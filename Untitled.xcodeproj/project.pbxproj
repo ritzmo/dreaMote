@@ -25,6 +25,7 @@
 		DA7FD7690D84339500974B1A /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7680D84339500974B1A /* Timer.m */; };
 		DA7FD82C0D843BD300974B1A /* addicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD82B0D843BD300974B1A /* addicon.png */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
+		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51B0B0D82F09300A769F3 /* XMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51AFB0D82F09300A769F3 /* XMLDocument.m */; };
 		DAD51B0C0D82F09300A769F3 /* XMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51AFD0D82F09300A769F3 /* XMLElement.m */; };
@@ -73,6 +74,8 @@
 		DA7FD82B0D843BD300974B1A /* addicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addicon.png; path = images/addicon.png; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
+		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
+		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
 		DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma2Connector.m; sourceTree = "<group>"; };
@@ -171,6 +174,8 @@
 				DA19BDFA0D8553180074AE48 /* ControlViewController.m */,
 				DA19BEDB0D856EC30074AE48 /* Volume.h */,
 				DA19BEDC0D856EC30074AE48 /* Volume.m */,
+				DAC3B7E90D85A55A00696B06 /* TimerViewController.h */,
+				DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -328,6 +333,7 @@
 				DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */,
 				DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */,
 				DA19BEDD0D856EC30074AE48 /* Volume.m in Sources */,
+				DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

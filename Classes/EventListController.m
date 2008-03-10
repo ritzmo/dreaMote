@@ -21,7 +21,7 @@
 {
     self = [super init];
     if (self) {
-        self.title = @"Events";
+        self.title = NSLocalizedString(@"Events", @"");
 		self.events = [NSMutableArray array];
     }
     return self;
@@ -31,7 +31,9 @@
 {
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.events = [NSMutableArray arrayWithArray: eventList];
-	
+
+	// XXX: we might want to replace title with our service (if one is provided or we add sref/sname to event)
+
 	return eventListController;
 }
 
@@ -85,8 +87,10 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	Event *event = [(EventTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] event];
-	EventViewController *targetViewController = [EventViewController withEvent: event];
-	[[applicationDelegate navigationController] pushViewController:targetViewController animated:YES];
+	EventViewController *eventViewController = [EventViewController withEvent: event];
+	[[applicationDelegate navigationController] pushViewController: eventViewController animated: YES];
+
+	//[eventViewController release];
 
 	return nil;
 }

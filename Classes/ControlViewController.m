@@ -50,9 +50,11 @@
 
 - (void)loadView
 {
+	UIColor *backgroundColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
+
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = [UIColor blackColor];
+	contentView.backgroundColor = backgroundColor;
 	self.view = contentView;
 	[contentView release];
 
@@ -60,6 +62,8 @@
 	self.view.autoresizesSubviews = YES;	
 
 	CGFloat yCoord = kTopMargin;
+
+	// XXX: we might want to make volume control more webif-like (left aligned slider next to a button to mute)
 
 	// create a label for our volume slider (should fix the color though)
 	CGRect frame = CGRectMake(kLeftMargin, yCoord, self.view.bounds.size.width - kRightMargin - kLeftMargin, kLabelHeight);
@@ -117,6 +121,7 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
+	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Standby", @"") forStates:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
@@ -129,6 +134,7 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
+	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Reboot", @"") forStates:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
@@ -141,6 +147,7 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
+	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Restart", @"") forStates:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
@@ -153,6 +160,7 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
+	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Shutdown", @"") forStates:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];

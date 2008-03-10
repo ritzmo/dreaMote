@@ -11,6 +11,7 @@
 #import "TimerTableViewCell.h"
 #import "AppDelegateMethods.h"
 #import "Timer.h"
+#import "TimerViewController.h"
 
 @implementation TimerListController
 
@@ -21,7 +22,7 @@
     self = [super init];
     if (self) {
 		self.timers = [NSMutableArray array];
-        self.title = @"Timers";
+        self.title = NSLocalizedString(@"Timers", @"");
     }
     return self;
 }
@@ -88,8 +89,12 @@
 
 - (void)addAction:(id)sender
 {
-	// the add button was clicked, handle it here
-	//
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	TimerViewController *timerViewController = [TimerViewController newTimer];
+	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+
+	[timerViewController release];
 }
 
 
@@ -109,7 +114,13 @@
 	// the user clicked one of our buttons
 	if (buttonIndex == 0)
 	{
-		// XXX: add edit
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
+		TimerViewController *timerViewController = [TimerViewController withTimer: timer];
+		[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+
+		[timerViewController release];
 	}
 	else
 	{

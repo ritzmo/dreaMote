@@ -19,7 +19,7 @@
 	if (self = [super init])
 	{
 		self.event = nil;
-		self.title = @"Event";
+		self.title = NSLocalizedString(@"Event", @"");
 	}
 	
 	return self;

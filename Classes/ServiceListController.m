@@ -22,7 +22,7 @@
 {
     self = [super init];
     if (self) {
-        self.title = @"Services";
+        self.title = NSLocalizedString(@"Services", @"");
 		self.services = [NSMutableArray array];
     }
     return self;
@@ -106,8 +106,10 @@
 	{
 		// Second Button: epg
 		NSArray *eventList = [applicationDelegate getEPGForService: service];
-		EventListController *targetViewController = [EventListController withEventList: eventList];
-		[[applicationDelegate navigationController] pushViewController:targetViewController animated:YES];
+		EventListController *eventListController = [EventListController withEventList: eventList];
+		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
+		
+		[eventListController release];
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];
