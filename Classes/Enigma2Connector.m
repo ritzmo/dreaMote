@@ -37,14 +37,20 @@
 
 - (BOOL)zapTo:(Service *) service
 {
+	BOOL returnValue = NO;
+
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [service getServiceReference]];
 	
 	// Create URL Object and download it
-	NSData *myData = [[NSURL URLWithString: myURI] resourceDataUsingCache: NO];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 	
 	// Compare to expected result
-	return [myData isLike: @"	<rootElement></rootElement>"];
+	NSRange myRange = [myString rangeOfString: @"<rootElement></rootElement>"];
+	if(myRange.length)
+		returnValue = YES;
+	
+	return returnValue;
 }
 
 #ifdef STREAMING_PARSE
@@ -333,7 +339,7 @@
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/powerstate?newstate=%d", self.baseAddress, newState];
 	
 	// Create URL Object and download it
-	[[NSURL URLWithString: myURI] resourceDataUsingCache: NO];
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 }
 
 - (void)shutdown
@@ -349,7 +355,7 @@
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/remotecontrol?command=116", self.baseAddress];
 	
 	// Create URL Object and download it
-	[[NSURL URLWithString: myURI] resourceDataUsingCache: NO];
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 }
 
 - (void)reboot
@@ -430,13 +436,21 @@
 	return returnVolume;
 }
 
-- (void)toggleMuted
+- (BOOL)toggleMuted
 {
+	BOOL returnValue = NO;
+
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=mute", self.baseAddress];
-	
+
 	// Create URL Object and download it
-	[[NSURL URLWithString: myURI] resourceDataUsingCache: NO];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	
+	NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
+	if(myRange.length)
+		returnValue = YES;
+	
+	return returnValue;
 }
 
 - (void)setVolume:(int) newVolume
@@ -445,7 +459,7 @@
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=set%d", self.baseAddress, newVolume];
 	
 	// Create URL Object and download it
-	[[NSURL URLWithString: myURI] resourceDataUsingCache: NO];
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 }
 
 @end

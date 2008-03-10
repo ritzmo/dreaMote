@@ -29,7 +29,7 @@
 - (void)restart;
 - (void)shutdown;
 - (Volume*)getVolume;
-- (void)setMuted:(BOOL) newMuted;
+- (BOOL)toggleMuted;
 - (void)setVolume:(int) newVolume;
 
 @property (nonatomic, retain) UIWindow *window;

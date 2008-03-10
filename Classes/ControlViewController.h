@@ -14,9 +14,11 @@
 @private
 	Volume *_volume;
 	UISwitch *_switchControl;
+	UISlider *_slider;
 }
 
 @property (nonatomic, retain) Volume *volume;
 @property (nonatomic, retain) UISwitch *switchControl;
+@property (nonatomic, retain) UISlider *slider;
 
 @end

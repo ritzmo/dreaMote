@@ -102,9 +102,9 @@
 	return [[self connection] getVolume];
 }
 
-- (void)toggleMuted
+- (BOOL)toggleMuted
 {
-	[[self connection] toggleMuted];
+	return [[self connection] toggleMuted];
 
 }
 

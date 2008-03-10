@@ -23,7 +23,7 @@
  - (void)reboot;
  - (void)restart;
  - (Volume *)getVolume;
- - (void)toggleMuted;
+ - (BOOL)toggleMuted;
  - (void)setVolume:(int) newVolume;
 
 @end
