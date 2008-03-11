@@ -62,8 +62,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// TODO: we might need to clean up our old timer list or cache results and reload only in certain situations
-	self.timers = [[RemoteConnectorObject sharedRemoteConnector] fetchTimers];
+	[_timers release];
+	_timers = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers] retain];
 
 	[super viewWillAppear: animated];
 }

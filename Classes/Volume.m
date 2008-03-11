@@ -33,7 +33,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@> ResultText: '%@'.\n Current: '%@'.\n Is muted: '%@'.\n", [self class], self.resulttext, self.current, self.ismuted];
+    return [NSString stringWithFormat:@"<%@> ResultText: '%@'.\nCurrent: '%i'.\nIs muted: '%d'.\n", [self class], self.resulttext, self.current, self.ismuted];
 }
 
 + (NSDictionary *)childElements
@@ -49,9 +49,24 @@
 {
     static NSDictionary *propertyNames = nil;
     if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setResult:", kResultElementName, @"setResulttext:", kResultTextElementName, @"setCurrent:", kCurrentElementName, @"setIsmuted:", kIsMutedElementName, nil];
+        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setResultFromString:", kResultElementName, @"setResulttext:", kResultTextElementName, @"setCurrentFromString:", kCurrentElementName, @"setIsmutedFromString:", kIsMutedElementName, nil];
     }
     return propertyNames;
+}
+
+- (void)setResultFromString: (NSString *)newResult
+{
+	_result = [newResult isEqualToString: @"True"];
+}
+
+- (void)setCurrentFromString: (NSString *)newCurrent
+{
+	_current = [newCurrent intValue];
+}
+
+- (void)setIsmutedFromString: (NSString *)newMuted
+{
+	_ismuted = [newMuted isEqualToString: @"True"];
 }
 
 @end

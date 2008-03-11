@@ -56,8 +56,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// TODO: we might need to clean up our old services list or cache results and reload only in certain situations
-	self.services = [[RemoteConnectorObject sharedRemoteConnector] fetchServices];
+	[_services release];
+	_services = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices] retain];
 
 	[super viewWillAppear: animated];
 }

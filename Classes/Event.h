@@ -16,8 +16,8 @@
     NSMutableDictionary *_rawAttributes; // Content from the XML parse.
     
     NSString *_eit;
-    NSString *_begin;
-	NSString *_duration;
+	NSDate *_begin;
+	NSDate *_end;
 	NSString *_title;
 	NSString *_sdescription;
 	NSString *_edescription;
@@ -25,8 +25,8 @@
 
 @property (nonatomic, retain) NSMutableDictionary *rawAttributes;
 @property (nonatomic, retain) NSString *eit;
-@property (nonatomic, retain) NSString *begin;
-@property (nonatomic, retain) NSString *duration;
+@property (nonatomic, retain) NSDate *begin;
+@property (nonatomic, retain) NSDate *end;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *sdescription;
 @property (nonatomic, retain) NSString *edescription;

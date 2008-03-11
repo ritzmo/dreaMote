@@ -37,8 +37,6 @@
 
 - (BOOL)zapTo:(Service *) service
 {
-	BOOL returnValue = NO;
-
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [service getServiceReference]];
 	
@@ -46,11 +44,7 @@
 	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 	
 	// Compare to expected result
-	NSRange myRange = [myString rangeOfString: @"<rootElement></rootElement>"];
-	if(myRange.length)
-		returnValue = YES;
-	
-	return returnValue;
+	return [myString isEqualToString: @"	<rootElement></rootElement>"];
 }
 
 #ifdef STREAMING_PARSE

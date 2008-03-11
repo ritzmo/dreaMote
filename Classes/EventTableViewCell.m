@@ -37,9 +37,9 @@
 	[eventname drawAtPoint:CGPointMake(x, 7.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:14] lineBreakMode:UILineBreakModeTailTruncation];
 
 	// Render <begin date> <begin time> - <end time>
-	NSDate *begin = [NSDate dateWithTimeIntervalSince1970: [[_event begin] doubleValue]];
-	NSDate *end = [NSDate dateWithTimeIntervalSince1970: [[_event begin] doubleValue]+[[_event duration] doubleValue]];
-	NSString *time = [NSString stringWithFormat: @"%@ - %@", [begin descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil], [end descriptionWithCalendarFormat:@"%H:%M" timeZone:nil locale:nil]];
+	//NSDate *begin = [NSDate dateWithTimeIntervalSince1970: [[_event begin] doubleValue]];
+	//NSDate *end = [NSDate dateWithTimeIntervalSince1970: [[_event begin] doubleValue]+[[_event duration] doubleValue]];
+	NSString *time = [NSString stringWithFormat: @"%@ - %@", [[_event begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil], [[_event end] descriptionWithCalendarFormat:@"%H:%M" timeZone:nil locale:nil]];
 	[time drawAtPoint:CGPointMake(x, 28) forWidth:MAX_WIDTH withFont:[UIFont italicSystemFontOfSize:10] lineBreakMode:UILineBreakModeTailTruncation];
 
     [super drawRect:clip];

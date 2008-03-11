@@ -10,7 +10,7 @@
 
 #define kEitElementName @"e2eit"
 #define kBeginElementName @"e2timebegin"
-#define kDurationElementName @"e2duration"
+#define kEndElementName @"e2timeend"
 #define kTitleElementName @"e2name"
 #define kDescriptionElementName @"e2description"
 #define kJustplayElementName @"e2justplay"
@@ -22,7 +22,7 @@
 @synthesize rawAttributes = _rawAttributes;
 @synthesize eit = _eit;
 @synthesize begin = _begin;
-@synthesize duration = _duration;
+@synthesize end = _end;
 @synthesize title = _title;
 @synthesize tdescription = _tdescription;
 @synthesize disabled = _disabled;
@@ -48,7 +48,7 @@
 {
     static NSDictionary *childElements = nil;
     if (!childElements) {
-        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kDurationElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kJustplayElementName, [NSNull null], kDisabledElementName, [NSNull null], kRepeatedElementName, nil];
+        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kEndElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kJustplayElementName, [NSNull null], kDisabledElementName, [NSNull null], kRepeatedElementName, nil];
     }
     return childElements;
 }
@@ -57,9 +57,36 @@
 {
     static NSDictionary *propertyNames = nil;
     if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBegin:", kBeginElementName, @"setDuration:", kDurationElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplay:", kJustplayElementName, @"setDisabled:", kDisabledElementName, @"setRepeated:", kRepeatedElementName, nil];
+        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromString:", kEndElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplayFromString:", kJustplayElementName, @"setDisabledFromString:", kDisabledElementName, @"setRepeatedFromString:", kRepeatedElementName, nil];
     }
     return propertyNames;
+}
+
+- (void)setBeginFromString: (NSString *)newBegin
+{
+	[_begin release];
+	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+}
+
+- (void)setEndFromString: (NSString *)newEnd
+{
+	[_end release];
+	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
+}
+
+- (void)setDisabledFromString: (NSString *)newDisabled
+{
+	_disabled = [newDisabled isEqualToString: @"1"];
+}
+
+- (void)setJustplayFromString: (NSString *)newJustplay
+{
+	_justplay = [newJustplay isEqualToString: @"1"];
+}
+
+- (void)setRepeatedFromString: (NSString *)newRepeated
+{
+	_repeated = [newRepeated intValue];
 }
 
 @end

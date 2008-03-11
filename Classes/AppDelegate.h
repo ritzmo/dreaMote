@@ -19,17 +19,6 @@
 	UINavigationController *_navigationController;
 }
 
-- (NSArray*)getServices;
-- (NSArray*)getTimers;
-- (void)zapToService:(Service *)service;
-- (void)standby;
-- (void)reboot;
-- (void)restart;
-- (void)shutdown;
-- (Volume*)getVolume;
-- (BOOL)toggleMuted;
-- (void)setVolume:(int) newVolume;
-
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
 

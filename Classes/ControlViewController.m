@@ -40,8 +40,8 @@
 {
 	// TODO: we might need to clean up our old timer list or cache results and reload only in certain situations
 	self.volume = [[RemoteConnectorObject sharedRemoteConnector] getVolume];
-	self.switchControl.on = ([[self.volume ismuted] isLike: @"True"]) ? YES: NO;
-	self.slider.value = [[self.volume current] floatValue];
+	self.switchControl.on = [self.volume ismuted];
+	self.slider.value = (float)[self.volume current];
 
 	[super viewWillAppear: animated];
 

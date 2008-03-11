@@ -15,16 +15,16 @@
 @private
     NSMutableDictionary *_rawAttributes; // Content from the XML parse.
     
-    NSString *_result;
-    NSString *_resulttext;
-	NSString *_current;
-	NSString *_ismuted;
+	BOOL _result;
+	NSString *_resulttext;
+	int _current;
+	BOOL _ismuted;
 }
 
 @property (nonatomic, retain) NSMutableDictionary *rawAttributes;
-@property (nonatomic, retain) NSString *result;
+@property (assign) BOOL result;
 @property (nonatomic, retain) NSString *resulttext;
-@property (nonatomic, retain) NSString *current;
-@property (nonatomic, retain) NSString *ismuted;
+@property (assign) int current;
+@property (assign) BOOL ismuted;
 
 @end
