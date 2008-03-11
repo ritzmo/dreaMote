@@ -37,10 +37,10 @@
 
 - (void)loadView
 {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-    tableView.delegate = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.rowHeight = 48.0;
+	tableView.rowHeight = 58.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
 

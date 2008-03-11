@@ -26,18 +26,25 @@
 
 - (void)drawRect:(CGRect)clip
 {
-	#define LOCATION_COLUMN_X 5.0
-	#define LOCATION_WIDTH 200.0
-	
-	#define MAGNITUDE_WIDTH 100.0
+	#define COLUMN_X 5.0
+	#define MAX_WIDTH 305.0
 
-	// Just a plain black timer name
-	// TODO: add begin/end, maybe service - see e2 timer overview for reference
+	// Render Event name
 	[[UIColor blackColor] set];
-    NSString *timername = [_timer title];
+	NSString *servicename = [[_timer service] sname];
 	CGRect contentRect = [self contentRectForBounds:self.bounds];
-	CGFloat x = contentRect.origin.x + LOCATION_COLUMN_X;
-	[timername drawAtPoint:CGPointMake(x, 7.0) forWidth:LOCATION_WIDTH withFont:[UIFont boldSystemFontOfSize:14] lineBreakMode:UILineBreakModeTailTruncation];
+	CGFloat x = contentRect.origin.x + COLUMN_X;
+	[servicename drawAtPoint:CGPointMake(x, 7.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:14] lineBreakMode:UILineBreakModeTailTruncation];
+
+	// Render Timer name
+	[[UIColor blackColor] set];
+	NSString *timername = [_timer title];
+	contentRect = [self contentRectForBounds:self.bounds];
+	[timername drawAtPoint:CGPointMake(x, 26.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:12] lineBreakMode:UILineBreakModeTailTruncation];
+
+	// Render <begin date> <begin time> - <end time>
+	NSString *time = [NSString stringWithFormat: @"%@ - %@", [[_timer begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil], [[_timer end] descriptionWithCalendarFormat:@"%H:%M" timeZone:nil locale:nil]];
+	[time drawAtPoint:CGPointMake(x, 41.0) forWidth:MAX_WIDTH withFont:[UIFont italicSystemFontOfSize:12] lineBreakMode:UILineBreakModeTailTruncation];
 	
     [super drawRect:clip];
 }

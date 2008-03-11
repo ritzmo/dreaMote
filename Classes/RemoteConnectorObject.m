@@ -13,11 +13,6 @@
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 
-/*!
- * @brief Set the shared AIAdium instance
- *
- * Called once, after AIAdium loads
- */
 + (void)_setSharedRemoteConnector:(NSObject<RemoteConnector> *)shared
 {
     NSParameterAssert(_sharedRemoteConnector == nil);

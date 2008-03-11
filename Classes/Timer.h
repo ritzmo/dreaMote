@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "XMLModelObject.h"
+#import "Service.h"
 
 @interface Timer : NSObject <XMLModelObject> {
 
@@ -23,7 +24,8 @@
 	NSString *_tdescription;
 	int _repeated;
 	BOOL _justplay;
-	// XXX: add service
+	Service *_service;
+	NSString *_sref;
 }
 
 @property (nonatomic, retain) NSMutableDictionary *rawAttributes;
@@ -35,5 +37,7 @@
 @property (assign) BOOL disabled;
 @property (assign) int repeated;
 @property (assign) BOOL justplay;
+@property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) NSString *sref;
 
 @end

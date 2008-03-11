@@ -38,8 +38,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// TODO: we might need to clean up our old timer list or cache results and reload only in certain situations
-	self.volume = [[RemoteConnectorObject sharedRemoteConnector] getVolume];
+	[_volume release];
+	_volume = [[[RemoteConnectorObject sharedRemoteConnector] getVolume] retain];
 	self.switchControl.on = [self.volume ismuted];
 	self.slider.value = (float)[self.volume current];
 
