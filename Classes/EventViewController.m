@@ -8,6 +8,8 @@
 
 #import "EventViewController.h"
 
+#import "TimerViewController.h"
+#import "AppDelegateMethods.h"
 #import "Constants.h"
 
 @implementation EventViewController
@@ -43,6 +45,19 @@
 	[super dealloc];
 }
 
++ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
+{
+	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+	
+	label.textAlignment = UITextAlignmentLeft;
+	label.text = title;
+	label.font = [UIFont boldSystemFontOfSize:17.0];
+	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
+	label.backgroundColor = [UIColor clearColor];
+
+	return label;
+}
+
 - (void)loadView
 {
 	UIColor *backColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
@@ -55,10 +70,12 @@
 	
 	self.view.autoresizesSubviews = YES;
 
+	CGFloat yCoord = kTopMargin;
+
 	// create a text view
 	// TODO: we really need something better looking here :-)
 	CGRect frame = CGRectMake(	kLeftMargin,
-						kTopMargin,
+						yCoord,
 						self.view.bounds.size.width - kLeftMargin - kRightMargin,
 						kTextViewHeight);
     myTextView = [[UITextView alloc] initWithFrame:frame];
@@ -70,28 +87,110 @@
 
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];
-	if([_event.sdescription length])
+	if([[_event sdescription] length])
 	{
-		[text appendString: _event.sdescription];
+		[text appendString: [_event sdescription]];
 	}
 	else
 	{
-		[text appendString: _event.title];
+		[text appendString: [_event title]];
 	}
 
-	if([_event.edescription length])
+	if([[_event edescription] length])
 	{
 		[text appendString: @"\n\n"];
-		[text appendString: _event.edescription];
+		[text appendString: [_event edescription]];
 	}
 
 	myTextView.text = text;
+	[self.view addSubview:myTextView];
+
 	[text release];
 
-	// TODO: display begin/end, allow creating a timer
-	// XXX: this would require to know the service so keep that in mind :-)
+	// XXX: I'm not completely satisfied how begin/end look
 
-	[self.view addSubview:myTextView];
+	// create a label for our begin textfield
+	yCoord += kTweenMargin + kTextViewHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[EventViewController fieldLabelWithFrame:frame title:@"Begin:"]];
+
+	// begin
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - (kRightMargin*2),
+						kTextFieldHeight);
+	UITextField *textField = [[UITextField alloc] initWithFrame:frame];
+	textField.borderStyle = UITextFieldBorderStyleRounded;
+	textField.textColor = [UIColor blackColor];
+	textField.font = [UIFont systemFontOfSize:17.0];
+	textField.delegate = self;
+	textField.text = [[_event begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	textField.enabled = NO;
+	textField.backgroundColor = backColor;
+	textField.returnKeyType = UIReturnKeyDone;
+	textField.keyboardType = UIKeyboardTypeDefault;
+	[self.view addSubview:textField];
+	
+	[textField release];
+
+	// create a label for our end textfield
+	yCoord += kTweenMargin + kTextFieldHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[EventViewController fieldLabelWithFrame:frame title:@"End:"]];
+	
+	// end
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - (kRightMargin*2),
+						kTextFieldHeight);
+	textField = [[UITextField alloc] initWithFrame:frame];
+	textField.borderStyle = UITextFieldBorderStyleRounded;
+	textField.textColor = [UIColor blackColor];
+	textField.font = [UIFont systemFontOfSize:17.0];
+	textField.delegate = self;
+	textField.text = [[_event end] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	textField.enabled = NO;
+	textField.backgroundColor = backColor;
+	textField.returnKeyType = UIReturnKeyDone;
+	textField.keyboardType = UIKeyboardTypeDefault;
+	[self.view addSubview:textField];
+	
+	[textField release];
+
+	// add timer button
+	yCoord += kTextFieldHeight + kTweenMargin;
+
+	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	roundedButtonType.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
+											yCoord,
+											kWideButtonWidth,
+											kStdButtonHeight);
+	roundedButtonType.backgroundColor = backColor;
+	[roundedButtonType setTitle:NSLocalizedString(@"Add Timer", @"") forStates:UIControlStateNormal];
+	[roundedButtonType addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview: roundedButtonType];
 }
 
+- (void)addTimer: (id)sender
+{
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	TimerViewController *timerViewController = [TimerViewController withEvent: _event];
+	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+
+	[timerViewController release];
+}
+	
 @end

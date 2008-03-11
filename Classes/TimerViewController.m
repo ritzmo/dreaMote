@@ -11,6 +11,8 @@
 #import "AppDelegateMethods.h"
 #import "Constants.h"
 
+// TODO: keep an own service instance to track changes (text fields can be tracked by themselves)
+
 @implementation TimerViewController
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
@@ -21,6 +23,9 @@
 
 @synthesize timer = _timer;
 @synthesize creatingNewTimer = _creatingNewTimer;
+@synthesize service = _service;
+@synthesize begin = _begin;
+@synthesize end = _end;
 
 - (id)init
 {
@@ -31,10 +36,19 @@
 	return self;
 }
 
++ (TimerViewController *)withEvent: (Event *)ourEvent
+{
+	TimerViewController *timerViewController = [[TimerViewController alloc] init];
+	timerViewController.timer = [Timer withEvent: ourEvent];
+	timerViewController.creatingNewTimer = YES;
+
+	return timerViewController;
+}
+
 + (TimerViewController *)withTimer: (Timer *)ourTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.timer = ourTimer;
+	timerViewController.timer = [ourTimer retain];
 	timerViewController.creatingNewTimer = NO;
 
 	return timerViewController;
@@ -43,7 +57,7 @@
 + (TimerViewController *)newTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.timer = [[Timer alloc] init];
+	timerViewController.timer = [[Timer new] autorelease];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;
@@ -85,6 +99,19 @@
 	
 	// note: for UITextField, if you don't like autocompletion while typing use:
 	// aTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+
+	/*
+	Order of E2 Timer Editing Screen is:
+		- Name
+		- Description
+		- Type
+		- Repeated
+		- Begin
+		- End
+		- (Location)
+		- afterEvent
+		- Service
+	*/
 
 	CGFloat yCoord = kTopMargin;
 
@@ -141,6 +168,126 @@
 	timerDescription.returnKeyType = UIReturnKeyDone;
 	timerDescription.keyboardType = UIKeyboardTypeDefault;
 	[self.view addSubview:timerDescription];
+
+	// create a label for our service textfield
+	yCoord += kTweenMargin + kTextFieldHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Service:"]];
+
+	// service
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kTextFieldHeight);
+	timerServiceName = [[UITextField alloc] initWithFrame:frame];
+	timerServiceName.borderStyle = UITextFieldBorderStyleRounded;
+	timerServiceName.textColor = [UIColor blackColor];
+	timerServiceName.font = [UIFont systemFontOfSize:17.0];
+	timerServiceName.delegate = self;
+	timerServiceName.text = [[self.timer service] sname];
+	timerServiceName.placeholder = @"<touch to select service>";
+	timerServiceName.enabled = NO; // XXX: we disable this for now as i currently cant figure out how to disable editing :-/
+	timerServiceName.backgroundColor = backgroundColor;
+	timerServiceName.returnKeyType = UIReturnKeyDone;
+	timerServiceName.keyboardType = UIKeyboardTypeDefault;
+	[timerServiceName addTarget:self action:@selector(editService:) forControlEvents:UIControlEventAllTouchEvents];
+	[self.view addSubview:timerServiceName];
+	
+	// XXX: I'm not completely satisfied how begin/end look
+
+	// create a label for our begin textfield
+	yCoord += kTweenMargin + kTextFieldHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Begin:"]];
+
+	// begin
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kTextFieldHeight);
+	timerBeginString = [[UITextField alloc] initWithFrame:frame];
+	timerBeginString.borderStyle = UITextFieldBorderStyleRounded;
+	timerBeginString.textColor = [UIColor blackColor];
+	timerBeginString.font = [UIFont systemFontOfSize:17.0];
+	timerBeginString.delegate = self;
+	timerBeginString.text = [[_timer begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	timerBeginString.enabled = NO; // XXX: we disable this for now as i currently cant figure out how to disable editing :-/
+	timerBeginString.backgroundColor = backgroundColor;
+	timerBeginString.returnKeyType = UIReturnKeyDone;
+	timerBeginString.keyboardType = UIKeyboardTypeDefault;
+	[self.view addSubview:timerBeginString];
+
+	// create a label for our end textfield
+	yCoord += kTweenMargin + kTextFieldHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"End:"]];
+	
+	// end
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kTextFieldHeight);
+	timerEndString = [[UITextField alloc] initWithFrame:frame];
+	timerEndString.borderStyle = UITextFieldBorderStyleRounded;
+	timerEndString.textColor = [UIColor blackColor];
+	timerEndString.font = [UIFont systemFontOfSize:17.0];
+	timerEndString.delegate = self;
+	timerEndString.text = [[_timer end] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	timerEndString.enabled = NO;
+	timerEndString.backgroundColor = backgroundColor;
+	timerEndString.returnKeyType = UIReturnKeyDone;
+	timerEndString.keyboardType = UIKeyboardTypeDefault;
+	[self.view addSubview:timerEndString];
+
+/*
+	// this is a template :-)
+	// create a label for our  textfield
+	yCoord += kTweenMargin + kTextFieldHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@":"]];
+	
+	// 
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - (kRightMargin*2),
+						kTextFieldHeight);
+	timer = [[UITextField alloc] initWithFrame:frame];
+	timer.borderStyle = UITextFieldBorderStyleRounded;
+	timer.textColor = [UIColor blackColor];
+	timer.font = [UIFont systemFontOfSize:17.0];
+	timer.delegate = self;
+	timer.text = [self.timer ];
+	timer.placeholder = @"<enter >";
+	timer.backgroundColor = backgroundColor;
+	timer.returnKeyType = UIReturnKeyDone;
+	timer.keyboardType = UIKeyboardTypeDefault;
+	[ addTarget:self action:@selector(:) forControlEvents:UIControlEventEditingBegin];
+	[self.view addSubview:timer];
+*/
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the summary field
@@ -235,6 +382,13 @@
 		removeObserver:self name:UIKeyboardWillShowNotification object:self.view.window];
 	[[NSNotificationCenter defaultCenter]
 		removeObserver:self name:UIKeyboardDidHideNotification object:self.view.window];
+}
+
+- (void)editService:(id)sender
+{
+	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[notification show];
+	[notification release];
 }
 
 @end

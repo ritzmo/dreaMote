@@ -33,6 +33,38 @@
 @synthesize service = _service;
 @synthesize sref = _sref;
 
++ (Timer *)withEvent: (Event *)ourEvent
+{
+	Timer *timer = [[Timer alloc] init];
+	timer.title = [[ourEvent title] retain];
+	timer.tdescription = [[ourEvent sdescription] retain];
+	timer.begin = [[ourEvent begin] retain];
+	timer.end = [[ourEvent end] retain];
+	timer.eit = [[ourEvent eit] retain];
+	timer.disabled = NO;
+	timer.justplay = NO;
+	// XXX: we need the service :-/
+	timer.repeated = 0;
+
+	return timer;
+}
+
++ (Timer *)new
+{
+	Timer *timer = [[Timer alloc] init];
+	timer.begin = [NSDate date];
+	timer.end = [timer.begin addTimeInterval: (double)3600];
+	timer.eit = @"-1";
+	timer.title = @"";
+	timer.tdescription = @"";
+	timer.disabled = NO;
+	timer.justplay = NO;
+	timer.service = [[Service alloc] init];
+	timer.repeated = 0;
+
+	return timer;
+}
+
 - (NSMutableDictionary *)XMLAttributes
 {
     return self.rawAttributes;

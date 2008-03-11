@@ -84,7 +84,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Service Action Title", @"") message:NSLocalizedString(@"Service Action Message", @"")
-									delegate:self defaultButton:nil cancelButton:nil otherButtons:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
+									delegate:self defaultButton:nil cancelButton:NSLocalizedString(@"Cancel", @"") otherButtons:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
 	[actionSheet showInView:self.view];
 	[actionSheet release];
 	
@@ -96,14 +96,14 @@
 {
 	Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] service];
 
-	if (buttonIndex == 0)
+	if (buttonIndex == 1)
 	{
-		// First Button: zap
+		// Second Button: zap
 		[[RemoteConnectorObject sharedRemoteConnector] zapTo: service];
 	}
-	else
+	else if (buttonIndex == 2)
 	{
-		// Second Button: epg
+		// Third Button: epg
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 		NSArray *eventList = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG: service];
 		EventListController *eventListController = [EventListController withEventList: eventList];
@@ -114,10 +114,6 @@
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];
 	[(UITableView*)self.view deselectRowAtIndexPath:tableSelection animated:NO];
-}
-
-- (void)tableView:(UITableView *)tableView selectionDidChangeToIndexPath:(NSIndexPath *)newIndexPath fromIndexPath:(NSIndexPath *)oldIndexPath
-{
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 

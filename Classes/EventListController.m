@@ -95,14 +95,6 @@
 	return nil;
 }
 
-- (void)modalView:(UIModalView *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-}
-
-- (void)tableView:(UITableView *)tableView selectionDidChangeToIndexPath:(NSIndexPath *)newIndexPath fromIndexPath:(NSIndexPath *)oldIndexPath
-{
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
 	// TODO: handle seperators?

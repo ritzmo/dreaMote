@@ -10,6 +10,7 @@
 
 #import "XMLModelObject.h"
 #import "Service.h"
+#import "Event.h"
 
 @interface Timer : NSObject <XMLModelObject> {
 
@@ -27,6 +28,9 @@
 	Service *_service;
 	NSString *_sref;
 }
+
++ (Timer *)withEvent: (Event *)ourEvent;
++ (Timer *)new;
 
 @property (nonatomic, retain) NSMutableDictionary *rawAttributes;
 @property (nonatomic, retain) NSString *eit;

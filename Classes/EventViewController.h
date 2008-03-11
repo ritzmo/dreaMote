@@ -10,12 +10,13 @@
 
 #import "Event.h"
 
-@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate>
+@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 {
 	UITextView *myTextView;
 	Event *_event;
 }
 
++ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
 + (EventViewController*)withEvent: (Event*) newEvent;
 
 @property (nonatomic, retain) Event *event;

@@ -40,7 +40,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.rowHeight = 58.0;
+	tableView.rowHeight = 62.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
 
@@ -101,7 +101,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Action Title", @"") message:NSLocalizedString(@"Timer Action Message", @"")
-									delegate:self defaultButton:nil cancelButton:nil otherButtons:@"Edit", @"Delete", nil];
+									delegate:self defaultButton:nil cancelButton:NSLocalizedString(@"Cancel", @"") otherButtons:NSLocalizedString(@"Edit", @""), NSLocalizedString(@"Delete", @""), nil];
 	[actionSheet showInView:self.view];
 	[actionSheet release];
 	
@@ -111,9 +111,9 @@
 
 - (void)modalView:(UIModalView *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	// the user clicked one of our buttons
-	if (buttonIndex == 0)
+	if (buttonIndex == 1)
 	{
+		// Second Button: Edit
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
@@ -122,8 +122,9 @@
 
 		[timerViewController release];
 	}
-	else
+	else if (buttonIndex == 2)
 	{
+		// Third Button: Delete
 		// XXX: add delete ;-)
 	}
 
