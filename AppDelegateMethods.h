@@ -7,21 +7,8 @@
  *
  */
 
-@class Service;
-@class Volume;
+// TODO: see if we still need any of this ;-)
 
 @interface AppDelegateMethods
-
-- (void)zapToService:(Service *)service;
-- (NSArray *)getServices;
-- (NSArray *)getTimers;
-- (NSArray *)getEPGForService: (Service *)service;
-- (void)standby;
-- (void)reboot;
-- (void)restart;
-- (void)shutdown;
-- (Volume *)getVolume;
-- (BOOL)toggleMuted;
-- (void)setVolume:(int) newVolume;
 
 @end

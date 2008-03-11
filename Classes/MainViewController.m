@@ -13,7 +13,7 @@
 #import "TimerListController.h"
 #import "ControlViewController.h"
 
-#include "AppDelegateMethods.h"
+//#include "AppDelegateMethods.h"
 
 @implementation MainViewController
 

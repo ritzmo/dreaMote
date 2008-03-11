@@ -8,7 +8,8 @@
 
 #import "ControlViewController.h"
 
-#import "AppDelegateMethods.h"
+//#import "AppDelegateMethods.h"
+#import "RemoteConnectorObject.h"
 #import "Constants.h"
 
 @implementation ControlViewController
@@ -38,8 +39,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	// TODO: we might need to clean up our old timer list or cache results and reload only in certain situations
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	self.volume = [applicationDelegate getVolume];
+	self.volume = [[RemoteConnectorObject sharedRemoteConnector] getVolume];
 	self.switchControl.on = ([[self.volume ismuted] isLike: @"True"]) ? YES: NO;
 	self.slider.value = [[self.volume current] floatValue];
 
@@ -180,41 +180,33 @@
 
 - (void)standby:(id)sender
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	[applicationDelegate standby];
+	[[RemoteConnectorObject sharedRemoteConnector] standby];
 }
 
 - (void)reboot:(id)sender
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	[applicationDelegate reboot];
+	[[RemoteConnectorObject sharedRemoteConnector] reboot];
 }
 
 - (void)restart:(id)sender
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	[applicationDelegate restart];
+	[[RemoteConnectorObject sharedRemoteConnector] restart];
 }
 
 - (void)shutdown:(id)sender
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	[applicationDelegate shutdown];
+	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 }
 
 - (void)toggleMuted:(id)sender
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	[applicationDelegate toggleMuted];
+	[[RemoteConnectorObject sharedRemoteConnector] toggleMuted];
 }
 
 - (void)volumeChanged:(id)sender
 {
 	// XXX: this is called twice (wtf?) but we ignore this for now
-	//self.volume.current = [NSString stringWithFormat: @"%f", [(UISlider*)sender value]];
-
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	[applicationDelegate setVolume:(int)[(UISlider*)sender value]];
+	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(int)[(UISlider*)sender value]];
 }
 
 @end

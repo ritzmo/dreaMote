@@ -17,8 +17,6 @@
     UIWindow *_window;
 	
 	UINavigationController *_navigationController;
-	
-	id <RemoteConnector> *_connection;
 }
 
 - (NSArray*)getServices;
@@ -34,6 +32,5 @@
 
 @property (nonatomic, retain) UIWindow *window;
 @property (nonatomic, retain) UINavigationController *navigationController;
-@property (nonatomic, retain) id <RemoteConnector> *connection;
 
 @end

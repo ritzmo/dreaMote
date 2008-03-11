@@ -12,6 +12,7 @@
 
 #import "ServiceTableViewCell.h"
 #import "AppDelegateMethods.h"
+#import "RemoteConnectorObject.h"
 #import "Service.h"
 
 @implementation ServiceListController
@@ -56,8 +57,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	// TODO: we might need to clean up our old services list or cache results and reload only in certain situations
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	self.services = [applicationDelegate getServices];
+	self.services = [[RemoteConnectorObject sharedRemoteConnector] fetchServices];
 
 	[super viewWillAppear: animated];
 }
@@ -94,18 +94,18 @@
 
 - (void)modalView:(UIModalView *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 	Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] service];
 
 	if (buttonIndex == 0)
 	{
 		// First Button: zap
-		[applicationDelegate zapToService: service];
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo: service];
 	}
 	else
 	{
 		// Second Button: epg
-		NSArray *eventList = [applicationDelegate getEPGForService: service];
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+		NSArray *eventList = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG: service];
 		EventListController *eventListController = [EventListController withEventList: eventList];
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
 		

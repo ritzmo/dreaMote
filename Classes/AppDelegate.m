@@ -12,13 +12,13 @@
 #import "Volume.h"
 
 #import "RemoteConnector.h"
+#import "RemoteConnectorObject.h"
 #import "Enigma2Connector.h"
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 @synthesize navigationController = _navigationController;
-@synthesize connection = _connection;
 
 - init {
 	if (self = [super init]) {
@@ -29,14 +29,14 @@
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	// XXX: connection is not manageable like this and this should be placed somewhere elese
-	self.connection = (id <RemoteConnector>*)[Enigma2Connector createClassWithAddress:@"http://192.168.45.38"];
+	[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress:@"http://192.168.45.38"]];
 
-    // Create window
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+	// Create window
+	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
 	[self.window setBackgroundColor:[UIColor whiteColor]];
 	
 	// set up main view navigation controller
-    MainViewController *navController = [[MainViewController alloc] init];
+	MainViewController *navController = [[MainViewController alloc] init];
 	
 	// create a navigation controller using the new controller
 	self.navigationController = [[UINavigationController alloc] initWithRootViewController:navController];
@@ -44,73 +44,72 @@
 	
 	[navController release];
 	
-    // Show the window and view
+	// Show the window and view
 	[self.window addSubview:[self.navigationController view]];
-    [self.window makeKeyAndVisible];
+	[self.window makeKeyAndVisible];
 }
 
 - (void)dealloc {
-    [_window release];
+	[_window release];
 	[_navigationController release];
-	[_connection release];
 
-    [super dealloc];
+	[super dealloc];
 }
 
 - (void)zapToService:(Service *)service
 {
-	[[self connection] zapTo:service];
+	[[RemoteConnectorObject sharedRemoteConnector] zapTo:service];
 }
 
 - (NSArray *)getServices
 {
-	return [[self connection] fetchServices];
+	return [[RemoteConnectorObject sharedRemoteConnector] fetchServices];
 }
 
 - (NSArray *)getTimers
 {
-	return [[self connection] fetchTimers];
+	return [[RemoteConnectorObject sharedRemoteConnector] fetchTimers];
 }
 
 - (NSArray *)getEPGForService: (Service *)service
 {
-	return [[self connection] fetchEPG: service];
+	return [[RemoteConnectorObject sharedRemoteConnector] fetchEPG: service];
 }
 
 - (void)standby
 {
-	[[self connection] standby];
+	[[RemoteConnectorObject sharedRemoteConnector] standby];
 }
 
 - (void)reboot
 {
-	[[self connection] reboot];
+	[[RemoteConnectorObject sharedRemoteConnector] reboot];
 }
 
 - (void)restart
 {
-	[[self connection] restart];
+	[[RemoteConnectorObject sharedRemoteConnector] restart];
 }
 
 - (void)shutdown
 {
-	[[self connection] shutdown];
+	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 }
 
 - (Volume *)getVolume
 {
-	return [[self connection] getVolume];
+	return [[RemoteConnectorObject sharedRemoteConnector] getVolume];
 }
 
 - (BOOL)toggleMuted
 {
-	return [[self connection] toggleMuted];
+	return [[RemoteConnectorObject sharedRemoteConnector] toggleMuted];
 
 }
 
 - (void)setVolume:(int) newVolume
 {
-	[[self connection] setVolume: newVolume];
+	[[RemoteConnectorObject sharedRemoteConnector] setVolume: newVolume];
 }
 
 @end

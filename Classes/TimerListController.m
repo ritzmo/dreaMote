@@ -10,6 +10,7 @@
 
 #import "TimerTableViewCell.h"
 #import "AppDelegateMethods.h"
+#import "RemoteConnectorObject.h"
 #import "Timer.h"
 #import "TimerViewController.h"
 
@@ -62,8 +63,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	// TODO: we might need to clean up our old timer list or cache results and reload only in certain situations
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	self.timers = [applicationDelegate getTimers];
+	self.timers = [[RemoteConnectorObject sharedRemoteConnector] fetchTimers];
 
 	[super viewWillAppear: animated];
 }
