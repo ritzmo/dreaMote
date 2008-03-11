@@ -24,7 +24,7 @@
 @synthesize begin = _begin;
 @synthesize duration = _duration;
 @synthesize title = _title;
-@synthesize description = _description;
+@synthesize tdescription = _tdescription;
 @synthesize disabled = _disabled;
 @synthesize repeated = _repeated;
 @synthesize justplay = _justplay;
@@ -57,7 +57,7 @@
 {
     static NSDictionary *propertyNames = nil;
     if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBegin:", kBeginElementName, @"setDuration:", kDurationElementName, @"setTitle:", kTitleElementName, @"setDescription:", kDescriptionElementName, @"setJustplay:", kJustplayElementName, @"setDisabled:", kDisabledElementName, @"setRepeated:", kRepeatedElementName, nil];
+        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBegin:", kBeginElementName, @"setDuration:", kDurationElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplay:", kJustplayElementName, @"setDisabled:", kDisabledElementName, @"setRepeated:", kRepeatedElementName, nil];
     }
     return propertyNames;
 }

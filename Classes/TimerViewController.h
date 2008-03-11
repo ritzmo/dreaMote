@@ -12,6 +12,7 @@
 
 @interface TimerViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate> {
 	UITextField *timerTitle;
+	UITextField *timerDescription;
 	UIResponder *lastTrackedFirstResponder;
 
 @private

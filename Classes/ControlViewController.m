@@ -47,6 +47,18 @@
 
 }
 
++ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
+{
+	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+	
+	label.textAlignment = UITextAlignmentLeft;
+	label.text = title;
+	label.font = [UIFont boldSystemFontOfSize:17.0];
+	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
+	label.backgroundColor = [UIColor clearColor];
+
+	return label;
+}
 
 - (void)loadView
 {
@@ -66,20 +78,19 @@
 	// XXX: we might want to make volume control more webif-like (left aligned slider next to a button to mute)
 
 	// create a label for our volume slider (should fix the color though)
-	CGRect frame = CGRectMake(kLeftMargin, yCoord, self.view.bounds.size.width - kRightMargin - kLeftMargin, kLabelHeight);
-	UILabel *label = [[UILabel alloc] initWithFrame:frame];
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = NSLocalizedString(@"Volume:", @"");
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:label];
-	[label release];
+	CGRect frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[ControlViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Volume:", @"")]];
 
 	// Volume
 	yCoord += kLabelHeight;
 
-	frame = CGRectMake(kLeftMargin, yCoord, self.view.bounds.size.width - kRightMargin - kLeftMargin, kSliderHeight);
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kSliderHeight);
 	_slider = [[UISlider alloc] initWithFrame:frame];
 	[_slider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventTouchUpInside];
 	// in case the parent view draws with a custom color or gradient, use a transparent color
@@ -93,25 +104,24 @@
 	// create a label for our muted switch (should fix the color though)
 	yCoord += kSliderHeight + kTweenMargin*2;
 
-	frame = CGRectMake(kLeftMargin, yCoord, self.view.bounds.size.width - kRightMargin - kLeftMargin, kLabelHeight);
-	label = [[UILabel alloc] initWithFrame:frame];
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = NSLocalizedString(@"Mute:", @"");
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:label];
-	[label release];
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[ControlViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Mute:", @"")]];
 
 	// Muted
 	yCoord += kLabelHeight;
 
-	frame = CGRectMake(kLeftMargin + 96.0, yCoord, kSwitchButtonWidth, kSwitchButtonHeight);
+	frame = CGRectMake(kLeftMargin + 96.0,
+						yCoord,
+						kSwitchButtonWidth,
+						kSwitchButtonHeight);
 	_switchControl = [[UISwitch alloc] initWithFrame:frame];
 	[_switchControl addTarget:self action:@selector(toggleMuted:) forControlEvents:UIControlEventTouchUpInside];
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_switchControl.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:_switchControl];
+	[self.view addSubview:_switchControl];
 
 	// Standby
 	yCoord += kSwitchButtonHeight + kTweenMargin*3;

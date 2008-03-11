@@ -53,21 +53,22 @@
 {
 	[_timer release];
 	[timerTitle release];
+	[timerDescription release];
 
 	[super dealloc];
 }
 
 + (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
 {
-    UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
-    
+	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+	
 	label.textAlignment = UITextAlignmentLeft;
-    label.text = title;
-    label.font = [UIFont boldSystemFontOfSize:17.0];
-    label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-    label.backgroundColor = [UIColor clearColor];
+	label.text = title;
+	label.font = [UIFont boldSystemFontOfSize:17.0];
+	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
+	label.backgroundColor = [UIColor clearColor];
 
-    return label;
+	return label;
 }
 
 - (void)loadView
@@ -87,63 +88,92 @@
 
 	CGFloat yCoord = kTopMargin;
 
-	// create a label for the "rounded" style UITextField
-	CGRect frame = CGRectMake(	kLeftMargin,
+	// create a label for our title textfield
+	CGRect frame = CGRectMake(kLeftMargin,
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
 	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Name:"]];
 	
-	// create a text field "rounded" style
+	// title
 	yCoord += kTweenMargin + kLabelHeight;
-	frame = CGRectMake(	kLeftMargin,
+
+	frame = CGRectMake(kLeftMargin,
 						yCoord,
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	timerTitle = [[UITextField alloc] initWithFrame:frame];
-    timerTitle.borderStyle = UITextFieldBorderStyleRounded;
-    timerTitle.textColor = [UIColor blackColor];
-    timerTitle.font = [UIFont systemFontOfSize:17.0];
-    timerTitle.delegate = self;
+	timerTitle.borderStyle = UITextFieldBorderStyleRounded;
+	timerTitle.textColor = [UIColor blackColor];
+	timerTitle.font = [UIFont systemFontOfSize:17.0];
+	timerTitle.delegate = self;
 	timerTitle.text = [self.timer title];
-    timerTitle.placeholder = @"<enter title>";
-    timerTitle.backgroundColor = backgroundColor;
+	timerTitle.placeholder = @"<enter title>";
+	timerTitle.backgroundColor = backgroundColor;
 	timerTitle.returnKeyType = UIReturnKeyDone;
 	timerTitle.keyboardType = UIKeyboardTypeDefault;
 	[self.view addSubview:timerTitle];
+
+	// create a label for our description textfield
+	yCoord += kTweenMargin + kTextFieldHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - kRightMargin - kLeftMargin,
+						kLabelHeight);
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Description:"]];
+	
+	// description
+	yCoord += kTweenMargin + kLabelHeight;
+
+	frame = CGRectMake(kLeftMargin,
+						yCoord,
+						self.view.bounds.size.width - (kRightMargin*2),
+						kTextFieldHeight);
+	timerDescription = [[UITextField alloc] initWithFrame:frame];
+	timerDescription.borderStyle = UITextFieldBorderStyleRounded;
+	timerDescription.textColor = [UIColor blackColor];
+	timerDescription.font = [UIFont systemFontOfSize:17.0];
+	timerDescription.delegate = self;
+	timerDescription.text = [self.timer tdescription];
+	timerDescription.placeholder = @"<enter description>";
+	timerDescription.backgroundColor = backgroundColor;
+	timerDescription.returnKeyType = UIReturnKeyDone;
+	timerDescription.keyboardType = UIKeyboardTypeDefault;
+	[self.view addSubview:timerDescription];
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the summary field
 //
 - (void)setViewMovedUp:(BOOL)movedUp
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:kVerticalOffsetAnimationDuration];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:kVerticalOffsetAnimationDuration];
 	
-    // Make changes to the view's frame inside the animation block.
+	// Make changes to the view's frame inside the animation block.
 	// They will be animated instead of taking place immediately.
-    CGRect rect = self.view.frame;
-    if (movedUp)
+	CGRect rect = self.view.frame;
+	if (movedUp)
 	{
-        // If moving up, not only decrease the origin but increase the height so the view 
-        // covers the entire screen behind the keyboard.
-        rect.origin.y -= kViewVerticalOffset;
-        rect.size.height += kViewVerticalOffset;
-    }
+		// If moving up, not only decrease the origin but increase the height so the view 
+		// covers the entire screen behind the keyboard.
+		rect.origin.y -= kViewVerticalOffset;
+		rect.size.height += kViewVerticalOffset;
+	}
 	else
 	{
-        // If moving down, not only increase the origin but decrease the height.
-        rect.origin.y += kViewVerticalOffset;
-        rect.size.height -= kViewVerticalOffset;
-    }
-    self.view.frame = rect;
-    
-    [UIView commitAnimations];
+		// If moving down, not only increase the origin but decrease the height.
+		rect.origin.y += kViewVerticalOffset;
+		rect.size.height -= kViewVerticalOffset;
+	}
+	self.view.frame = rect;
+	
+	[UIView commitAnimations];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    // The keyboard will be shown
+	// The keyboard will be shown
 	//
 	// If the user is editing either of the two text fields placed under the keyboard area,
 	// adjust the display so that the each of them will not be covered by the keyboard.
@@ -166,15 +196,15 @@
 
 - (void)keyboardDidHide:(NSNotification *)notification
 {
-    // The keyboard was hidden
+	// The keyboard was hidden
 	//
 	// If the view was previously adjusted to prevent the keyboard from covering 
-    // the edit fields, restore the original positioning.
+	// the edit fields, restore the original positioning.
 	//
-    if  (self.view.frame.origin.y < 0)
+	if  (self.view.frame.origin.y < 0)
 	{
-        [self setViewMovedUp:NO];
-    }
+		[self setViewMovedUp:NO];
+	}
 }
 
 // this helps dismiss the keyboard then the "done" button is clicked
@@ -200,7 +230,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    // Unregister for keyboard notifications while not visible.
+	// Unregister for keyboard notifications while not visible.
 	[[NSNotificationCenter defaultCenter]
 		removeObserver:self name:UIKeyboardWillShowNotification object:self.view.window];
 	[[NSNotificationCenter defaultCenter]

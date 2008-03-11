@@ -17,6 +17,8 @@
 	UISlider *_slider;
 }
 
++ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
+
 @property (nonatomic, retain) Volume *volume;
 @property (nonatomic, retain) UISwitch *switchControl;
 @property (nonatomic, retain) UISlider *slider;
