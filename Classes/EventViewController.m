@@ -66,9 +66,9 @@
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = backColor;
 	self.view = contentView;
-	[contentView release];
-	
 	self.view.autoresizesSubviews = YES;
+
+	[contentView release];
 
 	CGFloat yCoord = kTopMargin;
 

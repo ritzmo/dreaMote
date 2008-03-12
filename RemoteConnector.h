@@ -9,6 +9,7 @@
 
 #include "Service.h"
 #include "Volume.h"
+#include "Timer.h"
 
 @protocol RemoteConnector
 
@@ -25,5 +26,7 @@
  - (Volume *)getVolume;
  - (BOOL)toggleMuted;
  - (void)setVolume:(int) newVolume;
+ - (void)addTimer:(Timer *) newTimer;
+ - (void)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
 
 @end

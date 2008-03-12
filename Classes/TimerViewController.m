@@ -11,8 +11,6 @@
 #import "AppDelegateMethods.h"
 #import "Constants.h"
 
-// TODO: keep an own service instance to track changes (text fields can be tracked by themselves)
-
 @implementation TimerViewController
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
@@ -39,6 +37,7 @@
 + (TimerViewController *)withEvent: (Event *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
+	timerViewController.title = NSLocalizedString(@"New Timer", @"");
 	timerViewController.timer = [Timer withEvent: ourEvent];
 	timerViewController.creatingNewTimer = YES;
 
@@ -57,6 +56,7 @@
 + (TimerViewController *)newTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
+	timerViewController.title = NSLocalizedString(@"New Timer", @"");
 	timerViewController.timer = [[Timer new] autorelease];
 	timerViewController.creatingNewTimer = YES;
 
@@ -68,6 +68,14 @@
 	[_timer release];
 	[timerTitle release];
 	[timerDescription release];
+	[timerServiceName release];
+	[timerBeginString release];
+	[timerEndString release];
+	[lastTrackedFirstResponder release];
+
+	[_service release];
+	[_begin release];
+	[_end release];
 
 	[super dealloc];
 }
@@ -92,11 +100,31 @@
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = backgroundColor;
+
+	// important for view orientation rotation
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);	
 	self.view = contentView;
-	[contentView release];
-	
 	self.view.autoresizesSubviews = YES;
 	
+	[contentView release];
+
+	// add our custom done button as the nav bar's custom right view
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeNavigationDone];
+	[button setTitle:NSLocalizedString(@"Done", @"") forStates:UIControlStateNormal];
+	[button addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
+	UINavigationItem *navItem = self.navigationItem;
+	navItem.customRightView = button;
+
+	[button release];
+
+	// add our custom cancel button as the nav bar's custom left view
+	button = [UIButton buttonWithType:UIButtonTypeNavigation];
+	[button setTitle:NSLocalizedString(@"Cancel", @"") forStates:UIControlStateNormal];
+	[button addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
+	navItem.customLeftView = button;
+	
+	[navItem release];
+
 	// note: for UITextField, if you don't like autocompletion while typing use:
 	// aTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
@@ -389,6 +417,36 @@
 	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[notification show];
 	[notification release];
+}
+
+- (void)doneAction:(id)sender
+{
+	NSString *message;
+	if(_creatingNewTimer)
+	{
+		message = @"We should add the new timer now, but its not yet implemented";
+	}
+	else
+	{
+		Timer *oldTimer = [_timer copy];
+		_timer.title = [timerTitle text];
+		_timer.tdescription = [timerDescription text];
+		
+		if([[oldTimer title] isEqual: [_timer title]])
+			message = @"We should change the timer now, but its not yet implemented";
+		else
+			message = @"We should change the timer now, but its not yet implemented - but the name changed :-)";
+	}
+	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[notification show];
+	[notification release];
+}
+
+- (void)cancelAction:(id)sender
+{
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 }
 
 @end

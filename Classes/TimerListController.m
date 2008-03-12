@@ -94,7 +94,7 @@
 	TimerViewController *timerViewController = [TimerViewController newTimer];
 	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
 
-	[timerViewController release];
+	//[timerViewController release];
 }
 
 
@@ -104,9 +104,8 @@
 									delegate:self defaultButton:nil cancelButton:NSLocalizedString(@"Cancel", @"") otherButtons:NSLocalizedString(@"Edit", @""), NSLocalizedString(@"Delete", @""), nil];
 	[actionSheet showInView:self.view];
 	[actionSheet release];
-	
-	return indexPath; // nil to disable select
 
+	return indexPath; // nil to disable select
 }
 
 - (void)modalView:(UIModalView *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -120,7 +119,7 @@
 		TimerViewController *timerViewController = [TimerViewController withTimer: timer];
 		[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
 
-		[timerViewController release];
+		//[timerViewController release];
 	}
 	else if (buttonIndex == 2)
 	{
@@ -130,10 +129,6 @@
 
 	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
 	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:NO];
-}
-
-- (void)tableView:(UITableView *)tableView selectionDidChangeToIndexPath:(NSIndexPath *)newIndexPath fromIndexPath:(NSIndexPath *)oldIndexPath
-{
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 

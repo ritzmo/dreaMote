@@ -17,6 +17,29 @@
 @synthesize sref = _sref;
 @synthesize sname = _sname;
 
+- (id)initWithService:(Service *)service
+{
+	self = [super init];
+    
+	if (self) {
+		self.sref = [[service sref] copy];
+		self.sname = [[service sname] copy];
+	}
+
+	return self;
+}
+
+#pragma mark -
+#pragma mark    Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id newElement = [[[self class] alloc] initWithService:self];
+
+    return newElement;
+}
+
 - (NSMutableDictionary *)XMLAttributes
 {
     return self.rawAttributes;

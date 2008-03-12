@@ -65,6 +65,36 @@
 	return timer;
 }
 
+- (id)initWithTimer:(Timer *)timer
+{
+	self = [super init];
+    
+	if (self) {
+		self.begin = [[timer begin] copy];
+		self.end = [[timer end] copy];
+		self.eit = [[timer eit] copy];
+		self.title = [[timer title] copy];
+		self.tdescription = [[timer tdescription] copy];
+		self.disabled = [timer disabled];
+		self.justplay = [timer justplay];
+		self.service = [[timer service] copy];
+		self.repeated = timer.repeated;
+	}
+
+	return self;
+}
+
+#pragma mark -
+#pragma mark    Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    id newElement = [[[self class] alloc] initWithTimer:self];
+
+    return newElement;
+}
+
 - (NSMutableDictionary *)XMLAttributes
 {
     return self.rawAttributes;

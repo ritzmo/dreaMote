@@ -456,4 +456,22 @@
 	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 }
 
+- (void)addTimer:(Timer *) newTimer
+{
+	// Generate URI
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d", baseAddress, [[newTimer service] sref], [[newTimer begin] timeIntervalSince1970], [[newTimer end] timeIntervalSince1970], [newTimer title], [newTimer tdescription], [newTimer eit], [newTimer disabled], [newTimer justplay], 0/*[newTimer afterEvent]*/];
+
+	// Create URL Object and download it
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+}
+
+- (void)editTimer:(Timer *) oldTimer: (Timer *) newTimer
+{
+	// Generate URI
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", baseAddress, [[newTimer service] sref], [[newTimer begin] timeIntervalSince1970], [[newTimer end] timeIntervalSince1970], [newTimer title], [newTimer tdescription], [newTimer eit], [newTimer disabled], [newTimer justplay], 0/*[newTimer afterEvent]*/, [[oldTimer service] sref], [[oldTimer begin] timeIntervalSince1970], [[oldTimer end] timeIntervalSince1970]];
+
+	// Create URL Object and download it
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+}
+
 @end
