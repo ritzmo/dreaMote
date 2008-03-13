@@ -74,14 +74,13 @@
 	[_timers release];
 	_timers = [[self sortTimers: [[RemoteConnectorObject sharedRemoteConnector] fetchTimers]] retain];
 
-	// XXX: yeah, this sucks - but there is no better way i know of and i think has good coding style ;-)
-	NSMutableArray *myArray = [NSMutableArray arrayWithObjects: [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], nil];
+	int localDist[4] = {0, 0, 0, 0};
 	for(Timer *timer in _timers){
-		[myArray replaceObjectAtIndex: [timer state] withObject: [NSNumber numberWithInt: [[myArray objectAtIndex: [timer state]] intValue] + 1]];
+		localDist[[timer state]]++;
 	}
 
 	[_dist release];
-	_dist = [myArray retain];
+	_dist = [[NSArray arrayWithObjects: [NSNumber numberWithInt: localDist[0]], [NSNumber numberWithInt: localDist[1]], [NSNumber numberWithInt: localDist[2]], [NSNumber numberWithInt: localDist[3]], nil] retain];
 
 	[(UITableView *)self.view reloadData];
 
