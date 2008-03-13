@@ -11,11 +11,13 @@
 @interface TimerListController : UIViewController <UIModalViewDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_timers;
+	NSArray *_dist;
 }
 
 - (void)addAction:(id)sender;
 - (void)reloadData;
 
 @property (nonatomic, retain) NSArray *timers;
+@property (nonatomic, retain) NSArray *dist;
 
 @end

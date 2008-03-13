@@ -18,6 +18,7 @@
 #define kRepeatedElementName @"e2repeated"
 #define kSrefElementName @"e2servicereference"
 #define kSnameElementName @"e2servicename"
+#define kStateElementName @"e2state"
 
 @implementation Timer
 
@@ -32,6 +33,7 @@
 @synthesize justplay = _justplay;
 @synthesize service = _service;
 @synthesize sref = _sref;
+@synthesize state = _state;
 
 + (Timer *)withEvent: (Event *)ourEvent
 {
@@ -45,6 +47,7 @@
 	timer.justplay = NO;
 	// XXX: we need the service :-/
 	timer.repeated = 0;
+	timer.state = 0;
 
 	return timer;
 }
@@ -61,6 +64,7 @@
 	timer.justplay = NO;
 	timer.service = [[Service alloc] init];
 	timer.repeated = 0;
+	timer.state = 0;
 
 	return timer;
 }
@@ -79,6 +83,7 @@
 		self.justplay = [timer justplay];
 		self.service = [[timer service] copy];
 		self.repeated = timer.repeated;
+		self.state = timer.state;
 	}
 
 	return self;
@@ -110,11 +115,16 @@
     return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 
+- (NSString *)getStateString
+{
+	return [[NSString stringWithFormat: @"%d", _state] autorelease];
+}
+
 + (NSDictionary *)childElements
 {
     static NSDictionary *childElements = nil;
     if (!childElements) {
-        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kEndElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kJustplayElementName, [NSNull null], kDisabledElementName, [NSNull null], kRepeatedElementName, [NSNull null], kSrefElementName, [NSNull null], kSnameElementName, nil];
+        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kEndElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kJustplayElementName, [NSNull null], kDisabledElementName, [NSNull null], kRepeatedElementName, [NSNull null], kSrefElementName, [NSNull null], kSnameElementName, [NSNull null], kStateElementName, nil];
     }
     return childElements;
 }
@@ -123,7 +133,7 @@
 {
     static NSDictionary *propertyNames = nil;
     if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromString:", kEndElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplayFromString:", kJustplayElementName, @"setDisabledFromString:", kDisabledElementName, @"setRepeatedFromString:", kRepeatedElementName, @"setSref:", kSrefElementName, @"setServiceFromSname:", kSnameElementName, nil];
+        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromString:", kEndElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplayFromString:", kJustplayElementName, @"setDisabledFromString:", kDisabledElementName, @"setRepeatedFromString:", kRepeatedElementName, @"setSref:", kSrefElementName, @"setServiceFromSname:", kSnameElementName, @"setStateFromString:", kStateElementName, nil];
     }
     return propertyNames;
 }
@@ -161,6 +171,11 @@
 	_service = [[Service alloc] init];
 	_service.sref = _sref;
 	_service.sname = newSname;
+}
+
+- (void)setStateFromString: (NSString *)newState
+{
+	_state = [newState intValue];
 }
 
 @end

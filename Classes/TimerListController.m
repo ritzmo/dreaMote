@@ -17,12 +17,14 @@
 @implementation TimerListController
 
 @synthesize timers = _timers;
+@synthesize dist = _dist;
 
 - (id)init
 {
     self = [super init];
     if (self) {
-		self.timers = [NSMutableArray array];
+		self.timers = [NSArray array];
+		self.dist = [NSArray arrayWithObjects: [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], nil];
         self.title = NSLocalizedString(@"Timers", @"");
     }
     return self;
@@ -31,6 +33,7 @@
 - (void)dealloc
 {
 	[_timers release];
+	[_dist release];
 
 	[super dealloc];
 }
@@ -42,7 +45,7 @@
 	tableView.dataSource = self;
 	tableView.rowHeight = 62.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
+	[tableView reloadData];
 
 	// add our custom add button as the nav bar's custom right view
 	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeNavigation];
@@ -60,10 +63,26 @@
 	[(UITableView *)self.view reloadData];
 }
 
+- (NSArray *)sortTimers:(NSArray *)timers
+{        
+	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"getStateString" ascending:YES] autorelease];
+	return [timers sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	[_timers release];
-	_timers = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers] retain];
+	_timers = [[self sortTimers: [[RemoteConnectorObject sharedRemoteConnector] fetchTimers]] retain];
+
+	// XXX: yeah, this sucks - but there is no better way i know of and i think has good coding style ;-)
+	NSMutableArray *myArray = [NSMutableArray arrayWithObjects: [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], nil];
+	for(Timer *timer in _timers){
+		[myArray replaceObjectAtIndex: [timer state] withObject: [NSNumber numberWithInt: [[myArray objectAtIndex: [timer state]] intValue] + 1]];
+	}
+
+	[_dist release];
+	_dist = [myArray retain];
+
 	[(UITableView *)self.view reloadData];
 
 	[super viewWillAppear: animated];
@@ -83,7 +102,12 @@
 		cell = [[[TimerTableViewCell alloc] initWithFrame:cellFrame] autorelease];
 	}
 
-	cell.timer = [[self timers] objectAtIndex:indexPath.row];
+	// XXX: I really should think about the way i keep track of items in a section
+	int offset = 0;
+	for(int i = 0; i < indexPath.section; i++){
+		offset += [[_dist objectAtIndex: i] intValue];
+	}
+	cell.timer = [[self timers] objectAtIndex: offset + indexPath.row];
 
 	return cell;
 }
@@ -117,10 +141,20 @@
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
-		TimerViewController *timerViewController = [TimerViewController withTimer: timer];
-		[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
 
-		//[timerViewController release];
+		if([timer state] != 0)
+		{
+			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:@"Can't edit a running or finished timer." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+		}
+		else
+		{
+			TimerViewController *timerViewController = [TimerViewController withTimer: timer];
+			[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+
+			//[timerViewController release];
+		}
 	}
 	else if (buttonIndex == 2)
 	{
@@ -134,13 +168,27 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	// TODO: handle seperators?
-	return 1;
+	return 4;
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if(section == 0)
+		return @"Waiting";
+	else if(section == 1)
+		return @"Prepared";
+	else if (section == 2)
+		return @"Running";
+	else
+		return @"Finished";
+}
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[self timers] count];
+	if([_dist count] < 4) // XXX: wtf?
+		return 0;
+		
+	return [[_dist objectAtIndex: section] intValue];
 }
 
 @end

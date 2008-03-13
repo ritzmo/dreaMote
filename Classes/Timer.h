@@ -27,6 +27,7 @@
 	BOOL _justplay;
 	Service *_service;
 	NSString *_sref;
+	int _state;
 }
 
 + (Timer *)withEvent: (Event *)ourEvent;
@@ -43,5 +44,6 @@
 @property (assign) BOOL justplay;
 @property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) NSString *sref;
+@property (assign) int state;
 
 @end
