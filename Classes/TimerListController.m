@@ -64,6 +64,7 @@
 {
 	[_timers release];
 	_timers = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers] retain];
+	[(UITableView *)self.view reloadData];
 
 	[super viewWillAppear: animated];
 }

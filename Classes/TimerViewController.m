@@ -8,6 +8,7 @@
 
 #import "TimerViewController.h"
 
+#import "RemoteConnectorObject.h"
 #import "AppDelegateMethods.h"
 #import "Constants.h"
 
@@ -250,7 +251,7 @@
 	timerBeginString.textColor = [UIColor blackColor];
 	timerBeginString.font = [UIFont systemFontOfSize:17.0];
 	timerBeginString.delegate = self;
-	timerBeginString.text = [[_timer begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	timerBeginString.text = [[_timer begin] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil];
 	timerBeginString.enabled = NO; // XXX: we disable this for now as i currently cant figure out how to disable editing :-/
 	timerBeginString.backgroundColor = backgroundColor;
 	timerBeginString.returnKeyType = UIReturnKeyDone;
@@ -278,13 +279,12 @@
 	timerEndString.textColor = [UIColor blackColor];
 	timerEndString.font = [UIFont systemFontOfSize:17.0];
 	timerEndString.delegate = self;
-	timerEndString.text = [[_timer end] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	timerEndString.text = [[_timer end] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil];
 	timerEndString.enabled = NO;
 	timerEndString.backgroundColor = backgroundColor;
 	timerEndString.returnKeyType = UIReturnKeyDone;
 	timerEndString.keyboardType = UIKeyboardTypeDefault;
 	[self.view addSubview:timerEndString];
-
 /*
 	// this is a template :-)
 	// create a label for our  textfield
@@ -355,7 +355,7 @@
 	//
 	// We do this by examining the notification's object to get the keyboard's frame
 	//
-	CGRect rect;
+	/*CGRect rect;
 	[[notification object] getValue:&rect];
 
 	if (([timerTitle isFirstResponder]) && (rect.origin.y >= timerTitle.frame.origin.y))
@@ -366,7 +366,7 @@
 	else
 	{
 		[self setViewMovedUp:NO];
-	}
+	}*/
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification
@@ -376,10 +376,10 @@
 	// If the view was previously adjusted to prevent the keyboard from covering 
 	// the edit fields, restore the original positioning.
 	//
-	if  (self.view.frame.origin.y < 0)
+	/*if  (self.view.frame.origin.y > 0)
 	{
 		[self setViewMovedUp:NO];
-	}
+	}*/
 }
 
 // this helps dismiss the keyboard then the "done" button is clicked
@@ -421,25 +421,48 @@
 
 - (void)doneAction:(id)sender
 {
-	NSString *message;
 	if(_creatingNewTimer)
 	{
-		message = @"We should add the new timer now, but its not yet implemented";
+		NSString *message = @"We should add the new timer now, but that's not yet implemented so we're closing...";
+
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
 	}
 	else
 	{
 		Timer *oldTimer = [_timer copy];
-		_timer.title = [timerTitle text];
-		_timer.tdescription = [timerDescription text];
 		
-		if([[oldTimer title] isEqual: [_timer title]])
-			message = @"We should change the timer now, but its not yet implemented";
+		if([[timerTitle text] length])
+		{
+			_timer.title = [timerTitle text];
+		}
 		else
-			message = @"We should change the timer now, but its not yet implemented - but the name changed :-)";
+		{
+			// XXX: this might be better of at another place as we might want to catch more errors...
+			NSString *message = @"Can't save a timer with an empty title.";
+
+			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+			
+			return;
+		}
+
+		if([[timerDescription text] length])
+			_timer.tdescription = [timerDescription text];
+		else
+			_timer.tdescription = @"";
+
+		[[RemoteConnectorObject sharedRemoteConnector] editTimer: oldTimer: _timer];
+
+
+		[oldTimer release];
 	}
-	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[notification show];
-	[notification release];
+
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 }
 
 - (void)cancelAction:(id)sender

@@ -58,6 +58,7 @@
 {
 	[_services release];
 	_services = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices] retain];
+	[(UITableView *)self.view reloadData];
 
 	[super viewWillAppear: animated];
 }
