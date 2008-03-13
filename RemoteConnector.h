@@ -18,15 +18,18 @@
  - (NSArray *)fetchServices;
  - (NSArray *)fetchEPG: (Service *) service;
  - (NSArray *)fetchTimers;
+ - (Volume *)getVolume;
+
+ // XXX: we might want to return a dictionary which contains retval / explain for these
  - (BOOL)zapTo:(Service *) service;
  - (void)shutdown;
  - (void)standby;
  - (void)reboot;
  - (void)restart;
- - (Volume *)getVolume;
  - (BOOL)toggleMuted;
  - (void)setVolume:(int) newVolume;
  - (void)addTimer:(Timer *) newTimer;
  - (void)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
+ - (void)delTimer:(Timer *) oldTimer;
 
 @end

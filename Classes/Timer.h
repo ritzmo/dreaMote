@@ -31,6 +31,7 @@
 }
 
 + (Timer *)withEvent: (Event *)ourEvent;
++ (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService;
 + (Timer *)new;
 
 @property (nonatomic, retain) NSMutableDictionary *rawAttributes;

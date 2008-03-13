@@ -45,7 +45,24 @@
 	timer.eit = [[ourEvent eit] retain];
 	timer.disabled = NO;
 	timer.justplay = NO;
-	// XXX: we need the service :-/
+	timer.service = [[Service alloc] init];
+	timer.repeated = 0;
+	timer.state = 0;
+
+	return timer;
+}
+
++ (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService
+{
+	Timer *timer = [[Timer alloc] init];
+	timer.title = [[ourEvent title] retain];
+	timer.tdescription = [[ourEvent sdescription] retain];
+	timer.begin = [[ourEvent begin] retain];
+	timer.end = [[ourEvent end] retain];
+	timer.eit = [[ourEvent eit] retain];
+	timer.disabled = NO;
+	timer.justplay = NO;
+	timer.service = [ourService retain];
 	timer.repeated = 0;
 	timer.state = 0;
 

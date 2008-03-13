@@ -45,6 +45,16 @@
 	return timerViewController;
 }
 
++ (TimerViewController *)withEventAndService: (Event *)ourEvent: (Service *)ourService
+{
+	TimerViewController *timerViewController = [[TimerViewController alloc] init];
+	timerViewController.title = NSLocalizedString(@"New Timer", @"");
+	timerViewController.timer = [Timer withEventAndService: ourEvent: ourService];
+	timerViewController.creatingNewTimer = YES;
+
+	return timerViewController;
+}
+
 + (TimerViewController *)withTimer: (Timer *)ourTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];

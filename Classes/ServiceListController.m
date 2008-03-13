@@ -107,7 +107,7 @@
 		// Third Button: epg
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 		NSArray *eventList = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG: service];
-		EventListController *eventListController = [EventListController withEventList: eventList];
+		EventListController *eventListController = [EventListController withEventListAndService: eventList: service];
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
 		
 		[eventListController release];

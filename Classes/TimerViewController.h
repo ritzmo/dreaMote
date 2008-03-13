@@ -10,6 +10,7 @@
 
 #import "Timer.h"
 #import "Event.h"
+#import "Service.h"
 
 @interface TimerViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate> {
 	UITextField *timerTitle;
@@ -28,6 +29,7 @@
 }
 
 + (TimerViewController *)withEvent: (Event *)ourEvent;
++ (TimerViewController *)withEventAndService: (Event *)ourEvent: (Service *)ourService;
 + (TimerViewController *)withTimer: (Timer *)ourTimer;
 + (TimerViewController *)newTimer;
 

@@ -15,6 +15,7 @@
 @implementation EventViewController
 
 @synthesize event = _event;
+@synthesize service = _service;
 
 - (id)init
 {
@@ -27,12 +28,24 @@
 	return self;
 }
 
-+ (EventViewController*)withEvent: (Event*) newEvent
++ (EventViewController *)withEvent: (Event *) newEvent
 {
 	EventViewController *eventViewController = [[EventViewController alloc] init];
 
 	eventViewController.event = newEvent;
 	eventViewController.title = newEvent.title;
+	eventViewController.service = [[Service alloc] init];
+	
+	return eventViewController;
+}
+
++ (EventViewController *)withEventAndService: (Event *) newEvent: (Service *) newService
+{
+	EventViewController *eventViewController = [[EventViewController alloc] init];
+
+	eventViewController.event = newEvent;
+	eventViewController.title = newEvent.title;
+	eventViewController.service = newService;
 	
 	return eventViewController;
 }
@@ -187,10 +200,10 @@
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
-	TimerViewController *timerViewController = [TimerViewController withEvent: _event];
+	TimerViewController *timerViewController = [TimerViewController withEventAndService: _event: _service];
 	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
 
-	[timerViewController release];
+	//[timerViewController release];
 }
 	
 @end

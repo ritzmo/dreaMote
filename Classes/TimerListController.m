@@ -158,7 +158,9 @@
 	else if (buttonIndex == 2)
 	{
 		// Third Button: Delete
-		// XXX: add delete ;-)
+		// XXX: I'd actually add another dialogue to confirm the removal of this timer but that would require another modalView as far as I understand ;-) 
+		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
+		[[RemoteConnectorObject sharedRemoteConnector] delTimer: timer];
 	}
 
 	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
@@ -172,13 +174,13 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if(section == 0)
-		return @"Waiting";
+		return NSLocalizedString(@"Waiting", @"");
 	else if(section == 1)
-		return @"Prepared";
+		return NSLocalizedString(@"Prepared", @"");
 	else if (section == 2)
-		return @"Running";
+		return NSLocalizedString(@"Running", @"");
 	else
-		return @"Finished";
+		return NSLocalizedString(@"Finished", @"");
 }
 
 

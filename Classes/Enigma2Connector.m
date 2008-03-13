@@ -479,4 +479,13 @@
 	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 }
 
+- (void)delTimer:(Timer *) oldTimer
+{
+	// Generate URI
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerdelete?sRef=%@&begin=%d&end=%d", baseAddress, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970], (int)[[oldTimer end] timeIntervalSince1970]];
+
+	// Create URL Object and download it
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+}
+
 @end

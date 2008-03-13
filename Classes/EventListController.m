@@ -16,13 +16,13 @@
 @implementation EventListController
 
 @synthesize events = _events;
+@synthesize service = _service;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         self.title = NSLocalizedString(@"Events", @"");
-		self.events = [NSMutableArray array];
     }
     return self;
 }
@@ -30,9 +30,19 @@
 + (EventListController*)withEventList: (NSArray*) eventList
 {
 	EventListController *eventListController = [[EventListController alloc] init];
-	eventListController.events = [NSMutableArray arrayWithArray: eventList];
+	eventListController.events = [eventList retain];
+	eventListController.service = [[Service alloc] init];
 
-	// XXX: we might want to replace title with our service (if one is provided or we add sref/sname to event)
+	return eventListController;
+}
+
++ (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService
+{
+	EventListController *eventListController = [[EventListController alloc] init];
+	eventListController.events = [eventList retain];
+	eventListController.service = [ourService retain];
+
+	eventListController.title = [ourService sname];
 
 	return eventListController;
 }
@@ -40,6 +50,7 @@
 - (void)dealloc
 {
 	[_events release];
+	[_service release];
 	
 	[super dealloc];
 }
@@ -87,7 +98,7 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	Event *event = [(EventTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] event];
-	EventViewController *eventViewController = [EventViewController withEvent: event];
+	EventViewController *eventViewController = [EventViewController withEventAndService: event: _service];
 	[[applicationDelegate navigationController] pushViewController: eventViewController animated: YES];
 
 	//[eventViewController release];

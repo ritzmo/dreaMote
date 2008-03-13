@@ -8,14 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Service.h";
+
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_events;
+	Service *_service;
 }
 
 + (EventListController*)withEventList: (NSArray*) eventList;
++ (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService;
 - (void)reloadData;
 
 @property (nonatomic, retain) NSArray *events;
+@property (nonatomic, retain) Service *service;
 
 @end
