@@ -126,19 +126,17 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// TODO: upgraded sdk
-	/*
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Action Title", @"") message:NSLocalizedString(@"Timer Action Message", @"")
-									delegate:self defaultButton:nil cancelButton:NSLocalizedString(@"Cancel", @"") otherButtons:NSLocalizedString(@"Edit", @""), NSLocalizedString(@"Delete", @""), nil];
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Action Title", @"")
+															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Edit", @""), NSLocalizedString(@"Delete", @""), nil];
 	[actionSheet showInView:self.view];
-	[actionSheet release];*/
+	[actionSheet release];
 
 	return indexPath; // nil to disable select
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if (buttonIndex == 1)
+	if (buttonIndex == 0)
 	{
 		// Second Button: Edit
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
@@ -154,12 +152,12 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 		else
 		{
 			TimerViewController *timerViewController = [TimerViewController withTimer: timer];
-			[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+			[[applicationDelegate navigationController] pushViewController: timerViewController animated: NO]; // TODO: why does this break when animated?
 
 			//[timerViewController release];
 		}
 	}
-	else if (buttonIndex == 2)
+	else if (buttonIndex == 1)
 	{
 		// Third Button: Delete
 		// XXX: I'd actually add another dialogue to confirm the removal of this timer but that would require another modalView as far as I understand ;-) 

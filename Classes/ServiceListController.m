@@ -86,11 +86,10 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// TODO: upgraded sdk
-	/*UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Service Action Title", @"") message:NSLocalizedString(@"Service Action Message", @"")
-									delegate:self defaultButton:nil cancelButton:NSLocalizedString(@"Cancel", @"") otherButtons:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Service Action Title", @"")
+															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
 	[actionSheet showInView:self.view];
-	[actionSheet release];*/
+	[actionSheet release];
 	
 	return indexPath; // nil to disable select
 
@@ -100,12 +99,12 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 {
 	Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] service];
 
-	if (buttonIndex == 1)
+	if (buttonIndex == 0)
 	{
 		// Second Button: zap
 		[[RemoteConnectorObject sharedRemoteConnector] zapTo: service];
 	}
-	else if (buttonIndex == 2)
+	else if (buttonIndex == 1)
 	{
 		// Third Button: epg
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];

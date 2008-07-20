@@ -120,19 +120,23 @@
 	[contentView release];
 
 	// add our custom done button as the nav bar's custom right view
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
-	[button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
+	// XXX: where does it get its text from? :D
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+												target:self action:@selector(doneAction:)];
+	//[button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
 	UINavigationItem *navItem = self.navigationItem;
-	//navItem.customRightView = button; // TODO: upgraded sdk
+	navItem.rightBarButtonItem = button;
 
 	[button release];
 
 	// add our custom cancel button as the nav bar's custom left view
-	button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
+	// TODO: do we really want this?
+	/*
+	button = [UIButton buttonWithType:UIButtonTypeContactAdd];
 	[button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
-	//navItem.customLeftView = button; // TODO: upgraded sdk
+	navItem.leftBarButtonItem = button;
+	*/
 	
 	[navItem release];
 
