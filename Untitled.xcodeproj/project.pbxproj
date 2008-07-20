@@ -24,7 +24,6 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA7FD7690D84339500974B1A /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7680D84339500974B1A /* Timer.m */; };
-		DA7FD82C0D843BD300974B1A /* addicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD82B0D843BD300974B1A /* addicon.png */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
@@ -76,7 +75,6 @@
 		DA7FD7670D84339500974B1A /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DA7FD7680D84339500974B1A /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		DA7FD82B0D843BD300974B1A /* addicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = addicon.png; path = images/addicon.png; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
@@ -105,7 +103,7 @@
 		DAD51B2F0D82F16B00A769F3 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		DAD51D710D8303FF00A769F3 /* ServiceListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceListController.h; sourceTree = "<group>"; };
 		DAD51D720D8303FF00A769F3 /* ServiceListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceListController.m; sourceTree = "<group>"; };
-		DAD51D7C0D8304AD00A769F3 /* AppDelegateMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegateMethods.h; path = ../AppDelegateMethods.h; sourceTree = "<group>"; };
+		DAD51D7C0D8304AD00A769F3 /* AppDelegateMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegateMethods.h; sourceTree = "<group>"; };
 		DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceTableViewCell.h; sourceTree = "<group>"; };
 		DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceTableViewCell.m; sourceTree = "<group>"; };
 		DAD51DF10D830A3900A769F3 /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
@@ -132,6 +130,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
 				DA2710C70D838A3200C25B85 /* Event.h */,
 				DA2710C80D838A3200C25B85 /* Event.m */,
 				DAD51D7C0D8304AD00A769F3 /* AppDelegateMethods.h */,
@@ -139,6 +138,7 @@
 				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
 				DAD51DF10D830A3900A769F3 /* Service.h */,
 				DAD51DF20D830A3900A769F3 /* Service.m */,
+				DA7FD7720D84345100974B1A /* Constants.h */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */,
@@ -233,10 +233,8 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
 				32CA4F630368D1EE00C91783 /* Untitled_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				DA7FD7720D84345100974B1A /* Constants.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -264,7 +262,6 @@
 		DA7FD8260D843B8400974B1A /* images */ = {
 			isa = PBXGroup;
 			children = (
-				DA7FD82B0D843BD300974B1A /* addicon.png */,
 			);
 			name = images;
 			sourceTree = "<group>";
@@ -312,7 +309,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */,
-				DA7FD82C0D843BD300974B1A /* addicon.png in Resources */,
 				DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -43,7 +43,9 @@
 	[timername drawAtPoint:CGPointMake(x, 26.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:12] lineBreakMode:UILineBreakModeTailTruncation];
 
 	// Render <begin date> <begin time> - <end time>
-	NSString *time = [NSString stringWithFormat: @"%@ - %@", [[_timer begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil], [[_timer end] descriptionWithCalendarFormat:@"%H:%M" timeZone:nil locale:nil]];
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init]  autorelease];
+	[format setDateFormat: @"%d.%m. %H:%M"];
+	NSString *time = [NSString stringWithFormat: @"%@ - %@", [format stringFromDate: [_timer begin]], [format stringFromDate: [_timer end]]];
 	[time drawAtPoint:CGPointMake(x, 41.0) forWidth:MAX_WIDTH withFont:[UIFont italicSystemFontOfSize:12] lineBreakMode:UILineBreakModeTailTruncation];
 	
     [super drawRect:clip];

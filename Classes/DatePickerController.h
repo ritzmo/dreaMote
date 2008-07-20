@@ -14,10 +14,12 @@
 	UITextField		*textField;
 	UIDatePicker	*datePickerView;
 	NSDate			*date;
+	NSDateFormatter *format;
 }
 
 + (DatePickerController *)withDate: (NSDate *)ourDate;
 
 @property (nonatomic, retain) NSDate *date;
+@property (nonatomic, retain) NSDateFormatter *format;
 
 @end

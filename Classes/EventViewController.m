@@ -131,6 +131,10 @@
 						kLabelHeight);
 	[self.view addSubview:[EventViewController fieldLabelWithFrame:frame title:@"Begin:"]];
 
+	// Date Formatter
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	[format setDateFormat: @"%d.%m. %H:%M"];
+	
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;
 
@@ -143,13 +147,14 @@
 	textField.textColor = [UIColor blackColor];
 	textField.font = [UIFont systemFontOfSize:17.0];
 	textField.delegate = self;
-	textField.text = [[_event begin] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	textField.text = [format stringFromDate: [_event begin]];
+
 	textField.enabled = NO;
 	textField.backgroundColor = backColor;
 	textField.returnKeyType = UIReturnKeyDone;
 	textField.keyboardType = UIKeyboardTypeDefault;
 	[self.view addSubview:textField];
-	
+
 	[textField release];
 
 	// create a label for our end textfield
@@ -173,13 +178,13 @@
 	textField.textColor = [UIColor blackColor];
 	textField.font = [UIFont systemFontOfSize:17.0];
 	textField.delegate = self;
-	textField.text = [[_event end] descriptionWithCalendarFormat:@"%d.%m. %H:%M" timeZone:nil locale:nil];
+	textField.text = [format stringFromDate: [_event end]];
 	textField.enabled = NO;
 	textField.backgroundColor = backColor;
 	textField.returnKeyType = UIReturnKeyDone;
 	textField.keyboardType = UIKeyboardTypeDefault;
 	[self.view addSubview:textField];
-	
+
 	[textField release];
 
 	// add timer button

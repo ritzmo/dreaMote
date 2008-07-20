@@ -15,6 +15,7 @@
 #define kPickerSegmentControlHeight 30.0
 
 @synthesize date;
+@synthesize format;
 
 - (id)init
 {
@@ -22,6 +23,8 @@
 	{
 		// this title will appear in the navigation bar
 		self.title = NSLocalizedString(@"Date Picker", @"");
+		self.format = [[NSDateFormatter alloc] init];
+		[self.format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
 	}
 	
 	return self;
@@ -74,13 +77,14 @@
 	[textField release];
 	[datePickerView release];
 	[label release];
-	
+	[format release];
+
 	[super dealloc];
 }
 
 - (void)timeChanged: (id)sender
 {
-	label.text = [[datePickerView date] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil];
+	label.text = [format stringFromDate: [datePickerView date]];
 }
 
 @end

@@ -17,10 +17,13 @@
 
 @implementation AppDelegate
 
+static NSString *remoteHost = @"http://192.168.178.22";
+
 @synthesize window = _window;
 @synthesize navigationController = _navigationController;
 
-- init {
+- init
+{
 	if (self = [super init]) {
 		// Your initialization code here
 	}
@@ -29,12 +32,12 @@
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	    // low on memory: do whatever you can to reduce your memory foot print here
+	// low on memory: do whatever you can to reduce your memory foot print here
 }
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	// XXX: connection is not manageable like this and this should be placed somewhere elese
-	[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress:@"http://192.168.178.22"]];
+	[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteHost]];
 /*
 	// Create window
 	_window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
@@ -54,7 +57,8 @@
 	[_window makeKeyAndVisible];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
 	[_window release];
 	[_navigationController release];
 

@@ -250,6 +250,10 @@
 						kLabelHeight);
 	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Begin:"]];
 
+	// Date Formatter
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	[format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+	
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;
 
@@ -259,7 +263,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	timerBeginString.backgroundColor = backgroundColor;
-	[timerBeginString setTitle:[[_timer begin] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil] forState:UIControlStateNormal];
+	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
 	[timerBeginString addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: timerBeginString];
 
@@ -281,7 +285,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	timerEndString.backgroundColor = backgroundColor;
-	[timerEndString setTitle:[[_timer end] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil] forState:UIControlStateNormal];
+	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];
 	[timerEndString addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: timerEndString];
 
