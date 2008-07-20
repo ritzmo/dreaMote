@@ -17,13 +17,16 @@
 
 @implementation MainViewController
 
+static NSString *kMainCell_ID = @"MainCell_ID";
+
+@synthesize myTableView;
+
 - (id)init
 {
 	if (self = [super init])
 	{
 		// make the title of this page the same as the title of this app
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-		menuList = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -36,8 +39,10 @@
 	[super dealloc];
 }
 
-- (void)loadView
+- (void)awakeFromNib
 {	
+	menuList = [[NSMutableArray alloc] init];
+
 	// setup the parent content view to host the UITableView
 	UIView *contentView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	[contentView setBackgroundColor:[UIColor blackColor]];
@@ -81,10 +86,10 @@
 	UINavigationItem *navItem = self.navigationItem;
 	
 	// Add the "Settings" button to the navigation bar
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeNavigation];
-	[button setTitle:NSLocalizedString(@"Settings", @"") forStates:UIControlStateNormal];
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
+	[button setTitle:NSLocalizedString(@"Settings", @"") forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(settingsAction:) forControlEvents:UIControlEventTouchUpInside];
-	navItem.customLeftView = button;
+	//navItem.customLeftView = button; // TODO: upgraded sdk
 	
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -97,7 +102,8 @@
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
 	[myTableView reloadData];	// populate our table's data
-	[self.view addSubview: myTableView];
+	//[self.view addSubview: myTableView];
+	self.view = myTableView;
 }
 
 - (void)settingsAction:(id)sender
@@ -109,6 +115,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
 	[myTableView deselectRowAtIndexPath:tableSelection animated:NO];
 }
@@ -136,27 +143,22 @@
 	return UITableViewCellAccessoryDisclosureIndicator;
 }
 
-- (void)tableView:(UITableView *)tableView selectionDidChangeToIndexPath:(NSIndexPath *)newIndexPath fromIndexPath:(NSIndexPath *)oldIndexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UIViewController *targetViewController = [[menuList objectAtIndex: newIndexPath.row] objectForKey:@"viewController"];
+	UIViewController *targetViewController = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
 	[[self navigationController] pushViewController:targetViewController animated:YES];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath withAvailableCell:(UITableViewCell *)availableCell
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	MyCustomCell *cell = nil;
-	if (availableCell != nil)
-	{
-		// Use the existing cell if it's there
-		cell = (MyCustomCell*)availableCell;
-	}
-	else
-	{
-		cell = [[[MyCustomCell alloc] initWithFrame:CGRectZero] autorelease];
-	}
+	MyCustomCell *cell = (MyCustomCell*)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
+    if (cell == nil)
+    {
+        cell = [[[MyCustomCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+    }
 	
 	// get the view controller's info dictionary based on the indexPath's row
-	cell.dataDictionary = [menuList objectAtIndex:indexPath.row];
+	[cell setDataDictionary: [menuList objectAtIndex:indexPath.row]];
 	
 	return cell;
 }

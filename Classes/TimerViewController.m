@@ -120,19 +120,19 @@
 	[contentView release];
 
 	// add our custom done button as the nav bar's custom right view
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeNavigationDone];
-	[button setTitle:NSLocalizedString(@"Done", @"") forStates:UIControlStateNormal];
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
+	[button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(doneAction:) forControlEvents:UIControlEventTouchUpInside];
 	UINavigationItem *navItem = self.navigationItem;
-	navItem.customRightView = button;
+	//navItem.customRightView = button; // TODO: upgraded sdk
 
 	[button release];
 
 	// add our custom cancel button as the nav bar's custom left view
-	button = [UIButton buttonWithType:UIButtonTypeNavigation];
-	[button setTitle:NSLocalizedString(@"Cancel", @"") forStates:UIControlStateNormal];
+	button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
+	[button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
-	navItem.customLeftView = button;
+	//navItem.customLeftView = button; // TODO: upgraded sdk
 	
 	[navItem release];
 
@@ -169,7 +169,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	timerTitle = [[UITextField alloc] initWithFrame:frame];
-	timerTitle.borderStyle = UITextFieldBorderStyleRounded;
+	timerTitle.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
 	timerTitle.textColor = [UIColor blackColor];
 	timerTitle.font = [UIFont systemFontOfSize:17.0];
 	timerTitle.delegate = self;
@@ -197,7 +197,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	timerDescription = [[UITextField alloc] initWithFrame:frame];
-	timerDescription.borderStyle = UITextFieldBorderStyleRounded;
+	timerDescription.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
 	timerDescription.textColor = [UIColor blackColor];
 	timerDescription.font = [UIFont systemFontOfSize:17.0];
 	timerDescription.delegate = self;
@@ -220,28 +220,27 @@
 	// service
 	yCoord += kTweenMargin + kLabelHeight;
 
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kTextFieldHeight);
-	timerServiceName = [[UITextField alloc] initWithFrame:frame];
-	timerServiceName.borderStyle = UITextFieldBorderStyleRounded;
-	timerServiceName.textColor = [UIColor blackColor];
-	timerServiceName.font = [UIFont systemFontOfSize:17.0];
-	timerServiceName.delegate = self;
-	timerServiceName.text = [[self.timer service] sname];
-	timerServiceName.placeholder = @"<touch to select service>";
-	timerServiceName.enabled = NO; // XXX: we disable this for now as i currently cant figure out how to disable editing :-/
+	timerServiceName = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	timerServiceName.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
+											yCoord,
+											kWideButtonWidth,
+											kStdButtonHeight);
 	timerServiceName.backgroundColor = backgroundColor;
-	timerServiceName.returnKeyType = UIReturnKeyDone;
-	timerServiceName.keyboardType = UIKeyboardTypeDefault;
-	[timerServiceName addTarget:self action:@selector(editService:) forControlEvents:UIControlEventAllTouchEvents];
-	[self.view addSubview:timerServiceName];
+	NSString *buttonTitle = @"";
+	if([[[self.timer service] sname] length])
+		buttonTitle = [[self.timer service] sname];
+	else
+		buttonTitle = NSLocalizedString(@"Select Service", @"");
+	[timerServiceName setTitle:buttonTitle forState:UIControlStateNormal];
+	[timerServiceName addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview: timerServiceName];
+	
+	[buttonTitle release];
 	
 	// XXX: I'm not completely satisfied how begin/end look
 
 	// create a label for our begin textfield
-	yCoord += kTweenMargin + kTextFieldHeight;
+	yCoord += kTweenMargin + kStdButtonHeight;
 
 	frame = CGRectMake(kLeftMargin,
 						yCoord,
@@ -252,24 +251,18 @@
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;
 
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kTextFieldHeight);
-	timerBeginString = [[UITextField alloc] initWithFrame:frame];
-	timerBeginString.borderStyle = UITextFieldBorderStyleRounded;
-	timerBeginString.textColor = [UIColor blackColor];
-	timerBeginString.font = [UIFont systemFontOfSize:17.0];
-	timerBeginString.delegate = self;
-	timerBeginString.text = [[_timer begin] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil];
-	timerBeginString.enabled = NO; // XXX: we disable this for now as i currently cant figure out how to disable editing :-/
+	timerBeginString = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	timerBeginString.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
+											yCoord,
+											kWideButtonWidth,
+											kStdButtonHeight);
 	timerBeginString.backgroundColor = backgroundColor;
-	timerBeginString.returnKeyType = UIReturnKeyDone;
-	timerBeginString.keyboardType = UIKeyboardTypeDefault;
-	[self.view addSubview:timerBeginString];
+	[timerBeginString setTitle:[[_timer begin] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil] forState:UIControlStateNormal];
+	[timerBeginString addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview: timerBeginString];
 
 	// create a label for our end textfield
-	yCoord += kTweenMargin + kTextFieldHeight;
+	yCoord += kTweenMargin + kStdButtonHeight;
 
 	frame = CGRectMake(kLeftMargin,
 						yCoord,
@@ -280,21 +273,16 @@
 	// end
 	yCoord += kTweenMargin + kLabelHeight;
 
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kTextFieldHeight);
-	timerEndString = [[UITextField alloc] initWithFrame:frame];
-	timerEndString.borderStyle = UITextFieldBorderStyleRounded;
-	timerEndString.textColor = [UIColor blackColor];
-	timerEndString.font = [UIFont systemFontOfSize:17.0];
-	timerEndString.delegate = self;
-	timerEndString.text = [[_timer end] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil];
-	timerEndString.enabled = NO;
+	timerEndString = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	timerEndString.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
+											yCoord,
+											kWideButtonWidth,
+											kStdButtonHeight);
 	timerEndString.backgroundColor = backgroundColor;
-	timerEndString.returnKeyType = UIReturnKeyDone;
-	timerEndString.keyboardType = UIKeyboardTypeDefault;
-	[self.view addSubview:timerEndString];
+	[timerEndString setTitle:[[_timer end] descriptionWithCalendarFormat:@"%A, %d.%m.%Y %H:%M" timeZone:nil locale:nil] forState:UIControlStateNormal];
+	[timerEndString addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview: timerEndString];
+
 /*
 	// this is a template :-)
 	// create a label for our  textfield
@@ -423,6 +411,20 @@
 }
 
 - (void)editService:(id)sender
+{
+	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[notification show];
+	[notification release];
+}
+
+- (void)editBegin:(id)sender
+{
+	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[notification show];
+	[notification release];
+}
+
+- (void)editEnd:(id)sender
 {
 	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[notification show];

@@ -20,11 +20,10 @@
 #define UPPER_ROW_TOP			0
 
 #define CELL_HEIGHT				50
-	
 
-- (id)initWithFrame:(CGRect)aRect
+- (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)reuseIdentifier
 {
-	if (self = [super initWithFrame:aRect])
+	if (self = [super initWithFrame:aRect reuseIdentifier:reuseIdentifier])
 	{
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -35,7 +34,7 @@
 		nameLabel.backgroundColor = [UIColor clearColor];
 		nameLabel.opaque = NO;
 		nameLabel.textColor = [UIColor blackColor];
-		nameLabel.highlightColor = [UIColor whiteColor];
+		//nameLabel.highlightColor = [UIColor whiteColor]; // TODO: upgraded sdk
 		nameLabel.font = [UIFont boldSystemFontOfSize:18];
 		[self addSubview:nameLabel];
 		
@@ -43,7 +42,7 @@
 		explainLabel.backgroundColor = [UIColor clearColor];
 		explainLabel.opaque = NO;
 		explainLabel.textColor = [UIColor grayColor];
-		explainLabel.highlightColor = [UIColor whiteColor];
+		//explainLabel.highlightColor = [UIColor whiteColor]; // TODO: upgraded sdk
 		explainLabel.font = [UIFont systemFontOfSize:14];
 		[self addSubview:explainLabel];
 	}
@@ -54,7 +53,7 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-    CGRect contentRect = [self contentRectForBounds:self.bounds];
+    CGRect contentRect = [self.contentView bounds];
 	
 	// In this example we will never be editing, but this illustrates the appropriate pattern
     CGRect frame = CGRectMake(contentRect.origin.x + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, LEFT_COLUMN_WIDTH, CELL_HEIGHT);

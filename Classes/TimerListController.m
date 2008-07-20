@@ -16,6 +16,8 @@
 
 @implementation TimerListController
 
+static NSString *kTimerCell_ID = @"TimerCell_ID";
+
 @synthesize timers = _timers;
 @synthesize dist = _dist;
 
@@ -48,11 +50,11 @@
 	[tableView reloadData];
 
 	// add our custom add button as the nav bar's custom right view
-	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeNavigation];
-	[addButton setImage:[UIImage imageNamed:@"addicon.png"] forStates:UIControlStateNormal];
+	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
+	[addButton setImage:[UIImage imageNamed:@"addicon.png"] forState:UIControlStateNormal];
 	[addButton addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
 	UINavigationItem *navItem = self.navigationItem;
-	navItem.customRightView = addButton;
+	//navItem.customRightView = addButton; // TODO: upgraded sdk
 
 	self.view = tableView;
 	[tableView release];
@@ -91,14 +93,14 @@
 #pragma mark		Table View
 #pragma mark	-
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath withAvailableCell:(UITableViewCell *)availableCell {
-	TimerTableViewCell *cell = nil;
-	if (availableCell != nil) {
-		cell = (TimerTableViewCell *)availableCell;
-	} else {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	TimerTableViewCell *cell = (TimerTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kTimerCell_ID];
+	if(cell == nil)
+	{
 		CGSize size = CGSizeMake(300, 36);
 		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[TimerTableViewCell alloc] initWithFrame:cellFrame] autorelease];
+		cell = [[[TimerTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kTimerCell_ID] autorelease];
 	}
 
 	// XXX: I really should think about the way i keep track of items in a section
@@ -124,15 +126,17 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// TODO: upgraded sdk
+	/*
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Action Title", @"") message:NSLocalizedString(@"Timer Action Message", @"")
 									delegate:self defaultButton:nil cancelButton:NSLocalizedString(@"Cancel", @"") otherButtons:NSLocalizedString(@"Edit", @""), NSLocalizedString(@"Delete", @""), nil];
 	[actionSheet showInView:self.view];
-	[actionSheet release];
+	[actionSheet release];*/
 
 	return indexPath; // nil to disable select
 }
 
-- (void)modalView:(UIModalView *)modalView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	if (buttonIndex == 1)
 	{

@@ -139,7 +139,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	UITextField *textField = [[UITextField alloc] initWithFrame:frame];
-	textField.borderStyle = UITextFieldBorderStyleRounded;
+	textField.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
 	textField.textColor = [UIColor blackColor];
 	textField.font = [UIFont systemFontOfSize:17.0];
 	textField.delegate = self;
@@ -169,7 +169,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	textField = [[UITextField alloc] initWithFrame:frame];
-	textField.borderStyle = UITextFieldBorderStyleRounded;
+	textField.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
 	textField.textColor = [UIColor blackColor];
 	textField.font = [UIFont systemFontOfSize:17.0];
 	textField.delegate = self;
@@ -191,7 +191,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	roundedButtonType.backgroundColor = backColor;
-	[roundedButtonType setTitle:NSLocalizedString(@"Add Timer", @"") forStates:UIControlStateNormal];
+	[roundedButtonType setTitle:NSLocalizedString(@"Add Timer", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
 }

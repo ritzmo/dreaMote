@@ -15,7 +15,7 @@
 #define kTweenMargin			10.0
 
 // control dimensions
-#define kTextViewHeight			240.0
+#define kTextViewHeight			220.0
 #define kTextFieldHeight		30.0
 #define kSliderHeight			7.0
 #define kWideButtonWidth		220.0

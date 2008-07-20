@@ -132,7 +132,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	roundedButtonType.backgroundColor = backgroundColor;
-	[roundedButtonType setTitle:NSLocalizedString(@"Standby", @"") forStates:UIControlStateNormal];
+	[roundedButtonType setTitle:NSLocalizedString(@"Standby", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
 
@@ -145,7 +145,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	roundedButtonType.backgroundColor = backgroundColor;
-	[roundedButtonType setTitle:NSLocalizedString(@"Reboot", @"") forStates:UIControlStateNormal];
+	[roundedButtonType setTitle:NSLocalizedString(@"Reboot", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
 
@@ -158,7 +158,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	roundedButtonType.backgroundColor = backgroundColor;
-	[roundedButtonType setTitle:NSLocalizedString(@"Restart", @"") forStates:UIControlStateNormal];
+	[roundedButtonType setTitle:NSLocalizedString(@"Restart", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
 
@@ -171,7 +171,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	roundedButtonType.backgroundColor = backgroundColor;
-	[roundedButtonType setTitle:NSLocalizedString(@"Shutdown", @"") forStates:UIControlStateNormal];
+	[roundedButtonType setTitle:NSLocalizedString(@"Shutdown", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
 }

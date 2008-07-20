@@ -15,6 +15,8 @@
 
 @implementation EventListController
 
+static NSString *kEventCell_ID = @"EventCell_ID";
+
 @synthesize events = _events;
 @synthesize service = _service;
 
@@ -77,14 +79,14 @@
 #pragma mark		Table View
 #pragma mark	-
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath withAvailableCell:(UITableViewCell *)availableCell {
-	EventTableViewCell *cell = nil;
-	if (availableCell != nil) {
-		cell = (EventTableViewCell *)availableCell;
-	} else {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
+	if(cell == nil)
+	{
 		CGSize size = CGSizeMake(300, 36);
 		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame] autorelease];
+		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kEventCell_ID] autorelease];
 	}
 
 	Event *eventForRow = [self.events objectAtIndex:indexPath.row];

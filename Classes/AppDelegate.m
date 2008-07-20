@@ -27,26 +27,31 @@
 	return self;
 }
 
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+	    // low on memory: do whatever you can to reduce your memory foot print here
+}
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	// XXX: connection is not manageable like this and this should be placed somewhere elese
-	[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress:@"http://192.168.45.38"]];
-
+	[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress:@"http://192.168.178.22"]];
+/*
 	// Create window
-	self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-	[self.window setBackgroundColor:[UIColor whiteColor]];
-	
+	_window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+	[_window setBackgroundColor:[UIColor whiteColor]];
+
 	// set up main view navigation controller
 	MainViewController *navController = [[MainViewController alloc] init];
 	
 	// create a navigation controller using the new controller
-	self.navigationController = [[UINavigationController alloc] initWithRootViewController:navController];
-	self.navigationController.navigationBarStyle = UIBarStyleDefault;
+	_navigationController = [[UINavigationController alloc] initWithRootViewController:navController];
+	//self.navigationController.navigationBarStyle = UIBarStyleDefault; // TODO: upgraded sdk
 	
 	[navController release];
-	
+*/
 	// Show the window and view
-	[self.window addSubview:[self.navigationController view]];
-	[self.window makeKeyAndVisible];
+	[_window addSubview:[_navigationController view]];
+	[_window makeKeyAndVisible];
 }
 
 - (void)dealloc {

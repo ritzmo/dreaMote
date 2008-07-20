@@ -32,14 +32,14 @@
 	// Render Event name
 	[[UIColor blackColor] set];
 	NSString *servicename = [[_timer service] sname];
-	CGRect contentRect = [self contentRectForBounds:self.bounds];
+	CGRect contentRect = [self.contentView bounds];
 	CGFloat x = contentRect.origin.x + COLUMN_X;
 	[servicename drawAtPoint:CGPointMake(x, 7.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:14] lineBreakMode:UILineBreakModeTailTruncation];
 
 	// Render Timer name
 	[[UIColor blackColor] set];
 	NSString *timername = [_timer title];
-	contentRect = [self contentRectForBounds:self.bounds];
+	contentRect = [self.contentView bounds];
 	[timername drawAtPoint:CGPointMake(x, 26.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:12] lineBreakMode:UILineBreakModeTailTruncation];
 
 	// Render <begin date> <begin time> - <end time>

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ServiceListController : UIViewController <UIModalViewDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface ServiceListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_services;
 }

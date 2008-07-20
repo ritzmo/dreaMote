@@ -32,7 +32,7 @@
 	// Render Event name
 	[[UIColor blackColor] set];
     NSString *eventname = [_event title];
-	CGRect contentRect = [self contentRectForBounds:self.bounds];
+	CGRect contentRect = [self.contentView bounds];
 	CGFloat x = contentRect.origin.x + COLUMN_X;
 	[eventname drawAtPoint:CGPointMake(x, 7.0) forWidth:MAX_WIDTH withFont:[UIFont boldSystemFontOfSize:14] lineBreakMode:UILineBreakModeTailTruncation];
 

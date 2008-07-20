@@ -11,12 +11,11 @@
 #import "RemoteConnector.h"
 #import "AppDelegateMethods.h"
 
-@interface AppDelegate : NSObject  <UIApplicationDelegate> {
-
+@interface AppDelegate : NSObject  <UIApplicationDelegate>
+{
 @private
-    UIWindow *_window;
-	
-	UINavigationController *_navigationController;
+    IBOutlet UIWindow *_window;
+	IBOutlet UINavigationController *_navigationController;
 }
 
 @property (nonatomic, retain) UIWindow *window;

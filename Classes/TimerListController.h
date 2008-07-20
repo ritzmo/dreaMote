@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TimerListController : UIViewController <UIModalViewDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface TimerListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_timers;
 	NSArray *_dist;

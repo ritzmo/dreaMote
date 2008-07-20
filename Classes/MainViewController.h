@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController <UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource, UIModalViewDelegate>
+@interface MainViewController : UIViewController <UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource>
 {
-	UITableView		*myTableView;
+	IBOutlet UITableView		*myTableView;
 	NSMutableArray	*menuList;
 }
+
+@property (nonatomic, retain) UITableView *myTableView;
 
 @end
