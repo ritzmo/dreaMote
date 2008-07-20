@@ -86,10 +86,9 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 	UINavigationItem *navItem = self.navigationItem;
 	
 	// Add the "Settings" button to the navigation bar
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
-	[button setTitle:NSLocalizedString(@"Settings", @"") forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(settingsAction:) forControlEvents:UIControlEventTouchUpInside];
-	//navItem.customLeftView = button; // TODO: upgraded sdk
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
+														target:self action:@selector(settingsAction:)];
+	navItem.leftBarButtonItem = button;
 	
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];

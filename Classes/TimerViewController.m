@@ -120,10 +120,8 @@
 	[contentView release];
 
 	// add our custom done button as the nav bar's custom right view
-	// XXX: where does it get its text from? :D
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 												target:self action:@selector(doneAction:)];
-	//[button setTitle:NSLocalizedString(@"Done", @"") forState:UIControlStateNormal];
 	UINavigationItem *navItem = self.navigationItem;
 	navItem.rightBarButtonItem = button;
 

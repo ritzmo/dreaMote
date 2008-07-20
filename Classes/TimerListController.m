@@ -50,11 +50,10 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 	[tableView reloadData];
 
 	// add our custom add button as the nav bar's custom right view
-	UIButton *addButton = [UIButton buttonWithType:UIButtonTypeContactAdd]; // TODO: upgraded sdk
-	[addButton setImage:[UIImage imageNamed:@"addicon.png"] forState:UIControlStateNormal];
-	[addButton addTarget:self action:@selector(addAction:) forControlEvents:UIControlEventTouchUpInside];
+	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+														target:self action:@selector(addAction:)];
 	UINavigationItem *navItem = self.navigationItem;
-	//navItem.customRightView = addButton; // TODO: upgraded sdk
+	navItem.rightBarButtonItem = addButton;
 
 	self.view = tableView;
 	[tableView release];
