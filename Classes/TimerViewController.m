@@ -8,6 +8,8 @@
 
 #import "TimerViewController.h"
 
+#import "DatePickerController.h"
+
 #import "RemoteConnectorObject.h"
 #import "AppDelegateMethods.h"
 #import "Constants.h"
@@ -21,6 +23,7 @@
 #define kVerticalOffsetAnimationDuration	0.30
 
 @synthesize timer = _timer;
+@synthesize oldTimer = _oldTimer;
 @synthesize creatingNewTimer = _creatingNewTimer;
 @synthesize service = _service;
 @synthesize begin = _begin;
@@ -59,6 +62,7 @@
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	timerViewController.timer = [ourTimer retain];
+	timerViewController.oldTimer = [ourTimer copy];
 	timerViewController.creatingNewTimer = NO;
 
 	return timerViewController;
@@ -77,6 +81,7 @@
 - (void)dealloc
 {
 	[_timer release];
+	[_oldTimer release];
 	[timerTitle release];
 	[timerDescription release];
 	[timerServiceName release];
@@ -425,18 +430,19 @@
 
 - (void)editBegin:(id)sender
 {
-	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[notification show];
-	[notification release];
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	DatePickerController *datePickerController = [DatePickerController withDate: [_timer begin]];
+	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
 }
 
 - (void)editEnd:(id)sender
 {
-	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[notification show];
-	[notification release];
-}
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
+	DatePickerController *datePickerController = [DatePickerController withDate: [_timer end]];
+	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
+}
 - (void)doneAction:(id)sender
 {
 	if(_creatingNewTimer)
@@ -448,9 +454,7 @@
 		[notification release];
 	}
 	else
-	{
-		Timer *oldTimer = [_timer copy];
-		
+	{		
 		if([[timerTitle text] length])
 		{
 			_timer.title = [timerTitle text];
@@ -472,10 +476,7 @@
 		else
 			_timer.tdescription = @"";
 
-		[[RemoteConnectorObject sharedRemoteConnector] editTimer: oldTimer: _timer];
-
-
-		[oldTimer release];
+		[[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer];
 	}
 
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];

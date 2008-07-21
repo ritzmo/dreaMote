@@ -6,6 +6,9 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
+#import "AppDelegateMethods.h"
+
+#import "TimerViewController.h"
 #import "DatePickerController.h"
 
 #import "Constants.h"
@@ -57,6 +60,14 @@
 	datePickerView.date = date;
 	[datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:datePickerView];
+
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+														target:self action:@selector(doneAction:)];
+	UINavigationItem *navItem = self.navigationItem;
+	navItem.rightBarButtonItem = button;
+
+	[button release];
+	[navItem release];
 	
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
@@ -68,8 +79,28 @@
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor];
-	label.text = @"asdf";
+	label.text = [format stringFromDate: date];
 	[self.view addSubview:label];
+}
+
+- (void)doneAction:(id)sender
+{
+	[[datePickerView date] retain];
+
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+
+	// XXX: hack?
+	TimerViewController *topViewController = (TimerViewController*)[[applicationDelegate navigationController] topViewController];
+	if(topViewController.timer.begin == date)
+	{
+		topViewController.timer.begin = [[datePickerView date] retain];
+	}
+	else
+	{
+		topViewController.timer.end = [[datePickerView date] retain];
+	}
 }
 
 - (void)dealloc

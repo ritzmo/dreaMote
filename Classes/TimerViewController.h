@@ -22,6 +22,7 @@
 
 @private
 	Timer *_timer;
+	Timer *_oldTimer;
 	Service *_service;
 	NSDate *_begin;
 	NSDate *_end;
@@ -34,6 +35,7 @@
 + (TimerViewController *)newTimer;
 
 @property (nonatomic, retain) Timer *timer;
+@property (nonatomic, retain) Timer *oldTimer;
 @property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) NSDate *begin;
 @property (nonatomic, retain) NSDate *end;

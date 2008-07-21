@@ -12,9 +12,9 @@
 {
 	UILabel			*label;
 	UITextField		*textField;
-	UIDatePicker	*datePickerView;
 	NSDate			*date;
 	NSDateFormatter *format;
+	UIDatePicker	*datePickerView;
 }
 
 + (DatePickerController *)withDate: (NSDate *)ourDate;
