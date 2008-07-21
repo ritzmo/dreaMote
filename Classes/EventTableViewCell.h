@@ -13,9 +13,13 @@
 
 @private	
 	Event *_event;
+	UILabel *_eventNameLabel;
+	UILabel *_eventTimeLabel;
 }
 
 @property (nonatomic, retain) Event *event;
+@property (nonatomic, retain) UILabel *eventNameLabel;
+@property (nonatomic, retain) UILabel *eventTimeLabel;
 
 @end
 

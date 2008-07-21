@@ -13,8 +13,8 @@
 @interface Volume : NSObject <XMLModelObject> {
 
 @private
-    NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-    
+	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
+	
 	BOOL _result;
 	NSString *_resulttext;
 	int _current;

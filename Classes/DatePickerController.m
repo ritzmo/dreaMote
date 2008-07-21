@@ -77,7 +77,7 @@
 									self.view.bounds.size.width - (kRightMargin * 2.0),
 									kTextFieldHeight);
 	label = [[UILabel alloc] initWithFrame:frame];
-    label.font = [UIFont systemFontOfSize:14];
+	label.font = [UIFont systemFontOfSize:14];
 	label.textAlignment = UITextAlignmentCenter;
 	label.textColor = [UIColor whiteColor];
 	label.backgroundColor = [UIColor clearColor];

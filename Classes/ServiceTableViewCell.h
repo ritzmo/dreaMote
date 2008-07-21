@@ -9,13 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "Service.h"
 
-@interface ServiceTableViewCell : UITableViewCell {
-
+@interface ServiceTableViewCell : UITableViewCell
+{
 @private	
 	Service *_service;
+	UILabel *_serviceNameLabel;
 }
 
-@property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) UILabel *serviceNameLabel;
+
+- (Service*)service;
+- (void)setService:(Service *)newService;
 
 @end
 

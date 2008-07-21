@@ -33,7 +33,7 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 
 - (void)dealloc
 {
-    [myTableView release];
+	[myTableView release];
 	[menuList release];
 	
 	[super dealloc];
@@ -151,10 +151,10 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	MyCustomCell *cell = (MyCustomCell*)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
-    if (cell == nil)
-    {
-        cell = [[[MyCustomCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
-    }
+	if (cell == nil)
+	{
+		cell = [[[MyCustomCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+	}
 	
 	// get the view controller's info dictionary based on the indexPath's row
 	[cell setDataDictionary: [menuList objectAtIndex:indexPath.row]];

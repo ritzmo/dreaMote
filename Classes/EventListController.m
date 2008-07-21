@@ -22,11 +22,11 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        self.title = NSLocalizedString(@"Events", @"");
-    }
-    return self;
+	self = [super init];
+	if (self) {
+		self.title = NSLocalizedString(@"Events", @"");
+	}
+	return self;
 }
 
 + (EventListController*)withEventList: (NSArray*) eventList
@@ -59,8 +59,8 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (void)loadView
 {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-    tableView.delegate = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = 48.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -89,8 +89,7 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kEventCell_ID] autorelease];
 	}
 
-	Event *eventForRow = [self.events objectAtIndex:indexPath.row];
-	cell.event = eventForRow;
+	[cell setEvent: [self.events objectAtIndex:indexPath.row]];
 	
 	return cell;
 }
@@ -99,7 +98,7 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
-	Event *event = [(EventTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] event];
+	Event *event = [self.events objectAtIndex: indexPath.row];//[(EventTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] event];
 	EventViewController *eventViewController = [EventViewController withEventAndService: event: _service];
 	[[applicationDelegate navigationController] pushViewController: eventViewController animated: YES];
 

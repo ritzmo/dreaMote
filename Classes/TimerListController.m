@@ -23,13 +23,13 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
+	self = [super init];
+	if (self) {
 		self.timers = [NSArray array];
 		self.dist = [NSArray arrayWithObjects: [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], nil];
-        self.title = NSLocalizedString(@"Timers", @"");
-    }
-    return self;
+		self.title = NSLocalizedString(@"Timers", @"");
+	}
+	return self;
 }
 
 - (void)dealloc
@@ -65,7 +65,7 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 }
 
 - (NSArray *)sortTimers:(NSArray *)timers
-{        
+{		
 	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"getStateString" ascending:YES] autorelease];
 	return [timers sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 }

@@ -13,9 +13,9 @@
 @interface Event : NSObject <XMLModelObject> {
 
 @private
-    NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-    
-    NSString *_eit;
+	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
+	
+	NSString *_eit;
 	NSDate *_begin;
 	NSDate *_end;
 	NSString *_title;

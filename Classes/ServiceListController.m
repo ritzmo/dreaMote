@@ -17,8 +17,6 @@
 
 @implementation ServiceListController
 
-static NSString *kServiceCell_ID = @"ServiceCell_ID";
-
 @synthesize services = _services;
 @synthesize selectTarget = _selectTarget;
 @synthesize selectCallback = _selectCallback;
@@ -26,13 +24,13 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (id)init
 {
-    self = [super init];
-    if (self) {
-        self.title = NSLocalizedString(@"Services", @"");
+	self = [super init];
+	if (self) {
+		self.title = NSLocalizedString(@"Services", @"");
 		self.services = [NSMutableArray array];
 		self.justSelecting = NO;
-    }
-    return self;
+	}
+	return self;
 }
 
 - (void)dealloc
@@ -45,8 +43,8 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (void)loadView
 {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-    tableView.delegate = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = 38.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -76,16 +74,18 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	ServiceTableViewCell *cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kServiceCell_ID];
+	static NSString *kServiceCell_ID = @"ServiceCell_ID";
+
+	ServiceTableViewCell *cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
 	if(cell == nil)
 	{
 		CGSize size = CGSizeMake(300, 36);
 		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[ServiceTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kServiceCell_ID] autorelease];
+		cell = [[[ServiceTableViewCell alloc] initWithFrame: cellFrame reuseIdentifier: kServiceCell_ID] autorelease];
 	}
 
-	cell.service = [[self services] objectAtIndex:indexPath.row];
-	
+	[cell setService: [[self services] objectAtIndex:indexPath.row]];
+
 	return cell;
 }
 
@@ -128,7 +128,7 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 		EventListController *eventListController = [EventListController withEventListAndService: eventList: service];
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
 		
-		[eventListController release];
+		//[eventListController release];
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];

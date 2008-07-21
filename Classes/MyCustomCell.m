@@ -53,10 +53,10 @@
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-    CGRect contentRect = [self.contentView bounds];
+	CGRect contentRect = [self.contentView bounds];
 	
 	// In this example we will never be editing, but this illustrates the appropriate pattern
-    CGRect frame = CGRectMake(contentRect.origin.x + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, LEFT_COLUMN_WIDTH, CELL_HEIGHT);
+	CGRect frame = CGRectMake(contentRect.origin.x + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, LEFT_COLUMN_WIDTH, CELL_HEIGHT);
 	nameLabel.frame = frame;
 	
 	frame = CGRectMake(contentRect.origin.x + 75 + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, LEFT_COLUMN_WIDTH, CELL_HEIGHT);
@@ -66,7 +66,7 @@
 - (void)dealloc
 {
 	[dataDictionary release];
-    [super dealloc];
+	[super dealloc];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

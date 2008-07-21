@@ -20,7 +20,7 @@
 - (id)initWithService:(Service *)service
 {
 	self = [super init];
-    
+	
 	if (self) {
 		self.sref = [[service sref] copy];
 		self.sname = [[service sname] copy];
@@ -30,47 +30,47 @@
 }
 
 #pragma mark -
-#pragma mark    Copy
+#pragma mark	Copy
 #pragma mark -
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id newElement = [[[self class] alloc] initWithService:self];
+	id newElement = [[[self class] alloc] initWithService:self];
 
-    return newElement;
+	return newElement;
 }
 
 - (NSMutableDictionary *)XMLAttributes
 {
-    return self.rawAttributes;
+	return self.rawAttributes;
 }
 
 - (void)setXMLAttributes:(NSMutableDictionary *)attributes
 {
-    self.rawAttributes = attributes;
+	self.rawAttributes = attributes;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@> Name: '%@'.\n Ref: '%@'.\n", [self class], self.sname, self.sref];
+	return [NSString stringWithFormat:@"<%@> Name: '%@'.\n Ref: '%@'.\n", [self class], self.sname, self.sref];
 }
 
 + (NSDictionary *)childElements
 {
-    static NSDictionary *childElements = nil;
-    if (!childElements) {
-        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kSrefElementName, [NSNull null], kSnameElementName, nil];
-    }
-    return childElements;
+	static NSDictionary *childElements = nil;
+	if (!childElements) {
+		childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kSrefElementName, [NSNull null], kSnameElementName, nil];
+	}
+	return childElements;
 }
 
 + (NSDictionary *)setterMethodsAndChildElementNames
 {
-    static NSDictionary *propertyNames = nil;
-    if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setSref:", kSrefElementName, @"setSname:", kSnameElementName, nil];
-    }
-    return propertyNames;
+	static NSDictionary *propertyNames = nil;
+	if (!propertyNames) {
+		propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setSref:", kSrefElementName, @"setSname:", kSnameElementName, nil];
+	}
+	return propertyNames;
 }
 
 - (NSString *)getServiceReference

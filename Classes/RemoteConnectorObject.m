@@ -15,14 +15,14 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 
 + (void)_setSharedRemoteConnector:(NSObject<RemoteConnector> *)shared
 {
-    NSParameterAssert(_sharedRemoteConnector == nil);
-    _sharedRemoteConnector = [shared retain];
+	NSParameterAssert(_sharedRemoteConnector == nil);
+	_sharedRemoteConnector = [shared retain];
 }
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
 {
-    NSParameterAssert(_sharedRemoteConnector != nil);
-    return _sharedRemoteConnector;
+	NSParameterAssert(_sharedRemoteConnector != nil);
+	return _sharedRemoteConnector;
 }
 
 - (id)init
@@ -32,7 +32,7 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 		NSParameterAssert(_sharedRemoteConnector != nil);
 		connector = _sharedRemoteConnector;
 	}
-    return self;
+	return self;
 }
 
 @end

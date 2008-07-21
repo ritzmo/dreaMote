@@ -91,12 +91,12 @@
 						yCoord,
 						self.view.bounds.size.width - kLeftMargin - kRightMargin,
 						kTextViewHeight);
-    myTextView = [[UITextView alloc] initWithFrame:frame];
-    myTextView.textColor = [UIColor blackColor];
-    myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
-    myTextView.delegate = self;
+	myTextView = [[UITextView alloc] initWithFrame:frame];
+	myTextView.textColor = [UIColor blackColor];
+	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
+	myTextView.delegate = self;
 	myTextView.editable = NO;
-    myTextView.backgroundColor = [UIColor whiteColor];
+	myTextView.backgroundColor = [UIColor whiteColor];
 
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];

@@ -14,7 +14,7 @@
 @interface AppDelegate : NSObject  <UIApplicationDelegate>
 {
 @private
-    IBOutlet UIWindow *_window;
+	IBOutlet UIWindow *_window;
 	IBOutlet UINavigationController *_navigationController;
 }
 

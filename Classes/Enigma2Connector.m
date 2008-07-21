@@ -52,21 +52,21 @@
 {
 	NSError *parseError = nil;
 
-    NSDictionary *modelDictionary = [[NSDictionary alloc] initWithObjectsAndKeys: myClass, myElement, nil];
-    
-    XMLReaderSAX *streamingParser = [[XMLReaderSAX alloc] init];
-    [streamingParser setModelObjectDictionary: modelDictionary];
-    [modelDictionary release];
-    [streamingParser parseXMLFileAtURL: [NSURL URLWithString: myURI] parseError: &parseError];
+	NSDictionary *modelDictionary = [[NSDictionary alloc] initWithObjectsAndKeys: myClass, myElement, nil];
+	
+	XMLReaderSAX *streamingParser = [[XMLReaderSAX alloc] init];
+	[streamingParser setModelObjectDictionary: modelDictionary];
+	[modelDictionary release];
+	[streamingParser parseXMLFileAtURL: [NSURL URLWithString: myURI] parseError: &parseError];
 
-    NSMutableArray *allElements = [NSMutableArray arrayWithArray: streamingParser.parsedModelObjects];
+	NSMutableArray *allElements = [NSMutableArray arrayWithArray: streamingParser.parsedModelObjects];
 
-    // The parser creates the array of model objects, but it doesn't know when to dispose of it.
-    // At this point we've taken the results and stored them elsewhere, so we can
-    // tell the parser to release the model objects and avoid leaking them.
-    [streamingParser releaseModelObjects];
-    
-    [streamingParser release];
+	// The parser creates the array of model objects, but it doesn't know when to dispose of it.
+	// At this point we've taken the results and stored them elsewhere, so we can
+	// tell the parser to release the model objects and avoid leaking them.
+	[streamingParser releaseModelObjects];
+	
+	[streamingParser release];
 	
 	return allElements;
 }
@@ -76,16 +76,16 @@
 {
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/getservices?sRef=%@", self.baseAddress, @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"];
 
-    #ifdef STREAMING_PARSE
-    
+	#ifdef STREAMING_PARSE
+	
 	return [self fetchXmlDocument: myURI :@"Service" :@"e2service"];
 
-    #else
+	#else
 
 	NSError *parseError = nil;
 	NSMutableArray *allServices = [NSMutableArray array];
-    
-    XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
+	
+	XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
 
 	if (!document && !parseError) {
 		// If document is nil and parseError is nil, the XML document from the web server was not available.
@@ -95,23 +95,23 @@
 		// XXX: we might want to signal our failure (eg by adding a "known false service")
 		return allServices;
 	}
-    
+	
 	NSArray *itemElements = [document.rootElement descendantsNamed: @"e2service"];
 	for (XMLElement *itemElement in itemElements) {
 	
 		/*
 			Example:
-            <?xml version="1.0" encoding="UTF-8"?>
-            <e2servicelist>
-               <e2service>
-                   <e2servicereference>1:0:1:335:9DD0:7E:820000:0:0:0:</e2servicereference>
-                   <e2servicename>M6 Suisse</e2servicename>
-               </e2service>   
-            </e2servicelist>
+			<?xml version="1.0" encoding="UTF-8"?>
+			<e2servicelist>
+			   <e2service>
+				   <e2servicereference>1:0:1:335:9DD0:7E:820000:0:0:0:</e2servicereference>
+				   <e2servicename>M6 Suisse</e2servicename>
+			   </e2service>   
+			</e2servicelist>
 		*/
 
 		Service *service = [[Service alloc] init];
-        [allServices addObject:service];
+		[allServices addObject:service];
 
 		XMLElement *servicename = [itemElement firstChildNamed: @"e2servicename"];
 		if (servicename) {
@@ -130,7 +130,7 @@
 		}
 	}
 
-    return allServices;
+	return allServices;
 	
 	#endif
 }
@@ -140,16 +140,16 @@
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, [service getServiceReference]];
 	
 
-    #ifdef STREAMING_PARSE
+	#ifdef STREAMING_PARSE
 
-    return [self fetchXmlDocument: myURI :@"Event" :@"e2event"];
-    
-    #else
+	return [self fetchXmlDocument: myURI :@"Event" :@"e2event"];
+	
+	#else
 	
 	NSError *parseError = nil;
 	NSMutableArray *allEvents = [NSMutableArray array];
 
-    XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
+	XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
 
 	if (!document && !parseError) {
 		// If document is nil and parseError is nil, the XML document from the web server was not available.
@@ -159,13 +159,13 @@
 		// XXX: we might want to signal our failure (eg by adding a "known false event")
 		return allEvents;
 	}
-    
+	
 	NSArray *itemElements = [document.rootElement descendantsNamed: @"e2event"];
 	for (XMLElement *itemElement in itemElements) {
 	
 		/*
 			Example:
-            <?xml version="1.0" encoding="UTF-8"?>
+			<?xml version="1.0" encoding="UTF-8"?>
 			<e2eventlist>
 				<e2event>
 					<e2eventid>40710</e2eventid>
@@ -181,7 +181,7 @@
 		*/
 
 		Event *event = [[Event alloc] init];
-        [allEvents addObject:event];
+		[allEvents addObject:event];
 
 		XMLElement *eit = [itemElement firstChildNamed: @"e2eventid"];
 		if (eit) {
@@ -243,16 +243,16 @@
 {
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/timerlist", self.baseAddress];
 
-    #ifdef STREAMING_PARSE
+	#ifdef STREAMING_PARSE
 	
 	return [self fetchXmlDocument: myURI :@"Timer" :@"e2timer"];
-    
-    #else
-    
+	
+	#else
+	
 	NSError *parseError = nil;
 	NSMutableArray *allTimers = [NSMutableArray array];
 
-    XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
+	XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
 
 	if (!document && !parseError) {
 		// If document is nil and parseError is nil, the XML document from the web server was not available.
@@ -262,46 +262,46 @@
 		// XXX: we might want to signal our failure (eg by adding a "known false event")
 		return allTimers;
 	}
-    
+	
 	NSArray *itemElements = [document.rootElement descendantsNamed: @"e2timer"];
 	for (XMLElement *itemElement in itemElements) {
 	
 		/*
 			Example:
-            <?xml version="1.0" encoding="UTF-8"?>
-            <e2timerlist>
-            	<e2timer>
-            		<e2servicereference>1:0:1:445C:453:1:C00000:0:0:0:</e2servicereference>
-            		<e2servicename>SAT.1</e2servicename>
-            		<e2eit>48286</e2eit>
-            		<e2name>Numb3rs - Die Logik des Verbrechens</e2name>
-            		<e2description>Numb3rs - Die Logik des Verbrechens</e2description>
-            		<e2descriptionextended>N/A</e2descriptionextended>
-            		<e2disabled>0</e2disabled>
-            		<e2timebegin>1205093400</e2timebegin>
-            		<e2timeend>1205097600</e2timeend>
-            		<e2duration>4200</e2duration>
-            		<e2startprepare>1205093380</e2startprepare>
-            		<e2justplay>0</e2justplay>
-            		<e2afterevent>0</e2afterevent>
-            		<e2logentries></e2logentries>
-            		<e2filename></e2filename>
-            		<e2backoff>0</e2backoff>
-            		<e2nextactivation></e2nextactivation>
-            		<e2firsttryprepare>True</e2firsttryprepare>
-            		<e2state>0</e2state>
-            		<e2repeated>0</e2repeated>
-            		<e2dontsave>0</e2dontsave>
-            		<e2cancled>False</e2cancled>
-            		<e2color>000000</e2color>
-            		<e2toggledisabled>1</e2toggledisabled>
-            		<e2toggledisabledimg>off</e2toggledisabledimg>
-            	</e2timer>
-            </e2timerlist>
+			<?xml version="1.0" encoding="UTF-8"?>
+			<e2timerlist>
+				<e2timer>
+					<e2servicereference>1:0:1:445C:453:1:C00000:0:0:0:</e2servicereference>
+					<e2servicename>SAT.1</e2servicename>
+					<e2eit>48286</e2eit>
+					<e2name>Numb3rs - Die Logik des Verbrechens</e2name>
+					<e2description>Numb3rs - Die Logik des Verbrechens</e2description>
+					<e2descriptionextended>N/A</e2descriptionextended>
+					<e2disabled>0</e2disabled>
+					<e2timebegin>1205093400</e2timebegin>
+					<e2timeend>1205097600</e2timeend>
+					<e2duration>4200</e2duration>
+					<e2startprepare>1205093380</e2startprepare>
+					<e2justplay>0</e2justplay>
+					<e2afterevent>0</e2afterevent>
+					<e2logentries></e2logentries>
+					<e2filename></e2filename>
+					<e2backoff>0</e2backoff>
+					<e2nextactivation></e2nextactivation>
+					<e2firsttryprepare>True</e2firsttryprepare>
+					<e2state>0</e2state>
+					<e2repeated>0</e2repeated>
+					<e2dontsave>0</e2dontsave>
+					<e2cancled>False</e2cancled>
+					<e2color>000000</e2color>
+					<e2toggledisabled>1</e2toggledisabled>
+					<e2toggledisabledimg>off</e2toggledisabledimg>
+				</e2timer>
+			</e2timerlist>
 		*/
 
 		Timer *timer = [[Timer alloc] init];
-        [allTimers addObject:timer];
+		[allTimers addObject:timer];
 
 		// XXX: implement
 
@@ -366,16 +366,16 @@
 {
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol", self.baseAddress];
 
-    #ifdef STREAMING_PARSE
+	#ifdef STREAMING_PARSE
 	
 	NSArray *allVolumes = [self fetchXmlDocument: myURI :@"Volume" :@"e2volume"];
-    
-    #else
-    
+	
+	#else
+	
 	NSError *parseError = nil;
 	NSMutableArray *allVolumes = [NSMutableArray array];
 
-    XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
+	XMLDocument *document = [XMLDocument documentWithContentsOfURL: [NSURL URLWithString: myURI] error: &parseError];
 
 	if (!document && !parseError) {
 		// If document is nil and parseError is nil, the XML document from the web server was not available.
@@ -385,23 +385,23 @@
 		// XXX: we might want to signal our failure (eg by adding known false values)
 		return [[Volume alloc] init];
 	}
-    
+	
 	NSArray *itemElements = [document.rootElement descendantsNamed: @"e2volume"];
 	for (XMLElement *itemElement in itemElements) {
 	
 		/*
 			Example:
-            <?xml version="1.0" encoding="UTF-8"?>
-            <e2volume>
-               <e2result>True</e2result>
-               <e2resulttext>state</e2resulttext>
-               <e2current>5</e2current>
-               <e2ismuted>False</e2ismuted>	
-            </e2volume>
+			<?xml version="1.0" encoding="UTF-8"?>
+			<e2volume>
+			   <e2result>True</e2result>
+			   <e2resulttext>state</e2resulttext>
+			   <e2current>5</e2current>
+			   <e2ismuted>False</e2ismuted>	
+			</e2volume>
 		*/
 
 		Volume *volume = [[Volume alloc] init];
-        [allVolumes addObject:volume];
+		[allVolumes addObject:volume];
 
 		// XXX: implement
 

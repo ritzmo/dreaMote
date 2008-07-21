@@ -13,10 +13,10 @@
 @interface Service : NSObject <XMLModelObject> {
 
 @private
-    NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-    
-    NSString *_sref;
-    NSString *_sname;
+	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
+	
+	NSString *_sref;
+	NSString *_sname;
 }
 
 - (NSString *)getServiceReference;

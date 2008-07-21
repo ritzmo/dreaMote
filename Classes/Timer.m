@@ -89,7 +89,7 @@
 - (id)initWithTimer:(Timer *)timer
 {
 	self = [super init];
-    
+	
 	if (self) {
 		self.begin = [[timer begin] copy];
 		self.end = [[timer end] copy];
@@ -107,29 +107,29 @@
 }
 
 #pragma mark -
-#pragma mark    Copy
+#pragma mark	Copy
 #pragma mark -
 
 - (id)copyWithZone:(NSZone *)zone
 {
-    id newElement = [[[self class] alloc] initWithTimer:self];
+	id newElement = [[[self class] alloc] initWithTimer:self];
 
-    return newElement;
+	return newElement;
 }
 
 - (NSMutableDictionary *)XMLAttributes
 {
-    return self.rawAttributes;
+	return self.rawAttributes;
 }
 
 - (void)setXMLAttributes:(NSMutableDictionary *)attributes
 {
-    self.rawAttributes = attributes;
+	self.rawAttributes = attributes;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
+	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 
 - (NSString *)getStateString
@@ -139,20 +139,20 @@
 
 + (NSDictionary *)childElements
 {
-    static NSDictionary *childElements = nil;
-    if (!childElements) {
-        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kEndElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kJustplayElementName, [NSNull null], kDisabledElementName, [NSNull null], kRepeatedElementName, [NSNull null], kSrefElementName, [NSNull null], kSnameElementName, [NSNull null], kStateElementName, nil];
-    }
-    return childElements;
+	static NSDictionary *childElements = nil;
+	if (!childElements) {
+		childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kEndElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kJustplayElementName, [NSNull null], kDisabledElementName, [NSNull null], kRepeatedElementName, [NSNull null], kSrefElementName, [NSNull null], kSnameElementName, [NSNull null], kStateElementName, nil];
+	}
+	return childElements;
 }
 
 + (NSDictionary *)setterMethodsAndChildElementNames
 {
-    static NSDictionary *propertyNames = nil;
-    if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromString:", kEndElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplayFromString:", kJustplayElementName, @"setDisabledFromString:", kDisabledElementName, @"setRepeatedFromString:", kRepeatedElementName, @"setSref:", kSrefElementName, @"setServiceFromSname:", kSnameElementName, @"setStateFromString:", kStateElementName, nil];
-    }
-    return propertyNames;
+	static NSDictionary *propertyNames = nil;
+	if (!propertyNames) {
+		propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromString:", kEndElementName, @"setTitle:", kTitleElementName, @"setTdescription:", kDescriptionElementName, @"setJustplayFromString:", kJustplayElementName, @"setDisabledFromString:", kDisabledElementName, @"setRepeatedFromString:", kRepeatedElementName, @"setSref:", kSrefElementName, @"setServiceFromSname:", kSnameElementName, @"setStateFromString:", kStateElementName, nil];
+	}
+	return propertyNames;
 }
 
 - (void)setBeginFromString: (NSString *)newBegin

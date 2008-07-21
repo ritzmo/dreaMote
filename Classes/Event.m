@@ -27,35 +27,35 @@
 
 - (NSMutableDictionary *)XMLAttributes
 {
-    return self.rawAttributes;
+	return self.rawAttributes;
 }
 
 - (void)setXMLAttributes:(NSMutableDictionary *)attributes
 {
-    self.rawAttributes = attributes;
+	self.rawAttributes = attributes;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
+	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 
 + (NSDictionary *)childElements
 {
-    static NSDictionary *childElements = nil;
-    if (!childElements) {
-        childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kDurationElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kExtendedElementName, nil];
-    }
-    return childElements;
+	static NSDictionary *childElements = nil;
+	if (!childElements) {
+		childElements = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNull null], kEitElementName, [NSNull null], kBeginElementName, [NSNull null], kDurationElementName, [NSNull null], kTitleElementName, [NSNull null], kDescriptionElementName, [NSNull null], kExtendedElementName, nil];
+	}
+	return childElements;
 }
 
 + (NSDictionary *)setterMethodsAndChildElementNames
 {
-    static NSDictionary *propertyNames = nil;
-    if (!propertyNames) {
-        propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromDurationString:", kDurationElementName, @"setTitle:", kTitleElementName, @"setSdescription:", kDescriptionElementName, @"setEdescription:", kExtendedElementName, nil];
-    }
-    return propertyNames;
+	static NSDictionary *propertyNames = nil;
+	if (!propertyNames) {
+		propertyNames = [[NSDictionary alloc] initWithObjectsAndKeys:@"setEit:", kEitElementName, @"setBeginFromString:", kBeginElementName, @"setEndFromDurationString:", kDurationElementName, @"setTitle:", kTitleElementName, @"setSdescription:", kDescriptionElementName, @"setEdescription:", kExtendedElementName, nil];
+	}
+	return propertyNames;
 }
 
 - (void)setBeginFromString: (NSString *)newBegin
