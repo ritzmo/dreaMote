@@ -200,7 +200,7 @@
 
 - (void)toggleMuted:(id)sender
 {
-	[[RemoteConnectorObject sharedRemoteConnector] toggleMuted];
+	[_switchControl setOn: [[RemoteConnectorObject sharedRemoteConnector] toggleMuted]];
 }
 
 - (void)volumeChanged:(id)sender
