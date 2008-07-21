@@ -479,37 +479,33 @@
 
 - (void)doneAction:(id)sender
 {
-	if(_creatingNewTimer)
+	if([[timerTitle text] length])
 	{
-		NSString *message = @"We should add the new timer now, but that's not yet implemented so we're closing...";
-
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
+		_timer.title = [timerTitle text];
 	}
 	else
-	{		
-		if([[timerTitle text] length])
-		{
-			_timer.title = [timerTitle text];
-		}
-		else
-		{
-			// XXX: this might be better of at another place as we might want to catch more errors...
-			NSString *message = @"Can't save a timer with an empty title.";
+	{
+		// XXX: this might be better of at another place as we might want to catch more errors...
+		NSString *message = @"Can't save a timer with an empty title.";
+		
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+		
+		return;
+	}
 
-			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[notification show];
-			[notification release];
-			
-			return;
-		}
+	if([[timerDescription text] length])
+		_timer.tdescription = [timerDescription text];
+	else
+		_timer.tdescription = @"";
 
-		if([[timerDescription text] length])
-			_timer.tdescription = [timerDescription text];
-		else
-			_timer.tdescription = @"";
-
+	if(_creatingNewTimer)
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer];
+	}
+	else
+	{
 		[[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer];
 	}
 
