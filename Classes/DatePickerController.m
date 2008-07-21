@@ -19,6 +19,8 @@
 
 @synthesize date;
 @synthesize format;
+@synthesize selectTarget = _selectTarget;
+@synthesize selectCallback = _selectCallback;
 
 - (id)init
 {
@@ -85,22 +87,15 @@
 
 - (void)doneAction:(id)sender
 {
-	[[datePickerView date] retain];
+	if(_selectTarget != nil && _selectCallback != nil)
+	{
+		[_selectTarget performSelector:(SEL)_selectCallback withObject: [datePickerView date]];
+	}
 
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 
-	// XXX: hack?
-	TimerViewController *topViewController = (TimerViewController*)[[applicationDelegate navigationController] topViewController];
-	if(topViewController.timer.begin == date)
-	{
-		topViewController.timer.begin = [[datePickerView date] retain];
-	}
-	else
-	{
-		topViewController.timer.end = [[datePickerView date] retain];
-	}
 }
 
 - (void)dealloc
@@ -109,6 +104,7 @@
 	[datePickerView release];
 	[label release];
 	[format release];
+	[_selectTarget release];
 
 	[super dealloc];
 }
@@ -116,6 +112,12 @@
 - (void)timeChanged: (id)sender
 {
 	label.text = [format stringFromDate: [datePickerView date]];
+}
+
+- (void)setTarget: (id)target action: (SEL)action
+{
+	_selectTarget = target;
+	_selectCallback = action;
 }
 
 @end

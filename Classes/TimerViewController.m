@@ -8,6 +8,7 @@
 
 #import "TimerViewController.h"
 
+#import "ServiceListController.h"
 #import "DatePickerController.h"
 
 #import "RemoteConnectorObject.h"
@@ -364,18 +365,16 @@
 	//
 	// We do this by examining the notification's object to get the keyboard's frame
 	//
-	/*CGRect rect;
-	[[notification object] getValue:&rect];
-
-	if (([timerTitle isFirstResponder]) && (rect.origin.y >= timerTitle.frame.origin.y))
+	/*
+	if (([timerTitle isFirstResponder]) && (self.view.frame.origin.y >= 0))
 	{
 		[self setViewMovedUp:YES];
-		lastTrackedFirstResponder = timerTitle;
 	}
 	else
 	{
 		[self setViewMovedUp:NO];
-	}*/
+	}
+	*/
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification
@@ -385,10 +384,12 @@
 	// If the view was previously adjusted to prevent the keyboard from covering 
 	// the edit fields, restore the original positioning.
 	//
-	/*if  (self.view.frame.origin.y > 0)
+	/*
+	if  (self.view.frame.origin.y > 0)
 	{
 		[self setViewMovedUp:NO];
-	}*/
+	}
+	*/
 }
 
 // this helps dismiss the keyboard then the "done" button is clicked
@@ -423,9 +424,21 @@
 
 - (void)editService:(id)sender
 {
-	UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Notification:" message:@"Not yet implemented." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-	[notification show];
-	[notification release];
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	ServiceListController *serviceListController = [[ServiceListController alloc] init];
+	serviceListController.justSelecting = YES;
+	[serviceListController setTarget: self action: @selector(serviceSelected:)];
+	[[applicationDelegate navigationController] pushViewController: serviceListController animated: YES];
+	
+	//[serviceListController release];
+}
+
+- (void)serviceSelected:(id)object
+{
+	// XXX: we might want to check for an invalid service here (unable to receive list ?)
+	self.timer.service = [(Service*)object retain];
+	[timerServiceName setTitle: [[_timer service] sname] forState:UIControlStateNormal];
 }
 
 - (void)editBegin:(id)sender
@@ -433,7 +446,17 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	DatePickerController *datePickerController = [DatePickerController withDate: [_timer begin]];
+	[datePickerController setTarget: self action: @selector(beginSelected:)];
 	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
+}
+
+- (void)beginSelected:(id)object
+{
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	[format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+
+	self.timer.begin = [(NSDate*)object retain];
+	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
 }
 
 - (void)editEnd:(id)sender
@@ -441,8 +464,19 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	DatePickerController *datePickerController = [DatePickerController withDate: [_timer end]];
+	[datePickerController setTarget: self action: @selector(endSelected:)];
 	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
 }
+
+- (void)endSelected:(id)object
+{
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	[format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+
+	self.timer.end = [(NSDate*)object retain];
+	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];
+}
+
 - (void)doneAction:(id)sender
 {
 	if(_creatingNewTimer)

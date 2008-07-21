@@ -11,10 +11,18 @@
 @interface ServiceListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_services;
+	SEL _selectCallback;
+	id _selectTarget;
+@public
+	BOOL justSelecting;
 }
 
 - (void)reloadData;
+- (void)setTarget: (id)target action: (SEL)action;
 
 @property (nonatomic, retain) NSArray *services;
+@property (nonatomic) BOOL justSelecting;
+@property (nonatomic, retain) id selectTarget;
+@property (nonatomic) SEL selectCallback;
 
 @end

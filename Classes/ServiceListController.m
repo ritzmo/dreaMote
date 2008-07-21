@@ -20,6 +20,9 @@
 static NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 @synthesize services = _services;
+@synthesize selectTarget = _selectTarget;
+@synthesize selectCallback = _selectCallback;
+@synthesize justSelecting;
 
 - (id)init
 {
@@ -27,6 +30,7 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
     if (self) {
         self.title = NSLocalizedString(@"Services", @"");
 		self.services = [NSMutableArray array];
+		self.justSelecting = NO;
     }
     return self;
 }
@@ -34,6 +38,7 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 - (void)dealloc
 {
 	[_services release];
+	[_selectTarget release];
 	
 	[super dealloc];
 }
@@ -86,6 +91,17 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(justSelecting && _selectTarget != nil && _selectCallback != nil)
+	{
+		Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] service];
+		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
+
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+		
+		[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+		
+		return nil;
+	}
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Service Action Title", @"")
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
 	[actionSheet showInView:self.view];
@@ -128,6 +144,12 @@ static NSString *kServiceCell_ID = @"ServiceCell_ID";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [[self services] count];
+}
+
+- (void)setTarget: (id)target action: (SEL)action
+{
+	_selectTarget = target;
+	_selectCallback = action;
 }
 
 @end
