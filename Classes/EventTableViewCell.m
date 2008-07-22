@@ -67,11 +67,11 @@
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *begin = [[format stringFromDate: [_event begin]] autorelease];
+	NSString *begin = [format stringFromDate: [_event begin]];
 	[format setDateStyle:NSDateFormatterNoStyle];
-	NSString *end = [[format stringFromDate: [_event end]] autorelease];
+	NSString *end = [format stringFromDate: [_event end]];
 	self.eventTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
-	
+
 	[self setNeedsDisplay];
 }
 
