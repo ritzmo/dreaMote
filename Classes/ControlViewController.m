@@ -53,6 +53,9 @@
 
 - (void)gotVolume:(id)newVolume
 {
+	if(newVolume == nil)
+		return;
+
 	_volume = [(Volume*)newVolume retain];
 
 	self.switchControl.on = [self.volume ismuted];

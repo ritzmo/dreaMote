@@ -5,12 +5,6 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
-			<key>Title</key>
-			<string>Name</string>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
 			<key>DefaultValue</key>
 			<string>http://192.168.178.22</string>
 			<key>Key</key>
@@ -40,6 +34,6 @@
 		</dict>
 	</array>
 	<key>Title</key>
-	<string>w00t</string>
+	<string>dreaMote</string>
 </dict>
 </plist>
