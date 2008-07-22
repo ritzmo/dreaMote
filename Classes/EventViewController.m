@@ -9,7 +9,6 @@
 #import "EventViewController.h"
 
 #import "TimerViewController.h"
-#import "AppDelegateMethods.h"
 #import "Constants.h"
 
 @implementation EventViewController
