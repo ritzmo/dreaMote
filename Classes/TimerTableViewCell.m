@@ -8,8 +8,6 @@
 
 #import "TimerTableViewCell.h"
 
-#import "AppDelegateMethods.h"
-
 @interface TimerTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end

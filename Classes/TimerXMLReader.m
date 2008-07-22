@@ -98,52 +98,52 @@ static NSUInteger parsedTimersCounter;
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2name"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2name' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2disabled"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2disabled' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2justplay"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2justplay' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
 	} else if ([elementName isEqualToString:@"e2repeated"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2repeated' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
 	}/* else if ([elementName isEqualToString:@"e2afterevent"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2afterevent' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
 	}*/ else if ([elementName isEqualToString:@"e2timebegin"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2timebegin' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
 	} else if ([elementName isEqualToString:@"e2timeend"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2timeend' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
 	} else if ([elementName isEqualToString:@"e2description"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2description' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2state"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2state' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
 	}/* else if ([elementName isEqualToString:@"e2descriptionextended"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2descriptionextended' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
@@ -185,7 +185,7 @@ static NSUInteger parsedTimersCounter;
 	} else if ([elementName isEqualToString:@"e2state"]) {
 		[[self currentTimerObject] setStateFromString: [self contentOfCurrentProperty]];
 	} else if([elementName isEqualToString:@"e2timer"]) {
-		[self.target performSelector:self.addObject withObject:self.currentTimerObject];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentTimerObject waitUntilDone:YES];
 	}
 	self.contentOfCurrentProperty = nil;
 }

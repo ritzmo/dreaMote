@@ -45,7 +45,7 @@
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		1D6058910D05DD3D006BFB54 /* Untitled.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Untitled.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* Untitled_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Untitled_Prefix.pch; sourceTree = "<group>"; };
@@ -95,7 +95,6 @@
 		DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma2Connector.m; sourceTree = "<group>"; };
 		DAD51D710D8303FF00A769F3 /* ServiceListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceListController.h; sourceTree = "<group>"; };
 		DAD51D720D8303FF00A769F3 /* ServiceListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceListController.m; sourceTree = "<group>"; };
-		DAD51D7C0D8304AD00A769F3 /* AppDelegateMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegateMethods.h; sourceTree = "<group>"; };
 		DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceTableViewCell.h; sourceTree = "<group>"; };
 		DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceTableViewCell.m; sourceTree = "<group>"; };
 		DAD51DF10D830A3900A769F3 /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
@@ -134,7 +133,6 @@
 				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
 				DA2710C70D838A3200C25B85 /* Event.h */,
 				DA2710C80D838A3200C25B85 /* Event.m */,
-				DAD51D7C0D8304AD00A769F3 /* AppDelegateMethods.h */,
 				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
 				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
 				DAD51DF10D830A3900A769F3 /* Service.h */,
@@ -197,7 +195,7 @@
 			isa = PBXGroup;
 			children = (
 				DA054BE00E36164D002BC368 /* Settings.bundle */,
-				1D6058910D05DD3D006BFB54 /* Untitled.app */,
+				1D6058910D05DD3D006BFB54 /* dreaMote.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -245,9 +243,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1D6058900D05DD3D006BFB54 /* Untitled */ = {
+		1D6058900D05DD3D006BFB54 /* dreaMote */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Untitled" */;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "dreaMote" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
@@ -257,9 +255,9 @@
 			);
 			dependencies = (
 			);
-			name = Untitled;
-			productName = Untitled;
-			productReference = 1D6058910D05DD3D006BFB54 /* Untitled.app */;
+			name = dreaMote;
+			productName = dreaMote;
+			productReference = 1D6058910D05DD3D006BFB54 /* dreaMote.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -274,7 +272,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1D6058900D05DD3D006BFB54 /* Untitled */,
+				1D6058900D05DD3D006BFB54 /* dreaMote */,
 			);
 		};
 /* End PBXProject section */
@@ -359,7 +357,7 @@
 				GCC_PREFIX_HEADER = Untitled_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PREBINDING = NO;
-				PRODUCT_NAME = Untitled;
+				PRODUCT_NAME = dreaMote;
 			};
 			name = Debug;
 		};
@@ -373,7 +371,7 @@
 				GCC_PREFIX_HEADER = Untitled_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				PREBINDING = NO;
-				PRODUCT_NAME = Untitled;
+				PRODUCT_NAME = dreaMote;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -406,7 +404,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "Untitled" */ = {
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "dreaMote" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,

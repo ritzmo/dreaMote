@@ -9,7 +9,6 @@
 #import "TimerListController.h"
 
 #import "TimerTableViewCell.h"
-#import "AppDelegateMethods.h"
 #import "RemoteConnectorObject.h"
 #import "Timer.h"
 #import "TimerViewController.h"
@@ -62,14 +61,24 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[_timers removeAllObjects];
+
 	dist[0] = 0;
 	dist[1] = 0;
 	dist[2] = 0;
 	dist[3] = 0;
 
-	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
+	[self reloadData];
+	
+	// Spawn a thread to fetch the timer data so that the UI is not blocked while the 
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
+}
+
+- (void)fetchTimers
+{
+	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
 }
 
 - (void)addTimer:(id)newTimer
@@ -80,7 +89,8 @@
 	
 	// XXX: now this sucks *g*
 	int offset = 0;
-	for(int i = 0; i < state; i++){
+	int i;
+	for(i = 0; i < state; i++){
 		offset += dist[i];
 	}
 
@@ -104,7 +114,8 @@
 
 	// XXX: I really should think about the way i keep track of items in a section
 	int offset = 0;
-	for(int i = 0; i < indexPath.section; i++){
+	int i;
+	for(i = 0; i < indexPath.section; i++){
 		offset += dist[i];
 	}
 	[cell setTimer: [[self timers] objectAtIndex: offset + indexPath.row]];
@@ -151,7 +162,7 @@
 		else
 		{
 			TimerViewController *timerViewController = [TimerViewController withTimer: timer];
-			[[applicationDelegate navigationController] pushViewController: timerViewController animated: NO]; // TODO: why does this break when animated?
+			[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
 
 			//[timerViewController release];
 		}

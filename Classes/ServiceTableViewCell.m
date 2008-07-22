@@ -7,7 +7,6 @@
 //
 
 #import "ServiceTableViewCell.h"
-#import "AppDelegateMethods.h"
 
 @interface ServiceTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;

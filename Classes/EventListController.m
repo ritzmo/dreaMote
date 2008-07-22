@@ -10,7 +10,7 @@
 
 #import "EventTableViewCell.h"
 #import "EventViewController.h"
-#import "AppDelegateMethods.h"
+#import "RemoteConnectorObject.h"
 #import "Event.h"
 
 @implementation EventListController
@@ -75,9 +75,15 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 	[(UITableView *)self.view reloadData];
 }
 
+- (void)fetchEvents
+{
+	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
+}
+
 - (void)addEvent:(id)event
 {
 	[_events addObject: [(Event*)event retain]];
+	[self reloadData];
 }
 
 #pragma mark	-

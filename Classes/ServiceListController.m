@@ -11,7 +11,6 @@
 #import "EventListController.h"
 
 #import "ServiceTableViewCell.h"
-#import "AppDelegateMethods.h"
 #import "RemoteConnectorObject.h"
 #import "Service.h"
 
@@ -62,15 +61,24 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[_services removeAllObjects];
+	[self reloadData];
 
-	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
+	// Spawn a thread to fetch the service data so that the UI is not blocked while
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
+}
+
+- (void)fetchServices
+{
+	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
 }
 
 - (void)addService:(id)service
 {
 	[_services addObject: [(Service*)service retain]];
+	[self reloadData];
 }
 
 #pragma mark	-
@@ -89,7 +97,7 @@
 		cell = [[[ServiceTableViewCell alloc] initWithFrame: cellFrame reuseIdentifier: kServiceCell_ID] autorelease];
 	}
 
-	[cell setService: [[self services] objectAtIndex:indexPath.row]];
+	[cell setService: [_services objectAtIndex:indexPath.row]];
 
 	return cell;
 }
@@ -131,7 +139,11 @@
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 		NSMutableArray *eventList = [NSMutableArray array];
 		EventListController *eventListController = [EventListController withEventListAndService: eventList: service];
-		[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: eventListController action:@selector(addEvent:) service: service];
+
+		// Spawn a thread to fetch the event data so that the UI is not blocked while
+		// application parses the XML file.
+		[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:eventListController withObject:nil];
+
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
 	
 		//[eventListController release];
@@ -149,7 +161,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [[self services] count];
+	return [_services count];
 }
 
 - (void)setTarget: (id)target action: (SEL)action

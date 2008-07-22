@@ -59,7 +59,7 @@ static NSUInteger parsedEventsCounter;
 		
 		// An e2event in the xml represents a service, so create an instance of it.
 		self.currentEventObject = [[Event alloc] init];
-		[self.target performSelector:self.addObject withObject:self.currentEventObject];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone:YES];
 
 		return;
 	}
@@ -75,32 +75,32 @@ static NSUInteger parsedEventsCounter;
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else*/ if ([elementName isEqualToString:@"e2eventid"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2eventid' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2eventstart"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2eventstart' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2eventduration"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2eventduration' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2eventtitle"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2eventtitle' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2eventdescription"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2eventdescription' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
 	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		// Create a mutable string to hold the contents of the 'e2eventdescriptionextended' element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 

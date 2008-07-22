@@ -8,8 +8,6 @@
 
 #import "EventTableViewCell.h"
 
-#import "AppDelegateMethods.h"
-
 @interface EventTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end

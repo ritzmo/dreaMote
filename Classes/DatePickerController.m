@@ -6,8 +6,6 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "AppDelegateMethods.h"
-
 #import "TimerViewController.h"
 #import "DatePickerController.h"
 

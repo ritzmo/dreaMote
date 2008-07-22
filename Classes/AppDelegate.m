@@ -20,8 +20,8 @@ NSString *kConnector			= @"connectorKey";
 
 @implementation AppDelegate
 
-@synthesize window = _window;
-@synthesize navigationController = _navigationController;
+@synthesize window;
+@synthesize navigationController;
 
 - init
 {
@@ -35,8 +35,8 @@ NSString *kConnector			= @"connectorKey";
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
 	// Show the window and view
-	[_window addSubview:[_navigationController view]];
-	[_window makeKeyAndVisible];
+	[window addSubview:[navigationController view]];
+	[window makeKeyAndVisible];
 	
 	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey:kConnector];
 	if (testValue == nil)
@@ -92,8 +92,8 @@ NSString *kConnector			= @"connectorKey";
 
 - (void)dealloc
 {
-	[_window release];
-	[_navigationController release];
+	[window release];
+	[navigationController release];
 
 	[super dealloc];
 }

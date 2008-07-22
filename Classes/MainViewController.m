@@ -13,8 +13,6 @@
 #import "TimerListController.h"
 #import "ControlViewController.h"
 
-//#include "AppDelegateMethods.h"
-
 @implementation MainViewController
 
 static NSString *kMainCell_ID = @"MainCell_ID";

@@ -55,7 +55,7 @@ static NSUInteger parsedServicesCounter;
 
 		// An e2service in the xml represents a service, so create an instance of it.
 		self.currentServiceObject = [[Service alloc] init];
-		[self.target performSelector:self.addObject withObject:self.currentServiceObject];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentServiceObject waitUntilDone: YES];
 
 		return;
 	}

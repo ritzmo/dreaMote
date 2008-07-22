@@ -95,7 +95,7 @@ static NSUInteger parsedVolumesCounter;
 	} else if ([elementName isEqualToString:@"e2ismuted"]) {
 		[[self currentVolumeObject] setIsmuted: [[self contentOfCurrentProperty] boolValue]];
 	} else if ([elementName isEqualToString:@"e2volume"]) {
-		[self.target performSelector:self.addObject withObject:self.currentVolumeObject];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentVolumeObject waitUntilDone:YES];
 	}
 	self.contentOfCurrentProperty = nil;
 }

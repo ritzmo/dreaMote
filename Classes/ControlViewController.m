@@ -8,7 +8,6 @@
 
 #import "ControlViewController.h"
 
-//#import "AppDelegateMethods.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -40,9 +39,16 @@
 {
 	[_volume release];
 
-	[[RemoteConnectorObject sharedRemoteConnector] getVolume:self action:@selector(gotVolume:)];
+	// Spawn a thread to fetch the volume data so that the UI is not blocked while the 
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchVolume) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
+}
+
+- (void)fetchVolume
+{
+	[[RemoteConnectorObject sharedRemoteConnector] getVolume:self action:@selector(gotVolume:)];
 }
 
 - (void)gotVolume:(id)newVolume

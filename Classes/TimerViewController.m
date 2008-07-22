@@ -12,7 +12,6 @@
 #import "DatePickerController.h"
 
 #import "RemoteConnectorObject.h"
-#import "AppDelegateMethods.h"
 #import "Constants.h"
 
 @implementation TimerViewController
