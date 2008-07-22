@@ -76,8 +76,11 @@
 	self.serviceNameLabel.text = [[newTimer service] sname];
 	self.timerNameLabel.text = [newTimer title];
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateFormat: @"%d.%m. %H:%M"];
-	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", [[format stringFromDate: [newTimer begin]] autorelease], [[format stringFromDate: [newTimer begin]] autorelease]];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterMediumStyle];
+	NSString *begin = [[format stringFromDate: [newTimer begin]] autorelease];
+	[format setDateStyle:NSDateFormatterNoStyle];
+	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [[format stringFromDate: [newTimer end]] autorelease]];
 
 	[self setNeedsDisplay];
 }

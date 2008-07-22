@@ -72,7 +72,7 @@ NSString *kConnector			= @"connectorKey";
 		// since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults =  [NSDictionary dictionaryWithObjectsAndKeys:
 									  remoteHostDefault, kRemoteHost,
-									  [NSNumber numberWithInt: 1], kConnector,
+									  connectorDefault, kConnector,
 									  nil];
 
 		[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];

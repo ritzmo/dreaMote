@@ -258,7 +258,8 @@
 
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+	[format setDateStyle:NSDateFormatterFullStyle];
+	[format setTimeStyle:NSDateFormatterMediumStyle];
 	
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;
@@ -268,7 +269,8 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
-	timerBeginString.backgroundColor = backgroundColor;
+	[timerBeginString setBackgroundColor: backgroundColor];
+	[timerBeginString setFont: [UIFont systemFontOfSize:12.0]];
 	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
 	[timerBeginString addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: timerBeginString];
@@ -290,7 +292,8 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
-	timerEndString.backgroundColor = backgroundColor;
+	[timerEndString setFont: [UIFont systemFontOfSize:12.0]];
+	[timerEndString setBackgroundColor: backgroundColor];
 	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];
 	[timerEndString addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: timerEndString];
@@ -453,7 +456,8 @@
 - (void)beginSelected:(id)object
 {
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+	[format setDateStyle:NSDateFormatterFullStyle];
+	[format setTimeStyle:NSDateFormatterMediumStyle];
 
 	self.timer.begin = [(NSDate*)object retain];
 	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
@@ -471,7 +475,8 @@
 - (void)endSelected:(id)object
 {
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+	[format setDateStyle:NSDateFormatterFullStyle];
+	[format setTimeStyle:NSDateFormatterMediumStyle];
 
 	self.timer.end = [(NSDate*)object retain];
 	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];

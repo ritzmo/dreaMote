@@ -133,7 +133,8 @@
 
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateFormat: @"%d.%m. %H:%M"];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterMediumStyle];
 	
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;

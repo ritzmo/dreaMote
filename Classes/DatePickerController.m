@@ -29,7 +29,8 @@
 		// this title will appear in the navigation bar
 		self.title = NSLocalizedString(@"Date Picker", @"");
 		self.format = [[NSDateFormatter alloc] init];
-		[self.format setDateFormat: @"%A, %d.%m.%Y %H:%M"];
+		[format setDateStyle:NSDateFormatterFullStyle];
+		[format setTimeStyle:NSDateFormatterMediumStyle];
 	}
 	
 	return self;
