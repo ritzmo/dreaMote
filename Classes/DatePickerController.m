@@ -30,7 +30,7 @@
 		self.title = NSLocalizedString(@"Date Picker", @"");
 		self.format = [[NSDateFormatter alloc] init];
 		[format setDateStyle:NSDateFormatterFullStyle];
-		[format setTimeStyle:NSDateFormatterMediumStyle];
+		[format setTimeStyle:NSDateFormatterShortStyle];
 	}
 	
 	return self;

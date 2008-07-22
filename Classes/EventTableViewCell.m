@@ -68,7 +68,7 @@
 	self.eventNameLabel.text = [newEvent title];
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *begin = [[format stringFromDate: [_event begin]] autorelease];
 	[format setDateStyle:NSDateFormatterNoStyle];
 	NSString *end = [[format stringFromDate: [_event end]] autorelease];

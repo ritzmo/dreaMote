@@ -259,7 +259,7 @@
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterFullStyle];
-	[format setTimeStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
 	
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;
@@ -457,7 +457,7 @@
 {
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterFullStyle];
-	[format setTimeStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
 
 	self.timer.begin = [(NSDate*)object retain];
 	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
@@ -476,7 +476,7 @@
 {
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterFullStyle];
-	[format setTimeStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
 
 	self.timer.end = [(NSDate*)object retain];
 	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];

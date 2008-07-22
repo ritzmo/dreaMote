@@ -77,7 +77,7 @@
 	self.timerNameLabel.text = [newTimer title];
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *begin = [[format stringFromDate: [newTimer begin]] autorelease];
 	[format setDateStyle:NSDateFormatterNoStyle];
 	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [[format stringFromDate: [newTimer end]] autorelease]];
