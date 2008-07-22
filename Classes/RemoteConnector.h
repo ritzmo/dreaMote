@@ -7,6 +7,10 @@
  *
  */
 
+enum availableConnectors {
+	kEnigma2Connector = 1,
+};
+
 #include "Service.h"
 #include "Volume.h"
 #include "Timer.h"

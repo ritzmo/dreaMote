@@ -39,6 +39,10 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 	[super dealloc];
 }
 
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
 - (void)awakeFromNib
 {	
 	menuList = [[NSMutableArray alloc] init];
