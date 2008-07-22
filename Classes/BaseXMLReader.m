@@ -67,6 +67,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 {
 }
 
+- (void)parserDidEndDocument:(NSXMLParser *)parser
+{
+	[self.target performSelectorOnMainThread:self.addObject withObject:nil waitUntilDone:YES];
+}
+
 - (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
 {	
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];

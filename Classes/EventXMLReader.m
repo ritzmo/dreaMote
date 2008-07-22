@@ -59,7 +59,6 @@ static NSUInteger parsedEventsCounter;
 		
 		// An e2event in the xml represents a service, so create an instance of it.
 		self.currentEventObject = [[Event alloc] init];
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone:YES];
 
 		return;
 	}
@@ -131,6 +130,8 @@ static NSUInteger parsedEventsCounter;
 		[[self currentEventObject] setSdescription: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"]) {
 		[[self currentEventObject] setEdescription: [self contentOfCurrentProperty]];
+	} else if ([elementName isEqualToString:@"e2event"]) {
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone:YES];
 	}
 	self.contentOfCurrentProperty = nil;
 }

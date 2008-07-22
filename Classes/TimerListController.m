@@ -13,6 +13,8 @@
 #import "Timer.h"
 #import "TimerViewController.h"
 
+static int timerCount = 0;
+
 @implementation TimerListController
 
 @synthesize timers = _timers;
@@ -62,6 +64,7 @@
 {
 	[_timers removeAllObjects];
 
+	timerCount = 0;
 	dist[0] = 0;
 	dist[1] = 0;
 	dist[2] = 0;
@@ -83,21 +86,28 @@
 
 - (void)addTimer:(id)newTimer
 {
-	Timer* timer = [(Timer*)newTimer retain];
+	if(newTimer == nil)
+		[self reloadData];
+	else
+	{
+		Timer* timer = [(Timer*)newTimer retain];
 
-	int state = [timer state];
-	
-	// XXX: now this sucks *g*
-	int offset = 0;
-	int i;
-	for(i = 0; i < state; i++){
-		offset += dist[i];
+		int state = [timer state];
+
+		// XXX: now this sucks *g*
+		int offset = 0;
+		int i;
+		for(i = 0; i < state; i++){
+			offset += dist[i];
+		}
+
+		dist[state]++;
+
+		[_timers insertObject:timer atIndex:offset];
+		
+		if(!(++timerCount % 10))
+			[self reloadData];
 	}
-
-	dist[state]++;
-
-	[_timers insertObject:timer atIndex:offset];
-	[self reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

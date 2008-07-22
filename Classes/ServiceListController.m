@@ -14,6 +14,8 @@
 #import "RemoteConnectorObject.h"
 #import "Service.h"
 
+static int serviceCount = 0;
+
 @implementation ServiceListController
 
 @synthesize services = _services;
@@ -61,9 +63,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[_services removeAllObjects];
+	serviceCount = 0;
 	[self reloadData];
 
-	// Spawn a thread to fetch the service data so that the UI is not blocked while
+	// Spawn a thread to fetch the service data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
 
@@ -77,8 +80,14 @@
 
 - (void)addService:(id)service
 {
-	[_services addObject: [(Service*)service retain]];
-	[self reloadData];
+	if(service == nil)
+		[self reloadData];
+	else
+	{
+		[_services addObject: [(Service*)service retain]];
+		if(!(++serviceCount % 10))
+			[self reloadData];
+	}
 }
 
 #pragma mark	-
@@ -161,7 +170,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [_services count];
+	return serviceCount;//[_services count];
 }
 
 - (void)setTarget: (id)target action: (SEL)action

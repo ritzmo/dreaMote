@@ -55,7 +55,6 @@ static NSUInteger parsedServicesCounter;
 
 		// An e2service in the xml represents a service, so create an instance of it.
 		self.currentServiceObject = [[Service alloc] init];
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentServiceObject waitUntilDone: YES];
 
 		return;
 	}
@@ -88,6 +87,8 @@ static NSUInteger parsedServicesCounter;
 		[[self currentServiceObject] setSref: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2servicename"]) {
 		[[self currentServiceObject] setSname: [self contentOfCurrentProperty]];
+	} else if ([elementName isEqualToString:@"e2service"]) {
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentServiceObject waitUntilDone: YES];
 	}
 	self.contentOfCurrentProperty = nil;
 }

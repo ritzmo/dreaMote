@@ -13,6 +13,8 @@
 #import "RemoteConnectorObject.h"
 #import "Event.h"
 
+static int eventCount = 0;
+
 @implementation EventListController
 
 static NSString *kEventCell_ID = @"EventCell_ID";
@@ -77,13 +79,21 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (void)fetchEvents
 {
+	eventCount = 0;
 	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
 }
 
 - (void)addEvent:(id)event
 {
-	[_events addObject: [(Event*)event retain]];
-	[self reloadData];
+	if(event == nil)
+		[self reloadData];
+	else
+	{
+		[_events addObject: [(Event*)event retain]];
+		if(!(++eventCount % 10))
+			[self reloadData];
+	}
+	
 }
 
 #pragma mark	-
@@ -120,13 +130,13 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	// TODO: handle seperators?
+	// TODO: seperate by day??
 	return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [self.events count];
+	return eventCount;//[self.events count];
 }
 
 @end
