@@ -14,17 +14,16 @@
 	SEL _selectCallback;
 	id _selectTarget;
 	int _serviceCount;
-@public
-	BOOL justSelecting;
+	BOOL _refreshServices;
 }
 
 - (void)reloadData;
 - (void)setTarget: (id)target action: (SEL)action;
 
 @property (nonatomic, retain) NSMutableArray *services;
-@property (nonatomic) BOOL justSelecting;
-@property (nonatomic) int serviceCount;
-@property (nonatomic, retain) id selectTarget;
 @property (nonatomic) SEL selectCallback;
+@property (nonatomic, retain) id selectTarget;
+@property (nonatomic) int serviceCount;
+@property (nonatomic) BOOL refreshServices;
 
 @end

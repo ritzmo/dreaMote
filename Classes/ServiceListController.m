@@ -20,7 +20,7 @@
 @synthesize selectTarget = _selectTarget;
 @synthesize selectCallback = _selectCallback;
 @synthesize serviceCount = _serviceCount;
-@synthesize justSelecting;
+@synthesize refreshServices = _refreshServices;
 
 - (id)init
 {
@@ -28,8 +28,8 @@
 	if (self) {
 		self.title = NSLocalizedString(@"Services", @"");
 		self.services = [NSMutableArray array];
-		self.justSelecting = NO;
 		self.serviceCount = 0;
+		self.refreshServices = YES;
 	}
 	return self;
 }
@@ -64,7 +64,10 @@
 {
 	// Spawn a thread to fetch the service data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+	if(_refreshServices)
+		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+
+	_refreshServices = YES;
 
 	[super viewWillAppear: animated];
 }
@@ -113,17 +116,18 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(justSelecting && _selectTarget != nil && _selectCallback != nil)
+	if(_selectTarget != nil && _selectCallback != nil)
 	{
 		Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] service];
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
 
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-		
+
 		[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 		
 		return nil;
 	}
+
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Service Action Title", @"")
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
 	[actionSheet showInView:self.view];
@@ -156,6 +160,8 @@
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
 	
 		//[eventListController release];
+		
+		_refreshServices = NO;
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];

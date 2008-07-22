@@ -18,6 +18,13 @@
 #import "TimerXMLReader.h"
 #import "VolumeXMLReader.h"
 
+/*
+ <e2simplexmlresult>
+  <e2state>True</e2state>
+  <e2statetext>Timer removed</e2statetext>
+ </e2simplexmlresult>
+*/
+
 @implementation Enigma2Connector
 
 @synthesize baseAddress;

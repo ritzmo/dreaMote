@@ -133,14 +133,12 @@
 	[button release];
 
 	// add our custom cancel button as the nav bar's custom left view
-	// TODO: do we really want this?
-	/*
-	button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-	[button setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(cancelAction:) forControlEvents:UIControlEventTouchUpInside];
+	button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+												target:self action:@selector(cancelAction:)];
 	navItem.leftBarButtonItem = button;
-	*/
 	
+	[button release];
+
 	[navItem release];
 
 	// note: for UITextField, if you don't like autocompletion while typing use:
@@ -429,7 +427,6 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	ServiceListController *serviceListController = [[ServiceListController alloc] init];
-	serviceListController.justSelecting = YES;
 	[serviceListController setTarget: self action: @selector(serviceSelected:)];
 	[[applicationDelegate navigationController] pushViewController: serviceListController animated: YES];
 

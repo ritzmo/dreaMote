@@ -8,6 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">352.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
+			<integer value="7"/>
 			<integer value="2"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
@@ -50,9 +51,10 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<object class="IBUIViewController" id="1018912514">
 						<object class="IBUITableView" key="IBUIView" id="72559514">
-							<nil key="NSNextResponder"/>
+							<reference key="NSNextResponder"/>
 							<int key="NSvFlags">274</int>
 							<string key="NSFrameSize">{320, 416}</string>
+							<reference key="NSSuperview"/>
 							<reference key="IBUIBackgroundColor" ref="106200061"/>
 							<bool key="IBUIOpaque">NO</bool>
 							<bool key="IBUIClipsSubviews">YES</bool>
@@ -65,6 +67,7 @@
 							<float key="IBUISectionFooterHeight">2.700000e+01</float>
 						</object>
 						<object class="IBUINavigationItem" key="IBUINavigationItem" id="201411648">
+							<reference key="IBUINavigationBar"/>
 							<string key="IBUITitle">dreaMote</string>
 						</object>
 						<reference key="IBUIParentViewController" ref="827005148"/>
@@ -276,8 +279,8 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSMutableArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>_navigationController</string>
-							<string>_window</string>
+							<string>navigationController</string>
+							<string>window</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>

@@ -15,8 +15,6 @@
 
 @implementation MainViewController
 
-static NSString *kMainCell_ID = @"MainCell_ID";
-
 @synthesize myTableView;
 
 - (id)init
@@ -50,15 +48,15 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 	[contentView setBackgroundColor:[UIColor blackColor]];
 	self.view = contentView;
 	[contentView release];
-	
+
 	// setup our content view so that it auto-rotates along with the UViewController
 	self.view.autoresizesSubviews = YES;
 	self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
+
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
 	// and add it to a mutable array.  If you want to add more pages, simply call "addObject" on "menuList"
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
-	
+
 	ServiceListController *serviceListController = [[ServiceListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 												NSLocalizedString(@"Service List Title", @""), @"title",
@@ -84,26 +82,28 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 												nil]];
 
 	[controlViewController release];
-
-	UINavigationItem *navItem = self.navigationItem;
 	
+	// XXX: settings button removed as long as its useless
+/*
+	UINavigationItem *navItem = self.navigationItem;
+
 	// Add the "Settings" button to the navigation bar
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
 														target:self action:@selector(settingsAction:)];
 	navItem.rightBarButtonItem = button;
-	
+*/
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	myTableView.delegate = self;
 	myTableView.dataSource = self;
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	
+
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
 	myTableView.autoresizesSubviews = YES;
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
+
 	[myTableView reloadData];	// populate our table's data
-	//[self.view addSubview: myTableView];
+	[self.view addSubview: myTableView];
 	self.view = myTableView;
 }
 
@@ -124,6 +124,7 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 - (void)viewDidAppear:(BOOL)animated
 {
 	// do something here as our view re-appears
+	[super viewDidAppear:animated];
 }
 
 
@@ -152,6 +153,8 @@ static NSString *kMainCell_ID = @"MainCell_ID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	static NSString *kMainCell_ID = @"MainCell_ID";
+
 	MyCustomCell *cell = (MyCustomCell*)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
 	if (cell == nil)
 	{
