@@ -75,6 +75,11 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 	[(UITableView *)self.view reloadData];
 }
 
+- (void)addEvent:(id)event
+{
+	[_events addObject: [(Event*)event retain]];
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-

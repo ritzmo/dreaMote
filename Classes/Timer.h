@@ -8,15 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "XMLModelObject.h"
 #import "Service.h"
 #import "Event.h"
 
-@interface Timer : NSObject <XMLModelObject> {
-
+@interface Timer : NSObject
+{
 @private
-	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-	
 	NSString *_eit;
 	NSDate *_begin;
 	NSDate *_end;
@@ -34,7 +31,15 @@
 + (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService;
 + (Timer *)new;
 
-@property (nonatomic, retain) NSMutableDictionary *rawAttributes;
+- (NSString *)getStateString;
+- (void)setBeginFromString: (NSString *)newBegin;
+- (void)setEndFromString: (NSString *)newEnd;
+- (void)setDisabledFromString: (NSString *)newDisabled;
+- (void)setJustplayFromString: (NSString *)newJustplay;
+- (void)setRepeatedFromString: (NSString *)newRepeated;
+- (void)setServiceFromSname: (NSString *)newSname;
+- (void)setStateFromString: (NSString *)newState;
+
 @property (nonatomic, retain) NSString *eit;
 @property (nonatomic, retain) NSDate *begin;
 @property (nonatomic, retain) NSDate *end;

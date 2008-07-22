@@ -16,17 +16,13 @@
 
 @implementation TimerListController
 
-static NSString *kTimerCell_ID = @"TimerCell_ID";
-
 @synthesize timers = _timers;
-@synthesize dist = _dist;
 
 - (id)init
 {
 	self = [super init];
 	if (self) {
-		self.timers = [NSArray array];
-		self.dist = [NSArray arrayWithObjects: [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], [NSNumber numberWithInt: 0], nil];
+		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"");
 	}
 	return self;
@@ -35,7 +31,6 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 - (void)dealloc
 {
 	[_timers release];
-	[_dist release];
 
 	[super dealloc];
 }
@@ -64,36 +59,41 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 	[(UITableView *)self.view reloadData];
 }
 
-- (NSArray *)sortTimers:(NSArray *)timers
-{		
-	NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"getStateString" ascending:YES] autorelease];
-	return [timers sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
-	[_timers release];
-	_timers = [[self sortTimers: [[RemoteConnectorObject sharedRemoteConnector] fetchTimers]] retain];
+	[_timers removeAllObjects];
+	dist[0] = 0;
+	dist[1] = 0;
+	dist[2] = 0;
+	dist[3] = 0;
 
-	int localDist[4] = {0, 0, 0, 0};
-	for(Timer *timer in _timers){
-		localDist[[timer state]]++;
-	}
-
-	[_dist release];
-	_dist = [[NSArray arrayWithObjects: [NSNumber numberWithInt: localDist[0]], [NSNumber numberWithInt: localDist[1]], [NSNumber numberWithInt: localDist[2]], [NSNumber numberWithInt: localDist[3]], nil] retain];
-
-	[(UITableView *)self.view reloadData];
+	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
 
 	[super viewWillAppear: animated];
 }
 
-#pragma mark	-
-#pragma mark		Table View
-#pragma mark	-
+- (void)addTimer:(id)newTimer
+{
+	Timer* timer = [(Timer*)newTimer retain];
+
+	int state = [timer state];
+	
+	// XXX: now this sucks *g*
+	int offset = 0;
+	for(int i = 0; i < state; i++){
+		offset += dist[i];
+	}
+
+	dist[state]++;
+
+	[_timers insertObject:timer atIndex:offset];
+	[self reloadData];
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	static NSString *kTimerCell_ID = @"TimerCell_ID";
+
 	TimerTableViewCell *cell = (TimerTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kTimerCell_ID];
 	if(cell == nil)
 	{
@@ -105,9 +105,9 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 	// XXX: I really should think about the way i keep track of items in a section
 	int offset = 0;
 	for(int i = 0; i < indexPath.section; i++){
-		offset += [[_dist objectAtIndex: i] intValue];
+		offset += dist[i];
 	}
-	cell.timer = [[self timers] objectAtIndex: offset + indexPath.row];
+	[cell setTimer: [[self timers] objectAtIndex: offset + indexPath.row]];
 
 	return cell;
 }
@@ -187,10 +187,7 @@ static NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if([_dist count] < 4) // XXX: wtf?
-		return 0;
-		
-	return [[_dist objectAtIndex: section] intValue];
+	return dist[section];
 }
 
 @end

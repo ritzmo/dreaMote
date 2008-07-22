@@ -8,13 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "XMLModelObject.h"
-
-@interface Event : NSObject <XMLModelObject> {
-
-@private
-	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-	
+@interface Event : NSObject
+{
+@private	
 	NSString *_eit;
 	NSDate *_begin;
 	NSDate *_end;
@@ -23,12 +19,14 @@
 	NSString *_edescription;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *rawAttributes;
 @property (nonatomic, retain) NSString *eit;
 @property (nonatomic, retain) NSDate *begin;
 @property (nonatomic, retain) NSDate *end;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *sdescription;
 @property (nonatomic, retain) NSString *edescription;
+
+- (void)setBeginFromString: (NSString *)newBegin;
+- (void)setEndFromDurationString: (NSString *)newDuration;
 
 @end

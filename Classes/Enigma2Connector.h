@@ -10,16 +10,10 @@
 
 #import "RemoteConnector.h"
 
-#define STREAMING_PARSE
-
 @interface Enigma2Connector : NSObject <RemoteConnector> {
 @private
 	NSString *baseAddress;
 }
-
-#ifdef STREAMING_PARSE
-- (NSArray *)fetchXmlDocument:(NSString *) myURI :(NSString *) myClass :(NSString *) myElement;
-#endif
 
 @property (nonatomic, retain) NSString *baseAddress;
 

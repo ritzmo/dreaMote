@@ -15,10 +15,10 @@
 
 - (id)initWithAddress:(NSString *) address;
 + (id <RemoteConnector>*)createClassWithAddress:(NSString *) address;
-- (NSArray *)fetchServices;
-- (NSArray *)fetchEPG:(Service *) service;
-- (NSArray *)fetchTimers;
-- (Volume *)getVolume;
+- (void)fetchServices:(id)target action:(SEL)action;
+- (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
+- (void)fetchTimers:(id)target action:(SEL)action;
+- (void)getVolume:(id)target action:(SEL)action;
 
 // XXX: we might want to return a dictionary which contains retval / explain for these
 - (BOOL)zapTo:(Service *) service;

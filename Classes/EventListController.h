@@ -12,15 +12,16 @@
 
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 @private
-	NSArray *_events;
+	NSMutableArray *_events;
 	Service *_service;
 }
 
 + (EventListController*)withEventList: (NSArray*) eventList;
 + (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService;
 - (void)reloadData;
+- (void)addEvent:(id)event;
 
-@property (nonatomic, retain) NSArray *events;
+@property (nonatomic, retain) NSMutableArray *events;
 @property (nonatomic, retain) Service *service;
 
 @end

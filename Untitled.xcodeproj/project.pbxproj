@@ -24,17 +24,15 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA7FD7690D84339500974B1A /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7680D84339500974B1A /* Timer.m */; };
+		DA8FE2870E3558CB000B32C3 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */; };
+		DA8FE28A0E3558DE000B32C3 /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE2890E3558DE000B32C3 /* ServiceXMLReader.m */; };
+		DA8FE3380E356036000B32C3 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE3370E356036000B32C3 /* EventXMLReader.m */; };
+		DAA464B40E35E46400A1940D /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA464B30E35E46400A1940D /* TimerXMLReader.m */; };
+		DAA464BA0E35E4CC00A1940D /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
-		DAD51B0B0D82F09300A769F3 /* XMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51AFB0D82F09300A769F3 /* XMLDocument.m */; };
-		DAD51B0C0D82F09300A769F3 /* XMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51AFD0D82F09300A769F3 /* XMLElement.m */; };
-		DAD51B0E0D82F09300A769F3 /* XMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51B020D82F09300A769F3 /* XMLNode.m */; };
-		DAD51B100D82F09300A769F3 /* XMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51B060D82F09300A769F3 /* XMLReader.m */; };
-		DAD51B110D82F09300A769F3 /* XMLReaderSAX.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51B080D82F09300A769F3 /* XMLReaderSAX.m */; };
-		DAD51B120D82F09300A769F3 /* XMLUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51B0A0D82F09300A769F3 /* XMLUtilities.m */; };
-		DAD51B300D82F16B00A769F3 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DAD51B2F0D82F16B00A769F3 /* libxml2.2.dylib */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD51DF30D830A3900A769F3 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DF20D830A3900A769F3 /* Service.m */; };
@@ -75,6 +73,16 @@
 		DA7FD7670D84339500974B1A /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DA7FD7680D84339500974B1A /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseXMLReader.h; sourceTree = "<group>"; };
+		DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseXMLReader.m; sourceTree = "<group>"; };
+		DA8FE2880E3558D5000B32C3 /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceXMLReader.h; sourceTree = "<group>"; };
+		DA8FE2890E3558DE000B32C3 /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceXMLReader.m; sourceTree = "<group>"; };
+		DA8FE3360E35602B000B32C3 /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventXMLReader.h; sourceTree = "<group>"; };
+		DA8FE3370E356036000B32C3 /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventXMLReader.m; sourceTree = "<group>"; };
+		DAA464B20E35E45B00A1940D /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerXMLReader.h; sourceTree = "<group>"; };
+		DAA464B30E35E46400A1940D /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerXMLReader.m; sourceTree = "<group>"; };
+		DAA464B80E35E4C500A1940D /* VolumeXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeXMLReader.h; sourceTree = "<group>"; };
+		DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeXMLReader.m; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
@@ -83,24 +91,6 @@
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
 		DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma2Connector.m; sourceTree = "<group>"; };
-		DAD51AFA0D82F09300A769F3 /* XMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLDocument.h; path = XML/XMLDocument.h; sourceTree = "<group>"; };
-		DAD51AFB0D82F09300A769F3 /* XMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLDocument.m; path = XML/XMLDocument.m; sourceTree = "<group>"; };
-		DAD51AFC0D82F09300A769F3 /* XMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLElement.h; path = XML/XMLElement.h; sourceTree = "<group>"; };
-		DAD51AFD0D82F09300A769F3 /* XMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLElement.m; path = XML/XMLElement.m; sourceTree = "<group>"; };
-		DAD51AFE0D82F09300A769F3 /* XMLModelObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLModelObject.h; path = XML/XMLModelObject.h; sourceTree = "<group>"; };
-		DAD51AFF0D82F09300A769F3 /* XMLMutationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLMutationTests.h; path = XML/XMLMutationTests.h; sourceTree = "<group>"; };
-		DAD51B000D82F09300A769F3 /* XMLMutationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLMutationTests.m; path = XML/XMLMutationTests.m; sourceTree = "<group>"; };
-		DAD51B010D82F09300A769F3 /* XMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLNode.h; path = XML/XMLNode.h; sourceTree = "<group>"; };
-		DAD51B020D82F09300A769F3 /* XMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLNode.m; path = XML/XMLNode.m; sourceTree = "<group>"; };
-		DAD51B030D82F09300A769F3 /* XMLParsingTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLParsingTests.h; path = XML/XMLParsingTests.h; sourceTree = "<group>"; };
-		DAD51B040D82F09300A769F3 /* XMLParsingTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLParsingTests.m; path = XML/XMLParsingTests.m; sourceTree = "<group>"; };
-		DAD51B050D82F09300A769F3 /* XMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLReader.h; path = XML/XMLReader.h; sourceTree = "<group>"; };
-		DAD51B060D82F09300A769F3 /* XMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLReader.m; path = XML/XMLReader.m; sourceTree = "<group>"; };
-		DAD51B070D82F09300A769F3 /* XMLReaderSAX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLReaderSAX.h; path = XML/XMLReaderSAX.h; sourceTree = "<group>"; };
-		DAD51B080D82F09300A769F3 /* XMLReaderSAX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLReaderSAX.m; path = XML/XMLReaderSAX.m; sourceTree = "<group>"; };
-		DAD51B090D82F09300A769F3 /* XMLUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XMLUtilities.h; path = XML/XMLUtilities.h; sourceTree = "<group>"; };
-		DAD51B0A0D82F09300A769F3 /* XMLUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XMLUtilities.m; path = XML/XMLUtilities.m; sourceTree = "<group>"; };
-		DAD51B2F0D82F16B00A769F3 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = usr/lib/libxml2.2.dylib; sourceTree = SDKROOT; };
 		DAD51D710D8303FF00A769F3 /* ServiceListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceListController.h; sourceTree = "<group>"; };
 		DAD51D720D8303FF00A769F3 /* ServiceListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceListController.m; sourceTree = "<group>"; };
 		DAD51D7C0D8304AD00A769F3 /* AppDelegateMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegateMethods.h; sourceTree = "<group>"; };
@@ -120,7 +110,6 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */,
-				DAD51B300D82F16B00A769F3 /* libxml2.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,6 +119,16 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */,
+				DAA464B80E35E4C500A1940D /* VolumeXMLReader.h */,
+				DAA464B30E35E46400A1940D /* TimerXMLReader.m */,
+				DAA464B20E35E45B00A1940D /* TimerXMLReader.h */,
+				DA8FE3370E356036000B32C3 /* EventXMLReader.m */,
+				DA8FE3360E35602B000B32C3 /* EventXMLReader.h */,
+				DA8FE2890E3558DE000B32C3 /* ServiceXMLReader.m */,
+				DA8FE2880E3558D5000B32C3 /* ServiceXMLReader.h */,
+				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
+				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
 				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
 				DA2710C70D838A3200C25B85 /* Event.h */,
 				DA2710C80D838A3200C25B85 /* Event.m */,
@@ -143,23 +142,6 @@
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */,
 				DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */,
-				DAD51AFA0D82F09300A769F3 /* XMLDocument.h */,
-				DAD51AFB0D82F09300A769F3 /* XMLDocument.m */,
-				DAD51AFC0D82F09300A769F3 /* XMLElement.h */,
-				DAD51AFD0D82F09300A769F3 /* XMLElement.m */,
-				DAD51AFE0D82F09300A769F3 /* XMLModelObject.h */,
-				DAD51AFF0D82F09300A769F3 /* XMLMutationTests.h */,
-				DAD51B000D82F09300A769F3 /* XMLMutationTests.m */,
-				DAD51B010D82F09300A769F3 /* XMLNode.h */,
-				DAD51B020D82F09300A769F3 /* XMLNode.m */,
-				DAD51B030D82F09300A769F3 /* XMLParsingTests.h */,
-				DAD51B040D82F09300A769F3 /* XMLParsingTests.m */,
-				DAD51B050D82F09300A769F3 /* XMLReader.h */,
-				DAD51B060D82F09300A769F3 /* XMLReader.m */,
-				DAD51B070D82F09300A769F3 /* XMLReaderSAX.h */,
-				DAD51B080D82F09300A769F3 /* XMLReaderSAX.m */,
-				DAD51B090D82F09300A769F3 /* XMLUtilities.h */,
-				DAD51B0A0D82F09300A769F3 /* XMLUtilities.m */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
 				DA2713250D84056800C25B85 /* EventListController.h */,
@@ -252,7 +234,6 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DAD51B2F0D82F16B00A769F3 /* libxml2.2.dylib */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -323,12 +304,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */,
-				DAD51B0B0D82F09300A769F3 /* XMLDocument.m in Sources */,
-				DAD51B0C0D82F09300A769F3 /* XMLElement.m in Sources */,
-				DAD51B0E0D82F09300A769F3 /* XMLNode.m in Sources */,
-				DAD51B100D82F09300A769F3 /* XMLReader.m in Sources */,
-				DAD51B110D82F09300A769F3 /* XMLReaderSAX.m in Sources */,
-				DAD51B120D82F09300A769F3 /* XMLUtilities.m in Sources */,
 				DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */,
 				DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */,
 				DAD51DF30D830A3900A769F3 /* Service.m in Sources */,
@@ -346,6 +321,11 @@
 				DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */,
 				DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */,
 				DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */,
+				DA8FE2870E3558CB000B32C3 /* BaseXMLReader.m in Sources */,
+				DA8FE28A0E3558DE000B32C3 /* ServiceXMLReader.m in Sources */,
+				DA8FE3380E356036000B32C3 /* EventXMLReader.m in Sources */,
+				DAA464B40E35E46400A1940D /* TimerXMLReader.m in Sources */,
+				DAA464BA0E35E4CC00A1940D /* VolumeXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,7 +361,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Untitled_Prefix.pch;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				PREBINDING = NO;
 				PRODUCT_NAME = Untitled;
@@ -396,7 +375,6 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Untitled_Prefix.pch;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = Info.plist;
 				PREBINDING = NO;
 				PRODUCT_NAME = Untitled;
@@ -413,7 +391,6 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = iphonesimulator2.0;
@@ -425,7 +402,6 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				PREBINDING = NO;
 				SDKROOT = iphonesimulator2.0;
 			};

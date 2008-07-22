@@ -8,20 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-#import "XMLModelObject.h"
-
-@interface Volume : NSObject <XMLModelObject> {
-
+@interface Volume : NSObject
+{
 @private
-	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-	
 	BOOL _result;
 	NSString *_resulttext;
 	int _current;
 	BOOL _ismuted;
 }
 
-@property (nonatomic, retain) NSMutableDictionary *rawAttributes;
 @property (assign) BOOL result;
 @property (nonatomic, retain) NSString *resulttext;
 @property (assign) int current;

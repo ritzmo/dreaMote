@@ -39,12 +39,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[_volume release];
-	_volume = [[[RemoteConnectorObject sharedRemoteConnector] getVolume] retain];
-	self.switchControl.on = [self.volume ismuted];
-	self.slider.value = (float)[self.volume current];
+
+	[[RemoteConnectorObject sharedRemoteConnector] getVolume:self action:@selector(gotVolume:)];
 
 	[super viewWillAppear: animated];
+}
 
+- (void)gotVolume:(id)newVolume
+{
+	_volume = [(Volume*)newVolume retain];
+
+	self.switchControl.on = [self.volume ismuted];
+	self.slider.value = (float)[self.volume current];
 }
 
 + (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title

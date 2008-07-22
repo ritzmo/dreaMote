@@ -10,14 +10,13 @@
 
 @interface TimerListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
-	NSArray *_timers;
-	NSArray *_dist;
+	NSMutableArray *_timers;
+	int dist[4];// = {0, 0, 0, 0};
 }
 
 - (void)addAction:(id)sender;
 - (void)reloadData;
 
-@property (nonatomic, retain) NSArray *timers;
-@property (nonatomic, retain) NSArray *dist;
+@property (nonatomic, retain) NSMutableArray *timers;
 
 @end

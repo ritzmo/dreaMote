@@ -61,11 +61,16 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[_services release];
-	_services = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices] retain];
-	[(UITableView *)self.view reloadData];
+	[_services removeAllObjects];
+
+	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
 
 	[super viewWillAppear: animated];
+}
+
+- (void)addService:(id)service
+{
+	[_services addObject: [(Service*)service retain]];
 }
 
 #pragma mark	-
@@ -124,10 +129,11 @@
 	{
 		// Third Button: epg
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-		NSArray *eventList = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG: service];
+		NSMutableArray *eventList = [NSMutableArray array];
 		EventListController *eventListController = [EventListController withEventListAndService: eventList: service];
+		[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: eventListController action:@selector(addEvent:) service: service];
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
-		
+	
 		//[eventListController release];
 	}
 

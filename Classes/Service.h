@@ -8,13 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "XMLModelObject.h"
-
-@interface Service : NSObject <XMLModelObject> {
-
+@interface Service : NSObject
+{
 @private
-	NSMutableDictionary *_rawAttributes; // Content from the XML parse.
-	
 	NSString *_sref;
 	NSString *_sname;
 }
@@ -22,7 +18,6 @@
 - (NSString *)getServiceReference;
 - (NSString *)getServiceName;
 
-@property (nonatomic, retain) NSMutableDictionary *rawAttributes;
 @property (nonatomic, retain) NSString *sref;
 @property (nonatomic, retain) NSString *sname;
 
