@@ -14,13 +14,12 @@
 #import "RemoteConnectorObject.h"
 #import "Service.h"
 
-static int serviceCount = 0;
-
 @implementation ServiceListController
 
 @synthesize services = _services;
 @synthesize selectTarget = _selectTarget;
 @synthesize selectCallback = _selectCallback;
+@synthesize serviceCount = _serviceCount;
 @synthesize justSelecting;
 
 - (id)init
@@ -30,6 +29,7 @@ static int serviceCount = 0;
 		self.title = NSLocalizedString(@"Services", @"");
 		self.services = [NSMutableArray array];
 		self.justSelecting = NO;
+		self.serviceCount = 0;
 	}
 	return self;
 }
@@ -62,10 +62,6 @@ static int serviceCount = 0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[_services removeAllObjects];
-	serviceCount = 0;
-	[self reloadData];
-
 	// Spawn a thread to fetch the service data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
@@ -75,6 +71,10 @@ static int serviceCount = 0;
 
 - (void)fetchServices
 {
+	[_services removeAllObjects];
+	_serviceCount = 0;
+	[self reloadData];
+
 	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
 }
 
@@ -85,7 +85,7 @@ static int serviceCount = 0;
 	else
 	{
 		[_services addObject: [(Service*)service retain]];
-		if(!(++serviceCount % 10))
+		if(!(++_serviceCount % 12))
 			[self reloadData];
 	}
 }
@@ -170,7 +170,7 @@ static int serviceCount = 0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return serviceCount;//[_services count];
+	return _serviceCount;
 }
 
 - (void)setTarget: (id)target action: (SEL)action

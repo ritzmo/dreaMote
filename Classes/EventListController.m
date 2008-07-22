@@ -13,20 +13,18 @@
 #import "RemoteConnectorObject.h"
 #import "Event.h"
 
-static int eventCount = 0;
-
 @implementation EventListController
-
-static NSString *kEventCell_ID = @"EventCell_ID";
 
 @synthesize events = _events;
 @synthesize service = _service;
+@synthesize eventCount = _eventCount;
 
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Events", @"");
+		self.eventCount = 0;
 	}
 	return self;
 }
@@ -79,7 +77,8 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (void)fetchEvents
 {
-	eventCount = 0;
+	[_events removeAllObjects];
+	_eventCount = 0;
 	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
 }
 
@@ -90,7 +89,7 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 	else
 	{
 		[_events addObject: [(Event*)event retain]];
-		if(!(++eventCount % 10))
+		if(!(++_eventCount % 10))
 			[self reloadData];
 	}
 	
@@ -102,6 +101,8 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	static NSString *kEventCell_ID = @"EventCell_ID";
+
 	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
 	if(cell == nil)
 	{
@@ -136,7 +137,7 @@ static NSString *kEventCell_ID = @"EventCell_ID";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return eventCount;//[self.events count];
+	return _eventCount;
 }
 
 @end

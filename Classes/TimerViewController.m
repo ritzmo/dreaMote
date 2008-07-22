@@ -432,7 +432,7 @@
 	serviceListController.justSelecting = YES;
 	[serviceListController setTarget: self action: @selector(serviceSelected:)];
 	[[applicationDelegate navigationController] pushViewController: serviceListController animated: YES];
-	
+
 	//[serviceListController release];
 }
 
@@ -483,20 +483,15 @@
 
 - (void)doneAction:(id)sender
 {
+	NSString *message = nil;
+
 	if([[timerTitle text] length])
 	{
 		_timer.title = [timerTitle text];
 	}
 	else
 	{
-		// XXX: this might be better of at another place as we might want to catch more errors...
-		NSString *message = @"Can't save a timer with an empty title.";
-		
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-		
-		return;
+		message = @"Can't save a timer with an empty title.";
 	}
 
 	if([[timerDescription text] length])
@@ -504,18 +499,32 @@
 	else
 		_timer.tdescription = @"";
 
-	if(_creatingNewTimer)
+	if(!message)
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer];
+		if(_creatingNewTimer)
+		{
+			if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
+				message = @"Error adding new timer.";
+		}
+		else
+		{
+			if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
+				message = @"Error editing timer.";
+		}
+	}
+
+	if(message != nil)
+	{
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
 	}
 	else
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer];
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+		[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 	}
-
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 }
 
 - (void)cancelAction:(id)sender

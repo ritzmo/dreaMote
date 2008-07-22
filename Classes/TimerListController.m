@@ -13,11 +13,10 @@
 #import "Timer.h"
 #import "TimerViewController.h"
 
-static int timerCount = 0;
-
 @implementation TimerListController
 
 @synthesize timers = _timers;
+@synthesize timerCount = _timerCount;
 
 - (id)init
 {
@@ -62,16 +61,6 @@ static int timerCount = 0;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[_timers removeAllObjects];
-
-	timerCount = 0;
-	dist[0] = 0;
-	dist[1] = 0;
-	dist[2] = 0;
-	dist[3] = 0;
-
-	[self reloadData];
-	
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the 
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
@@ -81,6 +70,16 @@ static int timerCount = 0;
 
 - (void)fetchTimers
 {
+	[_timers removeAllObjects];
+
+	_timerCount = 0;
+	dist[0] = 0;
+	dist[1] = 0;
+	dist[2] = 0;
+	dist[3] = 0;
+
+	[self reloadData];
+
 	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
 }
 
@@ -105,7 +104,7 @@ static int timerCount = 0;
 
 		[_timers insertObject:timer atIndex:offset];
 		
-		if(!(++timerCount % 10))
+		if(!(++_timerCount % 10))
 			[self reloadData];
 	}
 }
@@ -182,7 +181,13 @@ static int timerCount = 0;
 		// Third Button: Delete
 		// XXX: I'd actually add another dialogue to confirm the removal of this timer but that would require another modalView as far as I understand ;-) 
 		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
-		[[RemoteConnectorObject sharedRemoteConnector] delTimer: timer];
+
+		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
+		{
+			dist[[timer state]]--;
+			[_timers removeObject: timer];
+			[self reloadData];
+		}
 	}
 
 	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];

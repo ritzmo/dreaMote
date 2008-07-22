@@ -37,10 +37,14 @@
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [service getServiceReference]];
-	
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
 	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
-	
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
 	// Compare to expected result
 	return [myString isEqualToString: @"	<rootElement></rootElement>"];
 }
@@ -103,9 +107,13 @@
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/powerstate?newstate=%d", self.baseAddress, newState];
-	
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
 	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)shutdown
@@ -119,9 +127,13 @@
 
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/remotecontrol?command=116", self.baseAddress];
-	
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
 	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)reboot
@@ -157,8 +169,12 @@
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=mute", self.baseAddress];
 
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
 	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
 	if(myRange.length)
@@ -167,13 +183,23 @@
 	return NO;
 }
 
-- (void)setVolume:(int) newVolume
+- (BOOL)setVolume:(int) newVolume
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=set%d", self.baseAddress, newVolume];
-	
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
 }
 
 + (NSString *)urlencode:(NSString *)toencode
@@ -181,31 +207,61 @@
 	return [(NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)toencode, NULL, (CFStringRef)@"()<>@,.;:\"/[]?=\\& ", kCFStringEncodingUTF8) autorelease];
 }
 
-- (void)addTimer:(Timer *) newTimer
+- (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)[[newTimer end] timeIntervalSince1970], [Enigma2Connector urlencode: [newTimer title]], [Enigma2Connector urlencode: [newTimer tdescription]], [newTimer eit], [newTimer disabled], [newTimer justplay], 0/*[newTimer afterEvent]*/];
 
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
 }
 
-- (void)editTimer:(Timer *) oldTimer: (Timer *) newTimer
+- (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)[[newTimer end] timeIntervalSince1970], [Enigma2Connector urlencode: [newTimer title]], [Enigma2Connector urlencode: [newTimer tdescription]], [newTimer eit], [newTimer disabled], [newTimer justplay], 0/*[newTimer afterEvent]*/, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970], (int)[[oldTimer end] timeIntervalSince1970]];
 
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
 }
 
-- (void)delTimer:(Timer *) oldTimer
+- (BOOL)delTimer:(Timer *) oldTimer
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerdelete?sRef=%@&begin=%d&end=%d", baseAddress, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970], (int)[[oldTimer end] timeIntervalSince1970]];
 
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
 }
 
 @end

@@ -14,6 +14,7 @@
 @private
 	NSMutableArray *_events;
 	Service *_service;
+	int _eventCount;
 }
 
 + (EventListController*)withEventList: (NSArray*) eventList;
@@ -23,5 +24,6 @@
 
 @property (nonatomic, retain) NSMutableArray *events;
 @property (nonatomic, retain) Service *service;
+@property (nonatomic) int eventCount;
 
 @end

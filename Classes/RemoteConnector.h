@@ -31,9 +31,9 @@ enum availableConnectors {
 - (void)reboot;
 - (void)restart;
 - (BOOL)toggleMuted;
-- (void)setVolume:(int) newVolume;
-- (void)addTimer:(Timer *) newTimer;
-- (void)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
-- (void)delTimer:(Timer *) oldTimer;
+- (BOOL)setVolume:(int) newVolume;
+- (BOOL)addTimer:(Timer *) newTimer;
+- (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
+- (BOOL)delTimer:(Timer *) oldTimer;
 
 @end
