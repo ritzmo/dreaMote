@@ -17,6 +17,7 @@
 #import "EventXMLReader.h"
 #import "TimerXMLReader.h"
 #import "VolumeXMLReader.h"
+#import "MovieXMLReader.h"
 
 /*
  <e2simplexmlresult>
@@ -103,6 +104,24 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader release];
+	[pool release];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+- (void)fetchMovielist:(id)target action:(SEL)action
+{
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/movielist", self.baseAddress];
+	
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSError *parseError = nil;
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
 	[streamReader release];
 	[pool release];

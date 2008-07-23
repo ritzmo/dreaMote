@@ -13,6 +13,7 @@
 #import "TimerListController.h"
 #import "ControlViewController.h"
 #import "RCEmulatorController.h"
+#import "MovieListController.h"
 
 @implementation MainViewController
 
@@ -93,6 +94,15 @@
 												targetViewController, @"viewController",
 												nil]];
 
+	[targetViewController release];
+	
+	targetViewController = [[MovieListController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Movie List Title", @""), @"title",
+						 NSLocalizedString(@"Movie List Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
+	
 	[targetViewController release];
 
 	// XXX: settings button removed as long as its useless
