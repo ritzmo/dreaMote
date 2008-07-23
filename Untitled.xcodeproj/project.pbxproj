@@ -19,6 +19,16 @@
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
+		DA7A232A0E372AB800455D11 /* key_2.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A23290E372AB800455D11 /* key_2.png */; };
+		DA7A232C0E372AC100455D11 /* key_1.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A232B0E372AC100455D11 /* key_1.png */; };
+		DA7A24A70E37398400455D11 /* key_0.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A249F0E37398400455D11 /* key_0.png */; };
+		DA7A24A80E37398400455D11 /* key_3.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A00E37398400455D11 /* key_3.png */; };
+		DA7A24A90E37398400455D11 /* key_4.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A10E37398400455D11 /* key_4.png */; };
+		DA7A24AA0E37398400455D11 /* key_5.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A20E37398400455D11 /* key_5.png */; };
+		DA7A24AB0E37398400455D11 /* key_6.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A30E37398400455D11 /* key_6.png */; };
+		DA7A24AC0E37398400455D11 /* key_7.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A40E37398400455D11 /* key_7.png */; };
+		DA7A24AD0E37398400455D11 /* key_8.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A50E37398400455D11 /* key_8.png */; };
+		DA7A24AE0E37398400455D11 /* key_9.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A24A60E37398400455D11 /* key_9.png */; };
 		DA7FD6750D8423E300974B1A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6740D8423E300974B1A /* MainViewController.m */; };
 		DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD6C80D8428F900974B1A /* Localizable.strings */; };
 		DA7FD6D60D84296500974B1A /* MyCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6D50D84296500974B1A /* MyCustomCell.m */; };
@@ -65,6 +75,16 @@
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
 		DA7A22780E371ACA00455D11 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
 		DA7A22790E371ACA00455D11 /* RCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEmulatorController.m; sourceTree = "<group>"; };
+		DA7A23290E372AB800455D11 /* key_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_2.png; path = Images/key_2.png; sourceTree = "<group>"; };
+		DA7A232B0E372AC100455D11 /* key_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_1.png; path = Images/key_1.png; sourceTree = "<group>"; };
+		DA7A249F0E37398400455D11 /* key_0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_0.png; path = Images/key_0.png; sourceTree = "<group>"; };
+		DA7A24A00E37398400455D11 /* key_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_3.png; path = Images/key_3.png; sourceTree = "<group>"; };
+		DA7A24A10E37398400455D11 /* key_4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_4.png; path = Images/key_4.png; sourceTree = "<group>"; };
+		DA7A24A20E37398400455D11 /* key_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_5.png; path = Images/key_5.png; sourceTree = "<group>"; };
+		DA7A24A30E37398400455D11 /* key_6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_6.png; path = Images/key_6.png; sourceTree = "<group>"; };
+		DA7A24A40E37398400455D11 /* key_7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_7.png; path = Images/key_7.png; sourceTree = "<group>"; };
+		DA7A24A50E37398400455D11 /* key_8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_8.png; path = Images/key_8.png; sourceTree = "<group>"; };
+		DA7A24A60E37398400455D11 /* key_9.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_9.png; path = Images/key_9.png; sourceTree = "<group>"; };
 		DA7FD6730D8423E300974B1A /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		DA7FD6740D8423E300974B1A /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		DA7FD6C40D8428E500974B1A /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -208,6 +228,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				DA7A23250E372A8800455D11 /* Images */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -243,6 +264,23 @@
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DA7A23250E372A8800455D11 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				DA7A249F0E37398400455D11 /* key_0.png */,
+				DA7A24A00E37398400455D11 /* key_3.png */,
+				DA7A24A10E37398400455D11 /* key_4.png */,
+				DA7A24A20E37398400455D11 /* key_5.png */,
+				DA7A24A30E37398400455D11 /* key_6.png */,
+				DA7A24A40E37398400455D11 /* key_7.png */,
+				DA7A24A50E37398400455D11 /* key_8.png */,
+				DA7A24A60E37398400455D11 /* key_9.png */,
+				DA7A232B0E372AC100455D11 /* key_1.png */,
+				DA7A23290E372AB800455D11 /* key_2.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +328,16 @@
 				DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */,
 				DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */,
 				DAFD325B0E367C31001EC6EA /* Settings.bundle in Resources */,
+				DA7A232A0E372AB800455D11 /* key_2.png in Resources */,
+				DA7A232C0E372AC100455D11 /* key_1.png in Resources */,
+				DA7A24A70E37398400455D11 /* key_0.png in Resources */,
+				DA7A24A80E37398400455D11 /* key_3.png in Resources */,
+				DA7A24A90E37398400455D11 /* key_4.png in Resources */,
+				DA7A24AA0E37398400455D11 /* key_5.png in Resources */,
+				DA7A24AB0E37398400455D11 /* key_6.png in Resources */,
+				DA7A24AC0E37398400455D11 /* key_7.png in Resources */,
+				DA7A24AD0E37398400455D11 /* key_8.png in Resources */,
+				DA7A24AE0E37398400455D11 /* key_9.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

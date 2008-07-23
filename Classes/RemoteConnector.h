@@ -19,7 +19,7 @@ enum powerStates {
 
 enum buttonCodes {
 	kButtonCodePower = 116,
-	kButttonCode1 = 2,
+	kButtonCode1 = 2,
 	kButtonCode2 = 3,
 	kButtonCode3 = 4,
 	kButtonCode4 = 5,

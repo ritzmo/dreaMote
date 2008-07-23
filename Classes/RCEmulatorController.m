@@ -11,7 +11,7 @@
 #import "Constants.h"
 
 @interface RCEmulatorController()
-- (UIButton*)customButton:(CGRect)frame withAction:(SEL)action andImage:(NSString*)image;
+- (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath action:(SEL)action;
 @end
 
 
@@ -43,34 +43,170 @@
 	self.view.autoresizesSubviews = YES;
 	
 	[contentView release];
-	
-	CGFloat yCoord = kTopMargin;
-	CGFloat xCoord = (self.view.bounds.size.width - kWideButtonWidth) / 2.0;
-	CGRect frame;
+
 	UIButton *roundedButtonType;
+	CGRect frame;
+	
+	const CGFloat imageWidth = 45;
+	const CGFloat imageHeight = 35;
+	CGFloat currX;
+	CGFloat currY;
 
-	// add ok button
-	frame = CGRectMake(xCoord, yCoord, kWideButtonWidth, kStdButtonHeight);
-	roundedButtonType = [self customButton:frame withAction:@selector(okPressed:) andImage:nil];
-	//[roundedButtonType setTitle:NSLocalizedString(@"OK", @"") forState:UIControlStateNormal];
+	// ok
+	//frame = CGRectMake(0, 0, imageWidth, imageHeight);
+	//roundedButtonType = [self customButton:frame withImage:@"key_ok.png" action:@selector(onePressed:)];
+	//[self.view addSubview: roundedButtonType];
+	
+	// 1
+	currX = kTopMargin;
+	currY = kLeftMargin;
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_1.png" action:@selector(onePressed:)];
 	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 2
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_2.png" action:@selector(twoPressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 3
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_3.png" action:@selector(threePressed:)];
+	[self.view addSubview: roundedButtonType];
+	
+	// new row
+	currX += imageHeight + kTweenMargin;
+	currY = kLeftMargin;
+	
+	// 4
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_4.png" action:@selector(fourPressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 5
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_5.png" action:@selector(fivePressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 6
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_6.png" action:@selector(sixPressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// new row
+	currX += imageHeight + kTweenMargin;
+	currY = kLeftMargin;
+	
+	// 7
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_7.png" action:@selector(sevenPressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 8
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_8.png" action:@selector(eightPressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 9
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_9.png" action:@selector(ninePressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// new row
+	currX += imageHeight + kTweenMargin;
+	currY = kLeftMargin;
+	
+	// <
+	//frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	//roundedButtonType = [self customButton:frame withImage:@"key_left.png" action:@selector(leftPressed:)];
+	//[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// 0
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_0.png" action:@selector(zeroPressed:)];
+	[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
+	
+	// >
+	//frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	//roundedButtonType = [self customButton:frame withImage:@"key_right.png" action:@selector(rightPressed:)];
+	//[self.view addSubview: roundedButtonType];
+	currY += imageWidth + kTweenMargin;
 }
 
-- (UIButton*)customButton:(CGRect)frame withAction:(SEL)action andImage:(NSString*)image
+- (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath action:(SEL)action
 {
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = frame;
-	//roundedButtonType.backgroundColor = backColor;
-	if(image != nil)
-		[roundedButtonType setImage:[UIImage imageNamed:image] forState:UIControlStateNormal|UIControlStateHighlighted|UIControlStateDisabled|UIControlStateSelected];
-	[roundedButtonType addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+	UIButton *uiButton = [UIButton buttonWithType: UIButtonTypeCustom];
+	uiButton.frame = frame;
+	//uiButon.backgroundColor = backColor;
+	if(imagePath != nil){
+		UIImage *image = [UIImage imageNamed:imagePath];
+		[uiButton setBackgroundImage:image forState:UIControlStateHighlighted];
+		[uiButton setBackgroundImage:image forState:UIControlStateNormal];
+	}
+	[uiButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
-	return roundedButtonType;
+	return uiButton;
 }
 
-- (void)okPressed:(id)sender
+- (void)onePressed:(id)sender
 {
-	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeOK];
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode1];
 }
+
+- (void)twoPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode2];
+}
+
+- (void)threePressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode3];
+}
+
+- (void)fourPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode4];
+}
+
+- (void)fivePressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode5];
+}
+
+- (void)sixPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode6];
+}
+
+- (void)sevenPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode7];
+}
+
+- (void)eightPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode8];
+}
+
+- (void)ninePressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode9];
+}
+
+- (void)zeroPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode0];
+}
+
 
 @end
