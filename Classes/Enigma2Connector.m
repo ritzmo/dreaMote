@@ -125,7 +125,7 @@
 
 - (void)shutdown
 {
-	[self sendPowerstate: 1];
+	[self sendPowerstate: kShutdownState];
 }
 
 - (void)standby
@@ -145,12 +145,12 @@
 
 - (void)reboot
 {
-	[self sendPowerstate: 2];
+	[self sendPowerstate: kRebootState];
 }
 
 - (void)restart
 {
-	[self sendPowerstate: 3];
+	[self sendPowerstate: kRestartGUIState];
 }
 
 - (void)getVolume:(id)target action:(SEL)action
@@ -256,6 +256,25 @@
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerdelete?sRef=%@&begin=%d&end=%d", baseAddress, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970], (int)[[oldTimer end] timeIntervalSince1970]];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
+}
+
+- (BOOL)sendButton:(int) type
+{
+	// Generate URI
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/remotecontrol?command=%d", baseAddress, type];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 

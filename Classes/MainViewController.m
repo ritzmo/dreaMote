@@ -12,6 +12,7 @@
 #import "ServiceListController.h"
 #import "TimerListController.h"
 #import "ControlViewController.h"
+#import "RCEmulatorController.h"
 
 @implementation MainViewController
 
@@ -57,32 +58,43 @@
 	// and add it to a mutable array.  If you want to add more pages, simply call "addObject" on "menuList"
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
 
-	ServiceListController *serviceListController = [[ServiceListController alloc] init];
+	UIViewController *targetViewController;
+
+	targetViewController = [[ServiceListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 												NSLocalizedString(@"Service List Title", @""), @"title",
 												NSLocalizedString(@"Service List Explain", @""), @"explainText",
-												serviceListController, @"viewController",
+												targetViewController, @"viewController",
 												nil]];
-	[serviceListController release];
+	[targetViewController release];
 	
-	TimerListController *timerListController = [[TimerListController alloc] init];
+	targetViewController = [[TimerListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 												NSLocalizedString(@"Timer List Title", @""), @"title",
 												NSLocalizedString(@"Timer List Explain", @""), @"explainText",
-												timerListController, @"viewController",
+												targetViewController, @"viewController",
 												nil]];
 
-	[timerListController release];
+	[targetViewController release];
 
-	ControlViewController *controlViewController = [[ControlViewController alloc] init];
+	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 												NSLocalizedString(@"Control View Title", @""), @"title",
 												NSLocalizedString(@"Control View Explain", @""), @"explainText",
-												controlViewController, @"viewController",
+												targetViewController, @"viewController",
 												nil]];
 
-	[controlViewController release];
-	
+	[targetViewController release];
+
+	targetViewController = [[RCEmulatorController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+												NSLocalizedString(@"Remote Control Title", @""), @"title",
+												NSLocalizedString(@"Remote Control Explain", @""), @"explainText",
+												targetViewController, @"viewController",
+												nil]];
+
+	[targetViewController release];
+
 	// XXX: settings button removed as long as its useless
 /*
 	UINavigationItem *navItem = self.navigationItem;
