@@ -47,19 +47,21 @@
 	UIButton *roundedButtonType;
 	CGRect frame;
 	
-	const CGFloat imageWidth = 45;
-	const CGFloat imageHeight = 35;
+	CGFloat imageWidth;
+	CGFloat imageHeight;
 	CGFloat currX;
 	CGFloat currY;
 
-	// ok
-	//frame = CGRectMake(0, 0, imageWidth, imageHeight);
-	//roundedButtonType = [self customButton:frame withImage:@"key_ok.png" action:@selector(onePressed:)];
-	//[self.view addSubview: roundedButtonType];
+	/* Begin Keypad */
+
+	imageWidth = 45;
+	imageHeight = 35;
 	
-	// 1
+	// new row
 	currX = kTopMargin;
-	currY = kLeftMargin;
+	currY = 75;
+
+	// 1
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_1.png" action:@selector(onePressed:)];
 	[self.view addSubview: roundedButtonType];
@@ -78,7 +80,7 @@
 	
 	// new row
 	currX += imageHeight + kTweenMargin;
-	currY = kLeftMargin;
+	currY = 75;
 	
 	// 4
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
@@ -100,7 +102,7 @@
 	
 	// new row
 	currX += imageHeight + kTweenMargin;
-	currY = kLeftMargin;
+	currY = 75;
 	
 	// 7
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
@@ -122,12 +124,12 @@
 	
 	// new row
 	currX += imageHeight + kTweenMargin;
-	currY = kLeftMargin;
+	currY = 75;
 	
 	// <
-	//frame = CGRectMake(currY, currX, imageWidth, imageHeight);
-	//roundedButtonType = [self customButton:frame withImage:@"key_left.png" action:@selector(leftPressed:)];
-	//[self.view addSubview: roundedButtonType];
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_leftarrow.png" action:@selector(leftArrowPressed:)];
+	[self.view addSubview: roundedButtonType];
 	currY += imageWidth + kTweenMargin;
 	
 	// 0
@@ -137,10 +139,44 @@
 	currY += imageWidth + kTweenMargin;
 	
 	// >
-	//frame = CGRectMake(currY, currX, imageWidth, imageHeight);
-	//roundedButtonType = [self customButton:frame withImage:@"key_right.png" action:@selector(rightPressed:)];
-	//[self.view addSubview: roundedButtonType];
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_rightarrow.png" action:@selector(rightArrowPressed:)];
+	[self.view addSubview: roundedButtonType];
 	currY += imageWidth + kTweenMargin;
+	
+	/* End Keypad */
+	
+	/* Begin Navigation pad */
+
+	currX += 2*imageWidth; // currX is used as center here
+	currY = 77;
+	
+	// ok
+	frame = CGRectMake(currY+50, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_ok.png" action:@selector(okPressed:)];
+	[self.view addSubview: roundedButtonType];
+
+	// left
+	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_left.png" action:@selector(leftPressed:)];
+	[self.view addSubview: roundedButtonType];
+	
+	// right
+	frame = CGRectMake(currY+100, currX, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_right.png" action:@selector(rightPressed:)];
+	[self.view addSubview: roundedButtonType];
+	
+	// up
+	frame = CGRectMake(currY+50, currX-40, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_up.png" action:@selector(upPressed:)];
+	[self.view addSubview: roundedButtonType];
+	
+	// down
+	frame = CGRectMake(currY+50, currX+40, imageWidth, imageHeight);
+	roundedButtonType = [self customButton:frame withImage:@"key_down.png" action:@selector(downPressed:)];
+	[self.view addSubview: roundedButtonType];
+
+	/* End Navigation pad */
 }
 
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath action:(SEL)action
@@ -156,6 +192,31 @@
 	[uiButton addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
 	return uiButton;
+}
+
+- (void)okPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeOK];
+}
+
+- (void)upPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeUp];
+}
+
+- (void)downPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeDown];
+}
+
+- (void)leftPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeLeft];
+}
+
+- (void)rightPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeRight];
 }
 
 - (void)onePressed:(id)sender
@@ -208,5 +269,14 @@
 	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCode0];
 }
 
+- (void)leftArrowPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodePrevious];
+}
+
+- (void)rightArrowPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeNext];
+}
 
 @end
