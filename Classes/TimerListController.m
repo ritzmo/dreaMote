@@ -16,7 +16,6 @@
 @implementation TimerListController
 
 @synthesize timers = _timers;
-@synthesize timerCount = _timerCount;
 
 - (id)init
 {
@@ -72,7 +71,6 @@
 {
 	[_timers removeAllObjects];
 
-	_timerCount = 0;
 	dist[0] = 0;
 	dist[1] = 0;
 	dist[2] = 0;
@@ -93,18 +91,14 @@
 
 		int state = [timer state];
 
-		// XXX: now this sucks *g*
-		int offset = 0;
 		int i;
-		for(i = 0; i < state; i++){
-			offset += dist[i];
+		for(i = 3; i > state; i--){
+			dist[i]++;
 		}
 
-		dist[state]++;
-
-		[_timers insertObject:timer atIndex:offset];
+		[_timers insertObject:timer atIndex:dist[state]++];
 		
-		if(!(++_timerCount % 10))
+		if(!(dist[3] % 10))
 			[self reloadData];
 	}
 }
@@ -123,10 +117,8 @@
 
 	// XXX: I really should think about the way i keep track of items in a section
 	int offset = 0;
-	int i;
-	for(i = 0; i < indexPath.section; i++){
-		offset += dist[i];
-	}
+	if(indexPath.section > 0)
+		offset = dist[indexPath.section-1];
 	[cell setTimer: [[self timers] objectAtIndex: offset + indexPath.row]];
 
 	return cell;
@@ -213,7 +205,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return dist[section];
+	if(section > 0)
+		return dist[section] - dist[section-1];
+	return dist[0];
 }
 
 @end

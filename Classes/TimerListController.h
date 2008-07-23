@@ -12,13 +12,11 @@
 @private
 	NSMutableArray *_timers;
 	int dist[4];
-	int _timerCount;
 }
 
 - (void)addAction:(id)sender;
 - (void)reloadData;
 
 @property (nonatomic, retain) NSMutableArray *timers;
-@property (nonatomic) int timerCount;
 
 @end
