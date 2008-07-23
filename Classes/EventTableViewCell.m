@@ -59,6 +59,8 @@
 
 - (void)setEvent:(Event *)newEvent
 {
+	if(_event == newEvent) return;
+
 	[newEvent retain];
 	[_event release];
 	_event = newEvent;

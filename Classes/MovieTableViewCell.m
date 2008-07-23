@@ -59,6 +59,8 @@
 
 - (void)setMovie:(Movie *)newMovie
 {
+	if(_movie == newMovie) return;
+
 	[newMovie retain];
 	[_movie release];
 	_movie = newMovie;

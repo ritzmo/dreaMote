@@ -76,6 +76,7 @@
 {
 	[_services removeAllObjects];
 	_serviceCount = 0;
+
 	[self reloadData];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];

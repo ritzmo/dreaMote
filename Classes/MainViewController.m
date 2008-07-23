@@ -78,24 +78,6 @@
 
 	[targetViewController release];
 
-	targetViewController = [[ControlViewController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												NSLocalizedString(@"Control View Title", @""), @"title",
-												NSLocalizedString(@"Control View Explain", @""), @"explainText",
-												targetViewController, @"viewController",
-												nil]];
-
-	[targetViewController release];
-
-	targetViewController = [[RCEmulatorController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												NSLocalizedString(@"Remote Control Title", @""), @"title",
-												NSLocalizedString(@"Remote Control Explain", @""), @"explainText",
-												targetViewController, @"viewController",
-												nil]];
-
-	[targetViewController release];
-	
 	targetViewController = [[MovieListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Movie List Title", @""), @"title",
@@ -103,6 +85,24 @@
 						 targetViewController, @"viewController",
 						 nil]];
 	
+	[targetViewController release];
+
+	targetViewController = [[RCEmulatorController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Remote Control Title", @""), @"title",
+						 NSLocalizedString(@"Remote Control Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
+	
+	[targetViewController release];
+
+	targetViewController = [[ControlViewController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+												NSLocalizedString(@"Control View Title", @""), @"title",
+												NSLocalizedString(@"Control View Explain", @""), @"explainText",
+												targetViewController, @"viewController",
+												nil]];
+
 	[targetViewController release];
 
 	// XXX: settings button removed as long as its useless

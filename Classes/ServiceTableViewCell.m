@@ -50,6 +50,8 @@
 
 - (void)setService:(Service *)newService
 {
+	if(_service == newService) return;
+
 	[newService retain];
 	[_service release];
 	_service = newService;

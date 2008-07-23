@@ -67,6 +67,8 @@
 
 - (void)setTimer:(Timer *)newTimer
 {
+	if(_timer == newTimer) return;
+
 	[newTimer retain];
 	[_timer release];
 	_timer = newTimer;
