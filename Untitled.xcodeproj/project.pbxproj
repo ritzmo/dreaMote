@@ -17,6 +17,7 @@
 		DA2710C90D838A3200C25B85 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2710C80D838A3200C25B85 /* Event.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
+		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
 		DA7A232A0E372AB800455D11 /* key_2.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A23290E372AB800455D11 /* key_2.png */; };
@@ -94,6 +95,8 @@
 		DA2713260D84056800C25B85 /* EventListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListController.m; sourceTree = "<group>"; };
 		DA27136A0D84071100C25B85 /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		DA27136B0D84071100C25B85 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
+		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
+		DA2CC28A0E378FCC006AE171 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
 		DA7A22780E371ACA00455D11 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
@@ -241,6 +244,8 @@
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
 				DA7A22780E371ACA00455D11 /* RCEmulatorController.h */,
 				DA7A22790E371ACA00455D11 /* RCEmulatorController.m */,
+				DA2CC2890E378FCC006AE171 /* RCButton.h */,
+				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -466,6 +471,7 @@
 				DAA464B40E35E46400A1940D /* TimerXMLReader.m in Sources */,
 				DAA464BA0E35E4CC00A1940D /* VolumeXMLReader.m in Sources */,
 				DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */,
+				DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
