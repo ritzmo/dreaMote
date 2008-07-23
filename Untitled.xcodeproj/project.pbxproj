@@ -50,6 +50,8 @@
 		DA7A25500E374B2200455D11 /* key_tv.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25440E374B2200455D11 /* key_tv.png */; };
 		DA7A25510E374B2200455D11 /* key_up.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25450E374B2200455D11 /* key_up.png */; };
 		DA7A25520E374B2200455D11 /* key_video.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25460E374B2200455D11 /* key_video.png */; };
+		DA7A25B90E375D7600455D11 /* key_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B70E375D7600455D11 /* key_minus.png */; };
+		DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B80E375D7600455D11 /* key_plus.png */; };
 		DA7FD6750D8423E300974B1A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6740D8423E300974B1A /* MainViewController.m */; };
 		DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD6C80D8428F900974B1A /* Localizable.strings */; };
 		DA7FD6D60D84296500974B1A /* MyCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6D50D84296500974B1A /* MyCustomCell.m */; };
@@ -127,6 +129,8 @@
 		DA7A25440E374B2200455D11 /* key_tv.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_tv.png; path = Images/key_tv.png; sourceTree = "<group>"; };
 		DA7A25450E374B2200455D11 /* key_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_up.png; path = Images/key_up.png; sourceTree = "<group>"; };
 		DA7A25460E374B2200455D11 /* key_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_video.png; path = Images/key_video.png; sourceTree = "<group>"; };
+		DA7A25B70E375D7600455D11 /* key_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_minus.png; path = Images/key_minus.png; sourceTree = "<group>"; };
+		DA7A25B80E375D7600455D11 /* key_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_plus.png; path = Images/key_plus.png; sourceTree = "<group>"; };
 		DA7FD6730D8423E300974B1A /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		DA7FD6740D8423E300974B1A /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		DA7FD6C40D8428E500974B1A /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -311,6 +315,8 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DA7A25B70E375D7600455D11 /* key_minus.png */,
+				DA7A25B80E375D7600455D11 /* key_plus.png */,
 				DA7A253B0E374B2200455D11 /* key_audio.png */,
 				DA7A253C0E374B2200455D11 /* key_down.png */,
 				DA7A253D0E374B2200455D11 /* key_exit.png */,
@@ -422,6 +428,8 @@
 				DA7A25500E374B2200455D11 /* key_tv.png in Resources */,
 				DA7A25510E374B2200455D11 /* key_up.png in Resources */,
 				DA7A25520E374B2200455D11 /* key_video.png in Resources */,
+				DA7A25B90E375D7600455D11 /* key_minus.png in Resources */,
+				DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

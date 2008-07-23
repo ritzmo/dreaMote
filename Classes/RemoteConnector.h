@@ -34,7 +34,7 @@ enum buttonCodes {
 	kButtonCodeVolUp = 115,
 	kButtonCodeVolDown = 114,
 	kButtonCodeMute = 113,
-	kButtonCodeBouqetUp = 402,
+	kButtonCodeBouquetUp = 402,
 	kButtonCodeBouquetDown = 403,
 	kButtonCodeLame = 174,
 	kButtonCodeInfo = 358,
