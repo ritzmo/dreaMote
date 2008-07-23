@@ -472,4 +472,24 @@
 	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeHelp];
 }
 
+- (void)infoPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeInfo];
+}
+
+- (void)audioPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeAudio];
+}
+
+- (void)videoPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeVideo];
+}
+
+- (void)menuPressed:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] sendButton: kButtonCodeMenu];
+}
+
 @end
