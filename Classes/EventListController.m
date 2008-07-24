@@ -96,9 +96,11 @@
 
 - (void)fetchEvents
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_events removeAllObjects];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
+	[pool release];
 }
 
 - (void)addEvent:(id)event

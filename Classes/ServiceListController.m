@@ -72,11 +72,13 @@
 
 - (void)fetchServices
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_services removeAllObjects];
 
 	[self reloadData];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
+	[pool release];
 }
 
 - (void)addService:(id)service

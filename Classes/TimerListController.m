@@ -69,6 +69,7 @@
 
 - (void)fetchTimers
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_timers removeAllObjects];
 
 	dist[0] = 0;
@@ -79,6 +80,7 @@
 	[self reloadData];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
+	[pool release];
 }
 
 - (void)addTimer:(id)newTimer

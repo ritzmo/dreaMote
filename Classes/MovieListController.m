@@ -66,10 +66,12 @@
 
 - (void)fetchMovies
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_movies removeAllObjects];
 	[self reloadData];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)];
+	[pool release];
 }
 
 - (void)addMovie:(id)movie
