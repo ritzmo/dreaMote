@@ -18,7 +18,6 @@
 	Service *_service;
 }
 
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
 + (EventViewController *)withEvent: (Event *) newEvent;
 + (EventViewController *)withEventAndService: (Event *) newEvent: (Service *)newService;
 

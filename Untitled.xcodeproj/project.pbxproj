@@ -210,70 +210,19 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DAF0D5490E38FF70001F7CF1 /* Cells */,
+				DAF0D54B0E39000F001F7CF1 /* Connector */,
+				DAF0D5470E38FF1E001F7CF1 /* ListController */,
+				DAF0D54A0E38FFF1001F7CF1 /* Objects */,
+				DAF0D5460E38FF16001F7CF1 /* ViewController */,
+				DAF0D5480E38FF52001F7CF1 /* XMLReader */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
-				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
-				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
 				DA7FD7720D84345100974B1A /* Constants.h */,
-				DA19BDF90D8553180074AE48 /* ControlViewController.h */,
-				DA19BDFA0D8553180074AE48 /* ControlViewController.m */,
 				DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */,
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
-				DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */,
-				DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */,
-				DA2710C70D838A3200C25B85 /* Event.h */,
-				DA2710C80D838A3200C25B85 /* Event.m */,
-				DA2713250D84056800C25B85 /* EventListController.h */,
-				DA2713260D84056800C25B85 /* EventListController.m */,
-				DA27136A0D84071100C25B85 /* EventTableViewCell.h */,
-				DA27136B0D84071100C25B85 /* EventTableViewCell.m */,
-				DAB5FA010D845F7A0074D998 /* EventViewController.h */,
-				DAB5FA020D845F7A0074D998 /* EventViewController.m */,
-				DA8FE3360E35602B000B32C3 /* EventXMLReader.h */,
-				DA8FE3370E356036000B32C3 /* EventXMLReader.m */,
-				DA7FD6730D8423E300974B1A /* MainViewController.h */,
-				DA7FD6740D8423E300974B1A /* MainViewController.m */,
-				DA5A04CD0E379C500062F924 /* Movie.h */,
-				DA5A04CE0E379C500062F924 /* Movie.m */,
-				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
-				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
-				DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */,
-				DA5A04D00E379C500062F924 /* MovieTableViewCell.m */,
-				DA80C4920E37A254008A42AE /* MovieViewController.h */,
-				DA80C4930E37A254008A42AE /* MovieViewController.m */,
-				DA5A04DC0E379ECA0062F924 /* MovieXMLReader.h */,
-				DA5A04DD0E379ECA0062F924 /* MovieXMLReader.m */,
-				DA7FD6D40D84296500974B1A /* MyCustomCell.h */,
-				DA7FD6D50D84296500974B1A /* MyCustomCell.m */,
 				DA2CC2890E378FCC006AE171 /* RCButton.h */,
 				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
-				DA7A22780E371ACA00455D11 /* RCEmulatorController.h */,
-				DA7A22790E371ACA00455D11 /* RCEmulatorController.m */,
-				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
-				DA426A480D86BE4400444631 /* RemoteConnectorObject.h */,
-				DA426A490D86BE4400444631 /* RemoteConnectorObject.m */,
-				DAD51DF10D830A3900A769F3 /* Service.h */,
-				DAD51DF20D830A3900A769F3 /* Service.m */,
-				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
-				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
-				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
-				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
-				DA8FE2880E3558D5000B32C3 /* ServiceXMLReader.h */,
-				DA8FE2890E3558DE000B32C3 /* ServiceXMLReader.m */,
-				DA7FD7670D84339500974B1A /* Timer.h */,
-				DA7FD7680D84339500974B1A /* Timer.m */,
-				DA7FD7540D84307700974B1A /* TimerListController.h */,
-				DA7FD7550D84307700974B1A /* TimerListController.m */,
-				DA7FD7640D84338600974B1A /* TimerTableViewCell.h */,
-				DA7FD7650D84338600974B1A /* TimerTableViewCell.m */,
-				DAC3B7E90D85A55A00696B06 /* TimerViewController.h */,
-				DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */,
-				DAA464B20E35E45B00A1940D /* TimerXMLReader.h */,
-				DAA464B30E35E46400A1940D /* TimerXMLReader.m */,
-				DAA464B80E35E4C500A1940D /* VolumeXMLReader.h */,
-				DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */,
-				DA19BEDB0D856EC30074AE48 /* Volume.h */,
-				DA19BEDC0D856EC30074AE48 /* Volume.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -384,6 +333,105 @@
 				DA7A25300E37499D00455D11 /* key_yellow.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DA19BDF90D8553180074AE48 /* ControlViewController.h */,
+				DA19BDFA0D8553180074AE48 /* ControlViewController.m */,
+				DAB5FA010D845F7A0074D998 /* EventViewController.h */,
+				DAB5FA020D845F7A0074D998 /* EventViewController.m */,
+				DA7FD6730D8423E300974B1A /* MainViewController.h */,
+				DA7FD6740D8423E300974B1A /* MainViewController.m */,
+				DA80C4920E37A254008A42AE /* MovieViewController.h */,
+				DA80C4930E37A254008A42AE /* MovieViewController.m */,
+				DA7A22780E371ACA00455D11 /* RCEmulatorController.h */,
+				DA7A22790E371ACA00455D11 /* RCEmulatorController.m */,
+				DAC3B7E90D85A55A00696B06 /* TimerViewController.h */,
+				DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		DAF0D5470E38FF1E001F7CF1 /* ListController */ = {
+			isa = PBXGroup;
+			children = (
+				DA2713250D84056800C25B85 /* EventListController.h */,
+				DA2713260D84056800C25B85 /* EventListController.m */,
+				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
+				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
+				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
+				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
+				DA7FD7540D84307700974B1A /* TimerListController.h */,
+				DA7FD7550D84307700974B1A /* TimerListController.m */,
+			);
+			name = ListController;
+			sourceTree = "<group>";
+		};
+		DAF0D5480E38FF52001F7CF1 /* XMLReader */ = {
+			isa = PBXGroup;
+			children = (
+				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
+				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
+				DA8FE3360E35602B000B32C3 /* EventXMLReader.h */,
+				DA8FE3370E356036000B32C3 /* EventXMLReader.m */,
+				DA5A04DC0E379ECA0062F924 /* MovieXMLReader.h */,
+				DA5A04DD0E379ECA0062F924 /* MovieXMLReader.m */,
+				DA8FE2880E3558D5000B32C3 /* ServiceXMLReader.h */,
+				DA8FE2890E3558DE000B32C3 /* ServiceXMLReader.m */,
+				DAA464B20E35E45B00A1940D /* TimerXMLReader.h */,
+				DAA464B30E35E46400A1940D /* TimerXMLReader.m */,
+				DAA464B80E35E4C500A1940D /* VolumeXMLReader.h */,
+				DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */,
+			);
+			name = XMLReader;
+			sourceTree = "<group>";
+		};
+		DAF0D5490E38FF70001F7CF1 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				DA27136A0D84071100C25B85 /* EventTableViewCell.h */,
+				DA27136B0D84071100C25B85 /* EventTableViewCell.m */,
+				DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */,
+				DA5A04D00E379C500062F924 /* MovieTableViewCell.m */,
+				DA7FD6D40D84296500974B1A /* MyCustomCell.h */,
+				DA7FD6D50D84296500974B1A /* MyCustomCell.m */,
+				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
+				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
+				DA7FD7640D84338600974B1A /* TimerTableViewCell.h */,
+				DA7FD7650D84338600974B1A /* TimerTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		DAF0D54A0E38FFF1001F7CF1 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				DA2710C70D838A3200C25B85 /* Event.h */,
+				DA2710C80D838A3200C25B85 /* Event.m */,
+				DA5A04CD0E379C500062F924 /* Movie.h */,
+				DA5A04CE0E379C500062F924 /* Movie.m */,
+				DAD51DF10D830A3900A769F3 /* Service.h */,
+				DAD51DF20D830A3900A769F3 /* Service.m */,
+				DA7FD7670D84339500974B1A /* Timer.h */,
+				DA7FD7680D84339500974B1A /* Timer.m */,
+				DA19BEDB0D856EC30074AE48 /* Volume.h */,
+				DA19BEDC0D856EC30074AE48 /* Volume.m */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
+		DAF0D54B0E39000F001F7CF1 /* Connector */ = {
+			isa = PBXGroup;
+			children = (
+				DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */,
+				DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */,
+				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
+				DA426A480D86BE4400444631 /* RemoteConnectorObject.h */,
+				DA426A490D86BE4400444631 /* RemoteConnectorObject.m */,
+			);
+			name = Connector;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

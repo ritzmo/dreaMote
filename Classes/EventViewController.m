@@ -11,6 +11,10 @@
 #import "TimerViewController.h"
 #import "Constants.h"
 
+@interface EventViewController()
+- (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
+@end
+
 @implementation EventViewController
 
 @synthesize event = _event;
@@ -57,19 +61,6 @@
 	[super dealloc];
 }
 
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
-{
-	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
-	
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = title;
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
-
-	return label;
-}
-
 - (void)loadView
 {
 	UIColor *backColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
@@ -85,7 +76,6 @@
 	CGFloat yCoord = kTopMargin;
 
 	// create a text view
-	// TODO: we really need something better looking here :-)
 	CGRect frame = CGRectMake(	kLeftMargin,
 						yCoord,
 						self.view.bounds.size.width - kLeftMargin - kRightMargin,
@@ -117,6 +107,7 @@
 	myTextView.text = text;
 	[self.view addSubview:myTextView];
 
+	[myTextView release];
 	[text release];
 
 	// XXX: I'm not completely satisfied how begin/end look
@@ -128,7 +119,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[EventViewController fieldLabelWithFrame:frame title:@"Begin:"]];
+	[self.view addSubview:[self fieldLabelWithFrame:frame title:@"Begin:"]];
 
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
@@ -143,7 +134,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	UITextField *textField = [[UITextField alloc] initWithFrame:frame];
-	textField.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
+	textField.borderStyle = UITextBorderStyleRoundedRect;
 	textField.textColor = [UIColor blackColor];
 	textField.font = [UIFont systemFontOfSize:17.0];
 	textField.delegate = self;
@@ -164,7 +155,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[EventViewController fieldLabelWithFrame:frame title:@"End:"]];
+	[self.view addSubview:[self fieldLabelWithFrame:frame title:@"End:"]];
 	
 	// end
 	yCoord += kTweenMargin + kLabelHeight;
@@ -174,7 +165,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	textField = [[UITextField alloc] initWithFrame:frame];
-	textField.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
+	textField.borderStyle = UITextBorderStyleRoundedRect;
 	textField.textColor = [UIColor blackColor];
 	textField.font = [UIFont systemFontOfSize:17.0];
 	textField.delegate = self;
@@ -210,5 +201,18 @@
 
 	//[timerViewController release];
 }
+
+- (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
+{
+	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
 	
+	label.textAlignment = UITextAlignmentLeft;
+	label.text = title;
+	label.font = [UIFont boldSystemFontOfSize:17.0];
+	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
+	label.backgroundColor = [UIColor clearColor];
+	
+	return label;
+}
+
 @end

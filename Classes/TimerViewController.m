@@ -174,7 +174,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	timerTitle = [[UITextField alloc] initWithFrame:frame];
-	timerTitle.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
+	timerTitle.borderStyle = UITextBorderStyleRoundedRect;
 	timerTitle.textColor = [UIColor blackColor];
 	timerTitle.font = [UIFont systemFontOfSize:17.0];
 	timerTitle.delegate = self;
@@ -202,7 +202,7 @@
 						self.view.bounds.size.width - (kRightMargin*2),
 						kTextFieldHeight);
 	timerDescription = [[UITextField alloc] initWithFrame:frame];
-	timerDescription.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
+	timerDescription.borderStyle = UITextBorderStyleRoundedRect;
 	timerDescription.textColor = [UIColor blackColor];
 	timerDescription.font = [UIFont systemFontOfSize:17.0];
 	timerDescription.delegate = self;
@@ -241,7 +241,7 @@
 	[self.view addSubview: timerServiceName];
 	
 	[buttonTitle release];
-	
+
 	// XXX: I'm not completely satisfied how begin/end look
 
 	// create a label for our begin textfield
@@ -257,7 +257,7 @@
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterFullStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	
+
 	// begin
 	yCoord += kTweenMargin + kLabelHeight;
 
@@ -326,8 +326,6 @@
 	[ addTarget:self action:@selector(:) forControlEvents:UIControlEventEditingBegin];
 	[self.view addSubview:timer];
 */
-
-	
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the summary field

@@ -163,7 +163,7 @@
 						   self.view.bounds.size.width - (kRightMargin*2),
 						   kTextFieldHeight);
 		textField = [[UITextField alloc] initWithFrame:frame];
-		textField.borderStyle = UITextBorderStyleRoundedRect; // TODO: upgraded sdk
+		textField.borderStyle = UITextBorderStyleRoundedRect;
 		textField.textColor = [UIColor blackColor];
 		textField.font = [UIFont systemFontOfSize:17.0];
 		textField.delegate = self;

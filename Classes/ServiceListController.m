@@ -48,7 +48,7 @@
 	tableView.rowHeight = 38.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
-	
+
 	self.view = tableView;
 	[tableView release];
 }
