@@ -13,7 +13,6 @@
 	NSMutableArray *_services;
 	SEL _selectCallback;
 	id _selectTarget;
-	int _serviceCount;
 	BOOL _refreshServices;
 }
 
@@ -23,7 +22,6 @@
 @property (nonatomic, retain) NSMutableArray *services;
 @property (nonatomic) SEL selectCallback;
 @property (nonatomic, retain) id selectTarget;
-@property (nonatomic) int serviceCount;
 @property (nonatomic) BOOL refreshServices;
 
 @end

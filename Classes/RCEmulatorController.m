@@ -6,6 +6,8 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
+#import <AudioToolbox/AudioServices.h>
+
 #import "RCEmulatorController.h"
 #import "RemoteConnectorObject.h"
 #import "RCButton.h"
@@ -14,7 +16,6 @@
 @interface RCEmulatorController()
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
 @end
-
 
 @implementation RCEmulatorController
 
@@ -31,6 +32,13 @@
 - (void)dealloc
 {
 	[super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	_shouldVibrate = [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC];
+	
+	[super viewWillAppear: animated];
 }
 
 - (void)loadView
@@ -306,7 +314,6 @@
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
 {
 	RCButton *uiButton = [[RCButton alloc] initWithFrame: frame];
-	uiButton.frame = frame;
 	uiButton.rcCode = keyCode;
 	if(imagePath != nil){
 		UIImage *image = [UIImage imageNamed:imagePath];
@@ -320,7 +327,8 @@
 
 - (void)buttonPressed:(id)sender
 {
-	[[RemoteConnectorObject sharedRemoteConnector] sendButton: ((RCButton*)sender).rcCode];
+	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: ((RCButton*)sender).rcCode] && _shouldVibrate)
+		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 }
 
 @end

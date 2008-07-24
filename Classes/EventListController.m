@@ -17,14 +17,12 @@
 
 @synthesize events = _events;
 @synthesize service = _service;
-@synthesize eventCount = _eventCount;
 
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Events", @"");
-		self.eventCount = 0;
 	}
 	return self;
 }
@@ -49,12 +47,33 @@
 	return eventListController;
 }
 
++ (EventListController*)forService: (Service *)ourService
+{
+	EventListController *eventListController = [[EventListController alloc] init];
+	eventListController.events = [NSMutableArray array];
+	eventListController.service = [ourService retain];
+	
+	eventListController.title = [ourService sname];
+	
+	return eventListController;
+}
+
 - (void)dealloc
 {
 	[_events release];
 	[_service release];
 	
 	[super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	// Spawn a thread to fetch the event data so that the UI is not blocked while the
+	// application parses the XML file.
+	if(![_events count])
+		[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+
+	[super viewWillAppear: animated];
 }
 
 - (void)loadView
@@ -78,7 +97,7 @@
 - (void)fetchEvents
 {
 	[_events removeAllObjects];
-	_eventCount = 0;
+
 	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
 }
 
@@ -89,10 +108,8 @@
 	else
 	{
 		[_events addObject: [(Event*)event retain]];
-		if(!(++_eventCount % 10))
-			[self reloadData];
+		[self reloadData];
 	}
-	
 }
 
 #pragma mark	-
@@ -111,7 +128,7 @@
 		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kEventCell_ID] autorelease];
 	}
 
-	[cell setEvent: [self.events objectAtIndex:indexPath.row]];
+	[cell setEvent: [_events objectAtIndex:indexPath.row]];
 	
 	return cell;
 }
@@ -120,7 +137,7 @@
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
-	Event *event = [self.events objectAtIndex: indexPath.row];//[(EventTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] event];
+	Event *event = [_events objectAtIndex: indexPath.row];
 	EventViewController *eventViewController = [EventViewController withEventAndService: event: _service];
 	[[applicationDelegate navigationController] pushViewController: eventViewController animated: YES];
 
@@ -137,7 +154,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return _eventCount;
+	return [_events count];
 }
 
 @end

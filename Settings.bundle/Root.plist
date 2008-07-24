@@ -5,6 +5,12 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Connection</string>
+		</dict>
+		<dict>
 			<key>DefaultValue</key>
 			<string>http://192.168.178.22</string>
 			<key>Key</key>
@@ -31,6 +37,22 @@
 			<array>
 				<integer>1</integer>
 			</array>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>Title</key>
+			<string>Usage</string>
+		</dict>
+		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>vibrateInRC</string>
+			<key>Title</key>
+			<string>Vibrate in RC</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 	</array>
 	<key>Title</key>

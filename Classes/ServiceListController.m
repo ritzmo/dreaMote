@@ -19,7 +19,6 @@
 @synthesize services = _services;
 @synthesize selectTarget = _selectTarget;
 @synthesize selectCallback = _selectCallback;
-@synthesize serviceCount = _serviceCount;
 @synthesize refreshServices = _refreshServices;
 
 - (id)init
@@ -28,7 +27,6 @@
 	if (self) {
 		self.title = NSLocalizedString(@"Services", @"");
 		self.services = [NSMutableArray array];
-		self.serviceCount = 0;
 		self.refreshServices = YES;
 	}
 	return self;
@@ -75,7 +73,6 @@
 - (void)fetchServices
 {
 	[_services removeAllObjects];
-	_serviceCount = 0;
 
 	[self reloadData];
 
@@ -89,8 +86,7 @@
 	else
 	{
 		[_services addObject: [(Service*)service retain]];
-		if(!(++_serviceCount % 12))
-			[self reloadData];
+		[self reloadData];
 	}
 }
 
@@ -119,13 +115,13 @@
 {
 	if(_selectTarget != nil && _selectCallback != nil)
 	{
-		Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: indexPath] service];
+		Service *service = [_services objectAtIndex: indexPath.row];
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
 
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 		[[applicationDelegate navigationController] popViewControllerAnimated: YES];
-		
+
 		return nil;
 	}
 
@@ -151,12 +147,7 @@
 	{
 		// Third Button: epg
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-		NSMutableArray *eventList = [NSMutableArray array];
-		EventListController *eventListController = [EventListController withEventListAndService: eventList: service];
-
-		// Spawn a thread to fetch the event data so that the UI is not blocked while
-		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:eventListController withObject:nil];
+		EventListController *eventListController = [EventListController forService: service];
 
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
 	
@@ -177,7 +168,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return _serviceCount;
+	return [_services count];
 }
 
 - (void)setTarget: (id)target action: (SEL)action

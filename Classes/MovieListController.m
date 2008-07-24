@@ -14,7 +14,6 @@
 @implementation MovieListController
 
 @synthesize movies = _movies;
-@synthesize movieCount = _movieCount;
 @synthesize refreshMovies;
 
 - (id)init
@@ -23,7 +22,6 @@
 	if (self) {
 		self.title = NSLocalizedString(@"Movies", @"");
 		self.movies = [NSMutableArray array];
-		self.movieCount = 0;
 		self.refreshMovies = YES;
 	}
 	return self;
@@ -69,7 +67,6 @@
 - (void)fetchMovies
 {
 	[_movies removeAllObjects];
-	_movieCount = 0;
 	[self reloadData];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)];
@@ -82,8 +79,7 @@
 	else
 	{
 		[_movies addObject: [(Movie*)movie retain]];
-		if(!(++_movieCount % 10))
-			[self reloadData];
+		[self reloadData];
 	}	
 }
 
@@ -130,14 +126,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return _movieCount;
+	return [_movies count];
 }
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
 
 - (void)didReceiveMemoryWarning {
 	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview

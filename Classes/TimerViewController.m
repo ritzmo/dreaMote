@@ -326,6 +326,8 @@
 	[ addTarget:self action:@selector(:) forControlEvents:UIControlEventEditingBegin];
 	[self.view addSubview:timer];
 */
+
+	
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the summary field

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface RCEmulatorController : UIViewController {
-
+@private
+	BOOL _shouldVibrate;
 }
 
 @end

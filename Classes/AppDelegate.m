@@ -7,16 +7,11 @@
 //
 
 #import "AppDelegate.h"
-#import "MainViewController.h"
-#import "Service.h"
-#import "Volume.h"
+#import "Constants.h"
 
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Enigma2Connector.h"
-
-NSString *kRemoteHost			= @"remoteHostKey";
-NSString *kConnector			= @"connectorKey";
 
 @implementation AppDelegate
 
@@ -37,7 +32,7 @@ NSString *kConnector			= @"connectorKey";
 	// Show the window and view
 	[window addSubview:[navigationController view]];
 	[window makeKeyAndVisible];
-	
+
 	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey:kConnector];
 	if (testValue == nil)
 	{
@@ -52,6 +47,7 @@ NSString *kConnector			= @"connectorKey";
 
 		NSString *remoteHostDefault;
 		NSNumber *connectorDefault;
+		NSNumber *vibrateRcDefault;
 
 		NSDictionary *prefItem;
 		for (prefItem in prefSpecifierArray)
@@ -67,12 +63,17 @@ NSString *kConnector			= @"connectorKey";
 			{
 				remoteHostDefault = defaultValue;
 			}
+			else if ([keyValueStr isEqualToString:kVibratingRC])
+			{
+				vibrateRcDefault = defaultValue;
+			}
 		}
 		
 		// since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults =  [NSDictionary dictionaryWithObjectsAndKeys:
 									  remoteHostDefault, kRemoteHost,
 									  connectorDefault, kConnector,
+									  [vibrateRcDefault boolValue], kVibratingRC,
 									  nil];
 
 		[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];

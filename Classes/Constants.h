@@ -28,3 +28,8 @@
 // specific font metrics used in our text fields and text views
 #define kFontName				@"Arial"
 #define kTextViewFontSize		16.0
+
+// default keys
+#define kRemoteHost				@"remoteHostKey"
+#define kConnector				@"connectorKey"
+#define kVibratingRC			@"vibrateInRC"

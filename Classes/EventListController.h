@@ -14,16 +14,15 @@
 @private
 	NSMutableArray *_events;
 	Service *_service;
-	int _eventCount;
 }
 
 + (EventListController*)withEventList: (NSArray*) eventList;
 + (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService;
++ (EventListController*)forService: (Service *)ourService;
 - (void)reloadData;
 - (void)addEvent:(id)event;
 
 @property (nonatomic, retain) NSMutableArray *events;
 @property (nonatomic, retain) Service *service;
-@property (nonatomic) int eventCount;
 
 @end

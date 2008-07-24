@@ -149,17 +149,8 @@
 
 - (void)standby
 {
-	// XXX: we send remote control command 116 here as we want to toggle standby
-
-	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/remotecontrol?command=116", self.baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	// XXX: we send remote control command button power here as we want to toggle standby
+	[self sendButton: kButtonCodePower];
 }
 
 - (void)reboot
@@ -221,7 +212,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 	if(myRange.length)
 		return YES;
 	
@@ -302,7 +293,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 	if(myRange.length)
 		return YES;
 	

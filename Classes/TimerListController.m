@@ -119,7 +119,7 @@
 	int offset = 0;
 	if(indexPath.section > 0)
 		offset = dist[indexPath.section-1];
-	[cell setTimer: [[self timers] objectAtIndex: offset + indexPath.row]];
+	[cell setTimer: [_timers objectAtIndex: offset + indexPath.row]];
 
 	return cell;
 }

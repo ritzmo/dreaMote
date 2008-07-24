@@ -97,7 +97,7 @@
 	if (!self.editing) {
 		CGFloat boundsX = contentRect.origin.x;
 		CGRect frame;
-		
+
 		// Place the name label.
 		frame = CGRectMake(boundsX + COLUMN_X, 7, MAX_WIDTH, 14);
 		self.serviceNameLabel.frame = frame;
@@ -117,7 +117,7 @@
 	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly,   |however, the views need to be transparent (so that the selection color shows through).  
 	 */
 	[super setSelected:selected animated:animated];
-	
+
 	UIColor *backgroundColor = nil;
 	if (selected) {
 		backgroundColor = [UIColor clearColor];

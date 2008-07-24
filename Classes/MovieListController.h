@@ -11,7 +11,6 @@
 @interface MovieListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSMutableArray *_movies;
-	int _movieCount;
 @public
 	BOOL refreshMovies;
 }
@@ -19,7 +18,6 @@
 - (void)reloadData;
 
 @property (nonatomic, retain) NSMutableArray *movies;
-@property (nonatomic) int movieCount;
 @property (nonatomic) BOOL refreshMovies;
 
 @end
