@@ -55,9 +55,9 @@
 	[newService retain];
 	[_service release];
 	_service = newService;
-	
+
 	self.serviceNameLabel.text = [newService getServiceName];
-	
+
 	[self setNeedsDisplay];
 }
 

@@ -122,7 +122,7 @@ static NSUInteger parsedEventsCounter;
 	if (qName) {
 		elementName = qName;
 	}
-	
+
 	if ([elementName isEqualToString:@"e2eventid"]) {
 		[[self currentEventObject] setEit: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2eventstart"]) {
