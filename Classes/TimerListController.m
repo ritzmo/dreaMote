@@ -60,6 +60,15 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	dist[0] = 0;
+	dist[1] = 0;
+	dist[2] = 0;
+	dist[3] = 0;
+	
+	[_timers removeAllObjects];
+	
+	[self reloadData];
+
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];

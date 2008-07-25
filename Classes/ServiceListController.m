@@ -62,6 +62,10 @@
 {
 	if(_refreshServices)
 	{
+		[_services removeAllObjects];
+		
+		[self reloadData];
+
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
@@ -77,8 +81,8 @@
 	if(_refreshServices)
 	{
 		[_services removeAllObjects];
-		
-		[self reloadData];		
+
+		[self reloadData];
 	}
 }
 

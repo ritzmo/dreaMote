@@ -38,6 +38,10 @@
 {
 	if(refreshMovies)
 	{
+		[_movies removeAllObjects];
+		
+		[self reloadData];
+
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
