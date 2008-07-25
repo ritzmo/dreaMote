@@ -12,7 +12,9 @@
 
 @interface MovieViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 {
+@private
 	UITextView *myTextView;
+	UIButton *playButton;
 	Movie *_movie;
 }
 

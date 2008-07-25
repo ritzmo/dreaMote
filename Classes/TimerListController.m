@@ -94,12 +94,11 @@
 
 		int state = [timer state];
 
-		int i;
-		for(i = 3; i > state; i--){
-			dist[i]++;
-		}
+		[_timers insertObject:timer atIndex:dist[state]];
 
-		[_timers insertObject:timer atIndex:dist[state]++];
+		for(; state <= 3; state++){
+			dist[state]++;
+		}
 	}
 	[self reloadData];
 }

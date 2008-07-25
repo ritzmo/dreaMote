@@ -217,6 +217,7 @@
 		buttonTitle = [[self.timer service] sname];
 	else
 		buttonTitle = NSLocalizedString(@"Select Service", @"");
+	[timerServiceName setFont: [UIFont systemFontOfSize:12.0]];
 	[timerServiceName setTitle:buttonTitle forState:UIControlStateNormal];
 	[timerServiceName addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: timerServiceName];
@@ -316,7 +317,7 @@
 									  yCoord,
 									  kWideButtonWidth,
 									  kStdButtonHeight);
-	[deleteButton setFont: [UIFont systemFontOfSize:14.0]];
+	[deleteButton setFont: [UIFont systemFontOfSize:12.0]];
 	[deleteButton setBackgroundColor: backgroundColor];
 	[deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
 	[deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];

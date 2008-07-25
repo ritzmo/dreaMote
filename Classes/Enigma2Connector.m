@@ -28,6 +28,10 @@
  </e2simplexmlresult>
 */
 
+@interface Enigma2Connector()
++ (NSString *)urlencode:(NSString *)toencode;
+@end
+
 @implementation Enigma2Connector
 
 @synthesize baseAddress;
@@ -50,10 +54,15 @@
 	return (id <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress: address];
 }
 
++ (NSString *)urlencode:(NSString *)toencode
+{
+	return [(NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)toencode, NULL, (CFStringRef)@"()<>@,.;:\"/[]?=\\& ", kCFStringEncodingUTF8) autorelease];
+}
+
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [service getServiceReference]];
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [Enigma2Connector urlencode: [service getServiceReference]]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -61,7 +70,7 @@
 	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+	
 	// Compare to expected result
 	return [myString isEqualToString: @"	<rootElement></rootElement>"];
 }
@@ -231,11 +240,6 @@
 		return YES;
 	
 	return NO;
-}
-
-+ (NSString *)urlencode:(NSString *)toencode
-{
-	return [(NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)toencode, NULL, (CFStringRef)@"()<>@,.;:\"/[]?=\\& ", kCFStringEncodingUTF8) autorelease];
 }
 
 - (BOOL)addTimer:(Timer *) newTimer

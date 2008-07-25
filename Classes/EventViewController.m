@@ -187,6 +187,7 @@
 											kWideButtonWidth,
 											kStdButtonHeight);
 	roundedButtonType.backgroundColor = backColor;
+	[roundedButtonType setFont: [UIFont systemFontOfSize:12.0]];
 	[roundedButtonType setTitle:NSLocalizedString(@"Add Timer", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];

@@ -8,6 +8,7 @@
 
 #import "MovieViewController.h"
 
+#import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
 #import "Constants.h"
 
@@ -39,6 +40,7 @@
 - (void)dealloc
 {
 	[myTextView release];
+	[playButton release];
 	[_movie release];
 
 	[super dealloc];
@@ -132,7 +134,7 @@
 	UITextField *textField = [[UITextField alloc] initWithFrame:frame];
 	textField.borderStyle = UITextBorderStyleRoundedRect;
 	textField.textColor = [UIColor blackColor];
-	textField.font = [UIFont systemFontOfSize:17.0];
+	textField.font = [UIFont systemFontOfSize:14.0];
 	textField.delegate = self;
 	textField.text = [format stringFromDate: [_movie time]];
 
@@ -165,7 +167,7 @@
 		textField = [[UITextField alloc] initWithFrame:frame];
 		textField.borderStyle = UITextBorderStyleRoundedRect;
 		textField.textColor = [UIColor blackColor];
-		textField.font = [UIFont systemFontOfSize:17.0];
+		textField.font = [UIFont systemFontOfSize:14.0];
 		textField.delegate = self;
 		textField.text = [format stringFromDate: [[_movie time] addTimeInterval: (NSTimeInterval)[[_movie length] intValue]]];
 		textField.enabled = NO;
@@ -176,6 +178,30 @@
 
 		[textField release];
 	}
-}
 	
+	// play
+	yCoord += 2*kTweenMargin + kStdButtonHeight;
+	
+	playButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	playButton.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
+									yCoord,
+									kWideButtonWidth,
+									kStdButtonHeight);
+	[playButton setFont: [UIFont systemFontOfSize:14.0]];
+	[playButton setBackgroundColor: backColor];
+	[playButton setTitle:@"Play" forState:UIControlStateNormal];
+	[playButton addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview: playButton];
+}
+
+- (void)playAction: (id)sender
+{
+	Service *movieService = [[Service alloc] init];
+	[movieService setSref: [_movie sref]];
+
+	[[RemoteConnectorObject sharedRemoteConnector] zapTo: movieService];
+	
+	[movieService release];
+}
+
 @end
