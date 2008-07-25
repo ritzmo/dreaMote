@@ -12,20 +12,19 @@
 #import "Event.h"
 #import "Service.h"
 
-@interface TimerViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate> {
+@interface TimerViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate, UITextFieldDelegate> {
 	UITextField *timerTitle;
 	UITextField *timerDescription;
 	UIButton *timerServiceName;
 	UIButton *timerBeginString;
 	UIButton *timerEndString;
+	UIButton *deleteButton;
 	UIResponder *lastTrackedFirstResponder;
 
 @private
 	Timer *_timer;
 	Timer *_oldTimer;
 	Service *_service;
-	NSDate *_begin;
-	NSDate *_end;
 	BOOL _creatingNewTimer;
 }
 
@@ -37,8 +36,6 @@
 @property (nonatomic, retain) Timer *timer;
 @property (nonatomic, retain) Timer *oldTimer;
 @property (nonatomic, retain) Service *service;
-@property (nonatomic, retain) NSDate *begin;
-@property (nonatomic, retain) NSDate *end;
 @property (assign) BOOL creatingNewTimer;
 
 @end

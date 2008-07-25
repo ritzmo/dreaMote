@@ -98,6 +98,8 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_events removeAllObjects];
+	
+	[self reloadData];
 
 	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
 	[pool release];
@@ -105,13 +107,9 @@
 
 - (void)addEvent:(id)event
 {
-	if(event == nil)
-		[self reloadData];
-	else
-	{
+	if(event != nil)
 		[_events addObject: [(Event*)event retain]];
-		[self reloadData];
-	}
+	[self reloadData];
 }
 
 #pragma mark	-

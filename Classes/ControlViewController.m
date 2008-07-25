@@ -49,7 +49,9 @@
 - (void)fetchVolume
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
 	[[RemoteConnectorObject sharedRemoteConnector] getVolume:self action:@selector(gotVolume:)];
+
 	[pool release];
 }
 

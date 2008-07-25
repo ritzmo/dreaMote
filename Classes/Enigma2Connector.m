@@ -20,6 +20,8 @@
 #import "MovieXMLReader.h"
 
 /*
+ --- Just a reminder :-) ---
+
  <e2simplexmlresult>
   <e2state>True</e2state>
   <e2statetext>Timer removed</e2statetext>
@@ -34,6 +36,13 @@
 {
 	baseAddress = [address copy];
 	return self;
+}
+
+- (void)dealloc
+{
+	[baseAddress release];
+
+	[super dealloc];
 }
 
 + (id <RemoteConnector>*)createClassWithAddress:(NSString *) address
@@ -59,9 +68,9 @@
 
 - (void)fetchServices:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/getservices?sRef=%@", self.baseAddress, @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"];
-
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/getservices?sRef=%@", self.baseAddress, @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"];
 
 	NSError *parseError = nil;
 
@@ -70,16 +79,17 @@
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
 	[streamReader release];
-	[pool release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	[pool release];
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, [service getServiceReference]];
-
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, [service getServiceReference]];
 
 	NSError *parseError = nil;
 
@@ -88,16 +98,17 @@
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
 	[streamReader release];
-	[pool release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	[pool release];
 }
 
 - (void)fetchTimers:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/timerlist", self.baseAddress];
-
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/timerlist", self.baseAddress];
 	
 	NSError *parseError = nil;
 	
@@ -106,16 +117,17 @@
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
 	[streamReader release];
-	[pool release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	[pool release];
 }
 
 - (void)fetchMovielist:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/movielist", self.baseAddress];
-	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/movielist", self.baseAddress];
 	
 	NSError *parseError = nil;
 	
@@ -124,9 +136,10 @@
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
 	[streamReader release];
-	[pool release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	[pool release];
 }
 
 - (void)sendPowerstate: (int) newState
@@ -165,9 +178,9 @@
 
 - (void)getVolume:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol", self.baseAddress];
-
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol", self.baseAddress];
 
 	NSError *parseError = nil;
 	
@@ -176,9 +189,10 @@
 	VolumeXMLReader *streamReader = [VolumeXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
 	[streamReader release];
-	[pool release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	[pool release];
 }
 
 - (BOOL)toggleMuted

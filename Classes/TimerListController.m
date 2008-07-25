@@ -85,9 +85,7 @@
 
 - (void)addTimer:(id)newTimer
 {
-	if(newTimer == nil)
-		[self reloadData];
-	else
+	if(newTimer != nil)
 	{
 		Timer* timer = [(Timer*)newTimer retain];
 
@@ -99,10 +97,8 @@
 		}
 
 		[_timers insertObject:timer atIndex:dist[state]++];
-		
-		if(!(dist[3] % 10))
-			[self reloadData];
 	}
+	[self reloadData];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -117,7 +113,6 @@
 		cell = [[[TimerTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kTimerCell_ID] autorelease];
 	}
 
-	// XXX: I really should think about the way i keep track of items in a section
 	int offset = 0;
 	if(indexPath.section > 0)
 		offset = dist[indexPath.section-1];
@@ -139,53 +134,16 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Action Title", @"")
-															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Edit", @""), NSLocalizedString(@"Delete", @""), nil];
-	[actionSheet showInView:self.view];
-	[actionSheet release];
+	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+	
+	Timer *timer = [_timers objectAtIndex:indexPath.row];
+	
+	TimerViewController *timerViewController = [TimerViewController withTimer: timer];
+	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
 
-	return indexPath; // nil to disable select
-}
+	//[timerViewController release];
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex == 0)
-	{
-		// Second Button: Edit
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
-
-		if([timer state] != 0)
-		{
-			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:@"Can't edit a running or finished timer." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[notification show];
-			[notification release];
-		}
-		else
-		{
-			TimerViewController *timerViewController = [TimerViewController withTimer: timer];
-			[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
-
-			//[timerViewController release];
-		}
-	}
-	else if (buttonIndex == 1)
-	{
-		// Third Button: Delete
-		// XXX: I'd actually add another dialogue to confirm the removal of this timer but that would require another modalView as far as I understand ;-) 
-		Timer *timer = [(TimerTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] timer];
-
-		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
-		{
-			dist[[timer state]]--;
-			[_timers removeObject: timer];
-			[self reloadData];
-		}
-	}
-
-	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:NO];
+	return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 

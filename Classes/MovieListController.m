@@ -76,13 +76,9 @@
 
 - (void)addMovie:(id)movie
 {
-	if(movie == nil)
-		[self reloadData];
-	else
-	{
+	if(movie != nil)
 		[_movies addObject: [(Movie*)movie retain]];
-		[self reloadData];
-	}	
+	[self reloadData];
 }
 
 #pragma mark	-

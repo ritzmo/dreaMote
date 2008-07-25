@@ -26,8 +26,6 @@
 @synthesize oldTimer = _oldTimer;
 @synthesize creatingNewTimer = _creatingNewTimer;
 @synthesize service = _service;
-@synthesize begin = _begin;
-@synthesize end = _end;
 
 - (id)init
 {
@@ -81,6 +79,7 @@
 - (void)dealloc
 {
 	[_timer release];
+	[_service release];
 	[_oldTimer release];
 	[timerTitle release];
 	[timerDescription release];
@@ -88,10 +87,7 @@
 	[timerBeginString release];
 	[timerEndString release];
 	[lastTrackedFirstResponder release];
-
-	[_service release];
-	[_begin release];
-	[_end release];
+	[deleteButton release];
 
 	[super dealloc];
 }
@@ -123,23 +119,6 @@
 	self.view.autoresizesSubviews = YES;
 	
 	[contentView release];
-
-	// add our custom done button as the nav bar's custom right view
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-												target:self action:@selector(doneAction:)];
-	UINavigationItem *navItem = self.navigationItem;
-	navItem.rightBarButtonItem = button;
-
-	[button release];
-
-	// add our custom cancel button as the nav bar's custom left view
-	button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-												target:self action:@selector(cancelAction:)];
-	navItem.leftBarButtonItem = button;
-	
-	[button release];
-
-	[navItem release];
 
 	// note: for UITextField, if you don't like autocompletion while typing use:
 	// aTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -326,6 +305,50 @@
 	[ addTarget:self action:@selector(:) forControlEvents:UIControlEventEditingBegin];
 	[self.view addSubview:timer];
 */
+
+	// delete
+	yCoord += 2*kTweenMargin + kStdButtonHeight;
+	
+	deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	deleteButton.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
+									  yCoord,
+									  kWideButtonWidth,
+									  kStdButtonHeight);
+	[deleteButton setFont: [UIFont systemFontOfSize:14.0]];
+	[deleteButton setBackgroundColor: backgroundColor];
+	[deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+	[deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+	if(!self.creatingNewTimer)
+		[self.view addSubview: deleteButton];
+
+	UIBarButtonItem *button;
+	UINavigationItem *navItem = self.navigationItem;
+	if(self.creatingNewTimer)
+	{
+		// add our custom done button as the nav bar's custom right view
+		button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+															   target:self action:@selector(doneAction:)];
+		navItem.rightBarButtonItem = button;
+
+		[button release];
+
+		// add our custom cancel button as the nav bar's custom left view
+		button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+															   target:self action:@selector(cancelAction:)];
+		navItem.leftBarButtonItem = button;
+
+		[button release];
+	}
+	else
+	{
+		// add edit button as the nav bar's custom right view
+		navItem.rightBarButtonItem = self.editButtonItem;
+
+		// disable editing by default
+		[self setEditing: NO];
+	}
+	
+	[navItem release];
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the summary field
@@ -375,6 +398,27 @@
 		[self setViewMovedUp:NO];
 	}
 	*/
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+{
+	if(editing && _oldTimer && [_oldTimer state] != 0)
+	{
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:@"Can't edit a running or finished timer." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+	}
+	else
+	{
+		timerTitle.enabled = editing;
+		timerDescription.enabled = editing;
+		timerServiceName.enabled = editing;
+		timerBeginString.enabled = editing;
+		timerEndString.enabled = editing;
+		deleteButton.enabled = editing;
+
+		[super setEditing: editing animated: animated];
+	}
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification
@@ -529,6 +573,37 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+}
+
+- (void)deleteAction: (id)sender
+{
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Delete Title", @"")
+														delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles: NSLocalizedString(@"Delete", @""), nil];
+	[actionSheet showInView:self.view];
+	[actionSheet release];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex == 0)
+	{
+		// Custom Button: Delete
+		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: _oldTimer])
+		{
+			// Close when timer deleted
+			id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+			[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+		}
+		else
+		{
+			// Alert otherwise
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete failed" message:nil
+														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[alert show];
+			[alert release];
+		}
+	}
 }
 
 @end

@@ -35,7 +35,10 @@
 {
 	if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
 		UIView *myContentView = self.contentView;
-		
+
+		// you can do this here specifically or at the table level for all cells
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
 		// A label that displays the Eventname.
 		self.eventNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
 		self.eventNameLabel.textAlignment = UITextAlignmentLeft; // default

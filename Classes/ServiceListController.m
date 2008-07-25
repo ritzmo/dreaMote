@@ -83,13 +83,9 @@
 
 - (void)addService:(id)service
 {
-	if(service == nil)
-		[self reloadData];
-	else
-	{
+	if(service != nil)
 		[_services addObject: [(Service*)service retain]];
-		[self reloadData];
-	}
+	[self reloadData];
 }
 
 #pragma mark	-

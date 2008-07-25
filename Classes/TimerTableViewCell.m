@@ -37,7 +37,10 @@
 {
 	if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
 		UIView *myContentView = self.contentView;
-		
+
+		// you can do this here specifically or at the table level for all cells
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
 		// A label that displays the Servicename.
 		self.serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
 		self.serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
