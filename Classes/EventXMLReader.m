@@ -137,7 +137,7 @@ static NSUInteger parsedEventsCounter;
 	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"]) {
 		[[self currentEventObject] setEdescription: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2event"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone:YES];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

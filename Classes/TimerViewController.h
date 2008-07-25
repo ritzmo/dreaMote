@@ -26,6 +26,7 @@
 	Timer *_oldTimer;
 	Service *_service;
 	BOOL _creatingNewTimer;
+	BOOL _wasActive;
 }
 
 + (TimerViewController *)withEvent: (Event *)ourEvent;

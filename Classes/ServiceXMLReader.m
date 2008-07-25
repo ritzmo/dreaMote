@@ -94,7 +94,7 @@ static NSUInteger parsedServicesCounter;
 	} else if ([elementName isEqualToString:@"e2servicename"]) {
 		[[self currentServiceObject] setSname: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2service"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentServiceObject waitUntilDone: YES];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentServiceObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

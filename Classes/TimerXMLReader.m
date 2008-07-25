@@ -185,7 +185,7 @@ static NSUInteger parsedTimersCounter;
 	} else if ([elementName isEqualToString:@"e2state"]) {
 		[[self currentTimerObject] setStateFromString: [self contentOfCurrentProperty]];
 	} else if([elementName isEqualToString:@"e2timer"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentTimerObject waitUntilDone:YES];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentTimerObject waitUntilDone:NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

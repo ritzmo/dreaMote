@@ -153,7 +153,7 @@ static NSUInteger parsedMoviesCounter;
 	} else if ([elementName isEqualToString:@"e2filesize"]) {
 		[[self currentMovieObject] setSize: [NSNumber numberWithInt: [[self contentOfCurrentProperty] intValue]]];
 	} else if ([elementName isEqualToString:@"e2movie"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentMovieObject waitUntilDone:YES];
+		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentMovieObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

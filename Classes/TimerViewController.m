@@ -107,6 +107,8 @@
 
 - (void)loadView
 {
+	_wasActive = NO;
+
 	UIColor *backgroundColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
 	
 	// setup our parent content view and embed it to your view controller
@@ -318,37 +320,23 @@
 	[deleteButton setBackgroundColor: backgroundColor];
 	[deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
 	[deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-	if(!self.creatingNewTimer)
+	if(!_creatingNewTimer)
 		[self.view addSubview: deleteButton];
 
-	UIBarButtonItem *button;
 	UINavigationItem *navItem = self.navigationItem;
-	if(self.creatingNewTimer)
-	{
-		// add our custom done button as the nav bar's custom right view
-		button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-															   target:self action:@selector(doneAction:)];
-		navItem.rightBarButtonItem = button;
+	
+	// add edit button as the nav bar's custom right view
+	navItem.rightBarButtonItem = self.editButtonItem;
 
-		[button release];
-
-		// add our custom cancel button as the nav bar's custom left view
-		button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-															   target:self action:@selector(cancelAction:)];
-		navItem.leftBarButtonItem = button;
-
-		[button release];
-	}
-	else
-	{
-		// add edit button as the nav bar's custom right view
-		navItem.rightBarButtonItem = self.editButtonItem;
-
-		// disable editing by default
-		[self setEditing: NO];
-	}
+	// default editing mode depends on our mode
+	[self setEditing: _creatingNewTimer];
 	
 	[navItem release];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	_wasActive = YES;
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the summary field
@@ -402,11 +390,23 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 {
-	if(editing && _oldTimer && [_oldTimer state] != 0)
+	if(!_creatingNewTimer && [_oldTimer state] != 0)
 	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:@"Can't edit a running or finished timer." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
+		if(editing)
+		{
+			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:@"Can't edit a running or finished timer." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+		}
+		else
+		{
+			timerTitle.enabled = NO;
+			timerDescription.enabled = NO;
+			timerServiceName.enabled = NO;
+			timerBeginString.enabled = NO;
+			timerEndString.enabled = NO;
+			deleteButton.enabled = YES;
+		}
 	}
 	else
 	{
@@ -415,9 +415,62 @@
 		timerServiceName.enabled = editing;
 		timerBeginString.enabled = editing;
 		timerEndString.enabled = editing;
-		deleteButton.enabled = editing;
+		if(_creatingNewTimer)
+			deleteButton.enabled = editing;
 
 		[super setEditing: editing animated: animated];
+
+		// editing stopped, commit changes
+		if(_wasActive && !editing)
+		{
+			NSString *message = nil;
+
+			// Sanity Check Title
+			if([[timerTitle text] length])
+			{
+				_timer.title = [timerTitle text];
+			}
+			else
+			{
+				message = @"Can't save a timer with an empty title.";
+			}
+
+			// Get Description
+			if([[timerDescription text] length])
+				_timer.tdescription = [timerDescription text];
+			else
+				_timer.tdescription = @"";
+
+			// Try to commit changes if no error occured
+			if(!message)
+			{
+				if(_creatingNewTimer)
+				{
+					if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
+					{
+						message = @"Error adding new timer.";
+					}
+					else
+					{
+						id applicationDelegate = [[UIApplication sharedApplication] delegate];
+						[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+					}
+				}
+				else
+				{
+					if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
+						message = @"Error editing timer.";
+				}
+			}
+
+			// Show error message if one occured
+			if(message != nil)
+			{
+				UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[notification show];
+				[notification release];
+			}
+		}
 	}
 }
 
@@ -520,59 +573,6 @@
 
 	self.timer.end = [(NSDate*)object retain];
 	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];
-}
-
-- (void)doneAction:(id)sender
-{
-	NSString *message = nil;
-
-	if([[timerTitle text] length])
-	{
-		_timer.title = [timerTitle text];
-	}
-	else
-	{
-		message = @"Can't save a timer with an empty title.";
-	}
-
-	if([[timerDescription text] length])
-		_timer.tdescription = [timerDescription text];
-	else
-		_timer.tdescription = @"";
-
-	if(!message)
-	{
-		if(_creatingNewTimer)
-		{
-			if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
-				message = @"Error adding new timer.";
-		}
-		else
-		{
-			if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
-				message = @"Error editing timer.";
-		}
-	}
-
-	if(message != nil)
-	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-	}
-	else
-	{
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-		[[applicationDelegate navigationController] popViewControllerAnimated: YES];
-	}
-}
-
-- (void)cancelAction:(id)sender
-{
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
 }
 
 - (void)deleteAction: (id)sender

@@ -127,21 +127,21 @@
 
 	TimerViewController *timerViewController = [TimerViewController newTimer];
 	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
-
-	//[timerViewController release];
 }
 
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+	int index = indexPath.row;
+	if(indexPath.section > 0)
+		index += dist[indexPath.section-1];
 	
-	Timer *timer = [_timers objectAtIndex:indexPath.row];
-	
+	Timer *timer = [_timers objectAtIndex: index];
+
 	TimerViewController *timerViewController = [TimerViewController withTimer: timer];
 	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
-
-	//[timerViewController release];
 
 	return nil;
 }
