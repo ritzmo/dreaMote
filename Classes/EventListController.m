@@ -52,9 +52,13 @@
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.events = [NSMutableArray array];
 	eventListController.service = [ourService retain];
-	
+
 	eventListController.title = [ourService sname];
-	
+
+	// Spawn a thread to fetch the event data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:eventListController withObject:nil];	
+
 	return eventListController;
 }
 
@@ -64,16 +68,6 @@
 	[_service release];
 	
 	[super dealloc];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	// Spawn a thread to fetch the event data so that the UI is not blocked while the
-	// application parses the XML file.
-	if(![_events count])
-		[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
-
-	[super viewWillAppear: animated];
 }
 
 - (void)loadView
@@ -97,10 +91,6 @@
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_events removeAllObjects];
-	
-	[self reloadData];
-
 	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
 	[pool release];
 }

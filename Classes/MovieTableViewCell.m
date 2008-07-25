@@ -25,10 +25,10 @@
 
 - (void)dealloc
 {
+	[_eventNameLabel release];
+	[_eventTimeLabel release];
+
 	[super dealloc];
-	
-	[_eventNameLabel dealloc];
-	[_eventTimeLabel dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier

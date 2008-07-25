@@ -36,14 +36,26 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// Spawn a thread to fetch the movie data so that the UI is not blocked while the
-	// application parses the XML file.
 	if(refreshMovies)
+	{
+		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
+		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
+	}
 
 	refreshMovies = YES;
 
 	[super viewWillAppear: animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	if(refreshMovies)
+	{
+		[_movies removeAllObjects];
+		
+		[self reloadData];
+	}
 }
 
 - (void)loadView
@@ -67,9 +79,6 @@
 - (void)fetchMovies
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_movies removeAllObjects];
-	[self reloadData];
-
 	[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)];
 	[pool release];
 }

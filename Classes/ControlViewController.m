@@ -37,13 +37,16 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[_volume release];
-
 	// Spawn a thread to fetch the volume data so that the UI is not blocked while the 
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchVolume) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[_volume release];
 }
 
 - (void)fetchVolume
@@ -60,6 +63,7 @@
 	if(newVolume == nil)
 		return;
 
+	[_volume release];
 	_volume = [(Volume*)newVolume retain];
 
 	self.switchControl.on = [self.volume ismuted];

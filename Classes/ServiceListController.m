@@ -60,23 +60,31 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// Spawn a thread to fetch the service data so that the UI is not blocked while the
-	// application parses the XML file.
 	if(_refreshServices)
+	{
+		// Spawn a thread to fetch the service data so that the UI is not blocked while the
+		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+	}
 
 	_refreshServices = YES;
 
 	[super viewWillAppear: animated];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+	if(_refreshServices)
+	{
+		[_services removeAllObjects];
+		
+		[self reloadData];		
+	}
+}
+
 - (void)fetchServices
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_services removeAllObjects];
-
-	[self reloadData];
-
 	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
 	[pool release];
 }

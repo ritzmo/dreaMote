@@ -26,11 +26,11 @@
 
 - (void)dealloc
 {
+	[_serviceNameLabel release];
+	[_timerNameLabel release];
+	[_timerTimeLabel release];
+
 	[super dealloc];
-	
-	[_serviceNameLabel dealloc];
-	[_timerNameLabel dealloc];
-	[_timerTimeLabel dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier

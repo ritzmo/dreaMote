@@ -23,9 +23,9 @@
 
 - (void)dealloc
 {
+	[_serviceNameLabel release];
+
 	[super dealloc];
-	
-	[_serviceNameLabel dealloc];
 }
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier

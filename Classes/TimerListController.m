@@ -60,25 +60,28 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// Spawn a thread to fetch the timer data so that the UI is not blocked while the 
+	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
 }
 
-- (void)fetchTimers
+- (void)viewDidDisappear:(BOOL)animated
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_timers removeAllObjects];
-
 	dist[0] = 0;
 	dist[1] = 0;
 	dist[2] = 0;
 	dist[3] = 0;
 
-	[self reloadData];
+	[_timers removeAllObjects];
 
+	[self reloadData];
+}
+
+- (void)fetchTimers
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
 	[pool release];
 }
@@ -137,7 +140,7 @@
 	int index = indexPath.row;
 	if(indexPath.section > 0)
 		index += dist[indexPath.section-1];
-	
+
 	Timer *timer = [_timers objectAtIndex: index];
 
 	TimerViewController *timerViewController = [TimerViewController withTimer: timer];
