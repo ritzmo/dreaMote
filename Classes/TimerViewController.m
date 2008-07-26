@@ -234,14 +234,16 @@
 	}
 	else
 	{
+		[super setEditing: editing animated: animated];
+
+		[(UITableView*)self.view reloadData];
+
 		[timerTitleCell setEditing:editing animated:animated];
 		[timerDescriptionCell setEditing:editing animated:animated];
 		timerServiceName.enabled = editing;
 		timerBegin.enabled = editing;
 		timerEnd.enabled = editing;
 		deleteButton.enabled = editing;
-
-		[super setEditing: editing animated: animated];
 
 		// editing stopped, commit changes
 		if(_shouldSave && !editing)
@@ -402,7 +404,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(_creatingNewTimer)
+	if(_creatingNewTimer || ([_oldTimer state] == 0 && !self.editing))
 		return 5;
 	return 6;
 }
