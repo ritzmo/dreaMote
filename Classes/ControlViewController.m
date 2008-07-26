@@ -232,4 +232,9 @@
 	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(int)[(UISlider*)sender value]];
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	// Return YES for supported orientations
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
 @end

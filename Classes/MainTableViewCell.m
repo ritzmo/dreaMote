@@ -15,13 +15,6 @@
 @synthesize nameLabel;
 @synthesize explainLabel;
 
-#define LEFT_COLUMN_OFFSET		10
-#define LEFT_COLUMN_WIDTH		220
-
-#define UPPER_ROW_TOP			0
-
-#define CELL_HEIGHT				70
-
 - (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
 {
 	self = [super initWithFrame:aRect reuseIdentifier:identifier];
@@ -58,10 +51,10 @@
     CGRect contentRect = [self.contentView bounds];
 
 	// In this example we will never be editing, but this illustrates the appropriate pattern
-    CGRect frame = CGRectMake(contentRect.origin.x + LEFT_COLUMN_OFFSET, UPPER_ROW_TOP, LEFT_COLUMN_WIDTH, 26);
+    CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
 	nameLabel.frame = frame;
 
-	frame = CGRectMake(contentRect.origin.x + LEFT_COLUMN_OFFSET, 23, LEFT_COLUMN_WIDTH, 20);
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 23, contentRect.size.width - kRightMargin, 20);
 	explainLabel.frame = frame;
 }
 

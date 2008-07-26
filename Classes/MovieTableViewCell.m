@@ -6,6 +6,7 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
+#import "Constants.h"
 #import "MovieTableViewCell.h"
 
 @interface MovieTableViewCell()
@@ -79,23 +80,19 @@
 
 - (void)layoutSubviews
 {
-#define COLUMN_X 5.0
-#define MAX_WIDTH 305.0
-	
 	[super layoutSubviews];
 	CGRect contentRect = self.contentView.bounds;
 	
 	// In this example we will never be editing, but this illustrates the appropriate pattern
 	if (!self.editing) {
-		CGFloat boundsX = contentRect.origin.x;
 		CGRect frame;
 		
 		// Place the name label.
-		frame = CGRectMake(boundsX + COLUMN_X, 7, MAX_WIDTH, 14);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 14);
 		self.eventNameLabel.frame = frame;
 
 		// Place the time label.
-		frame = CGRectMake(boundsX + COLUMN_X, 30, MAX_WIDTH, 10);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, 10);
 		self.eventTimeLabel.frame = frame;
 	}
 }
