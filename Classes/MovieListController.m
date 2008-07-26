@@ -20,7 +20,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.title = NSLocalizedString(@"Movies", @"");
+		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		self.movies = [NSMutableArray array];
 		self.refreshMovies = YES;
 	}
@@ -70,6 +70,10 @@
 	tableView.rowHeight = 48.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
+	
+	// setup our content view so that it auto-rotates along with the UViewController
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
 	self.view = tableView;
 	[tableView release];
@@ -145,5 +149,9 @@
 	// Release anything that's not essential, such as cached data
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
 
 @end

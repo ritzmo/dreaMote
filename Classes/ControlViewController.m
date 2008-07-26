@@ -21,7 +21,7 @@
 {
 	if (self = [super init])
 	{
-		self.title = NSLocalizedString(@"Controls", @"");
+		self.title = NSLocalizedString(@"Controls", @"Title of ControlViewController");
 	}
 	return self;
 }

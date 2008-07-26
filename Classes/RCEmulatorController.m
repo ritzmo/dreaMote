@@ -23,7 +23,7 @@
 {
 	if (self = [super init])
 	{
-		self.title = NSLocalizedString(@"Remote Control Title", @"");
+		self.title = NSLocalizedString(@"Remote Control", @"Title of RCEmulatorController");
 	}
 
 	return self;

@@ -25,7 +25,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.title = NSLocalizedString(@"Services", @"");
+		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
 		self.services = [NSMutableArray array];
 		self.refreshServices = YES;
 	}
@@ -48,6 +48,10 @@
 	tableView.rowHeight = 38.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
+
+	// setup our content view so that it auto-rotates along with the UViewController
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
 	[tableView release];
@@ -135,7 +139,7 @@
 		return nil;
 	}
 
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Service Action Title", @"")
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"What to do with the currently selected Service?", @"UIActionSheet when List Item in ServiceListController selected")
 															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
 	[actionSheet showInView:self.view];
 	[actionSheet release];
@@ -185,6 +189,11 @@
 {
 	_selectTarget = target;
 	_selectCallback = action;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
 }
 
 @end

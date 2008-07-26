@@ -119,7 +119,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[self fieldLabelWithFrame:frame title:@"Begin:"]];
+	[self.view addSubview:[self fieldLabelWithFrame:frame title:NSLocalizedString(@"Begin:", @"")]];
 
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
@@ -155,7 +155,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[self fieldLabelWithFrame:frame title:@"End:"]];
+	[self.view addSubview:[self fieldLabelWithFrame:frame title:NSLocalizedString(@"End:", @"")]];
 	
 	// end
 	yCoord += kTweenMargin + kLabelHeight;

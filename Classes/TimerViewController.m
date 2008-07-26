@@ -31,7 +31,7 @@
 {
 	if (self = [super init])
 	{
-		self.title = NSLocalizedString(@"Timer", @"");
+		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
 	}
 	return self;
 }
@@ -145,7 +145,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Name:"]];
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Name:", @"")]];
 	
 	// title
 	yCoord += kTweenMargin + kLabelHeight;
@@ -160,7 +160,7 @@
 	timerTitle.font = [UIFont systemFontOfSize:17.0];
 	timerTitle.delegate = self;
 	timerTitle.text = [self.timer title];
-	timerTitle.placeholder = @"<enter title>";
+	timerTitle.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of timerTitle");
 	timerTitle.backgroundColor = backgroundColor;
 	timerTitle.returnKeyType = UIReturnKeyDone;
 	timerTitle.keyboardType = UIKeyboardTypeDefault;
@@ -173,7 +173,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Description:"]];
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Description:", @"")]];
 	
 	// description
 	yCoord += kTweenMargin + kLabelHeight;
@@ -188,7 +188,7 @@
 	timerDescription.font = [UIFont systemFontOfSize:17.0];
 	timerDescription.delegate = self;
 	timerDescription.text = [self.timer tdescription];
-	timerDescription.placeholder = @"<enter description>";
+	timerDescription.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of timerDescription");
 	timerDescription.backgroundColor = backgroundColor;
 	timerDescription.returnKeyType = UIReturnKeyDone;
 	timerDescription.keyboardType = UIKeyboardTypeDefault;
@@ -201,7 +201,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Service:"]];
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Service:", @"")]];
 
 	// service
 	yCoord += kTweenMargin + kLabelHeight;
@@ -233,7 +233,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"Begin:"]];
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Begin:", @"")]];
 
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
@@ -261,7 +261,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@"End:"]];
+	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"End:", @"")]];
 	
 	// end
 	yCoord += kTweenMargin + kLabelHeight;
@@ -319,7 +319,7 @@
 									  kStdButtonHeight);
 	[deleteButton setFont: [UIFont systemFontOfSize:12.0]];
 	[deleteButton setBackgroundColor: backgroundColor];
-	[deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
+	[deleteButton setTitle:NSLocalizedString(@"Delete", @"") forState:UIControlStateNormal];
 	[deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
 	if(!_creatingNewTimer)
 		[self.view addSubview: deleteButton];
@@ -395,7 +395,7 @@
 	{
 		if(editing)
 		{
-			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:@"Can't edit a running or finished timer." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Can't edit a running or finished timer.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
 			[notification release];
 		}
@@ -433,7 +433,7 @@
 			}
 			else
 			{
-				message = @"Can't save a timer with an empty title.";
+				message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
 			}
 
 			// Get Description
@@ -449,7 +449,7 @@
 				{
 					if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
 					{
-						message = @"Error adding new timer.";
+						message = NSLocalizedString(@"Error adding new timer.", @"");
 					}
 					else
 					{
@@ -460,14 +460,14 @@
 				else
 				{
 					if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
-						message = @"Error editing timer.";
+						message = NSLocalizedString(@"Error editing timer.", @"");
 				}
 			}
 
 			// Show error message if one occured
 			if(message != nil)
 			{
-				UIAlertView *notification = [[UIAlertView alloc] initWithTitle:@"Error:" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[notification show];
 				[notification release];
 			}
@@ -578,7 +578,7 @@
 
 - (void)deleteAction: (id)sender
 {
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Timer Delete Title", @"")
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Do you really want to delete the selected timer?", @"")
 														delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles: NSLocalizedString(@"Delete", @""), nil];
 	[actionSheet showInView:self.view];
 	[actionSheet release];
@@ -599,8 +599,8 @@
 		else
 		{
 			// Alert otherwise
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete failed" message:nil
-														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
 			[alert release];
 		}

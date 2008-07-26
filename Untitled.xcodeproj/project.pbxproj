@@ -60,7 +60,7 @@
 		DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B80E375D7600455D11 /* key_plus.png */; };
 		DA7FD6750D8423E300974B1A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6740D8423E300974B1A /* MainViewController.m */; };
 		DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD6C80D8428F900974B1A /* Localizable.strings */; };
-		DA7FD6D60D84296500974B1A /* MyCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6D50D84296500974B1A /* MyCustomCell.m */; };
+		DA7FD6D60D84296500974B1A /* MainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6D50D84296500974B1A /* MainTableViewCell.m */; };
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA7FD7690D84339500974B1A /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7680D84339500974B1A /* Timer.m */; };
@@ -152,8 +152,8 @@
 		DA7FD6730D8423E300974B1A /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		DA7FD6740D8423E300974B1A /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		DA7FD6C40D8428E500974B1A /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA7FD6D40D84296500974B1A /* MyCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCustomCell.h; sourceTree = "<group>"; };
-		DA7FD6D50D84296500974B1A /* MyCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCustomCell.m; sourceTree = "<group>"; };
+		DA7FD6D40D84296500974B1A /* MainTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainTableViewCell.h; sourceTree = "<group>"; };
+		DA7FD6D50D84296500974B1A /* MainTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainTableViewCell.m; sourceTree = "<group>"; };
 		DA7FD7540D84307700974B1A /* TimerListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerListController.h; sourceTree = "<group>"; };
 		DA7FD7550D84307700974B1A /* TimerListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerListController.m; sourceTree = "<group>"; };
 		DA7FD7640D84338600974B1A /* TimerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerTableViewCell.h; sourceTree = "<group>"; };
@@ -395,8 +395,8 @@
 				DA27136B0D84071100C25B85 /* EventTableViewCell.m */,
 				DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */,
 				DA5A04D00E379C500062F924 /* MovieTableViewCell.m */,
-				DA7FD6D40D84296500974B1A /* MyCustomCell.h */,
-				DA7FD6D50D84296500974B1A /* MyCustomCell.m */,
+				DA7FD6D40D84296500974B1A /* MainTableViewCell.h */,
+				DA7FD6D50D84296500974B1A /* MainTableViewCell.m */,
 				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
 				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
 				DA7FD7640D84338600974B1A /* TimerTableViewCell.h */,
@@ -532,7 +532,7 @@
 				DA2713270D84056800C25B85 /* EventListController.m in Sources */,
 				DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */,
 				DA7FD6750D8423E300974B1A /* MainViewController.m in Sources */,
-				DA7FD6D60D84296500974B1A /* MyCustomCell.m in Sources */,
+				DA7FD6D60D84296500974B1A /* MainTableViewCell.m in Sources */,
 				DA7FD7560D84307700974B1A /* TimerListController.m in Sources */,
 				DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */,
 				DA7FD7690D84339500974B1A /* Timer.m in Sources */,

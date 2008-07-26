@@ -22,7 +22,7 @@
 	self = [super init];
 	if (self) {
 		self.timers = [NSMutableArray array];
-		self.title = NSLocalizedString(@"Timers", @"");
+		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
 	}
 	return self;
 }
@@ -42,6 +42,10 @@
 	tableView.rowHeight = 62.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	[tableView reloadData];
+
+	// setup our content view so that it auto-rotates along with the UViewController
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	// add our custom add button as the nav bar's custom right view
 	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -173,12 +177,16 @@
 		return NSLocalizedString(@"Finished", @"");
 }
 
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	if(section > 0)
 		return dist[section] - dist[section-1];
 	return dist[0];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
 }
 
 @end

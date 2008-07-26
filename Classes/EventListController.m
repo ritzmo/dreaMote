@@ -22,7 +22,7 @@
 {
 	self = [super init];
 	if (self) {
-		self.title = NSLocalizedString(@"Events", @"");
+		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
 	}
 	return self;
 }
@@ -78,6 +78,10 @@
 	tableView.rowHeight = 48.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
+
+	// setup our content view so that it auto-rotates along with the UViewController
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
 	self.view = tableView;
 	[tableView release];
@@ -145,6 +149,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_events count];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
 }
 
 @end

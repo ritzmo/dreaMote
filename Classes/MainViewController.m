@@ -8,7 +8,7 @@
 
 #import "MainViewController.h"
 
-#import "MyCustomCell.h"
+#import "MainTableViewCell.h"
 #import "ServiceListController.h"
 #import "TimerListController.h"
 #import "ControlViewController.h"
@@ -177,10 +177,10 @@
 {
 	static NSString *kMainCell_ID = @"MainCell_ID";
 
-	MyCustomCell *cell = (MyCustomCell*)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
+	MainTableViewCell *cell = (MainTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
 	if (cell == nil)
 	{
-		cell = [[[MyCustomCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+		cell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
 	}
 	
 	// get the view controller's info dictionary based on the indexPath's row

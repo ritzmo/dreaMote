@@ -21,7 +21,7 @@
 	if (self = [super init])
 	{
 		self.movie = nil;
-		self.title = NSLocalizedString(@"Movie", @"");
+		self.title = NSLocalizedString(@"Movie", @"Default title of MovieViewController");
 	}
 	
 	return self;
@@ -117,7 +117,7 @@
 						yCoord,
 						self.view.bounds.size.width - kRightMargin - kLeftMargin,
 						kLabelHeight);
-	[self.view addSubview:[MovieViewController fieldLabelWithFrame:frame title:@"Begin:"]];
+	[self.view addSubview:[MovieViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Begin:", @"")]];
 
 	// Date Formatter
 	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
@@ -155,7 +155,7 @@
 							yCoord,
 							self.view.bounds.size.width - kRightMargin - kLeftMargin,
 							kLabelHeight);
-		[self.view addSubview:[MovieViewController fieldLabelWithFrame:frame title:@"End:"]];
+		[self.view addSubview:[MovieViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"End:", @"")]];
 	
 		// end
 		yCoord += kTweenMargin + kLabelHeight;
@@ -189,7 +189,7 @@
 									kStdButtonHeight);
 	[playButton setFont: [UIFont systemFontOfSize:14.0]];
 	[playButton setBackgroundColor: backColor];
-	[playButton setTitle:@"Play" forState:UIControlStateNormal];
+	[playButton setTitle:NSLocalizedString(@"Play", @"") forState:UIControlStateNormal];
 	[playButton addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: playButton];
 }
