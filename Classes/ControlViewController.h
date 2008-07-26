@@ -10,17 +10,20 @@
 
 #import "Volume.h"
 
-@interface ControlViewController : UIViewController {
+@interface ControlViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate,
+														UITextFieldDelegate, UITableViewDelegate,
+														UITableViewDataSource>
+{
 @private
 	Volume *_volume;
 	UISwitch *_switchControl;
 	UISlider *_slider;
+	UITableView *myTableView;
 }
-
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
 
 @property (nonatomic, retain) Volume *volume;
 @property (nonatomic, retain) UISwitch *switchControl;
 @property (nonatomic, retain) UISlider *slider;
+@property (nonatomic, retain) UITableView *myTableView;
 
 @end

@@ -8,6 +8,8 @@
 
 #import "ControlViewController.h"
 
+#import "DisplayCell.h"
+#import "SourceCell.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -16,6 +18,7 @@
 @synthesize volume = _volume;
 @synthesize switchControl = _switchControl;
 @synthesize slider = _slider;
+@synthesize myTableView;
 
 - (id)init
 {
@@ -85,117 +88,71 @@
 
 - (void)loadView
 {
-	// setup our parent content view and embed it to your view controller
-	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
-	contentView.autoresizesSubviews = YES;
-	self.view = contentView;
-	[contentView release];
+	// create and configure the table view
+	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	myTableView.delegate = self;
+	myTableView.dataSource = self;
+	myTableView.autoresizesSubviews = YES;
 
-	// make sure our subview autoresize in case you decide to support rotated orientations
-	self.view.autoresizesSubviews = YES;	
-
-	CGFloat yCoord = kTopMargin;
-
-	// XXX: we might want to make volume control more webif-like (left aligned slider next to a button to mute)
-
-	// create a label for our volume slider (should fix the color though)
-	CGRect frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[ControlViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Volume:", @"")]];
+	self.view = myTableView;
 
 	// Volume
-	yCoord += kLabelHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kSliderHeight);
-	_slider = [[UISlider alloc] initWithFrame:frame];
+	_slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
 	[_slider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventTouchUpInside];
+
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_slider.backgroundColor = [UIColor clearColor];
+
 	_slider.minimumValue = 0.0;
 	_slider.maximumValue = 100.0;
 	_slider.continuous = YES;
 	_slider.value = 50.0;
-	[self.view addSubview:_slider];
-
-	// create a label for our muted switch (should fix the color though)
-	yCoord += kSliderHeight + kTweenMargin*2;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[ControlViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Mute:", @"")]];
 
 	// Muted
-	yCoord += kLabelHeight;
-
-	frame = CGRectMake(kLeftMargin + 96.0,
-						yCoord,
-						kSwitchButtonWidth,
-						kSwitchButtonHeight);
-	_switchControl = [[UISwitch alloc] initWithFrame:frame];
+	_switchControl = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_switchControl addTarget:self action:@selector(toggleMuted:) forControlEvents:UIControlEventTouchUpInside];
+
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_switchControl.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:_switchControl];
-
-	// Standby
-	yCoord += kSwitchButtonHeight + kTweenMargin*3;
-
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	[roundedButtonType setTitle:NSLocalizedString(@"Standby", @"") forState:UIControlStateNormal];
-	[roundedButtonType addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: roundedButtonType];
-
-	// Reboot
-	yCoord += kStdButtonHeight + kTweenMargin;
-
-	roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	[roundedButtonType setTitle:NSLocalizedString(@"Reboot", @"") forState:UIControlStateNormal];
-	[roundedButtonType addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: roundedButtonType];
-
-	// Restart
-	yCoord += kStdButtonHeight + kTweenMargin;
-
-	roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	[roundedButtonType setTitle:NSLocalizedString(@"Restart", @"") forState:UIControlStateNormal];
-	[roundedButtonType addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: roundedButtonType];
-
-	// Shutdown
-	yCoord += kStdButtonHeight + kTweenMargin;
-
-	roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	[roundedButtonType setTitle:NSLocalizedString(@"Shutdown", @"") forState:UIControlStateNormal];
-	[roundedButtonType addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: roundedButtonType];
 }
 
-// TODO: try to merge :-)
+- (UIButton *)create_StandbyButton
+{
+	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
+	[roundedButtonType addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 
+	return roundedButtonType;
+}
+
+- (UIButton *)create_RebootButton
+{
+	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
+	[roundedButtonType addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
+
+	return roundedButtonType;
+}
+
+- (UIButton *)create_RestartButton
+{
+	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
+	[roundedButtonType addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
+
+	return roundedButtonType;
+}
+
+- (UIButton *)create_ShutdownButton
+{
+	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
+	[roundedButtonType addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
+
+	return roundedButtonType;
+}
+
+// XXX: these should be merged
 - (void)standby:(id)sender
 {
 	[[RemoteConnectorObject sharedRemoteConnector] standby];
@@ -230,6 +187,98 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - UITableView delegates
+
+// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
+//
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return UITableViewCellEditingStyleNone;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return 2;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	switch (section) {
+		case 0:
+			return NSLocalizedString(@"Volume", @"");
+		case 1:
+			return NSLocalizedString(@"Power", @"");
+		default:
+			return nil;
+	}
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	if(section == 1)
+		return 4;
+	return 2;
+}
+
+// to determine specific row height for each cell, override this.  In this example, each row is determined
+// buy the its subviews that are embedded.
+//
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return kUIRowHeight;
+}
+
+// to determine which UITableViewCell to be used on a given row.
+//
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	DisplayCell *sourceCell = (DisplayCell *)[myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+	if(sourceCell == nil)
+		sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+
+	// we are creating a new cell, setup its attributes
+	switch ([indexPath section]) {
+		case 0:
+			if([indexPath row] == 0)
+			{
+				sourceCell.nameLabel.text = nil;
+				sourceCell.view = _slider;
+			}
+			else
+			{
+				sourceCell.nameLabel.text = NSLocalizedString(@"Mute", @"");
+				sourceCell.view = _switchControl;
+			}
+			break;
+		case 1:
+			switch ([indexPath row]){
+				case 0:
+					sourceCell.nameLabel.text = NSLocalizedString(@"Standby", @"");
+					sourceCell.view = [self create_StandbyButton];
+					break;
+				case 1:
+					sourceCell.nameLabel.text = NSLocalizedString(@"Reboot", @"");
+					sourceCell.view = [self create_RebootButton];
+					break;
+				case 2:
+					sourceCell.nameLabel.text = NSLocalizedString(@"Restart", @"");
+					sourceCell.view = [self create_RestartButton];
+					break;
+				case 3:
+					sourceCell.nameLabel.text = NSLocalizedString(@"Shutdown", @"");
+					sourceCell.view = [self create_ShutdownButton];
+					break;
+				default:
+					break;
+			}
+			break;	
+		default:
+			break;
+	}
+	
+	return sourceCell;
 }
 
 @end
