@@ -11,11 +11,13 @@
 #import "Event.h"
 #import "Service.h"
 
-@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate>
+@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate,
+													UITextFieldDelegate, UITableViewDelegate,
+													UITableViewDataSource>
 {
-	UITextView *myTextView;
 	Event *_event;
 	Service *_service;
+	UITableView	*myTableView;
 }
 
 + (EventViewController *)withEvent: (Event *) newEvent;
@@ -23,5 +25,6 @@
 
 @property (nonatomic, retain) Event *event;
 @property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) UITableView *myTableView;
 
 @end

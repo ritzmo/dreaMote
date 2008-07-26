@@ -12,21 +12,28 @@
 #import "Event.h"
 #import "Service.h"
 
-@interface TimerViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate, UITextFieldDelegate> {
+#import "CellTextField.h"
+
+@interface TimerViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate,
+													UITextFieldDelegate, UITableViewDelegate,
+													UITableViewDataSource, EditableTableViewCellDelegate>
+{
+	UITableView *myTableView;
 	UITextField *timerTitle;
+	CellTextField *timerTitleCell;
 	UITextField *timerDescription;
+	CellTextField *timerDescriptionCell;
 	UIButton *timerServiceName;
-	UIButton *timerBeginString;
-	UIButton *timerEndString;
+	UIButton *timerBegin;
+	UIButton *timerEnd;
 	UIButton *deleteButton;
-	UIResponder *lastTrackedFirstResponder;
 
 @private
 	Timer *_timer;
 	Timer *_oldTimer;
 	Service *_service;
 	BOOL _creatingNewTimer;
-	BOOL _wasActive;
+	BOOL _shouldSave;
 }
 
 + (TimerViewController *)withEvent: (Event *)ourEvent;
@@ -37,6 +44,7 @@
 @property (nonatomic, retain) Timer *timer;
 @property (nonatomic, retain) Timer *oldTimer;
 @property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) UITableView *myTableView;
 @property (assign) BOOL creatingNewTimer;
 
 @end

@@ -9,6 +9,10 @@
 #import "EventViewController.h"
 
 #import "TimerViewController.h"
+#import "CellTextView.h"
+#import "CellTextField.h"
+#import "DisplayCell.h"
+#import "SourceCell.h"
 #import "Constants.h"
 
 @interface EventViewController()
@@ -19,6 +23,7 @@
 
 @synthesize event = _event;
 @synthesize service = _service;
+@synthesize myTableView;
 
 - (id)init
 {
@@ -55,7 +60,6 @@
 
 - (void)dealloc
 {
-	[myTextView release];
 	[_event release];
 
 	[super dealloc];
@@ -63,134 +67,13 @@
 
 - (void)loadView
 {
-	UIColor *backColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
-	
-	// setup our parent content view and embed it to your view controller
-	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = backColor;
-	self.view = contentView;
-	self.view.autoresizesSubviews = YES;
+	// create and configure the table view
+	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	myTableView.delegate = self;
+	myTableView.dataSource = self;
+	myTableView.autoresizesSubviews = YES;
 
-	[contentView release];
-
-	CGFloat yCoord = kTopMargin;
-
-	// create a text view
-	CGRect frame = CGRectMake(	kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kLeftMargin - kRightMargin,
-						kTextViewHeight);
-	myTextView = [[UITextView alloc] initWithFrame:frame];
-	myTextView.textColor = [UIColor blackColor];
-	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
-	myTextView.delegate = self;
-	myTextView.editable = NO;
-	myTextView.backgroundColor = [UIColor whiteColor];
-
-	// We display short description (or title) and extended description (if available) in our textview
-	NSMutableString *text = [[NSMutableString alloc] init];
-	if([[_event sdescription] length])
-	{
-		[text appendString: [_event sdescription]];
-	}
-	else
-	{
-		[text appendString: [_event title]];
-	}
-
-	if([[_event edescription] length])
-	{
-		[text appendString: @"\n\n"];
-		[text appendString: [_event edescription]];
-	}
-
-	myTextView.text = text;
-	[self.view addSubview:myTextView];
-
-	[myTextView release];
-	[text release];
-
-	// XXX: I'm not completely satisfied how begin/end look
-
-	// create a label for our begin textfield
-	yCoord += kTweenMargin + kTextViewHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[self fieldLabelWithFrame:frame title:NSLocalizedString(@"Begin:", @"")]];
-
-	// Date Formatter
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	
-	// begin
-	yCoord += kTweenMargin + kLabelHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - (kRightMargin*2),
-						kTextFieldHeight);
-	UITextField *textField = [[UITextField alloc] initWithFrame:frame];
-	textField.borderStyle = UITextBorderStyleRoundedRect;
-	textField.textColor = [UIColor blackColor];
-	textField.font = [UIFont systemFontOfSize:17.0];
-	textField.delegate = self;
-	textField.text = [format stringFromDate: [_event begin]];
-
-	textField.enabled = NO;
-	textField.backgroundColor = backColor;
-	textField.returnKeyType = UIReturnKeyDone;
-	textField.keyboardType = UIKeyboardTypeDefault;
-	[self.view addSubview:textField];
-
-	[textField release];
-
-	// create a label for our end textfield
-	yCoord += kTweenMargin + kTextFieldHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[self fieldLabelWithFrame:frame title:NSLocalizedString(@"End:", @"")]];
-	
-	// end
-	yCoord += kTweenMargin + kLabelHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - (kRightMargin*2),
-						kTextFieldHeight);
-	textField = [[UITextField alloc] initWithFrame:frame];
-	textField.borderStyle = UITextBorderStyleRoundedRect;
-	textField.textColor = [UIColor blackColor];
-	textField.font = [UIFont systemFontOfSize:17.0];
-	textField.delegate = self;
-	textField.text = [format stringFromDate: [_event end]];
-	textField.enabled = NO;
-	textField.backgroundColor = backColor;
-	textField.returnKeyType = UIReturnKeyDone;
-	textField.keyboardType = UIKeyboardTypeDefault;
-	[self.view addSubview:textField];
-
-	[textField release];
-
-	// add timer button
-	yCoord += kTextFieldHeight + kTweenMargin;
-
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	roundedButtonType.backgroundColor = backColor;
-	[roundedButtonType setFont: [UIFont systemFontOfSize:12.0]];
-	[roundedButtonType setTitle:NSLocalizedString(@"Add Timer", @"") forState:UIControlStateNormal];
-	[roundedButtonType addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: roundedButtonType];
+	self.view = myTableView;
 }
 
 - (void)addTimer: (id)sender
@@ -214,6 +97,192 @@
 	label.backgroundColor = [UIColor clearColor];
 	
 	return label;
+}
+
+- (UITextView *)create_Summary
+{
+	CGRect frame = CGRectMake(0, 0, 100, kTextViewHeight);
+	UITextView *myTextView = [[[UITextView alloc] initWithFrame:frame] autorelease];
+	myTextView.textColor = [UIColor blackColor];
+	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
+	myTextView.delegate = self;
+	myTextView.editable = NO;
+	myTextView.backgroundColor = [UIColor whiteColor];
+	
+	// We display short description (or title) and extended description (if available) in our textview
+	NSMutableString *text = [[NSMutableString alloc] init];
+	if([[_event sdescription] length])
+	{
+		[text appendString: [_event sdescription]];
+	}
+	else
+	{
+		[text appendString: [_event title]];
+	}
+	
+	if([[_event edescription] length])
+	{
+		[text appendString: @"\n\n"];
+		[text appendString: [_event edescription]];
+	}
+	
+	myTextView.text = text;
+
+	[text release];
+	
+	return myTextView;
+}
+
+- (NSString *)format_BeginEnd: (NSDate *)dateTime
+{
+	// Date Formatter
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
+	
+	return [format stringFromDate: dateTime];
+}
+
+- (UIButton *)create_AddTimerButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+#pragma mark UITextView delegate methods
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+	// we don't allow editing
+}
+
+- (void)saveAction:(id)sender
+{
+	// we don't allow editing
+}
+
+#pragma mark - UITableView delegates
+
+// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
+//
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return UITableViewCellEditingStyleNone;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	return 4;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	switch (section) {
+		case 0:
+			return NSLocalizedString(@"Description", @"");
+		case 1:
+			return NSLocalizedString(@"Begin", @"");
+		case 2:
+			return NSLocalizedString(@"End", @"");
+		default:
+			return nil;
+	}
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return 1;
+}
+
+// to determine specific row height for each cell, override this.  In this example, each row is determined
+// buy the its subviews that are embedded.
+//
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	CGFloat result;
+
+	switch ([indexPath section])
+	{
+		case 0:
+		{
+			result = kTextViewHeight;
+			break;
+		}
+		case 1:
+		case 2:
+		{
+			result = kTextFieldHeight;
+			break;
+		}
+		case 3:
+		{
+			result = kUIRowHeight;
+			break;
+		}
+	}
+	
+	return result;
+}
+
+// utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
+//
+- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
+{
+	UITableViewCell *cell = nil;
+
+	switch (section) {
+		case 0:
+			cell = [myTableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
+			if(cell == nil)
+				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
+			break;
+		case 1:
+		case 2:
+			cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
+			if(cell == nil)
+				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
+			break;
+		case 3:
+			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+			if(cell == nil)
+				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			break;
+		default:
+			break;
+	}
+
+	return cell;
+}
+
+// to determine which UITableViewCell to be used on a given row.
+//
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSInteger section = [indexPath section];
+	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
+	
+	// we are creating a new cell, setup its attributes
+	switch (section) {
+		case 0:
+			((CellTextView *)sourceCell).view = [self create_Summary];
+			break;
+		case 1:
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_event begin]];
+			break;
+		case 2:
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_event end]];
+			break;	
+		case 3:
+			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add Timer", @"");
+			((DisplayCell *)sourceCell).view = [self create_AddTimerButton];
+		default:
+			break;
+	}
+	
+	return sourceCell;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

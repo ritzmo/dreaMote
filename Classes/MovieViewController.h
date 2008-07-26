@@ -10,17 +10,18 @@
 
 #import "Movie.h"
 
-@interface MovieViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate, UITextFieldDelegate>
+@interface MovieViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate,
+													UITextFieldDelegate, UITableViewDelegate,
+													UITableViewDataSource>
 {
 @private
-	UITextView *myTextView;
-	UIButton *playButton;
+	UITableView	*myTableView;
 	Movie *_movie;
 }
 
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
 + (MovieViewController *)withMovie: (Movie *) newMovie;
 
 @property (nonatomic, retain) Movie *movie;
+@property (nonatomic, retain) UITableView *myTableView;
 
 @end

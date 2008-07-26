@@ -11,21 +11,32 @@
 #import "ServiceListController.h"
 #import "DatePickerController.h"
 
+#import "CellTextField.h"
+#import "DisplayCell.h"
+#import "SourceCell.h"
+
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
+
+@interface TimerViewController()
+- (void)setViewMovedUp:(BOOL)movedUp;
+@end
 
 @implementation TimerViewController
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kViewVerticalOffset					(kTextFieldHeight + kTweenMargin*5)
+#define kOFFSET_FOR_KEYBOARD					150.0
+
+#define kTextFieldWidth							100.0	// initial width, but the table cell will dictact the actual width
 
 // the duration of the animation for the view shift
-#define kVerticalOffsetAnimationDuration	0.30
+#define kVerticalOffsetAnimationDuration		0.30
 
 @synthesize timer = _timer;
 @synthesize oldTimer = _oldTimer;
 @synthesize creatingNewTimer = _creatingNewTimer;
 @synthesize service = _service;
+@synthesize myTableView;
 
 - (id)init
 {
@@ -81,312 +92,142 @@
 	[_timer release];
 	[_service release];
 	[_oldTimer release];
+
+	[myTableView release];
 	[timerTitle release];
 	[timerDescription release];
 	[timerServiceName release];
-	[timerBeginString release];
-	[timerEndString release];
-	[lastTrackedFirstResponder release];
+	[timerBegin release];
+	[timerEnd release];
 	[deleteButton release];
 
 	[super dealloc];
 }
 
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
+- (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
+	// Date Formatter
+	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
 	
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = title;
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
+	return [format stringFromDate: dateTime];
+}
 
-	return label;
+- (UITextField *)create_TextField
+{
+	CGRect frame = CGRectMake(0.0, 0.0, kTextFieldWidth, kTextFieldHeight);
+	UITextField *returnTextField = [[UITextField alloc] initWithFrame:frame];
+    
+	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
+    returnTextField.textColor = [UIColor blackColor];
+	returnTextField.font = [UIFont systemFontOfSize:17.0];
+    returnTextField.backgroundColor = [UIColor whiteColor];
+	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;	// no auto correction support
+
+	returnTextField.keyboardType = UIKeyboardTypeDefault;
+	returnTextField.returnKeyType = UIReturnKeyDone;
+
+	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;	// has a clear 'x' button to the right
+
+	return returnTextField;
+}
+
+- (UITextField *)create_TitleField
+{
+	UITextField *returnTextField = [self create_TextField];
+	
+    returnTextField.text = [_timer title];
+	returnTextField.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of timerTitle");
+	
+	return returnTextField;
+}
+
+- (UITextField *)create_DescriptionField
+{
+	UITextField *returnTextField = [self create_TextField];
+	
+    returnTextField.text = [_timer tdescription];
+	returnTextField.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of timerDescription");
+	
+	return returnTextField;
+}
+
+- (UIButton *)create_ServiceButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button setTitle:@"Change" forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+- (UIButton *)create_DeleteButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button setTitle:@"Change" forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+- (UIButton *)create_BeginButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button setTitle:@"Change" forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+- (UIButton *)create_EndButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button setTitle:@"Change" forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+- (void)reloadData
+{
+	[(UITableView *)self.view reloadData];
 }
 
 - (void)loadView
 {
-	_wasActive = NO;
+	_shouldSave = NO;
 
-	UIColor *backgroundColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
-	
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = backgroundColor;
-
-	// important for view orientation rotation
-	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);	
+	contentView.backgroundColor = [UIColor blackColor];
+	contentView.autoresizesSubviews = YES;
 	self.view = contentView;
-	self.view.autoresizesSubviews = YES;
-	
 	[contentView release];
 
-	// note: for UITextField, if you don't like autocompletion while typing use:
-	// aTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-	/*
-	Order of E2 Timer Editing Screen is:
-		- Name
-		- Description
-		- Type
-		- Repeated
-		- Begin
-		- End
-		- (Location)
-		- afterEvent
-		- Service
-	*/
-
-	CGFloat yCoord = kTopMargin;
-
-	// create a label for our title textfield
-	CGRect frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Name:", @"")]];
+	// create and configure the table view
+	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];	
+	myTableView.delegate = self;
+	myTableView.dataSource = self;
 	
-	// title
-	yCoord += kTweenMargin + kLabelHeight;
+	myTableView.scrollEnabled = YES;
+	[self.view addSubview: myTableView];
 
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - (kRightMargin*2),
-						kTextFieldHeight);
-	timerTitle = [[UITextField alloc] initWithFrame:frame];
-	timerTitle.borderStyle = UITextBorderStyleRoundedRect;
-	timerTitle.textColor = [UIColor blackColor];
-	timerTitle.font = [UIFont systemFontOfSize:17.0];
-	timerTitle.delegate = self;
-	timerTitle.text = [self.timer title];
-	timerTitle.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of timerTitle");
-	timerTitle.backgroundColor = backgroundColor;
-	timerTitle.returnKeyType = UIReturnKeyDone;
-	timerTitle.keyboardType = UIKeyboardTypeDefault;
-	[self.view addSubview:timerTitle];
-
-	// create a label for our description textfield
-	yCoord += kTweenMargin + kTextFieldHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Description:", @"")]];
-	
-	// description
-	yCoord += kTweenMargin + kLabelHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - (kRightMargin*2),
-						kTextFieldHeight);
-	timerDescription = [[UITextField alloc] initWithFrame:frame];
-	timerDescription.borderStyle = UITextBorderStyleRoundedRect;
-	timerDescription.textColor = [UIColor blackColor];
-	timerDescription.font = [UIFont systemFontOfSize:17.0];
-	timerDescription.delegate = self;
-	timerDescription.text = [self.timer tdescription];
-	timerDescription.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of timerDescription");
-	timerDescription.backgroundColor = backgroundColor;
-	timerDescription.returnKeyType = UIReturnKeyDone;
-	timerDescription.keyboardType = UIKeyboardTypeDefault;
-	[self.view addSubview:timerDescription];
-
-	// create a label for our service textfield
-	yCoord += kTweenMargin + kTextFieldHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Service:", @"")]];
-
-	// service
-	yCoord += kTweenMargin + kLabelHeight;
-
-	timerServiceName = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	timerServiceName.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	timerServiceName.backgroundColor = backgroundColor;
-	NSString *buttonTitle = @"";
-	if([[[self.timer service] sname] length])
-		buttonTitle = [[self.timer service] sname];
-	else
-		buttonTitle = NSLocalizedString(@"Select Service", @"");
-	[timerServiceName setFont: [UIFont systemFontOfSize:12.0]];
-	[timerServiceName setTitle:buttonTitle forState:UIControlStateNormal];
-	[timerServiceName addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: timerServiceName];
-	
-	[buttonTitle release];
-
-	// XXX: I'm not completely satisfied how begin/end look
-
-	// create a label for our begin textfield
-	yCoord += kTweenMargin + kStdButtonHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"Begin:", @"")]];
-
-	// Date Formatter
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterFullStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-
-	// begin
-	yCoord += kTweenMargin + kLabelHeight;
-
-	timerBeginString = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	timerBeginString.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	[timerBeginString setBackgroundColor: backgroundColor];
-	[timerBeginString setFont: [UIFont systemFontOfSize:12.0]];
-	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
-	[timerBeginString addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: timerBeginString];
-
-	// create a label for our end textfield
-	yCoord += kTweenMargin + kStdButtonHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:NSLocalizedString(@"End:", @"")]];
-	
-	// end
-	yCoord += kTweenMargin + kLabelHeight;
-
-	timerEndString = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	timerEndString.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-											yCoord,
-											kWideButtonWidth,
-											kStdButtonHeight);
-	[timerEndString setFont: [UIFont systemFontOfSize:12.0]];
-	[timerEndString setBackgroundColor: backgroundColor];
-	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];
-	[timerEndString addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: timerEndString];
-
-/*
-	// this is a template :-)
-	// create a label for our  textfield
-	yCoord += kTweenMargin + kTextFieldHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - kRightMargin - kLeftMargin,
-						kLabelHeight);
-	[self.view addSubview:[TimerViewController fieldLabelWithFrame:frame title:@":"]];
-	
-	// 
-	yCoord += kTweenMargin + kLabelHeight;
-
-	frame = CGRectMake(kLeftMargin,
-						yCoord,
-						self.view.bounds.size.width - (kRightMargin*2),
-						kTextFieldHeight);
-	timer = [[UITextField alloc] initWithFrame:frame];
-	timer.borderStyle = UITextFieldBorderStyleRounded;
-	timer.textColor = [UIColor blackColor];
-	timer.font = [UIFont systemFontOfSize:17.0];
-	timer.delegate = self;
-	timer.text = [self.timer ];
-	timer.placeholder = @"<enter >";
-	timer.backgroundColor = backgroundColor;
-	timer.returnKeyType = UIReturnKeyDone;
-	timer.keyboardType = UIKeyboardTypeDefault;
-	[ addTarget:self action:@selector(:) forControlEvents:UIControlEventEditingBegin];
-	[self.view addSubview:timer];
-*/
-
-	// delete
-	yCoord += 2*kTweenMargin + kStdButtonHeight;
-	
-	deleteButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	deleteButton.frame = CGRectMake(	(self.view.bounds.size.width - kWideButtonWidth) / 2.0,
-									  yCoord,
-									  kWideButtonWidth,
-									  kStdButtonHeight);
-	[deleteButton setFont: [UIFont systemFontOfSize:12.0]];
-	[deleteButton setBackgroundColor: backgroundColor];
-	[deleteButton setTitle:NSLocalizedString(@"Delete", @"") forState:UIControlStateNormal];
-	[deleteButton addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-	if(!_creatingNewTimer)
-		[self.view addSubview: deleteButton];
-
-	UINavigationItem *navItem = self.navigationItem;
-	
-	// add edit button as the nav bar's custom right view
-	navItem.rightBarButtonItem = self.editButtonItem;
+	timerTitle = [self create_TitleField];
+	timerDescription = [self create_DescriptionField];
+	timerServiceName = [[self create_ServiceButton] retain];
+	timerBegin = [[self create_BeginButton] retain];
+	timerEnd = [[self create_EndButton] retain];
+	deleteButton = [[self create_DeleteButton] retain];
 
 	// default editing mode depends on our mode
 	[self setEditing: _creatingNewTimer];
-	
-	[navItem release];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	_wasActive = YES;
-}
-
-// Animate the entire view up or down, to prevent the keyboard from covering the summary field
-//
-- (void)setViewMovedUp:(BOOL)movedUp
-{
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:kVerticalOffsetAnimationDuration];
-	
-	// Make changes to the view's frame inside the animation block.
-	// They will be animated instead of taking place immediately.
-	CGRect rect = self.view.frame;
-	if (movedUp)
-	{
-		// If moving up, not only decrease the origin but increase the height so the view 
-		// covers the entire screen behind the keyboard.
-		rect.origin.y -= kViewVerticalOffset;
-		rect.size.height += kViewVerticalOffset;
-	}
-	else
-	{
-		// If moving down, not only increase the origin but decrease the height.
-		rect.origin.y += kViewVerticalOffset;
-		rect.size.height -= kViewVerticalOffset;
-	}
-	self.view.frame = rect;
-	
-	[UIView commitAnimations];
-}
-
-- (void)keyboardWillShow:(NSNotification *)notification
-{
-	// The keyboard will be shown
-	//
-	// If the user is editing either of the two text fields placed under the keyboard area,
-	// adjust the display so that the each of them will not be covered by the keyboard.
-	//
-	// We do this by examining the notification's object to get the keyboard's frame
-	//
-	/*
-	if (([timerTitle isFirstResponder]) && (self.view.frame.origin.y >= 0))
-	{
-		[self setViewMovedUp:YES];
-	}
-	else
-	{
-		[self setViewMovedUp:NO];
-	}
-	*/
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
@@ -401,28 +242,27 @@
 		}
 		else
 		{
-			timerTitle.enabled = NO;
-			timerDescription.enabled = NO;
+			[timerTitleCell stopEditing];
+			[timerDescriptionCell stopEditing];
 			timerServiceName.enabled = NO;
-			timerBeginString.enabled = NO;
-			timerEndString.enabled = NO;
+			timerBegin.enabled = NO;
+			timerEnd.enabled = NO;
 			deleteButton.enabled = YES;
 		}
 	}
 	else
 	{
-		timerTitle.enabled = editing;
-		timerDescription.enabled = editing;
+		[timerTitleCell setEditing:editing animated:animated];
+		[timerDescriptionCell setEditing:editing animated:animated];
 		timerServiceName.enabled = editing;
-		timerBeginString.enabled = editing;
-		timerEndString.enabled = editing;
-		if(_creatingNewTimer)
-			deleteButton.enabled = editing;
+		timerBegin.enabled = editing;
+		timerEnd.enabled = editing;
+		deleteButton.enabled = editing;
 
 		[super setEditing: editing animated: animated];
 
 		// editing stopped, commit changes
-		if(_wasActive && !editing)
+		if(_shouldSave && !editing)
 		{
 			NSString *message = nil;
 
@@ -475,51 +315,6 @@
 	}
 }
 
-- (void)keyboardDidHide:(NSNotification *)notification
-{
-	// The keyboard was hidden
-	//
-	// If the view was previously adjusted to prevent the keyboard from covering 
-	// the edit fields, restore the original positioning.
-	//
-	/*
-	if  (self.view.frame.origin.y > 0)
-	{
-		[self setViewMovedUp:NO];
-	}
-	*/
-}
-
-// this helps dismiss the keyboard then the "done" button is clicked
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-	[textField resignFirstResponder];
-	return YES;
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	// Watch the keyboard so we can adjust the user interface if necessary.
-  
-	// since 'textFieldSecure' will be obscured when its keyboard shows up, we need to move it out of the way
-	// back back again each time the keyboard appears and disappears, so these two notification will help us
-	// with this effort:
-	//
-	[[NSNotificationCenter defaultCenter]
-		addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:self.view.window];
-	[[NSNotificationCenter defaultCenter]
-		addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:self.view.window];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-	// Unregister for keyboard notifications while not visible.
-	[[NSNotificationCenter defaultCenter]
-		removeObserver:self name:UIKeyboardWillShowNotification object:self.view.window];
-	[[NSNotificationCenter defaultCenter]
-		removeObserver:self name:UIKeyboardDidHideNotification object:self.view.window];
-}
-
 - (void)editService:(id)sender
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
@@ -533,9 +328,11 @@
 
 - (void)serviceSelected:(id)object
 {
-	// XXX: we might want to check for an invalid service here (unable to receive list ?)
-	self.timer.service = [(Service*)object retain];
-	[timerServiceName setTitle: [[_timer service] sname] forState:UIControlStateNormal];
+	if(object != nil)
+	{
+		self.timer.service = [(Service*)object retain];
+		[self reloadData];
+	}
 }
 
 - (void)editBegin:(id)sender
@@ -549,12 +346,8 @@
 
 - (void)beginSelected:(id)object
 {
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterFullStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-
 	self.timer.begin = [(NSDate*)object retain];
-	[timerBeginString setTitle:[format stringFromDate: [_timer begin]] forState:UIControlStateNormal];
+	[self reloadData];
 }
 
 - (void)editEnd:(id)sender
@@ -568,12 +361,8 @@
 
 - (void)endSelected:(id)object
 {
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterFullStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-
 	self.timer.end = [(NSDate*)object retain];
-	[timerEndString setTitle:[format stringFromDate: [_timer end]] forState:UIControlStateNormal];
+	[self reloadData];
 }
 
 - (void)deleteAction: (id)sender
@@ -607,9 +396,226 @@
 	}
 }
 
+#pragma mark - UITableView delegates
+
+// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
+//
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return UITableViewCellEditingStyleNone;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	if(_creatingNewTimer)
+		return 5;
+	return 6;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	/*
+	 Order of E2 Timer Editing Screen is:
+	 - Name
+	 - Description
+	 - Type
+	 - Repeated
+	 - Begin
+	 - End
+	 - (Location)
+	 - afterEvent
+	 - Service
+	*/
+
+	switch (section) {
+		case 0:
+			return NSLocalizedString(@"Title", @"");
+		case 1:
+			return NSLocalizedString(@"Description", @"");
+		case 2:
+			return NSLocalizedString(@"Service", @"");
+		case 3:
+			return NSLocalizedString(@"Begin", @"");
+		case 4:
+			return NSLocalizedString(@"End", @"");
+		default:
+			return nil;
+	}
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return 1;
+}
+
+// to determine specific row height for each cell, override this.  In this example, each row is determined
+// buy the its subviews that are embedded.
+//
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return kUIRowHeight;
+}
+
+// utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
+//
+- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
+{
+	UITableViewCell *cell = nil;
+
+	switch (section) {
+		case 0:
+		case 1:
+			cell = [myTableView dequeueReusableCellWithIdentifier:kCellTextField_ID];
+			if(cell == nil)
+				cell = [[[CellTextField alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextField_ID] autorelease];
+			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
+			break;
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+			if(cell == nil)
+				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			break;
+		default:
+			break;
+	}
+
+	return cell;
+}
+
+// to determine which UITableViewCell to be used on a given row.
+//
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSInteger section = [indexPath section];
+	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
+
+	// we are creating a new cell, setup its attributes
+	switch (section) {
+		case 0:
+			((CellTextField *)sourceCell).view = timerTitle;
+			timerTitleCell = (CellTextField *)sourceCell;
+			break;
+		case 1:
+			((CellTextField *)sourceCell).view = timerDescription;
+			timerDescriptionCell = (CellTextField *)sourceCell;
+			break;
+		case 2:
+			if([[[self.timer service] sname] length])
+				((DisplayCell *)sourceCell).nameLabel.text = [[_timer service] sname];
+			else
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Select Service", @"");
+			((DisplayCell *)sourceCell).view = timerServiceName;
+			break;
+		case 3:
+			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer begin]];
+			((DisplayCell *)sourceCell).view = timerBegin;
+			break;
+		case 4:
+			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer end]];
+			((DisplayCell *)sourceCell).view = timerEnd;
+			break;
+		case 5:
+			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Delete", @"");
+			((DisplayCell *)sourceCell).view = deleteButton;
+		default:
+			break;
+	}
+
+	return sourceCell;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark -
+#pragma mark <EditableTableViewCellDelegate> Methods and editing management
+
+- (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
+{
+    // notify other cells to end editing
+    if (![cell isEqual:timerTitleCell])
+		[timerTitleCell stopEditing];
+    if (![cell isEqual:timerDescriptionCell])
+		[timerDescriptionCell stopEditing];
+
+    return self.editing;
+}
+
+- (void)cellDidEndEditing:(EditableTableViewCell *)cell
+{
+	if ([cell isEqual:timerTitleCell] || [cell isEqual:timerDescriptionCell])
+	{
+        // Restore the position of the main view if it was animated to make room for the keyboard.
+        if  (self.view.frame.origin.y < 0)
+		{
+            [self setViewMovedUp:NO];
+        }
+    }
+}
+
+// Animate the entire view up or down, to prevent the keyboard from covering the author field.
+- (void)setViewMovedUp:(BOOL)movedUp
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    // Make changes to the view's frame inside the animation block. They will be animated instead
+    // of taking place immediately.
+    CGRect rect = self.view.frame;
+    if (movedUp)
+	{
+        // If moving up, not only decrease the origin but increase the height so the view 
+        // covers the entire screen behind the keyboard.
+        rect.origin.y -= kOFFSET_FOR_KEYBOARD;
+        rect.size.height += kOFFSET_FOR_KEYBOARD;
+    }
+	else
+	{
+        // If moving down, not only increase the origin but decrease the height.
+        rect.origin.y += kOFFSET_FOR_KEYBOARD;
+        rect.size.height -= kOFFSET_FOR_KEYBOARD;
+    }
+    self.view.frame = rect;
+    
+    [UIView commitAnimations];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notif
+{
+    // The keyboard will be shown. If the user is editing the author, adjust the display so that the
+    // author field will not be covered by the keyboard.
+    if ((timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
+	{
+        [self setViewMovedUp:YES];
+    }
+	else if (!timerDescriptionCell.isInlineEditing && self.view.frame.origin.y < 0)
+	{
+        [self setViewMovedUp:NO];
+    }
+}
+
+#pragma mark - UIViewController delegate methods
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // watch the keyboard so we can adjust the user interface if necessary.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
+												 name:UIKeyboardWillShowNotification object:self.view.window]; 
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	_shouldSave = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil]; 
 }
 
 @end

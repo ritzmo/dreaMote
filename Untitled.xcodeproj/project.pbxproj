@@ -19,6 +19,11 @@
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
+		DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247BF0E3B33FA00B09600 /* CellTextField.m */; };
+		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
+		DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
+		DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247EB0E3B3A7500B09600 /* DisplayCell.m */; };
+		DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5248220E3B3DFB00B09600 /* SourceCell.m */; };
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D10E379C500062F924 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04CE0E379C500062F924 /* Movie.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
@@ -105,6 +110,16 @@
 		DA2CC28A0E378FCC006AE171 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
+		DA5247BE0E3B33FA00B09600 /* CellTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextField.h; sourceTree = "<group>"; };
+		DA5247BF0E3B33FA00B09600 /* CellTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellTextField.m; sourceTree = "<group>"; };
+		DA5247C00E3B33FA00B09600 /* CellTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextView.h; sourceTree = "<group>"; };
+		DA5247C10E3B33FA00B09600 /* CellTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellTextView.m; sourceTree = "<group>"; };
+		DA5247E40E3B3A3500B09600 /* EditableTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditableTableViewCell.h; sourceTree = "<group>"; };
+		DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
+		DA5247EA0E3B3A7500B09600 /* DisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCell.h; sourceTree = "<group>"; };
+		DA5247EB0E3B3A7500B09600 /* DisplayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCell.m; sourceTree = "<group>"; };
+		DA5248210E3B3DFB00B09600 /* SourceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceCell.h; sourceTree = "<group>"; };
+		DA5248220E3B3DFB00B09600 /* SourceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceCell.m; sourceTree = "<group>"; };
 		DA5A048E0E3798BC0062F924 /* MovieListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieListController.h; sourceTree = "<group>"; };
 		DA5A048F0E3798BC0062F924 /* MovieListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListController.m; sourceTree = "<group>"; };
 		DA5A04CD0E379C500062F924 /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
@@ -391,6 +406,14 @@
 		DAF0D5490E38FF70001F7CF1 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				DA5247BE0E3B33FA00B09600 /* CellTextField.h */,
+				DA5247BF0E3B33FA00B09600 /* CellTextField.m */,
+				DA5247C00E3B33FA00B09600 /* CellTextView.h */,
+				DA5247C10E3B33FA00B09600 /* CellTextView.m */,
+				DA5247EA0E3B3A7500B09600 /* DisplayCell.h */,
+				DA5247EB0E3B3A7500B09600 /* DisplayCell.m */,
+				DA5247E40E3B3A3500B09600 /* EditableTableViewCell.h */,
+				DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */,
 				DA27136A0D84071100C25B85 /* EventTableViewCell.h */,
 				DA27136B0D84071100C25B85 /* EventTableViewCell.m */,
 				DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */,
@@ -399,6 +422,8 @@
 				DA7FD6D50D84296500974B1A /* MainTableViewCell.m */,
 				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
 				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
+				DA5248210E3B3DFB00B09600 /* SourceCell.h */,
+				DA5248220E3B3DFB00B09600 /* SourceCell.m */,
 				DA7FD7640D84338600974B1A /* TimerTableViewCell.h */,
 				DA7FD7650D84338600974B1A /* TimerTableViewCell.m */,
 			);
@@ -554,6 +579,11 @@
 				DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */,
 				DA5A04DE0E379ECA0062F924 /* MovieXMLReader.m in Sources */,
 				DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */,
+				DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */,
+				DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */,
+				DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */,
+				DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */,
+				DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
