@@ -85,11 +85,10 @@
 
 - (void)loadView
 {
-	UIColor *backgroundColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
-
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = backgroundColor;
+	contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
+	contentView.autoresizesSubviews = YES;
 	self.view = contentView;
 	[contentView release];
 
@@ -154,7 +153,6 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
-	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Standby", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
@@ -167,7 +165,6 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
-	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Reboot", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
@@ -180,7 +177,6 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
-	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Restart", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];
@@ -193,7 +189,6 @@
 											yCoord,
 											kWideButtonWidth,
 											kStdButtonHeight);
-	roundedButtonType.backgroundColor = backgroundColor;
 	[roundedButtonType setTitle:NSLocalizedString(@"Shutdown", @"") forState:UIControlStateNormal];
 	[roundedButtonType addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: roundedButtonType];

@@ -43,13 +43,11 @@
 
 - (void)loadView
 {
-	UIColor *backColor = [UIColor colorWithRed:197.0/255.0 green:204.0/255.0 blue:211.0/255.0 alpha:1.0];
-	
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = backColor;
+	contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
+	contentView.autoresizesSubviews = YES;
 	self.view = contentView;
-	self.view.autoresizesSubviews = YES;
 	
 	[contentView release];
 

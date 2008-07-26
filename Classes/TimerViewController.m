@@ -23,8 +23,6 @@
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD					150.0
 
-#define kTextFieldWidth							100.0	// initial width, but the table cell will dictact the actual width
-
 // the duration of the animation for the view shift
 #define kVerticalOffsetAnimationDuration		0.30
 
@@ -112,7 +110,7 @@
 
 - (UITextField *)create_TextField
 {
-	CGRect frame = CGRectMake(0.0, 0.0, kTextFieldWidth, kTextFieldHeight);
+	CGRect frame = CGRectMake(0.0, 0.0, 100.0, kTextFieldHeight);
 	UITextField *returnTextField = [[UITextField alloc] initWithFrame:frame];
 
 	returnTextField.leftView = nil;
