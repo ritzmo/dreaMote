@@ -114,7 +114,9 @@
 {
 	CGRect frame = CGRectMake(0.0, 0.0, kTextFieldWidth, kTextFieldHeight);
 	UITextField *returnTextField = [[UITextField alloc] initWithFrame:frame];
-    
+
+	returnTextField.leftView = nil;
+	returnTextField.leftViewMode = UITextFieldViewModeNever;
 	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
     returnTextField.textColor = [UIColor blackColor];
 	returnTextField.font = [UIFont systemFontOfSize:17.0];
