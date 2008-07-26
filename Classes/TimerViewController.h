@@ -13,6 +13,7 @@
 #import "Service.h"
 
 #import "CellTextField.h"
+#import "DisplayCell.h"
 
 @interface TimerViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate,
 													UITextFieldDelegate, UITableViewDelegate,
@@ -24,8 +25,11 @@
 	UITextField *timerDescription;
 	CellTextField *timerDescriptionCell;
 	UIButton *timerServiceName;
+	DisplayCell *timerServiceNameCell;
 	UIButton *timerBegin;
+	DisplayCell *timerBeginCell;
 	UIButton *timerEnd;
+	DisplayCell *timerEndCell;
 	UIButton *deleteButton;
 
 @private

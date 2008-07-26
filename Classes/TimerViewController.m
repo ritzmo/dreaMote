@@ -11,10 +11,6 @@
 #import "ServiceListController.h"
 #import "DatePickerController.h"
 
-#import "CellTextField.h"
-#import "DisplayCell.h"
-#import "SourceCell.h"
-
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -157,7 +153,6 @@
 {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button setTitle:@"Change" forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
@@ -167,9 +162,8 @@
 {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button setTitle:@"Change" forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 
@@ -177,7 +171,6 @@
 {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button setTitle:@"Change" forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
@@ -187,37 +180,24 @@
 {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button setTitle:@"Change" forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
-}
-
-- (void)reloadData
-{
-	[(UITableView *)self.view reloadData];
 }
 
 - (void)loadView
 {
 	_shouldSave = NO;
 
-	// setup our parent content view and embed it to your view controller
-	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	contentView.backgroundColor = [UIColor blackColor];
-	contentView.autoresizesSubviews = YES;
-	self.view = contentView;
-	[contentView release];
-
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	// create and configure the table view
-	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];	
+	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	myTableView.delegate = self;
 	myTableView.dataSource = self;
+	myTableView.autoresizesSubviews = YES;
 	
-	myTableView.scrollEnabled = YES;
-	[self.view addSubview: myTableView];
+	self.view = myTableView;
 
 	timerTitle = [self create_TitleField];
 	timerDescription = [self create_DescriptionField];
@@ -315,6 +295,11 @@
 	}
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+	// Return YES for supported orientations
+	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
 - (void)editService:(id)sender
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
@@ -328,11 +313,11 @@
 
 - (void)serviceSelected:(id)object
 {
-	if(object != nil)
-	{
-		self.timer.service = [(Service*)object retain];
-		[self reloadData];
-	}
+	if(object == nil)
+		return;
+
+	[_timer setService: [(Service*)object retain]];
+	timerServiceNameCell.nameLabel.text = [[_timer service] sname];
 }
 
 - (void)editBegin:(id)sender
@@ -346,8 +331,11 @@
 
 - (void)beginSelected:(id)object
 {
-	self.timer.begin = [(NSDate*)object retain];
-	[self reloadData];
+	if(object == nil)
+		return;
+
+	[_timer setBegin: [(NSDate*)object retain]];
+	timerBeginCell.nameLabel.text = [self format_BeginEnd: [_timer begin]];
 }
 
 - (void)editEnd:(id)sender
@@ -361,8 +349,11 @@
 
 - (void)endSelected:(id)object
 {
-	self.timer.end = [(NSDate*)object retain];
-	[self reloadData];
+	if(object == nil)
+		return;
+
+	[_timer setEnd: [(NSDate*)object retain]];
+	timerEndCell.nameLabel.text = [self format_BeginEnd: [_timer end]];
 }
 
 - (void)deleteAction: (id)sender
@@ -372,6 +363,8 @@
 	[actionSheet showInView:self.view];
 	[actionSheet release];
 }
+
+#pragma mark - UIActionSheet delegates
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -508,14 +501,17 @@
 			else
 				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Select Service", @"");
 			((DisplayCell *)sourceCell).view = timerServiceName;
+			timerServiceNameCell = (DisplayCell *)sourceCell;
 			break;
 		case 3:
 			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer begin]];
 			((DisplayCell *)sourceCell).view = timerBegin;
+			timerBeginCell = (DisplayCell *)sourceCell;
 			break;
 		case 4:
 			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer end]];
 			((DisplayCell *)sourceCell).view = timerEnd;
+			timerEndCell = (DisplayCell *)sourceCell;
 			break;
 		case 5:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Delete", @"");
@@ -525,11 +521,6 @@
 	}
 
 	return sourceCell;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark -
@@ -580,7 +571,7 @@
         rect.size.height -= kOFFSET_FOR_KEYBOARD;
     }
     self.view.frame = rect;
-    
+
     [UIView commitAnimations];
 }
 
