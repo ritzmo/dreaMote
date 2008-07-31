@@ -29,7 +29,10 @@
 - (void)setTagsFromString: (NSString *)newTags
 {
 	[_tags release];
-	_tags = [newTags componentsSeparatedByString:@" "];
+	if([newTags isEqualToString: @""])
+		_tags = [[NSArray array] retain];
+	else
+		_tags = [[newTags componentsSeparatedByString:@" "] retain];
 }
 
 @end

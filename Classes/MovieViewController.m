@@ -163,8 +163,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if([[_movie length] intValue] != -1)
-		return 4;
-	return 3;
+		return 7;
+	return 6;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -173,8 +173,14 @@
 		case 0:
 			return NSLocalizedString(@"Description", @"");
 		case 1:
-			return NSLocalizedString(@"Begin", @"");
+			return NSLocalizedString(@"Service", @"");
 		case 2:
+			return NSLocalizedString(@"Size", @"");
+		case 3:
+			return NSLocalizedString(@"Tags", @"");
+		case 4:
+			return NSLocalizedString(@"Begin", @"");
+		case 5:
 			if([[_movie length] intValue] != -1)
 				return NSLocalizedString(@"End", @"");
 		default:
@@ -184,6 +190,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	if(section == 3)
+	{
+		NSUInteger count = [[_movie tags] count];
+		if(!count)
+			return 1;
+		return [[_movie tags] count];
+	}
 	return 1;
 }
 
@@ -202,17 +215,20 @@
 			break;
 		}
 		case 1:
+		case 2:
+		case 3:
+		case 4:
 		{
 			result = kTextFieldHeight;
 			break;
 		}
-		case 2:
+		case 5:
 			if([[_movie length] intValue] != -1)
 			{
 				result = kTextFieldHeight;
 				break;
 			}
-		case 3:
+		case 6:
 		{
 			result = kUIRowHeight;
 			break;
@@ -235,11 +251,14 @@
 				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 			break;
 		case 1:
+		case 2:
+		case 3:
+		case 4:
 			cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
 			if(cell == nil)
 				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
 			break;
-		case 2:
+		case 5:
 			if([[_movie length] intValue] != -1)
 			{
 				cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
@@ -247,7 +266,7 @@
 					cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
 				break;
 			}
-		case 3:
+		case 6:
 			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
@@ -265,22 +284,34 @@
 {
 	NSInteger section = [indexPath section];
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
-	
+
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie time]];
+			((SourceCell *)sourceCell).sourceLabel.text = [_movie sname];
 			break;
 		case 2:
+			((SourceCell *)sourceCell).sourceLabel.text = [NSString stringWithFormat: @"%d kB", ([[_movie size] intValue] / 1024), nil];
+			break;
+		case 3:
+			if(![[_movie tags] count])
+				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"None", @"");
+			else
+				((SourceCell *)sourceCell).sourceLabel.text = [[_movie tags] objectAtIndex: [indexPath row]];
+			break;
+		case 4:
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie time]];
+			break;
+		case 5:
 			if([[_movie length] intValue] != -1)
 			{
 				((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [[_movie time] addTimeInterval: (NSTimeInterval)[[_movie length] intValue]]];
 				break;
 			}
-		case 3:
+		case 6:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
 			((DisplayCell *)sourceCell).view = [self create_PlayButton];
 		default:
