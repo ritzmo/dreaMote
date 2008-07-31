@@ -31,6 +31,8 @@
 	UIButton *timerEnd;
 	DisplayCell *timerEndCell;
 	UIButton *deleteButton;
+	UISwitch *timerEnabled;
+	UISwitch *timerJustplay;
 
 @private
 	Timer *_timer;

@@ -209,6 +209,20 @@
 	timerEnd = [[self create_EndButton] retain];
 	deleteButton = [[self create_DeleteButton] retain];
 
+	// Enabled
+	timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[timerEnabled setOn: ![_timer disabled]];
+
+	// in case the parent view draws with a custom color or gradient, use a transparent color
+	timerEnabled.backgroundColor = [UIColor clearColor];
+
+	// Justplay
+	timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[timerJustplay setOn: [_timer justplay]];
+
+	// in case the parent view draws with a custom color or gradient, use a transparent color
+	timerJustplay.backgroundColor = [UIColor clearColor];
+
 	// default editing mode depends on our mode
 	[self setEditing: _creatingNewTimer];
 }
@@ -267,6 +281,9 @@
 			else
 				_timer.tdescription = @"";
 
+			[_timer setDisabled: !timerEnabled.on];
+			[_timer setJustplay: timerJustplay.on];
+			
 			// Try to commit changes if no error occured
 			if(!message)
 			{
@@ -431,10 +448,12 @@
 		case 1:
 			return NSLocalizedString(@"Description", @"");
 		case 2:
-			return NSLocalizedString(@"Service", @"");
+			return NSLocalizedString(@"General", @"in timer settings dialog");
 		case 3:
-			return NSLocalizedString(@"Begin", @"");
+			return NSLocalizedString(@"Service", @"");
 		case 4:
+			return NSLocalizedString(@"Begin", @"");
+		case 5:
 			return NSLocalizedString(@"End", @"");
 		default:
 			return nil;
@@ -443,6 +462,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	if(section == 2)
+		return 2;
 	return 1;
 }
 
@@ -472,6 +493,7 @@
 		case 3:
 		case 4:
 		case 5:
+		case 6:
 			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
@@ -501,6 +523,20 @@
 			timerDescriptionCell = (CellTextField *)sourceCell;
 			break;
 		case 2:
+			switch ([indexPath row]) {
+				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Enabled", @"");
+					((DisplayCell *)sourceCell).view = timerEnabled;
+					break;
+				case 1:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Justplay", @"");
+					((DisplayCell *)sourceCell).view = timerJustplay;
+					break;
+				default:
+					break;
+			}
+			break;
+		case 3:
 			if([[[self.timer service] sname] length])
 				((DisplayCell *)sourceCell).nameLabel.text = [[_timer service] sname];
 			else
@@ -508,17 +544,17 @@
 			((DisplayCell *)sourceCell).view = timerServiceName;
 			timerServiceNameCell = (DisplayCell *)sourceCell;
 			break;
-		case 3:
+		case 4:
 			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer begin]];
 			((DisplayCell *)sourceCell).view = timerBegin;
 			timerBeginCell = (DisplayCell *)sourceCell;
 			break;
-		case 4:
+		case 5:
 			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer end]];
 			((DisplayCell *)sourceCell).view = timerEnd;
 			timerEndCell = (DisplayCell *)sourceCell;
 			break;
-		case 5:
+		case 6:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Delete", @"");
 			((DisplayCell *)sourceCell).view = deleteButton;
 		default:
