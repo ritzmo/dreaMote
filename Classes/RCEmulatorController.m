@@ -46,7 +46,11 @@
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
+
+	// setup our content view so that it auto-rotates along with the UViewController
 	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
 	self.view = contentView;
 	
 	[contentView release];

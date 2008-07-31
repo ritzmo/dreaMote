@@ -92,7 +92,10 @@
 	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	myTableView.delegate = self;
 	myTableView.dataSource = self;
+
+	// setup our content view so that it auto-rotates along with the UViewController
 	myTableView.autoresizesSubviews = YES;
+	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = myTableView;
 
