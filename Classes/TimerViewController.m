@@ -423,8 +423,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if(_creatingNewTimer || ([_oldTimer state] == 0 && !self.editing))
-		return 5;
-	return 6;
+		return 6;
+	return 7;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
