@@ -14,6 +14,8 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
+#import "FuzzyDateFormatter.h"
+
 @interface TimerViewController()
 - (void)setViewMovedUp:(BOOL)movedUp;
 @end
@@ -101,7 +103,7 @@
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	// Date Formatter
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	

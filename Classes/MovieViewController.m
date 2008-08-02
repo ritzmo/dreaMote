@@ -16,6 +16,8 @@
 #import "TimerViewController.h"
 #import "Constants.h"
 
+#import "FuzzyDateFormatter.h"
+
 @implementation MovieViewController
 
 @synthesize movie = _movie;
@@ -123,7 +125,7 @@
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	// Date Formatter
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	
