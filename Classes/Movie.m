@@ -23,7 +23,7 @@
 - (void)setTimeFromString: (NSString *)newTime
 {
 	[_time release];
-	_time = [[NSDate dateWithTimeIntervalSince1970: [newTime doubleValue]] retain];
+	_time = [[NSCalendarDate dateWithTimeIntervalSince1970: [newTime doubleValue]] retain];
 }
 
 - (void)setTagsFromString: (NSString *)newTags

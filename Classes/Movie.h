@@ -13,7 +13,7 @@
 @private	
 	NSString *_sref;
 	NSString *_sname;
-	NSDate *_time;
+	NSCalendarDate *_time;
 	NSString *_title;
 	NSString *_sdescription;
 	NSString *_edescription;
@@ -24,7 +24,7 @@
 
 @property (nonatomic, retain) NSString *sref;
 @property (nonatomic, retain) NSString *sname;
-@property (nonatomic, retain) NSDate *time;
+@property (nonatomic, retain) NSCalendarDate *time;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *sdescription;
 @property (nonatomic, retain) NSString *edescription;

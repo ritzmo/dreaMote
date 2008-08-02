@@ -9,6 +9,8 @@
 #import "Constants.h"
 #import "MovieTableViewCell.h"
 
+#import "FuzzyDateFormatter.h"
+
 @interface MovieTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
@@ -70,7 +72,7 @@
 	_movie = newMovie;
 	
 	self.eventNameLabel.text = [newMovie title];
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	self.eventTimeLabel.text = [format stringFromDate: [newMovie time]];

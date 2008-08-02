@@ -9,6 +9,8 @@
 #import "Constants.h"
 #import "TimerTableViewCell.h"
 
+#import "FuzzyDateFormatter.h"
+
 @interface TimerTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
@@ -79,7 +81,7 @@
 	
 	self.serviceNameLabel.text = [[newTimer service] sname];
 	self.timerNameLabel.text = [newTimer title];
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *begin = [format stringFromDate: [newTimer begin]];

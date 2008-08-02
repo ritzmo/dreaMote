@@ -9,6 +9,8 @@
 #import "Constants.h"
 #import "EventTableViewCell.h"
 
+#import "FuzzyDateFormatter.h"
+
 @interface EventTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
@@ -70,7 +72,7 @@
 	_event = newEvent;
 	
 	self.eventNameLabel.text = [newEvent title];
-	NSDateFormatter *format = [[[NSDateFormatter alloc] init] autorelease];
+	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *begin = [format stringFromDate: [_event begin]];

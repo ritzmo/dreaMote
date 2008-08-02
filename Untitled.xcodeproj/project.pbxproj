@@ -84,6 +84,7 @@
 		DAD51DF30D830A3900A769F3 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DF20D830A3900A769F3 /* Service.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
 		DAF3B2360E3881C800E4778B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAF3B2350E3881C800E4778B /* Settings.bundle */; };
+		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -205,6 +206,8 @@
 		DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
 		DAF3B2350E3881C800E4778B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
+		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +239,8 @@
 				DA7FD7720D84345100974B1A /* Constants.h */,
 				DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */,
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
+				DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */,
+				DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */,
 				DA2CC2890E378FCC006AE171 /* RCButton.h */,
 				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
 			);
@@ -601,6 +606,7 @@
 				DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */,
 				DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */,
 				DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */,
+				DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

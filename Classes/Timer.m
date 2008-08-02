@@ -117,13 +117,13 @@
 - (void)setBeginFromString: (NSString *)newBegin
 {
 	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	_begin = [[NSCalendarDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
 }
 
 - (void)setEndFromString: (NSString *)newEnd
 {
 	[_end release];
-	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
+	_end = [[NSCalendarDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
 }
 
 - (void)setDisabledFromString: (NSString *)newDisabled

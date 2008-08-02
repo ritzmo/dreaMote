@@ -12,16 +12,16 @@
 {
 @private	
 	NSString *_eit;
-	NSDate *_begin;
-	NSDate *_end;
+	NSCalendarDate *_begin;
+	NSCalendarDate *_end;
 	NSString *_title;
 	NSString *_sdescription;
 	NSString *_edescription;
 }
 
 @property (nonatomic, retain) NSString *eit;
-@property (nonatomic, retain) NSDate *begin;
-@property (nonatomic, retain) NSDate *end;
+@property (nonatomic, retain) NSCalendarDate *begin;
+@property (nonatomic, retain) NSCalendarDate *end;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *sdescription;
 @property (nonatomic, retain) NSString *edescription;

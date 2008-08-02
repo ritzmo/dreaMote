@@ -25,7 +25,7 @@
 - (void)setBeginFromString: (NSString *)newBegin
 {
 	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	_begin = [[NSCalendarDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
