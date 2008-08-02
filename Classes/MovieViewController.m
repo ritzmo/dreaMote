@@ -141,6 +141,25 @@
 	return button;
 }
 
+- (NSString *)format_size: (NSNumber*)size
+{
+	float floatSize = [size floatValue];
+
+	if (floatSize < 1023)
+		return [NSString stringWithFormat: @"%i bytes", floatSize];
+	floatSize /= 1024;
+
+	if (floatSize < 1023)
+		return [NSString stringWithFormat: @"%1.1f KB", floatSize];
+	floatSize /= 1024;
+
+	if (floatSize < 1023)
+		return [NSString stringWithFormat: @"%1.1f MB", floatSize];
+	floatSize /= 1024;
+
+	return [NSString stringWithFormat: @"%1.1f GB", floatSize];
+}
+
 #pragma mark UITextView delegate methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -296,7 +315,7 @@
 			((SourceCell *)sourceCell).sourceLabel.text = [_movie sname];
 			break;
 		case 2:
-			((SourceCell *)sourceCell).sourceLabel.text = [NSString stringWithFormat: @"%d kB", ([[_movie size] intValue] / 1024), nil];
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_size: [_movie size]];
 			break;
 		case 3:
 			if(![[_movie tags] count])
