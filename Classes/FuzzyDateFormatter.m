@@ -12,16 +12,16 @@
 
 - (NSString *)stringForObjectValue:(id)date
 {
-	int todaysDayOfCommonEra, datesDayOfCommonEra;
-
-	if (![date isKindOfClass:[NSCalendarDate class]])
-		return [super stringForObjectValue:date];
-
-	todaysDayOfCommonEra = [[NSCalendarDate date] dayOfCommonEra];
-	datesDayOfCommonEra = [date dayOfCommonEra];
-
-	if (datesDayOfCommonEra == todaysDayOfCommonEra)
+	// XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
+	NSDate *thisNight = [NSDate dateWithTimeIntervalSinceNow: -((long)[[NSDate date] timeIntervalSince1970] % 86400)];
+	NSTimeInterval secSinceToday = [date timeIntervalSinceDate: thisNight];
+	NSTimeInterval secSinceYesterday = [date timeIntervalSinceDate: [thisNight addTimeInterval: -86400]];
+	NSTimeInterval secSinceTomorrow = [date timeIntervalSinceDate: [thisNight addTimeInterval: 86400]];
+	
+	if (secSinceToday > 0 && secSinceToday < 86400)
 	{
+		if([self dateStyle] == NSDateFormatterNoStyle)
+			return [super stringForObjectValue:date];
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Today", @"");
 		NSDateFormatterStyle tempStyle = [self timeStyle];
@@ -30,8 +30,10 @@
 		[self setDateStyle: tempStyle];
 		return retVal;
 	}
-	else if (datesDayOfCommonEra == (todaysDayOfCommonEra - 1))
+	else if (secSinceYesterday > 0 && secSinceYesterday < 86400)
 	{
+		if([self dateStyle] == NSDateFormatterNoStyle)
+			return [super stringForObjectValue:date];
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Yesterday", @"");
 		NSDateFormatterStyle tempStyle = [self timeStyle];
@@ -40,8 +42,10 @@
 		[self setDateStyle: tempStyle];
 		return retVal;
 	}
-	else if (datesDayOfCommonEra == (todaysDayOfCommonEra + 1))
+	else if (secSinceTomorrow > 0 && secSinceTomorrow < 86400)
 	{
+		if([self dateStyle] == NSDateFormatterNoStyle)
+			return [super stringForObjectValue:date];
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Tomorrow", @"");
 		NSDateFormatterStyle tempStyle = [self timeStyle];

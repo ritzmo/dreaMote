@@ -15,8 +15,8 @@
 {
 @private
 	NSString *_eit;
-	NSCalendarDate *_begin;
-	NSCalendarDate *_end;
+	NSDate *_begin;
+	NSDate *_end;
 	BOOL _disabled;
 	NSString *_title;
 	NSString *_tdescription;
@@ -41,8 +41,8 @@
 - (void)setStateFromString: (NSString *)newState;
 
 @property (nonatomic, retain) NSString *eit;
-@property (nonatomic, retain) NSCalendarDate *begin;
-@property (nonatomic, retain) NSCalendarDate *end;
+@property (nonatomic, retain) NSDate *begin;
+@property (nonatomic, retain) NSDate *end;
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *tdescription;
 @property (assign) BOOL disabled;
