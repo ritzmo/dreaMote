@@ -241,6 +241,8 @@
 		{
 			[timerTitleCell stopEditing];
 			[timerDescriptionCell stopEditing];
+			timerEnabled.enabled = NO;
+			timerJustplay.enabled = NO;
 			timerServiceName.enabled = NO;
 			timerBegin.enabled = NO;
 			timerEnd.enabled = NO;
@@ -255,6 +257,8 @@
 
 		[timerTitleCell setEditing:editing animated:animated];
 		[timerDescriptionCell setEditing:editing animated:animated];
+		timerEnabled.enabled = editing;
+		timerJustplay.enabled = editing;
 		timerServiceName.enabled = editing;
 		timerBegin.enabled = editing;
 		timerEnd.enabled = editing;
