@@ -101,19 +101,19 @@
 
 	// Volume
 	_slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
-	[_slider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventTouchUpInside];
+	[_slider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventValueChanged];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_slider.backgroundColor = [UIColor clearColor];
 
 	_slider.minimumValue = 0.0;
 	_slider.maximumValue = 100.0;
-	_slider.continuous = YES;
+	_slider.continuous = NO;
 	_slider.value = 50.0;
 
 	// Muted
 	_switchControl = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_switchControl addTarget:self action:@selector(toggleMuted:) forControlEvents:UIControlEventTouchUpInside];
+	[_switchControl addTarget:self action:@selector(toggleMuted:) forControlEvents:UIControlEventValueChanged];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_switchControl.backgroundColor = [UIColor clearColor];
@@ -183,7 +183,6 @@
 
 - (void)volumeChanged:(id)sender
 {
-	// XXX: this is called twice (wtf?) but we ignore this for now
 	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(int)[(UISlider*)sender value]];
 }
 
