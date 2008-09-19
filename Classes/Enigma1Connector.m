@@ -233,7 +233,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"mute set"];
+	NSRange myRange = [myString rangeOfString: @"mute: 1"];
 	if(myRange.length)
 		return YES;
 
@@ -271,7 +271,6 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: this is just an assumption ;-)
 	NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
 	if(myRange.length)
 		return YES;
