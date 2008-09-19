@@ -58,12 +58,16 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	/*NSString *myString = */[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: how is success/failure indicated
-	return YES;
+	// XXX: this is just an assumption ;-)
+	NSRange myRange = [myString rangeOfString: @"Please wait..."];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
 }
 
 - (void)fetchServices:(id)target action:(SEL)action
@@ -176,42 +180,83 @@
 	[self sendPowerstate: @"restart"];
 }
 
-// TODO: port to e1 (volume is part of html box status, so we will have to adjust to this :-/)
 - (void)getVolume:(id)target action:(SEL)action
 {
-	return;
+	// Generate URI
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio", self.baseAddress];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	// Create URL Object and download it
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Volume *volumeObject = [[Volume alloc] init];
+
+	NSRange firstRange = [myString rangeOfString: @"volume: "];
+	NSRange secondRange;
+	if(firstRange.length)
+	{
+		secondRange = [myString rangeOfString: @"<br>"];
+		firstRange.location = firstRange.length;
+		firstRange.length = secondRange.location - firstRange.location;
+
+		[volumeObject setCurrent: [[myString substringWithRange: firstRange] intValue]];
+	}
+	else
+		[volumeObject setCurrent: -1];
+
+	firstRange = [myString rangeOfString: @"mute: "];
+	if(firstRange.length)
+	{
+		firstRange.location = firstRange.length;
+		firstRange.length = 1;
+
+		[volumeObject setIsmuted: [[myString substringWithRange: firstRange] isEqualToString: @"1"]];
+	}
+	else
+		[volumeObject setIsmuted: NO];
+
+	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
 }
 
 - (BOOL)toggleMuted
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/setVolume?mute=xy", self.baseAddress];
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?mute=xy", self.baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	/*NSString *myString = */[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: how is failure/success indicated ?!
-	return YES;
+	NSRange myRange = [myString rangeOfString: @"mute set"];
+	if(myRange.length)
+		return YES;
+
+	return NO;
 }
 
 - (BOOL)setVolume:(int) newVolume
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/setVolume?volume=%d", self.baseAddress, newVolume];
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, newVolume];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	/*NSString *myString = */[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: how is failure/success indicated ?!
-	return YES;
+	NSRange myRange = [myString rangeOfString: @"Volume set."];
+	if(myRange.length)
+		return YES;
+
+	return NO;
 }
 
 - (BOOL)addTimer:(Timer *) newTimer
@@ -254,12 +299,15 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	/*NSString *myString = */[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: how is failure/success indicated ?!
-	return YES;
+	NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
 }
 
 - (BOOL)sendButton:(int) type
@@ -274,7 +322,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: how is failure/success indicated ?!
+	// TODO: is there any way to find out if the request succeeded?
 	return YES;
 }
 
