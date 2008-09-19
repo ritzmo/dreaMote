@@ -29,15 +29,15 @@
 			<string>Type</string>
 			<key>Titles</key>
 			<array>
-				<string>Enigma2</string>
-				<string>Enigma1</string>
+				<string>Enigma</string>
+				<string>Enigma 2</string>
 			</array>
 			<key>Type</key>
 			<string>PSMultiValueSpecifier</string>
 			<key>Values</key>
 			<array>
-				<integer>1</integer>
 				<integer>2</integer>
+				<integer>1</integer>
 			</array>
 		</dict>
 		<dict>
