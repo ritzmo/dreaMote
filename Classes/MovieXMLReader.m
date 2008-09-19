@@ -32,7 +32,7 @@ static NSUInteger parsedMoviesCounter;
 }
 
 /*
- Example:
+ Enigma2 Example:
  <?xml version="1.0" encoding="UTF-8"?>
  <e2movielist>
  <e2movie>
@@ -41,7 +41,6 @@ static NSUInteger parsedMoviesCounter;
  <e2description>Scrubs - Die Anfänger</e2description>
  <e2descriptionextended>Ted stellt sich gegen Kelso, als er sich für höhere Löhne für die Schwestern einsetzt. Todd hat seine Berufung in der plastischen Chirurgie gefunden. Als Turk sich dagegen einsetzt, dass ein sechzehnjähriges Mädchen eine Brust-OP bekommt, sieht Todd sich gezwungen, seinen Freund umzustimmen, denn dessen Job hängt davon ab. Jordan mischt sich in Keith und Elliotts Beziehung ein, was sich als nicht so gute Idee herausstellt.</e2descriptionextended>
  <e2servicename>ProSieben</e2servicename>
- 
  <e2time>1216797360</e2time>
  <e2length>disabled</e2length>
  <e2tags></e2tags>
@@ -49,6 +48,12 @@ static NSUInteger parsedMoviesCounter;
  <e2filesize>1649208192</e2filesize>
  </e2movie>
  </e2movielist>
+
+ Enigma1 Example:
+ <?xml version="1.0" encoding="UTF-8"?>
+ <movies>
+  <service><reference>1:0:1:6dcf:44d:1:c00000:93d2d1:0:0:/hdd/movie/WDR Köln - Rockpalast - Haldern Pop 2006 - 26_08_06.ts</reference><name>Rockpalast - Haldern Pop 2006</name><orbital_position>192</orbital_position></service>
+ </movies>
 */
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
@@ -62,7 +67,7 @@ static NSUInteger parsedMoviesCounter;
 		[parser abortParsing];
 	}
 	
-	if ([elementName isEqualToString:@"e2movie"]) {
+	if ([elementName isEqualToString:@"e2movie"] || [elementName isEqualToString:@"service"]) {
 		
 		parsedMoviesCounter++;
 		
@@ -72,48 +77,23 @@ static NSUInteger parsedMoviesCounter;
 		return;
 	}
 
-	if ([elementName isEqualToString:@"e2servicereference"]) {
-		// Create a mutable string to hold the contents of the 'e2servicereference' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
+	if (
+		/* Enigma 2 */
+		[elementName isEqualToString:@"e2servicereference"]	// Sref to movie
+		|| [elementName isEqualToString:@"e2servicename"]	// Service Name
+		|| [elementName isEqualToString:@"e2length"]		// Length of Movie
+		|| [elementName isEqualToString:@"e2time"]			// When the movie was recorded
+		|| [elementName isEqualToString:@"e2title"]			// Title
+		|| [elementName isEqualToString:@"e2description"]	// Description
+		|| [elementName isEqualToString:@"e2descriptionextended"]	// Extended Description
+		|| [elementName isEqualToString:@"e2tags"]			// Tags
+		|| [elementName isEqualToString:@"e2filesize"]		// Filesize
+		/* Enigma 1 */
+		|| [elementName isEqualToString:@"reference"]		// Sref to movie
+		|| [elementName isEqualToString:@"name"]			// Title
 
-	} else if ([elementName isEqualToString:@"e2servicename"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2length"]) {
-		// Create a mutable string to hold the contents of the 'e2length' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2time"]) {
-		// Create a mutable string to hold the contents of the 'e2time' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2title"]) {
-		// Create a mutable string to hold the contents of the 'e2title' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2description"]) {
-		// Create a mutable string to hold the contents of the 'e2description' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2descriptionextended"]) {
-		// Create a mutable string to hold the contents of the 'e2descriptionextended' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-		
-	} else if ([elementName isEqualToString:@"e2tags"]) {
-		// Create a mutable string to hold the contents of the 'e2tags' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-		
-	} else if ([elementName isEqualToString:@"e2filesize"]) {
-		// Create a mutable string to hold the contents of the 'e2filesize' element.
+		) {
+		// Create a mutable string to hold the contents of this element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 		
@@ -131,7 +111,7 @@ static NSUInteger parsedMoviesCounter;
 		elementName = qName;
 	}
 	
-	if ([elementName isEqualToString:@"e2servicereference"]) {
+	if ([elementName isEqualToString:@"e2servicereference"] || [elementName isEqualToString:@"reference"]) {
 		[[self currentMovieObject] setSref: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2servicename"]) {
 		[[self currentMovieObject] setSname: [self contentOfCurrentProperty]];
@@ -142,7 +122,7 @@ static NSUInteger parsedMoviesCounter;
 			[[self currentMovieObject] setLength: [NSNumber numberWithInt: [[self contentOfCurrentProperty] intValue]]];
 	} else if ([elementName isEqualToString:@"e2time"]) {
 		[[self currentMovieObject] setTimeFromString: [self contentOfCurrentProperty]];
-	} else if ([elementName isEqualToString:@"e2title"]) {
+	} else if ([elementName isEqualToString:@"e2title"] || [elementName isEqualToString:@"name"]) {
 		[[self currentMovieObject] setTitle: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2description"]) {
 		[[self currentMovieObject] setSdescription: [self contentOfCurrentProperty]];
@@ -152,7 +132,7 @@ static NSUInteger parsedMoviesCounter;
 		[[self currentMovieObject] setTagsFromString: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2filesize"]) {
 		[[self currentMovieObject] setSize: [NSNumber numberWithLongLong: [[self contentOfCurrentProperty] longLongValue]]];
-	} else if ([elementName isEqualToString:@"e2movie"]) {
+	} else if ([elementName isEqualToString:@"e2movie"] || [elementName isEqualToString:@"service"]) {
 		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentMovieObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;

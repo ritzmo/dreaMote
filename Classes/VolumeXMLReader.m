@@ -58,23 +58,14 @@ static NSUInteger parsedVolumesCounter;
 		return;
 	}
 
-	if ([elementName isEqualToString:@"e2result"]) {
-		// Create a mutable string to hold the contents of the 'e2servicereference' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
+	if (
+		[elementName isEqualToString:@"e2result"]
+		|| [elementName isEqualToString:@"e2resulttext"]
+		|| [elementName isEqualToString:@"e2current"]
+		|| [elementName isEqualToString:@"e2ismuted"]
 
-	} else if ([elementName isEqualToString:@"e2resulttext"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2current"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2ismuted"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
+		) {
+		// Create a mutable string to hold the contents of this element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 

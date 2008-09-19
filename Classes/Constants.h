@@ -46,6 +46,7 @@
 // table view cell content offsets
 #define kCellLeftOffset			8.0
 #define kCellTopOffset			12.0
+
 // default keys
 #define kRemoteHost				@"remoteHostKey"
 #define kConnector				@"connectorKey"

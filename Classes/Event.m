@@ -17,6 +17,15 @@
 @synthesize sdescription = _sdescription;
 @synthesize edescription = _edescription;
 
+- init
+{
+	if (self = [super init])
+	{
+		_duration = -1;
+	}
+	return self;
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
@@ -26,10 +35,19 @@
 {
 	[_begin release];
 	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	if(_duration != -1){
+		[_end release];
+		_end = [[_begin addTimeInterval: _duration] retain];
+		_duration = -1;
+	}
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
+	if(_begin == nil) {
+		_duration = [newDuration doubleValue];
+		return;
+	}
 	[_end release];
 	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
 }

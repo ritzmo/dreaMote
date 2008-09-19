@@ -25,6 +25,7 @@
 	Service *_service;
 	NSString *_sref;
 	int _state;
+	int _afterevent;
 }
 
 + (Timer *)withEvent: (Event *)ourEvent;
@@ -34,11 +35,13 @@
 - (NSString *)getStateString;
 - (void)setBeginFromString: (NSString *)newBegin;
 - (void)setEndFromString: (NSString *)newEnd;
+- (void)setEndFromDurationString: (NSString *)newDuration;
 - (void)setDisabledFromString: (NSString *)newDisabled;
 - (void)setJustplayFromString: (NSString *)newJustplay;
 - (void)setRepeatedFromString: (NSString *)newRepeated;
 - (void)setServiceFromSname: (NSString *)newSname;
 - (void)setStateFromString: (NSString *)newState;
+- (void)setAftereventFromString: (NSString *)newAfterevent;
 
 @property (nonatomic, retain) NSString *eit;
 @property (nonatomic, retain) NSDate *begin;
@@ -51,5 +54,6 @@
 @property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) NSString *sref;
 @property (assign) int state;
+@property (assign) int afterevent;
 
 @end

@@ -12,6 +12,7 @@
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Enigma2Connector.h"
+#import "Enigma1Connector.h"
 
 @implementation AppDelegate
 
@@ -85,6 +86,9 @@
 	{
 		case kEnigma2Connector:
 			[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteHost]];
+			break;
+		case kEnigma1Connector:
+			[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteHost]];
 			break;
 		default:
 			break;

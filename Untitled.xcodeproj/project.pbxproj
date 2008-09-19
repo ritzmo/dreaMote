@@ -63,6 +63,7 @@
 		DA7A25520E374B2200455D11 /* key_video.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25460E374B2200455D11 /* key_video.png */; };
 		DA7A25B90E375D7600455D11 /* key_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B70E375D7600455D11 /* key_minus.png */; };
 		DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B80E375D7600455D11 /* key_plus.png */; };
+		DA7DEB050E8310AA00B15F7C /* Enigma1Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7DEB040E8310AA00B15F7C /* Enigma1Connector.m */; };
 		DA7FD6750D8423E300974B1A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6740D8423E300974B1A /* MainViewController.m */; };
 		DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD6C80D8428F900974B1A /* Localizable.strings */; };
 		DA7FD6D60D84296500974B1A /* MainTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6D50D84296500974B1A /* MainTableViewCell.m */; };
@@ -165,6 +166,8 @@
 		DA7A25460E374B2200455D11 /* key_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_video.png; path = Images/key_video.png; sourceTree = "<group>"; };
 		DA7A25B70E375D7600455D11 /* key_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_minus.png; path = Images/key_minus.png; sourceTree = "<group>"; };
 		DA7A25B80E375D7600455D11 /* key_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_plus.png; path = Images/key_plus.png; sourceTree = "<group>"; };
+		DA7DEB030E8310AA00B15F7C /* Enigma1Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma1Connector.h; sourceTree = "<group>"; };
+		DA7DEB040E8310AA00B15F7C /* Enigma1Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma1Connector.m; sourceTree = "<group>"; };
 		DA7FD6730D8423E300974B1A /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		DA7FD6740D8423E300974B1A /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		DA7FD6C40D8428E500974B1A /* en */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -455,6 +458,8 @@
 		DAF0D54B0E39000F001F7CF1 /* Connector */ = {
 			isa = PBXGroup;
 			children = (
+				DA7DEB030E8310AA00B15F7C /* Enigma1Connector.h */,
+				DA7DEB040E8310AA00B15F7C /* Enigma1Connector.m */,
 				DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */,
 				DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */,
 				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
@@ -560,7 +565,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export CODESIGN_ALLOCATE=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate\nif [ \"${PLATFORM_NAME}\" == \"iphoneos\" ]; then\n\t${BUILT_PRODUCTS_DIR}/../../bin/gen_entitlements.py \"my.ritzMo.${PROJECT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\";\n\tcodesign -f -s \"iPhone developer\" --resource-rules \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/ResourceRules.plist\" \\\n\t\t --entitlements \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\"  \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\nfi\n";
+			shellScript = "export CODESIGN_ALLOCATE=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate\nif [ \"${PLATFORM_NAME}\" == \"iphoneos\" ]; then\n\t${BUILT_PRODUCTS_DIR}/../../bin/gen_entitlements.py \"my.ritzMo.${PROJECT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\";\n\tcodesign -f -s \"iPhone Pwned Developer\" --resource-rules \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/ResourceRules.plist\" \\\n\t\t --entitlements \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\"  \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -607,6 +612,7 @@
 				DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */,
 				DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */,
 				DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */,
+				DA7DEB050E8310AA00B15F7C /* Enigma1Connector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -668,12 +674,16 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Pwned Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
+				PROVISIONING_PROFILE = DefaultProfileUuid;
+				PROVISIONING_PROFILE_ALLOWED = NO;
+				PROVISIONING_PROFILE_REQUIRED = NO;
 				SDKROOT = iphonesimulator2.0;
 			};
 			name = Debug;
@@ -682,9 +692,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Pwned Developer";
+				GCC_VERSION = 4.0;
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = DefaultProfileUuid;
+				PROVISIONING_PROFILE_ALLOWED = NO;
+				PROVISIONING_PROFILE_REQUIRED = NO;
 				SDKROOT = iphonesimulator2.0;
 			};
 			name = Release;

@@ -32,7 +32,7 @@ static NSUInteger parsedEventsCounter;
 }
 
 /*
- Example:
+ Enigma2 Example:
  <?xml version="1.0" encoding="UTF-8"?>
  <e2eventlist>
  <e2event>
@@ -46,6 +46,26 @@ static NSUInteger parsedEventsCounter;
  <e2eventservicename>Das Erste</e2eventservicename>
  </e2event>
  </e2eventlist>
+
+ Enigma1 Example:
+ <?xml version="1.0" encoding="UTF-8"?>
+ <?xml-stylesheet type="text/xsl" href="/xml/serviceepg.xsl"?>
+ <service_epg>
+  <service>
+   <reference>1:0:1:445d:453:1:c00000:0:0:0:</reference>
+   <name>ProSieben</name>
+  </service>
+  <event id="0">
+   <date>18.09.2008</date>
+   <time>16:02</time>
+   <duration>3385</duration>
+   <description>Deine Chance! 3 Bewerber - 1 Job</description>
+   <genre>n/a</genre>
+   <genrecategory>00</genrecategory>
+   <start>1221746555</start>
+   <details>Starfotograf Jack 'Tin lichtet die deutsche Schowprominenz in seiner Fotoagentur in Hamburg ab. Dafür sucht er einen neuen Assistenten. Wer macht die besten Fotos: Sabrina (27), Thomas (28) oder Dominique (21)?</details>
+  </event>
+ </service_epg>
 */
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
@@ -59,7 +79,7 @@ static NSUInteger parsedEventsCounter;
 		[parser abortParsing];
 	}
 	
-	if ([elementName isEqualToString:@"e2event"]) {
+	if ([elementName isEqualToString:@"e2event"] || [elementName isEqualToString:@"event"]) {
 		
 		parsedEventsCounter++;
 		
@@ -69,43 +89,25 @@ static NSUInteger parsedEventsCounter;
 		return;
 	}
 
-	/*if ([elementName isEqualToString:@"e2servicereference"]) {
-		// Create a mutable string to hold the contents of the 'e2servicereference' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
 
-	} else if ([elementName isEqualToString:@"e2servicename"]) {
-		// Create a mutable string to hold the contents of the 'e2servicename' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
+	if (
+		/* Enigma 2 */
+		/* [elementName isEqualToString:@"e2servicereference"]	// Sref
+		|| [elementName isEqualToString:@"e2servicename"]		// Sname
+		|| */[elementName isEqualToString:@"e2eventid"]			// Eit
+		|| [elementName isEqualToString:@"e2eventstart"]		// Begin
+		|| [elementName isEqualToString:@"e2eventduration"]		// Duration
+		|| [elementName isEqualToString:@"e2eventtitle"]		// Title
+		|| [elementName isEqualToString:@"e2eventdescription"]	// Description
+		|| [elementName isEqualToString:@"e2eventdescriptionextended"]	// Extended Description
+		/* Enigma 1 */
+		|| [elementName isEqualToString:@"start"]			// Begin
+		|| [elementName isEqualToString:@"duration"]		// Duration
+		|| [elementName isEqualToString:@"description"]		// Title
+		|| [elementName isEqualToString:@"details"]			// Extended Description
 
-	} else*/ if ([elementName isEqualToString:@"e2eventid"]) {
-		// Create a mutable string to hold the contents of the 'e2eventid' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2eventstart"]) {
-		// Create a mutable string to hold the contents of the 'e2eventstart' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2eventduration"]) {
-		// Create a mutable string to hold the contents of the 'e2eventduration' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2eventtitle"]) {
-		// Create a mutable string to hold the contents of the 'e2eventtitle' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2eventdescription"]) {
-		// Create a mutable string to hold the contents of the 'e2eventdescription' element.
-		// The contents are collected in parser:foundCharacters:.
-		self.contentOfCurrentProperty = [NSMutableString string];
-
-	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"]) {
-		// Create a mutable string to hold the contents of the 'e2eventdescriptionextended' element.
+		) {
+		// Create a mutable string to hold the contents of this element.
 		// The contents are collected in parser:foundCharacters:.
 		self.contentOfCurrentProperty = [NSMutableString string];
 
@@ -125,18 +127,18 @@ static NSUInteger parsedEventsCounter;
 
 	if ([elementName isEqualToString:@"e2eventid"]) {
 		[[self currentEventObject] setEit: [self contentOfCurrentProperty]];
-	} else if ([elementName isEqualToString:@"e2eventstart"]) {
+	} else if ([elementName isEqualToString:@"e2eventstart"] || [elementName isEqualToString:@"start"]) {
 		[[self currentEventObject] setBeginFromString: [self contentOfCurrentProperty]];
-	} else if ([elementName isEqualToString:@"e2eventduration"]) {
+	} else if ([elementName isEqualToString:@"e2eventduration"] || [elementName isEqualToString:@"duration"]) {
 		// XXX: this relies on begin being set before, we might wanna fix this someday
 		[[self currentEventObject] setEndFromDurationString: [self contentOfCurrentProperty]];
-	} else if ([elementName isEqualToString:@"e2eventtitle"]) {
+	} else if ([elementName isEqualToString:@"e2eventtitle"] || [elementName isEqualToString:@"description"]) {
 		[[self currentEventObject] setTitle: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"e2eventdescription"]) {
 		[[self currentEventObject] setSdescription: [self contentOfCurrentProperty]];
-	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"]) {
+	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"] || [elementName isEqualToString:@"details"]) {
 		[[self currentEventObject] setEdescription: [self contentOfCurrentProperty]];
-	} else if ([elementName isEqualToString:@"e2event"]) {
+	} else if ([elementName isEqualToString:@"e2event"] || [elementName isEqualToString:@"event"]) {
 		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;

@@ -21,6 +21,7 @@
 @synthesize service = _service;
 @synthesize sref = _sref;
 @synthesize state = _state;
+@synthesize afterevent = _afterevent;
 
 + (Timer *)withEvent: (Event *)ourEvent
 {
@@ -35,6 +36,7 @@
 	timer.service = [[Service alloc] init];
 	timer.repeated = 0;
 	timer.state = 0;
+	timer.afterevent = 0;
 
 	return timer;
 }
@@ -126,6 +128,12 @@
 	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
 }
 
+- (void)setEndFromDurationString: (NSString *)newDuration
+{
+	[_end release];
+	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+}
+
 - (void)setDisabledFromString: (NSString *)newDisabled
 {
 	_disabled = [newDisabled isEqualToString: @"1"];
@@ -152,6 +160,11 @@
 - (void)setStateFromString: (NSString *)newState
 {
 	_state = [newState intValue];
+}
+
+- (void)setAftereventFromString: (NSString *)newAfterevent
+{
+	_afterevent = [newAfterevent intValue];
 }
 
 @end
