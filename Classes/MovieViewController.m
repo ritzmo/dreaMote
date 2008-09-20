@@ -81,7 +81,7 @@
 - (void)playAction: (id)sender
 {
 	Service *movieService = [[Service alloc] init];
-	[movieService setSref: [_movie sref]];
+	[movieService setSref: _movie.sref];
 
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: movieService];
 	
@@ -100,19 +100,19 @@
 	
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];
-	if([[_movie sdescription] length])
+	if([_movie.sdescription length])
 	{
-		[text appendString: [_movie sdescription]];
+		[text appendString: _movie.sdescription];
 	}
 	else
 	{
-		[text appendString: [_movie title]];
+		[text appendString: _movie.title];
 	}
 	
-	if([[_movie edescription] length])
+	if([_movie.edescription length])
 	{
 		[text appendString: @"\n\n"];
-		[text appendString: [_movie edescription]];
+		[text appendString: _movie.edescription];
 	}
 	
 	myTextView.text = text;
@@ -183,7 +183,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if([[_movie length] intValue] != -1)
+	if([_movie.length intValue] != -1)
 		return 7;
 	return 6;
 }
@@ -202,7 +202,7 @@
 		case 4:
 			return NSLocalizedString(@"Begin", @"");
 		case 5:
-			if([[_movie length] intValue] != -1)
+			if([_movie.length intValue] != -1)
 				return NSLocalizedString(@"End", @"");
 		default:
 			return nil;
@@ -213,10 +213,10 @@
 {
 	if(section == 3)
 	{
-		NSUInteger count = [[_movie tags] count];
+		NSUInteger count = [_movie.tags count];
 		if(!count)
 			return 1;
-		return [[_movie tags] count];
+		return count;
 	}
 	return 1;
 }
@@ -244,7 +244,7 @@
 			break;
 		}
 		case 5:
-			if([[_movie length] intValue] != -1)
+			if([_movie.length intValue] != -1)
 			{
 				result = kTextFieldHeight;
 				break;
@@ -280,7 +280,7 @@
 				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
 			break;
 		case 5:
-			if([[_movie length] intValue] != -1)
+			if([_movie.length intValue] != -1)
 			{
 				cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
 				if(cell == nil)
@@ -312,24 +312,27 @@
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			((SourceCell *)sourceCell).sourceLabel.text = [_movie sname];
+			((SourceCell *)sourceCell).sourceLabel.text = _movie.sname;
 			break;
 		case 2:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_size: [_movie size]];
+			if([_movie.size intValue] != -1)
+				((SourceCell *)sourceCell).sourceLabel.text = [self format_size: _movie.size];
+			else
+				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"N/A", @"");
 			break;
 		case 3:
-			if(![[_movie tags] count])
+			if(![_movie.tags count])
 				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"None", @"");
 			else
-				((SourceCell *)sourceCell).sourceLabel.text = [[_movie tags] objectAtIndex: [indexPath row]];
+				((SourceCell *)sourceCell).sourceLabel.text = [_movie.tags objectAtIndex: [indexPath row]];
 			break;
 		case 4:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie time]];
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
-			if([[_movie length] intValue] != -1)
+			if([_movie.length intValue] != -1)
 			{
-				((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [[_movie time] addTimeInterval: (NSTimeInterval)[[_movie length] intValue]]];
+				((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length intValue]]];
 				break;
 			}
 		case 6:

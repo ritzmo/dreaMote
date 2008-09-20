@@ -71,11 +71,11 @@
 	[_movie release];
 	_movie = newMovie;
 	
-	self.eventNameLabel.text = [newMovie title];
+	self.eventNameLabel.text = newMovie.title;
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	self.eventTimeLabel.text = [format stringFromDate: [newMovie time]];
+	self.eventTimeLabel.text = [format stringFromDate: newMovie.time];
 
 	[self setNeedsDisplay];
 }

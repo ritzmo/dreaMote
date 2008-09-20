@@ -37,7 +37,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	_shouldVibrate = [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC];
-	
+
 	[super viewWillAppear: animated];
 }
 

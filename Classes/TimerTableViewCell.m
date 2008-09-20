@@ -79,14 +79,14 @@
 	[_timer release];
 	_timer = newTimer;
 	
-	self.serviceNameLabel.text = [[newTimer service] sname];
-	self.timerNameLabel.text = [newTimer title];
+	self.serviceNameLabel.text = newTimer.service.sname;
+	self.timerNameLabel.text = newTimer.title;
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *begin = [format stringFromDate: [newTimer begin]];
+	NSString *begin = [format stringFromDate: newTimer.begin];
 	[format setDateStyle:NSDateFormatterNoStyle];
-	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [format stringFromDate: [newTimer end]]];
+	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [format stringFromDate: newTimer.end]];
 
 	[self setNeedsDisplay];
 }

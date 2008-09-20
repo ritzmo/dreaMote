@@ -60,7 +60,7 @@
 	[_service release];
 	_service = newService;
 
-	self.serviceNameLabel.text = [newService getServiceName];
+	self.serviceNameLabel.text = newService.sname;
 
 	[self setNeedsDisplay];
 }

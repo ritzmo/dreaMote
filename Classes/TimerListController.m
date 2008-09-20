@@ -105,7 +105,7 @@
 	{
 		Timer* timer = [(Timer*)newTimer retain];
 
-		int state = [timer state];
+		int state = timer.state;
 
 		[_timers insertObject:timer atIndex:dist[state]];
 

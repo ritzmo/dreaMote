@@ -116,19 +116,19 @@
 	
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];
-	if([[_event sdescription] length])
+	if([_event.sdescription length])
 	{
-		[text appendString: [_event sdescription]];
+		[text appendString: _event.sdescription];
 	}
 	else
 	{
-		[text appendString: [_event title]];
+		[text appendString: _event.title];
 	}
 	
-	if([[_event edescription] length])
+	if([_event.edescription length])
 	{
 		[text appendString: @"\n\n"];
-		[text appendString: [_event edescription]];
+		[text appendString: _event.edescription];
 	}
 	
 	myTextView.text = text;
@@ -275,10 +275,10 @@
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_event begin]];
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _event.begin];
 			break;
 		case 2:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_event end]];
+			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _event.end];
 			break;	
 		case 3:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add Timer", @"");

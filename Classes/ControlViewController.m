@@ -15,7 +15,6 @@
 
 @implementation ControlViewController
 
-@synthesize volume = _volume;
 @synthesize switchControl = _switchControl;
 @synthesize slider = _slider;
 @synthesize myTableView;
@@ -31,7 +30,6 @@
 
 - (void)dealloc
 {
-	[_volume release];
 	[_switchControl release];
 	[_slider release];
 
@@ -49,7 +47,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[_volume release];
+	[super viewDidDisappear:animated];
 }
 
 - (void)fetchVolume
@@ -66,11 +64,10 @@
 	if(newVolume == nil)
 		return;
 
-	[_volume release];
-	_volume = [(Volume*)newVolume retain];
+	Volume *volume = (Volume*)newVolume; // just for convenience
 
-	self.switchControl.on = [self.volume ismuted];
-	self.slider.value = (float)[self.volume current];
+	_switchControl.on = volume.ismuted;
+	_slider.value = (float)(volume.current);
 }
 
 + (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title

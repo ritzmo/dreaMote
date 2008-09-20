@@ -37,7 +37,6 @@
 @private
 	Timer *_timer;
 	Timer *_oldTimer;
-	Service *_service;
 	BOOL _creatingNewTimer;
 	BOOL _shouldSave;
 }
@@ -49,7 +48,6 @@
 
 @property (nonatomic, retain) Timer *timer;
 @property (nonatomic, retain) Timer *oldTimer;
-@property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) UITableView *myTableView;
 @property (assign) BOOL creatingNewTimer;
 

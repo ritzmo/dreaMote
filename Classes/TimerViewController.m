@@ -31,7 +31,6 @@
 @synthesize timer = _timer;
 @synthesize oldTimer = _oldTimer;
 @synthesize creatingNewTimer = _creatingNewTimer;
-@synthesize service = _service;
 @synthesize myTableView;
 
 - (id)init
@@ -86,7 +85,6 @@
 - (void)dealloc
 {
 	[_timer release];
-	[_service release];
 	[_oldTimer release];
 
 	[myTableView release];
@@ -135,7 +133,7 @@
 {
 	UITextField *returnTextField = [self create_TextField];
 	
-    returnTextField.text = [_timer title];
+    returnTextField.text = _timer.title;
 	returnTextField.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of timerTitle");
 	
 	return returnTextField;
@@ -145,7 +143,7 @@
 {
 	UITextField *returnTextField = [self create_TextField];
 	
-    returnTextField.text = [_timer tdescription];
+    returnTextField.text = _timer.tdescription;
 	returnTextField.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of timerDescription");
 	
 	return returnTextField;
@@ -213,14 +211,14 @@
 
 	// Enabled
 	timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[timerEnabled setOn: ![_timer disabled]];
+	[timerEnabled setOn: !_timer.disabled];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	timerEnabled.backgroundColor = [UIColor clearColor];
 
 	// Justplay
 	timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[timerJustplay setOn: [_timer justplay]];
+	[timerJustplay setOn: _timer.justplay];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	timerJustplay.backgroundColor = [UIColor clearColor];
@@ -231,7 +229,7 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 {
-	if(!_creatingNewTimer && [_oldTimer state] != 0)
+	if(!_creatingNewTimer && _oldTimer.state != 0)
 	{
 		if(editing)
 		{
@@ -287,8 +285,8 @@
 			else
 				_timer.tdescription = @"";
 
-			[_timer setDisabled: !timerEnabled.on];
-			[_timer setJustplay: timerJustplay.on];
+			_timer.disabled = !timerEnabled.on;
+			_timer.justplay = timerJustplay.on;
 			
 			// Try to commit changes if no error occured
 			if(!message)
@@ -344,15 +342,15 @@
 	if(object == nil)
 		return;
 
-	[_timer setService: [(Service*)object retain]];
-	timerServiceNameCell.nameLabel.text = [[_timer service] sname];
+	_timer.service = (Service*)object;
+	timerServiceNameCell.nameLabel.text = _timer.service.sname;
 }
 
 - (void)editBegin:(id)sender
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
-	DatePickerController *datePickerController = [DatePickerController withDate: [_timer begin]];
+	DatePickerController *datePickerController = [DatePickerController withDate: _timer.begin];
 	[datePickerController setTarget: self action: @selector(beginSelected:)];
 	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
 }
@@ -362,15 +360,15 @@
 	if(object == nil)
 		return;
 
-	[_timer setBegin: [(NSDate*)object retain]];
-	timerBeginCell.nameLabel.text = [self format_BeginEnd: [_timer begin]];
+	_timer.begin = (NSDate*)object;
+	timerBeginCell.nameLabel.text = [self format_BeginEnd: _timer.begin];
 }
 
 - (void)editEnd:(id)sender
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
-	DatePickerController *datePickerController = [DatePickerController withDate: [_timer end]];
+	DatePickerController *datePickerController = [DatePickerController withDate: _timer.end];
 	[datePickerController setTarget: self action: @selector(endSelected:)];
 	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
 }
@@ -380,8 +378,8 @@
 	if(object == nil)
 		return;
 
-	[_timer setEnd: [(NSDate*)object retain]];
-	timerEndCell.nameLabel.text = [self format_BeginEnd: [_timer end]];
+	_timer.end = (NSDate*)object;
+	timerEndCell.nameLabel.text = [self format_BeginEnd: _timer.end];
 }
 
 - (void)deleteAction: (id)sender
@@ -428,7 +426,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(_creatingNewTimer || ([_oldTimer state] == 0 && !self.editing))
+	if(_creatingNewTimer || (_oldTimer.state == 0 && !self.editing))
 		return 6;
 	return 7;
 }
@@ -544,19 +542,19 @@
 			break;
 		case 3:
 			if([[[self.timer service] sname] length])
-				((DisplayCell *)sourceCell).nameLabel.text = [[_timer service] sname];
+				((DisplayCell *)sourceCell).nameLabel.text = _timer.service.sname;
 			else
 				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Select Service", @"");
 			((DisplayCell *)sourceCell).view = timerServiceName;
 			timerServiceNameCell = (DisplayCell *)sourceCell;
 			break;
 		case 4:
-			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer begin]];
+			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: _timer.begin];
 			((DisplayCell *)sourceCell).view = timerBegin;
 			timerBeginCell = (DisplayCell *)sourceCell;
 			break;
 		case 5:
-			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: [_timer end]];
+			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: _timer.end];
 			((DisplayCell *)sourceCell).view = timerEnd;
 			timerEndCell = (DisplayCell *)sourceCell;
 			break;

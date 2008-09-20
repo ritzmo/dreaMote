@@ -20,6 +20,19 @@
 @synthesize size = _size;
 @synthesize tags = _tags;
 
+- init
+{
+	if (self = [super init])
+	{
+		_length = [[NSNumber numberWithInt: -1] retain];
+		_size = [[NSNumber numberWithInt: -1] retain];
+		_sdescription = [NSLocalizedString(@"N/A", @"") retain];
+		_edescription = [NSLocalizedString(@"N/A", @"") retain];
+		_tags = [[NSArray array] retain];
+	}
+	return self;
+}
+
 - (void)setTimeFromString: (NSString *)newTime
 {
 	[_time release];

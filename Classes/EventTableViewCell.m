@@ -71,13 +71,13 @@
 	[_event release];
 	_event = newEvent;
 	
-	self.eventNameLabel.text = [newEvent title];
+	self.eventNameLabel.text = newEvent.title;
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *begin = [format stringFromDate: [_event begin]];
+	NSString *begin = [format stringFromDate: _event.begin];
 	[format setDateStyle:NSDateFormatterNoStyle];
-	NSString *end = [format stringFromDate: [_event end]];
+	NSString *end = [format stringFromDate: _event.end];
 	self.eventTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
 
 	[self setNeedsDisplay];
