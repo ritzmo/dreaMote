@@ -15,7 +15,7 @@
 - (NSString *)stringForObjectValue:(id)date
 {
 	// XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
-	NSDate *thisNight = [NSDate dateWithTimeIntervalSinceNow: -(((long)[NSDate timeIntervalSinceReferenceDate] % ONEDAY) + [[self timeZone] secondsFromGMT])];
+	NSDate *thisNight = [NSDate dateWithTimeIntervalSinceNow: -(((long)[NSDate timeIntervalSinceReferenceDate]) + [[self timeZone] secondsFromGMT]) % ONEDAY];
 	NSTimeInterval secSinceToday = [date timeIntervalSinceDate: thisNight];
 	NSTimeInterval secSinceYesterday = [date timeIntervalSinceDate: [thisNight addTimeInterval: -ONEDAY]];
 	NSTimeInterval secSinceTomorrow = [date timeIntervalSinceDate: [thisNight addTimeInterval: ONEDAY]];
