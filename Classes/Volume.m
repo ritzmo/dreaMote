@@ -27,7 +27,7 @@
 
 - (void)setCurrentFromString: (NSString *)newCurrent
 {
-	_current = [newCurrent intValue];
+	_current = [newCurrent integerValue];
 }
 
 - (void)setIsmutedFromString: (NSString *)newMuted

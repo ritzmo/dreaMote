@@ -9,7 +9,6 @@
 #import "RemoteConnector.h"
 
 @interface RemoteConnectorObject : NSObject {
-	NSObject<RemoteConnector> *connector;
 }
  	
 + (void)_setSharedRemoteConnector:(NSObject<RemoteConnector> *)shared;

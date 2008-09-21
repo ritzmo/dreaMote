@@ -146,7 +146,7 @@
 
 - (void)setRepeatedFromString: (NSString *)newRepeated
 {
-	_repeated = [newRepeated intValue];
+	_repeated = [newRepeated integerValue];
 }
 
 - (void)setServiceFromSname: (NSString *)newSname
@@ -159,12 +159,12 @@
 
 - (void)setStateFromString: (NSString *)newState
 {
-	_state = [newState intValue];
+	_state = [newState integerValue];
 }
 
 - (void)setAftereventFromString: (NSString *)newAfterevent
 {
-	_afterevent = [newAfterevent intValue];
+	_afterevent = [newAfterevent integerValue];
 }
 
 @end

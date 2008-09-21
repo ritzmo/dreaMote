@@ -19,6 +19,12 @@
 #import "VolumeXMLReader.h"
 #import "MovieXMLReader.h"
 
+enum powerStates {
+	kShutdownState = 1,
+	kRebootState = 2,
+	kRestartGUIState = 3,
+};
+
 /*
  --- Just a reminder :-) ---
 

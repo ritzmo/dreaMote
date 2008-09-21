@@ -13,13 +13,13 @@
 @private
 	BOOL _result;
 	NSString *_resulttext;
-	int _current;
+	NSInteger _current;
 	BOOL _ismuted;
 }
 
 @property (assign) BOOL result;
 @property (nonatomic, retain) NSString *resulttext;
-@property (assign) int current;
+@property (assign) NSInteger current;
 @property (assign) BOOL ismuted;
 
 @end

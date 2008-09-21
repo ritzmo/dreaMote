@@ -10,7 +10,6 @@
 
 #import "TimerTableViewCell.h"
 #import "RemoteConnectorObject.h"
-#import "Timer.h"
 #import "TimerViewController.h"
 
 @implementation TimerListController
@@ -64,10 +63,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	dist[0] = 0;
-	dist[1] = 0;
-	dist[2] = 0;
-	dist[3] = 0;
+	NSInteger i;
+	for(i = 0; i < kTimerStateMax; i++)
+		dist[i] = 0;
 	
 	[_timers removeAllObjects];
 	
@@ -82,10 +80,9 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	dist[0] = 0;
-	dist[1] = 0;
-	dist[2] = 0;
-	dist[3] = 0;
+	NSInteger i;
+	for(i = 0; i < kTimerStateMax; i++)
+		dist[i] = 0;
 
 	[_timers removeAllObjects];
 
@@ -105,7 +102,7 @@
 	{
 		Timer* timer = [(Timer*)newTimer retain];
 
-		int state = timer.state;
+		NSInteger state = timer.state;
 
 		[_timers insertObject:timer atIndex:dist[state]];
 
@@ -128,7 +125,7 @@
 		cell = [[[TimerTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kTimerCell_ID] autorelease];
 	}
 
-	int offset = 0;
+	NSInteger offset = 0;
 	if(indexPath.section > 0)
 		offset = dist[indexPath.section-1];
 	[cell setTimer: [_timers objectAtIndex: offset + indexPath.row]];
@@ -149,7 +146,7 @@
 {
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
-	int index = indexPath.row;
+	NSInteger index = indexPath.row;
 	if(indexPath.section > 0)
 		index += dist[indexPath.section-1];
 
@@ -163,15 +160,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return 4;
+	return kTimerStateMax;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if(section == 0)
+	if(section == kTimerStateWaiting)
 		return NSLocalizedString(@"Waiting", @"");
-	else if(section == 1)
+	else if(section == kTimerStatePrepared)
 		return NSLocalizedString(@"Prepared", @"");
-	else if (section == 2)
+	else if (section == kTimerStateRunning)
 		return NSLocalizedString(@"Running", @"");
 	else
 		return NSLocalizedString(@"Finished", @"");

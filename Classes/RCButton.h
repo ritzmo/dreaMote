@@ -11,9 +11,9 @@
 
 @interface RCButton : UIButton {
 @public
-	int rcCode;
+	NSInteger rcCode;
 }
 
-@property (nonatomic) int rcCode;
+@property (nonatomic) NSInteger rcCode;
 
 @end

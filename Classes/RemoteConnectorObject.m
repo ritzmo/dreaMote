@@ -25,14 +25,4 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 	return _sharedRemoteConnector;
 }
 
-- (id)init
-{
-	if ((self = [super init]))
-	{
-		NSParameterAssert(_sharedRemoteConnector != nil);
-		connector = _sharedRemoteConnector;
-	}
-	return self;
-}
-
 @end

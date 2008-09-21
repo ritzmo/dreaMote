@@ -12,12 +12,6 @@ enum availableConnectors {
 	kEnigma1Connector = 2,
 };
 
-enum powerStates {
-	kShutdownState = 1,
-	kRebootState = 2,
-	kRestartGUIState = 3,
-};
-
 enum buttonCodes {
 	kButtonCodePower = 116,
 	kButtonCode1 = 2,

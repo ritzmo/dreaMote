@@ -11,6 +11,20 @@
 #import "Service.h"
 #import "Event.h"
 
+enum afterEvent {
+	kAfterEventNothing = 0,
+	kAfterEventStandby = 1,
+	kAfterEventDeepstandby = 2
+};
+
+enum timerStates {
+	kTimerStateWaiting = 0,
+	kTimerStatePrepared = 1,
+	kTimerStateRunning = 2,
+	kTimerStateFinished = 3,
+	kTimerStateMax = 4
+};
+
 @interface Timer : NSObject
 {
 @private
@@ -20,12 +34,12 @@
 	BOOL _disabled;
 	NSString *_title;
 	NSString *_tdescription;
-	int _repeated;
+	NSInteger _repeated;
 	BOOL _justplay;
 	Service *_service;
 	NSString *_sref;
-	int _state;
-	int _afterevent;
+	NSInteger _state;
+	NSInteger _afterevent;
 }
 
 + (Timer *)withEvent: (Event *)ourEvent;
@@ -49,11 +63,11 @@
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *tdescription;
 @property (assign) BOOL disabled;
-@property (assign) int repeated;
+@property (assign) NSInteger repeated;
 @property (assign) BOOL justplay;
 @property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) NSString *sref;
-@property (assign) int state;
-@property (assign) int afterevent;
+@property (assign) NSInteger state;
+@property (assign) NSInteger afterevent;
 
 @end

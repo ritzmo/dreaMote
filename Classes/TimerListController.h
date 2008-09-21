@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "Timer.h"
+
 @interface TimerListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSMutableArray *_timers;
-	int dist[4];
+	NSInteger dist[kTimerStateMax];
 }
 
 - (void)addAction:(id)sender;

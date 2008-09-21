@@ -177,22 +177,22 @@ static NSUInteger parsedTimersCounter;
 		[[self currentTimerObject] setStateFromString: [self contentOfCurrentProperty]];
 	} else if ([elementName isEqualToString:@"typedata"]) {
 		// TODO: see if we can extract more information
-		int typeData = [[self contentOfCurrentProperty] intValue];
+		NSInteger typeData = [[self contentOfCurrentProperty] integerValue];
 
 		// We translate to Enigma2 States here
 		if(typeData & stateRunning)
-			[[self currentTimerObject] setState: 1];
+			[[self currentTimerObject] setState: kTimerStateRunning];
 		else if(typeData & stateFinished)
-			[[self currentTimerObject] setState: 3];
+			[[self currentTimerObject] setState: kTimerStateFinished];
 		else // stateWaiting or unknown
-			[[self currentTimerObject] setState: 0];
+			[[self currentTimerObject] setState: kTimerStateWaiting];
 
 		if(typeData & doShutdown)
-			[[self currentTimerObject] setAfterevent: 1];
+			[[self currentTimerObject] setAfterevent: kAfterEventStandby];
 		else if(typeData & doGoSleep)
-			[[self currentTimerObject] setAfterevent: 2];
+			[[self currentTimerObject] setAfterevent: kAfterEventDeepstandby];
 		else
-			[[self currentTimerObject] setAfterevent: 0];
+			[[self currentTimerObject] setAfterevent: kAfterEventNothing];
 
 		if(typeData & SwitchTimerEntry)
 			[[self currentTimerObject] setJustplay: YES];
