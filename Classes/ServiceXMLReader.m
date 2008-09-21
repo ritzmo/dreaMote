@@ -101,11 +101,11 @@ static NSUInteger parsedServicesCounter;
 	}
 
 	if ([elementName isEqualToString:@"e2servicereference"] || [elementName isEqualToString:@"reference"]) {
-		[[self currentServiceObject] setSref: [self contentOfCurrentProperty]];
+		self.currentServiceObject.sref = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2servicename"] || [elementName isEqualToString:@"name"]) {
-		[[self currentServiceObject] setSname: [self contentOfCurrentProperty]];
+		self.currentServiceObject.sname = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2service"] || [elementName isEqualToString:@"service"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentServiceObject waitUntilDone: NO];
+		[self.target performSelectorOnMainThread: self.addObject withObject: self.currentServiceObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

@@ -150,57 +150,56 @@ static NSUInteger parsedTimersCounter;
 	}
 
 	if ([elementName isEqualToString:@"e2servicereference"] || [elementName isEqualToString:@"reference"]) {
-		[[self currentTimerObject] setSref: [self contentOfCurrentProperty]];
+		self.currentTimerObject.sref = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2servicename"] || [elementName isEqualToString:@"name"]) {
 		// XXX: this relies on sref being set before, we might wanna fix this someday
-		[[self currentTimerObject] setServiceFromSname: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setServiceFromSname: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2eit"]) {
-		[[self currentTimerObject] setEit: [self contentOfCurrentProperty]];
+		self.currentTimerObject.eit = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2timebegin"] || [elementName isEqualToString:@"start"]) {
-		[[self currentTimerObject] setBeginFromString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setBeginFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2timeend"]) {
-		[[self currentTimerObject] setEndFromString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setEndFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"duration"]) {
-		 // XXX: this relies on start being set before, darn that sucks :-)
-		[[self currentTimerObject] setEndFromDurationString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setEndFromDurationString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2name"] || [elementName isEqualToString:@"description"]) {
-		[[self currentTimerObject] setTitle: [self contentOfCurrentProperty]];
+		self.currentTimerObject.title = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2description"]) {
-		[[self currentTimerObject] setTdescription: [self contentOfCurrentProperty]];
+		self.currentTimerObject.tdescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2justplay"]) {
-		[[self currentTimerObject] setJustplayFromString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setJustplayFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2repeated"]) {
-		[[self currentTimerObject] setRepeatedFromString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setRepeatedFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2disabled"]) {
-		[[self currentTimerObject] setDisabledFromString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setDisabledFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2state"]) {
-		[[self currentTimerObject] setStateFromString: [self contentOfCurrentProperty]];
+		[self.currentTimerObject setStateFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"typedata"]) {
 		// TODO: see if we can extract more information
-		NSInteger typeData = [[self contentOfCurrentProperty] integerValue];
+		NSInteger typeData = [self.contentOfCurrentProperty integerValue];
 
 		// We translate to Enigma2 States here
 		if(typeData & stateRunning)
-			[[self currentTimerObject] setState: kTimerStateRunning];
+			self.currentTimerObject.state = kTimerStateRunning;
 		else if(typeData & stateFinished)
-			[[self currentTimerObject] setState: kTimerStateFinished];
+			self.currentTimerObject.state = kTimerStateFinished;
 		else // stateWaiting or unknown
-			[[self currentTimerObject] setState: kTimerStateWaiting];
+			self.currentTimerObject.state =  kTimerStateWaiting;
 
 		if(typeData & doShutdown)
-			[[self currentTimerObject] setAfterevent: kAfterEventStandby];
+			self.currentTimerObject.afterevent = kAfterEventStandby;
 		else if(typeData & doGoSleep)
-			[[self currentTimerObject] setAfterevent: kAfterEventDeepstandby];
+			self.currentTimerObject.afterevent = kAfterEventDeepstandby;
 		else
-			[[self currentTimerObject] setAfterevent: kAfterEventNothing];
+			self.currentTimerObject.afterevent = kAfterEventNothing;
 
 		if(typeData & SwitchTimerEntry)
-			[[self currentTimerObject] setJustplay: YES];
+			self.currentTimerObject.justplay = YES;
 		else // We assume RecTimerEntry here
-			[[self currentTimerObject] setJustplay: NO];
+			self.currentTimerObject.justplay = NO;
 
 	} else if([elementName isEqualToString:@"e2timer"] || [elementName isEqualToString:@"timer"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentTimerObject waitUntilDone:NO];
+		[self.target performSelectorOnMainThread: self.addObject withObject: self.currentTimerObject waitUntilDone:NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

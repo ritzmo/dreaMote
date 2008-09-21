@@ -183,7 +183,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if([_movie.length intValue] != -1)
+	if([_movie.length integerValue] != -1)
 		return 7;
 	return 6;
 }
@@ -202,7 +202,7 @@
 		case 4:
 			return NSLocalizedString(@"Begin", @"");
 		case 5:
-			if([_movie.length intValue] != -1)
+			if([_movie.length integerValue] != -1)
 				return NSLocalizedString(@"End", @"");
 		default:
 			return nil;
@@ -244,7 +244,7 @@
 			break;
 		}
 		case 5:
-			if([_movie.length intValue] != -1)
+			if([_movie.length integerValue] != -1)
 			{
 				result = kTextFieldHeight;
 				break;
@@ -280,7 +280,7 @@
 				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
 			break;
 		case 5:
-			if([_movie.length intValue] != -1)
+			if([_movie.length integerValue] != -1)
 			{
 				cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
 				if(cell == nil)
@@ -315,7 +315,7 @@
 			((SourceCell *)sourceCell).sourceLabel.text = _movie.sname;
 			break;
 		case 2:
-			if([_movie.size intValue] != -1)
+			if([_movie.size integerValue] != -1)
 				((SourceCell *)sourceCell).sourceLabel.text = [self format_size: _movie.size];
 			else
 				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"N/A", @"");
@@ -330,9 +330,9 @@
 			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
-			if([_movie.length intValue] != -1)
+			if([_movie.length integerValue] != -1)
 			{
-				((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length intValue]]];
+				((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
 				break;
 			}
 		case 6:

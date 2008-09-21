@@ -126,20 +126,19 @@ static NSUInteger parsedEventsCounter;
 	}
 
 	if ([elementName isEqualToString:@"e2eventid"]) {
-		[[self currentEventObject] setEit: [self contentOfCurrentProperty]];
+		self.currentEventObject.eit = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2eventstart"] || [elementName isEqualToString:@"start"]) {
-		[[self currentEventObject] setBeginFromString: [self contentOfCurrentProperty]];
+		[self.currentEventObject setBeginFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2eventduration"] || [elementName isEqualToString:@"duration"]) {
-		// XXX: this relies on begin being set before, we might wanna fix this someday
-		[[self currentEventObject] setEndFromDurationString: [self contentOfCurrentProperty]];
+		[self.currentEventObject setEndFromDurationString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2eventtitle"] || [elementName isEqualToString:@"description"]) {
-		[[self currentEventObject] setTitle: [self contentOfCurrentProperty]];
+		self.currentEventObject.title = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2eventdescription"]) {
-		[[self currentEventObject] setSdescription: [self contentOfCurrentProperty]];
+		self.currentEventObject.sdescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2eventdescriptionextended"] || [elementName isEqualToString:@"details"]) {
-		[[self currentEventObject] setEdescription: [self contentOfCurrentProperty]];
+		self.currentEventObject.edescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2event"] || [elementName isEqualToString:@"event"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentEventObject waitUntilDone: NO];
+		[self.target performSelectorOnMainThread: self.addObject withObject: self.currentEventObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

@@ -75,6 +75,15 @@
 	return timer;
 }
 
+- init
+{
+	if (self = [super init])
+	{
+		_duration = -1;
+	}
+	return self;
+}
+
 - (id)initWithTimer:(Timer *)timer
 {
 	self = [super init];
@@ -90,6 +99,7 @@
 		self.service = [[timer service] copy];
 		self.repeated = timer.repeated;
 		self.state = timer.state;
+		_duration = -1;
 	}
 
 	return self;
@@ -120,6 +130,11 @@
 {
 	[_begin release];
 	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	if(_duration != -1){
+		[_end release];
+		_end = [[_begin addTimeInterval: _duration] retain];
+		_duration = -1;
+	}
 }
 
 - (void)setEndFromString: (NSString *)newEnd
@@ -130,6 +145,10 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
+	if(_begin == nil) {
+		_duration = [newDuration doubleValue];
+		return;
+	}
 	[_end release];
 	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
 }

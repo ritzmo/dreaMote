@@ -82,7 +82,7 @@
 	}
 
 	NSString *remoteHost = [[[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost] autorelease];
-	switch([[[NSUserDefaults standardUserDefaults] stringForKey: kConnector] intValue])
+	switch([[[NSUserDefaults standardUserDefaults] stringForKey: kConnector] integerValue])
 	{
 		case kEnigma2Connector:
 			[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteHost]];

@@ -112,28 +112,28 @@ static NSUInteger parsedMoviesCounter;
 	}
 	
 	if ([elementName isEqualToString:@"e2servicereference"] || [elementName isEqualToString:@"reference"]) {
-		[[self currentMovieObject] setSref: [self contentOfCurrentProperty]];
+		self.currentMovieObject.sref = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2servicename"]) {
-		[[self currentMovieObject] setSname: [self contentOfCurrentProperty]];
+		self.currentMovieObject.sname = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2length"]) {
-		if([[self contentOfCurrentProperty] isEqualToString: @"disabled"])
-			[[self currentMovieObject] setLength: [NSNumber numberWithInt: -1]];
+		if([self.contentOfCurrentProperty isEqualToString: @"disabled"])
+			self.currentMovieObject.length = [NSNumber numberWithInteger: -1];
 		else
-			[[self currentMovieObject] setLength: [NSNumber numberWithInt: [[self contentOfCurrentProperty] intValue]]];
+			self.currentMovieObject.length = [NSNumber numberWithInteger: [self.contentOfCurrentProperty integerValue]];
 	} else if ([elementName isEqualToString:@"e2time"]) {
-		[[self currentMovieObject] setTimeFromString: [self contentOfCurrentProperty]];
+		[self.currentMovieObject setTimeFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2title"] || [elementName isEqualToString:@"name"]) {
-		[[self currentMovieObject] setTitle: [self contentOfCurrentProperty]];
+		self.currentMovieObject.title = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2description"]) {
-		[[self currentMovieObject] setSdescription: [self contentOfCurrentProperty]];
+		self.currentMovieObject.sdescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2descriptionextended"]) {
-		[[self currentMovieObject] setEdescription: [self contentOfCurrentProperty]];
+		self.currentMovieObject.edescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2tags"]) {
-		[[self currentMovieObject] setTagsFromString: [self contentOfCurrentProperty]];
+		[self.currentMovieObject setTagsFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"e2filesize"]) {
-		[[self currentMovieObject] setSize: [NSNumber numberWithLongLong: [[self contentOfCurrentProperty] longLongValue]]];
+		self.currentMovieObject.size = [NSNumber numberWithLongLong: [self.contentOfCurrentProperty longLongValue]];
 	} else if ([elementName isEqualToString:@"e2movie"] || [elementName isEqualToString:@"service"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentMovieObject waitUntilDone: NO];
+		[self.target performSelectorOnMainThread: self.addObject withObject: self.currentMovieObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }

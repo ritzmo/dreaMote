@@ -202,7 +202,7 @@
 		firstRange.location = firstRange.length;
 		firstRange.length = secondRange.location - firstRange.location;
 
-		[volumeObject setCurrent: [[myString substringWithRange: firstRange] intValue]];
+		[volumeObject setCurrent: [[myString substringWithRange: firstRange] integerValue]];
 	}
 	else
 		[volumeObject setCurrent: -1];

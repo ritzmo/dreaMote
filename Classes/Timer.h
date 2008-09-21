@@ -40,6 +40,7 @@ enum timerStates {
 	NSString *_sref;
 	NSInteger _state;
 	NSInteger _afterevent;
+	double _duration;
 }
 
 + (Timer *)withEvent: (Event *)ourEvent;

@@ -84,15 +84,15 @@ static NSUInteger parsedVolumesCounter;
 	}
 
 	if ([elementName isEqualToString:@"e2result"]) {
-		[[self currentVolumeObject] setResult: [[self contentOfCurrentProperty] boolValue]];
+		self.currentVolumeObject.result = [self.contentOfCurrentProperty boolValue];
 	} else if ([elementName isEqualToString:@"e2resulttext"]) {
-		[[self currentVolumeObject] setResulttext: [self contentOfCurrentProperty]];
+		self.currentVolumeObject.resulttext = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2current"]) {
-		[[self currentVolumeObject] setCurrent: [[self contentOfCurrentProperty] intValue]];
+		self.currentVolumeObject.current = [self.contentOfCurrentProperty integerValue];
 	} else if ([elementName isEqualToString:@"e2ismuted"]) {
-		[[self currentVolumeObject] setIsmuted: [[self contentOfCurrentProperty] boolValue]];
+		self.currentVolumeObject.ismuted = [self.contentOfCurrentProperty boolValue];
 	} else if ([elementName isEqualToString:@"e2volume"]) {
-		[self.target performSelectorOnMainThread:self.addObject withObject:self.currentVolumeObject waitUntilDone: NO];
+		[self.target performSelectorOnMainThread: self.addObject withObject: self.currentVolumeObject waitUntilDone: NO];
 	}
 	self.contentOfCurrentProperty = nil;
 }
