@@ -1,7 +1,6 @@
 // Header
 
 #import "TimerXMLReader.h"
-#import "RemoteConnector.h" // XXX: we need e1 timer enums
 
 static NSUInteger parsedTimersCounter;
 

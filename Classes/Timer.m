@@ -7,7 +7,6 @@
 //
 
 #import "Timer.h"
-#import "RemoteConnector.h" // XXX: we need e1 timer enums
 
 @implementation Timer
 
