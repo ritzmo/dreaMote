@@ -211,23 +211,18 @@
 		// Convert Volume to expected Format
 		volume = VOLFACTOR * (63 - [[myString substringWithRange: firstRange] integerValue]);
 	}
-	[volumeObject setCurrent: volume];
+	volumeObject.current = volume;
 
-	if(volume == -1)
+	firstRange = [myString rangeOfString: @"mute: "];
+	if(firstRange.length)
 	{
-		firstRange = [myString rangeOfString: @"mute: "];
-		if(firstRange.length)
-		{
-			firstRange.location = firstRange.length;
-			firstRange.length = 1;
+		firstRange.location = firstRange.length;
+		firstRange.length = 1;
 
-			[volumeObject setIsmuted: [[myString substringWithRange: firstRange] isEqualToString: @"1"]];
-		}
-		else
-			[volumeObject setIsmuted: NO];
+		volumeObject.ismuted = [[myString substringWithRange: firstRange] isEqualToString: @"1"];
 	}
 	else
-		[volumeObject setIsmuted: (volume == 0)];
+		volumeObject.ismuted = NO;
 
 	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
 }
