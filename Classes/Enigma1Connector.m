@@ -262,7 +262,7 @@
 - (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&name=%@after_event=%d&action=%@", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)([[newTimer end] timeIntervalSince1970] - [[newTimer begin] timeIntervalSince1970]), [Enigma1Connector urlencode: [newTimer title]], 0/*[newTimer afterEvent]*/, [newTimer justplay] ? @"zap" : @"record"];
+	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)([[newTimer end] timeIntervalSince1970] - [[newTimer begin] timeIntervalSince1970]), [Enigma1Connector urlencode: [newTimer title]], 0/*[newTimer afterEvent]*/, [newTimer justplay] ? @"zap" : @"record"];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -289,7 +289,6 @@
 	return NO;
 }
 
-// TODO: see if ref & start are actually enough, code suggests this
 - (BOOL)delTimer:(Timer *) oldTimer
 {
 	// Generate URI
