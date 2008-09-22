@@ -24,11 +24,11 @@
 {
 	if (self = [super init])
 	{
-		_length = [[NSNumber numberWithInt: -1] retain];
-		_size = [[NSNumber numberWithInt: -1] retain];
-		_sdescription = [NSLocalizedString(@"N/A", @"") retain];
-		_edescription = [NSLocalizedString(@"N/A", @"") retain];
-		_tags = [[NSArray array] retain];
+		self.length = [NSNumber numberWithInt: -1];
+		self.size = [NSNumber numberWithInt: -1];
+		self.sdescription = NSLocalizedString(@"N/A", @"");
+		self.edescription = NSLocalizedString(@"N/A", @"");
+		self.tags = [NSArray array];
 	}
 	return self;
 }

@@ -7,6 +7,7 @@
 //
 
 #import "Timer.h"
+#import "RemoteConnector.h" // XXX: we need e1 timer enums
 
 @implementation Timer
 
@@ -26,11 +27,11 @@
 + (Timer *)withEvent: (Event *)ourEvent
 {
 	Timer *timer = [[Timer alloc] init];
-	timer.title = [[ourEvent title] retain];
-	timer.tdescription = [[ourEvent sdescription] retain];
-	timer.begin = [[ourEvent begin] retain];
-	timer.end = [[ourEvent end] retain];
-	timer.eit = [[ourEvent eit] retain];
+	timer.title = [ourEvent title];
+	timer.tdescription = [ourEvent sdescription];
+	timer.begin = [ourEvent begin];
+	timer.end = [ourEvent end];
+	timer.eit = [ourEvent eit];
 	timer.disabled = NO;
 	timer.justplay = NO;
 	timer.service = [[Service alloc] init];
@@ -44,14 +45,14 @@
 + (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService
 {
 	Timer *timer = [[Timer alloc] init];
-	timer.title = [[ourEvent title] retain];
-	timer.tdescription = [[ourEvent sdescription] retain];
-	timer.begin = [[ourEvent begin] retain];
-	timer.end = [[ourEvent end] retain];
-	timer.eit = [[ourEvent eit] retain];
+	timer.title = [ourEvent title];
+	timer.tdescription = [ourEvent sdescription];
+	timer.begin = [ourEvent begin];
+	timer.end = [ourEvent end];
+	timer.eit = [ourEvent eit];
 	timer.disabled = NO;
 	timer.justplay = NO;
-	timer.service = [ourService retain];
+	timer.service = ourService;
 	timer.repeated = 0;
 	timer.state = 0;
 
@@ -62,7 +63,7 @@
 {
 	Timer *timer = [[Timer alloc] init];
 	timer.begin = [NSDate date];
-	timer.end = [timer.begin addTimeInterval: (double)3600];
+	timer.end = [timer.begin addTimeInterval: (NSTimeInterval)3600];
 	timer.eit = @"-1";
 	timer.title = @"";
 	timer.tdescription = @"";
@@ -124,6 +125,16 @@
 - (NSString *)getStateString
 {
 	return [[NSString stringWithFormat: @"%d", _state] autorelease];
+}
+
+- (NSInteger)getEnigmaAfterEvent
+{
+	if(_afterevent == kAfterEventStandby)
+		return doGoSleep;
+	else if(_afterevent == kAfterEventDeepstandby)
+		return doShutdown;
+	else // _afterevent == kAfterEventNothing or unhandled
+		return 0;
 }
 
 - (void)setBeginFromString: (NSString *)newBegin

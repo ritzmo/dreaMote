@@ -44,7 +44,10 @@ enum powerStates {
 
 - (id)initWithAddress:(NSString *) address
 {
-	baseAddress = [address copy];
+	if(self = [super init])
+	{
+		baseAddress = [address copy];
+	}
 	return self;
 }
 
@@ -68,7 +71,7 @@ enum powerStates {
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [Enigma2Connector urlencode: [service getServiceReference]]];
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [Enigma2Connector urlencode: service.sref]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -104,7 +107,7 @@ enum powerStates {
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, [service getServiceReference]];
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, service.sref];
 
 	NSError *parseError = nil;
 
@@ -157,7 +160,7 @@ enum powerStates {
 	[pool release];
 }
 
-- (void)sendPowerstate: (int) newState
+- (void)sendPowerstate: (NSInteger) newState
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/powerstate?newstate=%d", self.baseAddress, newState];
@@ -229,7 +232,7 @@ enum powerStates {
 	return NO;
 }
 
-- (BOOL)setVolume:(int) newVolume
+- (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=set%d", self.baseAddress, newVolume];
@@ -251,7 +254,7 @@ enum powerStates {
 - (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)[[newTimer end] timeIntervalSince1970], [Enigma2Connector urlencode: [newTimer title]], [Enigma2Connector urlencode: [newTimer tdescription]], [newTimer eit], [newTimer disabled], [newTimer justplay], 0/*[newTimer afterEvent]*/];
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [Enigma2Connector urlencode: newTimer.title], [Enigma2Connector urlencode: newTimer.tdescription], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -270,7 +273,7 @@ enum powerStates {
 - (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)[[newTimer end] timeIntervalSince1970], [Enigma2Connector urlencode: [newTimer title]], [Enigma2Connector urlencode: [newTimer tdescription]], [newTimer eit], [newTimer disabled], [newTimer justplay], 0/*[newTimer afterEvent]*/, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970], (int)[[oldTimer end] timeIntervalSince1970]];
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [Enigma2Connector urlencode: newTimer.title], [Enigma2Connector urlencode: newTimer.tdescription], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -289,7 +292,7 @@ enum powerStates {
 - (BOOL)delTimer:(Timer *) oldTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerdelete?sRef=%@&begin=%d&end=%d", baseAddress, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970], (int)[[oldTimer end] timeIntervalSince1970]];
+	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerdelete?sRef=%@&begin=%d&end=%d", baseAddress, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -305,7 +308,7 @@ enum powerStates {
 	return NO;
 }
 
-- (BOOL)sendButton:(int) type
+- (BOOL)sendButton:(NSInteger) type
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/web/remotecontrol?command=%d", baseAddress, type];

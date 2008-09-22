@@ -180,7 +180,7 @@
 
 - (void)volumeChanged:(id)sender
 {
-	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(int)[(UISlider*)sender value]];
+	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(NSInteger)[(UISlider*)sender value]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

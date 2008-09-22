@@ -108,10 +108,10 @@ enum enigma1timertype {
 - (void)reboot;
 - (void)restart;
 - (BOOL)toggleMuted;
-- (BOOL)setVolume:(int) newVolume;
+- (BOOL)setVolume:(NSInteger) newVolume;
 - (BOOL)addTimer:(Timer *) newTimer;
 - (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
 - (BOOL)delTimer:(Timer *) oldTimer;
-- (BOOL)sendButton:(int) type;
+- (BOOL)sendButton:(NSInteger) type;
 
 @end

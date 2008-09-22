@@ -29,7 +29,10 @@
 
 - (id)initWithAddress:(NSString *) address
 {
-	baseAddress = [address copy];
+	if(self = [super init])
+	{
+		baseAddress = [address copy];
+	}
 	return self;
 }
 
@@ -53,7 +56,7 @@
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/zapTo?mode=zap&path=%@", self.baseAddress, [Enigma1Connector urlencode: [service getServiceReference]]];
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/zapTo?mode=zap&path=%@", self.baseAddress, [Enigma1Connector urlencode: service.sref]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -88,7 +91,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *myURI = [NSString stringWithFormat:@"%@/xml/serviceepg?ref=%@", self.baseAddress, [service getServiceReference]];
+	NSString *myURI = [NSString stringWithFormat:@"%@/xml/serviceepg?ref=%@", self.baseAddress, service.sref];
 
 	NSError *parseError = nil;
 
@@ -179,7 +182,7 @@
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio", self.baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	// Create URL Object and download it
@@ -235,7 +238,7 @@
 	return NO;
 }
 
-- (BOOL)setVolume:(int) newVolume
+- (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, newVolume];
@@ -257,7 +260,8 @@
 - (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, [[newTimer service] sref], (int)[[newTimer begin] timeIntervalSince1970], (int)([[newTimer end] timeIntervalSince1970] - [[newTimer begin] timeIntervalSince1970]), [Enigma1Connector urlencode: [newTimer title]], 0/*[newTimer afterEvent]*/, [newTimer justplay] ? @"zap" : @"record"];
+	// XXX: disabled == paused ?!
+	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -276,9 +280,12 @@
 - (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer
 {
 	// This is the easiest way I found in enigma sources as changeTimerEvent does not accept start & duration ;-)
-	if([self delTimer: oldTimer]) {
+	if([self delTimer: oldTimer])
+	{
 		if([self addTimer: newTimer])
 			return YES;
+
+		// XXX: We might run into serious problems if this fails too :-)
 		[self addTimer: oldTimer]; // We failed to add the new timer, try to add the old one again
 	}
 	return NO;
@@ -287,7 +294,7 @@
 - (BOOL)delTimer:(Timer *) oldTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/deleteTimerEvent?ref=%@&start=%d&force=yes", baseAddress, [[oldTimer service] sref], (int)[[oldTimer begin] timeIntervalSince1970]];
+	NSString *myURI = [NSString stringWithFormat: @"%@/deleteTimerEvent?ref=%@&start=%d&force=yes", baseAddress, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -299,11 +306,11 @@
 	NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
 	if(myRange.length)
 		return YES;
-	
+
 	return NO;
 }
 
-- (BOOL)sendButton:(int) type
+- (BOOL)sendButton:(NSInteger) type
 {
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/cgi-bin/rc?%d", baseAddress, type];

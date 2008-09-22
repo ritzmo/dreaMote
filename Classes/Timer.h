@@ -48,6 +48,7 @@ enum timerStates {
 + (Timer *)new;
 
 - (NSString *)getStateString;
+- (NSInteger)getEnigmaAfterEvent;
 - (void)setBeginFromString: (NSString *)newBegin;
 - (void)setEndFromString: (NSString *)newEnd;
 - (void)setEndFromDurationString: (NSString *)newDuration;
