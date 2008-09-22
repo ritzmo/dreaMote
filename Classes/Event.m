@@ -17,13 +17,25 @@
 @synthesize sdescription = _sdescription;
 @synthesize edescription = _edescription;
 
-- init
+- (id)init
 {
 	if (self = [super init])
 	{
 		_duration = -1;
 	}
 	return self;
+}
+
+- (void)dealloc
+{
+	[_eit release];
+	[_begin release];
+	[_end release];
+	[_title release];
+	[_sdescription release];
+	[_edescription release];
+	
+	[super dealloc];
 }
 
 - (NSString *)description

@@ -25,6 +25,14 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[_sref release];
+	[_sname release];
+
+	[super dealloc];
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -

@@ -19,7 +19,7 @@
 @synthesize window;
 @synthesize navigationController;
 
-- init
+- (id)init
 {
 	if (self = [super init])
 	{

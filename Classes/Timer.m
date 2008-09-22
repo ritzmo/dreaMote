@@ -26,11 +26,11 @@
 + (Timer *)withEvent: (Event *)ourEvent
 {
 	Timer *timer = [[Timer alloc] init];
-	timer.title = [ourEvent title];
-	timer.tdescription = [ourEvent sdescription];
-	timer.begin = [ourEvent begin];
-	timer.end = [ourEvent end];
-	timer.eit = [ourEvent eit];
+	timer.title = ourEvent.title;
+	timer.tdescription = ourEvent.sdescription;
+	timer.begin = ourEvent.begin;
+	timer.end = ourEvent.end;
+	timer.eit = ourEvent.eit;
 	timer.disabled = NO;
 	timer.justplay = NO;
 	timer.service = [[Service alloc] init];
@@ -44,11 +44,11 @@
 + (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService
 {
 	Timer *timer = [[Timer alloc] init];
-	timer.title = [ourEvent title];
-	timer.tdescription = [ourEvent sdescription];
-	timer.begin = [ourEvent begin];
-	timer.end = [ourEvent end];
-	timer.eit = [ourEvent eit];
+	timer.title = ourEvent.title;
+	timer.tdescription = ourEvent.sdescription;
+	timer.begin = ourEvent.begin;
+	timer.end = ourEvent.end;
+	timer.eit = ourEvent.eit;
 	timer.disabled = NO;
 	timer.justplay = NO;
 	timer.service = ourService;
@@ -75,7 +75,7 @@
 	return timer;
 }
 
-- init
+- (id)init
 {
 	if (self = [super init])
 	{
@@ -89,14 +89,14 @@
 	self = [super init];
 	
 	if (self) {
-		self.begin = [[timer begin] copy];
-		self.end = [[timer end] copy];
-		self.eit = [[timer eit] copy];
-		self.title = [[timer title] copy];
-		self.tdescription = [[timer tdescription] copy];
-		self.disabled = [timer disabled];
-		self.justplay = [timer justplay];
-		self.service = [[timer service] copy];
+		self.begin = [timer.begin copy];
+		self.end = [timer.end copy];
+		self.eit = [timer.eit copy];
+		self.title = [timer.title copy];
+		self.tdescription = [timer.tdescription copy];
+		self.disabled = timer.disabled;
+		self.justplay = timer.justplay;
+		self.service = [timer.service copy];
 		self.repeated = timer.repeated;
 		self.state = timer.state;
 		_duration = -1;
@@ -105,13 +105,25 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[_begin release];
+	[_end release];
+	[_eit release];
+	[_title release];
+	[_tdescription release];
+	[_service release];
+
+	[super dealloc];
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	id newElement = [[[self class] alloc] initWithTimer:self];
+	id newElement = [[[self class] alloc] initWithTimer: self];
 
 	return newElement;
 }

@@ -20,7 +20,7 @@
 @synthesize size = _size;
 @synthesize tags = _tags;
 
-- init
+- (id)init
 {
 	if (self = [super init])
 	{
@@ -31,6 +31,17 @@
 		self.tags = [NSArray array];
 	}
 	return self;
+}
+
+- (void)dealloc
+{
+	[_length release];
+	[_size release];
+	[_sdescription release];
+	[_edescription release];
+	[_tags release];
+
+	[super dealloc];
 }
 
 - (void)setTimeFromString: (NSString *)newTime
