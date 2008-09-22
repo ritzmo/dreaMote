@@ -19,6 +19,8 @@
 #import "VolumeXMLReader.h"
 #import "MovieXMLReader.h"
 
+#define VOLFACTOR (100/63)
+
 @interface Enigma1Connector()
 + (NSString *)urlencode:(NSString *)toencode;
 @end
@@ -180,6 +182,11 @@
 
 - (void)getVolume:(id)target action:(SEL)action
 {
+	/*
+	 * /cgi-bin/audio
+	 * 0 -> 100%
+	 * 63 -> 0% == Mute
+	 */
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio", self.baseAddress];
 
@@ -191,6 +198,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	Volume *volumeObject = [[Volume alloc] init];
+	NSInteger volume = -1;
 
 	NSRange firstRange = [myString rangeOfString: @"volume: "];
 	NSRange secondRange;
@@ -200,21 +208,26 @@
 		firstRange.location = firstRange.length;
 		firstRange.length = secondRange.location - firstRange.location;
 
-		[volumeObject setCurrent: [[myString substringWithRange: firstRange] integerValue]];
+		// Convert Volume to expected Format
+		volume = VOLFACTOR * (63 - [[myString substringWithRange: firstRange] integerValue]);
 	}
-	else
-		[volumeObject setCurrent: -1];
+	[volumeObject setCurrent: volume];
 
-	firstRange = [myString rangeOfString: @"mute: "];
-	if(firstRange.length)
+	if(volume == -1)
 	{
-		firstRange.location = firstRange.length;
-		firstRange.length = 1;
+		firstRange = [myString rangeOfString: @"mute: "];
+		if(firstRange.length)
+		{
+			firstRange.location = firstRange.length;
+			firstRange.length = 1;
 
-		[volumeObject setIsmuted: [[myString substringWithRange: firstRange] isEqualToString: @"1"]];
+			[volumeObject setIsmuted: [[myString substringWithRange: firstRange] isEqualToString: @"1"]];
+		}
+		else
+			[volumeObject setIsmuted: NO];
 	}
 	else
-		[volumeObject setIsmuted: NO];
+		[volumeObject setIsmuted: (volume == 0)];
 
 	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
 }
@@ -241,7 +254,7 @@
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, newVolume];
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, newVolume/VOLFACTOR];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -259,9 +272,14 @@
 
 - (BOOL)addTimer:(Timer *) newTimer
 {
+	// We hack around a little here - assuming statePaused equals a disabled timer in enigma2 we hide this flag in afterEvent as there is no other way of setting it
+	// TODO: find out if the assumption is true :-)
+	NSInteger afterEvent = [newTimer getEnigmaAfterEvent];
+	if(newTimer.disabled)
+		afterEvent |= statePaused;
+
 	// Generate URI
-	// XXX: disabled == paused ?!
-	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"];
+	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], afterEvent , newTimer.justplay ? @"zap" : @"record"];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
