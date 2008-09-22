@@ -20,7 +20,6 @@
 @synthesize eventNameLabel = _eventNameLabel;
 @synthesize eventTimeLabel = _eventTimeLabel;
 
-
 + (void)initialize
 {
 	// TODO: anything to be done here?

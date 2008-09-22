@@ -128,7 +128,7 @@
 	NSInteger offset = 0;
 	if(indexPath.section > 0)
 		offset = dist[indexPath.section-1];
-	[cell setTimer: [_timers objectAtIndex: offset + indexPath.row]];
+	cell.timer = [_timers objectAtIndex: offset + indexPath.row];
 
 	return cell;
 }

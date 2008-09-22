@@ -120,7 +120,7 @@
 		cell = [[[ServiceTableViewCell alloc] initWithFrame: cellFrame reuseIdentifier: kServiceCell_ID] autorelease];
 	}
 
-	[cell setService: [_services objectAtIndex:indexPath.row]];
+	cell.service = [_services objectAtIndex:indexPath.row];
 
 	return cell;
 }

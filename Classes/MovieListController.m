@@ -114,7 +114,7 @@
 		cell = [[[MovieTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kMovieCell_ID] autorelease];
 	}
 
-	[cell setMovie: [_movies objectAtIndex:indexPath.row]];
+	cell.movie = [_movies objectAtIndex:indexPath.row];
 	
 	return cell;
 }

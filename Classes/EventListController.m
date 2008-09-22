@@ -122,7 +122,7 @@
 		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kEventCell_ID] autorelease];
 	}
 
-	[cell setEvent: [_events objectAtIndex:indexPath.row]];
+	cell.event = [_events objectAtIndex:indexPath.row];
 	
 	return cell;
 }
