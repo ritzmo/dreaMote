@@ -65,7 +65,7 @@
 + (TimerViewController *)withTimer: (Timer *)ourTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.timer = [ourTimer retain];
+	timerViewController.timer = ourTimer;
 	timerViewController.oldTimer = [ourTimer copy];
 	timerViewController.creatingNewTimer = NO;
 

@@ -30,7 +30,7 @@
 + (EventListController*)withEventList: (NSArray*) eventList
 {
 	EventListController *eventListController = [[EventListController alloc] init];
-	eventListController.events = [eventList retain];
+	eventListController.events = eventList;
 	eventListController.service = [[Service alloc] init];
 
 	return eventListController;
@@ -39,8 +39,8 @@
 + (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService
 {
 	EventListController *eventListController = [[EventListController alloc] init];
-	eventListController.events = [eventList retain];
-	eventListController.service = [ourService retain];
+	eventListController.events = eventList;
+	eventListController.service = ourService;
 
 	eventListController.title = [ourService sname];
 
@@ -51,7 +51,7 @@
 {
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.events = [NSMutableArray array];
-	eventListController.service = [ourService retain];
+	eventListController.service = ourService;
 
 	eventListController.title = [ourService sname];
 
@@ -66,7 +66,7 @@
 {
 	[_events release];
 	[_service release];
-	
+
 	[super dealloc];
 }
 

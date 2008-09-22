@@ -37,7 +37,7 @@
 + (DatePickerController *)withDate: (NSDate *)ourDate
 {
 	DatePickerController *datePickerController = [[DatePickerController alloc] init];
-	datePickerController.date = [ourDate retain];
+	datePickerController.date = ourDate;
 	
 	return datePickerController;
 }
