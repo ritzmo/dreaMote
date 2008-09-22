@@ -58,16 +58,11 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: this is just an assumption ;-)
-	NSRange myRange = [myString rangeOfString: @"Please wait..."];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return YES; // The Enigma1-WebIf doesn't give us any useful result anyways
 }
 
 - (void)fetchServices:(id)target action:(SEL)action
@@ -316,12 +311,11 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	/*NSString *myString = */[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: is there any way to find out if the request succeeded?
-	return YES;
+	return YES; // The Enigma1-WebIf doesn't give any useful result
 }
 
 @end
