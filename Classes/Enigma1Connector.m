@@ -55,6 +55,7 @@
 	return [(NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)toencode, NULL, (CFStringRef)@"()<>@,.;:\"/[]?=\\& ", kCFStringEncodingUTF8) autorelease];
 }
 
+// TODO: can someone verify if this works (especially for movies)?
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
