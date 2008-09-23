@@ -333,8 +333,6 @@
 	ServiceListController *serviceListController = [[ServiceListController alloc] init];
 	[serviceListController setTarget: self action: @selector(serviceSelected:)];
 	[[applicationDelegate navigationController] pushViewController: serviceListController animated: YES];
-
-	//[serviceListController release];
 }
 
 - (void)serviceSelected:(id)object
@@ -541,7 +539,7 @@
 			}
 			break;
 		case 3:
-			if([[[self.timer service] sname] length])
+			if([self.timer.service.sname length])
 				((DisplayCell *)sourceCell).nameLabel.text = _timer.service.sname;
 			else
 				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Select Service", @"");

@@ -166,13 +166,13 @@ static NSUInteger parsedTimersCounter;
 	} else if ([elementName isEqualToString:@"e2description"]) {
 		self.currentTimerObject.tdescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2justplay"]) {
-		[self.currentTimerObject setJustplayFromString: self.contentOfCurrentProperty];
+		self.currentTimerObject.justplay = [self.contentOfCurrentProperty isEqualToString: @"1"];
 	} else if ([elementName isEqualToString:@"e2repeated"]) {
-		[self.currentTimerObject setRepeatedFromString: self.contentOfCurrentProperty];
+		self.currentTimerObject.repeated = [self.contentOfCurrentProperty integerValue];
 	} else if ([elementName isEqualToString:@"e2disabled"]) {
-		[self.currentTimerObject setDisabledFromString: self.contentOfCurrentProperty];
+		self.currentTimerObject.disabled = [self.contentOfCurrentProperty isEqualToString: @"1"];
 	} else if ([elementName isEqualToString:@"e2state"]) {
-		[self.currentTimerObject setStateFromString: self.contentOfCurrentProperty];
+		self.currentTimerObject.state = [self.contentOfCurrentProperty integerValue];
 	} else if ([elementName isEqualToString:@"typedata"]) {
 		// TODO: see if we can extract more information
 		NSInteger typeData = [self.contentOfCurrentProperty integerValue];

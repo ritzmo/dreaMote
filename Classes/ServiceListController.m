@@ -164,9 +164,7 @@
 		EventListController *eventListController = [EventListController forService: service];
 
 		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
-	
-		//[eventListController release];
-		
+
 		_refreshServices = NO;
 	}
 

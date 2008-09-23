@@ -95,7 +95,7 @@
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: [self service]];
+	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service];
 	[pool release];
 }
 
@@ -134,8 +134,6 @@
 	Event *event = [_events objectAtIndex: indexPath.row];
 	EventViewController *eventViewController = [EventViewController withEventAndService: event: _service];
 	[[applicationDelegate navigationController] pushViewController: eventViewController animated: YES];
-
-	//[eventViewController release];
 
 	return nil;
 }

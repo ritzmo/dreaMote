@@ -87,8 +87,6 @@
 
 	TimerViewController *timerViewController = [TimerViewController withEventAndService: _event: _service];
 	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
-
-	//[timerViewController release];
 }
 
 - (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title

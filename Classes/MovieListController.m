@@ -126,8 +126,6 @@
 	Movie *movie = [self.movies objectAtIndex: indexPath.row];
 	MovieViewController *movieViewController = [MovieViewController withMovie: movie];
 	[[applicationDelegate navigationController] pushViewController: movieViewController animated: YES];
-	
-	//[movieViewController release];
 
 	refreshMovies = NO;
 	
