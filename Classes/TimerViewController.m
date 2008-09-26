@@ -76,7 +76,7 @@
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	timerViewController.title = NSLocalizedString(@"New Timer", @"");
-	timerViewController.timer = [[Timer new] autorelease];
+	timerViewController.timer = [[Timer timer] autorelease];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;

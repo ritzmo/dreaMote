@@ -59,7 +59,7 @@
 	return timer;
 }
 
-+ (Timer *)new
++ (Timer *)timer
 {
 	Timer *timer = [[Timer alloc] init];
 	timer.begin = [NSDate date];

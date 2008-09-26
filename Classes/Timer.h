@@ -82,7 +82,7 @@ enum timerType {
 
 + (Timer *)withEvent: (Event *)ourEvent;
 + (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService;
-+ (Timer *)new;
++ (Timer *)timer;
 
 - (NSString *)getStateString;
 - (NSInteger)getEnigmaAfterEvent;
