@@ -26,7 +26,7 @@
 			return [super stringForObjectValue:date];
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Today", @"");
-		NSDateFormatterStyle tempStyle = [self timeStyle];
+		NSDateFormatterStyle tempStyle = [self dateStyle];
 		[self setDateStyle: NSDateFormatterNoStyle];
 		NSString *retVal = [NSString stringWithFormat: @"%@, %@", NSLocalizedString(@"Today", @""), [super stringForObjectValue: date]];
 		[self setDateStyle: tempStyle];
@@ -38,7 +38,7 @@
 			return [super stringForObjectValue:date];
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Yesterday", @"");
-		NSDateFormatterStyle tempStyle = [self timeStyle];
+		NSDateFormatterStyle tempStyle = [self dateStyle];
 		[self setDateStyle: NSDateFormatterNoStyle];
 		NSString *retVal = [NSString stringWithFormat: @"%@, %@", NSLocalizedString(@"Yesterday", @""), [super stringForObjectValue: date]];
 		[self setDateStyle: tempStyle];
@@ -50,7 +50,7 @@
 			return [super stringForObjectValue:date];
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Tomorrow", @"");
-		NSDateFormatterStyle tempStyle = [self timeStyle];
+		NSDateFormatterStyle tempStyle = [self dateStyle];
 		[self setDateStyle: NSDateFormatterNoStyle];
 		NSString *retVal = [NSString stringWithFormat: @"%@, %@", NSLocalizedString(@"Tomorrow", @""), [super stringForObjectValue: date]];
 		[self setDateStyle: tempStyle];
