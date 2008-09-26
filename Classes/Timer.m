@@ -178,21 +178,6 @@
 	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
 }
 
-- (void)setDisabledFromString: (NSString *)newDisabled
-{
-	_disabled = [newDisabled isEqualToString: @"1"];
-}
-
-- (void)setJustplayFromString: (NSString *)newJustplay
-{
-	_justplay = [newJustplay isEqualToString: @"1"];
-}
-
-- (void)setRepeatedFromString: (NSString *)newRepeated
-{
-	_repeated = [newRepeated integerValue];
-}
-
 - (void)setSref: (NSString *)newSref
 {
 	[_sref release];
@@ -218,21 +203,11 @@
 		_service = [[Service alloc] init];
 		_service.sref = _sref;
 		_service.sname = newSname;
-		
+
 		[_sref release];
 	}
 	else
 		_sname = [newSname retain];
-}
-
-- (void)setStateFromString: (NSString *)newState
-{
-	_state = [newState integerValue];
-}
-
-- (void)setAftereventFromString: (NSString *)newAfterevent
-{
-	_afterevent = [newAfterevent integerValue];
 }
 
 @end

@@ -89,11 +89,6 @@ enum timerType {
 - (void)setBeginFromString: (NSString *)newBegin;
 - (void)setEndFromString: (NSString *)newEnd;
 - (void)setEndFromDurationString: (NSString *)newDuration;
-- (void)setDisabledFromString: (NSString *)newDisabled;
-- (void)setJustplayFromString: (NSString *)newJustplay;
-- (void)setRepeatedFromString: (NSString *)newRepeated;
-- (void)setStateFromString: (NSString *)newState;
-- (void)setAftereventFromString: (NSString *)newAfterevent;
 
 @property (nonatomic, retain) NSString *eit;
 @property (nonatomic, retain) NSDate *begin;
