@@ -180,7 +180,6 @@
 
 - (void)setSref: (NSString *)newSref
 {
-	[_sref release];
 	if(_sname)
 	{
 		[_service release];
@@ -189,14 +188,17 @@
 		_service.sname = _sname;
 
 		[_sname release];
+		_sname = nil;
 	}
 	else
+	{
+		[_sref release];
 		_sref = [newSref retain];
+	}
 }
 
 - (void)setSname: (NSString *)newSname
 {
-	[_sname release];
 	if(_sref)
 	{
 		[_service release];
@@ -205,9 +207,13 @@
 		_service.sname = newSname;
 
 		[_sref release];
+		_sref = nil;
 	}
 	else
+	{
+		[_sname release];
 		_sname = [newSname retain];
+	}
 }
 
 @end

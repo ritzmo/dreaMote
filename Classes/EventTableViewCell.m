@@ -23,7 +23,7 @@
 + (void)initialize
 {
 	// TODO: anything to be done here?
-}	
+}
 
 - (void)dealloc
 {
@@ -66,9 +66,8 @@
 {
 	if(_event == newEvent) return;
 
-	[newEvent retain];
 	[_event release];
-	_event = newEvent;
+	_event = [newEvent retain];
 	
 	self.eventNameLabel.text = newEvent.title;
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];

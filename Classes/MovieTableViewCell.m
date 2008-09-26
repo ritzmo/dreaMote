@@ -20,11 +20,10 @@
 @synthesize eventNameLabel = _eventNameLabel;
 @synthesize eventTimeLabel = _eventTimeLabel;
 
-
 + (void)initialize
 {
 	// TODO: anything to be done here?
-}	
+}
 
 - (void)dealloc
 {
@@ -67,9 +66,8 @@
 {
 	if(_movie == newMovie) return;
 
-	[newMovie retain];
 	[_movie release];
-	_movie = newMovie;
+	_movie = [newMovie retain];
 	
 	self.eventNameLabel.text = newMovie.title;
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];

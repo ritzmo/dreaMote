@@ -20,7 +20,7 @@
 + (void)initialize
 {
 	// TODO: anything to be done here?
-}	
+}
 
 - (void)dealloc
 {
@@ -40,10 +40,10 @@
 		// A label that displays the Servicename.
 		self.serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
 		self.serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview:self.serviceNameLabel];
+		[myContentView addSubview: self.serviceNameLabel];
 		[self.serviceNameLabel release];
 	}
-	
+
 	return self;
 }
 
@@ -56,9 +56,8 @@
 {
 	if(_service == newService) return;
 
-	[newService retain];
 	[_service release];
-	_service = newService;
+	_service = [newService retain];
 
 	self.serviceNameLabel.text = newService.sname;
 

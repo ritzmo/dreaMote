@@ -21,11 +21,10 @@
 @synthesize timerNameLabel = _timerNameLabel;
 @synthesize timerTimeLabel = _timerTimeLabel;
 
-
 + (void)initialize
 {
 	// TODO: anything to be done here?
-}	
+}
 
 - (void)dealloc
 {
@@ -75,10 +74,9 @@
 {
 	if(_timer == newTimer) return;
 
-	[newTimer retain];
 	[_timer release];
-	_timer = newTimer;
-	
+	_timer = [newTimer retain];
+
 	self.serviceNameLabel.text = newTimer.service.sname;
 	self.timerNameLabel.text = newTimer.title;
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
@@ -95,7 +93,7 @@
 {
 	[super layoutSubviews];
 	CGRect contentRect = self.contentView.bounds;
-	
+
 	// In this example we will never be editing, but this illustrates the appropriate pattern
 	if (!self.editing) {
 		CGRect frame;
@@ -126,15 +124,15 @@
 	} else {
 		backgroundColor = [UIColor whiteColor];
 	}
-	
+
 	self.serviceNameLabel.backgroundColor = backgroundColor;
 	self.serviceNameLabel.highlighted = selected;
 	self.serviceNameLabel.opaque = !selected;
-	
+
 	self.timerNameLabel.backgroundColor = backgroundColor;
 	self.timerNameLabel.highlighted = selected;
 	self.timerNameLabel.opaque = !selected;
-	
+
 	self.timerTimeLabel.backgroundColor = backgroundColor;
 	self.timerTimeLabel.highlighted = selected;
 	self.timerTimeLabel.opaque = !selected;
@@ -152,7 +150,7 @@
 	} else {
 		font = [UIFont systemFontOfSize:fontSize];
 	}
-	
+
 	/*
 	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the	  |selection color shows through).  This is handled in setSelected:animated:.
 	 */
