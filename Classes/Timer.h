@@ -74,6 +74,7 @@ enum timerType {
 	BOOL _justplay;
 	Service *_service;
 	NSString *_sref;
+	NSString *_sname;
 	NSInteger _state;
 	NSInteger _afterevent;
 	double _duration;
@@ -91,7 +92,6 @@ enum timerType {
 - (void)setDisabledFromString: (NSString *)newDisabled;
 - (void)setJustplayFromString: (NSString *)newJustplay;
 - (void)setRepeatedFromString: (NSString *)newRepeated;
-- (void)setServiceFromSname: (NSString *)newSname;
 - (void)setStateFromString: (NSString *)newState;
 - (void)setAftereventFromString: (NSString *)newAfterevent;
 
@@ -105,6 +105,7 @@ enum timerType {
 @property (assign) BOOL justplay;
 @property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) NSString *sref;
+@property (nonatomic, retain) NSString *sname;
 @property (assign) NSInteger state;
 @property (assign) NSInteger afterevent;
 

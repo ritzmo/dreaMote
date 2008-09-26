@@ -151,8 +151,7 @@ static NSUInteger parsedTimersCounter;
 	if ([elementName isEqualToString:@"e2servicereference"] || [elementName isEqualToString:@"reference"]) {
 		self.currentTimerObject.sref = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2servicename"] || [elementName isEqualToString:@"name"]) {
-		// XXX: this relies on sref being set before, we might wanna fix this someday
-		[self.currentTimerObject setServiceFromSname: self.contentOfCurrentProperty];
+		self.currentTimerObject.sname = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2eit"]) {
 		self.currentTimerObject.eit = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2timebegin"] || [elementName isEqualToString:@"start"]) {

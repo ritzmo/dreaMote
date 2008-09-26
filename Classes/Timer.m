@@ -20,6 +20,7 @@
 @synthesize justplay = _justplay;
 @synthesize service = _service;
 @synthesize sref = _sref;
+@synthesize sname = _sname;
 @synthesize state = _state;
 @synthesize afterevent = _afterevent;
 
@@ -113,6 +114,8 @@
 	[_title release];
 	[_tdescription release];
 	[_service release];
+	[_sname release];
+	[_sref release];
 
 	[super dealloc];
 }
@@ -190,12 +193,36 @@
 	_repeated = [newRepeated integerValue];
 }
 
-- (void)setServiceFromSname: (NSString *)newSname
+- (void)setSref: (NSString *)newSref
 {
-	[_service release];
-	_service = [[Service alloc] init];
-	_service.sref = _sref;
-	_service.sname = newSname;
+	[_sref release];
+	if(_sname)
+	{
+		[_service release];
+		_service = [[Service alloc] init];
+		_service.sref = newSref;
+		_service.sname = _sname;
+
+		[_sname release];
+	}
+	else
+		_sref = [newSref retain];
+}
+
+- (void)setSname: (NSString *)newSname
+{
+	[_sname release];
+	if(_sref)
+	{
+		[_service release];
+		_service = [[Service alloc] init];
+		_service.sref = _sref;
+		_service.sname = newSname;
+		
+		[_sref release];
+	}
+	else
+		_sname = [newSname retain];
 }
 
 - (void)setStateFromString: (NSString *)newState
