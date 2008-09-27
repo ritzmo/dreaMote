@@ -250,7 +250,7 @@
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, newVolume/VOLFACTOR];
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, (63 - (newVolume/VOLFACTOR))];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
