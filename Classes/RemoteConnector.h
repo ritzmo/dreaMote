@@ -12,6 +12,12 @@ enum availableConnectors {
 	kEnigma1Connector = 2,
 };
 
+// Ok, this is a little much for just two connectors - but we might want to extend this software even further some day :-)
+enum connectorFeatures {
+	kFeaturesDisabledTimers = 1,
+	kFeaturesExtendedRecordInfo = 2, // as long as we lack more connectors this is specific enough
+};
+
 enum buttonCodes {
 	kButtonCodePower = 116,
 	kButtonCode1 = 2,
@@ -59,6 +65,7 @@ enum buttonCodes {
 
 - (id)initWithAddress:(NSString *) address;
 + (id <RemoteConnector>*)createClassWithAddress:(NSString *) address;
+- (NSInteger)getFeatures;
 - (void)fetchServices:(id)target action:(SEL)action;
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
 - (void)fetchTimers:(id)target action:(SEL)action;

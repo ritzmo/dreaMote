@@ -207,7 +207,7 @@
 {
 	CGFloat result;
 
-	switch ([indexPath section])
+	switch (indexPath.section)
 	{
 		case 0:
 		{
@@ -264,7 +264,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = [indexPath section];
+	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
 	
 	// we are creating a new cell, setup its attributes

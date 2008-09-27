@@ -25,15 +25,6 @@ enum powerStates {
 	kRestartGUIState = 3,
 };
 
-/*
- --- Just a reminder :-) ---
-
- <e2simplexmlresult>
-  <e2state>True</e2state>
-  <e2statetext>Timer removed</e2statetext>
- </e2simplexmlresult>
-*/
-
 @interface Enigma2Connector()
 + (NSString *)urlencode:(NSString *)toencode;
 @end
@@ -41,6 +32,11 @@ enum powerStates {
 @implementation Enigma2Connector
 
 @synthesize baseAddress;
+
+- (NSInteger)getFeatures
+{
+	return kFeaturesDisabledTimers | kFeaturesExtendedRecordInfo;
+}
 
 - (id)initWithAddress:(NSString *) address
 {

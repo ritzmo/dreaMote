@@ -464,7 +464,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 2)
+	if(section == 2 && ([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesDisabledTimers))
 		return 2;
 	return 1;
 }
@@ -511,7 +511,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = [indexPath section];
+	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
 
 	// we are creating a new cell, setup its attributes
@@ -525,11 +525,14 @@
 			timerDescriptionCell = (CellTextField *)sourceCell;
 			break;
 		case 2:
-			switch ([indexPath row]) {
+			switch (indexPath.row) {
 				case 0:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Enabled", @"");
-					((DisplayCell *)sourceCell).view = timerEnabled;
-					break;
+					if([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesDisabledTimers)
+					{
+						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Enabled", @"");
+						((DisplayCell *)sourceCell).view = timerEnabled;
+						break;
+					}
 				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Justplay", @"");
 					((DisplayCell *)sourceCell).view = timerJustplay;

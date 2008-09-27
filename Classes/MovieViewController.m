@@ -99,22 +99,27 @@
 	myTextView.backgroundColor = [UIColor whiteColor];
 	
 	// We display short description (or title) and extended description (if available) in our textview
-	NSMutableString *text = [[NSMutableString alloc] init];
-	if([_movie.sdescription length])
-	{
-		[text appendString: _movie.sdescription];
-	}
+	NSMutableString *text;
+	if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+		text = [_movie.title copy];
 	else
 	{
-		[text appendString: _movie.title];
+		text = [[NSMutableString alloc] init];
+		if([_movie.sdescription length])
+		{
+			[text appendString: _movie.sdescription];
+		}
+		else
+		{
+			[text appendString: _movie.title];
+		}
+
+		if([_movie.edescription length])
+		{
+			[text appendString: @"\n\n"];
+			[text appendString: _movie.edescription];
+		}
 	}
-	
-	if([_movie.edescription length])
-	{
-		[text appendString: @"\n\n"];
-		[text appendString: _movie.edescription];
-	}
-	
 	myTextView.text = text;
 	
 	[text release];
@@ -183,6 +188,9 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+		return 2;
+
 	if([_movie.length integerValue] != -1)
 		return 7;
 	return 6;
@@ -190,10 +198,13 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	switch (section) {
+	switch (section)
+	{
 		case 0:
 			return NSLocalizedString(@"Description", @"");
 		case 1:
+			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+				return nil;
 			return NSLocalizedString(@"Service", @"");
 		case 2:
 			return NSLocalizedString(@"Size", @"");
@@ -227,8 +238,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CGFloat result;
-	
-	switch ([indexPath section])
+
+	switch (indexPath.section)
 	{
 		case 0:
 		{
@@ -236,6 +247,11 @@
 			break;
 		}
 		case 1:
+			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			{
+				result = kUIRowHeight;
+				break;
+			}
 		case 2:
 		case 3:
 		case 4:
@@ -255,7 +271,6 @@
 			break;
 		}
 	}
-	
 	return result;
 }
 
@@ -264,7 +279,7 @@
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
 {
 	UITableViewCell *cell = nil;
-	
+
 	switch (section) {
 		case 0:
 			cell = [myTableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
@@ -272,6 +287,13 @@
 				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 			break;
 		case 1:
+			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			{
+				cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+				if(cell == nil)
+					cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+				break;
+			}
 		case 2:
 		case 3:
 		case 4:
@@ -303,7 +325,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = [indexPath section];
+	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
 
 	// we are creating a new cell, setup its attributes
@@ -312,6 +334,12 @@
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
+			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			{
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
+				((DisplayCell *)sourceCell).view = [self create_PlayButton];
+				break;
+			}
 			((SourceCell *)sourceCell).sourceLabel.text = _movie.sname;
 			break;
 		case 2:
@@ -324,7 +352,7 @@
 			if(![_movie.tags count])
 				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"None", @"");
 			else
-				((SourceCell *)sourceCell).sourceLabel.text = [_movie.tags objectAtIndex: [indexPath row]];
+				((SourceCell *)sourceCell).sourceLabel.text = [_movie.tags objectAtIndex: indexPath.row];
 			break;
 		case 4:
 			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _movie.time];

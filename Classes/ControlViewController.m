@@ -238,9 +238,9 @@
 		sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
 	// we are creating a new cell, setup its attributes
-	switch ([indexPath section]) {
+	switch (indexPath.section) {
 		case 0:
-			if([indexPath row] == 0)
+			if(indexPath.row == 0)
 			{
 				sourceCell.nameLabel.text = nil;
 				sourceCell.view = _slider;
@@ -252,7 +252,7 @@
 			}
 			break;
 		case 1:
-			switch ([indexPath row]){
+			switch (indexPath.row){
 				case 0:
 					sourceCell.nameLabel.text = NSLocalizedString(@"Standby", @"");
 					sourceCell.view = [self create_StandbyButton];

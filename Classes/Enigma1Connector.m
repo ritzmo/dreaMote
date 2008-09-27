@@ -29,6 +29,11 @@
 
 @synthesize baseAddress;
 
+- (NSInteger)getFeatures
+{
+	return 0;
+}
+
 - (id)initWithAddress:(NSString *) address
 {
 	if(self = [super init])
