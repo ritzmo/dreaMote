@@ -100,7 +100,7 @@
 {
 	if(newTimer != nil)
 	{
-		Timer* timer = [(Timer*)newTimer retain];
+		Timer* timer = (Timer*)newTimer;
 
 		NSInteger state = timer.state;
 

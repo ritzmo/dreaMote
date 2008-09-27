@@ -100,7 +100,7 @@
 - (void)addService:(id)service
 {
 	if(service != nil)
-		[_services addObject: [(Service*)service retain]];
+		[_services addObject: (Service*)service];
 	[self reloadData];
 }
 

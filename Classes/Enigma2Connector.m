@@ -82,8 +82,6 @@ enum powerStates {
 
 - (void)fetchServices:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/getservices?sRef=%@", self.baseAddress, @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"];
 
 	NSError *parseError = nil;
@@ -95,14 +93,10 @@ enum powerStates {
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[pool release];
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, service.sref];
 
 	NSError *parseError = nil;
@@ -114,14 +108,10 @@ enum powerStates {
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[pool release];
 }
 
 - (void)fetchTimers:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/timerlist", self.baseAddress];
 	
 	NSError *parseError = nil;
@@ -133,14 +123,10 @@ enum powerStates {
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	[pool release];
 }
 
 - (void)fetchMovielist:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/movielist", self.baseAddress];
 	
 	NSError *parseError = nil;
@@ -152,8 +138,6 @@ enum powerStates {
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	[pool release];
 }
 
 - (void)sendPowerstate: (NSInteger) newState
@@ -192,8 +176,6 @@ enum powerStates {
 
 - (void)getVolume:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol", self.baseAddress];
 
 	NSError *parseError = nil;
@@ -205,8 +187,6 @@ enum powerStates {
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	[pool release];
 }
 
 - (BOOL)toggleMuted

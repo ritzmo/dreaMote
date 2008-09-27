@@ -102,7 +102,7 @@
 - (void)addEvent:(id)event
 {
 	if(event != nil)
-		[(NSMutableArray *)_events addObject: [(Event*)event retain]];
+		[(NSMutableArray *)_events addObject: (Event*)event];
 	[self reloadData];
 }
 

@@ -94,7 +94,7 @@
 - (void)addMovie:(id)movie
 {
 	if(movie != nil)
-		[_movies addObject: [(Movie*)movie retain]];
+		[_movies addObject: (Movie*)movie];
 	[self reloadData];
 }
 

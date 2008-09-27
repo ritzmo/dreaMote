@@ -78,8 +78,6 @@
 
 - (void)fetchServices:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/xml/services?mode=0&submode=4", self.baseAddress];
 
 	NSError *parseError = nil;
@@ -87,18 +85,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[pool release];
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
 	NSString *myURI = [NSString stringWithFormat:@"%@/xml/serviceepg?ref=%@", self.baseAddress, service.sref];
 
 	NSError *parseError = nil;
@@ -106,18 +100,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	[pool release];
 }
 
 - (void)fetchTimers:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/xml/timers", self.baseAddress];
 	
 	NSError *parseError = nil;
@@ -125,18 +115,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	[pool release];
 }
 
 - (void)fetchMovielist:(id)target action:(SEL)action
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	NSString *myURI = [NSString stringWithFormat:@"%@/xml/services?mode=3&submode=4", self.baseAddress];
 	
 	NSError *parseError = nil;
@@ -144,12 +130,10 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	[pool release];
 }
 
 - (void)sendPowerstate: (NSString *) newState
