@@ -688,7 +688,7 @@
 				PROVISIONING_PROFILE = DefaultProfileUuid;
 				PROVISIONING_PROFILE_ALLOWED = NO;
 				PROVISIONING_PROFILE_REQUIRED = NO;
-				SDKROOT = iphonesimulator2.0;
+				SDKROOT = iphonesimulator2.1;
 			};
 			name = Debug;
 		};
@@ -702,7 +702,7 @@
 				PROVISIONING_PROFILE = DefaultProfileUuid;
 				PROVISIONING_PROFILE_ALLOWED = NO;
 				PROVISIONING_PROFILE_REQUIRED = NO;
-				SDKROOT = iphonesimulator2.0;
+				SDKROOT = iphonesimulator2.1;
 			};
 			name = Release;
 		};
