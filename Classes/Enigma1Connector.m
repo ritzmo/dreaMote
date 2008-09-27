@@ -268,14 +268,8 @@
 
 - (BOOL)addTimer:(Timer *) newTimer
 {
-	// We hack around a little here - assuming statePaused equals a disabled timer in enigma2 we hide this flag in afterEvent as there is no other way of setting it
-	// TODO: find out if the assumption is true :-)
-	NSInteger afterEvent = [newTimer getEnigmaAfterEvent];
-	if(newTimer.disabled)
-		afterEvent |= statePaused;
-
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], afterEvent , newTimer.justplay ? @"zap" : @"record"];
+	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
