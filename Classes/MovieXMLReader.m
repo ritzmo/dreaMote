@@ -122,8 +122,11 @@ static NSUInteger parsedMoviesCounter;
 			self.currentMovieObject.length = [NSNumber numberWithInteger: [self.contentOfCurrentProperty integerValue]];
 	} else if ([elementName isEqualToString:@"e2time"]) {
 		[self.currentMovieObject setTimeFromString: self.contentOfCurrentProperty];
-	} else if ([elementName isEqualToString:@"e2title"] || [elementName isEqualToString:@"name"]) {
+	} else if ([elementName isEqualToString:@"e2title"]) {
 		self.currentMovieObject.title = self.contentOfCurrentProperty;
+	} else if ([elementName isEqualToString:@"name"]) {
+		// We have to un-escape some characters here...
+		self.currentMovieObject.title = [self.contentOfCurrentProperty stringByReplacingOccurrencesOfString: @"&amp;" withString: @"&"];
 	} else if ([elementName isEqualToString:@"e2description"]) {
 		self.currentMovieObject.sdescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2descriptionextended"]) {

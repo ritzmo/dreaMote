@@ -100,7 +100,7 @@
 	
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text;
-	if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+	if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 		text = [_movie.title copy];
 	else
 	{
@@ -188,7 +188,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+	if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 		return 2;
 
 	if([_movie.length integerValue] != -1)
@@ -203,7 +203,7 @@
 		case 0:
 			return NSLocalizedString(@"Description", @"");
 		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 				return nil;
 			return NSLocalizedString(@"Service", @"");
 		case 2:
@@ -247,7 +247,7 @@
 			break;
 		}
 		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 			{
 				result = kUIRowHeight;
 				break;
@@ -287,7 +287,7 @@
 				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 			break;
 		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 			{
 				cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 				if(cell == nil)
@@ -334,7 +334,7 @@
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo)
+			if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 			{
 				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
 				((DisplayCell *)sourceCell).view = [self create_PlayButton];
