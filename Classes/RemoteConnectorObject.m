@@ -26,7 +26,7 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 					  password, remoteHost];
 
 	if(_sharedRemoteConnector)
-		[_sharedRemoteConnector release];
+		[_sharedRemoteConnector dealloc];
 
 	switch(connectorId)
 	{
@@ -50,7 +50,7 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 + (void)_releaseSharedRemoteConnector
 {
 	NSParameterAssert(_sharedRemoteConnector != nil);
-	[_sharedRemoteConnector release];
+	[_sharedRemoteConnector dealloc];
 	_sharedRemoteConnector = nil;
 }
 
