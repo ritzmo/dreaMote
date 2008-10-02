@@ -21,11 +21,6 @@
 @synthesize timerNameLabel = _timerNameLabel;
 @synthesize timerTimeLabel = _timerTimeLabel;
 
-+ (void)initialize
-{
-	// TODO: anything to be done here?
-}
-
 - (void)dealloc
 {
 	[_serviceNameLabel release];

@@ -122,8 +122,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// XXX: see if this runs fine on the target machine - looks buggy in simulator
-	[myTableView deselectRowAtIndexPath: indexPath animated: YES];
+	// XXX: don't animate this as long as its buggy :-)
+	[myTableView deselectRowAtIndexPath: indexPath animated: NO];
 
 	_selectedItem = indexPath.row;
 	[myTableView reloadData];

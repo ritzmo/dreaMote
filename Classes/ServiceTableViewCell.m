@@ -17,11 +17,6 @@
 
 @synthesize serviceNameLabel = _serviceNameLabel;
 
-+ (void)initialize
-{
-	// TODO: anything to be done here?
-}
-
 - (void)dealloc
 {
 	[_serviceNameLabel release];

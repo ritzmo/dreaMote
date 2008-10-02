@@ -101,8 +101,6 @@ static NSUInteger parsedTimersCounter;
 		// An e2timer in the xml represents a timer, so create an instance of it.
 		self.currentTimerObject = [[Timer alloc] init];
 
-		// XXX: be aware of the fact the send fully parsed timers
-
 		return;
 	}
 
@@ -173,7 +171,6 @@ static NSUInteger parsedTimersCounter;
 	} else if ([elementName isEqualToString:@"e2state"]) {
 		self.currentTimerObject.state = [self.contentOfCurrentProperty integerValue];
 	} else if ([elementName isEqualToString:@"typedata"]) {
-		// TODO: see if we can extract more information
 		NSInteger typeData = [self.contentOfCurrentProperty integerValue];
 
 		// We translate to Enigma2 States here

@@ -47,10 +47,11 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 	_sharedRemoteConnector = [shared retain];
 }
 
-+ (void)_deleteSharedRemoteConnector
++ (void)_releaseSharedRemoteConnector
 {
 	NSParameterAssert(_sharedRemoteConnector != nil);
 	[_sharedRemoteConnector release];
+	_sharedRemoteConnector = nil;
 }
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
