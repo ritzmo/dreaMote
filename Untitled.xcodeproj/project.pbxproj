@@ -77,6 +77,7 @@
 		DA8FE3380E356036000B32C3 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE3370E356036000B32C3 /* EventXMLReader.m */; };
 		DAA464B40E35E46400A1940D /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA464B30E35E46400A1940D /* TimerXMLReader.m */; };
 		DAA464BA0E35E4CC00A1940D /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */; };
+		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
@@ -85,8 +86,8 @@
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD51DF30D830A3900A769F3 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DF20D830A3900A769F3 /* Service.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
-		DAF3B2360E3881C800E4778B /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAF3B2350E3881C800E4778B /* Settings.bundle */; };
 		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
+		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -194,6 +195,8 @@
 		DAA464B30E35E46400A1940D /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerXMLReader.m; sourceTree = "<group>"; };
 		DAA464B80E35E4C500A1940D /* VolumeXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeXMLReader.h; sourceTree = "<group>"; };
 		DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeXMLReader.m; sourceTree = "<group>"; };
+		DAB579ED0E94CA580093721B /* ConnectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectorViewController.h; sourceTree = "<group>"; };
+		DAB579EE0E94CA580093721B /* ConnectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectorViewController.m; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
@@ -210,9 +213,10 @@
 		DAD51DF20D830A3900A769F3 /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
-		DAF3B2350E3881C800E4778B /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
+		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
+		DAFE42A20E94220800896017 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -274,7 +278,6 @@
 			isa = PBXGroup;
 			children = (
 				1D6058910D05DD3D006BFB54 /* dreaMote.app */,
-				DAF3B2350E3881C800E4778B /* Settings.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -364,6 +367,10 @@
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DAFE42A10E94220800896017 /* ConfigViewController.h */,
+				DAFE42A20E94220800896017 /* ConfigViewController.m */,
+				DAB579ED0E94CA580093721B /* ConnectorViewController.h */,
+				DAB579EE0E94CA580093721B /* ConnectorViewController.m */,
 				DA19BDF90D8553180074AE48 /* ControlViewController.h */,
 				DA19BDFA0D8553180074AE48 /* ControlViewController.m */,
 				DAB5FA010D845F7A0074D998 /* EventViewController.h */,
@@ -550,7 +557,6 @@
 				DA7A25520E374B2200455D11 /* key_video.png in Resources */,
 				DA7A25B90E375D7600455D11 /* key_minus.png in Resources */,
 				DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */,
-				DAF3B2360E3881C800E4778B /* Settings.bundle in Resources */,
 				DA0A2A580E840E8600726F58 /* Icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -617,6 +623,8 @@
 				DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */,
 				DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */,
 				DA7DEB050E8310AA00B15F7C /* Enigma1Connector.m in Sources */,
+				DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */,
+				DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

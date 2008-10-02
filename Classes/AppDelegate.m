@@ -11,8 +11,6 @@
 
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
-#import "Enigma2Connector.h"
-#import "Enigma1Connector.h"
 
 @implementation AppDelegate
 
@@ -37,62 +35,23 @@
 	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey:kConnector];
 	if (testValue == nil)
 	{
-		// no default values have been set, create them here based on what's in our Settings bundle info
+		// no default values have been set, create them here
 		//
-		NSString *pathStr = [[NSBundle mainBundle] bundlePath];
-		NSString *settingsBundlePath = [pathStr stringByAppendingPathComponent:@"Settings.bundle"];
-		NSString *finalPath = [settingsBundlePath stringByAppendingPathComponent:@"Root.plist"];
-		
-		NSDictionary *settingsDict = [NSDictionary dictionaryWithContentsOfFile:finalPath];
-		NSArray *prefSpecifierArray = [settingsDict objectForKey:@"PreferenceSpecifiers"];
-
-		NSString *remoteHostDefault;
-		NSNumber *connectorDefault;
-		NSNumber *vibrateRcDefault;
-
-		NSDictionary *prefItem;
-		for (prefItem in prefSpecifierArray)
-		{
-			NSString *keyValueStr = [prefItem objectForKey:@"Key"];
-			id defaultValue = [prefItem objectForKey:@"DefaultValue"];
-			
-			if ([keyValueStr isEqualToString:kConnector])
-			{
-				connectorDefault = defaultValue;
-			}
-			else if ([keyValueStr isEqualToString:kRemoteHost])
-			{
-				remoteHostDefault = defaultValue;
-			}
-			else if ([keyValueStr isEqualToString:kVibratingRC])
-			{
-				vibrateRcDefault = defaultValue;
-			}
-		}
 		
 		// since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults =  [NSDictionary dictionaryWithObjectsAndKeys:
-									  remoteHostDefault, kRemoteHost,
-									  connectorDefault, kConnector,
-									  [vibrateRcDefault boolValue], kVibratingRC,
+									  @"dreambox", kRemoteHost,
+									  @"", kUsername,
+									  @"", kPassword,
+									  kEnigma2Connector, kConnector,
+									  NO, kVibratingRC,
 									  nil];
 
 		[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 
-	NSString *remoteHost = [[[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost] autorelease];
-	switch([[[NSUserDefaults standardUserDefaults] stringForKey: kConnector] integerValue])
-	{
-		case kEnigma2Connector:
-			[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteHost]];
-			break;
-		case kEnigma1Connector:
-			[RemoteConnectorObject _setSharedRemoteConnector: (NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteHost]];
-			break;
-		default:
-			break;
-	}
+	[RemoteConnectorObject createConnector: [[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost] :[[NSUserDefaults standardUserDefaults] stringForKey: kUsername] :[[NSUserDefaults standardUserDefaults] stringForKey: kPassword] : [[[NSUserDefaults standardUserDefaults] stringForKey: kConnector] integerValue]];
 }
 
 - (void)dealloc

@@ -10,8 +10,10 @@
 
 @interface RemoteConnectorObject : NSObject {
 }
- 	
+
++ (void)createConnector: (NSString *)remoteHost: (NSString *)username: (NSString *)password: (NSInteger) connectorId;
 + (void)_setSharedRemoteConnector:(NSObject<RemoteConnector> *)shared;
++ (void)_deleteSharedRemoteConnector;
 + (NSObject<RemoteConnector> *)sharedRemoteConnector;
  	
 @end

@@ -8,8 +8,9 @@
  */
 
 enum availableConnectors {
-	kEnigma2Connector = 1,
-	kEnigma1Connector = 2,
+	kEnigma2Connector = 0,
+	kEnigma1Connector = 1,
+	kMaxConnector = 2,
 };
 
 // Ok, this is a little much for just two connectors - but we might want to extend this software even further some day :-)

@@ -49,5 +49,7 @@
 
 // default keys
 #define kRemoteHost				@"remoteHostKey"
+#define kUsername				@"usernameKey"
+#define kPassword				@"passwordKey"
 #define kConnector				@"connectorKey"
 #define kVibratingRC			@"vibrateInRC"

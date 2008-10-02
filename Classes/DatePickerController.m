@@ -94,7 +94,6 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
-
 }
 
 - (void)dealloc

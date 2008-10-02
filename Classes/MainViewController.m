@@ -14,6 +14,7 @@
 #import "ControlViewController.h"
 #import "RCEmulatorController.h"
 #import "MovieListController.h"
+#import "ConfigViewController.h"
 
 @implementation MainViewController
 
@@ -105,15 +106,13 @@
 
 	[targetViewController release];
 
-	// XXX: settings button removed as long as its useless
-/*
 	UINavigationItem *navItem = self.navigationItem;
 
 	// Add the "Settings" button to the navigation bar
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
 														target:self action:@selector(settingsAction:)];
 	navItem.rightBarButtonItem = button;
-*/
+
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	myTableView.delegate = self;
@@ -131,7 +130,8 @@
 
 - (void)settingsAction:(id)sender
 {
-	// TODO: open settings dialogue
+	UIViewController *targetViewController = [[ConfigViewController alloc] init];
+	[[self navigationController] pushViewController:targetViewController animated:YES];
 }
 
 #pragma mark UIViewController delegates

@@ -9,14 +9,48 @@
 #import "RemoteConnectorObject.h"
 #import "RemoteConnector.h"
 
+#import "Enigma2Connector.h"
+#import "Enigma1Connector.h"
+
 @implementation RemoteConnectorObject
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
+
++ (void)createConnector: (NSString *)remoteHost: (NSString *)username: (NSString *)password: (NSInteger) connectorId
+{
+	NSString *remoteAddress;
+	if([username isEqualToString: @""])
+		remoteAddress = [NSString stringWithFormat: @"http://%@", remoteHost];
+	else
+		remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", username,
+					  password, remoteHost];
+
+	if(_sharedRemoteConnector)
+		[_sharedRemoteConnector release];
+
+	switch(connectorId)
+	{
+		case kEnigma2Connector:
+			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteAddress] retain];
+			break;
+		case kEnigma1Connector:
+			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress] retain];
+			break;
+		default:
+			break;
+	}
+}
 
 + (void)_setSharedRemoteConnector:(NSObject<RemoteConnector> *)shared
 {
 	NSParameterAssert(_sharedRemoteConnector == nil);
 	_sharedRemoteConnector = [shared retain];
+}
+
++ (void)_deleteSharedRemoteConnector
+{
+	NSParameterAssert(_sharedRemoteConnector != nil);
+	[_sharedRemoteConnector release];
 }
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
