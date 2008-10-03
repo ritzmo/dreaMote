@@ -127,7 +127,7 @@
 			[[NSUserDefaults standardUserDefaults] setObject: usernameTextField.text forKey: kUsername];
 			[[NSUserDefaults standardUserDefaults] setObject: passwordTextField.text forKey: kPassword];
 			[[NSUserDefaults standardUserDefaults] setInteger: _connector forKey: kConnector];
-			[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.enabled forKey: kVibratingRC];
+			[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.on forKey: kVibratingRC];
 
 			[RemoteConnectorObject createConnector: remoteAddressTextField.text : usernameTextField.text : passwordTextField.text : _connector];
 		}
