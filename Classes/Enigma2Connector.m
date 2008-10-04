@@ -33,9 +33,14 @@ enum powerStates {
 
 @synthesize baseAddress;
 
-- (NSInteger)getFeatures
+- (enum connectorFeatures)getFeatures
 {
 	return kFeaturesDisabledTimers | kFeaturesExtendedRecordInfo;
+}
+
+- (NSInteger)getMaxVolume
+{
+	return 100;
 }
 
 - (id)initWithAddress:(NSString *) address

@@ -109,8 +109,8 @@
 	UINavigationItem *navItem = self.navigationItem;
 
 	// Add the "Settings" button to the navigation bar
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
-														target:self action:@selector(settingsAction:)];
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
+														target: self action: @selector(settingsAction:)];
 	navItem.rightBarButtonItem = button;
 
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods

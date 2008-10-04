@@ -104,9 +104,8 @@
 	_slider.backgroundColor = [UIColor clearColor];
 
 	_slider.minimumValue = 0.0;
-	_slider.maximumValue = 100.0;
+	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
 	_slider.continuous = NO;
-	_slider.value = 50.0;
 
 	// Muted
 	_switchControl = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];

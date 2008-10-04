@@ -66,7 +66,8 @@ enum buttonCodes {
 
 - (id)initWithAddress:(NSString *) address;
 + (id <RemoteConnector>*)createClassWithAddress:(NSString *) address;
-- (NSInteger)getFeatures;
+- (enum connectorFeatures)getFeatures;
+- (NSInteger)getMaxVolume;
 - (void)fetchServices:(id)target action:(SEL)action;
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
 - (void)fetchTimers:(id)target action:(SEL)action;

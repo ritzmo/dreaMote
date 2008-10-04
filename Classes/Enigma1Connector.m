@@ -19,8 +19,6 @@
 #import "VolumeXMLReader.h"
 #import "MovieXMLReader.h"
 
-#define VOLFACTOR (100/63)
-
 @interface Enigma1Connector()
 + (NSString *)urlencode:(NSString *)toencode;
 @end
@@ -29,9 +27,14 @@
 
 @synthesize baseAddress;
 
-- (NSInteger)getFeatures
+- (enum connectorFeatures)getFeatures
 {
 	return 0;
+}
+
+- (NSInteger)getMaxVolume
+{
+	return 63;
 }
 
 - (id)initWithAddress:(NSString *) address
@@ -171,11 +174,6 @@
 
 - (void)getVolume:(id)target action:(SEL)action
 {
-	/*
-	 * /cgi-bin/audio
-	 * 0 -> 100%
-	 * 63 -> 0% == Mute
-	 */
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio", self.baseAddress];
 
@@ -197,8 +195,8 @@
 		firstRange.location = firstRange.length;
 		firstRange.length = secondRange.location - firstRange.location;
 
-		// Convert Volume to expected Format
-		volume = VOLFACTOR * (63 - [[myString substringWithRange: firstRange] integerValue]);
+		// Invert volume range we get to ease usage
+		volume = 63 - [[myString substringWithRange: firstRange] integerValue];
 	}
 	volumeObject.current = volume;
 
@@ -238,7 +236,7 @@
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, (63 - (newVolume/VOLFACTOR))];
+	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, 63 - newVolume];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
