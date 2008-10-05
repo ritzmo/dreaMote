@@ -24,8 +24,10 @@
 	CellTextField *passwordCell;
 	UITableViewCell *connectorCell;
 	UISwitch *vibrateInRC;
+	NSMutableDictionary *connection;
 	@private
 	BOOL _shouldSave;
+	BOOL _isNew;
 	NSInteger _connector;
 }
 

@@ -81,26 +81,45 @@
 
 	self.view = myTableView;
 
+	NSArray *connections = [RemoteConnectorObject getConnections];
+	if([connections count])
+	{
+		connection = [connections objectAtIndex: 0];
+		_isNew = NO;
+	}
+	else
+	{
+		connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+													@"dreambox", kRemoteHost,
+													@"", kUsername,
+													@"", kPassword,
+													[NSNumber numberWithInteger: kEnigma2Connector], kConnector,
+													nil];
+		_isNew = YES;
+	}
+
+	[connection retain];
+
 	// Remote Address
 	remoteAddressTextField = [[self create_TextField] retain];
 	remoteAddressTextField.placeholder = NSLocalizedString(@"<remote address>", @"");
-	remoteAddressTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost];
+	remoteAddressTextField.text = [[connection objectForKey: kRemoteHost] copy];
 	remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
 	// Username
 	usernameTextField = [[self create_TextField] retain];
 	usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
-	usernameTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kUsername];
+	usernameTextField.text = [[connection objectForKey: kUsername] copy];
 
 	// Password
 	passwordTextField = [[self create_TextField] retain];
 	passwordTextField.placeholder = NSLocalizedString(@"<remote password>", @"");
-	passwordTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kPassword];
+	passwordTextField.text = [[connection objectForKey: kPassword] copy];
 	passwordTextField.secureTextEntry = YES;
 
 	// Connector
-	_connector = [[[NSUserDefaults standardUserDefaults] stringForKey: kConnector] integerValue];
-	
+	_connector = [[connection objectForKey: kConnector] integerValue];
+
 	// RC Vibration
 	vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
@@ -123,13 +142,19 @@
 
 		if(_shouldSave)
 		{
-			[[NSUserDefaults standardUserDefaults] setObject: remoteAddressTextField.text forKey: kRemoteHost];
-			[[NSUserDefaults standardUserDefaults] setObject: usernameTextField.text forKey: kUsername];
-			[[NSUserDefaults standardUserDefaults] setObject: passwordTextField.text forKey: kPassword];
-			[[NSUserDefaults standardUserDefaults] setInteger: _connector forKey: kConnector];
+			[connection setObject: remoteAddressTextField.text forKey: kRemoteHost];
+			[connection setObject: usernameTextField.text forKey: kUsername];
+			[connection setObject: passwordTextField.text forKey: kPassword];
+			[connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
 			[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.on forKey: kVibratingRC];
 
-			[RemoteConnectorObject createConnector: remoteAddressTextField.text : usernameTextField.text : passwordTextField.text : _connector];
+			if(_isNew)
+			{
+				NSMutableArray *connections = [RemoteConnectorObject getConnections];
+				[connections addObject: connection];
+			}
+
+			[RemoteConnectorObject connectTo: 0];
 		}
 	}
 }
@@ -144,7 +169,7 @@
 	if(newConnector == nil)
 		return;
 
-	_connector = [newConnector intValue];
+	_connector = [newConnector integerValue];
 
 	if(_connector == kEnigma1Connector)
 		connectorCell.text = NSLocalizedString(@"Enigma", "");

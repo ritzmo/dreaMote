@@ -6,6 +6,8 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
+#import "Constants.h"
+
 #import "RemoteConnectorObject.h"
 #import "RemoteConnector.h"
 
@@ -15,9 +17,20 @@
 @implementation RemoteConnectorObject
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
+static NSMutableArray *_connections = nil;
 
-+ (void)createConnector: (NSString *)remoteHost: (NSString *)username: (NSString *)password: (NSInteger) connectorId
++ (void)connectTo: (NSInteger)connectionIndex
 {
+	if(!_connections || connectionIndex >= [_connections count])
+		return;	
+
+	NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
+
+	NSString *remoteHost = [connection objectForKey: kRemoteHost];
+	NSString *username = [connection objectForKey: kUsername];
+	NSString *password = [connection objectForKey: kPassword];
+	NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
+
 	NSString *remoteAddress;
 	if([username isEqualToString: @""])
 		remoteAddress = [NSString stringWithFormat: @"http://%@", remoteHost];
@@ -26,7 +39,10 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 					  password, remoteHost];
 
 	if(_sharedRemoteConnector)
+	{
 		[_sharedRemoteConnector dealloc];
+		_sharedRemoteConnector = nil;
+	}
 
 	switch(connectorId)
 	{
@@ -41,17 +57,36 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 	}
 }
 
-+ (void)_setSharedRemoteConnector:(NSObject<RemoteConnector> *)shared
++ (BOOL)loadConnections
 {
-	NSParameterAssert(_sharedRemoteConnector == nil);
-	_sharedRemoteConnector = [shared retain];
+	NSString *finalPath = [@"~/Library/Preferences/Connections.plist" stringByExpandingTildeInPath];
+	
+	_connections = [[NSMutableArray arrayWithContentsOfFile: finalPath] retain];
+
+	if(_connections == nil)
+	{
+		_connections = [[NSMutableArray array] retain];
+		return NO;
+	}
+	return YES;
 }
 
-+ (void)_releaseSharedRemoteConnector
++ (NSMutableArray *)getConnections
 {
-	NSParameterAssert(_sharedRemoteConnector != nil);
-	[_sharedRemoteConnector dealloc];
-	_sharedRemoteConnector = nil;
+	NSParameterAssert(_connections != nil);
+	return _connections;
+}
+
++ (void)saveConnections
+{
+	NSString *finalPath = [@"~/Library/Preferences/Connections.plist" stringByExpandingTildeInPath];
+
+	[_connections writeToFile: finalPath atomically: YES];
+}
+
++ (BOOL)isConnected
+{
+	return (_sharedRemoteConnector != nil);
 }
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector

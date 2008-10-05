@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import "Constants.h"
 
-#import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 
 @implementation AppDelegate
@@ -32,26 +31,34 @@
 	[window addSubview:[navigationController view]];
 	[window makeKeyAndVisible];
 
-	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey:kConnector];
-	if (testValue == nil)
+	BOOL configLoaded = [RemoteConnectorObject loadConnections];
+	NSNumber *activeConnectionId = [NSNumber numberWithInteger: (configLoaded) ? 0 : -1];
+
+	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kActiveConnection];
+	if(testValue == nil)
 	{
 		// no default values have been set, create them here
-		//
-		
+
 		// since no default values have been set (i.e. no preferences file created), create it here
-		NSDictionary *appDefaults =  [NSDictionary dictionaryWithObjectsAndKeys:
-									  @"dreambox", kRemoteHost,
-									  @"", kUsername,
-									  @"", kPassword,
-									  kEnigma2Connector, kConnector,
+		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+									  activeConnectionId, kActiveConnection,
 									  NO, kVibratingRC,
 									  nil];
 
-		[[NSUserDefaults standardUserDefaults] registerDefaults:appDefaults];
+		[[NSUserDefaults standardUserDefaults] registerDefaults: appDefaults];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
+	else
+		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
 
-	[RemoteConnectorObject createConnector: [[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost] :[[NSUserDefaults standardUserDefaults] stringForKey: kUsername] :[[NSUserDefaults standardUserDefaults] stringForKey: kPassword] : [[[NSUserDefaults standardUserDefaults] stringForKey: kConnector] integerValue]];
+	if(configLoaded)
+		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+	// Save our connection array
+	[RemoteConnectorObject saveConnections];
 }
 
 - (void)dealloc

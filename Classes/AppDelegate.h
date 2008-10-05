@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RemoteConnector.h"
-
 @interface AppDelegate : NSObject  <UIApplicationDelegate>
 {
 	IBOutlet UIWindow *window;

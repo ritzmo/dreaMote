@@ -47,9 +47,12 @@
 #define kCellLeftOffset			8.0
 #define kCellTopOffset			12.0
 
-// default keys
+// keys in connection dict
 #define kRemoteHost				@"remoteHostKey"
 #define kUsername				@"usernameKey"
 #define kPassword				@"passwordKey"
 #define kConnector				@"connectorKey"
+
+// keys in nsuserdefaults
+#define kActiveConnection		@"activeConnector"
 #define kVibratingRC			@"vibrateInRC"

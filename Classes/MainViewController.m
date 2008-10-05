@@ -8,6 +8,8 @@
 
 #import "MainViewController.h"
 
+#import "RemoteConnectorObject.h"
+
 #import "MainTableViewCell.h"
 #import "ServiceListController.h"
 #import "TimerListController.h"
@@ -145,8 +147,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	// do something here as our view re-appears
-	[super viewDidAppear:animated];
+	// TODO: We might want to explain this to the user :-)
+	if(![RemoteConnectorObject isConnected])
+	{
+		[self settingsAction: nil];
+	}
 }
 
 
