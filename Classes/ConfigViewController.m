@@ -172,7 +172,10 @@
 		}
 	}
 	else
+	{
+		_shouldSave = YES;
 		[self.navigationItem setLeftBarButtonItem: [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)] animated: YES]; 
+	}
 }
 
 - (void)cancelEdit: (id)sender
@@ -333,8 +336,6 @@
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(self.editing && indexPath.section == 2)
 	{
-		_shouldSave = NO;
-
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 		ConnectorViewController *connectorViewController = [ConnectorViewController withConnector: _connector];
@@ -428,8 +429,6 @@
     // watch the keyboard so we can adjust the user interface if necessary.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification object:self.view.window];
-	
-	_shouldSave = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
