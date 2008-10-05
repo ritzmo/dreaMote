@@ -25,6 +25,7 @@
 	NSMutableDictionary *connection;
 	NSInteger connectionIndex;
 	UIButton *makeDefaultButton;
+	UIButton *connectButton;
 	@private
 	BOOL _shouldSave;
 	NSInteger _connector;
@@ -34,6 +35,8 @@
 + (ConfigViewController *)newConnection;
 
 @property (nonatomic,retain) NSMutableDictionary *connection;
+@property (nonatomic,retain) UIButton *makeDefaultButton;
+@property (nonatomic,retain) UIButton *connectButton;
 @property (nonatomic) NSInteger connectionIndex;
 
 @end

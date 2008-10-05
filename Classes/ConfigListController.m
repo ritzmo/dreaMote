@@ -233,10 +233,4 @@
 	[(UITableView *)self.view reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-	if([_connections count])
-		[RemoteConnectorObject connectTo: [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]];
-}
-
 @end

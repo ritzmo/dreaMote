@@ -23,6 +23,8 @@
 
 @synthesize connection;
 @synthesize connectionIndex;
+@synthesize makeDefaultButton;
+@synthesize connectButton;
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD					120.0
@@ -69,6 +71,7 @@
 	[usernameTextField release];
 	[passwordTextField release];
 	[makeDefaultButton release];
+	[connectButton release];
 
 	[super dealloc];
 }
@@ -99,6 +102,15 @@
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
 	[button addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
+- (UIButton *)create_ConnectButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button addTarget:self action:@selector(doConnect:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
 }
@@ -137,9 +149,13 @@
 
 	// Connector
 	_connector = [[connection objectForKey: kConnector] integerValue];
+
+	// Connect Button
+	self.connectButton = [self create_ConnectButton];
+	connectButton.enabled = NO;
 	
 	// "Make Default" Button
-	makeDefaultButton = [[self create_DefaultButton] retain];
+	self.makeDefaultButton = [self create_DefaultButton];
 	makeDefaultButton.enabled = NO;
 }
 
@@ -148,6 +164,7 @@
 	[super setEditing: editing animated: animated];
 
 	makeDefaultButton.enabled = editing;
+	connectButton.enabled = editing;
 
 	if(!editing)
 	{
@@ -187,7 +204,14 @@
 - (void)makeDefault: (id)sender
 {
 	[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: connectionIndex] forKey: kActiveConnection];
+	[RemoteConnectorObject connectTo: connectionIndex];
 }
+
+- (void)doConnect: (id)sender
+{
+	[RemoteConnectorObject connectTo: connectionIndex];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
@@ -241,7 +265,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 1)
+	if(section == 1 || section == 3)
 		return 2;
 	return 1;
 }
@@ -326,8 +350,20 @@
 			connectorCell = (UITableViewCell *)sourceCell;
 			break;
 		case 3:
-			((DisplayCell *)sourceCell).view = makeDefaultButton;
-			((DisplayCell *)sourceCell).text = NSLocalizedString(@"Make Default", @"");
+			switch(indexPath.row)
+			{
+				case 0:
+					((DisplayCell *)sourceCell).view = connectButton;
+					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Connect", @"");
+					break;
+				case 1:
+					((DisplayCell *)sourceCell).view = makeDefaultButton;
+					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Make Default", @"");
+					break;
+				default:
+					break;
+			}
+			break;
 		default:
 			break;
 	}

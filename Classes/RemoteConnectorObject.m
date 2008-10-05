@@ -59,6 +59,15 @@ static NSMutableArray *_connections = nil;
 	return YES;
 }
 
++ (void)disconnect
+{
+	if(_sharedRemoteConnector)
+	{
+		[_sharedRemoteConnector dealloc];
+		_sharedRemoteConnector = nil;
+	}
+}
+
 + (BOOL)loadConnections
 {
 	NSString *finalPath = [@"~/Library/Preferences/Connections.plist" stringByExpandingTildeInPath];
