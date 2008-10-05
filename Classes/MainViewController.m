@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 
 #import "RemoteConnectorObject.h"
+#import "Constants.h"
 
 #import "MainTableViewCell.h"
 #import "ServiceListController.h"
@@ -17,6 +18,7 @@
 #import "RCEmulatorController.h"
 #import "MovieListController.h"
 #import "ConfigViewController.h"
+#import "ConfigListController.h"
 
 @implementation MainViewController
 
@@ -132,7 +134,7 @@
 
 - (void)settingsAction:(id)sender
 {
-	UIViewController *targetViewController = [[ConfigViewController alloc] init];
+	UIViewController *targetViewController = [[ConfigListController alloc] init];
 	[[self navigationController] pushViewController:targetViewController animated:YES];
 }
 
@@ -148,9 +150,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	// TODO: We might want to explain this to the user :-)
-	if(![RemoteConnectorObject isConnected])
+	if(![RemoteConnectorObject isConnected] && ![RemoteConnectorObject connectTo: [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]])
 	{
-		[self settingsAction: nil];
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+		
+		UIViewController *targetViewController = [ConfigViewController newConnection];
+		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
 	}
 }
 

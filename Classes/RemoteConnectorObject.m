@@ -19,10 +19,10 @@
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 static NSMutableArray *_connections = nil;
 
-+ (void)connectTo: (NSInteger)connectionIndex
++ (BOOL)connectTo: (NSInteger)connectionIndex
 {
 	if(!_connections || connectionIndex >= [_connections count])
-		return;	
+		return NO;
 
 	NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
 
@@ -53,8 +53,10 @@ static NSMutableArray *_connections = nil;
 			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress] retain];
 			break;
 		default:
-			break;
+			return NO;
 	}
+	
+	return YES;
 }
 
 + (BOOL)loadConnections

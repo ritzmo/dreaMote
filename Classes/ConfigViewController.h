@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 #import "CellTextField.h"
-#import "DisplayCell.h"
 
 @interface ConfigViewController : UIViewController <UIScrollViewDelegate,
 													UITextFieldDelegate, UITableViewDelegate,
@@ -23,13 +22,18 @@
 	UITextField *passwordTextField;
 	CellTextField *passwordCell;
 	UITableViewCell *connectorCell;
-	UISwitch *vibrateInRC;
 	NSMutableDictionary *connection;
+	NSInteger connectionIndex;
+	UIButton *makeDefaultButton;
 	@private
 	BOOL _shouldSave;
-	BOOL _isNew;
 	NSInteger _connector;
 }
 
-@end
++ (ConfigViewController *)withConnection: (NSMutableDictionary *)newConnection: (NSInteger)atIndex;
++ (ConfigViewController *)newConnection;
 
+@property (nonatomic,retain) NSMutableDictionary *connection;
+@property (nonatomic) NSInteger connectionIndex;
+
+@end

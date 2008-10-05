@@ -11,7 +11,7 @@
 @interface RemoteConnectorObject : NSObject {
 }
 
-+ (void)connectTo: (NSInteger)connectionIndex;
++ (BOOL)connectTo: (NSInteger)connectionIndex;
 + (NSMutableArray *)getConnections;
 + (BOOL)loadConnections;
 + (void)saveConnections;

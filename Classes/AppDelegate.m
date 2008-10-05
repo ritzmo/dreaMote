@@ -31,8 +31,7 @@
 	[window addSubview:[navigationController view]];
 	[window makeKeyAndVisible];
 
-	BOOL configLoaded = [RemoteConnectorObject loadConnections];
-	NSNumber *activeConnectionId = [NSNumber numberWithInteger: (configLoaded) ? 0 : -1];
+	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 
 	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kActiveConnection];
 	if(testValue == nil)
@@ -51,7 +50,7 @@
 	else
 		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
 
-	if(configLoaded)
+	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
 }
 

@@ -13,11 +13,16 @@
 #import "ConnectorViewController.h"
 #import "Constants.h"
 
+#import "DisplayCell.h"
+
 @interface ConfigViewController()
 - (void)setViewMovedUp:(BOOL)movedUp;
 @end
 
 @implementation ConfigViewController
+
+@synthesize connection;
+@synthesize connectionIndex;
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD					120.0
@@ -34,12 +39,36 @@
 	return self;
 }
 
++ (ConfigViewController *)withConnection: (NSMutableDictionary *)newConnection: (NSInteger)atIndex;
+{
+	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
+	configViewController.connection = newConnection;
+	configViewController.connectionIndex = atIndex;
+
+	return configViewController;
+}
+
++ (ConfigViewController *)newConnection
+{
+	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
+	configViewController.connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+																			@"dreambox", kRemoteHost,
+																			@"", kUsername,
+																			@"", kPassword,
+																			[NSNumber numberWithInteger: kEnigma2Connector], kConnector,
+																			nil];
+	configViewController.connectionIndex = -1;
+
+	return configViewController;
+}
+
 - (void)dealloc
 {
 	[myTableView release];
 	[remoteAddressTextField release];
 	[usernameTextField release];
 	[passwordTextField release];
+	[makeDefaultButton release];
 
 	[super dealloc];
 }
@@ -65,10 +94,18 @@
 	return returnTextField;
 }
 
+- (UIButton *)create_DefaultButton
+{
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
+	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	[button addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
+}
+
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	// XXX: We might want to add a custom left button to cancel when editing, just leaving the view might not be obvious
 
 	// create and configure the table view
 	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
@@ -80,25 +117,6 @@
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = myTableView;
-
-	NSArray *connections = [RemoteConnectorObject getConnections];
-	if([connections count])
-	{
-		connection = [connections objectAtIndex: 0];
-		_isNew = NO;
-	}
-	else
-	{
-		connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-													@"dreambox", kRemoteHost,
-													@"", kUsername,
-													@"", kPassword,
-													[NSNumber numberWithInteger: kEnigma2Connector], kConnector,
-													nil];
-		_isNew = YES;
-	}
-
-	[connection retain];
 
 	// Remote Address
 	remoteAddressTextField = [[self create_TextField] retain];
@@ -119,23 +137,22 @@
 
 	// Connector
 	_connector = [[connection objectForKey: kConnector] integerValue];
-
-	// RC Vibration
-	vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
 	
-	// in case the parent view draws with a custom color or gradient, use a transparent color
-	vibrateInRC.backgroundColor = [UIColor clearColor];
-	vibrateInRC.enabled = NO;
+	// "Make Default" Button
+	makeDefaultButton = [[self create_DefaultButton] retain];
+	makeDefaultButton.enabled = NO;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 {
 	[super setEditing: editing animated: animated];
 
-	vibrateInRC.enabled = editing;
+	makeDefaultButton.enabled = editing;
+
 	if(!editing)
 	{
+		[self.navigationItem setLeftBarButtonItem: nil animated: YES];
+
 		[remoteAddressCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
@@ -146,17 +163,27 @@
 			[connection setObject: usernameTextField.text forKey: kUsername];
 			[connection setObject: passwordTextField.text forKey: kPassword];
 			[connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
-			[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.on forKey: kVibratingRC];
 
-			if(_isNew)
-			{
-				NSMutableArray *connections = [RemoteConnectorObject getConnections];
+			NSMutableArray *connections = [RemoteConnectorObject getConnections];
+			if(connectionIndex == -1)
 				[connections addObject: connection];
-			}
-
-			[RemoteConnectorObject connectTo: 0];
+			else
+				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
 		}
 	}
+	else
+		[self.navigationItem setLeftBarButtonItem: [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)] animated: YES]; 
+}
+
+- (void)cancelEdit: (id)sender
+{
+	_shouldSave = NO;
+	[self setEditing: NO animated: YES];
+}
+
+- (void)makeDefault: (id)sender
+{
+	[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: connectionIndex] forKey: kActiveConnection];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -287,16 +314,15 @@
 			break;
 		case 2:
 			if(_connector == kEnigma1Connector)
-				((UITableViewCell *)sourceCell).text = NSLocalizedString(@"Enigma", "");
+				((UITableViewCell *)sourceCell).text = NSLocalizedString(@"Enigma", @"");
 			else
-				((UITableViewCell *)sourceCell).text = NSLocalizedString(@"Enigma 2", "");
+				((UITableViewCell *)sourceCell).text = NSLocalizedString(@"Enigma 2", @"");
 
 			connectorCell = (UITableViewCell *)sourceCell;
 			break;
 		case 3:
-			((DisplayCell *)sourceCell).view = vibrateInRC;
-			((DisplayCell *)sourceCell).text = NSLocalizedString(@"Vibrate in RC", @"");
-			break;
+			((DisplayCell *)sourceCell).view = makeDefaultButton;
+			((DisplayCell *)sourceCell).text = NSLocalizedString(@"Make Default", @"");
 		default:
 			break;
 	}
