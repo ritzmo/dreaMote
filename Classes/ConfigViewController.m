@@ -218,6 +218,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	if(connectionIndex == -1 || connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue])
+		return 3;
 	return 4;
 }
 
