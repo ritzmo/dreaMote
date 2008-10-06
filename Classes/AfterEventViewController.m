@@ -21,7 +21,7 @@
 {
 	if (self = [super init])
 	{
-		self.title = NSLocalizedString(@"Connector", @"Default title of AfterEventViewController");
+		self.title = NSLocalizedString(@"After Event", @"Default title of AfterEventViewController");
 	}
 	return self;
 }
