@@ -10,6 +10,7 @@
 
 #import "ServiceListController.h"
 #import "DatePickerController.h"
+#import "AfterEventViewController.h"
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -388,6 +389,22 @@
 	[actionSheet release];
 }
 
+- (void)afterEventSelected: (NSNumber*) newAfterEvent
+{
+	if(newAfterEvent == nil)
+		return;
+	
+	_timer.afterevent = [newAfterEvent integerValue];
+	
+	if(_timer.afterevent == kAfterEventNothing)
+		afterEventCell.text = NSLocalizedString(@"Nothing", @"After Event");
+	else if(_timer.afterevent == kAfterEventStandby)
+		afterEventCell.text = NSLocalizedString(@"Standby", @"");
+	else //if(_timer.afterevent == kAfterEventDeepstandby)
+		afterEventCell.text = NSLocalizedString(@"Deep Standby", @"");
+}
+
+
 #pragma mark - UIActionSheet delegates
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -425,8 +442,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if(_creatingNewTimer || (_oldTimer.state == 0 && !self.editing))
-		return 6;
-	return 7;
+		return 7;
+	return 8;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -457,6 +474,8 @@
 			return NSLocalizedString(@"Begin", @"");
 		case 5:
 			return NSLocalizedString(@"End", @"");
+		case 6:
+			return NSLocalizedString(@"After Event", @"");
 		default:
 			return nil;
 	}
@@ -481,6 +500,8 @@
 //
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
 {
+	static NSString *kVanilla_ID = @"Vanilla_ID";
+
 	UITableViewCell *cell = nil;
 
 	switch (section) {
@@ -495,10 +516,15 @@
 		case 3:
 		case 4:
 		case 5:
-		case 6:
+		case 7:
 			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			break;
+		case 6:
+			cell = [myTableView dequeueReusableCellWithIdentifier:kVanilla_ID];
+			if(cell == nil)
+				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
 			break;
 		default:
 			break;
@@ -560,6 +586,17 @@
 			timerEndCell = (DisplayCell *)sourceCell;
 			break;
 		case 6:
+			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			if(_timer.afterevent == kAfterEventNothing)
+				sourceCell.text = NSLocalizedString(@"Nothing", @"After Event");
+			else if(_timer.afterevent == kAfterEventStandby)
+				sourceCell.text = NSLocalizedString(@"Standby", @"");
+			else //if(_timer.afterevent == kAfterEventDeepstandby)
+				sourceCell.text = NSLocalizedString(@"Deep Standby", @"");
+
+			afterEventCell = sourceCell;
+			break;
+		case 7:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Delete", @"");
 			((DisplayCell *)sourceCell).view = deleteButton;
 		default:
@@ -567,6 +604,25 @@
 	}
 
 	return sourceCell;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if(self.editing && indexPath.section == 6)
+	{
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+		
+		AfterEventViewController *targetViewController = [AfterEventViewController withAfterEvent: _timer.afterevent];
+		[targetViewController setTarget: self action: @selector(afterEventSelected:)];
+		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
+	}
+	
+	// We don't want any actual response :-)
+    return nil;
+}
+
+- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
+    // Show the disclosure indicator in section 2 if editing.
+    return (self.editing && indexPath.section == 6) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 #pragma mark -

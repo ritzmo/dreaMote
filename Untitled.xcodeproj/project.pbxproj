@@ -77,6 +77,7 @@
 		DA8FE3380E356036000B32C3 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE3370E356036000B32C3 /* EventXMLReader.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA220480E9941F500DD749C /* segment_check.png in Resources */ = {isa = PBXBuildFile; fileRef = DAA220470E9941F500DD749C /* segment_check.png */; };
+		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA464B40E35E46400A1940D /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA464B30E35E46400A1940D /* TimerXMLReader.m */; };
 		DAA464BA0E35E4CC00A1940D /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA464B90E35E4CC00A1940D /* VolumeXMLReader.m */; };
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
@@ -196,6 +197,8 @@
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
 		DAA21E7F0E99288600DD749C /* ConfigListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigListController.m; sourceTree = "<group>"; };
 		DAA220470E9941F500DD749C /* segment_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = segment_check.png; path = Images/segment_check.png; sourceTree = "<group>"; };
+		DAA2222A0E998CE900DD749C /* AfterEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AfterEventViewController.h; sourceTree = "<group>"; };
+		DAA2222B0E998CE900DD749C /* AfterEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AfterEventViewController.m; sourceTree = "<group>"; };
 		DAA464B20E35E45B00A1940D /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerXMLReader.h; sourceTree = "<group>"; };
 		DAA464B30E35E46400A1940D /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerXMLReader.m; sourceTree = "<group>"; };
 		DAA464B80E35E4C500A1940D /* VolumeXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeXMLReader.h; sourceTree = "<group>"; };
@@ -373,6 +376,8 @@
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DAA2222A0E998CE900DD749C /* AfterEventViewController.h */,
+				DAA2222B0E998CE900DD749C /* AfterEventViewController.m */,
 				DAFE42A10E94220800896017 /* ConfigViewController.h */,
 				DAFE42A20E94220800896017 /* ConfigViewController.m */,
 				DAB579ED0E94CA580093721B /* ConnectorViewController.h */,
@@ -635,6 +640,7 @@
 				DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */,
 				DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */,
 				DAA21E800E99288600DD749C /* ConfigListController.m in Sources */,
+				DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

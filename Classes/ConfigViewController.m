@@ -343,11 +343,11 @@
 			break;
 		case 2:
 			if(_connector == kEnigma1Connector)
-				((UITableViewCell *)sourceCell).text = NSLocalizedString(@"Enigma", @"");
+				sourceCell.text = NSLocalizedString(@"Enigma", @"");
 			else
-				((UITableViewCell *)sourceCell).text = NSLocalizedString(@"Enigma 2", @"");
+				sourceCell.text = NSLocalizedString(@"Enigma 2", @"");
 
-			connectorCell = (UITableViewCell *)sourceCell;
+			connectorCell = sourceCell;
 			break;
 		case 3:
 			switch(indexPath.row)

@@ -33,7 +33,7 @@
 	UIButton *deleteButton;
 	UISwitch *timerEnabled;
 	UISwitch *timerJustplay;
-
+	UITableViewCell *afterEventCell;
 @private
 	Timer *_timer;
 	Timer *_oldTimer;

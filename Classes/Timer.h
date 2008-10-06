@@ -14,7 +14,8 @@
 enum afterEvent {
 	kAfterEventNothing = 0,
 	kAfterEventStandby = 1,
-	kAfterEventDeepstandby = 2
+	kAfterEventDeepstandby = 2,
+	kAfterEventMax = 3
 };
 
 enum timerStates {
