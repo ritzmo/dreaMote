@@ -226,9 +226,9 @@
 	_connector = [newConnector integerValue];
 
 	if(_connector == kEnigma1Connector)
-		connectorCell.text = NSLocalizedString(@"Enigma", "");
+		connectorCell.text = NSLocalizedString(@"Enigma", @"");
 	else
-		connectorCell.text = NSLocalizedString(@"Enigma 2", "");
+		connectorCell.text = NSLocalizedString(@"Enigma 2", @"");
 }
 
 #pragma mark - UITableView delegates

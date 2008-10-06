@@ -108,10 +108,10 @@
 	switch(indexPath.row)
 	{
 		case kEnigma2Connector:
-			cell.text = NSLocalizedString(@"Enigma 2", "");
+			cell.text = NSLocalizedString(@"Enigma 2", @"");
 			break;
 		case kEnigma1Connector:
-			cell.text = NSLocalizedString(@"Enigma", "");
+			cell.text = NSLocalizedString(@"Enigma", @"");
 			break;
 		default:
 			break;
