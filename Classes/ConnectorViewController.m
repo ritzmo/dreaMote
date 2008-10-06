@@ -36,23 +36,22 @@
 
 - (void)dealloc
 {
-	[myTableView release];
-
 	[super dealloc];
 }
 
 - (void)loadView
 {
 	// create and configure the table view
-	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	myTableView.delegate = self;
-	myTableView.dataSource = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	tableView.delegate = self;
+	tableView.dataSource = self;
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	myTableView.autoresizesSubviews = YES;
-	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	self.view = myTableView;
+	self.view = tableView;
+	[tableView release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -100,7 +99,7 @@
 
 	UITableViewCell *cell = nil;
 
-	cell = [myTableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+	cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
 	if (cell == nil) 
 		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
@@ -123,10 +122,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// XXX: don't animate this as long as its buggy :-)
-	[myTableView deselectRowAtIndexPath: indexPath animated: NO];
+	[tableView deselectRowAtIndexPath: indexPath animated: NO];
 
 	_selectedItem = indexPath.row;
-	[myTableView reloadData];
+	[tableView reloadData];
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {

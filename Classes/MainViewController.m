@@ -187,7 +187,7 @@
 {
 	static NSString *kMainCell_ID = @"MainCell_ID";
 
-	MainTableViewCell *cell = (MainTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
+	MainTableViewCell *cell = (MainTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
 	if (cell == nil)
 	{
 		cell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];

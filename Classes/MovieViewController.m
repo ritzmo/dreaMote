@@ -21,7 +21,6 @@
 @implementation MovieViewController
 
 @synthesize movie = _movie;
-@synthesize myTableView;
 
 - (id)init
 {
@@ -67,15 +66,16 @@
 - (void)loadView
 {
 	// create and configure the table view
-	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	myTableView.delegate = self;
-	myTableView.dataSource = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	tableView.delegate = self;
+	tableView.dataSource = self;
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	myTableView.autoresizesSubviews = YES;
-	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	self.view = myTableView;
+	self.view = tableView;
+	[tableView release];
 }
 
 - (void)playAction: (id)sender
@@ -276,20 +276,20 @@
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
 //
-- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
+- (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
 	UITableViewCell *cell = nil;
 
 	switch (section) {
 		case 0:
-			cell = [myTableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
+			cell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
 			if(cell == nil)
 				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 			break;
 		case 1:
 			if(!([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesExtendedRecordInfo))
 			{
-				cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+				cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 				if(cell == nil)
 					cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 				break;
@@ -297,20 +297,20 @@
 		case 2:
 		case 3:
 		case 4:
-			cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
+			cell = [tableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
 			if(cell == nil)
 				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
 			break;
 		case 5:
 			if([_movie.length integerValue] != -1)
 			{
-				cell = [myTableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
+				cell = [tableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
 				if(cell == nil)
 					cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
 				break;
 			}
 		case 6:
-			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 			break;
@@ -326,7 +326,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger section = indexPath.section;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
+	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
 
 	// we are creating a new cell, setup its attributes
 	switch (section) {

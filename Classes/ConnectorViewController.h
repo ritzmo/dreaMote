@@ -12,8 +12,6 @@
 													UITableViewDelegate,
 													UITableViewDataSource>
 {
-	UITableView *myTableView;
-
 	@private
 	NSInteger _selectedItem;
 	SEL _selectCallback;

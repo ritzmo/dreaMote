@@ -17,7 +17,6 @@
 {
 	Event *_event;
 	Service *_service;
-	UITableView	*myTableView;
 }
 
 + (EventViewController *)withEvent: (Event *) newEvent;
@@ -25,6 +24,5 @@
 
 @property (nonatomic, retain) Event *event;
 @property (nonatomic, retain) Service *service;
-@property (nonatomic, retain) UITableView *myTableView;
 
 @end

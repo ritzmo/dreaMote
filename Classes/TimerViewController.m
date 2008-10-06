@@ -32,7 +32,6 @@
 @synthesize timer = _timer;
 @synthesize oldTimer = _oldTimer;
 @synthesize creatingNewTimer = _creatingNewTimer;
-@synthesize myTableView;
 
 - (id)init
 {
@@ -88,7 +87,6 @@
 	[_timer release];
 	[_oldTimer release];
 
-	[myTableView release];
 	[timerTitle release];
 	[timerDescription release];
 	[timerServiceName release];
@@ -193,15 +191,16 @@
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	// create and configure the table view
-	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	myTableView.delegate = self;
-	myTableView.dataSource = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	tableView.delegate = self;
+	tableView.dataSource = self;
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	myTableView.autoresizesSubviews = YES;
-	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
-	self.view = myTableView;
+	self.view = tableView;
+	[tableView release];
 
 	timerTitle = [self create_TitleField];
 	timerDescription = [self create_DescriptionField];
@@ -498,7 +497,7 @@
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
 //
-- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
+- (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
 
@@ -507,7 +506,7 @@
 	switch (section) {
 		case 0:
 		case 1:
-			cell = [myTableView dequeueReusableCellWithIdentifier:kCellTextField_ID];
+			cell = [tableView dequeueReusableCellWithIdentifier:kCellTextField_ID];
 			if(cell == nil)
 				cell = [[[CellTextField alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextField_ID] autorelease];
 			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
@@ -517,12 +516,12 @@
 		case 4:
 		case 5:
 		case 7:
-			cell = [myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 			break;
 		case 6:
-			cell = [myTableView dequeueReusableCellWithIdentifier:kVanilla_ID];
+			cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
 			break;
@@ -538,7 +537,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger section = indexPath.section;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
+	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
 
 	// we are creating a new cell, setup its attributes
 	switch (section) {

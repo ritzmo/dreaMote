@@ -14,7 +14,6 @@
 													UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
-	UITableView *myTableView;
 	UITextField *remoteAddressTextField;
 	CellTextField *remoteAddressCell;
 	UITextField *usernameTextField;

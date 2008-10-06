@@ -17,7 +17,6 @@
 
 @synthesize switchControl = _switchControl;
 @synthesize slider = _slider;
-@synthesize myTableView;
 
 - (id)init
 {
@@ -86,15 +85,16 @@
 - (void)loadView
 {
 	// create and configure the table view
-	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	myTableView.delegate = self;
-	myTableView.dataSource = self;
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	tableView.delegate = self;
+	tableView.dataSource = self;
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	myTableView.autoresizesSubviews = YES;
-	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	self.view = myTableView;
+	self.view = tableView;
+	[tableView release];
 
 	// Volume
 	_slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
@@ -232,7 +232,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	DisplayCell *sourceCell = (DisplayCell *)[myTableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+	DisplayCell *sourceCell = (DisplayCell *)[tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 	if(sourceCell == nil)
 		sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 

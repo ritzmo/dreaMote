@@ -15,13 +15,11 @@
 													UITableViewDataSource>
 {
 @private
-	UITableView	*myTableView;
 	Movie *_movie;
 }
 
 + (MovieViewController *)withMovie: (Movie *) newMovie;
 
 @property (nonatomic, retain) Movie *movie;
-@property (nonatomic, retain) UITableView *myTableView;
 
 @end

@@ -19,7 +19,6 @@
 													UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
-	UITableView *myTableView;
 	UITextField *timerTitle;
 	CellTextField *timerTitleCell;
 	UITextField *timerDescription;
@@ -48,7 +47,6 @@
 
 @property (nonatomic, retain) Timer *timer;
 @property (nonatomic, retain) Timer *oldTimer;
-@property (nonatomic, retain) UITableView *myTableView;
 @property (assign) BOOL creatingNewTimer;
 
 @end
