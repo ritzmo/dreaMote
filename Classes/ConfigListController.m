@@ -209,8 +209,12 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == indexPath.row - 1)
+		NSInteger currentDefault = [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue];
+		if(currentDefault > indexPath.row - 1)
+			[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: currentDefault - 1] forKey: kActiveConnection];
+		else if(currentDefault == indexPath.row - 1)
 			[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
+
 		[_connections removeObjectAtIndex: indexPath.row - 1];
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 						 withRowAnimation: UITableViewRowAnimationFade];
