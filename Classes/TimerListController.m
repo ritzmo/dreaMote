@@ -75,7 +75,7 @@
 						withRowAnimation: UITableViewRowAnimationFade];
 	}
 
-	[self reloadData];
+	[(UITableView*)self.view reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -123,7 +123,7 @@
 
 		[_timers insertObject:timer atIndex:dist[state]];
 
-		for(; state <= 3; state++){
+		for(; state < kTimerStateMax; state++){
 			dist[state]++;
 		}
 	}
@@ -226,17 +226,25 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		Timer *timer = ((TimerTableViewCell *)[tableView cellForRowAtIndexPath: indexPath]).timer;
-		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
+		NSInteger index = indexPath.row;
+		NSInteger section = indexPath.section - 1;
+		if(section > 0)
+			index += dist[section - 1];
+
+		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: [_timers objectAtIndex: index]])
 		{
+			for(; section < kTimerStateMax; section++){
+				dist[section]--;
+			}
+
+			[_timers removeObjectAtIndex: index];
+
 			[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 							 withRowAnimation: UITableViewRowAnimationFade];
-
-			[_timers removeObject: timer];
 		}
 		else
 		{
-			// Alert otherwise
+			// alert user if timer could not be deleted
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
 														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
