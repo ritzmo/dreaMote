@@ -29,7 +29,6 @@
 	DisplayCell *timerBeginCell;
 	UIButton *timerEnd;
 	DisplayCell *timerEndCell;
-	UIButton *deleteButton;
 	UISwitch *timerEnabled;
 	UISwitch *timerJustplay;
 	UITableViewCell *afterEventCell;

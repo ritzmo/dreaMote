@@ -123,7 +123,7 @@
 		default:
 			break;
 	}
-	
+
 	return cell;
 }
 

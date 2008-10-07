@@ -12,6 +12,8 @@
 #import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
 
+#import "Constants.h"
+
 @implementation TimerListController
 
 @synthesize timers = _timers;
@@ -35,6 +37,8 @@
 
 - (void)loadView
 {
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;
@@ -46,12 +50,6 @@
 	tableView.autoresizesSubviews = YES;
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	// add our custom add button as the nav bar's custom right view
-	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-														target:self action:@selector(addAction:)];
-	UINavigationItem *navItem = self.navigationItem;
-	navItem.rightBarButtonItem = addButton;
-
 	self.view = tableView;
 	[tableView release];
 }
@@ -59,6 +57,25 @@
 - (void)reloadData
 {
 	[(UITableView *)self.view reloadData];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+{
+	[super setEditing: editing animated: animated];
+	[(UITableView*)self.view setEditing: editing animated: animated];
+
+	if(editing)
+	{
+		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
+						withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+	{
+		[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
+						withRowAnimation: UITableViewRowAnimationFade];
+	}
+
+	[self reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -113,34 +130,40 @@
 	[self reloadData];
 }
 
+// to determine which UITableViewCell to be used on a given row.
+//
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	static NSString *kVanilla_ID = @"Vanilla_ID";
 	static NSString *kTimerCell_ID = @"TimerCell_ID";
 
-	TimerTableViewCell *cell = (TimerTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kTimerCell_ID];
-	if(cell == nil)
+	NSInteger section = indexPath.section;
+	UITableViewCell *cell = nil;
+
+	if(section == 0)
 	{
-		CGSize size = CGSizeMake(300, 36);
-		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[TimerTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kTimerCell_ID] autorelease];
+		cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+		if(cell == nil)
+			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
+		cell.text = NSLocalizedString(@"New Timer", @"");
+		cell.font = [UIFont systemFontOfSize:kTextViewFontSize]; // XXX: Looks a little weird though
+
+		return cell;
 	}
+	--section;
+	
+	cell = [tableView dequeueReusableCellWithIdentifier:kTimerCell_ID];
+	if(cell == nil)
+		cell = [[[TimerTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kTimerCell_ID] autorelease];
 
 	NSInteger offset = 0;
-	if(indexPath.section > 0)
-		offset = dist[indexPath.section-1];
-	cell.timer = [_timers objectAtIndex: offset + indexPath.row];
+	if(section > 0)
+		offset = dist[section-1];
+	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
 
 	return cell;
 }
-
-- (void)addAction:(id)sender
-{
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	TimerViewController *timerViewController = [TimerViewController newTimer];
-	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
-}
-
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -160,10 +183,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return kTimerStateMax;
+	return kTimerStateMax + 1;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if(section == 0)
+		return nil;
+	--section;
+
 	if(section == kTimerStateWaiting)
 		return NSLocalizedString(@"Waiting", @"");
 	else if(section == kTimerStatePrepared)
@@ -176,9 +203,53 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+	if(self.editing && section == 0)
+		return 1;
+	--section;
+
 	if(section > 0)
 		return dist[section] - dist[section-1];
 	return dist[0];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(indexPath.section == 0)
+		return UITableViewCellEditingStyleInsert;
+	return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// If row is deleted, remove it from the list.
+	if (editingStyle == UITableViewCellEditingStyleDelete)
+	{
+		Timer *timer = ((TimerTableViewCell *)[tableView cellForRowAtIndexPath: indexPath]).timer;
+		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
+		{
+			[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
+							 withRowAnimation: UITableViewRowAnimationFade];
+
+			[_timers removeObject: timer];
+		}
+		else
+		{
+			// Alert otherwise
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[alert show];
+			[alert release];
+		}
+	}
+	else if(editingStyle == UITableViewCellEditingStyleInsert)
+	{
+		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+
+		TimerViewController *targetViewController = [TimerViewController newTimer];
+		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
+
+		[self setEditing: NO animated: NO];
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation

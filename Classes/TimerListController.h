@@ -16,7 +16,6 @@
 	NSInteger dist[kTimerStateMax];
 }
 
-- (void)addAction:(id)sender;
 - (void)reloadData;
 
 @property (nonatomic, retain) NSMutableArray *timers;

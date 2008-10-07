@@ -92,7 +92,6 @@
 	[timerServiceName release];
 	[timerBegin release];
 	[timerEnd release];
-	[deleteButton release];
 
 	[super dealloc];
 }
@@ -157,15 +156,6 @@
 	return button;
 }
 
-- (UIButton *)create_DeleteButton
-{
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button addTarget:self action:@selector(deleteAction:) forControlEvents:UIControlEventTouchUpInside];
-
-	return button;
-}
-
 - (UIButton *)create_BeginButton
 {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
@@ -207,7 +197,6 @@
 	timerServiceName = [[self create_ServiceButton] retain];
 	timerBegin = [[self create_BeginButton] retain];
 	timerEnd = [[self create_EndButton] retain];
-	deleteButton = [[self create_DeleteButton] retain];
 
 	// Enabled
 	timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -246,7 +235,6 @@
 			timerServiceName.enabled = NO;
 			timerBegin.enabled = NO;
 			timerEnd.enabled = NO;
-			deleteButton.enabled = YES;
 		}
 	}
 	else
@@ -262,7 +250,6 @@
 		timerServiceName.enabled = editing;
 		timerBegin.enabled = editing;
 		timerEnd.enabled = editing;
-		deleteButton.enabled = editing;
 
 		// editing stopped, commit changes
 		if(_shouldSave && !editing)
@@ -380,14 +367,6 @@
 	timerEndCell.nameLabel.text = [self format_BeginEnd: _timer.end];
 }
 
-- (void)deleteAction: (id)sender
-{
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Do you really want to delete the selected timer?", @"")
-														delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles: NSLocalizedString(@"Delete", @""), nil];
-	[actionSheet showInView:self.view];
-	[actionSheet release];
-}
-
 - (void)afterEventSelected: (NSNumber*) newAfterEvent
 {
 	if(newAfterEvent == nil)
@@ -403,32 +382,6 @@
 		afterEventCell.text = NSLocalizedString(@"Deep Standby", @"");
 }
 
-
-#pragma mark - UIActionSheet delegates
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if (buttonIndex == 0)
-	{
-		// Custom Button: Delete
-		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: _oldTimer])
-		{
-			// Close when timer deleted
-			id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-			[[applicationDelegate navigationController] popViewControllerAnimated: YES];
-		}
-		else
-		{
-			// Alert otherwise
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
-													delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-			[alert show];
-			[alert release];
-		}
-	}
-}
-
 #pragma mark - UITableView delegates
 
 // if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
@@ -440,9 +393,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(_creatingNewTimer || (_oldTimer.state == 0 && !self.editing))
-		return 7;
-	return 8;
+	return 7;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -515,7 +466,6 @@
 		case 3:
 		case 4:
 		case 5:
-		case 7:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
@@ -595,9 +545,6 @@
 
 			afterEventCell = sourceCell;
 			break;
-		case 7:
-			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Delete", @"");
-			((DisplayCell *)sourceCell).view = deleteButton;
 		default:
 			break;
 	}
@@ -609,12 +556,12 @@
 	if(self.editing && indexPath.section == 6)
 	{
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-		
+
 		AfterEventViewController *targetViewController = [AfterEventViewController withAfterEvent: _timer.afterevent];
 		[targetViewController setTarget: self action: @selector(afterEventSelected:)];
 		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
 	}
-	
+
 	// We don't want any actual response :-)
     return nil;
 }
