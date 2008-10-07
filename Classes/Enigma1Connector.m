@@ -306,6 +306,19 @@
 
 - (BOOL)sendButton:(NSInteger) type
 {
+	// Fix some Buttoncodes
+	switch(type)
+	{
+		case kButtonCodeLame:
+			type = 1;
+			break;
+		case kButtonCodeMenu:
+			type = 141;
+			break;
+		default:
+			break;
+	}
+
 	// Generate URI
 	NSString *myURI = [NSString stringWithFormat: @"%@/cgi-bin/rc?%d", baseAddress, type];
 
