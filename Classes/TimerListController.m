@@ -203,8 +203,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if(self.editing && section == 0)
-		return 1;
+	if(section == 0)
+	{
+		return (self.editing) ? 1 : 0;
+	}
 	--section;
 
 	if(section > 0)
