@@ -158,7 +158,7 @@
 	self.makeDefaultButton = [self create_DefaultButton];
 	makeDefaultButton.enabled = NO;
 
-	[self setEditing: YES animated: NO];
+	[self setEditing: (connectionIndex == -1) animated: NO];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;

@@ -33,9 +33,11 @@ enum powerStates {
 
 @synthesize baseAddress;
 
-- (enum connectorFeatures)getFeatures
+- (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	return kFeaturesDisabledTimers | kFeaturesExtendedRecordInfo;
+	return
+		(feature == kFeaturesDisabledTimers) ||
+		(feature == kFeaturesExtendedRecordInfo);
 }
 
 - (NSInteger)getMaxVolume

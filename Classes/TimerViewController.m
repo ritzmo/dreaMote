@@ -433,7 +433,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 2 && ([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesDisabledTimers))
+	if(section == 2 && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
 		return 2;
 	return 1;
 }
@@ -502,7 +502,7 @@
 		case 2:
 			switch (indexPath.row) {
 				case 0:
-					if([[RemoteConnectorObject sharedRemoteConnector] getFeatures] & kFeaturesDisabledTimers)
+					if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
 					{
 						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Enabled", @"");
 						((DisplayCell *)sourceCell).view = timerEnabled;

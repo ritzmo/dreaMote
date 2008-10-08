@@ -27,9 +27,9 @@
 
 @synthesize baseAddress;
 
-- (enum connectorFeatures)getFeatures
+- (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	return 0;
+	return NO;
 }
 
 - (NSInteger)getMaxVolume
