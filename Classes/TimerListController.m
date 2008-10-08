@@ -170,8 +170,9 @@
 	id applicationDelegate = [[UIApplication sharedApplication] delegate];
 
 	NSInteger index = indexPath.row;
-	if(indexPath.section > 0)
-		index += dist[indexPath.section-1];
+	NSInteger section = indexPath.section - 1;
+	if(section > 0)
+		index += dist[indexPath.section - 1];
 
 	Timer *timer = [_timers objectAtIndex: index];
 
