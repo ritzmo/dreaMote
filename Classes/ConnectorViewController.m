@@ -116,20 +116,25 @@
 			break;
 	}
 
+	if(indexPath.row == _selectedItem)
+		cell.accessoryType = UITableViewCellAccessoryCheckmark;
+	else
+		cell.accessoryType = UITableViewCellAccessoryNone;
+
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// XXX: don't animate this as long as its buggy :-)
-	[tableView deselectRowAtIndexPath: indexPath animated: NO];
+	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
+	cell.accessoryType = UITableViewCellAccessoryNone;
+
+	cell = [tableView cellForRowAtIndexPath: indexPath];
+	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
 	_selectedItem = indexPath.row;
-	[tableView reloadData];
-}
-
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    return (indexPath.row == _selectedItem) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 }
 
 - (void)setTarget: (id)target action: (SEL)action

@@ -152,11 +152,11 @@
 
 	// Connect Button
 	self.connectButton = [self create_ConnectButton];
-	connectButton.enabled = NO;
+	connectButton.enabled = YES;
 	
 	// "Make Default" Button
 	self.makeDefaultButton = [self create_DefaultButton];
-	makeDefaultButton.enabled = NO;
+	makeDefaultButton.enabled = YES;
 
 	[self setEditing: (connectionIndex == -1) animated: NO];
 }
@@ -165,8 +165,8 @@
 {
 	[super setEditing: editing animated: animated];
 
-	makeDefaultButton.enabled = editing;
-	connectButton.enabled = editing;
+	/*makeDefaultButton.enabled = editing;
+	connectButton.enabled = editing;*/
 
 	if(!editing)
 	{
@@ -189,11 +189,14 @@
 			else
 				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
 		}
+
+		connectorCell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	else
 	{
 		_shouldSave = YES;
-		[self.navigationItem setLeftBarButtonItem: [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)] animated: YES]; 
+		[self.navigationItem setLeftBarButtonItem: [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)] animated: YES];
+		connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 }
 
@@ -385,11 +388,6 @@
 	
 	// We don't want any actual response :-)
     return nil;
-}
-
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    // Show the disclosure indicator in section 2 if editing.
-    return (self.editing && indexPath.section == 2) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 #pragma mark -
