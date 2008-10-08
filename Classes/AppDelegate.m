@@ -32,8 +32,42 @@
 	[window makeKeyAndVisible];
 
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
+	NSString *testValue = nil;
 
-	NSString *testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kActiveConnection];
+	// Try to read 0.1-0 configuration
+	testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost];
+	if(testValue != nil)
+	{
+		// Build Connection Dict from old defaults
+		NSDictionary *connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									[[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost], kRemoteHost,
+									[[NSUserDefaults standardUserDefaults] stringForKey: kUsername], kUsername,
+									[[NSUserDefaults standardUserDefaults] stringForKey: kPassword], kPassword,
+									[NSNumber numberWithInteger: [[NSUserDefaults standardUserDefaults] integerForKey: kConnector]], kConnector,
+									nil];
+
+		// Load, edit and save new connections array
+		[RemoteConnectorObject loadConnections];
+		NSMutableArray *connections = [RemoteConnectorObject getConnections];
+		[connections addObject: connection];
+		[RemoteConnectorObject saveConnections];
+
+		// Remove old defaults
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kRemoteHost];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kUsername];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kPassword];
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kConnector];
+
+		// Register new item (kActiveConnection)
+		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+									 activeConnectionId, kActiveConnection,
+									 nil];
+
+		[[NSUserDefaults standardUserDefaults] registerDefaults: appDefaults];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+
+	testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kActiveConnection];
 	if(testValue == nil)
 	{
 		// no default values have been set, create them here

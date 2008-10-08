@@ -93,6 +93,8 @@ static NSMutableArray *_connections = nil;
 	NSString *finalPath = [@"~/Library/Preferences/Connections.plist" stringByExpandingTildeInPath];
 
 	[_connections writeToFile: finalPath atomically: YES];
+	[_connections release];
+	_connections = nil;
 }
 
 + (BOOL)isConnected
