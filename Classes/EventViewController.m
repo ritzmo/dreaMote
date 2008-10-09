@@ -62,6 +62,7 @@
 - (void)dealloc
 {
 	[_event release];
+	[_service release];
 
 	[super dealloc];
 }
