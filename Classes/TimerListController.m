@@ -72,10 +72,8 @@
 	else
 	{
 		[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationFade];
+						withRowAnimation: UITableViewRowAnimationTop];
 	}
-
-	[(UITableView*)self.view reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
