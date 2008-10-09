@@ -7,6 +7,12 @@
  *
  */
 
+/*
+ * define this to animate addition of new rows to the various listcontrollers,
+ * looks a little laggy on device hence its off by default
+ */
+//#define ENABLE_LAGGY_ANIMATIONS
+
 // padding for margins
 #define kLeftMargin				5.0
 #define kTopMargin				5.0

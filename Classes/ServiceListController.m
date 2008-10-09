@@ -100,8 +100,17 @@
 - (void)addService:(id)service
 {
 	if(service != nil)
+	{
 		[_services addObject: (Service*)service];
-	[self reloadData];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_services count]-1 inSection:0]]
+						withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+#else
+	}
+#endif
+		[self reloadData];
 }
 
 #pragma mark	-

@@ -94,8 +94,17 @@
 - (void)addMovie:(id)movie
 {
 	if(movie != nil)
+	{
 		[_movies addObject: (Movie*)movie];
-	[self reloadData];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_movies count]-1 inSection:0]]
+						withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+#else
+	}
+#endif
+		[self reloadData];
 }
 
 #pragma mark	-

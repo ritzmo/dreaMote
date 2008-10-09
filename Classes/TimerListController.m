@@ -118,14 +118,26 @@
 		Timer* timer = (Timer*)newTimer;
 
 		NSInteger state = timer.state;
+		NSInteger index = dist[state];
 
-		[_timers insertObject:timer atIndex:dist[state]];
+		[_timers insertObject:timer atIndex:index];
 
 		for(; state < kTimerStateMax; state++){
 			dist[state]++;
 		}
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		state = timer.state;
+		if(state > 0)
+			index -= dist[state - 1];
+
+		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
+						withRowAnimation: UITableViewRowAnimationTop];
 	}
-	[self reloadData];
+	else
+#else
+	}
+#endif
+		[self reloadData];
 }
 
 // to determine which UITableViewCell to be used on a given row.

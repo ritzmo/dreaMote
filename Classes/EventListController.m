@@ -102,7 +102,16 @@
 - (void)addEvent:(id)event
 {
 	if(event != nil)
+	{
 		[(NSMutableArray *)_events addObject: (Event*)event];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
+						withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+#else
+	}
+#endif
 	[self reloadData];
 }
 
