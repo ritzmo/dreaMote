@@ -24,6 +24,7 @@
 {
 	[_eventNameLabel release];
 	[_eventTimeLabel release];
+	[_movie release];
 
 	[super dealloc];
 }

@@ -9,8 +9,6 @@
 #import "Constants.h"
 #import "TimerTableViewCell.h"
 
-#import "FuzzyDateFormatter.h"
-
 @interface TimerTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
@@ -20,12 +18,15 @@
 @synthesize serviceNameLabel = _serviceNameLabel;
 @synthesize timerNameLabel = _timerNameLabel;
 @synthesize timerTimeLabel = _timerTimeLabel;
+@synthesize formatter = _formatter;
 
 - (void)dealloc
 {
 	[_serviceNameLabel release];
 	[_timerNameLabel release];
 	[_timerTimeLabel release];
+	[_formatter release];
+	[_timer release];
 
 	[super dealloc];
 }
@@ -55,6 +56,10 @@
 		self.timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview:self.timerTimeLabel];
 		[self.timerTimeLabel release];
+
+		//
+		self.formatter = [[FuzzyDateFormatter alloc] init];
+		[_formatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	
 	return self;
@@ -74,12 +79,10 @@
 
 	self.serviceNameLabel.text = newTimer.service.sname;
 	self.timerNameLabel.text = newTimer.title;
-	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *begin = [format stringFromDate: newTimer.begin];
-	[format setDateStyle:NSDateFormatterNoStyle];
-	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [format stringFromDate: newTimer.end]];
+	[_formatter setDateStyle:NSDateFormatterMediumStyle];
+	NSString *begin = [_formatter stringFromDate: newTimer.begin];
+	[_formatter setDateStyle:NSDateFormatterNoStyle];
+	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [_formatter stringFromDate: newTimer.end]];
 
 	[self setNeedsDisplay];
 }

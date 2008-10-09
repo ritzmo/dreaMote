@@ -9,8 +9,6 @@
 #import "Constants.h"
 #import "EventTableViewCell.h"
 
-#import "FuzzyDateFormatter.h"
-
 @interface EventTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
@@ -19,11 +17,14 @@
 
 @synthesize eventNameLabel = _eventNameLabel;
 @synthesize eventTimeLabel = _eventTimeLabel;
+@synthesize formatter = _formatter;
 
 - (void)dealloc
 {
 	[_eventNameLabel release];
 	[_eventTimeLabel release];
+	[_formatter release];
+	[_event release];
 
 	[super dealloc];
 }
@@ -47,6 +48,10 @@
 		self.eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview:self.eventTimeLabel];
 		[self.eventTimeLabel release];
+
+		//
+		self.formatter = [[FuzzyDateFormatter alloc] init];
+		[_formatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	
 	return self;
@@ -65,12 +70,10 @@
 	_event = [newEvent retain];
 	
 	self.eventNameLabel.text = newEvent.title;
-	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *begin = [format stringFromDate: _event.begin];
-	[format setDateStyle:NSDateFormatterNoStyle];
-	NSString *end = [format stringFromDate: _event.end];
+	[_formatter setDateStyle:NSDateFormatterMediumStyle];
+	NSString *begin = [_formatter stringFromDate: _event.begin];
+	[_formatter setDateStyle:NSDateFormatterNoStyle];
+	NSString *end = [_formatter stringFromDate: _event.end];
 	self.eventTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
 
 	[self setNeedsDisplay];

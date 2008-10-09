@@ -20,6 +20,7 @@
 - (void)dealloc
 {
 	[_serviceNameLabel release];
+	[_service release];
 
 	[super dealloc];
 }
