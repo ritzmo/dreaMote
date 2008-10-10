@@ -18,8 +18,8 @@
 	self = [super init];
 	
 	if (self) {
-		self.sref = [[service sref] copy];
-		self.sname = [[service sname] copy];
+		self.sref = [service.sref copy];
+		self.sname = [service.sname copy];
 	}
 
 	return self;
@@ -47,16 +47,6 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@> Name: '%@'.\n Ref: '%@'.\n", [self class], self.sname, self.sref];
-}
-
-- (NSString *)getServiceReference
-{
-	return _sref;
-}
-
-- (NSString *)getServiceName
-{
-	return _sname;
 }
 
 @end

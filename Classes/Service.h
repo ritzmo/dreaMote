@@ -15,9 +15,6 @@
 	NSString *_sname;
 }
 
-- (NSString *)getServiceReference;
-- (NSString *)getServiceName;
-
 @property (nonatomic, retain) NSString *sref;
 @property (nonatomic, retain) NSString *sname;
 

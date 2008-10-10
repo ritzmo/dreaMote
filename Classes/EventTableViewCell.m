@@ -67,9 +67,9 @@
 	
 	self.eventNameLabel.text = newEvent.title;
 	[_formatter setDateStyle:NSDateFormatterMediumStyle];
-	NSString *begin = [_formatter stringFromDate: _event.begin];
+	NSString *begin = [_formatter stringFromDate: newEvent.begin];
 	[_formatter setDateStyle:NSDateFormatterNoStyle];
-	NSString *end = [_formatter stringFromDate: _event.end];
+	NSString *end = [_formatter stringFromDate: newEvent.end];
 	self.eventTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
 
 	[self setNeedsDisplay];
