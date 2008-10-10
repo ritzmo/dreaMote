@@ -16,10 +16,6 @@
 
 #import "FuzzyDateFormatter.h"
 
-@interface EventViewController()
-- (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title;
-@end
-
 @implementation EventViewController
 
 @synthesize event = _event;
@@ -88,26 +84,13 @@
 	[targetViewController release];
 }
 
-- (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
-{
-	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
-	
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = title;
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
-	
-	return label;
-}
-
 - (UITextView *)create_Summary
 {
 	CGRect frame = CGRectMake(0, 0, 100, kTextViewHeight);
-	UITextView *myTextView = [[[UITextView alloc] initWithFrame:frame] autorelease];
+	UITextView *myTextView = [[UITextView alloc] initWithFrame:frame];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
-	myTextView.delegate = self;
+	//myTextView.delegate = self;
 	myTextView.editable = NO;
 	myTextView.backgroundColor = [UIColor whiteColor];
 	
@@ -121,17 +104,17 @@
 	{
 		[text appendString: _event.title];
 	}
-	
+
 	if([_event.edescription length])
 	{
 		[text appendString: @"\n\n"];
 		[text appendString: _event.edescription];
 	}
-	
+
 	myTextView.text = text;
 
 	[text release];
-	
+
 	return myTextView;
 }
 
@@ -141,7 +124,7 @@
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	
+
 	return [format stringFromDate: dateTime];
 }
 
@@ -150,7 +133,7 @@
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
 	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 
@@ -167,13 +150,6 @@
 }
 
 #pragma mark - UITableView delegates
-
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellEditingStyleNone;
-}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
