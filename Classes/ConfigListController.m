@@ -92,10 +92,9 @@
 	if(indexPath.section != 0)
 		return nil;
 
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
 	UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
-	[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
+	[self.navigationController pushViewController: targetViewController animated: YES];
+	[targetViewController release];
 
 	return nil;
 }
@@ -221,11 +220,10 @@
 	}
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
 		UIViewController *targetViewController = [ConfigViewController newConnection];
-		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
-		
+		[self.navigationController pushViewController: targetViewController animated: YES];
+		[targetViewController release];
+
 		[self setEditing: NO animated: NO];
 	}
 }

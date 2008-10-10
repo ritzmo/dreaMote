@@ -28,7 +28,7 @@
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
 	// Show the window and view
-	[window addSubview:[navigationController view]];
+	[window addSubview: navigationController.view];
 	[window makeKeyAndVisible];
 
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];

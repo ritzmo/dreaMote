@@ -22,8 +22,6 @@
 - (void)setTarget: (id)target action: (SEL)action;
 
 @property (nonatomic) NSInteger selectedItem;
-@property (nonatomic, retain) id selectTarget;
-@property (nonatomic) SEL selectCallback;
 
 @end
 

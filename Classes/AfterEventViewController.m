@@ -14,8 +14,6 @@
 @implementation AfterEventViewController
 
 @synthesize selectedItem = _selectedItem;
-@synthesize selectTarget = _selectTarget;
-@synthesize selectCallback = _selectCallback;
 
 - (id)init
 {
@@ -60,18 +58,6 @@
 }
 
 #pragma mark - UITableView delegates
-
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellEditingStyleNone;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-	return 1;
-}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -119,20 +105,25 @@
 			break;
 	}
 
+	if(indexPath.row == _selectedItem)
+		cell.accessoryType = UITableViewCellAccessoryCheckmark;
+	else
+		cell.accessoryType = UITableViewCellAccessoryNone;
+
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// XXX: don't animate this as long as its buggy :-)
-	[tableView deselectRowAtIndexPath: indexPath animated: NO];
-
+	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
+	cell.accessoryType = UITableViewCellAccessoryNone;
+	
+	cell = [tableView cellForRowAtIndexPath: indexPath];
+	cell.accessoryType = UITableViewCellAccessoryCheckmark;
+	
 	_selectedItem = indexPath.row;
-	[tableView reloadData];
-}
-
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    return (indexPath.row == _selectedItem) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 }
 
 - (void)setTarget: (id)target action: (SEL)action

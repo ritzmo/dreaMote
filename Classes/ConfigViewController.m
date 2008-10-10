@@ -365,11 +365,10 @@
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if(self.editing && indexPath.section == 2)
 	{
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-		ConnectorViewController *connectorViewController = [ConnectorViewController withConnector: _connector];
-		[connectorViewController setTarget: self action: @selector(connectorSelected:)];
-		[[applicationDelegate navigationController] pushViewController: connectorViewController animated: YES];
+		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
+		[targetViewController setTarget: self action: @selector(connectorSelected:)];
+		[self.navigationController pushViewController: targetViewController animated: YES];
+		[targetViewController release];
 	}
 	
 	// We don't want any actual response :-)

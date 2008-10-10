@@ -17,8 +17,6 @@
 
 @synthesize date;
 @synthesize format;
-@synthesize selectTarget = _selectTarget;
-@synthesize selectCallback = _selectCallback;
 
 - (id)init
 {
@@ -37,7 +35,7 @@
 + (DatePickerController *)withDate: (NSDate *)ourDate
 {
 	DatePickerController *datePickerController = [[DatePickerController alloc] init];
-	datePickerController.date = ourDate;
+	datePickerController.date = [ourDate copy];
 	
 	return datePickerController;
 }
@@ -64,11 +62,9 @@
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 														target:self action:@selector(doneAction:)];
-	UINavigationItem *navItem = self.navigationItem;
-	navItem.rightBarButtonItem = button;
+	self.navigationItem.rightBarButtonItem = button;
 
 	[button release];
-	[navItem release];
 	
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
@@ -91,18 +87,16 @@
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: [datePickerView date]];
 	}
 
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+	[self.navigationController popViewControllerAnimated: YES];
 }
 
 - (void)dealloc
 {
 	[textField release];
 	[datePickerView release];
+	[date release];
 	[label release];
 	[format release];
-	[_selectTarget release];
 
 	[super dealloc];
 }

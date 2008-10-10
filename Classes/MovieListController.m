@@ -138,14 +138,13 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-	
 	Movie *movie = [self.movies objectAtIndex: indexPath.row];
-	MovieViewController *movieViewController = [MovieViewController withMovie: movie];
-	[[applicationDelegate navigationController] pushViewController: movieViewController animated: YES];
+	MovieViewController *targetViewController = [MovieViewController withMovie: movie];
+	[self.navigationController pushViewController: targetViewController animated: YES];
+	[targetViewController release];
 
 	refreshMovies = NO;
-	
+
 	return nil;
 }
 

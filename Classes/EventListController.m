@@ -143,11 +143,10 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
 	Event *event = [_events objectAtIndex: indexPath.row];
-	EventViewController *eventViewController = [EventViewController withEventAndService: event: _service];
-	[[applicationDelegate navigationController] pushViewController: eventViewController animated: YES];
+	EventViewController *targetViewController = [EventViewController withEventAndService: event: _service];
+	[self.navigationController pushViewController: targetViewController animated: YES];
+	[targetViewController release];
 
 	return nil;
 }

@@ -135,7 +135,8 @@
 - (void)settingsAction:(id)sender
 {
 	UIViewController *targetViewController = [[ConfigListController alloc] init];
-	[[self navigationController] pushViewController:targetViewController animated:YES];
+	[self.navigationController pushViewController: targetViewController animated: YES];
+	[targetViewController release];
 }
 
 #pragma mark UIViewController delegates
@@ -152,13 +153,11 @@
 	// TODO: We might want to explain this to the user :-)
 	if(![RemoteConnectorObject isConnected] && ![RemoteConnectorObject connectTo: [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]])
 	{
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-		
 		UIViewController *targetViewController = [ConfigViewController newConnection];
-		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
+		[self.navigationController pushViewController: targetViewController animated: YES];
+		[targetViewController release];
 	}
 }
-
 
 #pragma mark UITableView delegates
 
@@ -180,7 +179,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UIViewController *targetViewController = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
-	[[self navigationController] pushViewController:targetViewController animated:YES];
+	[self.navigationController pushViewController:targetViewController animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

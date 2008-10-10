@@ -81,10 +81,10 @@
 - (UITextView *)create_Summary
 {
 	CGRect frame = CGRectMake(0, 0, 100, kTextViewHeight);
-	UITextView *myTextView = [[[UITextView alloc] initWithFrame:frame] autorelease];
+	UITextView *myTextView = [[UITextView alloc] initWithFrame:frame];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
-	myTextView.delegate = self;
+	//myTextView.delegate = self;
 	myTextView.editable = NO;
 	myTextView.backgroundColor = [UIColor whiteColor];
 	

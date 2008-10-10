@@ -248,8 +248,7 @@
 					}
 					else
 					{
-						id applicationDelegate = [[UIApplication sharedApplication] delegate];
-						[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+						[self.navigationController popViewControllerAnimated: YES];
 					}
 				}
 				else
@@ -480,7 +479,6 @@
 	if(self.editing)
 	{
 		NSInteger section = indexPath.section;
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
 		UIViewController *targetViewController = nil;
 
 		if(section == 3)
@@ -504,7 +502,8 @@
 			[(AfterEventViewController *)targetViewController setTarget: self action: @selector(afterEventSelected:)];
 		}
 		
-		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
+		[self.navigationController pushViewController: targetViewController animated: YES];
+		[targetViewController release];
 	}
 
 	// We don't want any actual response :-)

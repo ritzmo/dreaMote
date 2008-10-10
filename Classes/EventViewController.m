@@ -83,10 +83,9 @@
 
 - (void)addTimer: (id)sender
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	TimerViewController *timerViewController = [TimerViewController withEventAndService: _event: _service];
-	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+	TimerViewController *targetViewController = [TimerViewController withEventAndService: _event: _service];
+	[self.navigationController pushViewController: targetViewController animated: YES];
+	[targetViewController release];
 }
 
 - (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title

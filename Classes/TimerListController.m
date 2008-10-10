@@ -182,8 +182,6 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
 	NSInteger index = indexPath.row;
 	NSInteger section = indexPath.section - 1;
 	if(section > 0)
@@ -191,8 +189,9 @@
 
 	Timer *timer = [_timers objectAtIndex: index];
 
-	TimerViewController *timerViewController = [TimerViewController withTimer: timer];
-	[[applicationDelegate navigationController] pushViewController: timerViewController animated: YES];
+	TimerViewController *targetViewController = [TimerViewController withTimer: timer];
+	[self.navigationController pushViewController: targetViewController animated: YES];
+	[targetViewController release];
 
 	return nil;
 }
@@ -269,10 +268,9 @@
 	}
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
 		TimerViewController *targetViewController = [TimerViewController newTimer];
-		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
+		[self.navigationController pushViewController: targetViewController animated: YES];
+		[targetViewController release];
 
 		[self setEditing: NO animated: NO];
 	}

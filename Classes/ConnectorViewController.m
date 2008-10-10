@@ -14,8 +14,6 @@
 @implementation ConnectorViewController
 
 @synthesize selectedItem = _selectedItem;
-@synthesize selectTarget = _selectTarget;
-@synthesize selectCallback = _selectCallback;
 
 - (id)init
 {
@@ -60,18 +58,6 @@
 }
 
 #pragma mark - UITableView delegates
-
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellEditingStyleNone;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-	return 1;
-}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {

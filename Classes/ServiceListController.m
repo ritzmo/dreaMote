@@ -141,9 +141,7 @@
 		Service *service = [_services objectAtIndex: indexPath.row];
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
 
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-		[[applicationDelegate navigationController] popViewControllerAnimated: YES];
+		[self.navigationController popViewControllerAnimated: YES];
 
 		return nil;
 	}
@@ -169,16 +167,16 @@
 	else if (buttonIndex == 1)
 	{
 		// Third Button: epg
-		id applicationDelegate = [[UIApplication sharedApplication] delegate];
-		EventListController *eventListController = [EventListController forService: service];
+		EventListController *targetViewController = [EventListController forService: service];
 
-		[[applicationDelegate navigationController] pushViewController: eventListController animated:YES];
+		[self.navigationController pushViewController: targetViewController animated:YES];
+		[targetViewController release];
 
 		_refreshServices = NO;
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];
-	[(UITableView*)self.view deselectRowAtIndexPath:tableSelection animated:NO];
+	[(UITableView*)self.view deselectRowAtIndexPath:tableSelection animated: YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 

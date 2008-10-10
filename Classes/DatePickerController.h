@@ -25,7 +25,5 @@
 
 @property (nonatomic, retain) NSDate *date;
 @property (nonatomic, retain) NSDateFormatter *format;
-@property (nonatomic, retain) id selectTarget;
-@property (nonatomic) SEL selectCallback;
 
 @end
