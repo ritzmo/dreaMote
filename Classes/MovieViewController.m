@@ -38,7 +38,7 @@
 
 	movieViewController.movie = newMovie;
 	movieViewController.title = [newMovie title];
-	
+
 	return movieViewController;
 }
 
@@ -47,19 +47,6 @@
 	[_movie release];
 
 	[super dealloc];
-}
-
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
-{
-	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
-	
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = title;
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
-
-	return label;
 }
 
 - (void)loadView
@@ -79,13 +66,15 @@
 	[tableView release];
 }
 
+//* Start playback of the movie on the remote box
+//* @see #zapTo:
 - (void)playAction: (id)sender
 {
 	Service *movieService = [[Service alloc] init];
 	[movieService setSref: _movie.sref];
 
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: movieService];
-	
+
 	[movieService release];
 }
 
@@ -122,9 +111,9 @@
 		}
 	}
 	myTextView.text = text;
-	
+
 	[text release];
-	
+
 	return myTextView;
 }
 
@@ -147,6 +136,8 @@
 	return button;
 }
 
+//* Convert the size in bytes of a movie to a human-readable size
+//* @param size NSNumber containing size in bytes
 - (NSString *)format_size: (NSNumber*)size
 {
 	float floatSize = [size floatValue];
@@ -180,23 +171,19 @@
 
 #pragma mark - UITableView delegates
 
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellEditingStyleNone;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	// We always have 7 sections, but not all of them have content
 	return 7;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+	// First section is always present
 	if(section == 0)
 		return NSLocalizedString(@"Description", @"");
 
+	// Other rows might be displayed if we have extended record description
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
 		switch(section)
@@ -226,6 +213,11 @@
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
+		/*
+		 * If we have extended record descriptions we show most of the rows (unless movie length
+		 * is unknown in this case its hidden) and the only section which can have more than one
+		 * row is section 3 (movie tags).
+		 */
 		switch(section)
 		{
 			case 3:
@@ -243,6 +235,7 @@
 	}
 	else
 	{
+		// Only section 0 and 6 are displayed when we only have basic information.
 		switch(section)
 		{
 			case 0:
@@ -257,6 +250,9 @@
 	return 0;
 }
 
+// as some rows are hidden we want to hide the gap created by empty sections by
+// resizing the header fields.
+//
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if(section == 0)
@@ -272,31 +268,25 @@
 	return 0.0;
 }
 
-// to determine specific row height for each cell, override this.  In this example, each row is determined
-// buy the its subviews that are embedded.
+// determine the adjustable height of a row. these are determined by the sections and if a
+// section is set to be hidden the row size is reduced to 0.
 //
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger section = indexPath.section;
 	if(section == 0)
 		return kTextViewHeight;
+	else if(section == 6)
+		return kUIRowHeight;
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
-		if(section == 5)
-			return ([_movie.length integerValue] != -1) ? kTextFieldHeight : 0;
-		else if(section == 6)
-			return kUIRowHeight;
+		if(section == 5 && [_movie.length integerValue] == -1)
+			return 0.0;
 		return kTextFieldHeight;
 	}
-	else
-	{
-		if(section == 6)
-			return kUIRowHeight;
-		return 0;
-	}
 
-	return 0;
+	return 0.0;
 }
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
@@ -382,7 +372,7 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
+	// We only allow to rotate "back" to our favourite orientation...
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
