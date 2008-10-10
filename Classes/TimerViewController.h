@@ -24,11 +24,11 @@
 	UITextField *timerDescription;
 	CellTextField *timerDescriptionCell;
 	UIButton *timerServiceName;
-	DisplayCell *timerServiceNameCell;
+	UITableViewCell *timerServiceNameCell;
 	UIButton *timerBegin;
-	DisplayCell *timerBeginCell;
+	UITableViewCell *timerBeginCell;
 	UIButton *timerEnd;
-	DisplayCell *timerEndCell;
+	UITableViewCell *timerEndCell;
 	UISwitch *timerEnabled;
 	UISwitch *timerJustplay;
 	UITableViewCell *afterEventCell;

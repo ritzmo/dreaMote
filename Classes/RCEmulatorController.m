@@ -52,12 +52,12 @@
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = contentView;
-	
+
 	[contentView release];
 
 	UIButton *roundedButtonType;
 	CGRect frame;
-	
+
 	CGFloat imageWidth;
 	CGFloat imageHeight;
 	CGFloat currX;

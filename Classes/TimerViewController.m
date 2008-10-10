@@ -89,9 +89,6 @@
 
 	[timerTitle release];
 	[timerDescription release];
-	[timerServiceName release];
-	[timerBegin release];
-	[timerEnd release];
 
 	[super dealloc];
 }
@@ -147,33 +144,6 @@
 	return returnTextField;
 }
 
-- (UIButton *)create_ServiceButton
-{
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button addTarget:self action:@selector(editService:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
-}
-
-- (UIButton *)create_BeginButton
-{
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button addTarget:self action:@selector(editBegin:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
-}
-
-- (UIButton *)create_EndButton
-{
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
-	[button addTarget:self action:@selector(editEnd:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
-}
-
 - (void)loadView
 {
 	_shouldSave = NO;
@@ -184,6 +154,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
+	tableView.rowHeight = kUIRowHeight;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -194,9 +165,6 @@
 
 	timerTitle = [self create_TitleField];
 	timerDescription = [self create_DescriptionField];
-	timerServiceName = [[self create_ServiceButton] retain];
-	timerBegin = [[self create_BeginButton] retain];
-	timerEnd = [[self create_EndButton] retain];
 
 	// Enabled
 	timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -232,9 +200,6 @@
 			[timerDescriptionCell stopEditing];
 			timerEnabled.enabled = NO;
 			timerJustplay.enabled = NO;
-			timerServiceName.enabled = NO;
-			timerBegin.enabled = NO;
-			timerEnd.enabled = NO;
 		}
 	}
 	else
@@ -247,9 +212,6 @@
 		[timerDescriptionCell setEditing:editing animated:animated];
 		timerEnabled.enabled = editing;
 		timerJustplay.enabled = editing;
-		timerServiceName.enabled = editing;
-		timerBegin.enabled = editing;
-		timerEnd.enabled = editing;
 
 		// editing stopped, commit changes
 		if(_shouldSave && !editing)
@@ -313,61 +275,34 @@
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)editService:(id)sender
+- (void)serviceSelected: (Service *)newService
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	ServiceListController *serviceListController = [[ServiceListController alloc] init];
-	[serviceListController setTarget: self action: @selector(serviceSelected:)];
-	[[applicationDelegate navigationController] pushViewController: serviceListController animated: YES];
-}
-
-- (void)serviceSelected:(id)object
-{
-	if(object == nil)
+	if(newService == nil)
 		return;
 
-	_timer.service = (Service*)object;
-	timerServiceNameCell.nameLabel.text = _timer.service.sname;
+	_timer.service = newService;
+	timerServiceNameCell.text = newService.sname;
 }
 
-- (void)editBegin:(id)sender
+- (void)beginSelected: (NSDate *)newDate
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	DatePickerController *datePickerController = [DatePickerController withDate: _timer.begin];
-	[datePickerController setTarget: self action: @selector(beginSelected:)];
-	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
-}
-
-- (void)beginSelected:(id)object
-{
-	if(object == nil)
+	if(newDate == nil)
 		return;
 
-	_timer.begin = (NSDate*)object;
-	timerBeginCell.nameLabel.text = [self format_BeginEnd: _timer.begin];
+	_timer.begin = newDate;
+	timerBeginCell.text = [self format_BeginEnd: newDate];
 }
 
-- (void)editEnd:(id)sender
+- (void)endSelected: (NSDate *)newDate
 {
-	id applicationDelegate = [[UIApplication sharedApplication] delegate];
-
-	DatePickerController *datePickerController = [DatePickerController withDate: _timer.end];
-	[datePickerController setTarget: self action: @selector(endSelected:)];
-	[[applicationDelegate navigationController] pushViewController: datePickerController animated: YES];
-}
-
-- (void)endSelected:(id)object
-{
-	if(object == nil)
+	if(newDate == nil)
 		return;
 
-	_timer.end = (NSDate*)object;
-	timerEndCell.nameLabel.text = [self format_BeginEnd: _timer.end];
+	_timer.end = newDate;
+	timerEndCell.text = [self format_BeginEnd: newDate];
 }
 
-- (void)afterEventSelected: (NSNumber*) newAfterEvent
+- (void)afterEventSelected: (NSNumber *)newAfterEvent
 {
 	if(newAfterEvent == nil)
 		return;
@@ -438,14 +373,6 @@
 	return 1;
 }
 
-// to determine specific row height for each cell, override this.  In this example, each row is determined
-// buy the its subviews that are embedded.
-//
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return kUIRowHeight;
-}
-
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
 //
 - (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
@@ -463,17 +390,18 @@
 			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
 			break;
 		case 2:
-		case 3:
-		case 4:
-		case 5:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 			break;
+		case 3:
+		case 4:
+		case 5:
 		case 6:
 			cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
+			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			break;
 		default:
 			break;
@@ -518,24 +446,20 @@
 			break;
 		case 3:
 			if([self.timer.service.sname length])
-				((DisplayCell *)sourceCell).nameLabel.text = _timer.service.sname;
+				sourceCell.text = _timer.service.sname;
 			else
-				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Select Service", @"");
-			((DisplayCell *)sourceCell).view = timerServiceName;
-			timerServiceNameCell = (DisplayCell *)sourceCell;
+				sourceCell.text = NSLocalizedString(@"Select Service", @"");
+			timerServiceNameCell = sourceCell;
 			break;
 		case 4:
-			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: _timer.begin];
-			((DisplayCell *)sourceCell).view = timerBegin;
-			timerBeginCell = (DisplayCell *)sourceCell;
+			sourceCell.text = [self format_BeginEnd: _timer.begin];
+			timerBeginCell = sourceCell;
 			break;
 		case 5:
-			((DisplayCell *)sourceCell).nameLabel.text = [self format_BeginEnd: _timer.end];
-			((DisplayCell *)sourceCell).view = timerEnd;
-			timerEndCell = (DisplayCell *)sourceCell;
+			sourceCell.text = [self format_BeginEnd: _timer.end];
+			timerEndCell = sourceCell;
 			break;
 		case 6:
-			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			if(_timer.afterevent == kAfterEventNothing)
 				sourceCell.text = NSLocalizedString(@"Nothing", @"After Event");
 			else if(_timer.afterevent == kAfterEventStandby)
@@ -553,12 +477,33 @@
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(self.editing && indexPath.section == 6)
+	if(self.editing)
 	{
+		NSInteger section = indexPath.section;
 		id applicationDelegate = [[UIApplication sharedApplication] delegate];
+		UIViewController *targetViewController = nil;
 
-		AfterEventViewController *targetViewController = [AfterEventViewController withAfterEvent: _timer.afterevent];
-		[targetViewController setTarget: self action: @selector(afterEventSelected:)];
+		if(section == 3)
+		{
+			targetViewController = [[ServiceListController alloc] init];
+			[(ServiceListController *)targetViewController setTarget: self action: @selector(serviceSelected:)];
+		}
+		else if(section == 4)
+		{
+			targetViewController = [DatePickerController withDate: _timer.begin];
+			[(DatePickerController *)targetViewController setTarget: self action: @selector(beginSelected:)];
+		}
+		else if(section == 5)
+		{
+			targetViewController = [DatePickerController withDate: _timer.end];
+			[(DatePickerController *)targetViewController setTarget: self action: @selector(endSelected:)];
+		}
+		else if(section == 6)
+		{
+			targetViewController = [AfterEventViewController withAfterEvent: _timer.afterevent];
+			[(AfterEventViewController *)targetViewController setTarget: self action: @selector(afterEventSelected:)];
+		}
+		
 		[[applicationDelegate navigationController] pushViewController: targetViewController animated: YES];
 	}
 
@@ -567,8 +512,9 @@
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    // Show the disclosure indicator in section 2 if editing.
-    return (self.editing && indexPath.section == 6) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+    // Show the disclosure indicator in section 3..6 if editing.
+	NSInteger section = indexPath.section;
+    return (self.editing && section > 2 && section < 7) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 #pragma mark -
