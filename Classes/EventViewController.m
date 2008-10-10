@@ -12,7 +12,6 @@
 #import "CellTextView.h"
 #import "CellTextField.h"
 #import "DisplayCell.h"
-#import "SourceCell.h"
 #import "Constants.h"
 
 #import "FuzzyDateFormatter.h"
@@ -231,55 +230,42 @@
 	return result;
 }
 
-// utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
-//
-- (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
-{
-	UITableViewCell *cell = nil;
-
-	switch (section) {
-		case 0:
-			cell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
-			if(cell == nil)
-				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
-			break;
-		case 1:
-		case 2:
-			cell = [tableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
-			if(cell == nil)
-				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
-			break;
-		case 3:
-			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
-			break;
-		default:
-			break;
-	}
-
-	return cell;
-}
-
 // to determine which UITableViewCell to be used on a given row.
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	static NSString *kVanilla_ID = @"Vanilla_ID";
+		
 	NSInteger section = indexPath.section;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
+	UITableViewCell *sourceCell = nil;
 	
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
+			if(sourceCell == nil)
+				sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
+			
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _event.begin];
-			break;
 		case 2:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _event.end];
-			break;	
+			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+			if (sourceCell == nil) 
+				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			
+			sourceCell.textAlignment = UITextAlignmentCenter;
+			sourceCell.textColor = [UIColor blackColor];
+			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			
+			sourceCell.text = (section == 1) ? [self format_BeginEnd: _event.begin] : [self format_BeginEnd: _event.end];
+			break;
 		case 3:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+			if(sourceCell == nil)
+				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add Timer", @"");
 			((DisplayCell *)sourceCell).view = [self create_AddTimerButton];
 		default:

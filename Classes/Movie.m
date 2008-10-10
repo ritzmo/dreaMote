@@ -24,8 +24,8 @@
 {
 	if (self = [super init])
 	{
-		self.length = [NSNumber numberWithInt: -1];
-		self.size = [NSNumber numberWithInt: -1];
+		self.length = [NSNumber numberWithInteger: -1];
+		self.size = [NSNumber numberWithInteger: -1];
 		self.sdescription = NSLocalizedString(@"N/A", @"");
 		self.edescription = NSLocalizedString(@"N/A", @"");
 		self.tags = [NSArray array];
@@ -35,10 +35,14 @@
 
 - (void)dealloc
 {
-	[_length release];
-	[_size release];
+	[_sref release];
+	[_sname release];
+	[_time release];
+	[_title release];
 	[_sdescription release];
 	[_edescription release];
+	[_length release];
+	[_size release];
 	[_tags release];
 
 	[super dealloc];

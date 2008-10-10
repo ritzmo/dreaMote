@@ -24,7 +24,6 @@
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
 		DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
 		DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247EB0E3B3A7500B09600 /* DisplayCell.m */; };
-		DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5248220E3B3DFB00B09600 /* SourceCell.m */; };
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D10E379C500062F924 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04CE0E379C500062F924 /* Movie.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
@@ -126,8 +125,6 @@
 		DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
 		DA5247EA0E3B3A7500B09600 /* DisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCell.h; sourceTree = "<group>"; };
 		DA5247EB0E3B3A7500B09600 /* DisplayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCell.m; sourceTree = "<group>"; };
-		DA5248210E3B3DFB00B09600 /* SourceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SourceCell.h; sourceTree = "<group>"; };
-		DA5248220E3B3DFB00B09600 /* SourceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SourceCell.m; sourceTree = "<group>"; };
 		DA5A048E0E3798BC0062F924 /* MovieListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieListController.h; sourceTree = "<group>"; };
 		DA5A048F0E3798BC0062F924 /* MovieListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListController.m; sourceTree = "<group>"; };
 		DA5A04CD0E379C500062F924 /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
@@ -453,8 +450,6 @@
 				DA7FD6D50D84296500974B1A /* MainTableViewCell.m */,
 				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
 				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
-				DA5248210E3B3DFB00B09600 /* SourceCell.h */,
-				DA5248220E3B3DFB00B09600 /* SourceCell.m */,
 				DA7FD7640D84338600974B1A /* TimerTableViewCell.h */,
 				DA7FD7650D84338600974B1A /* TimerTableViewCell.m */,
 			);
@@ -634,7 +629,6 @@
 				DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */,
 				DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */,
 				DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */,
-				DA5248230E3B3DFB00B09600 /* SourceCell.m in Sources */,
 				DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */,
 				DA7DEB050E8310AA00B15F7C /* Enigma1Connector.m in Sources */,
 				DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */,
@@ -711,7 +705,7 @@
 				PROVISIONING_PROFILE = DefaultProfileUuid;
 				PROVISIONING_PROFILE_ALLOWED = NO;
 				PROVISIONING_PROFILE_REQUIRED = NO;
-				SDKROOT = iphonesimulator2.1;
+				SDKROOT = iphoneos2.1;
 			};
 			name = Debug;
 		};
@@ -728,7 +722,7 @@
 				PROVISIONING_PROFILE = DefaultProfileUuid;
 				PROVISIONING_PROFILE_ALLOWED = NO;
 				PROVISIONING_PROFILE_REQUIRED = NO;
-				SDKROOT = iphonesimulator2.1;
+				SDKROOT = iphoneos2.1;
 			};
 			name = Release;
 		};

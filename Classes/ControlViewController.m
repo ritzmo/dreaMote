@@ -9,7 +9,6 @@
 #import "ControlViewController.h"
 
 #import "DisplayCell.h"
-#import "SourceCell.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 

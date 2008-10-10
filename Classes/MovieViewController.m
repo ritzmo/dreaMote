@@ -11,7 +11,6 @@
 #import "CellTextView.h"
 #import "CellTextField.h"
 #import "DisplayCell.h"
-#import "SourceCell.h"
 #import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
 #import "Constants.h"
@@ -278,6 +277,8 @@
 //
 - (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
+	static NSString *kVanilla_ID = @"Vanilla_ID";
+
 	UITableViewCell *cell = nil;
 
 	switch (section) {
@@ -297,16 +298,26 @@
 		case 2:
 		case 3:
 		case 4:
-			cell = [tableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
-			if(cell == nil)
-				cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
+			cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+			if (cell == nil) 
+				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
+			cell.textAlignment = UITextAlignmentCenter;
+			cell.textColor = [UIColor blackColor];
+			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			break;
 		case 5:
 			if([_movie.length integerValue] != -1)
 			{
-				cell = [tableView dequeueReusableCellWithIdentifier:kSourceCell_ID];
-				if(cell == nil)
-					cell = [[[SourceCell alloc] initWithFrame:CGRectZero reuseIdentifier:kSourceCell_ID] autorelease];
+				cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+				if (cell == nil) 
+					cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
+				cell.textAlignment = UITextAlignmentCenter;
+				cell.textColor = [UIColor blackColor];
+				cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+				cell.selectionStyle = UITableViewCellSelectionStyleNone;
 				break;
 			}
 		case 6:
@@ -340,27 +351,27 @@
 				((DisplayCell *)sourceCell).view = [self create_PlayButton];
 				break;
 			}
-			((SourceCell *)sourceCell).sourceLabel.text = _movie.sname;
+			sourceCell.text = _movie.sname;
 			break;
 		case 2:
 			if([_movie.size integerValue] != -1)
-				((SourceCell *)sourceCell).sourceLabel.text = [self format_size: _movie.size];
+				sourceCell.text = [self format_size: _movie.size];
 			else
-				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"N/A", @"");
+				sourceCell.text = NSLocalizedString(@"N/A", @"");
 			break;
 		case 3:
 			if(![_movie.tags count])
-				((SourceCell *)sourceCell).sourceLabel.text = NSLocalizedString(@"None", @"");
+				sourceCell.text = NSLocalizedString(@"None", @"");
 			else
-				((SourceCell *)sourceCell).sourceLabel.text = [_movie.tags objectAtIndex: indexPath.row];
+				sourceCell.text = [_movie.tags objectAtIndex: indexPath.row];
 			break;
 		case 4:
-			((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: _movie.time];
+			sourceCell.text = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
 			if([_movie.length integerValue] != -1)
 			{
-				((SourceCell *)sourceCell).sourceLabel.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
+				sourceCell.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
 				break;
 			}
 		case 6:

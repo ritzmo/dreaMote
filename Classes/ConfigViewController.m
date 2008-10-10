@@ -283,55 +283,33 @@
 	return kUIRowHeight;
 }
 
-// utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
-//
-- (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
-{
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-
-	UITableViewCell *cell = nil;
-
-	switch(section)
-	{
-		case 0:
-		case 1:
-			cell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
-			if(cell == nil)
-				cell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
-			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
-			break;
-		case 2:
-			cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (cell == nil) 
-				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
-			break;
-		case 3:
-			cell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
-			break;
-		default:
-			break;
-	}
-
-	return cell;
-}
-
 // to determine which UITableViewCell to be used on a given row.
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	static NSString *kVanilla_ID = @"Vanilla_ID";
+
 	NSInteger section = indexPath.section;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
+	UITableViewCell *sourceCell = nil;
 
 	// we are creating a new cell, setup its attributes
 	switch(section)
 	{
 		case 0:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
+			if(sourceCell == nil)
+				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
+			((CellTextField *)sourceCell).delegate = self;	// so we can detect when cell editing starts
+
 			((CellTextField *)sourceCell).view = remoteAddressTextField;
 			remoteAddressCell = (CellTextField *)sourceCell;
 			break;
 		case 1:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
+			if(sourceCell == nil)
+				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
+			((CellTextField *)sourceCell).delegate = self;	// so we can detect when cell editing starts
+
 			switch(indexPath.row)
 			{
 				case 0:
@@ -347,6 +325,10 @@
 			}
 			break;
 		case 2:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+			if (sourceCell == nil) 
+				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
 			if(_connector == kEnigma1Connector)
 				sourceCell.text = NSLocalizedString(@"Enigma", @"");
 			else
@@ -355,6 +337,10 @@
 			connectorCell = sourceCell;
 			break;
 		case 3:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+			if(sourceCell == nil)
+				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+
 			switch(indexPath.row)
 			{
 				case 0:
