@@ -90,7 +90,6 @@
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:frame];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
-	//myTextView.delegate = self;
 	myTextView.editable = NO;
 	myTextView.backgroundColor = [UIColor whiteColor];
 	
@@ -135,18 +134,6 @@
 	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
 
 	return button;
-}
-
-#pragma mark UITextView delegate methods
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-	// we don't allow editing
-}
-
-- (void)saveAction:(id)sender
-{
-	// we don't allow editing
 }
 
 #pragma mark - UITableView delegates

@@ -84,7 +84,6 @@
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:frame];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
-	//myTextView.delegate = self;
 	myTextView.editable = NO;
 	myTextView.backgroundColor = [UIColor whiteColor];
 	
@@ -155,18 +154,6 @@
 	floatSize /= 1024;
 
 	return [NSString stringWithFormat: @"%1.1f GB", floatSize];
-}
-
-#pragma mark UITextView delegate methods
-
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-	// we don't allow editing
-}
-
-- (void)saveAction:(id)sender
-{
-	// we don't allow editing
 }
 
 #pragma mark - UITableView delegates

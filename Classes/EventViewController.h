@@ -11,9 +11,8 @@
 #import "Event.h"
 #import "Service.h"
 
-@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate,
-													UITextFieldDelegate, UITableViewDelegate,
-													UITableViewDataSource>
+@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate,
+													UITableViewDelegate, UITableViewDataSource>
 {
 	Event *_event;
 	Service *_service;
