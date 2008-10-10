@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 #import "Service.h";
+#import "FuzzyDateFormatter.h"
 
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_events;
 	Service *_service;
+	FuzzyDateFormatter *dateFormatter;
 }
 
 + (EventListController*)withEventList: (NSArray*) eventList;
@@ -24,5 +26,6 @@
 
 @property (nonatomic, retain) NSArray *events;
 @property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 
 @end

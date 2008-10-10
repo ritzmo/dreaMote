@@ -48,10 +48,6 @@
 		self.eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview:self.eventTimeLabel];
 		[self.eventTimeLabel release];
-
-		//
-		self.formatter = [[FuzzyDateFormatter alloc] init];
-		[_formatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	
 	return self;

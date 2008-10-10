@@ -56,10 +56,6 @@
 		self.timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview:self.timerTimeLabel];
 		[self.timerTimeLabel release];
-
-		//
-		self.formatter = [[FuzzyDateFormatter alloc] init];
-		[_formatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	
 	return self;

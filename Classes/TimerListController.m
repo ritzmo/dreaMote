@@ -17,6 +17,7 @@
 @implementation TimerListController
 
 @synthesize timers = _timers;
+@synthesize dateFormatter;
 
 - (id)init
 {
@@ -24,6 +25,8 @@
 	if (self) {
 		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
+		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	return self;
 }
@@ -31,6 +34,7 @@
 - (void)dealloc
 {
 	[_timers release];
+	[dateFormatter release];
 
 	[super dealloc];
 }
@@ -170,6 +174,7 @@
 	NSInteger offset = 0;
 	if(section > 0)
 		offset = dist[section-1];
+	((TimerTableViewCell *)cell).formatter = dateFormatter;
 	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
 
 	return cell;
@@ -182,7 +187,7 @@
 	NSInteger index = indexPath.row;
 	NSInteger section = indexPath.section - 1;
 	if(section > 0)
-		index += dist[indexPath.section - 1];
+		index += dist[section - 1];
 
 	Timer *timer = [_timers objectAtIndex: index];
 

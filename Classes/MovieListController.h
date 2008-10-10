@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "FuzzyDateFormatter.h"
+
 @interface MovieListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSMutableArray *_movies;
+	FuzzyDateFormatter *dateFormatter;
 @public
 	BOOL refreshMovies;
 }
@@ -19,5 +22,6 @@
 
 @property (nonatomic, retain) NSMutableArray *movies;
 @property (nonatomic) BOOL refreshMovies;
+@property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 
 @end

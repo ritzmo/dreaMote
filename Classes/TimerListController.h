@@ -9,15 +9,18 @@
 #import <UIKit/UIKit.h>
 
 #import "Timer.h"
+#import "FuzzyDateFormatter.h"
 
 @interface TimerListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSMutableArray *_timers;
 	NSInteger dist[kTimerStateMax];
+	FuzzyDateFormatter *dateFormatter;
 }
 
 - (void)reloadData;
 
 @property (nonatomic, retain) NSMutableArray *timers;
+@property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 
 @end

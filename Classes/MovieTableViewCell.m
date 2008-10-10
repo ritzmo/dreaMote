@@ -19,12 +19,14 @@
 
 @synthesize eventNameLabel = _eventNameLabel;
 @synthesize eventTimeLabel = _eventTimeLabel;
+@synthesize formatter = _formatter;
 
 - (void)dealloc
 {
 	[_eventNameLabel release];
 	[_eventTimeLabel release];
 	[_movie release];
+	[_formatter release];
 
 	[super dealloc];
 }
@@ -66,10 +68,7 @@
 	_movie = [newMovie retain];
 	
 	self.eventNameLabel.text = newMovie.title;
-	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	self.eventTimeLabel.text = [format stringFromDate: newMovie.time];
+	self.eventTimeLabel.text = [_formatter stringFromDate: newMovie.time];
 
 	[self setNeedsDisplay];
 }

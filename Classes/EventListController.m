@@ -17,12 +17,15 @@
 
 @synthesize events = _events;
 @synthesize service = _service;
+@synthesize dateFormatter;
 
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
+		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	return self;
 }
@@ -66,6 +69,7 @@
 {
 	[_events release];
 	[_service release];
+	[dateFormatter release];
 
 	[super dealloc];
 }
@@ -131,6 +135,7 @@
 		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kEventCell_ID] autorelease];
 	}
 
+	cell.formatter = dateFormatter;
 	cell.event = [_events objectAtIndex:indexPath.row];
 	
 	return cell;

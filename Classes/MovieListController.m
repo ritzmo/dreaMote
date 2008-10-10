@@ -11,10 +11,13 @@
 #import "MovieTableViewCell.h"
 #import "MovieViewController.h"
 
+#import "Constants.h"
+
 @implementation MovieListController
 
 @synthesize movies = _movies;
 @synthesize refreshMovies;
+@synthesize dateFormatter;
 
 - (id)init
 {
@@ -23,6 +26,9 @@
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		self.movies = [NSMutableArray array];
 		self.refreshMovies = YES;
+		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	}
 	return self;
 }
@@ -30,6 +36,7 @@
 - (void)dealloc
 {
 	[_movies release];
+	[dateFormatter release];
 	
 	[super dealloc];
 }
@@ -67,7 +74,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.rowHeight = 48.0;
+	tableView.rowHeight = kUIRowHeight;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
 	
@@ -123,6 +130,7 @@
 		cell = [[[MovieTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kMovieCell_ID] autorelease];
 	}
 
+	cell.formatter = dateFormatter;
 	cell.movie = [_movies objectAtIndex:indexPath.row];
 	
 	return cell;
