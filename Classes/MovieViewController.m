@@ -68,6 +68,8 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
+	tableView.sectionFooterHeight = 1.0;
+	tableView.sectionHeaderHeight = 1.0;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -187,48 +189,87 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
-		return 2;
-
-	if([_movie.length integerValue] != -1)
-		return 7;
-	return 6;
+	return 7;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	switch (section)
+	if(section == 0)
+		return NSLocalizedString(@"Description", @"");
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
-		case 0:
-			return NSLocalizedString(@"Description", @"");
-		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
+		switch(section)
+		{
+			case 1:
+				return NSLocalizedString(@"Service", @"");
+			case 2:
+				return NSLocalizedString(@"Size", @"");
+			case 3:
+				return NSLocalizedString(@"Tags", @"");
+			case 4:
+				return NSLocalizedString(@"Begin", @"");
+			case 5:
+				if([_movie.length integerValue] != -1)
+					return NSLocalizedString(@"End", @"");
+			default:
 				return nil;
-			return NSLocalizedString(@"Service", @"");
-		case 2:
-			return NSLocalizedString(@"Size", @"");
-		case 3:
-			return NSLocalizedString(@"Tags", @"");
-		case 4:
-			return NSLocalizedString(@"Begin", @"");
-		case 5:
-			if([_movie.length integerValue] != -1)
-				return NSLocalizedString(@"End", @"");
-		default:
-			return nil;
+		}
 	}
+	
+	return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 3)
+	NSUInteger count = 0;
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
-		NSUInteger count = [_movie.tags count];
-		if(!count)
-			return 1;
-		return count;
+		switch(section)
+		{
+			case 3:
+				count = [_movie.tags count];
+				if(!count)
+					return 1;
+				return count;
+			case 5:
+				if([_movie.length integerValue] != -1)
+					return 1;
+				return 0;
+			default:
+				return 1;
+		}
 	}
-	return 1;
+	else
+	{
+		switch(section)
+		{
+			case 0:
+				return 1;
+			case 6:
+				return 1;
+			default:
+				return 0;
+		}
+	}
+
+	return 0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(section == 0)
+		return 34.0;
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
+	{
+		if(section == 5 && [_movie.length integerValue] == -1)
+			return 0.0;
+		return 34.0;
+	}
+
+	return 0.0;
 }
 
 // to determine specific row height for each cell, override this.  In this example, each row is determined
@@ -236,41 +277,26 @@
 //
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	CGFloat result;
+	NSInteger section = indexPath.section;
+	if(section == 0)
+		return kTextViewHeight;
 
-	switch (indexPath.section)
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
-		case 0:
-		{
-			result = kTextViewHeight;
-			break;
-		}
-		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
-			{
-				result = kUIRowHeight;
-				break;
-			}
-		case 2:
-		case 3:
-		case 4:
-		{
-			result = kTextFieldHeight;
-			break;
-		}
-		case 5:
-			if([_movie.length integerValue] != -1)
-			{
-				result = kTextFieldHeight;
-				break;
-			}
-		case 6:
-		{
-			result = kUIRowHeight;
-			break;
-		}
+		if(section == 5)
+			return ([_movie.length integerValue] != -1) ? kTextFieldHeight : 0;
+		else if(section == 6)
+			return kUIRowHeight;
+		return kTextFieldHeight;
 	}
-	return result;
+	else
+	{
+		if(section == 6)
+			return kUIRowHeight;
+		return 0;
+	}
+
+	return 0;
 }
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
@@ -288,16 +314,10 @@
 				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 			break;
 		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
-			{
-				cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-				if(cell == nil)
-					cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
-				break;
-			}
 		case 2:
 		case 3:
 		case 4:
+		case 5:
 			cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
 			if (cell == nil) 
 				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
@@ -307,24 +327,10 @@
 			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			break;
-		case 5:
-			if([_movie.length integerValue] != -1)
-			{
-				cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-				if (cell == nil) 
-					cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
-
-				cell.textAlignment = UITextAlignmentCenter;
-				cell.textColor = [UIColor blackColor];
-				cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-				break;
-			}
 		case 6:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
-			break;
+				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];			
 		default:
 			break;
 	}
@@ -345,12 +351,6 @@
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
-			{
-				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
-				((DisplayCell *)sourceCell).view = [self create_PlayButton];
-				break;
-			}
 			sourceCell.text = _movie.sname;
 			break;
 		case 2:
@@ -369,11 +369,8 @@
 			sourceCell.text = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
-			if([_movie.length integerValue] != -1)
-			{
-				sourceCell.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
-				break;
-			}
+			sourceCell.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
+			break;
 		case 6:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
 			((DisplayCell *)sourceCell).view = [self create_PlayButton];
