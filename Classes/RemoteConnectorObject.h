@@ -13,10 +13,14 @@
 
 + (BOOL)connectTo: (NSInteger)connectionIndex;
 + (void)disconnect;
+
 + (NSMutableArray *)getConnections;
 + (BOOL)loadConnections;
 + (void)saveConnections;
+
++ (enum availableConnectors)autodetectConnector: (NSDictionary *)connection;
 + (BOOL)isConnected;
++ (NSInteger)getConnectedId;
 + (NSObject<RemoteConnector> *)sharedRemoteConnector;
  	
 @end

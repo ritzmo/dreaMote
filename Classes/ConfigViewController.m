@@ -210,13 +210,19 @@
 {
 	[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: connectionIndex] forKey: kActiveConnection];
 	[RemoteConnectorObject connectTo: connectionIndex];
+
+	[(UITableView *)self.view deleteSections:[NSIndexSet indexSetWithIndex: 3] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)doConnect: (id)sender
 {
 	[RemoteConnectorObject connectTo: connectionIndex];
-}
 
+	if(connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue])
+		[(UITableView *)self.view deleteSections:[NSIndexSet indexSetWithIndex: 3] withRowAnimation:UITableViewRowAnimationFade];
+	else
+		[(UITableView *)self.view deleteRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:3]] withRowAnimation:UITableViewRowAnimationFade];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
@@ -228,7 +234,31 @@
 	if(newConnector == nil)
 		return;
 
+	NSInteger oldConnector = _connector;
 	_connector = [newConnector integerValue];
+
+	if(_connector == -1)
+	{
+		((UITableView *)self.view).userInteractionEnabled = NO;
+
+		NSDictionary *tempConnection = [NSDictionary dictionaryWithObjectsAndKeys:
+								remoteAddressTextField.text, kRemoteHost,
+								usernameTextField.text, kUsername,
+								passwordTextField.text, kPassword,
+								nil];
+
+		_connector = [RemoteConnectorObject autodetectConnector: tempConnection];
+		if(_connector == kInvalidConnector)
+		{
+			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Could not determine remote box type.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+
+			_connector = oldConnector;
+		}
+
+		((UITableView *)self.view).userInteractionEnabled = YES;
+	}
 
 	if(_connector == kEnigma1Connector)
 		connectorCell.text = NSLocalizedString(@"Enigma", @"");
@@ -247,7 +277,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(connectionIndex == -1 || connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue])
+	if(	connectionIndex == -1
+		|| (connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] && connectionIndex == [RemoteConnectorObject getConnectedId]))
 		return 3;
 	return 4;
 }
@@ -270,8 +301,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 1 || section == 3)
+	if(section == 1)
 		return 2;
+	if(section == 3)
+	{
+		if(connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]
+			|| connectionIndex == [RemoteConnectorObject getConnectedId])
+			return 1;
+		return 2;
+	}
 	return 1;
 }
 
@@ -290,6 +328,7 @@
 	static NSString *kVanilla_ID = @"Vanilla_ID";
 
 	NSInteger section = indexPath.section;
+	NSInteger row;
 	UITableViewCell *sourceCell = nil;
 
 	// we are creating a new cell, setup its attributes
@@ -341,7 +380,12 @@
 			if(sourceCell == nil)
 				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-			switch(indexPath.row)
+			row = indexPath.row;
+
+			if(connectionIndex == [RemoteConnectorObject getConnectedId])
+				row++;
+
+			switch(row)
 			{
 				case 0:
 					((DisplayCell *)sourceCell).view = connectButton;

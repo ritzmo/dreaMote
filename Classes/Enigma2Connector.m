@@ -71,6 +71,31 @@ enum powerStates {
 	return [(NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)toencode, NULL, (CFStringRef)@"()<>@,.;:\"/[]?=\\& ", kCFStringEncodingUTF8) autorelease];
 }
 
+- (BOOL)isReachable
+{
+	// Generate URI
+	NSString *myURI = [NSString stringWithFormat:@"%@/web/about", self.baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	NSError *error;
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: [NSURL URLWithString: myURI]
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: &error];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2about>"];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
+}
+
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI

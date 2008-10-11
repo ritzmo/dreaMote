@@ -18,6 +18,7 @@
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 static NSMutableArray *_connections = nil;
+static NSInteger _connectionIndex;
 
 + (BOOL)connectTo: (NSInteger)connectionIndex
 {
@@ -42,6 +43,7 @@ static NSMutableArray *_connections = nil;
 	{
 		[_sharedRemoteConnector dealloc];
 		_sharedRemoteConnector = nil;
+		_connectionIndex = -1;
 	}
 
 	switch(connectorId)
@@ -55,7 +57,8 @@ static NSMutableArray *_connections = nil;
 		default:
 			return NO;
 	}
-	
+
+	_connectionIndex = connectionIndex;
 	return YES;
 }
 
@@ -97,9 +100,49 @@ static NSMutableArray *_connections = nil;
 	_connections = nil;
 }
 
++ (enum availableConnectors)autodetectConnector: (NSDictionary *)connection
+{
+	NSObject <RemoteConnector>* connector = nil;
+
+	NSString *remoteHost = [connection objectForKey: kRemoteHost];
+	NSString *username = [connection objectForKey: kUsername];
+	NSString *password = [connection objectForKey: kPassword];
+
+	NSString *remoteAddress;
+	if([username isEqualToString: @""])
+		remoteAddress = [NSString stringWithFormat: @"http://%@", remoteHost];
+	else
+		remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", username,
+						 password, remoteHost];
+	
+	connector = (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteAddress];
+	if([connector isReachable])
+	{
+		[connector release];
+		return kEnigma2Connector;
+	}
+
+	[connector release];
+	connector = (NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress];
+	if([connector isReachable])
+	{
+		[connector release];
+		return kEnigma1Connector;
+	}
+
+	[connector release];
+
+	return kInvalidConnector;
+}
+
 + (BOOL)isConnected
 {
 	return (_sharedRemoteConnector != nil);
+}
+
++ (NSInteger)getConnectedId
+{
+	return _connectionIndex;
 }
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector

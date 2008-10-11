@@ -150,10 +150,28 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	// TODO: We might want to explain this to the user :-)
-	if(![RemoteConnectorObject isConnected] && ![RemoteConnectorObject connectTo: [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]])
+	if(![RemoteConnectorObject isConnected])
+		[RemoteConnectorObject connectTo: [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]];
+
+	if(![RemoteConnectorObject isConnected])
 	{
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Create Configuration", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+
 		UIViewController *targetViewController = [ConfigViewController newConnection];
+		[self.navigationController pushViewController: targetViewController animated: YES];
+		[targetViewController release];
+	}
+
+	else if(![[RemoteConnectorObject sharedRemoteConnector] isReachable])
+	{
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Remote host unreachable", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+
+		// XXX: using the already initialized instance would be nice ;-)
+		UIViewController *targetViewController = [[ControlViewController alloc] init];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}

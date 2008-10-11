@@ -8,6 +8,7 @@
  */
 
 enum availableConnectors {
+	kInvalidConnector = -1,
 	kEnigma2Connector = 0,
 	kEnigma1Connector = 1,
 	kMaxConnector = 2,
@@ -68,6 +69,8 @@ enum buttonCodes {
 + (id <RemoteConnector>*)createClassWithAddress:(NSString *) address;
 - (const BOOL)hasFeature: (enum connectorFeatures)feature;
 - (NSInteger)getMaxVolume;
+- (BOOL)isReachable;
+
 - (void)fetchServices:(id)target action:(SEL)action;
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
 - (void)fetchTimers:(id)target action:(SEL)action;

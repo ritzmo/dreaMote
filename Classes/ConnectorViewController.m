@@ -39,6 +39,10 @@
 
 - (void)loadView
 {
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Autodetect", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(doAutodetect:)];
+	self.navigationItem.rightBarButtonItem = button;
+	[button release];
+
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
@@ -50,6 +54,12 @@
 
 	self.view = tableView;
 	[tableView release];
+}
+
+- (void)doAutodetect: (id)sender
+{
+	_selectedItem = -1;
+	[self.navigationController popViewControllerAnimated: YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
