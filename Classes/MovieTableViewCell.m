@@ -41,15 +41,15 @@
 
 		// A label that displays the Eventname.
 		self.eventNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
-		self.eventNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview:self.eventNameLabel];
-		[self.eventNameLabel release];
+		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
+		[myContentView addSubview: _eventNameLabel];
+		[_eventNameLabel release];
 		
 		// A label that displays the Eventtime.
 		self.eventTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
-		self.eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview:self.eventTimeLabel];
-		[self.eventTimeLabel release];
+		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
+		[myContentView addSubview: _eventTimeLabel];
+		[_eventTimeLabel release];
 	}
 	
 	return self;
@@ -67,8 +67,8 @@
 	[_movie release];
 	_movie = [newMovie retain];
 	
-	self.eventNameLabel.text = newMovie.title;
-	self.eventTimeLabel.text = [_formatter stringFromDate: newMovie.time];
+	_eventNameLabel.text = newMovie.title;
+	_eventTimeLabel.text = [_formatter stringFromDate: newMovie.time];
 
 	[self setNeedsDisplay];
 }
@@ -84,11 +84,11 @@
 		
 		// Place the name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 14);
-		self.eventNameLabel.frame = frame;
+		_eventNameLabel.frame = frame;
 
 		// Place the time label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, 10);
-		self.eventTimeLabel.frame = frame;
+		_eventTimeLabel.frame = frame;
 	}
 }
 
@@ -105,13 +105,13 @@
 		backgroundColor = [UIColor whiteColor];
 	}
 	
-	self.eventNameLabel.backgroundColor = backgroundColor;
-	self.eventNameLabel.highlighted = selected;
-	self.eventNameLabel.opaque = !selected;
+	_eventNameLabel.backgroundColor = backgroundColor;
+	_eventNameLabel.highlighted = selected;
+	_eventNameLabel.opaque = !selected;
 	
-	self.eventTimeLabel.backgroundColor = backgroundColor;
-	self.eventTimeLabel.highlighted = selected;
-	self.eventTimeLabel.opaque = !selected;
+	_eventTimeLabel.backgroundColor = backgroundColor;
+	_eventTimeLabel.highlighted = selected;
+	_eventTimeLabel.opaque = !selected;
 }
 
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold

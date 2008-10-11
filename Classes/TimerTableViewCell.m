@@ -41,21 +41,21 @@
 
 		// A label that displays the Servicename.
 		self.serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
-		self.serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview:self.serviceNameLabel];
-		[self.serviceNameLabel release];
+		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
+		[myContentView addSubview: _serviceNameLabel];
+		[_serviceNameLabel release];
 
 		// A label that displays the Timername.
 		self.timerNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:YES];
-		self.timerNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview:self.timerNameLabel];
-		[self.timerNameLabel release];
+		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
+		[myContentView addSubview: _timerNameLabel];
+		[_timerNameLabel release];
 
 		// A label that displays the Timer time.
 		self.timerTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:NO];
-		self.timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview:self.timerTimeLabel];
-		[self.timerTimeLabel release];
+		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
+		[myContentView addSubview: _timerTimeLabel];
+		[_timerTimeLabel release];
 	}
 	
 	return self;
@@ -73,12 +73,12 @@
 	[_timer release];
 	_timer = [newTimer retain];
 
-	self.serviceNameLabel.text = newTimer.service.sname;
-	self.timerNameLabel.text = newTimer.title;
+	_serviceNameLabel.text = newTimer.service.sname;
+	_timerNameLabel.text = newTimer.title;
 	[_formatter setDateStyle:NSDateFormatterMediumStyle];
 	NSString *begin = [_formatter stringFromDate: newTimer.begin];
 	[_formatter setDateStyle:NSDateFormatterNoStyle];
-	self.timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [_formatter stringFromDate: newTimer.end]];
+	_timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [_formatter stringFromDate: newTimer.end]];
 
 	[self setNeedsDisplay];
 }
@@ -94,15 +94,15 @@
 
 		// Place the name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 14);
-		self.serviceNameLabel.frame = frame;
+		_serviceNameLabel.frame = frame;
 
 		// Place the other name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 26, contentRect.size.width - kRightMargin, 12);
-		self.timerNameLabel.frame = frame;
+		_timerNameLabel.frame = frame;
 
 		// Place the time label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 41, contentRect.size.width - kRightMargin, 10);
-		self.timerTimeLabel.frame = frame;
+		_timerTimeLabel.frame = frame;
 	}
 }
 
@@ -119,17 +119,17 @@
 		backgroundColor = [UIColor whiteColor];
 	}
 
-	self.serviceNameLabel.backgroundColor = backgroundColor;
-	self.serviceNameLabel.highlighted = selected;
-	self.serviceNameLabel.opaque = !selected;
+	_serviceNameLabel.backgroundColor = backgroundColor;
+	_serviceNameLabel.highlighted = selected;
+	_serviceNameLabel.opaque = !selected;
 
-	self.timerNameLabel.backgroundColor = backgroundColor;
-	self.timerNameLabel.highlighted = selected;
-	self.timerNameLabel.opaque = !selected;
+	_timerNameLabel.backgroundColor = backgroundColor;
+	_timerNameLabel.highlighted = selected;
+	_timerNameLabel.opaque = !selected;
 
-	self.timerTimeLabel.backgroundColor = backgroundColor;
-	self.timerTimeLabel.highlighted = selected;
-	self.timerTimeLabel.opaque = !selected;
+	_timerTimeLabel.backgroundColor = backgroundColor;
+	_timerTimeLabel.highlighted = selected;
+	_timerTimeLabel.opaque = !selected;
 }
 
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold

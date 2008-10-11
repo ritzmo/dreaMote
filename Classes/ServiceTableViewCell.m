@@ -35,9 +35,9 @@
 
 		// A label that displays the Servicename.
 		self.serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
-		self.serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview: self.serviceNameLabel];
-		[self.serviceNameLabel release];
+		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
+		[myContentView addSubview: _serviceNameLabel];
+		[_serviceNameLabel release];
 	}
 
 	return self;
@@ -55,7 +55,7 @@
 	[_service release];
 	_service = [newService retain];
 
-	self.serviceNameLabel.text = newService.sname;
+	_serviceNameLabel.text = newService.sname;
 
 	[self setNeedsDisplay];
 }
@@ -71,7 +71,7 @@
 		
 		// Place the location label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 1, contentRect.size.width - kRightMargin, 20);
-		self.serviceNameLabel.frame = frame;
+		_serviceNameLabel.frame = frame;
 	}
 }
 
@@ -88,9 +88,9 @@
 		backgroundColor = [UIColor whiteColor];
 	}
 
-	self.serviceNameLabel.backgroundColor = backgroundColor;
-	self.serviceNameLabel.highlighted = selected;
-	self.serviceNameLabel.opaque = !selected;
+	_serviceNameLabel.backgroundColor = backgroundColor;
+	_serviceNameLabel.highlighted = selected;
+	_serviceNameLabel.opaque = !selected;
 }
 
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold
