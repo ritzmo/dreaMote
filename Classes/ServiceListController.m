@@ -176,7 +176,7 @@
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];
-	[(UITableView*)self.view deselectRowAtIndexPath:tableSelection animated: YES];
+	[(UITableView*)self.view deselectRowAtIndexPath:tableSelection animated: NO]; // XXX: looks buggy if animated...
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
