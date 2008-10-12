@@ -131,6 +131,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger section = indexPath.section;
+	NSInteger row = indexPath.row;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
 	
 	// we are creating a new cell, setup its attributes
@@ -140,18 +141,20 @@
 			sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			if(self.editing)
 			{
-				if(indexPath.row == 0)
+				if(row == 0)
 					sourceCell.text = NSLocalizedString(@"New Connection", @"");
 				else
-					sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: indexPath.row - 1] objectForKey: kRemoteHost];
+					sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row - 1] objectForKey: kRemoteHost];
 			}
 			else
 			{
-				if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == indexPath.row)
+				if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == row)
 					sourceCell.image = [UIImage imageNamed:@"segment_check.png"];
+				else if([RemoteConnectorObject getConnectedId] == row)
+					sourceCell.image = [UIImage imageNamed:@"connected.png"];
 				else
 					sourceCell.image = nil;
-				sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: indexPath.row] objectForKey: kRemoteHost];
+				sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			}
 			break;
 		case 1:
