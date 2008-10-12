@@ -12,9 +12,9 @@
 
 @interface Enigma1Connector : NSObject <RemoteConnector> {
 @private
-	NSString *baseAddress;
+	NSURL *baseAddress;
 }
 
-@property (nonatomic, retain) NSString *baseAddress;
+@property (nonatomic, retain) NSURL *baseAddress;
 
 @end

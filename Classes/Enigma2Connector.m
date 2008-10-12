@@ -49,7 +49,7 @@ enum powerStates {
 {
 	if(self = [super init])
 	{
-		baseAddress = [address copy];
+		self.baseAddress = [NSURL URLWithString: address];
 	}
 	return self;
 }
@@ -74,16 +74,15 @@ enum powerStates {
 - (BOOL)isReachable
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/about", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/web/about" relativeToURL:baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	NSError *error;
 	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: [NSURL URLWithString: myURI]
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: &error];
+										 returningResponse: &response error: nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
@@ -99,12 +98,18 @@ enum powerStates {
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/zap?sRef=%@", self.baseAddress, [Enigma2Connector urlencode: service.sref]];
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [Enigma2Connector urlencode: service.sref]] relativeToURL:baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
@@ -114,14 +119,14 @@ enum powerStates {
 
 - (void)fetchServices:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/getservices?sRef=%@", self.baseAddress, @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"]  relativeToURL:baseAddress];
 
 	NSError *parseError = nil;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -129,14 +134,14 @@ enum powerStates {
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/epgservice?sRef=%@", self.baseAddress, service.sref];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", service.sref] relativeToURL: baseAddress];
 
 	NSError *parseError = nil;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -144,14 +149,14 @@ enum powerStates {
 
 - (void)fetchTimers:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/timerlist", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -159,14 +164,14 @@ enum powerStates {
 
 - (void)fetchMovielist:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/movielist", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/web/movielist" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -175,12 +180,16 @@ enum powerStates {
 - (void)sendPowerstate: (NSInteger) newState
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/powerstate?newstate=%d", self.baseAddress, newState];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/powerstate?newstate=%d", newState] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -208,14 +217,14 @@ enum powerStates {
 
 - (void)getVolume:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: baseAddress];
 
 	NSError *parseError = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	VolumeXMLReader *streamReader = [VolumeXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:[NSURL URLWithString:myURI] parseError:&parseError];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -224,12 +233,18 @@ enum powerStates {
 - (BOOL)toggleMuted
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=mute", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/web/vol?set=mute" relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -243,12 +258,18 @@ enum powerStates {
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/web/vol?set=set%d", self.baseAddress, newVolume];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/vol?set=set%d", newVolume] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -262,12 +283,18 @@ enum powerStates {
 - (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [Enigma2Connector urlencode: newTimer.title], [Enigma2Connector urlencode: newTimer.tdescription], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [Enigma2Connector urlencode: newTimer.title], [Enigma2Connector urlencode: newTimer.tdescription], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -281,12 +308,18 @@ enum powerStates {
 - (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [Enigma2Connector urlencode: newTimer.title], [Enigma2Connector urlencode: newTimer.tdescription], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [Enigma2Connector urlencode: newTimer.title], [Enigma2Connector urlencode: newTimer.tdescription], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -300,12 +333,18 @@ enum powerStates {
 - (BOOL)delTimer:(Timer *) oldTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/timerdelete?sRef=%@&begin=%d&end=%d", baseAddress, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -319,12 +358,18 @@ enum powerStates {
 - (BOOL)sendButton:(NSInteger) type
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/web/remotecontrol?command=%d", baseAddress, type];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/remotecontrol?command=%d", type] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 

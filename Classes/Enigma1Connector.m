@@ -41,7 +41,7 @@
 {
 	if(self = [super init])
 	{
-		baseAddress = [address copy];
+		self.baseAddress = [NSURL URLWithString: address];
 	}
 	return self;
 }
@@ -66,16 +66,15 @@
 - (BOOL)isReachable
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/xml/boxstatus", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/xml/boxstatus"  relativeToURL:baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	NSError *error;
 	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: [NSURL URLWithString: myURI]
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: &error];
+										 returningResponse: &response error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -93,12 +92,16 @@
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/zapTo?mode=zap&path=%@", self.baseAddress, [Enigma1Connector urlencode: service.sref]];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [Enigma1Connector urlencode: service.sref]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -107,14 +110,14 @@
 
 - (void)fetchServices:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/xml/services?mode=0&submode=4", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: baseAddress];
 
 	NSError *parseError = nil;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -122,14 +125,14 @@
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/xml/serviceepg?ref=%@", self.baseAddress, service.sref];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", service.sref] relativeToURL: baseAddress];
 
 	NSError *parseError = nil;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -137,14 +140,14 @@
 
 - (void)fetchTimers:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/xml/timers", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -152,14 +155,14 @@
 
 - (void)fetchMovielist:(id)target action:(SEL)action
 {
-	NSString *myURI = [NSString stringWithFormat:@"%@/xml/services?mode=3&submode=4", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=3&submode=4" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: [NSURL URLWithString:myURI] parseError: &parseError];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -168,12 +171,16 @@
 - (void)sendPowerstate: (NSString *) newState
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/admin?command=%@", self.baseAddress, newState];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/admin?command=%@", newState] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -202,12 +209,18 @@
 - (void)getVolume:(id)target action:(SEL)action
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio" relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -244,12 +257,18 @@
 - (BOOL)toggleMuted
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?mute=xy", self.baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio?mute=xy" relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -263,12 +282,18 @@
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat:@"%@/cgi-bin/audio?volume=%d", self.baseAddress, 63 - newVolume];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/audio?volume=%d", 63 - newVolume] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -282,12 +307,18 @@
 - (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", baseAddress, newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -315,12 +346,18 @@
 - (BOOL)delTimer:(Timer *) oldTimer
 {
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/deleteTimerEvent?ref=%@&start=%d&force=yes", baseAddress, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970]];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSString *myString = [NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -347,12 +384,16 @@
 	}
 
 	// Generate URI
-	NSString *myURI = [NSString stringWithFormat: @"%@/cgi-bin/rc?%d", baseAddress, type];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/rc?%d", type] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	[NSString stringWithContentsOfURL: [NSURL URLWithString: myURI] encoding: NSUTF8StringEncoding error: nil];
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
