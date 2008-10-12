@@ -82,6 +82,7 @@
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
+		DACE34E60EA1F9550082B04C /* connected.png in Resources */ = {isa = PBXBuildFile; fileRef = DACE34E50EA1F9550082B04C /* connected.png */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
@@ -206,6 +207,7 @@
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
+		DACE34E50EA1F9550082B04C /* connected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = connected.png; path = Images/connected.png; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DACE34E50EA1F9550082B04C /* connected.png */,
 				DAA220470E9941F500DD749C /* segment_check.png */,
 				DA0A2A570E840E8600726F58 /* Icon.png */,
 				DA7A249F0E37398400455D11 /* key_0.png */,
@@ -567,6 +570,7 @@
 				DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */,
 				DA0A2A580E840E8600726F58 /* Icon.png in Resources */,
 				DAA220480E9941F500DD749C /* segment_check.png in Resources */,
+				DACE34E60EA1F9550082B04C /* connected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
