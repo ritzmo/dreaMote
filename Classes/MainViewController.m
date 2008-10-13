@@ -30,6 +30,7 @@
 	{
 		// make the title of this page the same as the title of this app
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+		configListController = nil;
 	}
 	return self;
 }
@@ -43,7 +44,11 @@
 	[super dealloc];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
+	[configListController release];
+	configListController = nil;
+
     [super didReceiveMemoryWarning];
 }
 
@@ -111,8 +116,6 @@
 
 	[targetViewController release];
 
-	configListController = [[ConfigListController alloc] init];
-
 	// Add the "Settings" button to the navigation bar
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
 														target: self action: @selector(settingsAction:)];
@@ -135,6 +138,8 @@
 
 - (void)settingsAction:(id)sender
 {
+	if(configListController == nil)
+		configListController = [[ConfigListController alloc] init];
 	[self.navigationController pushViewController: configListController animated: YES];
 }
 
@@ -169,6 +174,8 @@
 		[notification show];
 		[notification release];
 
+		if(configListController == nil)
+			configListController = [[ConfigListController alloc] init];
 		[self.navigationController pushViewController: configListController animated: YES];
 	}
 }

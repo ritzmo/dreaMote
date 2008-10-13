@@ -22,7 +22,7 @@
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
-		_connections = nil;
+		_connections = [[RemoteConnectorObject getConnections] retain];
 	}
 	return self;
 }
@@ -235,14 +235,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	_connections = [[RemoteConnectorObject getConnections] retain];
 	[(UITableView *)self.view reloadData];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[_connections release];
-	_connections = nil;
 }
 
 @end
