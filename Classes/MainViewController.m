@@ -170,8 +170,7 @@
 		[notification show];
 		[notification release];
 
-		// XXX: using the already initialized instance would be nice ;-)
-		UIViewController *targetViewController = [[ControlViewController alloc] init];
+		UIViewController *targetViewController = [[ConfigListController alloc] init];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}

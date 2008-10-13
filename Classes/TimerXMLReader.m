@@ -158,8 +158,11 @@ static NSUInteger parsedTimersCounter;
 		[self.currentTimerObject setEndFromString: self.contentOfCurrentProperty];
 	} else if ([elementName isEqualToString:@"duration"]) {
 		[self.currentTimerObject setEndFromDurationString: self.contentOfCurrentProperty];
-	} else if ([elementName isEqualToString:@"e2name"] || [elementName isEqualToString:@"description"]) {
+	} else if ([elementName isEqualToString:@"e2name"]) {
 		self.currentTimerObject.title = self.contentOfCurrentProperty;
+	} else if ([elementName isEqualToString:@"description"]) {
+		// We have to un-escape some characters here...
+		self.currentTimerObject.title = [self.contentOfCurrentProperty stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	} else if ([elementName isEqualToString:@"e2description"]) {
 		self.currentTimerObject.tdescription = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2justplay"]) {

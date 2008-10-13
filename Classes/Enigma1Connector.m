@@ -70,23 +70,15 @@
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	NSURLResponse *response;
+	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
+	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	NSRange myRange = [myString rangeOfString: @"<boxstatus>"];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return ([response statusCode] == 200);
 }
 
 - (BOOL)zapTo:(Service *) service
@@ -97,7 +89,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSURLResponse *response;
+	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	[NSURLConnection sendSynchronousRequest: request
@@ -105,7 +97,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return YES; // The Enigma1-WebIf doesn't give us any useful result anyways
+	return ([response statusCode] == 204);
 }
 
 - (void)fetchServices:(id)target action:(SEL)action
@@ -389,7 +381,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSURLResponse *response;
+	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	[NSURLConnection sendSynchronousRequest: request
@@ -397,7 +389,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return YES; // The Enigma1-WebIf doesn't give any useful result
+	return ([response statusCode] == 204);
 }
 
 @end

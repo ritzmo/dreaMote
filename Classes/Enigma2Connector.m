@@ -78,21 +78,13 @@ enum powerStates {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	NSURLResponse *response;
+	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
+	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	NSRange myRange = [myString rangeOfString: @"<e2about>"];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return ([response statusCode] == 200);
 }
 
 - (BOOL)zapTo:(Service *) service
