@@ -84,6 +84,8 @@ enum powerStates {
 	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
 	return ([response statusCode] == 200);
 }
 

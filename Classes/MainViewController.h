@@ -12,6 +12,8 @@
 {
 	IBOutlet UITableView		*myTableView;
 	NSMutableArray	*menuList;
+@private
+	UIViewController *configListController;
 }
 
 @property (nonatomic, retain) UITableView *myTableView;

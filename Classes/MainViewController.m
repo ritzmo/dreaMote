@@ -38,7 +38,8 @@
 {
 	[myTableView release];
 	[menuList release];
-	
+	[configListController release];
+
 	[super dealloc];
 }
 
@@ -110,12 +111,12 @@
 
 	[targetViewController release];
 
-	UINavigationItem *navItem = self.navigationItem;
+	configListController = [[ConfigListController alloc] init];
 
 	// Add the "Settings" button to the navigation bar
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
 														target: self action: @selector(settingsAction:)];
-	navItem.rightBarButtonItem = button;
+	self.navigationItem.rightBarButtonItem = button;
 
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -134,9 +135,7 @@
 
 - (void)settingsAction:(id)sender
 {
-	UIViewController *targetViewController = [[ConfigListController alloc] init];
-	[self.navigationController pushViewController: targetViewController animated: YES];
-	[targetViewController release];
+	[self.navigationController pushViewController: configListController animated: YES];
 }
 
 #pragma mark UIViewController delegates
@@ -155,7 +154,7 @@
 
 	if(![RemoteConnectorObject isConnected])
 	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Create Configuration", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"You need to configure this application before you can use it.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
 
@@ -166,13 +165,11 @@
 
 	else if(![[RemoteConnectorObject sharedRemoteConnector] isReachable])
 	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Remote host unreachable", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Remote host unreachable!\nPlease check your network settings or connect to another host.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
 
-		UIViewController *targetViewController = [[ConfigListController alloc] init];
-		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
+		[self.navigationController pushViewController: configListController animated: YES];
 	}
 }
 
@@ -205,13 +202,11 @@
 
 	MainTableViewCell *cell = (MainTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
 	if (cell == nil)
-	{
 		cell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
-	}
 	
 	// get the view controller's info dictionary based on the indexPath's row
 	[cell setDataDictionary: [menuList objectAtIndex:indexPath.row]];
-	
+
 	return cell;
 }
 
