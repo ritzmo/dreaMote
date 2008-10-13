@@ -327,10 +327,21 @@
 	return uiButton;
 }
 
-- (void)buttonPressed:(id)sender
+- (void)buttonPressed:(RCButton *)sender
 {
-	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: ((RCButton*)sender).rcCode] && _shouldVibrate)
+	// Spawn a thread to send the request so that the UI is not blocked while
+	// waiting for the response.
+	[NSThread detachNewThreadSelector:@selector(sendButton:) toTarget:self withObject: [NSNumber numberWithInteger: sender.rcCode]];
+}
+
+- (void)sendButton: (NSNumber *)rcCode
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: [rcCode integerValue]] && _shouldVibrate)
 		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+
+	[pool release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
