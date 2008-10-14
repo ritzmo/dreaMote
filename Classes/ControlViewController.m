@@ -68,25 +68,13 @@
 	_slider.value = (float)(volume.current);
 }
 
-+ (UILabel *)fieldLabelWithFrame:(CGRect)frame title:(NSString *)title
-{
-	UILabel *label = [[[UILabel alloc] initWithFrame:frame] autorelease];
-	
-	label.textAlignment = UITextAlignmentLeft;
-	label.text = title;
-	label.font = [UIFont boldSystemFontOfSize:17.0];
-	label.textColor = [UIColor colorWithRed:76.0/255.0 green:86.0/255.0 blue:108.0/255.0 alpha:1.0];
-	label.backgroundColor = [UIColor clearColor];
-
-	return label;
-}
-
 - (void)loadView
 {
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
+	tableView.rowHeight = kUIRowHeight;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -176,9 +164,9 @@
 	[_switchControl setOn: [[RemoteConnectorObject sharedRemoteConnector] toggleMuted]];
 }
 
-- (void)volumeChanged:(id)sender
+- (void)volumeChanged:(UISlider *)volumeSlider
 {
-	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(NSInteger)[(UISlider*)sender value]];
+	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(NSInteger)[volumeSlider value]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -217,14 +205,6 @@
 	if(section == 1)
 		return 4;
 	return 2;
-}
-
-// to determine specific row height for each cell, override this.  In this example, each row is determined
-// buy the its subviews that are embedded.
-//
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return kUIRowHeight;
 }
 
 // to determine which UITableViewCell to be used on a given row.

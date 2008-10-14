@@ -12,6 +12,8 @@
 #import "DatePickerController.h"
 #import "AfterEventViewController.h"
 
+#import "DisplayCell.h"
+
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -126,8 +128,7 @@
 
 - (UITextField *)create_TextField
 {
-	CGRect frame = CGRectMake(0.0, 0.0, 100.0, kTextFieldHeight);
-	UITextField *returnTextField = [[UITextField alloc] initWithFrame:frame];
+	UITextField *returnTextField = [[UITextField alloc] initWithFrame:CGRectZero];
 
 	returnTextField.leftView = nil;
 	returnTextField.leftViewMode = UITextFieldViewModeNever;

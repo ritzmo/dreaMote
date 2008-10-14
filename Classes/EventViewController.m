@@ -10,7 +10,6 @@
 
 #import "TimerViewController.h"
 #import "CellTextView.h"
-#import "CellTextField.h"
 #import "DisplayCell.h"
 #import "Constants.h"
 
@@ -88,8 +87,7 @@
 
 - (UITextView *)create_Summary
 {
-	CGRect frame = CGRectMake(0, 0, 100, kTextViewHeight);
-	UITextView *myTextView = [[UITextView alloc] initWithFrame:frame];
+	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;

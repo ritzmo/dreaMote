@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainViewController : UIViewController <UINavigationBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 	IBOutlet UITableView		*myTableView;
 	NSMutableArray	*menuList;

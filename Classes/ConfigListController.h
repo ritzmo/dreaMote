@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConfigListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface ConfigListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+{
 @private
 	NSMutableArray *_connections;
 	UISwitch *vibrateInRC;

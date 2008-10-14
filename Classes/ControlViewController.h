@@ -10,8 +10,7 @@
 
 #import "Volume.h"
 
-@interface ControlViewController : UIViewController <UIScrollViewDelegate, UITextViewDelegate,
-														UITextFieldDelegate, UITableViewDelegate,
+@interface ControlViewController : UIViewController <UIScrollViewDelegate, UITableViewDelegate,
 														UITableViewDataSource>
 {
 @private

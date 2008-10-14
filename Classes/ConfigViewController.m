@@ -77,8 +77,7 @@
 
 - (UITextField *)create_TextField
 {
-	CGRect frame = CGRectMake(0.0, 0.0, 100.0, kTextFieldHeight);
-	UITextField *returnTextField = [[UITextField alloc] initWithFrame:frame];
+	UITextField *returnTextField = [[UITextField alloc] initWithFrame:CGRectZero];
 
 	returnTextField.leftView = nil;
 	returnTextField.leftViewMode = UITextFieldViewModeNever;
@@ -122,6 +121,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
+	tableView.rowHeight = kUIRowHeight;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -313,14 +313,6 @@
 	return 1;
 }
 
-// to determine specific row height for each cell, override this.  In this example, each row is determined
-// buy the its subviews that are embedded.
-//
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return kUIRowHeight;
-}
-
 // to determine which UITableViewCell to be used on a given row.
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -414,7 +406,7 @@
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}
-	
+
 	// We don't want any actual response :-)
     return nil;
 }
@@ -496,12 +488,16 @@
     // watch the keyboard so we can adjust the user interface if necessary.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification object:self.view.window];
+
+	[super viewWillAppear: animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil]; 
+
+	[super viewWillDisappear: animated];
 }
 
 @end

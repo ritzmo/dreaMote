@@ -10,8 +10,8 @@
 
 #import "Movie.h"
 
-@interface MovieViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate,
-													UITableViewDelegate, UITableViewDataSource>
+@interface MovieViewController : UIViewController <UIScrollViewDelegate, UITableViewDelegate,
+													UITableViewDataSource>
 {
 @private
 	Movie *_movie;

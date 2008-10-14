@@ -43,6 +43,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
+	tableView.rowHeight = kUIRowHeight;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -67,14 +68,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	return kAfterEventMax;
-}
-
-// to determine specific row height for each cell, override this.  In this example, each row is determined
-// buy the its subviews that are embedded.
-//
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return kUIRowHeight;
 }
 
 // to determine which UITableViewCell to be used on a given row.

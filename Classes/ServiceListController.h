@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ServiceListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface ServiceListController : UIViewController <UIActionSheetDelegate,
+													UITableViewDelegate, UITableViewDataSource>
+{
 @private
 	NSMutableArray *_services;
 	SEL _selectCallback;
@@ -18,10 +20,5 @@
 
 - (void)reloadData;
 - (void)setTarget: (id)target action: (SEL)action;
-
-@property (nonatomic, retain) NSMutableArray *services;
-@property (nonatomic) SEL selectCallback;
-@property (nonatomic, retain) id selectTarget;
-@property (nonatomic) BOOL refreshServices;
 
 @end

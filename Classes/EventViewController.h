@@ -11,7 +11,7 @@
 #import "Event.h"
 #import "Service.h"
 
-@interface EventViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate,
+@interface EventViewController : UIViewController <UIScrollViewDelegate,
 													UITableViewDelegate, UITableViewDataSource>
 {
 @private

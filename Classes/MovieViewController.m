@@ -9,7 +9,6 @@
 #import "MovieViewController.h"
 
 #import "CellTextView.h"
-#import "CellTextField.h"
 #import "DisplayCell.h"
 #import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
@@ -92,8 +91,7 @@
 
 - (UITextView *)create_Summary
 {
-	CGRect frame = CGRectMake(0, 0, 100, kTextViewHeight);
-	UITextView *myTextView = [[UITextView alloc] initWithFrame:frame];
+	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;

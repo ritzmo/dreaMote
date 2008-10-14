@@ -16,18 +16,13 @@
 
 @implementation ServiceListController
 
-@synthesize services = _services;
-@synthesize selectTarget = _selectTarget;
-@synthesize selectCallback = _selectCallback;
-@synthesize refreshServices = _refreshServices;
-
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
-		self.services = [NSMutableArray array];
-		self.refreshServices = YES;
+		_services = [[NSMutableArray array] retain];
+		_refreshServices = YES;
 	}
 	return self;
 }

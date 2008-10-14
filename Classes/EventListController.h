@@ -13,7 +13,8 @@
 
 @class EventViewController;
 
-@interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+@interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+{
 @private
 	NSArray *_events;
 	Service *_service;

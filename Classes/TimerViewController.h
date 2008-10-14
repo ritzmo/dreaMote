@@ -13,7 +13,6 @@
 #import "Service.h"
 
 #import "CellTextField.h"
-#import "DisplayCell.h"
 
 @class ServiceListController;
 @class AfterEventViewController;
