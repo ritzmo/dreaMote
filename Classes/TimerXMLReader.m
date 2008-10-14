@@ -148,8 +148,11 @@ static NSUInteger parsedTimersCounter;
 
 	if ([elementName isEqualToString:@"e2servicereference"] || [elementName isEqualToString:@"reference"]) {
 		self.currentTimerObject.sref = self.contentOfCurrentProperty;
-	} else if ([elementName isEqualToString:@"e2servicename"] || [elementName isEqualToString:@"name"]) {
+	} else if ([elementName isEqualToString:@"e2servicename"]) {
 		self.currentTimerObject.sname = self.contentOfCurrentProperty;
+	} else if ([elementName isEqualToString:@"name"]) {
+		// We have to un-escape some characters here...
+		self.currentTimerObject.sname = [self.contentOfCurrentProperty stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	} else if ([elementName isEqualToString:@"e2eit"]) {
 		self.currentTimerObject.eit = self.contentOfCurrentProperty;
 	} else if ([elementName isEqualToString:@"e2timebegin"] || [elementName isEqualToString:@"start"]) {
