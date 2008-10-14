@@ -371,6 +371,15 @@
 		case kButtonCodeMenu:
 			type = 141;
 			break;
+		case kButtonCodeTV:
+			type = 385;
+			break;
+		case kButtonCodeRadio:
+			type = 377;
+			break;
+		case kButtonCodeText:
+			type = 66;
+			break;
 		default:
 			break;
 	}
