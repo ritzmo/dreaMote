@@ -168,4 +168,10 @@
 	return YES;
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[eventViewController release];
+	eventViewController = nil;
+}
+
 @end

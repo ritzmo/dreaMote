@@ -71,6 +71,9 @@
 {
 	if(refreshMovies)
 		[_movies removeAllObjects];
+
+	[movieViewController release];
+	movieViewController = nil;
 }
 
 - (void)loadView

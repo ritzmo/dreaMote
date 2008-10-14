@@ -38,7 +38,10 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
+
+		serviceListController = nil;
 		datePickerController = nil;
+		afterEventViewController = nil;
 	}
 	return self;
 }
@@ -621,6 +624,8 @@
     // watch the keyboard so we can adjust the user interface if necessary.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification object:self.view.window]; 
+
+	[super viewWillAppear: animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -631,7 +636,20 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil]; 
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+
+	[super viewWillDisappear: animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[serviceListController release];
+	[afterEventViewController release];
+	[datePickerController release];
+	
+	serviceListController = nil;
+	afterEventViewController = nil;
+	datePickerController = nil;
 }
 
 @end
