@@ -8,17 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Service.h";
+#import "Service.h"
 #import "FuzzyDateFormatter.h"
+
+@class EventViewController;
 
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSArray *_events;
 	Service *_service;
 	FuzzyDateFormatter *dateFormatter;
+
+	EventViewController *eventViewController;
 }
 
-+ (EventListController*)withEventList: (NSArray*) eventList;
 + (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService;
 + (EventListController*)forService: (Service *)ourService;
 - (void)reloadData;

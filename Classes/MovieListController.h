@@ -10,10 +10,14 @@
 
 #import "FuzzyDateFormatter.h"
 
+@class MovieViewController;
+
 @interface MovieListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
 @private
 	NSMutableArray *_movies;
 	FuzzyDateFormatter *dateFormatter;
+
+	MovieViewController *movieViewController;
 @public
 	BOOL refreshMovies;
 }

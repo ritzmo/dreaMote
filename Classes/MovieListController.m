@@ -24,11 +24,13 @@
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
-		self.movies = [NSMutableArray array];
-		self.refreshMovies = YES;
-		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[self.dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		_movies = [NSMutableArray array];
+		refreshMovies = YES;
+		dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+
+		movieViewController = nil;
 	}
 	return self;
 }
@@ -37,8 +39,18 @@
 {
 	[_movies release];
 	[dateFormatter release];
-	
+	[movieViewController release];
+
 	[super dealloc];
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+	[movieViewController release];
+	movieViewController = nil;
+
+    [super didReceiveMemoryWarning];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -139,9 +151,11 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	Movie *movie = [self.movies objectAtIndex: indexPath.row];
-	MovieViewController *targetViewController = [MovieViewController withMovie: movie];
-	[self.navigationController pushViewController: targetViewController animated: YES];
-	[targetViewController release];
+	if(movieViewController == nil)
+		movieViewController = [[MovieViewController alloc] init];
+	movieViewController.movie = movie;
+
+	[self.navigationController pushViewController: movieViewController animated: YES];
 
 	refreshMovies = NO;
 
@@ -151,11 +165,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_movies count];
-}
-
-- (void)didReceiveMemoryWarning {
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-	// Release anything that's not essential, such as cached data
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation

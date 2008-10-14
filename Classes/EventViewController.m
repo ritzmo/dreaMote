@@ -18,7 +18,6 @@
 
 @implementation EventViewController
 
-@synthesize event = _event;
 @synthesize service = _service;
 
 - (id)init
@@ -32,23 +31,11 @@
 	return self;
 }
 
-+ (EventViewController *)withEvent: (Event *) newEvent
-{
-	EventViewController *eventViewController = [[EventViewController alloc] init];
-
-	eventViewController.event = newEvent;
-	eventViewController.title = newEvent.title;
-	eventViewController.service = [[Service alloc] init];
-	
-	return eventViewController;
-}
-
 + (EventViewController *)withEventAndService: (Event *) newEvent: (Service *) newService
 {
 	EventViewController *eventViewController = [[EventViewController alloc] init];
 
 	eventViewController.event = newEvent;
-	eventViewController.title = newEvent.title;
 	eventViewController.service = newService;
 	
 	return eventViewController;
@@ -60,6 +47,18 @@
 	[_service release];
 
 	[super dealloc];
+}
+
+- (Event *)event
+{
+	return _event;
+}
+
+- (void)setEvent: (Event *)newEvent
+{
+	[_event release];
+	_event = [newEvent retain];
+	self.title = newEvent.title;
 }
 
 - (void)loadView

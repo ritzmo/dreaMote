@@ -24,19 +24,11 @@
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
-		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		eventViewController = nil;
 	}
 	return self;
-}
-
-+ (EventListController*)withEventList: (NSArray*) eventList
-{
-	EventListController *eventListController = [[EventListController alloc] init];
-	eventListController.events = eventList;
-	eventListController.service = [[Service alloc] init];
-
-	return eventListController;
 }
 
 + (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService
@@ -70,8 +62,18 @@
 	[_events release];
 	[_service release];
 	[dateFormatter release];
+	[eventViewController release];
 
 	[super dealloc];
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+	[eventViewController release];
+	eventViewController = nil;
+	
+    [super didReceiveMemoryWarning];
 }
 
 - (void)loadView
@@ -144,9 +146,13 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	Event *event = [_events objectAtIndex: indexPath.row];
-	EventViewController *targetViewController = [EventViewController withEventAndService: event: _service];
-	[self.navigationController pushViewController: targetViewController animated: YES];
-	[targetViewController release];
+	if(eventViewController == nil)
+		eventViewController = [[EventViewController alloc] init];
+
+	eventViewController.event = event;
+	eventViewController.service = _service;
+
+	[self.navigationController pushViewController: eventViewController animated: YES];
 
 	return nil;
 }

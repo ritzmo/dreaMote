@@ -19,7 +19,6 @@
 	Service *_service;
 }
 
-+ (EventViewController *)withEvent: (Event *) newEvent;
 + (EventViewController *)withEventAndService: (Event *) newEvent: (Service *)newService;
 
 @property (nonatomic, retain) Event *event;
