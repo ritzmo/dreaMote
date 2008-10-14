@@ -19,8 +19,6 @@
 
 @implementation MovieViewController
 
-@synthesize movie = _movie;
-
 - (id)init
 {
 	if (self = [super init])
@@ -37,7 +35,6 @@
 	MovieViewController *movieViewController = [[MovieViewController alloc] init];
 
 	movieViewController.movie = newMovie;
-	movieViewController.title = [newMovie title];
 
 	return movieViewController;
 }
@@ -47,6 +44,18 @@
 	[_movie release];
 
 	[super dealloc];
+}
+
+- (Movie *)movie
+{
+	return _movie;
+}
+
+- (void)setMoview: (Movie *)newMovie
+{
+	[_movie release];
+	_movie = [newMovie retain];
+	self.title = newMovie.title;
 }
 
 - (void)loadView
