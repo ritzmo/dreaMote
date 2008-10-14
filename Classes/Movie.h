@@ -35,5 +35,4 @@
 - (void)setTimeFromString: (NSString *)newTime;
 - (void)setTagsFromString: (NSString *)newTags;
 
-
 @end

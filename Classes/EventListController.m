@@ -67,7 +67,6 @@
 	[super dealloc];
 }
 
-
 - (void)didReceiveMemoryWarning
 {
 	[eventViewController release];
@@ -131,11 +130,7 @@
 
 	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
 	if(cell == nil)
-	{
-		CGSize size = CGSizeMake(300, 36);
-		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[EventTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kEventCell_ID] autorelease];
-	}
+		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
 
 	cell.formatter = dateFormatter;
 	cell.event = [_events objectAtIndex:indexPath.row];

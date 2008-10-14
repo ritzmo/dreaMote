@@ -12,7 +12,8 @@
 
 @class MovieViewController;
 
-@interface MovieListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface MovieListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+{
 @private
 	NSMutableArray *_movies;
 	FuzzyDateFormatter *dateFormatter;
@@ -21,11 +22,5 @@
 @public
 	BOOL refreshMovies;
 }
-
-- (void)reloadData;
-
-@property (nonatomic, retain) NSMutableArray *movies;
-@property (nonatomic) BOOL refreshMovies;
-@property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 
 @end

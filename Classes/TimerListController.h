@@ -11,7 +11,9 @@
 #import "Timer.h"
 #import "FuzzyDateFormatter.h"
 
-@interface TimerListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface TimerListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate,
+													UITableViewDataSource>
+{
 @private
 	NSMutableArray *_timers;
 	NSInteger dist[kTimerStateMax];

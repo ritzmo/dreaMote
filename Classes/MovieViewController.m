@@ -23,8 +23,8 @@
 {
 	if (self = [super init])
 	{
-		self.movie = nil;
 		self.title = NSLocalizedString(@"Movie", @"Default title of MovieViewController");
+		_movie = nil;
 	}
 	
 	return self;
@@ -51,11 +51,14 @@
 	return _movie;
 }
 
-- (void)setMoview: (Movie *)newMovie
+- (void)setMovie: (Movie *)newMovie
 {
 	[_movie release];
 	_movie = [newMovie retain];
-	self.title = newMovie.title;
+	if(newMovie != nil)
+		self.title = newMovie.title;
+
+	[(UITableView *)self.view reloadData];
 }
 
 - (void)loadView

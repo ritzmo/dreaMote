@@ -24,8 +24,8 @@
 {
 	if (self = [super init])
 	{
-		self.event = nil;
 		self.title = NSLocalizedString(@"Event", @"");
+		_event = nil;
 	}
 	
 	return self;
@@ -58,7 +58,10 @@
 {
 	[_event release];
 	_event = [newEvent retain];
-	self.title = newEvent.title;
+	if(newEvent != nil)
+		self.title = newEvent.title;
+
+	[(UITableView *)self.view reloadData];
 }
 
 - (void)loadView

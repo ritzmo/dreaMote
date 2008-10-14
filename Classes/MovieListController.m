@@ -15,17 +15,14 @@
 
 @implementation MovieListController
 
-@synthesize movies = _movies;
-@synthesize refreshMovies;
-@synthesize dateFormatter;
-
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
-		_movies = [NSMutableArray array];
+		_movies = [[NSMutableArray array] retain];
 		refreshMovies = YES;
+
 		dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -44,7 +41,6 @@
 	[super dealloc];
 }
 
-
 - (void)didReceiveMemoryWarning
 {
 	[movieViewController release];
@@ -58,8 +54,8 @@
 	if(refreshMovies)
 	{
 		[_movies removeAllObjects];
-		
-		[self reloadData];
+
+		[(UITableView *)self.view reloadData];
 
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -74,11 +70,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	if(refreshMovies)
-	{
 		[_movies removeAllObjects];
-		
-		[self reloadData];
-	}
 }
 
 - (void)loadView
@@ -89,18 +81,13 @@
 	tableView.rowHeight = kUIRowHeight;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
-	
+
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
+
 	self.view = tableView;
 	[tableView release];
-}
-
-- (void)reloadData
-{
-	[(UITableView *)self.view reloadData];
 }
 
 - (void)fetchMovies
@@ -123,7 +110,7 @@
 #else
 	}
 #endif
-		[self reloadData];
+		[(UITableView *)self.view reloadData];
 }
 
 #pragma mark	-
@@ -136,11 +123,7 @@
 	
 	MovieTableViewCell *cell = (MovieTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kMovieCell_ID];
 	if(cell == nil)
-	{
-		CGSize size = CGSizeMake(300, 36);
-		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[MovieTableViewCell alloc] initWithFrame:cellFrame reuseIdentifier:kMovieCell_ID] autorelease];
-	}
+		cell = [[[MovieTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMovieCell_ID] autorelease];
 
 	cell.formatter = dateFormatter;
 	cell.movie = [_movies objectAtIndex:indexPath.row];
@@ -150,7 +133,7 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Movie *movie = [self.movies objectAtIndex: indexPath.row];
+	Movie *movie = [_movies objectAtIndex: indexPath.row];
 	if(movieViewController == nil)
 		movieViewController = [[MovieViewController alloc] init];
 	movieViewController.movie = movie;

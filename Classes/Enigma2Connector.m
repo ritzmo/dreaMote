@@ -97,18 +97,15 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSURLResponse *response;
+	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
+	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	// Compare to expected result
-	return [myString isEqualToString: @"	<rootElement></rootElement>"];
+
+	return ([response statusCode] == 200);
 }
 
 - (void)fetchServices:(id)target action:(SEL)action
