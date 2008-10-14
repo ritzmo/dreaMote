@@ -121,6 +121,8 @@
 														target: self action: @selector(settingsAction:)];
 	self.navigationItem.rightBarButtonItem = button;
 
+	[button release];
+
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	myTableView.delegate = self;

@@ -50,7 +50,7 @@
 	[contentView release];
 
 	CGRect frame = CGRectMake(	0.0,
-								kTopMargin + kPickerSegmentControlHeight,
+								0.0, //kTopMargin + kPickerSegmentControlHeight,
 								self.view.bounds.size.width - (kRightMargin * 2.0),
 								self.view.bounds.size.height - 110.0);
 	datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
@@ -68,7 +68,7 @@
 	
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
-									kTopMargin + kPickerSegmentControlHeight + 220.0,
+									kTweenMargin + 220.0,
 									self.view.bounds.size.width - (kRightMargin * 2.0),
 									kTextFieldHeight);
 	label = [[UILabel alloc] initWithFrame:frame];

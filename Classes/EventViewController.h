@@ -14,6 +14,7 @@
 @interface EventViewController : UIViewController <UIScrollViewDelegate, UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource>
 {
+@private
 	Event *_event;
 	Service *_service;
 }

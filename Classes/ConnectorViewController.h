@@ -12,7 +12,7 @@
 													UITableViewDelegate,
 													UITableViewDataSource>
 {
-	@private
+@private
 	NSInteger _selectedItem;
 	SEL _selectCallback;
 	id _selectTarget;

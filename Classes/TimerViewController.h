@@ -15,10 +15,15 @@
 #import "CellTextField.h"
 #import "DisplayCell.h"
 
+@class ServiceListController;
+@class AfterEventViewController;
+@class DatePickerController;
+
 @interface TimerViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate,
 													UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
+@private
 	UITextField *timerTitle;
 	CellTextField *timerTitleCell;
 	UITextField *timerDescription;
@@ -32,11 +37,15 @@
 	UISwitch *timerEnabled;
 	UISwitch *timerJustplay;
 	UITableViewCell *afterEventCell;
-@private
+	
 	Timer *_timer;
 	Timer *_oldTimer;
 	BOOL _creatingNewTimer;
 	BOOL _shouldSave;
+
+	ServiceListController *serviceListController;
+	AfterEventViewController *afterEventViewController;
+	DatePickerController *datePickerController;
 }
 
 + (TimerViewController *)withEvent: (Event *)ourEvent;

@@ -38,6 +38,7 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
+		datePickerController = nil;
 	}
 	return self;
 }
@@ -90,7 +91,24 @@
 	[timerTitle release];
 	[timerDescription release];
 
+	[serviceListController release];
+	[afterEventViewController release];
+	[datePickerController release];
+
 	[super dealloc];
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[serviceListController release];
+	[afterEventViewController release];
+	[datePickerController release];
+	
+	serviceListController = nil;
+	afterEventViewController = nil;
+	datePickerController = nil;
+	
+    [super didReceiveMemoryWarning];
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
@@ -483,27 +501,41 @@
 
 		if(section == 3)
 		{
-			targetViewController = [[ServiceListController alloc] init];
-			[(ServiceListController *)targetViewController setTarget: self action: @selector(serviceSelected:)];
+			if(serviceListController == nil)
+				serviceListController = [[ServiceListController alloc] init];
+			[serviceListController setTarget: self action: @selector(serviceSelected:)];
+
+			targetViewController = serviceListController;
 		}
 		else if(section == 4)
 		{
-			targetViewController = [DatePickerController withDate: _timer.begin];
-			[(DatePickerController *)targetViewController setTarget: self action: @selector(beginSelected:)];
+			if(datePickerController == nil)
+				datePickerController = [[DatePickerController alloc] init];
+ 			datePickerController.date = [_timer.begin copy];
+			[datePickerController setTarget: self action: @selector(beginSelected:)];
+
+			targetViewController = datePickerController;
 		}
 		else if(section == 5)
 		{
-			targetViewController = [DatePickerController withDate: _timer.end];
-			[(DatePickerController *)targetViewController setTarget: self action: @selector(endSelected:)];
+			if(datePickerController == nil)
+				datePickerController = [[DatePickerController alloc] init];
+ 			datePickerController.date = [_timer.end copy];
+			[datePickerController setTarget: self action: @selector(endSelected:)];
+
+			targetViewController = datePickerController;
 		}
 		else if(section == 6)
 		{
-			targetViewController = [AfterEventViewController withAfterEvent: _timer.afterevent];
-			[(AfterEventViewController *)targetViewController setTarget: self action: @selector(afterEventSelected:)];
+			if(afterEventViewController == nil)
+				afterEventViewController = [[AfterEventViewController alloc] init];
+			afterEventViewController.selectedItem = _timer.afterevent;
+			[afterEventViewController setTarget: self action: @selector(afterEventSelected:)];
+
+			targetViewController = afterEventViewController;
 		}
-		
+
 		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
 	}
 
 	// We don't want any actual response :-)

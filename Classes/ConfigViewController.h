@@ -14,6 +14,7 @@
 													UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
+@private
 	UITextField *remoteAddressTextField;
 	CellTextField *remoteAddressCell;
 	UITextField *usernameTextField;
@@ -25,7 +26,7 @@
 	NSInteger connectionIndex;
 	UIButton *makeDefaultButton;
 	UIButton *connectButton;
-	@private
+
 	BOOL _shouldSave;
 	NSInteger _connector;
 }
