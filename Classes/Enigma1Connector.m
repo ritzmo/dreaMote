@@ -19,10 +19,6 @@
 #import "VolumeXMLReader.h"
 #import "MovieXMLReader.h"
 
-@interface Enigma1Connector()
-+ (NSString *)urlencode:(NSString *)toencode;
-@end
-
 @implementation Enigma1Connector
 
 @synthesize baseAddress;
@@ -58,11 +54,6 @@
 	return (id <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress: address];
 }
 
-+ (NSString *)urlencode:(NSString *)toencode
-{
-	return [(NSString *) CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)toencode, NULL, (CFStringRef)@"()<>@,.;:\"/[]?=\\& ", kCFStringEncodingUTF8) autorelease];
-}
-
 - (BOOL)isReachable
 {
 	// Generate URI
@@ -84,7 +75,7 @@
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [Enigma1Connector urlencode: service.sref]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -299,7 +290,7 @@
 - (BOOL)addTimer:(Timer *) newTimer
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [Enigma1Connector urlencode: newTimer.title], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
