@@ -12,7 +12,6 @@
 {
 @private
 	UILabel			*label;
-	UITextField		*textField;
 	NSDate			*date;
 	NSDateFormatter *format;
 	UIDatePicker	*datePickerView;

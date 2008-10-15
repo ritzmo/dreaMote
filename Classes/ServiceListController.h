@@ -18,7 +18,6 @@
 	BOOL _refreshServices;
 }
 
-- (void)reloadData;
 - (void)setTarget: (id)target action: (SEL)action;
 
 @end

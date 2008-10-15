@@ -19,8 +19,6 @@
 	FuzzyDateFormatter *dateFormatter;
 }
 
-- (void)reloadData;
-
 @property (nonatomic, retain) NSMutableArray *timers;
 @property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 

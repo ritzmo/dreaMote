@@ -25,7 +25,6 @@
 
 + (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService;
 + (EventListController*)forService: (Service *)ourService;
-- (void)reloadData;
 - (void)addEvent:(id)event;
 
 @property (nonatomic, retain) NSArray *events;

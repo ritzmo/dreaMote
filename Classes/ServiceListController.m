@@ -53,11 +53,6 @@
 	[tableView release];
 }
 
-- (void)reloadData
-{
-	[(UITableView *)self.view reloadData];
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
 	if(_refreshServices)
@@ -65,7 +60,7 @@
 		[_services makeObjectsPerformSelector:@selector(release)];
 		[_services removeAllObjects];
 
-		[self reloadData];
+		[(UITableView *)self.view reloadData];
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -106,7 +101,7 @@
 #else
 	}
 #endif
-		[self reloadData];
+		[(UITableView *)self.view reloadData];
 }
 
 #pragma mark	-
@@ -119,18 +114,14 @@
 
 	ServiceTableViewCell *cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
 	if(cell == nil)
-	{
-		CGSize size = CGSizeMake(300, 36);
-		CGRect cellFrame = CGRectMake(0,0,size.width,size.height);
-		cell = [[[ServiceTableViewCell alloc] initWithFrame: cellFrame reuseIdentifier: kServiceCell_ID] autorelease];
-	}
+		cell = [[[ServiceTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceCell_ID] autorelease];
 
 	cell.service = [_services objectAtIndex:indexPath.row];
 
 	return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(_selectTarget != nil && _selectCallback != nil)
 	{
@@ -138,17 +129,14 @@
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
 
 		[self.navigationController popViewControllerAnimated: YES];
-
-		return nil;
 	}
-
-	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"What to do with the currently selected Service?", @"UIActionSheet when List Item in ServiceListController selected")
-															 delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
-	[actionSheet showInView:self.view];
-	[actionSheet release];
-	
-	return indexPath; // nil to disable select
-
+	else
+	{
+		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"What to do with the currently selected Service?", @"UIActionSheet when List Item in ServiceListController selected")
+																delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
+		[actionSheet showInView: tableView];
+		[actionSheet release];
+	}
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex: (NSInteger)buttonIndex

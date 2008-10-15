@@ -19,7 +19,6 @@
 	FuzzyDateFormatter *dateFormatter;
 
 	MovieViewController *movieViewController;
-@public
 	BOOL refreshMovies;
 }
 

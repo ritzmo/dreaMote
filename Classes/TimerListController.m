@@ -59,12 +59,7 @@
 	[tableView release];
 }
 
-- (void)reloadData
-{
-	[(UITableView *)self.view reloadData];
-}
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
 	[(UITableView*)self.view setEditing: editing animated: animated];
@@ -90,7 +85,7 @@
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
 
-	[self reloadData];
+	[(UITableView *)self.view reloadData];
 
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -142,7 +137,7 @@
 #else
 	}
 #endif
-		[self reloadData];
+		[(UITableView *)self.view reloadData];
 }
 
 // to determine which UITableViewCell to be used on a given row.

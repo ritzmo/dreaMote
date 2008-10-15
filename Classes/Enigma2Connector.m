@@ -13,11 +13,11 @@
 #import "Event.h"
 #import "Volume.h"
 
-#import "ServiceXMLReader.h"
-#import "EventXMLReader.h"
-#import "TimerXMLReader.h"
-#import "VolumeXMLReader.h"
-#import "MovieXMLReader.h"
+#import "Enigma/ServiceXMLReader.h"
+#import "Enigma/EventXMLReader.h"
+#import "Enigma/TimerXMLReader.h"
+#import "Enigma/VolumeXMLReader.h"
+#import "Enigma/MovieXMLReader.h"
 
 enum powerStates {
 	kShutdownState = 1,

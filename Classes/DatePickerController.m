@@ -92,7 +92,6 @@
 
 - (void)dealloc
 {
-	[textField release];
 	[datePickerView release];
 	[date release];
 	[label release];

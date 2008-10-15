@@ -93,11 +93,6 @@
 	[tableView release];
 }
 
-- (void)reloadData
-{
-	[(UITableView *)self.view reloadData];
-}
-
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -118,7 +113,7 @@
 #else
 	}
 #endif
-	[self reloadData];
+	[(UITableView *)self.view reloadData];
 }
 
 #pragma mark	-
