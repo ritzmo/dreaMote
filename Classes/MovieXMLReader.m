@@ -64,14 +64,16 @@ static NSUInteger parsedMoviesCounter;
 	// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
 	// Otherwise the application runs very slowly on the device.
 	if (parsedMoviesCounter >= MAX_MOVIES) {
+		self.currentMovieObject = nil;
+
 		[parser abortParsing];
 	}
 	
 	if ([elementName isEqualToString:@"e2movie"] || [elementName isEqualToString:@"service"]) {
-		
+
 		parsedMoviesCounter++;
-		
-		// An e2event in the xml represents a service, so create an instance of it.
+
+		// An e2movie/service in the xml represents a movie, so create an instance of it.
 		self.currentMovieObject = [[Movie alloc] init];
 
 		return;

@@ -91,14 +91,16 @@ static NSUInteger parsedTimersCounter;
 	// If the number of parsed timers is greater than MAX_ELEMENTS, abort the parse.
 	// Otherwise the application runs very slowly on the device.
 	if (parsedTimersCounter >= MAX_TIMERS) {
+		self.currentTimerObject = nil;
+
 		[parser abortParsing];
 	}
 	
 	if ([elementName isEqualToString:@"e2timer"] || [elementName isEqualToString:@"timer"]) {
-		
+
 		parsedTimersCounter++;
-		
-		// An e2timer in the xml represents a timer, so create an instance of it.
+
+		// An (e2)timer in the xml represents a timer, so create an instance of it.
 		self.currentTimerObject = [[Timer alloc] init];
 
 		return;

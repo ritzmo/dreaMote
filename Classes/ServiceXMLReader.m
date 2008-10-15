@@ -60,6 +60,8 @@ static NSUInteger parsedServicesCounter;
 	// Otherwise the application runs very slowly on the device.
 	if (parsedServicesCounter >= MAX_SERVICES)
 	{
+		self.currentServiceObject = nil;
+
 		[parser abortParsing];
 	}
 	
@@ -67,7 +69,7 @@ static NSUInteger parsedServicesCounter;
 	{
 		parsedServicesCounter++;
 
-		// An e2service in the xml represents a service, so create an instance of it.
+		// An (e2)service in the xml represents a service, so create an instance of it.
 		self.currentServiceObject = [[Service alloc] init];
 
 		return;

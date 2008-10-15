@@ -46,6 +46,8 @@ static NSUInteger parsedVolumesCounter;
 
 	// We assume a unique Volume
 	if (parsedVolumesCounter > 1) {
+		self.currentVolumeObject = nil;
+
 		[parser abortParsing];
 	}
 

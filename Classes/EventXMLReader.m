@@ -76,14 +76,16 @@ static NSUInteger parsedEventsCounter;
 	// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
 	// Otherwise the application runs very slowly on the device.
 	if (parsedEventsCounter >= MAX_EVENTS) {
+		self.currentEventObject = nil;
+
 		[parser abortParsing];
 	}
 	
 	if ([elementName isEqualToString:@"e2event"] || [elementName isEqualToString:@"event"]) {
-		
+
 		parsedEventsCounter++;
-		
-		// An e2event in the xml represents a service, so create an instance of it.
+
+		// An (e2)event in the xml represents an event, so create an instance of it.
 		self.currentEventObject = [[Event alloc] init];
 
 		return;
