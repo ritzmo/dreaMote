@@ -33,6 +33,7 @@
 
 - (void)dealloc
 {
+	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers release];
 	[dateFormatter release];
 
@@ -85,9 +86,10 @@
 	NSInteger i;
 	for(i = 0; i < kTimerStateMax; i++)
 		dist[i] = 0;
-	
+
+	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
-	
+
 	[self reloadData];
 
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
@@ -103,9 +105,8 @@
 	for(i = 0; i < kTimerStateMax; i++)
 		dist[i] = 0;
 
+	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
-
-	[self reloadData];
 }
 
 - (void)fetchTimers

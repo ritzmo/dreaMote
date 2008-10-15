@@ -37,7 +37,7 @@
 	eventListController.events = eventList;
 	eventListController.service = ourService;
 
-	eventListController.title = [ourService sname];
+	eventListController.title = ourService.sname;
 
 	return eventListController;
 }
@@ -48,7 +48,7 @@
 	eventListController.events = [NSMutableArray array];
 	eventListController.service = ourService;
 
-	eventListController.title = [ourService sname];
+	eventListController.title = ourService.sname;
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -59,6 +59,7 @@
 
 - (void)dealloc
 {
+	[_events makeObjectsPerformSelector:@selector(release)];
 	[_events release];
 	[_service release];
 	[dateFormatter release];

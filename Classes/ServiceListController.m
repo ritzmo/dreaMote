@@ -29,6 +29,7 @@
 
 - (void)dealloc
 {
+	[_services makeObjectsPerformSelector:@selector(release)];
 	[_services release];
 	[_selectTarget release];
 	
@@ -61,8 +62,9 @@
 {
 	if(_refreshServices)
 	{
+		[_services makeObjectsPerformSelector:@selector(release)];
 		[_services removeAllObjects];
-		
+
 		[self reloadData];
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
@@ -79,9 +81,8 @@
 {
 	if(_refreshServices)
 	{
+		[_services makeObjectsPerformSelector:@selector(release)];
 		[_services removeAllObjects];
-
-		[self reloadData];
 	}
 }
 
