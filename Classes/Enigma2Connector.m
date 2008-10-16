@@ -31,10 +31,12 @@ enum powerStates {
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	return
+	return YES;
+	/*return
 		(feature == kFeaturesDisabledTimers) ||
+		(feature == kFeaturesRecordInfo) ||
 		(feature == kFeaturesExtendedRecordInfo) ||
-		(feature == kFeaturesGUIRestart);
+		(feature == kFeaturesGUIRestart);*/
 }
 
 - (NSInteger)getMaxVolume

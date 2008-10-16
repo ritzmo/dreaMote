@@ -14,6 +14,7 @@
 	NSMutableArray	*menuList;
 @private
 	UIViewController *configListController;
+	NSDictionary *_recordDictionary;
 }
 
 @property (nonatomic, retain) UITableView *myTableView;

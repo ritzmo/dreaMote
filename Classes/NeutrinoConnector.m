@@ -28,7 +28,7 @@
 
 - (NSInteger)getMaxVolume
 {
-	return 63;
+	return 100;
 }
 
 - (id)initWithAddress:(NSString *) address
@@ -154,9 +154,9 @@
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/timer?format=id" relativeToURL: baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI

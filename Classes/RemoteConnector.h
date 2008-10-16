@@ -21,7 +21,7 @@ enum availableConnectors {
 
 // Ok, this is a little much for just two connectors - but we might want to extend this software even further some day :-)
 enum connectorFeatures {
-	// Timers can be disable without removing them
+	// Timers can be disabled without removing them
 	kFeaturesDisabledTimers = 1,
 	// Connector can fetch Record Info
 	kFeaturesRecordInfo = 2,

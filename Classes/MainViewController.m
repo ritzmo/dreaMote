@@ -31,6 +31,7 @@
 		// make the title of this page the same as the title of this app
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 		configListController = nil;
+		_recordDictionary = nil;
 	}
 	return self;
 }
@@ -40,6 +41,7 @@
 	[myTableView release];
 	[menuList release];
 	[configListController release];
+	[_recordDictionary release];
 
 	[super dealloc];
 }
@@ -89,14 +91,13 @@
 
 	[targetViewController release];
 
-	// XXX: this should be hidden when kFeaturesRecordInfo is unset
 	targetViewController = [[MovieListController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+	_recordDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Movie List Title", @""), @"title",
 						 NSLocalizedString(@"Movie List Explain", @""), @"explainText",
 						 targetViewController, @"viewController",
-						 nil]];
-	
+						 nil] retain];
+
 	[targetViewController release];
 
 	targetViewController = [[RCEmulatorController alloc] init];
@@ -153,13 +154,33 @@
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
 	[myTableView deselectRowAtIndexPath:tableSelection animated:NO];
+
+	id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
+	if(![RemoteConnectorObject isConnected])
+		if(![RemoteConnectorObject connectTo: [connId integerValue]])
+			return;
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+	{
+		if(![menuList containsObject: _recordDictionary])
+		{
+			[menuList insertObject:_recordDictionary atIndex: 2];
+			[myTableView reloadData];
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _recordDictionary])
+		{
+			[menuList removeObject: _recordDictionary];
+			[myTableView reloadData];
+		}
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	if(![RemoteConnectorObject isConnected])
-		[RemoteConnectorObject connectTo: [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]];
-
+	// viewWillAppear makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
 		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"You need to configure this application before you can use it.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -184,11 +205,6 @@
 }
 
 #pragma mark UITableView delegates
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-	return 1;
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
