@@ -10,16 +10,16 @@
 
 static NSUInteger parsedEventsCounter;
 
-@implementation EventXMLReader
+@implementation EnigmaEventXMLReader
 
 @synthesize currentEventObject = _currentEventObject;
 
 // Events are 'heavy'
 #define MAX_EVENTS 100
 
-+ (EventXMLReader*)initWithTarget:(id)target action:(SEL)action
++ (EnigmaEventXMLReader*)initWithTarget:(id)target action:(SEL)action
 {
-	EventXMLReader *xmlReader = [[EventXMLReader alloc] init];
+	EnigmaEventXMLReader *xmlReader = [[EnigmaEventXMLReader alloc] init];
 	xmlReader.target = target;
 	xmlReader.addObject = action;
 
@@ -77,6 +77,7 @@ static NSUInteger parsedEventsCounter;
 	// Otherwise the application runs very slowly on the device.
 	if (parsedEventsCounter >= MAX_EVENTS) {
 		self.currentEventObject = nil;
+		self.contentOfCurrentProperty = nil;
 
 		[parser abortParsing];
 	}

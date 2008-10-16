@@ -89,6 +89,7 @@
 
 	[targetViewController release];
 
+	// XXX: this should be hidden when kFeaturesRecordInfo is unset
 	targetViewController = [[MovieListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Movie List Title", @""), @"title",

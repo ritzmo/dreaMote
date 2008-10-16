@@ -101,7 +101,13 @@
 		case kEnigma1Connector:
 			cell.text = NSLocalizedString(@"Enigma", @"");
 			break;
+#ifdef ENABLE_NEUTRINO_CONNECTOR
+		case kNeutrinoConnector:
+			cell.text = NSLocalizedString(@"Neutrino", @"");
+			break;
+#endif
 		default:
+			cell.text = @"???";
 			break;
 	}
 

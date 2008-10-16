@@ -11,13 +11,24 @@ enum availableConnectors {
 	kInvalidConnector = -1,
 	kEnigma2Connector = 0,
 	kEnigma1Connector = 1,
+#ifdef ENABLE_NEUTRINO_CONNECTOR
+	kNeutrinoConnector = 2,
+	kMaxConnector = 3,
+#else
 	kMaxConnector = 2,
+#endif
 };
 
 // Ok, this is a little much for just two connectors - but we might want to extend this software even further some day :-)
 enum connectorFeatures {
+	// Timers can be disable without removing them
 	kFeaturesDisabledTimers = 1,
-	kFeaturesExtendedRecordInfo = 2, // as long as we lack more connectors this is specific enough
+	// Connector can fetch Record Info
+	kFeaturesRecordInfo = 2,
+	// Connector can fetch extended information about recordings (e.g. tags)
+	kFeaturesExtendedRecordInfo = 3, // XXX: as long as we lack more connectors this is specific enough
+	// Connector offers to restart just the remote GUI (not the same as rebooting!)
+	kFeaturesGUIRestart = 4,
 };
 
 enum buttonCodes {

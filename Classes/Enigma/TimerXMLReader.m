@@ -92,6 +92,7 @@ static NSUInteger parsedTimersCounter;
 	// Otherwise the application runs very slowly on the device.
 	if (parsedTimersCounter >= MAX_TIMERS) {
 		self.currentTimerObject = nil;
+		self.contentOfCurrentProperty = nil;
 
 		[parser abortParsing];
 	}

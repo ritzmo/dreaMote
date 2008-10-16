@@ -262,8 +262,14 @@
 
 	if(_connector == kEnigma1Connector)
 		connectorCell.text = NSLocalizedString(@"Enigma", @"");
-	else
+	else if(_connector == kEnigma2Connector)
 		connectorCell.text = NSLocalizedString(@"Enigma 2", @"");
+#ifdef ENABLE_NEUTRINO_CONNECTOR
+	else if(_connector == kNeutrinoConnector)
+		connectorCell.text = NSLocalizedString(@"Neutrino", @"");
+#endif
+	else
+		connectorCell.text = @"???";
 }
 
 #pragma mark - UITableView delegates
@@ -362,8 +368,14 @@
 
 			if(_connector == kEnigma1Connector)
 				sourceCell.text = NSLocalizedString(@"Enigma", @"");
-			else
+			else if(_connector == kEnigma2Connector)
 				sourceCell.text = NSLocalizedString(@"Enigma 2", @"");
+#ifdef ENABLE_NEUTRINO_CONNECTOR
+			else if(_connector == kNeutrinoConnector)
+				sourceCell.text = NSLocalizedString(@"Neutrino", @"");
+#endif
+			else
+				sourceCell.text = @"???";
 
 			connectorCell = sourceCell;
 			break;

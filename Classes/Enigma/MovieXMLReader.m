@@ -65,6 +65,7 @@ static NSUInteger parsedMoviesCounter;
 	// Otherwise the application runs very slowly on the device.
 	if (parsedMoviesCounter >= MAX_MOVIES) {
 		self.currentMovieObject = nil;
+		self.contentOfCurrentProperty = nil;
 
 		[parser abortParsing];
 	}

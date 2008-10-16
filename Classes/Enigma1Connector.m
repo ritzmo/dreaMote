@@ -25,7 +25,7 @@
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	return NO;
+	return (feature == kFeaturesGUIRestart);
 }
 
 - (NSInteger)getMaxVolume
@@ -114,7 +114,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
+	EnigmaEventXMLReader *streamReader = [EnigmaEventXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader release];
 

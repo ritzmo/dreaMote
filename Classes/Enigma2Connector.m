@@ -33,7 +33,8 @@ enum powerStates {
 {
 	return
 		(feature == kFeaturesDisabledTimers) ||
-		(feature == kFeaturesExtendedRecordInfo);
+		(feature == kFeaturesExtendedRecordInfo) ||
+		(feature == kFeaturesGUIRestart);
 }
 
 - (NSInteger)getMaxVolume
@@ -122,7 +123,7 @@ enum powerStates {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
+	EnigmaEventXMLReader *streamReader = [EnigmaEventXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	[streamReader release];
 

@@ -203,7 +203,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if(section == 1)
-		return 4;
+		return ([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart]) ? 4 : 3;
 	return 2;
 }
 
@@ -240,9 +240,12 @@
 					sourceCell.view = [self create_RebootButton];
 					break;
 				case 2:
-					sourceCell.nameLabel.text = NSLocalizedString(@"Restart", @"");
-					sourceCell.view = [self create_RestartButton];
-					break;
+					if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
+					{
+						sourceCell.nameLabel.text = NSLocalizedString(@"Restart", @"");
+						sourceCell.view = [self create_RestartButton];
+						break;
+					}
 				case 3:
 					sourceCell.nameLabel.text = NSLocalizedString(@"Shutdown", @"");
 					sourceCell.view = [self create_ShutdownButton];

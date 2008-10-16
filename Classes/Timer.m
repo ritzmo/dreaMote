@@ -17,6 +17,7 @@
 @synthesize tdescription = _tdescription;
 @synthesize disabled = _disabled;
 @synthesize repeated = _repeated;
+@synthesize repeatcount = _repeatcount;
 @synthesize justplay = _justplay;
 @synthesize service = _service;
 @synthesize sref = _sref;
@@ -36,6 +37,7 @@
 	timer.justplay = NO;
 	timer.service = [[Service alloc] init];
 	timer.repeated = 0;
+	timer.repeatcount = 0;
 	timer.state = 0;
 	timer.afterevent = 0;
 
@@ -54,6 +56,7 @@
 	timer.justplay = NO;
 	timer.service = ourService;
 	timer.repeated = 0;
+	timer.repeatcount = 0;
 	timer.state = 0;
 
 	return timer;
@@ -71,6 +74,7 @@
 	timer.justplay = NO;
 	timer.service = [[Service alloc] init];
 	timer.repeated = 0;
+	timer.repeatcount = 0;
 	timer.state = 0;
 
 	return timer;
@@ -99,6 +103,7 @@
 		self.justplay = timer.justplay;
 		self.service = [timer.service copy];
 		self.repeated = timer.repeated;
+		self.repeatcount = timer.repeatcount;
 		self.state = timer.state;
 		_duration = -1;
 	}

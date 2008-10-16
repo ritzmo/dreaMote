@@ -61,6 +61,7 @@ static NSUInteger parsedServicesCounter;
 	if (parsedServicesCounter >= MAX_SERVICES)
 	{
 		self.currentServiceObject = nil;
+		self.contentOfCurrentProperty = nil;
 
 		[parser abortParsing];
 	}

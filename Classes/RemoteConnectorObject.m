@@ -13,6 +13,7 @@
 
 #import "Enigma2Connector.h"
 #import "Enigma1Connector.h"
+#import "NeutrinoConnector.h"
 
 @implementation RemoteConnectorObject
 
@@ -54,6 +55,11 @@ static NSInteger _connectionIndex;
 		case kEnigma1Connector:
 			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress] retain];
 			break;
+#ifdef ENABLE_NEUTRINO_CONNECTOR
+		case kNeutrinoConnector:
+			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[NeutrinoConnector createClassWithAddress: remoteAddress] retain];
+			break;
+#endif
 		default:
 			return NO;
 	}
@@ -129,7 +135,15 @@ static NSInteger _connectionIndex;
 		[connector release];
 		return kEnigma1Connector;
 	}
-
+#ifdef ENABLE_NEUTRINO_CONNECTOR
+	[connector release];
+	connector = (NSObject <RemoteConnector>*)[NeutrinoConnector createClassWithAddress: remoteAddress];
+	if([connector isReachable])
+	{
+		[connector release];
+		return kNeutrinoConnector;
+	}
+#endif
 	[connector release];
 
 	return kInvalidConnector;
