@@ -119,8 +119,10 @@
 	[targetViewController release];
 
 	// Add the "Settings" button to the navigation bar
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Settings", @"") style: UIBarButtonItemStyleDone
-														target: self action: @selector(settingsAction:)];
+	UIBarButtonItem *button = [[UIBarButtonItem alloc]
+											initWithTitle: NSLocalizedString(@"Settings", @"")
+											style: UIBarButtonItemStyleDone
+											target: self action: @selector(settingsAction:)];
 	self.navigationItem.rightBarButtonItem = button;
 
 	[button release];
@@ -183,7 +185,10 @@
 	// viewWillAppear makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"You need to configure this application before you can use it.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"You need to configure this application before you can use it.", @"")
+									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
 
@@ -194,13 +199,14 @@
 
 	else if(![[RemoteConnectorObject sharedRemoteConnector] isReachable])
 	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Remote host unreachable!\nPlease check your network settings or connect to another host.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"Remote host unreachable!\nPlease check your network settings or connect to another host.", @"")
+									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
 
-		if(configListController == nil)
-			configListController = [[ConfigListController alloc] init];
-		[self.navigationController pushViewController: configListController animated: YES];
+		[self settingsAction: nil];
 	}
 }
 

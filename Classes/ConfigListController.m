@@ -212,12 +212,13 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
 		NSInteger currentDefault = [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue];
-		if(currentDefault > indexPath.row - 1)
+		NSInteger index = indexPath.row - 1;
+		if(currentDefault > index)
 			[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: currentDefault - 1] forKey: kActiveConnection];
-		else if(currentDefault == indexPath.row - 1)
+		else if(currentDefault == index) // XXX: we might want to reloadData in this case as the icons need to be adjusted...
 			[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
 
-		[_connections removeObjectAtIndex: indexPath.row - 1];
+		[_connections removeObjectAtIndex: index];
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 						 withRowAnimation: UITableViewRowAnimationFade];
 	}

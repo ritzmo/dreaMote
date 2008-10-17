@@ -19,7 +19,7 @@
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 static NSMutableArray *_connections = nil;
-static NSInteger _connectionIndex;
+static NSDictionary *_connection;
 
 + (BOOL)connectTo: (NSInteger)connectionIndex
 {
@@ -44,7 +44,8 @@ static NSInteger _connectionIndex;
 	{
 		[_sharedRemoteConnector dealloc];
 		_sharedRemoteConnector = nil;
-		_connectionIndex = -1;
+		[_connection release];
+		_connection = nil;
 	}
 
 	switch(connectorId)
@@ -64,7 +65,7 @@ static NSInteger _connectionIndex;
 			return NO;
 	}
 
-	_connectionIndex = connectionIndex;
+	_connection = [connection retain];
 	return YES;
 }
 
@@ -74,6 +75,8 @@ static NSInteger _connectionIndex;
 	{
 		[_sharedRemoteConnector dealloc];
 		_sharedRemoteConnector = nil;
+		[_connection release];
+		_connection = nil;
 	}
 }
 
@@ -156,7 +159,10 @@ static NSInteger _connectionIndex;
 
 + (NSInteger)getConnectedId
 {
-	return _connectionIndex;
+	NSUInteger index = [_connections indexOfObject: _connection];
+	if(index == NSNotFound)
+		return 0;
+	return index;
 }
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector

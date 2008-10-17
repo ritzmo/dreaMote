@@ -185,7 +185,11 @@
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(connectionIndex == -1)
+			{
+				connectionIndex = [connections count];
 				[connections addObject: connection];
+				[(UITableView *)self.view reloadData];
+			}
 			else
 				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
 		}
@@ -365,6 +369,9 @@
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
 			if (sourceCell == nil) 
 				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
+			if(self.editing)
+				sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 			if(_connector == kEnigma1Connector)
 				sourceCell.text = NSLocalizedString(@"Enigma", @"");
