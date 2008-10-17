@@ -27,7 +27,9 @@
 {
 	return
 		(feature == kFeaturesGUIRestart) ||
-		(feature == kFeaturesRecordInfo);
+		(feature == kFeaturesRecordInfo) ||
+		(feature == kFeaturesMessageCaption) ||
+		(feature == kFeaturesMessageTimeout);
 }
 
 - (NSInteger)getMaxVolume
@@ -392,6 +394,31 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	return ([response statusCode] == 204);
+}
+
+- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d", message, caption, timeout] relativeToURL: baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"+ok"];
+	if(myRange.length)
+		return YES;
+
+	return NO;
 }
 
 @end

@@ -19,6 +19,7 @@
 #import "MovieListController.h"
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
+#import "MessageViewController.h"
 
 @implementation MainViewController
 
@@ -115,6 +116,15 @@
 												NSLocalizedString(@"Control View Explain", @""), @"explainText",
 												targetViewController, @"viewController",
 												nil]];
+
+	[targetViewController release];
+
+	targetViewController = [[MessageViewController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Message View Title", @""), @"title",
+						 NSLocalizedString(@"Message View Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
 
 	[targetViewController release];
 

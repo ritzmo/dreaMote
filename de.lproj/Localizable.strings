@@ -265,3 +265,5 @@
 /* No comment provided by engineer. */
 "Zap" = "Umschalten";
 
+"Message View Title" = "Nachrichten";
+"Message View Explain" = "Kurze Nachrichten verschicken";

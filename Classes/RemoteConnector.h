@@ -19,7 +19,14 @@ enum availableConnectors {
 #endif
 };
 
-// Ok, this is a little much for just two connectors - but we might want to extend this software even further some day :-)
+enum enigma2MessageTypes {
+	kMessageTypeYesNo = 0,
+	kMessageTypeInfo = 1,
+	kMessageTypeMessage = 2,
+	kMessageTypeAttention = 3,
+	kMessageTypeMax = 4
+};
+
 enum connectorFeatures {
 	// Timers can be disabled without removing them
 	kFeaturesDisabledTimers = 1,
@@ -29,6 +36,12 @@ enum connectorFeatures {
 	kFeaturesExtendedRecordInfo = 3, // XXX: as long as we lack more connectors this is specific enough
 	// Connector offers to restart just the remote GUI (not the same as rebooting!)
 	kFeaturesGUIRestart = 4,
+	// Can give a message type
+	kFeaturesMessageType = 5,
+	// Can set a custom caption for messages
+	kFeaturesMessageCaption = 6,
+	// Can provide a custom timeout
+	kFeaturesMessageTimeout = 7,
 };
 
 enum buttonCodes {
@@ -70,9 +83,9 @@ enum buttonCodes {
 	kButtonCodeHelp = 138,
 };
 
-#include "Service.h"
-#include "Volume.h"
-#include "Timer.h"
+@class Service;
+@class Volume;
+@class Timer;
 
 @protocol RemoteConnector
 
@@ -100,5 +113,6 @@ enum buttonCodes {
 - (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
 - (BOOL)delTimer:(Timer *) oldTimer;
 - (BOOL)sendButton:(NSInteger) type;
+- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
 
 @end

@@ -469,6 +469,27 @@
 	return ([response statusCode] == 200);
 }
 
+- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
+{
+	// Generate URI
+	// XXX: there's also nmsg - whats the difference?!
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?popup=%@", message] relativeToURL: baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// XXX: is this status code correct?
+	return ([response statusCode] == 200);
+}
+
 @end
 
 #endif
