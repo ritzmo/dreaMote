@@ -1,0 +1,267 @@
+﻿/*
+   Localizable.strings
+   Untitled
+
+   Created by Moritz Venn on 17.10.08.
+   Copyright 2008 __MyCompanyName__. All rights reserved.
+*/
+
+/* Placeholder of timerDescription */
+"<enter description>" = "<beschreibung>";
+
+/* Placeholder of timerTitle */
+"<enter title>" = "<title>";
+
+/* No comment provided by engineer. */
+"<remote address>" = "<entfernter host>";
+
+/* No comment provided by engineer. */
+"<remote password>" = "<zugangspasswort>";
+
+/* No comment provided by engineer. */
+"<remote username>" = "<zugangsname>";
+
+/* No comment provided by engineer. */
+"Add Timer" = "Neuer Timer";
+
+/* Default title of AfterEventViewController */
+"After Event" = "Nach der Aufnahme";
+
+/* No comment provided by engineer. */
+"Autodetect" = "Erkenne";
+
+/* No comment provided by engineer. */
+"Begin" = "Anfang";
+
+/* No comment provided by engineer. */
+"Can't edit a running or finished timer." = "Kann aktiven order beendeten Timer nicht bearbeiten.";
+
+/* No comment provided by engineer. */
+"Can't save a timer with an empty title." = "Kann keinen Timer ohne Titel sichern.";
+
+/* No comment provided by engineer. */
+"Cancel" = "Abbrechen";
+
+/* Default title of ConfigViewController
+   Default Title of ConfigListController */
+"Configuration" = "Konfiguration";
+
+/* No comment provided by engineer. */
+"Configured Connections" = "Bekannte Verbindungen";
+
+/* No comment provided by engineer. */
+"Connect" = "Verbinde";
+
+/* Default title of ConnectorViewController */
+"Connector" = "Connector";
+
+/* No comment provided by engineer. */
+"Control View Explain" = "Lautstärkesteuerung und Herunterfahren";
+
+/* No comment provided by engineer. */
+"Control View Title" = "Steuerung";
+
+/* Title of ControlViewController */
+"Controls" = "Steuerung";
+
+/* No comment provided by engineer. */
+"Could not determine remote box type." = "Konnte Recievertyp nicht autoamtisch erkennen!";
+
+/* No comment provided by engineer. */
+"Credential" = "Zugangsdaten";
+
+/* No comment provided by engineer. */
+"Date Picker" = "Datumsauswahl";
+
+/* No comment provided by engineer. */
+"Deep Standby" = "Herunterfahren";
+
+/* No comment provided by engineer. */
+"Delete failed" = "Entfernen fehlgeschlagen";
+
+/* No comment provided by engineer. */
+"Description" = "Beschreibung";
+
+/* No comment provided by engineer. */
+"Enabled" = "Aktiv";
+
+/* No comment provided by engineer. */
+"End" = "Ende";
+
+/* No comment provided by engineer. */
+"Enigma" = "Enigma";
+
+/* No comment provided by engineer. */
+"Enigma 2" = "Enigma 2";
+
+/* No comment provided by engineer. */
+"Error" = "Fehler";
+
+/* No comment provided by engineer. */
+"Error adding new timer." = "Konnte neuen Timer nicht hinzufügen.";
+
+/* No comment provided by engineer. */
+"Error editing timer." = "Konnte Timer nicht bearbeiten.";
+
+/* No comment provided by engineer. */
+"Event" = "Sendung";
+
+/* Default Title of EventListController */
+"Events" = "EPG";
+
+/* No comment provided by engineer. */
+"Finished" = "Beendet";
+
+/* in timer settings dialog */
+"General" = "Allgemein";
+
+/* No comment provided by engineer. */
+"Justplay" = "Nur wiedergeben";
+
+/* No comment provided by engineer. */
+"Make Default" = "Zu Standard machen";
+
+/* Default title of MovieViewController */
+"Movie" = "Aufnahme";
+
+/* No comment provided by engineer. */
+"Movie List Explain" = "Aufnahmen anzeigen";
+
+/* No comment provided by engineer. */
+"Movie List Title" = "Aufgenommene Filme";
+
+/* Title of MovieListController */
+"Movies" = "Aufnahmen";
+
+/* No comment provided by engineer. */
+"Mute" = "Stumm";
+
+/* No comment provided by engineer. */
+"N/A" = "n/v";
+
+/* No comment provided by engineer. */
+"Neutrino" = "Neutrino";
+
+/* No comment provided by engineer. */
+"New Connection" = "Neue Verbindung";
+
+/* No comment provided by engineer. */
+"New Timer" = "Neuer Timer";
+
+/* No comment provided by engineer. */
+"None" = "Keine";
+
+/* After Event */
+"Nothing" = "Nichts tun";
+
+/* No comment provided by engineer. */
+"Play" = "Wiedergabe";
+
+/* No comment provided by engineer. */
+"Power" = "Ausschalten";
+
+/* No comment provided by engineer. */
+"Prepared" = "Startet in Kürze";
+
+/* No comment provided by engineer. */
+"Reboot" = "Neu starten";
+
+/* No comment provided by engineer. */
+"Remote Box Type" = "Recievertyp";
+
+/* Title of RCEmulatorController */
+"Remote Control" = "Fernbedienung";
+
+/* No comment provided by engineer. */
+"Remote Control Explain" = "Emulierte Fernbedienung";
+
+/* No comment provided by engineer. */
+"Remote Control Title" = "Fernbedienung";
+
+/* No comment provided by engineer. */
+"Remote Host" = "Entfernter Host";
+
+/* No comment provided by engineer. */
+"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Entfernter Host nicht erreichbar!\nBitte überprüfen Sie ihre Netzwerkverbindung oder verbinden Sie sich zu einem anderen Server.";
+
+/* No comment provided by engineer. */
+"Restart" = "GUI neu starten";
+
+/* No comment provided by engineer. */
+"Running" = "Aktiv";
+
+/* No comment provided by engineer. */
+"Select Service" = "Sender auswählen";
+
+/* No comment provided by engineer. */
+"Service" = "Sender";
+
+/* No comment provided by engineer. */
+"Service List Explain" = "Favoriten anzeigen";
+
+/* No comment provided by engineer. */
+"Service List Title" = "Senderliste";
+
+/* Title of ServiceListController */
+"Services" = "Favoriten";
+
+/* No comment provided by engineer. */
+"Settings" = "Einstellungen";
+
+/* No comment provided by engineer. */
+"Show EPG" = "EPG anzeigen";
+
+/* No comment provided by engineer. */
+"Shutdown" = "Herunterfahren";
+
+/* No comment provided by engineer. */
+"Size" = "Größe";
+
+/* No comment provided by engineer. */
+"Standby" = "Standby";
+
+/* No comment provided by engineer. */
+"Tags" = "Tags";
+
+/* Default title of TimerViewController */
+"Timer" = "Timer";
+
+/* No comment provided by engineer. */
+"Timer List Explain" = "Bearbeiten der Timerliste";
+
+/* No comment provided by engineer. */
+"Timer List Title" = "Timer";
+
+/* Title of TimerListController */
+"Timers" = "Timer";
+
+/* No comment provided by engineer. */
+"Title" = "Titel";
+
+/* No comment provided by engineer. */
+"Today" = "Heute";
+
+/* No comment provided by engineer. */
+"Tomorrow" = "Morgen";
+
+/* No comment provided by engineer. */
+"Vibrate in RC" = "Vibration der FB";
+
+/* No comment provided by engineer. */
+"Volume" = "Lautstärke";
+
+/* No comment provided by engineer. */
+"Waiting" = "Wartend";
+
+/* UIActionSheet when List Item in ServiceListController selected */
+"What to do with the currently selected Service?" = "Was mit dem ausgewählten Service machen?";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Gestern";
+
+/* No comment provided by engineer. */
+"You need to configure this application before you can use it." = "Sie müssen diese Anwendung konfigurieren bevor Sie diese nutzen können!";
+
+/* No comment provided by engineer. */
+"Zap" = "Umschalten";
+
