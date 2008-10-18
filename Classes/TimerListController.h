@@ -11,6 +11,7 @@
 #import "Timer.h"
 
 @class FuzzyDateFormatter;
+@class TimerViewController;
 
 @interface TimerListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
@@ -18,6 +19,7 @@
 	NSMutableArray *_timers;
 	NSInteger dist[kTimerStateMax];
 	FuzzyDateFormatter *dateFormatter;
+	TimerViewController *timerViewController;
 }
 
 @property (nonatomic, retain) NSMutableArray *timers;

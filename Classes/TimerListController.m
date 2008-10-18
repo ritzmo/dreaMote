@@ -29,6 +29,7 @@
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
 		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		timerViewController = nil;
 	}
 	return self;
 }
@@ -38,8 +39,17 @@
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers release];
 	[dateFormatter release];
+	[timerViewController release];
 
 	[super dealloc];
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[timerViewController release];
+	timerViewController = nil;
+	
+    [super didReceiveMemoryWarning];
 }
 
 - (void)loadView
@@ -104,6 +114,8 @@
 
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
+	[timerViewController release];
+	timerViewController = nil;
 	[dateFormatter resetReferenceDate];
 }
 
@@ -187,9 +199,14 @@
 
 	Timer *timer = [_timers objectAtIndex: index];
 
-	TimerViewController *targetViewController = [TimerViewController withTimer: timer];
-	[self.navigationController pushViewController: targetViewController animated: YES];
-	[targetViewController release];
+	if(timerViewController == nil)
+		timerViewController = [[TimerViewController alloc] init];
+	
+	timerViewController.timer = timer;
+	timerViewController.oldTimer = [timer copy];
+	timerViewController.creatingNewTimer = NO;
+
+	[self.navigationController pushViewController: timerViewController animated: YES];
 
 	return nil;
 }
@@ -266,9 +283,14 @@
 	}
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		TimerViewController *targetViewController = [TimerViewController newTimer];
-		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
+		if(timerViewController == nil)
+			timerViewController = [[TimerViewController alloc] init];
+
+		timerViewController.timer = [Timer timer];
+		timerViewController.oldTimer = nil;
+		timerViewController.creatingNewTimer = YES;
+
+		[self.navigationController pushViewController: timerViewController animated: YES];
 
 		[self setEditing: NO animated: NO];
 	}

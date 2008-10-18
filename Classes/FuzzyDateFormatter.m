@@ -59,7 +59,7 @@
 		return retVal;
 	}
 
-	if (secSinceToday >= -ONEDAY && secSinceToday < 0)
+	if (secSinceToday >= ONEDAY && secSinceToday < TWODAY)
 	{
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Tomorrow", @"");
@@ -70,7 +70,7 @@
 		return retVal;
 	}
 
-	if (secSinceToday >= ONEDAY && secSinceToday < TWODAY)
+	if (secSinceToday >= -ONEDAY && secSinceToday < 0)
 	{
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Yesterday", @"");

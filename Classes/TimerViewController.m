@@ -34,9 +34,7 @@
 // the duration of the animation for the view shift
 #define kVerticalOffsetAnimationDuration		0.30
 
-@synthesize timer = _timer;
 @synthesize oldTimer = _oldTimer;
-@synthesize creatingNewTimer = _creatingNewTimer;
 
 - (id)init
 {
@@ -44,6 +42,7 @@
 	{
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
 
+		_creatingNewTimer = NO;
 		serviceListController = nil;
 		datePickerController = nil;
 		afterEventViewController = nil;
@@ -54,7 +53,6 @@
 + (TimerViewController *)withEvent: (Event *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.title = NSLocalizedString(@"New Timer", @"");
 	timerViewController.timer = [Timer withEvent: ourEvent];
 	timerViewController.creatingNewTimer = YES;
 
@@ -64,7 +62,6 @@
 + (TimerViewController *)withEventAndService: (Event *)ourEvent: (Service *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.title = NSLocalizedString(@"New Timer", @"");
 	timerViewController.timer = [Timer withEventAndService: ourEvent: ourService];
 	timerViewController.creatingNewTimer = YES;
 
@@ -84,7 +81,6 @@
 + (TimerViewController *)newTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.title = NSLocalizedString(@"New Timer", @"");
 	timerViewController.timer = [Timer timer];
 	timerViewController.creatingNewTimer = YES;
 
@@ -98,6 +94,8 @@
 
 	[timerTitle release];
 	[timerDescription release];
+	[timerEnabled release];
+	[timerJustplay release];
 
 	[serviceListController release];
 	[afterEventViewController release];
@@ -119,13 +117,47 @@
     [super didReceiveMemoryWarning];
 }
 
+- (Timer *)timer
+{
+	return _timer;
+}
+
+- (void)setTimer: (Timer *)newTimer
+{
+	if(_timer == newTimer) return;
+
+	[_timer release];
+	_timer = [newTimer retain];
+
+	timerTitle.text = newTimer.title;
+	timerDescription.text = newTimer.tdescription;
+	[timerEnabled setOn: !newTimer.disabled];
+	[timerJustplay setOn: newTimer.justplay];
+
+	[(UITableView *)self.view reloadData]; 
+}
+
+- (BOOL)creatingNewTimer
+{
+	return _creatingNewTimer;
+}
+
+- (void)setCreatingNewTimer: (BOOL)newValue
+{
+	_creatingNewTimer = newValue;
+	if(newValue)
+		self.title = NSLocalizedString(@"New Timer", @"");
+	else
+		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
+}
+
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	// Date Formatter
 	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
-	
+
 	return [format stringFromDate: dateTime];
 }
 
@@ -152,8 +184,7 @@
 - (UITextField *)create_TitleField
 {
 	UITextField *returnTextField = [self create_TextField];
-	
-    returnTextField.text = _timer.title;
+	returnTextField.text = _timer.title;
 	returnTextField.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of timerTitle");
 	
 	return returnTextField;
@@ -162,10 +193,9 @@
 - (UITextField *)create_DescriptionField
 {
 	UITextField *returnTextField = [self create_TextField];
-	
-    returnTextField.text = _timer.tdescription;
+	returnTextField.text = _timer.tdescription;
 	returnTextField.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of timerDescription");
-	
+
 	return returnTextField;
 }
 
@@ -628,8 +658,6 @@
     // watch the keyboard so we can adjust the user interface if necessary.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification object:self.view.window]; 
-
-	[super viewWillAppear: animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -641,8 +669,6 @@
 {
     // unregister for keyboard notifications while not visible.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-
-	[super viewWillDisappear: animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
