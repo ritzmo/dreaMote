@@ -25,6 +25,9 @@
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
+		DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutViewController.m */; };
+		DA51BC430EAA45A500AF9146 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DA51BC410EAA45A500AF9146 /* emblem-favorite.png */; };
+		DA51BC440EAA45A500AF9146 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DA51BC420EAA45A500AF9146 /* network-wired.png */; };
 		DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247BF0E3B33FA00B09600 /* CellTextField.m */; };
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
 		DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
@@ -79,14 +82,12 @@
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
 		DA8FE2870E3558CB000B32C3 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
-		DAA220480E9941F500DD749C /* segment_check.png in Resources */ = {isa = PBXBuildFile; fileRef = DAA220470E9941F500DD749C /* segment_check.png */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
 		DAB2A9E80EA7311300E62787 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB2A9E70EA7311300E62787 /* EventXMLReader.m */; };
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
-		DACE34E60EA1F9550082B04C /* connected.png in Resources */ = {isa = PBXBuildFile; fileRef = DACE34E50EA1F9550082B04C /* connected.png */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
@@ -132,6 +133,10 @@
 		DA2CC28A0E378FCC006AE171 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
+		DA51BAFF0EAA344200AF9146 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		DA51BB000EAA344200AF9146 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		DA51BC410EAA45A500AF9146 /* emblem-favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "emblem-favorite.png"; path = "Images/emblem-favorite.png"; sourceTree = "<group>"; };
+		DA51BC420EAA45A500AF9146 /* network-wired.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "network-wired.png"; path = "Images/network-wired.png"; sourceTree = "<group>"; };
 		DA5247BE0E3B33FA00B09600 /* CellTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextField.h; sourceTree = "<group>"; };
 		DA5247BF0E3B33FA00B09600 /* CellTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellTextField.m; sourceTree = "<group>"; };
 		DA5247C00E3B33FA00B09600 /* CellTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextView.h; sourceTree = "<group>"; };
@@ -207,7 +212,6 @@
 		DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseXMLReader.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
 		DAA21E7F0E99288600DD749C /* ConfigListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigListController.m; sourceTree = "<group>"; };
-		DAA220470E9941F500DD749C /* segment_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = segment_check.png; path = Images/segment_check.png; sourceTree = "<group>"; };
 		DAA2222A0E998CE900DD749C /* AfterEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AfterEventViewController.h; sourceTree = "<group>"; };
 		DAA2222B0E998CE900DD749C /* AfterEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AfterEventViewController.m; sourceTree = "<group>"; };
 		DAA9247B0EA68C4D00FC0E70 /* NeutrinoConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoConnector.h; sourceTree = "<group>"; };
@@ -220,7 +224,6 @@
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
-		DACE34E50EA1F9550082B04C /* connected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = connected.png; path = Images/connected.png; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
@@ -363,8 +366,8 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				DACE34E50EA1F9550082B04C /* connected.png */,
-				DAA220470E9941F500DD749C /* segment_check.png */,
+				DA51BC410EAA45A500AF9146 /* emblem-favorite.png */,
+				DA51BC420EAA45A500AF9146 /* network-wired.png */,
 				DA0A2A570E840E8600726F58 /* Icon.png */,
 				DA7A249F0E37398400455D11 /* key_0.png */,
 				DA7A232B0E372AC100455D11 /* key_1.png */,
@@ -415,6 +418,8 @@
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DA51BAFF0EAA344200AF9146 /* AboutViewController.h */,
+				DA51BB000EAA344200AF9146 /* AboutViewController.m */,
 				DAA2222A0E998CE900DD749C /* AfterEventViewController.h */,
 				DAA2222B0E998CE900DD749C /* AfterEventViewController.m */,
 				DAFE42A10E94220800896017 /* ConfigViewController.h */,
@@ -613,8 +618,8 @@
 				DA7A25B90E375D7600455D11 /* key_minus.png in Resources */,
 				DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */,
 				DA0A2A580E840E8600726F58 /* Icon.png in Resources */,
-				DAA220480E9941F500DD749C /* segment_check.png in Resources */,
-				DACE34E60EA1F9550082B04C /* connected.png in Resources */,
+				DA51BC430EAA45A500AF9146 /* emblem-favorite.png in Resources */,
+				DA51BC440EAA45A500AF9146 /* network-wired.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -687,6 +692,7 @@
 				DAB2A9E80EA7311300E62787 /* EventXMLReader.m in Sources */,
 				DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */,
 				DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */,
+				DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

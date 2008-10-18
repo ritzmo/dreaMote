@@ -26,6 +26,7 @@
 	{
 		self.length = [NSNumber numberWithInteger: -1];
 		self.size = [NSNumber numberWithInteger: -1];
+		self.time = nil;
 		self.sdescription = NSLocalizedString(@"N/A", @"");
 		self.edescription = NSLocalizedString(@"N/A", @"");
 		self.tags = [NSArray array];

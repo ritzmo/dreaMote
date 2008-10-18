@@ -20,6 +20,7 @@
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
 #import "MessageViewController.h"
+#import "AboutViewController.h"
 
 @implementation MainViewController
 
@@ -137,6 +138,14 @@
 
 	[button release];
 
+	// Add the "About" button to the navigation bar
+	UIButton* aboutViewButton = [UIButton buttonWithType: UIButtonTypeInfoLight];
+	[aboutViewButton addTarget:self action:@selector(aboutAction:) forControlEvents:UIControlEventTouchUpInside];
+	button = [[UIBarButtonItem alloc] initWithCustomView: aboutViewButton];
+	self.navigationItem.leftBarButtonItem = button;
+	[aboutViewButton release];
+	[button release];
+
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	myTableView.delegate = self;
@@ -157,6 +166,13 @@
 	if(configListController == nil)
 		configListController = [[ConfigListController alloc] init];
 	[self.navigationController pushViewController: configListController animated: YES];
+}
+
+- (void)aboutAction: (id)sender
+{
+	UIViewController *aboutViewController = [[AboutViewController alloc] init];
+	[self.navigationController presentModalViewController: aboutViewController animated:YES];
+	[aboutViewController release];
 }
 
 #pragma mark UIViewController delegates

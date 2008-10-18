@@ -149,9 +149,9 @@
 			else
 			{
 				if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == row)
-					sourceCell.image = [UIImage imageNamed:@"segment_check.png"];
+					sourceCell.image = [UIImage imageNamed:@"emblem-favorite.png"];
 				else if([RemoteConnectorObject getConnectedId] == row)
-					sourceCell.image = [UIImage imageNamed:@"connected.png"];
+					sourceCell.image = [UIImage imageNamed:@"network-wired.png"];
 				else
 					sourceCell.image = nil;
 				sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];

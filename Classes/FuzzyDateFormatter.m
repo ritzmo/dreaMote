@@ -37,6 +37,9 @@
 // XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
 - (NSString *)stringForObjectValue:(id)date
 {
+	if(date == nil)
+		return nil;
+
 	NSDateFormatterStyle dateStyle = [self dateStyle];
 	if(dateStyle == NSDateFormatterNoStyle)
 		return [super stringForObjectValue:date];
