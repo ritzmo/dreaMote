@@ -28,6 +28,12 @@ static NSUInteger parsedServicesCounter;
 	return xmlReader;
 }
 
+- (void)dealloc
+{
+	[_currentServiceObject release];
+	[super dealloc];
+}
+
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
 	parsedServicesCounter = 0;
@@ -57,23 +63,23 @@ static NSUInteger parsedServicesCounter;
 	{
 		elementName = qName;
 	}
-
-	// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
-	// Otherwise the application runs very slowly on the device.
-	if (parsedServicesCounter >= MAX_SERVICES)
-	{
-		self.currentServiceObject = nil;
-		self.contentOfCurrentProperty = nil;
-
-		[parser abortParsing];
-	}
 	
 	if ([elementName isEqualToString:@"e2service"] || [elementName isEqualToString:@"service"])
 	{
-		parsedServicesCounter++;
+		// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
+		// Otherwise the application runs very slowly on the device.
+		if(++parsedServicesCounter >= MAX_SERVICES)
+		{
+			self.currentServiceObject = nil;
+			self.contentOfCurrentProperty = nil;
 
-		// An (e2)service in the xml represents a service, so create an instance of it.
-		self.currentServiceObject = [[Service alloc] init];
+			[parser abortParsing];
+		}
+		else
+		{
+			// An (e2)service in the xml represents a service, so create an instance of it.
+			self.currentServiceObject = [[Service alloc] init];
+		}
 
 		return;
 	}

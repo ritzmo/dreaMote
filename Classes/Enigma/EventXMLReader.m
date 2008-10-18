@@ -28,6 +28,12 @@ static NSUInteger parsedEventsCounter;
 	return xmlReader;
 }
 
+- (void)dealloc
+{
+	[_currentEventObject release];
+	[super dealloc];
+}
+
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
 	parsedEventsCounter = 0;
@@ -74,22 +80,23 @@ static NSUInteger parsedEventsCounter;
 	if (qName) {
 		elementName = qName;
 	}
-
-	// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
-	// Otherwise the application runs very slowly on the device.
-	if (parsedEventsCounter >= MAX_EVENTS) {
-		self.currentEventObject = nil;
-		self.contentOfCurrentProperty = nil;
-
-		[parser abortParsing];
-	}
 	
 	if ([elementName isEqualToString:@"e2event"] || [elementName isEqualToString:@"event"]) {
 
-		parsedEventsCounter++;
+		// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
+		// Otherwise the application runs very slowly on the device.
+		if(++parsedEventsCounter >= MAX_EVENTS)
+		{
+			self.currentEventObject = nil;
+			self.contentOfCurrentProperty = nil;
 
-		// An (e2)event in the xml represents an event, so create an instance of it.
-		self.currentEventObject = [[Event alloc] init];
+			[parser abortParsing];
+		}
+		else
+		{
+			// An (e2)event in the xml represents an event, so create an instance of it.
+			self.currentEventObject = [[Event alloc] init];
+		}
 
 		return;
 	}

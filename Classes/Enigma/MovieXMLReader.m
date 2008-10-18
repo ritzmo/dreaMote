@@ -28,6 +28,12 @@ static NSUInteger parsedMoviesCounter;
 	return xmlReader;
 }
 
+- (void)dealloc
+{
+	[_currentMovieObject release];
+	[super dealloc];
+}
+
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
 	parsedMoviesCounter = 0;
@@ -62,22 +68,23 @@ static NSUInteger parsedMoviesCounter;
 	if (qName) {
 		elementName = qName;
 	}
-
-	// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
-	// Otherwise the application runs very slowly on the device.
-	if (parsedMoviesCounter >= MAX_MOVIES) {
-		self.currentMovieObject = nil;
-		self.contentOfCurrentProperty = nil;
-
-		[parser abortParsing];
-	}
 	
 	if ([elementName isEqualToString:@"e2movie"] || [elementName isEqualToString:@"service"]) {
 
-		parsedMoviesCounter++;
+		// If the number of parsed services is greater than MAX_ELEMENTS, abort the parse.
+		// Otherwise the application runs very slowly on the device.
+		if(++parsedMoviesCounter >= MAX_MOVIES)
+		{
+			self.currentMovieObject = nil;
+			self.contentOfCurrentProperty = nil;
 
-		// An e2movie/service in the xml represents a movie, so create an instance of it.
-		self.currentMovieObject = [[Movie alloc] init];
+			[parser abortParsing];
+		}
+		else
+		{
+			// An e2movie/service in the xml represents a movie, so create an instance of it.
+			self.currentMovieObject = [[Movie alloc] init];
+		}
 
 		return;
 	}

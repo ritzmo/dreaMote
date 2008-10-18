@@ -28,6 +28,12 @@ static NSUInteger parsedTimersCounter;
 	return xmlReader;
 }
 
+- (void)dealloc
+{
+	[_currentTimerObject release];
+	[super dealloc];
+}
+
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
 	parsedTimersCounter = 0;
@@ -95,22 +101,23 @@ static NSUInteger parsedTimersCounter;
 	if (qName) {
 		elementName = qName;
 	}
-
-	// If the number of parsed timers is greater than MAX_ELEMENTS, abort the parse.
-	// Otherwise the application runs very slowly on the device.
-	if (parsedTimersCounter >= MAX_TIMERS) {
-		self.currentTimerObject = nil;
-		self.contentOfCurrentProperty = nil;
-
-		[parser abortParsing];
-	}
 	
 	if ([elementName isEqualToString:@"e2timer"] || [elementName isEqualToString:@"timer"]) {
 
-		parsedTimersCounter++;
+		// If the number of parsed timers is greater than MAX_ELEMENTS, abort the parse.
+		// Otherwise the application runs very slowly on the device.
+		if(++parsedTimersCounter >= MAX_TIMERS)
+		{
+			self.currentTimerObject = nil;
+			self.contentOfCurrentProperty = nil;
 
-		// An (e2)timer in the xml represents a timer, so create an instance of it.
-		self.currentTimerObject = [[Timer alloc] init];
+			[parser abortParsing];
+		}
+		else
+		{
+			// An (e2)timer in the xml represents a timer, so create an instance of it.
+			self.currentTimerObject = [[Timer alloc] init];
+		}
 
 		return;
 	}

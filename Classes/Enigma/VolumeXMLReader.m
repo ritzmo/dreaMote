@@ -25,6 +25,12 @@ static NSUInteger parsedVolumesCounter;
 	return xmlReader;
 }
 
+- (void)dealloc
+{
+	[_currentVolumeObject release];
+	[super dealloc];
+}
+
 - (void)parserDidStartDocument:(NSXMLParser *)parser
 {
 	parsedVolumesCounter = 0;
@@ -46,19 +52,20 @@ static NSUInteger parsedVolumesCounter;
 		elementName = qName;
 	}
 
-	// We assume a unique Volume
-	if (parsedVolumesCounter > 1) {
-		self.currentVolumeObject = nil;
-		self.contentOfCurrentProperty = nil;
-
-		[parser abortParsing];
-	}
 
 	if ([elementName isEqualToString:@"e2volume"]) {
 
-		parsedVolumesCounter++;
+		// We assume a unique Volume
+		if (++parsedVolumesCounter > 1) {
+			self.currentVolumeObject = nil;
+			self.contentOfCurrentProperty = nil;
 
-		self.currentVolumeObject = [[Volume alloc] init];
+			[parser abortParsing];
+		}
+		else
+		{
+			self.currentVolumeObject = [[Volume alloc] init];
+		}
 
 		return;
 	}
