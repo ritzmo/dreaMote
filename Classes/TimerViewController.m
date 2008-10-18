@@ -12,12 +12,15 @@
 #import "DatePickerController.h"
 #import "AfterEventViewController.h"
 
-#import "DisplayCell.h"
-
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-
 #import "FuzzyDateFormatter.h"
+
+#import "DisplayCell.h"
+
+#import "Timer.h"
+#import "Event.h"
+#import "Service.h"
 
 @interface TimerViewController()
 - (void)setViewMovedUp:(BOOL)movedUp;

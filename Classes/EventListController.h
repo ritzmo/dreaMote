@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Service.h"
-#import "FuzzyDateFormatter.h"
-
+@class Service;
+@class FuzzyDateFormatter;
 @class EventViewController;
 
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>

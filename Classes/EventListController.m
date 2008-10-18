@@ -10,7 +10,11 @@
 
 #import "EventTableViewCell.h"
 #import "EventViewController.h"
+
 #import "RemoteConnectorObject.h"
+#import "FuzzyDateFormatter.h"
+
+#import "Service.h"
 #import "Event.h"
 
 @implementation EventListController

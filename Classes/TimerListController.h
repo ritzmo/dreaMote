@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import "Timer.h"
-#import "FuzzyDateFormatter.h"
+
+@class FuzzyDateFormatter;
 
 @interface TimerListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

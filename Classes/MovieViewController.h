@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Movie.h"
+@class Movie;
 
 @interface MovieViewController : UIViewController <UIScrollViewDelegate, UITableViewDelegate,
 													UITableViewDataSource>

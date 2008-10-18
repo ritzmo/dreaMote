@@ -6,8 +6,11 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import "Constants.h"
 #import "TimerTableViewCell.h"
+
+#import "Constants.h"
+
+#import "Service.h"
 
 @interface TimerTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;

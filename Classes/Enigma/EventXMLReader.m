@@ -8,6 +8,8 @@
 
 #import "EventXMLReader.h"
 
+#import "Event.h"
+
 static NSUInteger parsedEventsCounter;
 
 @implementation EnigmaEventXMLReader

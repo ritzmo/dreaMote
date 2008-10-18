@@ -10,9 +10,10 @@
 
 #import "EventListController.h"
 
-#import "ServiceTableViewCell.h"
 #import "RemoteConnectorObject.h"
 #import "Service.h"
+
+#import "ServiceTableViewCell.h"
 
 @implementation ServiceListController
 

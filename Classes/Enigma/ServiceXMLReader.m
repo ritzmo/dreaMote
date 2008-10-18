@@ -8,6 +8,8 @@
 
 #import "ServiceXMLReader.h"
 
+#import "Service.h"
+
 static NSUInteger parsedServicesCounter;
 
 @implementation ServiceXMLReader

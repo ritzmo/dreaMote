@@ -10,8 +10,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Event.h"
 #import "BaseXMLReader.h"
+
+@class Event;
 
 @interface NeutrinoEventXMLReader : BaseXMLReader
 {
@@ -20,7 +21,6 @@
 }
 
 + (NeutrinoEventXMLReader*)initWithTarget:(id)target action:(SEL)action;
-//- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error;
 
 @property (nonatomic, retain) Event *currentEventObject;
 

@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Service.h"
 #import "BaseXMLReader.h"
+
+@class Service;
 
 @interface ServiceXMLReader : BaseXMLReader
 {
@@ -20,7 +21,5 @@
 + (ServiceXMLReader*)initWithTarget:(id)target action:(SEL)action;
 
 @property (nonatomic, retain) Service *currentServiceObject;
-
-//- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error;
 
 @end

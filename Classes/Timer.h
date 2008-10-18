@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Service.h"
-#import "Event.h"
+@class Service;
+@class Event;
 
 enum afterEvent {
 	kAfterEventNothing = 0,

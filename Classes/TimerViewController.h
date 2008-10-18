@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Timer.h"
-#import "Event.h"
-#import "Service.h"
+@class Timer;
+@class Event;
+@class Service;
 
 #import "CellTextField.h"
 

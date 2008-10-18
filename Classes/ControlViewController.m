@@ -8,9 +8,12 @@
 
 #import "ControlViewController.h"
 
-#import "DisplayCell.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
+
+#import "DisplayCell.h"
+
+#import "Volume.h"
 
 @implementation ControlViewController
 

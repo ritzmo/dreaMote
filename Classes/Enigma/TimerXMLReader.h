@@ -1,9 +1,16 @@
-// Header
+//
+//  TimerXMLReader.h
+//  Untitled
+//
+//  Created by Moritz Venn on 11.03.08.
+//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 
-#import "Timer.h"
 #import "BaseXMLReader.h"
+
+@class Timer;
 
 @interface TimerXMLReader : BaseXMLReader
 {
@@ -12,7 +19,6 @@
 }
 
 + (TimerXMLReader*)initWithTarget:(id)target action:(SEL)action;
-//- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error;
 
 @property (nonatomic, retain) Timer *currentTimerObject;
 

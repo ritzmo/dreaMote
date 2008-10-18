@@ -8,6 +8,9 @@
 
 #import "Timer.h"
 
+#import "Service.h"
+#import "Event.h"
+
 @implementation Timer
 
 @synthesize eit = _eit;

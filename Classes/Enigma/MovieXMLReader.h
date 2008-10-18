@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Movie.h"
 #import "BaseXMLReader.h"
+
+@class Movie;
 
 @interface MovieXMLReader : BaseXMLReader
 {
@@ -18,7 +19,6 @@
 }
 
 + (MovieXMLReader*)initWithTarget:(id)target action:(SEL)action;
-//- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error;
 
 @property (nonatomic, retain) Movie *currentMovieObject;
 

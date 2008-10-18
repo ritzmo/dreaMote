@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Volume.h"
-
 @interface ControlViewController : UIViewController <UIScrollViewDelegate, UITableViewDelegate,
 														UITableViewDataSource>
 {

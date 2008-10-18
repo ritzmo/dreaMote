@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Event.h"
-#import "Service.h"
+@class Event;
+@class Service;
 
 @interface EventViewController : UIViewController <UIScrollViewDelegate,
 													UITableViewDelegate, UITableViewDataSource>

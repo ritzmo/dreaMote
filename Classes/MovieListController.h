@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "FuzzyDateFormatter.h"
-
+@class FuzzyDateFormatter;
 @class MovieViewController;
 
 @interface MovieListController : UIViewController <UITableViewDelegate, UITableViewDataSource>

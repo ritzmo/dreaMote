@@ -8,6 +8,8 @@
 
 #import "MovieXMLReader.h"
 
+#import "Movie.h"
+
 static NSUInteger parsedMoviesCounter;
 
 @implementation MovieXMLReader

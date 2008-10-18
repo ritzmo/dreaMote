@@ -7,11 +7,13 @@
 //
 
 #import "MovieListController.h"
-#import "RemoteConnectorObject.h"
+
 #import "MovieTableViewCell.h"
 #import "MovieViewController.h"
 
+#import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "FuzzyDateFormatter.h"
 
 @implementation MovieListController
 

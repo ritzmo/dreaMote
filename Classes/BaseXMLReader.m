@@ -54,6 +54,14 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @synthesize target = _target;
 @synthesize addObject = _addObject;
 
+- (void)dealloc
+{
+	[_contentOfCurrentProperty release];
+	[_target release];
+
+	[super dealloc];
+}
+
 + (BaseXMLReader*)initWithTarget:(id)target action:(SEL)action
 {
 	BaseXMLReader *xmlReader = [[BaseXMLReader alloc] init];

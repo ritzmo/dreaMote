@@ -8,13 +8,16 @@
 
 #import "MovieViewController.h"
 
-#import "CellTextView.h"
-#import "DisplayCell.h"
 #import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
 #import "Constants.h"
-
 #import "FuzzyDateFormatter.h"
+
+#import "CellTextView.h"
+#import "DisplayCell.h"
+
+#import "Movie.h"
+#import "Service.h"
 
 @implementation MovieViewController
 

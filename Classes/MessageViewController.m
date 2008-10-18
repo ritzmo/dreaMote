@@ -8,11 +8,11 @@
 
 #import "MessageViewController.h"
 
+#import "MessageTypeViewController.h"
+
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-
-#import "MessageTypeViewController.h"
 
 #import "DisplayCell.h"
 

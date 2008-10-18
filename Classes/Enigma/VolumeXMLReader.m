@@ -8,6 +8,8 @@
 
 #import "VolumeXMLReader.h"
 
+#import "Volume.h"
+
 static NSUInteger parsedVolumesCounter;
 
 @implementation VolumeXMLReader

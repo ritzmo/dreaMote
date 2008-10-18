@@ -9,11 +9,14 @@
 #import "EventViewController.h"
 
 #import "TimerViewController.h"
+#import "FuzzyDateFormatter.h"
+
 #import "CellTextView.h"
 #import "DisplayCell.h"
 #import "Constants.h"
 
-#import "FuzzyDateFormatter.h"
+#import "Event.h"
+#import "Service.h"
 
 @implementation EventViewController
 
