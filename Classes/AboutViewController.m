@@ -45,7 +45,7 @@
 	frame = CGRectMake(kLeftMargin, kTopMargin, self.view.bounds.size.width - 2*kLeftMargin, kTextViewHeight);
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
 	[aboutText loadHTMLString: NSLocalizedString(@"About Text", @"FULL HTML About text of the Application") baseURL: [NSURL URLWithString: @""]];
-	aboutText.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
+	aboutText.backgroundColor = [UIColor clearColor];
 	aboutText.delegate = self;
 	[self.view addSubview: aboutText];
 	[aboutText release];
