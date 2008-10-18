@@ -269,7 +269,8 @@
 "Message View Explain" = "Kurze Nachrichten verschicken";
 
 /* Translate this ?! */
-"About Text" = "Code by Moritz Venn in 2008.<br /><br /><br />
+"About Text" = "<html><head></head><body style=\"background-color: transparent;\">
+Code by Moritz Venn in 2008.<br /><br /><br />
 Remote Control Images and Application Icon donated by mfgeg. Thanks!<br /><br />
 Settings Icons are part of the <a href=\"http://tango.freedesktop.org\">Tango Icon Library</a> licensed under the <a href=\"http://creativecommons.org/licenses/by-sa/2.5/\">Creative Commons Attribution Share-Alike license</a>.
-";
+</body></html>";
