@@ -11,6 +11,9 @@
 
 #import "FuzzyDateFormatter.h"
 
+// cell identifier for this custom cell
+extern NSString *kEventCell_ID;
+
 @interface EventTableViewCell : UITableViewCell {
 
 @private	

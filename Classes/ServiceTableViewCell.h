@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Service.h"
 
+// cell identifier for this custom cell
+extern NSString *kServiceCell_ID;
+
 @interface ServiceTableViewCell : UITableViewCell
 {
 @private	

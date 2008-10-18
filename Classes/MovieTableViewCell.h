@@ -11,6 +11,9 @@
 
 #import "FuzzyDateFormatter.h"
 
+// cell identifier for this custom cell
+extern NSString *kMovieCell_ID;
+
 @interface MovieTableViewCell : UITableViewCell {
 
 @private	

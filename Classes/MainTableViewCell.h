@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+// cell identifier for this custom cell
+extern NSString *kMainCell_ID;
+
 @interface MainTableViewCell : UITableViewCell
 {
 @private

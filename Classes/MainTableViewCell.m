@@ -9,6 +9,9 @@
 #import "MainTableViewCell.h"
 #import "Constants.h"
 
+// cell identifier for this custom cell
+NSString *kMainCell_ID = @"MainCell_ID";
+
 @implementation MainTableViewCell
 
 @synthesize dataDictionary;

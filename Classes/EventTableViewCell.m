@@ -9,6 +9,9 @@
 #import "Constants.h"
 #import "EventTableViewCell.h"
 
+// cell identifier for this custom cell
+NSString *kEventCell_ID = @"EventCell_ID";
+
 @interface EventTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
@@ -64,7 +67,7 @@
 
 	[_event release];
 	_event = [newEvent retain];
-	
+
 	_eventNameLabel.text = newEvent.title;
 	[_formatter setDateStyle:NSDateFormatterMediumStyle];
 	NSString *begin = [_formatter stringFromDate: newEvent.begin];

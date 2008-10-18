@@ -12,6 +12,9 @@
 
 #import "FuzzyDateFormatter.h"
 
+// cell identifier for this custom cell
+extern NSString *kTimerCell_ID;
+
 @interface TimerTableViewCell : UITableViewCell
 {
 @private	

@@ -148,7 +148,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
-	static NSString *kTimerCell_ID = @"TimerCell_ID";
 
 	NSInteger section = indexPath.section;
 	UITableViewCell *cell = nil;

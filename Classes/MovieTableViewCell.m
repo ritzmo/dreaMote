@@ -11,6 +11,9 @@
 
 #import "FuzzyDateFormatter.h"
 
+// cell identifier for this custom cell
+NSString *kMovieCell_ID = @"MovieCell_ID";
+
 @interface MovieTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end

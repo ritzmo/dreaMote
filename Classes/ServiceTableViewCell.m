@@ -9,6 +9,9 @@
 #import "Constants.h"
 #import "ServiceTableViewCell.h"
 
+// cell identifier for this custom cell
+NSString *kServiceCell_ID = @"ServiceCell_ID";
+
 @interface ServiceTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end

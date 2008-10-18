@@ -12,6 +12,9 @@
 
 #import "Service.h"
 
+// cell identifier for this custom cell
+NSString *kTimerCell_ID = @"TimerCell_ID";
+
 @interface TimerTableViewCell()
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
 @end
