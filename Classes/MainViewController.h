@@ -14,6 +14,7 @@
 	NSMutableArray	*menuList;
 @private
 	UIViewController *configListController;
+	UIViewController *aboutViewController;
 	NSDictionary *_recordDictionary;
 }
 

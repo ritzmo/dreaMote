@@ -43,6 +43,7 @@
 	[myTableView release];
 	[menuList release];
 	[configListController release];
+	[aboutViewController release];
 	[_recordDictionary release];
 
 	[super dealloc];
@@ -52,6 +53,8 @@
 {
 	[configListController release];
 	configListController = nil;
+	[aboutViewController release];
+	aboutViewController = nil;
 
     [super didReceiveMemoryWarning];
 }
@@ -170,9 +173,9 @@
 
 - (void)aboutAction: (id)sender
 {
-	UIViewController *aboutViewController = [[AboutViewController alloc] init];
+	if(aboutViewController == nil)
+		aboutViewController = [[AboutViewController alloc] init];
 	[self.navigationController presentModalViewController: aboutViewController animated:YES];
-	[aboutViewController release];
 }
 
 #pragma mark UIViewController delegates
@@ -261,7 +264,7 @@
 	MainTableViewCell *cell = (MainTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
 	if (cell == nil)
 		cell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
-	
+
 	// get the view controller's info dictionary based on the indexPath's row
 	[cell setDataDictionary: [menuList objectAtIndex:indexPath.row]];
 
