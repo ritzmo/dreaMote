@@ -8,6 +8,10 @@
 
 @interface FuzzyDateFormatter : NSDateFormatter
 {
+@private
+	NSDate *thisNight;
 }
+
+- (void)resetReferenceDate;
 
 @end

@@ -79,6 +79,7 @@
 
 	[movieViewController release];
 	movieViewController = nil;
+	[dateFormatter resetReferenceDate];
 }
 
 - (void)loadView

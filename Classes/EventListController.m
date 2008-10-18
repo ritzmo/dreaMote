@@ -168,6 +168,7 @@
 {
 	[eventViewController release];
 	eventViewController = nil;
+	[dateFormatter resetReferenceDate];
 }
 
 @end

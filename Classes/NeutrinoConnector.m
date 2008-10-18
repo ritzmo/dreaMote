@@ -73,7 +73,6 @@
 - (BOOL)zapTo:(Service *) service
 {
 	// Generate URI
-	// TODO: this does not work for movies - find a solution or remove from GUI!
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;

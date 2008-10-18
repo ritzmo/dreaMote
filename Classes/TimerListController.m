@@ -102,6 +102,7 @@
 
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
+	[dateFormatter resetReferenceDate];
 }
 
 - (void)fetchTimers
