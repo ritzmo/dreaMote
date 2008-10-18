@@ -113,9 +113,10 @@
 	{
 		// channel_id channelname
 		NSRange range = [serviceString rangeOfString: @" "];
-		Service *service = [[Service alloc] init];
 		if(range.length)
 		{
+			Service *service = [[Service alloc] init];
+
 			// Cut until first " "
 			range.length = range.location;
 			range.location = 0;
@@ -129,8 +130,6 @@
 
 			[target performSelectorOnMainThread:action withObject:service waitUntilDone:NO];
 		}
-		else
-			[service release];
 	}
 }
 
@@ -179,9 +178,10 @@
 		Timer *timer = [[Timer alloc] init];
 		
 		// Determine type, reject unhandled
-		if([[timerStringComponents objectAtIndex: 1] integerValue] == neutrinoTimerTypeRecord)
+		NSInteger timerType = [[timerStringComponents objectAtIndex: 1] integerValue];
+		if(timerType == neutrinoTimerTypeRecord)
 			timer.justplay = NO;
-		else if([[timerStringComponents objectAtIndex: 1] integerValue] == neutrinoTimerTypeZapto)
+		else if(timerType == neutrinoTimerTypeZapto)
 			timer.justplay = YES;
 		else
 		{
@@ -235,8 +235,28 @@
 
 - (void)standby
 {
-	// TODO: standby is considered a toggle
-	[self sendPowerstate: @"standby?on"];
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: @"/control/standby" relativeToURL: baseAddress];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	if([myString isEqualToString: @"on"])
+		myString = @"standby?off";
+	else
+		myString = @"standby?on";
+
+	// XXX: sendPowerstate will toggle it back and on/off/on/off might look odd... remove?
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	[self sendPowerstate: myString];
 }
 
 - (void)reboot
