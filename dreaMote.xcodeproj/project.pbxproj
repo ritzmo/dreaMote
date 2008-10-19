@@ -94,6 +94,11 @@
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD51DF30D830A3900A769F3 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DF20D830A3900A769F3 /* Service.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
+		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
+		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
+		DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1410EABAD4300D99545 /* system-shutdown.png */; };
+		DADFB1470EABAD4300D99545 /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1420EABAD4300D99545 /* view-refresh.png */; };
+		DADFB1A20EABB2C800D99545 /* mail-forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1A10EABB2C800D99545 /* mail-forward.png */; };
 		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
 		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
@@ -236,6 +241,11 @@
 		DAD51DF20D830A3900A769F3 /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
+		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
+		DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "preferences-desktop-screensaver.png"; path = "Images/preferences-desktop-screensaver.png"; sourceTree = "<group>"; };
+		DADFB1410EABAD4300D99545 /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "system-shutdown.png"; path = "Images/system-shutdown.png"; sourceTree = "<group>"; };
+		DADFB1420EABAD4300D99545 /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "view-refresh.png"; path = "Images/view-refresh.png"; sourceTree = "<group>"; };
+		DADFB1A10EABB2C800D99545 /* mail-forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mail-forward.png"; path = "Images/mail-forward.png"; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
 		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
@@ -366,6 +376,11 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DADFB1A10EABB2C800D99545 /* mail-forward.png */,
+				DADFB13E0EABAD4300D99545 /* media-playback-start.png */,
+				DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */,
+				DADFB1410EABAD4300D99545 /* system-shutdown.png */,
+				DADFB1420EABAD4300D99545 /* view-refresh.png */,
 				DA51BC410EAA45A500AF9146 /* emblem-favorite.png */,
 				DA51BC420EAA45A500AF9146 /* network-wired.png */,
 				DA0A2A570E840E8600726F58 /* Icon.png */,
@@ -620,6 +635,11 @@
 				DA0A2A580E840E8600726F58 /* Icon.png in Resources */,
 				DA51BC430EAA45A500AF9146 /* emblem-favorite.png in Resources */,
 				DA51BC440EAA45A500AF9146 /* network-wired.png in Resources */,
+				DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */,
+				DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */,
+				DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */,
+				DADFB1470EABAD4300D99545 /* view-refresh.png in Resources */,
+				DADFB1A20EABB2C800D99545 /* mail-forward.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -628,7 +648,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		DAEC9A1C0E4424FF00033973 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -637,7 +657,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export CODESIGN_ALLOCATE=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate\nif [ \"${PLATFORM_NAME}\" == \"iphoneos\" ]; then\n\t${BUILT_PRODUCTS_DIR}/../../bin/gen_entitlements.py \"my.ritzMo.${PROJECT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\";\n\tcodesign -f -s \"iPhone Pwned Developer\" --resource-rules \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/ResourceRules.plist\" \\\n\t\t --entitlements \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\"  \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\nfi\n";
+			shellScript = "export CODESIGN_ALLOCATE=/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin/codesign_allocate\nif [ \"${PLATFORM_NAME}\" == \"iphoneos\" ]; then\n\t${BUILT_PRODUCTS_DIR}/../../bin/gen_entitlements.py \\\n\t\t\"my.ritzMo.${PROJECT_NAME}\" \\\n\t\t\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\";\n\tcodesign -f -s \"iPhone Pwned Developer\" --resource-rules \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/ResourceRules.plist\" \\\n\t\t --entitlements \"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/${PROJECT_NAME}.xcent\" \\\n\t\t\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

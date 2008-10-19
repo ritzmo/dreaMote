@@ -69,8 +69,11 @@
 
 - (UIButton *)create_SendButton
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"mail-forward.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
 	[button addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;

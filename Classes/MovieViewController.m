@@ -141,10 +141,13 @@
 
 - (UIButton *)create_PlayButton
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd]; // XXX: we need a proper play icon here
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"media-playback-start.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
 	[button addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 

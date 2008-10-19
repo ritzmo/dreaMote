@@ -321,6 +321,7 @@
 		UIImage *image = [UIImage imageNamed:imagePath];
 		[uiButton setBackgroundImage:image forState:UIControlStateHighlighted];
 		[uiButton setBackgroundImage:image forState:UIControlStateNormal];
+		[image release];
 	}
 	[uiButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
 

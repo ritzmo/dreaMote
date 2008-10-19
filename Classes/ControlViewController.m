@@ -107,59 +107,50 @@
 
 - (UIButton *)create_StandbyButton
 {
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
-	[roundedButtonType addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
+	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 
-	return roundedButtonType;
+	return button;
 }
 
 - (UIButton *)create_RebootButton
 {
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
-	[roundedButtonType addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
+	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 
-	return roundedButtonType;
+	return button;
 }
 
 - (UIButton *)create_RestartButton
 {
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
-	[roundedButtonType addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
-
-	return roundedButtonType;
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
+	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
 }
 
 - (UIButton *)create_ShutdownButton
 {
-	UIButton *roundedButtonType = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	roundedButtonType.frame = CGRectMake(0, 0, 25.0, 25.0);
-	[roundedButtonType addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
-
-	return roundedButtonType;
-}
-
-// XXX: these should be merged
-- (void)standby:(id)sender
-{
-	[[RemoteConnectorObject sharedRemoteConnector] standby];
-}
-
-- (void)reboot:(id)sender
-{
-	[[RemoteConnectorObject sharedRemoteConnector] reboot];
-}
-
-- (void)restart:(id)sender
-{
-	[[RemoteConnectorObject sharedRemoteConnector] restart];
-}
-
-- (void)shutdown:(id)sender
-{
-	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"system-shutdown.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
+	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return button;
 }
 
 - (void)toggleMuted:(id)sender
