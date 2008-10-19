@@ -82,7 +82,7 @@ static NSDictionary *_connection;
 
 + (BOOL)loadConnections
 {
-	NSString *finalPath = [@"~/Library/Preferences/Connections.plist" stringByExpandingTildeInPath];
+	NSString *finalPath = [@"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist" stringByExpandingTildeInPath];
 	
 	_connections = [[NSMutableArray arrayWithContentsOfFile: finalPath] retain];
 
@@ -102,7 +102,7 @@ static NSDictionary *_connection;
 
 + (void)saveConnections
 {
-	NSString *finalPath = [@"~/Library/Preferences/Connections.plist" stringByExpandingTildeInPath];
+	NSString *finalPath = [@"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist" stringByExpandingTildeInPath];
 
 	[_connections writeToFile: finalPath atomically: YES];
 	[_connections release];
