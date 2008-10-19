@@ -72,8 +72,10 @@
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	timerViewController.timer = ourTimer;
-	timerViewController.oldTimer = [ourTimer copy];
+	Timer *ourCopy = [ourTimer copy];
+	timerViewController.oldTimer = ourCopy;
 	timerViewController.creatingNewTimer = NO;
+	[ourCopy release];
 
 	return timerViewController;
 }

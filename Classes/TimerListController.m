@@ -30,6 +30,7 @@
 		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		timerViewController = nil;
+		_willReappear = NO;
 	}
 	return self;
 }
@@ -96,6 +97,7 @@
 
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
+	_willReappear = NO;
 
 	[(UITableView *)self.view reloadData];
 
@@ -114,8 +116,13 @@
 
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
-	[timerViewController release];
-	timerViewController = nil;
+
+	if(!_willReappear)
+	{
+		[timerViewController release];
+		timerViewController = nil;
+	}
+
 	[dateFormatter resetReferenceDate];
 }
 
@@ -190,7 +197,7 @@
 	return cell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger index = indexPath.row;
 	NSInteger section = indexPath.section - 1;
@@ -198,17 +205,19 @@
 		index += dist[section - 1];
 
 	Timer *timer = [_timers objectAtIndex: index];
+	Timer *ourCopy = [timer copy];
 
 	if(timerViewController == nil)
 		timerViewController = [[TimerViewController alloc] init];
-	
+
 	timerViewController.timer = timer;
-	timerViewController.oldTimer = [timer copy];
+	timerViewController.oldTimer = ourCopy;
 	timerViewController.creatingNewTimer = NO;
+	[ourCopy release];
+
+	_willReappear = YES;
 
 	[self.navigationController pushViewController: timerViewController animated: YES];
-
-	return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -289,6 +298,8 @@
 		timerViewController.timer = [Timer timer];
 		timerViewController.oldTimer = nil;
 		timerViewController.creatingNewTimer = YES;
+
+		_willReappear = YES;
 
 		[self.navigationController pushViewController: timerViewController animated: YES];
 

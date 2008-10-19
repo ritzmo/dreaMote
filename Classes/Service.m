@@ -18,8 +18,8 @@
 	self = [super init];
 	
 	if (self) {
-		self.sref = [service.sref copy];
-		self.sname = [service.sname copy];
+		_sref = [service.sref copy];
+		_sname = [service.sname copy];
 	}
 
 	return self;

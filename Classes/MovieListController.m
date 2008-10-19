@@ -77,10 +77,10 @@
 	{
 		[_movies makeObjectsPerformSelector:@selector(release)];
 		[_movies removeAllObjects];
+		[movieViewController release];
+		movieViewController = nil;
 	}
 
-	[movieViewController release];
-	movieViewController = nil;
 	[dateFormatter resetReferenceDate];
 }
 

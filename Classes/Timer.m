@@ -97,17 +97,17 @@
 	self = [super init];
 	
 	if (self) {
-		self.begin = [timer.begin copy];
-		self.end = [timer.end copy];
-		self.eit = [timer.eit copy];
-		self.title = [timer.title copy];
-		self.tdescription = [timer.tdescription copy];
-		self.disabled = timer.disabled;
-		self.justplay = timer.justplay;
-		self.service = [timer.service copy];
-		self.repeated = timer.repeated;
-		self.repeatcount = timer.repeatcount;
-		self.state = timer.state;
+		_begin = [timer.begin copy];
+		_end = [timer.end copy];
+		_eit = [timer.eit copy];
+		_title = [timer.title copy];
+		_tdescription = [timer.tdescription copy];
+		_disabled = timer.disabled;
+		_justplay = timer.justplay;
+		_service = [timer.service copy];
+		_repeated = timer.repeated;
+		_repeatcount = timer.repeatcount;
+		_state = timer.state;
 		_duration = -1;
 	}
 

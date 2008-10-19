@@ -20,6 +20,7 @@
 	NSInteger dist[kTimerStateMax];
 	FuzzyDateFormatter *dateFormatter;
 	TimerViewController *timerViewController;
+	BOOL _willReappear;
 }
 
 @property (nonatomic, retain) NSMutableArray *timers;
