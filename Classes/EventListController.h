@@ -15,18 +15,16 @@
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSArray *_events;
+	NSMutableArray *_events;
 	Service *_service;
 	FuzzyDateFormatter *dateFormatter;
 
 	EventViewController *eventViewController;
 }
 
-+ (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService;
 + (EventListController*)forService: (Service *)ourService;
 - (void)addEvent:(id)event;
 
-@property (nonatomic, retain) NSArray *events;
 @property (nonatomic, retain) Service *service;
 @property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 

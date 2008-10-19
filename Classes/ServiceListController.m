@@ -24,6 +24,7 @@
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
 		_services = [[NSMutableArray array] retain];
 		_refreshServices = YES;
+		eventListController = nil;
 	}
 	return self;
 }
@@ -33,8 +34,17 @@
 	[_services makeObjectsPerformSelector:@selector(release)];
 	[_services release];
 	[_selectTarget release];
+	[eventListController release];
 	
 	[super dealloc];
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[eventListController release];
+	eventListController = nil;
+
+	[super didReceiveMemoryWarning];
 }
 
 - (void)loadView
@@ -79,6 +89,9 @@
 	{
 		[_services makeObjectsPerformSelector:@selector(release)];
 		[_services removeAllObjects];
+
+		[eventListController release];
+		eventListController = nil;
 	}
 }
 
@@ -150,12 +163,13 @@
 	else if (buttonIndex == 1)
 	{
 		// Third Button: epg
-		EventListController *targetViewController = [EventListController forService: service];
+		if(eventListController == nil)
+			eventListController = [[EventListController alloc] init];
 
-		[self.navigationController pushViewController: targetViewController animated:YES];
-		[targetViewController release];
+		eventListController.service = service;
 
 		_refreshServices = NO;
+		[self.navigationController pushViewController: eventListController animated:YES];
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];

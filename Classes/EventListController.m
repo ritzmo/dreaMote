@@ -19,8 +19,6 @@
 
 @implementation EventListController
 
-@synthesize events = _events;
-@synthesize service = _service;
 @synthesize dateFormatter;
 
 - (id)init
@@ -31,34 +29,41 @@
 		dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		eventViewController = nil;
+		_service = nil;
+		_events = [[NSMutableArray array] retain];
 	}
 	return self;
-}
-
-+ (EventListController*)withEventListAndService: (NSArray *) eventList: (Service *)ourService
-{
-	EventListController *eventListController = [[EventListController alloc] init];
-	eventListController.events = eventList;
-	eventListController.service = ourService;
-
-	eventListController.title = ourService.sname;
-
-	return eventListController;
 }
 
 + (EventListController*)forService: (Service *)ourService
 {
 	EventListController *eventListController = [[EventListController alloc] init];
-	eventListController.events = [NSMutableArray array];
 	eventListController.service = ourService;
 
-	eventListController.title = ourService.sname;
+	return eventListController;
+}
+
+- (Service *)service
+{
+	return _service;
+}
+
+- (void)setService: (Service *)newService
+{
+	if(_service == newService) return;
+
+	[_service release];
+	_service = [newService retain];
+
+	self.title = newService.sname;
+
+	[_events makeObjectsPerformSelector:@selector(release)];
+	[_events removeAllObjects];
+	[(UITableView *)self.view reloadData];
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:eventListController withObject:nil];	
-
-	return eventListController;
+	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
 }
 
 - (void)dealloc

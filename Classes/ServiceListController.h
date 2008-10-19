@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class EventListController;
+
 @interface ServiceListController : UIViewController <UIActionSheetDelegate,
 													UITableViewDelegate, UITableViewDataSource>
 {
@@ -16,6 +18,7 @@
 	SEL _selectCallback;
 	id _selectTarget;
 	BOOL _refreshServices;
+	EventListController *eventListController;
 }
 
 - (void)setTarget: (id)target action: (SEL)action;
