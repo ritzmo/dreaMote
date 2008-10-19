@@ -103,7 +103,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		_serviceNameLabel.frame = frame;
 
 		// Place the other name label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 26, contentRect.size.width - kRightMargin, 12);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 25, contentRect.size.width - kRightMargin, 14);
 		_timerNameLabel.frame = frame;
 
 		// Place the time label.
