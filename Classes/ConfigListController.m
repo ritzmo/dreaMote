@@ -227,6 +227,8 @@
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
+
+		[self setEditing: NO animated: NO];
 	}
 }
 
@@ -239,7 +241,8 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[self setEditing: NO animated: NO];
+	// XXX: if we do this here this will break the edit button...
+	//[self setEditing: NO animated: NO];
 }
 
 @end

@@ -77,16 +77,21 @@
 	[super setEditing: editing animated: animated];
 	[(UITableView*)self.view setEditing: editing animated: animated];
 
-	if(editing)
+	if(animated)
 	{
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
+		if(editing)
+		{
+			[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
+							withRowAnimation: UITableViewRowAnimationTop];
+		}
+		else
+		{
+			[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
+							withRowAnimation: UITableViewRowAnimationTop];
+		}
 	}
 	else
-	{
-		[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
-	}
+		[(UITableView *)self.view reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -117,13 +122,17 @@
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
 
-	if(!_willReappear)
-	{
+	// XXX: we always release this for now unless the issue with the broken edit button is resolved
+	//if(!_willReappear)
+	//{
 		[timerViewController release];
 		timerViewController = nil;
-	}
+	//}
 
 	[dateFormatter resetReferenceDate];
+
+	// XXX: if we do this here this will break the edit button...
+	//[self setEditing: NO animated: NO];
 }
 
 - (void)fetchTimers

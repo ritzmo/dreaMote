@@ -151,8 +151,9 @@
 	else
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
 
+	_shouldSave = NO;
 	_creatingNewTimer = newValue;
-	[self setEditing: !newValue];
+	[self setEditing: newValue animated: NO];
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
@@ -205,8 +206,6 @@
 
 - (void)loadView
 {
-	_shouldSave = NO;
-
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	// create and configure the table view
@@ -240,6 +239,7 @@
 	timerJustplay.backgroundColor = [UIColor clearColor];
 
 	// default editing mode depends on our mode
+	_shouldSave = NO;
 	[self setEditing: _creatingNewTimer];
 }
 
@@ -255,6 +255,7 @@
 		}
 		else
 		{
+			[super setEditing: NO animated: animated];
 			[timerTitleCell stopEditing];
 			[timerDescriptionCell stopEditing];
 			timerEnabled.enabled = NO;
@@ -264,7 +265,6 @@
 	else
 	{
 		[super setEditing: editing animated: animated];
-
 		[(UITableView*)self.view reloadData];
 
 		[timerTitleCell setEditing:editing animated:animated];
