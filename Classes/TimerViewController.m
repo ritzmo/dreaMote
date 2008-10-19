@@ -146,11 +146,13 @@
 
 - (void)setCreatingNewTimer: (BOOL)newValue
 {
-	_creatingNewTimer = newValue;
 	if(newValue)
 		self.title = NSLocalizedString(@"New Timer", @"");
 	else
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
+
+	_creatingNewTimer = newValue;
+	[self setEditing: !newValue];
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
