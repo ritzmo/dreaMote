@@ -24,11 +24,13 @@
 {
 	if (self = [super init])
 	{
-		self.length = [NSNumber numberWithInteger: -1];
-		self.size = [NSNumber numberWithInteger: -1];
+		NSNumber *invalidNumber = [NSNumber numberWithInteger: -1];
+		self.length = invalidNumber;
+		self.size = invalidNumber;
 		self.time = nil;
-		self.sdescription = NSLocalizedString(@"N/A", @"");
-		self.edescription = NSLocalizedString(@"N/A", @"");
+		NSString *localizedNa = NSLocalizedString(@"N/A", @"");
+		self.sdescription = localizedNa;
+		self.edescription = localizedNa;
 		self.tags = [NSArray array];
 	}
 	return self;

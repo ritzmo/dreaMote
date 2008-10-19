@@ -31,19 +31,21 @@
 	[window addSubview: navigationController.view];
 	[window makeKeyAndVisible];
 
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *testValue = nil;
 
 	// Try to read 0.1-0 configuration
-	testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost];
+	testValue = [stdDefaults stringForKey: kRemoteHost];
 	if(testValue != nil)
 	{
 		// Build Connection Dict from old defaults
 		NSDictionary *connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									[[NSUserDefaults standardUserDefaults] stringForKey: kRemoteHost], kRemoteHost,
-									[[NSUserDefaults standardUserDefaults] stringForKey: kUsername], kUsername,
-									[[NSUserDefaults standardUserDefaults] stringForKey: kPassword], kPassword,
-									[NSNumber numberWithInteger: [[NSUserDefaults standardUserDefaults] integerForKey: kConnector]], kConnector,
+									[stdDefaults stringForKey: kRemoteHost], kRemoteHost,
+									[stdDefaults stringForKey: kUsername], kUsername,
+									[stdDefaults stringForKey: kPassword], kPassword,
+									[NSNumber numberWithInteger:
+												[stdDefaults integerForKey: kConnector]], kConnector,
 									nil];
 
 		// Load, edit and save new connections array
@@ -53,21 +55,21 @@
 		[RemoteConnectorObject saveConnections];
 
 		// Remove old defaults
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kRemoteHost];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kUsername];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kPassword];
-		[[NSUserDefaults standardUserDefaults] removeObjectForKey: kConnector];
+		[stdDefaults removeObjectForKey: kRemoteHost];
+		[stdDefaults removeObjectForKey: kUsername];
+		[stdDefaults removeObjectForKey: kPassword];
+		[stdDefaults removeObjectForKey: kConnector];
 
 		// Register new item (kActiveConnection)
 		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 									 activeConnectionId, kActiveConnection,
 									 nil];
 
-		[[NSUserDefaults standardUserDefaults] registerDefaults: appDefaults];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[stdDefaults registerDefaults: appDefaults];
+		[stdDefaults synchronize];
 	}
 
-	testValue = [[NSUserDefaults standardUserDefaults] stringForKey: kActiveConnection];
+	testValue = [stdDefaults stringForKey: kActiveConnection];
 	if(testValue == nil)
 	{
 		// no default values have been set, create them here
@@ -78,8 +80,8 @@
 									  NO, kVibratingRC,
 									  nil];
 
-		[[NSUserDefaults standardUserDefaults] registerDefaults: appDefaults];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+		[stdDefaults registerDefaults: appDefaults];
+		[stdDefaults synchronize];
 	}
 	else
 		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
@@ -92,6 +94,7 @@
 {
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
+	[RemoteConnectorObject disconnect];
 }
 
 - (void)dealloc
