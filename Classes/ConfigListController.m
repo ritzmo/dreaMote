@@ -227,8 +227,6 @@
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
-
-		[self setEditing: NO animated: NO];
 	}
 }
 
@@ -237,6 +235,11 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[(UITableView *)self.view reloadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[self setEditing: NO animated: NO];
 }
 
 @end
