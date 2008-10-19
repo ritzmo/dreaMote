@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AfterEventViewController : UIViewController <UIScrollViewDelegate,
-													UITableViewDelegate,
-													UITableViewDataSource>
+@interface AfterEventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	NSInteger _selectedItem;

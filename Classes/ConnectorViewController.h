@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConnectorViewController : UIViewController <UIScrollViewDelegate,
-													UITableViewDelegate,
-													UITableViewDataSource>
+@interface ConnectorViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	NSInteger _selectedItem;

@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MessageTypeViewController : UIViewController <UIScrollViewDelegate,
-													UITableViewDelegate,
-													UITableViewDataSource>
+@interface MessageTypeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	NSInteger _selectedItem;

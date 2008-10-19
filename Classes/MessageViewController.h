@@ -10,8 +10,7 @@
 
 #import "CellTextField.h"
 
-@interface MessageViewController : UIViewController <UIScrollViewDelegate,
-													UITextFieldDelegate, UITableViewDelegate,
+@interface MessageViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
 @private

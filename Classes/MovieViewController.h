@@ -10,8 +10,7 @@
 
 @class Movie;
 
-@interface MovieViewController : UIViewController <UIScrollViewDelegate, UITableViewDelegate,
-													UITableViewDataSource>
+@interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	Movie *_movie;

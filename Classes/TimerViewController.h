@@ -18,9 +18,9 @@
 @class AfterEventViewController;
 @class DatePickerController;
 
-@interface TimerViewController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate,
-													UITextFieldDelegate, UITableViewDelegate,
-													UITableViewDataSource, EditableTableViewCellDelegate>
+@interface TimerViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate,
+													UITableViewDelegate, UITableViewDataSource,
+													EditableTableViewCellDelegate>
 {
 @private
 	UITextField *timerTitle;

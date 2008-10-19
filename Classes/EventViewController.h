@@ -11,8 +11,7 @@
 @class Event;
 @class Service;
 
-@interface EventViewController : UIViewController <UIScrollViewDelegate,
-													UITableViewDelegate, UITableViewDataSource>
+@interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	Event *_event;

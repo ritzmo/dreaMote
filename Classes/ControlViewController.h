@@ -8,8 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ControlViewController : UIViewController <UIScrollViewDelegate, UITableViewDelegate,
-														UITableViewDataSource>
+@interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	UISwitch *_switchControl;
