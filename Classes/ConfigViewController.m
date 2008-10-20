@@ -210,6 +210,7 @@
 {
 	_shouldSave = NO;
 	[self setEditing: NO animated: YES];
+	[self.navigationController popViewControllerAnimated: YES];
 }
 
 - (void)makeDefault: (id)sender

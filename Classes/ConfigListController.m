@@ -24,6 +24,7 @@
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
 		_shouldSave = NO;
+		_viewWillReapper = NO;
 	}
 	return self;
 }
@@ -233,6 +234,7 @@
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
 		UIViewController *targetViewController = [ConfigViewController newConnection];
+		_viewWillReapper = YES;
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}
@@ -242,7 +244,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	if(!_viewWillReapper)
+		[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	_viewWillReapper = NO;
 	[(UITableView *)self.view reloadData];
 }
 
@@ -250,7 +254,7 @@
 {
 	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
 	// won't reset the editButtonItem
-	if(self.editing)
+	if(self.editing && !_viewWillReapper)
 	{
 		_shouldSave = NO;
 		[self setEditing: NO animated: YES];

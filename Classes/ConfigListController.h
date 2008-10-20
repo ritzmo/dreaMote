@@ -14,6 +14,7 @@
 	NSMutableArray *_connections;
 	UISwitch *vibrateInRC;
 	BOOL _shouldSave;
+	BOOL _viewWillReapper;
 }
 
 @end
