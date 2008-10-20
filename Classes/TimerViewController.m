@@ -136,6 +136,7 @@
 	[timerEnabled setOn: !newTimer.disabled];
 	[timerJustplay setOn: newTimer.justplay];
 
+	[(UITableView *)self.view scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 	[(UITableView *)self.view reloadData]; 
 }
 

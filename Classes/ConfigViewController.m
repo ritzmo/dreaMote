@@ -97,19 +97,25 @@
 
 - (UIButton *)create_DefaultButton
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"emblem-favorite.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
 	[button addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 
 - (UIButton *)create_ConnectButton
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect]; // XXX: an icon would be nice ;)
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIImage *image = [UIImage imageNamed:@"network-wired.png"];
+	[button setImage:image forState:UIControlStateHighlighted];
+	[button setImage:image forState:UIControlStateNormal];
+	[image release];
 	[button addTarget:self action:@selector(doConnect:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 

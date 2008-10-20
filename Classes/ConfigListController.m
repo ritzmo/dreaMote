@@ -151,20 +151,21 @@
 			if(self.editing)
 			{
 				if(row == 0)
-					sourceCell.text = NSLocalizedString(@"New Connection", @"");
-				else
-					sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row - 1] objectForKey: kRemoteHost];
-			}
-			else
-			{
-				if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == row)
-					sourceCell.image = [UIImage imageNamed:@"emblem-favorite.png"];
-				else if([RemoteConnectorObject getConnectedId] == row)
-					sourceCell.image = [UIImage imageNamed:@"network-wired.png"];
-				else
+				{
 					sourceCell.image = nil;
-				sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
+					sourceCell.text = NSLocalizedString(@"New Connection", @"");
+					break;
+				}
+				row--;
 			}
+
+			if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == row)
+				sourceCell.image = [UIImage imageNamed:@"emblem-favorite.png"];
+			else if([RemoteConnectorObject getConnectedId] == row)
+				sourceCell.image = [UIImage imageNamed:@"network-wired.png"];
+			else
+				sourceCell.image = nil;
+			sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			break;
 		case 1:
 			((DisplayCell *)sourceCell).view = vibrateInRC;
@@ -220,12 +221,17 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		NSInteger currentDefault = [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue];
+		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+		NSInteger currentDefault = [[stdDefaults objectForKey: kActiveConnection] integerValue];
 		NSInteger index = indexPath.row - 1;
+
 		if(currentDefault > index)
-			[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: currentDefault - 1] forKey: kActiveConnection];
-		else if(currentDefault == index) // XXX: we might want to reloadData in this case as the icons need to be adjusted...
-			[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
+			[stdDefaults setObject: [NSNumber numberWithInteger: currentDefault - 1] forKey: kActiveConnection];
+		else if(currentDefault == index)
+		{
+			[stdDefaults setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
+			[(UITableView *)self.view reloadData];
+		}
 
 		[_connections removeObjectAtIndex: index];
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
@@ -233,8 +239,9 @@
 	}
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		UIViewController *targetViewController = [ConfigViewController newConnection];
 		_viewWillReapper = YES;
+
+		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}
@@ -247,6 +254,7 @@
 	if(!_viewWillReapper)
 		[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
 	_viewWillReapper = NO;
+
 	[(UITableView *)self.view reloadData];
 }
 
