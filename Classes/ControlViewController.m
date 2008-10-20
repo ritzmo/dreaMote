@@ -112,7 +112,7 @@
 	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
-	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 
 	return button;
 }
@@ -124,7 +124,7 @@
 	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
-	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 
 	return button;
 }
@@ -136,7 +136,7 @@
 	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
-	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
 }
@@ -148,9 +148,30 @@
 	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
-	[button addTarget:[RemoteConnectorObject sharedRemoteConnector] action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return button;
+}
+
+// XXX: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
+- (void)standby:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] standby];
+}
+
+- (void)reboot:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] reboot];
+}
+
+- (void)restart:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] restart];
+}
+
+-(void)shutdown:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 }
 
 - (void)toggleMuted:(id)sender
