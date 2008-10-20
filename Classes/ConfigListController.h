@@ -13,6 +13,7 @@
 @private
 	NSMutableArray *_connections;
 	UISwitch *vibrateInRC;
+	BOOL _shouldSave;
 }
 
 @end

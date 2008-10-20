@@ -207,6 +207,9 @@
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
+	self.navigationItem.leftBarButtonItem = cancelButtonItem;
+	[cancelButtonItem release];
 
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
@@ -255,6 +258,7 @@
 		}
 		else
 		{
+			self.navigationItem.leftBarButtonItem = nil;
 			[super setEditing: NO animated: animated];
 			[timerTitleCell stopEditing];
 			[timerDescriptionCell stopEditing];
@@ -264,6 +268,17 @@
 	}
 	else
 	{
+		if(editing)
+		{
+			UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
+			self.navigationItem.leftBarButtonItem = cancelButtonItem;
+			[cancelButtonItem release];
+		}
+		else
+		{
+			self.navigationItem.leftBarButtonItem = nil;
+		}
+
 		[super setEditing: editing animated: animated];
 		[(UITableView*)self.view reloadData];
 
@@ -326,6 +341,13 @@
 			}
 		}
 	}
+}
+
+- (void)cancelEdit:(id)sender
+{
+	_shouldSave = NO;
+	[self setEditing: NO animated: YES];
+	[self.navigationController popViewControllerAnimated: YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -660,8 +682,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     // watch the keyboard so we can adjust the user interface if necessary.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
-												 name:UIKeyboardWillShowNotification object:self.view.window]; 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+												selector:@selector(keyboardWillShow:) 
+												name:UIKeyboardWillShowNotification
+												object:self.view.window]; 
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -672,7 +696,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												name:UIKeyboardWillShowNotification
+												object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

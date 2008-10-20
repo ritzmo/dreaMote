@@ -23,6 +23,7 @@
 	if (self) {
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
+		_shouldSave = NO;
 	}
 	return self;
 }
@@ -67,19 +68,26 @@
 
 	vibrateInRC.enabled = editing;
 
-	if(editing)
+	if(animated)
 	{
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
-						 withRowAnimation: UITableViewRowAnimationFade];
+		if(editing)
+		{
+			[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject:
+											[NSIndexPath indexPathForRow:0 inSection:0]]
+							withRowAnimation: UITableViewRowAnimationFade];
+		}
+		else
+		{
+			[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject:
+											[NSIndexPath indexPathForRow:0 inSection:0]]
+							withRowAnimation: UITableViewRowAnimationFade];
+		}
 	}
-	else
-	{
-		[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
-						 withRowAnimation: UITableViewRowAnimationFade];
 
+	if(!editing && _shouldSave)
 		[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.on forKey: kVibratingRC];
-	}
-	
+	_shouldSave = YES;
+
 	[(UITableView*)self.view reloadData];
 }
 
@@ -227,8 +235,6 @@
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
-
-		[self setEditing: NO animated: NO];
 	}
 }
 
@@ -236,13 +242,19 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
 	[(UITableView *)self.view reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
-	// XXX: if we do this here this will break the edit button...
-	//[self setEditing: NO animated: NO];
+	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
+	// won't reset the editButtonItem
+	if(self.editing)
+	{
+		_shouldSave = NO;
+		[self setEditing: NO animated: YES];
+	}
 }
 
 @end

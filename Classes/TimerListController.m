@@ -113,6 +113,14 @@
 	[super viewWillAppear: animated];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
+	// won't reset the editButtonItem
+	if(self.editing)
+		[self setEditing:NO animated: YES];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
 	NSInteger i;
@@ -122,17 +130,13 @@
 	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
 
-	// XXX: we always release this for now unless the issue with the broken edit button is resolved
-	//if(!_willReappear)
-	//{
+	if(!_willReappear)
+	{
 		[timerViewController release];
 		timerViewController = nil;
-	//}
+	}
 
 	[dateFormatter resetReferenceDate];
-
-	// XXX: if we do this here this will break the edit button...
-	//[self setEditing: NO animated: NO];
 }
 
 - (void)fetchTimers
@@ -311,8 +315,6 @@
 		_willReappear = YES;
 
 		[self.navigationController pushViewController: timerViewController animated: YES];
-
-		[self setEditing: NO animated: NO];
 	}
 }
 

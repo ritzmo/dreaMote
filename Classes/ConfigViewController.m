@@ -199,7 +199,9 @@
 	else
 	{
 		_shouldSave = YES;
-		[self.navigationItem setLeftBarButtonItem: [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)] animated: YES];
+		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
+		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
+		[cancelButtonItem release];
 		connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 }
