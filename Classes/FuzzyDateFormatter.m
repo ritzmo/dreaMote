@@ -24,13 +24,13 @@
 
 - (void)dealloc
 {
-	[thisNight dealloc];
+	[thisNight release];
 	[super dealloc];
 }
 
 - (void)resetReferenceDate
 {
-	[thisNight dealloc];
+	[thisNight release];
 	thisNight = nil;
 }
 
