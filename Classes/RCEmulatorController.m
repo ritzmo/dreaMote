@@ -52,7 +52,6 @@
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = contentView;
-
 	[contentView release];
 
 	UIButton *roundedButtonType;
@@ -75,18 +74,21 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_1.png" andKeyCode: kButtonCode1];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 2
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_2.png" andKeyCode: kButtonCode2];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 3
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_3.png" andKeyCode: kButtonCode3];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// new row
 	currX += imageHeight + kTweenMargin;
@@ -96,18 +98,21 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_4.png" andKeyCode: kButtonCode4];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 5
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_5.png" andKeyCode: kButtonCode5];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 6
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_6.png" andKeyCode: kButtonCode6];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// new row
@@ -118,18 +123,21 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_7.png" andKeyCode: kButtonCode7];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 8
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_8.png" andKeyCode: kButtonCode8];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 9
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_9.png" andKeyCode: kButtonCode9];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// new row
@@ -140,18 +148,21 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_leftarrow.png" andKeyCode: kButtonCodePrevious];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// 0
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_0.png" andKeyCode: kButtonCode0];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// >
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_rightarrow.png" andKeyCode: kButtonCodeNext];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	/* End Keypad */
@@ -164,47 +175,56 @@
 	frame = CGRectMake(currY+50, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_ok.png" andKeyCode: kButtonCodeOK];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	// left
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_left.png" andKeyCode: kButtonCodeLeft];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// right
 	frame = CGRectMake(currY+100, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_right.png" andKeyCode: kButtonCodeRight];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// up
 	frame = CGRectMake(currY+50, currX-40, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_up.png" andKeyCode: kButtonCodeUp];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// down
 	frame = CGRectMake(currY+50, currX+40, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_down.png" andKeyCode: kButtonCodeDown];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	/* Additional Buttons Navigation pad */
 	// info
 	frame = CGRectMake(currY, currX-40, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_info.png" andKeyCode: kButtonCodeInfo];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// audio
 	frame = CGRectMake(currY, currX+40, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_audio.png" andKeyCode: kButtonCodeAudio];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// menu
 	frame = CGRectMake(currY+100, currX-40, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_menu.png" andKeyCode: kButtonCodeMenu];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// video
 	frame = CGRectMake(currY+100, currX+40, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_video.png" andKeyCode: kButtonCodeVideo];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	/* End Navigation pad */
 
@@ -216,24 +236,28 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_red.png" andKeyCode: kButtonCodeRed];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// green
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_green.png" andKeyCode: kButtonCodeGreen];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// yellow
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_yellow.png" andKeyCode: kButtonCodeYellow];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// blue
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_blue.png" andKeyCode: kButtonCodeBlue];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	// next row
 	currX += imageHeight + kTweenMargin;
@@ -243,24 +267,28 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_tv.png" andKeyCode: kButtonCodeTV];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// radio
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_radio.png" andKeyCode: kButtonCodeRadio];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// text
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_text.png" andKeyCode: kButtonCodeText];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// help
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_help.png" andKeyCode: kButtonCodeHelp];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	/* End lower pad */
 	
@@ -272,12 +300,14 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_plus.png" andKeyCode: kButtonCodeVolUp];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currX += imageHeight + kTweenMargin;
 
 	// down
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_minus.png" andKeyCode: kButtonCodeVolDown];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	/* End Volume pad */
 
@@ -289,12 +319,14 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_plus.png" andKeyCode: kButtonCodeBouquetUp];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currX += imageHeight + kTweenMargin;
 
 	// down
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_minus.png" andKeyCode: kButtonCodeBouquetDown];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	/* End Bouquet pad */
 
@@ -304,6 +336,7 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_mute.png" andKeyCode: kButtonCodeMute];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 	
 	// lame
 	currX = 140;
@@ -311,6 +344,7 @@
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_exit.png" andKeyCode: kButtonCodeLame];
 	[self.view addSubview: roundedButtonType];
+	[roundedButtonType release];
 }
 
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode

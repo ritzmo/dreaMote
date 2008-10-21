@@ -308,7 +308,9 @@
 		if(timerViewController == nil)
 			timerViewController = [[TimerViewController alloc] init];
 
-		timerViewController.timer = [Timer timer];
+		Timer *newTimer = [Timer timer];
+		timerViewController.timer = newTimer;
+		[newTimer release];
 		timerViewController.oldTimer = nil;
 		timerViewController.creatingNewTimer = YES;
 

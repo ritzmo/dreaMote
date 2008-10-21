@@ -61,6 +61,7 @@
 		self.title = newMovie.title;
 
 	[(UITableView *)self.view reloadData];
+	[(UITableView *)self.view scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
 }
 
 - (void)loadView
@@ -126,7 +127,7 @@
 
 	[text release];
 
-	return myTextView;
+	return [myTextView autorelease];
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
@@ -148,7 +149,7 @@
 	[image release];
 	[button addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
 
-	return button;
+	return [button autorelease];
 }
 
 //* Convert the size in bytes of a movie to a human-readable size

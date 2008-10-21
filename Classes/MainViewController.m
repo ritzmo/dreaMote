@@ -63,16 +63,6 @@
 {	
 	menuList = [[NSMutableArray alloc] init];
 
-	// setup the parent content view to host the UITableView
-	UIView *contentView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	[contentView setBackgroundColor:[UIColor blackColor]];
-	self.view = contentView;
-	[contentView release];
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	self.view.autoresizesSubviews = YES;
-	self.view.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
 	// and add it to a mutable array.  If you want to add more pages, simply call "addObject" on "menuList"
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
@@ -138,7 +128,6 @@
 											style: UIBarButtonItemStyleDone
 											target: self action: @selector(settingsAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-
 	[button release];
 
 	// Add the "About" button to the navigation bar
@@ -162,6 +151,7 @@
 	[myTableView reloadData];	// populate our table's data
 	[self.view addSubview: myTableView];
 	self.view = myTableView;
+	[myTableView release];
 }
 
 - (void)settingsAction:(id)sender
