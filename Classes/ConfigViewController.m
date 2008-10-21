@@ -197,7 +197,10 @@
 				[(UITableView *)self.view reloadData];
 			}
 			else
+			{
 				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
+				[RemoteConnectorObject connectTo: connectionIndex]; // Reconnect because changes won't be applied otherwise
+			}
 		}
 
 		connectorCell.accessoryType = UITableViewCellAccessoryNone;
