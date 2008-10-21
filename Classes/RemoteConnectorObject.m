@@ -42,8 +42,12 @@ static NSDictionary *_connection;
 
 	if(_sharedRemoteConnector)
 	{
-		[_sharedRemoteConnector dealloc];
+		[_sharedRemoteConnector release];
 		_sharedRemoteConnector = nil;
+	}
+	
+	if(_connection)
+	{
 		[_connection release];
 		_connection = nil;
 	}
@@ -51,14 +55,14 @@ static NSDictionary *_connection;
 	switch(connectorId)
 	{
 		case kEnigma2Connector:
-			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteAddress] retain];
+			_sharedRemoteConnector = (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteAddress];
 			break;
 		case kEnigma1Connector:
-			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress] retain];
+			_sharedRemoteConnector = (NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress];
 			break;
 #ifdef ENABLE_NEUTRINO_CONNECTOR
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [(NSObject <RemoteConnector>*)[NeutrinoConnector createClassWithAddress: remoteAddress] retain];
+			_sharedRemoteConnector = (NSObject <RemoteConnector>*)[NeutrinoConnector createClassWithAddress: remoteAddress];
 			break;
 #endif
 		default:
@@ -73,8 +77,12 @@ static NSDictionary *_connection;
 {
 	if(_sharedRemoteConnector)
 	{
-		[_sharedRemoteConnector dealloc];
+		[_sharedRemoteConnector release];
 		_sharedRemoteConnector = nil;
+	}
+
+	if(_connection)
+	{
 		[_connection release];
 		_connection = nil;
 	}
@@ -83,7 +91,7 @@ static NSDictionary *_connection;
 + (BOOL)loadConnections
 {
 	NSString *finalPath = [@"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist" stringByExpandingTildeInPath];
-	
+
 	_connections = [[NSMutableArray arrayWithContentsOfFile: finalPath] retain];
 
 	if(_connections == nil)
