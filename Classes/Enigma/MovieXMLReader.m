@@ -83,7 +83,9 @@ static NSUInteger parsedMoviesCounter;
 		else
 		{
 			// An e2movie/service in the xml represents a movie, so create an instance of it.
-			self.currentMovieObject = [[Movie alloc] init];
+			Movie *newMovie = [[Movie alloc] init];
+			self.currentMovieObject = newMovie;
+			[newMovie release];
 		}
 
 		return;

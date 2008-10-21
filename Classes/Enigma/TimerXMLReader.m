@@ -116,7 +116,9 @@ static NSUInteger parsedTimersCounter;
 		else
 		{
 			// An (e2)timer in the xml represents a timer, so create an instance of it.
-			self.currentTimerObject = [[Timer alloc] init];
+			Timer *newTimer = [[Timer alloc] init];
+			self.currentTimerObject = newTimer;
+			[newTimer release];
 		}
 
 		return;

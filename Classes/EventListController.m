@@ -57,7 +57,6 @@
 
 	self.title = newService.sname;
 
-	[_events makeObjectsPerformSelector:@selector(release)];
 	[_events removeAllObjects];
 	[(UITableView *)self.view reloadData];
 
@@ -68,7 +67,6 @@
 
 - (void)dealloc
 {
-	[_events makeObjectsPerformSelector:@selector(release)];
 	[_events release];
 	[_service release];
 	[dateFormatter release];

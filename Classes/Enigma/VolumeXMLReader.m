@@ -64,7 +64,7 @@ static NSUInteger parsedVolumesCounter;
 		}
 		else
 		{
-			self.currentVolumeObject = [[Volume alloc] init];
+			_currentVolumeObject = [[Volume alloc] init];
 		}
 
 		return;

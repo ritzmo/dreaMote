@@ -95,7 +95,9 @@ static NSUInteger parsedEventsCounter;
 		else
 		{
 			// An (e2)event in the xml represents an event, so create an instance of it.
-			self.currentEventObject = [[Event alloc] init];
+			Event *newEvent = [[Event alloc] init];
+			self.currentEventObject = newEvent;
+			[newEvent release];
 		}
 
 		return;

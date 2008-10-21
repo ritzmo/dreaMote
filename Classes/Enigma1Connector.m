@@ -208,7 +208,7 @@
 										 returningResponse: &response error: nil];
 	
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	Volume *volumeObject = [[Volume alloc] init];
@@ -239,6 +239,7 @@
 		volumeObject.ismuted = NO;
 
 	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
+	[volumeObject release];
 }
 
 - (BOOL)toggleMuted

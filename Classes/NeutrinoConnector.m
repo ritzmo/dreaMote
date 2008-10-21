@@ -128,6 +128,7 @@
 			service.sname = [serviceString substringWithRange: range];
 
 			[target performSelectorOnMainThread:action withObject:service waitUntilDone:NO];
+			[service release];
 		}
 	}
 }
@@ -202,6 +203,7 @@
 		[service release];
 
 		[target performSelectorOnMainThread:action withObject:timer waitUntilDone:NO];
+		[timer release];
 	}
 }
 
@@ -305,6 +307,7 @@
 	volumeObject.current = [myString integerValue];
 
 	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
+	[volumeObject release];
 }
 
 - (BOOL)toggleMuted

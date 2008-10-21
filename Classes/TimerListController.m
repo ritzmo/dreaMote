@@ -37,7 +37,6 @@
 
 - (void)dealloc
 {
-	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers release];
 	[dateFormatter release];
 	[timerViewController release];
@@ -100,7 +99,6 @@
 	for(i = 0; i < kTimerStateMax; i++)
 		dist[i] = 0;
 
-	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
 	_willReappear = NO;
 
@@ -127,7 +125,6 @@
 	for(i = 0; i < kTimerStateMax; i++)
 		dist[i] = 0;
 
-	[_timers makeObjectsPerformSelector:@selector(release)];
 	[_timers removeAllObjects];
 
 	if(!_willReappear)

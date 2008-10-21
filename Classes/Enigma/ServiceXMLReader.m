@@ -78,7 +78,9 @@ static NSUInteger parsedServicesCounter;
 		else
 		{
 			// An (e2)service in the xml represents a service, so create an instance of it.
-			self.currentServiceObject = [[Service alloc] init];
+			Service *newService = [[Service alloc] init];
+			self.currentServiceObject = newService;
+			[newService release];
 		}
 
 		return;

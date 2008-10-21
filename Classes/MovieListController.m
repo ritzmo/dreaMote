@@ -36,7 +36,6 @@
 
 - (void)dealloc
 {
-	[_movies makeObjectsPerformSelector:@selector(release)];
 	[_movies release];
 	[dateFormatter release];
 	[movieViewController release];
@@ -56,7 +55,6 @@
 {
 	if(refreshMovies)
 	{
-		[_movies makeObjectsPerformSelector:@selector(release)];
 		[_movies removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
@@ -75,7 +73,6 @@
 {
 	if(refreshMovies)
 	{
-		[_movies makeObjectsPerformSelector:@selector(release)];
 		[_movies removeAllObjects];
 		[movieViewController release];
 		movieViewController = nil;

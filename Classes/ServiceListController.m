@@ -31,7 +31,6 @@
 
 - (void)dealloc
 {
-	[_services makeObjectsPerformSelector:@selector(release)];
 	[_services release];
 	[_selectTarget release];
 	[eventListController release];
@@ -68,7 +67,6 @@
 {
 	if(_refreshServices)
 	{
-		[_services makeObjectsPerformSelector:@selector(release)];
 		[_services removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
@@ -87,7 +85,6 @@
 {
 	if(_refreshServices)
 	{
-		[_services makeObjectsPerformSelector:@selector(release)];
 		[_services removeAllObjects];
 
 		[eventListController release];
