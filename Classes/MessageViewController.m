@@ -139,15 +139,34 @@
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:4];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 
+	NSString *failureMessage = nil;
+
 	NSString *message = messageTextField.text;
 	NSString *caption = captionTextField.text;
 	NSInteger type = _type;
 	NSInteger timeout = [timeoutTextField.text integerValue];
-	if(![[RemoteConnectorObject sharedRemoteConnector] sendMessage:message :caption :type :timeout])
+
+	// XXX: we could also join these messages
+	if(message == nil || [message isEqualToString: @""])
+		failureMessage = NSLocalizedString(@"Message cannot be empty.", @"");
+	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption]
+			&& (caption == nil || [caption isEqualToString: @""]))
+		failureMessage = NSLocalizedString(@"Caption cannot be empty.", @"");
+	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout]
+			&& timeout == 0)
+		failureMessage = NSLocalizedString(@"Please provide a valid timeout interval.", @"");
+	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType]
+			&& _type >= kMessageTypeMax)
+		failureMessage = NSLocalizedString(@"Invalid message type.", @"");
+	else if(![[RemoteConnectorObject sharedRemoteConnector] sendMessage:
+															   message :caption :type :timeout])
+		failureMessage = NSLocalizedString(@"Could not send message.", @"");
+
+	if(failureMessage != nil)
 	{
 		UIAlertView *notification = [[UIAlertView alloc]
 									 initWithTitle:NSLocalizedString(@"Error", @"")
-									 message:NSLocalizedString(@"Could not send message.", @"")
+									 message:failureMessage
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
