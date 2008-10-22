@@ -148,22 +148,38 @@
 // XXX: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
 - (void)standby:(id)sender
 {
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] standby];
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)reboot:(id)sender
 {
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] reboot];
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)restart:(id)sender
 {
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:1];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] restart];
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(void)shutdown:(id)sender
 {
+	NSIndexPath *indexPath;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
+		indexPath = [NSIndexPath indexPathForRow:3 inSection:1];
+	else
+		indexPath = [NSIndexPath indexPathForRow:2 inSection:1];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)toggleMuted:(id)sender
@@ -182,6 +198,11 @@
 }
 
 #pragma mark - UITableView delegates
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return nil;
+}
 
 // if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
 //
@@ -225,6 +246,7 @@
 	// we are creating a new cell, setup its attributes
 	switch (indexPath.section) {
 		case 0:
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			if(indexPath.row == 0)
 			{
 				sourceCell.nameLabel.text = nil;
@@ -237,6 +259,7 @@
 			}
 			break;
 		case 1:
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			switch (indexPath.row){
 				case 0:
 					sourceCell.nameLabel.text = NSLocalizedString(@"Standby", @"");

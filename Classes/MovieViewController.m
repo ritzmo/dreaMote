@@ -89,12 +89,17 @@
 //* @see #zapTo:
 - (void)playAction: (id)sender
 {
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:6];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+
 	Service *movieService = [[Service alloc] init];
 	[movieService setSref: _movie.sref];
 
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: movieService];
 
 	[movieService release];
+
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITextView *)create_Summary
@@ -176,6 +181,11 @@
 }
 
 #pragma mark - UITableView delegates
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return nil;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -368,6 +378,7 @@
 			sourceCell.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
 			break;
 		case 6:
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
 			((DisplayCell *)sourceCell).view = [self create_PlayButton];
 		default:

@@ -597,6 +597,8 @@
 
 			targetViewController = afterEventViewController;
 		}
+		else
+			return nil;
 
 		[self.navigationController pushViewController: targetViewController animated: YES];
 	}

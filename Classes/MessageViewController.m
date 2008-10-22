@@ -71,11 +71,9 @@
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"mail-forward.png"];
-	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
-	[image release];
 	[button addTarget:self action:@selector(sendMessage:) forControlEvents:UIControlEventTouchUpInside];
-	
+
 	return button;
 }
 
@@ -96,17 +94,17 @@
 	[tableView release];
 
 	// Message
-	messageTextField = [[self create_TextField] retain];
+	messageTextField = [self create_TextField];
 	messageTextField.placeholder = NSLocalizedString(@"<message text>", @"");
 	messageTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Caption
-	captionTextField = [[self create_TextField] retain];
+	captionTextField = [self create_TextField];
 	captionTextField.placeholder = NSLocalizedString(@"<message caption>", @"");
 	captionTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Timeout
-	timeoutTextField = [[self create_TextField] retain];
+	timeoutTextField = [self create_TextField];
 	timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
 	timeoutTextField.keyboardType = UIKeyboardTypeDefault; // XXX: we lack a better one :-)
 
@@ -114,7 +112,7 @@
 	_type = kMessageTypeInfo;
 
 	// Connect Button
-	sendButton = [[self create_SendButton] retain];
+	sendButton = [self create_SendButton];
 	sendButton.enabled = YES;
 
 	[self setEditing: YES animated: NO];
@@ -138,6 +136,9 @@
 
 - (void)sendMessage: (id)sender
 {
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:4];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+
 	NSString *message = messageTextField.text;
 	NSString *caption = captionTextField.text;
 	NSInteger type = _type;
@@ -151,6 +152,8 @@
 		[notification show];
 		[notification release];
 	}
+
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -312,7 +315,7 @@
 			cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
 			if (cell == nil) 
 				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
-			
+
 			cell.textAlignment = UITextAlignmentLeft;
 			cell.textColor = [UIColor blackColor];
 			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -321,7 +324,8 @@
 		case 4:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];			
+				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		default:
 			break;
 	}

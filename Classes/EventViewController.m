@@ -88,9 +88,14 @@
 
 - (void)addTimer: (id)sender
 {
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+
 	TimerViewController *targetViewController = [TimerViewController withEventAndService: _event: _service];
 	[self.navigationController pushViewController: targetViewController animated: YES];
 	[targetViewController release];
+
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITextView *)create_Summary
@@ -145,6 +150,11 @@
 }
 
 #pragma mark - UITableView delegates
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return nil;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
