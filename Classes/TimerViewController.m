@@ -295,47 +295,39 @@
 
 			// Sanity Check Title
 			if([[timerTitle text] length])
-			{
 				_timer.title = [timerTitle text];
-			}
 			else
-			{
 				message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
-			}
 
 			// Get Description
 			if([[timerDescription text] length])
 				_timer.tdescription = [timerDescription text];
 			else
 				_timer.tdescription = @"";
-			
+
 			// See if we actually have a Service
 			if(_timer.service == nil || !_timer.service.valid)
-			{
 				message = NSLocalizedString(@"Can't save a timer without a service.", @"");
-			}
 
 			_timer.disabled = !timerEnabled.on;
 			_timer.justplay = timerJustplay.on;
-			
+
 			// Try to commit changes if no error occured
 			if(!message)
 			{
 				if(_creatingNewTimer)
 				{
 					if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
-					{
 						message = NSLocalizedString(@"Error adding new timer.", @"");
-					}
 					else
-					{
 						[self.navigationController popViewControllerAnimated: YES];
-					}
 				}
 				else
 				{
-					if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
+					if([[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
 						message = NSLocalizedString(@"Error editing timer.", @"");
+					else
+						[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
 
