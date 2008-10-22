@@ -109,48 +109,44 @@
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
-	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
 	[button addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 
-	return button;
+	return [button autorelease];
 }
 
 - (UIButton *)create_RebootButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
-	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
 	[button addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 
-	return button;
+	return [button autorelease];
 }
 
 - (UIButton *)create_RestartButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
-	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
 	[button addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
+
+	return [button autorelease];
 }
 
 - (UIButton *)create_ShutdownButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"system-shutdown.png"];
-	[button setImage:image forState:UIControlStateHighlighted];
 	[button setImage:image forState:UIControlStateNormal];
 	[image release];
 	[button addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
 	
-	return button;
+	return [button autorelease];
 }
 
 // XXX: we might want to merge these by using a custom button... targeting the remote connector directly does not work!

@@ -141,7 +141,7 @@
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
 	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
 
-	return button;
+	return [button autorelease];
 }
 
 #pragma mark - UITableView delegates
