@@ -110,7 +110,6 @@
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[image release];
 	[button addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
@@ -121,7 +120,6 @@
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[image release];
 	[button addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
@@ -132,7 +130,6 @@
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[image release];
 	[button addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
@@ -143,7 +140,6 @@
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"system-shutdown.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[image release];
 	[button addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return [button autorelease];

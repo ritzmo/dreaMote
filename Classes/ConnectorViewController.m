@@ -20,6 +20,7 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Connector", @"Default title of ConnectorViewController");
+		_selectedItem = -1;
 	}
 	return self;
 }
