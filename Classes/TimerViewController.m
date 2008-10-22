@@ -126,10 +126,11 @@
 
 - (void)setTimer: (Timer *)newTimer
 {
-	if(_timer == newTimer) return;
-
-	[_timer release];
-	_timer = [newTimer retain];
+	if(_timer != newTimer)
+	{
+		[_timer release];
+		_timer = [newTimer retain];
+	}
 
 	timerTitle.text = newTimer.title;
 	timerDescription.text = newTimer.tdescription;

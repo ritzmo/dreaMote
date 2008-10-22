@@ -230,6 +230,7 @@
 		else if(currentDefault == index)
 		{
 			[stdDefaults setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
+			[RemoteConnectorObject disconnect];
 			[(UITableView *)self.view reloadData];
 		}
 

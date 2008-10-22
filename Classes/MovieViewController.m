@@ -55,8 +55,12 @@
 
 - (void)setMovie: (Movie *)newMovie
 {
-	[_movie release];
-	_movie = [newMovie retain];
+	if(_movie != newMovie)
+	{
+		[_movie release];
+		_movie = [newMovie retain];
+	}
+
 	if(newMovie != nil)
 		self.title = newMovie.title;
 

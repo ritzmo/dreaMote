@@ -58,8 +58,12 @@
 
 - (void)setEvent: (Event *)newEvent
 {
-	[_event release];
-	_event = [newEvent retain];
+	if(_event != newEvent)
+	{
+		[_event release];
+		_event = [newEvent retain];
+	}
+
 	if(newEvent != nil)
 		self.title = newEvent.title;
 

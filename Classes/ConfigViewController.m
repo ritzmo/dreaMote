@@ -194,12 +194,14 @@
 			{
 				connectionIndex = [connections count];
 				[connections addObject: connection];
+				[(UITableView *)self.view insertSections:[NSIndexSet indexSetWithIndex: 3] withRowAnimation:UITableViewRowAnimationFade];
 				[(UITableView *)self.view reloadData];
 			}
 			else
 			{
 				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
-				[RemoteConnectorObject connectTo: connectionIndex]; // Reconnect because changes won't be applied otherwise
+				if(connectionIndex == [RemoteConnectorObject getConnectedId])
+					[RemoteConnectorObject connectTo: connectionIndex]; // Reconnect because changes won't be applied otherwise
 			}
 		}
 
