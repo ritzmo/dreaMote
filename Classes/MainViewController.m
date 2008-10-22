@@ -56,6 +56,9 @@
 	[aboutViewController release];
 	aboutViewController = nil;
 
+	if([RemoteConnectorObject isConnected])
+		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
+
     [super didReceiveMemoryWarning];
 }
 

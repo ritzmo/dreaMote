@@ -115,4 +115,6 @@ enum buttonCodes {
 - (BOOL)sendButton:(NSInteger) type;
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
 
+- (void)freeCaches;
+
 @end

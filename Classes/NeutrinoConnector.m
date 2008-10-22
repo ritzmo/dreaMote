@@ -36,6 +36,7 @@
 	if(self = [super init])
 	{
 		self.baseAddress = [NSURL URLWithString: address];
+		serviceCache = nil;
 	}
 	return self;
 }
@@ -43,6 +44,7 @@
 - (void)dealloc
 {
 	[baseAddress release];
+	[serviceCache release];
 
 	[super dealloc];
 }
@@ -90,6 +92,7 @@
 	return ([response statusCode] == 200);
 }
 
+// TODO: reimplement this as streaming parser some day :-)
 - (void)fetchServices:(id)target action:(SEL)action
 {
 	// Generate URI
@@ -105,9 +108,11 @@
 										 returningResponse: &response error: nil];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	// Parse
 	NSArray *serviceStringList = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString: @"\n"];
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 100]; // We might want to figure out some sane initial capactiy
+
 	for(NSString *serviceString in serviceStringList)
 	{
 		// channel_id channelname
@@ -120,17 +125,22 @@
 			range.length = range.location;
 			range.location = 0;
 			service.sref = [serviceString substringWithRange: range];
-			
+
 			// Cut from first " "
 			range.location = range.length + 1;
 			range.length = [serviceString length] - range.location;
-			
+
 			service.sname = [serviceString substringWithRange: range];
+
+			[dict setObject: service forKey: service.sref];
 
 			[target performSelectorOnMainThread:action withObject:service waitUntilDone:NO];
 			[service release];
 		}
 	}
+
+	[serviceCache release];
+	serviceCache = [[NSDictionary dictionaryWithDictionary: dict] retain];
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
@@ -149,8 +159,13 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
+// TODO: reimplement this as streaming parser some day :-)
 - (void)fetchTimers:(id)target action:(SEL)action
 {
+	// Refresh Service Cache if empty, we need it later when resolving service references
+	if(serviceCache == nil)
+		[self fetchServices:nil action:nil];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/timer?format=id" relativeToURL: baseAddress];
 
@@ -196,11 +211,19 @@
 		[timer setBeginFromString: [timerStringComponents objectAtIndex: 5]];
 		[timer setEndFromString: [timerStringComponents objectAtIndex: 6]];
 
-		Service *service = [[Service alloc] init];
-		service.sref = [timerStringComponents objectAtIndex: 7];
-		service.sname = @"???"; // XXX: should be resolved
-		timer.service = service;
-		[service release];
+		// Eventually fetch Service from our Cache
+		NSString *sref = [timerStringComponents objectAtIndex: 7];
+		Service *service = [serviceCache objectForKey: sref];
+		if(service != nil)
+			timer.service = service;
+		else
+		{
+			service = [[Service alloc] init];
+			service.sref = sref;
+			service.sname = @"???";
+			timer.service = service;
+			[service release];
+		}
 
 		[target performSelectorOnMainThread:action withObject:timer waitUntilDone:NO];
 		[timer release];
@@ -254,10 +277,9 @@
 	else
 		myString = @"standby?on";
 
-	// XXX: sendPowerstate will toggle it back and on/off/on/off might look odd... remove?
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
 	[self sendPowerstate: myString];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)reboot
@@ -510,6 +532,12 @@
 
 	// XXX: is this status code correct?
 	return ([response statusCode] == 200);
+}
+
+- (void)freeCaches
+{
+	[serviceCache release];
+	serviceCache = nil;
 }
 
 @end

@@ -422,4 +422,9 @@
 	return NO;
 }
 
+- (void)freeCaches
+{
+	// XXX: We don't use any caches
+}
+
 @end

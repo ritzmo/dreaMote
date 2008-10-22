@@ -15,6 +15,7 @@
 @interface NeutrinoConnector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;
+	NSDictionary *serviceCache;
 }
 
 @property (nonatomic, retain) NSURL *baseAddress;
