@@ -38,7 +38,9 @@
 	timer.eit = ourEvent.eit;
 	timer.disabled = NO;
 	timer.justplay = NO;
-	timer.service = [[Service alloc] init];
+	Service *newService = [[Service alloc] init];
+	timer.service = newService;
+	[newService release];
 	timer.repeated = 0;
 	timer.repeatcount = 0;
 	timer.state = 0;
@@ -75,7 +77,9 @@
 	timer.tdescription = @"";
 	timer.disabled = NO;
 	timer.justplay = NO;
-	timer.service = [[Service alloc] init];
+	Service *newService = [[Service alloc] init];
+	timer.service = newService;
+	[newService release];
 	timer.repeated = 0;
 	timer.repeatcount = 0;
 	timer.state = 0;
@@ -88,6 +92,7 @@
 	if (self = [super init])
 	{
 		_duration = -1;
+		_service = nil;
 	}
 	return self;
 }

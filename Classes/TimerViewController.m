@@ -308,6 +308,12 @@
 				_timer.tdescription = [timerDescription text];
 			else
 				_timer.tdescription = @"";
+			
+			// See if we actually have a Service
+			if(_timer.service == nil || !_timer.service.valid)
+			{
+				message = NSLocalizedString(@"Can't save a timer without a service.", @"");
+			}
 
 			_timer.disabled = !timerEnabled.on;
 			_timer.justplay = timerJustplay.on;

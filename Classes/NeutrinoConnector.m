@@ -454,7 +454,7 @@
 		case kButtonCodeRight: buttonCode = @"KEY_RIGHT"; break;
 		case kButtonCodeUp: buttonCode = @"KEY_UP"; break;
 		case kButtonCodeDown: buttonCode = @"KEY_DOWN"; break;
-		//case kButtonCode: buttonCode = @"KEY_HOME"; break; // XXX: unimpl?
+		case kButtonCodeLame: buttonCode = @"KEY_HOME"; break;
 		case kButtonCodeRed: buttonCode = @"KEY_RED"; break;
 		case kButtonCodeGreen: buttonCode = @"KEY_GREEN"; break;
 		case kButtonCodeYellow: buttonCode = @"KEY_YELLOW"; break;
@@ -495,7 +495,7 @@
 {
 	// Generate URI
 	// XXX: there's also nmsg - whats the difference?!
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?popup=%@", message] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?popup=%@", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 

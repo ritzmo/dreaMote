@@ -17,5 +17,6 @@
 
 @property (nonatomic, retain) NSString *sref;
 @property (nonatomic, retain) NSString *sname;
+@property (nonatomic, readonly, getter = isValid) BOOL valid;
 
 @end

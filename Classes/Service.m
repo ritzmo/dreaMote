@@ -33,6 +33,11 @@
 	[super dealloc];
 }
 
+- (BOOL)isValid
+{
+	return _sref != nil;
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -
