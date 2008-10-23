@@ -39,6 +39,7 @@
 	[toolbar release];
 	[rcView release];
 	[screenView release];
+	[scrollView release];
 	[imageView release];
 	[screenshotButton release];
 
@@ -404,13 +405,24 @@
 
 	[screenView addSubview:toolbar];
 
-	// XXX: find valid frame
-	imageView = [[UIImageView alloc] initWithFrame: CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height - (toolbarHeight * 2.0))];
-	[screenView addSubview: imageView];
+	scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height - (toolbarHeight * 2.0) + 2.0)];
+	scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	scrollView.autoresizesSubviews = YES;
+	screenView.clipsToBounds = NO;
+	scrollView.contentMode = (UIViewContentModeScaleAspectFit);
+	scrollView.delegate = self;
+	scrollView.maximumZoomScale = 2.6;
+	scrollView.minimumZoomScale = 1.0;
+	scrollView.exclusiveTouch = NO;
+	[screenView addSubview: scrollView];
+	imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
+	imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	imageView.contentMode = UIViewContentModeScaleAspectFit;
+	[scrollView addSubview: imageView];
 
     UIBarButtonItem *systemItem = [[UIBarButtonItem alloc]
 								   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-								   target:self action:@selector(screenView:)];
+								   target:self action:@selector(flipView:)];
 	
 	// flex item used to separate the left groups items and right grouped items
 	UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -419,12 +431,6 @@
 
 	// XXX: find icons!
 
-	// create a bordered style button with custom title
-	UIBarButtonItem *reloadItem = [[UIBarButtonItem alloc] initWithTitle:@"Reload"
-																style:UIBarButtonItemStyleBordered
-															   target:self
-															   action:@selector(loadImage:)];
-	
 	// create a bordered style button with custom title
 	UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:@"OSD"
 																  style:UIBarButtonItemStyleBordered
@@ -437,7 +443,7 @@
 																  target:self
 																  action:@selector(setVideoType:)];
 
-	NSArray *items = [NSArray arrayWithObjects: systemItem, reloadItem, flexItem, osdItem, videoItem, nil];
+	NSArray *items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, videoItem, nil];
 	[toolbar setItems:items animated:NO];
 
 	[systemItem release];
@@ -475,9 +481,9 @@
 	}
 	else
 	{
+		[self loadImage: nil];
 		[rcView removeFromSuperview];
 		[self.view addSubview: screenView];
-		[self loadImage: nil];
 	}
 
 	[UIView commitAnimations];
@@ -495,7 +501,13 @@
 
 	UIImage * image = [UIImage imageWithData: [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType]];
 	if(image != nil)
+	{
 		imageView.image = image;
+		CGSize size = image.size;
+		scrollView.contentSize = CGSizeMake(size.width*0.45, size.height*0.45);
+
+		imageView.frame = CGRectMake(0.0, 0.0, size.width*0.45, size.height*0.45);
+	}
 	else
 		NSLog(@"Bla, no valid image");
 
@@ -504,20 +516,14 @@
 
 - (void)setOSDType:(id)sender
 {
-	if(_screenshotType != kScreenshotTypeOSD)
-	{
-		_screenshotType = kScreenshotTypeOSD;
-		[self loadImage: nil];
-	}
+	_screenshotType = kScreenshotTypeOSD;
+	[self loadImage: nil];
 }
 
 - (void)setVideoType:(id)sender
 {
-	if(_screenshotType != kScreenshotTypeVideo)
-	{
-		_screenshotType = kScreenshotTypeVideo;
-		[self loadImage: nil];
-	}
+	_screenshotType = kScreenshotTypeVideo;
+	[self loadImage: nil];
 }
 
 - (void)buttonPressed:(RCButton *)sender
@@ -538,11 +544,17 @@
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	if([screenView superview])
-		return YES;
+	//if([screenView superview])
+	//	return YES;
 
 	// RC should only be displayed in portrait mode
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark UIScrollView delegates
+
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return imageView;
 }
 
 @end

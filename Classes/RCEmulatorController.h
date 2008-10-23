@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCEmulatorController : UIViewController {
+@interface RCEmulatorController : UIViewController <UIScrollViewDelegate>
+{
 @private
 	BOOL _shouldVibrate;
 	UIView *rcView;
 	UIView *screenView;
+	UIScrollView *scrollView;
 	UIImageView *imageView;
 	UIToolbar *toolbar;
 	UIButton *screenshotButton;
