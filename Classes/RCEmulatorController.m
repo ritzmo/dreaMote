@@ -417,6 +417,7 @@
 	[screenView addSubview: scrollView];
 	imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
 	imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	imageView.autoresizesSubviews = YES;
 	imageView.contentMode = UIViewContentModeScaleAspectFit;
 	[scrollView addSubview: imageView];
 
@@ -502,10 +503,10 @@
 	UIImage * image = [UIImage imageWithData: [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType]];
 	if(image != nil)
 	{
-		imageView.image = image;
 		CGSize size = image.size;
-		scrollView.contentSize = CGSizeMake(size.width*0.45, size.height*0.45);
 
+		imageView.image = image;
+		scrollView.contentSize = CGSizeMake(size.width*0.45, size.height*0.45);
 		imageView.frame = CGRectMake(0.0, 0.0, size.width*0.45, size.height*0.45);
 	}
 	else
@@ -543,9 +544,29 @@
 	[pool release];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	screenView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height);
+
+	// size up the toolbar and set its frame
+	[toolbar sizeToFit];
+	CGFloat toolbarHeight = toolbar.frame.size.height;
+	CGRect mainViewBounds = screenView.bounds;
+	[toolbar setFrame:CGRectMake(CGRectGetMinX(mainViewBounds),
+								 CGRectGetMinY(mainViewBounds) + CGRectGetHeight(mainViewBounds) - toolbarHeight,
+								 CGRectGetWidth(mainViewBounds),
+								 toolbarHeight)];
+
+	scrollView.frame = CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height - toolbarHeight);
+
+	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one ;-)
+	imageView.image = nil;
+	[self loadImage: nil];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	//if([screenView superview])
-	//	return YES;
+	if([screenView superview])
+		return YES;
 
 	// RC should only be displayed in portrait mode
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
