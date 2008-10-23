@@ -27,6 +27,12 @@ enum enigma2MessageTypes {
 	kMessageTypeMax = 4
 };
 
+enum screenshotType {
+	kScreenshotTypeBoth = 0,
+	kScreenshotTypeOSD = 1,
+	kScreenshotTypeVideo = 2,
+};
+
 enum connectorFeatures {
 	// Timers can be disabled without removing them
 	kFeaturesDisabledTimers = 1,
@@ -42,6 +48,8 @@ enum connectorFeatures {
 	kFeaturesMessageCaption = 6,
 	// Can provide a custom timeout
 	kFeaturesMessageTimeout = 7,
+	// Can fetch a Screenshot of the GUI
+	kFeaturesScreenshot = 8,
 };
 
 enum buttonCodes {
@@ -114,6 +122,8 @@ enum buttonCodes {
 - (BOOL)delTimer:(Timer *) oldTimer;
 - (BOOL)sendButton:(NSInteger) type;
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
+
+- (NSData *)getScreenshot: (enum screenshotType)type;
 
 - (void)freeCaches;
 

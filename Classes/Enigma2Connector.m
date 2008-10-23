@@ -386,6 +386,40 @@ enum powerStates {
 	return NO;
 }
 
+- (NSData *)getScreenshot: (enum screenshotType)type
+{
+	NSString *appendType = nil;
+	switch(type)
+	{
+		case kScreenshotTypeOSD:
+			appendType = @"?command=o";
+			break;
+		case kScreenshotTypeVideo:
+			appendType = @"?command=v";
+			break;
+		case kScreenshotTypeBoth:
+		default:
+			appendType = @"";
+			break;
+	}
+
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/grab%@", appendType] relativeToURL: baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	return data;
+}
+
 - (void)freeCaches
 {
 	// XXX: We don't use any caches

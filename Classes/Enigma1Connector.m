@@ -29,7 +29,8 @@
 		(feature == kFeaturesGUIRestart) ||
 		(feature == kFeaturesRecordInfo) ||
 		(feature == kFeaturesMessageCaption) ||
-		(feature == kFeaturesMessageTimeout);
+		(feature == kFeaturesMessageTimeout) ||
+		(feature == kFeaturesScreenshot);
 }
 
 - (NSInteger)getMaxVolume
@@ -420,6 +421,69 @@
 		return YES;
 
 	return NO;
+}
+
+- (NSData *)getScreenshot: (enum screenshotType)type
+{
+	if(type == kScreenshotTypeOSD)
+	{
+		// Generate URI
+		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot" relativeToURL: baseAddress];
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+		// Create URL Object and download it
+		NSURLResponse *response;
+		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		NSData *data = [NSURLConnection sendSynchronousRequest: request
+											returningResponse: &response error: nil];
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+		return data;
+	}
+	else if(type == kScreenshotTypeVideo)
+	{
+		// We need to trigger a capture and individually fetch the picture
+		// Generate URI
+		NSURL *myURI = [NSURL URLWithString: @"/body?mode=controlScreenShot" relativeToURL: baseAddress];
+		
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		
+		// Create URL Object and download it
+		NSURLResponse *response;
+		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		NSData *data = [NSURLConnection sendSynchronousRequest: request
+											returningResponse: &response error: nil];
+		
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		
+		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+		NSRange myRange = [myString rangeOfString: @"/root/tmp/screenshot.jpg"];
+		if(!myRange.length)
+			return nil;
+		
+		// Generate URI
+		myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: baseAddress];
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+		// Create URL Object and download it
+		request = [NSURLRequest requestWithURL: myURI
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		data = [NSURLConnection sendSynchronousRequest: request
+											returningResponse: &response error: nil];
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+		return data;
+	}
+	// XXX: is both even supported?
+
+	return nil;
 }
 
 - (void)freeCaches
