@@ -11,6 +11,13 @@
 @interface RCEmulatorController : UIViewController {
 @private
 	BOOL _shouldVibrate;
+	UIView *rcView;
+	UIView *screenView;
+	UIImageView *imageView;
+	UIToolbar *toolbar;
+	UIButton *screenshotButton;
+
+	NSInteger _screenshotType;
 }
 
 @end

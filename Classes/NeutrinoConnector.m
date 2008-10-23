@@ -497,7 +497,8 @@
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	// Generate URI
-	// XXX: there's also nmsg - whats the difference?!
+	// we open a popup which means the window will close automatically
+	// nmsg (a window which must be closed be the user) is also available
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?popup=%@", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -513,6 +514,12 @@
 
 	// XXX: is this status code correct?
 	return ([response statusCode] == 200);
+}
+
+- (NSData *)getScreenshot: (enum screenshotType)type
+{
+	// XXX: not supported
+	return nil;
 }
 
 - (void)freeCaches
