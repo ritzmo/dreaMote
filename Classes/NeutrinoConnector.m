@@ -15,6 +15,7 @@
 #import "Event.h"
 #import "Volume.h"
 
+#import "Neutrino/ServiceXMLReader.h"
 #import "Neutrino/EventXMLReader.h"
 
 @implementation NeutrinoConnector
@@ -36,7 +37,7 @@
 	if(self = [super init])
 	{
 		self.baseAddress = [NSURL URLWithString: address];
-		serviceCache = nil;
+		serviceCache = [[NSMutableDictionary dictionaryWithCapacity: 50] retain];
 	}
 	return self;
 }
@@ -45,6 +46,7 @@
 {
 	[baseAddress release];
 	[serviceCache release];
+	[serviceTarget release];
 
 	[super dealloc];
 }
@@ -92,55 +94,35 @@
 	return ([response statusCode] == 200);
 }
 
-// TODO: reimplement this as streaming parser some day :-)
+- (void)addService:(Service *)newService
+{
+	if(newService != nil && newService.sref != nil)
+		[serviceCache setObject: newService forKey: newService.sref];
+
+	[serviceTarget performSelectorOnMainThread:serviceSelector withObject:newService waitUntilDone:NO];
+}
+
 - (void)fetchServices:(id)target action:(SEL)action
 {
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/control/channellist" relativeToURL: baseAddress];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	// Parse
-	NSArray *serviceStringList = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString: @"\n"];
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity: 100]; // We might want to figure out some sane initial capactiy
-
-	for(NSString *serviceString in serviceStringList)
+	[serviceCache removeAllObjects];
+	if(serviceTarget != target)
 	{
-		// channel_id channelname
-		NSRange range = [serviceString rangeOfString: @" "];
-		if(range.length)
-		{
-			Service *service = [[Service alloc] init];
-
-			// Cut until first " "
-			range.length = range.location;
-			range.location = 0;
-			service.sref = [serviceString substringWithRange: range];
-
-			// Cut from first " "
-			range.location = range.length + 1;
-			range.length = [serviceString length] - range.location;
-
-			service.sname = [serviceString substringWithRange: range];
-
-			[dict setObject: service forKey: service.sref];
-
-			[target performSelectorOnMainThread:action withObject:service waitUntilDone:NO];
-			[service release];
-		}
+		[serviceTarget release];
+		serviceTarget = [target retain];
 	}
+	serviceSelector = action;
 
-	[serviceCache release];
-	serviceCache = [[NSDictionary dictionaryWithDictionary: dict] retain];
+	NSURL *myURI = [NSURL URLWithString: @"/control/bouquetsxml" relativeToURL: baseAddress];
+
+	NSError *parseError = nil;
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	NeutrinoServiceXMLReader *streamReader = [NeutrinoServiceXMLReader initWithTarget: self action: @selector(addService:)];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
+	[streamReader release];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
@@ -163,7 +145,7 @@
 - (void)fetchTimers:(id)target action:(SEL)action
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
-	if(serviceCache == nil)
+	if([serviceCache count] == 0)
 		[self fetchServices:nil action:nil];
 
 	// Generate URI
@@ -369,7 +351,6 @@
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// neutrino expect volume to be a multiple of 5
-	// TODO: find out if 0 is allowed
 	NSInteger diff = newVolume % 5;
 	// XXX: to make this code easier we could just add/remove the diff but lets try it fair first :-)
 	if(diff < 3)
@@ -536,8 +517,9 @@
 
 - (void)freeCaches
 {
-	[serviceCache release];
-	serviceCache = nil;
+	[serviceCache removeAllObjects];
+	[serviceTarget release];
+	serviceTarget = nil;
 }
 
 @end

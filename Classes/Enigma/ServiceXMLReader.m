@@ -12,16 +12,16 @@
 
 static NSUInteger parsedServicesCounter;
 
-@implementation ServiceXMLReader
+@implementation EnigmaServiceXMLReader
 
 @synthesize currentServiceObject = _currentServiceObject;
 
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
-+ (ServiceXMLReader*)initWithTarget:(id)target action:(SEL)action
++ (EnigmaServiceXMLReader*)initWithTarget:(id)target action:(SEL)action
 {
-	ServiceXMLReader *xmlReader = [[ServiceXMLReader alloc] init];
+	EnigmaServiceXMLReader *xmlReader = [[EnigmaServiceXMLReader alloc] init];
 	xmlReader.target = target;
 	xmlReader.addObject = action;
 

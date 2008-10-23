@@ -80,7 +80,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 }
 
 - (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
-{	
+{
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
 
 	// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.

@@ -15,7 +15,10 @@
 @interface NeutrinoConnector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;
-	NSDictionary *serviceCache;
+	NSMutableDictionary *serviceCache;
+
+	id serviceTarget;
+	SEL serviceSelector;
 }
 
 @property (nonatomic, retain) NSURL *baseAddress;

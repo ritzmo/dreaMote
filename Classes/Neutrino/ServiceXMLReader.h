@@ -2,7 +2,7 @@
 //  ServiceXMLReader.h
 //  Untitled
 //
-//  Created by Moritz Venn on 11.03.08.
+//  Created by Moritz Venn on 23.10.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
@@ -12,13 +12,13 @@
 
 @class Service;
 
-@interface EnigmaServiceXMLReader : BaseXMLReader
+@interface NeutrinoServiceXMLReader : BaseXMLReader
 {
 @private
 	Service *_currentServiceObject;
 }
 
-+ (EnigmaServiceXMLReader*)initWithTarget:(id)target action:(SEL)action;
++ (NeutrinoServiceXMLReader*)initWithTarget:(id)target action:(SEL)action;
 
 @property (nonatomic, retain) Service *currentServiceObject;
 

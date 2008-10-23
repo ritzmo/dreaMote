@@ -99,6 +99,7 @@
 		DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1410EABAD4300D99545 /* system-shutdown.png */; };
 		DADFB1470EABAD4300D99545 /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1420EABAD4300D99545 /* view-refresh.png */; };
 		DADFB1A20EABB2C800D99545 /* mail-forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1A10EABB2C800D99545 /* mail-forward.png */; };
+		DAE7794F0EB0657900F18FC9 /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE7794E0EB0657900F18FC9 /* ServiceXMLReader.m */; };
 		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
 		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
@@ -246,6 +247,8 @@
 		DADFB1410EABAD4300D99545 /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "system-shutdown.png"; path = "Images/system-shutdown.png"; sourceTree = "<group>"; };
 		DADFB1420EABAD4300D99545 /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "view-refresh.png"; path = "Images/view-refresh.png"; sourceTree = "<group>"; };
 		DADFB1A10EABB2C800D99545 /* mail-forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mail-forward.png"; path = "Images/mail-forward.png"; sourceTree = "<group>"; };
+		DAE7794D0EB0657900F18FC9 /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceXMLReader.h; path = Neutrino/ServiceXMLReader.h; sourceTree = "<group>"; };
+		DAE7794E0EB0657900F18FC9 /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceXMLReader.m; path = Neutrino/ServiceXMLReader.m; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
 		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
@@ -426,6 +429,8 @@
 			children = (
 				DAB2A9E60EA7311300E62787 /* EventXMLReader.h */,
 				DAB2A9E70EA7311300E62787 /* EventXMLReader.m */,
+				DAE7794D0EB0657900F18FC9 /* ServiceXMLReader.h */,
+				DAE7794E0EB0657900F18FC9 /* ServiceXMLReader.m */,
 			);
 			name = Neutrino;
 			sourceTree = "<group>";
@@ -713,6 +718,7 @@
 				DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */,
 				DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */,
 				DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */,
+				DAE7794F0EB0657900F18FC9 /* ServiceXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

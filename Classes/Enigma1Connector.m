@@ -103,7 +103,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
+	EnigmaServiceXMLReader *streamReader = [EnigmaServiceXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader release];
 
