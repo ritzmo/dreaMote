@@ -13,7 +13,8 @@
 #import "RCButton.h"
 #import "Constants.h"
 
-#define kTransitionDuration 0.6
+#define kTransitionDuration	0.6
+#define kImageScale			0.45
 
 @interface RCEmulatorController()
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
@@ -121,9 +122,13 @@
 	self.view = contentView;
 	[contentView release];
 
+	// Flip Button
+	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
+
+#pragma mark RC View
+
 	// create the container view which we will use for transition animation (centered horizontally)
 	rcView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
-	rcView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
 	[self.view addSubview:rcView];
 
 	UIButton *roundedButtonType;
@@ -418,12 +423,10 @@
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 
-	// Flip Button
-	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
+#pragma mark Screenshot View
 
 	// ImageView for Screenshots
 	screenView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
-	screenView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
 
 	toolbar = [UIToolbar new];
 	toolbar.barStyle = UIBarStyleDefault;
@@ -500,20 +503,17 @@
 
 - (void)loadImageThread:(id)dummy
 {
-	// XXX: see if we can speed the process up... feels laggy (over internet though)
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 	UIImage * image = [UIImage imageWithData: [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType]];
 	if(image != nil)
 	{
-		CGSize size = image.size;
+		CGSize size = CGSizeMake(image.size.width*kImageScale, image.size.height*kImageScale);
 
 		imageView.image = image;
-		scrollView.contentSize = CGSizeMake(size.width*0.45, size.height*0.45);
-		imageView.frame = CGRectMake(0.0, 0.0, size.width*0.45, size.height*0.45);
+		scrollView.contentSize = size;
+		imageView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
 	}
-	else
-		NSLog(@"Bla, no valid image");
 
 	[pool release];
 }
@@ -553,34 +553,35 @@
 	[pool release];
 }
 
-- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	[super willAnimateSecondHalfOfRotationFromInterfaceOrientation:fromInterfaceOrientation duration:duration];
+	imageView.image = nil;
+	toolbar.frame = CGRectInfinite;
 
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: duration];
-	
-	screenView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height);
-	
-	// size up the toolbar and set its frame
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	//[UIView beginAnimations:nil context:NULL];
+	//[UIView setAnimationDuration: kTransitionDuration];
+
+	// adjust size of screenView, toolbar & scrollView
+	CGRect mainViewBounds = self.view.bounds;
+	screenView.frame = CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height);
 	[toolbar sizeToFit];
+	mainViewBounds = screenView.bounds;
 	CGFloat toolbarHeight = toolbar.frame.size.height;
-	CGRect mainViewBounds = screenView.bounds;
-	[toolbar setFrame:CGRectMake(CGRectGetMinX(mainViewBounds),
-								 CGRectGetMinY(mainViewBounds) + CGRectGetHeight(mainViewBounds) - toolbarHeight,
-								 CGRectGetWidth(mainViewBounds),
-								 toolbarHeight)];
-	
-	scrollView.frame = CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height - toolbarHeight);
-
-	[UIView commitAnimations];
+	CGFloat edgeY = mainViewBounds.size.height - toolbarHeight;
+	CGFloat width = mainViewBounds.size.width;
+	toolbar.frame = CGRectMake(0.0, edgeY, width, toolbarHeight);
+	scrollView.frame = CGRectMake(0.0, 0.0, width, edgeY);
 
 	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one ;-)
-	if([screenView superview])
-	{
-		imageView.image = nil;
+	if(screenView.superview)
 		[self loadImage: nil];
-	}
+
+	//[UIView commitAnimations];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
