@@ -98,6 +98,15 @@
 	
 	self.view = tableView;
 	[tableView release];
+
+	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
+	self.navigationItem.rightBarButtonItem = zapButton;
+	[zapButton release];
+}
+
+- (void)zapAction:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
 }
 
 - (void)fetchEvents
