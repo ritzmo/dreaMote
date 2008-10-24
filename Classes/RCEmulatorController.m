@@ -13,7 +13,7 @@
 #import "RCButton.h"
 #import "Constants.h"
 
-#define kTransitionDuration 1.0
+#define kTransitionDuration 0.6
 
 @interface RCEmulatorController()
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
@@ -420,7 +420,6 @@
 
 	// Flip Button
 	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
-	self.navigationItem.rightBarButtonItem = screenshotButton;
 
 	// ImageView for Screenshots
 	screenView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -554,10 +553,15 @@
 	[pool release];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)willAnimateSecondHalfOfRotationFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	screenView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height);
+	[super willAnimateSecondHalfOfRotationFromInterfaceOrientation:fromInterfaceOrientation duration:duration];
 
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: duration];
+	
+	screenView.frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height);
+	
 	// size up the toolbar and set its frame
 	[toolbar sizeToFit];
 	CGFloat toolbarHeight = toolbar.frame.size.height;
@@ -566,12 +570,17 @@
 								 CGRectGetMinY(mainViewBounds) + CGRectGetHeight(mainViewBounds) - toolbarHeight,
 								 CGRectGetWidth(mainViewBounds),
 								 toolbarHeight)];
-
+	
 	scrollView.frame = CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height - toolbarHeight);
 
+	[UIView commitAnimations];
+
 	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one ;-)
-	imageView.image = nil;
-	[self loadImage: nil];
+	if([screenView superview])
+	{
+		imageView.image = nil;
+		[self loadImage: nil];
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
