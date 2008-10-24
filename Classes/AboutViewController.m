@@ -45,7 +45,7 @@
 
 	frame = CGRectMake(0.0, 0.0, size.width, kTextViewHeight);
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
-	[aboutText loadHTMLString: NSLocalizedString(@"About Text", @"FULL HTML About text of the Application") baseURL: [NSURL URLWithString: @""]];
+	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"]] baseURL: [NSURL URLWithString: @""]];
 	aboutText.backgroundColor = [UIColor clearColor];
 	aboutText.delegate = self;
 	[self.view addSubview: aboutText];

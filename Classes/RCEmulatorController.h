@@ -17,7 +17,7 @@
 	UIScrollView *scrollView;
 	UIImageView *imageView;
 	UIToolbar *toolbar;
-	UIButton *screenshotButton;
+	UIBarButtonItem *screenshotButton;
 
 	NSInteger _screenshotType;
 }

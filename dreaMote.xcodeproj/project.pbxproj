@@ -13,6 +13,8 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		DA0A2A580E840E8600726F58 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0A2A570E840E8600726F58 /* Icon.png */; };
+		DA0FA5070EB1CC27009A1898 /* image-x-generic.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5060EB1CC27009A1898 /* image-x-generic.png */; };
+		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA19BEDD0D856EC30074AE48 /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BEDC0D856EC30074AE48 /* Volume.m */; };
 		DA1D2A250EA68AB700B19FE0 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1D2A1C0EA68AB700B19FE0 /* EventXMLReader.m */; };
@@ -115,6 +117,8 @@
 		32CA4F630368D1EE00C91783 /* dreaMote_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dreaMote_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.info-plist"; sourceTree = "<group>"; };
 		DA0A2A570E840E8600726F58 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Images/Icon.png; sourceTree = "<group>"; };
+		DA0FA5060EB1CC27009A1898 /* image-x-generic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "image-x-generic.png"; path = "Images/image-x-generic.png"; sourceTree = "<group>"; };
+		DA0FA5750EB1D189009A1898 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = Other/about.html; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
 		DA19BEDB0D856EC30074AE48 /* Volume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Volume.h; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA0FA5750EB1D189009A1898 /* about.html */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
 				DACFCCEE0E33CAD100348996 /* MainWindow.xib */,
@@ -379,6 +384,7 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DA0FA5060EB1CC27009A1898 /* image-x-generic.png */,
 				DADFB1A10EABB2C800D99545 /* mail-forward.png */,
 				DADFB13E0EABAD4300D99545 /* media-playback-start.png */,
 				DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */,
@@ -645,6 +651,8 @@
 				DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */,
 				DADFB1470EABAD4300D99545 /* view-refresh.png in Resources */,
 				DADFB1A20EABB2C800D99545 /* mail-forward.png in Resources */,
+				DA0FA5070EB1CC27009A1898 /* image-x-generic.png in Resources */,
+				DA0FA5760EB1D189009A1898 /* about.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -91,18 +91,16 @@
 		[osdItem release];
 		[videoItem release];
 		[bothItem release];
-		
-		if(![screenshotButton superview])
-			[rcView addSubview: screenshotButton];
+
+		self.navigationItem.leftBarButtonItem = screenshotButton;
 
 		if([screenView superview])
 			[self loadImage: nil];
 	}
 	else
 	{
-		if([screenshotButton superview])
-			[screenshotButton removeFromSuperview];
-		
+		self.navigationItem.leftBarButtonItem = nil;
+
 		if([screenView superview])
 			[self flipView: nil];
 	}
@@ -421,12 +419,9 @@
 	[roundedButtonType release];
 
 	// Flip Button
-	// XXX: find good position / image
-	frame = CGRectMake(rcView.bounds.size.width - 25.0, rcView.bounds.size.height - 75.0, 25.0, 25.0);
-	screenshotButton = [[UIButton buttonWithType:UIButtonTypeInfoDark] retain];
-	screenshotButton.frame = frame;
-	[screenshotButton addTarget:self action:@selector(flipView:) forControlEvents:UIControlEventTouchUpInside];
-
+	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
+	self.navigationItem.rightBarButtonItem = screenshotButton;
+	
 	// ImageView for Screenshots
 	screenView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
 	screenView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
