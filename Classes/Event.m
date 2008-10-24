@@ -16,12 +16,14 @@
 @synthesize title = _title;
 @synthesize sdescription = _sdescription;
 @synthesize edescription = _edescription;
+@synthesize timeString;
 
 - (id)init
 {
 	if (self = [super init])
 	{
 		_duration = -1;
+		timeString = nil;
 	}
 	return self;
 }
@@ -34,7 +36,8 @@
 	[_title release];
 	[_sdescription release];
 	[_edescription release];
-	
+	[timeString release];
+
 	[super dealloc];
 }
 
@@ -45,6 +48,9 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
+	[timeString release];
+	timeString = nil;
+
 	[_begin release];
 	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
 	if(_duration != -1){
@@ -56,6 +62,9 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
+	[timeString release];
+	timeString = nil;
+
 	if(_begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;

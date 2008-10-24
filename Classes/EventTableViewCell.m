@@ -69,11 +69,15 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	_event = [newEvent retain];
 
 	_eventNameLabel.text = newEvent.title;
-	[_formatter setDateStyle:NSDateFormatterMediumStyle];
-	NSString *begin = [_formatter stringFromDate: newEvent.begin];
-	[_formatter setDateStyle:NSDateFormatterNoStyle];
-	NSString *end = [_formatter stringFromDate: newEvent.end];
-	_eventTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
+	if(newEvent.timeString == nil)
+	{
+		[_formatter setDateStyle:NSDateFormatterMediumStyle];
+		NSString *begin = [_formatter stringFromDate: newEvent.begin];
+		[_formatter setDateStyle:NSDateFormatterNoStyle];
+		NSString *end = [_formatter stringFromDate: newEvent.end];
+		newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+	}
+	_eventTimeLabel.text = newEvent.timeString;
 
 	[self setNeedsDisplay];
 }

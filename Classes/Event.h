@@ -18,6 +18,8 @@
 	NSString *_sdescription;
 	NSString *_edescription;
 	double _duration;
+
+	NSString *timeString;
 }
 
 @property (nonatomic, retain) NSString *eit;
@@ -26,6 +28,7 @@
 @property (nonatomic, retain) NSString *title;
 @property (nonatomic, retain) NSString *sdescription;
 @property (nonatomic, retain) NSString *edescription;
+@property (nonatomic, retain) NSString *timeString;
 
 - (void)setBeginFromString: (NSString *)newBegin;
 - (void)setEndFromDurationString: (NSString *)newDuration;
