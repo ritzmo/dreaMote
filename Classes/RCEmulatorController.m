@@ -92,14 +92,14 @@
 		[videoItem release];
 		[bothItem release];
 
-		self.navigationItem.leftBarButtonItem = screenshotButton;
+		self.navigationItem.rightBarButtonItem = screenshotButton;
 
 		if([screenView superview])
 			[self loadImage: nil];
 	}
 	else
 	{
-		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.rightBarButtonItem = nil;
 
 		if([screenView superview])
 			[self flipView: nil];
@@ -421,7 +421,7 @@
 	// Flip Button
 	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
 	self.navigationItem.rightBarButtonItem = screenshotButton;
-	
+
 	// ImageView for Screenshots
 	screenView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
 	screenView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
