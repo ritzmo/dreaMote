@@ -32,6 +32,8 @@
 - (void)dealloc
 {
 	[_connections release];
+	[vibrateInRC release];
+	[connectionTest release];
 
 	[super dealloc];
 }
@@ -60,6 +62,14 @@
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	vibrateInRC.backgroundColor = [UIColor clearColor];
 	vibrateInRC.enabled = NO;
+
+	// Connectivity test
+	connectionTest = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
+	
+	// in case the parent view draws with a custom color or gradient, use a transparent color
+	connectionTest.backgroundColor = [UIColor clearColor];
+	connectionTest.enabled = NO;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
@@ -68,6 +78,7 @@
 	[(UITableView*)self.view setEditing: editing animated: animated];
 
 	vibrateInRC.enabled = editing;
+	connectionTest.enabled = editing;
 
 	if(animated)
 	{
@@ -86,7 +97,10 @@
 	}
 
 	if(!editing && _shouldSave)
+	{
 		[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.on forKey: kVibratingRC];
+		[[NSUserDefaults standardUserDefaults] setBool: connectionTest.on forKey: kConnectionTest];
+	}
 	_shouldSave = YES;
 
 	[(UITableView*)self.view reloadData];
@@ -168,8 +182,19 @@
 			sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			break;
 		case 1:
-			((DisplayCell *)sourceCell).view = vibrateInRC;
-			((DisplayCell *)sourceCell).text = NSLocalizedString(@"Vibrate in RC", @"");
+			switch(row)
+			{
+				case 0:
+					((DisplayCell *)sourceCell).view = vibrateInRC;
+					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Vibrate in RC", @"");
+					break;
+				case 1:
+					((DisplayCell *)sourceCell).view = connectionTest;
+					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Check Connectivity", @"");
+					break;
+				default:
+					break;
+			}
 			break;
 		default:
 			break;
@@ -191,7 +216,7 @@
 			return [_connections count] + 1;
 		return [_connections count];
 	}
-	return 1;
+	return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

@@ -56,3 +56,4 @@
 // keys in nsuserdefaults
 #define kActiveConnection		@"activeConnector"
 #define kVibratingRC			@"vibrateInRC"
+#define kConnectionTest			@"connectionTest"

@@ -69,11 +69,10 @@
 		[stdDefaults synchronize];
 	}
 
+	// cvs up to rev 561, will be merged with later one after pushing this to the testers :-)
 	testValue = [stdDefaults stringForKey: kActiveConnection];
 	if(testValue == nil)
 	{
-		// no default values have been set, create them here
-
 		// since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 									  activeConnectionId, kActiveConnection,
@@ -85,6 +84,19 @@
 	}
 	else
 		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
+
+	// new feature as of revision 562
+	testValue = [stdDefaults stringForKey: kConnectionTest];
+	if(testValue == nil)
+	{
+		// since no default values have been set (i.e. older preferences), create it here
+		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+									 @"YES", kConnectionTest,
+									 nil];
+
+		[stdDefaults registerDefaults: appDefaults];
+		[stdDefaults synchronize];
+	}
 
 	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];

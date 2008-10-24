@@ -13,6 +13,7 @@
 @private
 	NSMutableArray *_connections;
 	UISwitch *vibrateInRC;
+	UISwitch *connectionTest;
 	BOOL _shouldSave;
 	BOOL _viewWillReapper;
 }
