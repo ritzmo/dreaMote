@@ -219,7 +219,7 @@
 	}
 
 	else if([[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]
-			&& [[RemoteConnectorObject sharedRemoteConnector] isReachable])
+			&& ![[RemoteConnectorObject sharedRemoteConnector] isReachable])
 	{
 		UIAlertView *notification = [[UIAlertView alloc]
 									 initWithTitle:NSLocalizedString(@"Error", @"")
