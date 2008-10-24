@@ -254,7 +254,9 @@
 										 returningResponse: &response error: nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	if([myString isEqualToString: @"on"])
+	BOOL equalsOn = [myString isEqualToString: @"on"];
+	[myString release];
+	if(equalsOn)
 		myString = @"standby?off";
 	else
 		myString = @"standby?on";
@@ -296,6 +298,8 @@
 	else
 		volumeObject.ismuted = NO;
 
+	[myString release];
+
 	// Generate URI (volume)
 	myURI = [NSURL URLWithString: @"/control/volume" relativeToURL: baseAddress];
 	
@@ -310,12 +314,15 @@
 	myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	volumeObject.current = [myString integerValue];
 
+	[myString release];
+
 	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
 	[volumeObject release];
 }
 
 - (BOOL)toggleMuted
 {
+	BOOL equalsRes = NO;
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: baseAddress];
 	
@@ -329,7 +336,9 @@
 										 returningResponse: &response error: nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	if([myString isEqualToString: @"1"])
+	equalsRes = [myString isEqualToString: @"1"];
+	[myString release];
+	if(equalsRes)
 		myString = @"unmute";
 	else
 		myString = @"mute";
@@ -345,7 +354,9 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([myString isEqualToString: @"mute"]);
+	equalsRes = [myString isEqualToString: @"mute"];
+	[myString release];
+	return equalsRes;
 }
 
 - (BOOL)setVolume:(NSInteger) newVolume

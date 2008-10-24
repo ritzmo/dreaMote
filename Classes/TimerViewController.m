@@ -53,7 +53,9 @@
 + (TimerViewController *)withEvent: (Event *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.timer = [Timer withEvent: ourEvent];
+	Timer *newTimer = [Timer withEvent: ourEvent];
+	timerViewController.timer = newTimer;
+	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;
@@ -62,7 +64,9 @@
 + (TimerViewController *)withEventAndService: (Event *)ourEvent: (Service *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.timer = [Timer withEventAndService: ourEvent: ourService];
+	Timer *newTimer = [Timer withEventAndService: ourEvent: ourService];
+	timerViewController.timer = newTimer;
+	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;
@@ -74,8 +78,8 @@
 	timerViewController.timer = ourTimer;
 	Timer *ourCopy = [ourTimer copy];
 	timerViewController.oldTimer = ourCopy;
-	timerViewController.creatingNewTimer = NO;
 	[ourCopy release];
+	timerViewController.creatingNewTimer = NO;
 
 	return timerViewController;
 }
@@ -83,7 +87,9 @@
 + (TimerViewController *)newTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	timerViewController.timer = [Timer timer];
+	Timer *newTimer = [Timer timer];
+	timerViewController.timer = newTimer;
+	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;
@@ -295,14 +301,14 @@
 			NSString *message = nil;
 
 			// Sanity Check Title
-			if([[timerTitle text] length])
-				_timer.title = [timerTitle text];
+			if([timerTitle.text length])
+				_timer.title = timerTitle.text;
 			else
 				message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
 
 			// Get Description
-			if([[timerDescription text] length])
-				_timer.tdescription = [timerDescription text];
+			if([timerDescription.text length])
+				_timer.tdescription = timerDescription.text;
 			else
 				_timer.tdescription = @"";
 
@@ -325,7 +331,7 @@
 				}
 				else
 				{
-					if([[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
+					if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
 						message = NSLocalizedString(@"Error editing timer.", @"");
 					else
 						[self.navigationController popViewControllerAnimated: YES];

@@ -239,6 +239,8 @@
 	else
 		volumeObject.ismuted = NO;
 
+	[myString release];
+
 	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
 	[volumeObject release];
 }
@@ -262,6 +264,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"mute: 1"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 
@@ -287,6 +290,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"Volume set."];
+	[myString release];
 	if(myRange.length)
 		return YES;
 
@@ -312,6 +316,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
+	[myString release];
 	if(myRange.length)
 		return YES;
 	
@@ -351,6 +356,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
+	[myString release];
 	if(myRange.length)
 		return YES;
 
@@ -417,6 +423,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"+ok"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 
@@ -463,6 +470,7 @@
 		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 		NSRange myRange = [myString rangeOfString: @"/root/tmp/screenshot.jpg"];
+		[myString release];
 		if(!myRange.length)
 			return nil;
 		

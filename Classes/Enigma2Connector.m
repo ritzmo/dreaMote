@@ -230,6 +230,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 
@@ -255,6 +256,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 	
@@ -280,6 +282,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 	
@@ -305,6 +308,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 	
@@ -330,6 +334,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 	
@@ -355,6 +360,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 	
@@ -380,6 +386,7 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	[myString release];
 	if(myRange.length)
 		return YES;
 

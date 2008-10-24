@@ -127,7 +127,7 @@
 
 	[text release];
 
-	return myTextView;
+	return [myTextView autorelease];
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
@@ -146,7 +146,7 @@
 	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
 	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
 
-	return [button autorelease];
+	return button;
 }
 
 #pragma mark - UITableView delegates
