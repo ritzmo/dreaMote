@@ -443,7 +443,7 @@
 
 		return data;
 	}
-	else if(type == kScreenshotTypeVideo)
+	else// We actually generate a combined picture here
 	{
 		// We need to trigger a capture and individually fetch the picture
 		// Generate URI
@@ -481,7 +481,6 @@
 
 		return data;
 	}
-	// XXX: is both even supported?
 
 	return nil;
 }

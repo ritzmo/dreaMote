@@ -52,6 +52,46 @@
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
 	{
+		UIBarButtonItem *systemItem = [[UIBarButtonItem alloc]
+									   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+									   target:self action:@selector(flipView:)];
+
+		// flex item used to separate the left groups items and right grouped items
+		UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																	target:nil
+																	action:nil];
+
+		// create a bordered style button with custom title
+		UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"OSD", @"")
+																	style:UIBarButtonItemStyleBordered
+																	target:self
+																	action:@selector(setOSDType:)];
+
+		// create a bordered style button with custom title
+		UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Video", @"")
+																	style:UIBarButtonItemStyleBordered
+																	target:self
+																	action:@selector(setVideoType:)];
+
+		// create a bordered style button with custom title
+		UIBarButtonItem *bothItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"All", @"")
+																	style:UIBarButtonItemStyleBordered
+																	target:self
+																	action:@selector(setBothType:)];
+		
+		NSArray *items;
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
+			items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, videoItem, bothItem, nil];
+		else
+			items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, bothItem, nil];
+		[toolbar setItems:items animated:NO];
+
+		[systemItem release];
+		[flexItem release];
+		[osdItem release];
+		[videoItem release];
+		[bothItem release];
+		
 		if(![screenshotButton superview])
 			[rcView addSubview: screenshotButton];
 
@@ -420,37 +460,6 @@
 	imageView.autoresizesSubviews = YES;
 	imageView.contentMode = UIViewContentModeScaleAspectFit;
 	[scrollView addSubview: imageView];
-
-    UIBarButtonItem *systemItem = [[UIBarButtonItem alloc]
-								   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-								   target:self action:@selector(flipView:)];
-	
-	// flex item used to separate the left groups items and right grouped items
-	UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																			  target:nil
-																			  action:nil];
-
-	// XXX: find icons!
-
-	// create a bordered style button with custom title
-	UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:@"OSD"
-																  style:UIBarButtonItemStyleBordered
-																 target:self
-																 action:@selector(setOSDType:)];
-	
-	// create a bordered style button with custom title
-	UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:@"Video"
-																   style:UIBarButtonItemStyleBordered
-																  target:self
-																  action:@selector(setVideoType:)];
-
-	NSArray *items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, videoItem, nil];
-	[toolbar setItems:items animated:NO];
-
-	[systemItem release];
-	[flexItem release];
-	[osdItem release];
-	[videoItem release];
 }
 
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
@@ -524,6 +533,12 @@
 - (void)setVideoType:(id)sender
 {
 	_screenshotType = kScreenshotTypeVideo;
+	[self loadImage: nil];
+}
+
+- (void)setBothType:(id)sender
+{
+	_screenshotType = kScreenshotTypeBoth;
 	[self loadImage: nil];
 }
 

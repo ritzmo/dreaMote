@@ -50,6 +50,8 @@ enum connectorFeatures {
 	kFeaturesMessageTimeout = 7,
 	// Can fetch a Screenshot of the GUI
 	kFeaturesScreenshot = 8,
+	// Can fetch a Screenshot of just the video buffer
+	kFeaturesVideoScreenshot = 9,
 };
 
 enum buttonCodes {
