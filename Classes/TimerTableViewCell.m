@@ -81,12 +81,16 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 	_serviceNameLabel.text = newTimer.service.sname;
 	_timerNameLabel.text = newTimer.title;
-	[_formatter setDateStyle:NSDateFormatterMediumStyle];
-	NSString *begin = [_formatter stringFromDate: newTimer.begin];
-	[_formatter setDateStyle:NSDateFormatterNoStyle];
-	NSString *end = [_formatter stringFromDate: newTimer.end];
-	if(begin && end)
-		_timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
+	if(newTimer.timeString == nil)
+	{
+		[_formatter setDateStyle:NSDateFormatterMediumStyle];
+		NSString *begin = [_formatter stringFromDate: newTimer.begin];
+		[_formatter setDateStyle:NSDateFormatterNoStyle];
+		NSString *end = [_formatter stringFromDate: newTimer.end];
+		if(begin && end)
+			newTimer.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+	}
+	_timerTimeLabel.text = newTimer.timeString;
 
 	[self setNeedsDisplay];
 }

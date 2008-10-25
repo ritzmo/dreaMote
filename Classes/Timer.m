@@ -28,6 +28,7 @@
 @synthesize state = _state;
 @synthesize afterevent = _afterevent;
 @synthesize valid = _isValid;
+@synthesize timeString = _timeString;
 
 + (Timer *)withEvent: (Event *)ourEvent
 {
@@ -95,6 +96,7 @@
 		_duration = -1;
 		_service = nil;
 		_isValid = YES;
+		_timeString = nil;
 	}
 	return self;
 }
@@ -132,6 +134,7 @@
 	[_service release];
 	[_sname release];
 	[_sref release];
+	[_timeString release];
 
 	[super dealloc];
 }
@@ -169,6 +172,9 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
+	[_timeString release];
+	_timeString = nil;
+
 	[_begin release];
 	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
 	if(_duration != -1){
@@ -180,12 +186,18 @@
 
 - (void)setEndFromString: (NSString *)newEnd
 {
+	[_timeString release];
+	_timeString = nil;
+
 	[_end release];
 	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
+	[_timeString release];
+	_timeString = nil;
+
 	if(_begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;
