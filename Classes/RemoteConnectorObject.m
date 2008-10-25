@@ -15,6 +15,8 @@
 #import "Enigma1Connector.h"
 #import "NeutrinoConnector.h"
 
+#define configPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
+
 @implementation RemoteConnectorObject
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
@@ -55,14 +57,14 @@ static NSDictionary *_connection;
 	switch(connectorId)
 	{
 		case kEnigma2Connector:
-			_sharedRemoteConnector = (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteAddress];
+			_sharedRemoteConnector = [Enigma2Connector createClassWithAddress: remoteAddress];
 			break;
 		case kEnigma1Connector:
-			_sharedRemoteConnector = (NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress];
+			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteAddress];
 			break;
 #ifdef ENABLE_NEUTRINO_CONNECTOR
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = (NSObject <RemoteConnector>*)[NeutrinoConnector createClassWithAddress: remoteAddress];
+			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteAddress];
 			break;
 #endif
 		default:
@@ -90,7 +92,7 @@ static NSDictionary *_connection;
 
 + (BOOL)loadConnections
 {
-	NSString *finalPath = [@"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist" stringByExpandingTildeInPath];
+	NSString *finalPath = [configPath stringByExpandingTildeInPath];
 
 	_connections = [[NSMutableArray arrayWithContentsOfFile: finalPath] retain];
 
@@ -110,7 +112,7 @@ static NSDictionary *_connection;
 
 + (void)saveConnections
 {
-	NSString *finalPath = [@"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist" stringByExpandingTildeInPath];
+	NSString *finalPath = [configPath stringByExpandingTildeInPath];
 
 	[_connections writeToFile: finalPath atomically: YES];
 	[_connections release];
@@ -132,7 +134,7 @@ static NSDictionary *_connection;
 		remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", username,
 						 password, remoteHost];
 	
-	connector = (NSObject <RemoteConnector>*)[Enigma2Connector createClassWithAddress: remoteAddress];
+	connector = [Enigma2Connector createClassWithAddress: remoteAddress];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -140,7 +142,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = (NSObject <RemoteConnector>*)[Enigma1Connector createClassWithAddress: remoteAddress];
+	connector = [Enigma1Connector createClassWithAddress: remoteAddress];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -148,7 +150,7 @@ static NSDictionary *_connection;
 	}
 #ifdef ENABLE_NEUTRINO_CONNECTOR
 	[connector release];
-	connector = (NSObject <RemoteConnector>*)[NeutrinoConnector createClassWithAddress: remoteAddress];
+	connector = [NeutrinoConnector createClassWithAddress: remoteAddress];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -169,7 +171,8 @@ static NSDictionary *_connection;
 {
 	NSUInteger index = [_connections indexOfObject: _connection];
 	if(index == NSNotFound)
-		return [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue];
+		return [[[NSUserDefaults standardUserDefaults]
+					objectForKey: kActiveConnection] integerValue];
 	return index;
 }
 

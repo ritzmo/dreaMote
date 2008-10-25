@@ -51,9 +51,9 @@
 	[super dealloc];
 }
 
-+ (id <RemoteConnector>*)createClassWithAddress:(NSString *) address
++ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address
 {
-	return (id <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress: address];
+	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress: address];
 }
 
 - (BOOL)isReachable
