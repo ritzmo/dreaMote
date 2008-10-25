@@ -96,7 +96,7 @@
 
 - (void)addService:(Service *)newService
 {
-	if(newService != nil && newService.sref != nil)
+	if(newService != nil && newService.valid)
 		[serviceCache setObject: newService forKey: newService.sref];
 
 	[serviceTarget performSelectorOnMainThread:serviceSelector withObject:newService waitUntilDone:NO];
@@ -112,7 +112,7 @@
 	}
 	serviceSelector = action;
 
-	NSURL *myURI = [NSURL URLWithString: @"/control/bouquetsxml" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: baseAddress];
 
 	NSError *parseError = nil;
 
@@ -155,12 +155,26 @@
 
 	// Create URL Object and download it
 	NSURLResponse *response;
+	NSError *error;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
+						  returningResponse: &response error: &error];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// Error occured, so send fake object
+	if(error || !data)
+	{
+		Timer *fakeObject = [[Timer alloc] init];
+		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+		fakeObject.state = 0;
+		fakeObject.valid = NO;
+		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[fakeObject release];
+
+		return;
+	}
 
 	// Parse
 	NSArray *timerStringList = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString: @"\n"];

@@ -51,6 +51,11 @@
 	[super dealloc];
 }
 
+- (BOOL)isValid
+{
+	return _sref != nil;
+}
+
 - (void)setTimeFromString: (NSString *)newTime
 {
 	[_time release];

@@ -31,6 +31,7 @@
 @property (nonatomic, retain) NSNumber *length;
 @property (nonatomic, retain) NSNumber *size;
 @property (nonatomic, retain) NSArray *tags;
+@property (nonatomic, readonly, getter = isValid) BOOL valid;
 
 - (void)setTimeFromString: (NSString *)newTime;
 - (void)setTagsFromString: (NSString *)newTags;

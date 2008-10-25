@@ -39,6 +39,14 @@ static NSUInteger parsedServicesCounter;
 	parsedServicesCounter = 0;
 }
 
+- (void)sendErroneousObject
+{
+	Service *fakeService = [[Service alloc] init];
+	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+	[self.target performSelectorOnMainThread: self.addObject withObject: fakeService waitUntilDone: NO];
+	[fakeService release];
+}
+
 /*
  Enigma2 Example:
  <?xml version="1.0" encoding="UTF-8"?>

@@ -41,6 +41,14 @@ static NSUInteger parsedEventsCounter;
 	parsedEventsCounter = 0;
 }
 
+- (void)sendErroneousObject
+{
+	Event *fakeObject = [[Event alloc] init];
+	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[fakeObject release];
+}
+
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -89,7 +97,6 @@ static NSUInteger parsedEventsCounter;
 
 		return;
 	}
-
 
 	if (
 		[elementName isEqualToString:@"eventid"]			// Eit

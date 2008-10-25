@@ -48,6 +48,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "BaseXMLReader.h"
 
+@interface BaseXMLReader()
+- (void)sendErroneousObject;
+@end
+
 @implementation BaseXMLReader
 
 @synthesize contentOfCurrentProperty = _contentOfCurrentProperty;
@@ -84,31 +88,39 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 	NSXMLParser *parser = [[NSXMLParser alloc] initWithContentsOfURL:URL];
 
 	// Set self as the delegate of the parser so that it will receive the parser delegate methods callbacks.
-	[parser setDelegate:self];
+	parser.delegate = self;
 
 	// Depending on the XML document you're parsing, you may want to enable these features of NSXMLParser.
 	[parser setShouldProcessNamespaces:NO];
 	[parser setShouldReportNamespacePrefixes:NO];
 	[parser setShouldResolveExternalEntities:NO];
-	
+
 	[parser parse];
-	
+
 	NSError *parseError = [parser parserError];
-	if (parseError && error) {
+	if(parseError && error)
+	{
 		*error = parseError;
+
+		[self sendErroneousObject];
 	}
-	
+
 	[parser release];
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-	// XXX: descending classes should implement this	
+	// XXX: descending classes should implement this
 }
 
 - (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
-	// XXX: descending classes should implement this	
+	// XXX: descending classes should implement this
+}
+
+- (void)sendErroneousObject
+{
+	// XXX: descending classes should implement this
 }
 
 - (void)parser:(NSXMLParser *)parser foundCharacters:(NSString *)string

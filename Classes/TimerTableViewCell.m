@@ -84,7 +84,9 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	[_formatter setDateStyle:NSDateFormatterMediumStyle];
 	NSString *begin = [_formatter stringFromDate: newTimer.begin];
 	[_formatter setDateStyle:NSDateFormatterNoStyle];
-	_timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, [_formatter stringFromDate: newTimer.end]];
+	NSString *end = [_formatter stringFromDate: newTimer.end];
+	if(begin && end)
+		_timerTimeLabel.text = [NSString stringWithFormat: @"%@ - %@", begin, end];
 
 	[self setNeedsDisplay];
 }

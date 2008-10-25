@@ -39,6 +39,14 @@ static NSUInteger parsedServicesCounter;
 	parsedServicesCounter = 0;
 }
 
+- (void)sendErroneousObject
+{
+	Service *fakeService = [[Service alloc] init];
+	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+	[self.target performSelectorOnMainThread: self.addObject withObject: fakeService waitUntilDone: NO];
+	[fakeService release];
+}
+
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -71,7 +79,10 @@ static NSUInteger parsedServicesCounter;
 			// A channel in the xml represents a service, so create an instance of it.
 			Service *newService = [[Service alloc] init];
 			newService.sname = [attributeDict valueForKey:@"name"];
-			newService.sref = [attributeDict valueForKey:@"serviceID"];
+			newService.sref = [NSString stringWithFormat: @"%@%@%@",
+							   [attributeDict valueForKey:@"tsid"],
+							   [attributeDict valueForKey:@"onid"],
+							   [attributeDict valueForKey:@"serviceID"]];
 			[self.target performSelectorOnMainThread: self.addObject withObject: newService waitUntilDone: NO];
 			[newService release];
 		}

@@ -23,6 +23,8 @@
 	if (self = [super init])
 	{
 		_duration = -1;
+		_begin = nil;
+		_end = nil;
 		timeString = nil;
 	}
 	return self;

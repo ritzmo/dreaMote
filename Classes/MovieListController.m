@@ -140,6 +140,9 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	Movie *movie = [_movies objectAtIndex: indexPath.row];
+	if(!movie.valid)
+		return nil;
+
 	if(movieViewController == nil)
 		movieViewController = [[MovieViewController alloc] init];
 	movieViewController.movie = movie;

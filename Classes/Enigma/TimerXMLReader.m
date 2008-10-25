@@ -39,6 +39,16 @@ static NSUInteger parsedTimersCounter;
 	parsedTimersCounter = 0;
 }
 
+- (void)sendErroneousObject
+{
+	Timer *fakeObject = [[Timer alloc] init];
+	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+	fakeObject.state = 0;
+	fakeObject.valid = NO;
+	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[fakeObject release];
+}
+
 /*
  Enigma2 Example:
  <?xml version="1.0" encoding="UTF-8"?>

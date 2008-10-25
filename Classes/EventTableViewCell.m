@@ -75,7 +75,8 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		NSString *begin = [_formatter stringFromDate: newEvent.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
 		NSString *end = [_formatter stringFromDate: newEvent.end];
-		newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+		if(begin && end)
+			newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
 	_eventTimeLabel.text = newEvent.timeString;
 

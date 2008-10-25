@@ -27,6 +27,7 @@
 @synthesize sname = _sname;
 @synthesize state = _state;
 @synthesize afterevent = _afterevent;
+@synthesize valid = _isValid;
 
 + (Timer *)withEvent: (Event *)ourEvent
 {
@@ -93,6 +94,7 @@
 	{
 		_duration = -1;
 		_service = nil;
+		_isValid = YES;
 	}
 	return self;
 }
@@ -114,6 +116,7 @@
 		_repeatcount = timer.repeatcount;
 		_state = timer.state;
 		_duration = -1;
+		_isValid = timer.valid;
 	}
 
 	return self;

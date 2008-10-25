@@ -215,6 +215,12 @@
 		index += dist[section - 1];
 
 	Timer *timer = [_timers objectAtIndex: index];
+	if(!timer.valid)
+	{
+		[tableView deselectRowAtIndexPath: indexPath animated: YES];
+		return;
+	}
+
 	Timer *ourCopy = [timer copy];
 
 	if(timerViewController == nil)

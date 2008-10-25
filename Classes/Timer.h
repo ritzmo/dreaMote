@@ -109,6 +109,7 @@ enum neutrinoTimerRepeat {
 	NSInteger _state;
 	NSInteger _afterevent;
 	double _duration;
+	BOOL _isValid;
 }
 
 + (Timer *)withEvent: (Event *)ourEvent;
@@ -135,5 +136,6 @@ enum neutrinoTimerRepeat {
 @property (nonatomic, retain) NSString *sname;
 @property (assign) NSInteger state;
 @property (assign) NSInteger afterevent;
+@property (nonatomic, assign) BOOL valid;
 
 @end
