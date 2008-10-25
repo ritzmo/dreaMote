@@ -68,13 +68,15 @@
 		self.title = newEvent.title;
 
 	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];	
+	[(UITableView *)self.view scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
+								atScrollPosition: UITableViewScrollPositionTop
+								animated: NO];	
 }
 
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 
@@ -89,13 +91,15 @@
 - (void)addTimer: (id)sender
 {
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath
+								animated: YES
+								scrollPosition: UITableViewScrollPositionNone];
 
 	TimerViewController *targetViewController = [TimerViewController withEventAndService: _event: _service];
 	[self.navigationController pushViewController: targetViewController animated: YES];
 	[targetViewController release];
 
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 - (UITextView *)create_Summary
@@ -109,13 +113,9 @@
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];
 	if([_event.sdescription length])
-	{
 		[text appendString: _event.sdescription];
-	}
 	else
-	{
 		[text appendString: _event.title];
-	}
 
 	if([_event.edescription length])
 	{
@@ -238,8 +238,11 @@
 			sourceCell.textColor = [UIColor blackColor];
 			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-			
-			sourceCell.text = (section == 1) ? [self format_BeginEnd: _event.begin] : [self format_BeginEnd: _event.end];
+
+			if(section == 1)
+				sourceCell.text = [self format_BeginEnd: _event.begin];
+			 else
+				sourceCell.text = [self format_BeginEnd: _event.end];
 			break;
 		case 3:
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
@@ -255,7 +258,8 @@
 	return sourceCell;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }

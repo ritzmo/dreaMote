@@ -426,7 +426,8 @@
 #pragma mark Screenshot View
 
 	// ImageView for Screenshots
-	screenView = [[UIView alloc] initWithFrame: CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+	frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height);
+	screenView = [[UIView alloc] initWithFrame: frame];
 
 	toolbar = [UIToolbar new];
 	toolbar.barStyle = UIBarStyleDefault;
@@ -434,15 +435,18 @@
 	// size up the toolbar and set its frame
 	[toolbar sizeToFit];
 	CGFloat toolbarHeight = toolbar.frame.size.height;
-	CGRect mainViewBounds = screenView.bounds;
-	[toolbar setFrame:CGRectMake(CGRectGetMinX(mainViewBounds),
-								 CGRectGetMinY(mainViewBounds) + CGRectGetHeight(mainViewBounds) - (toolbarHeight * 2.0) + 2.0,
-								 CGRectGetWidth(mainViewBounds),
-								 toolbarHeight)];
-
+	CGSize mainViewSize = screenView.bounds.size;
+	toolbar.frame = CGRectMake(0.0,
+							   mainViewSize.height - (toolbarHeight * 2.0) + 2.0,
+							   mainViewSize.width,
+							   toolbarHeight);
 	[screenView addSubview:toolbar];
 
-	scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height - (toolbarHeight * 2.0) + 2.0)];
+	frame = CGRectMake(0.0,
+					   0.0,
+					   mainViewSize.width,
+					   mainViewSize.height - (toolbarHeight * 2.0) + 2.0);
+	scrollView = [[UIScrollView alloc] initWithFrame: frame];
 	scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	scrollView.autoresizesSubviews = YES;
 	screenView.clipsToBounds = NO;
@@ -468,7 +472,8 @@
 		[uiButton setBackgroundImage:image forState:UIControlStateHighlighted];
 		[uiButton setBackgroundImage:image forState:UIControlStateNormal];
 	}
-	[uiButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[uiButton addTarget:self action:@selector(buttonPressed:)
+				forControlEvents:UIControlEventTouchUpInside];
 
 	return uiButton;
 }
@@ -478,9 +483,10 @@
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: kTransitionDuration];
 
-	[UIView setAnimationTransition:([rcView superview] ?
-									UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
-						   forView:self.view cache:YES];
+	[UIView setAnimationTransition:
+				([rcView superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
+				forView: self.view
+				cache: YES];
 	if ([screenView superview])
 	{
 		[screenView removeFromSuperview];
@@ -505,7 +511,8 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	UIImage * image = [UIImage imageWithData: [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType]];
+	NSData *data = [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType];
+	UIImage * image = [UIImage imageWithData: data];
 	if(image != nil)
 	{
 		CGSize size = CGSizeMake(image.size.width*kImageScale, image.size.height*kImageScale);
@@ -540,14 +547,17 @@
 {
 	// Spawn a thread to send the request so that the UI is not blocked while
 	// waiting for the response.
-	[NSThread detachNewThreadSelector:@selector(sendButton:) toTarget:self withObject: [NSNumber numberWithInteger: sender.rcCode]];
+	[NSThread detachNewThreadSelector:@selector(sendButton:)
+							toTarget:self
+							withObject: [NSNumber numberWithInteger: sender.rcCode]];
 }
 
 - (void)sendButton: (NSNumber *)rcCode
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: [rcCode integerValue]] && _shouldVibrate)
+	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: [rcCode integerValue]]
+			&& _shouldVibrate)
 		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 
 	[pool release];
@@ -567,24 +577,25 @@
 	//[UIView setAnimationDuration: kTransitionDuration];
 
 	// adjust size of screenView, toolbar & scrollView
-	CGRect mainViewBounds = self.view.bounds;
-	screenView.frame = CGRectMake(0.0, 0.0, mainViewBounds.size.width, mainViewBounds.size.height);
+	CGSize mainViewSize = self.view.bounds.size;
+	screenView.frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
 	[toolbar sizeToFit];
-	mainViewBounds = screenView.bounds;
+	//mainViewSize = screenView.bounds.size;
 	CGFloat toolbarHeight = toolbar.frame.size.height;
-	CGFloat edgeY = mainViewBounds.size.height - toolbarHeight;
-	CGFloat width = mainViewBounds.size.width;
+	CGFloat edgeY = mainViewSize.height - toolbarHeight;
+	CGFloat width = mainViewSize.width;
 	toolbar.frame = CGRectMake(0.0, edgeY, width, toolbarHeight);
 	scrollView.frame = CGRectMake(0.0, 0.0, width, edgeY);
 
-	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one ;-)
+	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one
 	if(screenView.superview)
 		[self loadImage: nil];
 
 	//[UIView commitAnimations];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
 	if([screenView superview])
 		return YES;
 
@@ -594,7 +605,8 @@
 
 #pragma mark UIScrollView delegates
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
     return imageView;
 }
 

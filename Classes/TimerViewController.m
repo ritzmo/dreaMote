@@ -122,7 +122,7 @@
 	afterEventViewController = nil;
 	datePickerController = nil;
 	
-    [super didReceiveMemoryWarning];
+	[super didReceiveMemoryWarning];
 }
 
 - (Timer *)timer
@@ -144,7 +144,10 @@
 	[timerJustplay setOn: newTimer.justplay];
 
 	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	[(UITableView *)self.view
+						scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
+						atScrollPosition: UITableViewScrollPositionTop
+						animated: NO];
 }
 
 - (BOOL)creatingNewTimer
@@ -181,15 +184,17 @@
 	returnTextField.leftView = nil;
 	returnTextField.leftViewMode = UITextFieldViewModeNever;
 	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
-    returnTextField.textColor = [UIColor blackColor];
+	returnTextField.textColor = [UIColor blackColor];
 	returnTextField.font = [UIFont systemFontOfSize:17.0];
-    returnTextField.backgroundColor = [UIColor whiteColor];
-	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;	// no auto correction support
+	returnTextField.backgroundColor = [UIColor whiteColor];
+	// no auto correction support
+	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 	returnTextField.keyboardType = UIKeyboardTypeDefault;
 	returnTextField.returnKeyType = UIReturnKeyDone;
 
-	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;	// has a clear 'x' button to the right
+	// has a clear 'x' button to the right
+	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
 	return returnTextField;
 }
@@ -215,12 +220,15 @@
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
+	UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
+							initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+							target: self
+							action: @selector(cancelEdit:)];
 	self.navigationItem.leftBarButtonItem = cancelButtonItem;
 	[cancelButtonItem release];
 
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = kUIRowHeight;
@@ -260,7 +268,12 @@
 	{
 		if(editing)
 		{
-			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Can't edit a running or finished timer.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *notification = [[UIAlertView alloc]
+								initWithTitle:NSLocalizedString(@"Error", @"")
+								message:NSLocalizedString(@"Can't edit a running or finished timer.", @"")
+								delegate:nil
+								cancelButtonTitle:@"OK"
+								otherButtonTitles:nil];
 			[notification show];
 			[notification release];
 		}
@@ -286,7 +299,10 @@
 
 	if(editing)
 	{
-		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
+		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
+									initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+									target: self
+									action: @selector(cancelEdit:)];
 		self.navigationItem.leftBarButtonItem = cancelButtonItem;
 		[cancelButtonItem release];
 
@@ -344,7 +360,12 @@
 	// Show error message if one occured
 	if(message != nil)
 	{
-		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *notification = [[UIAlertView alloc]
+							initWithTitle:NSLocalizedString(@"Error", @"")
+							message:message
+							delegate:nil
+							cancelButtonTitle:@"OK"
+							otherButtonTitles:nil];
 		[notification show];
 		[notification release];
 	}
@@ -357,7 +378,8 @@
 	[self.navigationController popViewControllerAnimated: YES];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
@@ -406,13 +428,6 @@
 
 #pragma mark - UITableView delegates
 
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellEditingStyleNone;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return 7;
@@ -420,19 +435,6 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	/*
-	 Order of E2 Timer Editing Screen is:
-	 - Name
-	 - Description
-	 - Type
-	 - Repeated
-	 - Begin
-	 - End
-	 - (Location)
-	 - afterEvent
-	 - Service
-	*/
-
 	switch (section) {
 		case 0:
 			return NSLocalizedString(@"Title", @"");
@@ -455,7 +457,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 2 && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
+	if(section == 2
+	   && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
 		return 2;
 	return 1;
 }
@@ -563,7 +566,8 @@
 	return sourceCell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	if(self.editing)
 	{
 		NSInteger section = indexPath.section;
@@ -611,13 +615,15 @@
 	}
 
 	// We don't want any actual response :-)
-    return nil;
+	return nil;
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
 	// Show the disclosure indicator in section 3..6 if editing.
 	NSInteger section = indexPath.section;
-	return (self.editing && section > 2 && section < 7) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+	if(self.editing && section > 2 && section < 7)
+		return UITableViewCellAccessoryDisclosureIndicator;
+	return UITableViewCellAccessoryNone;
 }
 
 #pragma mark -
@@ -625,73 +631,67 @@
 
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
-    // notify other cells to end editing
-    if (![cell isEqual:timerTitleCell])
+	// notify other cells to end editing
+	if (![cell isEqual:timerTitleCell])
 		[timerTitleCell stopEditing];
-    if (![cell isEqual:timerDescriptionCell])
+	if (![cell isEqual:timerDescriptionCell])
 		[timerDescriptionCell stopEditing];
 
-    return self.editing;
+	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
 	if ([cell isEqual:timerTitleCell] || [cell isEqual:timerDescriptionCell])
 	{
-        // Restore the position of the main view if it was animated to make room for the keyboard.
-        if  (self.view.frame.origin.y < 0)
-		{
-            [self setViewMovedUp:NO];
-        }
-    }
+		// Restore the position of the main view if it was animated to make room for the keyboard.
+		if  (self.view.frame.origin.y < 0)
+			[self setViewMovedUp:NO];
+	}
 }
 
 // Animate the entire view up or down, to prevent the keyboard from covering the author field.
 - (void)setViewMovedUp:(BOOL)movedUp
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3];
-    // Make changes to the view's frame inside the animation block. They will be animated instead
-    // of taking place immediately.
-    CGRect rect = self.view.frame;
-    if (movedUp)
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.3];
+	// Make changes to the view's frame inside the animation block. They will be animated instead
+	// of taking place immediately.
+	CGRect rect = self.view.frame;
+	if (movedUp)
 	{
-        // If moving up, not only decrease the origin but increase the height so the view 
-        // covers the entire screen behind the keyboard.
-        rect.origin.y -= kOFFSET_FOR_KEYBOARD;
-        rect.size.height += kOFFSET_FOR_KEYBOARD;
-    }
+		// If moving up, not only decrease the origin but increase the height so the view 
+		// covers the entire screen behind the keyboard.
+		rect.origin.y -= kOFFSET_FOR_KEYBOARD;
+		rect.size.height += kOFFSET_FOR_KEYBOARD;
+	}
 	else
 	{
-        // If moving down, not only increase the origin but decrease the height.
-        rect.origin.y += kOFFSET_FOR_KEYBOARD;
-        rect.size.height -= kOFFSET_FOR_KEYBOARD;
-    }
-    self.view.frame = rect;
+		// If moving down, not only increase the origin but decrease the height.
+		rect.origin.y += kOFFSET_FOR_KEYBOARD;
+		rect.size.height -= kOFFSET_FOR_KEYBOARD;
+	}
+	self.view.frame = rect;
 
-    [UIView commitAnimations];
+	[UIView commitAnimations];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notif
 {
-    // The keyboard will be shown. If the user is editing the author, adjust the display so that the
-    // author field will not be covered by the keyboard.
-    if ((timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
-	{
-        [self setViewMovedUp:YES];
-    }
+	// The keyboard will be shown. If the user is editing the description, adjust the display so
+	// that the description field will not be covered by the keyboard.
+	if ((timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
+		[self setViewMovedUp:YES];
 	else if (!timerDescriptionCell.isInlineEditing && self.view.frame.origin.y < 0)
-	{
-        [self setViewMovedUp:NO];
-    }
+		[self setViewMovedUp:NO];
 }
 
 #pragma mark - UIViewController delegate methods
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    // watch the keyboard so we can adjust the user interface if necessary.
-    [[NSNotificationCenter defaultCenter] addObserver:self
+	// watch the keyboard so we can adjust the user interface if necessary.
+	[[NSNotificationCenter defaultCenter] addObserver:self
 												selector:@selector(keyboardWillShow:) 
 												name:UIKeyboardWillShowNotification
 												object:self.view.window]; 
@@ -704,8 +704,8 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+	// unregister for keyboard notifications while not visible.
+	[[NSNotificationCenter defaultCenter] removeObserver:self
 												name:UIKeyboardWillShowNotification
 												object:nil];
 }

@@ -65,7 +65,10 @@
 		self.title = newMovie.title;
 
 	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	[(UITableView *)self.view
+						scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
+						atScrollPosition: UITableViewScrollPositionTop
+						animated: NO];
 }
 
 - (void)loadView
@@ -90,7 +93,10 @@
 - (void)playAction: (id)sender
 {
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:6];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[(UITableView *)self.view
+						selectRowAtIndexPath: indexPath
+						animated: YES
+						scrollPosition: UITableViewScrollPositionNone];
 
 	Service *movieService = [[Service alloc] init];
 	[movieService setSref: _movie.sref];
@@ -99,7 +105,7 @@
 
 	[movieService release];
 
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 - (UITextView *)create_Summary
@@ -109,8 +115,9 @@
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
 	myTextView.backgroundColor = [UIColor whiteColor];
-	
-	// We display short description (or title) and extended description (if available) in our textview
+
+	// We display short description (or title) and extended description (if available)
+	// in our textview
 	NSMutableString *text;
 	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 		text = [_movie.title copy];
@@ -118,13 +125,9 @@
 	{
 		text = [[NSMutableString alloc] init];
 		if([_movie.sdescription length])
-		{
 			[text appendString: _movie.sdescription];
-		}
 		else
-		{
 			[text appendString: _movie.title];
-		}
 
 		if([_movie.edescription length])
 		{
@@ -151,10 +154,12 @@
 
 - (UIButton *)create_PlayButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"media-playback-start.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(playAction:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(playAction:)
+				forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
 }
