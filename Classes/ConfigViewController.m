@@ -27,7 +27,7 @@
 @synthesize connectButton;
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kOFFSET_FOR_KEYBOARD					120.0
+#define kOFFSET_FOR_KEYBOARD					110.0
 
 // the duration of the animation for the view shift
 #define kVerticalOffsetAnimationDuration		0.30
@@ -54,11 +54,12 @@
 {
 	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
 	configViewController.connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																			@"dreambox", kRemoteHost,
-																			@"", kUsername,
-																			@"", kPassword,
-																			[NSNumber numberWithInteger: kEnigma2Connector], kConnector,
-																			nil];
+																@"dreambox", kRemoteHost,
+																@"", kUsername,
+																@"", kPassword,
+																[NSNumber numberWithInteger:
+																	kEnigma2Connector], kConnector,
+																nil];
 	configViewController.connectionIndex = -1;
 
 	return configViewController;
@@ -85,32 +86,38 @@
     returnTextField.textColor = [UIColor blackColor];
 	returnTextField.font = [UIFont systemFontOfSize:17.0];
     returnTextField.backgroundColor = [UIColor whiteColor];
-	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;	// no auto correction support
+	// no auto correction support
+	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
 	returnTextField.keyboardType = UIKeyboardTypeDefault;
 	returnTextField.returnKeyType = UIReturnKeyDone;
 
-	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;	// has a clear 'x' button to the right
+	// has a clear 'x' button to the right
+	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
 	return returnTextField;
 }
 
 - (UIButton *)create_DefaultButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"emblem-favorite.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(makeDefault:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(makeDefault:)
+				forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
 }
 
 - (UIButton *)create_ConnectButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"network-wired.png"];
 	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(doConnect:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:@selector(doConnect:)
+				forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
 }
@@ -120,7 +127,7 @@
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = kUIRowHeight;
@@ -190,14 +197,17 @@
 			{
 				connectionIndex = [connections count];
 				[connections addObject: connection];
-				[(UITableView *)self.view insertSections:[NSIndexSet indexSetWithIndex: 3] withRowAnimation:UITableViewRowAnimationFade];
+				[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
+											withRowAnimation: UITableViewRowAnimationFade];
 				[(UITableView *)self.view reloadData];
 			}
 			else
 			{
 				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
+
+				// Reconnect because changes won't be applied otherwise
 				if(connectionIndex == [RemoteConnectorObject getConnectedId])
-					[RemoteConnectorObject connectTo: connectionIndex]; // Reconnect because changes won't be applied otherwise
+					[RemoteConnectorObject connectTo: connectionIndex];
 			}
 		}
 
@@ -222,20 +232,29 @@
 
 - (void)makeDefault: (id)sender
 {
-	[[NSUserDefaults standardUserDefaults] setObject: [NSNumber numberWithInteger: connectionIndex] forKey: kActiveConnection];
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+	NSNumber *activeConnection = [NSNumber numberWithInteger: connectionIndex];
+	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
 	[RemoteConnectorObject connectTo: connectionIndex];
 
-	[(UITableView *)self.view deleteSections:[NSIndexSet indexSetWithIndex: 3] withRowAnimation:UITableViewRowAnimationFade];
+	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
+								withRowAnimation: UITableViewRowAnimationFade];
 }
 
 - (void)doConnect: (id)sender
 {
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+
 	[RemoteConnectorObject connectTo: connectionIndex];
 
-	if(connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue])
-		[(UITableView *)self.view deleteSections:[NSIndexSet indexSetWithIndex: 3] withRowAnimation:UITableViewRowAnimationFade];
+	if(connectionIndex == [[stdDefaults objectForKey: kActiveConnection] integerValue])
+		[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
+									withRowAnimation: UITableViewRowAnimationFade];
 	else
-		[(UITableView *)self.view deleteRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:3]] withRowAnimation:UITableViewRowAnimationFade];
+		[(UITableView *)self.view
+				deleteRowsAtIndexPaths: [NSArray arrayWithObject:
+											[NSIndexPath indexPathForRow:0 inSection:3]]
+				withRowAnimation: UITableViewRowAnimationFade];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -251,7 +270,7 @@
 	NSInteger oldConnector = _connector;
 	_connector = [newConnector integerValue];
 
-	if(_connector == -1)
+	if(_connector == kInvalidConnector)
 	{
 		((UITableView *)self.view).userInteractionEnabled = NO;
 
@@ -264,7 +283,10 @@
 		_connector = [RemoteConnectorObject autodetectConnector: tempConnection];
 		if(_connector == kInvalidConnector)
 		{
-			UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Could not determine remote box type.", @"") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			UIAlertView *notification = [[UIAlertView alloc]
+								initWithTitle:NSLocalizedString(@"Error", @"")
+								message:NSLocalizedString(@"Could not determine remote box type.", @"")
+								delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
 			[notification release];
 
@@ -325,7 +347,8 @@
 		return 2;
 	if(section == 3)
 	{
-		if(connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue]
+		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+		if(connectionIndex == [[stdDefaults objectForKey: kActiveConnection] integerValue]
 			|| connectionIndex == [RemoteConnectorObject getConnectedId])
 			return 1;
 		return 2;
@@ -350,7 +373,7 @@
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
-			((CellTextField *)sourceCell).delegate = self;	// so we can detect when cell editing starts
+			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
 
 			((CellTextField *)sourceCell).view = remoteAddressTextField;
 			remoteAddressCell = (CellTextField *)sourceCell;
@@ -359,9 +382,11 @@
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
-			((CellTextField *)sourceCell).delegate = self;	// so we can detect when cell editing starts
+			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
 
-			switch(indexPath.row)
+			row = indexPath.row;
+			
+			switch(row)
 			{
 				case 0:
 					((CellTextField *)sourceCell).view = usernameTextField;
@@ -445,21 +470,24 @@
 
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
-
-    // notify other cells to end editing
-    if (![cell isEqual: remoteAddressCell])
-		[remoteAddressCell stopEditing];
-	if (![cell isEqual: usernameCell])
+	// notify other cells to end editing
+	if([cell isEqual: remoteAddressCell])
+	{
 		[usernameCell stopEditing];
-	if (![cell isEqual: passwordCell])
 		[passwordCell stopEditing];
+	}
+	else
+		[remoteAddressCell stopEditing];
 
-    return self.editing;
+	// XXX: usernameCell & passwordCell will track this themselves
+
+	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	if ([cell isEqual: usernameCell] || [cell isEqual: passwordCell])
+	if(([cell isEqual: usernameCell] && ! passwordCell.isInlineEditing)
+		|| ([cell isEqual: passwordCell] && !usernameCell.isInlineEditing))
 	{
         // Restore the position of the main view if it was animated to make room for the keyboard.
         if  (self.view.frame.origin.y < 0)
@@ -469,7 +497,7 @@
     }
 }
 
-// Animate the entire view up or down, to prevent the keyboard from covering the author field.
+// Animate the entire view up or down, to prevent the keyboard from covering the text field.
 - (void)setViewMovedUp:(BOOL)movedUp
 {
     [UIView beginAnimations:nil context:NULL];
@@ -498,16 +526,15 @@
 
 - (void)keyboardWillShow:(NSNotification *)notif
 {
-    // The keyboard will be shown. If the user is editing the author, adjust the display so that the
-    // author field will not be covered by the keyboard.
-    if ((usernameCell.isInlineEditing || passwordCell.isInlineEditing) && self.view.frame.origin.y >= 0)
+	// The keyboard will be shown. If the user is editing the username or password, adjust the
+	// display so that the field will not be covered by the keyboard.
+	if(usernameCell.isInlineEditing || passwordCell.isInlineEditing)
 	{
-        [self setViewMovedUp:YES];
-    }
-	else if (!passwordCell.isInlineEditing && self.view.frame.origin.y < 0)
-	{
-        [self setViewMovedUp:NO];
-    }
+		if(self.view.frame.origin.y >= 0)
+			[self setViewMovedUp:YES];
+	}
+	else if(self.view.frame.origin.y < 0)
+		[self setViewMovedUp:NO];
 }
 
 #pragma mark - UIViewController delegate methods
@@ -516,7 +543,8 @@
 {
     // watch the keyboard so we can adjust the user interface if necessary.
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
-												 name:UIKeyboardWillShowNotification object:self.view.window];
+												name:UIKeyboardWillShowNotification
+												object:self.view.window];
 
 	[super viewWillAppear: animated];
 }
@@ -524,7 +552,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil]; 
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+												name:UIKeyboardWillShowNotification
+												object:nil]; 
 
 	[super viewWillDisappear: animated];
 }

@@ -23,7 +23,7 @@
 @implementation MessageViewController
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kOFFSET_FOR_KEYBOARD					120.0
+#define kOFFSET_FOR_KEYBOARD					90.0
 
 // the duration of the animation for the view shift
 #define kVerticalOffsetAnimationDuration		0.30
