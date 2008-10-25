@@ -273,79 +273,80 @@
 			timerEnabled.enabled = NO;
 			timerJustplay.enabled = NO;
 		}
+
+		return;
 	}
-	else
+
+	[super setEditing: editing animated: animated];
+
+	[timerTitleCell setEditing:editing animated:animated];
+	[timerDescriptionCell setEditing:editing animated:animated];
+	timerEnabled.enabled = editing;
+	timerJustplay.enabled = editing;
+
+	if(editing)
 	{
-		if(editing)
+		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
+		self.navigationItem.leftBarButtonItem = cancelButtonItem;
+		[cancelButtonItem release];
+
+		[(UITableView *)self.view reloadData];
+		return;
+	}
+
+	self.navigationItem.leftBarButtonItem = nil;
+	[(UITableView *)self.view reloadData];
+
+	// Abort if we are not supposed to commit changes now
+	if(!_shouldSave)
+		return;
+
+	NSString *message = nil;
+
+	// Sanity Check Title
+	if([timerTitle.text length])
+		_timer.title = timerTitle.text;
+	else
+		message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
+
+	// Get Description
+	if([timerDescription.text length])
+		_timer.tdescription = timerDescription.text;
+	else
+		_timer.tdescription = @"";
+
+	// See if we actually have a Service
+	if(_timer.service == nil || !_timer.service.valid)
+		message = NSLocalizedString(@"Can't save a timer without a service.", @"");
+
+	_timer.disabled = !timerEnabled.on;
+	_timer.justplay = timerJustplay.on;
+
+	// Try to commit changes if no error occured
+	if(!message)
+	{
+		if(_creatingNewTimer)
 		{
-			UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
-			self.navigationItem.leftBarButtonItem = cancelButtonItem;
-			[cancelButtonItem release];
+			if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
+				message = NSLocalizedString(@"Error adding new timer.", @"");
+			else
+				[self.navigationController popViewControllerAnimated: YES];
 		}
 		else
 		{
-			self.navigationItem.leftBarButtonItem = nil;
-		}
-
-		[super setEditing: editing animated: animated];
-		[(UITableView*)self.view reloadData];
-
-		[timerTitleCell setEditing:editing animated:animated];
-		[timerDescriptionCell setEditing:editing animated:animated];
-		timerEnabled.enabled = editing;
-		timerJustplay.enabled = editing;
-
-		// editing stopped, commit changes
-		if(_shouldSave && !editing)
-		{
-			NSString *message = nil;
-
-			// Sanity Check Title
-			if([timerTitle.text length])
-				_timer.title = timerTitle.text;
+			if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
+				message = NSLocalizedString(@"Error editing timer.", @"");
 			else
-				message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
-
-			// Get Description
-			if([timerDescription.text length])
-				_timer.tdescription = timerDescription.text;
-			else
-				_timer.tdescription = @"";
-
-			// See if we actually have a Service
-			if(_timer.service == nil || !_timer.service.valid)
-				message = NSLocalizedString(@"Can't save a timer without a service.", @"");
-
-			_timer.disabled = !timerEnabled.on;
-			_timer.justplay = timerJustplay.on;
-
-			// Try to commit changes if no error occured
-			if(!message)
-			{
-				if(_creatingNewTimer)
-				{
-					if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
-						message = NSLocalizedString(@"Error adding new timer.", @"");
-					else
-						[self.navigationController popViewControllerAnimated: YES];
-				}
-				else
-				{
-					if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
-						message = NSLocalizedString(@"Error editing timer.", @"");
-					else
-						[self.navigationController popViewControllerAnimated: YES];
-				}
-			}
-
-			// Show error message if one occured
-			if(message != nil)
-			{
-				UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[notification show];
-				[notification release];
-			}
+				[self.navigationController popViewControllerAnimated: YES];
 		}
+	}
+
+	// Show error message if one occured
+	if(message != nil)
+	{
+		UIAlertView *notification = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
 	}
 }
 
@@ -614,9 +615,9 @@
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-    // Show the disclosure indicator in section 3..6 if editing.
+	// Show the disclosure indicator in section 3..6 if editing.
 	NSInteger section = indexPath.section;
-    return (self.editing && section > 2 && section < 7) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
+	return (self.editing && section > 2 && section < 7) ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
 }
 
 #pragma mark -

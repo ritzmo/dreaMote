@@ -122,6 +122,11 @@
 	return nil;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return (indexPath.section == 0);
+}
+
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
 //
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
