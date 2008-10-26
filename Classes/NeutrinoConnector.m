@@ -97,7 +97,7 @@
 - (void)addService:(Service *)newService
 {
 	if(newService != nil && newService.valid)
-		[serviceCache setObject: newService forKey: newService.sref];
+		[serviceCache setObject: newService forKey: newService.sname];
 
 	[serviceTarget performSelectorOnMainThread:serviceSelector withObject:newService waitUntilDone:NO];
 }
@@ -149,7 +149,7 @@
 		[self fetchServices:nil action:nil];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/control/timer?format=id" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -209,15 +209,19 @@
 		[timer setEndFromString: [timerStringComponents objectAtIndex: 6]];
 
 		// Eventually fetch Service from our Cache
-		NSString *sref = [timerStringComponents objectAtIndex: 7];
-		Service *service = [serviceCache objectForKey: sref];
+		NSRange objRange;
+		objRange.location = 7;
+		objRange.length = [timerStringComponents count] - 7;
+		NSString *sname = [[timerStringComponents subarrayWithRange: objRange] componentsJoinedByString: @" "];
+		Service *service = [serviceCache objectForKey: sname];
 		if(service != nil)
 			timer.service = service;
 		else
 		{
+			// XXX: we set a fake sref here as the service is valid enough for timers...
 			service = [[Service alloc] init];
-			service.sref = sref;
-			service.sname = NSLocalizedString(@"Unknown Service", @"");
+			service.sref = @"dc";
+			service.sname = sname;
 			timer.service = service;
 			[service release];
 		}
@@ -416,8 +420,8 @@
 	// XXX: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSString *add = [NSString stringWithFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	add = [add stringByAppendingFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	add = [add stringByAppendingString: @"&channel_id="];
-	add = [add stringByAppendingString: newTimer.service.sref];
+	add = [add stringByAppendingString: @"&channel_name="];
+	add = [add stringByAppendingString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -441,8 +445,8 @@
 	// XXX: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSString *add = [NSString stringWithFormat: @"/control/timer?action=new&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	add = [add stringByAppendingFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	add = [add stringByAppendingString: @"&channel_id="];
-	add = [add stringByAppendingString: newTimer.service.sref];
+	add = [add stringByAppendingString: @"&channel_name="];
+	add = [add stringByAppendingString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
 	add = [add stringByAppendingString: @"&rep="];
 	add = [add stringByAppendingFormat: @"%d", newTimer.repeated];
 	add = [add stringByAppendingString: @"&repcount="];
