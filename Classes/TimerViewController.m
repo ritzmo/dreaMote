@@ -320,13 +320,13 @@
 	NSString *message = nil;
 
 	// Sanity Check Title
-	if([timerTitle.text length])
+	if(timerTitle.text && [timerTitle.text length])
 		_timer.title = timerTitle.text;
 	else
 		message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
 
 	// Get Description
-	if([timerDescription.text length])
+	if(timerDescription.text && [timerDescription.text length])
 		_timer.tdescription = timerDescription.text;
 	else
 		_timer.tdescription = @"";
