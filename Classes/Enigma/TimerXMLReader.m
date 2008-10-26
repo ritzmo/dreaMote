@@ -206,6 +206,8 @@ static NSUInteger parsedTimersCounter;
 		self.currentTimerObject.disabled = [self.contentOfCurrentProperty isEqualToString: @"1"];
 	} else if ([elementName isEqualToString:@"e2state"]) {
 		self.currentTimerObject.state = [self.contentOfCurrentProperty integerValue];
+	} else if ([elementName isEqualToString:@"e2afterevent"]) {
+		self.currentTimerObject.afterevent = [self.contentOfCurrentProperty integerValue];
 	} else if ([elementName isEqualToString:@"typedata"]) {
 		NSInteger typeData = [self.contentOfCurrentProperty integerValue];
 

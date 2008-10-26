@@ -35,23 +35,25 @@ enum screenshotType {
 
 enum connectorFeatures {
 	// Timers can be disabled without removing them
-	kFeaturesDisabledTimers = 1,
+	kFeaturesDisabledTimers,
+	// Timer can have an "after Event"-Action
+	kFeaturesTimerAfterEvent,
 	// Connector can fetch Record Info
-	kFeaturesRecordInfo = 2,
+	kFeaturesRecordInfo,
 	// Connector can fetch extended information about recordings (e.g. tags)
-	kFeaturesExtendedRecordInfo = 3, // XXX: as long as we lack more connectors this is specific enough
+	kFeaturesExtendedRecordInfo, // XXX: as long as we lack more connectors this is specific enough
 	// Connector offers to restart just the remote GUI (not the same as rebooting!)
-	kFeaturesGUIRestart = 4,
+	kFeaturesGUIRestart,
 	// Can give a message type
-	kFeaturesMessageType = 5,
+	kFeaturesMessageType,
 	// Can set a custom caption for messages
-	kFeaturesMessageCaption = 6,
+	kFeaturesMessageCaption,
 	// Can provide a custom timeout
-	kFeaturesMessageTimeout = 7,
+	kFeaturesMessageTimeout,
 	// Can fetch a Screenshot of the GUI
-	kFeaturesScreenshot = 8,
+	kFeaturesScreenshot,
 	// Can fetch a Screenshot of just the video buffer
-	kFeaturesVideoScreenshot = 9,
+	kFeaturesVideoScreenshot,
 };
 
 enum buttonCodes {
