@@ -247,7 +247,7 @@
 
 	[RemoteConnectorObject connectTo: connectionIndex];
 
-	if(connectionIndex == [[stdDefaults objectForKey: kActiveConnection] integerValue])
+	if(connectionIndex == [stdDefaults integerForKey: kActiveConnection])
 		[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 									withRowAnimation: UITableViewRowAnimationFade];
 	else
@@ -318,7 +318,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if(	connectionIndex == -1
-		|| (connectionIndex == [[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] && connectionIndex == [RemoteConnectorObject getConnectedId]))
+		|| (connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] && connectionIndex == [RemoteConnectorObject getConnectedId]))
 		return 3;
 	return 4;
 }
@@ -346,7 +346,7 @@
 	if(section == 3)
 	{
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-		if(connectionIndex == [[stdDefaults objectForKey: kActiveConnection] integerValue]
+		if(connectionIndex == [stdDefaults integerForKey: kActiveConnection]
 			|| connectionIndex == [RemoteConnectorObject getConnectedId])
 			return 1;
 		return 2;

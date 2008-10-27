@@ -169,8 +169,8 @@ static NSDictionary *_connection;
 {
 	NSUInteger index = [_connections indexOfObject: _connection];
 	if(index == NSNotFound)
-		return [[[NSUserDefaults standardUserDefaults]
-					objectForKey: kActiveConnection] integerValue];
+		return [[NSUserDefaults standardUserDefaults]
+					integerForKey: kActiveConnection];
 	return index;
 }
 

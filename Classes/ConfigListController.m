@@ -178,7 +178,7 @@
 				row--;
 			}
 
-			if([[[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection] integerValue] == row)
+			if([[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] == row)
 				sourceCell.image = [UIImage imageNamed:@"emblem-favorite.png"];
 			else if([RemoteConnectorObject getConnectedId] == row)
 				sourceCell.image = [UIImage imageNamed:@"network-wired.png"];
@@ -252,7 +252,7 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-		NSInteger currentDefault = [[stdDefaults objectForKey: kActiveConnection] integerValue];
+		NSInteger currentDefault = [stdDefaults integerForKey: kActiveConnection];
 		NSInteger index = indexPath.row - 1;
 
 		if(currentDefault > index)
