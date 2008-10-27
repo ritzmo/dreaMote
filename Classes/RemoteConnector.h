@@ -54,6 +54,8 @@ enum connectorFeatures {
 	kFeaturesScreenshot,
 	// Can fetch a Screenshot of just the video buffer
 	kFeaturesVideoScreenshot,
+	// Remote Control has all buttons (we have a simple and a "full" view)
+	kFeaturesFullRemote,
 };
 
 enum buttonCodes {

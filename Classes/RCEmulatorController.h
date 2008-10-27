@@ -12,7 +12,10 @@
 {
 @private
 	BOOL _shouldVibrate;
-	UIView *rcView;
+	BOOL _fullRc;
+
+	UIView *fullRcView;
+	UIView *simpleRcView;
 	UIView *screenView;
 	UIScrollView *scrollView;
 	UIImageView *imageView;
