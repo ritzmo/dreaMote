@@ -202,7 +202,6 @@
 		timer.title = [NSString stringWithFormat: @"Timer %@", timer.eit];
 		timer.repeated = [[timerStringComponents objectAtIndex: 2] integerValue]; // XXX: as long as we don't offer to edit this via gui we can just keep the value and not change it to some common interpretation
 		timer.repeatcount = [[timerStringComponents objectAtIndex: 3] integerValue];
-		// XXX: is it ok to ignore announce time?
 		[timer setBeginFromString: [timerStringComponents objectAtIndex: 5]];
 		[timer setEndFromString: [timerStringComponents objectAtIndex: 6]];
 
@@ -225,12 +224,16 @@
 		}
 
 		// Determine state
-		if([timer.begin timeIntervalSinceNow] > 0)
+		NSDate *announce = [NSDate dateWithTimeIntervalSince1970:
+									[[timerStringComponents objectAtIndex: 4] doubleValue]];
+		if([announce timeIntervalSinceNow] > 0)
 			timer.state = kTimerStateWaiting;
-		else if([timer.end timeIntervalSinceNow] < 0)
-			timer.state = kTimerStateFinished;
-		else
+		else if([timer.begin timeIntervalSinceNow] > 0)
+			timer.state = kTimerStatePrepared;
+		else if([timer.end timeIntervalSinceNow] > 0)
 			timer.state = kTimerStateRunning;
+		else
+			timer.state = kTimerStateFinished;
 
 		[target performSelectorOnMainThread:action withObject:timer waitUntilDone:NO];
 		[timer release];
