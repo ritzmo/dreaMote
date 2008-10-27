@@ -300,10 +300,8 @@
 		connectorCell.text = NSLocalizedString(@"Enigma", @"");
 	else if(_connector == kEnigma2Connector)
 		connectorCell.text = NSLocalizedString(@"Enigma 2", @"");
-#ifdef ENABLE_NEUTRINO_CONNECTOR
 	else if(_connector == kNeutrinoConnector)
 		connectorCell.text = NSLocalizedString(@"Neutrino", @"");
-#endif
 	else
 		connectorCell.text = @"???";
 }
@@ -412,10 +410,8 @@
 				sourceCell.text = NSLocalizedString(@"Enigma", @"");
 			else if(_connector == kEnigma2Connector)
 				sourceCell.text = NSLocalizedString(@"Enigma 2", @"");
-#ifdef ENABLE_NEUTRINO_CONNECTOR
 			else if(_connector == kNeutrinoConnector)
 				sourceCell.text = NSLocalizedString(@"Neutrino", @"");
-#endif
 			else
 				sourceCell.text = @"???";
 

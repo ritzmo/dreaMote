@@ -6,8 +6,6 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#ifdef ENABLE_NEUTRINO_CONNECTOR
-
 #import <UIKit/UIKit.h>
 
 #import "RemoteConnector.h"
@@ -24,5 +22,3 @@
 @property (nonatomic, retain) NSURL *baseAddress;
 
 @end
-
-#endif

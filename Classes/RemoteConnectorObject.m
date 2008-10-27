@@ -62,11 +62,9 @@ static NSDictionary *_connection;
 		case kEnigma1Connector:
 			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteAddress];
 			break;
-#ifdef ENABLE_NEUTRINO_CONNECTOR
 		case kNeutrinoConnector:
 			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteAddress];
 			break;
-#endif
 		default:
 			return NO;
 	}
@@ -148,7 +146,7 @@ static NSDictionary *_connection;
 		[connector release];
 		return kEnigma1Connector;
 	}
-#ifdef ENABLE_NEUTRINO_CONNECTOR
+
 	[connector release];
 	connector = [NeutrinoConnector createClassWithAddress: remoteAddress];
 	if([connector isReachable])
@@ -156,7 +154,7 @@ static NSDictionary *_connection;
 		[connector release];
 		return kNeutrinoConnector;
 	}
-#endif
+
 	[connector release];
 
 	return kInvalidConnector;

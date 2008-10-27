@@ -11,12 +11,8 @@ enum availableConnectors {
 	kInvalidConnector = -1,
 	kEnigma2Connector = 0,
 	kEnigma1Connector = 1,
-#ifdef ENABLE_NEUTRINO_CONNECTOR
 	kNeutrinoConnector = 2,
 	kMaxConnector = 3,
-#else
-	kMaxConnector = 2,
-#endif
 };
 
 enum enigma2MessageTypes {

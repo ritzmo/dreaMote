@@ -6,8 +6,6 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#ifdef ENABLE_NEUTRINO_CONNECTOR
-
 #import <Foundation/Foundation.h>
 
 #import "BaseXMLReader.h"
@@ -25,5 +23,3 @@
 @property (nonatomic, retain) Event *currentEventObject;
 
 @end
-
-#endif

@@ -6,8 +6,6 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#ifdef ENABLE_NEUTRINO_CONNECTOR
-
 #import "NeutrinoConnector.h"
 
 #import "Service.h"
@@ -582,5 +580,3 @@
 }
 
 @end
-
-#endif

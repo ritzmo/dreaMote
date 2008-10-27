@@ -6,8 +6,6 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#ifdef ENABLE_NEUTRINO_CONNECTOR
-
 #import "EventXMLReader.h"
 
 #import "Event.h"
@@ -143,5 +141,3 @@ static NSUInteger parsedEventsCounter;
 }
 
 @end
-
-#endif
