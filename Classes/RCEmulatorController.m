@@ -243,7 +243,7 @@
 	// <
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_leftarrow.png" andKeyCode: kButtonCodePrevious];
-	[simpleRcView addSubview: roundedButtonType];
+	[fullRcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
@@ -257,7 +257,7 @@
 	// >
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_rightarrow.png" andKeyCode: kButtonCodeNext];
-	[simpleRcView addSubview: roundedButtonType];
+	[fullRcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
@@ -383,7 +383,7 @@
 	// help
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_help.png" andKeyCode: kButtonCodeHelp];
-	[fullRcView addSubview: roundedButtonType];
+	[simpleRcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 
 	/* End lower pad */

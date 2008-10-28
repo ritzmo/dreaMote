@@ -32,7 +32,6 @@
 - (void)dealloc
 {
 	[_services release];
-	[_selectTarget release];
 	[eventListController release];
 	
 	[super dealloc];
@@ -133,21 +132,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	Service *service = [_services objectAtIndex: indexPath.row];
-	if(_selectTarget != nil && _selectCallback != nil)
+	if(!service.valid)
+		[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	else if(_selectTarget != nil && _selectCallback != nil)
 	{
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
 
 		[self.navigationController popViewControllerAnimated: YES];
 	}
-	else if(service.valid)
+	else
 	{
 		UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"What to do with the currently selected Service?", @"UIActionSheet when List Item in ServiceListController selected")
 																delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
 		[actionSheet showInView: tableView];
 		[actionSheet release];
 	}
-	else
-		[tableView deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex: (NSInteger)buttonIndex
