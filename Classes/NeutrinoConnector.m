@@ -491,6 +491,9 @@
 
 - (BOOL)sendButton:(NSInteger) type
 {
+	// We fake some button codes (namely tv/radio) so we have to be able to set a custom uri
+	NSURL *myURI;
+
 	// Translate ButtonCodes
 	NSString *buttonCode = nil;
 	switch(type)
@@ -521,16 +524,27 @@
 		case kButtonCodeHelp: buttonCode = @"KEY_HELP"; break;
 		case kButtonCodePower: buttonCode = @"KEY_POWER"; break;
 		case kButtonCodeOK: buttonCode = @"KEY_OK"; break;
+		case kButtonCodeTV:
+			myURI = [NSURL URLWithString: @"/control/setmode?tv" relativeToURL: baseAddress];
+			break;
+		case kButtonCodeRadio:
+			myURI = [NSURL URLWithString: @"/control/setmode?radio" relativeToURL: baseAddress];
+			break;
 		//case kButtonCode: buttonCode = @"KEY_"; break; // meant for copy&paste ;-)
 		default:
 			break;
 	}
 
-	if(buttonCode == nil)
-		return NO;
+	if(myURI == nil)
+	{
+		if(buttonCode == nil)
+			return NO;
 
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: baseAddress];
+		// Generate URI
+		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: baseAddress];
+	}
+
+	
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 

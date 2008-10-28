@@ -362,14 +362,14 @@
 	// tv
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_tv.png" andKeyCode: kButtonCodeTV];
-	[fullRcView addSubview: roundedButtonType];
+	[simpleRcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
 	// radio
 	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
 	roundedButtonType = [self customButton:frame withImage:@"key_radio.png" andKeyCode: kButtonCodeRadio];
-	[fullRcView addSubview: roundedButtonType];
+	[simpleRcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 	
