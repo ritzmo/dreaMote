@@ -492,7 +492,7 @@
 - (BOOL)sendButton:(NSInteger) type
 {
 	// We fake some button codes (namely tv/radio) so we have to be able to set a custom uri
-	NSURL *myURI;
+	NSURL *myURI = nil;
 
 	// Translate ButtonCodes
 	NSString *buttonCode = nil;
@@ -543,8 +543,6 @@
 		// Generate URI
 		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: baseAddress];
 	}
-
-	
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
