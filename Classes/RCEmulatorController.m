@@ -56,7 +56,7 @@
 
 	if(_fullRc)
 	{
-		[fullRcView addSubview: simpleRcView];
+		[fullRcView insertSubview: simpleRcView atIndex: 0];
 		if(![screenView superview])
 			[self.view addSubview: fullRcView];
 	}
@@ -143,15 +143,18 @@
 	// Flip Button
 	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
 
+	CGSize mainViewSize = self.view.bounds.size;
+	CGRect frame;
+
 #pragma mark RC View
 
 	// create the rc views (i think its easier to have two views than to keep track of all buttons and add/remove them as pleased)
-	fullRcView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
-	simpleRcView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height)];
+	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
+	fullRcView = [[UIView alloc] initWithFrame: frame];
+	simpleRcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:simpleRcView];
 
 	UIButton *roundedButtonType;
-	CGRect frame;
 
 	CGFloat imageWidth;
 	CGFloat imageHeight;
@@ -445,7 +448,7 @@
 #pragma mark Screenshot View
 
 	// ImageView for Screenshots
-	frame = CGRectMake(0.0, 0.0, self.view.bounds.size.width, self.view.bounds.size.height);
+	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
 	screenView = [[UIView alloc] initWithFrame: frame];
 
 	toolbar = [UIToolbar new];
@@ -454,7 +457,7 @@
 	// size up the toolbar and set its frame
 	[toolbar sizeToFit];
 	CGFloat toolbarHeight = toolbar.frame.size.height;
-	CGSize mainViewSize = screenView.bounds.size;
+	mainViewSize = screenView.bounds.size;
 	toolbar.frame = CGRectMake(0.0,
 							   mainViewSize.height - (toolbarHeight * 2.0) + 2.0,
 							   mainViewSize.width,
