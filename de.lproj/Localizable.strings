@@ -164,7 +164,7 @@
 "Make Default" = "Zu Standard machen";
 
 /* Default title of MessageViewController */
-"Message" = "Nachrichten";
+"Message" = "Nachricht";
 
 /* No comment provided by engineer. */
 "Message cannot be empty." = "Nachricht darf nicht leer sein.";
