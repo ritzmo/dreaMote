@@ -109,6 +109,7 @@
 
 	// Timeout
 	timeoutTextField = [self create_TextField];
+	timeoutTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kMessageTimeout];
 	timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
 	timeoutTextField.keyboardType = UIKeyboardTypeDefault; // XXX: we lack a better one :-)
 
@@ -500,6 +501,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil]; 
 
 	[super viewWillDisappear: animated];
+
+	[[NSUserDefaults standardUserDefaults] setValue:timeoutTextField.text forKey: kMessageTimeout];
 }
 
 @end

@@ -98,6 +98,19 @@
 		[stdDefaults synchronize];
 	}
 
+	// new feature as of revision 591
+	testValue = [stdDefaults stringForKey: kMessageTimeout];
+	if(testValue == nil)
+	{
+		// since no default values have been set (i.e. older preferences), create it here
+		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+									 @"10", kMessageTimeout,
+									 nil];
+
+		[stdDefaults registerDefaults: appDefaults];
+		[stdDefaults synchronize];
+	}
+
 	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
 }

@@ -57,3 +57,4 @@
 #define kActiveConnection		@"activeConnector"
 #define kVibratingRC			@"vibrateInRC"
 #define kConnectionTest			@"connectionTest"
+#define kMessageTimeout			@"messageTimeout"
