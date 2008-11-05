@@ -13,6 +13,15 @@
 "<enter title>" = "<title>";
 
 /* No comment provided by engineer. */
+"<message caption>" = "<nachrichtentitel>";
+
+/* No comment provided by engineer. */
+"<message text>" = "<nachrichtentext>";
+
+/* No comment provided by engineer. */
+"<message timeout>" = "<nachrichten dauer>";
+
+/* No comment provided by engineer. */
 "<remote address>" = "<entfernter host>";
 
 /* No comment provided by engineer. */
@@ -28,6 +37,12 @@
 "After Event" = "Nach der Aufnahme";
 
 /* No comment provided by engineer. */
+"All" = "Alle";
+
+/* No comment provided by engineer. */
+"Attention" = "Warnung";
+
+/* No comment provided by engineer. */
 "Autodetect" = "Erkenne";
 
 /* No comment provided by engineer. */
@@ -40,7 +55,19 @@
 "Can't save a timer with an empty title." = "Kann keinen Timer ohne Titel sichern.";
 
 /* No comment provided by engineer. */
+"Can't save a timer without a service." = "Can't save a timer without a service.";
+
+/* No comment provided by engineer. */
 "Cancel" = "Abbrechen";
+
+/* No comment provided by engineer. */
+"Caption" = "Titel";
+
+/* No comment provided by engineer. */
+"Caption cannot be empty." = "Titel darf nicht leer sein.";
+
+/* No comment provided by engineer. */
+"Check Connectivity" = "Erreichbarkeit prüfen";
 
 /* Default title of ConfigViewController
    Default Title of ConfigListController */
@@ -68,6 +95,9 @@
 "Could not determine remote box type." = "Konnte Recievertyp nicht autoamtisch erkennen!";
 
 /* No comment provided by engineer. */
+"Could not send message." = "Konnte Nachricht nicht senden.";
+
+/* No comment provided by engineer. */
 "Credential" = "Zugangsdaten";
 
 /* No comment provided by engineer. */
@@ -81,6 +111,9 @@
 
 /* No comment provided by engineer. */
 "Description" = "Beschreibung";
+
+/* No comment provided by engineer. */
+"Done" = "Fertig";
 
 /* No comment provided by engineer. */
 "Enabled" = "Aktiv";
@@ -104,6 +137,9 @@
 "Error editing timer." = "Konnte Timer nicht bearbeiten.";
 
 /* No comment provided by engineer. */
+"Error retrieving Data" = "Konnte keine Daten empfangen";
+
+/* No comment provided by engineer. */
 "Event" = "Sendung";
 
 /* Default Title of EventListController */
@@ -116,10 +152,31 @@
 "General" = "Allgemein";
 
 /* No comment provided by engineer. */
+"Info" = "Info";
+
+/* No comment provided by engineer. */
+"Invalid message type." = "Ungültiger Typ.";
+
+/* No comment provided by engineer. */
 "Justplay" = "Nur wiedergeben";
 
 /* No comment provided by engineer. */
 "Make Default" = "Zu Standard machen";
+
+/* Default title of MessageViewController */
+"Message" = "Nachrichten";
+
+/* No comment provided by engineer. */
+"Message cannot be empty." = "Nachricht darf nicht leer sein.";
+
+/* Default title of MessageTypeViewController */
+"Message Type" = "Nachrichtentyp";
+
+/* No comment provided by engineer. */
+"Message View Explain" = "Kurze Nachrichten verschicken";
+
+/* No comment provided by engineer. */
+"Message View Title" = "Nachrichten";
 
 /* Default title of MovieViewController */
 "Movie" = "Aufnahme";
@@ -155,7 +212,13 @@
 "Nothing" = "Nichts tun";
 
 /* No comment provided by engineer. */
+"OSD" = "OSD";
+
+/* No comment provided by engineer. */
 "Play" = "Wiedergabe";
+
+/* No comment provided by engineer. */
+"Please provide a valid timeout interval." = "Bitte gib eine gültige Dauer an.";
 
 /* No comment provided by engineer. */
 "Power" = "Ausschalten";
@@ -194,6 +257,9 @@
 "Select Service" = "Sender auswählen";
 
 /* No comment provided by engineer. */
+"Send" = "Senden";
+
+/* No comment provided by engineer. */
 "Service" = "Sender";
 
 /* No comment provided by engineer. */
@@ -223,6 +289,12 @@
 /* No comment provided by engineer. */
 "Tags" = "Tags";
 
+/* No comment provided by engineer. */
+"Text" = "Text";
+
+/* No comment provided by engineer. */
+"Timeout" = "Dauer";
+
 /* Default title of TimerViewController */
 "Timer" = "Timer";
 
@@ -245,7 +317,13 @@
 "Tomorrow" = "Morgen";
 
 /* No comment provided by engineer. */
+"Type" = "Typ";
+
+/* No comment provided by engineer. */
 "Vibrate in RC" = "Vibration der FB";
+
+/* No comment provided by engineer. */
+"Video" = "Video";
 
 /* No comment provided by engineer. */
 "Volume" = "Lautstärke";
@@ -257,6 +335,9 @@
 "What to do with the currently selected Service?" = "Was mit dem ausgewählten Service machen?";
 
 /* No comment provided by engineer. */
+"Yes/No" = "Ja/Nein";
+
+/* No comment provided by engineer. */
 "Yesterday" = "Gestern";
 
 /* No comment provided by engineer. */
@@ -264,6 +345,3 @@
 
 /* No comment provided by engineer. */
 "Zap" = "Umschalten";
-
-"Message View Title" = "Nachrichten";
-"Message View Explain" = "Kurze Nachrichten verschicken";
