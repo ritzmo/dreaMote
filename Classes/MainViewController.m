@@ -126,20 +126,22 @@
 	[targetViewController release];
 
 	// Add the "Settings" button to the navigation bar
-	UIBarButtonItem *button = [[UIBarButtonItem alloc]
-											initWithTitle: NSLocalizedString(@"Settings", @"")
-											style: UIBarButtonItemStyleDone
-											target: self action: @selector(settingsAction:)];
-	self.navigationItem.rightBarButtonItem = button;
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, 22.0, 22.0)];
+	UIImage *image = [UIImage imageNamed:@"preferences-system.png"];
+	[button setImage:image forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(settingsAction:) forControlEvents:UIControlEventTouchUpInside];
+	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
+	self.navigationItem.rightBarButtonItem = buttonItem;
 	[button release];
+	[buttonItem release];
 
 	// Add the "About" button to the navigation bar
-	UIButton* aboutViewButton = [UIButton buttonWithType: UIButtonTypeInfoLight];
-	[aboutViewButton addTarget:self action:@selector(aboutAction:) forControlEvents:UIControlEventTouchUpInside];
-	button = [[UIBarButtonItem alloc] initWithCustomView: aboutViewButton];
-	self.navigationItem.leftBarButtonItem = button;
-	[aboutViewButton release];
+	button = [UIButton buttonWithType: UIButtonTypeInfoLight];
+	[button addTarget:self action:@selector(aboutAction:) forControlEvents:UIControlEventTouchUpInside];
+	buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
+	self.navigationItem.leftBarButtonItem = buttonItem;
 	[button release];
+	[buttonItem release];
 
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];

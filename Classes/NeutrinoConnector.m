@@ -583,7 +583,14 @@
 
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
-	// XXX: not supported
+	// XXX: not supported, some extracts from yweb source:
+	// do_snapshot:
+	///control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png
+	// do_dboxshot:
+	///control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp
+	// if response(-r) != 200 then s/-r//g
+	//after:
+	//control/exec?Y_Tools&fbshot_clear
 	return nil;
 }
 
