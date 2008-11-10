@@ -226,14 +226,16 @@
 	if(timerViewController == nil)
 		timerViewController = [[TimerViewController alloc] init];
 
-	timerViewController.timer = timer;
-	timerViewController.oldTimer = ourCopy;
-	timerViewController.creatingNewTimer = NO;
-	[ourCopy release];
-
 	_willReappear = YES;
 
+	timerViewController.timer = timer;
+	timerViewController.oldTimer = ourCopy;
+	[ourCopy release];
+
 	[self.navigationController pushViewController: timerViewController animated: YES];
+
+	// XXX: set this here so the edit button won't get screwed
+	timerViewController.creatingNewTimer = NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -311,15 +313,17 @@
 		if(timerViewController == nil)
 			timerViewController = [[TimerViewController alloc] init];
 
+		_willReappear = YES;
+
 		Timer *newTimer = [Timer timer];
 		timerViewController.timer = newTimer;
 		[newTimer release];
 		timerViewController.oldTimer = nil;
-		timerViewController.creatingNewTimer = YES;
-
-		_willReappear = YES;
 
 		[self.navigationController pushViewController: timerViewController animated: YES];
+
+		// XXX: set this here so the edit button won't get screwed
+		timerViewController.creatingNewTimer = YES;
 	}
 }
 

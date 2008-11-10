@@ -10,7 +10,7 @@
 "<enter description>" = "<beschreibung>";
 
 /* Placeholder of timerTitle */
-"<enter title>" = "<title>";
+"<enter title>" = "<titel>";
 
 /* No comment provided by engineer. */
 "<message caption>" = "<nachrichtentitel>";
@@ -55,7 +55,7 @@
 "Can't save a timer with an empty title." = "Kann keinen Timer ohne Titel sichern.";
 
 /* No comment provided by engineer. */
-"Can't save a timer without a service." = "Can't save a timer without a service.";
+"Can't save a timer without a service." = "Kann keinen Timer ohne Sender sichern.";
 
 /* No comment provided by engineer. */
 "Cancel" = "Abbrechen";

@@ -164,7 +164,7 @@
 
 	_shouldSave = NO;
 	_creatingNewTimer = newValue;
-	[self setEditing: newValue animated: NO];
+	[self setEditing: newValue animated: YES];
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
