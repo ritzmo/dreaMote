@@ -49,7 +49,7 @@
 "Begin" = "Anfang";
 
 /* No comment provided by engineer. */
-"Can't edit a running or finished timer." = "Kann aktiven order beendeten Timer nicht bearbeiten.";
+"Can't edit a running or finished timer." = "Kann aktiven oder beendeten Timer nicht bearbeiten.";
 
 /* No comment provided by engineer. */
 "Can't save a timer with an empty title." = "Kann keinen Timer ohne Titel sichern.";
@@ -92,7 +92,7 @@
 "Controls" = "Steuerung";
 
 /* No comment provided by engineer. */
-"Could not determine remote box type." = "Konnte Recievertyp nicht autoamtisch erkennen!";
+"Could not determine remote box type." = "Konnte Receivertyp nicht autoamtisch erkennen!";
 
 /* No comment provided by engineer. */
 "Could not send message." = "Konnte Nachricht nicht senden.";
@@ -230,7 +230,7 @@
 "Reboot" = "Neu starten";
 
 /* No comment provided by engineer. */
-"Remote Box Type" = "Recievertyp";
+"Remote Box Type" = "Receivertyp";
 
 /* Title of RCEmulatorController */
 "Remote Control" = "Fernbedienung";

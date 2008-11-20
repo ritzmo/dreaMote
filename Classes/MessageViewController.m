@@ -492,6 +492,8 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification object:self.view.window];
 
+	[(UITableView *)self.view reloadData];
+
 	[super viewWillAppear: animated];
 }
 
