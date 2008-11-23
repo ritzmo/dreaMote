@@ -359,6 +359,8 @@
 
 		self.navigationItem.leftBarButtonItem = nil;
 	}
+	else
+		self.navigationItem.leftBarButtonItem = nil;
 
 	[super setEditing: editing animated: animated];
 
