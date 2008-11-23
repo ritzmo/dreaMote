@@ -290,6 +290,75 @@
 		return;
 	}
 
+	if(editing)
+	{
+		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
+											 initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+											 target: self
+											 action: @selector(cancelEdit:)];
+		self.navigationItem.leftBarButtonItem = cancelButtonItem;
+		[cancelButtonItem release];
+	}
+	else if(_shouldSave)
+	{
+		NSString *message = nil;
+
+		// See if we actually have a Service
+		if(_timer.service == nil || !_timer.service.valid)
+			message = NSLocalizedString(@"Can't save a timer without a service.", @"");
+
+		// Sanity Check Title
+		if(timerTitle.text && [timerTitle.text length])
+			_timer.title = timerTitle.text;
+		else
+			message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
+
+		// Get Description
+		if(timerDescription.text && [timerDescription.text length])
+			_timer.tdescription = timerDescription.text;
+		else
+			_timer.tdescription = @"";
+
+		_timer.disabled = !timerEnabled.on;
+		_timer.justplay = timerJustplay.on;
+
+		// Try to commit changes if no error occured
+		if(!message)
+		{
+			if(_creatingNewTimer)
+			{
+				if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
+					message = NSLocalizedString(@"Error adding new timer.", @"");
+				else
+					[self.navigationController popViewControllerAnimated: YES];
+			}
+			else
+			{
+				if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
+					message = NSLocalizedString(@"Error editing timer.", @"");
+				else
+					[self.navigationController popViewControllerAnimated: YES];
+			}
+		}
+
+		// Show error message if one occured
+		if(message != nil)
+		{
+			UIAlertView *notification = [[UIAlertView alloc]
+										 initWithTitle:NSLocalizedString(@"Error", @"")
+										 message:message
+										 delegate:nil
+										 cancelButtonTitle:@"OK"
+										 otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+
+			return;
+		}
+
+		self.navigationItem.leftBarButtonItem = nil;
+	}
+
 	[super setEditing: editing animated: animated];
 
 	[timerTitleCell setEditing:editing animated:animated];
@@ -297,83 +366,13 @@
 	timerEnabled.enabled = editing;
 	timerJustplay.enabled = editing;
 
-	if(editing)
-	{
-		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
-									initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-									target: self
-									action: @selector(cancelEdit:)];
-		self.navigationItem.leftBarButtonItem = cancelButtonItem;
-		[cancelButtonItem release];
-
-		[(UITableView *)self.view reloadData];
-		return;
-	}
-
-	self.navigationItem.leftBarButtonItem = nil;
 	[(UITableView *)self.view reloadData];
-
-	// Abort if we are not supposed to commit changes now
-	if(!_shouldSave)
-		return;
-
-	NSString *message = nil;
-
-	// Sanity Check Title
-	if(timerTitle.text && [timerTitle.text length])
-		_timer.title = timerTitle.text;
-	else
-		message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
-
-	// Get Description
-	if(timerDescription.text && [timerDescription.text length])
-		_timer.tdescription = timerDescription.text;
-	else
-		_timer.tdescription = @"";
-
-	// See if we actually have a Service
-	if(_timer.service == nil || !_timer.service.valid)
-		message = NSLocalizedString(@"Can't save a timer without a service.", @"");
-
-	_timer.disabled = !timerEnabled.on;
-	_timer.justplay = timerJustplay.on;
-
-	// Try to commit changes if no error occured
-	if(!message)
-	{
-		if(_creatingNewTimer)
-		{
-			if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
-				message = NSLocalizedString(@"Error adding new timer.", @"");
-			else
-				[self.navigationController popViewControllerAnimated: YES];
-		}
-		else
-		{
-			if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
-				message = NSLocalizedString(@"Error editing timer.", @"");
-			else
-				[self.navigationController popViewControllerAnimated: YES];
-		}
-	}
-
-	// Show error message if one occured
-	if(message != nil)
-	{
-		UIAlertView *notification = [[UIAlertView alloc]
-							initWithTitle:NSLocalizedString(@"Error", @"")
-							message:message
-							delegate:nil
-							cancelButtonTitle:@"OK"
-							otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-	}
 }
 
 - (void)cancelEdit:(id)sender
 {
 	_shouldSave = NO;
+	[self cellShouldBeginEditing: nil];
 	[self setEditing: NO animated: YES];
 	[self.navigationController popViewControllerAnimated: YES];
 }
