@@ -281,8 +281,9 @@
 		{
 			self.navigationItem.leftBarButtonItem = nil;
 			[super setEditing: NO animated: animated];
-			[timerTitleCell stopEditing];
-			[timerDescriptionCell stopEditing];
+			[self cellShouldBeginEditing: nil];
+			[timerTitleCell setEditing: NO animated: animated];
+			[timerDescriptionCell setEditing: NO animated: animated];
 			timerEnabled.enabled = NO;
 			timerJustplay.enabled = NO;
 		}
