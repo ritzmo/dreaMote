@@ -28,8 +28,6 @@
 @protected
 	CXMLDocument *_parser;
 #endif
-@protected
-	enum availableConnectors _connector;
 }
 
 + (BaseXMLReader*)initWithTarget:(id)target action:(SEL)action;
@@ -38,10 +36,5 @@
 @property (nonatomic) SEL addObject;
 
 - (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error connectorType:(enum availableConnectors)connector;
-
-// XXX: do we really want them to be public?
-- (void)parseAllEnigma2;
-- (void)parseAllEnigma1;
-- (void)parseAllNeutrino;
 
 @end

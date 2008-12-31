@@ -9,6 +9,9 @@
 
 @interface BaseXMLReader()
 - (void)sendErroneousObject;
+- (void)parseAllEnigma2;
+- (void)parseAllEnigma1;
+- (void)parseAllNeutrino;
 @end
 
 @implementation BaseXMLReader
@@ -48,7 +51,6 @@
 {
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	_parser = [[CXMLPushDocument alloc] initWithError: error];
-	_connector = connector;
 
 	// bail out if we encountered an error
 	if(error && *error)
@@ -63,7 +65,8 @@
 									delegate:self
 									startImmediately:NO];
 
-	if(!connection){
+	if(!connection)
+	{
 		[self sendErroneousObject];
 		return;
 	}
@@ -74,7 +77,8 @@
 							forMode: DataDownloaderRunMode];
 	[connection start];
 
-	while (!finished) { // a BOOL flagged in the delegate methods
+	while (!finished) // a BOOL flagged in the delegate methods
+	{
 		[[NSRunLoop currentRunLoop] runMode: DataDownloaderRunMode
 								beforeDate:[NSDate dateWithTimeIntervalSinceNow:30.0]];
 		[NSThread sleepForTimeInterval: 1.0];
@@ -83,6 +87,13 @@
 
 	finished = NO;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	if(!_parser.success)
+	{
+		[self sendErroneousObject];
+		return;
+
+	}
 #else
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
@@ -94,8 +105,9 @@
 		[self sendErroneousObject];
 		return;
 	}
-
-	switch(_connector)
+#endif
+	
+	switch(connector)
 	{
 		case kEnigma2Connector:
 			[self parseAllEnigma2];
@@ -110,7 +122,6 @@
 			[self sendErroneousObject];
 			return;
 	}
-#endif
 }
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
@@ -124,36 +135,13 @@
 	finished = YES;
 
 	[_parser abortParsing];
-	[self sendErroneousObject];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	finished = YES;
 
-	NSError *error = [_parser doneParsing];
-	// bail out if we encountered an error
-	if(error)
-	{
-		[self sendErroneousObject];
-		return;
-	}
-
-	switch(_connector)
-	{
-		case kEnigma2Connector:
-			[self parseAllEnigma2];
-			return;
-		case kEnigma1Connector:
-			[self parseAllEnigma1];
-			return;
-		case kNeutrinoConnector:
-			[self parseAllNeutrino];
-			return;
-		default:
-			[self sendErroneousObject];
-			return;
-	}
+	[_parser doneParsing];
 }
 
 #endif //LAME_ASYNCHRONOUS_DOWNLOAD

@@ -12,6 +12,8 @@
 
 @implementation CXMLPushDocument
 
+@synthesize success;
+
 - (void)dealloc
 {
 	if(_ctxt)
@@ -29,6 +31,7 @@
 			*outError = nil;
 			_parseError = outError;
 		}
+		success = NO;
 	}
 	else if(outError)
 		*outError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
@@ -68,6 +71,7 @@
 	int res = _ctxt->wellFormed;
 	if(res)
 	{
+		success = YES;
 		_node = (xmlNodePtr)_ctxt->myDoc;
 		NSAssert(_node->_private == NULL, @"TODO");
 		_node->_private = self; // Note. NOT retained (TODO think more about _private usage)
