@@ -80,8 +80,7 @@
 	while (!finished) // a BOOL flagged in the delegate methods
 	{
 		[[NSRunLoop currentRunLoop] runMode: DataDownloaderRunMode
-								beforeDate:[NSDate dateWithTimeIntervalSinceNow:30.0]];
-		[NSThread sleepForTimeInterval: 1.0];
+								beforeDate:[NSDate dateWithTimeIntervalSinceNow:15.0]];
 	}
 	[connection release];
 
