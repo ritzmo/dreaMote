@@ -197,8 +197,8 @@
 			{
 				connectionIndex = [connections count];
 				[connections addObject: connection];
-				[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
-											withRowAnimation: UITableViewRowAnimationFade];
+				//[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
+				//							withRowAnimation: UITableViewRowAnimationFade];
 				[(UITableView *)self.view reloadData];
 			}
 			else
