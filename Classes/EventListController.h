@@ -21,9 +21,8 @@
 	Service *_service;
 	FuzzyDateFormatter *dateFormatter;
 
-	EventViewController *eventViewController;
 	BaseXMLReader *eventXMLReader;
-	BOOL xmlSupportsIncremental;
+	EventViewController *eventViewController;
 }
 
 + (EventListController*)forService: (Service *)ourService;

@@ -8,10 +8,9 @@
 
 #import "Enigma1Connector.h"
 
-#import "Service.h"
-#import "Timer.h"
-#import "Event.h"
-#import "Volume.h"
+#import "Objects/Generic/Service.h"
+#import "Objects/Generic/Timer.h"
+#import "Objects/Generic/Volume.h"
 
 #import "XMLReader/Enigma/ServiceXMLReader.h"
 #import "XMLReader/Enigma/EventXMLReader.h"

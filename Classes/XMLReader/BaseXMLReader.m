@@ -9,13 +9,13 @@
 
 @interface BaseXMLReader()
 - (void)sendErroneousObject;
+- (void)parseFull;
 @end
 
 @implementation BaseXMLReader
 
 @synthesize target = _target;
 @synthesize addObject = _addObject;
-@synthesize supportsIncremental;
 @synthesize finished;
 
 - (id)init
@@ -23,7 +23,6 @@
 	if(self = [super init])
 	{
 		finished = NO;
-		supportsIncremental = NO;
 	}
 	return self;
 }
@@ -47,11 +46,6 @@
 
 - (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	[self parseXMLFileAtURL: URL parseError: error parseImmediately: YES];
-}
-
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error parseImmediately: (BOOL)doParse
-{
 	finished = NO;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	_parser = [[CXMLPushDocument alloc] initWithError: error];
@@ -59,8 +53,8 @@
 	// bail out if we encountered an error
 	if(error && *error)
 	{
-		if(doParse)
-			[self sendErroneousObject];
+
+		[self sendErroneousObject];
 		return;
 	}
 
@@ -72,8 +66,7 @@
 
 	if(!connection)
 	{
-		if(doParse)
-			[self sendErroneousObject];
+		[self sendErroneousObject];
 		return;
 	}
 
@@ -94,8 +87,7 @@
 
 	if(!_parser.success)
 	{
-		if(doParse)
-			[self sendErroneousObject];
+		[self sendErroneousObject];
 		return;
 
 	}
@@ -108,14 +100,12 @@
 	// bail out if we encountered an error
 	if(error && *error)
 	{
-		if(doParse)
-			[self sendErroneousObject];
+		[self sendErroneousObject];
 		return;
 	}
 #endif
 
-	if(doParse)
-		[self parseInitial];
+	[self parseFull];
 }
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
@@ -148,18 +138,6 @@
 - (void)parseFull
 {
 	// XXX: descending classes should implement this
-}
-
-- (void)parseInitial
-{
-	// If a descending class implements this it should set supportsIncremental to YES
-	[self parseFull];
-}
-
-- (id)parseSpecific: (NSString *)identifier
-{
-	// This function will only be called when supportsIncremental is set to YES
-	return nil;
 }
 
 @end

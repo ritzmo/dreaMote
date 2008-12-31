@@ -8,16 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class Movie;
+#import "MovieProtocol.h"
 
 @interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	Movie *_movie;
+	NSObject<MovieProtocol> *_movie;
 }
 
-+ (MovieViewController *)withMovie: (Movie *) newMovie;
++ (MovieViewController *)withMovie: (NSObject<MovieProtocol> *) newMovie;
 
-@property (nonatomic, retain) Movie *movie;
+@property (nonatomic, retain) NSObject<MovieProtocol> *movie;
 
 @end

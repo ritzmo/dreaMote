@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+#import "EventProtocol.h"
+
 @class Service;
-@class Event;
 
 enum afterEvent {
 	kAfterEventNothing = 0,
@@ -113,8 +114,8 @@ enum neutrinoTimerRepeat {
 	NSString *_timeString;
 }
 
-+ (Timer *)withEvent: (Event *)ourEvent;
-+ (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService;
++ (Timer *)withEvent: (NSObject<EventProtocol> *)ourEvent;
++ (Timer *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService;
 + (Timer *)timer;
 
 - (NSString *)getStateString;

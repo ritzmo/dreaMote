@@ -58,12 +58,12 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	return self;
 }
 
-- (Movie *)movie
+- (NSObject<MovieProtocol> *)movie
 {
 	return _movie;
 }
 
-- (void)setMovie:(Movie *)newMovie
+- (void)setMovie:(NSObject<MovieProtocol> *)newMovie
 {
 	if(_movie == newMovie) return;
 

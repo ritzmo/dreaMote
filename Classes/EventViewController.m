@@ -15,8 +15,8 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
-#import "Event.h"
-#import "Service.h"
+#import "Objects/EventProtocol.h"
+#import "Objects/Generic/Service.h"
 
 @implementation EventViewController
 
@@ -33,7 +33,7 @@
 	return self;
 }
 
-+ (EventViewController *)withEventAndService: (Event *) newEvent: (Service *) newService
++ (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (Service *) newService
 {
 	EventViewController *eventViewController = [[EventViewController alloc] init];
 
@@ -51,12 +51,12 @@
 	[super dealloc];
 }
 
-- (Event *)event
+- (NSObject<EventProtocol> *)event
 {
 	return _event;
 }
 
-- (void)setEvent: (Event *)newEvent
+- (void)setEvent: (NSObject<EventProtocol> *)newEvent
 {
 	if(_event != newEvent)
 	{

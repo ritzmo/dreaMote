@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class Timer;
-@class Event;
 @class Service;
 
+#import "Objects/EventProtocol.h"
 #import "CellTextField.h"
 
 @class ServiceListController;
@@ -47,8 +47,8 @@
 	DatePickerController *datePickerController;
 }
 
-+ (TimerViewController *)withEvent: (Event *)ourEvent;
-+ (TimerViewController *)withEventAndService: (Event *)ourEvent: (Service *)ourService;
++ (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent;
++ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService;
 + (TimerViewController *)withTimer: (Timer *)ourTimer;
 + (TimerViewController *)newTimer;
 

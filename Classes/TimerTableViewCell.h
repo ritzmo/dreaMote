@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Timer.h"
+#import "Objects/Generic/Timer.h"
 
 #import "FuzzyDateFormatter.h"
 

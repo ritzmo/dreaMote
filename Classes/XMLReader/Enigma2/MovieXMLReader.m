@@ -1,0 +1,72 @@
+//
+//  MovieXMLReader.m
+//  Untitled
+//
+//  Created by Moritz Venn on 11.03.08.
+//  Copyright 2008 __MyCompanyName__. All rights reserved.
+//
+
+#import "MovieXMLReader.h"
+
+#import "../../Objects/Enigma2/Movie.h"
+
+@implementation Enigma2MovieXMLReader
+
+// Movies are 'heavy'
+#define MAX_MOVIES 100
+
++ (Enigma2MovieXMLReader*)initWithTarget:(id)target action:(SEL)action
+{
+	Enigma2MovieXMLReader *xmlReader = [[Enigma2MovieXMLReader alloc] init];
+	xmlReader.target = target;
+	xmlReader.addObject = action;
+
+	return xmlReader;
+}
+
+- (void)sendErroneousObject
+{
+	NSObject<MovieProtocol> *fakeObject = [[Enigma2Movie alloc] init];
+	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[fakeObject release];
+}
+
+/*
+Example:
+ <?xml version="1.0" encoding="UTF-8"?>
+ <e2movielist>
+ <e2movie>
+ <e2servicereference>1:0:0:0:0:0:0:0:0:0:/hdd/movie/20080723 0916 - ProSieben - Scrubs - Die Anfänger.ts</e2servicereference>
+ <e2title>Scrubs - Die Anfänger</e2title>
+ <e2description>Scrubs - Die Anfänger</e2description>
+ <e2descriptionextended>Ted stellt sich gegen Kelso, als er sich für höhere Löhne für die Schwestern einsetzt. Todd hat seine Berufung in der plastischen Chirurgie gefunden. Als Turk sich dagegen einsetzt, dass ein sechzehnjähriges Mädchen eine Brust-OP bekommt, sieht Todd sich gezwungen, seinen Freund umzustimmen, denn dessen Job hängt davon ab. Jordan mischt sich in Keith und Elliotts Beziehung ein, was sich als nicht so gute Idee herausstellt.</e2descriptionextended>
+ <e2servicename>ProSieben</e2servicename>
+ <e2time>1216797360</e2time>
+ <e2length>disabled</e2length>
+ <e2tags></e2tags>
+ <e2filename>/hdd/movie/20080723 0916 - ProSieben - Scrubs - Die Anfänger.ts</e2filename>
+ <e2filesize>1649208192</e2filesize>
+ </e2movie>
+ </e2movielist>
+*/
+- (void)parseFull
+{
+	NSArray *resultNodes = NULL;
+	NSUInteger parsedMovieCounter = 0;
+	
+	resultNodes = [_parser nodesForXPath:@"/e2movielist/e2movie" error:nil];
+	
+	for (CXMLElement *resultElement in resultNodes) {
+		if(++parsedMovieCounter >= MAX_MOVIES)
+			break;
+
+		// An e2movie in the xml represents a movie, so create an instance of it.
+		NSObject<MovieProtocol> *newMovie = [[Enigma2Movie alloc] initWithNode: (CXMLNode *)resultElement];
+		
+		[self.target performSelectorOnMainThread: self.addObject withObject: newMovie waitUntilDone: NO];
+		[newMovie release];
+	}
+}
+
+@end

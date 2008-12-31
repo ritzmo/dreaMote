@@ -1,5 +1,5 @@
 //
-//  Event.h
+//  EventProtocol.h
 //  Untitled
 //
 //  Created by Moritz Venn on 09.03.08.
@@ -8,19 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Event : NSObject
-{
-@private	
-	NSString *_eit;
-	NSDate *_begin;
-	NSDate *_end;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-	double _duration;
-
-	NSString *timeString;
-}
+@protocol EventProtocol
 
 @property (nonatomic, retain) NSString *eit;
 @property (nonatomic, retain) NSDate *begin;

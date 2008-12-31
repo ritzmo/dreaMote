@@ -56,12 +56,12 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	return self;
 }
 
-- (Event *)event
+- (NSObject<EventProtocol> *)event
 {
 	return _event;
 }
 
-- (void)setEvent:(Event *)newEvent
+- (void)setEvent:(NSObject<EventProtocol> *)newEvent
 {
 	if(_event == newEvent) return;
 

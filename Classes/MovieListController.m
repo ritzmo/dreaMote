@@ -15,6 +15,8 @@
 #import "Constants.h"
 #import "FuzzyDateFormatter.h"
 
+#import "MovieProtocol.h"
+
 @implementation MovieListController
 
 - (id)init
@@ -30,8 +32,6 @@
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		movieViewController = nil;
-		movieXMLReader = nil;
-		xmlSupportsIncremental = NO;
 	}
 	return self;
 }
@@ -41,6 +41,7 @@
 	[_movies release];
 	[dateFormatter release];
 	[movieViewController release];
+	[movieXMLReader release];
 
 	[super dealloc];
 }
@@ -49,8 +50,6 @@
 {
 	[movieViewController release];
 	movieViewController = nil;
-	[movieXMLReader release];
-	movieXMLReader = nil;
 
     [super didReceiveMemoryWarning];
 }
@@ -80,6 +79,8 @@
 		[_movies removeAllObjects];
 		[movieViewController release];
 		movieViewController = nil;
+		[movieXMLReader release];
+		movieXMLReader = nil;
 	}
 
 	[dateFormatter resetReferenceDate];
@@ -102,19 +103,11 @@
 	[tableView release];
 }
 
-- (void)fetchMoviesAndParse: (BOOL)doParse
-{
-	if(doParse)
-		movieXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
-	else
-		movieXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: nil action:nil] retain];
-	xmlSupportsIncremental = movieXMLReader.supportsIncremental;
-}
-
 - (void)fetchMovies
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self fetchMoviesAndParse: YES];
+	[movieXMLReader release];
+	movieXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
 	[pool release];
 }
 
@@ -122,7 +115,7 @@
 {
 	if(movie != nil)
 	{
-		[_movies addObject: (Movie*)movie];
+		[_movies addObject: movie];
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_movies count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
@@ -152,19 +145,9 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Movie *movie = [_movies objectAtIndex: indexPath.row];
+	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: indexPath.row];
 	if(!movie.valid)
 		return nil;
-
-	if(xmlSupportsIncremental)
-	{
-		if(!movieXMLReader){
-			[self fetchMoviesAndParse: NO];
-			while(!movieXMLReader || !movieXMLReader.finished)
-				[NSThread sleepForTimeInterval: 1.0];
-		}
-		movie = [movieXMLReader parseSpecific: movie.sref];
-	}
 
 	if(movieViewController == nil)
 		movieViewController = [[MovieViewController alloc] init];

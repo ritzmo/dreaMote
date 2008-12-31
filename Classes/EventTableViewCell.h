@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Event.h"
+#import "Objects/EventProtocol.h"
 
 #import "FuzzyDateFormatter.h"
 
@@ -17,13 +17,13 @@ extern NSString *kEventCell_ID;
 @interface EventTableViewCell : UITableViewCell {
 
 @private	
-	Event *_event;
+	NSObject<EventProtocol> *_event;
 	UILabel *_eventNameLabel;
 	UILabel *_eventTimeLabel;
 	FuzzyDateFormatter *_formatter;
 }
 
-@property (nonatomic, retain) Event *event;
+@property (nonatomic, retain) NSObject<EventProtocol> *event;
 @property (nonatomic, retain) UILabel *eventNameLabel;
 @property (nonatomic, retain) UILabel *eventTimeLabel;
 @property (nonatomic, retain) FuzzyDateFormatter *formatter;

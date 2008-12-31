@@ -18,9 +18,9 @@
 
 #import "DisplayCell.h"
 
-#import "Timer.h"
-#import "Event.h"
-#import "Service.h"
+#import "Objects/Generic/Timer.h"
+#import "Objects/EventProtocol.h"
+#import "Objects/Generic/Service.h"
 
 @interface TimerViewController()
 - (void)setViewMovedUp:(BOOL)movedUp;
@@ -50,7 +50,7 @@
 	return self;
 }
 
-+ (TimerViewController *)withEvent: (Event *)ourEvent
++ (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	Timer *newTimer = [Timer withEvent: ourEvent];
@@ -61,7 +61,7 @@
 	return timerViewController;
 }
 
-+ (TimerViewController *)withEventAndService: (Event *)ourEvent: (Service *)ourService
++ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	Timer *newTimer = [Timer withEventAndService: ourEvent: ourService];

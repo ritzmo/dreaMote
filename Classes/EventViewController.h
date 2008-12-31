@@ -8,19 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-@class Event;
+#import "Objects/EventProtocol.h"
+
 @class Service;
 
 @interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	Event *_event;
+	NSObject<EventProtocol> *_event;
 	Service *_service;
 }
 
-+ (EventViewController *)withEventAndService: (Event *) newEvent: (Service *)newService;
++ (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (Service *)newService;
 
-@property (nonatomic, retain) Event *event;
+@property (nonatomic, retain) NSObject<EventProtocol> *event;
 @property (nonatomic, retain) Service *service;
 
 @end

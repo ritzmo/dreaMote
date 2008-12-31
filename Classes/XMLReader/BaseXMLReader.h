@@ -25,21 +25,14 @@ typedef CXMLDocument OurXMLDocument;
 	BOOL	finished;
 @protected
 	OurXMLDocument *_parser;
-	BOOL supportsIncremental;
 }
 
 + (BaseXMLReader*)initWithTarget:(id)target action:(SEL)action;
 
 @property (nonatomic, retain) id target;
 @property (nonatomic) SEL addObject;
-@property (readonly) BOOL supportsIncremental;
 @property (readonly) BOOL finished;
 
 - (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error parseImmediately: (BOOL)doParse;
-
-- (void)parseInitial;
-- (void)parseFull;
-- (id)parseSpecific: (NSString *)identifier;
 
 @end

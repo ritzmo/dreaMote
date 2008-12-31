@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Service.h"
+#import "Objects/Generic/Service.h"
 
 // cell identifier for this custom cell
 extern NSString *kServiceCell_ID;

@@ -14,8 +14,8 @@
 #import "RemoteConnectorObject.h"
 #import "FuzzyDateFormatter.h"
 
-#import "Service.h"
-#import "Event.h"
+#import "Objects/Generic/Service.h"
+#import "Objects/EventProtocol.h"
 
 @implementation EventListController
 
@@ -29,8 +29,6 @@
 		dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		eventViewController = nil;
-		eventXMLReader = nil;
-		xmlSupportsIncremental = NO;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
 	}
@@ -61,6 +59,8 @@
 
 	[_events removeAllObjects];
 	[(UITableView *)self.view reloadData];
+	[eventXMLReader release];
+	eventXMLReader = nil;
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -73,6 +73,7 @@
 	[_service release];
 	[dateFormatter release];
 	[eventViewController release];
+	[eventXMLReader release];
 
 	[super dealloc];
 }
@@ -81,8 +82,6 @@
 {
 	[eventViewController release];
 	eventViewController = nil;
-	[eventXMLReader release];
-	eventXMLReader = nil;
 	
     [super didReceiveMemoryWarning];
 }
@@ -113,19 +112,11 @@
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
 }
 
-- (void)fetchEventsAndParse: (BOOL)doParse
-{
-	if(doParse)
-		eventXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
-	else
-		eventXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: nil action: nil service: _service] retain];
-	xmlSupportsIncremental = eventXMLReader.supportsIncremental;
-}
-
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[self fetchEventsAndParse: YES];
+	[eventXMLReader release];
+	eventXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
 	[pool release];
 }
 
@@ -133,7 +124,7 @@
 {
 	if(event != nil)
 	{
-		[(NSMutableArray *)_events addObject: (Event*)event];
+		[(NSMutableArray *)_events addObject: event];
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
@@ -156,24 +147,15 @@
 		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
 
 	cell.formatter = dateFormatter;
-	cell.event = [_events objectAtIndex:indexPath.row];
+	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 	
 	return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Event *event = [_events objectAtIndex: indexPath.row];
-	if(xmlSupportsIncremental)
-	{
-		if(!eventXMLReader){
-			[self fetchEventsAndParse: NO];
-			while(!eventXMLReader || !eventXMLReader.finished)
-				[NSThread sleepForTimeInterval: 1.0];
-		}
-		event = [eventXMLReader parseSpecific: event.eit];
-	}
-	
+	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+
 	if(eventViewController == nil)
 		eventViewController = [[EventViewController alloc] init];
 

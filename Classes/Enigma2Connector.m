@@ -8,10 +8,9 @@
 
 #import "Enigma2Connector.h"
 
-#import "Service.h"
-#import "Timer.h"
-#import "Event.h"
-#import "Volume.h"
+#import "Objects/Generic/Service.h"
+#import "Objects/Generic/Timer.h"
+#import "Objects/Generic/Volume.h"
 
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
@@ -116,7 +115,7 @@ enum powerStates {
 	NSError *parseError = nil;
 
 	BaseXMLReader *streamReader = [[Enigma2EventXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError parseImmediately: target != nil];
+	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
 	return streamReader;
 }
 
@@ -138,7 +137,7 @@ enum powerStates {
 	NSError *parseError = nil;
 
 	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError parseImmediately: target != nil];
+	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
 	return streamReader;
 }
 

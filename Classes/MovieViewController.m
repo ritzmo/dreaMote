@@ -16,8 +16,8 @@
 #import "CellTextView.h"
 #import "DisplayCell.h"
 
-#import "Movie.h"
-#import "Service.h"
+#import "Objects/Generic/Movie.h"
+#import "Objects/Generic/Service.h"
 
 @implementation MovieViewController
 
@@ -32,7 +32,7 @@
 	return self;
 }
 
-+ (MovieViewController *)withMovie: (Movie *) newMovie
++ (MovieViewController *)withMovie: (NSObject<MovieProtocol> *) newMovie
 {
 	MovieViewController *movieViewController = [[MovieViewController alloc] init];
 
@@ -48,12 +48,12 @@
 	[super dealloc];
 }
 
-- (Movie *)movie
+- (NSObject<MovieProtocol> *)movie
 {
 	return _movie;
 }
 
-- (void)setMovie: (Movie *)newMovie
+- (void)setMovie: (NSObject<MovieProtocol> *)newMovie
 {
 	if(_movie != newMovie)
 	{

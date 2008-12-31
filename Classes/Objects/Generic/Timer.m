@@ -9,7 +9,6 @@
 #import "Timer.h"
 
 #import "Service.h"
-#import "Event.h"
 
 @implementation Timer
 
@@ -30,7 +29,7 @@
 @synthesize valid = _isValid;
 @synthesize timeString = _timeString;
 
-+ (Timer *)withEvent: (Event *)ourEvent
++ (Timer *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
 	Timer *timer = [[Timer alloc] init];
 	timer.title = ourEvent.title;
@@ -51,7 +50,7 @@
 	return timer;
 }
 
-+ (Timer *)withEventAndService: (Event *)ourEvent: (Service *)ourService
++ (Timer *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService
 {
 	Timer *timer = [[Timer alloc] init];
 	timer.title = ourEvent.title;

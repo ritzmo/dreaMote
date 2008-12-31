@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Movie.h"
+#import "Objects/MovieProtocol.h"
 
 #import "FuzzyDateFormatter.h"
 
@@ -17,13 +17,13 @@ extern NSString *kMovieCell_ID;
 @interface MovieTableViewCell : UITableViewCell {
 
 @private	
-	Movie *_movie;
+	NSObject<MovieProtocol> *_movie;
 	UILabel *_eventNameLabel;
 	UILabel *_eventTimeLabel;
 	FuzzyDateFormatter *_formatter;
 }
 
-@property (nonatomic, retain) Movie *movie;
+@property (nonatomic, retain) NSObject<MovieProtocol> *movie;
 @property (nonatomic, retain) UILabel *eventNameLabel;
 @property (nonatomic, retain) UILabel *eventTimeLabel;
 @property (nonatomic, retain) FuzzyDateFormatter *formatter;

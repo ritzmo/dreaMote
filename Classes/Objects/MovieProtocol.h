@@ -1,5 +1,5 @@
 //
-//  Movie.h
+//  MovieProtocol.h
 //  Untitled
 //
 //  Created by Moritz Venn on 09.03.08.
@@ -8,19 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Movie : NSObject
-{
-@private	
-	NSString *_sref;
-	NSString *_sname;
-	NSDate *_time;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-	NSNumber *_length;
-	NSNumber *_size;
-	NSArray *_tags;
-}
+@protocol MovieProtocol
 
 @property (nonatomic, retain) NSString *sref;
 @property (nonatomic, retain) NSString *sname;

@@ -11,7 +11,7 @@
 #import "EventListController.h"
 
 #import "RemoteConnectorObject.h"
-#import "Service.h"
+#import "Objects/Generic/Service.h"
 
 #import "ServiceTableViewCell.h"
 

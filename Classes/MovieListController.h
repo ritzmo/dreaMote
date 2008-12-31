@@ -21,7 +21,6 @@
 
 	MovieViewController *movieViewController;
 	BaseXMLReader *movieXMLReader;
-	BOOL xmlSupportsIncremental;
 	BOOL refreshMovies;
 }
 
