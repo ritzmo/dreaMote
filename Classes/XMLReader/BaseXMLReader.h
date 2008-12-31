@@ -23,7 +23,7 @@
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	BOOL	finished;
 @protected
-	OurXMLDocument *_parser;
+	CXMLPushDocument *_parser;
 #else
 @protected
 	CXMLDocument *_parser;
