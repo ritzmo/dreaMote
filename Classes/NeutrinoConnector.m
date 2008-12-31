@@ -13,8 +13,8 @@
 #import "Event.h"
 #import "Volume.h"
 
-#import "XMLReader/ServiceXMLReader.h"
-#import "XMLReader/EventXMLReader.h"
+#import "XMLReader/Neutrino/ServiceXMLReader.h"
+#import "XMLReader/Neutrino/EventXMLReader.h"
 
 @implementation NeutrinoConnector
 
@@ -100,7 +100,7 @@
 	[serviceTarget performSelectorOnMainThread:serviceSelector withObject:newService waitUntilDone:NO];
 }
 
-- (void)fetchServices:(id)target action:(SEL)action
+- (BaseXMLReader *)fetchServices:(id)target action:(SEL)action
 {
 	[serviceCache removeAllObjects];
 	if(serviceTarget != target)
@@ -114,25 +114,25 @@
 
 	NSError *parseError = nil;
 
-	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: self action: @selector(addService:)];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kNeutrinoConnector];
-	[streamReader release];
+	BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader initWithTarget: self action: @selector(addService:)] autorelease];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	return streamReader;
 }
 
-- (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
+- (BaseXMLReader *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
 	// XXX: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
 
-	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kNeutrinoConnector];
-	[streamReader release];
+	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader initWithTarget: target action: action] autorelease];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	return streamReader;
 }
 
 // TODO: reimplement this as streaming parser some day :-)
-- (void)fetchTimers:(id)target action:(SEL)action
+- (BaseXMLReader *)fetchTimers:(id)target action:(SEL)action
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
 	if([serviceCache count] == 0)
@@ -163,7 +163,7 @@
 		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
 		[fakeObject release];
 
-		return;
+		return nil;
 	}
 
 	// Parse
@@ -230,11 +230,14 @@
 		[target performSelectorOnMainThread:action withObject:timer waitUntilDone:NO];
 		[timer release];
 	}
+
+	return nil;
 }
 
-- (void)fetchMovielist:(id)target action:(SEL)action
+- (BaseXMLReader *)fetchMovielist:(id)target action:(SEL)action
 {
 	// XXX: is this actually possible?
+	return nil;
 }
 
 - (void)sendPowerstate: (NSString *) newState

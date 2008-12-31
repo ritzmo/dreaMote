@@ -97,6 +97,8 @@ enum buttonCodes {
 @class Volume;
 @class Timer;
 
+@class BaseXMLReader;
+
 @protocol RemoteConnector
 
 - (id)initWithAddress:(NSString *) address;
@@ -105,10 +107,10 @@ enum buttonCodes {
 - (NSInteger)getMaxVolume;
 - (BOOL)isReachable;
 
-- (void)fetchServices:(id)target action:(SEL)action;
-- (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
-- (void)fetchTimers:(id)target action:(SEL)action;
-- (void)fetchMovielist:(id)target action:(SEL)action;
+- (BaseXMLReader *)fetchServices:(id)target action:(SEL)action;
+- (BaseXMLReader *)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
+- (BaseXMLReader *)fetchTimers:(id)target action:(SEL)action;
+- (BaseXMLReader *)fetchMovielist:(id)target action:(SEL)action;
 - (void)getVolume:(id)target action:(SEL)action;
 
 // XXX: we might want to return a dictionary which contains retval / explain for these

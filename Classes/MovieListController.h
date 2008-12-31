@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "XMLReader/BaseXMLReader.h"
+
 @class FuzzyDateFormatter;
 @class MovieViewController;
 
@@ -18,6 +20,8 @@
 	FuzzyDateFormatter *dateFormatter;
 
 	MovieViewController *movieViewController;
+	BaseXMLReader *movieXMLReader;
+	BOOL xmlSupportsIncremental;
 	BOOL refreshMovies;
 }
 

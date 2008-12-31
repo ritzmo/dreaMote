@@ -9,8 +9,10 @@
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 #define DataDownloaderRunMode @"your_namespace.run_mode"
 #import "CXMLPushDocument.h"
+typedef CXMLPushDocument OurXMLDocument;
 #else
 #import "CXMLDocument.h"
+typedef CXMLDocument OurXMLDocument;
 #endif
 
 #import "RemoteConnector.h"
@@ -20,21 +22,24 @@
 @private
 	id		_target;
 	SEL		_addObject;
-#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	BOOL	finished;
 @protected
-	CXMLPushDocument *_parser;
-#else
-@protected
-	CXMLDocument *_parser;
-#endif
+	OurXMLDocument *_parser;
+	BOOL supportsIncremental;
 }
 
 + (BaseXMLReader*)initWithTarget:(id)target action:(SEL)action;
 
 @property (nonatomic, retain) id target;
 @property (nonatomic) SEL addObject;
+@property (readonly) BOOL supportsIncremental;
+@property (readonly) BOOL finished;
 
-- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error connectorType:(enum availableConnectors)connector;
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error parseImmediately: (BOOL)doParse;
+
+- (void)parseInitial;
+- (void)parseFull;
+- (id)parseSpecific: (NSString *)identifier;
 
 @end

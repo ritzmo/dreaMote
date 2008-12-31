@@ -9,26 +9,24 @@
 
 @interface BaseXMLReader()
 - (void)sendErroneousObject;
-- (void)parseAllEnigma2;
-- (void)parseAllEnigma1;
-- (void)parseAllNeutrino;
 @end
 
 @implementation BaseXMLReader
 
 @synthesize target = _target;
 @synthesize addObject = _addObject;
+@synthesize supportsIncremental;
+@synthesize finished;
 
-#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 - (id)init
 {
 	if(self = [super init])
 	{
 		finished = NO;
+		supportsIncremental = NO;
 	}
 	return self;
 }
-#endif
 
 - (void)dealloc
 {
@@ -47,15 +45,22 @@
 	return xmlReader;
 }
 
-- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error connectorType:(enum availableConnectors)connector;
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
+	[self parseXMLFileAtURL: URL parseError: error parseImmediately: YES];
+}
+
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error parseImmediately: (BOOL)doParse
+{
+	finished = NO;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	_parser = [[CXMLPushDocument alloc] initWithError: error];
 
 	// bail out if we encountered an error
 	if(error && *error)
 	{
-		[self sendErroneousObject];
+		if(doParse)
+			[self sendErroneousObject];
 		return;
 	}
 
@@ -67,7 +72,8 @@
 
 	if(!connection)
 	{
-		[self sendErroneousObject];
+		if(doParse)
+			[self sendErroneousObject];
 		return;
 	}
 
@@ -84,12 +90,12 @@
 	}
 	[connection release];
 
-	finished = NO;
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	if(!_parser.success)
 	{
-		[self sendErroneousObject];
+		if(doParse)
+			[self sendErroneousObject];
 		return;
 
 	}
@@ -97,30 +103,19 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	finished = YES;
 
 	// bail out if we encountered an error
 	if(error && *error)
 	{
-		[self sendErroneousObject];
+		if(doParse)
+			[self sendErroneousObject];
 		return;
 	}
 #endif
-	
-	switch(connector)
-	{
-		case kEnigma2Connector:
-			[self parseAllEnigma2];
-			return;
-		case kEnigma1Connector:
-			[self parseAllEnigma1];
-			return;
-		case kNeutrinoConnector:
-			[self parseAllNeutrino];
-			return;
-		default:
-			[self sendErroneousObject];
-			return;
-	}
+
+	if(doParse)
+		[self parseInitial];
 }
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
@@ -150,19 +145,21 @@
 	// XXX: descending classes should implement this
 }
 
-- (void)parseAllEnigma2
+- (void)parseFull
 {
 	// XXX: descending classes should implement this
 }
 
-- (void)parseAllEnigma1
+- (void)parseInitial
 {
-	// XXX: descending classes should implement this
+	// If a descending class implements this it should set supportsIncremental to YES
+	[self parseFull];
 }
 
-- (void)parseAllNeutrino
+- (id)parseSpecific: (NSString *)identifier
 {
-	// XXX: descending classes should implement this
+	// This function will only be called when supportsIncremental is set to YES
+	return nil;
 }
 
 @end

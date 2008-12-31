@@ -29,6 +29,8 @@
 		dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		eventViewController = nil;
+		eventXMLReader = nil;
+		xmlSupportsIncremental = NO;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
 	}
@@ -79,6 +81,8 @@
 {
 	[eventViewController release];
 	eventViewController = nil;
+	[eventXMLReader release];
+	eventXMLReader = nil;
 	
     [super didReceiveMemoryWarning];
 }
@@ -109,10 +113,19 @@
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
 }
 
+- (void)fetchEventsAndParse: (BOOL)doParse
+{
+	if(doParse)
+		eventXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
+	else
+		eventXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: nil action: nil service: _service] retain];
+	xmlSupportsIncremental = eventXMLReader.supportsIncremental;
+}
+
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service];
+	[self fetchEventsAndParse: YES];
 	[pool release];
 }
 
@@ -151,6 +164,16 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	Event *event = [_events objectAtIndex: indexPath.row];
+	if(xmlSupportsIncremental)
+	{
+		if(!eventXMLReader){
+			[self fetchEventsAndParse: NO];
+			while(!eventXMLReader || !eventXMLReader.finished)
+				[NSThread sleepForTimeInterval: 1.0];
+		}
+		event = [eventXMLReader parseSpecific: event.eit];
+	}
+	
 	if(eventViewController == nil)
 		eventViewController = [[EventViewController alloc] init];
 

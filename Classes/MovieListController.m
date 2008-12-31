@@ -30,6 +30,8 @@
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		movieViewController = nil;
+		movieXMLReader = nil;
+		xmlSupportsIncremental = NO;
 	}
 	return self;
 }
@@ -47,6 +49,8 @@
 {
 	[movieViewController release];
 	movieViewController = nil;
+	[movieXMLReader release];
+	movieXMLReader = nil;
 
     [super didReceiveMemoryWarning];
 }
@@ -98,10 +102,19 @@
 	[tableView release];
 }
 
+- (void)fetchMoviesAndParse: (BOOL)doParse
+{
+	if(doParse)
+		movieXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
+	else
+		movieXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: nil action:nil] retain];
+	xmlSupportsIncremental = movieXMLReader.supportsIncremental;
+}
+
 - (void)fetchMovies
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)];
+	[self fetchMoviesAndParse: YES];
 	[pool release];
 }
 
@@ -142,6 +155,16 @@
 	Movie *movie = [_movies objectAtIndex: indexPath.row];
 	if(!movie.valid)
 		return nil;
+
+	if(xmlSupportsIncremental)
+	{
+		if(!movieXMLReader){
+			[self fetchMoviesAndParse: NO];
+			while(!movieXMLReader || !movieXMLReader.finished)
+				[NSThread sleepForTimeInterval: 1.0];
+		}
+		movie = [movieXMLReader parseSpecific: movie.sref];
+	}
 
 	if(movieViewController == nil)
 		movieViewController = [[MovieViewController alloc] init];

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "XMLReader/BaseXMLReader.h"
+
 @class Service;
 @class FuzzyDateFormatter;
 @class EventViewController;
@@ -20,6 +22,8 @@
 	FuzzyDateFormatter *dateFormatter;
 
 	EventViewController *eventViewController;
+	BaseXMLReader *eventXMLReader;
+	BOOL xmlSupportsIncremental;
 }
 
 + (EventListController*)forService: (Service *)ourService;
