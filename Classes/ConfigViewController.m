@@ -195,10 +195,12 @@
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(connectionIndex == -1)
 			{
+				[(UITableView *)self.view beginUpdates];
 				connectionIndex = [connections count];
 				[connections addObject: connection];
-				//[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
-				//							withRowAnimation: UITableViewRowAnimationFade];
+				[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
+											withRowAnimation: UITableViewRowAnimationFade];
+				[(UITableView *)self.view endUpdates];
 				[(UITableView *)self.view reloadData];
 			}
 			else
