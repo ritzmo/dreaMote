@@ -38,6 +38,7 @@
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D10E379C500062F924 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04CE0E379C500062F924 /* Movie.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
+		DA5BBDF80F0B822600E4F1D3 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
@@ -171,6 +172,8 @@
 		DA5A04CE0E379C500062F924 /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
+		DA5BBDF60F0B822600E4F1D3 /* CXMLPushDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLPushDocument.h; path = XMLReader/CXMLPushDocument.h; sourceTree = "<group>"; };
+		DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLPushDocument.m; path = XMLReader/CXMLPushDocument.m; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA664CD70EA8E2C100A37F55 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
@@ -522,6 +525,10 @@
 		DAF0D5480E38FF52001F7CF1 /* XMLReader */ = {
 			isa = PBXGroup;
 			children = (
+				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
+				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
+				DA5BBDF60F0B822600E4F1D3 /* CXMLPushDocument.h */,
+				DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */,
 				DA1D2A1B0EA68AB700B19FE0 /* EventXMLReader.h */,
 				DA1D2A1C0EA68AB700B19FE0 /* EventXMLReader.m */,
 				DA1D2A1D0EA68AB700B19FE0 /* MovieXMLReader.h */,
@@ -532,8 +539,6 @@
 				DA1D2A220EA68AB700B19FE0 /* TimerXMLReader.m */,
 				DA1D2A230EA68AB700B19FE0 /* VolumeXMLReader.h */,
 				DA1D2A240EA68AB700B19FE0 /* VolumeXMLReader.m */,
-				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
-				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
 			);
 			name = XMLReader;
 			sourceTree = "<group>";
@@ -774,6 +779,7 @@
 				DAA103DC0F0B136B00F5CCB7 /* CXMLNode_CreationExtensions.m in Sources */,
 				DAA103DD0F0B136B00F5CCB7 /* CXMLNode_PrivateExtensions.m in Sources */,
 				DAA103DE0F0B136B00F5CCB7 /* CXMLNode_XPathExtensions.m in Sources */,
+				DA5BBDF80F0B822600E4F1D3 /* CXMLPushDocument.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

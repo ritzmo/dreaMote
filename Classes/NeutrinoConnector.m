@@ -114,13 +114,9 @@
 
 	NSError *parseError = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: self action: @selector(addService:)];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kNeutrinoConnector];
 	[streamReader release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
@@ -129,14 +125,10 @@
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kNeutrinoConnector];
 	[streamReader release];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 // TODO: reimplement this as streaming parser some day :-)

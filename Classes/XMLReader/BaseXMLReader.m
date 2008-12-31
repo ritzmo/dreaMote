@@ -16,6 +16,17 @@
 @synthesize target = _target;
 @synthesize addObject = _addObject;
 
+#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
+- (id)init
+{
+	if(self = [super init])
+	{
+		finished = NO;
+	}
+	return self;
+}
+#endif
+
 - (void)dealloc
 {
 	[_target release];
@@ -35,8 +46,9 @@
 
 - (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error connectorType:(enum availableConnectors)connector;
 {
-	// XXX: modify touchxml to allow chunk parsing... might save use some time/resources
-	_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
+#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
+	_parser = [[CXMLPushDocument alloc] initWithError: error];
+	_connector = connector;
 
 	// bail out if we encountered an error
 	if(error && *error)
@@ -45,7 +57,89 @@
 		return;
 	}
 
-	switch(connector)
+	NSURLRequest *request = [NSURLRequest requestWithURL: URL cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 50];
+	NSURLConnection *connection = [[NSURLConnection alloc]
+									initWithRequest:request
+									delegate:self
+									startImmediately:NO];
+
+	if(!connection){
+		[self sendErroneousObject];
+		return;
+	}
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	[connection scheduleInRunLoop:[NSRunLoop currentRunLoop]
+							forMode: DataDownloaderRunMode];
+	[connection start];
+
+	while (!finished) { // a BOOL flagged in the delegate methods
+		[[NSRunLoop currentRunLoop] runMode: DataDownloaderRunMode
+								beforeDate:[NSDate dateWithTimeIntervalSinceNow:30.0]];
+		[NSThread sleepForTimeInterval: 1.0];
+	}
+	[connection release];
+
+	finished = NO;
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+#else
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// bail out if we encountered an error
+	if(error && *error)
+	{
+		[self sendErroneousObject];
+		return;
+	}
+
+	switch(_connector)
+	{
+		case kEnigma2Connector:
+			[self parseAllEnigma2];
+			return;
+		case kEnigma1Connector:
+			[self parseAllEnigma1];
+			return;
+		case kNeutrinoConnector:
+			[self parseAllNeutrino];
+			return;
+		default:
+			[self sendErroneousObject];
+			return;
+	}
+#endif
+}
+
+#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+	[_parser parseChunk: data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+	finished = YES;
+
+	[_parser abortParsing];
+	[self sendErroneousObject];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	finished = YES;
+
+	NSError *error = [_parser doneParsing];
+	// bail out if we encountered an error
+	if(error)
+	{
+		[self sendErroneousObject];
+		return;
+	}
+
+	switch(_connector)
 	{
 		case kEnigma2Connector:
 			[self parseAllEnigma2];
@@ -61,6 +155,8 @@
 			return;
 	}
 }
+
+#endif //LAME_ASYNCHRONOUS_DOWNLOAD
 
 - (void)sendErroneousObject
 {

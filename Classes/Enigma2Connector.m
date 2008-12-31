@@ -104,13 +104,9 @@ enum powerStates {
 
 	NSError *parseError = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError: &parseError connectorType: kEnigma2Connector];
 	[streamReader release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
@@ -119,13 +115,9 @@ enum powerStates {
 
 	NSError *parseError = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError: &parseError connectorType: kEnigma2Connector];
 	[streamReader release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchTimers:(id)target action:(SEL)action
@@ -133,14 +125,10 @@ enum powerStates {
 	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError: &parseError connectorType: kEnigma2Connector];
 	[streamReader release];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchMovielist:(id)target action:(SEL)action
@@ -148,14 +136,10 @@ enum powerStates {
 	NSURL *myURI = [NSURL URLWithString: @"/web/movielist" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError: &parseError connectorType: kEnigma2Connector];
 	[streamReader release];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)sendPowerstate: (NSInteger) newState
@@ -201,14 +185,10 @@ enum powerStates {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: baseAddress];
 
 	NSError *parseError = nil;
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	VolumeXMLReader *streamReader = [VolumeXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError: &parseError connectorType: kEnigma2Connector];
 	[streamReader release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (BOOL)toggleMuted

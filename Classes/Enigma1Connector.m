@@ -103,13 +103,9 @@
 
 	NSError *parseError = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchEPG:(id)target action:(SEL)action service:(Service *)service
@@ -118,13 +114,9 @@
 
 	NSError *parseError = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchTimers:(id)target action:(SEL)action
@@ -132,14 +124,10 @@
 	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)fetchMovielist:(id)target action:(SEL)action
@@ -147,14 +135,10 @@
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=3&submode=4" relativeToURL: baseAddress];
 	
 	NSError *parseError = nil;
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 - (void)sendPowerstate: (NSString *) newState
