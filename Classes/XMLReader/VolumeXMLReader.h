@@ -14,12 +14,8 @@
 
 @interface VolumeXMLReader : BaseXMLReader
 {
-@private
-	Volume *_currentVolumeObject;
 }
 
 + (VolumeXMLReader*)initWithTarget:(id)target action:(SEL)action;
-
-@property (nonatomic, retain) Volume *currentVolumeObject;
 
 @end

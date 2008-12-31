@@ -14,12 +14,8 @@
 
 @interface TimerXMLReader : BaseXMLReader
 {
-@private
-	Timer *_currentTimerObject;
 }
 
 + (TimerXMLReader*)initWithTarget:(id)target action:(SEL)action;
-
-@property (nonatomic, retain) Timer *currentTimerObject;
 
 @end

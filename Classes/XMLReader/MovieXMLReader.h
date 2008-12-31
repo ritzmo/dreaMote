@@ -10,16 +10,10 @@
 
 #import "BaseXMLReader.h"
 
-@class Movie;
-
 @interface MovieXMLReader : BaseXMLReader
 {
-@private
-	Movie *_currentMovieObject;
 }
 
 + (MovieXMLReader*)initWithTarget:(id)target action:(SEL)action;
-
-@property (nonatomic, retain) Movie *currentMovieObject;
 
 @end

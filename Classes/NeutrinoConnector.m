@@ -13,8 +13,8 @@
 #import "Event.h"
 #import "Volume.h"
 
-#import "Neutrino/ServiceXMLReader.h"
-#import "Neutrino/EventXMLReader.h"
+#import "XMLReader/ServiceXMLReader.h"
+#import "XMLReader/EventXMLReader.h"
 
 @implementation NeutrinoConnector
 
@@ -116,8 +116,8 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	NeutrinoServiceXMLReader *streamReader = [NeutrinoServiceXMLReader initWithTarget: self action: @selector(addService:)];
-	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
+	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: self action: @selector(addService:)];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kNeutrinoConnector];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -132,8 +132,8 @@
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
-	NeutrinoEventXMLReader *streamReader = [NeutrinoEventXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
+	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kNeutrinoConnector];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;

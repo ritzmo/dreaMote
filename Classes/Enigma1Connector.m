@@ -13,11 +13,10 @@
 #import "Event.h"
 #import "Volume.h"
 
-#import "Enigma/ServiceXMLReader.h"
-#import "Enigma/EventXMLReader.h"
-#import "Enigma/TimerXMLReader.h"
-#import "Enigma/VolumeXMLReader.h"
-#import "Enigma/MovieXMLReader.h"
+#import "XMLReader/ServiceXMLReader.h"
+#import "XMLReader/EventXMLReader.h"
+#import "XMLReader/TimerXMLReader.h"
+#import "XMLReader/MovieXMLReader.h"
 
 @implementation Enigma1Connector
 
@@ -106,8 +105,8 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	EnigmaServiceXMLReader *streamReader = [EnigmaServiceXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	ServiceXMLReader *streamReader = [ServiceXMLReader initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -121,8 +120,8 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	EnigmaEventXMLReader *streamReader = [EnigmaEventXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	EventXMLReader *streamReader = [EventXMLReader initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -137,7 +136,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	TimerXMLReader *streamReader = [TimerXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -152,7 +151,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	MovieXMLReader *streamReader = [MovieXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError connectorType: kEnigma1Connector];
 	[streamReader release];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
