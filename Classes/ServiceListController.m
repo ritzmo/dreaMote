@@ -168,8 +168,8 @@
 	else if(_selectTarget != nil && _selectCallback != nil)
 	{
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
-
-		[self.navigationController popViewControllerAnimated: YES];
+		// XXX: this requires _selectTarget to be an UIViewController!
+		[self.navigationController popToViewController: _selectTarget animated: YES];
 	}
 	else
 	{

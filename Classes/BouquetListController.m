@@ -144,6 +144,8 @@
 	if(serviceListController == nil)
 		serviceListController = [[ServiceListController alloc] init];
 
+	if(_selectTarget != nil && _selectCallback != nil)
+		[serviceListController setTarget: _selectTarget action: _selectCallback];
 	serviceListController.bouquet = bouquet;
 
 	_refreshBouquets = NO;

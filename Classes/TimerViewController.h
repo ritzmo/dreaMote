@@ -13,7 +13,7 @@
 #import "Objects/TimerProtocol.h"
 #import "CellTextField.h"
 
-@class ServiceListController;
+@class BouquetListController;
 @class AfterEventViewController;
 @class DatePickerController;
 
@@ -41,7 +41,7 @@
 	BOOL _creatingNewTimer;
 	BOOL _shouldSave;
 
-	ServiceListController *serviceListController;
+	BouquetListController *bouquetListController;
 	AfterEventViewController *afterEventViewController;
 	DatePickerController *datePickerController;
 }

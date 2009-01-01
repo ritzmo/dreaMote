@@ -8,7 +8,7 @@
 
 #import "TimerViewController.h"
 
-#import "ServiceListController.h"
+#import "BouquetListController.h"
 #import "DatePickerController.h"
 #import "AfterEventViewController.h"
 
@@ -41,7 +41,7 @@
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
 
 		_creatingNewTimer = NO;
-		serviceListController = nil;
+		bouquetListController = nil;
 		datePickerController = nil;
 		afterEventViewController = nil;
 	}
@@ -103,7 +103,7 @@
 	[timerEnabled release];
 	[timerJustplay release];
 
-	[serviceListController release];
+	[bouquetListController release];
 	[afterEventViewController release];
 	[datePickerController release];
 
@@ -112,11 +112,11 @@
 
 - (void)didReceiveMemoryWarning
 {
-	[serviceListController release];
+	[bouquetListController release];
 	[afterEventViewController release];
 	[datePickerController release];
 	
-	serviceListController = nil;
+	bouquetListController = nil;
 	afterEventViewController = nil;
 	datePickerController = nil;
 	
@@ -581,11 +581,11 @@
 
 		if(section == 3)
 		{
-			if(serviceListController == nil)
-				serviceListController = [[ServiceListController alloc] init];
-			[serviceListController setTarget: self action: @selector(serviceSelected:)];
+			if(bouquetListController == nil)
+				bouquetListController = [[BouquetListController alloc] init];
+			[bouquetListController setTarget: self action: @selector(serviceSelected:)];
 
-			targetViewController = serviceListController;
+			targetViewController = bouquetListController;
 		}
 		else if(section == 4)
 		{
@@ -721,11 +721,11 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[serviceListController release];
+	[bouquetListController release];
 	[afterEventViewController release];
 	[datePickerController release];
 	
-	serviceListController = nil;
+	bouquetListController = nil;
 	afterEventViewController = nil;
 	datePickerController = nil;
 }
