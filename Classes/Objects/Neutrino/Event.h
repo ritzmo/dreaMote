@@ -14,14 +14,7 @@
 
 @interface NeutrinoEvent : NSObject <EventProtocol>
 {
-@private	
-	NSString *_eit;
-	NSDate *_begin;
-	NSDate *_end;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-
+@private
 	NSString *timeString;
 
 	CXMLNode *_node;

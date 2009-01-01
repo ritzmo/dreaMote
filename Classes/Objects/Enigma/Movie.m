@@ -12,54 +12,34 @@
 
 @implementation EnigmaMovie
 
-// XXX: does the gui really depend on this being an empty array
 - (NSArray *)tags
 {
-	if(_tags == nil)
-		_tags = [NSArray array];
 	return _tags;
 }
 
 - (void)setTags: (NSArray *)new
 {
-	if(_tags == new)
-		return;
-	[_tags release];
-	_tags = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSNumber *)size
 {
-	if(_size == nil)
-	{
-		_size = [NSNumber numberWithInt: -1];
-	}
 	return _size;
 }
 
 - (void)setSize: (NSNumber *)new
 {
-	if(_size == new)
-		return;
-	[_size release];
-	_size = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSNumber *)length
 {
-	if(_length == nil)
-	{
-		_length = [NSNumber numberWithInt: -1];
-	}
 	return _length;
 }
 
 - (void)setLength: (NSNumber *)new
 {
-	if(_length == new)
-		return;
-	[_length release];
-	_length = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSDate *)time
@@ -69,7 +49,7 @@
 
 - (void)setTime: (NSDate *)new
 {
-	return;
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sname
@@ -79,29 +59,22 @@
 
 - (void)setSname: (NSString *)new
 {
-	return;
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sref
 {
-	if(_sref == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.sref = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
 	}
-	return _sref;
+	return nil;
 }
 
 - (void)setSref: (NSString *)new
 {
-	if(_sref == new)
-		return;
-	[_sref release];
-	_sref = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)edescription
@@ -111,7 +84,7 @@
 
 - (void)setEdescription: (NSString *)new
 {
-	return;
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
@@ -121,30 +94,23 @@
 
 - (void)setSdescription: (NSString *)new
 {
-	return;
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)title
 {
-	if(_title == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			// We have to un-escape some characters here...
-			self.title = [[resultElement stringValue] stringByReplacingOccurrencesOfString: @"&amp;" withString: @"&"];
-			break;
-		}
+		// We have to un-escape some characters here...
+		return [[resultElement stringValue] stringByReplacingOccurrencesOfString: @"&amp;" withString: @"&"];
 	}
-	return _title;
+	return nil;
 }
 
 - (void)setTitle: (NSString *)new
 {
-	if(_title == new)
-		return;
-	[_title release];
-	_title = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -152,14 +118,15 @@
 	if (self = [super init])
 	{
 		_node = [node retain];
+		_size = [NSNumber numberWithInt: -1];
+		_tags = [NSArray array];
+		_length = [NSNumber numberWithInt: -1];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[_sref release];
-	[_title release];
 	[_length release];
 	[_size release];
 	[_tags release];

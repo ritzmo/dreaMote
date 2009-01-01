@@ -16,142 +16,98 @@
 
 - (NSString *)edescription
 {
-	if(_edescription == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"info2" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"info2" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.edescription = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
 	}
-	return _edescription;
+	return nil;
 }
 
 - (void)setEdescription: (NSString *)new
 {
-	if(_edescription == new)
-		return;
-	[_edescription release];
-	_edescription = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
 {
-	if(_sdescription == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"info1" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"info1" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.sdescription = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
 	}
-	return _sdescription;
+	return nil;
 }
 
 - (void)setSdescription: (NSString *)new
 {
-	if(_sdescription == new)
-		return;
-	[_sdescription release];
-	_sdescription = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)title
 {
-	if(_title == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.title = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
 	}
-	return _title;
+	return nil;
 }
 
 - (void)setTitle: (NSString *)new
 {
-	if(_title == new)
-		return;
-	[_title release];
-	_title = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSDate *)end
 {
-	if(_end == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"stop_sec" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"stop_sec" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.end = [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
-			break;
-		}
+		return [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
 	}
-	return _end;
+	return nil;
 }
 
 - (void)setEnd: (NSDate *)new
 {
-	if(_end == new)
-		return;
-	[_end release];
-	_end = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSDate *)begin
 {
-	if(_begin == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"start_sec" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"start_sec" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.begin = [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
-			break;
-		}
+			return [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
 	}
-	return _begin;
+	return nil;
 }
 
 - (void)setBegin: (NSDate *)new
 {
-	if(_begin == new)
-		return;
-	[_begin release];
-	_begin = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)eit
 {
-	if(_eit == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"eventid" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"eventid" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.eit = [resultElement stringValue];
-			break;
-		}
+			return [resultElement stringValue];
 	}
-	return _eit;
+	return nil;
 }
 
 - (void)setEit: (NSString *)new
 {
-	if(_eit == new)
-		return;
-	[_eit release];
-	_eit = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
 {
 	if (self = [super init])
 	{
-		_begin = nil;
-		_end = nil;
 		_node = [node retain];
 	}
 	return self;
@@ -159,12 +115,6 @@
 
 - (void)dealloc
 {
-	[_eit release];
-	[_begin release];
-	[_end release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
 	[_node release];
 	[timeString release];
 
@@ -173,6 +123,7 @@
 
 - (NSString *)description
 {
+	// XXX: because we don't cache values this might lag a little...
 	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 

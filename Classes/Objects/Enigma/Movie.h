@@ -14,9 +14,7 @@
 
 @interface EnigmaMovie : NSObject <MovieProtocol>
 {
-@private	
-	NSString *_sref;
-	NSString *_title;
+@private
 	NSNumber *_length;
 	NSNumber *_size;
 	NSArray *_tags;
