@@ -46,12 +46,12 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	return self;
 }
 
-- (Service*)service
+- (NSObject<ServiceProtocol> *)service
 {
 	return _service;
 }
 
-- (void)setService:(Service *)newService
+- (void)setService:(NSObject<ServiceProtocol> *)newService
 {
 	if(_service == newService) return;
 

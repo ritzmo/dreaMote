@@ -9,8 +9,8 @@
 #import "NeutrinoConnector.h"
 
 #import "Objects/Generic/Service.h"
-#import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Volume.h"
+#import "Objects/Generic/Timer.h"
 
 #import "XMLReader/BaseXMLReader.h"
 #import "XMLReader/Neutrino/EventXMLReader.h"
@@ -72,7 +72,7 @@
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapTo:(Service *) service
+- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
@@ -115,6 +115,7 @@
 	// XXX: This needs to be redone when we support bouquets :-)
 	if(cachedBouquetsXML)
 		[cachedBouquetsXML release];
+	[self refreshBouquetsXMLCache];
 
 	NSArray *resultNodes = NULL;
 	NSUInteger parsedServicesCounter = 0;
@@ -127,7 +128,7 @@
 			break;
 
 		// A channel in the xml represents a service, so create an instance of it.
-		Service *newService = [[Service alloc] init];
+		NSObject<ServiceProtocol> *newService = [[Service alloc] init];
 
 		newService.sname = [[resultElement attributeForName: @"name"] stringValue];
 		newService.sref = [NSString stringWithFormat: @"%@%@%@",
@@ -143,7 +144,7 @@
 	return cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
+- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
 {
 	// XXX: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: baseAddress];
@@ -226,7 +227,7 @@
 		objRange.length = [timerStringComponents count] - 7;
 		NSString *sname = [[timerStringComponents subarrayWithRange: objRange] componentsJoinedByString: @" "];
 
-		Service *service = [[Service alloc] init];
+		NSObject<ServiceProtocol> *service = [[Service alloc] init];
 		service.sname = sname;
 		NSArray *resultNodes = [cachedBouquetsXML nodesForXPath:
 									[NSString stringWithFormat: @"/zapit/Bouquet/channel[@name=\"%@\"]", sname]

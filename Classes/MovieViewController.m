@@ -16,7 +16,6 @@
 #import "CellTextView.h"
 #import "DisplayCell.h"
 
-#import "Objects/Generic/Movie.h"
 #import "Objects/Generic/Service.h"
 
 @implementation MovieViewController
@@ -98,7 +97,7 @@
 						animated: YES
 						scrollPosition: UITableViewScrollPositionNone];
 
-	Service *movieService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *movieService = [[Service alloc] init];
 	[movieService setSref: _movie.sref];
 
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: movieService];

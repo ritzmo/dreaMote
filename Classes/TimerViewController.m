@@ -19,7 +19,6 @@
 #import "DisplayCell.h"
 
 #import "Objects/Generic/Timer.h"
-#import "Objects/Generic/Service.h"
 
 @interface TimerViewController()
 - (void)setViewMovedUp:(BOOL)movedUp;
@@ -60,7 +59,7 @@
 	return timerViewController;
 }
 
-+ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService
++ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	NSObject<TimerProtocol> *newTimer = [Timer withEventAndService: ourEvent: ourService];
@@ -385,7 +384,7 @@
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)serviceSelected: (Service *)newService
+- (void)serviceSelected: (NSObject<ServiceProtocol> *)newService
 {
 	if(newService == nil)
 		return;

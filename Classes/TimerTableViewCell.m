@@ -67,12 +67,12 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	return self;
 }
 
-- (Timer *)timer
+- (NSObject<TimerProtocol> *)timer
 {
 	return _timer;
 }
 
-- (void)setTimer:(Timer *)newTimer
+- (void)setTimer:(NSObject<TimerProtocol> *)newTimer
 {
 	if(_timer == newTimer) return;
 

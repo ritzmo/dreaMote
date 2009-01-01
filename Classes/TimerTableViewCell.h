@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/Generic/Timer.h"
+#import "Objects/TimerProtocol.h"
 
 #import "FuzzyDateFormatter.h"
 
@@ -18,14 +18,14 @@ extern NSString *kTimerCell_ID;
 @interface TimerTableViewCell : UITableViewCell
 {
 @private	
-	Timer *_timer;
+	NSObject<TimerProtocol> *_timer;
 	UILabel *_serviceNameLabel;
 	UILabel *_timerNameLabel;
 	UILabel *_timerTimeLabel;
 	FuzzyDateFormatter *_formatter;
 }
 
-@property (nonatomic, retain) Timer *timer;
+@property (nonatomic, retain) NSObject<TimerProtocol> *timer;
 @property (nonatomic, retain) UILabel *serviceNameLabel;
 @property (nonatomic, retain) UILabel *timerNameLabel;
 @property (nonatomic, retain) UILabel *timerTimeLabel;

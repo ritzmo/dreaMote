@@ -97,8 +97,8 @@ enum buttonCodes {
 	kButtonCodeHelp = 138,
 };
 
-@class Service;
 @class Volume;
+@protocol ServiceProtocol;
 @protocol TimerProtocol;
 
 @class CXMLDocument;
@@ -112,13 +112,13 @@ enum buttonCodes {
 - (BOOL)isReachable;
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action;
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service;
+- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service;
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action;
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action;
 - (void)getVolume:(id)target action:(SEL)action;
 
 // XXX: we might want to return a dictionary which contains retval / explain for these
-- (BOOL)zapTo:(Service *) service;
+- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service;
 - (void)shutdown;
 - (void)standby;
 - (void)reboot;

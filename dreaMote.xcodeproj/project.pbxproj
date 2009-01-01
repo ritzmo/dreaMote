@@ -26,7 +26,6 @@
 		DA0BF0660F0BC011004B488C /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF05B0F0BC011004B488C /* CXMLNode_XPathExtensions.m */; };
 		DA0BF1310F0BDE13004B488C /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF12A0F0BDE13004B488C /* EventXMLReader.m */; };
 		DA0BF1320F0BDE13004B488C /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF12C0F0BDE13004B488C /* MovieXMLReader.m */; };
-		DA0BF1330F0BDE13004B488C /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF12E0F0BDE13004B488C /* ServiceXMLReader.m */; };
 		DA0BF1340F0BDE13004B488C /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1300F0BDE13004B488C /* TimerXMLReader.m */; };
 		DA0BF13F0F0BDE25004B488C /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1360F0BDE25004B488C /* EventXMLReader.m */; };
 		DA0BF1400F0BDE25004B488C /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1380F0BDE25004B488C /* MovieXMLReader.m */; };
@@ -167,8 +166,6 @@
 		DA0BF12A0F0BDE13004B488C /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventXMLReader.m; path = XMLReader/Enigma/EventXMLReader.m; sourceTree = "<group>"; };
 		DA0BF12B0F0BDE13004B488C /* MovieXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieXMLReader.h; path = XMLReader/Enigma/MovieXMLReader.h; sourceTree = "<group>"; };
 		DA0BF12C0F0BDE13004B488C /* MovieXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MovieXMLReader.m; path = XMLReader/Enigma/MovieXMLReader.m; sourceTree = "<group>"; };
-		DA0BF12D0F0BDE13004B488C /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceXMLReader.h; path = XMLReader/Enigma/ServiceXMLReader.h; sourceTree = "<group>"; };
-		DA0BF12E0F0BDE13004B488C /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceXMLReader.m; path = XMLReader/Enigma/ServiceXMLReader.m; sourceTree = "<group>"; };
 		DA0BF12F0F0BDE13004B488C /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerXMLReader.h; path = XMLReader/Enigma/TimerXMLReader.h; sourceTree = "<group>"; };
 		DA0BF1300F0BDE13004B488C /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerXMLReader.m; path = XMLReader/Enigma/TimerXMLReader.m; sourceTree = "<group>"; };
 		DA0BF1350F0BDE25004B488C /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventXMLReader.h; path = XMLReader/Enigma2/EventXMLReader.h; sourceTree = "<group>"; };
@@ -477,8 +474,6 @@
 				DA0BF12A0F0BDE13004B488C /* EventXMLReader.m */,
 				DA0BF12B0F0BDE13004B488C /* MovieXMLReader.h */,
 				DA0BF12C0F0BDE13004B488C /* MovieXMLReader.m */,
-				DA0BF12D0F0BDE13004B488C /* ServiceXMLReader.h */,
-				DA0BF12E0F0BDE13004B488C /* ServiceXMLReader.m */,
 				DA0BF12F0F0BDE13004B488C /* TimerXMLReader.h */,
 				DA0BF1300F0BDE13004B488C /* TimerXMLReader.m */,
 			);
@@ -906,7 +901,6 @@
 				DA0BF0660F0BC011004B488C /* CXMLNode_XPathExtensions.m in Sources */,
 				DA0BF1310F0BDE13004B488C /* EventXMLReader.m in Sources */,
 				DA0BF1320F0BDE13004B488C /* MovieXMLReader.m in Sources */,
-				DA0BF1330F0BDE13004B488C /* ServiceXMLReader.m in Sources */,
 				DA0BF1340F0BDE13004B488C /* TimerXMLReader.m in Sources */,
 				DA0BF13F0F0BDE25004B488C /* EventXMLReader.m in Sources */,
 				DA0BF1400F0BDE25004B488C /* MovieXMLReader.m in Sources */,

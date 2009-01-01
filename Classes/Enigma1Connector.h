@@ -10,9 +10,12 @@
 
 #import "RemoteConnector.h"
 
+#import "CXMLDocument.h"
+
 @interface Enigma1Connector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;
+	CXMLDocument *cachedBouquetsXML;
 }
 
 @property (nonatomic, retain) NSURL *baseAddress;

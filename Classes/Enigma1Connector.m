@@ -8,14 +8,16 @@
 
 #import "Enigma1Connector.h"
 
-#import "Objects/Generic/Service.h"
+#import "Objects/Enigma/Service.h"
 #import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Volume.h"
 
-#import "XMLReader/Enigma/ServiceXMLReader.h"
 #import "XMLReader/Enigma/EventXMLReader.h"
 #import "XMLReader/Enigma/TimerXMLReader.h"
 #import "XMLReader/Enigma/MovieXMLReader.h"
+
+// Services are 'lightweight'
+#define MAX_SERVICES 2048
 
 @implementation Enigma1Connector
 
@@ -50,6 +52,7 @@
 - (void)dealloc
 {
 	[baseAddress release];
+	[cachedBouquetsXML release];
 
 	[super dealloc];
 }
@@ -77,7 +80,7 @@
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapTo:(Service *) service
+- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
@@ -96,19 +99,53 @@
 	return ([response statusCode] == 204);
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action
+/*
+ Example:
+ <?xml version="1.0" encoding="UTF-8"?>
+ <bouquets>
+ <bouquet><reference>4097:7:0:33fc5:0:0:0:0:0:0:/var/tuxbox/config/enigma/userbouquet.33fc5.tv</reference><name>Favourites (TV)</name>
+ <service><reference>1:0:1:6dca:44d:1:c00000:0:0:0:</reference><name>Das Erste</name><provider>ARD</provider><orbital_position>192</orbital_position></service>
+ </bouquet>
+ </bouquets>
+ */
+- (void)refreshBouquetsXMLCache
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: baseAddress];
 
-	NSError *parseError = nil;
-
-	BaseXMLReader *streamReader = [[EnigmaServiceXMLReader alloc] initWithTarget: target action: action];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[BaseXMLReader alloc] initWithTarget: nil action: nil];
+	cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
+	[streamReader release];
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
+- (CXMLDocument *)fetchServices:(id)target action:(SEL)action
+{
+	// XXX: This needs to be redone when we support bouquets :-)
+	if(cachedBouquetsXML)
+		[cachedBouquetsXML release];
+	[self refreshBouquetsXMLCache];
+
+	NSArray *resultNodes = NULL;
+	NSUInteger parsedServicesCounter = 0;
+
+	resultNodes = [cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet/service" error:nil];
+
+	for(CXMLElement *resultElement in resultNodes)
+	{
+		if(++parsedServicesCounter >= MAX_SERVICES)
+			break;
+
+		// A service in the xml represents a service, so create an instance of it.
+		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
+
+		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[newService release];
+	}
+
+	// I don't assume we really need this but for the sake of it... :-)
+	return cachedBouquetsXML;
+}
+
+- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", service.sref] relativeToURL: baseAddress];
 
@@ -483,7 +520,8 @@
 
 - (void)freeCaches
 {
-	// XXX: We don't use any caches
+	[cachedBouquetsXML release];
+	cachedBouquetsXML = nil;
 }
 
 @end

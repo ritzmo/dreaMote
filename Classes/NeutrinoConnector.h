@@ -10,6 +10,8 @@
 
 #import "RemoteConnector.h"
 
+#import "CXMLDocument.h"
+
 @interface NeutrinoConnector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;

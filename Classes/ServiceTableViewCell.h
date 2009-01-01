@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Objects/Generic/Service.h"
+#import "Objects/ServiceProtocol.h"
 
 // cell identifier for this custom cell
 extern NSString *kServiceCell_ID;
@@ -15,14 +15,14 @@ extern NSString *kServiceCell_ID;
 @interface ServiceTableViewCell : UITableViewCell
 {
 @private	
-	Service *_service;
+	NSObject<ServiceProtocol> *_service;
 	UILabel *_serviceNameLabel;
 }
 
 @property (nonatomic, retain) UILabel *serviceNameLabel;
 
-- (Service*)service;
-- (void)setService:(Service *)newService;
+- (NSObject<ServiceProtocol> *)service;
+- (void)setService:(NSObject<ServiceProtocol> *)newService;
 
 @end
 

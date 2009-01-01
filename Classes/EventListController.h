@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class Service;
+@protocol ServiceProtocol;
 @class FuzzyDateFormatter;
 @class EventViewController;
 @class CXMLDocument;
@@ -17,17 +17,17 @@
 {
 @private
 	NSMutableArray *_events;
-	Service *_service;
+	NSObject<ServiceProtocol> *_service;
 	FuzzyDateFormatter *dateFormatter;
 
 	CXMLDocument *eventXMLDoc;
 	EventViewController *eventViewController;
 }
 
-+ (EventListController*)forService: (Service *)ourService;
++ (EventListController*)forService: (NSObject<ServiceProtocol> *)ourService;
 - (void)addEvent:(id)event;
 
-@property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
 @property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
 
 @end

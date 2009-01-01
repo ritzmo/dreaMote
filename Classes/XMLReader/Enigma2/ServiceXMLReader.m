@@ -20,7 +20,7 @@
 
 - (void)sendErroneousObject
 {
-	Service *fakeService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *fakeService = [[Service alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeService waitUntilDone: NO];
 	[fakeService release];
@@ -49,7 +49,7 @@
 			break;
 		
 		// An e2service in the xml represents a service, so create an instance of it.
-		Enigma2Service *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
+		NSObject<ServiceProtocol> *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
 		
 		[_target performSelectorOnMainThread: _addObject withObject: newService waitUntilDone: NO];
 		[newService release];

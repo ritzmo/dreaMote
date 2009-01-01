@@ -15,9 +15,6 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
-#import "Objects/EventProtocol.h"
-#import "Objects/Generic/Service.h"
-
 @implementation EventViewController
 
 @synthesize service = _service;
@@ -33,7 +30,7 @@
 	return self;
 }
 
-+ (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (Service *) newService
++ (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (NSObject<ServiceProtocol> *) newService
 {
 	EventViewController *eventViewController = [[EventViewController alloc] init];
 

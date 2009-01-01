@@ -8,9 +8,8 @@
 
 #import "Enigma2Connector.h"
 
-#import "Objects/Generic/Service.h"
-#import "Objects/Generic/Timer.h"
-#import "Objects/Generic/Volume.h"
+#import "Objects/ServiceProtocol.h"
+#import "Objects/TimerProtocol.h"
 
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
@@ -78,7 +77,7 @@ enum powerStates {
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapTo:(Service *) service
+- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
@@ -107,7 +106,7 @@ enum powerStates {
 	return doc;
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
+- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", service.sref] relativeToURL: baseAddress];
 

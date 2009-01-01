@@ -14,7 +14,7 @@
 #import "RemoteConnectorObject.h"
 #import "FuzzyDateFormatter.h"
 
-#import "Objects/Generic/Service.h"
+#import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
 
 @implementation EventListController
@@ -35,7 +35,7 @@
 	return self;
 }
 
-+ (EventListController*)forService: (Service *)ourService
++ (EventListController*)forService: (NSObject<ServiceProtocol> *)ourService
 {
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.service = ourService;
@@ -43,12 +43,12 @@
 	return eventListController;
 }
 
-- (Service *)service
+- (NSObject<ServiceProtocol> *)service
 {
 	return _service;
 }
 
-- (void)setService: (Service *)newService
+- (void)setService: (NSObject<ServiceProtocol> *)newService
 {
 	if(_service == newService) return;
 

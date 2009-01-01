@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@class Service;
-
 #import "Objects/EventProtocol.h"
+#import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
 #import "CellTextField.h"
 
@@ -48,7 +47,7 @@
 }
 
 + (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent;
-+ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService;
++ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService;
 + (TimerViewController *)withTimer: (NSObject<TimerProtocol> *)ourTimer;
 + (TimerViewController *)newTimer;
 

@@ -11,7 +11,7 @@
 #import "EventListController.h"
 
 #import "RemoteConnectorObject.h"
-#import "Objects/Generic/Service.h"
+#import "Objects/ServiceProtocol.h"
 
 #import "ServiceTableViewCell.h"
 
@@ -108,7 +108,7 @@
 {
 	if(service != nil)
 	{
-		[_services addObject: (Service*)service];
+		[_services addObject: service];
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_services count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
@@ -137,7 +137,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Service *service = [_services objectAtIndex: indexPath.row];
+	NSObject<ServiceProtocol> *service = [_services objectAtIndex: indexPath.row];
 	if(!service.valid)
 		[tableView deselectRowAtIndexPath: indexPath animated: YES];
 	else if(_selectTarget != nil && _selectCallback != nil)
@@ -157,7 +157,7 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex: (NSInteger)buttonIndex
 {
-	Service *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] service];
+	NSObject<ServiceProtocol> *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] service];
 
 	if (buttonIndex == 0)
 	{
