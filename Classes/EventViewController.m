@@ -196,10 +196,6 @@
 		}
 		case 1:
 		case 2:
-		{
-			result = kTextFieldHeight;
-			break;
-		}
 		case 3:
 		{
 			result = kUIRowHeight;
@@ -238,6 +234,7 @@
 			sourceCell.textColor = [UIColor blackColor];
 			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			sourceCell.indentationLevel = 1;
 
 			if(section == 1)
 				sourceCell.text = [self format_BeginEnd: _event.begin];

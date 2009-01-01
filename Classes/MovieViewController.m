@@ -304,7 +304,7 @@
 	{
 		if(section == 5 && [_movie.length integerValue] == -1)
 			return 0.0;
-		return kTextFieldHeight;
+		return kUIRowHeight;
 	}
 
 	return 0.0;
@@ -337,11 +337,12 @@
 			cell.textColor = [UIColor blackColor];
 			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			cell.indentationLevel = 1;
 			break;
 		case 6:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];			
+				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 		default:
 			break;
 	}
