@@ -111,7 +111,8 @@ enum buttonCodes {
 - (NSInteger)getMaxVolume;
 - (BOOL)isReachable;
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action;
+- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action;
+- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet;
 - (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service;
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action;
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action;

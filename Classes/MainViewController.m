@@ -12,6 +12,7 @@
 #import "Constants.h"
 
 #import "MainTableViewCell.h"
+#import "BouquetListController.h"
 #import "ServiceListController.h"
 #import "TimerListController.h"
 #import "ControlViewController.h"
@@ -72,14 +73,22 @@
 
 	UIViewController *targetViewController;
 
-	targetViewController = [[ServiceListController alloc] init];
+	targetViewController = [[BouquetListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												NSLocalizedString(@"Service List Title", @""), @"title",
-												NSLocalizedString(@"Service List Explain", @""), @"explainText",
+												NSLocalizedString(@"Bouquet List Title", @""), @"title",
+												NSLocalizedString(@"Bouquet List Explain", @""), @"explainText",
 												targetViewController, @"viewController",
 												nil]];
 	[targetViewController release];
-	
+/*
+	targetViewController = [[ServiceListController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Service List Title", @""), @"title",
+						 NSLocalizedString(@"Service List Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
+	[targetViewController release];
+*/	
 	targetViewController = [[TimerListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 												NSLocalizedString(@"Timer List Title", @""), @"title",

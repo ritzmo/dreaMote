@@ -110,17 +110,52 @@
 	[streamReader release];
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action
+- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
 {
-	// XXX: This needs to be redone when we support bouquets :-)
-	if(cachedBouquetsXML)
+	if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+	{
 		[cachedBouquetsXML release];
-	[self refreshBouquetsXMLCache];
+		[self refreshBouquetsXMLCache];
+	}
 
 	NSArray *resultNodes = NULL;
 	NSUInteger parsedServicesCounter = 0;
 
-	resultNodes = [cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet/channel" error:nil];
+	resultNodes = [cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
+
+	for(CXMLElement *resultElement in resultNodes)
+	{
+		if(++parsedServicesCounter >= MAX_SERVICES)
+			break;
+
+		// A channel in the xml represents a service, so create an instance of it.
+		NSObject<ServiceProtocol> *newService = [[Service alloc] init];
+
+		newService.sname = [[resultElement attributeForName: @"name"] stringValue];
+		newService.sref = [[resultElement attributeForName: @"bouquet_id"] stringValue];
+
+		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[newService release];
+	}
+
+	// I don't assume we really need this but for the sake of it... :-)
+	return cachedBouquetsXML;
+}
+
+- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
+{
+	if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+	{
+		[cachedBouquetsXML release];
+		[self refreshBouquetsXMLCache];
+	}
+
+	NSArray *resultNodes = NULL;
+	NSUInteger parsedServicesCounter = 0;
+
+	resultNodes = [cachedBouquetsXML nodesForXPath:
+					[NSString stringWithFormat: @"/zapit/Bouquet[@id=\"%@\"]/channel", bouquet.sref]
+					error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{

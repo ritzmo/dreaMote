@@ -46,6 +46,31 @@
 	[super didReceiveMemoryWarning];
 }
 
+- (NSObject<ServiceProtocol> *)bouquet
+{
+	return _bouquet;
+}
+
+- (void)setBouquet: (NSObject<ServiceProtocol> *)new
+{
+	if(_bouquet == new) return;
+
+	[_bouquet release];
+	_bouquet = [new retain];
+
+	self.title = new.sname;
+
+	[_services removeAllObjects];
+	[(UITableView *)self.view reloadData];
+	[serviceXMLDoc release];
+	serviceXMLDoc = nil;
+	_refreshServices = NO;
+
+	// Spawn a thread to fetch the event data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+}
+
 - (void)loadView
 {
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
@@ -100,7 +125,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[serviceXMLDoc release];
-	serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)] retain];
+	serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:) bouquet: _bouquet] retain];
 	[pool release];
 }
 

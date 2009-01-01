@@ -53,6 +53,7 @@
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
+		DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutViewController.m */; };
 		DA51BC430EAA45A500AF9146 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DA51BC410EAA45A500AF9146 /* emblem-favorite.png */; };
@@ -222,6 +223,8 @@
 		DA36F6BA0F0D2D9A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DA36F7050F0D2F0A005608CC /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
 		DA36F7060F0D2F0A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
+		DA3AA1D60F0D828D001B2057 /* BouquetListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetListController.h; sourceTree = "<group>"; };
+		DA3AA1D70F0D828D001B2057 /* BouquetListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetListController.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
 		DA51BAFF0EAA344200AF9146 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -661,6 +664,8 @@
 		DAF0D5470E38FF1E001F7CF1 /* ListController */ = {
 			isa = PBXGroup;
 			children = (
+				DA3AA1D60F0D828D001B2057 /* BouquetListController.h */,
+				DA3AA1D70F0D828D001B2057 /* BouquetListController.m */,
 				DAA21E7E0E99288600DD749C /* ConfigListController.h */,
 				DAA21E7F0E99288600DD749C /* ConfigListController.m */,
 				DA2713250D84056800C25B85 /* EventListController.h */,
@@ -922,6 +927,7 @@
 				DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */,
 				DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */,
 				DA36F7070F0D2F0A005608CC /* Service.m in Sources */,
+				DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

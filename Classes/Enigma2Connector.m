@@ -96,9 +96,19 @@ enum powerStates {
 	return ([response statusCode] == 200);
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action
+- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"]  relativeToURL:baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/web/getservices" relativeToURL: baseAddress];
+
+	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet;
+{
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithTarget: target action: action];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];

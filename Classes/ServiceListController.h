@@ -10,11 +10,13 @@
 
 @class EventListController;
 @class CXMLDocument;
+@protocol ServiceProtocol;
 
 @interface ServiceListController : UIViewController <UIActionSheetDelegate,
 													UITableViewDelegate, UITableViewDataSource>
 {
 @private
+	NSObject<ServiceProtocol> *_bouquet;
 	NSMutableArray *_services;
 	SEL _selectCallback;
 	id _selectTarget;
@@ -25,5 +27,7 @@
 }
 
 - (void)setTarget: (id)target action: (SEL)action;
+
+@property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
 
 @end
