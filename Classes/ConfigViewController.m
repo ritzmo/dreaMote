@@ -198,10 +198,11 @@
 				[(UITableView *)self.view beginUpdates];
 				connectionIndex = [connections count];
 				[connections addObject: connection];
-				[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
+				// XXX: ugly!
+				if(connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || connectionIndex == [RemoteConnectorObject getConnectedId])
+					[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
 											withRowAnimation: UITableViewRowAnimationFade];
 				[(UITableView *)self.view endUpdates];
-				[(UITableView *)self.view reloadData];
 			}
 			else
 			{
