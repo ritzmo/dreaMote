@@ -199,7 +199,7 @@
 				connectionIndex = [connections count];
 				[connections addObject: connection];
 				// XXX: ugly!
-				if(connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || connectionIndex == [RemoteConnectorObject getConnectedId])
+				if(connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || connectionIndex != [RemoteConnectorObject getConnectedId])
 					[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
 											withRowAnimation: UITableViewRowAnimationFade];
 				[(UITableView *)self.view endUpdates];
