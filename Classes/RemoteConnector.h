@@ -34,6 +34,8 @@ enum connectorFeatures {
 	kFeaturesDisabledTimers,
 	// Timer can have an "after Event"-Action
 	kFeaturesTimerAfterEvent,
+	// Timer can have "Auto" as "after Event"-Action
+	kFeaturesTimerAfterEventAuto,
 	// Connector can fetch Record Info
 	kFeaturesRecordInfo,
 	// Connector can fetch extended information about recordings (e.g. tags)
@@ -52,6 +54,8 @@ enum connectorFeatures {
 	kFeaturesVideoScreenshot,
 	// Remote Control has all buttons (we have a simple and a "full" view)
 	kFeaturesFullRemote,
+	// Remote Control of DM8000 *grml*
+	kFeaturesAdvancedRemote,
 };
 
 enum buttonCodes {
@@ -95,7 +99,7 @@ enum buttonCodes {
 
 @class Service;
 @class Volume;
-@class Timer;
+@protocol TimerProtocol;
 
 @class BaseXMLReader;
 
@@ -121,9 +125,9 @@ enum buttonCodes {
 - (void)restart;
 - (BOOL)toggleMuted;
 - (BOOL)setVolume:(NSInteger) newVolume;
-- (BOOL)addTimer:(Timer *) newTimer;
-- (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer;
-- (BOOL)delTimer:(Timer *) oldTimer;
+- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer;
+- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer;
+- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer;
 - (BOOL)sendButton:(NSInteger) type;
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
 

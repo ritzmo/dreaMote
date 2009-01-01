@@ -1,14 +1,14 @@
 //
 //  EventXMLReader.m
-//  Untitled
+//  dreaMote
 //
-//  Created by Moritz Venn on 11.03.08.
+//  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import "EventXMLReader.h"
 
-#import "../../Objects/Generic/Event.h"
+#import "../../Objects/Enigma/Event.h"
 
 @implementation EnigmaEventXMLReader
 
@@ -31,7 +31,7 @@
 
 - (void)sendErroneousObject
 {
-	Event *fakeObject = [[Event alloc] init];
+	EnigmaEvent *fakeObject = [[EnigmaEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
@@ -61,49 +61,20 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedEventsCounter = 0;
-	
-	resultNodes = [_parser nodesForXPath:@"/service_epg/service" error:nil];
-	
+
+	resultNodes = [_parser nodesForXPath:@"/service_epg/event" error:nil];
+
 	for (CXMLElement *resultElement in resultNodes) {
 		if(++parsedEventsCounter >= MAX_EVENTS)
 			break;
 
 		// An service in the xml represents an event, so create an instance of it.
-		Event *newEvent = [[Event alloc] init];
-
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"start"])
-			{
-				[newEvent setBeginFromString: [currentChild stringValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"duration"])
-			{
-				[newEvent setEndFromDurationString: [currentChild stringValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"description"])
-			{
-				newEvent.title = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"details"])
-			{
-				newEvent.edescription = [currentChild stringValue];
-				continue;
-			}
-		}
+		EnigmaEvent *newEvent = [[EnigmaEvent alloc] initWithNode: (CXMLNode *)resultElement];
 		
 		[self.target performSelectorOnMainThread: self.addObject withObject: newEvent waitUntilDone: NO];
 		[newEvent release];
 	}
 }
-
-// XXX: incremental does not help very much - we'd only save a single element...
 
 @end

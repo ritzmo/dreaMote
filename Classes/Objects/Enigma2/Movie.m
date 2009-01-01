@@ -1,12 +1,14 @@
 //
 //  Movie.m
-//  Untitled
+//  dreaMote
 //
-//  Created by Moritz Venn on 09.03.08.
+//  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import "Movie.h"
+
+#import "CXMLElement.h"
 
 @implementation Enigma2Movie
 
@@ -14,16 +16,11 @@
 {
 	if(_tags == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2tags" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2tags"])
-			{
-				[self setTagsFromString: [currentChild stringValue]];
-				break;
-			}
+			[self setTagsFromString: [currentChild stringValue]];
+			break;
 		}
 	}
 	return _tags;
@@ -41,16 +38,11 @@
 {
 	if(_size == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2filesize" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2filesize"])
-			{
-				self.size = [NSNumber numberWithLongLong: [[currentChild stringValue] longLongValue]];
-				break;
-			}
+			self.size = [NSNumber numberWithLongLong: [[currentChild stringValue] longLongValue]];
+			break;
 		}
 	}
 	return _size;
@@ -68,20 +60,15 @@
 {
 	if(_length == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2length" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2length"])
-			{
-				NSString *elementValue = [currentChild stringValue];
-				if([elementValue isEqualToString: @"disabled"])
-					self.length = [NSNumber numberWithInteger: -1];
-				else
-					self.length = [NSNumber numberWithInteger: [elementValue integerValue]];
-				break;
-			}
+			NSString *elementValue = [currentChild stringValue];
+			if([elementValue isEqualToString: @"disabled"])
+				self.length = [NSNumber numberWithInteger: -1];
+			else
+				self.length = [NSNumber numberWithInteger: [elementValue integerValue]];
+			break;
 		}
 	}
 	return _length;
@@ -99,16 +86,11 @@
 {
 	if(_time == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2time" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2time"])
-			{
-				[self setTimeFromString: [currentChild stringValue]];
-				break;
-			}
+			_time = [[NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]] retain];
+			break;
 		}
 	}
 	return _time;
@@ -126,16 +108,11 @@
 {
 	if(_sname == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2servicename"])
-			{
-				self.sname = [currentChild stringValue];
-				break;
-			}
+			self.sname = [currentChild stringValue];
+			break;
 		}
 	}
 	return _sname;
@@ -153,16 +130,11 @@
 {
 	if(_sref == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2servicereference"])
-			{
-				self.sref = [currentChild stringValue];
-				break;
-			}
+			self.sref = [currentChild stringValue];
+			break;
 		}
 	}
 	return _sref;
@@ -176,21 +148,15 @@
 	_sref = [new retain];
 }
 
-
 - (NSString *)edescription
 {
 	if(_edescription == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2descriptionextended" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2descriptionextended"])
-			{
-				self.edescription = [currentChild stringValue];
-				break;
-			}
+			self.edescription = [currentChild stringValue];
+			break;
 		}
 	}
 	return _edescription;
@@ -208,16 +174,11 @@
 {
 	if(_sdescription == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2description"])
-			{
-				self.sdescription = [currentChild stringValue];
-				break;
-			}
+			self.sdescription = [currentChild stringValue];
+			break;
 		}
 	}
 	return _sdescription;
@@ -235,16 +196,11 @@
 {
 	if(_title == nil)
 	{
-		CXMLNode *currentChild = nil;
-		for(NSUInteger counter = 0; counter < [_node childCount]; ++counter)
+		NSArray *resultNodes = [_node nodesForXPath:@"e2title" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			currentChild = (CXMLNode *)[_node childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2title"])
-			{
-				self.title = [currentChild stringValue];
-				break;
-			}
+			self.title = [currentChild stringValue];
+			break;
 		}
 	}
 	return _title;
@@ -285,13 +241,12 @@
 
 - (BOOL)isValid
 {
-	return self.sref != nil;
+	return _node && self.sref != nil;
 }
 
 - (void)setTimeFromString: (NSString *)newTime
 {
-	[_time release];
-	_time = [[NSDate dateWithTimeIntervalSince1970: [newTime doubleValue]] retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (void)setTagsFromString: (NSString *)newTags

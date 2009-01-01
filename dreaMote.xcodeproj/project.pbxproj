@@ -42,6 +42,11 @@
 		DA0BF45D0F0C1066004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4550F0C1066004B488C /* Timer.m */; };
 		DA0BF45E0F0C1066004B488C /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4570F0C1066004B488C /* Volume.m */; };
 		DA0BF5C70F0C19B5004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF5C60F0C19B5004B488C /* Movie.m */; };
+		DA0BF6D40F0C2D56004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF6D30F0C2D56004B488C /* Event.m */; };
+		DA0BF7500F0C3105004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF74F0F0C3105004B488C /* Timer.m */; };
+		DA0BF8AE0F0CBEDB004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8A90F0CBEDB004B488C /* Event.m */; };
+		DA0BF8AF0F0CBEDB004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AB0F0CBEDB004B488C /* Movie.m */; };
+		DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AD0F0CBEDB004B488C /* Timer.m */; };
 		DA0FA5070EB1CC27009A1898 /* image-x-generic.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5060EB1CC27009A1898 /* image-x-generic.png */; };
 		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
@@ -195,6 +200,17 @@
 		DA0BF5C50F0C19B5004B488C /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
 		DA0BF5C60F0C19B5004B488C /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		DA0BF5C80F0C19C4004B488C /* MovieProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieProtocol.h; sourceTree = "<group>"; };
+		DA0BF6D20F0C2D56004B488C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		DA0BF6D30F0C2D56004B488C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		DA0BF74E0F0C3105004B488C /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		DA0BF74F0F0C3105004B488C /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
+		DA0BF7510F0C3113004B488C /* TimerProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerProtocol.h; sourceTree = "<group>"; };
+		DA0BF8A80F0CBEDB004B488C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		DA0BF8A90F0CBEDB004B488C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		DA0BF8AA0F0CBEDB004B488C /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
+		DA0BF8AB0F0CBEDB004B488C /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
+		DA0BF8AC0F0CBEDB004B488C /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		DA0BF8AD0F0CBEDB004B488C /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DA0FA5060EB1CC27009A1898 /* image-x-generic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "image-x-generic.png"; path = "Images/image-x-generic.png"; sourceTree = "<group>"; };
 		DA0FA5750EB1D189009A1898 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = Other/about.html; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
@@ -502,6 +518,7 @@
 				DA0BF4580F0C1066004B488C /* Neutrino */,
 				DA0BF44C0F0C1066004B488C /* EventProtocol.h */,
 				DA0BF5C80F0C19C4004B488C /* MovieProtocol.h */,
+				DA0BF7510F0C3113004B488C /* TimerProtocol.h */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -509,6 +526,12 @@
 		DA0BF4480F0C1066004B488C /* Enigma */ = {
 			isa = PBXGroup;
 			children = (
+				DA0BF8A80F0CBEDB004B488C /* Event.h */,
+				DA0BF8A90F0CBEDB004B488C /* Event.m */,
+				DA0BF8AA0F0CBEDB004B488C /* Movie.h */,
+				DA0BF8AB0F0CBEDB004B488C /* Movie.m */,
+				DA0BF8AC0F0CBEDB004B488C /* Timer.h */,
+				DA0BF8AD0F0CBEDB004B488C /* Timer.m */,
 			);
 			path = Enigma;
 			sourceTree = "<group>";
@@ -520,6 +543,8 @@
 				DA0BF44B0F0C1066004B488C /* Event.m */,
 				DA0BF5C50F0C19B5004B488C /* Movie.h */,
 				DA0BF5C60F0C19B5004B488C /* Movie.m */,
+				DA0BF74E0F0C3105004B488C /* Timer.h */,
+				DA0BF74F0F0C3105004B488C /* Timer.m */,
 			);
 			path = Enigma2;
 			sourceTree = "<group>";
@@ -544,6 +569,8 @@
 		DA0BF4580F0C1066004B488C /* Neutrino */ = {
 			isa = PBXGroup;
 			children = (
+				DA0BF6D20F0C2D56004B488C /* Event.h */,
+				DA0BF6D30F0C2D56004B488C /* Event.m */,
 			);
 			path = Neutrino;
 			sourceTree = "<group>";
@@ -888,6 +915,11 @@
 				DA0BF45D0F0C1066004B488C /* Timer.m in Sources */,
 				DA0BF45E0F0C1066004B488C /* Volume.m in Sources */,
 				DA0BF5C70F0C19B5004B488C /* Movie.m in Sources */,
+				DA0BF6D40F0C2D56004B488C /* Event.m in Sources */,
+				DA0BF7500F0C3105004B488C /* Timer.m in Sources */,
+				DA0BF8AE0F0CBEDB004B488C /* Event.m in Sources */,
+				DA0BF8AF0F0CBEDB004B488C /* Movie.m in Sources */,
+				DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

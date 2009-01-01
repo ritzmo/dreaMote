@@ -2,7 +2,7 @@
 //  Event.m
 //  dreaMote
 //
-//  Created by Moritz Venn on 31.12.08.
+//  Created by Moritz Venn on 01.01.09.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 #import "CXMLElement.h"
 
-@implementation Enigma2Event
+@implementation NeutrinoEvent
 
 @synthesize timeString;
 
@@ -18,7 +18,7 @@
 {
 	if(_edescription == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescriptionextended" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"info2" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.edescription = [resultElement stringValue];
@@ -40,7 +40,7 @@
 {
 	if(_sdescription == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescription" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"info1" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.sdescription = [resultElement stringValue];
@@ -62,7 +62,7 @@
 {
 	if(_title == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.title = [resultElement stringValue];
@@ -84,10 +84,10 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventduration" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"stop_sec" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
-			[self setEndFromDurationString: [resultElement stringValue]];
+			self.end = [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
 			break;
 		}
 	}
@@ -106,10 +106,10 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"start_sec" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
-			[self setBeginFromString: [resultElement stringValue]];
+			self.begin = [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
 			break;
 		}
 	}
@@ -128,7 +128,7 @@
 {
 	if(_eit == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventid" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"eventid" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.eit = [resultElement stringValue];
@@ -178,31 +178,12 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[timeString release];
-	timeString = nil;
-
-	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
-	[_end release];
-	if(self.end == nil)
-	{
-		// XXX: should never happen
-		return;
-	}
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[timeString release];
-	timeString = nil;
-
-	if(self.begin == nil)
-	{
-		// XXX: should never happen
-		return;
-	}
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 @end

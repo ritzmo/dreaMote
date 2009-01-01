@@ -2,7 +2,7 @@
 //  Event.m
 //  dreaMote
 //
-//  Created by Moritz Venn on 31.12.08.
+//  Created by Moritz Venn on 01.01.09.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 #import "CXMLElement.h"
 
-@implementation Enigma2Event
+@implementation EnigmaEvent
 
 @synthesize timeString;
 
@@ -18,7 +18,7 @@
 {
 	if(_edescription == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescriptionextended" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"details" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.edescription = [resultElement stringValue];
@@ -38,31 +38,19 @@
 
 - (NSString *)sdescription
 {
-	if(_sdescription == nil)
-	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescription" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.sdescription = [resultElement stringValue];
-			break;
-		}
-	}
-	return _sdescription;
+	return nil;
 }
 
 - (void)setSdescription: (NSString *)new
 {
-	if(_sdescription == new)
-		return;
-	[_sdescription release];
-	_sdescription = [new retain];
+	return;
 }
 
 - (NSString *)title
 {
 	if(_title == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.title = [resultElement stringValue];
@@ -84,7 +72,7 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventduration" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"duration" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setEndFromDurationString: [resultElement stringValue]];
@@ -106,7 +94,7 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
+		NSArray *resultNodes = [_node nodesForXPath:@"start" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setBeginFromString: [resultElement stringValue]];
@@ -126,24 +114,12 @@
 
 - (NSString *)eit
 {
-	if(_eit == nil)
-	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventid" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.eit = [resultElement stringValue];
-			break;
-		}
-	}
-	return _eit;
+	return nil;
 }
 
 - (void)setEit: (NSString *)new
 {
-	if(_eit == new)
-		return;
-	[_eit release];
-	_eit = [new retain];
+	return;
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -159,7 +135,6 @@
 
 - (void)dealloc
 {
-	[_eit release];
 	[_begin release];
 	[_end release];
 	[_title release];

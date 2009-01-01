@@ -1,14 +1,14 @@
 //
 //  EventXMLReader.m
-//  Untitled
+//  dreaMote
 //
-//  Created by Moritz Venn on 11.03.08.
+//  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import "EventXMLReader.h"
 
-#import "../../Objects/Generic/Event.h"
+#import "../../Objects/Neutrino/Event.h"
 
 @implementation NeutrinoEventXMLReader
 
@@ -31,7 +31,7 @@
 
 - (void)sendErroneousObject
 {
-	Event *fakeObject = [[Event alloc] init];
+	NSObject<EventProtocol> *fakeObject = [[NeutrinoEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
@@ -58,111 +58,9 @@
  </prog>
  </epglist>
  */
-- (void)parseInitial
-{
-	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
-	NSUInteger parsedEventsCounter = 0;
-	
-	resultNodes = [_parser nodesForXPath:@"/epglist/prog" error:nil];
-	
-	for (CXMLElement *resultElement in resultNodes) {
-		if(++parsedEventsCounter >= MAX_EVENTS)
-			break;
-		
-		// An service in the xml represents an event, so create an instance of it.
-		Event *newEvent = [[Event alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"eventid"])
-			{
-				newEvent.eit = [currentChild stringValue];
-				continue;
-			}
-			if([elementName isEqualToString:@"start_sec"])
-			{
-				newEvent.begin = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"stop_sec"])
-			{
-				newEvent.end = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"description"])
-			{
-				newEvent.title = [currentChild stringValue];
-				continue;
-			}
-		}
-		
-		[self.target performSelectorOnMainThread: self.addObject withObject: newEvent waitUntilDone: NO];
-		[newEvent release];
-	}	
-}
-
-- (id)parseSpecific: (NSString *)identifier
-{
-	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
-	
-	resultNodes = [_parser nodesForXPath:
-					[NSString stringWithFormat: @"/epglist/prog[eventid=\"%@\"]", identifier]
-					error:nil];
-
-	for (CXMLElement *resultElement in resultNodes) {
-		
-		// An service in the xml represents an event, so create an instance of it.
-		Event *newEvent = [[[Event alloc] init] autorelease];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"eventid"])
-			{
-				newEvent.eit = [currentChild stringValue];
-				continue;
-			}
-			if([elementName isEqualToString:@"start_sec"])
-			{
-				newEvent.begin = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"stop_sec"])
-			{
-				newEvent.end = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"description"])
-			{
-				newEvent.title = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"info1"])
-			{
-				newEvent.sdescription = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"info2"])
-			{
-				newEvent.edescription = [currentChild stringValue];
-				continue;
-			}
-		}
-		
-		return newEvent;
-	}
-	return nil;
-}
-
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedEventsCounter = 0;
 	
 	resultNodes = [_parser nodesForXPath:@"/epglist/prog" error:nil];
@@ -171,45 +69,9 @@
 		if(++parsedEventsCounter >= MAX_EVENTS)
 			break;
 		
-		// An service in the xml represents an event, so create an instance of it.
-		Event *newEvent = [[Event alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"eventid"])
-			{
-				newEvent.eit = [currentChild stringValue];
-				continue;
-			}
-			if([elementName isEqualToString:@"start_sec"])
-			{
-				newEvent.begin = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"stop_sec"])
-			{
-				newEvent.end = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
-				continue;
-			}
-			else if([elementName isEqualToString:@"description"])
-			{
-				newEvent.title = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"info1"])
-			{
-				newEvent.sdescription = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"info2"])
-			{
-				newEvent.edescription = [currentChild stringValue];
-				continue;
-			}
-		}
-		
+		// A prog in the xml represents an event, so create an instance of it.
+		NSObject<EventProtocol> *newEvent = [[NeutrinoEvent alloc] initWithNode:(CXMLNode *)resultElement];
+
 		[self.target performSelectorOnMainThread: self.addObject withObject: newEvent waitUntilDone: NO];
 		[newEvent release];
 	}

@@ -2,7 +2,7 @@
 //  Movie.h
 //  dreaMote
 //
-//  Created by Moritz Venn on 31.12.08.
+//  Created by Moritz Venn on 01.01.09.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
@@ -12,15 +12,11 @@
 
 #import "MovieProtocol.h"
 
-@interface Enigma2Movie : NSObject <MovieProtocol>
+@interface EnigmaMovie : NSObject <MovieProtocol>
 {
 @private	
 	NSString *_sref;
-	NSString *_sname;
-	NSDate *_time;
 	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
 	NSNumber *_length;
 	NSNumber *_size;
 	NSArray *_tags;

@@ -1,14 +1,14 @@
 //
 //  MovieXMLReader.m
-//  Untitled
+//  dreaMote
 //
-//  Created by Moritz Venn on 11.03.08.
+//  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import "MovieXMLReader.h"
 
-#import "../../Objects/Generic/Movie.h"
+#import "../../Objects/Enigma/Movie.h"
 
 @implementation EnigmaMovieXMLReader
 
@@ -31,7 +31,7 @@
 
 - (void)sendErroneousObject
 {
-	Movie *fakeObject = [[Movie alloc] init];
+	EnigmaMovie *fakeObject = [[EnigmaMovie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
@@ -47,7 +47,6 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedMovieCounter = 0;
 	
 	resultNodes = [_parser nodesForXPath:@"/movies/service" error:nil];
@@ -55,27 +54,10 @@
 	for (CXMLElement *resultElement in resultNodes) {
 		if(++parsedMovieCounter >= MAX_MOVIES)
 			break;
-		
+
 		// A service in the xml represents a movie, so create an instance of it.
-		Movie *newMovie = [[Movie alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"reference"])
-			{
-				newMovie.sref = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"name"])
-			{
-				// We have to un-escape some characters here...
-				newMovie.title = [[currentChild stringValue] stringByReplacingOccurrencesOfString: @"&amp;" withString: @"&"];
-				continue;
-			}
-		}
-		
+		EnigmaMovie *newMovie = [[EnigmaMovie alloc] initWithNode: (CXMLNode *)resultElement];
+
 		[self.target performSelectorOnMainThread: self.addObject withObject: newMovie waitUntilDone: NO];
 		[newMovie release];
 	}

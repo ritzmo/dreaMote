@@ -118,6 +118,7 @@
 		_state = timer.state;
 		_duration = -1;
 		_isValid = timer.valid;
+		_afterevent = timer.afterevent;
 	}
 
 	return self;

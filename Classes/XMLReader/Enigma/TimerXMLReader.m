@@ -1,14 +1,14 @@
 //
 //  TimerXMLReader.h
-//  Untitled
+//  dreaMote
 //
-//  Created by Moritz Venn on 11.03.08.
+//  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import "TimerXMLReader.h"
 
-#import "../../Objects/Generic/Timer.h"
+#import "../../Objects/Enigma/Timer.h"
 
 @implementation EnigmaTimerXMLReader
 
@@ -31,7 +31,7 @@
 
 - (void)sendErroneousObject
 {
-	Timer *fakeObject = [[Timer alloc] init];
+	EnigmaTimer *fakeObject = [[EnigmaTimer alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
@@ -67,7 +67,6 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedTimersCounter = 0;
 	
 	resultNodes = [_parser nodesForXPath:@"/timers/timer" error:nil];
@@ -78,60 +77,8 @@
 			break;
 		
 		// A timer in the xml represents a timer, so create an instance of it.
-		Timer *newTimer = [[Timer alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if ([elementName isEqualToString:@"reference"]) {
-				newTimer.sref = [currentChild stringValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"name"]) {
-				// We have to un-escape some characters here...
-				newTimer.sname = [[currentChild stringValue] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"start"]) {
-				[newTimer setBeginFromString: [currentChild stringValue]];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"duration"]) {
-				[newTimer setEndFromDurationString: [currentChild stringValue]];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"description"]) {
-				// We have to un-escape some characters here...
-				newTimer.title = [[currentChild stringValue] stringByReplacingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"typedata"]) {
-				NSInteger typeData = [[currentChild stringValue] integerValue];
-				
-				// We translate to Enigma2 States here
-				if(typeData & stateRunning)
-					newTimer.state = kTimerStateRunning;
-				else if(typeData & stateFinished)
-					newTimer.state = kTimerStateFinished;
-				else // stateWaiting or unknown
-					newTimer.state =  kTimerStateWaiting;
-				
-				if(typeData & doShutdown)
-					newTimer.afterevent = kAfterEventStandby;
-				else if(typeData & doGoSleep)
-					newTimer.afterevent = kAfterEventDeepstandby;
-				else
-					newTimer.afterevent = kAfterEventNothing;
-				
-				if(typeData & SwitchTimerEntry)
-					newTimer.justplay = YES;
-				else // We assume RecTimerEntry here
-					newTimer.justplay = NO;
-				continue;
-			}
-		}
-		
+		EnigmaTimer *newTimer = [[EnigmaTimer alloc] initWithNode: (CXMLNode *)resultElement];
+
 		[self.target performSelectorOnMainThread: self.addObject withObject: newTimer waitUntilDone: NO];
 		[newTimer release];
 	}

@@ -2,7 +2,7 @@
 //  Event.h
 //  dreaMote
 //
-//  Created by Moritz Venn on 31.12.08.
+//  Created by Moritz Venn on 01.01.09.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
@@ -12,7 +12,7 @@
 
 #import "EventProtocol.h"
 
-@interface Enigma2Event : NSObject <EventProtocol>
+@interface NeutrinoEvent : NSObject <EventProtocol>
 {
 @private	
 	NSString *_eit;

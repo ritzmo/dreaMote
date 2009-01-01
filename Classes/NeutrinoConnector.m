@@ -155,7 +155,7 @@
 	// Error occured, so send fake object
 	if(error || !data)
 	{
-		Timer *fakeObject = [[Timer alloc] init];
+		NSObject<TimerProtocol> *fakeObject = [[Timer alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 		fakeObject.state = 0;
 		fakeObject.valid = NO;
@@ -175,7 +175,7 @@
 		if([timerStringComponents count] < 8) // XXX: should not happen...
 			continue;
 
-		Timer *timer = [[Timer alloc] init];
+		NSObject<TimerProtocol> *timer = [[Timer alloc] init];
 		
 		// Determine type, reject unhandled
 		NSInteger timerType = [[timerStringComponents objectAtIndex: 1] integerValue];
@@ -409,7 +409,7 @@
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)addTimer:(Timer *) newTimer
+- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
 	// XXX: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
@@ -434,7 +434,7 @@
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer
+- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
 	// XXX: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
@@ -463,7 +463,7 @@
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)delTimer:(Timer *) oldTimer
+- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: baseAddress];

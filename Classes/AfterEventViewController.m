@@ -9,11 +9,13 @@
 #import "AfterEventViewController.h"
 
 #import "Constants.h"
-#import "Timer.h"
+
+#import "TimerProtocol.h"
 
 @implementation AfterEventViewController
 
 @synthesize selectedItem = _selectedItem;
+@synthesize showAuto = _showAuto;
 
 - (id)init
 {
@@ -24,10 +26,11 @@
 	return self;
 }
 
-+ (AfterEventViewController *)withAfterEvent: (NSInteger) afterEvent
++ (AfterEventViewController *)withAfterEvent: (NSInteger)afterEvent andAuto: (BOOL)showAuto
 {
 	AfterEventViewController *afterEventViewController = [[AfterEventViewController alloc] init];
 	afterEventViewController.selectedItem = afterEvent;
+	afterEventViewController.showAuto = showAuto;
 
 	return afterEventViewController;
 }
@@ -67,7 +70,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return kAfterEventMax;
+	// XXX: This is a hack - but works for now...
+	if(_showAuto)
+		return kAfterEventMax;
+	return kAfterEventAuto;
 }
 
 // to determine which UITableViewCell to be used on a given row.
@@ -93,6 +99,9 @@
 			break;
 		case kAfterEventDeepstandby:
 			cell.text = NSLocalizedString(@"Deep Standby", @"");
+			break;
+		case kAfterEventAuto:
+			cell.text = NSLocalizedString(@"Auto", @"");
 			break;
 		default:
 			break;

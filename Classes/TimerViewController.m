@@ -424,8 +424,10 @@
 		afterEventCell.text = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterevent == kAfterEventStandby)
 		afterEventCell.text = NSLocalizedString(@"Standby", @"");
-	else //if(_timer.afterevent == kAfterEventDeepstandby)
+	else if(_timer.afterevent == kAfterEventDeepstandby)
 		afterEventCell.text = NSLocalizedString(@"Deep Standby", @"");
+	else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
+		afterEventCell.text = NSLocalizedString(@"Auto", @"");
 }
 
 #pragma mark - UITableView delegates
@@ -558,8 +560,10 @@
 				sourceCell.text = NSLocalizedString(@"Nothing", @"After Event");
 			else if(_timer.afterevent == kAfterEventStandby)
 				sourceCell.text = NSLocalizedString(@"Standby", @"");
-			else //if(_timer.afterevent == kAfterEventDeepstandby)
+			else if(_timer.afterevent == kAfterEventDeepstandby)
 				sourceCell.text = NSLocalizedString(@"Deep Standby", @"");
+			else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
+				sourceCell.text = NSLocalizedString(@"Auto", @"");
 
 			afterEventCell = sourceCell;
 			break;
@@ -608,6 +612,9 @@
 			if(afterEventViewController == nil)
 				afterEventViewController = [[AfterEventViewController alloc] init];
 			afterEventViewController.selectedItem = _timer.afterevent;
+			// XXX: why gives directly assigning this an error?
+			BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
+			afterEventViewController.showAuto = showAuto;
 			[afterEventViewController setTarget: self action: @selector(afterEventSelected:)];
 
 			targetViewController = afterEventViewController;

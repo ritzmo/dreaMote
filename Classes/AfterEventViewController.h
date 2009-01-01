@@ -14,12 +14,14 @@
 	NSInteger _selectedItem;
 	SEL _selectCallback;
 	id _selectTarget;
+	BOOL _showAuto;
 }
 
-+ (AfterEventViewController *)withAfterEvent: (NSInteger)afterEvent;
++ (AfterEventViewController *)withAfterEvent: (NSInteger)afterEvent andAuto: (BOOL)showAuto;
 - (void)setTarget: (id)target action: (SEL)action;
 
-@property (nonatomic) NSInteger selectedItem;
+@property (assign) NSInteger selectedItem;
+@property (assign) BOOL showAuto;
 
 @end
 

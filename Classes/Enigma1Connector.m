@@ -281,7 +281,7 @@
 	return NO;
 }
 
-- (BOOL)addTimer:(Timer *) newTimer
+- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
@@ -307,7 +307,7 @@
 	return NO;
 }
 
-- (BOOL)editTimer:(Timer *) oldTimer: (Timer *) newTimer
+- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
 	// This is the easiest way I found in enigma sources as changeTimerEvent does not accept start & duration ;-)
 	if([self delTimer: oldTimer])
@@ -321,7 +321,7 @@
 	return NO;
 }
 
-- (BOOL)delTimer:(Timer *) oldTimer
+- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: baseAddress];

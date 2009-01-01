@@ -101,8 +101,9 @@
 
 	[_timers removeAllObjects];
 	_willReappear = NO;
-
 	[(UITableView *)self.view reloadData];
+	[timerXMLReader release];
+	timerXMLReader = nil;
 
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -131,6 +132,8 @@
 	{
 		[timerViewController release];
 		timerViewController = nil;
+		[timerXMLReader release];
+		timerXMLReader = nil;
 	}
 
 	[dateFormatter resetReferenceDate];
@@ -139,7 +142,8 @@
 - (void)fetchTimers
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)];
+	[timerXMLReader release];
+	timerXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)] retain];
 	[pool release];
 }
 

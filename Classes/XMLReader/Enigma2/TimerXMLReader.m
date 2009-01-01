@@ -1,14 +1,14 @@
 //
 //  TimerXMLReader.h
-//  Untitled
+//  dreaMote
 //
-//  Created by Moritz Venn on 11.03.08.
+//  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
 #import "TimerXMLReader.h"
 
-#import "../../Objects/Generic/Timer.h"
+#import "../../Objects/Enigma2/Timer.h"
 
 @implementation Enigma2TimerXMLReader
 
@@ -31,7 +31,7 @@
 
 - (void)sendErroneousObject
 {
-	Timer *fakeObject = [[Timer alloc] init];
+	Enigma2Timer *fakeObject = [[Enigma2Timer alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
@@ -75,7 +75,6 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedTimersCounter = 0;
 	
 	resultNodes = [_parser nodesForXPath:@"/e2timerlist/e2timer" error:nil];
@@ -86,62 +85,8 @@
 			break;
 		
 		// An e2timer in the xml represents a timer, so create an instance of it.
-		Timer *newTimer = [[Timer alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2servicereference"]) {
-				newTimer.sref = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"e2servicename"]) {
-				newTimer.sname = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"e2eit"]) {
-				newTimer.eit = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"e2timebegin"]) {
-				[newTimer setBeginFromString: [currentChild stringValue]];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2timeend"]) {
-				[newTimer setEndFromString: [currentChild stringValue]];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2name"]) {
-				newTimer.title = [currentChild stringValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2description"]) {
-				newTimer.tdescription = [currentChild stringValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2justplay"]) {
-				newTimer.justplay = [[currentChild stringValue] isEqualToString: @"1"];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2repeated"]) {
-				newTimer.repeated = [[currentChild stringValue] integerValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2disabled"]) {
-				newTimer.disabled = [[currentChild stringValue] isEqualToString: @"1"];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2state"]) {
-				newTimer.state = [[currentChild stringValue] integerValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2afterevent"]) {
-				newTimer.afterevent = [[currentChild stringValue] integerValue];
-				continue;
-			}
-		}
-		
+		Enigma2Timer *newTimer = [[Enigma2Timer alloc] initWithNode:(CXMLNode *)resultElement];
+
 		[self.target performSelectorOnMainThread: self.addObject withObject: newTimer waitUntilDone: NO];
 		[newTimer release];
 	}
