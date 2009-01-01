@@ -34,7 +34,6 @@
 		DA0BF1420F0BDE25004B488C /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF13C0F0BDE25004B488C /* TimerXMLReader.m */; };
 		DA0BF1430F0BDE25004B488C /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF13E0F0BDE25004B488C /* VolumeXMLReader.m */; };
 		DA0BF1480F0BDE3A004B488C /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1450F0BDE3A004B488C /* EventXMLReader.m */; };
-		DA0BF1490F0BDE3A004B488C /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1470F0BDE3A004B488C /* ServiceXMLReader.m */; };
 		DA0BF4590F0C1066004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44B0F0C1066004B488C /* Event.m */; };
 		DA0BF45A0F0C1066004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44F0F0C1066004B488C /* Event.m */; };
 		DA0BF45B0F0C1066004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4510F0C1066004B488C /* Movie.m */; };
@@ -184,8 +183,6 @@
 		DA0BF13E0F0BDE25004B488C /* VolumeXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VolumeXMLReader.m; path = XMLReader/Enigma2/VolumeXMLReader.m; sourceTree = "<group>"; };
 		DA0BF1440F0BDE3A004B488C /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventXMLReader.h; path = XMLReader/Neutrino/EventXMLReader.h; sourceTree = "<group>"; };
 		DA0BF1450F0BDE3A004B488C /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventXMLReader.m; path = XMLReader/Neutrino/EventXMLReader.m; sourceTree = "<group>"; };
-		DA0BF1460F0BDE3A004B488C /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceXMLReader.h; path = XMLReader/Neutrino/ServiceXMLReader.h; sourceTree = "<group>"; };
-		DA0BF1470F0BDE3A004B488C /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceXMLReader.m; path = XMLReader/Neutrino/ServiceXMLReader.m; sourceTree = "<group>"; };
 		DA0BF44A0F0C1066004B488C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		DA0BF44B0F0C1066004B488C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		DA0BF44C0F0C1066004B488C /* EventProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventProtocol.h; sourceTree = "<group>"; };
@@ -510,8 +507,6 @@
 			children = (
 				DA0BF1440F0BDE3A004B488C /* EventXMLReader.h */,
 				DA0BF1450F0BDE3A004B488C /* EventXMLReader.m */,
-				DA0BF1460F0BDE3A004B488C /* ServiceXMLReader.h */,
-				DA0BF1470F0BDE3A004B488C /* ServiceXMLReader.m */,
 			);
 			name = Neutrino;
 			sourceTree = "<group>";
@@ -919,7 +914,6 @@
 				DA0BF1420F0BDE25004B488C /* TimerXMLReader.m in Sources */,
 				DA0BF1430F0BDE25004B488C /* VolumeXMLReader.m in Sources */,
 				DA0BF1480F0BDE3A004B488C /* EventXMLReader.m in Sources */,
-				DA0BF1490F0BDE3A004B488C /* ServiceXMLReader.m in Sources */,
 				DA0BF4590F0C1066004B488C /* Event.m in Sources */,
 				DA0BF45A0F0C1066004B488C /* Event.m in Sources */,
 				DA0BF45B0F0C1066004B488C /* Movie.m in Sources */,

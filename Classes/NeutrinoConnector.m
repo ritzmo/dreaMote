@@ -12,8 +12,11 @@
 #import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Volume.h"
 
-#import "XMLReader/Neutrino/ServiceXMLReader.h"
+#import "XMLReader/BaseXMLReader.h"
 #import "XMLReader/Neutrino/EventXMLReader.h"
+
+// Services are 'lightweight'
+#define MAX_SERVICES 2048
 
 @implementation NeutrinoConnector
 
@@ -34,7 +37,6 @@
 	if(self = [super init])
 	{
 		self.baseAddress = [NSURL URLWithString: address];
-		serviceCache = [[NSMutableDictionary dictionaryWithCapacity: 50] retain];
 	}
 	return self;
 }
@@ -42,8 +44,7 @@
 - (void)dealloc
 {
 	[baseAddress release];
-	[serviceCache release];
-	[serviceTarget release];
+	[cachedBouquetsXML release];
 
 	[super dealloc];
 }
@@ -91,30 +92,55 @@
 	return ([response statusCode] == 200);
 }
 
-- (void)addService:(Service *)newService
+/*
+ Example:
+ <?xml version="1.0" encoding="UTF-8"?>
+ <zapit>
+ <Bouquet type="0" bouquet_id="0000" name="Hauptsender" hidden="0" locked="0">
+ <channel serviceID="d175" name="ProSieben" tsid="2718" onid="f001"/>
+ </Bouquet>
+ </zapit>
+ */
+- (void)refreshBouquetsXMLCache
 {
-	if(newService != nil && newService.valid)
-		[serviceCache setObject: newService forKey: newService.sname];
+	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: baseAddress];
 
-	[serviceTarget performSelectorOnMainThread:serviceSelector withObject:newService waitUntilDone:NO];
+	BaseXMLReader *streamReader = [[BaseXMLReader alloc] initWithTarget: nil action: nil];
+	cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
+	[streamReader release];
 }
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action
 {
-	[serviceCache removeAllObjects];
-	if(serviceTarget != target)
+	// XXX: This needs to be redone when we support bouquets :-)
+	if(cachedBouquetsXML)
+		[cachedBouquetsXML release];
+
+	NSArray *resultNodes = NULL;
+	NSUInteger parsedServicesCounter = 0;
+
+	resultNodes = [cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet/channel" error:nil];
+
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		[serviceTarget release];
-		serviceTarget = [target retain];
+		if(++parsedServicesCounter >= MAX_SERVICES)
+			break;
+
+		// A channel in the xml represents a service, so create an instance of it.
+		Service *newService = [[Service alloc] init];
+
+		newService.sname = [[resultElement attributeForName: @"name"] stringValue];
+		newService.sref = [NSString stringWithFormat: @"%@%@%@",
+						   [[resultElement attributeForName: @"tsid"] stringValue],
+						   [[resultElement attributeForName: @"onid"] stringValue],
+						   [[resultElement attributeForName: @"serviceID"] stringValue]];
+
+		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[newService release];
 	}
-	serviceSelector = action;
 
-	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: baseAddress];
-
-	BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithTarget: self action: @selector(addService:)];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
-	[streamReader autorelease];
-	return doc;
+	// I don't assume we really need this but for the sake of it... :-)
+	return cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
@@ -132,8 +158,8 @@
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
-	if([serviceCache count] == 0)
-		[self fetchServices:nil action:nil];
+	if(!cachedBouquetsXML)
+		[self refreshBouquetsXMLCache];
 
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: baseAddress];
@@ -199,18 +225,28 @@
 		objRange.location = 7;
 		objRange.length = [timerStringComponents count] - 7;
 		NSString *sname = [[timerStringComponents subarrayWithRange: objRange] componentsJoinedByString: @" "];
-		Service *service = [serviceCache objectForKey: sname];
-		if(service != nil)
-			timer.service = service;
+
+		Service *service = [[Service alloc] init];
+		service.sname = sname;
+		NSArray *resultNodes = [cachedBouquetsXML nodesForXPath:
+									[NSString stringWithFormat: @"/zapit/Bouquet/channel[@name=\"%@\"]", sname]
+									error:nil];
+		// XXX: do we really want this? we don't care about the sref :-)
+		if([resultNodes count])
+		{
+			CXMLElement *resultElement = [resultNodes objectAtIndex: 0];
+			service.sref = [NSString stringWithFormat: @"%@%@%@",
+								[[resultElement attributeForName: @"tsid"] stringValue],
+								[[resultElement attributeForName: @"onid"] stringValue],
+								[[resultElement attributeForName: @"serviceID"] stringValue]];
+		}
 		else
 		{
 			// XXX: we set a fake sref here as the service is valid enough for timers...
-			service = [[Service alloc] init];
 			service.sref = @"dc";
-			service.sname = sname;
-			timer.service = service;
-			[service release];
 		}
+		timer.service = service;
+		[service release];
 
 		// Determine state
 		NSDate *announce = [NSDate dateWithTimeIntervalSince1970:
@@ -588,9 +624,8 @@
 
 - (void)freeCaches
 {
-	[serviceCache removeAllObjects];
-	[serviceTarget release];
-	serviceTarget = nil;
+	[cachedBouquetsXML release];
+	cachedBouquetsXML = nil;
 }
 
 @end
