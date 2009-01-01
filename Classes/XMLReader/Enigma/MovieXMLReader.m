@@ -15,15 +15,6 @@
 // Movies are 'heavy'
 #define MAX_MOVIES 100
 
-+ (EnigmaMovieXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	EnigmaMovieXMLReader *xmlReader = [[EnigmaMovieXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)dealloc
 {
 	[super dealloc];
@@ -33,7 +24,7 @@
 {
 	EnigmaMovie *fakeObject = [[EnigmaMovie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -58,7 +49,7 @@
 		// A service in the xml represents a movie, so create an instance of it.
 		EnigmaMovie *newMovie = [[EnigmaMovie alloc] initWithNode: (CXMLNode *)resultElement];
 
-		[self.target performSelectorOnMainThread: self.addObject withObject: newMovie waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newMovie waitUntilDone: NO];
 		[newMovie release];
 	}
 }

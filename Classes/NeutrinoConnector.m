@@ -99,7 +99,7 @@
 	[serviceTarget performSelectorOnMainThread:serviceSelector withObject:newService waitUntilDone:NO];
 }
 
-- (BaseXMLReader *)fetchServices:(id)target action:(SEL)action
+- (CXMLDocument *)fetchServices:(id)target action:(SEL)action
 {
 	[serviceCache removeAllObjects];
 	if(serviceTarget != target)
@@ -111,27 +111,25 @@
 
 	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: baseAddress];
 
-	NSError *parseError = nil;
-
-	BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader initWithTarget: self action: @selector(addService:)] autorelease];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	return streamReader;
+	BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithTarget: self action: @selector(addService:)];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
-- (BaseXMLReader *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
+- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
 	// XXX: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: baseAddress];
-	
-	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	return streamReader;
+	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
 // TODO: reimplement this as streaming parser some day :-)
-- (BaseXMLReader *)fetchTimers:(id)target action:(SEL)action
+- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
 	if([serviceCache count] == 0)
@@ -233,7 +231,7 @@
 	return nil;
 }
 
-- (BaseXMLReader *)fetchMovielist:(id)target action:(SEL)action
+- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
 {
 	// XXX: is this actually possible?
 	return nil;

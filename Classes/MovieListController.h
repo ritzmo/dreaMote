@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "XMLReader/BaseXMLReader.h"
-
 @class FuzzyDateFormatter;
 @class MovieViewController;
+@class CXMLDocument;
 
 @interface MovieListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
@@ -20,7 +19,7 @@
 	FuzzyDateFormatter *dateFormatter;
 
 	MovieViewController *movieViewController;
-	BaseXMLReader *movieXMLReader;
+	CXMLDocument *movieXMLDoc;
 	BOOL refreshMovies;
 }
 

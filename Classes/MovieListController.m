@@ -41,7 +41,7 @@
 	[_movies release];
 	[dateFormatter release];
 	[movieViewController release];
-	[movieXMLReader release];
+	[movieXMLDoc release];
 
 	[super dealloc];
 }
@@ -79,8 +79,8 @@
 		[_movies removeAllObjects];
 		[movieViewController release];
 		movieViewController = nil;
-		[movieXMLReader release];
-		movieXMLReader = nil;
+		[movieXMLDoc release];
+		movieXMLDoc = nil;
 	}
 
 	[dateFormatter resetReferenceDate];
@@ -106,8 +106,8 @@
 - (void)fetchMovies
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[movieXMLReader release];
-	movieXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
+	[movieXMLDoc release];
+	movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
 	[pool release];
 }
 

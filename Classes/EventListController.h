@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "XMLReader/BaseXMLReader.h"
-
 @class Service;
 @class FuzzyDateFormatter;
 @class EventViewController;
+@class CXMLDocument;
 
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
@@ -21,7 +20,7 @@
 	Service *_service;
 	FuzzyDateFormatter *dateFormatter;
 
-	BaseXMLReader *eventXMLReader;
+	CXMLDocument *eventXMLDoc;
 	EventViewController *eventViewController;
 }
 

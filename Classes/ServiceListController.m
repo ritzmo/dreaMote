@@ -33,7 +33,8 @@
 {
 	[_services release];
 	[eventListController release];
-	
+	[serviceXMLDoc release];
+
 	[super dealloc];
 }
 
@@ -69,6 +70,8 @@
 		[_services removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
+		[serviceXMLDoc release];
+		serviceXMLDoc = nil;
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -88,12 +91,15 @@
 
 		[eventListController release];
 		eventListController = nil;
+		[serviceXMLDoc release];
+		serviceXMLDoc = nil;
 	}
 }
 
 - (void)fetchServices
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[serviceXMLDoc release];
 	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
 	[pool release];
 }

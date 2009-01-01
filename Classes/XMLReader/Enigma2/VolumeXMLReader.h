@@ -16,6 +16,4 @@
 {
 }
 
-+ (Enigma2VolumeXMLReader*)initWithTarget:(id)target action:(SEL)action;
-
 @end

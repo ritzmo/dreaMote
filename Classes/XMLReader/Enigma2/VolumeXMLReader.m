@@ -12,15 +12,6 @@
 
 @implementation Enigma2VolumeXMLReader
 
-+ (Enigma2VolumeXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	Enigma2VolumeXMLReader *xmlReader = [[Enigma2VolumeXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)dealloc
 {
 	[super dealloc];
@@ -36,7 +27,7 @@
  <e2ismuted>False</e2ismuted>	
  </e2volume>
 */
-- (void)parseAllEnigma2
+- (void)parseFull
 {
 	NSArray *resultNodes = NULL;
 	CXMLNode *currentChild = NULL;
@@ -73,17 +64,9 @@
 				continue;
 			}
 		}
-		[self.target performSelectorOnMainThread: self.addObject withObject: newVolume waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newVolume waitUntilDone: NO];
 		[newVolume release];
 	}
-}
-
-- (void)parseAllEnigma1
-{
-}
-
-- (void)parseAllNeutrino
-{
 }
 
 @end

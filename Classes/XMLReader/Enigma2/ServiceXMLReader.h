@@ -14,6 +14,4 @@
 {
 }
 
-+ (Enigma2ServiceXMLReader*)initWithTarget:(id)target action:(SEL)action;
-
 @end

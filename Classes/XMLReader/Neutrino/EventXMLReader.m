@@ -15,15 +15,6 @@
 // Events are 'heavy'
 #define MAX_EVENTS 100
 
-+ (NeutrinoEventXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	NeutrinoEventXMLReader *xmlReader = [[NeutrinoEventXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)dealloc
 {
 	[super dealloc];
@@ -33,7 +24,7 @@
 {
 	NSObject<EventProtocol> *fakeObject = [[NeutrinoEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -72,7 +63,7 @@
 		// A prog in the xml represents an event, so create an instance of it.
 		NSObject<EventProtocol> *newEvent = [[NeutrinoEvent alloc] initWithNode:(CXMLNode *)resultElement];
 
-		[self.target performSelectorOnMainThread: self.addObject withObject: newEvent waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newEvent waitUntilDone: NO];
 		[newEvent release];
 	}
 }

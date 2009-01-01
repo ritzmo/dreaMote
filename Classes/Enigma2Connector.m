@@ -97,48 +97,44 @@ enum powerStates {
 	return ([response statusCode] == 200);
 }
 
-- (BaseXMLReader *)fetchServices:(id)target action:(SEL)action
+- (CXMLDocument *)fetchServices:(id)target action:(SEL)action
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet"]  relativeToURL:baseAddress];
 
-	NSError *parseError = nil;
-
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
-	return streamReader;
+	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
-- (BaseXMLReader *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
+- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(Service *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", service.sref] relativeToURL: baseAddress];
 
-	NSError *parseError = nil;
-
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
-	return streamReader;
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
-- (BaseXMLReader *)fetchTimers:(id)target action:(SEL)action
+- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: baseAddress];
 
-	NSError *parseError = nil;
-
-	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
-	return streamReader;
+	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
-- (BaseXMLReader *)fetchMovielist:(id)target action:(SEL)action
+- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/movielist" relativeToURL: baseAddress];
 
-	NSError *parseError = nil;
-
-	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader initWithTarget: target action: action] autorelease];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
-	return streamReader;
+	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
 - (void)sendPowerstate: (NSInteger) newState
@@ -183,11 +179,9 @@ enum powerStates {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: baseAddress];
 
-	NSError *parseError = nil;
-
-	Enigma2VolumeXMLReader *streamReader = [Enigma2VolumeXMLReader initWithTarget: target action: action];
-	[streamReader parseXMLFileAtURL:myURI parseError: &parseError];
-	[streamReader release];
+	Enigma2VolumeXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL:myURI parseError: nil];
+	[streamReader autorelease];
 }
 
 - (BOOL)toggleMuted

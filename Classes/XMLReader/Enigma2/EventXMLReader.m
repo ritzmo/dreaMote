@@ -15,20 +15,11 @@
 // Events are 'heavy'
 #define MAX_EVENTS 100
 
-+ (Enigma2EventXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	Enigma2EventXMLReader *xmlReader = [[Enigma2EventXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)sendErroneousObject
 {
 	NSObject<EventProtocol> *fakeObject = [[Enigma2Event alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -62,7 +53,7 @@
 		// An e2event in the xml represents an event, so create an instance of it.
 		NSObject<EventProtocol> *newEvent = [[Enigma2Event alloc] initWithNode: (CXMLNode *)resultElement];
 
-		[self.target performSelectorOnMainThread: self.addObject withObject: newEvent waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newEvent waitUntilDone: NO];
 		[newEvent release];
 	}
 }

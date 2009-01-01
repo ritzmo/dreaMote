@@ -14,15 +14,15 @@
 
 @implementation BaseXMLReader
 
-@synthesize target = _target;
-@synthesize addObject = _addObject;
 @synthesize finished;
 
-- (id)init
+- (id)initWithTarget:(id)target action:(SEL)action
 {
 	if(self = [super init])
 	{
 		finished = NO;
+		_target = [target retain];
+		_addObject = action;
 	}
 	return self;
 }
@@ -35,16 +35,7 @@
 	[super dealloc];
 }
 
-+ (BaseXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	BaseXMLReader *xmlReader = [[BaseXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
+- (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
 	finished = NO;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
@@ -55,7 +46,7 @@
 	{
 
 		[self sendErroneousObject];
-		return;
+		return nil
 	}
 
 	NSURLRequest *request = [NSURLRequest requestWithURL: URL cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 50];
@@ -67,7 +58,7 @@
 	if(!connection)
 	{
 		[self sendErroneousObject];
-		return;
+		return nil
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -88,7 +79,7 @@
 	if(!_parser.success)
 	{
 		[self sendErroneousObject];
-		return;
+		return nil
 
 	}
 #else
@@ -101,11 +92,12 @@
 	if(error && *error)
 	{
 		[self sendErroneousObject];
-		return;
+		return nil;
 	}
 #endif
 
 	[self parseFull];
+	return _parser;
 }
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD

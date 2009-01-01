@@ -20,19 +20,17 @@ typedef CXMLDocument OurXMLDocument;
 @interface BaseXMLReader : NSObject
 {
 @private
-	id		_target;
-	SEL		_addObject;
 	BOOL	finished;
 @protected
+	id		_target;
+	SEL		_addObject;
 	OurXMLDocument *_parser;
 }
 
-+ (BaseXMLReader*)initWithTarget:(id)target action:(SEL)action;
+- (id)initWithTarget:(id)target action:(SEL)action;
 
-@property (nonatomic, retain) id target;
-@property (nonatomic) SEL addObject;
 @property (readonly) BOOL finished;
 
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+- (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
 
 @end

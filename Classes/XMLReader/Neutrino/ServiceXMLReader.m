@@ -17,20 +17,11 @@
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
-+ (NeutrinoServiceXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	NeutrinoServiceXMLReader *xmlReader = [[NeutrinoServiceXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)sendErroneousObject
 {
 	Service *fakeService = [[Service alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeService waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeService waitUntilDone: NO];
 	[fakeService release];
 }
 
@@ -64,7 +55,7 @@
 							[[resultElement attributeForName: @"onid"] stringValue],
 							[[resultElement attributeForName: @"serviceID"] stringValue]];
 		
-		[self.target performSelectorOnMainThread: self.addObject withObject: newService waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newService waitUntilDone: NO];
 		[newService release];
 	}
 }

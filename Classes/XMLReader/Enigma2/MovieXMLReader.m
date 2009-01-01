@@ -15,20 +15,11 @@
 // Movies are 'heavy'
 #define MAX_MOVIES 100
 
-+ (Enigma2MovieXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	Enigma2MovieXMLReader *xmlReader = [[Enigma2MovieXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)sendErroneousObject
 {
 	NSObject<MovieProtocol> *fakeObject = [[Enigma2Movie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -64,7 +55,7 @@ Example:
 		// An e2movie in the xml represents a movie, so create an instance of it.
 		NSObject<MovieProtocol> *newMovie = [[Enigma2Movie alloc] initWithNode: (CXMLNode *)resultElement];
 		
-		[self.target performSelectorOnMainThread: self.addObject withObject: newMovie waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newMovie waitUntilDone: NO];
 		[newMovie release];
 	}
 }

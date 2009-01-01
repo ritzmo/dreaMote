@@ -15,15 +15,6 @@
 // Timers are 'heavy'
 #define MAX_TIMERS 100
 
-+ (EnigmaTimerXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	EnigmaTimerXMLReader *xmlReader = [[EnigmaTimerXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)dealloc
 {
 	[super dealloc];
@@ -35,7 +26,7 @@
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeObject waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -79,7 +70,7 @@
 		// A timer in the xml represents a timer, so create an instance of it.
 		EnigmaTimer *newTimer = [[EnigmaTimer alloc] initWithNode: (CXMLNode *)resultElement];
 
-		[self.target performSelectorOnMainThread: self.addObject withObject: newTimer waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newTimer waitUntilDone: NO];
 		[newTimer release];
 	}
 }

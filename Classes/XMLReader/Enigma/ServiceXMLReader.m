@@ -17,20 +17,11 @@
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
-+ (EnigmaServiceXMLReader*)initWithTarget:(id)target action:(SEL)action
-{
-	EnigmaServiceXMLReader *xmlReader = [[EnigmaServiceXMLReader alloc] init];
-	xmlReader.target = target;
-	xmlReader.addObject = action;
-
-	return xmlReader;
-}
-
 - (void)sendErroneousObject
 {
 	Service *fakeService = [[Service alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[self.target performSelectorOnMainThread: self.addObject withObject: fakeService waitUntilDone: NO];
+	[_target performSelectorOnMainThread: _addObject withObject: fakeService waitUntilDone: NO];
 	[fakeService release];
 }
 
@@ -75,7 +66,7 @@
 			}
 		}
 		
-		[self.target performSelectorOnMainThread: self.addObject withObject: newService waitUntilDone: NO];
+		[_target performSelectorOnMainThread: _addObject withObject: newService waitUntilDone: NO];
 		[newService release];
 	}
 }

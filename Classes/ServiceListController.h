@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class EventListController;
+@class CXMLDocument;
 
 @interface ServiceListController : UIViewController <UIActionSheetDelegate,
 													UITableViewDelegate, UITableViewDataSource>
@@ -19,6 +20,8 @@
 	id _selectTarget;
 	BOOL _refreshServices;
 	EventListController *eventListController;
+
+	CXMLDocument *serviceXMLDoc;
 }
 
 - (void)setTarget: (id)target action: (SEL)action;

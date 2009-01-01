@@ -59,8 +59,8 @@
 
 	[_events removeAllObjects];
 	[(UITableView *)self.view reloadData];
-	[eventXMLReader release];
-	eventXMLReader = nil;
+	[eventXMLDoc release];
+	eventXMLDoc = nil;
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -73,7 +73,7 @@
 	[_service release];
 	[dateFormatter release];
 	[eventViewController release];
-	[eventXMLReader release];
+	[eventXMLDoc release];
 
 	[super dealloc];
 }
@@ -115,8 +115,8 @@
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[eventXMLReader release];
-	eventXMLReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
+	[eventXMLDoc release];
+	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
 	[pool release];
 }
 

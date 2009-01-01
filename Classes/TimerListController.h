@@ -10,7 +10,7 @@
 
 #import "Objects/Generic/Timer.h"
 
-@class BaseXMLReader;
+@class CXMLDocument;
 @class FuzzyDateFormatter;
 @class TimerViewController;
 
@@ -23,7 +23,7 @@
 	TimerViewController *timerViewController;
 	BOOL _willReappear;
 
-	BaseXMLReader *timerXMLReader;
+	CXMLDocument *timerXMLDoc;
 }
 
 @property (nonatomic, retain) NSMutableArray *timers;
