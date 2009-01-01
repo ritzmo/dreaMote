@@ -14,15 +14,10 @@
 
 @interface Enigma2Event : NSObject <EventProtocol>
 {
-@private	
-	NSString *_eit;
+@private
+	NSString *timeString;
 	NSDate *_begin;
 	NSDate *_end;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-
-	NSString *timeString;
 
 	CXMLNode *_node;
 }

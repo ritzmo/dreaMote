@@ -16,6 +16,8 @@
 
 #import "TimerTableViewCell.h"
 
+#import "Objects/Generic/Timer.h"
+
 @implementation TimerListController
 
 @synthesize timers = _timers;
@@ -218,14 +220,14 @@
 	if(section > 0)
 		index += dist[section - 1];
 
-	Timer *timer = [_timers objectAtIndex: index];
+	NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
 	if(!timer.valid)
 	{
 		[tableView deselectRowAtIndexPath: indexPath animated: YES];
 		return;
 	}
 
-	Timer *ourCopy = [timer copy];
+	NSObject<TimerProtocol> *ourCopy = [timer copy];
 
 	if(timerViewController == nil)
 		timerViewController = [[TimerViewController alloc] init];
@@ -319,7 +321,7 @@
 
 		_willReappear = YES;
 
-		Timer *newTimer = [Timer timer];
+		NSObject<TimerProtocol> *newTimer = [Timer timer];
 		timerViewController.timer = newTimer;
 		[newTimer release];
 		timerViewController.oldTimer = nil;

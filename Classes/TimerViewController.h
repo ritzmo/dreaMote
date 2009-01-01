@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@class Timer;
 @class Service;
 
 #import "Objects/EventProtocol.h"
+#import "Objects/TimerProtocol.h"
 #import "CellTextField.h"
 
 @class ServiceListController;
@@ -37,8 +37,8 @@
 	UISwitch *timerJustplay;
 	UITableViewCell *afterEventCell;
 	
-	Timer *_timer;
-	Timer *_oldTimer;
+	NSObject<TimerProtocol> *_timer;
+	NSObject<TimerProtocol> *_oldTimer;
 	BOOL _creatingNewTimer;
 	BOOL _shouldSave;
 
@@ -49,11 +49,11 @@
 
 + (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent;
 + (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService;
-+ (TimerViewController *)withTimer: (Timer *)ourTimer;
++ (TimerViewController *)withTimer: (NSObject<TimerProtocol> *)ourTimer;
 + (TimerViewController *)newTimer;
 
-@property (nonatomic, retain) Timer *timer;
-@property (nonatomic, retain) Timer *oldTimer;
+@property (nonatomic, retain) NSObject<TimerProtocol> *timer;
+@property (nonatomic, retain) NSObject<TimerProtocol> *oldTimer;
 @property (assign) BOOL creatingNewTimer;
 
 @end

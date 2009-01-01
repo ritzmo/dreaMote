@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/Generic/Timer.h"
+#import "Objects/TimerProtocol.h"
 
 @class CXMLDocument;
 @class FuzzyDateFormatter;

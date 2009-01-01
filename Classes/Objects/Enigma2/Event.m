@@ -16,68 +16,49 @@
 
 - (NSString *)edescription
 {
-	if(_edescription == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescriptionextended" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescriptionextended" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.edescription = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
+		break;
 	}
-	return _edescription;
+	return nil;
 }
 
 - (void)setEdescription: (NSString *)new
 {
-	if(_edescription == new)
-		return;
-	[_edescription release];
-	_edescription = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
 {
-	if(_sdescription == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescription" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescription" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.sdescription = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
+		break;
 	}
-	return _sdescription;
+	return nil;
 }
 
 - (void)setSdescription: (NSString *)new
 {
-	if(_sdescription == new)
-		return;
-	[_sdescription release];
-	_sdescription = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)title
 {
-	if(_title == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.title = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
 	}
-	return _title;
+	return nil;
 }
 
 - (void)setTitle: (NSString *)new
 {
-	if(_title == new)
-		return;
-	[_title release];
-	_title = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSDate *)end
@@ -109,7 +90,9 @@
 		NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
-			[self setBeginFromString: [resultElement stringValue]];
+			[timeString release];
+			timeString = nil;
+			_begin = [[NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]] retain];
 			break;
 		}
 	}
@@ -126,24 +109,17 @@
 
 - (NSString *)eit
 {
-	if(_eit == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2eventid" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventid" error:nil];
-		for(CXMLElement *resultElement in resultNodes)
-		{
-			self.eit = [resultElement stringValue];
-			break;
-		}
+		return [resultElement stringValue];
 	}
-	return _eit;
+	return nil;
 }
 
 - (void)setEit: (NSString *)new
 {
-	if(_eit == new)
-		return;
-	[_eit release];
-	_eit = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -159,12 +135,8 @@
 
 - (void)dealloc
 {
-	[_eit release];
 	[_begin release];
 	[_end release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
 	[_node release];
 	[timeString release];
 
@@ -173,22 +145,13 @@
 
 - (NSString *)description
 {
+	// XXX: because we don't cache values this might lag a little...
 	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[timeString release];
-	timeString = nil;
-
-	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
-	[_end release];
-	if(self.end == nil)
-	{
-		// XXX: should never happen
-		return;
-	}
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
@@ -197,10 +160,8 @@
 	timeString = nil;
 
 	if(self.begin == nil)
-	{
-		// XXX: should never happen
-		return;
-	}
+		[NSException raise:@"ExcBeginNull" format:nil];
+
 	[_end release];
 	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
 }

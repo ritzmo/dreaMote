@@ -19,7 +19,12 @@
 		NSArray *resultNodes = [_node nodesForXPath:@"e2tags" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
-			[self setTagsFromString: [currentChild stringValue]];
+			[_tags release];
+			NSString *newTags = [currentChild stringValue];
+			if([newTags isEqualToString: @""])
+				_tags = [[NSArray array] retain];
+			else
+				_tags = [[newTags componentsSeparatedByString:@" "] retain];
 			break;
 		}
 	}
@@ -36,24 +41,17 @@
 
 - (NSNumber *)size
 {
-	if(_size == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2filesize" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2filesize" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			self.size = [NSNumber numberWithLongLong: [[currentChild stringValue] longLongValue]];
-			break;
-		}
+		return [NSNumber numberWithLongLong: [[currentChild stringValue] longLongValue]];
 	}
-	return _size;
+	return nil;
 }
 
 - (void)setSize: (NSNumber *)new
 {
-	if(_size == new)
-		return;
-	[_size release];
-	_size = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSNumber *)length
@@ -106,112 +104,77 @@
 
 - (NSString *)sname
 {
-	if(_sname == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			self.sname = [currentChild stringValue];
-			break;
-		}
+		return [currentChild stringValue];
 	}
-	return _sname;
+	return nil;
 }
 
 - (void)setSname: (NSString *)new
 {
-	if(_sname == new)
-		return;
-	[_sname release];
-	_sname = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sref
 {
-	if(_sref == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			self.sref = [currentChild stringValue];
-			break;
-		}
+		return [currentChild stringValue];
 	}
-	return _sref;
+	return nil;
 }
 
 - (void)setSref: (NSString *)new
 {
-	if(_sref == new)
-		return;
-	[_sref release];
-	_sref = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)edescription
 {
-	if(_edescription == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2descriptionextended" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2descriptionextended" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			self.edescription = [currentChild stringValue];
-			break;
-		}
+		return [currentChild stringValue];
 	}
-	return _edescription;
+	return nil;
 }
 
 - (void)setEdescription: (NSString *)new
 {
-	if(_edescription == new)
-		return;
-	[_edescription release];
-	_edescription = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
 {
-	if(_sdescription == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			self.sdescription = [currentChild stringValue];
-			break;
-		}
+		return [currentChild stringValue];
 	}
-	return _sdescription;
+	return nil;
 }
 
 - (void)setSdescription: (NSString *)new
 {
-	if(_sdescription == new)
-		return;
-	[_sdescription release];
-	_sdescription = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (NSString *)title
 {
-	if(_title == nil)
+	NSArray *resultNodes = [_node nodesForXPath:@"e2title" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2title" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			self.title = [currentChild stringValue];
-			break;
-		}
+		return [currentChild stringValue];
 	}
-	return _title;
+	return nil;
 }
 
 - (void)setTitle: (NSString *)new
 {
-	if(_title == new)
-		return;
-	[_title release];
-	_title = [new retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -225,14 +188,8 @@
 
 - (void)dealloc
 {
-	[_sref release];
-	[_sname release];
 	[_time release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
 	[_length release];
-	[_size release];
 	[_tags release];
 	[_node release];
 
@@ -251,11 +208,7 @@
 
 - (void)setTagsFromString: (NSString *)newTags
 {
-	[_tags release];
-	if([newTags isEqualToString: @""])
-		_tags = [[NSArray array] retain];
-	else
-		_tags = [[newTags componentsSeparatedByString:@" "] retain];
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 }
 
 @end

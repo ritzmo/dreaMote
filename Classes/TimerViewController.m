@@ -19,7 +19,6 @@
 #import "DisplayCell.h"
 
 #import "Objects/Generic/Timer.h"
-#import "Objects/EventProtocol.h"
 #import "Objects/Generic/Service.h"
 
 @interface TimerViewController()
@@ -53,7 +52,7 @@
 + (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	Timer *newTimer = [Timer withEvent: ourEvent];
+	NSObject<TimerProtocol> *newTimer = [Timer withEvent: ourEvent];
 	timerViewController.timer = newTimer;
 	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
@@ -64,7 +63,7 @@
 + (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	Timer *newTimer = [Timer withEventAndService: ourEvent: ourService];
+	NSObject<TimerProtocol> *newTimer = [Timer withEventAndService: ourEvent: ourService];
 	timerViewController.timer = newTimer;
 	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
@@ -72,11 +71,11 @@
 	return timerViewController;
 }
 
-+ (TimerViewController *)withTimer: (Timer *)ourTimer
++ (TimerViewController *)withTimer: (NSObject<TimerProtocol> *)ourTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	timerViewController.timer = ourTimer;
-	Timer *ourCopy = [ourTimer copy];
+	NSObject<TimerProtocol> *ourCopy = [ourTimer copy];
 	timerViewController.oldTimer = ourCopy;
 	[ourCopy release];
 	timerViewController.creatingNewTimer = NO;
@@ -87,7 +86,7 @@
 + (TimerViewController *)newTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	Timer *newTimer = [Timer timer];
+	NSObject<TimerProtocol> *newTimer = [Timer timer];
 	timerViewController.timer = newTimer;
 	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
@@ -125,12 +124,12 @@
 	[super didReceiveMemoryWarning];
 }
 
-- (Timer *)timer
+- (NSObject<TimerProtocol> *)timer
 {
 	return _timer;
 }
 
-- (void)setTimer: (Timer *)newTimer
+- (void)setTimer: (NSObject<TimerProtocol> *)newTimer
 {
 	if(_timer != newTimer)
 	{

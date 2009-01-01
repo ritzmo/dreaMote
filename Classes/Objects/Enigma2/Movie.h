@@ -14,16 +14,10 @@
 
 @interface Enigma2Movie : NSObject <MovieProtocol>
 {
-@private	
-	NSString *_sref;
-	NSString *_sname;
-	NSDate *_time;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-	NSNumber *_length;
-	NSNumber *_size;
+@private
 	NSArray *_tags;
+	NSNumber *_length;
+	NSDate *_time;
 
 	CXMLNode *_node;
 }
