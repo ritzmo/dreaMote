@@ -10,6 +10,7 @@
 
 #import "EventProtocol.h"
 #import "TimerProtocol.h"
+#import "ServiceProtocol.h"
 
 @interface Timer : NSObject <TimerProtocol>
 {
@@ -23,7 +24,7 @@
 	NSInteger _repeated;
 	NSInteger _repeatcount;
 	BOOL _justplay;
-	Service *_service;
+	NSObject<ServiceProtocol> *_service;
 	NSString *_sref;
 	NSString *_sname;
 	NSInteger _state;
@@ -33,8 +34,8 @@
 	NSString *_timeString;
 }
 
-+ (Timer *)withEvent: (NSObject<EventProtocol> *)ourEvent;
-+ (Timer *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService;
-+ (Timer *)timer;
++ (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent;
++ (NSObject<TimerProtocol> *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService;
++ (NSObject<TimerProtocol> *)timer;
 
 @end

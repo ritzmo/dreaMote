@@ -9,6 +9,7 @@
 #import "MovieXMLReader.h"
 
 #import "../../Objects/Enigma2/Movie.h"
+#import "../../Objects/Generic/Movie.h"
 
 @implementation Enigma2MovieXMLReader
 
@@ -17,7 +18,7 @@
 
 - (void)sendErroneousObject
 {
-	NSObject<MovieProtocol> *fakeObject = [[Enigma2Movie alloc] init];
+	Movie *fakeObject = [[Movie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];

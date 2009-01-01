@@ -11,6 +11,7 @@
 #import "CXMLNode.h"
 
 #import "TimerProtocol.h"
+#import "ServiceProtocol.h"
 
 @interface Enigma2Timer : NSObject <TimerProtocol>
 {
@@ -23,7 +24,7 @@
 	NSString *_tdescription;
 	NSInteger _repeated;
 	BOOL _justplay;
-	Service *_service;
+	NSObject<ServiceProtocol> *_service;
 	NSInteger _state;
 	NSInteger _afterevent;
 	BOOL _isValid;

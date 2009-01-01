@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-@interface Service : NSObject
+#import "ServiceProtocol.h"
+
+@interface Service : NSObject <ServiceProtocol>
 {
 @private
 	NSString *_sref;
 	NSString *_sname;
 }
 
-@property (nonatomic, retain) NSString *sref;
-@property (nonatomic, retain) NSString *sname;
-@property (nonatomic, readonly, getter = isValid) BOOL valid;
+- (id)initWithService:(NSObject<ServiceProtocol> *)service;
 
 @end

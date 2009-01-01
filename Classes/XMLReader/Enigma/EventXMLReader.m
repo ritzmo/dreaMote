@@ -9,6 +9,7 @@
 #import "EventXMLReader.h"
 
 #import "../../Objects/Enigma/Event.h"
+#import "../../Objects/Generic/Event.h"
 
 @implementation EnigmaEventXMLReader
 
@@ -22,7 +23,7 @@
 
 - (void)sendErroneousObject
 {
-	EnigmaEvent *fakeObject = [[EnigmaEvent alloc] init];
+	Event *fakeObject = [[Event alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];

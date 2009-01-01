@@ -9,6 +9,7 @@
 #import "ServiceXMLReader.h"
 
 #import "../../Objects/Generic/Service.h"
+#import "../../Objects/Enigma/Service.h"
 
 #import "CXMLElement.h"
 
@@ -37,7 +38,6 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedServicesCounter = 0;
 	
 	resultNodes = [_parser nodesForXPath:@"/bouquets/bouquet/service" error:nil];
@@ -46,26 +46,10 @@
 	{
 		if(++parsedServicesCounter >= MAX_SERVICES)
 			break;
-		
+
 		// A service in the xml represents a service, so create an instance of it.
-		Service *newService = [[Service alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"reference"])
-			{
-				newService.sref = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"name"])
-			{
-				newService.sname = [currentChild stringValue];
-				continue;
-			}
-		}
-		
+		EnigmaService *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
+
 		[_target performSelectorOnMainThread: _addObject withObject: newService waitUntilDone: NO];
 		[newService release];
 	}

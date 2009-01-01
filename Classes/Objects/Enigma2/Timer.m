@@ -10,7 +10,7 @@
 
 #import "CXMLElement.h"
 
-#import "Service.h"
+#import "../Generic/Service.h"
 
 @implementation Enigma2Timer
 
@@ -71,7 +71,7 @@
 	_title = [new retain];
 }
 
-- (Service *)service
+- (NSObject<ServiceProtocol> *)service
 {
 	if(_service == nil)
 	{
@@ -105,7 +105,7 @@
 	return _service;
 }
 
-- (void)setService: (Service *)new
+- (void)setService: (NSObject<ServiceProtocol> *)new
 {
 	if(_service == new)
 		return;

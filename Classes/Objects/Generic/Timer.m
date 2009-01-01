@@ -29,9 +29,9 @@
 @synthesize valid = _isValid;
 @synthesize timeString = _timeString;
 
-+ (Timer *)withEvent: (NSObject<EventProtocol> *)ourEvent
++ (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
-	Timer *timer = [[Timer alloc] init];
+	NSObject<TimerProtocol> *timer = [[Timer alloc] init];
 	timer.title = ourEvent.title;
 	timer.tdescription = ourEvent.sdescription;
 	timer.begin = ourEvent.begin;
@@ -39,7 +39,7 @@
 	timer.eit = ourEvent.eit;
 	timer.disabled = NO;
 	timer.justplay = NO;
-	Service *newService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *newService = [[Service alloc] init];
 	timer.service = newService;
 	[newService release];
 	timer.repeated = 0;
@@ -50,9 +50,9 @@
 	return timer;
 }
 
-+ (Timer *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (Service *)ourService
++ (NSObject<TimerProtocol> *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
 {
-	Timer *timer = [[Timer alloc] init];
+	NSObject<TimerProtocol> *timer = [[Timer alloc] init];
 	timer.title = ourEvent.title;
 	timer.tdescription = ourEvent.sdescription;
 	timer.begin = ourEvent.begin;
@@ -68,9 +68,9 @@
 	return timer;
 }
 
-+ (Timer *)timer
++ (NSObject<TimerProtocol> *)timer
 {
-	Timer *timer = [[Timer alloc] init];
+	NSObject<TimerProtocol> *timer = [[Timer alloc] init];
 	timer.begin = [NSDate date];
 	timer.end = [timer.begin addTimeInterval: (NSTimeInterval)3600];
 	timer.eit = @"-1";
@@ -78,7 +78,7 @@
 	timer.tdescription = @"";
 	timer.disabled = NO;
 	timer.justplay = NO;
-	Service *newService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *newService = [[Service alloc] init];
 	timer.service = newService;
 	[newService release];
 	timer.repeated = 0;
@@ -100,7 +100,7 @@
 	return self;
 }
 
-- (id)initWithTimer:(Timer *)timer
+- (id)initWithTimer:(NSObject<TimerProtocol> *)timer
 {
 	self = [super init];
 	

@@ -53,6 +53,8 @@
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
+		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
+		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutViewController.m */; };
 		DA51BC430EAA45A500AF9146 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DA51BC410EAA45A500AF9146 /* emblem-favorite.png */; };
@@ -221,6 +223,11 @@
 		DA27136B0D84071100C25B85 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
 		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
 		DA2CC28A0E378FCC006AE171 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
+		DA36F6B70F0D2D8F005608CC /* ServiceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceProtocol.h; sourceTree = "<group>"; };
+		DA36F6B90F0D2D9A005608CC /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
+		DA36F6BA0F0D2D9A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
+		DA36F7050F0D2F0A005608CC /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
+		DA36F7060F0D2F0A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
 		DA51BAFF0EAA344200AF9146 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -518,6 +525,7 @@
 				DA0BF4580F0C1066004B488C /* Neutrino */,
 				DA0BF44C0F0C1066004B488C /* EventProtocol.h */,
 				DA0BF5C80F0C19C4004B488C /* MovieProtocol.h */,
+				DA36F6B70F0D2D8F005608CC /* ServiceProtocol.h */,
 				DA0BF7510F0C3113004B488C /* TimerProtocol.h */,
 			);
 			path = Objects;
@@ -530,6 +538,8 @@
 				DA0BF8A90F0CBEDB004B488C /* Event.m */,
 				DA0BF8AA0F0CBEDB004B488C /* Movie.h */,
 				DA0BF8AB0F0CBEDB004B488C /* Movie.m */,
+				DA36F7050F0D2F0A005608CC /* Service.h */,
+				DA36F7060F0D2F0A005608CC /* Service.m */,
 				DA0BF8AC0F0CBEDB004B488C /* Timer.h */,
 				DA0BF8AD0F0CBEDB004B488C /* Timer.m */,
 			);
@@ -543,6 +553,8 @@
 				DA0BF44B0F0C1066004B488C /* Event.m */,
 				DA0BF5C50F0C19B5004B488C /* Movie.h */,
 				DA0BF5C60F0C19B5004B488C /* Movie.m */,
+				DA36F6B90F0D2D9A005608CC /* Service.h */,
+				DA36F6BA0F0D2D9A005608CC /* Service.m */,
 				DA0BF74E0F0C3105004B488C /* Timer.h */,
 				DA0BF74F0F0C3105004B488C /* Timer.m */,
 			);
@@ -676,13 +688,13 @@
 		DAF0D5480E38FF52001F7CF1 /* XMLReader */ = {
 			isa = PBXGroup;
 			children = (
+				DA0BF1260F0BDDCE004B488C /* Enigma */,
+				DA0BF1270F0BDDD5004B488C /* Enigma2 */,
+				DA0BF1280F0BDDDC004B488C /* Neutrino */,
 				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
 				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
 				DA5BBDF60F0B822600E4F1D3 /* CXMLPushDocument.h */,
 				DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */,
-				DA0BF1260F0BDDCE004B488C /* Enigma */,
-				DA0BF1270F0BDDD5004B488C /* Enigma2 */,
-				DA0BF1280F0BDDDC004B488C /* Neutrino */,
 			);
 			name = XMLReader;
 			sourceTree = "<group>";
@@ -920,6 +932,8 @@
 				DA0BF8AE0F0CBEDB004B488C /* Event.m in Sources */,
 				DA0BF8AF0F0CBEDB004B488C /* Movie.m in Sources */,
 				DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */,
+				DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */,
+				DA36F7070F0D2F0A005608CC /* Service.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

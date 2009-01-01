@@ -9,6 +9,7 @@
 #import "TimerXMLReader.h"
 
 #import "../../Objects/Enigma2/Timer.h"
+#import "../../Objects/Generic/Timer.h"
 
 @implementation Enigma2TimerXMLReader
 
@@ -22,7 +23,7 @@
 
 - (void)sendErroneousObject
 {
-	Enigma2Timer *fakeObject = [[Enigma2Timer alloc] init];
+	Timer *fakeObject = [[Timer alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;

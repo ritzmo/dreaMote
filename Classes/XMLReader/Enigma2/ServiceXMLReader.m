@@ -8,6 +8,7 @@
 
 #import "ServiceXMLReader.h"
 
+#import "../../Objects/Enigma2/Service.h"
 #import "../../Objects/Generic/Service.h"
 
 #import "CXMLElement.h"
@@ -38,7 +39,6 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
 	NSUInteger parsedServicesCounter = 0;
 	
 	resultNodes = [_parser nodesForXPath:@"/e2servicelist/e2service" error:nil];
@@ -49,23 +49,7 @@
 			break;
 		
 		// An e2service in the xml represents a service, so create an instance of it.
-		Service *newService = [[Service alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];
-			if([elementName isEqualToString:@"e2servicereference"])
-			{
-				newService.sref = [currentChild stringValue];
-				continue;
-			}
-			else if([elementName isEqualToString:@"e2servicename"])
-			{
-				newService.sname = [currentChild stringValue];
-				continue;
-			}
-		}
+		Enigma2Service *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
 		
 		[_target performSelectorOnMainThread: _addObject withObject: newService waitUntilDone: NO];
 		[newService release];

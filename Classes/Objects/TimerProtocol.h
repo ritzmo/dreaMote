@@ -89,8 +89,7 @@ enum neutrinoTimerRepeat {
 	neutrinoTimerRepeatSunday = 16384,
 };
 
-@class Service;
-
+@protocol ServiceProtocol;
 @protocol TimerProtocol
 
 - (NSString *)getStateString;
@@ -108,7 +107,7 @@ enum neutrinoTimerRepeat {
 @property (assign) NSInteger repeated;
 @property (assign) NSInteger repeatcount;
 @property (assign) BOOL justplay;
-@property (nonatomic, retain) Service *service;
+@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
 @property (nonatomic, retain) NSString *sref;
 @property (nonatomic, retain) NSString *sname;
 @property (assign) NSInteger state;

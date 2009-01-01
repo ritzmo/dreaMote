@@ -9,6 +9,7 @@
 #import "EventXMLReader.h"
 
 #import "../../Objects/Neutrino/Event.h"
+#import "../../Objects/Generic/Event.h"
 
 @implementation NeutrinoEventXMLReader
 
@@ -22,7 +23,7 @@
 
 - (void)sendErroneousObject
 {
-	NSObject<EventProtocol> *fakeObject = [[NeutrinoEvent alloc] init];
+	Event *fakeObject = [[Event alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];

@@ -100,7 +100,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[serviceXMLDoc release];
-	[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)];
+	serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:)] retain];
 	[pool release];
 }
 

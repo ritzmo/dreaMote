@@ -13,7 +13,7 @@
 @synthesize sref = _sref;
 @synthesize sname = _sname;
 
-- (id)initWithService:(Service *)service
+- (id)initWithService:(NSObject<ServiceProtocol> *)service
 {
 	self = [super init];
 	
