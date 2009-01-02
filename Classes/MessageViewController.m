@@ -393,8 +393,8 @@
 			typeCell = sourceCell;
 			break;
 		case 4:
+			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Send", @"");
 			((DisplayCell *)sourceCell).view = sendButton;
-			((DisplayCell *)sourceCell).text = NSLocalizedString(@"Send", @"");
 			break;
 		default:
 			break;

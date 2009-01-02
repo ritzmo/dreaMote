@@ -443,8 +443,8 @@
 					if(sourceCell == nil)
 						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
 					((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
-					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Single Bouquet", @"");
 					break;
 			}
 			break;
@@ -461,12 +461,12 @@
 			switch(row)
 			{
 				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connect", @"");
 					((DisplayCell *)sourceCell).view = connectButton;
-					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Connect", @"");
 					break;
 				case 1:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Make Default", @"");
 					((DisplayCell *)sourceCell).view = makeDefaultButton;
-					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Make Default", @"");
 					break;
 				default:
 					break;

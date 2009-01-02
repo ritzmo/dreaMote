@@ -190,12 +190,12 @@
 			switch(row)
 			{
 				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
 					((DisplayCell *)sourceCell).view = vibrateInRC;
-					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Vibrate in RC", @"");
 					break;
 				case 1:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Check Connectivity", @"");
 					((DisplayCell *)sourceCell).view = connectionTest;
-					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Check Connectivity", @"");
 					break;
 				default:
 					break;
