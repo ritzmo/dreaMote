@@ -31,8 +31,8 @@ static NSDictionary *_connection;
 	NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
 
 	NSString *remoteHost = [connection objectForKey: kRemoteHost];
-	NSString *username = [connection objectForKey: kUsername];
-	NSString *password = [connection objectForKey: kPassword];
+	NSString *username = [[connection objectForKey: kUsername]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+	NSString *password = [[connection objectForKey: kPassword] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
 
 	NSString *remoteAddress;
