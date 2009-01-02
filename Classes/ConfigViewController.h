@@ -14,6 +14,8 @@
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
 @private
+	UITextField *remoteNameTextField;
+	CellTextField *remoteNameCell;
 	UITextField *remoteAddressTextField;
 	CellTextField *remoteAddressCell;
 	UITextField *usernameTextField;

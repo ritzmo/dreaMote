@@ -160,6 +160,7 @@
 {
 	NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
+	NSString *hostTitle = nil;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
 	
 	// we are creating a new cell, setup its attributes
@@ -184,7 +185,11 @@
 				sourceCell.image = [UIImage imageNamed:@"network-wired.png"];
 			else
 				sourceCell.image = nil;
-			sourceCell.text = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
+
+			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
+			if(!hostTitle)
+				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
+			sourceCell.text = hostTitle;
 			break;
 		case 1:
 			switch(row)

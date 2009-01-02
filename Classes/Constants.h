@@ -48,6 +48,7 @@
 #define kCellTopOffset			12.0
 
 // keys in connection dict
+#define kRemoteName				@"remoteNameKey"
 #define kRemoteHost				@"remoteHostKey"
 #define kUsername				@"usernameKey"
 #define kPassword				@"passwordKey"

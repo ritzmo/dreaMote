@@ -67,6 +67,7 @@
 
 - (void)dealloc
 {
+	[remoteNameTextField release];
 	[remoteAddressTextField release];
 	[usernameTextField release];
 	[passwordTextField release];
@@ -140,6 +141,12 @@
 	self.view = tableView;
 	[tableView release];
 
+	// Remote Name
+	remoteNameTextField = [[self create_TextField] retain];
+	remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
+	remoteNameTextField.text = [[connection objectForKey: kRemoteName] copy];
+	remoteNameTextField.keyboardType = UIKeyboardTypeURL;
+
 	// Remote Address
 	remoteAddressTextField = [[self create_TextField] retain];
 	remoteAddressTextField.placeholder = NSLocalizedString(@"<remote address>", @"");
@@ -189,6 +196,7 @@
 	{
 		[self.navigationItem setLeftBarButtonItem: nil animated: YES];
 
+		[remoteNameCell stopEditing];
 		[remoteAddressCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
@@ -196,6 +204,7 @@
 
 		if(_shouldSave)
 		{
+			[connection setObject: remoteNameTextField.text forKey: kRemoteName];
 			[connection setObject: remoteAddressTextField.text forKey: kRemoteHost];
 			[connection setObject: usernameTextField.text forKey: kUsername];
 			[connection setObject: passwordTextField.text forKey: kPassword];
@@ -357,20 +366,23 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 1)
-		return 2;
-	// XXX: HAAAAAAACK - but I really wanted this feature :P
-	if(section == 2 && _connector == kEnigma2Connector)
-		return 2;
-	if(section == 3)
+	switch(section)
 	{
-		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-		if(connectionIndex == [stdDefaults integerForKey: kActiveConnection]
-			|| connectionIndex == [RemoteConnectorObject getConnectedId])
+		case 0:
+		case 1:
+			return 2;
+		case 2:
+			// XXX: HAAAAAAACK - but I really wanted this feature :P
+			if(_connector == kEnigma2Connector)
+				return 2;
 			return 1;
-		return 2;
+		case 3:
+			if(connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
+			   || connectionIndex == [RemoteConnectorObject getConnectedId])
+				return 1;
+			return 2;
 	}
-	return 1;
+	return 0;
 }
 
 // to determine which UITableViewCell to be used on a given row.
@@ -380,7 +392,7 @@
 	static NSString *kVanilla_ID = @"Vanilla_ID";
 
 	NSInteger section = indexPath.section;
-	NSInteger row;
+	NSInteger row = indexPath.row;
 	UITableViewCell *sourceCell = nil;
 
 	// we are creating a new cell, setup its attributes
@@ -392,8 +404,19 @@
 				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
 			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
 
-			((CellTextField *)sourceCell).view = remoteAddressTextField;
-			remoteAddressCell = (CellTextField *)sourceCell;
+			switch(row)
+			{
+				case 0:
+					((CellTextField *)sourceCell).view = remoteNameTextField;
+					remoteNameCell = (CellTextField *)sourceCell;
+					break;
+				case 1:
+					((CellTextField *)sourceCell).view = remoteAddressTextField;
+					remoteAddressCell = (CellTextField *)sourceCell;
+					break;
+				default:
+					break;
+			}
 			break;
 		case 1:
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
@@ -401,8 +424,6 @@
 				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
 			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
 
-			row = indexPath.row;
-			
 			switch(row)
 			{
 				case 0:
@@ -455,8 +476,6 @@
 			if(sourceCell == nil)
 				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-			row = indexPath.row;
-
 			if(connectionIndex == [RemoteConnectorObject getConnectedId])
 				row++;
 
@@ -500,8 +519,15 @@
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
 	// notify other cells to end editing
-	if([cell isEqual: remoteAddressCell])
+	if([cell isEqual: remoteNameCell])
 	{
+		[remoteAddressCell stopEditing];
+		[usernameCell stopEditing];
+		[passwordCell stopEditing];
+	}
+	else if([cell isEqual: remoteAddressCell])
+	{
+		[remoteNameCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
 	}
