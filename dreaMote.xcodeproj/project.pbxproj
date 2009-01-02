@@ -246,7 +246,7 @@
 		DA5BBDF60F0B822600E4F1D3 /* CXMLPushDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLPushDocument.h; path = XMLReader/CXMLPushDocument.h; sourceTree = "<group>"; };
 		DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLPushDocument.m; path = XMLReader/CXMLPushDocument.m; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA664CD70EA8E2C100A37F55 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
