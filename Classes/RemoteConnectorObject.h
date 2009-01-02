@@ -20,6 +20,7 @@
 
 + (enum availableConnectors)autodetectConnector: (NSDictionary *)connection;
 + (BOOL)isConnected;
++ (BOOL)isSingleBouquet;
 + (NSInteger)getConnectedId;
 + (NSObject<RemoteConnector> *)sharedRemoteConnector;
  	

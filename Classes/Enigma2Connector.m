@@ -108,7 +108,12 @@ enum powerStates {
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet;
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
+	NSString *sref = nil;
+	if(!bouquet) // single bouquet mode
+		sref =  @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet";
+	else
+		sref = [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithTarget: target action: action];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];

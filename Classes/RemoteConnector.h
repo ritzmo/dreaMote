@@ -56,6 +56,8 @@ enum connectorFeatures {
 	kFeaturesFullRemote,
 	// Remote Control of DM8000 *grml*
 	kFeaturesAdvancedRemote,
+	// Has a single bouquet mode
+	kFeaturesSingleBouquet,
 };
 
 enum buttonCodes {

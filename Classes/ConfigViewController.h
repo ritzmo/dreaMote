@@ -25,6 +25,7 @@
 	NSInteger connectionIndex;
 	UIButton *makeDefaultButton;
 	UIButton *connectButton;
+	UISwitch *_singleBouquetSwitch;
 
 	BOOL _shouldSave;
 	NSInteger _connector;

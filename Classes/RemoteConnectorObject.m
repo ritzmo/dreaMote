@@ -165,6 +165,14 @@ static NSDictionary *_connection;
 	return (_sharedRemoteConnector != nil);
 }
 
++ (BOOL)isSingleBouquet
+{
+	id value = [_connection objectForKey: kSingleBouquet];
+	if(value == nil)
+		return NO;
+	return [value boolValue];
+}
+
 + (NSInteger)getConnectedId
 {
 	NSUInteger index = [_connections indexOfObject: _connection];

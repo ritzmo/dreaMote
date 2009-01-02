@@ -72,6 +72,7 @@
 	[passwordTextField release];
 	[makeDefaultButton release];
 	[connectButton release];
+	[_singleBouquetSwitch release];
 
 	[super dealloc];
 }
@@ -167,6 +168,13 @@
 	self.makeDefaultButton = [self create_DefaultButton];
 	makeDefaultButton.enabled = YES;
 
+	// Single bouquet switch
+	_singleBouquetSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
+	_singleBouquetSwitch.on = [[connection objectForKey: kSingleBouquet] boolValue];
+
+	// in case the parent view draws with a custom color or gradient, use a transparent color
+	_singleBouquetSwitch.backgroundColor = [UIColor clearColor];
+
 	[self setEditing: (connectionIndex == -1) animated: NO];
 }
 
@@ -184,6 +192,7 @@
 		[remoteAddressCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
+		_singleBouquetSwitch.enabled = NO;
 
 		if(_shouldSave)
 		{
@@ -191,6 +200,7 @@
 			[connection setObject: usernameTextField.text forKey: kUsername];
 			[connection setObject: passwordTextField.text forKey: kPassword];
 			[connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
+			[connection setObject: _singleBouquetSwitch.on ? @"YES" : @"NO" forKey: kSingleBouquet];
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(connectionIndex == -1)
@@ -219,6 +229,7 @@
 	else
 	{
 		_shouldSave = YES;
+		_singleBouquetSwitch.enabled = YES;
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 		[cancelButtonItem release];
@@ -346,6 +357,9 @@
 {
 	if(section == 1)
 		return 2;
+	// XXX: HAAAAAAACK - but I really wanted this feature :P
+	if(section == 2 && _connector == kEnigma2Connector)
+		return 2;
 	if(section == 3)
 	{
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -402,23 +416,37 @@
 			}
 			break;
 		case 2:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (sourceCell == nil) 
-				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			row = indexPath.row;
+			switch(row)
+			{
+				case 0:
+					sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+					if (sourceCell == nil) 
+						sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+					
+					if(self.editing)
+						sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					
+					if(_connector == kEnigma1Connector)
+						sourceCell.text = NSLocalizedString(@"Enigma", @"");
+					else if(_connector == kEnigma2Connector)
+						sourceCell.text = NSLocalizedString(@"Enigma 2", @"");
+					else if(_connector == kNeutrinoConnector)
+						sourceCell.text = NSLocalizedString(@"Neutrino", @"");
+					else
+						sourceCell.text = @"???";
+					
+					connectorCell = sourceCell;
+					break;
+				case 1:
+					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+					if(sourceCell == nil)
+						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-			if(self.editing)
-				sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-			if(_connector == kEnigma1Connector)
-				sourceCell.text = NSLocalizedString(@"Enigma", @"");
-			else if(_connector == kEnigma2Connector)
-				sourceCell.text = NSLocalizedString(@"Enigma 2", @"");
-			else if(_connector == kNeutrinoConnector)
-				sourceCell.text = NSLocalizedString(@"Neutrino", @"");
-			else
-				sourceCell.text = @"???";
-
-			connectorCell = sourceCell;
+					((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
+					((DisplayCell *)sourceCell).text = NSLocalizedString(@"Single Bouquet", @"");
+					break;
+			}
 			break;
 		case 3:
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
@@ -452,7 +480,7 @@
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(self.editing && indexPath.section == 2)
+	if(self.editing && indexPath.section == 2 && indexPath.row == 0)
 	{
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
 		[targetViewController setTarget: self action: @selector(connectorSelected:)];

@@ -345,3 +345,7 @@
 
 /* No comment provided by engineer. */
 "Zap" = "Umschalten";
+
+"Bouquet List Title" = "Bouquets";
+"Bouquet List Explain" = "Bouquets anzeigen";
+"Single Bouquet" = "Nur ein Bouquet";

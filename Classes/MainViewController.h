@@ -15,7 +15,9 @@
 @private
 	UIViewController *configListController;
 	UIViewController *aboutViewController;
+	NSDictionary *_bouquetDictionary;
 	NSDictionary *_recordDictionary;
+	NSDictionary *_serviceDictionary;
 }
 
 @property (nonatomic, retain) UITableView *myTableView;

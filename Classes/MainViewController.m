@@ -34,7 +34,6 @@
 		// make the title of this page the same as the title of this app
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 		configListController = nil;
-		_recordDictionary = nil;
 	}
 	return self;
 }
@@ -45,7 +44,9 @@
 	[menuList release];
 	[configListController release];
 	[aboutViewController release];
+	[_bouquetDictionary release];
 	[_recordDictionary release];
+	[_serviceDictionary release];
 
 	[super dealloc];
 }
@@ -74,27 +75,27 @@
 	UIViewController *targetViewController;
 
 	targetViewController = [[BouquetListController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												NSLocalizedString(@"Bouquet List Title", @""), @"title",
-												NSLocalizedString(@"Bouquet List Explain", @""), @"explainText",
-												targetViewController, @"viewController",
-												nil]];
+	_bouquetDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						NSLocalizedString(@"Bouquet List Title", @""), @"title",
+						NSLocalizedString(@"Bouquet List Explain", @""), @"explainText",
+						targetViewController, @"viewController",
+						nil] retain];
 	[targetViewController release];
-/*
+
 	targetViewController = [[ServiceListController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 NSLocalizedString(@"Service List Title", @""), @"title",
-						 NSLocalizedString(@"Service List Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
-						 nil]];
+	_serviceDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						NSLocalizedString(@"Service List Title", @""), @"title",
+						NSLocalizedString(@"Service List Explain", @""), @"explainText",
+						targetViewController, @"viewController",
+						nil] retain];
 	[targetViewController release];
-*/	
+
 	targetViewController = [[TimerListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												NSLocalizedString(@"Timer List Title", @""), @"title",
-												NSLocalizedString(@"Timer List Explain", @""), @"explainText",
-												targetViewController, @"viewController",
-												nil]];
+						NSLocalizedString(@"Timer List Title", @""), @"title",
+						NSLocalizedString(@"Timer List Explain", @""), @"explainText",
+						targetViewController, @"viewController",
+						nil]];
 
 	[targetViewController release];
 
@@ -118,10 +119,10 @@
 
 	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-												NSLocalizedString(@"Control View Title", @""), @"title",
-												NSLocalizedString(@"Control View Explain", @""), @"explainText",
-												targetViewController, @"viewController",
-												nil]];
+						NSLocalizedString(@"Control View Title", @""), @"title",
+						NSLocalizedString(@"Control View Explain", @""), @"explainText",
+						targetViewController, @"viewController",
+						nil]];
 
 	[targetViewController release];
 
@@ -207,6 +208,26 @@
 		if([menuList containsObject: _recordDictionary])
 		{
 			[menuList removeObject: _recordDictionary];
+			[myTableView reloadData];
+		}
+	}
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+	   && [RemoteConnectorObject isSingleBouquet])
+	{
+		if(![menuList containsObject: _serviceDictionary])
+		{
+			[menuList removeObject: _bouquetDictionary];
+			[menuList insertObject: _serviceDictionary atIndex: 0];
+			[myTableView reloadData];
+		}
+	}
+	else
+	{
+		if(![menuList containsObject: _bouquetDictionary])
+		{
+			[menuList removeObject: _serviceDictionary];
+			[menuList insertObject: _bouquetDictionary atIndex: 0];
 			[myTableView reloadData];
 		}
 	}
