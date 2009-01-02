@@ -652,12 +652,34 @@
 	if(type == kScreenshotTypeOSD)
 	{
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
-		
+		NSURL *myURI = [NSURL URLWithString: @"/GLJ-snapBMP.htm" relativeToURL: baseAddress];
+
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-		
+
 		// Create URL Object and download it
 		NSHTTPURLResponse *response;
+		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		[NSURLConnection sendSynchronousRequest: request
+							  returningResponse: &response error: nil];
+
+		if([responseCode statusCode] == 200)
+		{
+			// Generate URI
+			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: baseAddress];
+			
+			// Create URL Object and download it
+			request = [NSURLRequest requestWithURL: myURI
+									   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+			NSData *data = [NSURLConnection sendSynchronousRequest: request
+												 returningResponse: &response error: nil];
+			return data;
+		}
+
+		// Generate URI
+		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+		
+		// Create URL Object and download it
 		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 		[NSURLConnection sendSynchronousRequest: request
