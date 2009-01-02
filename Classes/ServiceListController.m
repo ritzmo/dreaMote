@@ -90,7 +90,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	if(_refreshServices)
+	if(_refreshServices && _bouquet == nil)
 	{
 		[_services removeAllObjects];
 
@@ -110,7 +110,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	if(_refreshServices)
+	if(_refreshServices && _bouquet == nil)
 	{
 		[_services removeAllObjects];
 
