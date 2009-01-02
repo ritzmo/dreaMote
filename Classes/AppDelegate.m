@@ -35,7 +35,7 @@
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *testValue = nil;
 
-	// Try to read 0.1-0 configuration
+	// 0.1-0 configuration
 	testValue = [stdDefaults stringForKey: kRemoteHost];
 	if(testValue != nil)
 	{
@@ -60,56 +60,33 @@
 		[stdDefaults removeObjectForKey: kPassword];
 		[stdDefaults removeObjectForKey: kConnector];
 
-		// Register new item (kActiveConnection)
+		// Register new items
 		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 									 activeConnectionId, kActiveConnection,
-									 nil];
-
-		[stdDefaults registerDefaults: appDefaults];
-		[stdDefaults synchronize];
-	}
-
-	// cvs up to rev 561, will be merged with later one after pushing this to the testers :-)
-	testValue = [stdDefaults stringForKey: kActiveConnection];
-	if(testValue == nil)
-	{
-		// since no default values have been set (i.e. no preferences file created), create it here
-		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-									  activeConnectionId, kActiveConnection,
-									  NO, kVibratingRC,
-									  nil];
-
-		[stdDefaults registerDefaults: appDefaults];
-		[stdDefaults synchronize];
-	}
-	else
-		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
-
-	// new feature as of revision 562
-	testValue = [stdDefaults stringForKey: kConnectionTest];
-	if(testValue == nil)
-	{
-		// since no default values have been set (i.e. older preferences), create it here
-		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+									 @"NO", kVibratingRC,
 									 @"YES", kConnectionTest,
-									 nil];
-
-		[stdDefaults registerDefaults: appDefaults];
-		[stdDefaults synchronize];
-	}
-
-	// new feature as of revision 591
-	testValue = [stdDefaults stringForKey: kMessageTimeout];
-	if(testValue == nil)
-	{
-		// since no default values have been set (i.e. older preferences), create it here
-		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 									 @"10", kMessageTimeout,
 									 nil];
 
 		[stdDefaults registerDefaults: appDefaults];
 		[stdDefaults synchronize];
 	}
+	// 0.2-0 configuration
+	else if((testValue = [stdDefaults stringForKey: kActiveConnection]) == nil)
+	{
+		// since no default values have been set (i.e. no preferences file created), create it here
+		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+										activeConnectionId, kActiveConnection,
+										@"NO", kVibratingRC,
+										@"YES", kConnectionTest,
+										@"10", kMessageTimeout,
+										nil];
+
+		[stdDefaults registerDefaults: appDefaults];
+		[stdDefaults synchronize];
+	}
+	else
+		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
 
 	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
