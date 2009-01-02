@@ -43,16 +43,14 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Eventname.
-		self.eventNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
+		_eventNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
 		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
-		[_eventNameLabel release];
 		
 		// A label that displays the Eventtime.
-		self.eventTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
+		_eventTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
 		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
-		[_eventTimeLabel release];
 	}
 	
 	return self;
@@ -69,7 +67,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 	[_movie release];
 	_movie = [newMovie retain];
-	
+
 	_eventNameLabel.text = newMovie.title;
 	_eventTimeLabel.text = [_formatter stringFromDate: newMovie.time];
 
@@ -97,7 +95,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly,   |however, the views need to be transparent (so that the selection color shows through).  
+	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  
 	 */
 	[super setSelected:selected animated:animated];
 	
@@ -131,7 +129,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	}
 	
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the	  |selection color shows through).  This is handled in setSelected:animated:.
+	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  This is handled in setSelected:animated:.
 	 */
 	UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	newLabel.backgroundColor = [UIColor whiteColor];

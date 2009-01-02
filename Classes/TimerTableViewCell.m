@@ -46,22 +46,19 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Servicename.
-		self.serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
+		_serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
-		[_serviceNameLabel release];
 
 		// A label that displays the Timername.
-		self.timerNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:YES];
+		_timerNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:YES];
 		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerNameLabel];
-		[_timerNameLabel release];
 
 		// A label that displays the Timer time.
-		self.timerTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:NO];
+		_timerTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:NO];
 		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerTimeLabel];
-		[_timerTimeLabel release];
 	}
 	
 	return self;
@@ -120,7 +117,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly,   |however, the views need to be transparent (so that the selection color shows through).  
+	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  
 	 */
 	[super setSelected:selected animated:animated];
 
@@ -158,7 +155,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	}
 
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the	  |selection color shows through).  This is handled in setSelected:animated:.
+	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  This is handled in setSelected:animated:.
 	 */
 	UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	newLabel.backgroundColor = [UIColor whiteColor];
