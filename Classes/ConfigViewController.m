@@ -318,6 +318,8 @@
 		connectorCell.text = NSLocalizedString(@"Neutrino", @"");
 	else
 		connectorCell.text = @"???";
+
+	[(UITableView *)self.view reloadData];
 }
 
 #pragma mark - UITableView delegates
