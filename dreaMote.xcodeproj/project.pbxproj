@@ -47,6 +47,7 @@
 		DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AD0F0CBEDB004B488C /* Timer.m */; };
 		DA0FA5070EB1CC27009A1898 /* image-x-generic.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5060EB1CC27009A1898 /* image-x-generic.png */; };
 		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
+		DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA114AD60F0EA77100CB94AE /* Bouquet.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
@@ -210,6 +211,8 @@
 		DA0BF8AD0F0CBEDB004B488C /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DA0FA5060EB1CC27009A1898 /* image-x-generic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "image-x-generic.png"; path = "Images/image-x-generic.png"; sourceTree = "<group>"; };
 		DA0FA5750EB1D189009A1898 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = Other/about.html; sourceTree = "<group>"; };
+		DA114AD50F0EA77100CB94AE /* Bouquet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bouquet.h; sourceTree = "<group>"; };
+		DA114AD60F0EA77100CB94AE /* Bouquet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bouquet.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
 		DA2713250D84056800C25B85 /* EventListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListController.h; sourceTree = "<group>"; };
@@ -574,6 +577,8 @@
 		DA0BF4580F0C1066004B488C /* Neutrino */ = {
 			isa = PBXGroup;
 			children = (
+				DA114AD50F0EA77100CB94AE /* Bouquet.h */,
+				DA114AD60F0EA77100CB94AE /* Bouquet.m */,
 				DA0BF6D20F0C2D56004B488C /* Event.h */,
 				DA0BF6D30F0C2D56004B488C /* Event.m */,
 			);
@@ -928,6 +933,7 @@
 				DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */,
 				DA36F7070F0D2F0A005608CC /* Service.m in Sources */,
 				DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */,
+				DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

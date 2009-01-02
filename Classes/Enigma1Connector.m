@@ -148,7 +148,7 @@
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
-	NSArray *resultNodes = NULL;
+	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
 	resultNodes = [bouquet nodesForXPath: @"service" error: nil];

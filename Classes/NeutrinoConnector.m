@@ -10,6 +10,7 @@
 
 #import "CXMLElement.h"
 
+#import "Objects/Neutrino/Bouquet.h"
 #import "Objects/Generic/Service.h"
 #import "Objects/Generic/Volume.h"
 #import "Objects/Generic/Timer.h"
@@ -131,10 +132,7 @@
 			break;
 
 		// A channel in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[Service alloc] init];
-
-		newService.sname = [[resultElement attributeForName: @"name"] stringValue];
-		newService.sref = [[resultElement attributeForName: @"bouquet_id"] stringValue];
+		NSObject<ServiceProtocol> *newService = [[NeutrinoBouquet alloc] initWithNode: resultElement];
 
 		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
 		[newService release];
@@ -146,18 +144,22 @@
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
-	if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
-	{
-		[cachedBouquetsXML release];
-		[self refreshBouquetsXMLCache];
-	}
-
-	NSArray *resultNodes = NULL;
+	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
-
-	resultNodes = [cachedBouquetsXML nodesForXPath:
-					[NSString stringWithFormat: @"/zapit/Bouquet[@bouquet_id=\"%@\"]/channel", bouquet.sref]
-					error:nil];
+	
+	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];
+	if(!resultNodes || ![resultNodes count])
+	{
+		if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+		{
+			[cachedBouquetsXML release];
+			[self refreshBouquetsXMLCache];
+		}
+		
+		resultNodes = [cachedBouquetsXML nodesForXPath:
+						[NSString stringWithFormat: @"/zapit/Bouquet[@name=\"%@\"]/channel", bouquet.sname]
+						error:nil];
+	}
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -673,6 +675,9 @@
 									   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 			NSData *data = [NSURLConnection sendSynchronousRequest: request
 												 returningResponse: &response error: nil];
+
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
 			return data;
 		}
 
