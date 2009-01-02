@@ -46,7 +46,7 @@
 	{
 
 		[self sendErroneousObject];
-		return nil
+		return nil;
 	}
 
 	NSURLRequest *request = [NSURLRequest requestWithURL: URL cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 50];
@@ -58,7 +58,7 @@
 	if(!connection)
 	{
 		[self sendErroneousObject];
-		return nil
+		return nil;
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -79,7 +79,7 @@
 	if(!_parser.success)
 	{
 		[self sendErroneousObject];
-		return nil
+		return nil;
 
 	}
 #else
