@@ -1,6 +1,6 @@
 //
 //  MessageTypeViewController.m
-//  Untitled
+//  dreaMote
 //
 //  Created by Moritz Venn on 17.10.08.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.

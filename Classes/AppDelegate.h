@@ -1,6 +1,6 @@
 //
 //  AppDelegate.h
-//  Untitled
+//  dreaMote
 //
 //  Created by Moritz Venn on 08.03.08.
 //  Copyright __MyCompanyName__ 2008. All rights reserved.

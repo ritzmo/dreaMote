@@ -1,6 +1,6 @@
 //
 //  Timer.m
-//  Untitled
+//  dreaMote
 //
 //  Created by Moritz Venn on 01.01.09.
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
