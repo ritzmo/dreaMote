@@ -663,7 +663,7 @@
 		[NSURLConnection sendSynchronousRequest: request
 							  returningResponse: &response error: nil];
 
-		if([responseCode statusCode] == 200)
+		if([response statusCode] == 200)
 		{
 			// Generate URI
 			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: baseAddress];
@@ -680,7 +680,7 @@
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
 		
 		// Create URL Object and download it
-		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+		request = [NSURLRequest requestWithURL: myURI
 												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 		[NSURLConnection sendSynchronousRequest: request
 											 returningResponse: &response error: nil];
