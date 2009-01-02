@@ -63,6 +63,14 @@
 	return _node && self.sref != nil;
 }
 
+- (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
+{
+	if(!_node)
+		return nil;
+
+	return [_node nodesForXPath: xpath error: error];
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -

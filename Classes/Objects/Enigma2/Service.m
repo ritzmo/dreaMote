@@ -64,6 +64,14 @@
 	return sref != nil && ![[sref substringToIndex: 5] isEqualToString: @"1:64:"];
 }
 
+- (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
+{
+	if(!_node)
+		return nil;
+	
+	return [_node nodesForXPath: xpath error: error];
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -

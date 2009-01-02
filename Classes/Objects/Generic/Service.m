@@ -38,6 +38,11 @@
 	return _sref != nil;
 }
 
+- (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
+{
+	return nil;
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -

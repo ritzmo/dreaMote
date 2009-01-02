@@ -148,19 +148,23 @@
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
-	if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
-	{
-		[cachedBouquetsXML release];
-		[self refreshBouquetsXMLCache];
-	}
-
 	NSArray *resultNodes = NULL;
 	NSUInteger parsedServicesCounter = 0;
 
-	resultNodes = [cachedBouquetsXML nodesForXPath:
-					[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
-					error:nil];
+	resultNodes = [bouquet nodesForXPath: @"service" error: nil];
+	if(!resultNodes || ![resultNodes count])
+	{
+		if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+		{
+			[cachedBouquetsXML release];
+			[self refreshBouquetsXMLCache];
+		}
 
+		resultNodes = [cachedBouquetsXML nodesForXPath:
+						[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
+						error:nil];
+	}
+	
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		if(++parsedServicesCounter >= MAX_SERVICES)

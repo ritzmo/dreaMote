@@ -14,4 +14,6 @@
 @property (nonatomic, retain) NSString *sname;
 @property (nonatomic, readonly, getter = isValid) BOOL valid;
 
+- (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error;
+
 @end
