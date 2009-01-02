@@ -8,6 +8,8 @@
 
 #import "NeutrinoConnector.h"
 
+#import "CXMLElement.h"
+
 #import "Objects/Generic/Service.h"
 #import "Objects/Generic/Volume.h"
 #import "Objects/Generic/Timer.h"
@@ -24,7 +26,7 @@
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	return NO;
+	return 	(feature == kFeaturesScreenshot);
 }
 
 - (NSInteger)getMaxVolume
@@ -647,14 +649,86 @@
 
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
-	// XXX: not supported, some extracts from yweb source:
-	// do_snapshot:
-	///control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png
-	// do_dboxshot:
-	///control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp
-	// if response(-r) != 200 then s/-r//g
-	//after:
-	//control/exec?Y_Tools&fbshot_clear
+	if(type == kScreenshotTypeOSD)
+	{
+		// Generate URI
+		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+		
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		
+		// Create URL Object and download it
+		NSHTTPURLResponse *response;
+		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		NSData *data = [NSURLConnection sendSynchronousRequest: request
+											 returningResponse: &response error: nil];
+
+		// do we actually get a status != 200 back?
+		if([response statusCode] != 200)
+		{
+			// Generate URI
+			myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+
+			// Create URL Object and download it
+			request = [NSURLRequest requestWithURL: myURI
+										cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+			data = [NSURLConnection sendSynchronousRequest: request
+												returningResponse: &response error: nil];
+		}
+
+		// Generate URI
+		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: baseAddress];
+		
+		// Create URL Object and download it
+		request = [NSURLRequest requestWithURL: myURI
+								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		[NSURLConnection sendSynchronousRequest: request
+							  returningResponse: &response error: nil];
+		
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		
+		return data;
+	}
+	else// We actually generate a combined picture here
+	{
+		// We need to trigger a capture and individually fetch the picture
+		// Generate URI
+		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png" relativeToURL: baseAddress];
+		
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		
+		// Create URL Object and download it
+		NSURLResponse *response;
+		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		[NSURLConnection sendSynchronousRequest: request
+											 returningResponse: &response error: nil];
+
+		// XXX: check status?
+
+		// Generate URI
+		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.png" relativeToURL: baseAddress];
+
+		// Create URL Object and download it
+		request = [NSURLRequest requestWithURL: myURI
+								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		NSData *data = [NSURLConnection sendSynchronousRequest: request
+									 returningResponse: &response error: nil];
+
+		// Generate URI
+		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: baseAddress];
+		
+		// Create URL Object and download it
+		request = [NSURLRequest requestWithURL: myURI
+								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		[NSURLConnection sendSynchronousRequest: request
+											 returningResponse: &response error: nil];
+
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+		return data;
+	}
+
 	return nil;
 }
 
