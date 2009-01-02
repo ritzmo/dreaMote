@@ -156,7 +156,7 @@
 	NSUInteger parsedServicesCounter = 0;
 
 	resultNodes = [cachedBouquetsXML nodesForXPath:
-					[NSString stringWithFormat: @"/zapit/Bouquet[@id=\"%@\"]/channel", bouquet.sref]
+					[NSString stringWithFormat: @"/zapit/Bouquet[@bouquet_id=\"%@\"]/channel", bouquet.sref]
 					error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
@@ -660,10 +660,11 @@
 		NSHTTPURLResponse *response;
 		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-		NSData *data = [NSURLConnection sendSynchronousRequest: request
+		[NSURLConnection sendSynchronousRequest: request
 											 returningResponse: &response error: nil];
 
 		// do we actually get a status != 200 back?
+		// maybe check if data is not empty...
 		if([response statusCode] != 200)
 		{
 			// Generate URI
@@ -672,9 +673,18 @@
 			// Create URL Object and download it
 			request = [NSURLRequest requestWithURL: myURI
 										cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-			data = [NSURLConnection sendSynchronousRequest: request
+			[NSURLConnection sendSynchronousRequest: request
 												returningResponse: &response error: nil];
 		}
+
+		// Generate URI
+		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+
+		// Create URL Object and download it
+		request = [NSURLRequest requestWithURL: myURI
+								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+		NSData *data = [NSURLConnection sendSynchronousRequest: request
+											 returningResponse: &response error: nil];
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: baseAddress];
