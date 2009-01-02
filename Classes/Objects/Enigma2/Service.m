@@ -60,7 +60,8 @@
 
 - (BOOL)isValid
 {
-	return self.sref != nil;
+	NSString *sref = self.sref;
+	return sref != nil && ![[sref substringToIndex: 5] isEqualToString: @"1:64:"];
 }
 
 #pragma mark -
