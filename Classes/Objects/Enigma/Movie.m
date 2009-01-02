@@ -118,9 +118,9 @@
 	if (self = [super init])
 	{
 		_node = [node retain];
-		_size = [NSNumber numberWithInt: -1];
-		_tags = [NSArray array];
-		_length = [NSNumber numberWithInt: -1];
+		_size = [[NSNumber numberWithInt: -1] retain];
+		_tags = [[NSArray array] retain];
+		_length = [[NSNumber numberWithInt: -1] retain];
 	}
 	return self;
 }

@@ -61,6 +61,8 @@
 		[_movies removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
+		[movieXMLDoc release];
+		movieXMLDoc = nil;
 
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -111,7 +113,7 @@
 	[pool release];
 }
 
-- (void)addMovie:(id)movie
+- (void)addMovie:(NSObject<MovieProtocol> *)movie
 {
 	if(movie != nil)
 	{
