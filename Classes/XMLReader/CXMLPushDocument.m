@@ -12,7 +12,10 @@
 
 @implementation CXMLPushDocument
 
-@synthesize success;
+- (BOOL)success
+{
+	return _node != NULL;
+}
 
 - (void)dealloc
 {
@@ -31,7 +34,6 @@
 			*outError = nil;
 			_parseError = outError;
 		}
-		success = NO;
 	}
 	else if(outError)
 		*outError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
@@ -55,15 +57,13 @@
 	_ctxt = NULL;
 }
 
-- (NSError *)doneParsing
+- (void)doneParsing
 {
-	NSError *outError = nil;
 	if(!_ctxt)
 	{
-		outError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
 		if(_parseError)
-			*_parseError = outError;
-		return outError;
+			*_parseError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
+		return;
 	}
 
 	xmlParseChunk(_ctxt, NULL, 0, 1);
@@ -71,23 +71,19 @@
 	int res = _ctxt->wellFormed;
 	if(res)
 	{
-		success = YES;
 		_node = (xmlNodePtr)_ctxt->myDoc;
 		NSAssert(_node->_private == NULL, @"TODO");
 		_node->_private = self; // Note. NOT retained (TODO think more about _private usage)
 	}
 	else
 	{
-		outError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
 		if(_parseError)
-			*_parseError = outError;
+			*_parseError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
 		_node = NULL;
 	}
 
     xmlFreeParserCtxt(_ctxt);
 	_ctxt = NULL;
-	
-	return outError;
 }
 
 @end

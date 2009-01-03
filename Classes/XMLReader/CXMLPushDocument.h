@@ -23,13 +23,12 @@
 @private
 	NSError **_parseError;
 	xmlParserCtxtPtr _ctxt;
-	BOOL success;
 }
 
 - (id)initWithError: (NSError **)outError;
 - (void)parseChunk: (NSData *)chunk;
 - (void)abortParsing;
-- (NSError *)doneParsing;
+- (void)doneParsing;
 
 @property (readonly) BOOL success;
 
