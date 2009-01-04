@@ -1,0 +1,156 @@
+//
+//  Timer.m
+//  dreaMote
+//
+//  Created by Moritz Venn on 04.01.09.
+//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//
+
+#import "Timer.h"
+
+#import "Service.h"
+#import "../Generic/Timer.h"
+
+@implementation SVDRPTimer
+
+@synthesize auxiliary = _auxiliary;
+@synthesize eit = _eit;
+@synthesize begin = _begin;
+@synthesize end = _end;
+@synthesize file = _file;
+@synthesize flags = _flags;
+@synthesize title = _title;
+@synthesize tdescription = _tdescription;
+@synthesize disabled = _disabled;
+@synthesize repeat = _repeat;
+@synthesize repeated = _repeated;
+@synthesize repeatcount = _repeatcount;
+@synthesize justplay = _justplay;
+@synthesize lifetime = _lifetime;
+@synthesize priority = _priority;
+@synthesize service = _service;
+@synthesize sref = _sref;
+@synthesize sname = _sname;
+@synthesize state = _state;
+@synthesize afterevent = _afterevent;
+@synthesize valid = _isValid;
+@synthesize timeString = _timeString;
+@synthesize tid = _tid;
+@synthesize hasRepeatBegin = _hasRepeatBegin;
+
+- (id)init
+{
+	if (self = [super init])
+	{
+		_service = nil;
+		_isValid = YES;
+		_timeString = nil;
+	}
+	return self;
+}
+
+- (void)dealloc
+{
+	[_auxiliary release];
+	[_begin release];
+	[_end release];
+	[_eit release];
+	[_file release];
+	[_title release];
+	[_tdescription release];
+	[_repeat release];
+	[_lifetime release];
+	[_priority release];
+	[_service release];
+	[_sname release];
+	[_sref release];
+	[_timeString release];
+	[_tid release];
+
+	[super dealloc];
+}
+
+- (NSString *)toString
+{
+	NSInteger newFlags = _flags;
+	if(_disabled)
+		newFlags |= 1;
+	else
+		newFlags = ~1;
+
+	NSCalendar *gregorian = [[NSCalendar alloc]
+								initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _begin];
+	NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _end];
+	[gregorian release];
+
+	NSString *dayStr;
+	if(_hasRepeatBegin)
+		dayStr = [NSString stringWithFormat: @"%@@%d-%d-%d",
+					_repeat, [beginComponents year], [beginComponents month], [beginComponents day]];
+	else if(_repeat != nil)
+		dayStr = _repeat;
+	else
+		dayStr = [NSString stringWithFormat: @"%d-%d-%d",
+					[beginComponents year], [beginComponents month], [beginComponents day]];
+
+	return [NSString stringWithFormat: @"%@:%d:%@:%d:%d:%@:%@:%@:%@",
+		_tid, newFlags, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
+		[endComponents hour] * 100 + [endComponents minute], _priority, _lifetime,
+		_file, _auxiliary];
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[Timer alloc] initWithTimer: self];
+
+	return newElement;
+}
+
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
+}
+
+- (NSString *)getStateString
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return nil;
+}
+
+- (NSInteger)getEnigmaAfterEvent
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return -1;
+}
+
+- (void)setBeginFromString: (NSString *)newBegin
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
+
+- (void)setEndFromString: (NSString *)newEnd
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
+
+- (void)setEndFromDurationString: (NSString *)newDuration
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
+
+- (void)setSref: (NSString *)newSref
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
+
+- (void)setSname: (NSString *)newSname
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
+
+@end

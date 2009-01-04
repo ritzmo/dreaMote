@@ -34,6 +34,8 @@
 	NSString *_timeString;
 }
 
+- (id)initWithTimer:(NSObject<TimerProtocol> *)timer;
+
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent;
 + (NSObject<TimerProtocol> *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService;
 + (NSObject<TimerProtocol> *)timer;

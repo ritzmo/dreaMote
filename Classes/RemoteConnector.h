@@ -12,7 +12,8 @@ enum availableConnectors {
 	kEnigma2Connector = 0,
 	kEnigma1Connector = 1,
 	kNeutrinoConnector = 2,
-	kMaxConnector = 3,
+	kSVDRPConnector = 3,
+	kMaxConnector = 4,
 };
 
 enum enigma2MessageTypes {

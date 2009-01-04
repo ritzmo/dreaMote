@@ -383,12 +383,8 @@
 
 - (NSInteger)getEnigmaAfterEvent
 {
-	if(_afterevent == kAfterEventStandby)
-		return doGoSleep;
-	else if(_afterevent == kAfterEventDeepstandby)
-		return doShutdown;
-	else // _afterevent == kAfterEventNothing or unhandled
-		return 0;
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return -1;
 }
 
 - (void)setBeginFromString: (NSString *)newBegin

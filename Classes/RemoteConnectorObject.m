@@ -14,6 +14,7 @@
 #import "Enigma2Connector.h"
 #import "Enigma1Connector.h"
 #import "NeutrinoConnector.h"
+#import "SVDRPConnector.h"
 
 #define configPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
 
@@ -34,13 +35,6 @@ static NSDictionary *_connection;
 	NSString *username = [[connection objectForKey: kUsername]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSString *password = [[connection objectForKey: kPassword] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
-
-	NSString *remoteAddress;
-	if([username isEqualToString: @""])
-		remoteAddress = [NSString stringWithFormat: @"http://%@", remoteHost];
-	else
-		remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", username,
-					  password, remoteHost];
 
 	if(_sharedRemoteConnector)
 	{
@@ -63,8 +57,10 @@ static NSDictionary *_connection;
 			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 			break;
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteAddress andUsername: username andPassword: password andPort: 0];
+			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 			break;
+		case kSVDRPConnector:
+			_sharedRemoteConnector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001];
 		default:
 			return NO;
 	}
@@ -146,6 +142,14 @@ static NSDictionary *_connection;
 	{
 		[connector release];
 		return kNeutrinoConnector;
+	}
+	
+	[connector release];
+	connector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001];
+	if([connector isReachable])
+	{
+		[connector release];
+		return kSVDRPConnector;
 	}
 
 	[connector release];

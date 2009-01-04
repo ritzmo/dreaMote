@@ -24,15 +24,6 @@
 		DA0BF0640F0BC011004B488C /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0570F0BC011004B488C /* CXMLNode_CreationExtensions.m */; };
 		DA0BF0650F0BC011004B488C /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0590F0BC011004B488C /* CXMLNode_PrivateExtensions.m */; };
 		DA0BF0660F0BC011004B488C /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF05B0F0BC011004B488C /* CXMLNode_XPathExtensions.m */; };
-		DA0BF1310F0BDE13004B488C /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF12A0F0BDE13004B488C /* EventXMLReader.m */; };
-		DA0BF1320F0BDE13004B488C /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF12C0F0BDE13004B488C /* MovieXMLReader.m */; };
-		DA0BF1340F0BDE13004B488C /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1300F0BDE13004B488C /* TimerXMLReader.m */; };
-		DA0BF13F0F0BDE25004B488C /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1360F0BDE25004B488C /* EventXMLReader.m */; };
-		DA0BF1400F0BDE25004B488C /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1380F0BDE25004B488C /* MovieXMLReader.m */; };
-		DA0BF1410F0BDE25004B488C /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF13A0F0BDE25004B488C /* ServiceXMLReader.m */; };
-		DA0BF1420F0BDE25004B488C /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF13C0F0BDE25004B488C /* TimerXMLReader.m */; };
-		DA0BF1430F0BDE25004B488C /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF13E0F0BDE25004B488C /* VolumeXMLReader.m */; };
-		DA0BF1480F0BDE3A004B488C /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF1450F0BDE3A004B488C /* EventXMLReader.m */; };
 		DA0BF4590F0C1066004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44B0F0C1066004B488C /* Event.m */; };
 		DA0BF45A0F0C1066004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44F0F0C1066004B488C /* Event.m */; };
 		DA0BF45B0F0C1066004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4510F0C1066004B488C /* Movie.m */; };
@@ -65,7 +56,6 @@
 		DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247EB0E3B3A7500B09600 /* DisplayCell.m */; };
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
-		DA5BBDF80F0B822600E4F1D3 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
@@ -103,6 +93,22 @@
 		DA7A25520E374B2200455D11 /* key_video.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25460E374B2200455D11 /* key_video.png */; };
 		DA7A25B90E375D7600455D11 /* key_minus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B70E375D7600455D11 /* key_minus.png */; };
 		DA7A25BA0E375D7600455D11 /* key_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A25B80E375D7600455D11 /* key_plus.png */; };
+		DA7D235F0F101F0500BB8BE7 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */; };
+		DA7D23600F101F0500BB8BE7 /* BufferedSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235A0F101F0500BB8BE7 /* BufferedSocket.m */; };
+		DA7D23610F101F0500BB8BE7 /* MutableDataBufferExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235C0F101F0500BB8BE7 /* MutableDataBufferExtension.m */; };
+		DA7D23620F101F0500BB8BE7 /* Socket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235E0F101F0500BB8BE7 /* Socket.m */; };
+		DA7D237D0F101F1500BB8BE7 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23650F101F1500BB8BE7 /* BaseXMLReader.m */; };
+		DA7D237E0F101F1500BB8BE7 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23670F101F1500BB8BE7 /* CXMLPushDocument.m */; };
+		DA7D237F0F101F1500BB8BE7 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D236A0F101F1500BB8BE7 /* EventXMLReader.m */; };
+		DA7D23800F101F1500BB8BE7 /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D236C0F101F1500BB8BE7 /* MovieXMLReader.m */; };
+		DA7D23810F101F1500BB8BE7 /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D236E0F101F1500BB8BE7 /* TimerXMLReader.m */; };
+		DA7D23820F101F1500BB8BE7 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */; };
+		DA7D23830F101F1500BB8BE7 /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23730F101F1500BB8BE7 /* MovieXMLReader.m */; };
+		DA7D23840F101F1500BB8BE7 /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23750F101F1500BB8BE7 /* ServiceXMLReader.m */; };
+		DA7D23850F101F1500BB8BE7 /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23770F101F1500BB8BE7 /* TimerXMLReader.m */; };
+		DA7D23860F101F1500BB8BE7 /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23790F101F1500BB8BE7 /* VolumeXMLReader.m */; };
+		DA7D23870F101F1500BB8BE7 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D237C0F101F1500BB8BE7 /* EventXMLReader.m */; };
+		DA7D23DD0F10249300BB8BE7 /* SVDRPConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23DC0F10249300BB8BE7 /* SVDRPConnector.m */; };
 		DA7DEB050E8310AA00B15F7C /* Enigma1Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7DEB040E8310AA00B15F7C /* Enigma1Connector.m */; };
 		DA7FD6750D8423E300974B1A /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD6740D8423E300974B1A /* MainViewController.m */; };
 		DA7FD6C90D8428F900974B1A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA7FD6C80D8428F900974B1A /* Localizable.strings */; };
@@ -110,7 +116,6 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
-		DA8FE2870E3558CB000B32C3 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
@@ -122,6 +127,7 @@
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
+		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
 		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
 		DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1410EABAD4300D99545 /* system-shutdown.png */; };
@@ -164,24 +170,6 @@
 		DA0BF05A0F0BC011004B488C /* CXMLNode_XPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_XPathExtensions.h; sourceTree = "<group>"; };
 		DA0BF05B0F0BC011004B488C /* CXMLNode_XPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_XPathExtensions.m; sourceTree = "<group>"; };
 		DA0BF05C0F0BC011004B488C /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
-		DA0BF1290F0BDE13004B488C /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventXMLReader.h; path = XMLReader/Enigma/EventXMLReader.h; sourceTree = "<group>"; };
-		DA0BF12A0F0BDE13004B488C /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventXMLReader.m; path = XMLReader/Enigma/EventXMLReader.m; sourceTree = "<group>"; };
-		DA0BF12B0F0BDE13004B488C /* MovieXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieXMLReader.h; path = XMLReader/Enigma/MovieXMLReader.h; sourceTree = "<group>"; };
-		DA0BF12C0F0BDE13004B488C /* MovieXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MovieXMLReader.m; path = XMLReader/Enigma/MovieXMLReader.m; sourceTree = "<group>"; };
-		DA0BF12F0F0BDE13004B488C /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerXMLReader.h; path = XMLReader/Enigma/TimerXMLReader.h; sourceTree = "<group>"; };
-		DA0BF1300F0BDE13004B488C /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerXMLReader.m; path = XMLReader/Enigma/TimerXMLReader.m; sourceTree = "<group>"; };
-		DA0BF1350F0BDE25004B488C /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventXMLReader.h; path = XMLReader/Enigma2/EventXMLReader.h; sourceTree = "<group>"; };
-		DA0BF1360F0BDE25004B488C /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventXMLReader.m; path = XMLReader/Enigma2/EventXMLReader.m; sourceTree = "<group>"; };
-		DA0BF1370F0BDE25004B488C /* MovieXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieXMLReader.h; path = XMLReader/Enigma2/MovieXMLReader.h; sourceTree = "<group>"; };
-		DA0BF1380F0BDE25004B488C /* MovieXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MovieXMLReader.m; path = XMLReader/Enigma2/MovieXMLReader.m; sourceTree = "<group>"; };
-		DA0BF1390F0BDE25004B488C /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceXMLReader.h; path = XMLReader/Enigma2/ServiceXMLReader.h; sourceTree = "<group>"; };
-		DA0BF13A0F0BDE25004B488C /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ServiceXMLReader.m; path = XMLReader/Enigma2/ServiceXMLReader.m; sourceTree = "<group>"; };
-		DA0BF13B0F0BDE25004B488C /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerXMLReader.h; path = XMLReader/Enigma2/TimerXMLReader.h; sourceTree = "<group>"; };
-		DA0BF13C0F0BDE25004B488C /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TimerXMLReader.m; path = XMLReader/Enigma2/TimerXMLReader.m; sourceTree = "<group>"; };
-		DA0BF13D0F0BDE25004B488C /* VolumeXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeXMLReader.h; path = XMLReader/Enigma2/VolumeXMLReader.h; sourceTree = "<group>"; };
-		DA0BF13E0F0BDE25004B488C /* VolumeXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VolumeXMLReader.m; path = XMLReader/Enigma2/VolumeXMLReader.m; sourceTree = "<group>"; };
-		DA0BF1440F0BDE3A004B488C /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventXMLReader.h; path = XMLReader/Neutrino/EventXMLReader.h; sourceTree = "<group>"; };
-		DA0BF1450F0BDE3A004B488C /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EventXMLReader.m; path = XMLReader/Neutrino/EventXMLReader.m; sourceTree = "<group>"; };
 		DA0BF44A0F0C1066004B488C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		DA0BF44B0F0C1066004B488C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		DA0BF44C0F0C1066004B488C /* EventProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventProtocol.h; sourceTree = "<group>"; };
@@ -246,8 +234,6 @@
 		DA5A048F0E3798BC0062F924 /* MovieListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListController.m; sourceTree = "<group>"; };
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
-		DA5BBDF60F0B822600E4F1D3 /* CXMLPushDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLPushDocument.h; path = XMLReader/CXMLPushDocument.h; sourceTree = "<group>"; };
-		DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLPushDocument.m; path = XMLReader/CXMLPushDocument.m; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA664CD70EA8E2C100A37F55 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
@@ -289,6 +275,38 @@
 		DA7A25460E374B2200455D11 /* key_video.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_video.png; path = Images/key_video.png; sourceTree = "<group>"; };
 		DA7A25B70E375D7600455D11 /* key_minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_minus.png; path = Images/key_minus.png; sourceTree = "<group>"; };
 		DA7A25B80E375D7600455D11 /* key_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_plus.png; path = Images/key_plus.png; sourceTree = "<group>"; };
+		DA7D23570F101F0500BB8BE7 /* AbstractSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractSocket.h; sourceTree = "<group>"; };
+		DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractSocket.m; sourceTree = "<group>"; };
+		DA7D23590F101F0500BB8BE7 /* BufferedSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BufferedSocket.h; sourceTree = "<group>"; };
+		DA7D235A0F101F0500BB8BE7 /* BufferedSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BufferedSocket.m; sourceTree = "<group>"; };
+		DA7D235B0F101F0500BB8BE7 /* MutableDataBufferExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableDataBufferExtension.h; sourceTree = "<group>"; };
+		DA7D235C0F101F0500BB8BE7 /* MutableDataBufferExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableDataBufferExtension.m; sourceTree = "<group>"; };
+		DA7D235D0F101F0500BB8BE7 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		DA7D235E0F101F0500BB8BE7 /* Socket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Socket.m; sourceTree = "<group>"; };
+		DA7D23640F101F1500BB8BE7 /* BaseXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseXMLReader.h; sourceTree = "<group>"; };
+		DA7D23650F101F1500BB8BE7 /* BaseXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseXMLReader.m; sourceTree = "<group>"; };
+		DA7D23660F101F1500BB8BE7 /* CXMLPushDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLPushDocument.h; sourceTree = "<group>"; };
+		DA7D23670F101F1500BB8BE7 /* CXMLPushDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLPushDocument.m; sourceTree = "<group>"; };
+		DA7D23690F101F1500BB8BE7 /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventXMLReader.h; sourceTree = "<group>"; };
+		DA7D236A0F101F1500BB8BE7 /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventXMLReader.m; sourceTree = "<group>"; };
+		DA7D236B0F101F1500BB8BE7 /* MovieXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieXMLReader.h; sourceTree = "<group>"; };
+		DA7D236C0F101F1500BB8BE7 /* MovieXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieXMLReader.m; sourceTree = "<group>"; };
+		DA7D236D0F101F1500BB8BE7 /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerXMLReader.h; sourceTree = "<group>"; };
+		DA7D236E0F101F1500BB8BE7 /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerXMLReader.m; sourceTree = "<group>"; };
+		DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventXMLReader.h; sourceTree = "<group>"; };
+		DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventXMLReader.m; sourceTree = "<group>"; };
+		DA7D23720F101F1500BB8BE7 /* MovieXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieXMLReader.h; sourceTree = "<group>"; };
+		DA7D23730F101F1500BB8BE7 /* MovieXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieXMLReader.m; sourceTree = "<group>"; };
+		DA7D23740F101F1500BB8BE7 /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceXMLReader.h; sourceTree = "<group>"; };
+		DA7D23750F101F1500BB8BE7 /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceXMLReader.m; sourceTree = "<group>"; };
+		DA7D23760F101F1500BB8BE7 /* TimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerXMLReader.h; sourceTree = "<group>"; };
+		DA7D23770F101F1500BB8BE7 /* TimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerXMLReader.m; sourceTree = "<group>"; };
+		DA7D23780F101F1500BB8BE7 /* VolumeXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeXMLReader.h; sourceTree = "<group>"; };
+		DA7D23790F101F1500BB8BE7 /* VolumeXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VolumeXMLReader.m; sourceTree = "<group>"; };
+		DA7D237B0F101F1500BB8BE7 /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventXMLReader.h; sourceTree = "<group>"; };
+		DA7D237C0F101F1500BB8BE7 /* EventXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventXMLReader.m; sourceTree = "<group>"; };
+		DA7D23DB0F10249300BB8BE7 /* SVDRPConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVDRPConnector.h; sourceTree = "<group>"; };
+		DA7D23DC0F10249300BB8BE7 /* SVDRPConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVDRPConnector.m; sourceTree = "<group>"; };
 		DA7DEB030E8310AA00B15F7C /* Enigma1Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma1Connector.h; sourceTree = "<group>"; };
 		DA7DEB040E8310AA00B15F7C /* Enigma1Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma1Connector.m; sourceTree = "<group>"; };
 		DA7FD6730D8423E300974B1A /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -303,8 +321,6 @@
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		DA80C4920E37A254008A42AE /* MovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieViewController.h; sourceTree = "<group>"; };
 		DA80C4930E37A254008A42AE /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
-		DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BaseXMLReader.h; path = XMLReader/BaseXMLReader.h; sourceTree = "<group>"; };
-		DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BaseXMLReader.m; path = XMLReader/BaseXMLReader.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
 		DAA21E7F0E99288600DD749C /* ConfigListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigListController.m; sourceTree = "<group>"; };
 		DAA2222A0E998CE900DD749C /* AfterEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AfterEventViewController.h; sourceTree = "<group>"; };
@@ -327,6 +343,8 @@
 		DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceTableViewCell.m; sourceTree = "<group>"; };
 		DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
+		DADE1AE70F115A2500807A25 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
 		DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "preferences-desktop-screensaver.png"; path = "Images/preferences-desktop-screensaver.png"; sourceTree = "<group>"; };
 		DADFB1410EABAD4300D99545 /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "system-shutdown.png"; path = "Images/system-shutdown.png"; sourceTree = "<group>"; };
@@ -356,13 +374,14 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DA0BF0470F0BC011004B488C /* TouchXML */,
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
+				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
+				DA0BF0470F0BC011004B488C /* TouchXML */,
 				DAF0D5460E38FF16001F7CF1 /* ViewController */,
-				DAF0D5480E38FF52001F7CF1 /* XMLReader */,
+				DA7D23630F101F1500BB8BE7 /* XMLReader */,
 				1D3623240D0F684500981E51 /* AppDelegate.h */,
 				1D3623250D0F684500981E51 /* AppDelegate.m */,
 				DA7FD7720D84345100974B1A /* Constants.h */,
@@ -473,45 +492,6 @@
 			path = TouchXML/Common/Source;
 			sourceTree = SOURCE_ROOT;
 		};
-		DA0BF1260F0BDDCE004B488C /* Enigma */ = {
-			isa = PBXGroup;
-			children = (
-				DA0BF1290F0BDE13004B488C /* EventXMLReader.h */,
-				DA0BF12A0F0BDE13004B488C /* EventXMLReader.m */,
-				DA0BF12B0F0BDE13004B488C /* MovieXMLReader.h */,
-				DA0BF12C0F0BDE13004B488C /* MovieXMLReader.m */,
-				DA0BF12F0F0BDE13004B488C /* TimerXMLReader.h */,
-				DA0BF1300F0BDE13004B488C /* TimerXMLReader.m */,
-			);
-			name = Enigma;
-			sourceTree = "<group>";
-		};
-		DA0BF1270F0BDDD5004B488C /* Enigma2 */ = {
-			isa = PBXGroup;
-			children = (
-				DA0BF1350F0BDE25004B488C /* EventXMLReader.h */,
-				DA0BF1360F0BDE25004B488C /* EventXMLReader.m */,
-				DA0BF1370F0BDE25004B488C /* MovieXMLReader.h */,
-				DA0BF1380F0BDE25004B488C /* MovieXMLReader.m */,
-				DA0BF1390F0BDE25004B488C /* ServiceXMLReader.h */,
-				DA0BF13A0F0BDE25004B488C /* ServiceXMLReader.m */,
-				DA0BF13B0F0BDE25004B488C /* TimerXMLReader.h */,
-				DA0BF13C0F0BDE25004B488C /* TimerXMLReader.m */,
-				DA0BF13D0F0BDE25004B488C /* VolumeXMLReader.h */,
-				DA0BF13E0F0BDE25004B488C /* VolumeXMLReader.m */,
-			);
-			name = Enigma2;
-			sourceTree = "<group>";
-		};
-		DA0BF1280F0BDDDC004B488C /* Neutrino */ = {
-			isa = PBXGroup;
-			children = (
-				DA0BF1440F0BDE3A004B488C /* EventXMLReader.h */,
-				DA0BF1450F0BDE3A004B488C /* EventXMLReader.m */,
-			);
-			name = Neutrino;
-			sourceTree = "<group>";
-		};
 		DA0BF4470F0C1066004B488C /* Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -519,6 +499,7 @@
 				DA0BF4490F0C1066004B488C /* Enigma2 */,
 				DA0BF44D0F0C1066004B488C /* Generic */,
 				DA0BF4580F0C1066004B488C /* Neutrino */,
+				DADE1AE60F115A2500807A25 /* SVDRP */,
 				DA0BF44C0F0C1066004B488C /* EventProtocol.h */,
 				DA0BF5C80F0C19C4004B488C /* MovieProtocol.h */,
 				DA36F6B70F0D2D8F005608CC /* ServiceProtocol.h */,
@@ -635,6 +616,83 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		DA7D23560F101F0500BB8BE7 /* SmallSockets */ = {
+			isa = PBXGroup;
+			children = (
+				DA7D23570F101F0500BB8BE7 /* AbstractSocket.h */,
+				DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */,
+				DA7D23590F101F0500BB8BE7 /* BufferedSocket.h */,
+				DA7D235A0F101F0500BB8BE7 /* BufferedSocket.m */,
+				DA7D235B0F101F0500BB8BE7 /* MutableDataBufferExtension.h */,
+				DA7D235C0F101F0500BB8BE7 /* MutableDataBufferExtension.m */,
+				DA7D235D0F101F0500BB8BE7 /* Socket.h */,
+				DA7D235E0F101F0500BB8BE7 /* Socket.m */,
+			);
+			path = SmallSockets;
+			sourceTree = "<group>";
+		};
+		DA7D23630F101F1500BB8BE7 /* XMLReader */ = {
+			isa = PBXGroup;
+			children = (
+				DA7D23640F101F1500BB8BE7 /* BaseXMLReader.h */,
+				DA7D23650F101F1500BB8BE7 /* BaseXMLReader.m */,
+				DA7D23660F101F1500BB8BE7 /* CXMLPushDocument.h */,
+				DA7D23670F101F1500BB8BE7 /* CXMLPushDocument.m */,
+				DA7D23680F101F1500BB8BE7 /* Enigma */,
+				DA7D236F0F101F1500BB8BE7 /* Enigma2 */,
+				DA7D237A0F101F1500BB8BE7 /* Neutrino */,
+			);
+			path = XMLReader;
+			sourceTree = "<group>";
+		};
+		DA7D23680F101F1500BB8BE7 /* Enigma */ = {
+			isa = PBXGroup;
+			children = (
+				DA7D23690F101F1500BB8BE7 /* EventXMLReader.h */,
+				DA7D236A0F101F1500BB8BE7 /* EventXMLReader.m */,
+				DA7D236B0F101F1500BB8BE7 /* MovieXMLReader.h */,
+				DA7D236C0F101F1500BB8BE7 /* MovieXMLReader.m */,
+				DA7D236D0F101F1500BB8BE7 /* TimerXMLReader.h */,
+				DA7D236E0F101F1500BB8BE7 /* TimerXMLReader.m */,
+			);
+			path = Enigma;
+			sourceTree = "<group>";
+		};
+		DA7D236F0F101F1500BB8BE7 /* Enigma2 */ = {
+			isa = PBXGroup;
+			children = (
+				DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */,
+				DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */,
+				DA7D23720F101F1500BB8BE7 /* MovieXMLReader.h */,
+				DA7D23730F101F1500BB8BE7 /* MovieXMLReader.m */,
+				DA7D23740F101F1500BB8BE7 /* ServiceXMLReader.h */,
+				DA7D23750F101F1500BB8BE7 /* ServiceXMLReader.m */,
+				DA7D23760F101F1500BB8BE7 /* TimerXMLReader.h */,
+				DA7D23770F101F1500BB8BE7 /* TimerXMLReader.m */,
+				DA7D23780F101F1500BB8BE7 /* VolumeXMLReader.h */,
+				DA7D23790F101F1500BB8BE7 /* VolumeXMLReader.m */,
+			);
+			path = Enigma2;
+			sourceTree = "<group>";
+		};
+		DA7D237A0F101F1500BB8BE7 /* Neutrino */ = {
+			isa = PBXGroup;
+			children = (
+				DA7D237B0F101F1500BB8BE7 /* EventXMLReader.h */,
+				DA7D237C0F101F1500BB8BE7 /* EventXMLReader.m */,
+			);
+			path = Neutrino;
+			sourceTree = "<group>";
+		};
+		DADE1AE60F115A2500807A25 /* SVDRP */ = {
+			isa = PBXGroup;
+			children = (
+				DADE1AE70F115A2500807A25 /* Timer.h */,
+				DADE1AE80F115A2500807A25 /* Timer.m */,
+			);
+			path = SVDRP;
+			sourceTree = "<group>";
+		};
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -685,20 +743,6 @@
 			name = ListController;
 			sourceTree = "<group>";
 		};
-		DAF0D5480E38FF52001F7CF1 /* XMLReader */ = {
-			isa = PBXGroup;
-			children = (
-				DA0BF1260F0BDDCE004B488C /* Enigma */,
-				DA0BF1270F0BDDD5004B488C /* Enigma2 */,
-				DA0BF1280F0BDDDC004B488C /* Neutrino */,
-				DA8FE2850E3558C2000B32C3 /* BaseXMLReader.h */,
-				DA8FE2860E3558CB000B32C3 /* BaseXMLReader.m */,
-				DA5BBDF60F0B822600E4F1D3 /* CXMLPushDocument.h */,
-				DA5BBDF70F0B822600E4F1D3 /* CXMLPushDocument.m */,
-			);
-			name = XMLReader;
-			sourceTree = "<group>";
-		};
 		DAF0D5490E38FF70001F7CF1 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -736,6 +780,8 @@
 				DAD51A390D82E34C00A769F3 /* RemoteConnector.h */,
 				DA426A480D86BE4400444631 /* RemoteConnectorObject.h */,
 				DA426A490D86BE4400444631 /* RemoteConnectorObject.m */,
+				DA7D23DB0F10249300BB8BE7 /* SVDRPConnector.h */,
+				DA7D23DC0F10249300BB8BE7 /* SVDRPConnector.m */,
 			);
 			name = Connector;
 			sourceTree = "<group>";
@@ -878,7 +924,6 @@
 				DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */,
 				DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */,
 				DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */,
-				DA8FE2870E3558CB000B32C3 /* BaseXMLReader.m in Sources */,
 				DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */,
 				DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */,
 				DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */,
@@ -898,7 +943,6 @@
 				DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */,
 				DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */,
 				DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */,
-				DA5BBDF80F0B822600E4F1D3 /* CXMLPushDocument.m in Sources */,
 				DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */,
 				DA0BF05E0F0BC011004B488C /* CXMLDocument_CreationExtensions.m in Sources */,
 				DA0BF05F0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m in Sources */,
@@ -909,15 +953,6 @@
 				DA0BF0640F0BC011004B488C /* CXMLNode_CreationExtensions.m in Sources */,
 				DA0BF0650F0BC011004B488C /* CXMLNode_PrivateExtensions.m in Sources */,
 				DA0BF0660F0BC011004B488C /* CXMLNode_XPathExtensions.m in Sources */,
-				DA0BF1310F0BDE13004B488C /* EventXMLReader.m in Sources */,
-				DA0BF1320F0BDE13004B488C /* MovieXMLReader.m in Sources */,
-				DA0BF1340F0BDE13004B488C /* TimerXMLReader.m in Sources */,
-				DA0BF13F0F0BDE25004B488C /* EventXMLReader.m in Sources */,
-				DA0BF1400F0BDE25004B488C /* MovieXMLReader.m in Sources */,
-				DA0BF1410F0BDE25004B488C /* ServiceXMLReader.m in Sources */,
-				DA0BF1420F0BDE25004B488C /* TimerXMLReader.m in Sources */,
-				DA0BF1430F0BDE25004B488C /* VolumeXMLReader.m in Sources */,
-				DA0BF1480F0BDE3A004B488C /* EventXMLReader.m in Sources */,
 				DA0BF4590F0C1066004B488C /* Event.m in Sources */,
 				DA0BF45A0F0C1066004B488C /* Event.m in Sources */,
 				DA0BF45B0F0C1066004B488C /* Movie.m in Sources */,
@@ -934,6 +969,23 @@
 				DA36F7070F0D2F0A005608CC /* Service.m in Sources */,
 				DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */,
 				DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */,
+				DA7D235F0F101F0500BB8BE7 /* AbstractSocket.m in Sources */,
+				DA7D23600F101F0500BB8BE7 /* BufferedSocket.m in Sources */,
+				DA7D23610F101F0500BB8BE7 /* MutableDataBufferExtension.m in Sources */,
+				DA7D23620F101F0500BB8BE7 /* Socket.m in Sources */,
+				DA7D237D0F101F1500BB8BE7 /* BaseXMLReader.m in Sources */,
+				DA7D237E0F101F1500BB8BE7 /* CXMLPushDocument.m in Sources */,
+				DA7D237F0F101F1500BB8BE7 /* EventXMLReader.m in Sources */,
+				DA7D23800F101F1500BB8BE7 /* MovieXMLReader.m in Sources */,
+				DA7D23810F101F1500BB8BE7 /* TimerXMLReader.m in Sources */,
+				DA7D23820F101F1500BB8BE7 /* EventXMLReader.m in Sources */,
+				DA7D23830F101F1500BB8BE7 /* MovieXMLReader.m in Sources */,
+				DA7D23840F101F1500BB8BE7 /* ServiceXMLReader.m in Sources */,
+				DA7D23850F101F1500BB8BE7 /* TimerXMLReader.m in Sources */,
+				DA7D23860F101F1500BB8BE7 /* VolumeXMLReader.m in Sources */,
+				DA7D23870F101F1500BB8BE7 /* EventXMLReader.m in Sources */,
+				DA7D23DD0F10249300BB8BE7 /* SVDRPConnector.m in Sources */,
+				DADE1AE90F115A2500807A25 /* Timer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

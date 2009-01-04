@@ -105,6 +105,9 @@
 		case kNeutrinoConnector:
 			cell.text = NSLocalizedString(@"Neutrino", @"");
 			break;
+		case kSVDRPConnector:
+			cell.text = NSLocalizedString(@"SVDRP", @"");
+			break;
 		default:
 			cell.text = @"???";
 			break;
