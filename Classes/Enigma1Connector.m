@@ -21,8 +21,6 @@
 
 @implementation Enigma1Connector
 
-@synthesize baseAddress;
-
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
 	return
@@ -40,11 +38,20 @@
 	return 63;
 }
 
-- (id)initWithAddress:(NSString *) address
+- (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
 {
 	if(self = [super init])
 	{
-		self.baseAddress = [NSURL URLWithString: address];
+		NSString *remoteAddress;
+		if([inUsername isEqualToString: @""])
+			remoteAddress = [NSString stringWithFormat: @"http://%@", address];
+		else
+			remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", inUsername,
+							 inPassword, address];
+		if(inPort > 0)
+			remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
+		
+		baseAddress = [[NSURL URLWithString: remoteAddress] retain];
 	}
 	return self;
 }
@@ -57,9 +64,9 @@
 	[super dealloc];
 }
 
-+ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address
++ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
 {
-	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress: address];
+	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort];
 }
 
 - (BOOL)isReachable

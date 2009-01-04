@@ -18,6 +18,4 @@
 	CXMLDocument *cachedBouquetsXML;
 }
 
-@property (nonatomic, retain) NSURL *baseAddress;
-
 @end

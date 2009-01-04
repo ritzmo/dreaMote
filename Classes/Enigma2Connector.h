@@ -15,6 +15,4 @@
 	NSURL *baseAddress;
 }
 
-@property (nonatomic, retain) NSURL *baseAddress;
-
 @end

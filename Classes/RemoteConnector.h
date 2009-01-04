@@ -107,8 +107,8 @@ enum buttonCodes {
 
 @protocol RemoteConnector
 
-- (id)initWithAddress:(NSString *) address;
-+ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address;
+- (id)initWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
++ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
 - (const BOOL)hasFeature: (enum connectorFeatures)feature;
 - (NSInteger)getMaxVolume;
 - (BOOL)isReachable;

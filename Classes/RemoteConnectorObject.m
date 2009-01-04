@@ -57,13 +57,13 @@ static NSDictionary *_connection;
 	switch(connectorId)
 	{
 		case kEnigma2Connector:
-			_sharedRemoteConnector = [Enigma2Connector createClassWithAddress: remoteAddress];
+			_sharedRemoteConnector = [Enigma2Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 			break;
 		case kEnigma1Connector:
-			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteAddress];
+			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 			break;
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteAddress];
+			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteAddress andUsername: username andPassword: password andPort: 0];
 			break;
 		default:
 			return NO;
@@ -125,14 +125,7 @@ static NSDictionary *_connection;
 	NSString *username = [connection objectForKey: kUsername];
 	NSString *password = [connection objectForKey: kPassword];
 
-	NSString *remoteAddress;
-	if([username isEqualToString: @""])
-		remoteAddress = [NSString stringWithFormat: @"http://%@", remoteHost];
-	else
-		remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", username,
-						 password, remoteHost];
-	
-	connector = [Enigma2Connector createClassWithAddress: remoteAddress];
+	connector = [Enigma2Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -140,7 +133,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = [Enigma1Connector createClassWithAddress: remoteAddress];
+	connector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -148,7 +141,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = [NeutrinoConnector createClassWithAddress: remoteAddress];
+	connector = [NeutrinoConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 	if([connector isReachable])
 	{
 		[connector release];
