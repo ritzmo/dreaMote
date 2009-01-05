@@ -30,7 +30,8 @@
 		(feature == kFeaturesMessageTimeout) ||
 		(feature == kFeaturesScreenshot) ||
 		(feature == kFeaturesTimerAfterEvent) ||
-		(feature == kFeaturesFullRemote);
+		(feature == kFeaturesFullRemote) ||
+		(feature == kFeaturesConstantTimerId);
 }
 
 - (NSInteger)getMaxVolume

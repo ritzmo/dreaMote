@@ -26,7 +26,7 @@
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
 	// Screenshots do not work yet... :-/
-	return NO;
+	return (feature == kFeaturesConstantTimerId);
 }
 
 - (NSInteger)getMaxVolume

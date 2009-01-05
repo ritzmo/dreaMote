@@ -85,7 +85,10 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: what about a response?
+	// XXX: we should really parse the return message
+	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSLog(ret);
+	[ret release];
 	return YES;
 }
 
@@ -123,7 +126,7 @@
 	while(true)
 	{
 		line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
-		if(!line || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		if(!line || [line length] < 3 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
 			[line release];
 			break;
@@ -179,7 +182,7 @@
 	while(true)
 	{
 		line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
-		if(!line)
+		if(!line || [line length] < 5)
 		{
 			[line release];
 			break;
@@ -218,9 +221,9 @@
 			[newEvent release];
 		}
 	}
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	return nil;
 }
 
@@ -252,7 +255,7 @@
 	while(true)
 	{
 		line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
-		if(!line || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		if(!line || [line length] < 3 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
 			[line release];
 			break;
@@ -268,7 +271,7 @@
 		range = [line rangeOfString: @" " options: NSBackwardsSearch];
 		range.length = range.location - 4;
 		range.location = 4;
-		newTimer.tid = [line substringFromIndex: 4];
+		newTimer.tid = [line substringWithRange: range];
 
 		// Flags:
 		//		1 the timer is active (and will record if it hits)
@@ -505,7 +508,9 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	[socket readDataUpToString: @"\r\n"];
+	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSLog(ret);
+	[ret release];
 	return YES;
 }
 
@@ -519,9 +524,11 @@
 
 	[socket writeString: [NSString stringWithFormat: @"UPDT %@\r\n", [self anyTimerToString: newTimer]]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	// XXX: we should really parse the return message
-	[socket readDataUpToString: @"\r\n"];
+	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSLog(ret);
+	[ret release];
 	return YES;
 }
 
@@ -538,11 +545,13 @@
 	if(![oldTimer respondsToSelector: @selector(toString)])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", [(SVDRPTimer *)oldTimer toString]]];
+	[socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	[socket readDataUpToString: @"\r\n"];
+	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSLog(ret);
+	[ret release];
 	return YES;
 }
 
@@ -564,7 +573,9 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	[socket readDataUpToString: @"\r\n"];
+	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSLog(ret);
+	[ret release];
 	return YES;
 }
 

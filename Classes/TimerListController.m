@@ -296,14 +296,31 @@
 
 		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: [_timers objectAtIndex: index]])
 		{
-			for(; section < kTimerStateMax; section++){
-				dist[section]--;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesConstantTimerId])
+			{
+				for(; section < kTimerStateMax; section++){
+					dist[section]--;
+				}
+				
+				[_timers removeObjectAtIndex: index];
+				
+				[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
+								 withRowAnimation: UITableViewRowAnimationFade];
 			}
+			else
+			{
+				for(section = 0; section < kTimerStateMax; section++)
+					dist[section] = 0;
 
-			[_timers removeObjectAtIndex: index];
+				[_timers removeAllObjects];
+				[(UITableView *)self.view reloadData];
+				[timerXMLDoc release];
+				timerXMLDoc = nil;
 
-			[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
-							 withRowAnimation: UITableViewRowAnimationFade];
+				// Spawn a thread to fetch the timer data so that the UI is not blocked while the
+				// application parses the XML file.
+				[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
+			}
 		}
 		else
 		{

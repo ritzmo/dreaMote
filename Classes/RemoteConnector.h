@@ -59,6 +59,8 @@ enum connectorFeatures {
 	kFeaturesAdvancedRemote,
 	// Has a single bouquet mode
 	kFeaturesSingleBouquet,
+	// Timer Id is a constant
+	kFeaturesConstantTimerId,
 };
 
 enum buttonCodes {
