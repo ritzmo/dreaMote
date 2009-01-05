@@ -9,7 +9,6 @@
 #import "Timer.h"
 
 #import "Service.h"
-#import "../Generic/Timer.h"
 
 @implementation SVDRPTimer
 
@@ -46,6 +45,37 @@
 		_isValid = YES;
 		_timeString = nil;
 	}
+	return self;
+}
+
+
+- (id)initWithSVDRPTimer:(SVDRPTimer *)timer
+{
+	self = [super init];
+	
+	if (self) {
+		_begin = [timer.begin copy];
+		_end = [timer.end copy];
+		_eit = [timer.eit copy];
+		_title = [timer.title copy];
+		_tdescription = [timer.tdescription copy];
+		_disabled = timer.disabled;
+		_justplay = timer.justplay;
+		_service = [timer.service copy];
+		_repeated = timer.repeated;
+		_repeatcount = timer.repeatcount;
+		_state = timer.state;
+		_isValid = timer.valid;
+		_afterevent = timer.afterevent;
+		_repeat = [timer.repeat copy];
+		_auxiliary = [timer.auxiliary copy];
+		_tid = [timer.tid copy];
+		_hasRepeatBegin = timer.hasRepeatBegin;
+		_flags = timer.flags;
+		_lifetime = [timer.lifetime copy];
+		_priority = [timer.priority copy];
+	}
+	
 	return self;
 }
 
@@ -106,7 +136,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	id newElement = [[Timer alloc] initWithTimer: self];
+	id newElement = [[SVDRPTimer alloc] initWithSVDRPTimer: self];
 
 	return newElement;
 }

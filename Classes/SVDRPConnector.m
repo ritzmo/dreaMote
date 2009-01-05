@@ -67,6 +67,24 @@
 	}	
 }
 
+- (NSString *)readSocketLine
+{
+	NSString *retVal = nil;
+	@try {
+		NSData *data = [socket readDataUpToString: @"\r\n"];
+		NSString *tmp = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+		if([tmp length] > 2)
+			retVal = [tmp substringToIndex: [tmp length] - 2];
+		[tmp release];
+	}
+	@catch (NSException * e) {
+		// ignore
+	}
+	@finally {
+		return retVal;
+	}
+}
+
 - (BOOL)isReachable
 {
 	if(!socket)
@@ -87,9 +105,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSString *ret = [self readSocketLine];
 	NSLog(ret);
-	[ret release];
 	return YES;
 }
 
@@ -120,25 +137,25 @@
 
 		return nil;
 	}
-	
+
 	[socket writeString: @"LSTC\r\n"];
 
 	NSString *line = nil;
+	NSRange range;
+	Service *newService = nil;
 	while(true)
 	{
-		line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
-		if(!line || [line length] < 3 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		line = [self readSocketLine];
+		if(!line || [line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
-			[line release];
 			break;
 		}
 
-		Service *newService = [[Service alloc] init];
+		newService = [[Service alloc] init];
 
 		NSArray *components = [line componentsSeparatedByString: @":"];
-		[line release];
 		NSString *name = [components objectAtIndex: 0];
-		NSRange range = [name rangeOfString: @" "];
+		range = [name rangeOfString: @" "];
 		name = [name substringFromIndex: range.location];
 		range.length = range.location-4;
 		range.location = 4;
@@ -154,6 +171,10 @@
 
 		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
 		[newService release];
+
+		// Last line
+		if([[line substringToIndex: 4] isEqualToString: @"250 "])
+			break;
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -179,13 +200,14 @@
 	[socket writeString: @"LSTE\r\n"];
 	
 	NSString *line = nil;
+	NSRange range;
 	Event *newEvent = nil;
 	while(true)
 	{
-		line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+		// XXX: when do we actually abort here?
+		line = [self readSocketLine];
 		if(!line || [line length] < 5)
 		{
-			[line release];
 			break;
 		}
 
@@ -200,19 +222,19 @@
 		}
 		else if([[line substringToIndex: 5] isEqualToString: @"215-T"])
 		{
-			NSRange range = [line rangeOfString: @" "];
+			range = [line rangeOfString: @" "];
 			// XXX: do we need to cut/replace anything?
 			newEvent.title = [line substringFromIndex: range.location];
 		}
 		else if([[line substringToIndex: 5] isEqualToString: @"215-S"])
 		{
-			NSRange range = [line rangeOfString: @" "];
+			range = [line rangeOfString: @" "];
 			// XXX: do we need to cut/replace anything?
 			newEvent.sdescription = [line substringFromIndex: range.location];
 		}
 		else if([[line substringToIndex: 5] isEqualToString: @"215-D"])
 		{
-			NSRange range = [line rangeOfString: @" "];
+			range = [line rangeOfString: @" "];
 			// XXX: do we need to cut/replace anything?
 			newEvent.edescription = [line substringFromIndex: range.location];
 		}
@@ -251,21 +273,19 @@
 	NSRange range;
 	NSInteger tmpInteger;
 	NSCalendar *gregorian = [[NSCalendar alloc]
-							initWithCalendarIdentifier:NSGregorianCalendar];
+							initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
 	while(true)
 	{
-		line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
-		if(!line || [line length] < 3 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		line = [self readSocketLine];
+		if(!line || [line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
-			[line release];
 			break;
 		}
 
 		SVDRPTimer *newTimer = [[SVDRPTimer alloc] init];
 
 		NSArray *components = [line componentsSeparatedByString: @":"];
-		[line release];
 
 		// Id:
 		line = [components objectAtIndex: 0];
@@ -359,8 +379,12 @@
 
 		[target performSelectorOnMainThread: action withObject: newTimer waitUntilDone: NO];
 		[newTimer release];
+
+		// Last line
+		if([[[components objectAtIndex: 0] substringToIndex: 4] isEqualToString: @"250 "])
+			break;
 	}
-	[comps release];
+	//[comps release];
 	[gregorian release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -373,11 +397,11 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
-	
+
 	[socket writeString: @"LSTR\r\n"];
-	
+
 	// TODO: fetch response.
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	return nil;
 }
@@ -421,7 +445,7 @@
 
 	[socket writeString: @"VOLU\r\n"];
 
-	NSString *line = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSString *line = [self readSocketLine];
 	if([line isEqualToString: @"250 Audio is mute"])
 	{
 		volumeObject.current = 0;
@@ -429,11 +453,13 @@
 	}
 	else
 	{
-		// 250 Audio volume is 
-		volumeObject.current = [[line substringFromIndex: 21] integerValue];
+		// 250 Audio volume is ?
+		NSRange range;
+		range.location = 21;
+		range.length = [line length] - 21 - 2;
+		volumeObject.current = [[line substringWithRange: range] integerValue];
 		volumeObject.ismuted = NO;
 	}
-	[line release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -451,7 +477,7 @@
 
 	[socket writeString: @"VOLU mute\r\n"];
 
-	NSString *line = [[[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding] autorelease];
+	NSString *line = [self readSocketLine];
 	return [line isEqualToString: @"250 Audio is mute"];
 }
 
@@ -467,7 +493,8 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	[socket readDataUpToString: @"\r\n"];
+	NSString *ret = [self readSocketLine];
+	NSLog(ret);
 	return YES;
 }
 
@@ -509,9 +536,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSString *ret = [self readSocketLine];
 	NSLog(ret);
-	[ret release];
 	return YES;
 }
 
@@ -527,9 +553,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSString *ret = [self readSocketLine];
 	NSLog(ret);
-	[ret release];
 	return YES;
 }
 
@@ -549,11 +574,8 @@
 	[socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message
-	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
-	NSLog(ret);
-	[ret release];
-	return YES;
+	NSString *ret = [self readSocketLine];
+	return [ret isEqualToString: [NSString stringWithFormat: @"250 Timer \"%@\" deleted", ((SVDRPTimer *)oldTimer).tid]];
 }
 
 - (BOOL)sendButton:(NSInteger) type
@@ -574,9 +596,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [[NSString alloc] initWithData: [socket readDataUpToString: @"\r\n"] encoding: NSUTF8StringEncoding];
+	NSString *ret = [self readSocketLine];
 	NSLog(ret);
-	[ret release];
 	return YES;
 }
 

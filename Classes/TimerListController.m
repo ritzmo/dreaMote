@@ -301,14 +301,15 @@
 				for(; section < kTimerStateMax; section++){
 					dist[section]--;
 				}
-				
+
 				[_timers removeObjectAtIndex: index];
-				
+
 				[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 								 withRowAnimation: UITableViewRowAnimationFade];
 			}
 			else
 			{
+				// XXX: this WILL reset our scroll position..
 				for(section = 0; section < kTimerStateMax; section++)
 					dist[section] = 0;
 
