@@ -57,8 +57,13 @@
 	[socket release];
 	socket = [[BufferedSocket bufferedSocket] retain];
 
-	[socket connectToHostName: address port: port];
-	[socket readDataUpToString: @"\n"]; // XXX: we need to skip the welcome line
+	@try {
+		[socket connectToHostName: address port: port];
+		[socket readDataUpToString: @"\n"]; // XXX: we need to skip the welcome line
+	}
+	@catch (NSException * e) {
+		return;
+	}	
 }
 
 - (BOOL)isReachable
@@ -73,6 +78,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return NO;
 
 	[socket writeString: [NSString stringWithFormat: @"CHAN %@\r\n", service.sref]];
 
@@ -100,6 +107,15 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+	{
+		Service *fakeObject = [[Service alloc] init];
+		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[fakeObject release];
+
+		return nil;
+	}
 	
 	[socket writeString: @"LSTC\r\n"];
 
@@ -146,6 +162,15 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+	{
+		Event *fakeObject = [[Event alloc] init];
+		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[fakeObject release];
+
+		return nil;
+	}
 	
 	[socket writeString: @"LSTE\r\n"];
 	
@@ -204,6 +229,17 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+	{
+		SVDRPTimer *fakeObject = [[SVDRPTimer alloc] init];
+		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+		fakeObject.state = 0;
+		fakeObject.valid = NO;
+		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[fakeObject release];
+
+		return nil;
+	}
 
 	[socket writeString: @"LSTT\r\n"];
 
@@ -259,11 +295,7 @@
 		tmpInteger = [line length];
 		if(tmpInteger == 7)
 		{
-			NSCalendarDate *date = [NSCalendarDate calendarDate];
-			[comps setYear: [date yearOfCommonEra]];
-			[comps setMonth: [date monthOfYear]];
-			[comps setDay: [date dayOfMonth]];
-
+			comps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]];
 			newTimer.repeat = line;
 		}
 		// repeating timer with startdate in MTWTF--@YYYY-MM-DD
@@ -380,6 +412,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return;
 
 	[socket writeString: @"VOLU\r\n"];
 
@@ -408,6 +442,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return NO;
 
 	[socket writeString: @"VOLU mute\r\n"];
 
@@ -420,12 +456,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return NO;
 	
 	[socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: fetch response?
+	[socket readDataUpToString: @"\r\n"];
 	return YES;
 }
 
@@ -446,8 +484,8 @@
 		NSString *dayStr = [NSString stringWithFormat: @"%d-%d-%d",
 					[beginComponents year], [beginComponents month], [beginComponents day]];
 
-		timerString = [NSString stringWithFormat: @"%@:%d:%@:%d:%d:%@:%@:%@:%@",
-					[NSDate timeIntervalSinceReferenceDate], flags, dayStr,
+		timerString = [NSString stringWithFormat: @"%d:%@:%d:%d:%@:%@:%@:%@",
+					flags, timer.service.sref, dayStr,
 					[beginComponents hour] * 100 + [beginComponents minute],
 					[endComponents hour] * 100 + [endComponents minute], 50, 50,
 					timer.title, @""];
@@ -460,11 +498,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return NO;
 
 	[socket writeString: [NSString stringWithFormat: @"UPDT %@\r\n", [self anyTimerToString: newTimer]]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message?
+	// XXX: we should really parse the return message
+	[socket readDataUpToString: @"\r\n"];
 	return YES;
 }
 
@@ -473,12 +514,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
-	
-	// XXX: help?
+	if(![socket isConnected])
+		return NO;
+
 	[socket writeString: [NSString stringWithFormat: @"UPDT %@\r\n", [self anyTimerToString: newTimer]]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	// XXX: we should really parse the return message?
+	// XXX: we should really parse the return message
+	[socket readDataUpToString: @"\r\n"];
 	return YES;
 }
 
@@ -487,6 +530,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return NO;
 
 	// we need the timer id of vdr!
 	// XXX: we should figure out a better way to detect an svdrptimer though
@@ -496,7 +541,8 @@
 	[socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", [(SVDRPTimer *)oldTimer toString]]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message?
+	// XXX: we should really parse the return message
+	[socket readDataUpToString: @"\r\n"];
 	return YES;
 }
 
@@ -511,11 +557,14 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return NO;
 
 	[socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message?
+	// XXX: we should really parse the return message
+	[socket readDataUpToString: @"\r\n"];
 	return YES;
 }
 

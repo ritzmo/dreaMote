@@ -94,8 +94,8 @@
 		dayStr = [NSString stringWithFormat: @"%d-%d-%d",
 					[beginComponents year], [beginComponents month], [beginComponents day]];
 
-	return [NSString stringWithFormat: @"%@:%d:%@:%d:%d:%@:%@:%@:%@",
-		_tid, newFlags, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
+	return [NSString stringWithFormat: @"%d:%@:%@:%d:%d:%@:%@:%@:%@",
+		newFlags, _service.sref, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
 		[endComponents hour] * 100 + [endComponents minute], _priority, _lifetime,
 		_file, _auxiliary];
 }
