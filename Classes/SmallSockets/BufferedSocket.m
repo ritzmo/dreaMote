@@ -28,6 +28,7 @@
 //        distribution.
 //        
 
+
 #import <sys/types.h>
 #import <sys/socket.h>
 #import <netinet/in.h>
@@ -36,7 +37,6 @@
 #import "MutableDataBufferExtension.h"
 
 @implementation BufferedSocket
-
 
 + (BufferedSocket*)bufferedSocket
 //
@@ -92,7 +92,7 @@
 {
     struct sockaddr_in acceptAddr;
     int socketfd2 = SOCKET_INVALID_DESCRIPTOR;
-    int addrSize = sizeof(acceptAddr);
+    unsigned addrSize = sizeof(acceptAddr);
   
     // Socket must be created, not connected, and listening
     

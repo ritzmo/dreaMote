@@ -7,6 +7,8 @@
 //
 // Additional modifications by Steven Frank (stevenf@panic.com)
 //
+// Deprecated function calls removed by Moritz Venn (moritz.venn@freaque.net)
+//
 // This software is provided 'as-is', without any express or implied 
 // warranty. In no event will the authors be held liable for any damages 
 // arising from the use of this software.
@@ -110,7 +112,7 @@
     const char* cs;
     NSData* d;
     
-    cs = [s lossyCString];
+    cs = [s cStringUsingEncoding: NSASCIIStringEncoding];
     d = [NSData dataWithBytes:cs length:strlen(cs)];
     
     return [self indexOfData:d];

@@ -103,6 +103,7 @@
     unsigned int	readBufferSize;
     NSString* 		remoteHostName;
     unsigned short 	remotePort;
+	unsigned short  localPort;
     int 			socketfd;
 }
 
@@ -113,6 +114,7 @@
 // Designated initializer
 
 - (id)init;
+- (id)initWithSocketType:(int)sockType;
 
 // Private initializer, do not use
 
@@ -132,6 +134,7 @@
 // Making connections
 
 - (void)connectToHostName:(NSString*)hostName port:(unsigned short)port;
+- (void)connectToHostName:(NSString*)hostName port:(unsigned short)port timeout:(struct timeval) timeout;
 
 // Receiving connections
 
@@ -139,9 +142,9 @@
 - (void)bindTo:(u_int32_t)address port:(unsigned short)port;
 - (void)listenOnPort:(unsigned short)port;
 - (void)listenOnPort:(unsigned short)port maxPendingConnections:(unsigned int)maxPendingConnections;
+- (unsigned short)localPort;
 
 // Reading and writing data
-
 - (BOOL)isReadable;
 - (BOOL)isWritable;
 - (int)readData:(NSMutableData*)data;

@@ -5,6 +5,10 @@
 //
 // Copyright (C) 2001 Steven Frank (stevenf@panic.com)
 //
+//	Modified by Jonathan Saggau August 23, 2007
+//
+// Deprecated function calls removed by Moritz Venn (moritz.venn@freaque.net)
+//
 // This software is provided 'as-is', without any express or implied 
 // warranty. In no event will the authors be held liable for any damages 
 // arising from the use of this software.
@@ -27,7 +31,6 @@
 //        
  
 #import "AbstractSocket.h"
-
 #import <fcntl.h>
 #import <netdb.h>
 #import <netinet/in.h>
@@ -37,10 +40,45 @@
 #import <arpa/inet.h>
 #import <unistd.h>
 
+/*
+ * Like connect(), but with an explicit timeout
+ * http://www.rtems.com/ml/rtems-snapshots/2000/september/msg00004.html
+ * gets current socket timeout, temporarily sets it to the arg val, connects,
+ * then sets it back.
+ */
+int connectWithTimeout (int sfd,
+                        struct sockaddr *addr,
+                        int addrlen,
+                        struct timeval *timeout)
+{
+    struct timeval sv;
+    unsigned svlen = sizeof sv;
+    int ret;
+
+    if (!timeout)
+        return connect (sfd, addr, addrlen);
+	fprintf(stderr, "getting socket opts\n");
+    if (getsockopt (sfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&sv, &svlen) < 0)
+        return -1;
+	fprintf(stderr, "setting socket opts: tv_sec %f, tv_usec %f\n", (float)timeout->tv_sec, (float)timeout->tv_usec);
+    if (setsockopt (sfd, SOL_SOCKET, SO_RCVTIMEO, (char *)timeout, sizeof *timeout) < 0)
+        return -1;
+	fprintf(stderr, "Connecting\n");
+    ret = connect (sfd, addr, addrlen);
+	fprintf(stderr, "REsetting socket opts\n");
+    setsockopt (sfd, SOL_SOCKET, SO_RCVTIMEO, (char *)&sv, sizeof sv);
+	fprintf(stderr, "returning\n");
+    return ret;
+}
 
 @implementation AbstractSocket
 
 - (id)init
+{
+	return [self initWithSocketType:SOCK_STREAM];
+}
+
+- (id)initWithSocketType:(int)sockType
 //
 // Designated initializer
 //
@@ -54,13 +92,12 @@
     readBufferSize = SOCKET_DEFAULT_READ_BUFFER_SIZE;
     remoteHostName = NULL;
     remotePort = SOCKET_INVALID_PORT;
-
+	localPort = SOCKET_INVALID_PORT;
+	
     // Create socket
-
-    if ( (socketfd = socket(AF_INET, SOCK_STREAM, 0)) < 0 )
+    if ( (socketfd = socket(AF_INET, sockType, 0)) < 0 )
         [NSException raise:SOCKET_EX_CANT_CREATE_SOCKET 
                         format:SOCKET_EX_CANT_CREATE_SOCKET_F, strerror(errno)];
-
     [self allocReadBuffer];
     
     return self;
@@ -95,7 +132,7 @@
 {
     struct sockaddr_in acceptAddr;
     int socketfd2 = SOCKET_INVALID_DESCRIPTOR;
-    int addrSize = sizeof(acceptAddr);
+    unsigned addrSize = sizeof(acceptAddr);
   
     // Socket must be created, not connected, and listening
     
@@ -154,6 +191,7 @@
 // call this method.  See listenOnPort instead.
 //
 {
+	localPort = port;
     struct sockaddr_in localAddr;
     int on = 1;
 
@@ -171,8 +209,11 @@
     localAddr.sin_port        = htons(port);
 
     if ( bind(socketfd, (struct sockaddr*)&localAddr, sizeof(localAddr)) < 0 )
+	{
 	[NSException raise:SOCKET_EX_BIND_FAILED 
                         format:SOCKET_EX_BIND_FAILED_F, strerror(errno)];
+	localPort = SOCKET_INVALID_PORT;
+	}
 }
 
 
@@ -199,8 +240,7 @@
     remotePort = SOCKET_INVALID_PORT;
 }
 
-
-- (void)connectToHostName:(NSString*)hostName port:(unsigned short)port
+- (void)connectToHostName:(NSString*)hostName port:(unsigned short)port timeout:(struct timeval) timeout
 //
 // Connect the socket to the host specified by hostName, on the requested port.
 //
@@ -220,7 +260,7 @@
     
     // Look up host 
     
-    if ( (remoteHost = gethostbyname([hostName cString])) == NULL )
+    if ( (remoteHost = gethostbyname([hostName cStringUsingEncoding: NSASCIIStringEncoding])) == NULL )
         [NSException raise:SOCKET_EX_HOST_NOT_FOUND 
                         format:SOCKET_EX_HOST_NOT_FOUND_F, strerror(errno)];
     
@@ -232,8 +272,8 @@
     remoteAddr.sin_port = htons(port);
 
     // Request connection, raise on failure
-    
-    if ( (connect(socketfd, (struct sockaddr*)&remoteAddr, sizeof(remoteAddr)) < 0) )
+
+    if ( (connectWithTimeout(socketfd, (struct sockaddr*)&remoteAddr, sizeof(remoteAddr), &timeout) < 0) )
         [NSException raise:SOCKET_EX_CONNECT_FAILED 
                         format:SOCKET_EX_CONNECT_FAILED_F, strerror(errno)];
 
@@ -243,6 +283,15 @@
     remotePort = port;
 
     connected = YES;
+}
+
+- (void)connectToHostName:(NSString*)hostName port:(unsigned short)port
+{
+	struct timeval timeout;
+	// Create a default timeout of four secs
+    timeout.tv_sec = 4;
+    timeout.tv_usec = 0;
+	[self connectToHostName:hostName port:port timeout:timeout];
 }
 
 
@@ -565,7 +614,7 @@
         
         if ( sent < 0 )
             [NSException raise:SOCKET_EX_SEND_FAILED 
-                            format:SOCKET_EX_SEND_FAILED_F, strerror(errno)];    
+                         format:SOCKET_EX_SEND_FAILED_F, strerror(errno)];    
         
         bytes += sent;
         len -= sent;
@@ -580,6 +629,11 @@
 {
     if ( [string length] > 0 ) 
         [self writeData:[string dataUsingEncoding:NSUTF8StringEncoding]]; 
+}
+
+- (unsigned short)localPort
+{
+	return localPort;
 }
 
 
