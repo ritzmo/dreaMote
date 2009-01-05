@@ -59,6 +59,7 @@
 
 	@try {
 		[socket connectToHostName: address port: port];
+		[socket setBlocking: YES];
 		[socket readDataUpToString: @"\n"]; // XXX: we need to skip the welcome line
 	}
 	@catch (NSException * e) {
