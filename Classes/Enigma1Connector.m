@@ -11,6 +11,7 @@
 #import "Objects/Enigma/Service.h"
 #import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Volume.h"
+#import "Objects/MovieProtocol.h"
 
 #import "XMLReader/Enigma/EventXMLReader.h"
 #import "XMLReader/Enigma/TimerXMLReader.h"
@@ -88,23 +89,33 @@
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+- (BOOL)zapInternal: (NSString *)sref
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
-
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
+	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
+	
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
+						  returningResponse: &response error: nil];
+	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+	
 	return ([response statusCode] == 204);
+}
+
+- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+{
+	return [self zapInternal: service.sref];
+}
+
+- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
+{
+	return [self zapInternal: movie.sref];
 }
 
 /*

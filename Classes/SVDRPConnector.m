@@ -9,10 +9,10 @@
 #import "SVDRPConnector.h"
 
 #import "BufferedSocket.h"
-#import <sys/socket.h>
 
-#import "Objects/Generic/Service.h"
 #import "Objects/Generic/Event.h"
+#import "Objects/Generic/Movie.h"
+#import "Objects/Generic/Service.h"
 #import "Objects/Generic/Volume.h"
 #import "Objects/SVDRP/Timer.h"
 
@@ -110,6 +110,24 @@
 	return YES;
 }
 
+- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
+{
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!socket || ![socket isConnected])
+		[self getSocket];
+	if(![socket isConnected])
+		return NO;
+
+	[socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// XXX: we should really parse the return message
+	NSString *ret = [self readSocketLine];
+	NSLog(ret);
+	return YES;
+}
+
 // TODO: does the vdr actually have bouquets?
 // XXX: for now we just return a fake service, we don't support favourite online mode anyway
 - (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
@@ -143,10 +161,9 @@
 	NSString *line = nil;
 	NSRange range;
 	Service *newService = nil;
-	while(true)
+	while(line = [self readSocketLine])
 	{
-		line = [self readSocketLine];
-		if(!line || [line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
 			break;
 		}
@@ -202,11 +219,9 @@
 	NSString *line = nil;
 	NSRange range;
 	Event *newEvent = nil;
-	while(true)
+	while(line = [self readSocketLine])
 	{
-		// XXX: when do we actually abort here?
-		line = [self readSocketLine];
-		if(!line || [line length] < 5)
+		if([line length] < 5 || [line isEqualToString: @"215 End of EPG data"])
 		{
 			break;
 		}
@@ -275,10 +290,9 @@
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	while(true)
+	while(line = [self readSocketLine])
 	{
-		line = [self readSocketLine];
-		if(!line || [line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
 			break;
 		}
@@ -391,7 +405,7 @@
 	return nil;
 }
 
-// TODO: implement
+// TODO: test this
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -400,7 +414,57 @@
 
 	[socket writeString: @"LSTR\r\n"];
 
-	// TODO: fetch response.
+	NSString *line = nil;
+	Movie *movie = nil;
+	NSRange range;
+	NSCalendar *gregorian = [[NSCalendar alloc]
+							 initWithCalendarIdentifier: NSGregorianCalendar];
+	NSDateComponents *comps = [[NSDateComponents alloc] init];
+	while(line = [self readSocketLine])
+	{
+		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		{
+			break;
+		}
+
+		movie = [[Movie alloc] init];
+
+		range.location = 4;
+		range.length = [line length] - 4;
+		range = [line rangeOfString: @" " options: NSLiteralSearch range: range];
+		range.length = range.location - 4;
+		range.location = 4;
+		movie.sref = [line substringWithRange: range];
+		line = [line substringFromIndex: range.location + range.length];
+
+		NSArray *components = [line componentsSeparatedByString: @" "];
+		line = [components objectAtIndex: 0];
+		range.location = 0;
+		range.length = 2;
+		[comps setDay: [[line substringWithRange: range] integerValue]];
+		range.location = 3;
+		[comps setMonth: [[line substringWithRange: range] integerValue]];
+		range.location = 6;
+		[comps setYear: 2000 + [[line substringWithRange: range] integerValue]];
+		line = [components objectAtIndex: 1];
+		range.location = 0;
+		[comps setHour: [[line substringWithRange: range] integerValue]];
+		range.location = 3;
+		[comps setMinute: [[line substringWithRange: range] integerValue]];
+
+		range.location = 3;
+		range.length = [components count] - 3;
+		movie.title = [[components subarrayWithRange: range] componentsJoinedByString: @" "];
+
+		[target performSelectorOnMainThread: action withObject: movie waitUntilDone: NO];
+		[movie release];
+
+		// Last line
+		if([[line substringToIndex: 4] isEqualToString: @"250 "])
+			break;
+	}
+	//[comps release];
+	[gregorian release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	return nil;
@@ -532,7 +596,7 @@
 	if(![socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"UPDT %@\r\n", [self anyTimerToString: newTimer]]];
+	[socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", [self anyTimerToString: newTimer]]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message

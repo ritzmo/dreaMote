@@ -61,6 +61,7 @@ static NSDictionary *_connection;
 			break;
 		case kSVDRPConnector:
 			_sharedRemoteConnector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001];
+			break;
 		default:
 			return NO;
 	}

@@ -103,6 +103,7 @@ enum buttonCodes {
 };
 
 @class Volume;
+@protocol MovieProtocol;
 @protocol ServiceProtocol;
 @protocol TimerProtocol;
 
@@ -125,6 +126,7 @@ enum buttonCodes {
 
 // XXX: we might want to return a dictionary which contains retval / explain for these
 - (BOOL)zapTo:(NSObject<ServiceProtocol> *) service;
+- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie;
 - (void)shutdown;
 - (void)standby;
 - (void)reboot;

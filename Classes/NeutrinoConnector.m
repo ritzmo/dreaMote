@@ -103,6 +103,12 @@
 	return ([response statusCode] == 200);
 }
 
+- (BOOL)playMovie: (NSObject<MovieProtocol> *)movie
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return NO;
+}
+
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>

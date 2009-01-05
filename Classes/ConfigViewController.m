@@ -257,17 +257,21 @@
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnection = [NSNumber numberWithInteger: connectionIndex];
+
+	[(UITableView *)self.view beginUpdates];
 	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
 	[RemoteConnectorObject connectTo: connectionIndex];
 
 	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 								withRowAnimation: UITableViewRowAnimationFade];
+	[(UITableView *)self.view endUpdates];
 }
 
 - (void)doConnect: (id)sender
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 
+	[(UITableView *)self.view beginUpdates];
 	[RemoteConnectorObject connectTo: connectionIndex];
 
 	if(connectionIndex == [stdDefaults integerForKey: kActiveConnection])
@@ -278,6 +282,7 @@
 				deleteRowsAtIndexPaths: [NSArray arrayWithObject:
 											[NSIndexPath indexPathForRow:0 inSection:3]]
 				withRowAnimation: UITableViewRowAnimationFade];
+	[(UITableView *)self.view endUpdates];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

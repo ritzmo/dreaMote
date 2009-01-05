@@ -8,6 +8,7 @@
 
 #import "Enigma2Connector.h"
 
+#import "Objects/MovieProtocol.h"
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
 
@@ -84,10 +85,10 @@ enum powerStates {
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+- (BOOL)zapInternal:(NSString *) sref
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -101,6 +102,16 @@ enum powerStates {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	return ([response statusCode] == 200);
+}
+
+- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+{
+	return [self zapInternal: service.sref];
+}
+
+- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
+{
+	return [self zapInternal: movie.sref];
 }
 
 - (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
