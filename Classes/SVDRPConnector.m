@@ -214,7 +214,7 @@
 		return nil;
 	}
 	
-	[socket writeString: @"LSTE\r\n"];
+	[socket writeString: [NSString stringWithFormat: @"LSTE %@\r\n", service.sref]];
 	
 	NSString *line = nil;
 	NSRange range;
