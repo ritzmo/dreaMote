@@ -109,12 +109,8 @@
 
 - (int)indexOfString:(NSString*)s
 {
-    const char* cs;
-    NSData* d;
-    
-    cs = [s cStringUsingEncoding: NSASCIIStringEncoding];
-    d = [NSData dataWithBytes:cs length:strlen(cs)];
-    
+    NSData *d = [s dataUsingEncoding: NSASCIIStringEncoding allowLossyConversion: YES];
+
     return [self indexOfData:d];
 }
 
