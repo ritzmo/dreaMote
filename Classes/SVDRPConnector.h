@@ -14,6 +14,7 @@
 
 @interface SVDRPConnector : NSObject <RemoteConnector> {
 @private
+	NSMutableDictionary *serviceCache;
 	NSString *address;
 	NSInteger port;
 

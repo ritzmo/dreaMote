@@ -35,6 +35,7 @@
 	{
 		address = [inAddress retain];
 		port = inPort > 0 ? inPort : 2001;
+		serviceCache = nil;
 	}
 	return self;
 }
@@ -43,6 +44,7 @@
 {
 	[address release];
 	[socket release];
+	[serviceCache release];
 
 	[super dealloc];
 }
@@ -155,6 +157,9 @@
 
 		return nil;
 	}
+	if(serviceCache != nil)
+		[serviceCache release];
+	serviceCache = [[NSMutableDictionary dictionaryWithCapacity: 50] retain]; // XXX: any suggestions for a good starting value?
 
 	[socket writeString: @"LSTC\r\n"];
 
@@ -189,6 +194,7 @@
 		newService.sname = name;
 
 		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[serviceCache setObject: newService forKey: newService.sref];
 		[newService release];
 
 		// Last line
@@ -283,6 +289,9 @@
 
 		return nil;
 	}
+	// Try to refresh cache if none present
+	if(serviceCache == nil)
+		[self fetchServices: nil action: nil bouquet: nil];	
 
 	[socket writeString: @"LSTT\r\n"];
 
@@ -323,11 +332,19 @@
 
 		// Channel
 		// This is a channel number, so we have to cache the names in fetchServices
-		Service *service = [[Service alloc] init];
-		service.sname = @"???";
-		service.sref = [components objectAtIndex: 1];
-		newTimer.service = service;
-		[service release];
+		Service *service = [serviceCache objectForKey: [components objectAtIndex: 1]];
+		if(service)
+		{
+			newTimer.service = service;
+		}
+		else
+		{
+			service = [[Service alloc] init];
+			service.sname = @"???";
+			service.sref = [components objectAtIndex: 1];
+			newTimer.service = service;
+			[service release];
+		}
 
 		// Day
 		line = [components objectAtIndex: 2];
@@ -560,34 +577,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
-	return YES;
-}
-
-- (NSString *)anyTimerToString:(NSObject<TimerProtocol> *) timer
-{
-	NSString *timerString = nil;
-	if([timer respondsToSelector: @selector(toString)])
-		timerString = [(SVDRPTimer *)timer toString];
-	else
-	{
-		NSInteger flags = timer.disabled ? 1 : 0;
-		
-		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-		NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: timer.begin];
-		NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: timer.end];
-		[gregorian release];
-		
-		NSString *dayStr = [NSString stringWithFormat: @"%d-%d-%d",
-					[beginComponents year], [beginComponents month], [beginComponents day]];
-
-		timerString = [NSString stringWithFormat: @"%d:%@:%d:%d:%@:%@:%@:%@",
-					flags, timer.service.sref, dayStr,
-					[beginComponents hour] * 100 + [beginComponents minute],
-					[endComponents hour] * 100 + [endComponents minute], 50, 50,
-					timer.title, @""];
-	}
-	return timerString;
+	return [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
 }
 
 - (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
@@ -598,13 +588,30 @@
 	if(![socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", [self anyTimerToString: newTimer]]];
+	NSString *timerString;
+	NSInteger flags = newTimer.disabled ? 1 : 0;
+
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+	NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.begin];
+	NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.end];
+	[gregorian release];
+
+	NSString *dayStr = [NSString stringWithFormat: @"%d-%d-%d",
+						[beginComponents year], [beginComponents month], [beginComponents day]];
+
+	timerString = [NSString stringWithFormat: @"%d:%@:%d:%d:%@:%@:%@:%@",
+				   flags, newTimer.service.sref, dayStr,
+				   [beginComponents hour] * 100 + [beginComponents minute],
+				   [endComponents hour] * 100 + [endComponents minute], 50, 50,
+				   newTimer.title, @""];
+
+	[socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
-	return YES;
+	if([ret length] < 4)
+		return NO;
+	return [[ret substringFromIndex: 4] isEqualToString: timerString];
 }
 
 - (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
@@ -615,13 +622,17 @@
 	if(![socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"UPDT %@\r\n", [self anyTimerToString: newTimer]]];
+	// we need the timer id of vdr!
+	// XXX: we should figure out a better way to detect an svdrptimer though
+	if(![newTimer respondsToSelector: @selector(toString)])
+		return NO;
+	NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
+
+	[socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
-	return YES;
+	return [ret isEqualToString: [NSString stringWithFormat: @"250 %@", timerString]];
 }
 
 - (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
@@ -661,10 +672,8 @@
 	[socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
-	return YES;
+	return [ret isEqualToString: @"250 Message queued"];
 }
 
 - (NSInteger)getMaxMessageType
@@ -685,6 +694,8 @@
 
 - (void)freeCaches
 {
+	[serviceCache release];
+	serviceCache = nil;
 	return;
 }
 
