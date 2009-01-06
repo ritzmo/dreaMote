@@ -34,7 +34,7 @@
 	if(self = [super init])
 	{
 		address = [inAddress retain];
-		port = inPort;
+		port = inPort > 0 ? inPort : 2001;
 	}
 	return self;
 }
@@ -172,7 +172,9 @@
 
 		NSArray *components = [line componentsSeparatedByString: @":"];
 		NSString *name = [components objectAtIndex: 0];
-		range = [name rangeOfString: @" "];
+		range.location = 4;
+		range.length = [name length] - 4;
+		range = [name rangeOfString: @" " options: NSLiteralSearch range: range];
 		name = [name substringFromIndex: range.location];
 		range.length = range.location-4;
 		range.location = 4;

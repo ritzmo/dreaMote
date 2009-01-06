@@ -54,6 +54,7 @@
 #define kPassword				@"passwordKey"
 #define kConnector				@"connectorKey"
 #define kSingleBouquet			@"singleBouquetKey"
+#define kPort					@"portKey"
 
 // keys in nsuserdefaults
 #define kActiveConnection		@"activeConnector"

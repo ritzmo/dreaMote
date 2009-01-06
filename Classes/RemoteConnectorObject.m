@@ -35,6 +35,7 @@ static NSDictionary *_connection;
 	NSString *username = [[connection objectForKey: kUsername]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSString *password = [[connection objectForKey: kPassword] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
+	NSInteger port = [[connection objectForKey: kPort] integerValue];
 
 	if(_sharedRemoteConnector)
 	{
@@ -51,16 +52,16 @@ static NSDictionary *_connection;
 	switch(connectorId)
 	{
 		case kEnigma2Connector:
-			_sharedRemoteConnector = [Enigma2Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
+			_sharedRemoteConnector = [Enigma2Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		case kEnigma1Connector:
-			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
+			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
+			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		case kSVDRPConnector:
-			_sharedRemoteConnector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001];
+			_sharedRemoteConnector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		default:
 			return NO;
