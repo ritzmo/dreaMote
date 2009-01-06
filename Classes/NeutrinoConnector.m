@@ -21,12 +21,20 @@
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
+enum neutrinoMessageTypes {
+	kNeutrinoMessageTypeNormal = 0,
+	kNeutrinoMessageTypeConfirmed = 1,
+	kNeutrinoMessageTypeMax = 2,
+};
+
 @implementation NeutrinoConnector
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
 	// Screenshots do not work yet... :-/
-	return (feature == kFeaturesConstantTimerId);
+	return
+		(feature == kFeaturesConstantTimerId) ||
+		(feature == kFeaturesMessageType);
 }
 
 - (NSInteger)getMaxVolume
@@ -644,9 +652,7 @@
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	// Generate URI
-	// we open a popup which means the window will close automatically
-	// nmsg (a window which must be closed be the user) is also available
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?popup=%@", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -665,12 +671,20 @@
 
 - (NSInteger)getMaxMessageType
 {
-	return 0;//kNeutrinoMessageTypeMax;
+	return kNeutrinoMessageTypeMax;
 }
 
 - (NSString *)getMessageTitle: (NSInteger)type
 {
-	return nil;
+	switch(type)
+	{
+		case kNeutrinoMessageTypeNormal:
+			return NSLocalizedString(@"Normal", @"");
+		case kNeutrinoMessageTypeConfirmed:
+			return NSLocalizedString(@"Confirmed", @"");
+		default:
+			return @"???";
+	}
 }
 
 - (NSData *)getScreenshot: (enum screenshotType)type
