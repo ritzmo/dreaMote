@@ -20,6 +20,14 @@
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
+enum enigma1MessageTypes {
+	kEnigma1MessageTypeInfo = 0,
+	kEnigma1MessageTypeWarning = 1,
+	kEnigma1MessageTypeQuestion = 2,
+	kEnigma1MessageTypeError = 3,
+	kEnigma1MessageTypeMax = 4
+};
+
 @implementation Enigma1Connector
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
@@ -29,6 +37,7 @@
 		(feature == kFeaturesRecordInfo) ||
 		(feature == kFeaturesMessageCaption) ||
 		(feature == kFeaturesMessageTimeout) ||
+		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesScreenshot) ||
 		(feature == kFeaturesTimerAfterEvent) ||
 		(feature == kFeaturesFullRemote) ||
@@ -494,8 +503,23 @@
 
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
+	NSInteger translatedType = -1;
+	switch(type)
+	{
+		case kEnigma1MessageTypeInfo:
+			translatedType = 16;
+		case kEnigma1MessageTypeWarning:
+			translatedType = 32;
+		case kEnigma1MessageTypeQuestion:
+			translatedType = 64;
+		case kEnigma1MessageTypeError:
+			translatedType = 128;
+		default:
+			translatedType = -1;
+	}
+
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [caption  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], timeout] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d&icon=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [caption  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], timeout, translatedType] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -520,12 +544,24 @@
 
 - (NSInteger)getMaxMessageType
 {
-	return 0;//kEnigma1MessageTypeMax;
+	return kEnigma1MessageTypeMax;
 }
 
 - (NSString *)getMessageTitle: (NSInteger)type
 {
-	return nil;
+	switch(type)
+	{
+		case kEnigma1MessageTypeInfo:
+			return NSLocalizedString(@"Info", @"");
+		case kEnigma1MessageTypeWarning:
+			return NSLocalizedString(@"Warning", @"");
+		case kEnigma1MessageTypeQuestion:
+			return NSLocalizedString(@"Question", @"");
+		case kEnigma1MessageTypeError:
+			return NSLocalizedString(@"Error", @"");
+		default:
+			return @"???";
+	}
 }
 
 - (NSData *)getScreenshot: (enum screenshotType)type
