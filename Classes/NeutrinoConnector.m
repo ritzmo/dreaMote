@@ -663,6 +663,16 @@
 	return ([response statusCode] == 200);
 }
 
+- (NSInteger)getMaxMessageType
+{
+	return 0;//kNeutrinoMessageTypeMax;
+}
+
+- (NSString *)getMessageTitle: (NSInteger)type
+{
+	return nil;
+}
+
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
 	if(type == kScreenshotTypeOSD)

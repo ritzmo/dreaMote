@@ -114,7 +114,7 @@
 	timeoutTextField.keyboardType = UIKeyboardTypeDefault; // XXX: we lack a better one :-)
 
 	// Default type
-	_type = kMessageTypeInfo;
+	_type = 0;
 
 	// Connect Button
 	sendButton = [self create_SendButton];
@@ -163,7 +163,7 @@
 			&& timeout == 0)
 		failureMessage = NSLocalizedString(@"Please provide a valid timeout interval.", @"");
 	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType]
-			&& _type >= kMessageTypeMax)
+			&& _type >= [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType])
 		failureMessage = NSLocalizedString(@"Invalid message type.", @"");
 	else if(![[RemoteConnectorObject sharedRemoteConnector] sendMessage:
 															   message :caption :type :timeout])
@@ -195,16 +195,7 @@
 
 	_type = [newType integerValue];
 
-	if(_type == kMessageTypeAttention)
-		typeCell.text = NSLocalizedString(@"Attention", @"");
-	else if(_type == kMessageTypeInfo)
-		typeCell.text = NSLocalizedString(@"Info", @"");
-	else if(_type == kMessageTypeMessage)
-		typeCell.text = NSLocalizedString(@"Message", @"");
-	else if(_type == kMessageTypeYesNo)
-		typeCell.text = NSLocalizedString(@"Yes/No", @"");
-	else
-		typeCell.text = @"???";
+	typeCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 }
 
 #pragma mark - UITableView delegates
@@ -379,16 +370,7 @@
 			if(self.editing)
 				sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-			if(_type == kMessageTypeAttention)
-				sourceCell.text = NSLocalizedString(@"Attention", @"");
-			else if(_type == kMessageTypeInfo)
-				sourceCell.text = NSLocalizedString(@"Info", @"");
-			else if(_type == kMessageTypeMessage)
-				sourceCell.text = NSLocalizedString(@"Message", @"");
-			else if(_type == kMessageTypeYesNo)
-				sourceCell.text = NSLocalizedString(@"Yes/No", @"");
-			else
-				sourceCell.text = @"???";
+			sourceCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 
 			typeCell = sourceCell;
 			break;

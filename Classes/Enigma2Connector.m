@@ -24,6 +24,14 @@ enum powerStates {
 	kRestartGUIState = 3,
 };
 
+enum enigma2MessageTypes {
+	kEnigma2MessageTypeYesNo = 0,
+	kEnigma2MessageTypeInfo = 1,
+	kEnigma2MessageTypeMessage = 2,
+	kEnigma2MessageTypeAttention = 3,
+	kEnigma2MessageTypeMax = 4
+};
+
 @implementation Enigma2Connector
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
@@ -396,6 +404,28 @@ enum powerStates {
 		return YES;
 
 	return NO;
+}
+
+- (NSInteger)getMaxMessageType
+{
+	return kEnigma2MessageTypeMax;
+}
+
+- (NSString *)getMessageTitle: (NSInteger)type
+{
+	switch(type)
+	{
+		case kEnigma2MessageTypeAttention:
+			return NSLocalizedString(@"Attention", @"");
+		case kEnigma2MessageTypeInfo:
+			return NSLocalizedString(@"Info", @"");
+		case kEnigma2MessageTypeMessage:
+			return NSLocalizedString(@"Message", @"");
+		case kEnigma2MessageTypeYesNo:
+			return NSLocalizedString(@"Yes/No", @"");
+		default:
+			return @"???";
+	}
 }
 
 - (NSData *)getScreenshot: (enum screenshotType)type

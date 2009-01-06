@@ -16,14 +16,6 @@ enum availableConnectors {
 	kMaxConnector = 4,
 };
 
-enum enigma2MessageTypes {
-	kMessageTypeYesNo = 0,
-	kMessageTypeInfo = 1,
-	kMessageTypeMessage = 2,
-	kMessageTypeAttention = 3,
-	kMessageTypeMax = 4
-};
-
 enum screenshotType {
 	kScreenshotTypeBoth = 0,
 	kScreenshotTypeOSD = 1,
@@ -138,6 +130,9 @@ enum buttonCodes {
 - (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer;
 - (BOOL)sendButton:(NSInteger) type;
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
+
+- (NSInteger)getMaxMessageType;
+- (NSString *)getMessageTitle: (NSInteger)type;
 
 - (NSData *)getScreenshot: (enum screenshotType)type;
 

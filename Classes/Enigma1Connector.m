@@ -518,6 +518,16 @@
 	return NO;
 }
 
+- (NSInteger)getMaxMessageType
+{
+	return 0;//kEnigma1MessageTypeMax;
+}
+
+- (NSString *)getMessageTitle: (NSInteger)type
+{
+	return nil;
+}
+
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
 	if(type == kScreenshotTypeOSD)

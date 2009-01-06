@@ -9,7 +9,7 @@
 #import "MessageTypeViewController.h"
 
 #import "Constants.h"
-#import "RemoteConnector.h"
+#import "RemoteConnectorObject.h"
 
 @implementation MessageTypeViewController
 
@@ -67,7 +67,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return kMessageTypeMax;
+	return [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType];
 }
 
 // to determine which UITableViewCell to be used on a given row.
@@ -84,24 +84,7 @@
 		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
 	// we are creating a new cell, setup its attributes
-	switch(row)
-	{
-		case kMessageTypeAttention:
-			cell.text = NSLocalizedString(@"Attention", @"");
-			break;
-		case kMessageTypeInfo:
-			cell.text = NSLocalizedString(@"Info", @"");
-			break;
-		case kMessageTypeMessage:
-			cell.text = NSLocalizedString(@"Message", @"");
-			break;
-		case kMessageTypeYesNo:
-			cell.text = NSLocalizedString(@"Yes/No", @"");
-			break;
-		default:
-			cell.text = @"???";
-			break;
-	}
+	cell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: row];
 
 	if(row == _selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;

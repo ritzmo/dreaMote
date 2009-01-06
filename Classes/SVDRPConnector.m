@@ -213,9 +213,9 @@
 
 		return nil;
 	}
-	
+
 	[socket writeString: [NSString stringWithFormat: @"LSTE %@\r\n", service.sref]];
-	
+
 	NSString *line = nil;
 	NSRange range;
 	Event *newEvent = nil;
@@ -663,6 +663,16 @@
 	NSString *ret = [self readSocketLine];
 	NSLog(ret);
 	return YES;
+}
+
+- (NSInteger)getMaxMessageType
+{
+	return 0;
+}
+
+- (NSString *)getMessageTitle: (NSInteger)type
+{
+	return nil;
 }
 
 - (NSData *)getScreenshot: (enum screenshotType)type
