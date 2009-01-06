@@ -84,7 +84,16 @@
 	}
 #else
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
+	@try {
+		_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
+	}
+	// XXX: this is to prevent an exception in -[NSData(NSData) initWithContentsOfURL:options:error:]
+	@catch (NSException * e) {
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[self sendErroneousObject];
+		return nil;
+	}
+	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	finished = YES;
 
