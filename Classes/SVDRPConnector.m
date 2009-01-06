@@ -20,8 +20,7 @@
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	// XXX: still wip, so work on core features first :-)
-	return NO;
+	return (feature == kFeaturesRecordInfo);
 }
 
 - (NSInteger)getMaxVolume
@@ -66,7 +65,7 @@
 	}
 	@catch (NSException * e) {
 		return;
-	}	
+	}
 }
 
 - (NSString *)readSocketLine
