@@ -656,8 +656,186 @@
 
 - (BOOL)sendButton:(NSInteger) type
 {
-	// TODO: implement
-	return NO;
+	NSString *buttonCode = nil;
+	switch(type)
+	{
+		case kButtonCode0:
+			buttonCode = @"0";
+			break;
+		case kButtonCode1:
+			buttonCode = @"1";
+			break;
+		case kButtonCode2:
+			buttonCode = @"2";
+			break;
+		case kButtonCode3:
+			buttonCode = @"3";
+			break;
+		case kButtonCode4:
+			buttonCode = @"4";
+			break;
+		case kButtonCode5:
+			buttonCode = @"5";
+			break;
+		case kButtonCode6:
+			buttonCode = @"6";
+			break;
+		case kButtonCode7:
+			buttonCode = @"7";
+			break;
+		case kButtonCode8:
+			buttonCode = @"8";
+			break;
+		case kButtonCode9:
+			buttonCode = @"9";
+			break;
+		case kButtonCodeUp:
+			buttonCode = @"Up";
+			break;
+		case kButtonCodeDown:
+			buttonCode = @"Down";
+			break;
+		case kButtonCodeLeft:
+			buttonCode = @"Left";
+			break;
+		case kButtonCodeRight:
+			buttonCode = @"Right";
+			break;
+		case kButtonCodeMenu:
+			buttonCode = @"Menu";
+			break;
+		case kButtonCodeOK:
+			buttonCode = @"Ok";
+			break;
+		case kButtonCodeRed:
+			buttonCode = @"Red";
+			break;
+		case kButtonCodeGreen:
+			buttonCode = @"Green";
+			break;
+		case kButtonCodeYellow:
+			buttonCode = @"Yellow";
+			break;
+		case kButtonCodeBlue:
+			buttonCode = @"Blue";
+			break;
+		case kButtonCodeInfo:
+			buttonCode = @"Info";
+			break;
+		case kButtonCodeNext:
+			buttonCode = @"Next";
+			break;
+		case kButtonCodePrevious:
+			buttonCode = @"Prev";
+			break;
+		case kButtonCodePower:
+			buttonCode = @"Power";
+			break;
+		case kButtonCodeBouquetUp:
+			buttonCode = @"Channel+";
+			break;
+		case kButtonCodeBouquetDown:
+			buttonCode = @"Channel-";
+			break;
+		case kButtonCodeVolUp:
+			buttonCode = @"Volume+";
+			break;
+		case kButtonCodeVolDown:
+			buttonCode = @"Volume-";
+			break;
+		case kButtonCodeMute:
+			buttonCode = @"Mute";
+			break;
+		case kButtonCodeAudio:
+			buttonCode = @"Audio";
+			break;
+		case kButtonCodeText: // Map Text -> Subtitles
+			buttonCode = @"Subtitles";
+			break;
+		case kButtonCodeVideo: // Map Video -> Recordings
+			buttonCode = @"Recordings";
+			break;
+		// Unmapped
+/*
+		case kButtonCodePlay:
+			buttonCode = @"Play";
+			break;
+		case kButtonCodePause:
+			buttonCode = @"Pause";
+			break;
+		case kButtonCodeStop:
+			buttonCode = @"Stop";
+			break;
+		case kButtonCodeRecord:
+			buttonCode = @"Record";
+			break;
+		case kButtonCodeFastFwd:
+			buttonCode = @"FastFwd";
+			break;
+		case kButtonCodeFastRwd:
+			buttonCode = @"FastRwd";
+			break;			
+		case kButtonCodePrevChannel:
+			buttonCode = @"PrevChannel";
+			break;
+		case kButtonCodeSchedule:
+			buttonCode = @"Schedule";
+			break;
+		case kButtonCodeChannels:
+			buttonCode = @"Channels";
+			break;
+		case kButtonCodeTimers:
+			buttonCode = @"Timers";
+			break;
+		case kButtonCodeSetup:
+			buttonCode = @"Setup";
+			break;
+		case kButtonCodeCommands:
+			buttonCode = @"Commands";
+			break;
+		case kButtonCodeUser1:
+			buttonCode = @"User1";
+			break;
+		case kButtonCodeUser2:
+			buttonCode = @"User2";
+			break;
+		case kButtonCodeUser3:
+			buttonCode = @"User3";
+			break;
+		case kButtonCodeUser4:
+			buttonCode = @"User4";
+			break;
+		case kButtonCodeUser5:
+			buttonCode = @"User5";
+			break;
+		case kButtonCodeUser6:
+			buttonCode = @"User6";
+			break;
+		case kButtonCodeUser7:
+			buttonCode = @"User7";
+			break;
+		case kButtonCodeUser8:
+			buttonCode = @"User8";
+			break;
+		case kButtonCodeUser9:
+			buttonCode = @"User9";
+			break;
+*/
+	}
+	if(buttonCode == nil)
+		return NO;
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!socket || ![socket isConnected])
+		[self getSocket];
+	if(![socket isConnected])
+		return NO;
+
+	[socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSString *ret = [self readSocketLine];
+	return [ret isEqualToString: [NSString stringWithFormat: @"250 Key \"%@\" accepted", buttonCode]];
 }
 
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
