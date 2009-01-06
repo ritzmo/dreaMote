@@ -160,16 +160,6 @@
 	return [[NSString stringWithFormat: @"%d", _state] autorelease];
 }
 
-- (NSInteger)getEnigmaAfterEvent
-{
-	if(_afterevent == kAfterEventStandby)
-		return doGoSleep;
-	else if(_afterevent == kAfterEventDeepstandby)
-		return doShutdown;
-	else // _afterevent == kAfterEventNothing or unhandled
-		return 0;
-}
-
 - (void)setBeginFromString: (NSString *)newBegin
 {
 	[_timeString release];

@@ -9,8 +9,8 @@
 #import "Enigma1Connector.h"
 
 #import "Objects/Enigma/Service.h"
-#import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Volume.h"
+#import "Objects/TimerProtocol.h"
 #import "Objects/MovieProtocol.h"
 
 #import "XMLReader/Enigma/EventXMLReader.h"
@@ -379,8 +379,16 @@
 
 - (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
+	NSInteger afterEvent = 0;
+	if(newTimer.afterevent == kAfterEventStandby)
+		afterEvent = doGoSleep;
+	else if(newTimer.afterevent == kAfterEventDeepstandby)
+		afterEvent = doShutdown;
+	else // newTimer.afterevent == kAfterEventNothing or unhandled
+		afterEvent = 0;
+
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer getEnigmaAfterEvent] , newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", newTimer.service.sref, (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 

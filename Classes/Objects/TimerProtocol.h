@@ -60,40 +60,10 @@ enum timerType {
 	Wed=4194304, Thu=8388608, Fr=16777216, Sa=33554432
 };
 
-// XXX: we ignore everything except zapto&standby currently but this is here in case we need it later
-enum neutrinoEventType {
-	neutrinoTimerTypeShutdown = 1,
-	neutrinoTimerTypeNextprogram = 2,
-	neutrinoTimerTypeZapto = 3,
-	neutrinoTimerTypeStandby = 4,
-	neutrinoTimerTypeRecord = 5,
-	neutrinoTimerTypeRemind = 6,
-	neutrinoTimerTypeSleep = 7,
-	neutrinoTimerTypePlugin = 8,
-};
-
-enum neutrinoTimerRepeat {
-	neutrinoTimerRepeatNever = 0,
-	neutrinoTimerRepeatDaily = 1,
-	neutrinoTimerRepeatWeekly = 2,
-	neutrinoTimerRepeatBiweekly = 3,
-	neutrinoTimerRepeatFourweekly = 4,
-	neutrinoTimerRepeatMonthly = 5,
-	neutrinoTimerRepeatByDescription = 6, // XXX: unimpl in neutrino?
-	neutrinoTimerRepeatMonday = 256,
-	neutrinoTimerRepeatTuesday = 512,
-	neutrinoTimerRepeatWednesday = 1024,
-	neutrinoTimerRepeatThursday = 2048,
-	neutrinoTimerRepeatFriday = 4096,
-	neutrinoTimerRepeatSaturday = 8192,
-	neutrinoTimerRepeatSunday = 16384,
-};
-
 @protocol ServiceProtocol;
 @protocol TimerProtocol
 
 - (NSString *)getStateString;
-- (NSInteger)getEnigmaAfterEvent;
 - (void)setBeginFromString: (NSString *)newBegin;
 - (void)setEndFromString: (NSString *)newEnd;
 - (void)setEndFromDurationString: (NSString *)newDuration;

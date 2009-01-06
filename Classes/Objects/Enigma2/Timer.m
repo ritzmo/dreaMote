@@ -381,12 +381,6 @@
 	return [[NSString stringWithFormat: @"%d", _state] autorelease];
 }
 
-- (NSInteger)getEnigmaAfterEvent
-{
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
-	return -1;
-}
-
 - (void)setBeginFromString: (NSString *)newBegin
 {
 	[NSException raise:@"ExcUnsopportedFunction" format:nil];
