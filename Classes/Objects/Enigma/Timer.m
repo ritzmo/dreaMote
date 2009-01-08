@@ -195,6 +195,11 @@
 
 - (NSInteger)repeated
 {
+	NSArray *resultNodes = [_node nodesForXPath:@"type" error:nil];;
+	for(CXMLElement *resultElement in resultNodes)
+	{
+		return [[resultElement stringValue] isEqualToString: @"SINGLE"] ? 0 : 1;
+	}
 	return 0;
 }
 
