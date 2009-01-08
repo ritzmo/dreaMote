@@ -38,13 +38,18 @@
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
 	finished = NO;
+	NSError *localError = nil;
+	if(error)
+		*error = nil;
+
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-	_parser = [[CXMLPushDocument alloc] initWithError: error];
+	_parser = [[CXMLPushDocument alloc] initWithError: &localError];
 
 	// bail out if we encountered an error
-	if(error && *error)
+	if(localError)
 	{
-
+		if(error)
+			*error = localError
 		[self sendErroneousObject];
 		return nil;
 	}
@@ -82,24 +87,26 @@
 		return nil;
 
 	}
-#else
+#else //!LAME_ASYNCHRONOUS_DOWNLOAD
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	@try {
-		_parser = [[CXMLDocument alloc] initWithContentsOfURL:URL options: 0 error: error];
-	}
-	// XXX: this is to prevent an exception in -[NSData(NSData) initWithContentsOfURL:options:error:]
-	@catch (NSException * e) {
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-		[self sendErroneousObject];
-		return nil;
-	}
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: URL
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+											returningResponse: &response error: nil];
+
+	_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	finished = YES;
 
 	// bail out if we encountered an error
-	if(error && *error)
+	if(localError)
 	{
+		if(error)
+			*error = localError;
 		[self sendErroneousObject];
 		return nil;
 	}
