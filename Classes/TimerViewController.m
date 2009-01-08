@@ -389,8 +389,10 @@
 	if(newService == nil)
 		return;
 
-	_timer.service = newService;
-	timerServiceNameCell.text = newService.sname;
+	// We copy the the service because it might be bound to an xmlnode we might free
+	// during our runtime.
+	_timer.service = [newService copy];
+	timerServiceNameCell.text = _timer.service.sname;
 }
 
 - (void)beginSelected: (NSDate *)newDate
