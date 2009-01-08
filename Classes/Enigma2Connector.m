@@ -446,7 +446,7 @@ enum enigma2MessageTypes {
 	}
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/grab?format=png%@", appendType] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/grab?format=jpg%@", appendType] relativeToURL: baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
