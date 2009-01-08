@@ -45,10 +45,10 @@ enum connectorFeatures {
 	kFeaturesScreenshot,
 	// Can fetch a Screenshot of just the video buffer
 	kFeaturesVideoScreenshot,
-	// Remote Control has all buttons (we have a simple and a "full" view)
-	kFeaturesFullRemote,
 	// Remote Control of DM8000 *grml*
 	kFeaturesAdvancedRemote,
+	// Has support for bouquets
+	kFeaturesBouquets,
 	// Has a single bouquet mode
 	kFeaturesSingleBouquet,
 	// Timer Id is a constant

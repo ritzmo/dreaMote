@@ -22,7 +22,9 @@
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
-	return (feature == kFeaturesRecordInfo);
+	return
+		(feature == kFeaturesRecordInfo) ||
+		(feature == kFeaturesSingleBouquet);
 }
 
 - (NSInteger)getMaxVolume

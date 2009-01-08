@@ -35,6 +35,7 @@ enum enigma1MessageTypes {
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
 {
 	return
+		(feature == kFeaturesBouquets) ||
 		(feature == kFeaturesGUIRestart) ||
 		(feature == kFeaturesRecordInfo) ||
 		(feature == kFeaturesMessageCaption) ||
@@ -42,7 +43,6 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesScreenshot) ||
 		(feature == kFeaturesTimerAfterEvent) ||
-		(feature == kFeaturesFullRemote) ||
 		(feature == kFeaturesConstantTimerId);
 }
 

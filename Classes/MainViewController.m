@@ -209,7 +209,10 @@
 	}
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
-	   && [RemoteConnectorObject isSingleBouquet])
+		&& (
+			[RemoteConnectorObject isSingleBouquet] ||
+			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets])
+		)
 	{
 		if(![menuList containsObject: _serviceDictionary])
 		{

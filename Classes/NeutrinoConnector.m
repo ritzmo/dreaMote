@@ -35,6 +35,7 @@ enum neutrinoMessageTypes {
 {
 	// Screenshots do not work yet... :-/
 	return
+		(feature == kFeaturesBouquets) ||
 		(feature == kFeaturesConstantTimerId) ||
 		(feature == kFeaturesMessageType);
 }
