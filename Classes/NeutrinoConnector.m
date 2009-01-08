@@ -18,6 +18,8 @@
 #import "XMLReader/BaseXMLReader.h"
 #import "XMLReader/Neutrino/EventXMLReader.h"
 
+#import "NeutrinoRCEmulatorController.h"
+
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
@@ -805,6 +807,13 @@ enum neutrinoMessageTypes {
 	}
 
 	return nil;
+}
+
+- (void)openRCEmulator: (UINavigationController *)navigationController
+{
+	UIViewController *targetViewController = [[NeutrinoRCEmulatorController alloc] init];
+	[navigationController pushViewController:targetViewController animated:YES];
+	[targetViewController release];
 }
 
 - (void)freeCaches

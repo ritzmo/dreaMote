@@ -17,6 +17,8 @@
 #import "XMLReader/Enigma/TimerXMLReader.h"
 #import "XMLReader/Enigma/MovieXMLReader.h"
 
+#import "EnigmaRCEmulatorController.h"
+
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
@@ -625,6 +627,13 @@ enum enigma1MessageTypes {
 	}
 
 	return nil;
+}
+
+- (void)openRCEmulator: (UINavigationController *)navigationController
+{
+	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];
+	[navigationController pushViewController:targetViewController animated:YES];
+	[targetViewController release];
 }
 
 - (void)freeCaches

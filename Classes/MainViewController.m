@@ -16,7 +16,6 @@
 #import "ServiceListController.h"
 #import "TimerListController.h"
 #import "ControlViewController.h"
-#import "RCEmulatorController.h"
 #import "MovieListController.h"
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
@@ -108,14 +107,11 @@
 
 	[targetViewController release];
 
-	targetViewController = [[RCEmulatorController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Remote Control Title", @""), @"title",
 						 NSLocalizedString(@"Remote Control Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
+						 [NSValue valueWithBytes: &@selector(openRCEmulator:) objCType:@encode(SEL)], @"function",
 						 nil]];
-	
-	[targetViewController release];
 
 	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -278,8 +274,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UIViewController *targetViewController = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
-	[self.navigationController pushViewController:targetViewController animated:YES];
+	SEL callfunc = nil;
+	[[[menuList objectAtIndex: indexPath.row] objectForKey:@"function"] getValue: &callfunc];
+	if(callfunc != nil)
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] performSelector: callfunc withObject: self.navigationController];
+	}
+	else
+	{
+		UIViewController *targetViewController = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
+		[self.navigationController pushViewController:targetViewController animated:YES];
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

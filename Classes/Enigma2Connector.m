@@ -18,6 +18,8 @@
 #import "XMLReader/Enigma2/VolumeXMLReader.h"
 #import "XMLReader/Enigma2/MovieXMLReader.h"
 
+#import "EnigmaRCEmulatorController.h"
+
 enum powerStates {
 	kShutdownState = 1,
 	kRebootState = 2,
@@ -460,6 +462,13 @@ enum enigma2MessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	return data;
+}
+
+- (void)openRCEmulator: (UINavigationController *)navigationController
+{
+	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];
+	[navigationController pushViewController:targetViewController animated:YES];
+	[targetViewController release];
 }
 
 - (void)freeCaches

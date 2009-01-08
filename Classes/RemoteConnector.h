@@ -103,19 +103,23 @@ enum buttonCodes {
 
 @protocol RemoteConnector
 
+// General
 - (id)initWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
 + (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
 - (const BOOL)hasFeature: (enum connectorFeatures)feature;
 - (NSInteger)getMaxVolume;
 - (BOOL)isReachable;
 
+// Data sources
 - (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action;
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet;
 - (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service;
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action;
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action;
 - (void)getVolume:(id)target action:(SEL)action;
+- (NSData *)getScreenshot: (enum screenshotType)type;
 
+// Functions
 // XXX: we might want to return a dictionary which contains retval / explain for these
 - (BOOL)zapTo:(NSObject<ServiceProtocol> *) service;
 - (BOOL)playMovie:(NSObject<MovieProtocol> *) movie;
@@ -131,11 +135,12 @@ enum buttonCodes {
 - (BOOL)sendButton:(NSInteger) type;
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
 
+// Helper GUI
 - (NSInteger)getMaxMessageType;
 - (NSString *)getMessageTitle: (NSInteger)type;
+- (void)openRCEmulator: (UINavigationController *)navigationController;
 
-- (NSData *)getScreenshot: (enum screenshotType)type;
-
+// Misc
 - (void)freeCaches;
 
 @end

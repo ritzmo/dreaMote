@@ -12,10 +12,7 @@
 {
 @private
 	BOOL _shouldVibrate;
-	BOOL _fullRc;
 
-	UIView *fullRcView;
-	UIView *simpleRcView;
 	UIView *screenView;
 	UIScrollView *scrollView;
 	UIImageView *imageView;
@@ -23,6 +20,12 @@
 	UIBarButtonItem *screenshotButton;
 
 	NSInteger _screenshotType;
+@protected
+	UIView *rcView;
 }
+
+- (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
+- (void)loadImage:(id)dummy;
+- (void)flipView:(id)sender;
 
 @end

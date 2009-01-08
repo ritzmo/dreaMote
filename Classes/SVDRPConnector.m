@@ -16,6 +16,8 @@
 #import "Objects/Generic/Volume.h"
 #import "Objects/SVDRP/Timer.h"
 
+#import "SVDRPRCEmulatorController.h"
+
 @implementation SVDRPConnector
 
 - (const BOOL)hasFeature: (enum connectorFeatures)feature
@@ -867,6 +869,13 @@
 {
 	// XXX: somehow possible, but a long way :-)
 	return nil;
+}
+
+- (void)openRCEmulator: (UINavigationController *)navigationController
+{
+	UIViewController *targetViewController = [[SVDRPRCEmulatorController alloc] init];
+	[navigationController pushViewController:targetViewController animated:YES];
+	[targetViewController release];
 }
 
 - (void)freeCaches

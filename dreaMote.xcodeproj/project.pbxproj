@@ -57,6 +57,9 @@
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
+		DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
+		DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
+		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
@@ -235,6 +238,12 @@
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
+		DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
+		DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoRCEmulatorController.h; sourceTree = "<group>"; };
+		DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NeutrinoRCEmulatorController.m; sourceTree = "<group>"; };
+		DA661FAA0F1635A50030A40B /* SVDRPRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVDRPRCEmulatorController.h; sourceTree = "<group>"; };
+		DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVDRPRCEmulatorController.m; sourceTree = "<group>"; };
 		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA664CD70EA8E2C100A37F55 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
@@ -696,6 +705,12 @@
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DA661FAA0F1635A50030A40B /* SVDRPRCEmulatorController.h */,
+				DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */,
+				DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */,
+				DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */,
+				DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */,
+				DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */,
 				DA51BAFF0EAA344200AF9146 /* AboutViewController.h */,
 				DA51BB000EAA344200AF9146 /* AboutViewController.m */,
 				DAA2222A0E998CE900DD749C /* AfterEventViewController.h */,
@@ -986,6 +1001,9 @@
 				DA7D23870F101F1500BB8BE7 /* EventXMLReader.m in Sources */,
 				DA7D23DD0F10249300BB8BE7 /* SVDRPConnector.m in Sources */,
 				DADE1AE90F115A2500807A25 /* Timer.m in Sources */,
+				DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */,
+				DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */,
+				DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
