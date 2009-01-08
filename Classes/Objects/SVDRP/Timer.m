@@ -106,7 +106,7 @@
 	if(_disabled)
 		newFlags |= 1;
 	else
-		newFlags = ~1;
+		newFlags &= ~1;
 
 	NSCalendar *gregorian = [[NSCalendar alloc]
 								initWithCalendarIdentifier:NSGregorianCalendar];
