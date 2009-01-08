@@ -18,6 +18,8 @@
 	CellTextField *remoteNameCell;
 	UITextField *remoteAddressTextField;
 	CellTextField *remoteAddressCell;
+	UITextField *remotePortTextField;
+	CellTextField *remotePortCell;
 	UITextField *usernameTextField;
 	CellTextField *usernameCell;
 	UITextField *passwordTextField;

@@ -27,7 +27,7 @@
 @synthesize connectButton;
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kOFFSET_FOR_KEYBOARD					110.0
+#define kOFFSET_FOR_KEYBOARD					150.0
 
 // the duration of the animation for the view shift
 #define kVerticalOffsetAnimationDuration		0.30
@@ -153,6 +153,13 @@
 	remoteAddressTextField.text = [[connection objectForKey: kRemoteHost] copy];
 	remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
+	// Remote Port
+	NSNumber *port = [connection objectForKey: kPort];
+	remotePortTextField = [[self create_TextField] retain];
+	remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
+	remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
+	remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+
 	// Username
 	usernameTextField = [[self create_TextField] retain];
 	usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
@@ -198,6 +205,7 @@
 
 		[remoteNameCell stopEditing];
 		[remoteAddressCell stopEditing];
+		[remotePortCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
 		_singleBouquetSwitch.enabled = NO;
@@ -206,6 +214,7 @@
 		{
 			[connection setObject: remoteNameTextField.text forKey: kRemoteName];
 			[connection setObject: remoteAddressTextField.text forKey: kRemoteHost];
+			[connection setObject: [NSNumber numberWithInteger: [remotePortTextField.text integerValue]] forKey: kPort];
 			[connection setObject: usernameTextField.text forKey: kUsername];
 			[connection setObject: passwordTextField.text forKey: kPassword];
 			[connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
@@ -304,6 +313,7 @@
 
 		NSDictionary *tempConnection = [NSDictionary dictionaryWithObjectsAndKeys:
 								remoteAddressTextField.text, kRemoteHost,
+								remotePortTextField.text, kPort,
 								usernameTextField.text, kUsername,
 								passwordTextField.text, kPassword,
 								nil];
@@ -376,6 +386,7 @@
 	switch(section)
 	{
 		case 0:
+			return 3;
 		case 1:
 			return 2;
 		case 2:
@@ -420,6 +431,10 @@
 				case 1:
 					((CellTextField *)sourceCell).view = remoteAddressTextField;
 					remoteAddressCell = (CellTextField *)sourceCell;
+					break;
+				case 2:
+					((CellTextField *)sourceCell).view = remotePortTextField;
+					remotePortCell = (CellTextField *)sourceCell;
 					break;
 				default:
 					break;
@@ -531,12 +546,21 @@
 	if([cell isEqual: remoteNameCell])
 	{
 		[remoteAddressCell stopEditing];
+		[remotePortCell stopEditing];
+		[usernameCell stopEditing];
+		[passwordCell stopEditing];
+	}
+	else if([cell isEqual: remotePortCell])
+	{
+		[remoteNameCell stopEditing];
+		[remoteAddressCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
 	}
 	else if([cell isEqual: remoteAddressCell])
 	{
 		[remoteNameCell stopEditing];
+		[remotePortCell stopEditing];
 		[usernameCell stopEditing];
 		[passwordCell stopEditing];
 	}
