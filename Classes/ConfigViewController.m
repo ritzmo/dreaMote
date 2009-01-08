@@ -145,7 +145,6 @@
 	remoteNameTextField = [[self create_TextField] retain];
 	remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
 	remoteNameTextField.text = [[connection objectForKey: kRemoteName] copy];
-	remoteNameTextField.keyboardType = UIKeyboardTypeURL;
 
 	// Remote Address
 	remoteAddressTextField = [[self create_TextField] retain];
@@ -158,7 +157,7 @@
 	remotePortTextField = [[self create_TextField] retain];
 	remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
 	remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
-	remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+	remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
 
 	// Username
 	usernameTextField = [[self create_TextField] retain];

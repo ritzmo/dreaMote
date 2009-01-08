@@ -111,7 +111,7 @@
 	timeoutTextField = [self create_TextField];
 	timeoutTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kMessageTimeout];
 	timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
-	timeoutTextField.keyboardType = UIKeyboardTypeDefault; // XXX: we lack a better one :-)
+	timeoutTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
 
 	// Default type
 	_type = 0;
