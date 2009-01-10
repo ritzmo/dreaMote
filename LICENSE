@@ -1,11 +1,23 @@
-The license of the actual Code is yet to be determined. So far everyone is
-invited to take a look at the Sourcecode and even non-comercially distribute a
-derivate version as long as I am credited.
+All Files of this Software are licensed under the Creative Commons 
+Attribution-NonCommercial-ShareAlike 3.0 Unported 
+License if not stated otherwise in a Files Head or in the list below.
+To view a copy of this license, visit
+http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to
+Creative Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
 
-The following Icons were made by mfgeg, their exact license is unknown to me but
-they were made specifically for this Application.
+Alternatively, this software may be distributed commercially by the original
+Author.
 
-Filenames:
+This software is NOT free software. It is open source, you are allowed to
+modify it (if you keep the license), but it may not be commercially 
+distributed other than under the conditions noted above.
+
+
+
+The following Icons were made by mfgeg, their exact license is unknown to me
+but they were made specifically for this Application.
+
+Filenames (relative to Images) :
 Icon.png
 key_0.png
 key_1.png
@@ -46,7 +58,7 @@ part of the Tango Icon Library (http://tango.freedesktop.org).
 They are licensed under the Creative Commons Attribution Share-Alike license,
 see http://creativecommons.org/licenses/by-sa/2.5/ for further information.
 
-Filenames:
+Filenames (relative to Images):
 emblem-favorite.png
 image-x-generic.png
 mail-forward.png
@@ -56,4 +68,21 @@ preferences-desktop-screensaver.png
 preferences-system.png
 system-shutdown.png
 view-refresh.png
+
+Any file below the TouchXML folder is part of the TouchXML package by touchcode
+and is licensed under the MIT license.
+
+Any file below the Classe/SmallSockets folder is spart of the SmallSockets
+library and are distributed acording to the following terms:
+SmallSockets is copyright © 2001 Steven Frank
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation (and/or about box) would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source distribution. 
 
