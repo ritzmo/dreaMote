@@ -54,7 +54,7 @@
 {
 	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
 	configViewController.connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-																@"dreambox", kRemoteHost,
+																@"", kRemoteHost,
 																@"", kUsername,
 																@"", kPassword,
 																[NSNumber numberWithInteger:
