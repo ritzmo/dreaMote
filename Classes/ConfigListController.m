@@ -187,7 +187,7 @@
 				sourceCell.image = nil;
 
 			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
-			if(!hostTitle)
+			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			sourceCell.text = hostTitle;
 			break;

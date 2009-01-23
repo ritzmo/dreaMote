@@ -55,6 +55,7 @@
 	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
 	configViewController.connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 																@"", kRemoteHost,
+																@"", kRemoteName,
 																@"", kUsername,
 																@"", kPassword,
 																[NSNumber numberWithInteger:
@@ -142,9 +143,12 @@
 	[tableView release];
 
 	// Remote Name
+	NSString *remoteName = [connection objectForKey: kRemoteName];
+	if(remoteName == nil) // Work around unset property
+		remoteName = @"";
 	remoteNameTextField = [[self create_TextField] retain];
 	remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
-	remoteNameTextField.text = [[connection objectForKey: kRemoteName] copy];
+	remoteNameTextField.text = [remoteName copy];
 
 	// Remote Address
 	remoteAddressTextField = [[self create_TextField] retain];
