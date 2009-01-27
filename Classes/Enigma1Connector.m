@@ -55,16 +55,25 @@ enum enigma1MessageTypes {
 {
 	if(self = [super init])
 	{
-		NSString *remoteAddress;
-		if([inUsername isEqualToString: @""])
-			remoteAddress = [NSString stringWithFormat: @"http://%@", address];
+		// Protect from unexpected input and assume a full URL if address starts with http
+		if([address rangeOfString: @"http"].location == 0)
+		{
+			baseAddress = [NSURL URLWithString: address];
+		}
 		else
-			remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", inUsername,
-							 inPassword, address];
-		if(inPort > 0)
-			remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
+		{
+			NSString *remoteAddress = nil;
+			if([inUsername isEqualToString: @""])
+				remoteAddress = [NSString stringWithFormat: @"http://%@", address];
+			else
+				remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", inUsername,
+								inPassword, address];
+			if(inPort > 0)
+				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 		
-		baseAddress = [[NSURL URLWithString: remoteAddress] retain];
+			baseAddress = [NSURL URLWithString: remoteAddress];
+		}
+		[baseAddress retain];
 	}
 	return self;
 }
