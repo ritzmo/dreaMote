@@ -434,6 +434,8 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!socket || ![socket isConnected])
 		[self getSocket];
+	if(![socket isConnected])
+		return nil;
 
 	[socket writeString: @"LSTR\r\n"];
 
