@@ -473,6 +473,32 @@ enum enigma2MessageTypes {
 	return data;
 }
 
+- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+											returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	[myString release];
+	if(myRange.length)
+		return YES;
+	
+	return NO;
+}
+
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
 	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];

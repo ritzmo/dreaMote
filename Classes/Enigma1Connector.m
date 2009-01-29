@@ -43,7 +43,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesScreenshot) ||
 		(feature == kFeaturesTimerAfterEvent) ||
-		(feature == kFeaturesConstantTimerId);
+		(feature == kFeaturesConstantTimerId) ||
+		(feature == kFeaturesRecordDelete);
 }
 
 - (NSInteger)getMaxVolume
@@ -636,6 +637,25 @@ enum enigma1MessageTypes {
 	}
 
 	return nil;
+}
+
+- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/cgi-bin/deleteMovie?ref=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+										returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	return ([response statusCode] == 204);
 }
 
 - (void)openRCEmulator: (UINavigationController *)navigationController

@@ -54,8 +54,19 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing: editing animated: animated];
+	[(UITableView*)self.view setEditing: editing animated: animated];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordDelete])
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	else
+		self.navigationItem.rightBarButtonItem = nil;
+
 	if(refreshMovies)
 	{
 		[_movies removeAllObjects];
@@ -72,6 +83,14 @@
 	refreshMovies = YES;
 
 	[super viewWillAppear: animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
+	// wouldn't reset the editButtonItem
+	if(self.editing)
+		[self setEditing:NO animated: YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -165,6 +184,37 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_movies count];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return UITableViewCellEditingStyleDelete;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{	
+	NSInteger index = indexPath.row;
+
+	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: index];
+	if(!movie.valid)
+		return;
+
+	if([[RemoteConnectorObject sharedRemoteConnector] delMovie: movie])
+	{
+
+		[_movies removeObjectAtIndex: index];
+			
+		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
+								withRowAnimation: UITableViewRowAnimationFade];
+	}
+	else
+	{
+		// alert user if movie could not be deleted
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation

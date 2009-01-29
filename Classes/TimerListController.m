@@ -294,7 +294,11 @@
 		if(section > 0)
 			index += dist[section - 1];
 
-		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: [_timers objectAtIndex: index]])
+		NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
+		if(!timer.valid)
+			return;
+
+		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
 		{
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesConstantTimerId])
 			{

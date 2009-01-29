@@ -33,6 +33,8 @@ enum connectorFeatures {
 	kFeaturesRecordInfo,
 	// Connector can fetch extended information about recordings (e.g. tags)
 	kFeaturesExtendedRecordInfo, // XXX: as long as we lack more connectors this is specific enough
+	// Connector can delete recordings
+	kFeaturesRecordDelete,
 	// Connector offers to restart just the remote GUI (not the same as rebooting!)
 	kFeaturesGUIRestart,
 	// Can give a message type
@@ -123,6 +125,7 @@ enum buttonCodes {
 // XXX: we might want to return a dictionary which contains retval / explain for these
 - (BOOL)zapTo:(NSObject<ServiceProtocol> *) service;
 - (BOOL)playMovie:(NSObject<MovieProtocol> *) movie;
+- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie;
 - (void)shutdown;
 - (void)standby;
 - (void)reboot;

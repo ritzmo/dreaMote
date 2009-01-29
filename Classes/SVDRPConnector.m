@@ -24,7 +24,8 @@
 {
 	return
 		(feature == kFeaturesRecordInfo) ||
-		(feature == kFeaturesSingleBouquet);
+		(feature == kFeaturesSingleBouquet) ||
+		(feature == kFeaturesRecordDelete);
 }
 
 - (NSInteger)getMaxVolume
@@ -872,6 +873,25 @@
 	// XXX: somehow possible, but a long way :-)
 	return nil;
 }
+
+- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+{
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!socket || ![socket isConnected])
+		[self getSocket];
+	if(![socket isConnected])
+		return NO;
+
+	[socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// XXX: we should really parse the return message
+	NSString *ret = [self readSocketLine];
+	NSLog(ret);
+	return YES;
+}
+
 
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
