@@ -435,7 +435,14 @@
 	if(!socket || ![socket isConnected])
 		[self getSocket];
 	if(![socket isConnected])
+	{
+		Movie *fakeObject = [[Movie alloc] init];
+		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[fakeObject release];
+		
 		return nil;
+	}
 
 	[socket writeString: @"LSTR\r\n"];
 
