@@ -405,12 +405,14 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
-	[myString release];
+	if(myRange.length)
+		return YES;
+	myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	if(myRange.length)
 		return YES;
 
