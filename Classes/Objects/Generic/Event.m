@@ -18,6 +18,17 @@
 @synthesize edescription = _edescription;
 @synthesize timeString;
 
+- (NSObject<ServiceProtocol> *)service
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];;
+	return nil;
+}
+
+- (void)setService: (NSObject<ServiceProtocol> *)service
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
+
 - (id)init
 {
 	if (self = [super init])

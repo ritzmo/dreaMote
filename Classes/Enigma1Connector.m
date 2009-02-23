@@ -658,6 +658,12 @@ enum enigma1MessageTypes {
 	return ([response statusCode] == 204);
 }
 
+- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return nil;
+}
+
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
 	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];

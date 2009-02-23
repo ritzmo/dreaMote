@@ -7,12 +7,51 @@
 //
 
 #import "Event.h"
+#import "../Generic/Service.h"
 
 #import "CXMLElement.h"
 
 @implementation Enigma2Event
 
 @synthesize timeString;
+
+- (NSObject<ServiceProtocol> *)service
+{
+	NSObject<ServiceProtocol> *service = nil;
+	NSArray *resultNodes = nil;
+	NSString *sname = nil;
+	NSString *sref = nil;
+
+	resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
+	{
+		sname = [[currentChild stringValue] retain];
+		break;
+	}
+
+	resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
+	{
+		sref = [[currentChild stringValue] retain];
+		break;
+	}
+
+	if(sname && sref)
+	{
+		service = [[[Service alloc] init] autorelease];
+		service.sname = sname;
+		service.sref = sref;
+	}
+	[sname release];
+	[sref release];
+
+	return service;
+}
+
+- (void)setService: (NSObject<ServiceProtocol> *)service
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+}
 
 - (NSString *)edescription
 {

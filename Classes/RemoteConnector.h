@@ -55,6 +55,8 @@ enum connectorFeatures {
 	kFeaturesSingleBouquet,
 	// Timer Id is a constant
 	kFeaturesConstantTimerId,
+	// Can sarch EPG
+	kFeaturesEPGSearch,
 };
 
 enum buttonCodes {
@@ -120,6 +122,7 @@ enum buttonCodes {
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action;
 - (void)getVolume:(id)target action:(SEL)action;
 - (NSData *)getScreenshot: (enum screenshotType)type;
+- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title;
 
 // Functions
 // XXX: we might want to return a dictionary which contains retval / explain for these

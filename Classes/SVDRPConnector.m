@@ -901,6 +901,11 @@
 	return YES;
 }
 
+- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return nil;
+}
 
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {

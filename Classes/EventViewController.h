@@ -19,6 +19,7 @@
 }
 
 + (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (NSObject<ServiceProtocol> *)newService;
++ (EventViewController *)withEvent: (NSObject<EventProtocol> *) newEvent;
 
 @property (nonatomic, retain) NSObject<EventProtocol> *event;
 @property (nonatomic, retain) NSObject<ServiceProtocol> *service;

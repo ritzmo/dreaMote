@@ -36,7 +36,17 @@
 
 	eventViewController.event = newEvent;
 	eventViewController.service = newService;
-	
+
+	return eventViewController;
+}
+
++ (EventViewController *)withEvent: (NSObject<EventProtocol> *) newEvent
+{
+	EventViewController *eventViewController = [[EventViewController alloc] init];
+
+	eventViewController.event = newEvent;
+	eventViewController.service = newEvent.service;
+
 	return eventViewController;
 }
 

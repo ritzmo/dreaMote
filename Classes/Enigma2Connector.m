@@ -501,6 +501,16 @@ enum enigma2MessageTypes {
 	return NO;
 }
 
+- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+{
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", title] relativeToURL: baseAddress];
+
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
 	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];
