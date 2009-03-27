@@ -105,6 +105,16 @@
 	_switchControl.backgroundColor = [UIColor clearColor];
 }
 
+- (UIButton *)create_InstantRecordButton
+{
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	//UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
+	//[button setImage:image forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(record:) forControlEvents:UIControlEventTouchUpInside];
+	
+	return [button autorelease];
+}
+
 - (UIButton *)create_StandbyButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
@@ -145,10 +155,19 @@
 	return [button autorelease];
 }
 
+- (void)record:(id)sender
+{
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+	[[RemoteConnectorObject sharedRemoteConnector] instantRecord];
+	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+}
+
 // XXX: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
 - (void)standby:(id)sender
 {
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] standby];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
@@ -156,7 +175,8 @@
 
 - (void)reboot:(id)sender
 {
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 1 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] reboot];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
@@ -164,7 +184,8 @@
 
 - (void)restart:(id)sender
 {
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:1];
+	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] restart];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
@@ -172,11 +193,12 @@
 
 -(void)shutdown:(id)sender
 {
+	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
-		indexPath = [NSIndexPath indexPathForRow:3 inSection:1];
+		indexPath = [NSIndexPath indexPathForRow: 3 inSection: section];
 	else
-		indexPath = [NSIndexPath indexPathForRow:2 inSection:1];
+		indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
@@ -213,6 +235,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
+		return 3;
 	return 2;
 }
 
@@ -222,6 +246,9 @@
 		case 0:
 			return NSLocalizedString(@"Volume", @"");
 		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
+				return NSLocalizedString(@"Record", @"");
+		case 2:
 			return NSLocalizedString(@"Power", @"");
 		default:
 			return nil;
@@ -230,9 +257,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 1)
-		return ([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart]) ? 4 : 3;
-	return 2;
+	switch(section) {
+		case 0:
+			return 2;
+		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
+				return 1;
+		case 2:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
+				return 4;
+			return 3;
+		default:
+			return 0;
+	}
 }
 
 // to determine which UITableViewCell to be used on a given row.
@@ -259,6 +296,13 @@
 			}
 			break;
 		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
+			{
+				sourceCell.nameLabel.text = NSLocalizedString(@"Instant Record", @"");
+				sourceCell.view = [self create_InstantRecordButton];
+				break;
+			}
+		case 2:
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			switch (indexPath.row){
 				case 0:
