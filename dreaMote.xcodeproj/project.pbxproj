@@ -62,6 +62,7 @@
 		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
+		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
 		DA7A232A0E372AB800455D11 /* key_2.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A23290E372AB800455D11 /* key_2.png */; };
 		DA7A232C0E372AC100455D11 /* key_1.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A232B0E372AC100455D11 /* key_1.png */; };
@@ -249,6 +250,8 @@
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
 		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
+		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
+		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
 		DA7A22780E371ACA00455D11 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
 		DA7A22790E371ACA00455D11 /* RCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCEmulatorController.m; sourceTree = "<group>"; };
 		DA7A23290E372AB800455D11 /* key_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_2.png; path = Images/key_2.png; sourceTree = "<group>"; };
@@ -748,6 +751,8 @@
 				DAA21E7F0E99288600DD749C /* ConfigListController.m */,
 				DA2713250D84056800C25B85 /* EventListController.h */,
 				DA2713260D84056800C25B85 /* EventListController.m */,
+				DA784CF30F7D147F00A8050F /* EventSearchListController.h */,
+				DA784CF40F7D147F00A8050F /* EventSearchListController.m */,
 				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
 				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
@@ -1004,6 +1009,7 @@
 				DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */,
 				DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */,
 				DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */,
+				DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

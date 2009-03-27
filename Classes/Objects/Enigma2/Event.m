@@ -22,14 +22,14 @@
 	NSString *sname = nil;
 	NSString *sref = nil;
 
-	resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	resultNodes = [_node nodesForXPath:@"e2eventservicename" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		sname = [[currentChild stringValue] retain];
 		break;
 	}
 
-	resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	resultNodes = [_node nodesForXPath:@"e2eventservicereference" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		sref = [[currentChild stringValue] retain];

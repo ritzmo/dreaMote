@@ -14,6 +14,7 @@
 #import "MainTableViewCell.h"
 #import "BouquetListController.h"
 #import "ServiceListController.h"
+#import "EventSearchListController.h"
 #import "TimerListController.h"
 #import "ControlViewController.h"
 #import "MovieListController.h"
@@ -87,6 +88,14 @@
 						NSLocalizedString(@"Service List Explain", @""), @"explainText",
 						targetViewController, @"viewController",
 						nil] retain];
+	[targetViewController release];
+
+	targetViewController = [[EventSearchListController alloc] init];
+	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							NSLocalizedString(@"Event Search Title", @""), @"title",
+							NSLocalizedString(@"Event Search Explain", @""), @"explainText",
+							targetViewController, @"viewController",
+							nil] retain];
 	[targetViewController release];
 
 	targetViewController = [[TimerListController alloc] init];
@@ -191,12 +200,16 @@
 		if(![RemoteConnectorObject connectTo: [connId integerValue]])
 			return;
 
+	BOOL reload = NO;
+	/* The menu reorganization might be buggy, this should be redone
+	   as it was a bad hack to begin with */
+	// Add/Remove Record
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
 	{
 		if(![menuList containsObject: _recordDictionary])
 		{
 			[menuList insertObject:_recordDictionary atIndex: 2];
-			[myTableView reloadData];
+			reload = YES;
 		}
 	}
 	else
@@ -204,10 +217,11 @@
 		if([menuList containsObject: _recordDictionary])
 		{
 			[menuList removeObject: _recordDictionary];
-			[myTableView reloadData];
+			reload = YES;
 		}
 	}
 
+	// Handle Single-Bouquet mode
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
 		&& (
 			[RemoteConnectorObject isSingleBouquet] ||
@@ -218,7 +232,7 @@
 		{
 			[menuList removeObject: _bouquetDictionary];
 			[menuList insertObject: _serviceDictionary atIndex: 0];
-			[myTableView reloadData];
+			reload = YES;
 		}
 	}
 	else
@@ -227,9 +241,30 @@
 		{
 			[menuList removeObject: _serviceDictionary];
 			[menuList insertObject: _bouquetDictionary atIndex: 0];
-			[myTableView reloadData];
+			reload = YES;
 		}
 	}
+
+	// Add/Remove Event Search
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
+	{
+		if(![menuList containsObject: _eventSearchDictionary])
+		{
+			[menuList insertObject: _eventSearchDictionary atIndex: 1];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _eventSearchDictionary])
+		{
+			[menuList removeObject: _eventSearchDictionary];
+			reload = YES;
+		}
+	}
+
+	if(reload)
+		[myTableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -15,7 +15,7 @@
 
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
-@private
+@protected
 	NSMutableArray *_events;
 	NSObject<ServiceProtocol> *_service;
 	FuzzyDateFormatter *dateFormatter;
