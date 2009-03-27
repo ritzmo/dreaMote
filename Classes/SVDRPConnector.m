@@ -907,6 +907,12 @@
 	return nil;
 }
 
+- (BOOL)instantRecord
+{
+	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	return NO;
+}
+
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
 	UIViewController *targetViewController = [[SVDRPRCEmulatorController alloc] init];

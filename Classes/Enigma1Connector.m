@@ -44,7 +44,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesScreenshot) ||
 		(feature == kFeaturesTimerAfterEvent) ||
 		(feature == kFeaturesConstantTimerId) ||
-		(feature == kFeaturesRecordDelete);
+		(feature == kFeaturesRecordDelete) ||
+		(feature == kFeaturesInstantRecord);
 }
 
 - (NSInteger)getMaxVolume
@@ -662,6 +663,25 @@ enum enigma1MessageTypes {
 {
 	[NSException raise:@"ExcUnsopportedFunction" format:nil];
 	return nil;
+}
+
+- (BOOL)instantRecord
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString:@"/cgi-bin/videocontrol?command=record" relativeToURL:baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+						  returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	return ([response statusCode] == 500);
 }
 
 - (void)openRCEmulator: (UINavigationController *)navigationController

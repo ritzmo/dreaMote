@@ -511,6 +511,33 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
+- (BOOL)instantRecord
+{
+	// Generate URI
+	// XXX: we only allow infinite instant records for now
+	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+						returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	[myString release];
+	if(myRange.length)
+		return YES;
+
+	return NO;
+}
+
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
 	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];

@@ -57,6 +57,8 @@ enum connectorFeatures {
 	kFeaturesConstantTimerId,
 	// Can sarch EPG
 	kFeaturesEPGSearch,
+	// Allows to start an instant record
+	kFeaturesInstantRecord,
 };
 
 enum buttonCodes {
@@ -140,6 +142,7 @@ enum buttonCodes {
 - (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer;
 - (BOOL)sendButton:(NSInteger) type;
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
+- (BOOL)instantRecord;
 
 // Helper GUI
 - (NSInteger)getMaxMessageType;
