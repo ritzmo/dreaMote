@@ -15,6 +15,8 @@
 
 #import "Objects/EventProtocol.h"
 
+#define kTransitionDuration	0.6
+
 @implementation EventSearchListController
 
 - (id)init
@@ -43,7 +45,10 @@
 {
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	self.view = contentView;
-	[contentView release];
+
+	// setup our content view so that it auto-rotates along with the UViewController
+	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	CGSize size = self.view.bounds.size;
 	CGRect frame = CGRectMake(0.0, 0.0, size.width, kSearchBarHeight);
@@ -60,11 +65,9 @@
 	tableView.rowHeight = 48.0;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
-	
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	[contentView addSubview: tableView];
+
+	[contentView release];
 }
 
 - (void)fetchEvents
@@ -129,6 +132,19 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)callingSearchBar
 {
 	[searchBar resignFirstResponder];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	//[UIView beginAnimations:nil context:NULL];
+	//[UIView setAnimationDuration: kTransitionDuration];
+
+	// adjust size of searchBar & tableView
+	CGSize mainViewSize = self.view.bounds.size;
+	searchBar.frame = CGRectMake(0.0, 0.0, mainViewSize.width, kSearchBarHeight);
+	tableView.frame = CGRectMake(0.0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
+
+	//[UIView commitAnimations];
 }
 
 @end
