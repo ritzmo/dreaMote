@@ -108,8 +108,8 @@
 - (UIButton *)create_InstantRecordButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
-	//UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
-	//[button setImage:image forState:UIControlStateNormal];
+	UIImage *image = [UIImage imageNamed:@"document-save.png"];
+	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(record:) forControlEvents:UIControlEventTouchUpInside];
 	
 	return [button autorelease];
