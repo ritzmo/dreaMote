@@ -387,12 +387,17 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(self.editing && indexPath.section == 3)
+	NSInteger section = indexPath.section;
+	if(self.editing && section == 3)
 	{
 		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
 		[targetViewController setTarget: self action: @selector(typeSelected:)];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
+	}
+	else if(section == 4)
+	{
+		[self sendMessage: nil];
 	}
 
 	// We don't want any actual response :-)

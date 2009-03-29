@@ -528,12 +528,23 @@
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if(self.editing && indexPath.section == 2 && indexPath.row == 0)
+	NSInteger row = indexPath.row;
+	if(self.editing && indexPath.section == 2 && row == 0)
 	{
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
 		[targetViewController setTarget: self action: @selector(connectorSelected:)];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
+	}
+	else if(indexPath.section == 3)
+	{
+		if(connectionIndex == [RemoteConnectorObject getConnectedId])
+			row++;
+
+		if(row == 0)
+			[self doConnect: nil];
+		else
+			[self makeDefault: nil];
 	}
 
 	// We don't want any actual response :-)

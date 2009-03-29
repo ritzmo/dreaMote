@@ -181,6 +181,14 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// XXX: this is kinda hackish
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	@try {
+		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
+	}
+	@catch (NSException * e) {
+		//
+	}
 	return nil;
 }
 

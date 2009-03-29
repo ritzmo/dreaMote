@@ -157,10 +157,10 @@
 
 - (void)record:(id)sender
 {
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
+	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated: YES scrollPosition: UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] instantRecord];
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 }
 
 // XXX: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
@@ -223,6 +223,14 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// XXX: this is kinda hackish
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	@try {
+		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
+	}
+	@catch (NSException * e) {
+		//
+	}
 	return nil;
 }
 
