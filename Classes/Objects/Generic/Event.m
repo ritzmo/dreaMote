@@ -25,7 +25,7 @@
 
 - (void)setService: (NSObject<ServiceProtocol> *)service
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (id)init

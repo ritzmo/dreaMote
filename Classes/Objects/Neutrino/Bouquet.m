@@ -20,7 +20,7 @@
 
 - (void)setSref: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)sname
@@ -30,7 +30,7 @@
 
 - (void)setSname: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLElement *)node

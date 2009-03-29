@@ -51,7 +51,7 @@
 
 - (void)setSize: (NSNumber *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSNumber *)length
@@ -114,7 +114,7 @@
 
 - (void)setSname: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)sref
@@ -129,7 +129,7 @@
 
 - (void)setSref: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)edescription
@@ -144,7 +144,7 @@
 
 - (void)setEdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
@@ -159,7 +159,7 @@
 
 - (void)setSdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)title
@@ -174,7 +174,7 @@
 
 - (void)setTitle: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -203,12 +203,12 @@
 
 - (void)setTimeFromString: (NSString *)newTime
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (void)setTagsFromString: (NSString *)newTags
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 @end

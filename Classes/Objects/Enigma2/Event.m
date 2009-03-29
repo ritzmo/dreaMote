@@ -50,7 +50,7 @@
 
 - (void)setService: (NSObject<ServiceProtocol> *)service
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)edescription
@@ -66,7 +66,7 @@
 
 - (void)setEdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
@@ -82,7 +82,7 @@
 
 - (void)setSdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)title
@@ -97,7 +97,7 @@
 
 - (void)setTitle: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSDate *)end
@@ -158,7 +158,7 @@
 
 - (void)setEit: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -190,7 +190,7 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration

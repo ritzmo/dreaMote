@@ -903,13 +903,13 @@
 
 - (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 
 - (BOOL)instantRecord
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return NO;
 }
 

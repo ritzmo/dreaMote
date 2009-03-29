@@ -661,7 +661,7 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 

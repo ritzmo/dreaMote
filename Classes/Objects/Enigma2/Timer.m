@@ -383,17 +383,17 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (void)setEndFromString: (NSString *)newEnd
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (void)setSref: (NSString *)newSref
