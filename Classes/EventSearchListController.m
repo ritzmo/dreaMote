@@ -104,12 +104,21 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+	NSObject<ServiceProtocol> *service = nil;
+
+	// XXX: if we encounter an exception we assume an invalid service
+	@try {
+		service = event.service;
+	}
+	@catch (NSException * e) {
+		return nil;
+	}
 
 	if(eventViewController == nil)
 		eventViewController = [[EventViewController alloc] init];
 
 	eventViewController.event = event;
-	eventViewController.service = event.service;
+	eventViewController.service = service;
 
 	[self.navigationController pushViewController: eventViewController animated: YES];
 

@@ -20,6 +20,7 @@
 
 - (NSObject<ServiceProtocol> *)service
 {
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 
