@@ -45,7 +45,7 @@
 {
 	if(_title == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"event/description" error:nil];;
+		NSArray *resultNodes = [_node nodesForXPath:@"event/description" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.title = [resultElement stringValue];
@@ -71,7 +71,7 @@
 		NSString *sname = nil;
 		NSString *sref = nil;
 
-		resultNodes = [_node nodesForXPath:@"service/name" error:nil];;
+		resultNodes = [_node nodesForXPath:@"service/name" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			sname = [[resultElement stringValue] retain];
@@ -119,7 +119,7 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"event/duration" error:nil];;
+		NSArray *resultNodes = [_node nodesForXPath:@"event/duration" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setEndFromDurationString: [resultElement stringValue]];
@@ -141,7 +141,7 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"event/start" error:nil];;
+		NSArray *resultNodes = [_node nodesForXPath:@"event/start" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setBeginFromString: [resultElement stringValue]];
@@ -195,7 +195,7 @@
 
 - (NSInteger)repeated
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"type" error:nil];;
+	NSArray *resultNodes = [_node nodesForXPath:@"type" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [[resultElement stringValue] isEqualToString: @"SINGLE"] ? 0 : 1;

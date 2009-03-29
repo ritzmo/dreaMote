@@ -16,13 +16,13 @@
 
 - (NSObject<ServiceProtocol> *)service
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];;
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 
 - (void)setService: (NSObject<ServiceProtocol> *)service
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)edescription
@@ -37,7 +37,7 @@
 
 - (void)setEdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)sdescription
@@ -52,7 +52,7 @@
 
 - (void)setSdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)title
@@ -67,7 +67,7 @@
 
 - (void)setTitle: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSDate *)end
@@ -82,7 +82,7 @@
 
 - (void)setEnd: (NSDate *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSDate *)begin
@@ -97,7 +97,7 @@
 
 - (void)setBegin: (NSDate *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (NSString *)eit
@@ -112,7 +112,7 @@
 
 - (void)setEit: (NSString *)new
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -140,12 +140,12 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[NSException raise:@"ExcUnsopportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 @end
