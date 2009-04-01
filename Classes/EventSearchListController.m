@@ -74,8 +74,9 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[eventXMLDoc release];
-	// XXX: do not forget to take some care of special chars (like hardcode iso8859-1 for now)
-	NSString *title = searchBar.text;
+	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
+	NSData *data = [searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
+	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
 	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self action:@selector(addEvent:) title: title] retain];
 	[pool release];
 }

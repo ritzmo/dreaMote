@@ -503,7 +503,8 @@ enum enigma2MessageTypes {
 
 - (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", title] relativeToURL: baseAddress];
+	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
