@@ -124,7 +124,7 @@
 {
 	if(event != nil)
 	{
-		[(NSMutableArray *)_events addObject: event];
+		[_events addObject: event];
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];

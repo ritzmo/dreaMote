@@ -84,7 +84,7 @@
 {
 	if(event != nil)
 	{
-		[(NSMutableArray *)_events addObject: event];
+		[_events addObject: event];
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
@@ -132,6 +132,11 @@
 {
 	[searchBar resignFirstResponder];
 
+	[_events removeAllObjects];
+	[tableView reloadData];
+	[eventXMLDoc release];
+	eventXMLDoc = nil;	
+	
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];	
