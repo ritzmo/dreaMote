@@ -15,13 +15,11 @@
 		DA09870E0EC206EE009C91B9 /* preferences-system.png in Resources */ = {isa = PBXBuildFile; fileRef = DA09870D0EC206ED009C91B9 /* preferences-system.png */; };
 		DA0A2A580E840E8600726F58 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0A2A570E840E8600726F58 /* Icon.png */; };
 		DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0490F0BC011004B488C /* CXMLDocument.m */; };
-		DA0BF05E0F0BC011004B488C /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04B0F0BC011004B488C /* CXMLDocument_CreationExtensions.m */; };
 		DA0BF05F0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04D0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m */; };
 		DA0BF0600F0BC011004B488C /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04F0F0BC011004B488C /* CXMLElement.m */; };
 		DA0BF0610F0BC011004B488C /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0510F0BC011004B488C /* CXMLElement_CreationExtensions.m */; };
 		DA0BF0620F0BC011004B488C /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0530F0BC011004B488C /* CXMLElement_ElementTreeExtensions.m */; };
 		DA0BF0630F0BC011004B488C /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0550F0BC011004B488C /* CXMLNode.m */; };
-		DA0BF0640F0BC011004B488C /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0570F0BC011004B488C /* CXMLNode_CreationExtensions.m */; };
 		DA0BF0650F0BC011004B488C /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0590F0BC011004B488C /* CXMLNode_PrivateExtensions.m */; };
 		DA0BF0660F0BC011004B488C /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF05B0F0BC011004B488C /* CXMLNode_XPathExtensions.m */; };
 		DA0BF4590F0C1066004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44B0F0C1066004B488C /* Event.m */; };
@@ -120,6 +118,8 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
+		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
+		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
@@ -156,8 +156,6 @@
 		DA0A2A570E840E8600726F58 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Images/Icon.png; sourceTree = "<group>"; };
 		DA0BF0480F0BC011004B488C /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument.h; sourceTree = "<group>"; };
 		DA0BF0490F0BC011004B488C /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument.m; sourceTree = "<group>"; };
-		DA0BF04A0F0BC011004B488C /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
-		DA0BF04B0F0BC011004B488C /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DA0BF04C0F0BC011004B488C /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
 		DA0BF04D0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
 		DA0BF04E0F0BC011004B488C /* CXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement.h; sourceTree = "<group>"; };
@@ -168,8 +166,6 @@
 		DA0BF0530F0BC011004B488C /* CXMLElement_ElementTreeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement_ElementTreeExtensions.m; sourceTree = "<group>"; };
 		DA0BF0540F0BC011004B488C /* CXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode.h; sourceTree = "<group>"; };
 		DA0BF0550F0BC011004B488C /* CXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode.m; sourceTree = "<group>"; };
-		DA0BF0560F0BC011004B488C /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
-		DA0BF0570F0BC011004B488C /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
 		DA0BF0580F0BC011004B488C /* CXMLNode_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_PrivateExtensions.h; sourceTree = "<group>"; };
 		DA0BF0590F0BC011004B488C /* CXMLNode_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_PrivateExtensions.m; sourceTree = "<group>"; };
 		DA0BF05A0F0BC011004B488C /* CXMLNode_XPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_XPathExtensions.h; sourceTree = "<group>"; };
@@ -334,6 +330,10 @@
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		DA80C4920E37A254008A42AE /* MovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieViewController.h; sourceTree = "<group>"; };
 		DA80C4930E37A254008A42AE /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
+		DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
+		DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
+		DA9789890F9DBB8F005C7390 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
+		DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
 		DAA21E7F0E99288600DD749C /* ConfigListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigListController.m; sourceTree = "<group>"; };
 		DAA2222A0E998CE900DD749C /* AfterEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AfterEventViewController.h; sourceTree = "<group>"; };
@@ -480,10 +480,9 @@
 		DA0BF0470F0BC011004B488C /* TouchXML */ = {
 			isa = PBXGroup;
 			children = (
+				DA9789860F9DBB8F005C7390 /* Creation */,
 				DA0BF0480F0BC011004B488C /* CXMLDocument.h */,
 				DA0BF0490F0BC011004B488C /* CXMLDocument.m */,
-				DA0BF04A0F0BC011004B488C /* CXMLDocument_CreationExtensions.h */,
-				DA0BF04B0F0BC011004B488C /* CXMLDocument_CreationExtensions.m */,
 				DA0BF04C0F0BC011004B488C /* CXMLDocument_PrivateExtensions.h */,
 				DA0BF04D0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m */,
 				DA0BF04E0F0BC011004B488C /* CXMLElement.h */,
@@ -494,8 +493,6 @@
 				DA0BF0530F0BC011004B488C /* CXMLElement_ElementTreeExtensions.m */,
 				DA0BF0540F0BC011004B488C /* CXMLNode.h */,
 				DA0BF0550F0BC011004B488C /* CXMLNode.m */,
-				DA0BF0560F0BC011004B488C /* CXMLNode_CreationExtensions.h */,
-				DA0BF0570F0BC011004B488C /* CXMLNode_CreationExtensions.m */,
 				DA0BF0580F0BC011004B488C /* CXMLNode_PrivateExtensions.h */,
 				DA0BF0590F0BC011004B488C /* CXMLNode_PrivateExtensions.m */,
 				DA0BF05A0F0BC011004B488C /* CXMLNode_XPathExtensions.h */,
@@ -697,6 +694,17 @@
 				DA7D237C0F101F1500BB8BE7 /* EventXMLReader.m */,
 			);
 			path = Neutrino;
+			sourceTree = "<group>";
+		};
+		DA9789860F9DBB8F005C7390 /* Creation */ = {
+			isa = PBXGroup;
+			children = (
+				DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */,
+				DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */,
+				DA9789890F9DBB8F005C7390 /* CXMLNode_CreationExtensions.h */,
+				DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */,
+			);
+			path = Creation;
 			sourceTree = "<group>";
 		};
 		DADE1AE60F115A2500807A25 /* SVDRP */ = {
@@ -968,13 +976,11 @@
 				DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */,
 				DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */,
 				DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */,
-				DA0BF05E0F0BC011004B488C /* CXMLDocument_CreationExtensions.m in Sources */,
 				DA0BF05F0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA0BF0600F0BC011004B488C /* CXMLElement.m in Sources */,
 				DA0BF0610F0BC011004B488C /* CXMLElement_CreationExtensions.m in Sources */,
 				DA0BF0620F0BC011004B488C /* CXMLElement_ElementTreeExtensions.m in Sources */,
 				DA0BF0630F0BC011004B488C /* CXMLNode.m in Sources */,
-				DA0BF0640F0BC011004B488C /* CXMLNode_CreationExtensions.m in Sources */,
 				DA0BF0650F0BC011004B488C /* CXMLNode_PrivateExtensions.m in Sources */,
 				DA0BF0660F0BC011004B488C /* CXMLNode_XPathExtensions.m in Sources */,
 				DA0BF4590F0C1066004B488C /* Event.m in Sources */,
@@ -1014,6 +1020,8 @@
 				DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */,
 				DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */,
 				DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */,
+				DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */,
+				DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
