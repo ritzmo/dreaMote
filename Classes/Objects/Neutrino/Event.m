@@ -148,4 +148,15 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
+- (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent
+{
+	return [self.eit isEqualToString: otherEvent.eit] &&
+	[self.title isEqualToString: otherEvent.title] &&
+	[self.sdescription isEqualToString: otherEvent.sdescription] &&
+	[self.edescription isEqualToString: otherEvent.edescription] &&
+	[self.begin isEqualToDate: otherEvent.begin] &&
+	[self.end isEqualToDate: otherEvent.end] &&
+	[self.service isEqualToService: otherEvent.service];
+}
+
 @end

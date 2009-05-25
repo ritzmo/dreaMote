@@ -77,4 +77,10 @@
 	return [NSString stringWithFormat:@"<%@> Name: '%@'.\n Ref: '%@'.\n", [self class], self.sname, self.sref];
 }
 
+- (BOOL)isEqualToService: (NSObject<ServiceProtocol> *)otherService
+{
+	return [self.sref isEqualToString: otherService.sref] &&
+	[self.sname isEqualToString: otherService.sname];
+}
+
 @end

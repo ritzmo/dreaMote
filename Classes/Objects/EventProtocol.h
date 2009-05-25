@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ServiceProtocol.h"
 
-@protocol ServiceProtocol;
 @protocol EventProtocol
 
 @property (nonatomic, retain) NSString *eit;
@@ -22,5 +22,6 @@
 
 - (void)setBeginFromString: (NSString *)newBegin;
 - (void)setEndFromDurationString: (NSString *)newDuration;
+- (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent;
 
 @end

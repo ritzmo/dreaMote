@@ -15,5 +15,6 @@
 @property (nonatomic, readonly, getter = isValid) BOOL valid;
 
 - (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error;
+- (BOOL)isEqualToService: (NSObject<ServiceProtocol> *)otherService;
 
 @end
