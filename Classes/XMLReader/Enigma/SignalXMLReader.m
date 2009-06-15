@@ -77,7 +77,7 @@
 			break;
 		
 		Signal *newSignal = [[Signal alloc] init];
-		newSignal.snr = 0; // enigma does not support this...
+		newSignal.snr = -1; // enigma does not support this...
 		
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
 		{

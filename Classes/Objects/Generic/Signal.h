@@ -11,13 +11,13 @@
 @interface Signal : NSObject
 {
 @private
-	double snrdb;
+	float snrdb;
 	NSInteger snr;
 	NSInteger ber;
 	NSInteger agc;
 }
 
-@property (assign) double snrdb;
+@property (assign) float snrdb;
 @property (assign) NSInteger snr;
 @property (assign) NSInteger ber;
 @property (assign) NSInteger agc;

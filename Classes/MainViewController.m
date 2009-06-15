@@ -178,7 +178,6 @@
 	myTableView.delegate = self;
 	myTableView.dataSource = self;
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	myTableView.scrollEnabled = NO;
 
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
 	myTableView.autoresizesSubviews = YES;

@@ -304,7 +304,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
-		
+
 	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = nil;
 

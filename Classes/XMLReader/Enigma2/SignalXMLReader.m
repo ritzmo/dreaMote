@@ -45,7 +45,7 @@
 			NSString *elementName = [currentChild name];			
 			if ([elementName isEqualToString:@"e2snrdb"]) {
 				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-				newSignal.snrdb = [[str substringToIndex: [str length] - 3] doubleValue];
+				newSignal.snrdb = [[str substringToIndex: [str length] - 3] floatValue];
 				continue;
 			}
 			else if ([elementName isEqualToString:@"e2snr"]) {

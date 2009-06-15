@@ -17,7 +17,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<%@> SNRdB: '%d dB'.\nSNR: '%i %'.\nBER: '%i'.\nAGC: '%i %'.\n", [self class], self.snrdb, self.snr, self.ber, self.agc];
+	return [NSString stringWithFormat:@"<%@> SNRdB: '%f dB'.\nSNR: '%i %'.\nBER: '%i'.\nAGC: '%i %'.\n", [self class], self.snrdb, self.snr, self.ber, self.agc];
 }
 
 @end

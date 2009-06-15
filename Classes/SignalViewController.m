@@ -11,6 +11,8 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
+#import "Signal.h"
+
 #import "DisplayCell.h"
 
 @implementation SignalViewController
@@ -28,7 +30,8 @@
 {
 	[_snr release];
 	[_agc release];
-	[_signal release];
+	[_snrdBCell release];
+	[_berCell release];
 
 	[timer invalidate];
 	timer = nil;
@@ -80,10 +83,18 @@
 
 	_snr.value = (float)(signal.snr);
 	_agc.value = (float)(signal.agc);
+
+	_hasSnrdB = signal.snrdb > -1;
+	_snrdBCell.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
+	_berCell.text = [NSString stringWithFormat: @"%i BER", signal.ber];
+
+	[(UITableView *)self.view reloadData];
 }
 
 - (void)loadView
 {
+	static NSString *kVanilla_ID = @"Vanilla_ID";
+
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
@@ -118,6 +129,30 @@
 	_agc.maximumValue = 100.0;
 	_agc.continuous = NO;
 	_agc.enabled = NO;
+
+	// SNRdB
+	UITableViewCell *sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+	if (sourceCell == nil) 
+		sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+	
+	sourceCell.textAlignment = UITextAlignmentCenter;
+	sourceCell.textColor = [UIColor blackColor];
+	sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+	sourceCell.indentationLevel = 1;
+	_snrdBCell = [sourceCell retain];
+
+	// BER
+	sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+	if (sourceCell == nil) 
+		sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+	
+	sourceCell.textAlignment = UITextAlignmentCenter;
+	sourceCell.textColor = [UIColor blackColor];
+	sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+	sourceCell.indentationLevel = 1;
+	_berCell = [sourceCell retain];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -136,53 +171,56 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	// TODO: second section with numerical values (as long as provided)
-	return 1;
+	return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if(section == 0)
-		return NSLocalizedString(@"Percentage", @""); // XXX: better title?
-
-	// TODO: second section with numerical values (as long as provided)
-	return nil;	
+		return NSLocalizedString(@"Percentage", @"");
+	return NSLocalizedString(@"Exact", @"");	
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	if(section == 0)
 		return 2;
-
-	// TODO: second section with numerical values (as long as provided)
-	return 0;
+	if(_hasSnrdB)
+		return 2;
+	return 1;
 }
 
 // to determine which UITableViewCell to be used on a given row.
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	DisplayCell *sourceCell = (DisplayCell *)[tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-	if(sourceCell == nil)
-		sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+	UITableViewCell *sourceCell = nil;
 
 	// we are creating a new cell, setup its attributes
 	switch (indexPath.section) {
 		case 0:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
+			if(sourceCell == nil)
+				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			if(indexPath.row == 0)
 			{
-				sourceCell.nameLabel.text = NSLocalizedString(@"SNR", @"");
-				sourceCell.view = _snr;
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"SNR", @"");
+				((DisplayCell *)sourceCell).view = _snr;
 			}
 			else
 			{
-				sourceCell.nameLabel.text = NSLocalizedString(@"AGC", @"");
-				sourceCell.view = _agc;
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"AGC", @"");
+				((DisplayCell *)sourceCell).view = _agc;
 			}
 			break;
 		case 1:
-			break;	
+			if(_hasSnrdB && indexPath.row == 0)
+				sourceCell = _snrdBCell;
+			else
+				sourceCell = _berCell;
+			break;
 		default:
 			break;
 	}

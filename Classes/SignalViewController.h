@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Signal.h"
-
 @interface SignalViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
 	NSTimer *timer;
 	UISlider *_snr;
 	UISlider *_agc;
-	Signal *_signal;
+	UITableViewCell *_snrdBCell;
+	UITableViewCell *_berCell;
+	BOOL _hasSnrdB;
 }
 
 @end
