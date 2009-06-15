@@ -31,7 +31,6 @@
 	[_signal release];
 
 	[timer invalidate];
-	[timer release];
 	timer = nil;
 
 	[super dealloc];
@@ -51,7 +50,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[timer invalidate];
-	[timer release];
 	timer = nil;
 
 	[super viewWillDisappear: animated];
