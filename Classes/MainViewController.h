@@ -19,6 +19,7 @@
 	NSDictionary *_recordDictionary;
 	NSDictionary *_serviceDictionary;
 	NSDictionary *_eventSearchDictionary;
+	NSDictionary *_signalDictionary;
 }
 
 @property (nonatomic, retain) UITableView *myTableView;

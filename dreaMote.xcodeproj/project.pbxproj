@@ -54,6 +54,7 @@
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
 		DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
 		DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247EB0E3B3A7500B09600 /* DisplayCell.m */; };
+		DA5536BE0FE6A38C00FBAF18 /* SignalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */; };
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
@@ -237,6 +238,8 @@
 		DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
 		DA5247EA0E3B3A7500B09600 /* DisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCell.h; sourceTree = "<group>"; };
 		DA5247EB0E3B3A7500B09600 /* DisplayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCell.m; sourceTree = "<group>"; };
+		DA5536BC0FE6A38C00FBAF18 /* SignalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalViewController.h; sourceTree = "<group>"; };
+		DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalViewController.m; sourceTree = "<group>"; };
 		DA5A048E0E3798BC0062F924 /* MovieListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieListController.h; sourceTree = "<group>"; };
 		DA5A048F0E3798BC0062F924 /* MovieListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListController.m; sourceTree = "<group>"; };
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
@@ -757,6 +760,8 @@
 				DA80C4930E37A254008A42AE /* MovieViewController.m */,
 				DA7A22780E371ACA00455D11 /* RCEmulatorController.h */,
 				DA7A22790E371ACA00455D11 /* RCEmulatorController.m */,
+				DA5536BC0FE6A38C00FBAF18 /* SignalViewController.h */,
+				DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */,
 				DAC3B7E90D85A55A00696B06 /* TimerViewController.h */,
 				DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */,
 			);
@@ -1034,6 +1039,7 @@
 				DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */,
 				DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */,
 				DA0B0EEE0FE6537D00684EDC /* Signal.m in Sources */,
+				DA5536BE0FE6A38C00FBAF18 /* SignalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

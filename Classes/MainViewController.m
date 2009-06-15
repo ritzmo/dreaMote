@@ -18,6 +18,7 @@
 #import "TimerListController.h"
 #import "ControlViewController.h"
 #import "MovieListController.h"
+#import "SignalViewController.h"
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
 #import "MessageViewController.h"
@@ -47,6 +48,8 @@
 	[_bouquetDictionary release];
 	[_recordDictionary release];
 	[_serviceDictionary release];
+	[_eventSearchDictionary release];
+	[_signalDictionary release];
 
 	[super dealloc];
 }
@@ -57,6 +60,10 @@
 	configListController = nil;
 	[aboutViewController release];
 	aboutViewController = nil;
+	[_eventSearchDictionary release];
+	_eventSearchDictionary = nil;
+	[_signalDictionary release];
+	_signalDictionary = nil;
 
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
@@ -96,6 +103,14 @@
 							NSLocalizedString(@"Event Search Explain", @""), @"explainText",
 							targetViewController, @"viewController",
 							nil] retain];
+	[targetViewController release];
+
+	targetViewController = [[SignalViewController alloc] init];
+	_signalDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							   NSLocalizedString(@"Signal Title", @""), @"title",
+							   NSLocalizedString(@"Signal Explain", @""), @"explainText",
+							   targetViewController, @"viewController",
+							   nil] retain];
 	[targetViewController release];
 
 	targetViewController = [[TimerListController alloc] init];
@@ -217,6 +232,24 @@
 		if([menuList containsObject: _recordDictionary])
 		{
 			[menuList removeObject: _recordDictionary];
+			reload = YES;
+		}
+	}
+
+	// Add/Remove Signal Finder
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
+	{
+		if(![menuList containsObject: _signalDictionary])
+		{
+			[menuList insertObject: _signalDictionary atIndex: 3];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _signalDictionary])
+		{
+			[menuList removeObject: _signalDictionary];
 			reload = YES;
 		}
 	}

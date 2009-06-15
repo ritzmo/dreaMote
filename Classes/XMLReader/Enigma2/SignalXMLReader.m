@@ -44,21 +44,21 @@
 			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
 			NSString *elementName = [currentChild name];			
 			if ([elementName isEqualToString:@"e2snrdb"]) {
-				NSString *str = [currentChild stringValue];
+				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 				newSignal.snrdb = [[str substringToIndex: [str length] - 3] doubleValue];
 				continue;
 			}
 			else if ([elementName isEqualToString:@"e2snr"]) {
-				NSString *str = [currentChild stringValue];
+				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 				newSignal.snr = [[str substringToIndex: [str length] - 2] integerValue];
 				continue;
 			}
 			else if ([elementName isEqualToString:@"e2ber"]) {
-				newSignal.ber = [[currentChild stringValue] integerValue];
+				newSignal.ber = [[[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] integerValue];
 				continue;
 			}
 			else if ([elementName isEqualToString:@"e2acg"]) {
-				NSString *str = [currentChild stringValue];
+				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 				newSignal.agc = [[str substringToIndex: [str length] - 2] integerValue];
 				continue;
 			}
