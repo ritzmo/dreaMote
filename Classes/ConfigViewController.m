@@ -37,6 +37,7 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
+		connectorCell = nil;
 	}
 	return self;
 }
@@ -245,7 +246,8 @@
 			}
 		}
 
-		connectorCell.accessoryType = UITableViewCellAccessoryNone;
+		if(connectorCell)
+			connectorCell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	else
 	{
@@ -254,7 +256,9 @@
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 		[cancelButtonItem release];
-		connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+		if(connectorCell)
+			connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 }
 

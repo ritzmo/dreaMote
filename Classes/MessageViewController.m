@@ -33,6 +33,7 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Message", @"Default title of MessageViewController");
+		typeCell = nil;
 	}
 	return self;
 }
@@ -133,9 +134,10 @@
 		[captionCell stopEditing];
 		[timeoutCell stopEditing];
 
-		typeCell.accessoryType = UITableViewCellAccessoryNone;
+		if(typeCell)
+			typeCell.accessoryType = UITableViewCellAccessoryNone;
 	}
-	else
+	else if(typeCell)
 		typeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 

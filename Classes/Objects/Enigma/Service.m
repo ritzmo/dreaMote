@@ -30,6 +30,7 @@
 
 - (NSString *)sname
 {
+	// TODO: how can this possible crash?
 	NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{

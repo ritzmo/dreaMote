@@ -44,6 +44,9 @@
 		bouquetListController = nil;
 		datePickerController = nil;
 		afterEventViewController = nil;
+		timerServiceNameCell = nil;
+		timerBeginCell = nil;
+		timerEndCell = nil;
 	}
 	return self;
 }
@@ -392,7 +395,8 @@
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.
 	_timer.service = [newService copy];
-	timerServiceNameCell.text = _timer.service.sname;
+	if(timerServiceNameCell)
+		timerServiceNameCell.text = _timer.service.sname;
 }
 
 - (void)beginSelected: (NSDate *)newDate
@@ -401,7 +405,8 @@
 		return;
 
 	_timer.begin = newDate;
-	timerBeginCell.text = [self format_BeginEnd: newDate];
+	if(timerBeginCell)
+		timerBeginCell.text = [self format_BeginEnd: newDate];
 }
 
 - (void)endSelected: (NSDate *)newDate
@@ -410,7 +415,8 @@
 		return;
 
 	_timer.end = newDate;
-	timerEndCell.text = [self format_BeginEnd: newDate];
+	if(timerEndCell)
+		timerEndCell.text = [self format_BeginEnd: newDate];
 }
 
 - (void)afterEventSelected: (NSNumber *)newAfterEvent

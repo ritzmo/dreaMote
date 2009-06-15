@@ -115,6 +115,13 @@
 	if(indexPath.section != 0)
 		return nil;
 
+	// XXX: seen some crashlogs which supposedly ran into this case...
+	if([_connections count] <= indexPath.row)
+	{
+		NSLog(@"ERROR: about to select out of bounds, aborting...");
+		return nil;
+	}
+
 	UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
 	[self.navigationController pushViewController: targetViewController animated: YES];
 	[targetViewController release];
