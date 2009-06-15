@@ -120,6 +120,7 @@
 
 	eventViewController.event = event;
 	eventViewController.service = service;
+	eventViewController.search = YES;
 
 	[self.navigationController pushViewController: eventViewController animated: YES];
 

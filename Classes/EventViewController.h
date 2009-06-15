@@ -11,12 +11,18 @@
 #import "Objects/EventProtocol.h"
 #import "Objects/ServiceProtocol.h"
 
+@class CXMLDocument;
+
 @interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
+	NSMutableArray *_similarEvents;
 	NSObject<EventProtocol> *_event;
 	NSObject<ServiceProtocol> *_service;
 	BOOL _similarFetched;
+	BOOL _isSearch;
+	
+	CXMLDocument *eventXMLDoc;
 }
 
 + (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (NSObject<ServiceProtocol> *)newService;
@@ -24,5 +30,6 @@
 
 @property (nonatomic, retain) NSObject<EventProtocol> *event;
 @property (nonatomic, retain) NSObject<ServiceProtocol> *service;
+@property (nonatomic) BOOL search;
 
 @end

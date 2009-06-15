@@ -10,7 +10,9 @@
 
 #import "TimerViewController.h"
 #import "FuzzyDateFormatter.h"
+#import "RemoteConnectorObject.h"
 
+#import "EventTableViewCell.h"
 #import "CellTextView.h"
 #import "DisplayCell.h"
 #import "Constants.h"
@@ -26,6 +28,9 @@
 		self.title = NSLocalizedString(@"Event", @"");
 		_event = nil;
 		_similarFetched = NO;
+		_similarEvents = [[NSMutableArray array] retain];
+		_isSearch = NO;
+		eventXMLDoc = nil;
 	}
 	
 	return self;
@@ -55,6 +60,8 @@
 {
 	[_event release];
 	[_service release];
+	[_similarEvents release];
+	[eventXMLDoc release];
 
 	[super dealloc];
 }
@@ -73,6 +80,7 @@
 	}
 
 	_similarFetched = NO;
+	[_similarEvents removeAllObjects];
 
 	if(newEvent != nil)
 		self.title = newEvent.title;
@@ -80,7 +88,25 @@
 	[(UITableView *)self.view reloadData];
 	[(UITableView *)self.view scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
 								atScrollPosition: UITableViewScrollPositionTop
-								animated: NO];	
+								animated: NO];
+	
+	[eventXMLDoc release];
+	eventXMLDoc = nil;
+}
+
+- (BOOL)search
+{
+	return _isSearch;
+}
+
+- (void)setSearch: (BOOL)newSearch
+{
+	BOOL oldSearch = _isSearch;
+	_isSearch = newSearch;
+
+	// reload data if value changed
+	if(oldSearch != newSearch)
+		[(UITableView *)self.view reloadData];
 }
 
 - (void)loadView
@@ -159,6 +185,30 @@
 	return button;
 }
 
+- (void)fetchEvents
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[eventXMLDoc release];
+	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self action:@selector(addEvent:) event: _event] retain];
+	[pool release];
+}
+
+- (void)addEvent:(id)event
+{
+	if(event != nil)
+	{
+		[_similarEvents addObject: event];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
+		 withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+#else
+	}
+#endif
+	[(UITableView *)self.view reloadData];
+}
+
 #pragma mark - UITableView delegates
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -176,11 +226,22 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 4;
+	NSUInteger sections = 4;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+		++sections;
+	if(_isSearch)
+		++sections;
+
+	return sections;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+	if(section > 2 && !_isSearch)
+		section++;
+	if(section > 3 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+		section++;
+
 	switch (section) {
 		case 0:
 			return NSLocalizedString(@"Description", @"");
@@ -188,6 +249,10 @@
 			return NSLocalizedString(@"Begin", @"");
 		case 2:
 			return NSLocalizedString(@"End", @"");
+		case 3:
+			return NSLocalizedString(@"Service", @"");
+		case 4:
+			return NSLocalizedString(@"Similar Events", @"");
 		default:
 			return nil;
 	}
@@ -195,6 +260,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	if(section > 2 && !_isSearch)
+		section++;
+	if(section == 4 && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+	{
+		NSUInteger count = [_similarEvents count];
+		return count ? count : 1;
+	}
+
 	return 1;
 }
 
@@ -215,6 +288,8 @@
 		case 1:
 		case 2:
 		case 3:
+		case 4:
+		case 5:
 		{
 			result = kUIRowHeight;
 			break;
@@ -232,7 +307,12 @@
 		
 	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = nil;
-	
+
+	if(section > 2 && !_isSearch)
+		section++;
+	if(section > 3 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+		section++;
+
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
@@ -260,6 +340,43 @@
 				sourceCell.text = [self format_BeginEnd: _event.end];
 			break;
 		case 3:
+			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+			if (sourceCell == nil) 
+				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
+			sourceCell.textAlignment = UITextAlignmentCenter;
+			sourceCell.textColor = [UIColor blackColor];
+			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			sourceCell.indentationLevel = 1;
+			sourceCell.text = _event.service.sname;
+				
+			break;
+		case 4:
+			if(![_similarEvents count])
+			{
+				sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
+				if (sourceCell == nil) 
+					sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+
+				sourceCell.textAlignment = UITextAlignmentCenter;
+				sourceCell.textColor = [UIColor blackColor];
+				sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+				sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+				sourceCell.indentationLevel = 1;
+				sourceCell.text = NSLocalizedString(@"No similar Events", @"");
+			}
+			else
+			{
+				sourceCell = [tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
+				if(sourceCell == nil)
+					sourceCell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
+
+				//((EventTableViewCell*)sourceCell).formatter = dateFormatter;
+				((EventTableViewCell*)sourceCell).event = (NSObject<EventProtocol> *)[_similarEvents objectAtIndex: indexPath.row];
+			}
+			break;
+		case 5:
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
@@ -279,7 +396,11 @@
 {
 	if(_similarFetched == NO)
 	{
-		// TODO: fetch similar events
+		// Spawn a thread to fetch the event data so that the UI is not blocked while the
+		// application parses the XML file.
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+			[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+
 		_similarFetched = YES;
 	}
 }
