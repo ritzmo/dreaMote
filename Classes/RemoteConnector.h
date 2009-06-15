@@ -59,6 +59,10 @@ enum connectorFeatures {
 	kFeaturesEPGSearch,
 	// Allows to start an instant record
 	kFeaturesInstantRecord,
+	// Offers a SatFinder
+	kFeaturesSatFinder,
+	// Similar EPG search
+	kFeaturesEPGSearchSimilar,
 };
 
 enum buttonCodes {
@@ -104,6 +108,7 @@ enum buttonCodes {
 @protocol MovieProtocol;
 @protocol ServiceProtocol;
 @protocol TimerProtocol;
+@protocol EventProtocol;
 
 @class CXMLDocument;
 
@@ -123,8 +128,10 @@ enum buttonCodes {
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action;
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action;
 - (void)getVolume:(id)target action:(SEL)action;
+- (void)getSignal:(id)target action:(SEL)action;
 - (NSData *)getScreenshot: (enum screenshotType)type;
 - (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title;
+- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event;
 
 // Functions
 // XXX: we might want to return a dictionary which contains retval / explain for these

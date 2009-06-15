@@ -563,6 +563,11 @@
 	[volumeObject release];
 }
 
+- (void)getSignal:(id)target action:(SEL)action
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+}
+
 - (BOOL)toggleMuted
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -902,6 +907,12 @@
 }
 
 - (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	return nil;
+}
+
+- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;

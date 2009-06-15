@@ -14,6 +14,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		DA09870E0EC206EE009C91B9 /* preferences-system.png in Resources */ = {isa = PBXBuildFile; fileRef = DA09870D0EC206ED009C91B9 /* preferences-system.png */; };
 		DA0A2A580E840E8600726F58 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0A2A570E840E8600726F58 /* Icon.png */; };
+		DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */; };
+		DA0B0EEE0FE6537D00684EDC /* Signal.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EED0FE6537D00684EDC /* Signal.m */; };
 		DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0490F0BC011004B488C /* CXMLDocument.m */; };
 		DA0BF05F0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04D0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m */; };
 		DA0BF0600F0BC011004B488C /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04F0F0BC011004B488C /* CXMLElement.m */; };
@@ -154,6 +156,10 @@
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.info-plist"; sourceTree = "<group>"; };
 		DA09870D0EC206ED009C91B9 /* preferences-system.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "preferences-system.png"; path = "Images/preferences-system.png"; sourceTree = "<group>"; };
 		DA0A2A570E840E8600726F58 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Images/Icon.png; sourceTree = "<group>"; };
+		DA0B0EE60FE6522E00684EDC /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
+		DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalXMLReader.m; sourceTree = "<group>"; };
+		DA0B0EEC0FE6537D00684EDC /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = Generic/Signal.h; sourceTree = "<group>"; };
+		DA0B0EED0FE6537D00684EDC /* Signal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Signal.m; path = Generic/Signal.m; sourceTree = "<group>"; };
 		DA0BF0480F0BC011004B488C /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument.h; sourceTree = "<group>"; };
 		DA0BF0490F0BC011004B488C /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument.m; sourceTree = "<group>"; };
 		DA0BF04C0F0BC011004B488C /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
@@ -506,6 +512,8 @@
 		DA0BF4470F0C1066004B488C /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				DA0B0EEC0FE6537D00684EDC /* Signal.h */,
+				DA0B0EED0FE6537D00684EDC /* Signal.m */,
 				DA0BF4480F0C1066004B488C /* Enigma */,
 				DA0BF4490F0C1066004B488C /* Enigma2 */,
 				DA0BF44D0F0C1066004B488C /* Generic */,
@@ -679,6 +687,8 @@
 				DA7D23730F101F1500BB8BE7 /* MovieXMLReader.m */,
 				DA7D23740F101F1500BB8BE7 /* ServiceXMLReader.h */,
 				DA7D23750F101F1500BB8BE7 /* ServiceXMLReader.m */,
+				DA0B0EE60FE6522E00684EDC /* SignalXMLReader.h */,
+				DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */,
 				DA7D23760F101F1500BB8BE7 /* TimerXMLReader.h */,
 				DA7D23770F101F1500BB8BE7 /* TimerXMLReader.m */,
 				DA7D23780F101F1500BB8BE7 /* VolumeXMLReader.h */,
@@ -1022,6 +1032,8 @@
 				DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */,
 				DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */,
 				DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */,
+				DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */,
+				DA0B0EEE0FE6537D00684EDC /* Signal.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

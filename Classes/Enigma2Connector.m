@@ -8,6 +8,7 @@
 
 #import "Enigma2Connector.h"
 
+#import "Objects/EventProtocol.h"
 #import "Objects/MovieProtocol.h"
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
@@ -17,6 +18,7 @@
 #import "XMLReader/Enigma2/TimerXMLReader.h"
 #import "XMLReader/Enigma2/VolumeXMLReader.h"
 #import "XMLReader/Enigma2/MovieXMLReader.h"
+#import "XMLReader/Enigma2/SignalXMLReader.h"
 
 #import "EnigmaRCEmulatorController.h"
 
@@ -231,6 +233,15 @@ enum enigma2MessageTypes {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: baseAddress];
 
 	Enigma2VolumeXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL:myURI parseError: nil];
+	[streamReader autorelease];
+}
+
+- (void)getSignal:(id)target action:(SEL)action
+{
+	NSURL *myURI = [NSURL URLWithString: @"/web/signal" relativeToURL: baseAddress];
+	
+	Enigma2SignalXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithTarget: target action: action];
 	[streamReader parseXMLFileAtURL:myURI parseError: nil];
 	[streamReader autorelease];
 }
@@ -506,6 +517,16 @@ enum enigma2MessageTypes {
 	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: baseAddress];
 
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event
+{
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: baseAddress];
+	
 	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];

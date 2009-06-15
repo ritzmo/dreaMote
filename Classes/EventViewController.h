@@ -16,6 +16,7 @@
 @private
 	NSObject<EventProtocol> *_event;
 	NSObject<ServiceProtocol> *_service;
+	BOOL _similarFetched;
 }
 
 + (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (NSObject<ServiceProtocol> *)newService;

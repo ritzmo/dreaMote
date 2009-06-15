@@ -25,6 +25,7 @@
 	{
 		self.title = NSLocalizedString(@"Event", @"");
 		_event = nil;
+		_similarFetched = NO;
 	}
 	
 	return self;
@@ -70,6 +71,8 @@
 		[_event release];
 		_event = [newEvent retain];
 	}
+
+	_similarFetched = NO;
 
 	if(newEvent != nil)
 		self.title = newEvent.title;
@@ -268,6 +271,17 @@
 	}
 	
 	return sourceCell;
+}
+
+#pragma mark - UIViewController delegate methods
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	if(_similarFetched == NO)
+	{
+		// TODO: fetch similar events
+		_similarFetched = YES;
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
