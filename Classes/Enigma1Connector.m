@@ -16,6 +16,7 @@
 #import "XMLReader/Enigma/EventXMLReader.h"
 #import "XMLReader/Enigma/TimerXMLReader.h"
 #import "XMLReader/Enigma/MovieXMLReader.h"
+#import "XMLReader/Enigma/SignalXMLReader.h"
 
 #import "EnigmaRCEmulatorController.h"
 
@@ -45,7 +46,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesTimerAfterEvent) ||
 		(feature == kFeaturesConstantTimerId) ||
 		(feature == kFeaturesRecordDelete) ||
-		(feature == kFeaturesInstantRecord);
+		(feature == kFeaturesInstantRecord) ||
+		(feature == kFeaturesSatFinder);
 }
 
 - (NSInteger)getMaxVolume
@@ -349,7 +351,13 @@ enum enigma1MessageTypes {
 
 - (void)getSignal:(id)target action:(SEL)action
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/streaminfo" relativeToURL: baseAddress];
+	
+	NSError *parseError = nil;
+	
+	BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithTarget: target action: action];
+	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
+	[streamReader autorelease];
 }
 
 - (BOOL)toggleMuted
