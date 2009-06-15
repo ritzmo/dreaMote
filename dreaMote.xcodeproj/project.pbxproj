@@ -126,6 +126,7 @@
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
+		DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */; };
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAB97AAB0F7FBCC400464B66 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB97AAA0F7FBCC400464B66 /* document-save.png */; };
@@ -349,6 +350,8 @@
 		DAA2222B0E998CE900DD749C /* AfterEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AfterEventViewController.m; sourceTree = "<group>"; };
 		DAA9247B0EA68C4D00FC0E70 /* NeutrinoConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoConnector.h; sourceTree = "<group>"; };
 		DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NeutrinoConnector.m; sourceTree = "<group>"; };
+		DAAC444E0FE6CECE00F3169F /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
+		DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalXMLReader.m; sourceTree = "<group>"; };
 		DAB579ED0E94CA580093721B /* ConnectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectorViewController.h; sourceTree = "<group>"; };
 		DAB579EE0E94CA580093721B /* ConnectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectorViewController.m; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
@@ -675,6 +678,8 @@
 				DA7D236A0F101F1500BB8BE7 /* EventXMLReader.m */,
 				DA7D236B0F101F1500BB8BE7 /* MovieXMLReader.h */,
 				DA7D236C0F101F1500BB8BE7 /* MovieXMLReader.m */,
+				DAAC444E0FE6CECE00F3169F /* SignalXMLReader.h */,
+				DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */,
 				DA7D236D0F101F1500BB8BE7 /* TimerXMLReader.h */,
 				DA7D236E0F101F1500BB8BE7 /* TimerXMLReader.m */,
 			);
@@ -1040,6 +1045,7 @@
 				DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */,
 				DA0B0EEE0FE6537D00684EDC /* Signal.m in Sources */,
 				DA5536BE0FE6A38C00FBAF18 /* SignalViewController.m in Sources */,
+				DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

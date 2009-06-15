@@ -82,6 +82,7 @@
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
 		{
 			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
+			NSString *elementName = [currentChild name];
 			if ([elementName isEqualToString:@"snr"]) {
 				NSString *str = [currentChild stringValue];
 				newSignal.snrdb = [[str substringToIndex: [str length] - 1] integerValue];
