@@ -9,6 +9,12 @@
     #import <UIKit/UIKit.h>
 #endif
 
+#ifdef __IPHONE_3_0
+// iPhone OS 3.0 specific
+#else
+// Earlier iPhone OS specific
+#endif
+
 #ifndef NSINTEGER_DEFINED
 	#define NSInteger int
 #endif

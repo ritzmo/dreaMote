@@ -11,6 +11,7 @@
 #import "BouquetListController.h"
 #import "DatePickerController.h"
 #import "AfterEventViewController.h"
+#import "SimpleRepeatedViewController.h"
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -44,9 +45,11 @@
 		bouquetListController = nil;
 		datePickerController = nil;
 		afterEventViewController = nil;
+		simpleRepeatedViewController = nil;
 		timerServiceNameCell = nil;
 		timerBeginCell = nil;
 		timerEndCell = nil;
+		repeatedCell = nil;
 	}
 	return self;
 }
@@ -109,6 +112,7 @@
 	[bouquetListController release];
 	[afterEventViewController release];
 	[datePickerController release];
+	[simpleRepeatedViewController release];
 
 	[super dealloc];
 }
@@ -118,10 +122,12 @@
 	[bouquetListController release];
 	[afterEventViewController release];
 	[datePickerController release];
+	[simpleRepeatedViewController release];
 	
 	bouquetListController = nil;
 	afterEventViewController = nil;
 	datePickerController = nil;
+	simpleRepeatedViewController = nil;
 	
 	[super didReceiveMemoryWarning];
 }
@@ -419,6 +425,57 @@
 		timerEndCell.text = [self format_BeginEnd: newDate];
 }
 
+- (void)simpleRepeatedSelected: (NSNumber *)newRepeated
+{
+	NSInteger repeated = -1;
+	if(newRepeated == nil)
+		return;
+
+	repeated = [newRepeated integerValue];
+	_timer.repeated = repeated;
+	
+	if(repeatedCell == nil)
+		return;
+	
+	if(repeated == 0)
+	{
+		repeatedCell.text = NSLocalizedString(@"Never", @"Repeated");
+	}
+	else
+	{
+		NSMutableString *text = nil;
+
+		if(repeated == 31)
+		{
+			repeatedCell.text = NSLocalizedString(@"Weekdays", @"Repeated");
+			return;
+		}
+		else if (repeated == 127)
+		{
+			repeatedCell.text = NSLocalizedString(@"Daily", @"Repeated");
+			return;
+		}
+
+		text = [NSMutableString stringWithCapacity: 10];
+		if(repeated & weekdayMon)
+			[text appendString: NSLocalizedString(@"Mon", "Weekday")];
+		if(repeated & weekdayTue)
+			[text appendString: NSLocalizedString(@"Tue", "Weekday")];
+		if(repeated & weekdayWed)
+			[text appendString: NSLocalizedString(@"Wed", "Weekday")];
+		if(repeated & weekdayThu)
+			[text appendString: NSLocalizedString(@"Thu", "Weekday")];
+		if(repeated & weekdayFri)
+			[text appendString: NSLocalizedString(@"Fri", "Weekday")];
+		if(repeated & weekdaySat)
+			[text appendString: NSLocalizedString(@"Sat", "Weekday")];
+		if(repeated & weekdaySun)
+			[text appendString: NSLocalizedString(@"Sun", "Weekday")];
+
+		repeatedCell.text = text;
+	}
+}
+
 - (void)afterEventSelected: (NSNumber *)newAfterEvent
 {
 	if(newAfterEvent == nil)
@@ -426,6 +483,9 @@
 	
 	_timer.afterevent = [newAfterEvent integerValue];
 	
+	if(afterEventCell == nil)
+		return;
+
 	if(_timer.afterevent == kAfterEventNothing)
 		afterEventCell.text = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterevent == kAfterEventStandby)
@@ -440,13 +500,21 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	NSInteger sections = 6;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
-		return 7;
-	return 6;
+		++sections;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+		++sections;
+	return sections;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+		++section;
+	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+		++section;
+		
 	switch (section) {
 		case 0:
 			return NSLocalizedString(@"Title", @"");
@@ -462,6 +530,8 @@
 			return NSLocalizedString(@"End", @"");
 		case 6:
 			return NSLocalizedString(@"After Event", @"");
+		case 7:
+			return NSLocalizedString(@"Repeated", @"");
 		default:
 			return nil;
 	}
@@ -500,6 +570,7 @@
 		case 4:
 		case 5:
 		case 6:
+		case 7:
 			cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
@@ -517,7 +588,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger section = indexPath.section;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
+	UITableViewCell *sourceCell = nil;
+
+	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+		++section;
+	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+		++section;
+
+	sourceCell = [self obtainTableCellForSection: tableView: section];
 
 	// we are creating a new cell, setup its attributes
 	switch (section) {
@@ -562,16 +640,12 @@
 			timerEndCell = sourceCell;
 			break;
 		case 6:
-			if(_timer.afterevent == kAfterEventNothing)
-				sourceCell.text = NSLocalizedString(@"Nothing", @"After Event");
-			else if(_timer.afterevent == kAfterEventStandby)
-				sourceCell.text = NSLocalizedString(@"Standby", @"");
-			else if(_timer.afterevent == kAfterEventDeepstandby)
-				sourceCell.text = NSLocalizedString(@"Deep Standby", @"");
-			else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
-				sourceCell.text = NSLocalizedString(@"Auto", @"");
-
 			afterEventCell = sourceCell;
+			[self afterEventSelected: [NSNumber numberWithInteger: _timer.afterevent]];
+			break;
+		case 7:
+			repeatedCell = sourceCell;
+			[self simpleRepeatedSelected: [NSNumber numberWithInteger: _timer.repeated]];
 			break;
 		default:
 			break;
@@ -586,6 +660,11 @@
 	{
 		NSInteger section = indexPath.section;
 		UIViewController *targetViewController = nil;
+
+		if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+			++section;
+		if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+			++section;
 
 		if(section == 3)
 		{
@@ -625,6 +704,15 @@
 
 			targetViewController = afterEventViewController;
 		}
+		else if(section == 7)
+		{
+			if(simpleRepeatedViewController == nil)
+				simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
+			simpleRepeatedViewController.repeated = _timer.repeated;
+			[simpleRepeatedViewController setTarget: self action: @selector(simpleRepeatedSelected:)];
+			
+			targetViewController = simpleRepeatedViewController;
+		}
 		else
 			return nil;
 
@@ -636,9 +724,9 @@
 }
 
 - (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-	// Show the disclosure indicator in section 3..6 if editing.
+	// Show the disclosure indicator in section 3..7 if editing.
 	NSInteger section = indexPath.section;
-	if(self.editing && section > 2 && section < 7)
+	if(self.editing && section > 2 && section < 8)
 		return UITableViewCellAccessoryDisclosureIndicator;
 	return UITableViewCellAccessoryNone;
 }
@@ -732,10 +820,12 @@
 	[bouquetListController release];
 	[afterEventViewController release];
 	[datePickerController release];
+	[simpleRepeatedViewController release];
 	
 	bouquetListController = nil;
 	afterEventViewController = nil;
 	datePickerController = nil;
+	simpleRepeatedViewController = nil;
 }
 
 @end

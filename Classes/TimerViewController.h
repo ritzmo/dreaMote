@@ -16,6 +16,7 @@
 @class BouquetListController;
 @class AfterEventViewController;
 @class DatePickerController;
+@class SimpleRepeatedViewController;
 
 @interface TimerViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
@@ -35,6 +36,7 @@
 	UISwitch *timerEnabled;
 	UISwitch *timerJustplay;
 	UITableViewCell *afterEventCell;
+	UITableViewCell *repeatedCell;
 	
 	NSObject<TimerProtocol> *_timer;
 	NSObject<TimerProtocol> *_oldTimer;
@@ -44,6 +46,7 @@
 	BouquetListController *bouquetListController;
 	AfterEventViewController *afterEventViewController;
 	DatePickerController *datePickerController;
+	SimpleRepeatedViewController *simpleRepeatedViewController;
 }
 
 + (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent;
