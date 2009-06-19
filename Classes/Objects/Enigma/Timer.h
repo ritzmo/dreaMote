@@ -28,6 +28,7 @@
 	double _duration;
 	BOOL _isValid;
 	NSString *timeString;
+	NSInteger _repeated;
 
 	// Unfortunately we need a helpers...
 	BOOL _typedataSet;

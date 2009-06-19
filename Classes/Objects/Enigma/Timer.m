@@ -195,17 +195,17 @@
 
 - (NSInteger)repeated
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"type" error:nil];
-	for(CXMLElement *resultElement in resultNodes)
+	if(!_typedataSet)
 	{
-		return [[resultElement stringValue] isEqualToString: @"SINGLE"] ? 0 : 1;
+		[self getTypedata];
 	}
-	return 0;
+
+	return _repeated;
 }
 
 - (void)setRepeated: (NSInteger)new
 {
-	return;
+	_repeated = new;
 }
 
 - (NSInteger)afterevent
@@ -244,6 +244,7 @@
 		_service = nil;
 		_isValid = YES;
 		timeString = nil;
+		_repeated = 0;
 
 		_typedataSet = NO;
 	}
@@ -373,24 +374,44 @@
 		
 		// We translate to Enigma2 States here
 		if(typeData & stateRunning)
-			self.state = kTimerStateRunning;
+			_state = kTimerStateRunning;
 		else if(typeData & stateFinished)
-			self.state = kTimerStateFinished;
+			_state = kTimerStateFinished;
 		else // stateWaiting or unknown
-			self.state =  kTimerStateWaiting;
-		
+			_state =  kTimerStateWaiting;
+
 		if(typeData & doShutdown)
-			self.afterevent = kAfterEventStandby;
+			_afterevent = kAfterEventStandby;
 		else if(typeData & doGoSleep)
-			self.afterevent = kAfterEventDeepstandby;
+			_afterevent = kAfterEventDeepstandby;
 		else
-			self.afterevent = kAfterEventNothing;
-		
+			_afterevent = kAfterEventNothing;
+
 		if(typeData & SwitchTimerEntry)
-			self.justplay = YES;
+			_justplay = YES;
 		else // We assume RecTimerEntry here
-			self.justplay = NO;
-		
+			_justplay = NO;
+
+		if(typeData & isRepeating)
+		{
+			if(typeData & Su)
+				_repeated |= weekdaySun;
+			if(typeData & Mo)
+				_repeated |= weekdayMon;
+			if(typeData & Tue)
+				_repeated |= weekdayTue;
+			if(typeData & Wed)
+				_repeated |= weekdayWed;
+			if(typeData & Thu)
+				_repeated |= weekdayThu;
+			if(typeData & Fr)
+				_repeated |= weekdayFri;
+			if(typeData & Sa)
+				_repeated |= weekdaySat;
+		}
+		else
+			_repeated = 0;
+
 		_typedataSet = YES;
 		return;
 	}

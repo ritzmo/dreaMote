@@ -63,6 +63,10 @@ enum connectorFeatures {
 	kFeaturesSatFinder,
 	// Similar EPG search
 	kFeaturesEPGSearchSimilar,
+	// "Simple" Repeated timers (as in nothing weird like "biweekly mondays and thursdays")
+	// NOTE: this is more of a hack to allow an implementation in enigma(2) without having
+	//       to bother about neutrino/svdrp :-)
+	kFeaturesSimpleRepeated,
 };
 
 enum buttonCodes {

@@ -60,6 +60,17 @@ enum timerType {
 	Wed=4194304, Thu=8388608, Fr=16777216, Sa=33554432
 };
 
+// weekday flags used in enigma2 and our common representation here
+enum weekDays {
+	weekdayMon = 1 << 0,
+	weekdayTue = 1 << 1,
+	weekdayWed = 1 << 2,
+	weekdayThu = 1 << 3,
+	weekdayFri = 1 << 4,
+	weekdaySat = 1 << 5,
+	weekdaySun = 1 << 6,
+};
+
 @protocol ServiceProtocol;
 @protocol TimerProtocol
 

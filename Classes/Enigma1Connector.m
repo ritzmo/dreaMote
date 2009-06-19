@@ -47,7 +47,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesConstantTimerId) ||
 		(feature == kFeaturesRecordDelete) ||
 		(feature == kFeaturesInstantRecord) ||
-		(feature == kFeaturesSatFinder);
+		(feature == kFeaturesSatFinder) ||
+		(feature == kFeaturesSimpleRepeated);
 }
 
 - (NSInteger)getMaxVolume
@@ -414,7 +415,10 @@ enum enigma1MessageTypes {
 
 - (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
+	NSInteger repeated = 0;
 	NSInteger afterEvent = 0;
+	NSURL *myURI = nil;
+
 	if(newTimer.afterevent == kAfterEventStandby)
 		afterEvent = doGoSleep;
 	else if(newTimer.afterevent == kAfterEventDeepstandby)
@@ -422,8 +426,20 @@ enum enigma1MessageTypes {
 	else // newTimer.afterevent == kAfterEventNothing or unhandled
 		afterEvent = 0;
 
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
+	repeated = newTimer.repeated;
+	if(repeated == 0)
+	{
+		// Generate non-repeated URI
+		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
+	}
+	else
+	{
+		// XXX: we theoretically could "inject" our weekday flags into the type but
+		// lets try to avoid more ugly hacks than this code already has :-)
+
+		// Generate repeated URI
+		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=repeating&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@&mo=%@&tu=%@&we=%@&th=%@&fr=%@&sa=%@&su=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record", (repeated & weekdayMon) > 0 ? @"on" : @"off", (repeated & weekdayTue) > 0 ? @"on" : @"off", (repeated & weekdayWed) > 0 ? @"on" : @"off", (repeated & weekdayThu) > 0 ? @"on" : @"off", (repeated & weekdayFri) > 0 ? @"on" : @"off", (repeated & weekdaySat) > 0 ? @"on" : @"off", (repeated & weekdaySun) > 0 ? @"on" : @"off"] relativeToURL: baseAddress];
+	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
