@@ -12,6 +12,10 @@
 
 #import "CXMLDocument.h"
 
+/*!
+ @interface NeutrinoConnector
+ @abstract Connector for Neutrino based STBs.
+ */
 @interface NeutrinoConnector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;

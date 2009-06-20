@@ -10,6 +10,10 @@
 
 #import "RemoteConnector.h"
 
+/*!
+ @interface Enigma2Connector
+ @abstract Connector for Enigma2 based STBs.
+ */
 @interface Enigma2Connector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;

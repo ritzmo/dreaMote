@@ -12,6 +12,10 @@
 
 @class BufferedSocket;
 
+/*!
+ @interface SVDRPConnector
+ @abstract Connector for SVDRP based STBs.
+ */
 @interface SVDRPConnector : NSObject <RemoteConnector> {
 @private
 	NSMutableDictionary *serviceCache;

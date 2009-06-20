@@ -6,12 +6,17 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
+
 #import <UIKit/UIKit.h>
 
 #import "RemoteConnector.h"
 
 #import "CXMLDocument.h"
 
+/*!
+ @interface Enigma1Connector
+ @abstract Connector for Enigma based STBs.
+ */
 @interface Enigma1Connector : NSObject <RemoteConnector> {
 @private
 	NSURL *baseAddress;
