@@ -12,17 +12,26 @@
 
 #import "EventProtocol.h"
 
+/*!
+ @brief Event in Enigma.
+ */
 @interface EnigmaEvent : NSObject <EventProtocol>
 {
 @private
-	NSDate *_begin;
-	NSDate *_end;
+	NSDate *_begin; /*!< @brief Begin. */
+	NSDate *_end; /*!< @brief End. */
 
-	NSString *timeString;
+	NSString *timeString; /*!< @brief ??? */
 
-	CXMLNode *_node;
+	CXMLNode *_node; /*!< @brief CXMLNode describing this Event. */
 }
 
+/*!
+ @brief Standard initializer.
+ 
+ @param CXMLNode Pointer to CXMLNode describing this Event.
+ @return EnigmaEvent instance.
+ */
 - (id)initWithNode: (CXMLNode *)node;
 
 @end

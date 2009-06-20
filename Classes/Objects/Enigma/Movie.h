@@ -12,16 +12,25 @@
 
 #import "MovieProtocol.h"
 
+/*!
+ @brief Movie in Enigma.
+ */
 @interface EnigmaMovie : NSObject <MovieProtocol>
 {
 @private
-	NSNumber *_length;
-	NSNumber *_size;
-	NSArray *_tags;
+	NSNumber *_length; /*!< @brief Length. */
+	NSNumber *_size; /*!< @brief Size. */
+	NSArray *_tags; /*!< @brief Tags. */
 
-	CXMLNode *_node;
+	CXMLNode *_node; /*!< @brief CXMLNode describing this Movie. */
 }
 
+/*!
+ @brief Standard initializer.
+ 
+ @param CXMLNode Pointer to CXMLNode describing this Movie.
+ @return EnigmaMovie instance.
+ */
 - (id)initWithNode: (CXMLNode *)node;
 
 @end

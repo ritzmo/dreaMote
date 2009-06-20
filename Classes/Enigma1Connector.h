@@ -14,13 +14,18 @@
 #import "CXMLDocument.h"
 
 /*!
- @interface Enigma1Connector
- @abstract Connector for Enigma based STBs.
+ @brief Connector for Enigma based STBs.
  */
 @interface Enigma1Connector : NSObject <RemoteConnector> {
 @private
-	NSURL *baseAddress;
+	NSURL *baseAddress; /*!< @brief Base URL of STB */
 
+	/*!
+	 @brief Cached Bouquet XML.
+
+	 For performance Reasons the Service list is only fetched once when entering
+	 the Bouquet list so we have to cache this (already parsed) XML in memory.
+	*/
 	CXMLDocument *cachedBouquetsXML;
 }
 

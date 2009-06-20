@@ -13,29 +13,38 @@
 #import "TimerProtocol.h"
 #import "ServiceProtocol.h"
 
+/*!
+ @brief Timer in Enigma.
+ */
 @interface EnigmaTimer : NSObject <TimerProtocol>
 {
 @private
-	NSDate *_begin;
-	NSDate *_end;
-	NSString *_title;
-	BOOL _justplay;
-	NSObject<ServiceProtocol> *_service;
-	NSString *_sref;
-	NSString *_sname;
-	NSInteger _state;
-	NSInteger _afterevent;
-	double _duration;
-	BOOL _isValid;
-	NSString *timeString;
-	NSInteger _repeated;
+	NSDate *_begin; /*!< @brief Begin. */
+	NSDate *_end; /*!< @brief End. */
+	NSString *_title; /*!< @brief Title. */
+	BOOL _justplay; /*!< @brief Justplay? */
+	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
+	NSInteger _state; /*!< @brief State. */
+	NSInteger _afterevent; /*!< @brief After Event Action. */
+	double _duration; /*!< @brief Duration. */
+	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
+	NSString *timeString; /*!< @brief ??? */
+	NSInteger _repeated; /*!< @brief Repeated Flags. */
 
 	// Unfortunately we need a helpers...
-	BOOL _typedataSet;
+	// Why I hear you ask? Because the values can actually evaluate to false
+	// and the code would just re-read the values all over again...
+	BOOL _typedataSet; /*!< @brief Flags were read. */
 
-	CXMLNode *_node;
+	CXMLNode *_node; /*!< @brief CXMLNode describing this Timer. */
 }
 
+/*!
+ @brief Standard initializer.
+ 
+ @param CXMLNode Pointer to CXMLNode describing this Timer.
+ @return EnigmaTimer instance.
+ */
 - (id)initWithNode: (CXMLNode *)node;
 
 @end

@@ -8,18 +8,36 @@
 
 #import <UIKit/UIKit.h>
 
+/*!
+ @brief Generic Signal.
+ */
 @interface Signal : NSObject
 {
 @private
-	float snrdb;
-	NSInteger snr;
-	NSInteger ber;
-	NSInteger agc;
+	float snrdb; /*!< SNR in dB */
+	NSInteger snr; /*!< SNR in % */
+	NSInteger ber; /*!< BER */
+	NSInteger agc; /*!< AGC in % */
 }
 
+/*!
+ @brief SNR in dB.
+ */
 @property (assign) float snrdb;
+
+/*!
+ @brief SNR.
+ */
 @property (assign) NSInteger snr;
+
+/*!
+ @brief BER.
+ */
 @property (assign) NSInteger ber;
+
+/*!
+ @brief AGC.
+ */
 @property (assign) NSInteger agc;
 
 @end

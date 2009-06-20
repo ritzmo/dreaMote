@@ -289,8 +289,6 @@
 	[_end release];
 	[_title release];
 	[_service release];
-	[_sname release];
-	[_sref release];
 	[timeString release];
 	
 	[_node release];

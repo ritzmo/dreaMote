@@ -12,12 +12,22 @@
 
 #import "ServiceProtocol.h"
 
+/*!
+ @brief Service in Enigma2.
+ */
 @interface Enigma2Service : NSObject <ServiceProtocol>
 {
 @private
-	CXMLNode *_node;
+	CXMLNode *_node; /*!< @brief CXMLNode describing this Service. */
 }
 
+
+/*!
+ @brief Standard initializer.
+ 
+ @param CXMLNode Pointer to CXMLNode describing this Service.
+ @return Enigma2Service instance.
+ */
 - (id)initWithNode: (CXMLNode *)node;
 
 @end

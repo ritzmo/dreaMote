@@ -12,44 +12,86 @@
 #import "TimerProtocol.h"
 #import "ServiceProtocol.h"
 
+/*!
+ @brief Timer in SVDRP.
+ */
 @interface SVDRPTimer : NSObject <TimerProtocol>
 {
 @private
-	NSString *_auxiliary;
-	NSString *_eit;
-	NSDate *_begin;
-	NSDate *_end;
-	NSString *_file;
-	NSInteger _flags;
-	BOOL _disabled;
-	NSString *_title;
-	NSString *_tdescription;
-	NSString *_repeat;
-	NSInteger _repeated;
-    NSInteger _repeatcount;
-	BOOL _justplay;
-	NSString *_lifetime;
-	NSString *_priority;
-	NSObject<ServiceProtocol> *_service;
-	NSString *_sref;
-	NSString *_sname;
-	NSInteger _state;
-	NSInteger _afterevent;
-	BOOL _isValid;
-	NSString *_timeString;
-	NSString *_tid;
-	BOOL _hasRepeatBegin;
+	NSString *_auxiliary; /*!< @brief ??? */
+	NSString *_eit; /*!< @brief Event Id. */
+	NSDate *_begin; /*!< @brief Begin. */
+	NSDate *_end; /*!< @brief End. */
+	NSString *_file; /*!< @brief ??? */
+	NSInteger _flags; /*!< @brief ??? */
+	BOOL _disabled; /*!< @brief Disabled? */
+	NSString *_title; /*!< @brief Title. */
+	NSString *_tdescription; /*!< @brief Description. */
+	NSString *_repeat; /*!< @brief ??? */
+	NSInteger _repeated; /*!< @brief ??? */
+    NSInteger _repeatcount; /*!< @brief ??? */
+	BOOL _justplay; /*!< @brief Justplay? */
+	NSString *_lifetime; /*!< @brief ??? */
+	NSString *_priority; /*!< @brief ??? */
+	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
+	NSString *_sref; /*!< @brief Service Reference. */
+	NSString *_sname; /*!< @brief Service Name. */
+	NSInteger _state; /*!< @brief State. */
+	NSInteger _afterevent; /*!< @brief After Event Action. */
+	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
+	NSString *_timeString; /*!< @brief ??? */
+	NSString *_tid; /*!< @brief Timer Id. */
+	BOOL _hasRepeatBegin; /*!< @brief ??? */
 }
 
+
+/*!
+ @brief Generate string representation of Timer.
+ 
+ @return String representation of Timer.
+ */
 - (NSString *)toString;
 
+
+
+/*!
+ @brief ???
+ */
 @property (nonatomic, retain) NSString *auxiliary;
+
+/*!
+ @brief ???
+ */
 @property (nonatomic, retain) NSString *lifetime;
+
+/*!
+ @brief ???
+ */
 @property (nonatomic, retain) NSString *file;
+
+/*!
+ @brief ???
+ */
 @property (nonatomic) NSInteger flags;
+
+/*!
+ @brief ???
+ */
 @property (nonatomic) BOOL hasRepeatBegin;
+
+/*!
+ @brief ???
+ */
 @property (nonatomic, retain) NSString *repeat;
+
+/*!
+ @brief Priority.
+ */
 @property (nonatomic, retain) NSString *priority;
+
+/*!
+ @brief Timer Id.
+ */
 @property (nonatomic, retain) NSString *tid;
 
 @end

@@ -161,8 +161,8 @@
 		DA0A2A570E840E8600726F58 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Images/Icon.png; sourceTree = "<group>"; };
 		DA0B0EE60FE6522E00684EDC /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
 		DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalXMLReader.m; sourceTree = "<group>"; };
-		DA0B0EEC0FE6537D00684EDC /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Signal.h; path = Generic/Signal.h; sourceTree = "<group>"; };
-		DA0B0EED0FE6537D00684EDC /* Signal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Signal.m; path = Generic/Signal.m; sourceTree = "<group>"; };
+		DA0B0EEC0FE6537D00684EDC /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signal.h; sourceTree = "<group>"; };
+		DA0B0EED0FE6537D00684EDC /* Signal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Signal.m; sourceTree = "<group>"; };
 		DA0BF0480F0BC011004B488C /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument.h; sourceTree = "<group>"; };
 		DA0BF0490F0BC011004B488C /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument.m; sourceTree = "<group>"; };
 		DA0BF04C0F0BC011004B488C /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
@@ -521,8 +521,6 @@
 		DA0BF4470F0C1066004B488C /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				DA0B0EEC0FE6537D00684EDC /* Signal.h */,
-				DA0B0EED0FE6537D00684EDC /* Signal.m */,
 				DA0BF4480F0C1066004B488C /* Enigma */,
 				DA0BF4490F0C1066004B488C /* Enigma2 */,
 				DA0BF44D0F0C1066004B488C /* Generic */,
@@ -575,6 +573,8 @@
 				DA0BF4510F0C1066004B488C /* Movie.m */,
 				DA0BF4520F0C1066004B488C /* Service.h */,
 				DA0BF4530F0C1066004B488C /* Service.m */,
+				DA0B0EEC0FE6537D00684EDC /* Signal.h */,
+				DA0B0EED0FE6537D00684EDC /* Signal.m */,
 				DA0BF4540F0C1066004B488C /* Timer.h */,
 				DA0BF4550F0C1066004B488C /* Timer.m */,
 				DA0BF4560F0C1066004B488C /* Volume.h */,

@@ -10,18 +10,21 @@
 
 #import "MovieProtocol.h"
 
+/*!
+ @brief Generic Movie.
+ */
 @interface Movie : NSObject <MovieProtocol>
 {
 @private	
-	NSString *_sref;
-	NSString *_sname;
-	NSDate *_time;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-	NSNumber *_length;
-	NSNumber *_size;
-	NSArray *_tags;
+	NSString *_sref; /*!< @brief Service Reference. */
+	NSString *_sname; /*!< @brief Service Name. */
+	NSDate *_time; /*!< @brief Begin. */
+	NSString *_title; /*!< @brief Title. */
+	NSString *_sdescription; /*!< @brief Short Description. */
+	NSString *_edescription; /*!< @brief Extended Description. */
+	NSNumber *_length; /*!< @brief Length. */
+	NSNumber *_size; /*!< @brief Filesize. */
+	NSArray *_tags; /*!< @brief Tags. */
 }
 
 @end

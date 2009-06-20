@@ -10,19 +10,19 @@
 
 #import "RemoteConnector.h"
 
+// Forward declaration
 @class BufferedSocket;
 
 /*!
- @interface SVDRPConnector
- @abstract Connector for SVDRP based STBs.
+ @brief Connector for SVDRP based STBs.
  */
 @interface SVDRPConnector : NSObject <RemoteConnector> {
 @private
-	NSMutableDictionary *serviceCache;
-	NSString *address;
-	NSInteger port;
+	NSMutableDictionary *serviceCache; /*!< @brief Cached List of Services */
+	NSString *address; /*!< @brief Hostname or Address of SVDRP Server */
+	NSInteger port; /*!< @brief Port SVDRP runs on */
 
-	BufferedSocket *socket;
+	BufferedSocket *socket; /*!< @brief Socket used to communicate with SVDRP Server */
 }
 
 @end

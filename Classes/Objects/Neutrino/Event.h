@@ -12,14 +12,23 @@
 
 #import "EventProtocol.h"
 
+/*!
+ @brief Event in Neutrino.
+ */
 @interface NeutrinoEvent : NSObject <EventProtocol>
 {
 @private
-	NSString *timeString;
+	NSString *timeString; /*!< @brief ??? */
 
-	CXMLNode *_node;
+	CXMLNode *_node; /*!< @brief CXMLNode describing this Event. */
 }
 
+/*!
+ @brief Standard initializer.
+ 
+ @param CXMLNode Pointer to CXMLNode describing this Event.
+ @return NeutrinoEvent instance.
+ */
 - (id)initWithNode: (CXMLNode *)node;
 
 @end

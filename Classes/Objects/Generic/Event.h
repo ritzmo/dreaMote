@@ -10,18 +10,21 @@
 
 #import "EventProtocol.h"
 
+/*!
+ @brief Generic Event.
+ */
 @interface Event : NSObject <EventProtocol>
 {
 @private	
-	NSString *_eit;
-	NSDate *_begin;
-	NSDate *_end;
-	NSString *_title;
-	NSString *_sdescription;
-	NSString *_edescription;
-	double _duration;
+	NSString *_eit; /*!< @brief Event Id. */
+	NSDate *_begin; /*!< @brief Begin. */
+	NSDate *_end; /*!< @brief End. */
+	NSString *_title; /*!< @brief Title. */
+	NSString *_sdescription; /*!< @brief Short Description. */
+	NSString *_edescription; /*!< @brief Extended Description. */
+	double _duration; /*!< @brief Duration. */
 
-	NSString *timeString;
+	NSString *timeString; /*!< @brief ??? */
 }
 
 @end

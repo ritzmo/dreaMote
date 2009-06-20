@@ -10,13 +10,22 @@
 
 #import "ServiceProtocol.h"
 
+/*!
+ @brief Generic Service.
+ */
 @interface Service : NSObject <ServiceProtocol>
 {
 @private
-	NSString *_sref;
-	NSString *_sname;
+	NSString *_sref; /*!< @brief Reference. */
+	NSString *_sname; /*!< @brief Name. */
 }
 
+/*!
+ @brief Init with existing Service.
+
+ @note Required to create a Copy.
+ @return Service instance.
+ */
 - (id)initWithService:(NSObject<ServiceProtocol> *)service;
 
 @end
