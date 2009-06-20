@@ -9,7 +9,9 @@
 #import "MainTableViewCell.h"
 #import "Constants.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 NSString *kMainCell_ID = @"MainCell_ID";
 
 @implementation MainTableViewCell
@@ -18,10 +20,10 @@ NSString *kMainCell_ID = @"MainCell_ID";
 @synthesize nameLabel;
 @synthesize explainLabel;
 
+/* initialize */
 - (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
 {
-	self = [super initWithFrame:aRect reuseIdentifier:identifier];
-	if (self)
+	if(self = [super initWithFrame: aRect reuseIdentifier: identifier])
 	{
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -35,7 +37,8 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		nameLabel.highlightedTextColor = [UIColor whiteColor];
 		nameLabel.font = [UIFont boldSystemFontOfSize:18];
 		[self.contentView addSubview:nameLabel];
-		
+
+		// Explanation label
 		explainLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
 		explainLabel.backgroundColor = [UIColor clearColor];
 		explainLabel.opaque = NO;
@@ -48,28 +51,33 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	return self;
 }
 
+/* layout */
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
-    CGRect contentRect = [self.contentView bounds];
+	CGRect frame;
+	CGRect contentRect;
 
-	// In this example we will never be editing, but this illustrates the appropriate pattern
-    CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
+	[super layoutSubviews];
+	contentRect = [self.contentView bounds];
+
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
 	nameLabel.frame = frame;
 
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 23, contentRect.size.width - kRightMargin, 20);
 	explainLabel.frame = frame;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[nameLabel release];
 	[explainLabel release];
 	[dataDictionary release];
 
-    [super dealloc];
+	[super dealloc];
 }
 
+/* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
@@ -78,18 +86,22 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	nameLabel.highlighted = selected;
 }
 
+/* assign item */
 - (void)setDataDictionary:(NSDictionary *)newDictionary
 {
-	if (dataDictionary == newDictionary)
-	{
-		return;
-	}
+	// Abort if same item assigned
+	if (dataDictionary == newDictionary) return;
+
+	// Free old item, assign new
 	[dataDictionary release];
 	dataDictionary = [newDictionary retain];
 	
 	// update value in subviews
 	nameLabel.text = [dataDictionary objectForKey:@"title"];
 	explainLabel.text = [dataDictionary objectForKey:@"explainText"];
+
+	// Redraw
+	[self setNeedsDisplay];
 }
 
 @end

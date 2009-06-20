@@ -21,7 +21,7 @@
 	NSDate *_begin; /*!< @brief Begin. */
 	NSDate *_end; /*!< @brief End. */
 
-	NSString *timeString; /*!< @brief ??? */
+	NSString *timeString; /*!< @brief Cache for Begin/End Textual representation. */
 
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Event. */
 }

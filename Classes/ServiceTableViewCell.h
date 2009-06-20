@@ -9,20 +9,30 @@
 #import <UIKit/UIKit.h>
 #import "Objects/ServiceProtocol.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 extern NSString *kServiceCell_ID;
 
+/*!
+ @brief UITableViewCell optimized to display Services.
+ */
 @interface ServiceTableViewCell : UITableViewCell
 {
 @private	
-	NSObject<ServiceProtocol> *_service;
-	UILabel *_serviceNameLabel;
+	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
+	UILabel *_serviceNameLabel; /*!< @brief Name Label. */
 }
 
+/*!
+ @brief Name Label.
+ */
 @property (nonatomic, retain) UILabel *serviceNameLabel;
 
-- (NSObject<ServiceProtocol> *)service;
-- (void)setService:(NSObject<ServiceProtocol> *)newService;
+/*!
+ @brief Service.
+ */
+@property (nonatomic, retain) NSObject<ServiceProtocol> * service;
 
 @end
 

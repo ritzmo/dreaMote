@@ -31,7 +31,7 @@
 	NSInteger _state; /*!< @brief State. */
 	NSInteger _afterevent; /*!< @brief After Event Action. */
 	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
-	NSString *timeString; /*!< @brief ??? */
+	NSString *timeString; /*!< @brief Cache for Begin/End Textual representation. */
 
 	// Unfortunately we need some helpers...
 	// Why I hear you ask? Because the values can actually evaluate to false

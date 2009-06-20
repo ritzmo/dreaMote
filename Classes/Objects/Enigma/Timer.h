@@ -28,7 +28,7 @@
 	NSInteger _afterevent; /*!< @brief After Event Action. */
 	double _duration; /*!< @brief Duration. */
 	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
-	NSString *timeString; /*!< @brief ??? */
+	NSString *timeString; /*!< @brief Cache for Begin/End Textual representation. */
 	NSInteger _repeated; /*!< @brief Repeated Flags. */
 
 	// Unfortunately we need a helpers...

@@ -11,11 +11,16 @@
 
 #import "FuzzyDateFormatter.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 NSString *kMovieCell_ID = @"MovieCell_ID";
 
 @interface MovieTableViewCell()
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
+/*!
+ @brief Private helper to create a label.
+ */
+- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold;
 @end
 
 @implementation MovieTableViewCell
@@ -24,6 +29,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 @synthesize eventTimeLabel = _eventTimeLabel;
 @synthesize formatter = _formatter;
 
+/* dealloc */
 - (void)dealloc
 {
 	[_eventNameLabel release];
@@ -34,21 +40,29 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	[super dealloc];
 }
 
+/* initialize */
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
 {
-	if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
+	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
+	{
 		UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Eventname.
-		_eventNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
+		_eventNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
+										   selectedColor: [UIColor whiteColor]
+												fontSize: 14.0
+													bold: YES];
 		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
 		
 		// A label that displays the Eventtime.
-		_eventTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:10.0 bold:NO];
+		_eventTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
+										   selectedColor: [UIColor whiteColor]
+												fontSize: 10.0
+													bold: NO];
 		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
 	}
@@ -56,30 +70,38 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	return self;
 }
 
+/* getter for movie property */
 - (NSObject<MovieProtocol> *)movie
 {
 	return _movie;
 }
 
+/* setter for movie property */
 - (void)setMovie:(NSObject<MovieProtocol> *)newMovie
 {
+	// Abort if same movie assigned
 	if(_movie == newMovie) return;
 
+	// Free old movie, assign new one
 	[_movie release];
 	_movie = [newMovie retain];
 
+	// Set new label contents
 	_eventNameLabel.text = newMovie.title;
 	_eventTimeLabel.text = [_formatter stringFromDate: newMovie.time];
 
+	// Redraw
 	[self setNeedsDisplay];
 }
 
+/* layout */
 - (void)layoutSubviews
 {
+	CGRect contentRect;
 	[super layoutSubviews];
-	CGRect contentRect = self.contentView.bounds;
+	contentRect = self.contentView.bounds;
 	
-	// In this example we will never be editing, but this illustrates the appropriate pattern
+	// XXX: we should never be editing.
 	if (!self.editing) {
 		CGRect frame;
 		
@@ -93,35 +115,42 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	}
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+/* (de)select */
+- (void)setSelected:(BOOL) selected animated:(BOOL) animated
+{
+	UIColor *backgroundColor = nil;
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  
+	 Views are drawn most efficiently when they are opaque and do not have a clear background,
+	 so in newLabelForMainText: the labels are made opaque and given a white background.
+	 
+	 To show selection properly, however, the views need to be transparent (so that the selection
+	 color shows through).
 	 */
 	[super setSelected:selected animated:animated];
-	
-	UIColor *backgroundColor = nil;
+
 	if (selected) {
 		backgroundColor = [UIColor clearColor];
 	} else {
 		backgroundColor = [UIColor whiteColor];
 	}
-	
+
+	// Name Label
 	_eventNameLabel.backgroundColor = backgroundColor;
 	_eventNameLabel.highlighted = selected;
 	_eventNameLabel.opaque = !selected;
-	
+
+	// Time Label
 	_eventTimeLabel.backgroundColor = backgroundColor;
 	_eventTimeLabel.highlighted = selected;
 	_eventTimeLabel.opaque = !selected;
 }
 
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold
+/* Create and configure a label. */
+- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold
 {
-	/*
-	 Create and configure a label.
-	 */
-	
 	UIFont *font;
+	UILabel *newLabel;
+
 	if (bold) {
 		font = [UIFont boldSystemFontOfSize:fontSize];
 	} else {
@@ -129,9 +158,14 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	}
 	
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  This is handled in setSelected:animated:.
+	 Views are drawn most efficiently when they are opaque and do not have a clear background,
+	 so in newLabelForMainText: the labels are made opaque and given a white background.
+	 
+	 To show selection properly, however, the views need to be transparent (so that the selection
+	 color shows through).
+	 This is handled in setSelected:animated:
 	 */
-	UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	newLabel.backgroundColor = [UIColor whiteColor];
 	newLabel.opaque = YES;
 	newLabel.textColor = primaryColor;

@@ -11,23 +11,41 @@
 
 #import "FuzzyDateFormatter.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 extern NSString *kEventCell_ID;
 
-@interface EventTableViewCell : UITableViewCell {
-
+/*!
+ @brief UITableViewCell optimized to display Events.
+ */
+@interface EventTableViewCell : UITableViewCell
+{
 @private	
-	NSObject<EventProtocol> *_event;
-	UILabel *_eventNameLabel;
-	UILabel *_eventTimeLabel;
-	FuzzyDateFormatter *_formatter;
+	NSObject<EventProtocol> *_event; /*!< @brief Assigned Event. */
+	UILabel *_eventNameLabel; /*!< @brief Name Label. */
+	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
+	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
+/*!
+ @brief Event.
+ */
 @property (nonatomic, retain) NSObject<EventProtocol> *event;
+
+/*!
+ @brief Name Label.
+ */
 @property (nonatomic, retain) UILabel *eventNameLabel;
+
+/*!
+ @brief Time Label.
+ */
 @property (nonatomic, retain) UILabel *eventTimeLabel;
+
+/*!
+ @brief Date Formatter.
+ */
 @property (nonatomic, retain) FuzzyDateFormatter *formatter;
 
 @end
-
-

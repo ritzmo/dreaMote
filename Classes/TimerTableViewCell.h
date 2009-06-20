@@ -12,23 +12,47 @@
 
 #import "FuzzyDateFormatter.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 extern NSString *kTimerCell_ID;
 
+/*!
+ @brief UITableViewCell optimized to display Timers.
+ */
 @interface TimerTableViewCell : UITableViewCell
 {
 @private	
-	NSObject<TimerProtocol> *_timer;
-	UILabel *_serviceNameLabel;
-	UILabel *_timerNameLabel;
-	UILabel *_timerTimeLabel;
-	FuzzyDateFormatter *_formatter;
+	NSObject<TimerProtocol> *_timer; /*!< @brief Timer. */
+	UILabel *_serviceNameLabel; /*!< @brief Service Label. */
+	UILabel *_timerNameLabel; /*!< @brief Name Label. */
+	UILabel *_timerTimeLabel; /*!< @brief Time Label. */
+	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
+/*!
+ @brief Timer.
+ */
 @property (nonatomic, retain) NSObject<TimerProtocol> *timer;
+
+/*!
+ @brief Service Label.
+ */
 @property (nonatomic, retain) UILabel *serviceNameLabel;
+
+/*!
+ @brief Name Label.
+ */
 @property (nonatomic, retain) UILabel *timerNameLabel;
+
+/*!
+ @brief Time Label.
+ */
 @property (nonatomic, retain) UILabel *timerTimeLabel;
+
+/*!
+ @brief Date Formatter instance.
+ */
 @property (nonatomic, retain) FuzzyDateFormatter *formatter;
 
 @end

@@ -12,11 +12,16 @@
 
 #import "Service.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 NSString *kTimerCell_ID = @"TimerCell_ID";
 
 @interface TimerTableViewCell()
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold;
+/*!
+ @brief Private helper to create a label.
+ */
+- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold;
 @end
 
 @implementation TimerTableViewCell
@@ -26,6 +31,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 @synthesize timerTimeLabel = _timerTimeLabel;
 @synthesize formatter = _formatter;
 
+/* dealloc */
 - (void)dealloc
 {
 	[_serviceNameLabel release];
@@ -37,26 +43,37 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	[super dealloc];
 }
 
+/* initialize */
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
 {
-	if (self = [super initWithFrame:frame reuseIdentifier:reuseIdentifier]) {
+	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
+	{
 		UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:14.0 bold:YES];
+		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
+											 selectedColor: [UIColor whiteColor]
+												  fontSize: 14.0
+													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 
 		// A label that displays the Timername.
-		_timerNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:YES];
+		_timerNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
+										   selectedColor: [UIColor whiteColor]
+												fontSize: 12.0
+													bold: YES];
 		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerNameLabel];
 
 		// A label that displays the Timer time.
-		_timerTimeLabel = [self newLabelWithPrimaryColor:[UIColor blackColor] selectedColor:[UIColor whiteColor] fontSize:12.0 bold:NO];
+		_timerTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
+										   selectedColor: [UIColor whiteColor]
+												fontSize: 12.0
+													bold: NO];
 		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerTimeLabel];
 	}
@@ -64,22 +81,26 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	return self;
 }
 
+/* getter for timer property */
 - (NSObject<TimerProtocol> *)timer
 {
 	return _timer;
 }
 
+/* setter for timer property */
 - (void)setTimer:(NSObject<TimerProtocol> *)newTimer
 {
+	// Abort if same timer assigned
 	if(_timer == newTimer) return;
 
+	// Free old timer, assign new one
 	[_timer release];
 	_timer = [newTimer retain];
 
-	_serviceNameLabel.text = newTimer.service.sname;
-	_timerNameLabel.text = newTimer.title;
+	// Check if time cache is present
 	if(newTimer.timeString == nil)
 	{
+		// It's not, create it
 		[_formatter setDateStyle:NSDateFormatterMediumStyle];
 		NSString *begin = [_formatter stringFromDate: newTimer.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
@@ -87,17 +108,24 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		if(begin && end)
 			newTimer.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
+
+	// Change label texts
+	_serviceNameLabel.text = newTimer.service.sname;
+	_timerNameLabel.text = newTimer.title;
 	_timerTimeLabel.text = newTimer.timeString;
 
+	// Redraw
 	[self setNeedsDisplay];
 }
 
+/* layout */
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
-	CGRect contentRect = self.contentView.bounds;
+	CGRect contentRect;
 
-	// In this example we will never be editing, but this illustrates the appropriate pattern
+	[super layoutSubviews];
+	contentRect = self.contentView.bounds;
+
 	if (!self.editing) {
 		CGRect frame;
 
@@ -115,39 +143,48 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	}
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+/* (de)select */
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+	UIColor *backgroundColor = nil;
+
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so in newLabelForMainText: the labels are made opaque and given a white background.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  
+	 Views are drawn most efficiently when they are opaque and do not have a clear background,
+	 so in newLabelForMainText: the labels are made opaque and given a white background.
+	 
+	 To show selection properly, however, the views need to be transparent (so that the selection
+	 color shows through).
 	 */
 	[super setSelected:selected animated:animated];
 
-	UIColor *backgroundColor = nil;
 	if (selected) {
 		backgroundColor = [UIColor clearColor];
 	} else {
 		backgroundColor = [UIColor whiteColor];
 	}
 
+	// Service
 	_serviceNameLabel.backgroundColor = backgroundColor;
 	_serviceNameLabel.highlighted = selected;
 	_serviceNameLabel.opaque = !selected;
 
+	// Name
 	_timerNameLabel.backgroundColor = backgroundColor;
 	_timerNameLabel.highlighted = selected;
 	_timerNameLabel.opaque = !selected;
 
+	// Time
 	_timerTimeLabel.backgroundColor = backgroundColor;
 	_timerTimeLabel.highlighted = selected;
 	_timerTimeLabel.opaque = !selected;
 }
 
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold
+/* Create and configure a label. */
+- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold
 {
-	/*
-	 Create and configure a label.
-	 */
-	
 	UIFont *font;
+	UILabel *newLabel;
+
 	if (bold) {
 		font = [UIFont boldSystemFontOfSize:fontSize];
 	} else {
@@ -155,9 +192,14 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	}
 
 	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background, so set these defaults.  To show selection properly, however, the views need to be transparent (so that the selection color shows through).  This is handled in setSelected:animated:.
+	 Views are drawn most efficiently when they are opaque and do not have a clear background,
+	 so in newLabelForMainText: the labels are made opaque and given a white background.
+	 
+	 To show selection properly, however, the views need to be transparent (so that the selection
+	 color shows through).
+	 This is handled in setSelected:animated:
 	 */
-	UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 	newLabel.backgroundColor = [UIColor whiteColor];
 	newLabel.opaque = YES;
 	newLabel.textColor = primaryColor;

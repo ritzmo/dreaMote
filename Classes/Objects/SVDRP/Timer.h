@@ -39,7 +39,7 @@
 	NSInteger _state; /*!< @brief State. */
 	NSInteger _afterevent; /*!< @brief After Event Action. */
 	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
-	NSString *_timeString; /*!< @brief ??? */
+	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 	NSString *_tid; /*!< @brief Timer Id. */
 	BOOL _hasRepeatBegin; /*!< @brief ??? */
 }

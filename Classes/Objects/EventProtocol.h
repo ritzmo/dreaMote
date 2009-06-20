@@ -45,7 +45,7 @@
 @property (nonatomic, retain) NSString *edescription;
 
 /*!
- @brief Good question... :-)
+ @brief Cache for Begin/End Textual representation.
  */
 @property (nonatomic, retain) NSString *timeString;
 

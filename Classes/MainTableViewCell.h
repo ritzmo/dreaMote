@@ -8,19 +8,35 @@
 
 #import <UIKit/UIKit.h>
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 extern NSString *kMainCell_ID;
 
+/*!
+ @brief UITableViewCell optimized to display Services.
+ */
 @interface MainTableViewCell : UITableViewCell
 {
 @private
-	NSDictionary	*dataDictionary;
-	UILabel			*nameLabel;
-	UILabel			*explainLabel;
+	NSDictionary	*dataDictionary; /*!< @brief Item. */
+	UILabel			*nameLabel; /*!< @brief Name Label. */
+	UILabel			*explainLabel; /*!< @brief Explanation Label. */
 }
 
+/*!
+ @brief Item.
+ */
 @property (nonatomic, retain) NSDictionary *dataDictionary;
+
+/*!
+ @brief Name Label.
+ */
 @property (nonatomic, retain) UILabel *nameLabel;
+
+/*!
+ @brief Explanation Label.
+ */
 @property (nonatomic, retain) UILabel *explainLabel;
 
 @end

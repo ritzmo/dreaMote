@@ -94,7 +94,7 @@ enum neutrinoTimerRepeat {
 	NSInteger _afterevent; /*!< @brief After Event Action. */
 	double _duration; /*!< @brief Event Duration. */
 	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
-	NSString *_timeString; /*!< @brief ??? */
+	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 }
 
 /*!

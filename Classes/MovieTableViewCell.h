@@ -11,21 +11,41 @@
 
 #import "FuzzyDateFormatter.h"
 
-// cell identifier for this custom cell
+/*!
+ @brief Cell identifier for this cell.
+ */
 extern NSString *kMovieCell_ID;
 
-@interface MovieTableViewCell : UITableViewCell {
-
+/*!
+ @brief UITableViewCell optimized to display .
+ */
+@interface MovieTableViewCell : UITableViewCell
+{
 @private	
-	NSObject<MovieProtocol> *_movie;
-	UILabel *_eventNameLabel;
-	UILabel *_eventTimeLabel;
-	FuzzyDateFormatter *_formatter;
+	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
+	UILabel *_eventNameLabel; /*!< @brief Name Label. */
+	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
+	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
+/*!
+ @brief Movie.
+ */
 @property (nonatomic, retain) NSObject<MovieProtocol> *movie;
+
+/*!
+ @brief Name Label.
+ */
 @property (nonatomic, retain) UILabel *eventNameLabel;
+
+/*!
+ @brief Time Label.
+ */
 @property (nonatomic, retain) UILabel *eventTimeLabel;
+
+/*!
+ @brief Date Formatter instance.
+ */
 @property (nonatomic, retain) FuzzyDateFormatter *formatter;
 
 @end
