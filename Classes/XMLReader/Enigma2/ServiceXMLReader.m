@@ -15,9 +15,15 @@
 
 @implementation Enigma2ServiceXMLReader
 
-// Services are 'lightweight'
+/*!
+ @brief Upper bound for parsed Services.
+ 
+ @note Services are considered 'lightweight'
+ @todo Do we actually still care? We keep the whole structure in our memory anyway...
+ */
 #define MAX_SERVICES 2048
 
+/* send fake object */
 - (void)sendErroneousObject
 {
 	NSObject<ServiceProtocol> *fakeService = [[Service alloc] init];

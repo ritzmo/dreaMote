@@ -17,20 +17,45 @@ typedef CXMLDocument OurXMLDocument;
 
 #import "RemoteConnector.h"
 
+/*!
+ @brief Basic XML Reader Class.
+
+ Download a website and read it in as XML.
+ Stores contents in a CXMLDocument.
+ */
 @interface BaseXMLReader : NSObject
 {
 @private
-	BOOL	finished;
+	BOOL	finished; /*!< @brief Finished parsing? */
 @protected
-	id		_target;
-	SEL		_addObject;
-	OurXMLDocument *_parser;
+	id		_target; /*!< @brief Callback Target. */
+	SEL		_addObject; /*!< @brief Callback Selector. */
+	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
 }
 
+/*!
+ @brief Standard initializer.
+ 
+ @param target Callback target.
+ @param action Callback selector.
+ @return BaseXMLReader instance.
+ */
 - (id)initWithTarget:(id)target action:(SEL)action;
 
-@property (readonly) BOOL finished;
-
+/*
+ @brief Download and parse XML document.
+ 
+ @param URL URL to download.
+ @param error Will be pointed to NSError if one occurs.
+ @return Parsed XML Document.
+ */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+
+
+
+/*!
+ @brief Finished parsing?
+ */
+@property (readonly) BOOL finished;
 
 @end

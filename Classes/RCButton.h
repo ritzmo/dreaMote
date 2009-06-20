@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-
+/*!
+ @brief Simple UIButton used to store RC Codes.
+ */
 @interface RCButton : UIButton {
 @public
-	NSInteger rcCode;
+	NSInteger rcCode; /*!< @brief Assigned RC Code. */
 }
 
+/*!
+ @brief Rc Code.
+ */
 @property (nonatomic) NSInteger rcCode;
 
 @end

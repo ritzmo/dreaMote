@@ -13,14 +13,15 @@
 
 @implementation EnigmaMovieXMLReader
 
-// Movies are 'heavy'
+/*!
+ @brief Upper bound for parsed Movies.
+ 
+ @note Movies are considered 'heavy'
+ @todo Do we actually still care? We keep the whole structure in our memory anyway...
+ */
 #define MAX_MOVIES 100
 
-- (void)dealloc
-{
-	[super dealloc];
-}
-
+/* send fake object */
 - (void)sendErroneousObject
 {
 	Movie *fakeObject = [[Movie alloc] init];

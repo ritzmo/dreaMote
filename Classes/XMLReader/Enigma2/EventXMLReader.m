@@ -13,9 +13,15 @@
 
 @implementation Enigma2EventXMLReader
 
-// Events are 'heavy'
+/*!
+ @brief Upper bound for parsed Events.
+ 
+ @note Events are considered 'heavy'
+ @todo Do we actually still care? We keep the whole structure in our memory anyway...
+ */
 #define MAX_EVENTS 100
 
+/* send fake object */
 - (void)sendErroneousObject
 {
 	Event *fakeObject = [[Event alloc] init];

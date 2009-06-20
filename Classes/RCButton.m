@@ -12,6 +12,7 @@
 
 @synthesize rcCode;
 
+/* Initialize */
 - (id)initWithFrame:(CGRect)frame
 {
 	if(self = [super initWithFrame:frame])

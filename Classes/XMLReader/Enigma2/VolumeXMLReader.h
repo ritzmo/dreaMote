@@ -10,8 +10,9 @@
 
 #import "BaseXMLReader.h"
 
-@class Volume;
-
+/*!
+ @brief Enigma2 Volume XML Reader.
+ */
 @interface Enigma2VolumeXMLReader : BaseXMLReader
 {
 }

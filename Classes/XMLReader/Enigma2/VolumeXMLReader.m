@@ -12,11 +12,6 @@
 
 @implementation Enigma2VolumeXMLReader
 
-- (void)dealloc
-{
-	[super dealloc];
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -37,6 +32,7 @@
 	
 	for(CXMLElement *resultElement in resultNodes)
 	{
+		// Volume is unique
 		if(++parsedVolumesCounter > 1)
 			break;
 		

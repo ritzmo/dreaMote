@@ -10,8 +10,9 @@
 
 #import "BaseXMLReader.h"
 
-@class Timer;
-
+/*!
+ @brief Enigma Timer XML Reader.
+ */
 @interface EnigmaTimerXMLReader : BaseXMLReader
 {
 }

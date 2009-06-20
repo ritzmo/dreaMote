@@ -16,6 +16,7 @@
 
 @synthesize finished;
 
+/* initialize */
 - (id)initWithTarget:(id)target action:(SEL)action
 {
 	if(self = [super init])
@@ -27,6 +28,7 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_target release];
@@ -35,6 +37,7 @@
 	[super dealloc];
 }
 
+/* download and parse xml document */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
 	finished = NO;
@@ -117,11 +120,13 @@
 }
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
+/* received data */
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	[_parser parseChunk: data];
 }
 
+/* connection failed */
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 	finished = YES;
@@ -129,6 +134,7 @@
 	[_parser abortParsing];
 }
 
+/* finished */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	finished = YES;
@@ -138,11 +144,13 @@
 
 #endif //LAME_ASYNCHRONOUS_DOWNLOAD
 
+/* send fake object back to callback */
 - (void)sendErroneousObject
 {
 	// XXX: descending classes should implement this
 }
 
+/* parse complete xml document */
 - (void)parseFull
 {
 	// XXX: descending classes should implement this

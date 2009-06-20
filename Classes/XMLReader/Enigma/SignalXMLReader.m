@@ -73,6 +73,7 @@
 	
 	for(CXMLElement *resultElement in resultNodes)
 	{
+		// Signal is unique
 		if(++parsedSignalCounter > 1)
 			break;
 		

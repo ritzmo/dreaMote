@@ -13,14 +13,15 @@
 
 @implementation Enigma2TimerXMLReader
 
-// Timers are 'heavy'
+/*!
+ @brief Upper bound for parsed Timers.
+ 
+ @note Timers are considered 'heavy'
+ @todo Do we actually still care? We keep the whole structure in our memory anyway...
+ */
 #define MAX_TIMERS 100
 
-- (void)dealloc
-{
-	[super dealloc];
-}
-
+/* send fake object */
 - (void)sendErroneousObject
 {
 	Timer *fakeObject = [[Timer alloc] init];

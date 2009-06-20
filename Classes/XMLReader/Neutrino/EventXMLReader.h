@@ -10,6 +10,9 @@
 
 #import "BaseXMLReader.h"
 
+/*!
+ @brief Neutrino Event XML Reader.
+ */
 @interface NeutrinoEventXMLReader : BaseXMLReader
 {
 }

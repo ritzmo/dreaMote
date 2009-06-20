@@ -13,14 +13,15 @@
 
 @implementation NeutrinoEventXMLReader
 
-// Events are 'heavy'
+/*!
+ @brief Upper bound for parsed Events.
+ 
+ @note Events are considered 'heavy'
+ @todo Do we actually still care? We keep the whole structure in our memory anyway...
+ */
 #define MAX_EVENTS 100
 
-- (void)dealloc
-{
-	[super dealloc];
-}
-
+/* send fake object */
 - (void)sendErroneousObject
 {
 	Event *fakeObject = [[Event alloc] init];

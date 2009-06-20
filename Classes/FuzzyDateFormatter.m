@@ -8,11 +8,19 @@
 
 #import "FuzzyDateFormatter.h"
 
+/*!
+ @brief Seconds in a day.
+ */
 #define ONEDAY 86400
+
+/*!
+ @brief Seconds in two days.
+ */
 #define TWODAY 172800
 
 @implementation FuzzyDateFormatter
 
+/* initialize */
 - (id)init
 {
 	if(self = [super init])
@@ -22,12 +30,14 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[thisNight release];
 	[super dealloc];
 }
 
+/* reset reference */
 - (void)resetReferenceDate
 {
 	[thisNight release];
@@ -37,6 +47,7 @@
 // XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
 - (NSString *)stringForObjectValue:(id)date
 {
+	// Argument error, return nothing
 	if(date == nil)
 		return nil;
 
@@ -44,12 +55,16 @@
 	if(dateStyle == NSDateFormatterNoStyle)
 		return [super stringForObjectValue:date];
 
+	// Set reference date if none set
 	if(thisNight == nil)
 		thisNight = [[NSDate dateWithTimeIntervalSinceNow: -((NSInteger)[NSDate timeIntervalSinceReferenceDate] + [[self timeZone] secondsFromGMT]) % ONEDAY] retain];
 
+	// Get seconds the event is away from 00:00 today
 	NSInteger secSinceToday = (NSInteger)([date timeIntervalSinceDate: thisNight]+0.9);
+
 	if (secSinceToday >= 0 && secSinceToday < ONEDAY)
 	{
+		/* Between one day, so its "Today" */
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Today", @"");
 
@@ -61,6 +76,7 @@
 
 	if (secSinceToday >= ONEDAY && secSinceToday < TWODAY)
 	{
+		/* Between one day and two days, so its "Tomorrow" */
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Tomorrow", @"");
 		
@@ -72,6 +88,7 @@
 
 	if (secSinceToday >= -ONEDAY && secSinceToday < 0)
 	{
+		/* One day in the past, so its "Yesterday" */
 		if([self timeStyle] == NSDateFormatterNoStyle)
 			return NSLocalizedString(@"Yesterday", @"");
 
@@ -81,6 +98,7 @@
 		return retVal;
 	}
 
+	// No special handling for this date, so return default one
 	return [super stringForObjectValue:date];
 }
 

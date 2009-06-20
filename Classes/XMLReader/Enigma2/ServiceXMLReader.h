@@ -10,6 +10,9 @@
 
 #import "BaseXMLReader.h"
 
+/*!
+ @brief Enigma2 Service XML Reader.
+ */
 @interface Enigma2ServiceXMLReader : BaseXMLReader
 {
 }

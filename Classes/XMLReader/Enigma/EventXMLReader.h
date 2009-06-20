@@ -10,6 +10,9 @@
 
 #import "BaseXMLReader.h"
 
+/*!
+ @brief Enigma Event XML Reader.
+ */
 @interface EnigmaEventXMLReader : BaseXMLReader
 {
 }

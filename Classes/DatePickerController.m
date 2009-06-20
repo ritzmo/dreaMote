@@ -18,6 +18,7 @@
 @synthesize date;
 @synthesize format;
 
+/* initialize */
 - (id)init
 {
 	if (self = [super init])
@@ -32,6 +33,7 @@
 	return self;
 }
 
+/* creator */
 + (DatePickerController *)withDate: (NSDate *)ourDate
 {
 	DatePickerController *datePickerController = [[DatePickerController alloc] init];
@@ -40,6 +42,7 @@
 	return datePickerController;
 }
 
+/* layout */
 - (void)loadView
 {		
 	// setup our parent content view and embed it to your view controller
@@ -80,6 +83,7 @@
 	[self.view addSubview:label];
 }
 
+/* finish */
 - (void)doneAction:(id)sender
 {
 	if(_selectTarget != nil && _selectCallback != nil)
@@ -90,6 +94,7 @@
 	[self.navigationController popViewControllerAnimated: YES];
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[datePickerView release];
@@ -100,11 +105,13 @@
 	[super dealloc];
 }
 
+/* selection changed */
 - (void)timeChanged: (id)sender
 {
 	label.text = [format stringFromDate: [datePickerView date]];
 }
 
+/* set callback */
 - (void)setTarget: (id)target action: (SEL)action
 {
 	_selectTarget = target;

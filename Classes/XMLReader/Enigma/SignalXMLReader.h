@@ -10,6 +10,9 @@
 
 #import "BaseXMLReader.h"
 
+/*!
+ @brief Enigma Signal XML Reader.
+ */
 @interface EnigmaSignalXMLReader : BaseXMLReader
 {
 }

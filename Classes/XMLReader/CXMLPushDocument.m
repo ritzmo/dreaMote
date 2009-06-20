@@ -12,11 +12,13 @@
 
 @implementation CXMLPushDocument
 
+/* did we successfully parse the document? */
 - (BOOL)success
 {
 	return _node != NULL;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	if(_ctxt)
@@ -25,6 +27,7 @@
 	[super dealloc];
 }
 
+/* initialize */
 - (id)initWithError: (NSError **)outError
 {
 	if (self = [super init])
@@ -41,6 +44,7 @@
 	return self;
 }
 
+/* parse a chunk of data */
 - (void)parseChunk: (NSData *)chunk
 {
 	if(!_ctxt)
@@ -49,6 +53,7 @@
 		xmlParseChunk(_ctxt, [chunk bytes], [chunk length], 0);
 }
 
+/* abort parsing */
 - (void)abortParsing
 {
 	// Is this enough?
@@ -57,6 +62,7 @@
 	_ctxt = NULL;
 }
 
+/* finish parsing */
 - (void)doneParsing
 {
 	if(!_ctxt)

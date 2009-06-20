@@ -10,6 +10,9 @@
 
 #import "BaseXMLReader.h"
 
+/*!
+ @brief Enigma Movie XML Reader.
+ */
 @interface EnigmaMovieXMLReader : BaseXMLReader
 {
 }
