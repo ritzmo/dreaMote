@@ -12,6 +12,7 @@
 #import "Objects/ServiceProtocol.h"
 
 @class CXMLDocument;
+@class FuzzyDateFormatter;
 
 @interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
@@ -21,7 +22,8 @@
 	NSObject<ServiceProtocol> *_service;
 	BOOL _similarFetched;
 	BOOL _isSearch;
-	
+
+	FuzzyDateFormatter *dateFormatter;
 	CXMLDocument *eventXMLDoc;
 }
 

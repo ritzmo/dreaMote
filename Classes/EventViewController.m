@@ -26,6 +26,7 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Event", @"");
+		dateFormatter = [[FuzzyDateFormatter alloc] init];
 		_event = nil;
 		_similarFetched = NO;
 		_similarEvents = [[NSMutableArray array] retain];
@@ -61,6 +62,7 @@
 	[_event release];
 	[_service release];
 	[_similarEvents release];
+	[dateFormatter release];
 	[eventXMLDoc release];
 
 	[super dealloc];
@@ -168,12 +170,10 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	// Date Formatter
-	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
-	return [format stringFromDate: dateTime];
+	return [dateFormatter stringFromDate: dateTime];
 }
 
 - (UIButton *)create_AddTimerButton
@@ -372,7 +372,8 @@
 				if(sourceCell == nil)
 					sourceCell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
 
-				//((EventTableViewCell*)sourceCell).formatter = dateFormatter;
+				sourceCell.accessoryType = UITableViewCellAccessoryNone;
+				((EventTableViewCell*)sourceCell).formatter = dateFormatter;
 				((EventTableViewCell*)sourceCell).event = (NSObject<EventProtocol> *)[_similarEvents objectAtIndex: indexPath.row];
 			}
 			break;
