@@ -25,13 +25,17 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 @synthesize eventNameLabel = _eventNameLabel;
 @synthesize eventTimeLabel = _eventTimeLabel;
+@synthesize eventServiceLabel = _eventServiceLabel;
 @synthesize formatter = _formatter;
+@synthesize showService = _showService;
+
 
 /* deallocate */
 - (void)dealloc
 {
 	[_eventNameLabel release];
 	[_eventTimeLabel release];
+	[_eventServiceLabel release];
 	[_formatter release];
 	[_event release];
 
@@ -63,6 +67,14 @@ NSString *kEventCell_ID = @"EventCell_ID";
 													bold: NO];
 		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
+		
+		// A label that displays the Service name.
+		_eventServiceLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
+										   selectedColor: [UIColor whiteColor]
+												fontSize: 10.0
+													bold: NO];
+		_eventServiceLabel.textAlignment = UITextAlignmentRight; // default
+		[myContentView addSubview: _eventServiceLabel];
 	}
 
 	return self;
@@ -99,6 +111,17 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	// Set Labels
 	_eventNameLabel.text = newEvent.title;
 	_eventTimeLabel.text = newEvent.timeString;
+	if(_showService)
+	{
+		@try{
+			_eventServiceLabel.text = newEvent.service.sname;
+		}
+		@catch(NSException * e){
+			_eventServiceLabel.text = @"";
+		}
+	}
+	else
+		_eventServiceLabel.text = @"";
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -122,6 +145,10 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		// Place the time label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, 10);
 		_eventTimeLabel.frame = frame;
+		
+		// Place the service name label.
+		frame = CGRectMake(contentRect.size.width - kRightMargin - 50, 30, 50, 10);
+		_eventServiceLabel.frame = frame;
 	}
 }
 
@@ -153,6 +180,11 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	_eventTimeLabel.backgroundColor = backgroundColor;
 	_eventTimeLabel.highlighted = selected;
 	_eventTimeLabel.opaque = !selected;
+
+	// Service Label
+	_eventServiceLabel.backgroundColor = backgroundColor;
+	_eventServiceLabel.highlighted = selected;
+	_eventServiceLabel.opaque = !selected;
 }
 
 /* Create and configure a label. */

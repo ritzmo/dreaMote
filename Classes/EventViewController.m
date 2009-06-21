@@ -374,6 +374,7 @@
 
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 				((EventTableViewCell*)sourceCell).formatter = _dateFormatter;
+				((EventTableViewCell*)sourceCell).showService = YES;
 				((EventTableViewCell*)sourceCell).event = (NSObject<EventProtocol> *)[_similarEvents objectAtIndex: indexPath.row];
 			}
 			break;

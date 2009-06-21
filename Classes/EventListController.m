@@ -163,8 +163,9 @@
 		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
 
 	cell.formatter = _dateFormatter;
+	cell.showService = NO;
 	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
-	
+
 	return cell;
 }
 

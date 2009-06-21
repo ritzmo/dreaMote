@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "EventViewController.h"
+#import "EventTableViewCell.h"
 
 #import "RemoteConnectorObject.h"
 
@@ -107,6 +108,20 @@
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
+
+/* cell for given row */
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
+	if(cell == nil)
+		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
+	
+	cell.formatter = _dateFormatter;
+	cell.showService = YES;
+	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+	
+	return cell;
+}
 
 /* about to select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

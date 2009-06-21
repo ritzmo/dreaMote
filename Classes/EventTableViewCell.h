@@ -25,7 +25,9 @@ extern NSString *kEventCell_ID;
 	NSObject<EventProtocol> *_event; /*!< @brief Assigned Event. */
 	UILabel *_eventNameLabel; /*!< @brief Name Label. */
 	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
+	UILabel *_eventServiceLabel; /*!< @brief Service Label. */
 	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
+	BOOL _showService; /*!< @brief Display service name? */
 }
 
 /*!
@@ -44,8 +46,21 @@ extern NSString *kEventCell_ID;
 @property (nonatomic, retain) UILabel *eventTimeLabel;
 
 /*!
+ @brief Service name label.
+ */
+@property (nonatomic, retain) UILabel *eventServiceLabel;
+
+/*!
  @brief Date Formatter.
  */
 @property (nonatomic, retain) FuzzyDateFormatter *formatter;
+
+/*!
+ @brief Display service name?
+ 
+ @note This needs to be set before assigning a new event to work properly.
+ Also the Events needs to keep a copy of the service.
+ */
+@property (nonatomic, assign) BOOL showService;
 
 @end
