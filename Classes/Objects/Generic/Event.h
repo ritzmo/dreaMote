@@ -13,7 +13,7 @@
 /*!
  @brief Generic Event.
  */
-@interface Event : NSObject <EventProtocol>
+@interface GenericEvent : NSObject <EventProtocol>
 {
 @private	
 	NSString *_eit; /*!< @brief Event Id. */

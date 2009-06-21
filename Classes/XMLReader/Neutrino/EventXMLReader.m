@@ -24,7 +24,7 @@
 /* send fake object */
 - (void)sendErroneousObject
 {
-	Event *fakeObject = [[Event alloc] init];
+	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];

@@ -13,7 +13,7 @@
 /*!
  @brief Generic Service.
  */
-@interface Service : NSObject <ServiceProtocol>
+@interface GenericService : NSObject <ServiceProtocol>
 {
 @private
 	NSString *_sref; /*!< @brief Reference. */

@@ -11,7 +11,7 @@
 /*!
  @brief Generic Volume.
  */
-@interface Volume : NSObject
+@interface GenericVolume : NSObject
 {
 @private
 	BOOL _result; /*!< @brief Did the request succeed? */

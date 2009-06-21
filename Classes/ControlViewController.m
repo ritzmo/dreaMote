@@ -65,7 +65,7 @@
 	if(newVolume == nil)
 		return;
 
-	Volume *volume = (Volume*)newVolume; // just for convenience
+	GenericVolume *volume = (GenericVolume*)newVolume; // just for convenience
 
 	_switchControl.on = volume.ismuted;
 	_slider.value = (float)(volume.current);

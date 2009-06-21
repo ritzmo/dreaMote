@@ -8,7 +8,7 @@
 
 #import "Service.h"
 
-@implementation Service
+@implementation GenericService
 
 @synthesize sref = _sref;
 @synthesize sname = _sname;

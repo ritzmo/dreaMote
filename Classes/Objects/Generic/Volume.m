@@ -8,7 +8,7 @@
 
 #import "Volume.h"
 
-@implementation Volume
+@implementation GenericVolume
 
 @synthesize result = _result;
 @synthesize resulttext = _resulttext;

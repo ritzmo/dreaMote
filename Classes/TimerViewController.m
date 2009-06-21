@@ -57,7 +57,7 @@
 + (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	NSObject<TimerProtocol> *newTimer = [Timer withEvent: ourEvent];
+	NSObject<TimerProtocol> *newTimer = [GenericTimer withEvent: ourEvent];
 	timerViewController.timer = newTimer;
 	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
@@ -68,7 +68,7 @@
 + (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	NSObject<TimerProtocol> *newTimer = [Timer withEventAndService: ourEvent: ourService];
+	NSObject<TimerProtocol> *newTimer = [GenericTimer withEventAndService: ourEvent: ourService];
 	timerViewController.timer = newTimer;
 	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
@@ -91,7 +91,7 @@
 + (TimerViewController *)newTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
-	NSObject<TimerProtocol> *newTimer = [Timer timer];
+	NSObject<TimerProtocol> *newTimer = [GenericTimer timer];
 	timerViewController.timer = newTimer;
 	[newTimer release];
 	timerViewController.creatingNewTimer = YES;

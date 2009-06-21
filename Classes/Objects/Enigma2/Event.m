@@ -38,7 +38,7 @@
 
 	if(sname && sref)
 	{
-		service = [[[Service alloc] init] autorelease];
+		service = [[[GenericService alloc] init] autorelease];
 		service.sname = sname;
 		service.sref = sref;
 	}

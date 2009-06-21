@@ -78,7 +78,7 @@
 
 - (id)copyWithZone:(NSZone *)zone
 {
-	id newElement = [[Service alloc] initWithService: self];
+	id newElement = [[GenericService alloc] initWithService: self];
 
 	return newElement;
 }

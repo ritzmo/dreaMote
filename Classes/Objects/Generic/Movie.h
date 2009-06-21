@@ -13,7 +13,7 @@
 /*!
  @brief Generic Movie.
  */
-@interface Movie : NSObject <MovieProtocol>
+@interface GenericMovie : NSObject <MovieProtocol>
 {
 @private	
 	NSString *_sref; /*!< @brief Service Reference. */

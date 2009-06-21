@@ -8,7 +8,7 @@
 
 #import "Event.h"
 
-@implementation Event
+@implementation GenericEvent
 
 @synthesize eit = _eit;
 @synthesize begin = _begin;

@@ -201,7 +201,7 @@ enum neutrinoMessageTypes {
 			break;
 
 		// A channel in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[Service alloc] init];
+		NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 
 		newService.sname = [[resultElement attributeForName: @"name"] stringValue];
 		newService.sref = [NSString stringWithFormat: @"%@%@%@",
@@ -253,7 +253,7 @@ enum neutrinoMessageTypes {
 	// Error occured, so send fake object
 	if(error || !data)
 	{
-		NSObject<TimerProtocol> *fakeObject = [[Timer alloc] init];
+		NSObject<TimerProtocol> *fakeObject = [[GenericTimer alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 		fakeObject.state = 0;
 		fakeObject.valid = NO;
@@ -273,7 +273,7 @@ enum neutrinoMessageTypes {
 		if([timerStringComponents count] < 8) // XXX: should not happen...
 			continue;
 
-		NSObject<TimerProtocol> *timer = [[Timer alloc] init];
+		NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 		
 		// Determine type, reject unhandled
 		NSInteger timerType = [[timerStringComponents objectAtIndex: 1] integerValue];
@@ -300,7 +300,7 @@ enum neutrinoMessageTypes {
 		objRange.length = [timerStringComponents count] - 7;
 		NSString *sname = [[timerStringComponents subarrayWithRange: objRange] componentsJoinedByString: @" "];
 
-		NSObject<ServiceProtocol> *service = [[Service alloc] init];
+		NSObject<ServiceProtocol> *service = [[GenericService alloc] init];
 		service.sname = sname;
 		NSArray *resultNodes = [_cachedBouquetsXML nodesForXPath:
 									[NSString stringWithFormat: @"/zapit/Bouquet/channel[@name=\"%@\"]", sname]
@@ -408,7 +408,7 @@ enum neutrinoMessageTypes {
 
 - (void)getVolume:(id)target action:(SEL)action
 {
-	Volume *volumeObject = [[Volume alloc] init];
+	GenericVolume *volumeObject = [[GenericVolume alloc] init];
 
 	// Generate URI (mute)
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];

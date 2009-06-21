@@ -8,7 +8,7 @@
 
 #import "Signal.h"
 
-@implementation Signal
+@implementation GenericSignal
 
 @synthesize snrdb = _snrdb;
 @synthesize snr = _snr;

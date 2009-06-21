@@ -38,7 +38,7 @@
 		if(++parsedSignalCounter > 1)
 			break;
 		
-		Signal *newSignal = [[Signal alloc] init];
+		GenericSignal *newSignal = [[GenericSignal alloc] init];
 		
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
 		{

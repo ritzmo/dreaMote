@@ -75,7 +75,7 @@ enum neutrinoTimerRepeat {
 /*!
  @brief Generic Timer.
  */
-@interface Timer : NSObject <TimerProtocol>
+@interface GenericTimer : NSObject <TimerProtocol>
 {
 @private
 	NSString *_eit; /*!< @brief Event Id. */

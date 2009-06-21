@@ -317,7 +317,7 @@ enum enigma1MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	Volume *volumeObject = [[Volume alloc] init];
+	GenericVolume *volumeObject = [[GenericVolume alloc] init];
 	NSInteger volume = -1;
 
 	NSRange firstRange = [myString rangeOfString: @"volume: "];

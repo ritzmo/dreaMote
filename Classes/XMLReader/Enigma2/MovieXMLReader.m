@@ -24,7 +24,7 @@
 /* send fake object */
 - (void)sendErroneousObject
 {
-	Movie *fakeObject = [[Movie alloc] init];
+	NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
 	[fakeObject release];

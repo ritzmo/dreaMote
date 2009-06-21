@@ -37,7 +37,7 @@
 			break;
 		
 		// A timer in the xml represents a timer, so create an instance of it.
-		Volume *newVolume = [[Volume alloc] init];
+		GenericVolume *newVolume = [[GenericVolume alloc] init];
 		
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
 		{

@@ -87,7 +87,7 @@
 		
 		if(sname && sref)
 		{
-			_service = [[Service alloc] init];
+			_service = [[GenericService alloc] init];
 			_service.sname = sname;
 			_service.sref = sref;
 		}

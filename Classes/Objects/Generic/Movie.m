@@ -8,7 +8,7 @@
 
 #import "Movie.h"
 
-@implementation Movie
+@implementation GenericMovie
 
 @synthesize sref = _sref;
 @synthesize sname = _sname;

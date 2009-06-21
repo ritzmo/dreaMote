@@ -138,7 +138,7 @@
 // XXX: for now we just return a fake service, we don't support favourite online mode anyway
 - (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
 {
-	NSObject<ServiceProtocol> *newService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	newService.sname = NSLocalizedString(@"All Services", @"");
 	newService.sref = @"dc";
 
@@ -154,7 +154,7 @@
 		[self getSocket];
 	if(![_socket isConnected])
 	{
-		Service *fakeObject = [[Service alloc] init];
+		NSObject<ServiceProtocol> *fakeObject = [[GenericService alloc] init];
 		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
 		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
 		[fakeObject release];
@@ -169,7 +169,7 @@
 
 	NSString *line = nil;
 	NSRange range;
-	Service *newService = nil;
+	NSObject<ServiceProtocol> *newService = nil;
 	while(line = [self readSocketLine])
 	{
 		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
@@ -177,7 +177,7 @@
 			break;
 		}
 
-		newService = [[Service alloc] init];
+		newService = [[GenericService alloc] init];
 
 		NSArray *components = [line componentsSeparatedByString: @":"];
 		NSString *name = [components objectAtIndex: 0];
@@ -218,7 +218,7 @@
 		[self getSocket];
 	if(![_socket isConnected])
 	{
-		Event *fakeObject = [[Event alloc] init];
+		NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
 		[fakeObject release];
@@ -230,7 +230,7 @@
 
 	NSString *line = nil;
 	NSRange range;
-	Event *newEvent = nil;
+	NSObject<EventProtocol> *newEvent = nil;
 	while(line = [self readSocketLine])
 	{
 		if([line length] < 5 || [line isEqualToString: @"215 End of EPG data"])
@@ -240,7 +240,7 @@
 
 		if([[line substringToIndex: 5] isEqualToString: @"215-E"])
 		{
-			newEvent = [[Event alloc] init];
+			newEvent = [[GenericEvent alloc] init];
 
 			NSArray *components = [line componentsSeparatedByString: @" "];
 			newEvent.eit = [components objectAtIndex: 1];
@@ -336,14 +336,14 @@
 
 		// Channel
 		// This is a channel number, so we have to cache the names in fetchServices
-		Service *service = [_serviceCache objectForKey: [components objectAtIndex: 1]];
+		NSObject<ServiceProtocol> *service = [_serviceCache objectForKey: [components objectAtIndex: 1]];
 		if(service)
 		{
 			newTimer.service = service;
 		}
 		else
 		{
-			service = [[Service alloc] init];
+			service = [[GenericService alloc] init];
 			service.sname = @"???";
 			service.sref = [components objectAtIndex: 1];
 			newTimer.service = service;
@@ -436,7 +436,7 @@
 		[self getSocket];
 	if(![_socket isConnected])
 	{
-		Movie *fakeObject = [[Movie alloc] init];
+		NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
 		[fakeObject release];
@@ -447,7 +447,7 @@
 	[_socket writeString: @"LSTR\r\n"];
 
 	NSString *line = nil;
-	Movie *movie = nil;
+	NSObject<MovieProtocol> *movie = nil;
 	NSRange range;
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier: NSGregorianCalendar];
@@ -459,7 +459,7 @@
 			break;
 		}
 
-		movie = [[Movie alloc] init];
+		movie = [[GenericMovie alloc] init];
 
 		range.location = 4;
 		range.length = [line length] - 4;
@@ -531,7 +531,7 @@
 
 - (void)getVolume:(id)target action:(SEL)action
 {
-	Volume *volumeObject = [[Volume alloc] init];
+	GenericVolume *volumeObject = [[GenericVolume alloc] init];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])

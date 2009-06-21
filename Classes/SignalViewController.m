@@ -79,7 +79,7 @@
 	if(anObject == nil)
 		return;
 
-	Signal *signal = (Signal*)anObject; // just for convenience
+	GenericSignal *signal = (GenericSignal*)anObject; // just for convenience
 
 	_snr.value = (float)(signal.snr);
 	_agc.value = (float)(signal.agc);

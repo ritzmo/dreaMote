@@ -26,7 +26,7 @@
 /* send fake object */
 - (void)sendErroneousObject
 {
-	NSObject<ServiceProtocol> *fakeService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
 	[_target performSelectorOnMainThread: _addObject withObject: fakeService waitUntilDone: NO];
 	[fakeService release];

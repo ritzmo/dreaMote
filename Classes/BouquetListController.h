@@ -13,7 +13,9 @@
 @class CXMLDocument;
 
 /*!
- @brief Bouquet List.
+ @brief Bouquet list.
+ 
+ Display list of known bouquets and start ServiceListController on selected ones.
  */
 @interface BouquetListController : UIViewController <UIActionSheetDelegate,
 													UITableViewDelegate, UITableViewDataSource>

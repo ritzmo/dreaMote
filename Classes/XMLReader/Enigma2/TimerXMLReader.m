@@ -24,7 +24,7 @@
 /* send fake object */
 - (void)sendErroneousObject
 {
-	Timer *fakeObject = [[Timer alloc] init];
+	NSObject<TimerProtocol> *fakeObject = [[GenericTimer alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;

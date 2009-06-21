@@ -153,7 +153,7 @@
 {
 	if(newTimer != nil)
 	{
-		Timer* timer = (Timer*)newTimer;
+		NSObject<TimerProtocol> *timer = (GenericTimer*)newTimer;
 
 		NSInteger state = timer.state;
 		NSInteger index = _dist[state];
@@ -343,7 +343,7 @@
 
 		_willReappear = YES;
 
-		NSObject<TimerProtocol> *newTimer = [Timer timer];
+		NSObject<TimerProtocol> *newTimer = [GenericTimer timer];
 		_timerViewController.timer = newTimer;
 		[newTimer release];
 		_timerViewController.oldTimer = nil;

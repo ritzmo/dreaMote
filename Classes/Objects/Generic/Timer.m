@@ -10,7 +10,7 @@
 
 #import "Service.h"
 
-@implementation Timer
+@implementation GenericTimer
 
 @synthesize eit = _eit;
 @synthesize begin = _begin;
@@ -31,7 +31,7 @@
 
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
-	NSObject<TimerProtocol> *timer = [[Timer alloc] init];
+	NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 	timer.title = ourEvent.title;
 	timer.tdescription = ourEvent.sdescription;
 	timer.begin = ourEvent.begin;
@@ -39,7 +39,7 @@
 	timer.eit = ourEvent.eit;
 	timer.disabled = NO;
 	timer.justplay = NO;
-	NSObject<ServiceProtocol> *newService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	timer.service = newService;
 	[newService release];
 	timer.repeated = 0;
@@ -52,7 +52,7 @@
 
 + (NSObject<TimerProtocol> *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
 {
-	NSObject<TimerProtocol> *timer = [[Timer alloc] init];
+	NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 	timer.title = ourEvent.title;
 	timer.tdescription = ourEvent.sdescription;
 	timer.begin = ourEvent.begin;
@@ -70,7 +70,7 @@
 
 + (NSObject<TimerProtocol> *)timer
 {
-	NSObject<TimerProtocol> *timer = [[Timer alloc] init];
+	NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 	timer.begin = [NSDate date];
 	timer.end = [timer.begin addTimeInterval: (NSTimeInterval)3600];
 	timer.eit = @"-1";
@@ -78,7 +78,7 @@
 	timer.tdescription = @"";
 	timer.disabled = NO;
 	timer.justplay = NO;
-	NSObject<ServiceProtocol> *newService = [[Service alloc] init];
+	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	timer.service = newService;
 	[newService release];
 	timer.repeated = 0;
@@ -201,7 +201,7 @@
 	if(_sname)
 	{
 		[_service release];
-		_service = [[Service alloc] init];
+		_service = [[GenericService alloc] init];
 		_service.sref = newSref;
 		_service.sname = _sname;
 
@@ -220,7 +220,7 @@
 	if(_sref)
 	{
 		[_service release];
-		_service = [[Service alloc] init];
+		_service = [[GenericService alloc] init];
 		_service.sref = _sref;
 		_service.sname = newSname;
 
