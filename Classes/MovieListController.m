@@ -19,6 +19,7 @@
 
 @implementation MovieListController
 
+/* initialize */
 - (id)init
 {
 	self = [super init];
@@ -36,6 +37,7 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_movies release];
@@ -46,6 +48,7 @@
 	[super dealloc];
 }
 
+/* memory warning */
 - (void)didReceiveMemoryWarning
 {
 	[_movieViewController release];
@@ -54,12 +57,14 @@
     [super didReceiveMemoryWarning];
 }
 
+/* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
 	[(UITableView*)self.view setEditing: editing animated: animated];
 }
 
+/* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordDelete])
@@ -85,6 +90,7 @@
 	[super viewWillAppear: animated];
 }
 
+/* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
 	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
@@ -93,8 +99,10 @@
 		[self setEditing:NO animated: YES];
 }
 
+/* did disappear */
 - (void)viewDidDisappear:(BOOL)animated
 {
+	// Free caches if supposed to
 	if(_refreshMovies)
 	{
 		[_movies removeAllObjects];
@@ -107,6 +115,7 @@
 	[_dateFormatter resetReferenceDate];
 }
 
+/* layout */
 - (void)loadView
 {
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
@@ -124,6 +133,7 @@
 	[tableView release];
 }
 
+/* fetch movie list */
 - (void)fetchMovies
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -132,6 +142,7 @@
 	[pool release];
 }
 
+/* add movie to list */
 - (void)addMovie:(NSObject<MovieProtocol> *)movie
 {
 	if(movie != nil)
@@ -152,6 +163,7 @@
 #pragma mark		Table View
 #pragma mark	-
 
+/* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	MovieTableViewCell *cell = (MovieTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kMovieCell_ID];
@@ -164,6 +176,7 @@
 	return cell;
 }
 
+/* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: indexPath.row];
@@ -181,21 +194,24 @@
 	return nil;
 }
 
+/* row count */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_movies count];
 }
 
+/* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellEditingStyleDelete;
 }
 
+/* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {	
 	NSInteger index = indexPath.row;
-
 	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: index];
+
 	if(!movie.valid)
 		return;
 
@@ -217,6 +233,7 @@
 	}
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;

@@ -23,6 +23,7 @@
 @synthesize timers = _timers;
 @synthesize dateFormatter = _dateFormatter;
 
+/* initialize */
 - (id)init
 {
 	self = [super init];
@@ -37,6 +38,7 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_timers release];
@@ -46,6 +48,7 @@
 	[super dealloc];
 }
 
+/* memory warning */
 - (void)didReceiveMemoryWarning
 {
 	[_timerViewController release];
@@ -54,6 +57,7 @@
     [super didReceiveMemoryWarning];
 }
 
+/* layout */
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -73,6 +77,7 @@
 	[tableView release];
 }
 
+/* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
@@ -95,12 +100,16 @@
 		[(UITableView *)self.view reloadData];
 }
 
+/* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
 	NSInteger i;
+	
+	// Reset _dist array
 	for(i = 0; i < kTimerStateMax; i++)
 		_dist[i] = 0;
 
+	// Clear caches
 	[_timers removeAllObjects];
 	_willReappear = NO;
 	[(UITableView *)self.view reloadData];
@@ -114,6 +123,7 @@
 	[super viewWillAppear: animated];
 }
 
+/* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
 	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
@@ -122,14 +132,19 @@
 		[self setEditing:NO animated: YES];
 }
 
+/* did disappear */
 - (void)viewDidDisappear:(BOOL)animated
 {
 	NSInteger i;
+
+	// Reset _dist array
 	for(i = 0; i < kTimerStateMax; i++)
 		_dist[i] = 0;
 
+	// Clear Timer list
 	[_timers removeAllObjects];
 
+	// Clear remaining caches if not reappearing
 	if(!_willReappear)
 	{
 		[_timerViewController release];
@@ -138,9 +153,11 @@
 		_timerXMLDoc = nil;
 	}
 
+	// Reset reference date of FuzzyDateFormatter
 	[_dateFormatter resetReferenceDate];
 }
 
+/* fetch timer list */
 - (void)fetchTimers
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -149,6 +166,7 @@
 	[pool release];
 }
 
+/* add timer to list */
 - (void)addTimer:(id)newTimer
 {
 	if(newTimer != nil)
@@ -178,15 +196,14 @@
 		[(UITableView *)self.view reloadData];
 }
 
-// to determine which UITableViewCell to be used on a given row.
-//
+/* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
-
 	NSInteger section = indexPath.section;
 	UITableViewCell *cell = nil;
 
+	// First section, "New Timer"
 	if(section == 0)
 	{
 		cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
@@ -198,12 +215,16 @@
 
 		return cell;
 	}
+
+	// Timer state is section - 1, so make this a little more readable
 	--section;
-	
+
+	// Acquire cell
 	cell = [tableView dequeueReusableCellWithIdentifier:kTimerCell_ID];
 	if(cell == nil)
 		cell = [[[TimerTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kTimerCell_ID] autorelease];
 
+	// Assign item
 	NSInteger offset = 0;
 	if(section > 0)
 		offset = _dist[section-1];
@@ -213,6 +234,7 @@
 	return cell;
 }
 
+/* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger index = indexPath.row;
@@ -244,11 +266,13 @@
 	_timerViewController.creatingNewTimer = NO;
 }
 
+/* number of sections */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
 	return kTimerStateMax + 1;
 }
 
+/* section title */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if(section == 0)
 		return nil;
@@ -264,8 +288,10 @@
 		return NSLocalizedString(@"Finished", @"");
 }
 
+/* rows in section */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+	// First section only has an item when editing
 	if(section == 0)
 	{
 		return (self.editing) ? 1 : 0;
@@ -277,6 +303,7 @@
 	return _dist[0];
 }
 
+/* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(indexPath.section == 0)
@@ -284,6 +311,7 @@
 	return UITableViewCellEditingStyleDelete;
 }
 
+/* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// If row is deleted, remove it from the list.
@@ -298,8 +326,10 @@
 		if(!timer.valid)
 			return;
 
+		// Try to delete timer
 		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
 		{
+			// If we have a constant timer Id don't refresh all data
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesConstantTimerId])
 			{
 				for(; section < kTimerStateMax; section++){
@@ -311,12 +341,14 @@
 				[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 								 withRowAnimation: UITableViewRowAnimationFade];
 			}
+			// Else reload data
 			else
 			{
 				// XXX: this WILL reset our scroll position..
 				for(section = 0; section < kTimerStateMax; section++)
 					_dist[section] = 0;
 
+				// Free caches
 				[_timers removeAllObjects];
 				[(UITableView *)self.view reloadData];
 				[_timerXMLDoc release];
@@ -327,15 +359,17 @@
 				[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
 			}
 		}
+		// Timer could not be deleted
 		else
 		{
-			// alert user if timer could not be deleted
+			// Alert user
 			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
 														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
 			[alert release];
 		}
 	}
+	// Add new Timer
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
 		if(_timerViewController == nil)
@@ -355,6 +389,7 @@
 	}
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;

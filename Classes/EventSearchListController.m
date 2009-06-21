@@ -19,6 +19,7 @@
 
 @implementation EventSearchListController
 
+/* initialize */
 - (id)init
 {
 	self = [super init];
@@ -28,6 +29,7 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_searchBar release];
@@ -36,11 +38,13 @@
 	[super dealloc];
 }
 
+/* memory warning */
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
 
+/* layout */
 - (void)loadView
 {
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
@@ -70,6 +74,7 @@
 	[contentView release];
 }
 
+/* fetch event list */
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -81,6 +86,7 @@
 	[pool release];
 }
 
+/* add event to list */
 - (void)addEvent:(id)event
 {
 	if(event != nil)
@@ -102,7 +108,8 @@
 #pragma mark		Table View
 #pragma mark	-
 
-- (NSIndexPath *)_tableView:(UITableView *)_tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+/* about to select row */
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 	NSObject<ServiceProtocol> *service = nil;
@@ -129,8 +136,8 @@
 
 #pragma mark UISearchBarDelegate delegate methods
 
-// called when keyboard search button pressed
-- (void)_searchBarSearchButtonClicked:(UISearchBar *)callingSearchBar
+/* called when keyboard search button pressed */
+- (void)searchBarSearchButtonClicked:(UISearchBar *)callingSearchBar
 {
 	[_searchBar resignFirstResponder];
 
@@ -144,12 +151,13 @@
 	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];	
 }
 
-// called when cancel button pressed
-- (void)_searchBarCancelButtonClicked:(UISearchBar *)callingSearchBar
+/* called when cancel button pressed */
+- (void)searchBarCancelButtonClicked:(UISearchBar *)callingSearchBar
 {
 	[_searchBar resignFirstResponder];
 }
 
+/* rotation finished */
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	//[UIView beginAnimations:nil context:NULL];
