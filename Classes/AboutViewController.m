@@ -11,9 +11,10 @@
 
 @implementation AboutViewController
 
+/* initialize */
 - (id)init
 {
-	if (self = [super init])
+	if(self = [super init])
 	{
 		self.title = NSLocalizedString(@"About", @"Title of AboutViewController");
 	}
@@ -21,12 +22,14 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_doneButton release];
 	[super dealloc];
 }
 
+/* layout */
 - (void)loadView
 {
 	// setup our parent content view and embed it to your view controller
@@ -60,11 +63,13 @@
 	[self.view addSubview: _doneButton];
 }
 
+/* "done" button pressed */
 - (void)buttonPressed: (id)sender
 {
-	[self.navigationController dismissModalViewControllerAnimated:YES];
+	[self.navigationController dismissModalViewControllerAnimated: YES];
 }
 
+/* rotate to portrait orientation only */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -72,8 +77,10 @@
 
 #pragma mark - UIWebView delegates
 
+/* load url? */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType; {
 	NSURL *requestURL = [[request URL] retain];
+
 	// Check to see what protocol/scheme the requested URL is.
 	if ( ([requestURL.scheme isEqualToString: @"http"]
 		  || [requestURL.scheme isEqualToString: @"https"])
@@ -84,6 +91,7 @@
 
 	// Auto release
 	[requestURL release];
+
 	// If request url is something other than http or https it will open in UIWebView
 	// You could also check for the other following protocols: tel, mailto and sms
 	return YES;

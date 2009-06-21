@@ -20,12 +20,13 @@
 /* initialize */
 - (id)init
 {
-	self = [super init];
-	if (self) {
+	if(self = [super init])
+	{
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
 		_services = [[NSMutableArray array] retain];
 		_refreshServices = YES;
 		_eventListController = nil;
+		_delegate = nil;
 	}
 	return self;
 }
@@ -189,11 +190,10 @@
 	if(!service.valid)
 		[tableView deselectRowAtIndexPath: indexPath animated: YES];
 	// Callback mode
-	else if(_selectTarget != nil && _selectCallback != nil)
+	else if(_delegate != nil)
 	{
-		[_selectTarget performSelector:(SEL)_selectCallback withObject: service];
-		// XXX: this requires _selectTarget to be an UIViewController!
-		[self.navigationController popToViewController: _selectTarget animated: YES];
+		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
+		[self.navigationController popToViewController: _delegate animated: YES];
 	}
 	// Show UIActionSheet
 	else
@@ -244,15 +244,14 @@
 	return [_services count];
 }
 
-/* set callback */
-- (void)setTarget: (id)target action: (SEL)action
+/* set delegate */
+- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate
 {
 	/*!
 	 @note We do not retain the target, this theoretically could be a problem but
 	 is not in this case.
 	 */
-	_selectTarget = target;
-	_selectCallback = action;
+	_delegate = delegate;
 }
 
 /* rotate with device */

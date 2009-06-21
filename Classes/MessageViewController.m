@@ -8,8 +8,6 @@
 
 #import "MessageViewController.h"
 
-#import "MessageTypeViewController.h"
-
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -393,7 +391,7 @@
 	if(self.editing && section == 3)
 	{
 		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
-		[targetViewController setTarget: self action: @selector(typeSelected:)];
+		[targetViewController setDelegate: self];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}

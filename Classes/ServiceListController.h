@@ -12,6 +12,7 @@
 @class EventListController;
 @class CXMLDocument;
 @protocol ServiceProtocol;
+@protocol ServiceListDelegate;
 
 /*!
  @brief Service List.
@@ -25,8 +26,7 @@
 @private
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief Service List. */
-	SEL _selectCallback; /*!< @brief Callback Selector. */
-	id _selectTarget; /*!< @brief Callback object. */
+	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 
@@ -34,15 +34,14 @@
 }
 
 /*!
- @brief Set Service Selection Callback.
+ @brief Set Service Selection Delegate.
  
- This Function is required for Timers as they will use this Callback when you change the
+ This Function is required for Timers as they will use the provided Callback when you change the
  Service of a Timer.
  
- @param target Callback object.
- @param action Callback selector.
+ @param delegate New delegate object.
  */
-- (void)setTarget: (id)target action: (SEL)action;
+- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
 
 
@@ -50,5 +49,23 @@
  @brief Bouquet.
  */
 @property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
+
+@end
+
+
+
+/*!
+ @brief Delegate for ServiceListController.
+
+ Objects wanting to be called back by a ServiceListController need to implement this Protocol.
+ */
+@protocol ServiceListDelegate <NSObject>
+
+/*!
+ @brief Service was selected.
+ 
+ @param newService Service that was selected.
+ */
+- (void)serviceSelected: (NSObject<ServiceProtocol> *)newService;
 
 @end

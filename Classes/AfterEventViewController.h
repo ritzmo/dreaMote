@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol AfterEventDelegate;
+
 /*!
  @brief After Event Selector.
  
@@ -17,8 +19,7 @@
 {
 @private
 	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	SEL _selectCallback; /*!< @brief Callback Selector. */
-	id _selectTarget; /*!< @brief Callback object. */
+	id<AfterEventDelegate> _delegate; /*!< @brief Delegate. */
 	BOOL _showAuto; /*!< @brief Show "kAfterEventAuto" Item? */
 }
 
@@ -34,12 +35,14 @@
 + (AfterEventViewController *)withAfterEvent: (NSInteger)afterEvent andAuto: (BOOL)showAuto;
 
 /*!
- @brief Set Callback Target.
+ @brief Set Delegate.
  
- @param target Callback object.
- @param action Callback selector.
+ The delegate will be called back when disappearing to inform it about the newly selected
+ after event action.
+ 
+ @param delegate New delegate object.
  */
-- (void)setTarget: (id)target action: (SEL)action;
+- (void)setDelegate: (id<AfterEventDelegate>) delegate;
 
 
 
@@ -55,3 +58,20 @@
 
 @end
 
+
+
+/*!
+ @brief AfterEventViewController Delegate.
+ 
+ Implements callback functionality for AfterEventViewController.
+ */
+@protocol AfterEventDelegate <NSObject>
+
+/*!
+ @brief After event was selected.
+ 
+ @param newAfterEvent Selected action..
+ */
+- (void)afterEventSelected: (NSNumber *)newAfterEvent;
+
+@end

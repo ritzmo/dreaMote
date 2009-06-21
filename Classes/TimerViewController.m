@@ -10,8 +10,6 @@
 
 #import "BouquetListController.h"
 #import "DatePickerController.h"
-#import "AfterEventViewController.h"
-#import "SimpleRepeatedViewController.h"
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -670,7 +668,7 @@
 		{
 			if(_bouquetListController == nil)
 				_bouquetListController = [[BouquetListController alloc] init];
-			[_bouquetListController setTarget: self action: @selector(serviceSelected:)];
+			[_bouquetListController setDelegate: self];
 
 			targetViewController = _bouquetListController;
 		}
@@ -700,7 +698,7 @@
 			// XXX: why gives directly assigning this an error?
 			BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
 			_afterEventViewController.showAuto = showAuto;
-			[_afterEventViewController setTarget: self action: @selector(afterEventSelected:)];
+			[_afterEventViewController setDelegate: self];
 
 			targetViewController = _afterEventViewController;
 		}
@@ -709,7 +707,7 @@
 			if(_simpleRepeatedViewController == nil)
 				_simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
 			_simpleRepeatedViewController.repeated = _timer.repeated;
-			[_simpleRepeatedViewController setTarget: self action: @selector(simpleRepeatedSelected:)];
+			[_simpleRepeatedViewController setDelegate: self];
 			
 			targetViewController = _simpleRepeatedViewController;
 		}

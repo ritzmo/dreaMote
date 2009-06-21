@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-// Forward declarations...
-@class ServiceListController;
+#import "ServiceListController.h"
+
+// Forward declaration
 @class CXMLDocument;
 
 /*!
@@ -22,8 +23,7 @@
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
-	SEL _selectCallback; /*!< @brief Callback Selector. */
-	id _selectTarget; /*!< @brief Callback Object. */
+	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 
@@ -31,14 +31,13 @@
 }
 
 /*!
- @brief Set Service Selection Callback.
+ @brief Set Service Selection Delegate.
  
- This Function is required for Timers as they will use this Callback when you change the
+ This Function is required for Timers as they will use the provided Callback when you change the
  Service of a Timer.
  
- @param target Callback object.
- @param action Callback selector.
+ @param delegate New delegate object.
  */
-- (void)setTarget: (id)target action: (SEL)action;
+- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
 @end

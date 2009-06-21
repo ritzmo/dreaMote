@@ -10,7 +10,6 @@
 
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
-#import "ConnectorViewController.h"
 #import "Constants.h"
 
 #import "DisplayCell.h"
@@ -537,7 +536,7 @@
 	if(self.editing && indexPath.section == 2 && row == 0)
 	{
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
-		[targetViewController setTarget: self action: @selector(connectorSelected:)];
+		[targetViewController setDelegate: self];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}

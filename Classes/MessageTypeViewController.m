@@ -15,15 +15,18 @@
 
 @synthesize selectedItem = _selectedItem;
 
+/* initialize */
 - (id)init
 {
-	if (self = [super init])
+	if(self = [super init])
 	{
 		self.title = NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController");
+		_delegate = nil;
 	}
 	return self;
 }
 
+/* create MessageTypeViewController with given type preselected */
 + (MessageTypeViewController *)withType: (NSInteger) typeKey
 {
 	MessageTypeViewController *messageTypeViewController = [[MessageTypeViewController alloc] init];
@@ -32,11 +35,13 @@
 	return messageTypeViewController;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[super dealloc];
 }
 
+/* layout */
 - (void)loadView
 {
 	// create and configure the table view
@@ -53,6 +58,7 @@
 	[tableView release];
 }
 
+/* rotate to portrait mode */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -60,22 +66,22 @@
 
 #pragma mark - UITableView delegates
 
+/* title for section */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	return nil;
 }
 
+/* rows in section */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	return [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType];
 }
 
-// to determine which UITableViewCell to be used on a given row.
-//
+/* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
-
 	UITableViewCell *cell = nil;
 	NSInteger row = indexPath.row;
 
@@ -94,6 +100,7 @@
 	return cell;
 }
 
+/* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
@@ -107,19 +114,24 @@
 	_selectedItem = indexPath.row;
 }
 
-- (void)setTarget: (id)target action: (SEL)action
+/* set delegate */
+- (void)setDelegate: (id<MessageTypeDelegate>) delegate
 {
-	_selectTarget = target;
-	_selectCallback = action;
+	/*!
+	 @note We do not retain the target, this theoretically could be a problem but
+	 is not in this case.
+	 */
+	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods
 
+/* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_selectTarget != nil && _selectCallback != nil)
+	if(_delegate != nil)
 	{
-		[_selectTarget performSelector:(SEL)_selectCallback withObject: [NSNumber numberWithInteger: _selectedItem]];
+		[_delegate performSelector:@selector(typeSelected:) withObject: [NSNumber numberWithInteger: _selectedItem]];
 	}
 }
 

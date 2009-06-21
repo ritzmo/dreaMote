@@ -44,6 +44,7 @@
 	_thisNight = nil;
 }
 
+/* translate date to string */
 // XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
 - (NSString *)stringForObjectValue:(id)date
 {

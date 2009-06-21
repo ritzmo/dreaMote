@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CellTextField.h"
+#import "CellTextField.h" /* EditableTableViewCellDelegate */
+#import "ConnectorViewController.h" /* ConnectorDelegate */
 
 /*!
  @brief Connection Settings.
@@ -17,7 +18,8 @@
  finally save / dismiss changes.
  */
 @interface ConfigViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
-													UITableViewDataSource, EditableTableViewCellDelegate>
+													UITableViewDataSource, ConnectorDelegate,
+													EditableTableViewCellDelegate>
 {
 @private
 	UITextField *_remoteNameTextField; /*!< @brief Name Text Field. */

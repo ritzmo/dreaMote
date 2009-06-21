@@ -8,8 +8,6 @@
 
 #import "BouquetListController.h"
 
-#import "ServiceListController.h"
-
 #import "RemoteConnectorObject.h"
 #import "Objects/ServiceProtocol.h"
 
@@ -26,6 +24,7 @@
 		_bouquets = [[NSMutableArray array] retain];
 		_refreshBouquets = YES;
 		_serviceListController = nil;
+		_delegate = nil;
 	}
 	return self;
 }
@@ -159,8 +158,8 @@
 		_serviceListController = [[ServiceListController alloc] init];
 
 	// Redirect callback if we have one
-	if(_selectTarget != nil && _selectCallback != nil)
-		[_serviceListController setTarget: _selectTarget action: _selectCallback];
+	if(_delegate != nil)
+		[_serviceListController setDelegate: _delegate];
 	_serviceListController.bouquet = bouquet;
 
 	// We do not want to refresh bouquet list when we return
@@ -184,15 +183,14 @@
 	return [_bouquets count];
 }
 
-/* set callback */
-- (void)setTarget: (id)target action: (SEL)action
+/* set delegate */
+- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate
 {
 	/*!
 	 @note We do not retain the target, this theoretically could be a problem but
 	 is not in this case.
 	 */
-	_selectTarget = target;
-	_selectCallback = action;
+	_delegate = delegate;
 }
 
 /* support rotation */

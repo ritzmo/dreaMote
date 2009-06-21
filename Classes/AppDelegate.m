@@ -16,6 +16,7 @@
 @synthesize window;
 @synthesize navigationController;
 
+/* initialize */
 - (id)init
 {
 	if (self = [super init])
@@ -25,6 +26,7 @@
 	return self;
 }
 
+/* finished launching */
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
 	// Show the window and view
@@ -92,6 +94,7 @@
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
 }
 
+/* close app */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
 	// Save our connection array
@@ -99,6 +102,7 @@
 	[RemoteConnectorObject disconnect];
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[window release];

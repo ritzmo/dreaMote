@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SimpleRepeatedDelegate;
+
 /*!
  @brief Repeated Flag selection.
  
@@ -19,8 +21,7 @@
 {
 @private
 	NSInteger _repeated; /*!< @brief Current Flags. */
-	SEL _selectCallback; /*!< @brief Callback selector. */
-	id _selectTarget; /*!< @brief Callback object. */
+	id<SimpleRepeatedDelegate> _delegate; /*!< @brief Delegate. */
 }
 
 /*!
@@ -32,12 +33,14 @@
 + (SimpleRepeatedViewController *)withRepeated: (NSInteger)repeated;
 
 /*!
- @brief Set Callback Target.
+ @brief Set Delegate.
  
- @param target Callback object.
- @param action Callback selector.
+ The delegate will be called back when disappearing to inform it about the newly selected
+ repeated flags.
+ 
+ @param delegate New delegate object.
  */
-- (void)setTarget: (id)target action: (SEL)action;
+- (void)setDelegate: (id<SimpleRepeatedDelegate>) delegate;
 
 
 
@@ -48,3 +51,20 @@
 
 @end
 
+
+
+/*!
+ @brief SimpleRepeatedViewController Delegate.
+ 
+ Implements callback functionality for SimpleRepeatedViewController.
+ */
+@protocol SimpleRepeatedDelegate <NSObject>
+
+/*!
+ @brief Repeated flags were selected.
+ 
+ @param newRepeated New repeated flags.
+ */
+- (void)simpleRepeatedSelected: (NSNumber *)newRepeated;
+
+@end

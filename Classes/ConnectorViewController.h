@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ConnectorDelegate;
+
 /*!
  @brief Connector Selection.
  
@@ -18,8 +20,7 @@
 {
 @private
 	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	SEL _selectCallback; /*!< @brief Callback Selector. */
-	id _selectTarget; /*!< @brief Callback Object. */
+	id<ConnectorDelegate> _delegate; /*!< @brief Delegate. */
 }
 
 /*!
@@ -31,12 +32,14 @@
 + (ConnectorViewController *)withConnector: (NSInteger) connectorKey;
 
 /*!
- @brief Set Callback Target.
+ @brief Set Delegate.
  
- @param target Callback object.
- @param action Callback selector.
+ The delegate will be called back when disappearing to inform it about the newly selected
+ connector id.
+ 
+ @param delegate New delegate object.
  */
-- (void)setTarget: (id)target action: (SEL)action;
+- (void)setDelegate: (id<ConnectorDelegate>) delegate;
 
 
 
@@ -47,3 +50,20 @@
 
 @end
 
+
+
+/*!
+ @brief ConnectorViewController Delegate.
+ 
+ Implements callback functionality for ConnectorViewController.
+ */
+@protocol ConnectorDelegate <NSObject>
+
+/*!
+ @brief Connector was selected.
+ 
+ @param newConnector Selected Connector.
+ */
+- (void)connectorSelected: (NSNumber*) newConnector;
+
+@end

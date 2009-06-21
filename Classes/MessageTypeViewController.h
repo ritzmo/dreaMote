@@ -8,17 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+// Forward declaration
+@protocol MessageTypeDelegate;
+
 /*!
  @brief Message Type Selector.
  
  Allows to choose the type of a message to be send to the STB.
  */
-@interface MessageTypeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface MessageTypeViewController : UIViewController <UITableViewDelegate,
+														UITableViewDataSource>
 {
 @private
 	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	SEL _selectCallback; /*!< @brief Callback Selector. */
-	id _selectTarget; /*!< @brief Callback object. */
+	id<MessageTypeDelegate> _delegate; /*!< @brief Delegate. */
 }
 
 /*!
@@ -30,12 +33,14 @@
 + (MessageTypeViewController *)withType: (NSInteger) typeKey;
 
 /*!
- @brief Set Callback Target.
+ @brief Set Delegate.
  
- @param target Callback object.
- @param action Callback selector.
+ The delegate will be called back when disappearing to inform it about the newly selected
+ message type.
+ 
+ @param delegate New delegate object.
  */
-- (void)setTarget: (id)target action: (SEL)action;
+- (void)setDelegate: (id<MessageTypeDelegate>) delegate;
 
 
 
@@ -43,5 +48,23 @@
  @brief Selected Item.
  */
 @property (nonatomic) NSInteger selectedItem;
+
+@end
+
+
+
+/*!
+ @brief MessageTypeViewController Delegate.
+ 
+ Implements callback functionality for MessageTypeViewController.
+*/
+@protocol MessageTypeDelegate <NSObject>
+
+/*!
+ @brief Type was selected.
+ 
+ @param newType Selected type.
+ */
+- (void)typeSelected: (NSNumber *) newType;
 
 @end

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CellTextField.h"
+#import "CellTextField.h" /* CellTextField, EditableTableViewCellDelegate */
+#import "MessageTypeViewController.h" /* MessageTypeDelegate */
 
 /*!
  @brief Message View.
@@ -16,7 +17,8 @@
  View to be used to send messages to the STB.
  */
 @interface MessageViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
-													UITableViewDataSource, EditableTableViewCellDelegate>
+													UITableViewDataSource, MessageTypeDelegate,
+													EditableTableViewCellDelegate>
 {
 @private
 	UITextField *_messageTextField; /*!< @brief Text Field. */

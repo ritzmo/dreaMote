@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/EventProtocol.h"
-#import "Objects/ServiceProtocol.h"
-#import "Objects/TimerProtocol.h"
-#import "CellTextField.h"
+#import "Objects/EventProtocol.h" /* EventProtocol */
+#import "Objects/ServiceProtocol.h" /* ServiceProtocol */
+#import "Objects/TimerProtocol.h" /* TimerProtocol */
+#import "CellTextField.h" /* CellTextField */
+
+#import "AfterEventViewController.h" /* AfterEventDelegate */
+#import "ServiceListController.h" /* ServiceListDelegate */
+#import "SimpleRepeatedViewController.h" /* SimpleRepeatedDelegate */
 
 // Forward declarations...
 @class BouquetListController;
-@class AfterEventViewController;
 @class DatePickerController;
-@class SimpleRepeatedViewController;
 
 /*!
  @brief Timer View.
@@ -26,6 +28,8 @@
  */
 @interface TimerViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
+													ServiceListDelegate, AfterEventDelegate,
+													SimpleRepeatedDelegate,
 													EditableTableViewCellDelegate>
 {
 @private

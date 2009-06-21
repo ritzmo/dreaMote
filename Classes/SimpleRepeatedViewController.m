@@ -16,15 +16,17 @@
 
 @synthesize repeated = _repeated;
 
+/* initialize */
 - (id)init
 {
-	if (self = [super init])
+	if(self = [super init])
 	{
 		self.title = NSLocalizedString(@"Repeated", @"Default title of SimpleRepeatedViewController");
 	}
 	return self;
 }
 
+/* create new SimpleRepeatedViewController instance with given flags */
 + (SimpleRepeatedViewController *)withRepeated: (NSInteger)repeated
 {
 	SimpleRepeatedViewController *simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
@@ -33,11 +35,13 @@
 	return simpleRepeatedViewController;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[super dealloc];
 }
 
+/* layout */
 - (void)loadView
 {
 	// create and configure the table view
@@ -54,6 +58,7 @@
 	[tableView release];
 }
 
+/* rotate to portrait mode */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -61,18 +66,19 @@
 
 #pragma mark - UITableView delegates
 
+/* header */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	return nil;
 }
 
+/* rows in section */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	return 7;
 }
 
-// to determine which UITableViewCell to be used on a given row.
-//
+/* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
@@ -119,17 +125,20 @@
 	return cell;
 }
 
+/* select row */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 
+	// Already selected, deselect
 	if(_repeated & (1 << indexPath.row))
 	{
 		cell.accessoryType = UITableViewCellAccessoryNone;
 		_repeated &= ~(1 << indexPath.row);
 	}
+	// Not selected, select
 	else
 	{
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -137,19 +146,24 @@
 	}
 }
 
-- (void)setTarget: (id)target action: (SEL)action
+/* set delegate */
+- (void)setDelegate: (id<SimpleRepeatedDelegate>) delegate
 {
-	_selectTarget = target;
-	_selectCallback = action;
+	/*!
+	 @note We do not retain the target, this theoretically could be a problem but
+	 is not in this case.
+	 */
+	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods
 
+/* about to disapper */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_selectTarget != nil && _selectCallback != nil)
+	if(_delegate != nil)
 	{
-		[_selectTarget performSelector:(SEL)_selectCallback withObject: [NSNumber numberWithInteger: _repeated]];
+		[_delegate performSelector:@selector(simpleRepeatedSelected:) withObject: [NSNumber numberWithInteger: _repeated]];
 	}
 }
 
