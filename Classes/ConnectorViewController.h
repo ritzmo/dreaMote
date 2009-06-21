@@ -10,6 +10,9 @@
 
 /*!
  @brief Connector Selection.
+ 
+ Allows to select a RemoteConnector to be used for a connection.
+ Also allows to start an "autodetection" routine.
  */
 @interface ConnectorViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

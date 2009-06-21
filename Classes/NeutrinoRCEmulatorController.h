@@ -12,6 +12,8 @@
 
 /*!
  @brief Emulated Remote Control for Neutrino.
+ 
+ Emulated remote control adjusted to the neutrino keyset.
  */
 @interface NeutrinoRCEmulatorController : RCEmulatorController
 {

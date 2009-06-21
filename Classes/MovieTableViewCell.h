@@ -17,7 +17,7 @@
 extern NSString *kMovieCell_ID;
 
 /*!
- @brief UITableViewCell optimized to display .
+ @brief UITableViewCell optimized to display Movies.
  */
 @interface MovieTableViewCell : UITableViewCell
 {

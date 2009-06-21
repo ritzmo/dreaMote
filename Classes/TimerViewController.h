@@ -21,6 +21,8 @@
 
 /*!
  @brief Timer View.
+ 
+ Display further information about a timer and allow to edit its configuration.
  */
 @interface TimerViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,

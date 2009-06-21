@@ -10,6 +10,8 @@
 
 /*!
  @brief About.
+ 
+ Displays a webkit widget which renders the about.html bundled with this application.
  */
 @interface AboutViewController : UIViewController <UIWebViewDelegate>
 {

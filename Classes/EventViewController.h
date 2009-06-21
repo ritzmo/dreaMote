@@ -17,6 +17,8 @@
 
 /*!
  @brief Event View.
+ 
+ Display further information of an Event and offer to program a timer for this event.
  */
 @interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

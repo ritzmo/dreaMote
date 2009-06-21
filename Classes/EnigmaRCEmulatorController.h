@@ -12,6 +12,8 @@
 
 /*!
  @brief Emulated Remote Control for Enigma.
+ 
+ Emulated Remote Control designed for Enigma and Enigma2 with "normal" remote control device.
  */
 @interface EnigmaRCEmulatorController : RCEmulatorController
 {

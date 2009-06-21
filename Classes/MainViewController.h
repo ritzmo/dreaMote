@@ -10,6 +10,11 @@
 
 /*!
  @brief Main View.
+ 
+ Display list of possible actions with currently selected connection (based on RemoteConnector
+ features).
+ If no connection is configured yet the user is immediately redirected to the
+ configuration screen.
  */
 @interface MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

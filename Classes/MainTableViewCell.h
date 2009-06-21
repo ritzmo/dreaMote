@@ -14,7 +14,7 @@
 extern NSString *kMainCell_ID;
 
 /*!
- @brief UITableViewCell optimized to display Services.
+ @brief UITableViewCell optimized to display elements on MainViewController.
  */
 @interface MainTableViewCell : UITableViewCell
 {

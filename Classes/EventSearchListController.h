@@ -10,6 +10,9 @@
 
 /*!
  @brief Event Search.
+ 
+ Allow to search for events, lists the results and opens an EventViewController upon
+ selection.
  */
 @interface EventSearchListController : EventListController <UISearchBarDelegate>
 {

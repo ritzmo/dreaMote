@@ -17,6 +17,12 @@
 
 /*!
  @brief Timer List.
+ 
+ Lists timers and allows to open a TimerViewController for further information / editing.
+ Removing a timer is also allowed.
+ 
+ @note The list is always reloaded when appearing to avoid problems with missing / wrong
+ timer ids.
  */
 @interface TimerListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

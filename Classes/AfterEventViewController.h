@@ -10,6 +10,8 @@
 
 /*!
  @brief After Event Selector.
+ 
+ Allows to select an after event action from the list defined by enum afterEvent.
  */
 @interface AfterEventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

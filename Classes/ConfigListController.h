@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 
 /*!
- @brief General Settings and Connection List.
+ @brief General settings and connection list.
+ 
+ Allows to set Application preferences and Add/Remove of known Connections.
  */
 @interface ConfigListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

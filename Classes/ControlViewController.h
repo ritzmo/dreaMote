@@ -10,6 +10,9 @@
 
 /*!
  @brief STB Control.
+ 
+ Control of simple functions like volume, power state and eventually (if RemoteConnector supports
+ it) instant record.
  */
 @interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

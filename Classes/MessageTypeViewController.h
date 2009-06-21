@@ -10,6 +10,8 @@
 
 /*!
  @brief Message Type Selector.
+ 
+ Allows to choose the type of a message to be send to the STB.
  */
 @interface MessageTypeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

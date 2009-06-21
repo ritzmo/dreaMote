@@ -12,6 +12,8 @@
 
 /*!
  @brief Emulated Remote Control for SVDRP.
+ 
+ Emulated remote control optimized for SVDRP keyset.
  */
 @interface SVDRPRCEmulatorController : RCEmulatorController
 {

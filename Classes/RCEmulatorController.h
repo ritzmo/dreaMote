@@ -10,6 +10,9 @@
 
 /*!
  @brief Basic Emulated Remote Control.
+ 
+ Generic remote control screen which only needs the rcView to be set up by extending
+ classes. Screenshot functionality is already included.
  */
 @interface RCEmulatorController : UIViewController <UIScrollViewDelegate>
 {

@@ -16,6 +16,8 @@
 
 /*!
  @brief Event List.
+ 
+ Lists events and opens an EventViewController upon selection.
  */
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

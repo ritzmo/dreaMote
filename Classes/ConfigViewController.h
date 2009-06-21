@@ -12,6 +12,9 @@
 
 /*!
  @brief Connection Settings.
+ 
+ Allows to change settings of a known or new connection, make it default or just connect and
+ finally save / dismiss changes.
  */
 @interface ConfigViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>

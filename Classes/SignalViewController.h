@@ -10,6 +10,8 @@
 
 /*!
  @brief Signal View.
+ 
+ Allows to display SNR(dB)/AGC/BER as long as RemoteConnector supports it.
  */
 @interface SignalViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

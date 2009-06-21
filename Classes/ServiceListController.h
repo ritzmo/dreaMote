@@ -15,6 +15,9 @@
 
 /*!
  @brief Service List.
+ 
+ Lists services of a Bouquet and opens EventListController for this Service upon
+ selection.
  */
 @interface ServiceListController : UIViewController <UIActionSheetDelegate,
 													UITableViewDelegate, UITableViewDataSource>

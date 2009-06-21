@@ -10,6 +10,10 @@
 
 /*!
  @brief Repeated Flag selection.
+ 
+ Allows to select repeated flags from a simple set of available values.
+ It's adjusted to the Enigma and Enigma2 model of repeating timers thus it only
+ offers weakly repetitions based on days.
  */
 @interface SimpleRepeatedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {

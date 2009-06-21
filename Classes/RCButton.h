@@ -10,6 +10,11 @@
 
 /*!
  @brief Simple UIButton used to store RC Codes.
+ 
+ Objects of this type are used in the emulated remote control (@see RCEmulatorController)
+ and helps settings those up by allowing to assign a normal button a rcCode which will be
+ handed to the RemoteConnector which on its side will convert it to a native rc code
+ of the STB.
  */
 @interface RCButton : UIButton {
 @public

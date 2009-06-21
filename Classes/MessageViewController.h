@@ -12,6 +12,8 @@
 
 /*!
  @brief Message View.
+ 
+ View to be used to send messages to the STB.
  */
 @interface MessageViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, EditableTableViewCellDelegate>
