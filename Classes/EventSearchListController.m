@@ -73,11 +73,11 @@
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[eventXMLDoc release];
+	[_eventXMLDoc release];
 	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
 	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
-	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self action:@selector(addEvent:) title: title] retain];
+	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self action:@selector(addEvent:) title: title] retain];
 	[pool release];
 }
 
@@ -115,14 +115,14 @@
 		return nil;
 	}
 
-	if(eventViewController == nil)
-		eventViewController = [[EventViewController alloc] init];
+	if(_eventViewController == nil)
+		_eventViewController = [[EventViewController alloc] init];
 
-	eventViewController.event = event;
-	eventViewController.service = service;
-	eventViewController.search = YES;
+	_eventViewController.event = event;
+	_eventViewController.service = service;
+	_eventViewController.search = YES;
 
-	[self.navigationController pushViewController: eventViewController animated: YES];
+	[self.navigationController pushViewController: _eventViewController animated: YES];
 
 	return nil;
 }
@@ -136,8 +136,8 @@
 
 	[_events removeAllObjects];
 	[_tableView reloadData];
-	[eventXMLDoc release];
-	eventXMLDoc = nil;	
+	[_eventXMLDoc release];
+	_eventXMLDoc = nil;	
 	
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.

@@ -33,7 +33,7 @@ enum neutrinoEventType {
  @brief Repeat Flags in Neutrino.
  */
 enum neutrinoTimerRepeat {
-	neutrinoTimerRepeatNever = 0, /*!< @briefDon't repeat.  */
+	neutrinoTimerRepeatNever = 0, /*!< @brief Don't repeat.  */
 	neutrinoTimerRepeatDaily = 1, /*!< @brief Repeat daily. */
 	neutrinoTimerRepeatWeekly = 2, /*!< @brief Repeat every week. */
 	neutrinoTimerRepeatBiweekly = 3, /*!< @brief Repeat every two weeks. */

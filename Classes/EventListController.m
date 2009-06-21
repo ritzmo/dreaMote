@@ -19,22 +19,24 @@
 
 @implementation EventListController
 
-@synthesize dateFormatter;
+@synthesize dateFormatter = _dateFormatter;
 
+/* initialize */
 - (id)init
 {
 	self = [super init];
 	if (self) {
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
-		dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-		eventViewController = nil;
+		_dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
 	}
 	return self;
 }
 
+/* new list for given service */
 + (EventListController*)forService: (NSObject<ServiceProtocol> *)ourService
 {
 	EventListController *eventListController = [[EventListController alloc] init];
@@ -43,49 +45,58 @@
 	return eventListController;
 }
 
+/* getter for service property */
 - (NSObject<ServiceProtocol> *)service
 {
 	return _service;
 }
 
+/* setter for service property */
 - (void)setService: (NSObject<ServiceProtocol> *)newService
 {
+	// No change, return immediately
 	if(_service == newService) return;
 
+	// Free old service, assign new
 	[_service release];
 	_service = [newService retain];
 
+	// Set tigle
 	self.title = newService.sname;
 
+	// Clean event list
 	[_events removeAllObjects];
 	[(UITableView *)self.view reloadData];
-	[eventXMLDoc release];
-	eventXMLDoc = nil;
+	[_eventXMLDoc release];
+	_eventXMLDoc = nil;
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_events release];
 	[_service release];
-	[dateFormatter release];
-	[eventViewController release];
-	[eventXMLDoc release];
+	[_dateFormatter release];
+	[_eventViewController release];
+	[_eventXMLDoc release];
 
 	[super dealloc];
 }
 
+/* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[eventViewController release];
-	eventViewController = nil;
+	[_eventViewController release];
+	_eventViewController = nil;
 	
     [super didReceiveMemoryWarning];
 }
 
+/* layout */
 - (void)loadView
 {
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
@@ -98,28 +109,32 @@
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
+
 	self.view = tableView;
 	[tableView release];
 
+	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
 	[zapButton release];
 }
 
+/* zap */
 - (void)zapAction:(id)sender
 {
 	[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
 }
 
+/* start download of event list */
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[eventXMLDoc release];
-	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
+	[_eventXMLDoc release];
+	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
 	[pool release];
 }
 
+/* add event to list */
 - (void)addEvent:(id)event
 {
 	if(event != nil)
@@ -140,52 +155,58 @@
 #pragma mark		Table View
 #pragma mark	-
 
+/* cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
 	if(cell == nil)
 		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
 
-	cell.formatter = dateFormatter;
+	cell.formatter = _dateFormatter;
 	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 	
 	return cell;
 }
 
+/* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 
-	if(eventViewController == nil)
-		eventViewController = [[EventViewController alloc] init];
+	if(_eventViewController == nil)
+		_eventViewController = [[EventViewController alloc] init];
 
-	eventViewController.event = event;
-	eventViewController.service = _service;
+	_eventViewController.event = event;
+	_eventViewController.service = _service;
 
-	[self.navigationController pushViewController: eventViewController animated: YES];
+	[self.navigationController pushViewController: _eventViewController animated: YES];
 
 	return nil;
 }
 
+/* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
 	// TODO: seperate by day??
 	return 1;
 }
 
+/* number of items */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_events count];
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
 }
 
+/* disappeared */
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[dateFormatter resetReferenceDate];
+	[_dateFormatter resetReferenceDate];
 }
 
 @end

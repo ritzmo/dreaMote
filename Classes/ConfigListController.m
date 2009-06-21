@@ -15,8 +15,20 @@
 
 #import "ConfigViewController.h"
 
+@interface ConfigListController()
+/*!
+ @brief Utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell
+ to be used on a given section.
+ 
+ @param section Section
+ @return UITableViewCell instance
+ */
+- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section;
+@end
+
 @implementation ConfigListController
 
+/* initialize */
 - (id)init
 {
 	self = [super init];
@@ -29,6 +41,7 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_connections release];
@@ -38,10 +51,9 @@
 	[super dealloc];
 }
 
+/* layout */
 - (void)loadView
 {
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
@@ -70,8 +82,12 @@
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_connectionTest.backgroundColor = [UIColor clearColor];
 	_connectionTest.enabled = NO;
+
+	// add edit button
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+/* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 {
 	[super setEditing: editing animated: animated];
@@ -80,6 +96,7 @@
 	_vibrateInRC.enabled = editing;
 	_connectionTest.enabled = editing;
 
+	// Animate if requested
 	if(animated)
 	{
 		if(editing)
@@ -96,13 +113,17 @@
 		}
 	}
 
+	// Save if supposed to
 	if(!editing && _shouldSave)
 	{
 		[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
 		[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
 	}
+
+	// If we did not save this time we are supposed to save if this is opened again
 	_shouldSave = YES;
 
+	// Make sure the UITableView notices the changes we made
 	[(UITableView*)self.view reloadData];
 }
 
@@ -110,8 +131,10 @@
 #pragma mark		Table View
 #pragma mark	-
 
+/* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// Only do something in section 0
 	if(indexPath.section != 0)
 		return nil;
 
@@ -122,26 +145,28 @@
 		return nil;
 	}
 
+	// Open ConfigViewController for selected item
 	UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
 	[self.navigationController pushViewController: targetViewController animated: YES];
 	[targetViewController release];
 
+	// Do not actually select row
 	return nil;
 }
 
+/* indent when editing? */
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// Only indent section 0
 	return (indexPath.section == 0);
 }
 
-// utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
-//
+/* cell for section */
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
-	
 	UITableViewCell *cell = nil;
-	
+
 	switch(section)
 	{
 		case 0:
@@ -161,8 +186,7 @@
 	return cell;
 }
 
-// to determine which UITableViewCell to be used on a given row.
-//
+/* determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger section = indexPath.section;
@@ -173,19 +197,27 @@
 	// we are creating a new cell, setup its attributes
 	switch(section)
 	{
+		/* Connections */
 		case 0:
 			sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			/*!
+			 @brief When editing we add a fake first item to the list so cover this here.
+			 */
 			if(self.editing)
 			{
+				// Setup fake item and abort
 				if(row == 0)
 				{
 					sourceCell.image = nil;
 					sourceCell.text = NSLocalizedString(@"New Connection", @"");
 					break;
 				}
+
+				// Fix index in list
 				row--;
 			}
 
+			// Set image for cell
 			if([[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] == row)
 				sourceCell.image = [UIImage imageNamed:@"emblem-favorite.png"];
 			else if([RemoteConnectorObject getConnectedId] == row)
@@ -193,18 +225,24 @@
 			else
 				sourceCell.image = nil;
 
+			// Title handling
 			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
 			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			sourceCell.text = hostTitle;
+
 			break;
+
+		/* Misc configuration items */
 		case 1:
 			switch(row)
 			{
+				/* Vibration */
 				case 0:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
 					((DisplayCell *)sourceCell).view = _vibrateInRC;
 					break;
+				/* Connectivity check */
 				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Check Connectivity", @"");
 					((DisplayCell *)sourceCell).view = _connectionTest;
@@ -220,11 +258,13 @@
 	return sourceCell;
 }
 
+/* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
 	return 2;
 }
 
+/* number of rows in given section */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	if(section == 0)
@@ -236,6 +276,7 @@
 	return 2;
 }
 
+/* section header */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if(section == 0)
@@ -243,21 +284,26 @@
 	return nil;
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
 }
 
+/* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// Only custom style in section 0
 	if(indexPath.section != 0)
 		return UITableViewCellEditingStyleNone;
 
+	// First row is fake "new connection" item
 	if(indexPath.row == 0)
 		return UITableViewCellEditingStyleInsert;
 	return UITableViewCellEditingStyleDelete;
 }
 
+/* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// If row is deleted, remove it from the list.
@@ -267,8 +313,10 @@
 		NSInteger currentDefault = [stdDefaults integerForKey: kActiveConnection];
 		NSInteger index = indexPath.row - 1;
 
+		// Shift index
 		if(currentDefault > index)
 			[stdDefaults setObject: [NSNumber numberWithInteger: currentDefault - 1] forKey: kActiveConnection];
+		// Default to 0 if current default connection removed
 		else if(currentDefault == index)
 		{
 			[stdDefaults setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
@@ -276,10 +324,12 @@
 			[(UITableView *)self.view reloadData];
 		}
 
+		// Remove item
 		[_connections removeObjectAtIndex: index];
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 						 withRowAnimation: UITableViewRowAnimationFade];
 	}
+	// Add new connection
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
 		_viewWillReapper = YES;
@@ -292,15 +342,20 @@
 
 #pragma mark - UIViewController delegate methods
 
+/* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+	// Fix defaults
 	if(!_viewWillReapper)
 		[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+
+	// Assume we won't reappear, will be fixed if we actually do so
 	_viewWillReapper = NO;
 
 	[(UITableView *)self.view reloadData];
 }
 
+/* about to hide */
 - (void)viewWillDisappear:(BOOL)animated
 {
 	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this

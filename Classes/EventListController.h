@@ -24,10 +24,10 @@
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Current Service. */
-	FuzzyDateFormatter *dateFormatter; /*!< @brief Date Formatter. */
+	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 
-	CXMLDocument *eventXMLDoc; /*!< @brief Event XML Document. */
-	EventViewController *eventViewController; /*!< @brief Cached Event Detail View. */
+	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
+	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 }
 
 /*!

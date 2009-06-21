@@ -17,6 +17,7 @@
 
 @implementation BouquetListController
 
+/* initialize */
 - (id)init
 {
 	self = [super init];
@@ -29,6 +30,7 @@
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_bouquets release];
@@ -38,6 +40,7 @@
 	[super dealloc];
 }
 
+/* memory warning */
 - (void)didReceiveMemoryWarning
 {
 	[_serviceListController release];
@@ -46,6 +49,7 @@
 	[super didReceiveMemoryWarning];
 }
 
+/* layout */
 - (void)loadView
 {
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
@@ -63,8 +67,10 @@
 	[tableView release];
 }
 
+/* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	// Refresh cache if we have a cleared one
 	if(_refreshBouquets)
 	{
 		[_bouquets removeAllObjects];
@@ -83,8 +89,10 @@
 	[super viewWillAppear: animated];
 }
 
+/* did hide */
 - (void)viewDidDisappear:(BOOL)animated
 {
+	// Clean caches if supposed to
 	if(_refreshBouquets)
 	{
 		[_bouquets removeAllObjects];
@@ -96,6 +104,7 @@
 	}
 }
 
+/* fetch contents */
 - (void)fetchBouquets
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -104,6 +113,7 @@
 	[pool release];
 }
 
+/* add service to list */
 - (void)addService:(id)bouquet
 {
 	if(bouquet != nil)
@@ -124,6 +134,7 @@
 #pragma mark		Table View
 #pragma mark	-
 
+/* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	ServiceTableViewCell *cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
@@ -135,41 +146,56 @@
 	return cell;
 }
 
+/* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// See if we have a valid bouquet
 	NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex: indexPath.row];
 	if(!bouquet.valid)
 		return nil;
 
+	// Check for cached ServiceListController instance
 	if(_serviceListController == nil)
 		_serviceListController = [[ServiceListController alloc] init];
 
+	// Redirect callback if we have one
 	if(_selectTarget != nil && _selectCallback != nil)
 		[_serviceListController setTarget: _selectTarget action: _selectCallback];
 	_serviceListController.bouquet = bouquet;
 
+	// We do not want to refresh bouquet list when we return
 	_refreshBouquets = NO;
+
 	[self.navigationController pushViewController: _serviceListController animated:YES];
 
+	// Do not actually select row
 	return nil;
 }
 
+/* number of sections */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
 	return 1;
 }
 
+/* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_bouquets count];
 }
 
+/* set callback */
 - (void)setTarget: (id)target action: (SEL)action
 {
+	/*!
+	 @note We do not retain the target, this theoretically could be a problem but
+	 is not in this case.
+	 */
 	_selectTarget = target;
 	_selectCallback = action;
 }
 
+/* support rotation */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
