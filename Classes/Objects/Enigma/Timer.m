@@ -19,7 +19,7 @@
 @implementation EnigmaTimer
 
 @synthesize valid = _isValid;
-@synthesize timeString;
+@synthesize timeString = _timeString;
 
 - (NSInteger)repeatcount
 {
@@ -243,7 +243,7 @@
 		_duration = -1;
 		_service = nil;
 		_isValid = YES;
-		timeString = nil;
+		_timeString = nil;
 		_repeated = 0;
 
 		_typedataSet = NO;
@@ -289,7 +289,7 @@
 	[_end release];
 	[_title release];
 	[_service release];
-	[timeString release];
+	[_timeString release];
 	
 	[_node release];
 
@@ -319,8 +319,8 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[timeString release];
-	timeString = nil;
+	[_timeString release];
+	_timeString = nil;
 
 	[_begin release];
 	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
@@ -333,8 +333,8 @@
 
 - (void)setEndFromString: (NSString *)newEnd
 {
-	[timeString release];
-	timeString = nil;
+	[_timeString release];
+	_timeString = nil;
 
 	[_end release];
 	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
@@ -342,8 +342,8 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[timeString release];
-	timeString = nil;
+	[_timeString release];
+	_timeString = nil;
 
 	if(_begin == nil) {
 		_duration = [newDuration doubleValue];

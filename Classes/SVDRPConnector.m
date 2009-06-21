@@ -37,18 +37,18 @@
 {
 	if(self = [super init])
 	{
-		address = [inAddress retain];
-		port = inPort > 0 ? inPort : 2001;
-		serviceCache = nil;
+		_address = [inAddress retain];
+		_port = inPort > 0 ? inPort : 2001;
+		_serviceCache = nil;
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[address release];
-	[socket release];
-	[serviceCache release];
+	[_address release];
+	[_socket release];
+	[_serviceCache release];
 
 	[super dealloc];
 }
@@ -60,13 +60,13 @@
 
 - (void)getSocket
 {
-	[socket release];
-	socket = [[BufferedSocket bufferedSocket] retain];
+	[_socket release];
+	_socket = [[BufferedSocket bufferedSocket] retain];
 
 	@try {
-		[socket connectToHostName: address port: port];
-		[socket setBlocking: YES];
-		[socket readDataUpToString: @"\n"]; // XXX: we need to skip the welcome line
+		[_socket connectToHostName: _address port: _port];
+		[_socket setBlocking: YES];
+		[_socket readDataUpToString: @"\n"]; // XXX: we need to skip the welcome line
 	}
 	@catch (NSException * e) {
 		return;
@@ -77,7 +77,7 @@
 {
 	NSString *retVal = nil;
 	@try {
-		NSData *data = [socket readDataUpToString: @"\r\n"];
+		NSData *data = [_socket readDataUpToString: @"\r\n"];
 		NSString *tmp = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 		if([tmp length] > 2)
 			retVal = [tmp substringToIndex: [tmp length] - 2];
@@ -93,20 +93,20 @@
 
 - (BOOL)isReachable
 {
-	if(!socket)
+	if(!_socket)
 		[self getSocket];
-	return [socket isConnected];
+	return [_socket isConnected];
 }
 
 - (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"CHAN %@\r\n", service.sref]];
+	[_socket writeString: [NSString stringWithFormat: @"CHAN %@\r\n", service.sref]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -119,12 +119,12 @@
 - (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
+	[_socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -150,9 +150,9 @@
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 	{
 		Service *fakeObject = [[Service alloc] init];
 		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
@@ -161,11 +161,11 @@
 
 		return nil;
 	}
-	if(serviceCache != nil)
-		[serviceCache release];
-	serviceCache = [[NSMutableDictionary dictionaryWithCapacity: 50] retain]; // XXX: any suggestions for a good starting value?
+	if(_serviceCache != nil)
+		[_serviceCache release];
+	_serviceCache = [[NSMutableDictionary dictionaryWithCapacity: 50] retain]; // XXX: any suggestions for a good starting value?
 
-	[socket writeString: @"LSTC\r\n"];
+	[_socket writeString: @"LSTC\r\n"];
 
 	NSString *line = nil;
 	NSRange range;
@@ -198,7 +198,7 @@
 		newService.sname = name;
 
 		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
-		[serviceCache setObject: newService forKey: newService.sref];
+		[_serviceCache setObject: newService forKey: newService.sref];
 		[newService release];
 
 		// Last line
@@ -214,9 +214,9 @@
 - (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 	{
 		Event *fakeObject = [[Event alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
@@ -226,7 +226,7 @@
 		return nil;
 	}
 
-	[socket writeString: [NSString stringWithFormat: @"LSTE %@\r\n", service.sref]];
+	[_socket writeString: [NSString stringWithFormat: @"LSTE %@\r\n", service.sref]];
 
 	NSString *line = nil;
 	NSRange range;
@@ -280,9 +280,9 @@
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 	{
 		SVDRPTimer *fakeObject = [[SVDRPTimer alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
@@ -294,10 +294,10 @@
 		return nil;
 	}
 	// Try to refresh cache if none present
-	if(serviceCache == nil)
+	if(_serviceCache == nil)
 		[self fetchServices: nil action: nil bouquet: nil];	
 
-	[socket writeString: @"LSTT\r\n"];
+	[_socket writeString: @"LSTT\r\n"];
 
 	NSString *line = nil;
 	NSRange range;
@@ -336,7 +336,7 @@
 
 		// Channel
 		// This is a channel number, so we have to cache the names in fetchServices
-		Service *service = [serviceCache objectForKey: [components objectAtIndex: 1]];
+		Service *service = [_serviceCache objectForKey: [components objectAtIndex: 1]];
 		if(service)
 		{
 			newTimer.service = service;
@@ -432,9 +432,9 @@
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 	{
 		Movie *fakeObject = [[Movie alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
@@ -444,7 +444,7 @@
 		return nil;
 	}
 
-	[socket writeString: @"LSTR\r\n"];
+	[_socket writeString: @"LSTR\r\n"];
 
 	NSString *line = nil;
 	Movie *movie = nil;
@@ -534,12 +534,12 @@
 	Volume *volumeObject = [[Volume alloc] init];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return;
 
-	[socket writeString: @"VOLU\r\n"];
+	[_socket writeString: @"VOLU\r\n"];
 
 	NSString *line = [self readSocketLine];
 	if([line isEqualToString: @"250 Audio is mute"])
@@ -571,12 +571,12 @@
 - (BOOL)toggleMuted
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
-	[socket writeString: @"VOLU mute\r\n"];
+	[_socket writeString: @"VOLU mute\r\n"];
 
 	NSString *line = [self readSocketLine];
 	return [line isEqualToString: @"250 Audio is mute"];
@@ -585,12 +585,12 @@
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 	
-	[socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
+	[_socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -601,9 +601,9 @@
 - (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
 	NSString *timerString;
@@ -623,7 +623,7 @@
 				   [endComponents hour] * 100 + [endComponents minute], 50, 50,
 				   newTimer.title, @""];
 
-	[socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", timerString]];
+	[_socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSString *ret = [self readSocketLine];
@@ -635,9 +635,9 @@
 - (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
 	// we need the timer id of vdr!
@@ -646,7 +646,7 @@
 		return NO;
 	NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
 
-	[socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
+	[_socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSString *ret = [self readSocketLine];
@@ -656,9 +656,9 @@
 - (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
 	// we need the timer id of vdr!
@@ -666,7 +666,7 @@
 	if(![oldTimer respondsToSelector: @selector(toString)])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
+	[_socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSString *ret = [self readSocketLine];
@@ -845,12 +845,12 @@
 		return NO;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
+	[_socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSString *ret = [self readSocketLine];
@@ -860,12 +860,12 @@
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
+	[_socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSString *ret = [self readSocketLine];
@@ -891,12 +891,12 @@
 - (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!socket || ![socket isConnected])
+	if(!_socket || ![_socket isConnected])
 		[self getSocket];
-	if(![socket isConnected])
+	if(![_socket isConnected])
 		return NO;
 
-	[socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
+	[_socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -933,8 +933,8 @@
 
 - (void)freeCaches
 {
-	[serviceCache release];
-	serviceCache = nil;
+	[_serviceCache release];
+	_serviceCache = nil;
 	return;
 }
 

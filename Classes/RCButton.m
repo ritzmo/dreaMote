@@ -17,7 +17,7 @@
 {
 	if(self = [super initWithFrame:frame])
 	{
-		self.rcCode = -1;
+		rcCode = -1;
 	}
 	return self;
 }

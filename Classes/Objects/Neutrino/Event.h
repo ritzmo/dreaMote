@@ -18,7 +18,7 @@
 @interface NeutrinoEvent : NSObject <EventProtocol>
 {
 @private
-	NSString *timeString; /*!< @brief Cache for Begin/End Textual representation. */
+	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Event. */
 }

@@ -23,7 +23,7 @@
 
 - (void)dealloc
 {
-	[doneButton release];
+	[_doneButton release];
 	[super dealloc];
 }
 
@@ -52,11 +52,11 @@
 	[aboutText release];
 
 	frame = CGRectMake(((size.width - 100.0) / 2), 300.0 + kTweenMargin, 100.0, 34.0);
-	doneButton = [[UIButton buttonWithType: UIButtonTypeRoundedRect] retain];
-	doneButton.frame = frame;
-	[doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
-	[doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: doneButton];
+	_doneButton = [[UIButton buttonWithType: UIButtonTypeRoundedRect] retain];
+	_doneButton.frame = frame;
+	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
+	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[self.view addSubview: _doneButton];
 }
 
 - (void)buttonPressed: (id)sender

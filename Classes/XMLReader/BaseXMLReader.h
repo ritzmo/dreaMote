@@ -26,7 +26,7 @@ typedef CXMLDocument OurXMLDocument;
 @interface BaseXMLReader : NSObject
 {
 @private
-	BOOL	finished; /*!< @brief Finished parsing? */
+	BOOL	_finished; /*!< @brief Finished parsing? */
 @protected
 	id		_target; /*!< @brief Callback Target. */
 	SEL		_addObject; /*!< @brief Callback Selector. */

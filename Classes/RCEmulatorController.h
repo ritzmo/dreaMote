@@ -16,11 +16,11 @@
 @private
 	BOOL _shouldVibrate; /*!< @brief Vibrate as response to successfully sent RC code? */
 
-	UIView *screenView; /*!< @brief Screenshot View. */
-	UIScrollView *scrollView; /*!< @brief Container of Screenshot View. */
-	UIImageView *imageView; /*!< @brief Actual Screenshot UI Item. */
-	UIToolbar *toolbar; /*!< @brief Toolbar. */
-	UIBarButtonItem *screenshotButton; /*!< @brief Button to quickly change to Screenshot View. */
+	UIView *_screenView; /*!< @brief Screenshot View. */
+	UIScrollView *_scrollView; /*!< @brief Container of Screenshot View. */
+	UIImageView *_imageView; /*!< @brief Actual Screenshot UI Item. */
+	UIToolbar *_toolbar; /*!< @brief Toolbar. */
+	UIBarButtonItem *_screenshotButton; /*!< @brief Button to quickly change to Screenshot View. */
 
 	NSInteger _screenshotType; /*!< @brief Selected Screenshot type. */
 @protected

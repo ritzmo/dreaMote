@@ -32,8 +32,8 @@
 - (void)dealloc
 {
 	[_connections release];
-	[vibrateInRC release];
-	[connectionTest release];
+	[_vibrateInRC release];
+	[_connectionTest release];
 
 	[super dealloc];
 }
@@ -56,20 +56,20 @@
 	[tableView release];
 	
 	// RC Vibration
-	vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	_vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
-	vibrateInRC.backgroundColor = [UIColor clearColor];
-	vibrateInRC.enabled = NO;
+	_vibrateInRC.backgroundColor = [UIColor clearColor];
+	_vibrateInRC.enabled = NO;
 
 	// Connectivity test
-	connectionTest = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
+	_connectionTest = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
 	
 	// in case the parent view draws with a custom color or gradient, use a transparent color
-	connectionTest.backgroundColor = [UIColor clearColor];
-	connectionTest.enabled = NO;
+	_connectionTest.backgroundColor = [UIColor clearColor];
+	_connectionTest.enabled = NO;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
@@ -77,8 +77,8 @@
 	[super setEditing: editing animated: animated];
 	[(UITableView*)self.view setEditing: editing animated: animated];
 
-	vibrateInRC.enabled = editing;
-	connectionTest.enabled = editing;
+	_vibrateInRC.enabled = editing;
+	_connectionTest.enabled = editing;
 
 	if(animated)
 	{
@@ -98,8 +98,8 @@
 
 	if(!editing && _shouldSave)
 	{
-		[[NSUserDefaults standardUserDefaults] setBool: vibrateInRC.on forKey: kVibratingRC];
-		[[NSUserDefaults standardUserDefaults] setBool: connectionTest.on forKey: kConnectionTest];
+		[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
+		[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
 	}
 	_shouldSave = YES;
 
@@ -203,11 +203,11 @@
 			{
 				case 0:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
-					((DisplayCell *)sourceCell).view = vibrateInRC;
+					((DisplayCell *)sourceCell).view = _vibrateInRC;
 					break;
 				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Check Connectivity", @"");
-					((DisplayCell *)sourceCell).view = connectionTest;
+					((DisplayCell *)sourceCell).view = _connectionTest;
 					break;
 				default:
 					break;
@@ -295,7 +295,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	if(!_viewWillReapper)
-		[vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+		[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
 	_viewWillReapper = NO;
 
 	[(UITableView *)self.view reloadData];

@@ -10,10 +10,10 @@
 
 @implementation Signal
 
-@synthesize snrdb;
-@synthesize snr;
-@synthesize ber;
-@synthesize agc;
+@synthesize snrdb = _snrdb;
+@synthesize snr = _snr;
+@synthesize ber = _ber;
+@synthesize agc = _agc;
 
 - (NSString *)description
 {

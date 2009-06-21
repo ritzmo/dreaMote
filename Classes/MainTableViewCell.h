@@ -19,9 +19,9 @@ extern NSString *kMainCell_ID;
 @interface MainTableViewCell : UITableViewCell
 {
 @private
-	NSDictionary	*dataDictionary; /*!< @brief Item. */
-	UILabel			*nameLabel; /*!< @brief Name Label. */
-	UILabel			*explainLabel; /*!< @brief Explanation Label. */
+	NSDictionary	*_dataDictionary; /*!< @brief Item. */
+	UILabel			*_nameLabel; /*!< @brief Name Label. */
+	UILabel			*_explainLabel; /*!< @brief Explanation Label. */
 }
 
 /*!

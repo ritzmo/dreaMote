@@ -16,7 +16,7 @@
 @synthesize title = _title;
 @synthesize sdescription = _sdescription;
 @synthesize edescription = _edescription;
-@synthesize timeString;
+@synthesize timeString = _timeString;
 
 - (NSObject<ServiceProtocol> *)service
 {
@@ -36,7 +36,7 @@
 		_duration = -1;
 		_begin = nil;
 		_end = nil;
-		timeString = nil;
+		_timeString = nil;
 	}
 	return self;
 }
@@ -49,7 +49,7 @@
 	[_title release];
 	[_sdescription release];
 	[_edescription release];
-	[timeString release];
+	[_timeString release];
 
 	[super dealloc];
 }
@@ -61,8 +61,8 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[timeString release];
-	timeString = nil;
+	[_timeString release];
+	_timeString = nil;
 
 	[_begin release];
 	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
@@ -75,8 +75,8 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[timeString release];
-	timeString = nil;
+	[_timeString release];
+	_timeString = nil;
 
 	if(_begin == nil) {
 		_duration = [newDuration doubleValue];

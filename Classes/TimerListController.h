@@ -22,12 +22,12 @@
 {
 @private
 	NSMutableArray *_timers; /*!< @brief Timer List. */
-	NSInteger dist[kTimerStateMax]; /*!< @brief Offset of State in Timer List. */
-	FuzzyDateFormatter *dateFormatter; /*!< @brief Date Formatter. */
-	TimerViewController *timerViewController; /*!< @brief Cached Timer Detail View. */
+	NSInteger _dist[kTimerStateMax]; /*!< @brief Offset of State in Timer List. */
+	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	TimerViewController *_timerViewController; /*!< @brief Cached Timer Detail View. */
 	BOOL _willReappear; /*!< @brief Used to guard free of ressources on close if we are opening a subview. */
 
-	CXMLDocument *timerXMLDoc; /*!< @brief Current Timer XML Document. */
+	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
 }
 
 /*!

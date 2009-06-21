@@ -20,11 +20,11 @@
 {
 @private
 	NSMutableArray *_movies; /*!< @brief Movie List. */
-	FuzzyDateFormatter *dateFormatter; /*!< @brief Date Formatter. */
+	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 
-	MovieViewController *movieViewController; /*!< @brief Cached Movie Detail View. */
-	CXMLDocument *movieXMLDoc; /*!< Current Movie XML Document. */
-	BOOL refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
+	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
+	CXMLDocument *_movieXMLDoc; /*!< Current Movie XML Document. */
+	BOOL _refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
 }
 
 @end

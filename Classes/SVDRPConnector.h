@@ -18,11 +18,11 @@
  */
 @interface SVDRPConnector : NSObject <RemoteConnector> {
 @private
-	NSMutableDictionary *serviceCache; /*!< @brief Cached List of Services */
-	NSString *address; /*!< @brief Hostname or Address of SVDRP Server */
-	NSInteger port; /*!< @brief Port SVDRP runs on */
+	NSMutableDictionary *_serviceCache; /*!< @brief Cached List of Services */
+	NSString *_address; /*!< @brief Hostname or Address of SVDRP Server */
+	NSInteger _port; /*!< @brief Port SVDRP runs on */
 
-	BufferedSocket *socket; /*!< @brief Socket used to communicate with SVDRP Server */
+	BufferedSocket *_socket; /*!< @brief Socket used to communicate with SVDRP Server */
 }
 
 @end

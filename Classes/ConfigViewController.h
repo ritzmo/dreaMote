@@ -17,21 +17,21 @@
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
 @private
-	UITextField *remoteNameTextField; /*!< @brief Name Text Field. */
-	CellTextField *remoteNameCell; /*!< @brief Name Cell. */
-	UITextField *remoteAddressTextField; /*!< @brief  Text Field. */
-	CellTextField *remoteAddressCell; /*!< @brief Address Cell. */
-	UITextField *remotePortTextField; /*!< @brief Port Text Field. */
-	CellTextField *remotePortCell; /*!< @brief Port Cell. */
-	UITextField *usernameTextField; /*!< @brief Username Text Field. */
-	CellTextField *usernameCell; /*!< @brief Username Cell. */
-	UITextField *passwordTextField; /*!< @brief Password Text Field. */
-	CellTextField *passwordCell; /*!< @brief Password Cell. */
-	UITableViewCell *connectorCell; /*!< @brief Connector Cell. */
-	NSMutableDictionary *connection; /*!< @brief Connection Dictionary. */
-	NSInteger connectionIndex; /*!< @brief Index in List of known Connections. */
-	UIButton *makeDefaultButton; /*!< @brief "Make Default" Button. */
-	UIButton *connectButton; /*!< @brief "Connect" Button. */
+	UITextField *_remoteNameTextField; /*!< @brief Name Text Field. */
+	CellTextField *_remoteNameCell; /*!< @brief Name Cell. */
+	UITextField *_remoteAddressTextField; /*!< @brief  Text Field. */
+	CellTextField *_remoteAddressCell; /*!< @brief Address Cell. */
+	UITextField *_remotePortTextField; /*!< @brief Port Text Field. */
+	CellTextField *_remotePortCell; /*!< @brief Port Cell. */
+	UITextField *_usernameTextField; /*!< @brief Username Text Field. */
+	CellTextField *_usernameCell; /*!< @brief Username Cell. */
+	UITextField *_passwordTextField; /*!< @brief Password Text Field. */
+	CellTextField *_passwordCell; /*!< @brief Password Cell. */
+	UITableViewCell *_connectorCell; /*!< @brief Connector Cell. */
+	NSMutableDictionary *_connection; /*!< @brief Connection Dictionary. */
+	NSInteger _connectionIndex; /*!< @brief Index in List of known Connections. */
+	UIButton *_makeDefaultButton; /*!< @brief "Make Default" Button. */
+	UIButton *_connectButton; /*!< @brief "Connect" Button. */
 	UISwitch *_singleBouquetSwitch; /*!< @brief Switch for "Single Bouquet Mode" if Connector supports it. */
 
 	BOOL _shouldSave; /*!< @brief Settings should be Saved. */

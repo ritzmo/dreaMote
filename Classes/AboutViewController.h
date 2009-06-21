@@ -14,7 +14,7 @@
 @interface AboutViewController : UIViewController <UIWebViewDelegate>
 {
 @private
-	UIButton *doneButton; /*!< @brief "Done" Button. */
+	UIButton *_doneButton; /*!< @brief "Done" Button. */
 }
 
 @end

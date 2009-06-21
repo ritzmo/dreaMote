@@ -31,13 +31,13 @@
 
 - (void)dealloc
 {
-	[toolbar release];
+	[_toolbar release];
 	[rcView release];
 
-	[screenView release];
-	[scrollView release];
-	[imageView release];
-	[screenshotButton release];
+	[_screenView release];
+	[_scrollView release];
+	[_imageView release];
+	[_screenshotButton release];
 
 	[super dealloc];
 }
@@ -80,7 +80,7 @@
 			items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, videoItem, bothItem, nil];
 		else
 			items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, bothItem, nil];
-		[toolbar setItems:items animated:NO];
+		[_toolbar setItems:items animated:NO];
 
 		[systemItem release];
 		[flexItem release];
@@ -88,16 +88,16 @@
 		[videoItem release];
 		[bothItem release];
 
-		self.navigationItem.rightBarButtonItem = screenshotButton;
+		self.navigationItem.rightBarButtonItem = _screenshotButton;
 
-		if([screenView superview])
+		if([_screenView superview])
 			[self loadImage: nil];
 	}
 	else
 	{
 		self.navigationItem.rightBarButtonItem = nil;
 
-		if([screenView superview])
+		if([_screenView superview])
 			[self flipView: nil];
 	}
 
@@ -118,47 +118,47 @@
 	[contentView release];
 
 	// Flip Button
-	screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
+	_screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
 
 	CGSize mainViewSize = self.view.bounds.size;
 	CGRect frame;
 
 	// ImageView for Screenshots
 	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
-	screenView = [[UIView alloc] initWithFrame: frame];
+	_screenView = [[UIView alloc] initWithFrame: frame];
 
-	toolbar = [UIToolbar new];
-	toolbar.barStyle = UIBarStyleDefault;
+	_toolbar = [UIToolbar new];
+	_toolbar.barStyle = UIBarStyleDefault;
 
-	// size up the toolbar and set its frame
-	[toolbar sizeToFit];
-	CGFloat toolbarHeight = toolbar.frame.size.height;
-	mainViewSize = screenView.bounds.size;
-	toolbar.frame = CGRectMake(0.0,
-							   mainViewSize.height - (toolbarHeight * 2.0) + 2.0,
+	// size up the _toolbar and set its frame
+	[_toolbar sizeToFit];
+	CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	mainViewSize = _screenView.bounds.size;
+	_toolbar.frame = CGRectMake(0.0,
+							   mainViewSize.height - (_toolbarHeight * 2.0) + 2.0,
 							   mainViewSize.width,
-							   toolbarHeight);
-	[screenView addSubview:toolbar];
+							   _toolbarHeight);
+	[_screenView addSubview:_toolbar];
 
 	frame = CGRectMake(0.0,
 					   0.0,
 					   mainViewSize.width,
-					   mainViewSize.height - (toolbarHeight * 2.0) + 2.0);
-	scrollView = [[UIScrollView alloc] initWithFrame: frame];
-	scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	scrollView.autoresizesSubviews = YES;
-	screenView.clipsToBounds = NO;
-	scrollView.contentMode = (UIViewContentModeScaleAspectFit);
-	scrollView.delegate = self;
-	scrollView.maximumZoomScale = 2.6;
-	scrollView.minimumZoomScale = 1.0;
-	scrollView.exclusiveTouch = NO;
-	[screenView addSubview: scrollView];
-	imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
-	imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	imageView.autoresizesSubviews = YES;
-	imageView.contentMode = UIViewContentModeScaleAspectFit;
-	[scrollView addSubview: imageView];
+					   mainViewSize.height - (_toolbarHeight * 2.0) + 2.0);
+	_scrollView = [[UIScrollView alloc] initWithFrame: frame];
+	_scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_scrollView.autoresizesSubviews = YES;
+	_screenView.clipsToBounds = NO;
+	_scrollView.contentMode = (UIViewContentModeScaleAspectFit);
+	_scrollView.delegate = self;
+	_scrollView.maximumZoomScale = 2.6;
+	_scrollView.minimumZoomScale = 1.0;
+	_scrollView.exclusiveTouch = NO;
+	[_screenView addSubview: _scrollView];
+	_imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
+	_imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_imageView.autoresizesSubviews = YES;
+	_imageView.contentMode = UIViewContentModeScaleAspectFit;
+	[_scrollView addSubview: _imageView];
 }
 
 - (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
@@ -186,16 +186,16 @@
 				forView: self.view
 				cache: YES];
 
-	if ([screenView superview])
+	if ([_screenView superview])
 	{
-		[screenView removeFromSuperview];
+		[_screenView removeFromSuperview];
 		[self.view addSubview: rcView];
 	}
 	else
 	{
 		[self loadImage: nil];
 		[rcView removeFromSuperview];
-		[self.view addSubview: screenView];
+		[self.view addSubview: _screenView];
 	}
 
 	[UIView commitAnimations];
@@ -216,9 +216,9 @@
 	{
 		CGSize size = CGSizeMake(image.size.width*kImageScale, image.size.height*kImageScale);
 
-		imageView.image = image;
-		scrollView.contentSize = size;
-		imageView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
+		_imageView.image = image;
+		_scrollView.contentSize = size;
+		_imageView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
 	}
 
 	[pool release];
@@ -264,8 +264,8 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	imageView.image = nil;
-	toolbar.frame = CGRectInfinite;
+	_imageView.image = nil;
+	_toolbar.frame = CGRectInfinite;
 
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
@@ -275,19 +275,19 @@
 	//[UIView beginAnimations:nil context:NULL];
 	//[UIView setAnimationDuration: kTransitionDuration];
 
-	// adjust size of screenView, toolbar & scrollView
+	// adjust size of _screenView, _toolbar & _scrollView
 	CGSize mainViewSize = self.view.bounds.size;
-	screenView.frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
-	[toolbar sizeToFit];
-	//mainViewSize = screenView.bounds.size;
-	CGFloat toolbarHeight = toolbar.frame.size.height;
-	CGFloat edgeY = mainViewSize.height - toolbarHeight;
+	_screenView.frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
+	[_toolbar sizeToFit];
+	//mainViewSize = _screenView.bounds.size;
+	CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	CGFloat edgeY = mainViewSize.height - _toolbarHeight;
 	CGFloat width = mainViewSize.width;
-	toolbar.frame = CGRectMake(0.0, edgeY, width, toolbarHeight);
-	scrollView.frame = CGRectMake(0.0, 0.0, width, edgeY);
+	_toolbar.frame = CGRectMake(0.0, edgeY, width, _toolbarHeight);
+	_scrollView.frame = CGRectMake(0.0, 0.0, width, edgeY);
 
 	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one
-	if(screenView.superview)
+	if(_screenView.superview)
 		[self loadImage: nil];
 
 	//[UIView commitAnimations];
@@ -295,7 +295,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if([screenView superview])
+	if([_screenView superview])
 		return YES;
 
 	// RC should only be displayed in portrait mode
@@ -304,9 +304,9 @@
 
 #pragma mark UIScrollView delegates
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)_scrollView
 {
-    return imageView;
+    return _imageView;
 }
 
 @end

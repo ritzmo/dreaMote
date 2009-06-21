@@ -15,7 +15,7 @@
 @implementation Enigma2Timer
 
 @synthesize valid = _isValid;
-@synthesize timeString;
+@synthesize timeString = _timeString;
 
 - (NSInteger)repeatcount
 {
@@ -295,7 +295,7 @@
 	{
 		_service = nil;
 		_isValid = YES;
-		timeString = nil;
+		_timeString = nil;
 
 		_disabledSet = NO;
 		_justplaySet = NO;
@@ -353,7 +353,7 @@
 	[_title release];
 	[_tdescription release];
 	[_service release];
-	[timeString release];
+	[_timeString release];
 	
 	[_node release];
 

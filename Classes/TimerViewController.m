@@ -42,14 +42,14 @@
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
 
 		_creatingNewTimer = NO;
-		bouquetListController = nil;
-		datePickerController = nil;
-		afterEventViewController = nil;
-		simpleRepeatedViewController = nil;
-		timerServiceNameCell = nil;
-		timerBeginCell = nil;
-		timerEndCell = nil;
-		repeatedCell = nil;
+		_bouquetListController = nil;
+		_datePickerController = nil;
+		_afterEventViewController = nil;
+		_simpleRepeatedViewController = nil;
+		_timerServiceNameCell = nil;
+		_timerBeginCell = nil;
+		_timerEndCell = nil;
+		_repeatedCell = nil;
 	}
 	return self;
 }
@@ -104,30 +104,30 @@
 	[_timer release];
 	[_oldTimer release];
 
-	[timerTitle release];
-	[timerDescription release];
-	[timerEnabled release];
-	[timerJustplay release];
+	[_timerTitle release];
+	[_timerDescription release];
+	[_timerEnabled release];
+	[_timerJustplay release];
 
-	[bouquetListController release];
-	[afterEventViewController release];
-	[datePickerController release];
-	[simpleRepeatedViewController release];
+	[_bouquetListController release];
+	[_afterEventViewController release];
+	[_datePickerController release];
+	[_simpleRepeatedViewController release];
 
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
-	[bouquetListController release];
-	[afterEventViewController release];
-	[datePickerController release];
-	[simpleRepeatedViewController release];
+	[_bouquetListController release];
+	[_afterEventViewController release];
+	[_datePickerController release];
+	[_simpleRepeatedViewController release];
 	
-	bouquetListController = nil;
-	afterEventViewController = nil;
-	datePickerController = nil;
-	simpleRepeatedViewController = nil;
+	_bouquetListController = nil;
+	_afterEventViewController = nil;
+	_datePickerController = nil;
+	_simpleRepeatedViewController = nil;
 	
 	[super didReceiveMemoryWarning];
 }
@@ -145,10 +145,10 @@
 		_timer = [newTimer retain];
 	}
 
-	timerTitle.text = newTimer.title;
-	timerDescription.text = newTimer.tdescription;
-	[timerEnabled setOn: !newTimer.disabled];
-	[timerJustplay setOn: newTimer.justplay];
+	_timerTitle.text = newTimer.title;
+	_timerDescription.text = newTimer.tdescription;
+	[_timerEnabled setOn: !newTimer.disabled];
+	[_timerJustplay setOn: newTimer.justplay];
 
 	[(UITableView *)self.view reloadData];
 	[(UITableView *)self.view
@@ -210,7 +210,7 @@
 {
 	UITextField *returnTextField = [self create_TextField];
 	returnTextField.text = _timer.title;
-	returnTextField.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of timerTitle");
+	returnTextField.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of _timerTitle");
 	
 	return returnTextField;
 }
@@ -219,7 +219,7 @@
 {
 	UITextField *returnTextField = [self create_TextField];
 	returnTextField.text = _timer.tdescription;
-	returnTextField.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of timerDescription");
+	returnTextField.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of _timerDescription");
 
 	return returnTextField;
 }
@@ -247,22 +247,22 @@
 	self.view = tableView;
 	[tableView release];
 
-	timerTitle = [self create_TitleField];
-	timerDescription = [self create_DescriptionField];
+	_timerTitle = [self create_TitleField];
+	_timerDescription = [self create_DescriptionField];
 
 	// Enabled
-	timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[timerEnabled setOn: !_timer.disabled];
+	_timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_timerEnabled setOn: !_timer.disabled];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
-	timerEnabled.backgroundColor = [UIColor clearColor];
+	_timerEnabled.backgroundColor = [UIColor clearColor];
 
 	// Justplay
-	timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[timerJustplay setOn: _timer.justplay];
+	_timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_timerJustplay setOn: _timer.justplay];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
-	timerJustplay.backgroundColor = [UIColor clearColor];
+	_timerJustplay.backgroundColor = [UIColor clearColor];
 
 	// default editing mode depends on our mode
 	_shouldSave = NO;
@@ -289,10 +289,10 @@
 			self.navigationItem.leftBarButtonItem = nil;
 			[super setEditing: NO animated: animated];
 			[self cellShouldBeginEditing: nil];
-			[timerTitleCell setEditing: NO animated: animated];
-			[timerDescriptionCell setEditing: NO animated: animated];
-			timerEnabled.enabled = NO;
-			timerJustplay.enabled = NO;
+			[_timerTitleCell setEditing: NO animated: animated];
+			[_timerDescriptionCell setEditing: NO animated: animated];
+			_timerEnabled.enabled = NO;
+			_timerJustplay.enabled = NO;
 		}
 
 		return;
@@ -316,19 +316,19 @@
 			message = NSLocalizedString(@"Can't save a timer without a service.", @"");
 
 		// Sanity Check Title
-		if(timerTitle.text && [timerTitle.text length])
-			_timer.title = timerTitle.text;
+		if(_timerTitle.text && [_timerTitle.text length])
+			_timer.title = _timerTitle.text;
 		else
 			message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
 
 		// Get Description
-		if(timerDescription.text && [timerDescription.text length])
-			_timer.tdescription = timerDescription.text;
+		if(_timerDescription.text && [_timerDescription.text length])
+			_timer.tdescription = _timerDescription.text;
 		else
 			_timer.tdescription = @"";
 
-		_timer.disabled = !timerEnabled.on;
-		_timer.justplay = timerJustplay.on;
+		_timer.disabled = !_timerEnabled.on;
+		_timer.justplay = _timerJustplay.on;
 
 		// Try to commit changes if no error occured
 		if(!message)
@@ -371,10 +371,10 @@
 
 	[super setEditing: editing animated: animated];
 
-	[timerTitleCell setEditing:editing animated:animated];
-	[timerDescriptionCell setEditing:editing animated:animated];
-	timerEnabled.enabled = editing;
-	timerJustplay.enabled = editing;
+	[_timerTitleCell setEditing:editing animated:animated];
+	[_timerDescriptionCell setEditing:editing animated:animated];
+	_timerEnabled.enabled = editing;
+	_timerJustplay.enabled = editing;
 
 	[(UITableView *)self.view reloadData];
 }
@@ -401,8 +401,8 @@
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.
 	_timer.service = [newService copy];
-	if(timerServiceNameCell)
-		timerServiceNameCell.text = _timer.service.sname;
+	if(_timerServiceNameCell)
+		_timerServiceNameCell.text = _timer.service.sname;
 }
 
 - (void)beginSelected: (NSDate *)newDate
@@ -411,8 +411,8 @@
 		return;
 
 	_timer.begin = newDate;
-	if(timerBeginCell)
-		timerBeginCell.text = [self format_BeginEnd: newDate];
+	if(_timerBeginCell)
+		_timerBeginCell.text = [self format_BeginEnd: newDate];
 }
 
 - (void)endSelected: (NSDate *)newDate
@@ -421,8 +421,8 @@
 		return;
 
 	_timer.end = newDate;
-	if(timerEndCell)
-		timerEndCell.text = [self format_BeginEnd: newDate];
+	if(_timerEndCell)
+		_timerEndCell.text = [self format_BeginEnd: newDate];
 }
 
 - (void)simpleRepeatedSelected: (NSNumber *)newRepeated
@@ -434,12 +434,12 @@
 	repeated = [newRepeated integerValue];
 	_timer.repeated = repeated;
 	
-	if(repeatedCell == nil)
+	if(_repeatedCell == nil)
 		return;
 	
 	if(repeated == 0)
 	{
-		repeatedCell.text = NSLocalizedString(@"Never", @"Repeated");
+		_repeatedCell.text = NSLocalizedString(@"Never", @"Repeated");
 	}
 	else
 	{
@@ -447,12 +447,12 @@
 
 		if(repeated == 31)
 		{
-			repeatedCell.text = NSLocalizedString(@"Weekdays", @"Repeated");
+			_repeatedCell.text = NSLocalizedString(@"Weekdays", @"Repeated");
 			return;
 		}
 		else if (repeated == 127)
 		{
-			repeatedCell.text = NSLocalizedString(@"Daily", @"Repeated");
+			_repeatedCell.text = NSLocalizedString(@"Daily", @"Repeated");
 			return;
 		}
 
@@ -472,7 +472,7 @@
 		if(repeated & weekdaySun)
 			[text appendString: NSLocalizedString(@"Sun", "Weekday")];
 
-		repeatedCell.text = text;
+		_repeatedCell.text = text;
 	}
 }
 
@@ -483,17 +483,17 @@
 	
 	_timer.afterevent = [newAfterEvent integerValue];
 	
-	if(afterEventCell == nil)
+	if(_afterEventCell == nil)
 		return;
 
 	if(_timer.afterevent == kAfterEventNothing)
-		afterEventCell.text = NSLocalizedString(@"Nothing", @"After Event");
+		_afterEventCell.text = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterevent == kAfterEventStandby)
-		afterEventCell.text = NSLocalizedString(@"Standby", @"");
+		_afterEventCell.text = NSLocalizedString(@"Standby", @"");
 	else if(_timer.afterevent == kAfterEventDeepstandby)
-		afterEventCell.text = NSLocalizedString(@"Deep Standby", @"");
+		_afterEventCell.text = NSLocalizedString(@"Deep Standby", @"");
 	else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
-		afterEventCell.text = NSLocalizedString(@"Auto", @"");
+		_afterEventCell.text = NSLocalizedString(@"Auto", @"");
 }
 
 #pragma mark - UITableView delegates
@@ -600,12 +600,12 @@
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
-			((CellTextField *)sourceCell).view = timerTitle;
-			timerTitleCell = (CellTextField *)sourceCell;
+			((CellTextField *)sourceCell).view = _timerTitle;
+			_timerTitleCell = (CellTextField *)sourceCell;
 			break;
 		case 1:
-			((CellTextField *)sourceCell).view = timerDescription;
-			timerDescriptionCell = (CellTextField *)sourceCell;
+			((CellTextField *)sourceCell).view = _timerDescription;
+			_timerDescriptionCell = (CellTextField *)sourceCell;
 			break;
 		case 2:
 			switch (indexPath.row) {
@@ -613,12 +613,12 @@
 					if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
 					{
 						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Enabled", @"");
-						((DisplayCell *)sourceCell).view = timerEnabled;
+						((DisplayCell *)sourceCell).view = _timerEnabled;
 						break;
 					}
 				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Justplay", @"");
-					((DisplayCell *)sourceCell).view = timerJustplay;
+					((DisplayCell *)sourceCell).view = _timerJustplay;
 					break;
 				default:
 					break;
@@ -629,22 +629,22 @@
 				sourceCell.text = _timer.service.sname;
 			else
 				sourceCell.text = NSLocalizedString(@"Select Service", @"");
-			timerServiceNameCell = sourceCell;
+			_timerServiceNameCell = sourceCell;
 			break;
 		case 4:
 			sourceCell.text = [self format_BeginEnd: _timer.begin];
-			timerBeginCell = sourceCell;
+			_timerBeginCell = sourceCell;
 			break;
 		case 5:
 			sourceCell.text = [self format_BeginEnd: _timer.end];
-			timerEndCell = sourceCell;
+			_timerEndCell = sourceCell;
 			break;
 		case 6:
-			afterEventCell = sourceCell;
+			_afterEventCell = sourceCell;
 			[self afterEventSelected: [NSNumber numberWithInteger: _timer.afterevent]];
 			break;
 		case 7:
-			repeatedCell = sourceCell;
+			_repeatedCell = sourceCell;
 			[self simpleRepeatedSelected: [NSNumber numberWithInteger: _timer.repeated]];
 			break;
 		default:
@@ -668,50 +668,50 @@
 
 		if(section == 3)
 		{
-			if(bouquetListController == nil)
-				bouquetListController = [[BouquetListController alloc] init];
-			[bouquetListController setTarget: self action: @selector(serviceSelected:)];
+			if(_bouquetListController == nil)
+				_bouquetListController = [[BouquetListController alloc] init];
+			[_bouquetListController setTarget: self action: @selector(serviceSelected:)];
 
-			targetViewController = bouquetListController;
+			targetViewController = _bouquetListController;
 		}
 		else if(section == 4)
 		{
-			if(datePickerController == nil)
-				datePickerController = [[DatePickerController alloc] init];
- 			datePickerController.date = [_timer.begin copy];
-			[datePickerController setTarget: self action: @selector(beginSelected:)];
+			if(_datePickerController == nil)
+				_datePickerController = [[DatePickerController alloc] init];
+ 			_datePickerController.date = [_timer.begin copy];
+			[_datePickerController setTarget: self action: @selector(beginSelected:)];
 
-			targetViewController = datePickerController;
+			targetViewController = _datePickerController;
 		}
 		else if(section == 5)
 		{
-			if(datePickerController == nil)
-				datePickerController = [[DatePickerController alloc] init];
- 			datePickerController.date = [_timer.end copy];
-			[datePickerController setTarget: self action: @selector(endSelected:)];
+			if(_datePickerController == nil)
+				_datePickerController = [[DatePickerController alloc] init];
+ 			_datePickerController.date = [_timer.end copy];
+			[_datePickerController setTarget: self action: @selector(endSelected:)];
 
-			targetViewController = datePickerController;
+			targetViewController = _datePickerController;
 		}
 		else if(section == 6)
 		{
-			if(afterEventViewController == nil)
-				afterEventViewController = [[AfterEventViewController alloc] init];
-			afterEventViewController.selectedItem = _timer.afterevent;
+			if(_afterEventViewController == nil)
+				_afterEventViewController = [[AfterEventViewController alloc] init];
+			_afterEventViewController.selectedItem = _timer.afterevent;
 			// XXX: why gives directly assigning this an error?
 			BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
-			afterEventViewController.showAuto = showAuto;
-			[afterEventViewController setTarget: self action: @selector(afterEventSelected:)];
+			_afterEventViewController.showAuto = showAuto;
+			[_afterEventViewController setTarget: self action: @selector(afterEventSelected:)];
 
-			targetViewController = afterEventViewController;
+			targetViewController = _afterEventViewController;
 		}
 		else if(section == 7)
 		{
-			if(simpleRepeatedViewController == nil)
-				simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
-			simpleRepeatedViewController.repeated = _timer.repeated;
-			[simpleRepeatedViewController setTarget: self action: @selector(simpleRepeatedSelected:)];
+			if(_simpleRepeatedViewController == nil)
+				_simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
+			_simpleRepeatedViewController.repeated = _timer.repeated;
+			[_simpleRepeatedViewController setTarget: self action: @selector(simpleRepeatedSelected:)];
 			
-			targetViewController = simpleRepeatedViewController;
+			targetViewController = _simpleRepeatedViewController;
 		}
 		else
 			return nil;
@@ -737,17 +737,17 @@
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
 	// notify other cells to end editing
-	if (![cell isEqual:timerTitleCell])
-		[timerTitleCell stopEditing];
-	if (![cell isEqual:timerDescriptionCell])
-		[timerDescriptionCell stopEditing];
+	if (![cell isEqual:_timerTitleCell])
+		[_timerTitleCell stopEditing];
+	if (![cell isEqual:_timerDescriptionCell])
+		[_timerDescriptionCell stopEditing];
 
 	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	if ([cell isEqual:timerTitleCell] || [cell isEqual:timerDescriptionCell])
+	if ([cell isEqual:_timerTitleCell] || [cell isEqual:_timerDescriptionCell])
 	{
 		// Restore the position of the main view if it was animated to make room for the keyboard.
 		if  (self.view.frame.origin.y < 0)
@@ -785,9 +785,9 @@
 {
 	// The keyboard will be shown. If the user is editing the description, adjust the display so
 	// that the description field will not be covered by the keyboard.
-	if ((timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
+	if ((_timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
 		[self setViewMovedUp:YES];
-	else if (!timerDescriptionCell.isInlineEditing && self.view.frame.origin.y < 0)
+	else if (!_timerDescriptionCell.isInlineEditing && self.view.frame.origin.y < 0)
 		[self setViewMovedUp:NO];
 }
 
@@ -817,15 +817,15 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[bouquetListController release];
-	[afterEventViewController release];
-	[datePickerController release];
-	[simpleRepeatedViewController release];
+	[_bouquetListController release];
+	[_afterEventViewController release];
+	[_datePickerController release];
+	[_simpleRepeatedViewController release];
 	
-	bouquetListController = nil;
-	afterEventViewController = nil;
-	datePickerController = nil;
-	simpleRepeatedViewController = nil;
+	_bouquetListController = nil;
+	_afterEventViewController = nil;
+	_datePickerController = nil;
+	_simpleRepeatedViewController = nil;
 }
 
 @end

@@ -16,8 +16,8 @@
 	IBOutlet UITableView		*myTableView; /*!< @brief Table View. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
-	UIViewController *configListController; /*!< @brief Cached Configuration List. */
-	UIViewController *aboutViewController; /*!< @brief Cached Abour View. */
+	UIViewController *_configListController; /*!< @brief Cached Configuration List. */
+	UIViewController *_aboutViewController; /*!< @brief Cached Abour View. */
 	NSDictionary *_bouquetDictionary; /*!< @brief Dictionary describing Bouquet List Item. */
 	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
 	NSDictionary *_serviceDictionary; /*!< @brief Dictionary describing Service List Item. */

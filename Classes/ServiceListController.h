@@ -25,9 +25,9 @@
 	SEL _selectCallback; /*!< @brief Callback Selector. */
 	id _selectTarget; /*!< @brief Callback object. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
-	EventListController *eventListController; /*!< @brief Caches Event List View. */
+	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 
-	CXMLDocument *serviceXMLDoc; /*!< Current Service XML Document. */
+	CXMLDocument *_serviceXMLDoc; /*!< Current Service XML Document. */
 }
 
 /*!

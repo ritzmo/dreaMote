@@ -21,7 +21,7 @@
 @implementation TimerListController
 
 @synthesize timers = _timers;
-@synthesize dateFormatter;
+@synthesize dateFormatter = _dateFormatter;
 
 - (id)init
 {
@@ -29,9 +29,9 @@
 	if (self) {
 		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
-		self.dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[self.dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-		timerViewController = nil;
+		_dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		_timerViewController = nil;
 		_willReappear = NO;
 	}
 	return self;
@@ -40,16 +40,16 @@
 - (void)dealloc
 {
 	[_timers release];
-	[dateFormatter release];
-	[timerViewController release];
+	[_dateFormatter release];
+	[_timerViewController release];
 
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
-	[timerViewController release];
-	timerViewController = nil;
+	[_timerViewController release];
+	_timerViewController = nil;
 	
     [super didReceiveMemoryWarning];
 }
@@ -99,13 +99,13 @@
 {
 	NSInteger i;
 	for(i = 0; i < kTimerStateMax; i++)
-		dist[i] = 0;
+		_dist[i] = 0;
 
 	[_timers removeAllObjects];
 	_willReappear = NO;
 	[(UITableView *)self.view reloadData];
-	[timerXMLDoc release];
-	timerXMLDoc = nil;
+	[_timerXMLDoc release];
+	_timerXMLDoc = nil;
 
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -126,26 +126,26 @@
 {
 	NSInteger i;
 	for(i = 0; i < kTimerStateMax; i++)
-		dist[i] = 0;
+		_dist[i] = 0;
 
 	[_timers removeAllObjects];
 
 	if(!_willReappear)
 	{
-		[timerViewController release];
-		timerViewController = nil;
-		[timerXMLDoc release];
-		timerXMLDoc = nil;
+		[_timerViewController release];
+		_timerViewController = nil;
+		[_timerXMLDoc release];
+		_timerXMLDoc = nil;
 	}
 
-	[dateFormatter resetReferenceDate];
+	[_dateFormatter resetReferenceDate];
 }
 
 - (void)fetchTimers
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[timerXMLDoc release];
-	timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)] retain];
+	[_timerXMLDoc release];
+	_timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)] retain];
 	[pool release];
 }
 
@@ -156,17 +156,17 @@
 		Timer* timer = (Timer*)newTimer;
 
 		NSInteger state = timer.state;
-		NSInteger index = dist[state];
+		NSInteger index = _dist[state];
 
 		[_timers insertObject:timer atIndex:index];
 
 		for(; state < kTimerStateMax; state++){
-			dist[state]++;
+			_dist[state]++;
 		}
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		state = timer.state;
 		if(state > 0)
-			index -= dist[state - 1];
+			index -= _dist[state - 1];
 
 		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
 						withRowAnimation: UITableViewRowAnimationTop];
@@ -206,8 +206,8 @@
 
 	NSInteger offset = 0;
 	if(section > 0)
-		offset = dist[section-1];
-	((TimerTableViewCell *)cell).formatter = dateFormatter;
+		offset = _dist[section-1];
+	((TimerTableViewCell *)cell).formatter = _dateFormatter;
 	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
 
 	return cell;
@@ -218,7 +218,7 @@
 	NSInteger index = indexPath.row;
 	NSInteger section = indexPath.section - 1;
 	if(section > 0)
-		index += dist[section - 1];
+		index += _dist[section - 1];
 
 	NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
 	if(!timer.valid)
@@ -229,19 +229,19 @@
 
 	NSObject<TimerProtocol> *ourCopy = [timer copy];
 
-	if(timerViewController == nil)
-		timerViewController = [[TimerViewController alloc] init];
+	if(_timerViewController == nil)
+		_timerViewController = [[TimerViewController alloc] init];
 
 	_willReappear = YES;
 
-	timerViewController.timer = timer;
-	timerViewController.oldTimer = ourCopy;
+	_timerViewController.timer = timer;
+	_timerViewController.oldTimer = ourCopy;
 	[ourCopy release];
 
-	[self.navigationController pushViewController: timerViewController animated: YES];
+	[self.navigationController pushViewController: _timerViewController animated: YES];
 
 	// XXX: set this here so the edit button won't get screwed
-	timerViewController.creatingNewTimer = NO;
+	_timerViewController.creatingNewTimer = NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -273,8 +273,8 @@
 	--section;
 
 	if(section > 0)
-		return dist[section] - dist[section-1];
-	return dist[0];
+		return _dist[section] - _dist[section-1];
+	return _dist[0];
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -292,7 +292,7 @@
 		NSInteger index = indexPath.row;
 		NSInteger section = indexPath.section - 1;
 		if(section > 0)
-			index += dist[section - 1];
+			index += _dist[section - 1];
 
 		NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
 		if(!timer.valid)
@@ -303,7 +303,7 @@
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesConstantTimerId])
 			{
 				for(; section < kTimerStateMax; section++){
-					dist[section]--;
+					_dist[section]--;
 				}
 
 				[_timers removeObjectAtIndex: index];
@@ -315,12 +315,12 @@
 			{
 				// XXX: this WILL reset our scroll position..
 				for(section = 0; section < kTimerStateMax; section++)
-					dist[section] = 0;
+					_dist[section] = 0;
 
 				[_timers removeAllObjects];
 				[(UITableView *)self.view reloadData];
-				[timerXMLDoc release];
-				timerXMLDoc = nil;
+				[_timerXMLDoc release];
+				_timerXMLDoc = nil;
 
 				// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 				// application parses the XML file.
@@ -338,20 +338,20 @@
 	}
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		if(timerViewController == nil)
-			timerViewController = [[TimerViewController alloc] init];
+		if(_timerViewController == nil)
+			_timerViewController = [[TimerViewController alloc] init];
 
 		_willReappear = YES;
 
 		NSObject<TimerProtocol> *newTimer = [Timer timer];
-		timerViewController.timer = newTimer;
+		_timerViewController.timer = newTimer;
 		[newTimer release];
-		timerViewController.oldTimer = nil;
+		_timerViewController.oldTimer = nil;
 
-		[self.navigationController pushViewController: timerViewController animated: YES];
+		[self.navigationController pushViewController: _timerViewController animated: YES];
 
 		// XXX: set this here so the edit button won't get screwed
-		timerViewController.creatingNewTimer = YES;
+		_timerViewController.creatingNewTimer = YES;
 	}
 }
 

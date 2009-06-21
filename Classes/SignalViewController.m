@@ -33,8 +33,8 @@
 	[_snrdBCell release];
 	[_berCell release];
 
-	[timer invalidate];
-	timer = nil;
+	[_timer invalidate];
+	_timer = nil;
 
 	[super dealloc];
 }
@@ -42,18 +42,18 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	// XXX: interval should be configurable
-	timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
+	_timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
 					target: self selector:@selector(fetchSignalDefer)
 					userInfo: nil repeats: YES];
-	[timer fire];
+	[_timer fire];
 
 	[super viewWillAppear: animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[timer invalidate];
-	timer = nil;
+	[_timer invalidate];
+	_timer = nil;
 
 	[super viewWillDisappear: animated];
 }

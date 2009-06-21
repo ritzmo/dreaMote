@@ -30,8 +30,8 @@
 
 - (void)dealloc
 {
-	[searchBar release];
-	[tableView release];
+	[_searchBar release];
+	[_tableView release];
 
 	[super dealloc];
 }
@@ -53,19 +53,19 @@
 	CGSize size = self.view.bounds.size;
 	CGRect frame = CGRectMake(0.0, 0.0, size.width, kSearchBarHeight);
 
-	searchBar = [[UISearchBar alloc] initWithFrame: frame];
-	searchBar.delegate = self;
-	searchBar.showsCancelButton = YES;
-	[contentView addSubview: searchBar];
+	_searchBar = [[UISearchBar alloc] initWithFrame: frame];
+	_searchBar.delegate = self;
+	_searchBar.showsCancelButton = YES;
+	[contentView addSubview: _searchBar];
 
 	frame = CGRectMake(0.0, kSearchBarHeight, size.width, size.height - kSearchBarHeight);
-	tableView = [[UITableView alloc] initWithFrame: frame style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = 48.0;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-	[contentView addSubview: tableView];
+	_tableView = [[UITableView alloc] initWithFrame: frame style:UITableViewStylePlain];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = 48.0;
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.sectionHeaderHeight = 0;
+	[contentView addSubview: _tableView];
 
 	[contentView release];
 }
@@ -75,7 +75,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[eventXMLDoc release];
 	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
-	NSData *data = [searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
+	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
 	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self action:@selector(addEvent:) title: title] retain];
 	[pool release];
@@ -87,14 +87,14 @@
 	{
 		[_events addObject: event];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-	[tableView reloadData];
+	[_tableView reloadData];
 }
 
 
@@ -102,7 +102,7 @@
 #pragma mark		Table View
 #pragma mark	-
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSIndexPath *)_tableView:(UITableView *)_tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 	NSObject<ServiceProtocol> *service = nil;
@@ -130,12 +130,12 @@
 #pragma mark UISearchBarDelegate delegate methods
 
 // called when keyboard search button pressed
-- (void)searchBarSearchButtonClicked:(UISearchBar *)callingSearchBar
+- (void)_searchBarSearchButtonClicked:(UISearchBar *)callingSearchBar
 {
-	[searchBar resignFirstResponder];
+	[_searchBar resignFirstResponder];
 
 	[_events removeAllObjects];
-	[tableView reloadData];
+	[_tableView reloadData];
 	[eventXMLDoc release];
 	eventXMLDoc = nil;	
 	
@@ -145,9 +145,9 @@
 }
 
 // called when cancel button pressed
-- (void)searchBarCancelButtonClicked:(UISearchBar *)callingSearchBar
+- (void)_searchBarCancelButtonClicked:(UISearchBar *)callingSearchBar
 {
-	[searchBar resignFirstResponder];
+	[_searchBar resignFirstResponder];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -155,10 +155,10 @@
 	//[UIView beginAnimations:nil context:NULL];
 	//[UIView setAnimationDuration: kTransitionDuration];
 
-	// adjust size of searchBar & tableView
+	// adjust size of _searchBar & _tableView
 	CGSize mainViewSize = self.view.bounds.size;
-	searchBar.frame = CGRectMake(0.0, 0.0, mainViewSize.width, kSearchBarHeight);
-	tableView.frame = CGRectMake(0.0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
+	_searchBar.frame = CGRectMake(0.0, 0.0, mainViewSize.width, kSearchBarHeight);
+	_tableView.frame = CGRectMake(0.0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
 
 	//[UIView commitAnimations];
 }

@@ -17,7 +17,7 @@
  */
 @interface NeutrinoConnector : NSObject <RemoteConnector> {
 @private
-	NSURL *baseAddress; /*!< @brief Base URL of STB */
+	NSURL *_baseAddress; /*!< @brief Base URL of STB */
 
 	/*!
 	 @brief Cached Bouquet XML.
@@ -27,7 +27,7 @@
 	 We also use this XML when reading the Timer list to associate the Id with a
 	 name.
 	 */
-	CXMLDocument *cachedBouquetsXML;
+	CXMLDocument *_cachedBouquetsXML;
 }
 
 @end

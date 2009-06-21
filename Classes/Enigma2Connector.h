@@ -15,7 +15,7 @@
  */
 @interface Enigma2Connector : NSObject <RemoteConnector> {
 @private
-	NSURL *baseAddress; /*!< @brief Base URL of STB */
+	NSURL *_baseAddress; /*!< @brief Base URL of STB */
 }
 
 @end

@@ -23,9 +23,9 @@
 	SEL _selectCallback; /*!< @brief Callback Selector. */
 	id _selectTarget; /*!< @brief Callback Object. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
-	ServiceListController *serviceListController; /*!< @brief Caches Service List instance. */
+	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 
-	CXMLDocument *bouquetXMLDoc; /*!< @brief Bouquet XML. */
+	CXMLDocument *_bouquetXMLDoc; /*!< @brief Bouquet XML. */
 }
 
 /*!

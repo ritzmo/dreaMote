@@ -24,7 +24,7 @@
 		self.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
 		_bouquets = [[NSMutableArray array] retain];
 		_refreshBouquets = YES;
-		serviceListController = nil;
+		_serviceListController = nil;
 	}
 	return self;
 }
@@ -32,16 +32,16 @@
 - (void)dealloc
 {
 	[_bouquets release];
-	[serviceListController release];
-	[bouquetXMLDoc release];
+	[_serviceListController release];
+	[_bouquetXMLDoc release];
 
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
-	[serviceListController release];
-	serviceListController = nil;
+	[_serviceListController release];
+	_serviceListController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -70,8 +70,8 @@
 		[_bouquets removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
-		[bouquetXMLDoc release];
-		bouquetXMLDoc = nil;
+		[_bouquetXMLDoc release];
+		_bouquetXMLDoc = nil;
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -89,18 +89,18 @@
 	{
 		[_bouquets removeAllObjects];
 
-		[serviceListController release];
-		serviceListController = nil;
-		[bouquetXMLDoc release];
-		bouquetXMLDoc = nil;
+		[_serviceListController release];
+		_serviceListController = nil;
+		[_bouquetXMLDoc release];
+		_bouquetXMLDoc = nil;
 	}
 }
 
 - (void)fetchBouquets
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[bouquetXMLDoc release];
-	bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets:self action:@selector(addService:)] retain];
+	[_bouquetXMLDoc release];
+	_bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets:self action:@selector(addService:)] retain];
 	[pool release];
 }
 
@@ -141,15 +141,15 @@
 	if(!bouquet.valid)
 		return nil;
 
-	if(serviceListController == nil)
-		serviceListController = [[ServiceListController alloc] init];
+	if(_serviceListController == nil)
+		_serviceListController = [[ServiceListController alloc] init];
 
 	if(_selectTarget != nil && _selectCallback != nil)
-		[serviceListController setTarget: _selectTarget action: _selectCallback];
-	serviceListController.bouquet = bouquet;
+		[_serviceListController setTarget: _selectTarget action: _selectCallback];
+	_serviceListController.bouquet = bouquet;
 
 	_refreshBouquets = NO;
-	[self.navigationController pushViewController: serviceListController animated:YES];
+	[self.navigationController pushViewController: _serviceListController animated:YES];
 
 	return nil;
 }

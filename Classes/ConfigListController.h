@@ -15,8 +15,8 @@
 {
 @private
 	NSMutableArray *_connections; /*!< @brief List of Connections. */
-	UISwitch *vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
-	UISwitch *connectionTest; /*!< @brief "Connection Test" UISwitch. */
+	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
+	UISwitch *_connectionTest; /*!< @brief "Connection Test" UISwitch. */
 	BOOL _shouldSave; /*!< @brief Are changed settings supposed to be changed? */
 	BOOL _viewWillReapper; /*!< @brier Should Data be reloaded on next open? */
 }

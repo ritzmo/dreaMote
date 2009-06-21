@@ -14,10 +14,10 @@
 @interface Signal : NSObject
 {
 @private
-	float snrdb; /*!< SNR in dB */
-	NSInteger snr; /*!< SNR in % */
-	NSInteger ber; /*!< BER */
-	NSInteger agc; /*!< AGC in % */
+	float _snrdb; /*!< SNR in dB */
+	NSInteger _snr; /*!< SNR in % */
+	NSInteger _ber; /*!< BER */
+	NSInteger _agc; /*!< AGC in % */
 }
 
 /*!

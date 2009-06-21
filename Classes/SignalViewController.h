@@ -14,7 +14,7 @@
 @interface SignalViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSTimer *timer; /*!< @brief NSTimer to refresh data. */
+	NSTimer *_timer; /*!< @brief NSTimer to refresh data. */
 	UISlider *_snr; /*!< @brief SNR % Slider. */
 	UISlider *_agc; /*!< @brief AGC % Slider. */
 	UITableViewCell *_snrdBCell; /*!< @brief Cell containing SNR dB. */

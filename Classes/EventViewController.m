@@ -26,12 +26,12 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Event", @"");
-		dateFormatter = [[FuzzyDateFormatter alloc] init];
+		_dateFormatter = [[FuzzyDateFormatter alloc] init];
 		_event = nil;
 		_similarFetched = NO;
 		_similarEvents = [[NSMutableArray array] retain];
 		_isSearch = NO;
-		eventXMLDoc = nil;
+		_eventXMLDoc = nil;
 	}
 	
 	return self;
@@ -62,8 +62,8 @@
 	[_event release];
 	[_service release];
 	[_similarEvents release];
-	[dateFormatter release];
-	[eventXMLDoc release];
+	[_dateFormatter release];
+	[_eventXMLDoc release];
 
 	[super dealloc];
 }
@@ -92,8 +92,8 @@
 								atScrollPosition: UITableViewScrollPositionTop
 								animated: NO];
 	
-	[eventXMLDoc release];
-	eventXMLDoc = nil;
+	[_eventXMLDoc release];
+	_eventXMLDoc = nil;
 }
 
 - (BOOL)search
@@ -170,10 +170,10 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-	[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+	[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
-	return [dateFormatter stringFromDate: dateTime];
+	return [_dateFormatter stringFromDate: dateTime];
 }
 
 - (UIButton *)create_AddTimerButton
@@ -188,8 +188,8 @@
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[eventXMLDoc release];
-	eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self action:@selector(addEvent:) event: _event] retain];
+	[_eventXMLDoc release];
+	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self action:@selector(addEvent:) event: _event] retain];
 	[pool release];
 }
 
@@ -373,7 +373,7 @@
 					sourceCell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
 
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
-				((EventTableViewCell*)sourceCell).formatter = dateFormatter;
+				((EventTableViewCell*)sourceCell).formatter = _dateFormatter;
 				((EventTableViewCell*)sourceCell).event = (NSObject<EventProtocol> *)[_similarEvents objectAtIndex: indexPath.row];
 			}
 			break;

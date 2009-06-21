@@ -16,9 +16,9 @@ NSString *kMainCell_ID = @"MainCell_ID";
 
 @implementation MainTableViewCell
 
-@synthesize dataDictionary;
-@synthesize nameLabel;
-@synthesize explainLabel;
+@synthesize dataDictionary = _dataDictionary;
+@synthesize nameLabel = _nameLabel;
+@synthesize explainLabel = _explainLabel;
 
 /* initialize */
 - (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
@@ -30,22 +30,22 @@ NSString *kMainCell_ID = @"MainCell_ID";
 
 		// Create label views to contain the various pieces of text that make up the cell.
 		// Add these as subviews.
-		nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
-		nameLabel.backgroundColor = [UIColor clearColor];
-		nameLabel.opaque = NO;
-		nameLabel.textColor = [UIColor blackColor];
-		nameLabel.highlightedTextColor = [UIColor whiteColor];
-		nameLabel.font = [UIFont boldSystemFontOfSize:18];
-		[self.contentView addSubview:nameLabel];
+		_nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
+		_nameLabel.backgroundColor = [UIColor clearColor];
+		_nameLabel.opaque = NO;
+		_nameLabel.textColor = [UIColor blackColor];
+		_nameLabel.highlightedTextColor = [UIColor whiteColor];
+		_nameLabel.font = [UIFont boldSystemFontOfSize:18];
+		[self.contentView addSubview:_nameLabel];
 
 		// Explanation label
-		explainLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
-		explainLabel.backgroundColor = [UIColor clearColor];
-		explainLabel.opaque = NO;
-		explainLabel.textColor = [UIColor grayColor];
-		explainLabel.highlightedTextColor = [UIColor whiteColor];
-		explainLabel.font = [UIFont systemFontOfSize:14];
-		[self.contentView addSubview:explainLabel];
+		_explainLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
+		_explainLabel.backgroundColor = [UIColor clearColor];
+		_explainLabel.opaque = NO;
+		_explainLabel.textColor = [UIColor grayColor];
+		_explainLabel.highlightedTextColor = [UIColor whiteColor];
+		_explainLabel.font = [UIFont systemFontOfSize:14];
+		[self.contentView addSubview:_explainLabel];
 	}
 	
 	return self;
@@ -61,18 +61,18 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	contentRect = [self.contentView bounds];
 
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
-	nameLabel.frame = frame;
+	_nameLabel.frame = frame;
 
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 23, contentRect.size.width - kRightMargin, 20);
-	explainLabel.frame = frame;
+	_explainLabel.frame = frame;
 }
 
 /* dealloc */
 - (void)dealloc
 {
-	[nameLabel release];
-	[explainLabel release];
-	[dataDictionary release];
+	[_nameLabel release];
+	[_explainLabel release];
+	[_dataDictionary release];
 
 	[super dealloc];
 }
@@ -83,22 +83,22 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	[super setSelected:selected animated:animated];
 	
 	// when the selected state changes, set the highlighted state of the lables accordingly
-	nameLabel.highlighted = selected;
+	_nameLabel.highlighted = selected;
 }
 
 /* assign item */
 - (void)setDataDictionary:(NSDictionary *)newDictionary
 {
 	// Abort if same item assigned
-	if (dataDictionary == newDictionary) return;
+	if (_dataDictionary == newDictionary) return;
 
 	// Free old item, assign new
-	[dataDictionary release];
-	dataDictionary = [newDictionary retain];
+	[_dataDictionary release];
+	_dataDictionary = [newDictionary retain];
 	
 	// update value in subviews
-	nameLabel.text = [dataDictionary objectForKey:@"title"];
-	explainLabel.text = [dataDictionary objectForKey:@"explainText"];
+	_nameLabel.text = [_dataDictionary objectForKey:@"title"];
+	_explainLabel.text = [_dataDictionary objectForKey:@"explainText"];
 
 	// Redraw
 	[self setNeedsDisplay];

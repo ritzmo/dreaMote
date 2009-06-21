@@ -34,7 +34,8 @@
 	{
 		// make the title of this page the same as the title of this app
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-		configListController = nil;
+		_configListController = nil;
+		_aboutViewController = nil;
 	}
 	return self;
 }
@@ -43,8 +44,8 @@
 {
 	[myTableView release];
 	[menuList release];
-	[configListController release];
-	[aboutViewController release];
+	[_configListController release];
+	[_aboutViewController release];
 	[_bouquetDictionary release];
 	[_recordDictionary release];
 	[_serviceDictionary release];
@@ -56,10 +57,10 @@
 
 - (void)didReceiveMemoryWarning
 {
-	[configListController release];
-	configListController = nil;
-	[aboutViewController release];
-	aboutViewController = nil;
+	[_configListController release];
+	_configListController = nil;
+	[_aboutViewController release];
+	_aboutViewController = nil;
 	[_eventSearchDictionary release];
 	_eventSearchDictionary = nil;
 	[_signalDictionary release];
@@ -189,16 +190,16 @@
 
 - (void)settingsAction:(id)sender
 {
-	if(configListController == nil)
-		configListController = [[ConfigListController alloc] init];
-	[self.navigationController pushViewController: configListController animated: YES];
+	if(_configListController == nil)
+		_configListController = [[ConfigListController alloc] init];
+	[self.navigationController pushViewController: _configListController animated: YES];
 }
 
 - (void)aboutAction: (id)sender
 {
-	if(aboutViewController == nil)
-		aboutViewController = [[AboutViewController alloc] init];
-	[self.navigationController presentModalViewController: aboutViewController animated:YES];
+	if(_aboutViewController == nil)
+		_aboutViewController = [[AboutViewController alloc] init];
+	[self.navigationController presentModalViewController: _aboutViewController animated:YES];
 }
 
 #pragma mark UIViewController delegates

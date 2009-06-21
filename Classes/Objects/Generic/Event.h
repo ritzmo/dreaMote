@@ -24,7 +24,7 @@
 	NSString *_edescription; /*!< @brief Extended Description. */
 	double _duration; /*!< @brief Duration. */
 
-	NSString *timeString; /*!< @brief Cache for Begin/End Textual representation. */
+	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 }
 
 @end

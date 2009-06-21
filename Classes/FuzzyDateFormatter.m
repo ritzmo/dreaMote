@@ -25,7 +25,7 @@
 {
 	if(self = [super init])
 	{
-		thisNight = nil;
+		_thisNight = nil;
 	}
 	return self;
 }
@@ -33,15 +33,15 @@
 /* dealloc */
 - (void)dealloc
 {
-	[thisNight release];
+	[_thisNight release];
 	[super dealloc];
 }
 
 /* reset reference */
 - (void)resetReferenceDate
 {
-	[thisNight release];
-	thisNight = nil;
+	[_thisNight release];
+	_thisNight = nil;
 }
 
 // XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
@@ -56,11 +56,11 @@
 		return [super stringForObjectValue:date];
 
 	// Set reference date if none set
-	if(thisNight == nil)
-		thisNight = [[NSDate dateWithTimeIntervalSinceNow: -((NSInteger)[NSDate timeIntervalSinceReferenceDate] + [[self timeZone] secondsFromGMT]) % ONEDAY] retain];
+	if(_thisNight == nil)
+		_thisNight = [[NSDate dateWithTimeIntervalSinceNow: -((NSInteger)[NSDate timeIntervalSinceReferenceDate] + [[self timeZone] secondsFromGMT]) % ONEDAY] retain];
 
 	// Get seconds the event is away from 00:00 today
-	NSInteger secSinceToday = (NSInteger)([date timeIntervalSinceDate: thisNight]+0.9);
+	NSInteger secSinceToday = (NSInteger)([date timeIntervalSinceDate: _thisNight]+0.9);
 
 	if (secSinceToday >= 0 && secSinceToday < ONEDAY)
 	{

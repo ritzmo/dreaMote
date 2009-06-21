@@ -13,7 +13,7 @@
 
 @implementation Enigma2Event
 
-@synthesize timeString;
+@synthesize timeString = _timeString;
 
 - (NSObject<ServiceProtocol> *)service
 {
@@ -129,8 +129,8 @@
 		NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
-			[timeString release];
-			timeString = nil;
+			[_timeString release];
+			_timeString = nil;
 			_begin = [[NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]] retain];
 			break;
 		}
@@ -177,7 +177,7 @@
 	[_begin release];
 	[_end release];
 	[_node release];
-	[timeString release];
+	[_timeString release];
 
 	[super dealloc];
 }
@@ -195,8 +195,8 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[timeString release];
-	timeString = nil;
+	[_timeString release];
+	_timeString = nil;
 
 	if(self.begin == nil)
 		[NSException raise:@"ExcBeginNull" format:nil];

@@ -27,30 +27,30 @@
 													EditableTableViewCellDelegate>
 {
 @private
-	UITextField *timerTitle; /*!< @brief Title Field. */
-	CellTextField *timerTitleCell; /*!< @brief Title Cell. */
-	UITextField *timerDescription; /*!< @brief Description Field. */
-	CellTextField *timerDescriptionCell; /*!< @brief Description Cell. */
-	UIButton *timerServiceName; /*!< @brief Service Name Button. */
-	UITableViewCell *timerServiceNameCell; /*!< @brief Service Name Cell. */
-	UIButton *timerBegin; /*!< @brief Begin Button. */
-	UITableViewCell *timerBeginCell; /*!< @brief Begin Cell. */
-	UIButton *timerEnd; /*!< @brief End Button. */
-	UITableViewCell *timerEndCell; /*!< @brief End Cell. */
-	UISwitch *timerEnabled; /*!< @brief Enabled Switch. */
-	UISwitch *timerJustplay; /*!< @brief Justplay Switch. */
-	UITableViewCell *afterEventCell; /*!< @brief After Event Cell. */
-	UITableViewCell *repeatedCell; /*!< @brief Repeated Cell. */
+	UITextField *_timerTitle; /*!< @brief Title Field. */
+	CellTextField *_timerTitleCell; /*!< @brief Title Cell. */
+	UITextField *_timerDescription; /*!< @brief Description Field. */
+	CellTextField *_timerDescriptionCell; /*!< @brief Description Cell. */
+	UIButton *_timerServiceName; /*!< @brief Service Name Button. */
+	UITableViewCell *_timerServiceNameCell; /*!< @brief Service Name Cell. */
+	UIButton *_timerBegin; /*!< @brief Begin Button. */
+	UITableViewCell *_timerBeginCell; /*!< @brief Begin Cell. */
+	UIButton *_timerEnd; /*!< @brief End Button. */
+	UITableViewCell *_timerEndCell; /*!< @brief End Cell. */
+	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */
+	UISwitch *_timerJustplay; /*!< @brief Justplay Switch. */
+	UITableViewCell *_afterEventCell; /*!< @brief After Event Cell. */
+	UITableViewCell *_repeatedCell; /*!< @brief Repeated Cell. */
 	
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */
 	NSObject<TimerProtocol> *_oldTimer; /*!< @brief Old Timer when changing existing one. */
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
 
-	BouquetListController *bouquetListController; /*!< @brief Cached Bouquet List. */
-	AfterEventViewController *afterEventViewController; /*!< @brief Cached After Event Selector. */
-	DatePickerController *datePickerController; /*!< @brief Cached Date Picker. */
-	SimpleRepeatedViewController *simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
+	BouquetListController *_bouquetListController; /*!< @brief Cached Bouquet List. */
+	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
+	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
+	SimpleRepeatedViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
 }
 
 /*!

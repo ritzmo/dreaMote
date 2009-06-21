@@ -25,13 +25,13 @@
 	if (self) {
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray array] retain];
-		refreshMovies = YES;
+		_refreshMovies = YES;
 
-		dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		_dateFormatter = [[FuzzyDateFormatter alloc] init];
+		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
-		movieViewController = nil;
+		_movieViewController = nil;
 	}
 	return self;
 }
@@ -39,17 +39,17 @@
 - (void)dealloc
 {
 	[_movies release];
-	[dateFormatter release];
-	[movieViewController release];
-	[movieXMLDoc release];
+	[_dateFormatter release];
+	[_movieViewController release];
+	[_movieXMLDoc release];
 
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
-	[movieViewController release];
-	movieViewController = nil;
+	[_movieViewController release];
+	_movieViewController = nil;
 
     [super didReceiveMemoryWarning];
 }
@@ -67,20 +67,20 @@
 	else
 		self.navigationItem.rightBarButtonItem = nil;
 
-	if(refreshMovies)
+	if(_refreshMovies)
 	{
 		[_movies removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
-		[movieXMLDoc release];
-		movieXMLDoc = nil;
+		[_movieXMLDoc release];
+		_movieXMLDoc = nil;
 
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
 	}
 
-	refreshMovies = YES;
+	_refreshMovies = YES;
 
 	[super viewWillAppear: animated];
 }
@@ -95,16 +95,16 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	if(refreshMovies)
+	if(_refreshMovies)
 	{
 		[_movies removeAllObjects];
-		[movieViewController release];
-		movieViewController = nil;
-		[movieXMLDoc release];
-		movieXMLDoc = nil;
+		[_movieViewController release];
+		_movieViewController = nil;
+		[_movieXMLDoc release];
+		_movieXMLDoc = nil;
 	}
 
-	[dateFormatter resetReferenceDate];
+	[_dateFormatter resetReferenceDate];
 }
 
 - (void)loadView
@@ -127,8 +127,8 @@
 - (void)fetchMovies
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[movieXMLDoc release];
-	movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
+	[_movieXMLDoc release];
+	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
 	[pool release];
 }
 
@@ -158,7 +158,7 @@
 	if(cell == nil)
 		cell = [[[MovieTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMovieCell_ID] autorelease];
 
-	cell.formatter = dateFormatter;
+	cell.formatter = _dateFormatter;
 	cell.movie = [_movies objectAtIndex:indexPath.row];
 	
 	return cell;
@@ -170,13 +170,13 @@
 	if(!movie.valid)
 		return nil;
 
-	if(movieViewController == nil)
-		movieViewController = [[MovieViewController alloc] init];
-	movieViewController.movie = movie;
+	if(_movieViewController == nil)
+		_movieViewController = [[MovieViewController alloc] init];
+	_movieViewController.movie = movie;
 
-	[self.navigationController pushViewController: movieViewController animated: YES];
+	[self.navigationController pushViewController: _movieViewController animated: YES];
 
-	refreshMovies = NO;
+	_refreshMovies = NO;
 
 	return nil;
 }

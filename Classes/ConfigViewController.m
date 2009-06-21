@@ -21,10 +21,10 @@
 
 @implementation ConfigViewController
 
-@synthesize connection;
-@synthesize connectionIndex;
-@synthesize makeDefaultButton;
-@synthesize connectButton;
+@synthesize connection = _connection;
+@synthesize connectionIndex = _connectionIndex;
+@synthesize makeDefaultButton = _makeDefaultButton;
+@synthesize connectButton = _connectButton;
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD					150.0
@@ -37,7 +37,7 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
-		connectorCell = nil;
+		_connectorCell = nil;
 	}
 	return self;
 }
@@ -69,12 +69,13 @@
 
 - (void)dealloc
 {
-	[remoteNameTextField release];
-	[remoteAddressTextField release];
-	[usernameTextField release];
-	[passwordTextField release];
-	[makeDefaultButton release];
-	[connectButton release];
+	[_remoteNameTextField release];
+	[_remoteAddressTextField release];
+	[_remotePortTextField release];
+	[_usernameTextField release];
+	[_passwordTextField release];
+	[_makeDefaultButton release];
+	[_connectButton release];
 	[_singleBouquetSwitch release];
 
 	[super dealloc];
@@ -144,110 +145,110 @@
 	[tableView release];
 
 	// Remote Name
-	NSString *remoteName = [connection objectForKey: kRemoteName];
+	NSString *remoteName = [_connection objectForKey: kRemoteName];
 	if(remoteName == nil) // Work around unset property
 		remoteName = @"";
-	remoteNameTextField = [[self create_TextField] retain];
-	remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
-	remoteNameTextField.text = [remoteName copy];
+	_remoteNameTextField = [[self create_TextField] retain];
+	_remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
+	_remoteNameTextField.text = [remoteName copy];
 
 	// Remote Address
-	remoteAddressTextField = [[self create_TextField] retain];
-	remoteAddressTextField.placeholder = NSLocalizedString(@"<remote address>", @"");
-	remoteAddressTextField.text = [[connection objectForKey: kRemoteHost] copy];
-	remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
+	_remoteAddressTextField = [[self create_TextField] retain];
+	_remoteAddressTextField.placeholder = NSLocalizedString(@"<remote address>", @"");
+	_remoteAddressTextField.text = [[_connection objectForKey: kRemoteHost] copy];
+	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
 	// Remote Port
-	NSNumber *port = [connection objectForKey: kPort];
-	remotePortTextField = [[self create_TextField] retain];
-	remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
-	remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
-	remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
+	NSNumber *port = [_connection objectForKey: kPort];
+	_remotePortTextField = [[self create_TextField] retain];
+	_remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
+	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
+	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
 
 	// Username
-	usernameTextField = [[self create_TextField] retain];
-	usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
-	usernameTextField.text = [[connection objectForKey: kUsername] copy];
+	_usernameTextField = [[self create_TextField] retain];
+	_usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
+	_usernameTextField.text = [[_connection objectForKey: kUsername] copy];
 
 	// Password
-	passwordTextField = [[self create_TextField] retain];
-	passwordTextField.placeholder = NSLocalizedString(@"<remote password>", @"");
-	passwordTextField.text = [[connection objectForKey: kPassword] copy];
-	passwordTextField.secureTextEntry = YES;
+	_passwordTextField = [[self create_TextField] retain];
+	_passwordTextField.placeholder = NSLocalizedString(@"<remote password>", @"");
+	_passwordTextField.text = [[_connection objectForKey: kPassword] copy];
+	_passwordTextField.secureTextEntry = YES;
 
 	// Connector
-	_connector = [[connection objectForKey: kConnector] integerValue];
+	_connector = [[_connection objectForKey: kConnector] integerValue];
 
 	// Connect Button
 	self.connectButton = [self create_ConnectButton];
-	connectButton.enabled = YES;
+	_connectButton.enabled = YES;
 	
 	// "Make Default" Button
 	self.makeDefaultButton = [self create_DefaultButton];
-	makeDefaultButton.enabled = YES;
+	_makeDefaultButton.enabled = YES;
 
 	// Single bouquet switch
 	_singleBouquetSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
-	_singleBouquetSwitch.on = [[connection objectForKey: kSingleBouquet] boolValue];
+	_singleBouquetSwitch.on = [[_connection objectForKey: kSingleBouquet] boolValue];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_singleBouquetSwitch.backgroundColor = [UIColor clearColor];
 
-	[self setEditing: (connectionIndex == -1) animated: NO];
+	[self setEditing: (_connectionIndex == -1) animated: NO];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 {
 	[super setEditing: editing animated: animated];
 
-	/*makeDefaultButton.enabled = editing;
-	connectButton.enabled = editing;*/
+	/*_makeDefaultButton.enabled = editing;
+	_connectButton.enabled = editing;*/
 
 	if(!editing)
 	{
 		[self.navigationItem setLeftBarButtonItem: nil animated: YES];
 
-		[remoteNameCell stopEditing];
-		[remoteAddressCell stopEditing];
-		[remotePortCell stopEditing];
-		[usernameCell stopEditing];
-		[passwordCell stopEditing];
+		[_remoteNameCell stopEditing];
+		[_remoteAddressCell stopEditing];
+		[_remotePortCell stopEditing];
+		[_usernameCell stopEditing];
+		[_passwordCell stopEditing];
 		_singleBouquetSwitch.enabled = NO;
 
 		if(_shouldSave)
 		{
-			[connection setObject: remoteNameTextField.text forKey: kRemoteName];
-			[connection setObject: remoteAddressTextField.text forKey: kRemoteHost];
-			[connection setObject: [NSNumber numberWithInteger: [remotePortTextField.text integerValue]] forKey: kPort];
-			[connection setObject: usernameTextField.text forKey: kUsername];
-			[connection setObject: passwordTextField.text forKey: kPassword];
-			[connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
-			[connection setObject: _singleBouquetSwitch.on ? @"YES" : @"NO" forKey: kSingleBouquet];
+			[_connection setObject: _remoteNameTextField.text forKey: kRemoteName];
+			[_connection setObject: _remoteAddressTextField.text forKey: kRemoteHost];
+			[_connection setObject: [NSNumber numberWithInteger: [_remotePortTextField.text integerValue]] forKey: kPort];
+			[_connection setObject: _usernameTextField.text forKey: kUsername];
+			[_connection setObject: _passwordTextField.text forKey: kPassword];
+			[_connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
+			[_connection setObject: _singleBouquetSwitch.on ? @"YES" : @"NO" forKey: kSingleBouquet];
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
-			if(connectionIndex == -1)
+			if(_connectionIndex == -1)
 			{
 				[(UITableView *)self.view beginUpdates];
-				connectionIndex = [connections count];
-				[connections addObject: connection];
+				_connectionIndex = [connections count];
+				[connections addObject: _connection];
 				// XXX: ugly!
-				if(connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || connectionIndex != [RemoteConnectorObject getConnectedId])
+				if(_connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || _connectionIndex != [RemoteConnectorObject getConnectedId])
 					[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
 											withRowAnimation: UITableViewRowAnimationFade];
 				[(UITableView *)self.view endUpdates];
 			}
 			else
 			{
-				[connections replaceObjectAtIndex: connectionIndex withObject: connection];
+				[connections replaceObjectAtIndex: _connectionIndex withObject: _connection];
 
 				// Reconnect because changes won't be applied otherwise
-				if(connectionIndex == [RemoteConnectorObject getConnectedId])
-					[RemoteConnectorObject connectTo: connectionIndex];
+				if(_connectionIndex == [RemoteConnectorObject getConnectedId])
+					[RemoteConnectorObject connectTo: _connectionIndex];
 			}
 		}
 
-		if(connectorCell)
-			connectorCell.accessoryType = UITableViewCellAccessoryNone;
+		if(_connectorCell)
+			_connectorCell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	else
 	{
@@ -257,8 +258,8 @@
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 		[cancelButtonItem release];
 
-		if(connectorCell)
-			connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		if(_connectorCell)
+			_connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 }
 
@@ -272,11 +273,11 @@
 - (void)makeDefault: (id)sender
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-	NSNumber *activeConnection = [NSNumber numberWithInteger: connectionIndex];
+	NSNumber *activeConnection = [NSNumber numberWithInteger: _connectionIndex];
 
 	[(UITableView *)self.view beginUpdates];
 	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
-	[RemoteConnectorObject connectTo: connectionIndex];
+	[RemoteConnectorObject connectTo: _connectionIndex];
 
 	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 								withRowAnimation: UITableViewRowAnimationFade];
@@ -288,9 +289,9 @@
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 
 	[(UITableView *)self.view beginUpdates];
-	[RemoteConnectorObject connectTo: connectionIndex];
+	[RemoteConnectorObject connectTo: _connectionIndex];
 
-	if(connectionIndex == [stdDefaults integerForKey: kActiveConnection])
+	if(_connectionIndex == [stdDefaults integerForKey: kActiveConnection])
 		[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 									withRowAnimation: UITableViewRowAnimationFade];
 	else
@@ -319,10 +320,10 @@
 		((UITableView *)self.view).userInteractionEnabled = NO;
 
 		NSDictionary *tempConnection = [NSDictionary dictionaryWithObjectsAndKeys:
-								remoteAddressTextField.text, kRemoteHost,
-								remotePortTextField.text, kPort,
-								usernameTextField.text, kUsername,
-								passwordTextField.text, kPassword,
+								_remoteAddressTextField.text, kRemoteHost,
+								_remotePortTextField.text, kPort,
+								_usernameTextField.text, kUsername,
+								_passwordTextField.text, kPassword,
 								nil];
 
 		_connector = [RemoteConnectorObject autodetectConnector: tempConnection];
@@ -342,15 +343,15 @@
 	}
 
 	if(_connector == kEnigma1Connector)
-		connectorCell.text = NSLocalizedString(@"Enigma", @"");
+		_connectorCell.text = NSLocalizedString(@"Enigma", @"");
 	else if(_connector == kEnigma2Connector)
-		connectorCell.text = NSLocalizedString(@"Enigma 2", @"");
+		_connectorCell.text = NSLocalizedString(@"Enigma 2", @"");
 	else if(_connector == kNeutrinoConnector)
-		connectorCell.text = NSLocalizedString(@"Neutrino", @"");
+		_connectorCell.text = NSLocalizedString(@"Neutrino", @"");
 	else if(_connector == kSVDRPConnector)
-		connectorCell.text = NSLocalizedString(@"SVDRP", @"");
+		_connectorCell.text = NSLocalizedString(@"SVDRP", @"");
 	else
-		connectorCell.text = @"???";
+		_connectorCell.text = @"???";
 
 	[(UITableView *)self.view reloadData];
 }
@@ -366,8 +367,8 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(	connectionIndex == -1
-		|| (connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] && connectionIndex == [RemoteConnectorObject getConnectedId]))
+	if(	_connectionIndex == -1
+		|| (_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] && _connectionIndex == [RemoteConnectorObject getConnectedId]))
 		return 3;
 	return 4;
 }
@@ -402,8 +403,8 @@
 				return 2;
 			return 1;
 		case 3:
-			if(connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
-			   || connectionIndex == [RemoteConnectorObject getConnectedId])
+			if(_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
+			   || _connectionIndex == [RemoteConnectorObject getConnectedId])
 				return 1;
 			return 2;
 	}
@@ -432,16 +433,16 @@
 			switch(row)
 			{
 				case 0:
-					((CellTextField *)sourceCell).view = remoteNameTextField;
-					remoteNameCell = (CellTextField *)sourceCell;
+					((CellTextField *)sourceCell).view = _remoteNameTextField;
+					_remoteNameCell = (CellTextField *)sourceCell;
 					break;
 				case 1:
-					((CellTextField *)sourceCell).view = remoteAddressTextField;
-					remoteAddressCell = (CellTextField *)sourceCell;
+					((CellTextField *)sourceCell).view = _remoteAddressTextField;
+					_remoteAddressCell = (CellTextField *)sourceCell;
 					break;
 				case 2:
-					((CellTextField *)sourceCell).view = remotePortTextField;
-					remotePortCell = (CellTextField *)sourceCell;
+					((CellTextField *)sourceCell).view = _remotePortTextField;
+					_remotePortCell = (CellTextField *)sourceCell;
 					break;
 				default:
 					break;
@@ -456,12 +457,12 @@
 			switch(row)
 			{
 				case 0:
-					((CellTextField *)sourceCell).view = usernameTextField;
-					usernameCell = (CellTextField *)sourceCell;
+					((CellTextField *)sourceCell).view = _usernameTextField;
+					_usernameCell = (CellTextField *)sourceCell;
 					break;
 				case 1:
-					((CellTextField *)sourceCell).view = passwordTextField;
-					passwordCell = (CellTextField *)sourceCell;
+					((CellTextField *)sourceCell).view = _passwordTextField;
+					_passwordCell = (CellTextField *)sourceCell;
 					break;
 				default:
 					break;
@@ -490,7 +491,7 @@
 					else
 						sourceCell.text = @"???";
 					
-					connectorCell = sourceCell;
+					_connectorCell = sourceCell;
 					break;
 				case 1:
 					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
@@ -507,18 +508,18 @@
 			if(sourceCell == nil)
 				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-			if(connectionIndex == [RemoteConnectorObject getConnectedId])
+			if(_connectionIndex == [RemoteConnectorObject getConnectedId])
 				row++;
 
 			switch(row)
 			{
 				case 0:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connect", @"");
-					((DisplayCell *)sourceCell).view = connectButton;
+					((DisplayCell *)sourceCell).view = _connectButton;
 					break;
 				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Make Default", @"");
-					((DisplayCell *)sourceCell).view = makeDefaultButton;
+					((DisplayCell *)sourceCell).view = _makeDefaultButton;
 					break;
 				default:
 					break;
@@ -542,7 +543,7 @@
 	}
 	else if(indexPath.section == 3)
 	{
-		if(connectionIndex == [RemoteConnectorObject getConnectedId])
+		if(_connectionIndex == [RemoteConnectorObject getConnectedId])
 			row++;
 
 		if(row == 0)
@@ -561,39 +562,39 @@
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
 	// notify other cells to end editing
-	if([cell isEqual: remoteNameCell])
+	if([cell isEqual: _remoteNameCell])
 	{
-		[remoteAddressCell stopEditing];
-		[remotePortCell stopEditing];
-		[usernameCell stopEditing];
-		[passwordCell stopEditing];
+		[_remoteAddressCell stopEditing];
+		[_remotePortCell stopEditing];
+		[_usernameCell stopEditing];
+		[_passwordCell stopEditing];
 	}
-	else if([cell isEqual: remotePortCell])
+	else if([cell isEqual: _remotePortCell])
 	{
-		[remoteNameCell stopEditing];
-		[remoteAddressCell stopEditing];
-		[usernameCell stopEditing];
-		[passwordCell stopEditing];
+		[_remoteNameCell stopEditing];
+		[_remoteAddressCell stopEditing];
+		[_usernameCell stopEditing];
+		[_passwordCell stopEditing];
 	}
-	else if([cell isEqual: remoteAddressCell])
+	else if([cell isEqual: _remoteAddressCell])
 	{
-		[remoteNameCell stopEditing];
-		[remotePortCell stopEditing];
-		[usernameCell stopEditing];
-		[passwordCell stopEditing];
+		[_remoteNameCell stopEditing];
+		[_remotePortCell stopEditing];
+		[_usernameCell stopEditing];
+		[_passwordCell stopEditing];
 	}
 	else
-		[remoteAddressCell stopEditing];
+		[_remoteAddressCell stopEditing];
 
-	// XXX: usernameCell & passwordCell will track this themselves
+	// XXX: _usernameCell & _passwordCell will track this themselves
 
 	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	if(([cell isEqual: usernameCell] && ! passwordCell.isInlineEditing)
-		|| ([cell isEqual: passwordCell] && !usernameCell.isInlineEditing))
+	if(([cell isEqual: _usernameCell] && ! _passwordCell.isInlineEditing)
+		|| ([cell isEqual: _passwordCell] && !_usernameCell.isInlineEditing))
 	{
         // Restore the position of the main view if it was animated to make room for the keyboard.
         if  (self.view.frame.origin.y < 0)
@@ -634,7 +635,7 @@
 {
 	// The keyboard will be shown. If the user is editing the username or password, adjust the
 	// display so that the field will not be covered by the keyboard.
-	if(usernameCell.isInlineEditing || passwordCell.isInlineEditing)
+	if(_usernameCell.isInlineEditing || _passwordCell.isInlineEditing)
 	{
 		if(self.view.frame.origin.y >= 0)
 			[self setViewMovedUp:YES];

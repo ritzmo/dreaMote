@@ -63,7 +63,7 @@ enum enigma1MessageTypes {
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
 		{
-			baseAddress = [NSURL URLWithString: address];
+			_baseAddress = [NSURL URLWithString: address];
 		}
 		else
 		{
@@ -76,17 +76,17 @@ enum enigma1MessageTypes {
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 		
-			baseAddress = [NSURL URLWithString: remoteAddress];
+			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
-		[baseAddress retain];
+		[_baseAddress retain];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[baseAddress release];
-	[cachedBouquetsXML release];
+	[_baseAddress release];
+	[_cachedBouquetsXML release];
 
 	[super dealloc];
 }
@@ -99,7 +99,7 @@ enum enigma1MessageTypes {
 - (BOOL)isReachable
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:@"/xml/boxstatus"  relativeToURL:baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/xml/boxstatus"  relativeToURL:_baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -117,7 +117,7 @@ enum enigma1MessageTypes {
 - (BOOL)zapInternal: (NSString *)sref
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -154,25 +154,25 @@ enum enigma1MessageTypes {
  */
 - (void)refreshBouquetsXMLCache
 {
-	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
 
 	BaseXMLReader *streamReader = [[BaseXMLReader alloc] initWithTarget: nil action: nil];
-	cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
+	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
 	[streamReader release];
 }
 
 - (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
 {
-	if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
-			[cachedBouquetsXML release];
+			[_cachedBouquetsXML release];
 			[self refreshBouquetsXMLCache];
 	}
 
 	NSArray *resultNodes = NULL;
 	NSUInteger parsedServicesCounter = 0;
 
-	resultNodes = [cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
+	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -187,7 +187,7 @@ enum enigma1MessageTypes {
 	}
 
 	// I don't assume we really need this but for the sake of it... :-)
-	return cachedBouquetsXML;
+	return _cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
@@ -198,13 +198,13 @@ enum enigma1MessageTypes {
 	resultNodes = [bouquet nodesForXPath: @"service" error: nil];
 	if(!resultNodes || ![resultNodes count])
 	{
-		if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 		{
-			[cachedBouquetsXML release];
+			[_cachedBouquetsXML release];
 			[self refreshBouquetsXMLCache];
 		}
 
-		resultNodes = [cachedBouquetsXML nodesForXPath:
+		resultNodes = [_cachedBouquetsXML nodesForXPath:
 						[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
 						error:nil];
 	}
@@ -222,12 +222,12 @@ enum enigma1MessageTypes {
 	}
 
 	// I don't assume we really need this but for the sake of it... :-)
-	return cachedBouquetsXML;
+	return _cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
 	NSError *parseError = nil;
 
@@ -239,7 +239,7 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
 {
-	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;
 
@@ -251,7 +251,7 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
 {
-	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=3&submode=4" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=3&submode=4" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;
 
@@ -264,7 +264,7 @@ enum enigma1MessageTypes {
 - (void)sendPowerstate: (NSString *) newState
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/admin?command=%@", newState] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/admin?command=%@", newState] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -302,7 +302,7 @@ enum enigma1MessageTypes {
 - (void)getVolume:(id)target action:(SEL)action
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio" relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -352,7 +352,7 @@ enum enigma1MessageTypes {
 
 - (void)getSignal:(id)target action:(SEL)action
 {
-	NSURL *myURI = [NSURL URLWithString: @"/xml/streaminfo" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/xml/streaminfo" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;
 	
@@ -364,7 +364,7 @@ enum enigma1MessageTypes {
 - (BOOL)toggleMuted
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio?mute=xy" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio?mute=xy" relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -390,7 +390,7 @@ enum enigma1MessageTypes {
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/audio?volume=%d", 63 - newVolume] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/audio?volume=%d", 63 - newVolume] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -430,7 +430,7 @@ enum enigma1MessageTypes {
 	if(repeated == 0)
 	{
 		// Generate non-repeated URI
-		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record"] relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=regular&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record"] relativeToURL: _baseAddress];
 	}
 	else
 	{
@@ -438,7 +438,7 @@ enum enigma1MessageTypes {
 		// lets try to avoid more ugly hacks than this code already has :-)
 
 		// Generate repeated URI
-		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=repeating&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@&mo=%@&tu=%@&we=%@&th=%@&fr=%@&sa=%@&su=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record", (repeated & weekdayMon) > 0 ? @"on" : @"off", (repeated & weekdayTue) > 0 ? @"on" : @"off", (repeated & weekdayWed) > 0 ? @"on" : @"off", (repeated & weekdayThu) > 0 ? @"on" : @"off", (repeated & weekdayFri) > 0 ? @"on" : @"off", (repeated & weekdaySat) > 0 ? @"on" : @"off", (repeated & weekdaySun) > 0 ? @"on" : @"off"] relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=repeating&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@&mo=%@&tu=%@&we=%@&th=%@&fr=%@&sa=%@&su=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], afterEvent, newTimer.justplay ? @"zap" : @"record", (repeated & weekdayMon) > 0 ? @"on" : @"off", (repeated & weekdayTue) > 0 ? @"on" : @"off", (repeated & weekdayWed) > 0 ? @"on" : @"off", (repeated & weekdayThu) > 0 ? @"on" : @"off", (repeated & weekdayFri) > 0 ? @"on" : @"off", (repeated & weekdaySat) > 0 ? @"on" : @"off", (repeated & weekdaySun) > 0 ? @"on" : @"off"] relativeToURL: _baseAddress];
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -479,7 +479,7 @@ enum enigma1MessageTypes {
 - (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -527,7 +527,7 @@ enum enigma1MessageTypes {
 	}
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/rc?%d", type] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/rc?%d", type] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -561,7 +561,7 @@ enum enigma1MessageTypes {
 	}
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d&icon=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [caption  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], timeout, translatedType] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d&icon=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [caption  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], timeout, translatedType] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -611,7 +611,7 @@ enum enigma1MessageTypes {
 	if(type == kScreenshotTypeOSD)
 	{
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot" relativeToURL: baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot" relativeToURL: _baseAddress];
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -630,7 +630,7 @@ enum enigma1MessageTypes {
 	{
 		// We need to trigger a capture and individually fetch the picture
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/body?mode=controlScreenShot" relativeToURL: baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/body?mode=controlScreenShot" relativeToURL: _baseAddress];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -651,7 +651,7 @@ enum enigma1MessageTypes {
 			return nil;
 		
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: _baseAddress];
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -672,7 +672,7 @@ enum enigma1MessageTypes {
 - (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/cgi-bin/deleteMovie?ref=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:baseAddress];
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/cgi-bin/deleteMovie?ref=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -703,7 +703,7 @@ enum enigma1MessageTypes {
 - (BOOL)instantRecord
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:@"/cgi-bin/videocontrol?command=record" relativeToURL:baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/cgi-bin/videocontrol?command=record" relativeToURL:_baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -728,8 +728,8 @@ enum enigma1MessageTypes {
 
 - (void)freeCaches
 {
-	[cachedBouquetsXML release];
-	cachedBouquetsXML = nil;
+	[_cachedBouquetsXML release];
+	_cachedBouquetsXML = nil;
 }
 
 @end

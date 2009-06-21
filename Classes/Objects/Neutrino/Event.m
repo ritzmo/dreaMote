@@ -12,7 +12,7 @@
 
 @implementation NeutrinoEvent
 
-@synthesize timeString;
+@synthesize timeString = _timeString;
 
 - (NSObject<ServiceProtocol> *)service
 {
@@ -127,7 +127,7 @@
 - (void)dealloc
 {
 	[_node release];
-	[timeString release];
+	[_timeString release];
 
 	[super dealloc];
 }

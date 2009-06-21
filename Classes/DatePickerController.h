@@ -16,10 +16,10 @@
 @interface DatePickerController : UIViewController
 {
 @private
-	UILabel			*label; /*!< @brief Label containing a textual representation of selected date. */
-	NSDate			*date; /*!< @brief Date to preselect. */
-	NSDateFormatter *format; /*!< @brief Cached DateFormatter for textual representation. */
-	UIDatePicker	*datePickerView; /*!< @brief Actual Date Picker. */
+	UILabel			*_label; /*!< @brief Label containing a textual representation of selected date. */
+	NSDate			*_date; /*!< @brief Date to preselect. */
+	NSDateFormatter *_format; /*!< @brief Cached DateFormatter for textual representation. */
+	UIDatePicker	*_datePickerView; /*!< @brief Actual Date Picker. */
 	SEL _selectCallback; /*!< @brief Callback selector. */
 	id _selectTarget; /*!< @brief Callback object. */
 }

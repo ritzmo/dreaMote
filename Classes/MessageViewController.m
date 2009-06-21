@@ -33,17 +33,17 @@
 	if (self = [super init])
 	{
 		self.title = NSLocalizedString(@"Message", @"Default title of MessageViewController");
-		typeCell = nil;
+		_typeCell = nil;
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[messageTextField release];
-	[captionTextField release];
-	[timeoutTextField release];
-	[sendButton release];
+	[_messageTextField release];
+	[_captionTextField release];
+	[_timeoutTextField release];
+	[_sendButton release];
 
 	[super dealloc];
 }
@@ -99,27 +99,27 @@
 	[tableView release];
 
 	// Message
-	messageTextField = [self create_TextField];
-	messageTextField.placeholder = NSLocalizedString(@"<message text>", @"");
-	messageTextField.keyboardType = UIKeyboardTypeDefault;
+	_messageTextField = [self create_TextField];
+	_messageTextField.placeholder = NSLocalizedString(@"<message text>", @"");
+	_messageTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Caption
-	captionTextField = [self create_TextField];
-	captionTextField.placeholder = NSLocalizedString(@"<message caption>", @"");
-	captionTextField.keyboardType = UIKeyboardTypeDefault;
+	_captionTextField = [self create_TextField];
+	_captionTextField.placeholder = NSLocalizedString(@"<message caption>", @"");
+	_captionTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Timeout
-	timeoutTextField = [self create_TextField];
-	timeoutTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kMessageTimeout];
-	timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
-	timeoutTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
+	_timeoutTextField = [self create_TextField];
+	_timeoutTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kMessageTimeout];
+	_timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
+	_timeoutTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
 
 	// Default type
 	_type = 0;
 
 	// Connect Button
-	sendButton = [self create_SendButton];
-	sendButton.enabled = YES;
+	_sendButton = [self create_SendButton];
+	_sendButton.enabled = YES;
 
 	[self setEditing: YES animated: NO];
 }
@@ -130,15 +130,15 @@
 
 	if(!editing)
 	{
-		[messageCell stopEditing];
-		[captionCell stopEditing];
-		[timeoutCell stopEditing];
+		[_messageCell stopEditing];
+		[_captionCell stopEditing];
+		[_timeoutCell stopEditing];
 
-		if(typeCell)
-			typeCell.accessoryType = UITableViewCellAccessoryNone;
+		if(_typeCell)
+			_typeCell.accessoryType = UITableViewCellAccessoryNone;
 	}
-	else if(typeCell)
-		typeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	else if(_typeCell)
+		_typeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)sendMessage: (id)sender
@@ -150,10 +150,10 @@
 
 	NSString *failureMessage = nil;
 
-	NSString *message = messageTextField.text;
-	NSString *caption = captionTextField.text;
+	NSString *message = _messageTextField.text;
+	NSString *caption = _captionTextField.text;
 	NSInteger type = _type;
-	NSInteger timeout = [timeoutTextField.text integerValue];
+	NSInteger timeout = [_timeoutTextField.text integerValue];
 
 	// XXX: we could also join these messages
 	if(message == nil || [message isEqualToString: @""])
@@ -197,7 +197,7 @@
 
 	_type = [newType integerValue];
 
-	typeCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+	_typeCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 }
 
 #pragma mark - UITableView delegates
@@ -357,16 +357,16 @@
 	switch(section)
 	{
 		case 0:
-			((CellTextField *)sourceCell).view = messageTextField;
-			messageCell = (CellTextField *)sourceCell;
+			((CellTextField *)sourceCell).view = _messageTextField;
+			_messageCell = (CellTextField *)sourceCell;
 			break;
 		case 1:
-			((CellTextField *)sourceCell).view = captionTextField;
-			captionCell = (CellTextField *)sourceCell;
+			((CellTextField *)sourceCell).view = _captionTextField;
+			_captionCell = (CellTextField *)sourceCell;
 			break;
 		case 2:
-			((CellTextField *)sourceCell).view = timeoutTextField;
-			timeoutCell = (CellTextField *)sourceCell;
+			((CellTextField *)sourceCell).view = _timeoutTextField;
+			_timeoutCell = (CellTextField *)sourceCell;
 			break;
 		case 3:
 			if(self.editing)
@@ -374,11 +374,11 @@
 
 			sourceCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 
-			typeCell = sourceCell;
+			_typeCell = sourceCell;
 			break;
 		case 4:
 			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Send", @"");
-			((DisplayCell *)sourceCell).view = sendButton;
+			((DisplayCell *)sourceCell).view = _sendButton;
 			break;
 		default:
 			break;
@@ -413,19 +413,19 @@
 {
 
 	// notify other cells to end editing
-	if (![cell isEqual: messageCell])
-		[messageCell stopEditing];
-	if (![cell isEqual: captionCell])
-		[captionCell stopEditing];
-	if (![cell isEqual: timeoutCell])
-		[timeoutCell stopEditing];
+	if (![cell isEqual: _messageCell])
+		[_messageCell stopEditing];
+	if (![cell isEqual: _captionCell])
+		[_captionCell stopEditing];
+	if (![cell isEqual: _timeoutCell])
+		[_timeoutCell stopEditing];
 
 	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	if([cell isEqual: captionCell] || [cell isEqual: timeoutCell])
+	if([cell isEqual: _captionCell] || [cell isEqual: _timeoutCell])
 	{
 		// Restore the position of the main view if it was animated to make room for the keyboard.
 		if(self.view.frame.origin.y < 0)
@@ -464,7 +464,7 @@
 {
 	// The keyboard will be shown. If the user is editing the caption or timeout adjust the
 	// display so that the field will not be covered by the keyboard.
-	if(timeoutCell.isInlineEditing)
+	if(_timeoutCell.isInlineEditing)
 	{
 		if(self.view.frame.origin.y >= 0)
 			[self setViewMovedUp:YES];
@@ -493,7 +493,7 @@
 
 	[super viewWillDisappear: animated];
 
-	[[NSUserDefaults standardUserDefaults] setValue:timeoutTextField.text forKey: kMessageTimeout];
+	[[NSUserDefaults standardUserDefaults] setValue:_timeoutTextField.text forKey: kMessageTimeout];
 }
 
 @end

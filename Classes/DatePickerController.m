@@ -15,8 +15,8 @@
 
 #define kPickerSegmentControlHeight 30.0
 
-@synthesize date;
-@synthesize format;
+@synthesize date = _date;
+@synthesize format = _format;
 
 /* initialize */
 - (id)init
@@ -25,9 +25,9 @@
 	{
 		// this title will appear in the navigation bar
 		self.title = NSLocalizedString(@"Date Picker", @"");
-		self.format = [[NSDateFormatter alloc] init];
-		[format setDateStyle:NSDateFormatterFullStyle];
-		[format setTimeStyle:NSDateFormatterShortStyle];
+		_format = [[NSDateFormatter alloc] init];
+		[_format setDateStyle:NSDateFormatterFullStyle];
+		[_format setTimeStyle:NSDateFormatterShortStyle];
 	}
 	
 	return self;
@@ -56,12 +56,12 @@
 								0.0, //kTopMargin + kPickerSegmentControlHeight,
 								self.view.bounds.size.width - (kRightMargin * 2.0),
 								self.view.bounds.size.height - 110.0);
-	datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
-	datePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	datePickerView.datePickerMode = UIDatePickerModeDateAndTime;
-	datePickerView.date = date;
-	[datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
-	[self.view addSubview:datePickerView];
+	_datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
+	_datePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_datePickerView.datePickerMode = UIDatePickerModeDateAndTime;
+	_datePickerView.date = _date;
+	[_datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
+	[self.view addSubview: _datePickerView];
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 														target:self action:@selector(doneAction:)];
@@ -74,13 +74,13 @@
 									kTweenMargin + 220.0,
 									self.view.bounds.size.width - (kRightMargin * 2.0),
 									kTextFieldHeight);
-	label = [[UILabel alloc] initWithFrame:frame];
-	label.font = [UIFont systemFontOfSize:14];
-	label.textAlignment = UITextAlignmentCenter;
-	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor clearColor];
-	label.text = [format stringFromDate: date];
-	[self.view addSubview:label];
+	_label = [[UILabel alloc] initWithFrame:frame];
+	_label.font = [UIFont systemFontOfSize:14];
+	_label.textAlignment = UITextAlignmentCenter;
+	_label.textColor = [UIColor whiteColor];
+	_label.backgroundColor = [UIColor clearColor];
+	_label.text = [_format stringFromDate: _date];
+	[self.view addSubview: _label];
 }
 
 /* finish */
@@ -88,7 +88,7 @@
 {
 	if(_selectTarget != nil && _selectCallback != nil)
 	{
-		[_selectTarget performSelector:(SEL)_selectCallback withObject: [datePickerView date]];
+		[_selectTarget performSelector:(SEL)_selectCallback withObject: [_datePickerView date]];
 	}
 
 	[self.navigationController popViewControllerAnimated: YES];
@@ -97,10 +97,10 @@
 /* dealloc */
 - (void)dealloc
 {
-	[datePickerView release];
-	[date release];
-	[label release];
-	[format release];
+	[_datePickerView release];
+	[_date release];
+	[_label release];
+	[_format release];
 
 	[super dealloc];
 }
@@ -108,7 +108,7 @@
 /* selection changed */
 - (void)timeChanged: (id)sender
 {
-	label.text = [format stringFromDate: [datePickerView date]];
+	_label.text = [_format stringFromDate: [_datePickerView date]];
 }
 
 /* set callback */

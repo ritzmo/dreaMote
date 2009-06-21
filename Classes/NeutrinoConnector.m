@@ -52,7 +52,7 @@ enum neutrinoMessageTypes {
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
 		{
-			baseAddress = [NSURL URLWithString: address];
+			_baseAddress = [NSURL URLWithString: address];
 		}
 		else
 		{
@@ -65,17 +65,17 @@ enum neutrinoMessageTypes {
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 			
-			baseAddress = [NSURL URLWithString: remoteAddress];
+			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
-		[baseAddress retain];
+		[_baseAddress retain];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[baseAddress release];
-	[cachedBouquetsXML release];
+	[_baseAddress release];
+	[_cachedBouquetsXML release];
 
 	[super dealloc];
 }
@@ -88,7 +88,7 @@ enum neutrinoMessageTypes {
 - (BOOL)isReachable
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:@"/control/info"  relativeToURL:baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/control/info"  relativeToURL:_baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -106,7 +106,7 @@ enum neutrinoMessageTypes {
 - (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -140,25 +140,25 @@ enum neutrinoMessageTypes {
  */
 - (void)refreshBouquetsXMLCache
 {
-	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: _baseAddress];
 
 	BaseXMLReader *streamReader = [[BaseXMLReader alloc] initWithTarget: nil action: nil];
-	cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
+	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
 	[streamReader release];
 }
 
 - (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
 {
-	if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
-		[cachedBouquetsXML release];
+		[_cachedBouquetsXML release];
 		[self refreshBouquetsXMLCache];
 	}
 
 	NSArray *resultNodes = NULL;
 	NSUInteger parsedServicesCounter = 0;
 
-	resultNodes = [cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
+	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -173,7 +173,7 @@ enum neutrinoMessageTypes {
 	}
 
 	// I don't assume we really need this but for the sake of it... :-)
-	return cachedBouquetsXML;
+	return _cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
@@ -184,13 +184,13 @@ enum neutrinoMessageTypes {
 	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];
 	if(!resultNodes || ![resultNodes count])
 	{
-		if(!cachedBouquetsXML || [cachedBouquetsXML retainCount] == 1)
+		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 		{
-			[cachedBouquetsXML release];
+			[_cachedBouquetsXML release];
 			[self refreshBouquetsXMLCache];
 		}
 		
-		resultNodes = [cachedBouquetsXML nodesForXPath:
+		resultNodes = [_cachedBouquetsXML nodesForXPath:
 						[NSString stringWithFormat: @"/zapit/Bouquet[@name=\"%@\"]/channel", bouquet.sname]
 						error:nil];
 	}
@@ -214,13 +214,13 @@ enum neutrinoMessageTypes {
 	}
 
 	// I don't assume we really need this but for the sake of it... :-)
-	return cachedBouquetsXML;
+	return _cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
 {
 	// XXX: Maybe we should not hardcode "max"
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: _baseAddress];
 
 	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithTarget: target action: action];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -232,11 +232,11 @@ enum neutrinoMessageTypes {
 - (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
-	if(!cachedBouquetsXML)
+	if(!_cachedBouquetsXML)
 		[self refreshBouquetsXMLCache];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -302,7 +302,7 @@ enum neutrinoMessageTypes {
 
 		NSObject<ServiceProtocol> *service = [[Service alloc] init];
 		service.sname = sname;
-		NSArray *resultNodes = [cachedBouquetsXML nodesForXPath:
+		NSArray *resultNodes = [_cachedBouquetsXML nodesForXPath:
 									[NSString stringWithFormat: @"/zapit/Bouquet/channel[@name=\"%@\"]", sname]
 									error:nil];
 		// XXX: do we really want this? we don't care about the sref :-)
@@ -350,7 +350,7 @@ enum neutrinoMessageTypes {
 - (void)sendPowerstate: (NSString *) newState
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/%@", newState] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/%@", newState] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -372,7 +372,7 @@ enum neutrinoMessageTypes {
 - (void)standby
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/control/standby" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/standby" relativeToURL: _baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -411,7 +411,7 @@ enum neutrinoMessageTypes {
 	Volume *volumeObject = [[Volume alloc] init];
 
 	// Generate URI (mute)
-	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -431,7 +431,7 @@ enum neutrinoMessageTypes {
 	[myString release];
 
 	// Generate URI (volume)
-	myURI = [NSURL URLWithString: @"/control/volume" relativeToURL: baseAddress];
+	myURI = [NSURL URLWithString: @"/control/volume" relativeToURL: _baseAddress];
 	
 	// Create URL Object and download it
 	request = [NSURLRequest requestWithURL: myURI
@@ -459,7 +459,7 @@ enum neutrinoMessageTypes {
 {
 	BOOL equalsRes = NO;
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -479,7 +479,7 @@ enum neutrinoMessageTypes {
 		myString = @"mute";
 
 	// Generate new URI
-	myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%@", myString] relativeToURL: baseAddress];
+	myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%@", myString] relativeToURL: _baseAddress];
 
 	// Create URL Object and download it
 	request = [NSURLRequest requestWithURL: myURI
@@ -505,7 +505,7 @@ enum neutrinoMessageTypes {
 		newVolume += diff;
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%d", newVolume] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%d", newVolume] relativeToURL: _baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -530,7 +530,7 @@ enum neutrinoMessageTypes {
 	add = [add stringByAppendingFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	add = [add stringByAppendingString: @"&channel_name="];
 	add = [add stringByAppendingString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-	NSURL *myURI = [NSURL URLWithString: add relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -559,7 +559,7 @@ enum neutrinoMessageTypes {
 	add = [add stringByAppendingFormat: @"%d", newTimer.repeated];
 	add = [add stringByAppendingString: @"&repcount="];
 	add = [add stringByAppendingFormat: @"%d", newTimer.repeatcount];
-	NSURL *myURI = [NSURL URLWithString: add relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
@@ -579,7 +579,7 @@ enum neutrinoMessageTypes {
 - (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -632,10 +632,10 @@ enum neutrinoMessageTypes {
 		case kButtonCodePower: buttonCode = @"KEY_POWER"; break;
 		case kButtonCodeOK: buttonCode = @"KEY_OK"; break;
 		case kButtonCodeTV:
-			myURI = [NSURL URLWithString: @"/control/setmode?tv" relativeToURL: baseAddress];
+			myURI = [NSURL URLWithString: @"/control/setmode?tv" relativeToURL: _baseAddress];
 			break;
 		case kButtonCodeRadio:
-			myURI = [NSURL URLWithString: @"/control/setmode?radio" relativeToURL: baseAddress];
+			myURI = [NSURL URLWithString: @"/control/setmode?radio" relativeToURL: _baseAddress];
 			break;
 		//case kButtonCode: buttonCode = @"KEY_"; break; // meant for copy&paste ;-)
 		default:
@@ -648,7 +648,7 @@ enum neutrinoMessageTypes {
 			return NO;
 
 		// Generate URI
-		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: _baseAddress];
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -669,7 +669,7 @@ enum neutrinoMessageTypes {
 - (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -709,7 +709,7 @@ enum neutrinoMessageTypes {
 	if(type == kScreenshotTypeOSD)
 	{
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/GLJ-snapBMP.htm" relativeToURL: baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/GLJ-snapBMP.htm" relativeToURL: _baseAddress];
 
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -723,7 +723,7 @@ enum neutrinoMessageTypes {
 		if([response statusCode] == 200)
 		{
 			// Generate URI
-			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: baseAddress];
+			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: _baseAddress];
 			
 			// Create URL Object and download it
 			request = [NSURLRequest requestWithURL: myURI
@@ -737,7 +737,7 @@ enum neutrinoMessageTypes {
 		}
 
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 		
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
@@ -750,7 +750,7 @@ enum neutrinoMessageTypes {
 		if([response statusCode] != 200)
 		{
 			// Generate URI
-			myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+			myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 
 			// Create URL Object and download it
 			request = [NSURLRequest requestWithURL: myURI
@@ -760,7 +760,7 @@ enum neutrinoMessageTypes {
 		}
 
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.bmp" relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
@@ -769,7 +769,7 @@ enum neutrinoMessageTypes {
 											 returningResponse: &response error: nil];
 
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
 		
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
@@ -785,7 +785,7 @@ enum neutrinoMessageTypes {
 	{
 		// We need to trigger a capture and individually fetch the picture
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png" relativeToURL: baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 		
@@ -799,7 +799,7 @@ enum neutrinoMessageTypes {
 		// XXX: check status?
 
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.png" relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
 
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
@@ -808,7 +808,7 @@ enum neutrinoMessageTypes {
 									 returningResponse: &response error: nil];
 
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: baseAddress];
+		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
 		
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
@@ -857,8 +857,8 @@ enum neutrinoMessageTypes {
 
 - (void)freeCaches
 {
-	[cachedBouquetsXML release];
-	cachedBouquetsXML = nil;
+	[_cachedBouquetsXML release];
+	_cachedBouquetsXML = nil;
 }
 
 @end

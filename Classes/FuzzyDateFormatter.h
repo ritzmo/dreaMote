@@ -14,7 +14,7 @@
 @interface FuzzyDateFormatter : NSDateFormatter
 {
 @private
-	NSDate *thisNight; /*!< @brief Cached NSDate refering to 00:00 today. */
+	NSDate *_thisNight; /*!< @brief Cached NSDate refering to 00:00 today. */
 }
 
 /*!

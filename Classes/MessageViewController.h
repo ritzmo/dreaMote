@@ -17,15 +17,15 @@
 													UITableViewDataSource, EditableTableViewCellDelegate>
 {
 @private
-	UITextField *messageTextField; /*!< @brief Text Field. */
-	CellTextField *messageCell; /*!< @brief Text Cell. */
-	UITextField *captionTextField; /*!< @brief Caption Field. */
-	CellTextField *captionCell; /*!< @brief Caption Cell. */
-	UITextField *timeoutTextField; /*!< @brief Timeout Field. */
-	CellTextField *timeoutCell; /*!< @brief Timeout Cell. */
-	UIButton *sendButton; /*!< @brief "Send" Button. */
+	UITextField *_messageTextField; /*!< @brief Text Field. */
+	CellTextField *_messageCell; /*!< @brief Text Cell. */
+	UITextField *_captionTextField; /*!< @brief Caption Field. */
+	CellTextField *_captionCell; /*!< @brief Caption Cell. */
+	UITextField *_timeoutTextField; /*!< @brief Timeout Field. */
+	CellTextField *_timeoutCell; /*!< @brief Timeout Cell. */
+	UIButton *_sendButton; /*!< @brief "Send" Button. */
 	NSInteger _type; /*!< @brief Selected message type. */
-	UITableViewCell *typeCell; /*!< @brief Cell with textual representation of message type. */
+	UITableViewCell *_typeCell; /*!< @brief Cell with textual representation of message type. */
 }
 
 @end

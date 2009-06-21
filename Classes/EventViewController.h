@@ -27,8 +27,8 @@
 	BOOL _similarFetched; /*!< @brief List of similar Events was already fetched. */
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
 
-	FuzzyDateFormatter *dateFormatter; /*!< @brief Date Formatter. */
-	CXMLDocument *eventXMLDoc; /*!< @brief Current Event XML Document. */
+	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	CXMLDocument *_eventXMLDoc; /*!< @brief Current Event XML Document. */
 }
 
 /*!

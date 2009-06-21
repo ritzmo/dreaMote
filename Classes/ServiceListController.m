@@ -24,7 +24,7 @@
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
 		_services = [[NSMutableArray array] retain];
 		_refreshServices = YES;
-		eventListController = nil;
+		_eventListController = nil;
 	}
 	return self;
 }
@@ -32,16 +32,16 @@
 - (void)dealloc
 {
 	[_services release];
-	[eventListController release];
-	[serviceXMLDoc release];
+	[_eventListController release];
+	[_serviceXMLDoc release];
 
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
-	[eventListController release];
-	eventListController = nil;
+	[_eventListController release];
+	_eventListController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -62,8 +62,8 @@
 
 	[_services removeAllObjects];
 	[(UITableView *)self.view reloadData];
-	[serviceXMLDoc release];
-	serviceXMLDoc = nil;
+	[_serviceXMLDoc release];
+	_serviceXMLDoc = nil;
 	_refreshServices = NO;
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
@@ -95,8 +95,8 @@
 		[_services removeAllObjects];
 
 		[(UITableView *)self.view reloadData];
-		[serviceXMLDoc release];
-		serviceXMLDoc = nil;
+		[_serviceXMLDoc release];
+		_serviceXMLDoc = nil;
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -114,18 +114,18 @@
 	{
 		[_services removeAllObjects];
 
-		[eventListController release];
-		eventListController = nil;
-		[serviceXMLDoc release];
-		serviceXMLDoc = nil;
+		[_eventListController release];
+		_eventListController = nil;
+		[_serviceXMLDoc release];
+		_serviceXMLDoc = nil;
 	}
 }
 
 - (void)fetchServices
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[serviceXMLDoc release];
-	serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:) bouquet: _bouquet] retain];
+	[_serviceXMLDoc release];
+	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:) bouquet: _bouquet] retain];
 	[pool release];
 }
 
@@ -192,13 +192,13 @@
 	else if (buttonIndex == 1)
 	{
 		// Third Button: epg
-		if(eventListController == nil)
-			eventListController = [[EventListController alloc] init];
+		if(_eventListController == nil)
+			_eventListController = [[EventListController alloc] init];
 
-		eventListController.service = service;
+		_eventListController.service = service;
 
 		_refreshServices = NO;
-		[self.navigationController pushViewController: eventListController animated:YES];
+		[self.navigationController pushViewController: _eventListController animated:YES];
 	}
 
 	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];

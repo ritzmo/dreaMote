@@ -14,8 +14,8 @@
 @interface EventSearchListController : EventListController <UISearchBarDelegate>
 {
 @private
-	UISearchBar	*searchBar; /*!< @brief Search Bar. */
-	UITableView *tableView; /*!< @brief Table View. */
+	UISearchBar	*_searchBar; /*!< @brief Search Bar. */
+	UITableView *_tableView; /*!< @brief Table View. */
 }
 
 @end
