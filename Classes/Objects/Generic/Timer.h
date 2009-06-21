@@ -17,59 +17,40 @@
 
  @note We ignore everything except zapto&standby currently but this is here
  in case we need it later.
- @constant neutrinoTimerTypeShutdown Shut STB down.
- @constant neutrinoTimerTypeNextprogram ???
- @constant neutrinoTimerTypeZapto Zap to a given Service.
- @constant neutrinoTimerTypeStandby Enter Standby.
- @constant neutrinoTimerTypeRecord Record a given Service.
- @constant neutrinoTimerTypeRemind ???
- @constant neutrinoTimerTypeSleep ???
- @constant neutrinoTimerTypePlugin ???
  */
 enum neutrinoEventType {
-	neutrinoTimerTypeShutdown = 1,
-	neutrinoTimerTypeNextprogram = 2,
-	neutrinoTimerTypeZapto = 3,
-	neutrinoTimerTypeStandby = 4,
-	neutrinoTimerTypeRecord = 5,
-	neutrinoTimerTypeRemind = 6,
-	neutrinoTimerTypeSleep = 7,
-	neutrinoTimerTypePlugin = 8,
+	neutrinoTimerTypeShutdown = 1, /*!< @brief Shut STB down. */
+	neutrinoTimerTypeNextprogram = 2, /*!< @brief ??? */
+	neutrinoTimerTypeZapto = 3, /*!< @brief Zap to a given Service. */
+	neutrinoTimerTypeStandby = 4, /*!< @brief Enter Standby. */
+	neutrinoTimerTypeRecord = 5, /*!< @brief Record a given Service. */
+	neutrinoTimerTypeRemind = 6, /*!< @brief ??? */
+	neutrinoTimerTypeSleep = 7, /*!< @brief ??? */
+	neutrinoTimerTypePlugin = 8, /*!< @brief ??? */
 };
 
 /*!
  @brief Repeat Flags in Neutrino.
-
- @constant neutrinoTimerRepeatNever Don't repeat.
- @constant neutrinoTimerRepeatDaily Repeat daily.
- @constant neutrinoTimerRepeatWeekly Repeat every week.
- @constant neutrinoTimerRepeatBiweekly Repeat every two weeks.
- @constant neutrinoTimerRepeatFourweekly Repeat every four weeks.
- @constant neutrinoTimerRepeatMonthly ??? Repeat on this day every month ???
- @constant neutrinoTimerRepeatByDescription ???
- @constant neutrinoTimerRepeatMonday Repeat on Monday.
- @constant neutrinoTimerRepeatTuesday Repeat on Tuesday.
- @constant neutrinoTimerRepeatWednesday Repeat on Wednesday.
- @constant neutrinoTimerRepeatThursday Repeat on Thursday.
- @constant neutrinoTimerRepeatFriday Repeat on Friday.
- @constant neutrinoTimerRepeatSaturday Repeat on Saturday.
- @constant neutrinoTimerRepeatSunday Repeat on Sunday.
  */
 enum neutrinoTimerRepeat {
-	neutrinoTimerRepeatNever = 0,
-	neutrinoTimerRepeatDaily = 1,
-	neutrinoTimerRepeatWeekly = 2,
-	neutrinoTimerRepeatBiweekly = 3,
-	neutrinoTimerRepeatFourweekly = 4,
-	neutrinoTimerRepeatMonthly = 5,
-	neutrinoTimerRepeatByDescription = 6, // XXX: unimpl in neutrino?
-	neutrinoTimerRepeatMonday = 256,
-	neutrinoTimerRepeatTuesday = 512,
-	neutrinoTimerRepeatWednesday = 1024,
-	neutrinoTimerRepeatThursday = 2048,
-	neutrinoTimerRepeatFriday = 4096,
-	neutrinoTimerRepeatSaturday = 8192,
-	neutrinoTimerRepeatSunday = 16384,
+	neutrinoTimerRepeatNever = 0, /*!< @briefDon't repeat.  */
+	neutrinoTimerRepeatDaily = 1, /*!< @brief Repeat daily. */
+	neutrinoTimerRepeatWeekly = 2, /*!< @brief Repeat every week. */
+	neutrinoTimerRepeatBiweekly = 3, /*!< @brief Repeat every two weeks. */
+	neutrinoTimerRepeatFourweekly = 4, /*!< @brief Repeat every four weeks. */
+	neutrinoTimerRepeatMonthly = 5, /*!< @brief ??? Repeat on this day every month ??? */
+	 /*!
+	  @brief ???
+	  @note Unimplemented in Neutrino?
+	*/
+	neutrinoTimerRepeatByDescription = 6,
+	neutrinoTimerRepeatMonday = 256, /*!< @brief Repeat on Monday. */
+	neutrinoTimerRepeatTuesday = 512, /*!< @brief Repeat on Tuesday. */
+	neutrinoTimerRepeatWednesday = 1024, /*!< @brief Repeat on Wednesday. */
+	neutrinoTimerRepeatThursday = 2048, /*!< @brief Repeat on Thursday. */
+	neutrinoTimerRepeatFriday = 4096, /*!< @brief Repeat on Friday. */
+	neutrinoTimerRepeatSaturday = 8192, /*!< @brief Repeat on Saturday. */
+	neutrinoTimerRepeatSunday = 16384, /*!< @brief Repeat on Sunday. */
 };
 
 /*!

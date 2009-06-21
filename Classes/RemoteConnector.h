@@ -11,86 +11,81 @@
 /*!
  @brief Enum describing the various available connectors.
  @note The associated connector of a connection is saved as this Id.
- 
- @constant kInvalidConnector not actually a valid connector
- @constant kEnigma2Connector enigma2
- @constant kEnigma1Connector enigma
- @constant kNeutrinoConnector neutrino
- @constant kSVDRPConnector svdrp
- @constant kMaxConnector upper bound of connectors
  */
 enum availableConnectors {
-	kInvalidConnector = -1,
-	kEnigma2Connector = 0,
-	kEnigma1Connector = 1,
-	kNeutrinoConnector = 2,
-	kSVDRPConnector = 3,
-	kMaxConnector = 4,
+	kInvalidConnector = -1, /*!< @brief Not actually a valid connector. */
+	kEnigma2Connector = 0, /*!< @brief Enigma2. */
+	kEnigma1Connector = 1, /*!< @brief Enigma. */
+	kNeutrinoConnector = 2, /*!< @brief Neutrino. */
+	kSVDRPConnector = 3, /*!< @brief SVDRP. */
+	kMaxConnector = 4, /*!< @brief Upper boudn of connectors. */
 };
 
 /*!
  @brief Simple enum describing the available types of screenshots.
- @constant kScreenshotTypeBoth screenshot containing both osd & video
- @constant kScreenshotTypeOSD screenshot containing only osd
- @constant kScreenshotTypeVideo screenshot containing only video
  */
 enum screenshotType {
-	kScreenshotTypeBoth = 0,
-	kScreenshotTypeOSD = 1,
-	kScreenshotTypeVideo = 2,
+	kScreenshotTypeBoth = 0, /*!< @brief Screenshot containing both osd & video. */
+	kScreenshotTypeOSD = 1, /*!< @brief Screenshot containing only osd. */
+	kScreenshotTypeVideo = 2, /*!< @brief Screenshot containing only video. */
 };
 
 /*!
  @brief Implemented connector features.
  @note To describe the available features of a connector this enum is used,
  you can check any of the feature against the hasFeature function.
- 
- @constant kFeaturesDisabledTimers Timers can be disabled without removing them
- @constant kFeaturesTimerAfterEvent Timer can have an "after Event"-Action
- @constant kFeaturesTimerAfterEventAuto Timer can have "Auto" as "after Event"-Action
- @constant kFeaturesRecordInfo Connector can fetch Record Info
- @constant kFeaturesExtendedRecordInfo Connector can fetch extended information about recordings (e.g. tags)
- @constant kFeaturesRecordDelete Connector can delete recordings
- @constant kFeaturesGUIRestart Connector offers to restart just the remote GUI (not the same as rebooting!)
- @constant kFeaturesMessageType Can give a message type
- @constant kFeaturesMessageCaption Can set a custom caption for messages
- @constant kFeaturesMessageTimeout Can provide a custom timeout
- @constant kFeaturesScreenshot Can fetch a Screenshot of the GUI
- @constant kFeaturesVideoScreenshot Can fetch a Screenshot of just the video buffer
- @constant kFeaturesAdvancedRemote Remote Control of DM8000 *grml*
- @constant kFeaturesBouquets Has support for bouquets
- @constant kFeaturesSingleBouquet Has a single bouquet mode
- @constant kFeaturesConstantTimerId Timer Id is a constant
- @constant kFeaturesEPGSearch Can sarch EPG
- @constant kFeaturesInstantRecord Allows to start an instant record
- @constant kFeaturesSatFinder Offers a SatFinder
- @constant kFeaturesEPGSearchSimilar Similar EPG search
- @constant kFeaturesSimpleRepeated "Simple" Repeated timers (as in nothing weird like "biweekly mondays and thursdays")
  */ 
 enum connectorFeatures {
+	/*! @brief Timers can be disabled without removing them. */
 	kFeaturesDisabledTimers,
+	/*! @brief Timer can have an "after Event"-Action. */
 	kFeaturesTimerAfterEvent,
+	/*! @brief Timer can have "Auto" as "after Event"-Action. */
 	kFeaturesTimerAfterEventAuto,
+	/*! @brief Connector can fetch Record Info. */
 	kFeaturesRecordInfo,
-	// XXX: as long as we lack more connectors this is specific enough
-	kFeaturesExtendedRecordInfo, 
+	/*!
+	 @brief Connector can fetch extended information about recordings (e.g. tags).
+	 @note As long as we lack more connectors this is specific enough
+	 */
+	kFeaturesExtendedRecordInfo,
+	/*! @brief Connector can delete recordings. */
 	kFeaturesRecordDelete,
+	/*! @brief Connector offers to restart just the remote GUI (not the same as rebooting!). */
 	kFeaturesGUIRestart,
+	/*! @brief Can give a message type. */
 	kFeaturesMessageType,
+	/*! @brief Can set a custom caption for messages. */
 	kFeaturesMessageCaption,
+	/*! @brief Can provide a custom timeout. */
 	kFeaturesMessageTimeout,
+	/*! @brief Can fetch a Screenshot of the GUI. */
 	kFeaturesScreenshot,
+	/*! @brief Can fetch a Screenshot of just the video buffer. */
 	kFeaturesVideoScreenshot,
+	/*! @brief Remote Control of DM8000 *grml*. */
 	kFeaturesAdvancedRemote,
+	/*! @brief Has support for bouquets. */
 	kFeaturesBouquets,
+	/*! @brief Has a single bouquet mode. */
 	kFeaturesSingleBouquet,
+	/*! @brief Timer Id is a constant. */
 	kFeaturesConstantTimerId,
+	/*! @brief Can sarch EPG. */
 	kFeaturesEPGSearch,
+	/*! @brief Allows to start an instant record. */
 	kFeaturesInstantRecord,
+	/*! @brief Offers a SatFinder. */
 	kFeaturesSatFinder,
+	/*! @brief Similar EPG search. */
 	kFeaturesEPGSearchSimilar,
-	// NOTE: this is more of a hack to allow an implementation in enigma(2) without having
-	//       to bother about neutrino/svdrp :-)
+	/*!
+	 @brief "Simple" Repeated timers
+	 "Simple" means not complicated like "biweekly mondays and thursdays".
+
+	 @note this is more of a hack to allow an implementation in enigma(2) without having
+	 to bother about neutrino/svdrp :-)
+	 */
 	kFeaturesSimpleRepeated,
 };
 

@@ -14,35 +14,28 @@
  @note kAfterEventAuto is not necessarily available as it is only supported by the
  Enigma2 based STBs.
  @see connectorFeatures
- @constant kAfterEventNothing Do nothing after recording.
- @constant kAfterEventStandby Go to standby after recording.
- @constant kAfterEventDeepstandby Shut down after recording.
- @constant kAfterEventAuto Go to mode before recording.
- @constant kAfterEventMax Upper bound of After Event Actions.
  */
 enum afterEvent {
-	kAfterEventNothing = 0,
-	kAfterEventStandby = 1,
-	kAfterEventDeepstandby = 2,
-	kAfterEventAuto = 3, // see kFeaturesTimerAfterEventAuto
-	kAfterEventMax = 4
+	kAfterEventNothing = 0, /*!< @brief Do nothing after recording. */
+	kAfterEventStandby = 1, /*!< @brief Go to standby after recording. */
+	kAfterEventDeepstandby = 2, /*!< @brief Shut down after recording. */
+	 /*!
+	  @brief Go to mode before recording.
+	  @see kFeaturesTimerAfterEventAuto
+	  */
+	kAfterEventAuto = 3,
+	kAfterEventMax = 4 /*!< @brief Upper bound of After Event Actions. */
 };
 
 /*!
  @brief Possible Timer states.
- 
- @constant kTimerStateWaiting Waiting for activation.
- @constant kTimerStatePrepared About to start.
- @constant kTimerStateRunning Currently running.
- @constant kTimerStateFinished Finished.
- @constant kTimerStateMax Upper bound of Timer states.
  */
 enum timerStates {
-	kTimerStateWaiting = 0,
-	kTimerStatePrepared = 1,
-	kTimerStateRunning = 2,
-	kTimerStateFinished = 3,
-	kTimerStateMax = 4
+	kTimerStateWaiting = 0, /*!< @brief Waiting for activation. */
+	kTimerStatePrepared = 1, /*!< @brief About to start. */
+	kTimerStateRunning = 2, /*!< @brief Currently running. */
+	kTimerStateFinished = 3, /*!< @brief Finished. */
+	kTimerStateMax = 4 /*!< @brief Upper bound of Timer states. */
 };
 
 /*!
@@ -89,22 +82,15 @@ enum timerType {
  @brief Common representation of Weekdays.
  
  @note Equal to values of Enigma2 repeated Timers.
- @constant weekdayMon Monday.
- @constant weekdayTue Tuesday.
- @constant weekdayWed Wednesday.
- @constant weekdayThu Thursday.
- @constant weekdayFri Friday.
- @constant weekdaySat Saturday.
- @constant weekdaySun Sunday.
  */
 enum weekDays {
-	weekdayMon = 1 << 0,
-	weekdayTue = 1 << 1,
-	weekdayWed = 1 << 2,
-	weekdayThu = 1 << 3,
-	weekdayFri = 1 << 4,
-	weekdaySat = 1 << 5,
-	weekdaySun = 1 << 6,
+	weekdayMon = 1 << 0, /*!< @brief Monday. */
+	weekdayTue = 1 << 1, /*!< @brief Tuesday. */
+	weekdayWed = 1 << 2, /*!< @brief Wednesday. */
+	weekdayThu = 1 << 3, /*!< @brief Thursday. */
+	weekdayFri = 1 << 4, /*!< @brief Friday. */
+	weekdaySat = 1 << 5, /*!< @brief Saturday. */
+	weekdaySun = 1 << 6, /*!< @brief Sunday. */
 };
 
 // Forward declaration
