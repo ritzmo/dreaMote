@@ -10,14 +10,28 @@
 
 #import "MovieProtocol.h"
 
+/*!
+ @brief Movie View.
+ */
 @interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSObject<MovieProtocol> *_movie;
+	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
 }
 
+/*!
+ @brief Open new view for given movie.
+ 
+ @param newMovie Movie to open view for.
+ @return MovieViewController instance.
+ */
 + (MovieViewController *)withMovie: (NSObject<MovieProtocol> *) newMovie;
 
+
+
+/*!
+ @brief Movie.
+ */
 @property (nonatomic, retain) NSObject<MovieProtocol> *movie;
 
 @end

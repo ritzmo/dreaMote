@@ -109,7 +109,7 @@ enum neutrinoTimerRepeat {
 /*!
  @brief Create Timer with attributes from given Event.
  
- @param outEvent Event.
+ @param ourEvent Event.
  @return Timer instance.
  */
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent;

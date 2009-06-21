@@ -8,11 +8,14 @@
 
 #import "EventListController.h"
 
+/*!
+ @brief Event Search.
+ */
 @interface EventSearchListController : EventListController <UISearchBarDelegate>
 {
 @private
-	UISearchBar	*searchBar;
-	UITableView *tableView;
+	UISearchBar	*searchBar; /*!< @brief Search Bar. */
+	UITableView *tableView; /*!< @brief Table View. */
 }
 
 @end

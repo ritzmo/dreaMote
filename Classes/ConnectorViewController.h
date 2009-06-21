@@ -8,17 +8,38 @@
 
 #import <UIKit/UIKit.h>
 
+/*!
+ @brief Connector Selection.
+ */
 @interface ConnectorViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSInteger _selectedItem;
-	SEL _selectCallback;
-	id _selectTarget;
+	NSInteger _selectedItem; /*!< @brief Selected Item. */
+	SEL _selectCallback; /*!< @brief Callback Selector. */
+	id _selectTarget; /*!< @brief Callback Object. */
 }
 
+/*!
+ @brief Standard Constructor.
+ 
+ @param connectorKey Selected Item.
+ @return ConnectorViewController instance.
+ */
 + (ConnectorViewController *)withConnector: (NSInteger) connectorKey;
+
+/*!
+ @brief Set Callback Target.
+ 
+ @param target Callback object.
+ @param action Callback selector.
+ */
 - (void)setTarget: (id)target action: (SEL)action;
 
+
+
+/*!
+ @brief Selected Item.
+ */
 @property (nonatomic) NSInteger selectedItem;
 
 @end

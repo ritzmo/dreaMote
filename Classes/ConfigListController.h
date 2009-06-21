@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+/*!
+ @brief General Settings and Connection List.
+ */
 @interface ConfigListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSMutableArray *_connections;
-	UISwitch *vibrateInRC;
-	UISwitch *connectionTest;
-	BOOL _shouldSave;
-	BOOL _viewWillReapper;
+	NSMutableArray *_connections; /*!< @brief List of Connections. */
+	UISwitch *vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
+	UISwitch *connectionTest; /*!< @brief "Connection Test" UISwitch. */
+	BOOL _shouldSave; /*!< @brief Are changed settings supposed to be changed? */
+	BOOL _viewWillReapper; /*!< @brier Should Data be reloaded on next open? */
 }
 
 @end

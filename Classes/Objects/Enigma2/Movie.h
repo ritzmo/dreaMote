@@ -29,7 +29,7 @@
 /*!
  @brief Standard initializer.
  
- @param CXMLNode Pointer to CXMLNode describing this Movie.
+ @param node Pointer to CXMLNode describing this Movie.
  @return Enigma2Movie instance.
  */
 - (id)initWithNode: (CXMLNode *)node;

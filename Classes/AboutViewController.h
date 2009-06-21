@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+/*!
+ @brief About.
+ */
 @interface AboutViewController : UIViewController <UIWebViewDelegate>
 {
 @private
-	UIButton *doneButton;
+	UIButton *doneButton; /*!< @brief "Done" Button. */
 }
 
 @end

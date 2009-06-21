@@ -24,7 +24,7 @@
 /*!
  @brief Standard initializer.
  
- @param CXMLNode Pointer to CXMLNode describing this Service.
+ @param node Pointer to CXMLNode describing this Service.
  @return EnigmaService instance.
  */
 - (id)initWithNode: (CXMLNode *)node;

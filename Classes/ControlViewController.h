@@ -8,14 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+/*!
+ @brief STB Control.
+ */
 @interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	UISwitch *_switchControl;
-	UISlider *_slider;
+	UISwitch *_switchControl; /*!< @brief Mute switch. */
+	UISlider *_slider; /*!< @brief Volume slider. */
 }
 
+/*!
+ @brief Mute switch.
+ */
 @property (nonatomic, retain) UISwitch *switchControl;
+
+/*!
+ @brief Volume slider.
+ */
 @property (nonatomic, retain) UISlider *slider;
 
 @end

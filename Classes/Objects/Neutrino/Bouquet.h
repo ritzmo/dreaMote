@@ -26,7 +26,7 @@
 /*!
  @brief Standard initializer.
  
- @param CXMLNode Pointer to CXMLNode describing this Bouquet.
+ @param node Pointer to CXMLNode describing this Bouquet.
  @return NeutrinoBouquet instance.
  */
 - (id)initWithNode: (CXMLElement *)node;

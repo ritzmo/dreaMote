@@ -10,6 +10,9 @@
 
 #import "RCEmulatorController.h"
 
+/*!
+ @brief Emulated Remote Control for Enigma.
+ */
 @interface EnigmaRCEmulatorController : RCEmulatorController
 {
 }

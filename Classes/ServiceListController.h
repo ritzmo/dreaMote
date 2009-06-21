@@ -8,26 +8,44 @@
 
 #import <UIKit/UIKit.h>
 
+// Forward declarations
 @class EventListController;
 @class CXMLDocument;
 @protocol ServiceProtocol;
 
+/*!
+ @brief Service List.
+ */
 @interface ServiceListController : UIViewController <UIActionSheetDelegate,
 													UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSObject<ServiceProtocol> *_bouquet;
-	NSMutableArray *_services;
-	SEL _selectCallback;
-	id _selectTarget;
-	BOOL _refreshServices;
-	EventListController *eventListController;
+	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
+	NSMutableArray *_services; /*!< @brief Service List. */
+	SEL _selectCallback; /*!< @brief Callback Selector. */
+	id _selectTarget; /*!< @brief Callback object. */
+	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
+	EventListController *eventListController; /*!< @brief Caches Event List View. */
 
-	CXMLDocument *serviceXMLDoc;
+	CXMLDocument *serviceXMLDoc; /*!< Current Service XML Document. */
 }
 
+/*!
+ @brief Set Service Selection Callback.
+ 
+ This Function is required for Timers as they will use this Callback when you change the
+ Service of a Timer.
+ 
+ @param target Callback object.
+ @param action Callback selector.
+ */
 - (void)setTarget: (id)target action: (SEL)action;
 
+
+
+/*!
+ @brief Bouquet.
+ */
 @property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
 
 @end

@@ -42,7 +42,7 @@
 /*!
  @brief Standard initializer.
  
- @param CXMLNode Pointer to CXMLNode describing this Timer.
+ @param node Pointer to CXMLNode describing this Timer.
  @return EnigmaTimer instance.
  */
 - (id)initWithNode: (CXMLNode *)node;

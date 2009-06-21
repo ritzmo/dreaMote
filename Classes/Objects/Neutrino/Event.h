@@ -26,7 +26,7 @@
 /*!
  @brief Standard initializer.
  
- @param CXMLNode Pointer to CXMLNode describing this Event.
+ @param node Pointer to CXMLNode describing this Event.
  @return NeutrinoEvent instance.
  */
 - (id)initWithNode: (CXMLNode *)node;

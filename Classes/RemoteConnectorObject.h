@@ -55,7 +55,7 @@
  @brief Try to automatically detect correct Connector for given Connection.
  
  @param connection Dictionary containing Connection data.
- @return Connector Id (see: @link availableConnectors enum availableConnectors @/link).
+ @return Connector Id (see: @link availableConnectors enum availableConnectors @endlink).
  */
 + (enum availableConnectors)autodetectConnector: (NSDictionary *)connection;
 

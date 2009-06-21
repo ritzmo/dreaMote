@@ -8,13 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+/*!
+ @brief Application Delegate.
+ */
 @interface AppDelegate : NSObject  <UIApplicationDelegate>
 {
-	UIWindow *window;
-	UINavigationController *navigationController;
+	UIWindow *window; /*!< @brief Application window. */
+	UINavigationController *navigationController; /*!< @brief Navigation Controller. */
 }
 
+/*!
+ @brief Application window.
+ */
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+
+/*!
+ @brief Navigation Controller.
+ */
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @end

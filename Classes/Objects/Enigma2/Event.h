@@ -28,7 +28,7 @@
 /*!
  @brief Standard initializer.
  
- @param CXMLNode Pointer to CXMLNode describing this Event.
+ @param node Pointer to CXMLNode describing this Event.
  @return Enigma2Event instance.
  */
 - (id)initWithNode: (CXMLNode *)node;
