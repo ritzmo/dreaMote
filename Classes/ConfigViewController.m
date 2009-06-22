@@ -15,7 +15,43 @@
 #import "DisplayCell.h"
 
 @interface ConfigViewController()
+/*!
+ @brief Animate View up or down.
+ Animate the entire view up or down, to prevent the keyboard from covering the text field.
+ 
+ @param movedUp YES if moving down again.
+ */
 - (void)setViewMovedUp:(BOOL)movedUp;
+
+/*!
+ @brief Create standardized UITextField.
+ 
+ @return UITextField instance.
+ */
+- (UITextField *)create_TextField;
+
+/*!
+ @brief Create standardized UIButton.
+ 
+ @param imageName Name of Image to illustrate button with.
+ @param action Selector to call on UIControlEventTouchUpInside.
+ @return UIButton instance.
+ */
+- (UIButton *)create_Button: (NSString *)imageName: (SEL)action;
+
+/*!
+ @brief Selector to call when _makeDefaultButton was pressed.
+ 
+ @param sender Unused instance of sender.
+ */
+- (void)makeDefault: (id)sender;
+
+/*!
+ @brief Selector to call when _connectButton was pressed.
+ 
+ @param sender Unused instance of sender.
+ */
+- (void)doConnect: (id)sender;
 @end
 
 @implementation ConfigViewController
@@ -25,15 +61,19 @@
 @synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
 
-// the amount of vertical shift upwards keep the text field in view as the keyboard appears
+/*!
+ @brief Keyboard offset.
+ The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
+ */
 #define kOFFSET_FOR_KEYBOARD					150.0
 
-// the duration of the animation for the view shift
+/*! @brief The duration of the animation for the view shift. */
 #define kVerticalOffsetAnimationDuration		0.30
 
+/* initialize */
 - (id)init
 {
-	if (self = [super init])
+	if(self = [super init])
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
 		_connectorCell = nil;
@@ -41,6 +81,7 @@
 	return self;
 }
 
+/* initiate ConfigViewController with given connection and index */
 + (ConfigViewController *)withConnection: (NSMutableDictionary *)newConnection: (NSInteger)atIndex;
 {
 	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
@@ -50,6 +91,7 @@
 	return configViewController;
 }
 
+/* initiate ConfigViewController with new connection */
 + (ConfigViewController *)newConnection
 {
 	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
@@ -66,6 +108,7 @@
 	return configViewController;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_remoteNameTextField release];
@@ -80,6 +123,7 @@
 	[super dealloc];
 }
 
+/* create a textfield */
 - (UITextField *)create_TextField
 {
 	UITextField *returnTextField = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -102,30 +146,20 @@
 	return returnTextField;
 }
 
-- (UIButton *)create_DefaultButton
+/* create a button */
+- (UIButton *)create_Button: (NSString *)imageName: (SEL)action
 {
 	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
-	UIImage *image = [UIImage imageNamed:@"emblem-favorite.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(makeDefault:)
-				forControlEvents:UIControlEventTouchUpInside];
-
+	UIImage *image = [UIImage imageNamed: imageName];
+	[button setImage: image forState: UIControlStateNormal];
+	[button addTarget: self action: action
+	 forControlEvents: UIControlEventTouchUpInside];
+	
 	return [button autorelease];
 }
 
-- (UIButton *)create_ConnectButton
-{
-	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
-	UIButton *button = [[UIButton alloc] initWithFrame: frame];
-	UIImage *image = [UIImage imageNamed:@"network-wired.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(doConnect:)
-				forControlEvents:UIControlEventTouchUpInside];
-
-	return [button autorelease];
-}
-
+/* layout */
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -179,11 +213,11 @@
 	_connector = [[_connection objectForKey: kConnector] integerValue];
 
 	// Connect Button
-	self.connectButton = [self create_ConnectButton];
+	self.connectButton = [self create_Button: @"network-wired.png": @selector(doConnect:)];
 	_connectButton.enabled = YES;
 	
 	// "Make Default" Button
-	self.makeDefaultButton = [self create_DefaultButton];
+	self.makeDefaultButton = [self create_Button: @"emblem-favorite.png": @selector(makeDefault:)];
 	_makeDefaultButton.enabled = YES;
 
 	// Single bouquet switch
@@ -196,6 +230,7 @@
 	[self setEditing: (_connectionIndex == -1) animated: NO];
 }
 
+/* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated;
 {
 	[super setEditing: editing animated: animated];
@@ -262,6 +297,7 @@
 	}
 }
 
+/* cancel and close */
 - (void)cancelEdit: (id)sender
 {
 	_shouldSave = NO;
@@ -269,6 +305,7 @@
 	[self.navigationController popViewControllerAnimated: YES];
 }
 
+/* "make default" button pressed */
 - (void)makeDefault: (id)sender
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -283,6 +320,7 @@
 	[(UITableView *)self.view endUpdates];
 }
 
+/* "connect" button pressed */
 - (void)doConnect: (id)sender
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -301,11 +339,15 @@
 	[(UITableView *)self.view endUpdates];
 }
 
+/* rotate to portrait mode */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - <ConnectorDelegate> methods
+
+/* connector selected */
 - (void)connectorSelected: (NSNumber*) newConnector
 {
 	if(newConnector == nil)
@@ -357,13 +399,13 @@
 
 #pragma mark - UITableView delegates
 
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
+/* no editing style for any cell */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellEditingStyleNone;
 }
 
+/* number of sections */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if(	_connectionIndex == -1
@@ -372,6 +414,7 @@
 	return 4;
 }
 
+/* title for sections */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	switch(section)
@@ -388,6 +431,7 @@
 	}
 }
 
+/* rows per section */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	switch(section)
@@ -397,7 +441,10 @@
 		case 1:
 			return 2;
 		case 2:
-			// XXX: HAAAAAAACK - but I really wanted this feature :P
+			/*!
+			 @brief Add "single bouquet" switch for Enigma2 based STBs.
+			 @note Actually this is an ugly hack but I really wanted this feature :P
+			 */
 			if(_connector == kEnigma2Connector)
 				return 2;
 			return 1;
@@ -410,8 +457,7 @@
 	return 0;
 }
 
-// to determine which UITableViewCell to be used on a given row.
-//
+/* determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
@@ -531,6 +577,7 @@
 	return sourceCell;
 }
 
+/* select row */
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	NSInteger row = indexPath.row;
 	if(self.editing && indexPath.section == 2 && row == 0)
@@ -558,6 +605,7 @@
 #pragma mark -
 #pragma mark <EditableTableViewCellDelegate> Methods and editing management
 
+/* stop editing other cells when starting another one */
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
 	// notify other cells to end editing
@@ -590,8 +638,13 @@
 	return self.editing;
 }
 
+/* cell stopped editing */
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
+	/*!
+	 @note We're only interested in _usernameCell and _passwordCell since
+	 those might have messed with our view.
+	 */
 	if(([cell isEqual: _usernameCell] && ! _passwordCell.isInlineEditing)
 		|| ([cell isEqual: _passwordCell] && !_usernameCell.isInlineEditing))
 	{
@@ -603,7 +656,7 @@
     }
 }
 
-// Animate the entire view up or down, to prevent the keyboard from covering the text field.
+/* Animate the entire view up or down, to prevent the keyboard from covering the text field. */
 - (void)setViewMovedUp:(BOOL)movedUp
 {
     [UIView beginAnimations:nil context:NULL];
@@ -630,10 +683,13 @@
     [UIView commitAnimations];
 }
 
+/* keyboard about to show */
 - (void)keyboardWillShow:(NSNotification *)notif
 {
-	// The keyboard will be shown. If the user is editing the username or password, adjust the
-	// display so that the field will not be covered by the keyboard.
+	/*!
+	 @note The keyboard will be shown. If the user is editing the username or password, adjust
+	 the display so that the field will not be covered by the keyboard.
+	 */
 	if(_usernameCell.isInlineEditing || _passwordCell.isInlineEditing)
 	{
 		if(self.view.frame.origin.y >= 0)
@@ -645,6 +701,7 @@
 
 #pragma mark - UIViewController delegate methods
 
+/* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
     // watch the keyboard so we can adjust the user interface if necessary.
@@ -655,6 +712,7 @@
 	[super viewWillAppear: animated];
 }
 
+/* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.

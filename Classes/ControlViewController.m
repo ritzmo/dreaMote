@@ -20,15 +20,17 @@
 @synthesize switchControl = _switchControl;
 @synthesize slider = _slider;
 
+/* initialize */
 - (id)init
 {
-	if (self = [super init])
+	if(self = [super init])
 	{
 		self.title = NSLocalizedString(@"Controls", @"Title of ControlViewController");
 	}
 	return self;
 }
 
+/* dealloc */
 - (void)dealloc
 {
 	[_switchControl release];
@@ -37,20 +39,7 @@
 	[super dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-	// Spawn a thread to fetch the volume data so that the UI is not blocked while the 
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchVolume) toTarget:self withObject:nil];
-
-	[super viewWillAppear: animated];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
-}
-
+/* initiate download of volume state */
 - (void)fetchVolume
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -60,6 +49,7 @@
 	[pool release];
 }
 
+/* volume received */
 - (void)gotVolume:(id)newVolume
 {
 	if(newVolume == nil)
@@ -71,6 +61,7 @@
 	_slider.value = (float)(volume.current);
 }
 
+/* layout */
 - (void)loadView
 {
 	// create and configure the table view
@@ -105,6 +96,7 @@
 	_switchControl.backgroundColor = [UIColor clearColor];
 }
 
+/* create "instant record" button */
 - (UIButton *)create_InstantRecordButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
@@ -115,6 +107,7 @@
 	return [button autorelease];
 }
 
+/* create "standby" button */
 - (UIButton *)create_StandbyButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
@@ -125,6 +118,7 @@
 	return [button autorelease];
 }
 
+/* create "reboot" button */
 - (UIButton *)create_RebootButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
@@ -135,6 +129,7 @@
 	return [button autorelease];
 }
 
+/* create "restart gui" button */
 - (UIButton *)create_RestartButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
@@ -145,6 +140,7 @@
 	return [button autorelease];
 }
 
+/* create "shutdown" button */
 - (UIButton *)create_ShutdownButton
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
@@ -155,6 +151,7 @@
 	return [button autorelease];
 }
 
+/* start recording */
 - (void)record:(id)sender
 {
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
@@ -164,6 +161,7 @@
 }
 
 // XXX: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
+/* go to standby */
 - (void)standby:(id)sender
 {
 	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
@@ -173,6 +171,7 @@
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+/* reboot */
 - (void)reboot:(id)sender
 {
 	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
@@ -182,6 +181,7 @@
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+/* restart gui */
 - (void)restart:(id)sender
 {
 	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
@@ -191,6 +191,7 @@
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+/* shutdown */
 -(void)shutdown:(id)sender
 {
 	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
@@ -204,16 +205,19 @@
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+/* toggle muted state */
 - (void)toggleMuted:(id)sender
 {
 	[_switchControl setOn: [[RemoteConnectorObject sharedRemoteConnector] toggleMuted]];
 }
 
+/* change volume */
 - (void)volumeChanged:(UISlider *)volumeSlider
 {
 	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(NSInteger)[volumeSlider value]];
 }
 
+/* rotate to portrait mode */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	// Return YES for supported orientations
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
@@ -221,6 +225,7 @@
 
 #pragma mark - UITableView delegates
 
+/* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// XXX: this is kinda hackish
@@ -234,13 +239,13 @@
 	return nil;
 }
 
-// if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
-//
+/* no editing style for any row */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	return UITableViewCellEditingStyleNone;
 }
 
+/* number of sections */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
@@ -248,6 +253,7 @@
 	return 2;
 }
 
+/* section titles */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	switch (section) {
@@ -263,6 +269,7 @@
 	}
 }
 
+/* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	switch(section) {
@@ -280,8 +287,7 @@
 	}
 }
 
-// to determine which UITableViewCell to be used on a given row.
-//
+/* determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	DisplayCell *sourceCell = (DisplayCell *)[tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
@@ -341,6 +347,24 @@
 	}
 	
 	return sourceCell;
+}
+
+#pragma mark - UIViewController delegate methods
+
+/* about to appear */
+- (void)viewWillAppear:(BOOL)animated
+{
+	// Spawn a thread to fetch the volume data so that the UI is not blocked while the 
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchVolume) toTarget:self withObject:nil];
+	
+	[super viewWillAppear: animated];
+}
+
+/* did disappear */
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[super viewDidDisappear:animated];
 }
 
 @end
