@@ -14,6 +14,9 @@
 
 #import "DisplayCell.h"
 
+/*!
+ @brief Private functions of ConfigViewController.
+ */
 @interface ConfigViewController()
 /*!
  @brief Animate View up or down.

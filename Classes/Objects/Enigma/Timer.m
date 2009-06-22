@@ -12,7 +12,13 @@
 
 #import "../Generic/Service.h"
 
+/*!
+ @brief Private functions of ConfigListController.
+ */
 @interface EnigmaTimer()
+/*!
+ @brief Translate timer flags into common representation.
+ */
 - (void)getTypedata;
 @end
 

@@ -14,6 +14,9 @@
  */
 NSString *kServiceCell_ID = @"ServiceCell_ID";
 
+/*!
+ @brief Private functions of ServiceTableViewCell.
+ */
 @interface ServiceTableViewCell()
 /*!
  @brief Private helper to create a label.

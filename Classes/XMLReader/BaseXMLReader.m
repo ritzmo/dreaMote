@@ -7,8 +7,18 @@
 //
 #import "BaseXMLReader.h"
 
+/*!
+ @brief Private functions of BaseXMLReader.
+ */
 @interface BaseXMLReader()
+/*!
+ @brief Instruct XMLReader to send fake object to callback.
+ */
 - (void)sendErroneousObject;
+
+/*!
+ @brief Parse XML Document.
+ */
 - (void)parseFull;
 @end
 

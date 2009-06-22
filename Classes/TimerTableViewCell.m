@@ -17,6 +17,9 @@
  */
 NSString *kTimerCell_ID = @"TimerCell_ID";
 
+/*!
+ @brief Private functions of TimerTableViewCell.
+ */
 @interface TimerTableViewCell()
 /*!
  @brief Private helper to create a label.

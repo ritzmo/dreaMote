@@ -14,6 +14,9 @@
  */
 NSString *kEventCell_ID = @"EventCell_ID";
 
+/*!
+ @brief Private functions of EventTableViewCell.
+ */
 @interface EventTableViewCell()
 /*!
  @brief Private helper to create a label.

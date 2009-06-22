@@ -14,7 +14,16 @@
 
 #import "DisplayCell.h"
 
+/*!
+ @brief Private functions of MessageViewController.
+ */
 @interface MessageViewController()
+/*!
+ @brief Animate View up or down.
+ Animate the entire view up or down, to prevent the keyboard from covering the text field.
+ 
+ @param movedUp YES if moving down again.
+ */
 - (void)setViewMovedUp:(BOOL)movedUp;
 @end
 

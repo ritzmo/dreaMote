@@ -16,6 +16,9 @@
  */
 NSString *kMovieCell_ID = @"MovieCell_ID";
 
+/*!
+ @brief Private functions of MovieTableViewCell.
+ */
 @interface MovieTableViewCell()
 /*!
  @brief Private helper to create a label.

@@ -15,6 +15,9 @@
 
 #import "ConfigViewController.h"
 
+/*!
+ @brief Private functions of ConfigListController.
+ */
 @interface ConfigListController()
 /*!
  @brief Utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell

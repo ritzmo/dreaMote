@@ -10,6 +10,7 @@
 
 /*!
  @brief Manages list of known and active Connection(s).
+
  By using this static Class we can easily share some ressources
  between the active UIViews and this eased development a lot.
  */
@@ -55,7 +56,8 @@
  @brief Try to automatically detect correct Connector for given Connection.
  
  @param connection Dictionary containing Connection data.
- @return Connector Id (@see enum availableConnectors).
+ @return Connector Id (see enum availableConnectors).
+ @see enum availableConnectors
  */
 + (enum availableConnectors)autodetectConnector: (NSDictionary *)connection;
 
