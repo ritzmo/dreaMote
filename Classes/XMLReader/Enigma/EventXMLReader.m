@@ -13,20 +13,31 @@
 
 @implementation EnigmaEventXMLReader
 
-/*!
- @brief Upper bound for parsed Events.
- 
- @note Events are considered 'heavy'
- @todo Do we actually still care? We keep the whole structure in our memory anyway...
- */
-#define MAX_EVENTS 100
+/* initialize */
+- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
+{
+	if(self = [super init])
+	{
+		_delegate = [delegate retain];
+	}
+	return self;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_delegate release];
+	[super dealloc];
+}
 
 /* send fake object */
 - (void)sendErroneousObject
 {
 	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread: @selector(addEvent:)
+								withObject: fakeObject
+							 waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -54,18 +65,17 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	NSUInteger parsedEventsCounter = 0;
 
 	resultNodes = [_parser nodesForXPath:@"/service_epg/event" error:nil];
 
-	for (CXMLElement *resultElement in resultNodes) {
-		if(++parsedEventsCounter >= MAX_EVENTS)
-			break;
-
+	for(CXMLElement *resultElement in resultNodes)
+	{
 		// An service in the xml represents an event, so create an instance of it.
 		EnigmaEvent *newEvent = [[EnigmaEvent alloc] initWithNode: (CXMLNode *)resultElement];
 		
-		[_target performSelectorOnMainThread: _addObject withObject: newEvent waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread: @selector(addEvent:)
+									withObject: newEvent
+								 waitUntilDone: NO];
 		[newEvent release];
 	}
 }

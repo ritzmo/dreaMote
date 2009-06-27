@@ -13,20 +13,31 @@
 
 @implementation Enigma2MovieXMLReader
 
-/*!
- @brief Upper bound for parsed Movies.
- 
- @note Movies are considered 'heavy'
- @todo Do we actually still care? We keep the whole structure in our memory anyway...
- */
-#define MAX_MOVIES 100
+/* initialize */
+- (id)initWithDelegate:(NSObject<MovieSourceDelegate> *)delegate
+{
+	if(self = [super init])
+	{
+		_delegate = [delegate retain];
+	}
+	return self;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_delegate release];
+	[super dealloc];
+}
 
 /* send fake object */
 - (void)sendErroneousObject
 {
 	NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread: @selector(addMovie:)
+								withObject: fakeObject
+							 waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -51,18 +62,17 @@ Example:
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	NSUInteger parsedMovieCounter = 0;
-	
-	resultNodes = [_parser nodesForXPath:@"/e2movielist/e2movie" error:nil];
-	
-	for (CXMLElement *resultElement in resultNodes) {
-		if(++parsedMovieCounter >= MAX_MOVIES)
-			break;
 
+	resultNodes = [_parser nodesForXPath:@"/e2movielist/e2movie" error:nil];
+
+	for(CXMLElement *resultElement in resultNodes)
+	{
 		// An e2movie in the xml represents a movie, so create an instance of it.
 		NSObject<MovieProtocol> *newMovie = [[Enigma2Movie alloc] initWithNode: (CXMLNode *)resultElement];
 		
-		[_target performSelectorOnMainThread: _addObject withObject: newMovie waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread: @selector(addMovie:)
+									withObject: newMovie
+								 waitUntilDone: NO];
 		[newMovie release];
 	}
 }

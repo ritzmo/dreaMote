@@ -162,27 +162,25 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_timerXMLDoc release];
-	_timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self action:@selector(addTimer:)] retain];
+	_timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers: self] retain];
 	[pool release];
 }
 
 /* add timer to list */
-- (void)addTimer:(id)newTimer
+- (void)addTimer: (NSObject<TimerProtocol> *)newTimer
 {
 	if(newTimer != nil)
 	{
-		NSObject<TimerProtocol> *timer = (GenericTimer*)newTimer;
-
-		NSInteger state = timer.state;
+		NSInteger state = newTimer.state;
 		NSInteger index = _dist[state];
 
-		[_timers insertObject:timer atIndex:index];
+		[_timers insertObject: newTimer atIndex: index];
 
 		for(; state < kTimerStateMax; state++){
 			_dist[state]++;
 		}
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		state = timer.state;
+		state = newTimer.state;
 		if(state > 0)
 			index -= _dist[state - 1];
 

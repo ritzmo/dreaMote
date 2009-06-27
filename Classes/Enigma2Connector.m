@@ -13,12 +13,12 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
 
-#import "XMLReader/Enigma2/ServiceXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
+#import "XMLReader/Enigma2/MovieXMLReader.h"
+#import "XMLReader/Enigma2/ServiceXMLReader.h"
+#import "XMLReader/Enigma2/SignalXMLReader.h"
 #import "XMLReader/Enigma2/TimerXMLReader.h"
 #import "XMLReader/Enigma2/VolumeXMLReader.h"
-#import "XMLReader/Enigma2/MovieXMLReader.h"
-#import "XMLReader/Enigma2/SignalXMLReader.h"
 
 #import "EnigmaRCEmulatorController.h"
 
@@ -135,17 +135,17 @@ enum enigma2MessageTypes {
 	return [self zapInternal: movie.sref];
 }
 
-- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
+- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/getservices" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet;
 {
 	NSString *sref = nil;
 	if(!bouquet) // single bouquet mode
@@ -154,37 +154,37 @@ enum enigma2MessageTypes {
 		sref = [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
+- (CXMLDocument *)fetchEPG:(NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
+- (CXMLDocument *)fetchTimers:(NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
+- (CXMLDocument *)fetchMovielist:(NSObject<MovieSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/movielist" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -228,20 +228,20 @@ enum enigma2MessageTypes {
 	[self sendPowerstate: kRestartGUIState];
 }
 
-- (void)getVolume:(id)target action:(SEL)action
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: _baseAddress];
 
-	Enigma2VolumeXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError: nil];
 	[streamReader autorelease];
 }
 
-- (void)getSignal:(id)target action:(SEL)action
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/signal" relativeToURL: _baseAddress];
 	
-	Enigma2SignalXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError: nil];
 	[streamReader autorelease];
 }
@@ -512,22 +512,22 @@ enum enigma2MessageTypes {
 	return NO;
 }
 
-- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
 	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event
+- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: _baseAddress];
 	
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;

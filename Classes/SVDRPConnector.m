@@ -16,6 +16,13 @@
 #import "Objects/Generic/Volume.h"
 #import "Objects/SVDRP/Timer.h"
 
+#import "EventSourceDelegate.h"
+#import "MovieSourceDelegate.h"
+#import "ServiceSourceDelegate.h"
+#import "SignalSourceDelegate.h"
+#import "TimerSourceDelegate.h"
+#import "VolumeSourceDelegate.h"
+
 #import "SVDRPRCEmulatorController.h"
 
 @implementation SVDRPConnector
@@ -136,18 +143,20 @@
 
 // TODO: does the vdr actually have bouquets?
 // XXX: for now we just return a fake service, we don't support favourite online mode anyway
-- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
+- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate
 {
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	newService.sname = NSLocalizedString(@"All Services", @"");
 	newService.sref = @"dc";
 
-	[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+	[delegate performSelectorOnMainThread: @selector(addService:)
+							   withObject: newService
+							waitUntilDone: NO];
 	[newService release];
 	return nil;
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
@@ -156,7 +165,9 @@
 	{
 		NSObject<ServiceProtocol> *fakeObject = [[GenericService alloc] init];
 		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
-		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: fakeObject
+								waitUntilDone: NO];
 		[fakeObject release];
 
 		return nil;
@@ -197,7 +208,9 @@
 			name = [name substringToIndex: range.location];
 		newService.sname = name;
 
-		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
 		[_serviceCache setObject: newService forKey: newService.sref];
 		[newService release];
 
@@ -211,7 +224,7 @@
 	return nil;
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
+- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
@@ -220,7 +233,9 @@
 	{
 		NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addEvent:)
+								   withObject: fakeObject
+								waitUntilDone: NO];
 		[fakeObject release];
 
 		return nil;
@@ -267,7 +282,9 @@
 		}
 		else if([[line substringToIndex: 5] isEqualToString: @"215-e"])
 		{
-			[target performSelectorOnMainThread: action withObject: newEvent waitUntilDone: NO];
+			[delegate performSelectorOnMainThread: @selector(addEvent:)
+									   withObject: newEvent
+									waitUntilDone: NO];
 			[newEvent release];
 		}
 	}
@@ -277,7 +294,7 @@
 	return nil;
 }
 
-- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
+- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
@@ -288,14 +305,16 @@
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 		fakeObject.state = 0;
 		fakeObject.valid = NO;
-		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addTimer:)
+								   withObject: fakeObject
+								waitUntilDone: NO];
 		[fakeObject release];
 
 		return nil;
 	}
 	// Try to refresh cache if none present
 	if(_serviceCache == nil)
-		[self fetchServices: nil action: nil bouquet: nil];	
+		[self fetchServices: nil bouquet: nil];	
 
 	[_socket writeString: @"LSTT\r\n"];
 
@@ -414,7 +433,9 @@
 		// XXX: we don't get any information about a title, so use the filename for now
 		newTimer.title = newTimer.file;
 
-		[target performSelectorOnMainThread: action withObject: newTimer waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addTimer:)
+								   withObject: newTimer
+								waitUntilDone: NO];
 		[newTimer release];
 
 		// Last line
@@ -429,7 +450,7 @@
 }
 
 // TODO: test this
-- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
@@ -438,7 +459,9 @@
 	{
 		NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addMovie:)
+								   withObject: fakeObject
+								waitUntilDone: NO];
 		[fakeObject release];
 		
 		return nil;
@@ -488,7 +511,9 @@
 		range.length = [components count] - 3;
 		movie.title = [[components subarrayWithRange: range] componentsJoinedByString: @" "];
 
-		[target performSelectorOnMainThread: action withObject: movie waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addMovie:)
+								   withObject: movie
+								waitUntilDone: NO];
 		[movie release];
 
 		// Last line
@@ -529,7 +554,7 @@
 	return;
 }
 
-- (void)getVolume:(id)target action:(SEL)action
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
 {
 	GenericVolume *volumeObject = [[GenericVolume alloc] init];
 
@@ -559,7 +584,9 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
+	[delegate performSelectorOnMainThread: @selector(addVolume:)
+							   withObject: volumeObject
+							waitUntilDone: NO];
 	[volumeObject release];
 }
 
@@ -906,16 +933,21 @@
 	return YES;
 }
 
-- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 
-- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event
+- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
+}
+
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
 - (BOOL)instantRecord

@@ -13,13 +13,22 @@
 
 @implementation Enigma2TimerXMLReader
 
-/*!
- @brief Upper bound for parsed Timers.
- 
- @note Timers are considered 'heavy'
- @todo Do we actually still care? We keep the whole structure in our memory anyway...
- */
-#define MAX_TIMERS 100
+/* initialize */
+- (id)initWithDelegate:(NSObject<TimerSourceDelegate> *)delegate
+{
+	if(self = [super init])
+	{
+		_delegate = [delegate retain];
+	}
+	return self;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_delegate release];
+	[super dealloc];
+}
 
 /* send fake object */
 - (void)sendErroneousObject
@@ -28,7 +37,9 @@
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
-	[_target performSelectorOnMainThread: _addObject withObject: fakeObject waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread: @selector(addTimer:)
+								withObject: fakeObject
+							 waitUntilDone: NO];
 	[fakeObject release];
 }
 
@@ -68,19 +79,17 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	NSUInteger parsedTimersCounter = 0;
-	
+
 	resultNodes = [_parser nodesForXPath:@"/e2timerlist/e2timer" error:nil];
-	
+
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		if(++parsedTimersCounter >= MAX_TIMERS)
-			break;
-		
 		// An e2timer in the xml represents a timer, so create an instance of it.
 		Enigma2Timer *newTimer = [[Enigma2Timer alloc] initWithNode:(CXMLNode *)resultElement];
 
-		[_target performSelectorOnMainThread: _addObject withObject: newTimer waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread: @selector(addTimer:)
+									withObject: newTimer
+								 waitUntilDone: NO];
 		[newTimer release];
 	}
 }

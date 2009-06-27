@@ -189,11 +189,11 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
-	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self action:@selector(addEvent:) event: _event] retain];
+	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self event: _event] retain];
 	[pool release];
 }
 
-- (void)addEvent:(id)event
+- (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	if(event != nil)
 	{

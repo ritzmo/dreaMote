@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "ServiceListController.h"
+#import "ServiceSourceDelegate.h"
 
 // Forward declaration
 @class CXMLDocument;
@@ -18,8 +19,8 @@
  
  Display list of known bouquets and start ServiceListController on selected ones.
  */
-@interface BouquetListController : UIViewController <UIActionSheetDelegate,
-													UITableViewDelegate, UITableViewDataSource>
+@interface BouquetListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate,
+													UITableViewDataSource, ServiceSourceDelegate>
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */

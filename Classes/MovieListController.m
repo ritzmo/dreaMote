@@ -138,12 +138,12 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_movieXMLDoc release];
-	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self action:@selector(addMovie:)] retain];
+	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self] retain];
 	[pool release];
 }
 
 /* add movie to list */
-- (void)addMovie:(NSObject<MovieProtocol> *)movie
+- (void)addMovie: (NSObject<MovieProtocol> *)movie
 {
 	if(movie != nil)
 	{

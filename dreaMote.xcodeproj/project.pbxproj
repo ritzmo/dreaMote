@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -143,14 +142,13 @@
 		DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1410EABAD4300D99545 /* system-shutdown.png */; };
 		DADFB1470EABAD4300D99545 /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1420EABAD4300D99545 /* view-refresh.png */; };
 		DADFB1A20EABB2C800D99545 /* mail-forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1A10EABB2C800D99545 /* mail-forward.png */; };
+		DAF197730FF5764D009CA6A0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF1976C0FF5764D009CA6A0 /* AppDelegate.m */; };
 		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
 		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -379,6 +377,14 @@
 		DADFB1410EABAD4300D99545 /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "system-shutdown.png"; path = "Images/system-shutdown.png"; sourceTree = "<group>"; };
 		DADFB1420EABAD4300D99545 /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "view-refresh.png"; path = "Images/view-refresh.png"; sourceTree = "<group>"; };
 		DADFB1A10EABB2C800D99545 /* mail-forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mail-forward.png"; path = "Images/mail-forward.png"; sourceTree = "<group>"; };
+		DAF1976B0FF5764D009CA6A0 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Delegates/AppDelegate.h; sourceTree = "<group>"; };
+		DAF1976C0FF5764D009CA6A0 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Delegates/AppDelegate.m; sourceTree = "<group>"; };
+		DAF1976D0FF5764D009CA6A0 /* EventSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EventSourceDelegate.h; path = Delegates/EventSourceDelegate.h; sourceTree = "<group>"; };
+		DAF1976E0FF5764D009CA6A0 /* MovieSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieSourceDelegate.h; path = Delegates/MovieSourceDelegate.h; sourceTree = "<group>"; };
+		DAF1976F0FF5764D009CA6A0 /* ServiceSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ServiceSourceDelegate.h; path = Delegates/ServiceSourceDelegate.h; sourceTree = "<group>"; };
+		DAF197700FF5764D009CA6A0 /* SignalSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SignalSourceDelegate.h; path = Delegates/SignalSourceDelegate.h; sourceTree = "<group>"; };
+		DAF197710FF5764D009CA6A0 /* TimerSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerSourceDelegate.h; path = Delegates/TimerSourceDelegate.h; sourceTree = "<group>"; };
+		DAF197720FF5764D009CA6A0 /* VolumeSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeSourceDelegate.h; path = Delegates/VolumeSourceDelegate.h; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
 		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
@@ -405,14 +411,13 @@
 			children = (
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
+				DAF197540FF574DB009CA6A0 /* Delegates */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
 				DA0BF0470F0BC011004B488C /* TouchXML */,
 				DAF0D5460E38FF16001F7CF1 /* ViewController */,
 				DA7D23630F101F1500BB8BE7 /* XMLReader */,
-				1D3623240D0F684500981E51 /* AppDelegate.h */,
-				1D3623250D0F684500981E51 /* AppDelegate.m */,
 				DA7FD7720D84345100974B1A /* Constants.h */,
 				DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */,
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
@@ -842,6 +847,21 @@
 			name = Connector;
 			sourceTree = "<group>";
 		};
+		DAF197540FF574DB009CA6A0 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				DAF1976B0FF5764D009CA6A0 /* AppDelegate.h */,
+				DAF1976C0FF5764D009CA6A0 /* AppDelegate.m */,
+				DAF1976D0FF5764D009CA6A0 /* EventSourceDelegate.h */,
+				DAF1976E0FF5764D009CA6A0 /* MovieSourceDelegate.h */,
+				DAF1976F0FF5764D009CA6A0 /* ServiceSourceDelegate.h */,
+				DAF197700FF5764D009CA6A0 /* SignalSourceDelegate.h */,
+				DAF197710FF5764D009CA6A0 /* TimerSourceDelegate.h */,
+				DAF197720FF5764D009CA6A0 /* VolumeSourceDelegate.h */,
+			);
+			name = Delegates;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -966,7 +986,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
-				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */,
 				DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */,
 				DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */,
@@ -1052,6 +1071,7 @@
 				DA5536BE0FE6A38C00FBAF18 /* SignalViewController.m in Sources */,
 				DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */,
 				DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */,
+				DAF197730FF5764D009CA6A0 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1116,6 +1136,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Pwned Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";
@@ -1134,6 +1155,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Pwned Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";

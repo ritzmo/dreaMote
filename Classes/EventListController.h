@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "EventSourceDelegate.h"
+
 // Forward declarations...
 @protocol ServiceProtocol;
 @class FuzzyDateFormatter;
@@ -19,7 +21,8 @@
  
  Lists events and opens an EventViewController upon selection.
  */
-@interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													EventSourceDelegate>
 {
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
@@ -37,15 +40,6 @@
  @return EventListController instance.
  */
 + (EventListController*)forService: (NSObject<ServiceProtocol> *)ourService;
-
-/*!
- @brief Add Event to List.
-
- Used for < RemoteConnector >::fetchEPG Callback.
- 
- @param event Event instance.
- */
-- (void)addEvent:(id)event;
 
 
 

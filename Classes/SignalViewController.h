@@ -8,12 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "SignalSourceDelegate.h"
+
 /*!
  @brief Signal View.
  
  Allows to display SNR(dB)/AGC/BER as long as RemoteConnector supports it.
  */
-@interface SignalViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface SignalViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													SignalSourceDelegate>
 {
 @private
 	NSTimer *_timer; /*!< @brief NSTimer to refresh data. */

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ServiceSourceDelegate.h"
+
 // Forward declarations
 @class EventListController;
 @class CXMLDocument;
@@ -20,8 +22,8 @@
  Lists services of a Bouquet and opens EventListController for this Service upon
  selection.
  */
-@interface ServiceListController : UIViewController <UIActionSheetDelegate,
-													UITableViewDelegate, UITableViewDataSource>
+@interface ServiceListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate,
+													UITableViewDataSource, ServiceSourceDelegate>
 {
 @private
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */

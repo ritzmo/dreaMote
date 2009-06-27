@@ -69,17 +69,15 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	[[RemoteConnectorObject sharedRemoteConnector] getSignal:self action:@selector(gotSignal:)];
+	[[RemoteConnectorObject sharedRemoteConnector] getSignal: self];
 
 	[pool release];
 }
 
-- (void)gotSignal:(id)anObject
+- (void)addSignal: (GenericSignal *)signal
 {
-	if(anObject == nil)
+	if(signal == nil)
 		return;
-
-	GenericSignal *signal = (GenericSignal*)anObject; // just for convenience
 
 	_snr.value = (float)(signal.snr);
 	_agc.value = (float)(signal.agc);

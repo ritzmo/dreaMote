@@ -15,20 +15,31 @@
 
 @implementation Enigma2ServiceXMLReader
 
-/*!
- @brief Upper bound for parsed Services.
- 
- @note Services are considered 'lightweight'
- @todo Do we actually still care? We keep the whole structure in our memory anyway...
- */
-#define MAX_SERVICES 2048
+/* initialize */
+- (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate
+{
+	if(self = [super init])
+	{
+		_delegate = [delegate retain];
+	}
+	return self;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_delegate release];
+	[super dealloc];
+}
 
 /* send fake object */
 - (void)sendErroneousObject
 {
 	NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[_target performSelectorOnMainThread: _addObject withObject: fakeService waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread: @selector(addService:)
+								withObject: fakeService
+							 waitUntilDone: NO];
 	[fakeService release];
 }
 
@@ -45,19 +56,17 @@
 - (void)parseFull
 {
 	NSArray *resultNodes = NULL;
-	NSUInteger parsedServicesCounter = 0;
-	
+
 	resultNodes = [_parser nodesForXPath:@"/e2servicelist/e2service" error:nil];
 	
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		if(++parsedServicesCounter >= MAX_SERVICES)
-			break;
-		
 		// An e2service in the xml represents a service, so create an instance of it.
 		NSObject<ServiceProtocol> *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
 		
-		[_target performSelectorOnMainThread: _addObject withObject: newService waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread: @selector(addService:)
+									withObject: newService
+								 waitUntilDone: NO];
 		[newService release];
 	}
 }

@@ -144,12 +144,12 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_serviceXMLDoc release];
-	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices:self action:@selector(addService:) bouquet: _bouquet] retain];
+	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet] retain];
 	[pool release];
 }
 
 /* add service to list */
-- (void)addService:(id)service
+- (void)addService: (NSObject<ServiceProtocol> *)service
 {
 	if(service != nil)
 	{

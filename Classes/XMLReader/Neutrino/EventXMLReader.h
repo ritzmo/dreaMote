@@ -9,12 +9,23 @@
 #import <Foundation/Foundation.h>
 
 #import "BaseXMLReader.h"
+#import "EventSourceDelegate.h"
 
 /*!
  @brief Neutrino Event XML Reader.
  */
 @interface NeutrinoEventXMLReader : BaseXMLReader
 {
+@private
+	NSObject<EventSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
+
+/*!
+ @brief Standard initializer.
+ 
+ @param target Delegate.
+ @return NeutrinoEventXMLReader instance.
+ */
+- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate;
 
 @end

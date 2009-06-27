@@ -44,18 +44,16 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	[[RemoteConnectorObject sharedRemoteConnector] getVolume:self action:@selector(gotVolume:)];
+	[[RemoteConnectorObject sharedRemoteConnector] getVolume: self];
 
 	[pool release];
 }
 
 /* volume received */
-- (void)gotVolume:(id)newVolume
+- (void)addVolume: (GenericVolume *)volume
 {
-	if(newVolume == nil)
+	if(volume == nil)
 		return;
-
-	GenericVolume *volume = (GenericVolume*)newVolume; // just for convenience
 
 	_switchControl.on = volume.ismuted;
 	_slider.value = (float)(volume.current);

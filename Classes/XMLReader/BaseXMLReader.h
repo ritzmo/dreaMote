@@ -28,19 +28,8 @@ typedef CXMLDocument OurXMLDocument;
 @private
 	BOOL	_finished; /*!< @brief Finished parsing? */
 @protected
-	id		_target; /*!< @brief Callback Target. */
-	SEL		_addObject; /*!< @brief Callback Selector. */
 	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
 }
-
-/*!
- @brief Standard initializer.
- 
- @param target Callback target.
- @param action Callback selector.
- @return BaseXMLReader instance.
- */
-- (id)initWithTarget:(id)target action:(SEL)action;
 
 /*
  @brief Download and parse XML document.

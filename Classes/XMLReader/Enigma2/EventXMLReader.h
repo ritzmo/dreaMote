@@ -9,12 +9,23 @@
 #import <Foundation/Foundation.h>
 
 #import "BaseXMLReader.h"
+#import "EventSourceDelegate.h"
 
 /*!
  @brief Enigma2 Event XML Reader.
  */
 @interface Enigma2EventXMLReader : BaseXMLReader
 {
+@private
+	NSObject<EventSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
+
+/*!
+ @brief Standard initializer.
+ 
+ @param target Delegate.
+ @return Enigma2EventXMLReader instance.
+ */
+- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate;
 
 @end

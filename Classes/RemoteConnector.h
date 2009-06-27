@@ -134,12 +134,17 @@ enum buttonCodes {
 
 
 // Forward declarations...
-@class Volume;
 @class CXMLDocument;
+@protocol EventProtocol;
 @protocol MovieProtocol;
 @protocol ServiceProtocol;
 @protocol TimerProtocol;
-@protocol EventProtocol;
+@protocol EventSourceDelegate;
+@protocol MovieSourceDelegate;
+@protocol ServiceSourceDelegate;
+@protocol SignalSourceDelegate;
+@protocol TimerSourceDelegate;
+@protocol VolumeSourceDelegate;
 
 
 
@@ -203,66 +208,59 @@ enum buttonCodes {
 /*!
  @brief Fetch list of available Bouquets.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action;
+- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate;
 
 /*!
  @brief Fetch Services of a given Bouquet.
  @note If no bouquet is given the Connector can choose to return the default bouquet.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @param bouquet Bouquet to request Services of.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet;
 
 /*!
  @brief Request EPG of given Service from Receiver.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @param service Service to fetch EPG of.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service;
+- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service;
 
 /*!
  @brief Request Timerlist from the Receiver.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action;
+- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
 
 /*!
  @brief Request Movielist from the Receiver.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action;
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate;
 
 /*!
  @brief Get current Volume settings.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  */
-- (void)getVolume:(id)target action:(SEL)action;
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate;
 
 /*!
  @brief Get current Signal Strength.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  */
-- (void)getSignal:(id)target action:(SEL)action;
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate;
 
 /*!
  @brief Request a Screnshot from the Receiver.
@@ -276,24 +274,22 @@ enum buttonCodes {
  @brief Invoke an EPG Search for Title.
  @note The Search is currently hardcoded to a case-insensitive search in ISO8859-15.
 
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @param title Text to Search in Event Titles.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title;
+- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title;
 
 /*!
  @brief Search EPG for Similar Events.
  @note Currently this needs support on the Receiver and therefore is only supported
  on Enigma2.
  
- @param target Object to perform callback on.
- @param action Callback function.
+ @param delegate Delegate to be called back.
  @param event Event to search similar events of.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event;
+- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
 
 
 

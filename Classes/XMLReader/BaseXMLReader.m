@@ -27,13 +27,11 @@
 @synthesize finished = _finished;
 
 /* initialize */
-- (id)initWithTarget:(id)target action:(SEL)action
+- (id)init
 {
 	if(self = [super init])
 	{
 		_finished = NO;
-		_target = [target retain];
-		_addObject = action;
 	}
 	return self;
 }
@@ -41,7 +39,6 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_target release];
 	[_parser release];
 
 	[super dealloc];

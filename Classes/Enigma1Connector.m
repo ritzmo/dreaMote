@@ -13,10 +13,12 @@
 #import "Objects/TimerProtocol.h"
 #import "Objects/MovieProtocol.h"
 
+#import "ServiceSourceDelegate.h"
+#import "VolumeSourceDelegate.h"
 #import "XMLReader/Enigma/EventXMLReader.h"
-#import "XMLReader/Enigma/TimerXMLReader.h"
 #import "XMLReader/Enigma/MovieXMLReader.h"
 #import "XMLReader/Enigma/SignalXMLReader.h"
+#import "XMLReader/Enigma/TimerXMLReader.h"
 
 #import "EnigmaRCEmulatorController.h"
 
@@ -156,12 +158,12 @@ enum enigma1MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[BaseXMLReader alloc] initWithTarget: nil action: nil];
+	BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
 	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
 	[streamReader release];
 }
 
-- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
+- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate
 {
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
@@ -182,7 +184,9 @@ enum enigma1MessageTypes {
 		// A service in the xml represents a service, so create an instance of it.
 		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
 
-		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
 		[newService release];
 	}
 
@@ -190,7 +194,7 @@ enum enigma1MessageTypes {
 	return _cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
@@ -217,7 +221,9 @@ enum enigma1MessageTypes {
 		// A service in the xml represents a service, so create an instance of it.
 		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
 
-		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
 		[newService release];
 	}
 
@@ -225,37 +231,37 @@ enum enigma1MessageTypes {
 	return _cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
+- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
+- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 	return doc;
 }
 
-- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=3&submode=4" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 	return doc;
@@ -299,7 +305,7 @@ enum enigma1MessageTypes {
 	[self sendPowerstate: @"restart"];
 }
 
-- (void)getVolume:(id)target action:(SEL)action
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio" relativeToURL: _baseAddress];
@@ -346,17 +352,19 @@ enum enigma1MessageTypes {
 
 	[myString release];
 
-	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
+	[delegate performSelectorOnMainThread: @selector(addVolume:)
+							   withObject: volumeObject
+							waitUntilDone: NO];
 	[volumeObject release];
 }
 
-- (void)getSignal:(id)target action:(SEL)action
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/streaminfo" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;
 	
-	BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 }
@@ -688,13 +696,13 @@ enum enigma1MessageTypes {
 	return ([response statusCode] == 204);
 }
 
-- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 
-- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event
+- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;

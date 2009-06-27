@@ -10,6 +10,7 @@
 
 #import "Objects/EventProtocol.h"
 #import "Objects/ServiceProtocol.h"
+#import "EventSourceDelegate.h"
 
 // Forward declarations...
 @class CXMLDocument;
@@ -20,7 +21,8 @@
  
  Display further information of an Event and offer to program a timer for this event.
  */
-@interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													EventSourceDelegate>
 {
 @private
 	NSMutableArray *_similarEvents; /*!< @brief List of similar Events. */

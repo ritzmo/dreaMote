@@ -9,12 +9,23 @@
 #import <Foundation/Foundation.h>
 
 #import "BaseXMLReader.h"
+#import "TimerSourceDelegate.h"
 
 /*!
  @brief Enigma Timer XML Reader.
  */
 @interface EnigmaTimerXMLReader : BaseXMLReader
 {
+@private
+	NSObject<TimerSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
+
+/*!
+ @brief Standard initializer.
+ 
+ @param target Delegate.
+ @return EnigmaTimerXMLReader instance.
+ */
+- (id)initWithDelegate:(NSObject<TimerSourceDelegate> *)delegate;
 
 @end

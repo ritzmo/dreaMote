@@ -9,12 +9,23 @@
 #import <Foundation/Foundation.h>
 
 #import "BaseXMLReader.h"
+#import "ServiceSourceDelegate.h"
 
 /*!
  @brief Enigma2 Service XML Reader.
  */
 @interface Enigma2ServiceXMLReader : BaseXMLReader
 {
+@private
+	NSObject<ServiceSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
+
+/*!
+ @brief Standard initializer.
+ 
+ @param target Delegate.
+ @return Enigma2ServiceXMLReader instance.
+ */
+- (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate;
 
 @end

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Objects/TimerProtocol.h"
+#import "TimerSourceDelegate.h"
 
 // Forward Declarations...
 @class CXMLDocument;
@@ -24,7 +25,8 @@
  @note The list is always reloaded when appearing to avoid problems with missing / wrong
  timer ids.
  */
-@interface TimerListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface TimerListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													TimerSourceDelegate>
 {
 @private
 	NSMutableArray *_timers; /*!< @brief Timer List. */

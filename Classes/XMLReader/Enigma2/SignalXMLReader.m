@@ -14,6 +14,23 @@
 
 @implementation Enigma2SignalXMLReader
 
+/* initialize */
+- (id)initWithDelegate:(NSObject<SignalSourceDelegate> *)delegate
+{
+	if(self = [super init])
+	{
+		_delegate = [delegate retain];
+	}
+	return self;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_delegate release];
+	[super dealloc];
+}
+
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -28,16 +45,11 @@
 {
 	NSArray *resultNodes = NULL;
 	CXMLNode *currentChild = NULL;
-	NSUInteger parsedSignalCounter = 0;
-	
+
 	resultNodes = [_parser nodesForXPath:@"/e2frontendstatus" error:nil];
-	
+
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		// Signal is unique
-		if(++parsedSignalCounter > 1)
-			break;
-		
 		GenericSignal *newSignal = [[GenericSignal alloc] init];
 		
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
@@ -65,8 +77,13 @@
 			}
 		}
 
-		[_target performSelectorOnMainThread: _addObject withObject: newSignal waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread: @selector(addSignal:)
+									withObject: newSignal
+								 waitUntilDone: NO];
 		[newSignal release];
+		
+		// Signal is unique
+		break;
 	}
 }
 

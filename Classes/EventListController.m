@@ -130,12 +130,12 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
-	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self action:@selector(addEvent:) service: _service] retain];
+	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self service: _service] retain];
 	[pool release];
 }
 
 /* add event to list */
-- (void)addEvent:(id)event
+- (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	if(event != nil)
 	{

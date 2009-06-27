@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+#import "VolumeSourceDelegate.h"
+
 /*!
  @brief STB Control.
  
  Control of simple functions like volume, power state and eventually (if RemoteConnector supports
  it) instant record.
  */
-@interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													VolumeSourceDelegate>
 {
 @private
 	UISwitch *_switchControl; /*!< @brief Mute switch. */

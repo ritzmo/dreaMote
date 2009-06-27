@@ -83,12 +83,12 @@
 	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
 	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
-	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self action:@selector(addEvent:) title: title] retain];
+	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self title: title] retain];
 	[pool release];
 }
 
 /* add event to list */
-- (void)addEvent:(id)event
+- (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	if(event != nil)
 	{

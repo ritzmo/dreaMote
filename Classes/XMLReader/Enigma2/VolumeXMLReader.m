@@ -12,6 +12,23 @@
 
 @implementation Enigma2VolumeXMLReader
 
+/* initialize */
+- (id)initWithDelegate:(NSObject<VolumeSourceDelegate> *)delegate
+{
+	if(self = [super init])
+	{
+		_delegate = [delegate retain];
+	}
+	return self;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_delegate release];
+	[super dealloc];
+}
+
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -26,16 +43,11 @@
 {
 	NSArray *resultNodes = NULL;
 	CXMLNode *currentChild = NULL;
-	NSUInteger parsedVolumesCounter = 0;
-	
+
 	resultNodes = [_parser nodesForXPath:@"/e2volume" error:nil];
-	
+
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		// Volume is unique
-		if(++parsedVolumesCounter > 1)
-			break;
-		
 		// A timer in the xml represents a timer, so create an instance of it.
 		GenericVolume *newVolume = [[GenericVolume alloc] init];
 		
@@ -60,8 +72,13 @@
 				continue;
 			}
 		}
-		[_target performSelectorOnMainThread: _addObject withObject: newVolume waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread: @selector(addVolume:)
+									withObject: newVolume
+								 waitUntilDone: NO];
 		[newVolume release];
+
+		// Volume is unique
+		break;
 	}
 }
 

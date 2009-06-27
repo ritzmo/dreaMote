@@ -15,13 +15,15 @@
 #import "Objects/Generic/Volume.h"
 #import "Objects/Generic/Timer.h"
 
+#import "MovieSourceDelegate.h"
+#import "ServiceSourceDelegate.h"
+#import "SignalSourceDelegate.h"
+#import "TimerSourceDelegate.h"
+#import "VolumeSourceDelegate.h"
 #import "XMLReader/BaseXMLReader.h"
 #import "XMLReader/Neutrino/EventXMLReader.h"
 
 #import "NeutrinoRCEmulatorController.h"
-
-// Services are 'lightweight'
-#define MAX_SERVICES 2048
 
 enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeNormal = 0,
@@ -142,12 +144,12 @@ enum neutrinoMessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[BaseXMLReader alloc] initWithTarget: nil action: nil];
+	BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
 	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
 	[streamReader release];
 }
 
-- (CXMLDocument *)fetchBouquets:(id)target action:(SEL)action
+- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate
 {
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
@@ -156,19 +158,17 @@ enum neutrinoMessageTypes {
 	}
 
 	NSArray *resultNodes = NULL;
-	NSUInteger parsedServicesCounter = 0;
 
 	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		if(++parsedServicesCounter >= MAX_SERVICES)
-			break;
-
 		// A channel in the xml represents a service, so create an instance of it.
 		NSObject<ServiceProtocol> *newService = [[NeutrinoBouquet alloc] initWithNode: resultElement];
 
-		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
 		[newService release];
 	}
 
@@ -176,10 +176,9 @@ enum neutrinoMessageTypes {
 	return _cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchServices:(id)target action:(SEL)action bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
 {
 	NSArray *resultNodes = nil;
-	NSUInteger parsedServicesCounter = 0;
 	
 	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];
 	if(!resultNodes || ![resultNodes count])
@@ -197,9 +196,6 @@ enum neutrinoMessageTypes {
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		if(++parsedServicesCounter >= MAX_SERVICES)
-			break;
-
 		// A channel in the xml represents a service, so create an instance of it.
 		NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 
@@ -209,7 +205,9 @@ enum neutrinoMessageTypes {
 						   [[resultElement attributeForName: @"onid"] stringValue],
 						   [[resultElement attributeForName: @"serviceID"] stringValue]];
 
-		[target performSelectorOnMainThread: action withObject: newService waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
 		[newService release];
 	}
 
@@ -217,19 +215,19 @@ enum neutrinoMessageTypes {
 	return _cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchEPG:(id)target action:(SEL)action service:(NSObject<ServiceProtocol> *)service
+- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	// XXX: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithTarget: target action: action];
+	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
 }
 
 // TODO: reimplement this as streaming parser some day :-)
-- (CXMLDocument *)fetchTimers:(id)target action:(SEL)action
+- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
 	if(!_cachedBouquetsXML)
@@ -257,7 +255,9 @@ enum neutrinoMessageTypes {
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 		fakeObject.state = 0;
 		fakeObject.valid = NO;
-		[target performSelectorOnMainThread: action withObject: fakeObject waitUntilDone: NO];
+		[delegate performSelectorOnMainThread: @selector(addTimer:)
+								   withObject: fakeObject
+								waitUntilDone: NO];
 		[fakeObject release];
 
 		return nil;
@@ -334,14 +334,16 @@ enum neutrinoMessageTypes {
 		else
 			timer.state = kTimerStateFinished;
 
-		[target performSelectorOnMainThread:action withObject:timer waitUntilDone:NO];
+		[delegate performSelectorOnMainThread: @selector(addTimer:)
+								   withObject: timer
+								waitUntilDone: NO];
 		[timer release];
 	}
 
 	return nil;
 }
 
-- (CXMLDocument *)fetchMovielist:(id)target action:(SEL)action
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
 {
 	// XXX: is this actually possible?
 	return nil;
@@ -406,7 +408,7 @@ enum neutrinoMessageTypes {
 	// XXX: not available
 }
 
-- (void)getVolume:(id)target action:(SEL)action
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
 {
 	GenericVolume *volumeObject = [[GenericVolume alloc] init];
 
@@ -446,11 +448,13 @@ enum neutrinoMessageTypes {
 
 	[myString release];
 
-	[target performSelectorOnMainThread:action withObject:volumeObject waitUntilDone:NO];
+	[delegate performSelectorOnMainThread: @selector(addVolume:)
+							   withObject: volumeObject
+							waitUntilDone: NO];
 	[volumeObject release];
 }
 
-- (void)getSignal:(id)target action:(SEL)action
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
@@ -830,13 +834,13 @@ enum neutrinoMessageTypes {
 	return NO;
 }
 
-- (CXMLDocument *)searchEPG:(id)target action:(SEL)action title:(NSString *)title
+- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
 }
 
-- (CXMLDocument *)searchEPGSimilar:(id)target action:(SEL)action event:(NSObject<EventProtocol> *)event
+- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
