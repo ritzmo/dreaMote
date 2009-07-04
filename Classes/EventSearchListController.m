@@ -63,7 +63,7 @@
 	_searchBar.showsCancelButton = YES;
 	[contentView addSubview: _searchBar];
 
-	frame = CGRectMake(0.0, kSearchBarHeight, size.width, size.height - kSearchBarHeight);
+	frame = CGRectMake(0.0, kSearchBarHeight, size.width, size.height - 2 * kSearchBarHeight);
 	_tableView = [[UITableView alloc] initWithFrame: frame style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
