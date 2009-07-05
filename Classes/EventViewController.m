@@ -328,28 +328,28 @@
 			if (sourceCell == nil) 
 				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 			
-			sourceCell.textAlignment = UITextAlignmentCenter;
-			sourceCell.textColor = [UIColor blackColor];
-			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
+			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 1;
 
 			if(section == 1)
-				sourceCell.text = [self format_BeginEnd: _event.begin];
+				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.begin];
 			 else
-				sourceCell.text = [self format_BeginEnd: _event.end];
+				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.end];
 			break;
 		case 3:
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
 			if (sourceCell == nil) 
 				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
-			sourceCell.textAlignment = UITextAlignmentCenter;
-			sourceCell.textColor = [UIColor blackColor];
-			sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
+			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 1;
-			sourceCell.text = _event.service.sname;
+			TABLEVIEWCELL_TEXT(sourceCell) = _event.service.sname;
 				
 			break;
 		case 4:
@@ -359,12 +359,12 @@
 				if (sourceCell == nil) 
 					sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
-				sourceCell.textAlignment = UITextAlignmentCenter;
-				sourceCell.textColor = [UIColor blackColor];
-				sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+				TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+				TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
+				TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 				sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 				sourceCell.indentationLevel = 1;
-				sourceCell.text = NSLocalizedString(@"No similar Events", @"");
+				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"No similar Events", @"");
 			}
 			else
 			{

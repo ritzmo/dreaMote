@@ -104,19 +104,19 @@
 	switch(indexPath.row)
 	{
 		case kEnigma2Connector:
-			cell.text = NSLocalizedString(@"Enigma 2", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Enigma 2", @"");
 			break;
 		case kEnigma1Connector:
-			cell.text = NSLocalizedString(@"Enigma", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Enigma", @"");
 			break;
 		case kNeutrinoConnector:
-			cell.text = NSLocalizedString(@"Neutrino", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Neutrino", @"");
 			break;
 		case kSVDRPConnector:
-			cell.text = NSLocalizedString(@"SVDRP", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"SVDRP", @"");
 			break;
 		default:
-			cell.text = @"???";
+			TABLEVIEWCELL_TEXT(cell) = @"???";
 			break;
 	}
 

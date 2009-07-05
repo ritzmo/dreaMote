@@ -204,7 +204,7 @@
 
 	_type = [newType integerValue];
 
-	_typeCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+	TABLEVIEWCELL_TEXT(_typeCell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 }
 
 #pragma mark - UITableView delegates
@@ -336,9 +336,9 @@
 			if (cell == nil) 
 				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
-			cell.textAlignment = UITextAlignmentLeft;
-			cell.textColor = [UIColor blackColor];
-			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			TABLEVIEWCELL_ALIGN(cell) = UITextAlignmentLeft;
+			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
+			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			break;
 		case 4:
@@ -379,7 +379,7 @@
 			if(self.editing)
 				sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-			sourceCell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+			TABLEVIEWCELL_TEXT(sourceCell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 
 			_typeCell = sourceCell;
 			break;

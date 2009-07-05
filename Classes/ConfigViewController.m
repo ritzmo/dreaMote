@@ -387,15 +387,15 @@
 	}
 
 	if(_connector == kEnigma1Connector)
-		_connectorCell.text = NSLocalizedString(@"Enigma", @"");
+		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"Enigma", @"");
 	else if(_connector == kEnigma2Connector)
-		_connectorCell.text = NSLocalizedString(@"Enigma 2", @"");
+		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"Enigma 2", @"");
 	else if(_connector == kNeutrinoConnector)
-		_connectorCell.text = NSLocalizedString(@"Neutrino", @"");
+		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"Neutrino", @"");
 	else if(_connector == kSVDRPConnector)
-		_connectorCell.text = NSLocalizedString(@"SVDRP", @"");
+		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"SVDRP", @"");
 	else
-		_connectorCell.text = @"???";
+		TABLEVIEWCELL_TEXT(_connectorCell) = @"???";
 
 	[(UITableView *)self.view reloadData];
 }
@@ -529,15 +529,15 @@
 						sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					
 					if(_connector == kEnigma1Connector)
-						sourceCell.text = NSLocalizedString(@"Enigma", @"");
+						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Enigma", @"");
 					else if(_connector == kEnigma2Connector)
-						sourceCell.text = NSLocalizedString(@"Enigma 2", @"");
+						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Enigma 2", @"");
 					else if(_connector == kNeutrinoConnector)
-						sourceCell.text = NSLocalizedString(@"Neutrino", @"");
+						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Neutrino", @"");
 					else if(_connector == kSVDRPConnector)
-						sourceCell.text = NSLocalizedString(@"SVDRP", @"");
+						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"SVDRP", @"");
 					else
-						sourceCell.text = @"???";
+						TABLEVIEWCELL_TEXT(sourceCell) = @"???";
 					
 					_connectorCell = sourceCell;
 					break;

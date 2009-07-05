@@ -333,9 +333,9 @@
 			if (cell == nil) 
 				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
-			cell.textAlignment = UITextAlignmentCenter;
-			cell.textColor = [UIColor blackColor];
-			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			TABLEVIEWCELL_ALIGN(cell) = UITextAlignmentCenter;
+			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
+			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			cell.indentationLevel = 1;
 			break;
@@ -363,25 +363,25 @@
 			((CellTextView *)sourceCell).view = [self create_Summary];
 			break;
 		case 1:
-			sourceCell.text = _movie.sname;
+			TABLEVIEWCELL_TEXT(sourceCell) = _movie.sname;
 			break;
 		case 2:
 			if([_movie.size integerValue] != -1)
-				sourceCell.text = [self format_size: _movie.size];
+				TABLEVIEWCELL_TEXT(sourceCell) = [self format_size: _movie.size];
 			else
-				sourceCell.text = NSLocalizedString(@"N/A", @"");
+				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"N/A", @"");
 			break;
 		case 3:
 			if(![_movie.tags count])
-				sourceCell.text = NSLocalizedString(@"None", @"");
+				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"None", @"");
 			else
-				sourceCell.text = [_movie.tags objectAtIndex: indexPath.row];
+				TABLEVIEWCELL_TEXT(sourceCell) = [_movie.tags objectAtIndex: indexPath.row];
 			break;
 		case 4:
-			sourceCell.text = [self format_BeginEnd: _movie.time];
+			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
-			sourceCell.text = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
+			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
 			break;
 		case 6:
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;

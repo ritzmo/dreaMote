@@ -208,8 +208,8 @@
 		if(cell == nil)
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
-		cell.text = NSLocalizedString(@"New Timer", @"");
-		cell.font = [UIFont systemFontOfSize:kTextViewFontSize]; // XXX: Looks a little weird though
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"New Timer", @"");
+		TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize]; // XXX: Looks a little weird though
 
 		return cell;
 	}

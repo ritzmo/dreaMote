@@ -90,7 +90,7 @@
 		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
 	// we are creating a new cell, setup its attributes
-	cell.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: row];
+	TABLEVIEWCELL_TEXT(cell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: row];
 
 	if(row == _selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;

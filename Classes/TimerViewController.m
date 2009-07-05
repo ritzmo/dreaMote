@@ -409,7 +409,7 @@
 	// during our runtime.
 	_timer.service = [newService copy];
 	if(_timerServiceNameCell)
-		_timerServiceNameCell.text = _timer.service.sname;
+		TABLEVIEWCELL_TEXT(_timerServiceNameCell) = _timer.service.sname;
 }
 
 - (void)beginSelected: (NSDate *)newDate
@@ -419,7 +419,7 @@
 
 	_timer.begin = newDate;
 	if(_timerBeginCell)
-		_timerBeginCell.text = [self format_BeginEnd: newDate];
+		TABLEVIEWCELL_TEXT(_timerBeginCell) = [self format_BeginEnd: newDate];
 }
 
 - (void)endSelected: (NSDate *)newDate
@@ -429,7 +429,7 @@
 
 	_timer.end = newDate;
 	if(_timerEndCell)
-		_timerEndCell.text = [self format_BeginEnd: newDate];
+		TABLEVIEWCELL_TEXT(_timerEndCell) = [self format_BeginEnd: newDate];
 }
 
 - (void)simpleRepeatedSelected: (NSNumber *)newRepeated
@@ -446,7 +446,7 @@
 	
 	if(repeated == 0)
 	{
-		_repeatedCell.text = NSLocalizedString(@"Never", @"Repeated");
+		TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Never", @"Repeated");
 	}
 	else
 	{
@@ -454,12 +454,12 @@
 
 		if(repeated == 31)
 		{
-			_repeatedCell.text = NSLocalizedString(@"Weekdays", @"Repeated");
+			TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Weekdays", @"Repeated");
 			return;
 		}
 		else if (repeated == 127)
 		{
-			_repeatedCell.text = NSLocalizedString(@"Daily", @"Repeated");
+			TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Daily", @"Repeated");
 			return;
 		}
 
@@ -479,7 +479,7 @@
 		if(repeated & weekdaySun)
 			[text appendString: NSLocalizedString(@"Sun", "Weekday")];
 
-		_repeatedCell.text = text;
+		TABLEVIEWCELL_TEXT(_repeatedCell) = text;
 	}
 }
 
@@ -494,13 +494,13 @@
 		return;
 
 	if(_timer.afterevent == kAfterEventNothing)
-		_afterEventCell.text = NSLocalizedString(@"Nothing", @"After Event");
+		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterevent == kAfterEventStandby)
-		_afterEventCell.text = NSLocalizedString(@"Standby", @"");
+		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Standby", @"");
 	else if(_timer.afterevent == kAfterEventDeepstandby)
-		_afterEventCell.text = NSLocalizedString(@"Deep Standby", @"");
+		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Deep Standby", @"");
 	else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
-		_afterEventCell.text = NSLocalizedString(@"Auto", @"");
+		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Auto", @"");
 }
 
 #pragma mark - UITableView delegates
@@ -581,7 +581,7 @@
 			cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
-			cell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			break;
 		default:
 			break;
@@ -633,17 +633,17 @@
 			break;
 		case 3:
 			if([self.timer.service.sname length])
-				sourceCell.text = _timer.service.sname;
+				TABLEVIEWCELL_TEXT(sourceCell) = _timer.service.sname;
 			else
-				sourceCell.text = NSLocalizedString(@"Select Service", @"");
+				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Select Service", @"");
 			_timerServiceNameCell = sourceCell;
 			break;
 		case 4:
-			sourceCell.text = [self format_BeginEnd: _timer.begin];
+			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.begin];
 			_timerBeginCell = sourceCell;
 			break;
 		case 5:
-			sourceCell.text = [self format_BeginEnd: _timer.end];
+			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.end];
 			_timerEndCell = sourceCell;
 			break;
 		case 6:

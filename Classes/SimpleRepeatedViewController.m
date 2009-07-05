@@ -93,25 +93,25 @@
 	switch(indexPath.row)
 	{
 		case 0:
-			cell.text = NSLocalizedString(@"Monday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Monday", @"");
 			break;
 		case 1:
-			cell.text = NSLocalizedString(@"Tuesday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Tuesday", @"");
 			break;
 		case 2:
-			cell.text = NSLocalizedString(@"Wednesday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Wednesday", @"");
 			break;
 		case 3:
-			cell.text = NSLocalizedString(@"Thursday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Thursday", @"");
 			break;
 		case 4:
-			cell.text = NSLocalizedString(@"Friday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Friday", @"");
 			break;
 		case 5:
-			cell.text = NSLocalizedString(@"Saturday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Saturday", @"");
 			break;
 		case 6:
-			cell.text = NSLocalizedString(@"Sunday", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Sunday", @"");
 			break;
 		default:
 			break;

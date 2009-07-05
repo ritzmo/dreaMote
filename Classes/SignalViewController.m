@@ -83,8 +83,8 @@
 	_agc.value = (float)(signal.agc);
 
 	_hasSnrdB = signal.snrdb > -1;
-	_snrdBCell.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
-	_berCell.text = [NSString stringWithFormat: @"%i BER", signal.ber];
+	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
+	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
 
 	[(UITableView *)self.view reloadData];
 }
@@ -133,9 +133,9 @@
 	if (sourceCell == nil) 
 		sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 	
-	sourceCell.textAlignment = UITextAlignmentCenter;
-	sourceCell.textColor = [UIColor blackColor];
-	sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
+	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
 	_snrdBCell = [sourceCell retain];
@@ -145,9 +145,9 @@
 	if (sourceCell == nil) 
 		sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 	
-	sourceCell.textAlignment = UITextAlignmentCenter;
-	sourceCell.textColor = [UIColor blackColor];
-	sourceCell.font = [UIFont systemFontOfSize:kTextViewFontSize];
+	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
+	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
 	_berCell = [sourceCell retain];

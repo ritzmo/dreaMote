@@ -211,8 +211,8 @@
 				// Setup fake item and abort
 				if(row == 0)
 				{
-					sourceCell.image = nil;
-					sourceCell.text = NSLocalizedString(@"New Connection", @"");
+					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"New Connection", @"");
 					break;
 				}
 
@@ -222,17 +222,17 @@
 
 			// Set image for cell
 			if([[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] == row)
-				sourceCell.image = [UIImage imageNamed:@"emblem-favorite.png"];
+				TABLEVIEWCELL_IMAGE(sourceCell) = [UIImage imageNamed:@"emblem-favorite.png"];
 			else if([RemoteConnectorObject getConnectedId] == row)
-				sourceCell.image = [UIImage imageNamed:@"network-wired.png"];
+				TABLEVIEWCELL_IMAGE(sourceCell) = [UIImage imageNamed:@"network-wired.png"];
 			else
-				sourceCell.image = nil;
+				TABLEVIEWCELL_IMAGE(sourceCell) = nil;
 
 			// Title handling
 			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
 			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
-			sourceCell.text = hostTitle;
+			TABLEVIEWCELL_TEXT(sourceCell) = hostTitle;
 
 			break;
 

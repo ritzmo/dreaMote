@@ -97,16 +97,16 @@
 	switch(indexPath.row)
 	{
 		case kAfterEventNothing:
-			cell.text = NSLocalizedString(@"Nothing", @"After Event");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Nothing", @"After Event");
 			break;
 		case kAfterEventStandby:
-			cell.text = NSLocalizedString(@"Standby", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"");
 			break;
 		case kAfterEventDeepstandby:
-			cell.text = NSLocalizedString(@"Deep Standby", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
 			break;
 		case kAfterEventAuto:
-			cell.text = NSLocalizedString(@"Auto", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
 			break;
 		default:
 			break;

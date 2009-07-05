@@ -11,8 +11,18 @@
 
 #ifdef __IPHONE_3_0
 // iPhone OS 3.0 specific
+#define TABLEVIEWCELL_TEXT(a) (a).textLabel.text
+#define TABLEVIEWCELL_FONT(a) (a).textLabel.font
+#define TABLEVIEWCELL_ALIGN(a) (a).textLabel.textAlignment
+#define TABLEVIEWCELL_COLOR(a) (a).textLabel.textColor
+#define TABLEVIEWCELL_IMAGE(a) (a).imageView.image
 #else
 // Earlier iPhone OS specific
+#define TABLEVIEWCELL_TEXT(a) (a).text
+#define TABLEVIEWCELL_FONT(a) (a).font
+#define TABLEVIEWCELL_ALIGN(a) (a).textAlignment
+#define TABLEVIEWCELL_COLOR(a) (a).textColor
+#define TABLEVIEWCELL_IMAGE(a) (a).image
 #endif
 
 #ifndef NSINTEGER_DEFINED
