@@ -142,15 +142,15 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		CGRect frame;
 		
 		// Place the name label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 14);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 16);
 		_eventNameLabel.frame = frame;
 
 		// Place the time label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, 10);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, 14);
 		_eventTimeLabel.frame = frame;
 		
 		// Place the service name label.
-		frame = CGRectMake(contentRect.size.width - kRightMargin - 50, 30, 50, 10);
+		frame = CGRectMake(contentRect.size.width - kRightMargin - 50, 30, 50, 14);
 		_eventServiceLabel.frame = frame;
 	}
 }

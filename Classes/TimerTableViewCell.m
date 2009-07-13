@@ -141,7 +141,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		_timerNameLabel.frame = frame;
 
 		// Place the time label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 41, contentRect.size.width - kRightMargin, 10);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 41, contentRect.size.width - kRightMargin, 14);
 		_timerTimeLabel.frame = frame;
 	}
 }
