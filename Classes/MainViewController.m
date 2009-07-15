@@ -338,11 +338,6 @@
 	return [menuList count];
 }
 
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tableView accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-	return UITableViewCellAccessoryDisclosureIndicator;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	SEL callfunc = nil;
@@ -363,6 +358,9 @@
 	MainTableViewCell *cell = (MainTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
 	if (cell == nil)
 		cell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+
+	// set accessory type
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	// get the view controller's info dictionary based on the indexPath's row
 	[cell setDataDictionary: [menuList objectAtIndex:indexPath.row]];

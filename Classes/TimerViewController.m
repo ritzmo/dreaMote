@@ -557,7 +557,7 @@
 - (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
 	static NSString *kVanilla_ID = @"Vanilla_ID";
-
+	BOOL setEditingStyle = YES;
 	UITableViewCell *cell = nil;
 
 	switch (section) {
@@ -582,10 +582,20 @@
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
 			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
+
+			if(self.editing)
+			{
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				setEditingStyle = NO;
+			}
 			break;
 		default:
 			break;
 	}
+
+	// no accessory by default
+	if(setEditingStyle)
+		cell.accessoryType = UITableViewCellAccessoryNone;
 
 	return cell;
 }
@@ -728,14 +738,6 @@
 
 	// We don't want any actual response :-)
 	return nil;
-}
-
-- (UITableViewCellAccessoryType)tableView:(UITableView *)tv accessoryTypeForRowWithIndexPath:(NSIndexPath *)indexPath {
-	// Show the disclosure indicator in section 3..7 if editing.
-	NSInteger section = indexPath.section;
-	if(self.editing && section > 2 && section < 8)
-		return UITableViewCellAccessoryDisclosureIndicator;
-	return UITableViewCellAccessoryNone;
 }
 
 #pragma mark -
