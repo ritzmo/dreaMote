@@ -19,6 +19,7 @@
 	if(self = [super init])
 	{
 		_delegate = [delegate retain];
+		_timeout = 15; // a lot higher timeout to allow to spin up hdd
 	}
 	return self;
 }

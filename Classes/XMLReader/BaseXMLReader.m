@@ -32,6 +32,7 @@
 	if(self = [super init])
 	{
 		_finished = NO;
+		_timeout = 5; // set default timeout
 	}
 	return self;
 }
@@ -103,7 +104,7 @@
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: URL
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: _timeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 											returningResponse: &response error: nil];
 

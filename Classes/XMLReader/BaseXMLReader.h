@@ -29,6 +29,7 @@ typedef CXMLDocument OurXMLDocument;
 	BOOL	_finished; /*!< @brief Finished parsing? */
 @protected
 	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
+	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
 }
 
 /*
