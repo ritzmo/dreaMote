@@ -48,7 +48,7 @@
 
 	frame = CGRectMake(0.0, 0.0, size.width, 310.0);
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
-	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"]] baseURL: [NSURL URLWithString: @""]];
+	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"] usedEncoding: nil error: nil] baseURL: [NSURL URLWithString: @""]];
 	aboutText.backgroundColor = [UIColor clearColor];
 	aboutText.opaque = NO;
 	aboutText.delegate = self;

@@ -57,10 +57,15 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 @synthesize view;
 
-- (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
+#ifdef __IPHONE_3_0
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-	self = [super initWithFrame:aRect reuseIdentifier:identifier];
-	if (self)
+	if(self = [super initWithStyle: style reuseIdentifier: reuseIdentifier])
+#else
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+{
+	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
+#endif
 	{
 		// turn off selection use
 		self.selectionStyle = UITableViewCellSelectionStyleNone;

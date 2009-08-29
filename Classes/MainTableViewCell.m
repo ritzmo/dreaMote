@@ -21,9 +21,15 @@ NSString *kMainCell_ID = @"MainCell_ID";
 @synthesize explainLabel = _explainLabel;
 
 /* initialize */
-- (id)initWithFrame:(CGRect)aRect reuseIdentifier:(NSString *)identifier
+#ifdef __IPHONE_3_0
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-	if(self = [super initWithFrame: aRect reuseIdentifier: identifier])
+	if(self = [super initWithStyle: style reuseIdentifier: reuseIdentifier])
+#else
+- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+{
+	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
+#endif
 	{
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

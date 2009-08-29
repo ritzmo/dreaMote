@@ -119,7 +119,7 @@
 
 	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
+	NSLog(@"%@", ret);
 	return YES;
 }
 
@@ -137,7 +137,7 @@
 
 	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
+	NSLog(@"%@", ret);
 	return YES;
 }
 
@@ -929,7 +929,7 @@
 
 	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
-	NSLog(ret);
+	NSLog(@"%@", ret);
 	return YES;
 }
 

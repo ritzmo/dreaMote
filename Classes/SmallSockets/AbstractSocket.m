@@ -301,7 +301,7 @@ int connectWithTimeout (int sfd,
 // 32-bit network address
 //
 {
-    return [NSString stringWithCString:inet_ntoa(*address)];
+    return [NSString stringWithCString:inet_ntoa(*address) encoding: NSASCIIStringEncoding];
 }
 
 
