@@ -458,10 +458,10 @@ enum enigma2MessageTypes {
 	switch(type)
 	{
 		case kScreenshotTypeOSD:
-			appendType = @"&o";
+			appendType = @"&o=&n=";
 			break;
 		case kScreenshotTypeVideo:
-			appendType = @"&v";
+			appendType = @"&v=";
 			break;
 		case kScreenshotTypeBoth:
 		default:
