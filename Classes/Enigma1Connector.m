@@ -558,12 +558,16 @@ enum enigma1MessageTypes {
 	{
 		case kEnigma1MessageTypeInfo:
 			translatedType = 16;
+			break;
 		case kEnigma1MessageTypeWarning:
 			translatedType = 32;
+			break;
 		case kEnigma1MessageTypeQuestion:
 			translatedType = 64;
+			break;
 		case kEnigma1MessageTypeError:
 			translatedType = 128;
+			break;
 		default:
 			translatedType = -1;
 	}

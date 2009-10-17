@@ -157,7 +157,7 @@
 
 - (NSString *)getStateString
 {
-	return [[NSString stringWithFormat: @"%d", _state] autorelease];
+	return [NSString stringWithFormat: @"%d", _state];
 }
 
 - (void)setBeginFromString: (NSString *)newBegin

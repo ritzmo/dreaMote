@@ -96,7 +96,7 @@
 	roundedButtonType = [self customButton:frame withImage:@"key_6.png" andKeyCode: kButtonCode6];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
-	currY += imageWidth + kTweenMargin;
+	//currY += imageWidth + kTweenMargin;
 	
 	// new row
 	currX += imageHeight + kTweenMargin;
@@ -121,7 +121,7 @@
 	roundedButtonType = [self customButton:frame withImage:@"key_9.png" andKeyCode: kButtonCode9];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
-	currY += imageWidth + kTweenMargin;
+	//currY += imageWidth + kTweenMargin;
 	
 	// new row
 	currX += imageHeight + kTweenMargin;
@@ -134,10 +134,8 @@
 	roundedButtonType = [self customButton:frame withImage:@"key_0.png" andKeyCode: kButtonCode0];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
-	currY += imageWidth + kTweenMargin;
+	//currY += imageWidth + kTweenMargin;
 
-	currY += imageWidth + kTweenMargin;
-	
 	/* End Keypad */
 	
 	/* Begin Navigation pad */
