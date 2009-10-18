@@ -61,7 +61,7 @@
 	[_service release];
 	_service = [newService retain];
 
-	// Set tigle
+	// Set title
 	self.title = newService.sname;
 
 	// Clean event list

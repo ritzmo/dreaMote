@@ -93,8 +93,7 @@
 	[self.sdescription isEqualToString: otherEvent.sdescription] &&
 	[self.edescription isEqualToString: otherEvent.edescription] &&
 	[self.begin isEqualToDate: otherEvent.begin] &&
-	[self.end isEqualToDate: otherEvent.end] &&
-	[self.service isEqualToService: otherEvent.service];
+	[self.end isEqualToDate: otherEvent.end];
 }
 
 @end
