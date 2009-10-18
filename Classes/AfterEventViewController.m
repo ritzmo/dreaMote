@@ -34,7 +34,7 @@
 	afterEventViewController.selectedItem = afterEvent;
 	afterEventViewController.showAuto = showAuto;
 
-	return afterEventViewController;
+	return [afterEventViewController autorelease];
 }
 
 /* dealloc */

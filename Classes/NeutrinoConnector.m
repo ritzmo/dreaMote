@@ -82,7 +82,7 @@ enum neutrinoMessageTypes {
 	[super dealloc];
 }
 
-+ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
++ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
 {
 	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort];
 }
@@ -264,7 +264,8 @@ enum neutrinoMessageTypes {
 	}
 
 	// Parse
-	NSArray *timerStringList = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] componentsSeparatedByString: @"\n"];
+	NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
 	for(NSString *timerString in timerStringList)
 	{
 		// eventID eventType eventRepeat repcount announceTime alarmTime stopTime data
@@ -284,6 +285,7 @@ enum neutrinoMessageTypes {
 		else
 		{
 			[timer release];
+			timer = nil;
 			continue;
 		}
 
@@ -339,6 +341,7 @@ enum neutrinoMessageTypes {
 								waitUntilDone: NO];
 		[timer release];
 	}
+	[baseString release];
 
 	return nil;
 }

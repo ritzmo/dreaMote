@@ -42,7 +42,7 @@
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.service = ourService;
 
-	return eventListController;
+	return [eventListController autorelease];
 }
 
 /* getter for service property */

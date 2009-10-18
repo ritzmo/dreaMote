@@ -33,7 +33,7 @@
 	ConnectorViewController *connectorViewController = [[ConnectorViewController alloc] init];
 	connectorViewController.selectedItem = connectorKey;
 
-	return connectorViewController;
+	return [connectorViewController autorelease];
 }
 
 /* dealloc */

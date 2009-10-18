@@ -35,7 +35,7 @@
 
 	movieViewController.movie = newMovie;
 
-	return movieViewController;
+	return [movieViewController autorelease];
 }
 
 - (void)dealloc

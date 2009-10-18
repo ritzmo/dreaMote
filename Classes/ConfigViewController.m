@@ -91,7 +91,7 @@
 	configViewController.connection = newConnection;
 	configViewController.connectionIndex = atIndex;
 
-	return configViewController;
+	return [configViewController autorelease];
 }
 
 /* initiate ConfigViewController with new connection */
@@ -146,7 +146,7 @@
 	// has a clear 'x' button to the right
 	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
-	return returnTextField;
+	return [returnTextField autorelease];
 }
 
 /* create a button */

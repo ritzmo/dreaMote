@@ -60,7 +60,7 @@
 	[super dealloc];
 }
 
-+ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
++ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
 {
 	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort];
 }
@@ -255,6 +255,11 @@
 
 		if([[line substringToIndex: 5] isEqualToString: @"215-E"])
 		{
+			if(newEvent != nil)
+			{
+				NSLog(@"Already got event... buggy SVDRP?");
+				[newEvent release];
+			}
 			newEvent = [[GenericEvent alloc] init];
 
 			NSArray *components = [line componentsSeparatedByString: @" "];
@@ -286,7 +291,13 @@
 									   withObject: newEvent
 									waitUntilDone: NO];
 			[newEvent release];
+			newEvent = nil;
 		}
+	}
+	if(newEvent != nil)
+	{
+		NSLog(@"Event was not released... buggy SVDRP?");
+		[newEvent release];
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -375,6 +386,7 @@
 		tmpInteger = [line length];
 		if(tmpInteger == 7)
 		{
+			[comps release];
 			comps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]];
 			newTimer.repeat = line;
 		}
@@ -442,7 +454,7 @@
 		if([[[components objectAtIndex: 0] substringToIndex: 4] isEqualToString: @"250 "])
 			break;
 	}
-	//[comps release];
+	[comps release];
 	[gregorian release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -520,7 +532,7 @@
 		if([[line substringToIndex: 4] isEqualToString: @"250 "])
 			break;
 	}
-	//[comps release];
+	[comps release];
 	[gregorian release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -556,16 +568,18 @@
 
 - (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
 {
-	GenericVolume *volumeObject = [[GenericVolume alloc] init];
+	GenericVolume *volumeObject = nil;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
 		return;
-
+	
 	[_socket writeString: @"VOLU\r\n"];
 
+	volumeObject = [[GenericVolume alloc] init];
+	
 	NSString *line = [self readSocketLine];
 	if([line isEqualToString: @"250 Audio is mute"])
 	{

@@ -93,7 +93,7 @@ enum enigma1MessageTypes {
 	[super dealloc];
 }
 
-+ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
++ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
 {
 	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort];
 }

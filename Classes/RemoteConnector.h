@@ -177,7 +177,7 @@ enum buttonCodes {
  @param port Port on Remote Host.
  @return RemoteConnector Object.
  */
-+ (NSObject <RemoteConnector>*)createClassWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
++ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
 
 /*!
  @brief Check if a Connector supports a given Feature.

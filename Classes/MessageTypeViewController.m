@@ -32,7 +32,7 @@
 	MessageTypeViewController *messageTypeViewController = [[MessageTypeViewController alloc] init];
 	messageTypeViewController.selectedItem = typeKey;
 
-	return messageTypeViewController;
+	return [messageTypeViewController autorelease];
 }
 
 /* dealloc */

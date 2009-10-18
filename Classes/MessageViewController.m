@@ -55,7 +55,7 @@
 	[super dealloc];
 }
 
-- (UITextField *)create_TextField
+- (UITextField *)allocTextField
 {
 	UITextField *returnTextField = [[UITextField alloc] initWithFrame:CGRectZero];
 
@@ -77,7 +77,7 @@
 	return returnTextField;
 }
 
-- (UIButton *)create_SendButton
+- (UIButton *)allocSendButton
 {
 	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
@@ -106,17 +106,17 @@
 	[tableView release];
 
 	// Message
-	_messageTextField = [self create_TextField];
+	_messageTextField = [self allocTextField];
 	_messageTextField.placeholder = NSLocalizedString(@"<message text>", @"");
 	_messageTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Caption
-	_captionTextField = [self create_TextField];
+	_captionTextField = [self allocTextField];
 	_captionTextField.placeholder = NSLocalizedString(@"<message caption>", @"");
 	_captionTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Timeout
-	_timeoutTextField = [self create_TextField];
+	_timeoutTextField = [self allocTextField];
 	_timeoutTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kMessageTimeout];
 	_timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
 	_timeoutTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
@@ -125,7 +125,7 @@
 	_type = 0;
 
 	// Connect Button
-	_sendButton = [self create_SendButton];
+	_sendButton = [self allocSendButton];
 	_sendButton.enabled = YES;
 
 	[self setEditing: YES animated: NO];

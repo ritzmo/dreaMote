@@ -61,7 +61,7 @@
 	return self;
 }
 
-+ (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent
++ (TimerViewController *)newWithEvent: (NSObject<EventProtocol> *)ourEvent
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	NSObject<TimerProtocol> *newTimer = [GenericTimer withEvent: ourEvent];
@@ -72,7 +72,7 @@
 	return timerViewController;
 }
 
-+ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
++ (TimerViewController *)newWithEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	NSObject<TimerProtocol> *newTimer = [GenericTimer withEventAndService: ourEvent: ourService];
@@ -83,7 +83,7 @@
 	return timerViewController;
 }
 
-+ (TimerViewController *)withTimer: (NSObject<TimerProtocol> *)ourTimer
++ (TimerViewController *)newWithTimer: (NSObject<TimerProtocol> *)ourTimer
 {
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	timerViewController.timer = ourTimer;
@@ -191,7 +191,7 @@
 	return [format stringFromDate: dateTime];
 }
 
-- (UITextField *)create_TextField
+- (UITextField *)allocTextField
 {
 	UITextField *returnTextField = [[UITextField alloc] initWithFrame:CGRectZero];
 
@@ -213,18 +213,18 @@
 	return returnTextField;
 }
 
-- (UITextField *)create_TitleField
+- (UITextField *)newTitleField
 {
-	UITextField *returnTextField = [self create_TextField];
+	UITextField *returnTextField = [self allocTextField];
 	returnTextField.text = _timer.title;
 	returnTextField.placeholder = NSLocalizedString(@"<enter title>", @"Placeholder of _timerTitle");
 	
 	return returnTextField;
 }
 
-- (UITextField *)create_DescriptionField
+- (UITextField *)newDescriptionField
 {
-	UITextField *returnTextField = [self create_TextField];
+	UITextField *returnTextField = [self allocTextField];
 	returnTextField.text = _timer.tdescription;
 	returnTextField.placeholder = NSLocalizedString(@"<enter description>", @"Placeholder of _timerDescription");
 
@@ -254,8 +254,8 @@
 	self.view = tableView;
 	[tableView release];
 
-	_timerTitle = [self create_TitleField];
-	_timerDescription = [self create_DescriptionField];
+	_timerTitle = [self newTitleField];
+	_timerDescription = [self newDescriptionField];
 
 	// Enabled
 	_timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];

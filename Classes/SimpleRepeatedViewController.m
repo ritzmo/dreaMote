@@ -32,7 +32,7 @@
 	SimpleRepeatedViewController *simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
 	simpleRepeatedViewController.repeated = repeated;
 
-	return simpleRepeatedViewController;
+	return [simpleRepeatedViewController autorelease];
 }
 
 /* dealloc */

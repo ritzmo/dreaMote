@@ -52,16 +52,16 @@ static NSDictionary *_connection;
 	switch(connectorId)
 	{
 		case kEnigma2Connector:
-			_sharedRemoteConnector = [Enigma2Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
+			_sharedRemoteConnector = [Enigma2Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		case kEnigma1Connector:
-			_sharedRemoteConnector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
+			_sharedRemoteConnector = [Enigma1Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [NeutrinoConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
+			_sharedRemoteConnector = [NeutrinoConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		case kSVDRPConnector:
-			_sharedRemoteConnector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
+			_sharedRemoteConnector = [SVDRPConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port];
 			break;
 		default:
 			return NO;
@@ -123,7 +123,7 @@ static NSDictionary *_connection;
 	NSString *username = [connection objectForKey: kUsername];
 	NSString *password = [connection objectForKey: kPassword];
 
-	connector = [Enigma2Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
+	connector = [Enigma2Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -131,7 +131,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = [Enigma1Connector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
+	connector = [Enigma1Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -139,7 +139,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = [NeutrinoConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
+	connector = [NeutrinoConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0];
 	if([connector isReachable])
 	{
 		[connector release];
@@ -147,7 +147,7 @@ static NSDictionary *_connection;
 	}
 	
 	[connector release];
-	connector = [SVDRPConnector createClassWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001];
+	connector = [SVDRPConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001];
 	if([connector isReachable])
 	{
 		[connector release];

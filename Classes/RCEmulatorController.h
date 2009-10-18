@@ -38,7 +38,7 @@
  @param keyCode RC Code.
  @return UIButton instance.
  */
-- (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
+- (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
 
 /*!
  @brief Load Image.

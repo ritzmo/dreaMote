@@ -161,7 +161,7 @@
 	[_scrollView addSubview: _imageView];
 }
 
-- (UIButton*)customButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
+- (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
 {
 	RCButton *uiButton = [[RCButton alloc] initWithFrame: frame];
 	uiButton.rcCode = keyCode;

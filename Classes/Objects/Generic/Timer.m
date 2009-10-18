@@ -47,7 +47,7 @@
 	timer.state = 0;
 	timer.afterevent = 0;
 
-	return timer;
+	return [timer autorelease];
 }
 
 + (NSObject<TimerProtocol> *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
@@ -65,7 +65,7 @@
 	timer.repeatcount = 0;
 	timer.state = 0;
 
-	return timer;
+	return [timer autorelease];
 }
 
 + (NSObject<TimerProtocol> *)timer
@@ -85,7 +85,7 @@
 	timer.repeatcount = 0;
 	timer.state = 0;
 
-	return timer;
+	return [timer autorelease];
 }
 
 - (id)init

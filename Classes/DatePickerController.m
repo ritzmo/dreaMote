@@ -39,7 +39,7 @@
 	DatePickerController *datePickerController = [[DatePickerController alloc] init];
 	datePickerController.date = [ourDate copy];
 	
-	return datePickerController;
+	return [datePickerController autorelease];
 }
 
 /* layout */

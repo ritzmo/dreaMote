@@ -44,7 +44,7 @@
 	eventViewController.event = newEvent;
 	eventViewController.service = newService;
 
-	return eventViewController;
+	return [eventViewController autorelease];
 }
 
 + (EventViewController *)withEvent: (NSObject<EventProtocol> *) newEvent
@@ -54,7 +54,7 @@
 	eventViewController.event = newEvent;
 	eventViewController.service = newEvent.service;
 
-	return eventViewController;
+	return [eventViewController autorelease];
 }
 
 - (void)dealloc
@@ -133,7 +133,7 @@
 								animated: YES
 								scrollPosition: UITableViewScrollPositionNone];
 
-	TimerViewController *targetViewController = [TimerViewController withEventAndService: _event: _service];
+	TimerViewController *targetViewController = [TimerViewController newWithEventAndService: _event: _service];
 	[self.navigationController pushViewController: targetViewController animated: YES];
 	[targetViewController release];
 

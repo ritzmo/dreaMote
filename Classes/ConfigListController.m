@@ -151,7 +151,6 @@
 	// Open ConfigViewController for selected item
 	UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
 	[self.navigationController pushViewController: targetViewController animated: YES];
-	[targetViewController release];
 
 	// Do not actually select row
 	return nil;

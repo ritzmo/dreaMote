@@ -37,11 +37,8 @@
 	CellTextField *_timerTitleCell; /*!< @brief Title Cell. */
 	UITextField *_timerDescription; /*!< @brief Description Field. */
 	CellTextField *_timerDescriptionCell; /*!< @brief Description Cell. */
-	UIButton *_timerServiceName; /*!< @brief Service Name Button. */
 	UITableViewCell *_timerServiceNameCell; /*!< @brief Service Name Cell. */
-	UIButton *_timerBegin; /*!< @brief Begin Button. */
 	UITableViewCell *_timerBeginCell; /*!< @brief Begin Cell. */
-	UIButton *_timerEnd; /*!< @brief End Button. */
 	UITableViewCell *_timerEndCell; /*!< @brief End Cell. */
 	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */
 	UISwitch *_timerJustplay; /*!< @brief Justplay Switch. */
@@ -65,7 +62,7 @@
  @param ourEvent Base Event.
  @return TimerViewController instance.
  */
-+ (TimerViewController *)withEvent: (NSObject<EventProtocol> *)ourEvent;
++ (TimerViewController *)newWithEvent: (NSObject<EventProtocol> *)ourEvent;
 
 /*!
  @brief Open new TimerViewController for given Event and Service.
@@ -74,7 +71,7 @@
  @param ourService Event Service.
  @return TimerViewController instance.
  */
-+ (TimerViewController *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService;
++ (TimerViewController *)newWithEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService;
 
 /*!
  @brief Open new TimerViewController for given Timer.
@@ -82,7 +79,7 @@
  @param ourTimer Base Timer.
  @return TimerViewController instance.
  */
-+ (TimerViewController *)withTimer: (NSObject<TimerProtocol> *)ourTimer;
++ (TimerViewController *)newWithTimer: (NSObject<TimerProtocol> *)ourTimer;
 
 /*!
  @brief Open new TimerViewController for new Timer.
