@@ -588,7 +588,6 @@
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
 		[targetViewController setDelegate: self];
 		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
 	}
 	else if(indexPath.section == 3)
 	{
