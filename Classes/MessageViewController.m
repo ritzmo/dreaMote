@@ -402,7 +402,6 @@
 		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
 		[targetViewController setDelegate: self];
 		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
 	}
 	else if(section == 4)
 	{
