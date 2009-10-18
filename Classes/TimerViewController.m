@@ -66,7 +66,6 @@
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	NSObject<TimerProtocol> *newTimer = [GenericTimer withEvent: ourEvent];
 	timerViewController.timer = newTimer;
-	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;
@@ -77,7 +76,6 @@
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	NSObject<TimerProtocol> *newTimer = [GenericTimer withEventAndService: ourEvent: ourService];
 	timerViewController.timer = newTimer;
-	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;
@@ -89,7 +87,6 @@
 	timerViewController.timer = ourTimer;
 	NSObject<TimerProtocol> *ourCopy = [ourTimer copy];
 	timerViewController.oldTimer = ourCopy;
-	[ourCopy release];
 	timerViewController.creatingNewTimer = NO;
 
 	return timerViewController;
@@ -100,7 +97,6 @@
 	TimerViewController *timerViewController = [[TimerViewController alloc] init];
 	NSObject<TimerProtocol> *newTimer = [GenericTimer timer];
 	timerViewController.timer = newTimer;
-	[newTimer release];
 	timerViewController.creatingNewTimer = YES;
 
 	return timerViewController;

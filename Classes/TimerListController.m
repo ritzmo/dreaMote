@@ -377,7 +377,6 @@
 
 		NSObject<TimerProtocol> *newTimer = [GenericTimer timer];
 		_timerViewController.timer = newTimer;
-		[newTimer release];
 		_timerViewController.oldTimer = nil;
 
 		[self.navigationController pushViewController: _timerViewController animated: YES];
