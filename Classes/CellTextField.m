@@ -57,13 +57,11 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 @synthesize view;
 
-#ifdef __IPHONE_3_0
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-	if(self = [super initWithStyle: style reuseIdentifier: reuseIdentifier])
-#else
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
 {
+#ifdef __IPHONE_3_0
+	if(self = [super initWithStyle: UITableViewCellStyleDefault reuseIdentifier: reuseIdentifier])
+#else
 	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
 #endif
 	{
