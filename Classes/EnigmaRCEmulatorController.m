@@ -6,23 +6,11 @@
 //  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
-#import <AudioToolbox/AudioServices.h>
-
 #import "EnigmaRCEmulatorController.h"
 #import "RemoteConnector.h"
 #import "Constants.h"
 
 @implementation EnigmaRCEmulatorController
-
-- (id)init
-{
-	if (self = [super init])
-	{
-		self.title = NSLocalizedString(@"Remote Control", @"Title of RCEmulatorController");
-	}
-
-	return self;
-}
 
 - (void)loadView
 {
