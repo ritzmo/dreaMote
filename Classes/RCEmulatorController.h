@@ -54,4 +54,11 @@
  */
 - (void)flipView:(id)sender;
 
+/*!
+ * @brief Send RC code.
+ *
+ * @param rcCode Code to send.
+ */
+- (void)sendButton: (NSNumber *)rcCode;
+
 @end
