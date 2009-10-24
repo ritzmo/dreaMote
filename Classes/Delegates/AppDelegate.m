@@ -16,16 +16,6 @@
 @synthesize window;
 @synthesize navigationController;
 
-/* initialize */
-- (id)init
-{
-	if (self = [super init])
-	{
-		// Your initialization code here
-	}
-	return self;
-}
-
 /* finished launching */
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
@@ -68,6 +58,7 @@
 									 @"NO", kVibratingRC,
 									 @"YES", kConnectionTest,
 									 @"10", kMessageTimeout,
+									 @"YES", kPrefersSimpleRemote,
 									 nil];
 
 		[stdDefaults registerDefaults: appDefaults];
@@ -82,13 +73,23 @@
 										@"NO", kVibratingRC,
 										@"YES", kConnectionTest,
 										@"10", kMessageTimeout,
+										@"YES", kPrefersSimpleRemote,
 										nil];
 
 		[stdDefaults registerDefaults: appDefaults];
 		[stdDefaults synchronize];
 	}
+	// 0.2+
 	else
+	{
 		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
+		// 0.2.808+
+		if([stdDefaults stringForKey: kPrefersSimpleRemote] == nil)
+		{
+			[stdDefaults setBool:YES forKey:kPrefersSimpleRemote];
+			[stdDefaults synchronize];
+		}
+	}
 
 	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];

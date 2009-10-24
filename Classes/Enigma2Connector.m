@@ -21,6 +21,9 @@
 #import "XMLReader/Enigma2/VolumeXMLReader.h"
 
 #import "EnigmaRCEmulatorController.h"
+#import "SimpleRCEmulatorController.h"
+
+#import "Constants.h"
 
 enum powerStates {
 	kShutdownState = 1,
@@ -562,7 +565,12 @@ enum enigma2MessageTypes {
 
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
-	UIViewController *targetViewController = [[EnigmaRCEmulatorController alloc] init];
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	UIViewController *targetViewController = nil;
+	if(useSimpleRemote)
+		targetViewController = [[SimpleRCEmulatorController alloc] init];
+	else
+		targetViewController = [[EnigmaRCEmulatorController alloc] init];
 	[navigationController pushViewController:targetViewController animated:YES];
 	[targetViewController release];
 }

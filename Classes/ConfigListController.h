@@ -19,6 +19,7 @@
 	NSMutableArray *_connections; /*!< @brief List of Connections. */
 	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
 	UISwitch *_connectionTest; /*!< @brief "Connection Test" UISwitch. */
+	UISwitch *_simpleRemote; /*!< @brief "Use simple remote" UISwitch. */
 	BOOL _shouldSave; /*!< @brief Are changed settings supposed to be changed? */
 	BOOL _viewWillReapper; /*!< @brief Should Data be reloaded on next open? */
 }

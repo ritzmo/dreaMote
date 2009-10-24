@@ -50,6 +50,7 @@
 	[_connections release];
 	[_vibrateInRC release];
 	[_connectionTest release];
+	[_simpleRemote release];
 
 	[super dealloc];
 }
@@ -85,6 +86,14 @@
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_connectionTest.backgroundColor = [UIColor clearColor];
 	_connectionTest.enabled = NO;
+	
+	// Simple remote
+	_simpleRemote = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
+	
+	// in case the parent view draws with a custom color or gradient, use a transparent color
+	_simpleRemote.backgroundColor = [UIColor clearColor];
+	_simpleRemote.enabled = NO;
 
 	// add edit button
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -98,6 +107,7 @@
 
 	_vibrateInRC.enabled = editing;
 	_connectionTest.enabled = editing;
+	_simpleRemote.enabled = editing;
 
 	// Animate if requested
 	if(animated)
@@ -121,6 +131,7 @@
 	{
 		[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
 		[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
+		[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
 	}
 
 	// If we did not save this time we are supposed to save if this is opened again
@@ -239,13 +250,18 @@
 		case 1:
 			switch(row)
 			{
-				/* Vibration */
+				/* Simple remote */
 				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Simple Remote", @"");
+					((DisplayCell *)sourceCell).view = _simpleRemote;
+					break;
+				/* Vibration */
+				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
 					((DisplayCell *)sourceCell).view = _vibrateInRC;
 					break;
 				/* Connectivity check */
-				case 1:
+				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Check Connectivity", @"");
 					((DisplayCell *)sourceCell).view = _connectionTest;
 					break;
@@ -275,7 +291,7 @@
 			return [_connections count] + 1;
 		return [_connections count];
 	}
-	return 2;
+	return 3;
 }
 
 /* section header */

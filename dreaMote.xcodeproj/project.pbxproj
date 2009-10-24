@@ -41,6 +41,7 @@
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
+		DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
@@ -122,6 +123,7 @@
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
+		DA997A8C1093A75B003AFA17 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA997A8B1093A75B003AFA17 /* 4-sided-arrow.png */; };
 		DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
@@ -215,6 +217,8 @@
 		DA2713260D84056800C25B85 /* EventListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListController.m; sourceTree = "<group>"; };
 		DA27136A0D84071100C25B85 /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		DA27136B0D84071100C25B85 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
+		DA27E29410924F010008A82E /* SimpleRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRCEmulatorController.h; sourceTree = "<group>"; };
+		DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRCEmulatorController.m; sourceTree = "<group>"; };
 		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
 		DA2CC28A0E378FCC006AE171 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
 		DA36F6B70F0D2D8F005608CC /* ServiceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceProtocol.h; sourceTree = "<group>"; };
@@ -343,6 +347,7 @@
 		DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DA9789890F9DBB8F005C7390 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
 		DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
+		DA997A8B1093A75B003AFA17 /* 4-sided-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "4-sided-arrow.png"; path = "Images/4-sided-arrow.png"; sourceTree = "<group>"; };
 		DA9AD37B0FEBE29C00A59612 /* SimpleRepeatedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRepeatedViewController.h; sourceTree = "<group>"; };
 		DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRepeatedViewController.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
@@ -602,6 +607,7 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DA997A8B1093A75B003AFA17 /* 4-sided-arrow.png */,
 				DAB97AAA0F7FBCC400464B66 /* document-save.png */,
 				DA09870D0EC206ED009C91B9 /* preferences-system.png */,
 				DA0FA5060EB1CC27009A1898 /* image-x-generic.png */,
@@ -773,6 +779,8 @@
 				DA7A22790E371ACA00455D11 /* RCEmulatorController.m */,
 				DA5536BC0FE6A38C00FBAF18 /* SignalViewController.h */,
 				DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */,
+				DA27E29410924F010008A82E /* SimpleRCEmulatorController.h */,
+				DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */,
 				DA9AD37B0FEBE29C00A59612 /* SimpleRepeatedViewController.h */,
 				DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */,
 				DA661FAA0F1635A50030A40B /* SVDRPRCEmulatorController.h */,
@@ -959,6 +967,7 @@
 				DA0FA5760EB1D189009A1898 /* about.html in Resources */,
 				DA09870E0EC206EE009C91B9 /* preferences-system.png in Resources */,
 				DAB97AAB0F7FBCC400464B66 /* document-save.png in Resources */,
+				DA997A8C1093A75B003AFA17 /* 4-sided-arrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1072,6 +1081,7 @@
 				DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */,
 				DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */,
 				DAF197730FF5764D009CA6A0 /* AppDelegate.m in Sources */,
+				DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -24,6 +24,9 @@
 #import "XMLReader/Neutrino/EventXMLReader.h"
 
 #import "NeutrinoRCEmulatorController.h"
+#import "SimpleRCEmulatorController.h"
+
+#import "Constants.h"
 
 enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeNormal = 0,
@@ -857,7 +860,12 @@ enum neutrinoMessageTypes {
 
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
-	UIViewController *targetViewController = [[NeutrinoRCEmulatorController alloc] init];
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	UIViewController *targetViewController = nil;
+	if(useSimpleRemote)
+		targetViewController = [[SimpleRCEmulatorController alloc] init];
+	else
+		targetViewController = [[NeutrinoRCEmulatorController alloc] init];
 	[navigationController pushViewController:targetViewController animated:YES];
 	[targetViewController release];
 }

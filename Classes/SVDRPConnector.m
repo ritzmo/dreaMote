@@ -24,6 +24,9 @@
 #import "VolumeSourceDelegate.h"
 
 #import "SVDRPRCEmulatorController.h"
+#import "SimpleRCEmulatorController.h"
+
+#import "Constants.h"
 
 @implementation SVDRPConnector
 
@@ -972,7 +975,12 @@
 
 - (void)openRCEmulator: (UINavigationController *)navigationController
 {
-	UIViewController *targetViewController = [[SVDRPRCEmulatorController alloc] init];
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	UIViewController *targetViewController = nil;
+	if(useSimpleRemote)
+		targetViewController = [[SimpleRCEmulatorController alloc] init];
+	else
+		targetViewController = [[SVDRPRCEmulatorController alloc] init];
 	[navigationController pushViewController:targetViewController animated:YES];
 	[targetViewController release];
 }

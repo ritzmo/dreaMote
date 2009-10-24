@@ -61,3 +61,4 @@
 #define kVibratingRC			@"vibrateInRC"
 #define kConnectionTest			@"connectionTest"
 #define kMessageTimeout			@"messageTimeout"
+#define kPrefersSimpleRemote	@"prefersSimpleRemote"
