@@ -78,9 +78,7 @@
 */
 - (void)parseFull
 {
-	NSArray *resultNodes = NULL;
-
-	resultNodes = [_parser nodesForXPath:@"/e2timerlist/e2timer" error:nil];
+	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2timerlist/e2timer" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{

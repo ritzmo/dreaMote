@@ -54,7 +54,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
 #endif
 	{
-		UIView *myContentView = self.contentView;
+		const UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -137,9 +137,8 @@ NSString *kEventCell_ID = @"EventCell_ID";
 /* layout */
 - (void)layoutSubviews
 {	
-	CGRect contentRect;
 	[super layoutSubviews];
-	contentRect = self.contentView.bounds;
+	const CGRect contentRect = self.contentView.bounds;
 	
 	// XXX: We actually should never be editing...
 	if (!self.editing) {

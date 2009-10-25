@@ -88,7 +88,7 @@
 	NSString *retVal = nil;
 	@try {
 		NSData *data = [_socket readDataUpToString: @"\r\n"];
-		NSString *tmp = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
+		const NSString *tmp = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 		if([tmp length] > 2)
 			retVal = [tmp substringToIndex: [tmp length] - 2];
 		[tmp release];
@@ -121,7 +121,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	NSLog(@"%@", ret);
 	return YES;
 }
@@ -139,7 +139,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	NSLog(@"%@", ret);
 	return YES;
 }
@@ -193,7 +193,7 @@
 
 		newService = [[GenericService alloc] init];
 
-		NSArray *components = [line componentsSeparatedByString: @":"];
+		const NSArray *components = [line componentsSeparatedByString: @":"];
 		NSString *name = [components objectAtIndex: 0];
 		range.location = 4;
 		range.length = [name length] - 4;
@@ -265,7 +265,7 @@
 			}
 			newEvent = [[GenericEvent alloc] init];
 
-			NSArray *components = [line componentsSeparatedByString: @" "];
+			const NSArray *components = [line componentsSeparatedByString: @" "];
 			newEvent.eit = [components objectAtIndex: 1];
 			[newEvent setBeginFromString: [components objectAtIndex: 2]];
 			[newEvent setEndFromDurationString: [components objectAtIndex: 3]];
@@ -335,7 +335,7 @@
 	NSString *line = nil;
 	NSRange range;
 	NSInteger tmpInteger;
-	NSCalendar *gregorian = [[NSCalendar alloc]
+	const NSCalendar *gregorian = [[NSCalendar alloc]
 							initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
 	while(line = [self readSocketLine])
@@ -347,7 +347,7 @@
 
 		SVDRPTimer *newTimer = [[SVDRPTimer alloc] init];
 
-		NSArray *components = [line componentsSeparatedByString: @":"];
+		const NSArray *components = [line componentsSeparatedByString: @":"];
 
 		// Id:
 		line = [components objectAtIndex: 0];
@@ -487,7 +487,7 @@
 	NSString *line = nil;
 	NSObject<MovieProtocol> *movie = nil;
 	NSRange range;
-	NSCalendar *gregorian = [[NSCalendar alloc]
+	const NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
 	while(line = [self readSocketLine])
@@ -507,7 +507,7 @@
 		movie.sref = [line substringWithRange: range];
 		line = [line substringFromIndex: range.location + range.length];
 
-		NSArray *components = [line componentsSeparatedByString: @" "];
+		const NSArray *components = [line componentsSeparatedByString: @" "];
 		line = [components objectAtIndex: 0];
 		range.location = 0;
 		range.length = 2;
@@ -583,7 +583,7 @@
 
 	volumeObject = [[GenericVolume alloc] init];
 	
-	NSString *line = [self readSocketLine];
+	const NSString *line = [self readSocketLine];
 	if([line isEqualToString: @"250 Audio is mute"])
 	{
 		volumeObject.current = 0;
@@ -622,8 +622,8 @@
 
 	[_socket writeString: @"VOLU mute\r\n"];
 
-	NSString *line = [self readSocketLine];
-	return [line isEqualToString: @"250 Audio is mute"];
+	const NSString *ret = [self readSocketLine];
+	return [ret isEqualToString: @"250 Audio is mute"];
 }
 
 - (BOOL)setVolume:(NSInteger) newVolume
@@ -638,7 +638,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	return [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
 }
 
@@ -651,11 +651,11 @@
 		return NO;
 
 	NSString *timerString;
-	NSInteger flags = newTimer.disabled ? 1 : 0;
+	const NSInteger flags = newTimer.disabled ? 1 : 0;
 
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-	NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.begin];
-	NSDateComponents *endComponents = [gregorian components: NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.end];
+	const NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.begin];
+	const NSDateComponents *endComponents = [gregorian components: NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.end];
 	[gregorian release];
 
 	NSString *dayStr = [NSString stringWithFormat: @"%d-%d-%d",
@@ -670,7 +670,7 @@
 	[_socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	if([ret length] < 4)
 		return NO;
 	return [[ret substringFromIndex: 4] isEqualToString: timerString];
@@ -688,12 +688,12 @@
 	// XXX: we should figure out a better way to detect an svdrptimer though
 	if(![newTimer respondsToSelector: @selector(toString)])
 		return NO;
-	NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
+	const NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
 
 	[_socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	return [ret isEqualToString: [NSString stringWithFormat: @"250 %@", timerString]];
 }
 
@@ -713,7 +713,7 @@
 	[_socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	return [ret isEqualToString: [NSString stringWithFormat: @"250 Timer \"%@\" deleted", ((SVDRPTimer *)oldTimer).tid]];
 }
 
@@ -722,167 +722,63 @@
 	NSString *buttonCode = nil;
 	switch(type)
 	{
-		case kButtonCode0:
-			buttonCode = @"0";
-			break;
-		case kButtonCode1:
-			buttonCode = @"1";
-			break;
-		case kButtonCode2:
-			buttonCode = @"2";
-			break;
-		case kButtonCode3:
-			buttonCode = @"3";
-			break;
-		case kButtonCode4:
-			buttonCode = @"4";
-			break;
-		case kButtonCode5:
-			buttonCode = @"5";
-			break;
-		case kButtonCode6:
-			buttonCode = @"6";
-			break;
-		case kButtonCode7:
-			buttonCode = @"7";
-			break;
-		case kButtonCode8:
-			buttonCode = @"8";
-			break;
-		case kButtonCode9:
-			buttonCode = @"9";
-			break;
-		case kButtonCodeUp:
-			buttonCode = @"Up";
-			break;
-		case kButtonCodeDown:
-			buttonCode = @"Down";
-			break;
-		case kButtonCodeLeft:
-			buttonCode = @"Left";
-			break;
-		case kButtonCodeRight:
-			buttonCode = @"Right";
-			break;
-		case kButtonCodeMenu:
-			buttonCode = @"Menu";
-			break;
-		case kButtonCodeOK:
-			buttonCode = @"Ok";
-			break;
-		case kButtonCodeRed:
-			buttonCode = @"Red";
-			break;
-		case kButtonCodeGreen:
-			buttonCode = @"Green";
-			break;
-		case kButtonCodeYellow:
-			buttonCode = @"Yellow";
-			break;
-		case kButtonCodeBlue:
-			buttonCode = @"Blue";
-			break;
-		case kButtonCodeInfo:
-			buttonCode = @"Info";
-			break;
-		case kButtonCodeNext:
-			buttonCode = @"Next";
-			break;
-		case kButtonCodePrevious:
-			buttonCode = @"Prev";
-			break;
-		case kButtonCodePower:
-			buttonCode = @"Power";
-			break;
-		case kButtonCodeBouquetUp:
-			buttonCode = @"Channel+";
-			break;
-		case kButtonCodeBouquetDown:
-			buttonCode = @"Channel-";
-			break;
-		case kButtonCodeVolUp:
-			buttonCode = @"Volume+";
-			break;
-		case kButtonCodeVolDown:
-			buttonCode = @"Volume-";
-			break;
-		case kButtonCodeMute:
-			buttonCode = @"Mute";
-			break;
-		case kButtonCodeAudio:
-			buttonCode = @"Audio";
-			break;
-		case kButtonCodeText: // Map Text -> Subtitles
-			buttonCode = @"Subtitles";
-			break;
-		case kButtonCodeVideo: // Map Video -> Recordings
-			buttonCode = @"Recordings";
-			break;
+		case kButtonCode0: buttonCode = @"0"; break;
+		case kButtonCode1: buttonCode = @"1"; break;
+		case kButtonCode2: buttonCode = @"2"; break;
+		case kButtonCode3: buttonCode = @"3"; break;
+		case kButtonCode4: buttonCode = @"4"; break;
+		case kButtonCode5: buttonCode = @"5"; break;
+		case kButtonCode6: buttonCode = @"6"; break;
+		case kButtonCode7: buttonCode = @"7"; break;
+		case kButtonCode8: buttonCode = @"8"; break;
+		case kButtonCode9: buttonCode = @"9"; break;
+		case kButtonCodeUp: buttonCode = @"Up"; break;
+		case kButtonCodeDown: buttonCode = @"Down"; break;
+		case kButtonCodeLeft: buttonCode = @"Left"; break;
+		case kButtonCodeRight: buttonCode = @"Right"; break;
+		case kButtonCodeMenu: buttonCode = @"Menu"; break;
+		case kButtonCodeOK: buttonCode = @"Ok"; break;
+		case kButtonCodeRed: buttonCode = @"Red"; break;
+		case kButtonCodeGreen: buttonCode = @"Green"; break;
+		case kButtonCodeYellow: buttonCode = @"Yellow"; break;
+		case kButtonCodeBlue: buttonCode = @"Blue"; break;
+		case kButtonCodeInfo: buttonCode = @"Info"; break;
+		case kButtonCodeNext: buttonCode = @"Next"; break;
+		case kButtonCodePrevious: buttonCode = @"Prev"; break;
+		case kButtonCodePower: buttonCode = @"Power"; break;
+		case kButtonCodeBouquetUp: buttonCode = @"Channel+"; break;
+		case kButtonCodeBouquetDown: buttonCode = @"Channel-"; break;
+		case kButtonCodeVolUp: buttonCode = @"Volume+"; break;
+		case kButtonCodeVolDown: buttonCode = @"Volume-"; break;
+		case kButtonCodeMute: buttonCode = @"Mute"; break;
+		case kButtonCodeAudio: buttonCode = @"Audio"; break;
+		// Map Text -> Subtitles
+		case kButtonCodeText: buttonCode = @"Subtitles"; break;
+		// Map Video -> Recordings
+		case kButtonCodeVideo: buttonCode = @"Recordings"; break;
 		// Unmapped
 /*
-		case kButtonCodePlay:
-			buttonCode = @"Play";
-			break;
-		case kButtonCodePause:
-			buttonCode = @"Pause";
-			break;
-		case kButtonCodeStop:
-			buttonCode = @"Stop";
-			break;
-		case kButtonCodeRecord:
-			buttonCode = @"Record";
-			break;
-		case kButtonCodeFastFwd:
-			buttonCode = @"FastFwd";
-			break;
-		case kButtonCodeFastRwd:
-			buttonCode = @"FastRwd";
-			break;			
-		case kButtonCodePrevChannel:
-			buttonCode = @"PrevChannel";
-			break;
-		case kButtonCodeSchedule:
-			buttonCode = @"Schedule";
-			break;
-		case kButtonCodeChannels:
-			buttonCode = @"Channels";
-			break;
-		case kButtonCodeTimers:
-			buttonCode = @"Timers";
-			break;
-		case kButtonCodeSetup:
-			buttonCode = @"Setup";
-			break;
-		case kButtonCodeCommands:
-			buttonCode = @"Commands";
-			break;
-		case kButtonCodeUser1:
-			buttonCode = @"User1";
-			break;
-		case kButtonCodeUser2:
-			buttonCode = @"User2";
-			break;
-		case kButtonCodeUser3:
-			buttonCode = @"User3";
-			break;
-		case kButtonCodeUser4:
-			buttonCode = @"User4";
-			break;
-		case kButtonCodeUser5:
-			buttonCode = @"User5";
-			break;
-		case kButtonCodeUser6:
-			buttonCode = @"User6";
-			break;
-		case kButtonCodeUser7:
-			buttonCode = @"User7";
-			break;
-		case kButtonCodeUser8:
-			buttonCode = @"User8";
-			break;
-		case kButtonCodeUser9:
-			buttonCode = @"User9";
-			break;
+		case kButtonCodePlay: buttonCode = @"Play"; break;
+		case kButtonCodePause: buttonCode = @"Pause"; break;
+		case kButtonCodeStop: buttonCode = @"Stop"; break;
+		case kButtonCodeRecord: buttonCode = @"Record"; break;
+		case kButtonCodeFastFwd: buttonCode = @"FastFwd"; break;
+		case kButtonCodeFastRwd: buttonCode = @"FastRwd"; break;
+		case kButtonCodePrevChannel: buttonCode = @"PrevChannel"; break;
+		case kButtonCodeSchedule: buttonCode = @"Schedule"; break;
+		case kButtonCodeChannels: buttonCode = @"Channels"; break;
+		case kButtonCodeTimers: buttonCode = @"Timers"; break;
+		case kButtonCodeSetup: buttonCode = @"Setup"; break;
+		case kButtonCodeCommands: buttonCode = @"Commands"; break;
+		case kButtonCodeUser1: buttonCode = @"User1"; break;
+		case kButtonCodeUser2: buttonCode = @"User2"; break;
+		case kButtonCodeUser3: buttonCode = @"User3"; break;
+		case kButtonCodeUser4: buttonCode = @"User4"; break;
+		case kButtonCodeUser5: buttonCode = @"User5"; break;
+		case kButtonCodeUser6: buttonCode = @"User6"; break;
+		case kButtonCodeUser7: buttonCode = @"User7"; break;
+		case kButtonCodeUser8: buttonCode = @"User8"; break;
+		case kButtonCodeUser9: buttonCode = @"User9"; break;
 */
 	}
 	if(buttonCode == nil)
@@ -897,7 +793,7 @@
 	[_socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	return [ret isEqualToString: [NSString stringWithFormat: @"250 Key \"%@\" accepted", buttonCode]];
 }
 
@@ -912,7 +808,7 @@
 	[_socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	return [ret isEqualToString: @"250 Message queued"];
 }
 
@@ -945,7 +841,7 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	NSString *ret = [self readSocketLine];
+	const NSString *ret = [self readSocketLine];
 	NSLog(@"%@", ret);
 	return YES;
 }
@@ -989,7 +885,6 @@
 {
 	[_serviceCache release];
 	_serviceCache = nil;
-	return;
 }
 
 @end

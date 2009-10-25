@@ -59,10 +59,9 @@ NSString *kMainCell_ID = @"MainCell_ID";
 - (void)layoutSubviews
 {
 	CGRect frame;
-	CGRect contentRect;
 
 	[super layoutSubviews];
-	contentRect = [self.contentView bounds];
+	const CGRect contentRect = [self.contentView bounds];
 
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
 	_nameLabel.frame = frame;

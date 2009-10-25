@@ -29,13 +29,13 @@ static NSDictionary *_connection;
 	if(!_connections || connectionIndex >= [_connections count])
 		return NO;
 
-	NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
+	const NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
 
 	NSString *remoteHost = [connection objectForKey: kRemoteHost];
 	NSString *username = [[connection objectForKey: kUsername]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSString *password = [[connection objectForKey: kPassword] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-	NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
-	NSInteger port = [[connection objectForKey: kPort] integerValue];
+	const NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
+	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 
 	if(_sharedRemoteConnector)
 	{
@@ -166,7 +166,7 @@ static NSDictionary *_connection;
 
 + (BOOL)isSingleBouquet
 {
-	id value = [_connection objectForKey: kSingleBouquet];
+	const id value = [_connection objectForKey: kSingleBouquet];
 	if(value == nil)
 		return NO;
 	return [value boolValue];
@@ -174,7 +174,7 @@ static NSDictionary *_connection;
 
 + (NSInteger)getConnectedId
 {
-	NSUInteger index = [_connections indexOfObject: _connection];
+	const NSUInteger index = [_connections indexOfObject: _connection];
 	if(index == NSNotFound)
 		return [[NSUserDefaults standardUserDefaults]
 					integerForKey: kActiveConnection];

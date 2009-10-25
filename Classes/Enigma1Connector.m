@@ -161,7 +161,7 @@ enum enigma1MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
+	const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
 	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
 	[streamReader release];
 }
@@ -174,7 +174,7 @@ enum enigma1MessageTypes {
 			[self refreshBouquetsXMLCache];
 	}
 
-	NSArray *resultNodes = NULL;
+	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
 	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
@@ -240,7 +240,7 @@ enum enigma1MessageTypes {
 
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 	return doc;
@@ -252,7 +252,7 @@ enum enigma1MessageTypes {
 	
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 	return doc;
@@ -264,7 +264,7 @@ enum enigma1MessageTypes {
 	
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 	return doc;
@@ -322,7 +322,7 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -367,7 +367,7 @@ enum enigma1MessageTypes {
 	
 	NSError *parseError = nil;
 	
-	BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 	[streamReader autorelease];
 }
@@ -386,11 +386,11 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"mute: 1"];
+	const NSRange myRange = [myString rangeOfString: @"mute: 1"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -412,11 +412,11 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"Volume set."];
+	const NSRange myRange = [myString rangeOfString: @"Volume set."];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -426,18 +426,23 @@ enum enigma1MessageTypes {
 
 - (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
-	NSInteger repeated = 0;
-	NSInteger afterEvent = 0;
+	const NSUInteger repeated = newTimer.repeated;
+	NSUInteger afterEvent = 0;
 	NSURL *myURI = nil;
 
-	if(newTimer.afterevent == kAfterEventStandby)
-		afterEvent = doGoSleep;
-	else if(newTimer.afterevent == kAfterEventDeepstandby)
-		afterEvent = doShutdown;
-	else // newTimer.afterevent == kAfterEventNothing or unhandled
-		afterEvent = 0;
+	switch(newTimer.afterevent)
+	{
+		case kAfterEventStandby:
+			afterEvent = doGoSleep;
+			break;
+		case kAfterEventDeepstandby:
+			afterEvent = doShutdown;
+			break;
+		case kAfterEventNothing:
+		default:
+			afterEvent = 0;
+	}
 
-	repeated = newTimer.repeated;
 	if(repeated == 0)
 	{
 		// Generate non-repeated URI
@@ -461,11 +466,11 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
+	const NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -501,11 +506,11 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
+	const NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -518,23 +523,12 @@ enum enigma1MessageTypes {
 	// Fix some Buttoncodes
 	switch(type)
 	{
-		case kButtonCodeLame:
-			type = 1;
-			break;
-		case kButtonCodeMenu:
-			type = 141;
-			break;
-		case kButtonCodeTV:
-			type = 385;
-			break;
-		case kButtonCodeRadio:
-			type = 377;
-			break;
-		case kButtonCodeText:
-			type = 66;
-			break;
-		default:
-			break;
+		case kButtonCodeLame: type = 1; break;
+		case kButtonCodeMenu: type = 141; break;
+		case kButtonCodeTV: type = 385; break;
+		case kButtonCodeRadio: type = 377; break;
+		case kButtonCodeText: type = 66; break;
+		default: break;
 	}
 
 	// Generate URI
@@ -587,11 +581,11 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"+ok"];
+	const NSRange myRange = [myString rangeOfString: @"+ok"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -657,10 +651,10 @@ enum enigma1MessageTypes {
 											returningResponse: &response error: nil];
 		
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-		
-		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-		NSRange myRange = [myString rangeOfString: @"/root/tmp/screenshot.jpg"];
+		const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+		const NSRange myRange = [myString rangeOfString: @"/root/tmp/screenshot.jpg"];
 		[myString release];
 		if(!myRange.length)
 			return nil;

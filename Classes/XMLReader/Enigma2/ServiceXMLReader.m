@@ -55,9 +55,7 @@
 */
 - (void)parseFull
 {
-	NSArray *resultNodes = NULL;
-
-	resultNodes = [_parser nodesForXPath:@"/e2servicelist/e2service" error:nil];
+	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2servicelist/e2service" error:nil];
 	
 	for(CXMLElement *resultElement in resultNodes)
 	{

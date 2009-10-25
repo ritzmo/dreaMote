@@ -710,7 +710,7 @@
 				_afterEventViewController = [[AfterEventViewController alloc] init];
 			_afterEventViewController.selectedItem = _timer.afterevent;
 			// XXX: why gives directly assigning this an error?
-			BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
+			const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
 			_afterEventViewController.showAuto = showAuto;
 			[_afterEventViewController setDelegate: self];
 

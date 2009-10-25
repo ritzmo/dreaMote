@@ -43,10 +43,8 @@
 */
 - (void)parseFull
 {
-	NSArray *resultNodes = NULL;
-	CXMLNode *currentChild = NULL;
-
-	resultNodes = [_parser nodesForXPath:@"/e2frontendstatus" error:nil];
+	CXMLNode *currentChild = nil;
+	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2frontendstatus" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -55,9 +53,9 @@
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
 		{
 			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			NSString *elementName = [currentChild name];			
+			const NSString *elementName = [currentChild name];			
 			if ([elementName isEqualToString:@"e2snrdb"]) {
-				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+				const NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 				newSignal.snrdb = [[str substringToIndex: [str length] - 3] floatValue];
 				continue;
 			}

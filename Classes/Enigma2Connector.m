@@ -142,7 +142,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/getservices" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -157,7 +157,7 @@ enum enigma2MessageTypes {
 		sref = [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -167,7 +167,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -177,7 +177,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -187,7 +187,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/movielist" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -235,7 +235,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError: nil];
 	[streamReader autorelease];
 }
@@ -244,7 +244,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/signal" relativeToURL: _baseAddress];
 	
-	BaseXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError: nil];
 	[streamReader autorelease];
 }
@@ -263,11 +263,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -289,11 +289,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -315,11 +315,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -341,11 +341,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -367,11 +367,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -393,11 +393,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -419,7 +419,7 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	NSString *myString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+	const NSString *myString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
@@ -503,11 +503,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 											returningResponse: &response error: nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 	[myString release];
 	if(myRange.length)
 		return YES;
@@ -520,7 +520,7 @@ enum enigma2MessageTypes {
 	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -530,7 +530,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: _baseAddress];
 	
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -551,11 +551,11 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 						returningResponse: &response error: nil];
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	[myString release];
 	if(myRange.length)
 		return YES;

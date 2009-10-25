@@ -147,20 +147,20 @@ enum neutrinoMessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
+	const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
 	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
 	[streamReader release];
 }
 
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate
 {
+	NSArray *resultNodes = nil;
+
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
 		[_cachedBouquetsXML release];
 		[self refreshBouquetsXMLCache];
 	}
-
-	NSArray *resultNodes = NULL;
 
 	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
 
@@ -223,7 +223,7 @@ enum neutrinoMessageTypes {
 	// XXX: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -267,8 +267,8 @@ enum neutrinoMessageTypes {
 	}
 
 	// Parse
-	NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
+	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
 	for(NSString *timerString in timerStringList)
 	{
 		// eventID eventType eventRepeat repcount announceTime alarmTime stopTime data
@@ -280,7 +280,7 @@ enum neutrinoMessageTypes {
 		NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 		
 		// Determine type, reject unhandled
-		NSInteger timerType = [[timerStringComponents objectAtIndex: 1] integerValue];
+		const NSInteger timerType = [[timerStringComponents objectAtIndex: 1] integerValue];
 		if(timerType == neutrinoTimerTypeRecord)
 			timer.justplay = NO;
 		else if(timerType == neutrinoTimerTypeZapto)
@@ -307,7 +307,7 @@ enum neutrinoMessageTypes {
 
 		NSObject<ServiceProtocol> *service = [[GenericService alloc] init];
 		service.sname = sname;
-		NSArray *resultNodes = [_cachedBouquetsXML nodesForXPath:
+		const NSArray *resultNodes = [_cachedBouquetsXML nodesForXPath:
 									[NSString stringWithFormat: @"/zapit/Bouquet/channel[@name=\"%@\"]", sname]
 									error:nil];
 		// XXX: do we really want this? we don't care about the sref :-)
@@ -328,7 +328,7 @@ enum neutrinoMessageTypes {
 		[service release];
 
 		// Determine state
-		NSDate *announce = [NSDate dateWithTimeIntervalSince1970:
+		const NSDate *announce = [NSDate dateWithTimeIntervalSince1970:
 									[[timerStringComponents objectAtIndex: 4] doubleValue]];
 		if([announce timeIntervalSinceNow] > 0)
 			timer.state = kTimerStateWaiting;
@@ -392,7 +392,7 @@ enum neutrinoMessageTypes {
 										 returningResponse: &response error: nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	BOOL equalsOn = [myString isEqualToString: @"on"];
+	const BOOL equalsOn = [myString isEqualToString: @"on"];
 	[myString release];
 	if(equalsOn)
 		myString = @"standby?off";
@@ -467,7 +467,6 @@ enum neutrinoMessageTypes {
 
 - (BOOL)toggleMuted
 {
-	BOOL equalsRes = NO;
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
 	
@@ -480,13 +479,14 @@ enum neutrinoMessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	equalsRes = [myString isEqualToString: @"1"];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const BOOL equalsRes = [myString isEqualToString: @"1"];
 	[myString release];
 	if(equalsRes)
 		myString = @"unmute";
 	else
 		myString = @"mute";
+
 
 	// Generate new URI
 	myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%@", myString] relativeToURL: _baseAddress];
@@ -499,15 +499,13 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	equalsRes = [myString isEqualToString: @"mute"];
-	[myString release];
-	return equalsRes;
+	return !equalsRes;
 }
 
 - (BOOL)setVolume:(NSInteger) newVolume
 {
 	// neutrino expect volume to be a multiple of 5
-	NSInteger diff = newVolume % 5;
+	const NSUInteger diff = newVolume % 5;
 	// XXX: to make this code easier we could just add/remove the diff but lets try it fair first :-)
 	if(diff < 3)
 		newVolume -= diff;

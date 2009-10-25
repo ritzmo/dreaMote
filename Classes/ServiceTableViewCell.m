@@ -46,7 +46,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
 #endif
 	{
-		UIView *myContentView = self.contentView;
+		const UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -89,17 +89,14 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 /* layout */
 - (void)layoutSubviews
 {
-	CGRect contentRect;
-
 	[super layoutSubviews];
-	contentRect = self.contentView.bounds;
+	const CGRect contentRect = self.contentView.bounds;
 	
 	// In this example we will never be editing, but this illustrates the appropriate pattern
-	if (!self.editing) {
-		CGRect frame;
-		
+	if (!self.editing)
+	{
 		// Place the location label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 1, contentRect.size.width - kRightMargin, 20);
+		const CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 1, contentRect.size.width - kRightMargin, 20);
 		_serviceNameLabel.frame = frame;
 	}
 }

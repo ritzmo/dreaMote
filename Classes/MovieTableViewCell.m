@@ -52,7 +52,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
 #endif
 	{
-		UIView *myContentView = self.contentView;
+		const UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -104,10 +104,9 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 /* layout */
 - (void)layoutSubviews
 {
-	CGRect contentRect;
 	[super layoutSubviews];
-	contentRect = self.contentView.bounds;
-	
+	const CGRect contentRect = self.contentView.bounds;
+
 	// XXX: we should never be editing.
 	if (!self.editing) {
 		CGRect frame;

@@ -55,7 +55,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	if(self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier])
 #endif
 	{
-		UIView *myContentView = self.contentView;
+		const UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -109,9 +109,9 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	{
 		// It's not, create it
 		[_formatter setDateStyle:NSDateFormatterMediumStyle];
-		NSString *begin = [_formatter stringFromDate: newTimer.begin];
+		const NSString *begin = [_formatter stringFromDate: newTimer.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
-		NSString *end = [_formatter stringFromDate: newTimer.end];
+		const NSString *end = [_formatter stringFromDate: newTimer.end];
 		if(begin && end)
 			newTimer.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
@@ -128,10 +128,8 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 /* layout */
 - (void)layoutSubviews
 {
-	CGRect contentRect;
-
 	[super layoutSubviews];
-	contentRect = self.contentView.bounds;
+	const CGRect contentRect = self.contentView.bounds;
 
 	if (!self.editing) {
 		CGRect frame;

@@ -52,7 +52,7 @@
 	if(date == nil)
 		return nil;
 
-	NSDateFormatterStyle dateStyle = [self dateStyle];
+	const NSDateFormatterStyle dateStyle = [self dateStyle];
 	if(dateStyle == NSDateFormatterNoStyle)
 		return [super stringForObjectValue:date];
 
@@ -61,7 +61,7 @@
 		_thisNight = [[NSDate dateWithTimeIntervalSinceNow: -((NSInteger)[NSDate timeIntervalSinceReferenceDate] + [[self timeZone] secondsFromGMT]) % ONEDAY] retain];
 
 	// Get seconds the event is away from 00:00 today
-	NSInteger secSinceToday = (NSInteger)([date timeIntervalSinceDate: _thisNight]+0.9);
+	const NSInteger secSinceToday = (NSInteger)([date timeIntervalSinceDate: _thisNight]+0.9);
 
 	if (secSinceToday >= 0 && secSinceToday < ONEDAY)
 	{

@@ -64,9 +64,7 @@
  */
 - (void)parseFull
 {
-	NSArray *resultNodes = NULL;
-
-	resultNodes = [_parser nodesForXPath:@"/service_epg/event" error:nil];
+	const NSArray *resultNodes = [_parser nodesForXPath:@"/service_epg/event" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
