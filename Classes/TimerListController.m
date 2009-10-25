@@ -26,8 +26,8 @@
 /* initialize */
 - (id)init
 {
-	self = [super init];
-	if (self) {
+	if(self = [super init])
+	{
 		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
 		_dateFormatter = [[FuzzyDateFormatter alloc] init];
@@ -103,7 +103,7 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	NSInteger i;
+	NSUInteger i;
 	
 	// Reset _dist array
 	for(i = 0; i < kTimerStateMax; i++)
@@ -135,7 +135,7 @@
 /* did disappear */
 - (void)viewDidDisappear:(BOOL)animated
 {
-	NSInteger i;
+	NSUInteger i;
 
 	// Reset _dist array
 	for(i = 0; i < kTimerStateMax; i++)
@@ -171,8 +171,8 @@
 {
 	if(newTimer != nil)
 	{
-		NSInteger state = newTimer.state;
-		NSInteger index = _dist[state];
+		NSUInteger state = newTimer.state;
+		NSUInteger index = _dist[state];
 
 		[_timers insertObject: newTimer atIndex: index];
 
@@ -197,7 +197,6 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
 	NSInteger section = indexPath.section;
 	UITableViewCell *cell = nil;
 
@@ -236,7 +235,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger index = indexPath.row;
-	NSInteger section = indexPath.section - 1;
+	const NSInteger section = indexPath.section - 1;
 	if(section > 0)
 		index += _dist[section - 1];
 
@@ -315,8 +314,8 @@
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
-		NSInteger index = indexPath.row;
-		NSInteger section = indexPath.section - 1;
+		NSUInteger index = indexPath.row;
+		NSUInteger section = indexPath.section - 1;
 		if(section > 0)
 			index += _dist[section - 1];
 
@@ -361,7 +360,7 @@
 		else
 		{
 			// Alert user
-			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
 														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
 			[alert release];

@@ -91,8 +91,6 @@
 
 - (void)loadView
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;

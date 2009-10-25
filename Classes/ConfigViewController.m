@@ -152,12 +152,12 @@
 /* create a button */
 - (UIButton *)create_Button: (NSString *)imageName: (SEL)action
 {
-	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	const CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed: imageName];
 	[button setImage: image forState: UIControlStateNormal];
 	[button addTarget: self action: action
-	 forControlEvents: UIControlEventTouchUpInside];
+		forControlEvents: UIControlEventTouchUpInside];
 	
 	return [button autorelease];
 }
@@ -195,7 +195,7 @@
 	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
 	// Remote Port
-	NSNumber *port = [_connection objectForKey: kPort];
+	const NSNumber *port = [_connection objectForKey: kPort];
 	_remotePortTextField = [[self create_TextField] retain];
 	_remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
 	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
@@ -356,7 +356,7 @@
 	if(newConnector == nil)
 		return;
 
-	NSInteger oldConnector = _connector;
+	const NSInteger oldConnector = _connector;
 	_connector = [newConnector integerValue];
 
 	if(_connector == kInvalidConnector)
@@ -463,9 +463,7 @@
 /* determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-
-	NSInteger section = indexPath.section;
+	const NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	UITableViewCell *sourceCell = nil;
 
@@ -517,7 +515,6 @@
 			}
 			break;
 		case 2:
-			row = indexPath.row;
 			switch(row)
 			{
 				case 0:

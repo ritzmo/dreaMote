@@ -137,7 +137,7 @@
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	// Date Formatter
-	FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
+	const FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
 	[format setDateStyle:NSDateFormatterMediumStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	
@@ -146,7 +146,7 @@
 
 - (UIButton *)create_PlayButton
 {
-	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	const CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"media-playback-start.png"];
 	[button setImage:image forState:UIControlStateNormal];
@@ -182,7 +182,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// XXX: this is kinda hackish
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 	@try {
 		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
 	}
@@ -294,7 +294,7 @@
 //
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
+	const NSInteger section = indexPath.section;
 	if(section == 0)
 		return kTextViewHeight;
 	else if(section == 6)
@@ -314,8 +314,6 @@
 //
 - (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-
 	UITableViewCell *cell = nil;
 
 	switch (section) {
@@ -354,7 +352,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
+	const NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
 
 	// we are creating a new cell, setup its attributes

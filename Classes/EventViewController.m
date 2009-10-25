@@ -103,7 +103,7 @@
 
 - (void)setSearch: (BOOL)newSearch
 {
-	BOOL oldSearch = _isSearch;
+	const BOOL oldSearch = _isSearch;
 	_isSearch = newSearch;
 
 	// reload data if value changed
@@ -193,7 +193,7 @@
 		_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self event: _event] retain];
 	}
 	@catch (NSException * e) {
-		//
+		_eventXMLDoc = nil;
 	}
 	[pool release];
 }
@@ -219,7 +219,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// XXX: this is kinda hackish
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 	@try {
 		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
 	}
@@ -269,7 +269,7 @@
 		section++;
 	if(section == 4 && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
 	{
-		NSUInteger count = [_similarEvents count];
+		const NSUInteger count = [_similarEvents count];
 		return count ? count : 1;
 	}
 
@@ -295,9 +295,9 @@
 		case 3:
 		case 4:
 		case 5:
+		default:
 		{
 			result = kUIRowHeight;
-			break;
 		}
 	}
 	
@@ -308,8 +308,6 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-
 	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = nil;
 

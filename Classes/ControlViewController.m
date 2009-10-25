@@ -162,7 +162,7 @@
 /* go to standby */
 - (void)standby:(id)sender
 {
-	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] standby];
@@ -172,7 +172,7 @@
 /* reboot */
 - (void)reboot:(id)sender
 {
-	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 1 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] reboot];
@@ -182,7 +182,7 @@
 /* restart gui */
 - (void)restart:(id)sender
 {
-	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] restart];
@@ -192,7 +192,7 @@
 /* shutdown */
 -(void)shutdown:(id)sender
 {
-	NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
+	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
 		indexPath = [NSIndexPath indexPathForRow: 3 inSection: section];
@@ -227,7 +227,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// XXX: this is kinda hackish
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 	@try {
 		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
 	}

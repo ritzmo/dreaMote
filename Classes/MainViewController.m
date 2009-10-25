@@ -210,7 +210,7 @@
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
 	[myTableView deselectRowAtIndexPath:tableSelection animated:NO];
 
-	id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
+	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
 		if(![RemoteConnectorObject connectTo: [connId integerValue]])
 			return;

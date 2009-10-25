@@ -48,29 +48,29 @@
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
 	{
-		UIBarButtonItem *systemItem = [[UIBarButtonItem alloc]
+		const UIBarButtonItem *systemItem = [[UIBarButtonItem alloc]
 									   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 									   target:self action:@selector(flipView:)];
 
 		// flex item used to separate the left groups items and right grouped items
-		UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																	target:nil
 																	action:nil];
 
 		// create a bordered style button with custom title
-		UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"OSD", @"")
+		const UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"OSD", @"")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
 																	action:@selector(setOSDType:)];
 
 		// create a bordered style button with custom title
-		UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Video", @"")
+		const UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Video", @"")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
 																	action:@selector(setVideoType:)];
 
 		// create a bordered style button with custom title
-		UIBarButtonItem *bothItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"All", @"")
+		const UIBarButtonItem *bothItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"All", @"")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
 																	action:@selector(setBothType:)];
@@ -132,7 +132,7 @@
 
 	// size up the _toolbar and set its frame
 	[_toolbar sizeToFit];
-	CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
 	mainViewSize = _screenView.bounds.size;
 	_toolbar.frame = CGRectMake(0.0,
 							   mainViewSize.height - (_toolbarHeight * 2.0) + 2.0,

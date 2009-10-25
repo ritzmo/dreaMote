@@ -47,6 +47,9 @@
 #define kCellLeftOffset			8.0
 #define kCellTopOffset			12.0
 
+//
+#define kVanilla_ID				@"Vanilla_ID"
+
 // keys in connection dict
 #define kRemoteName				@"remoteNameKey"
 #define kRemoteHost				@"remoteHostKey"

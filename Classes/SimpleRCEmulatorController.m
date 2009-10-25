@@ -16,10 +16,14 @@
 
 - (void)loadView
 {
+	const CGFloat imageWidth = 135;
+	const CGFloat imageHeight = 105;
+	CGRect frame;
+	UIButton *roundedButtonType;
+
 	[super loadView];
 
-	CGSize mainViewSize = self.view.bounds.size;
-	CGRect frame;
+	const CGSize mainViewSize = self.view.bounds.size;
 
 	// create the rc views (i think its easier to have two views than to keep track of all buttons and add/remove them as pleased)
 	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
@@ -27,9 +31,6 @@
 	[self.view addSubview:rcView];
 
 	// XXX: add dummy page, maybe volume slider, menu button, ...
-	UIButton *roundedButtonType;
-	const CGFloat imageWidth = 135;
-	const CGFloat imageHeight = 105;
 
 	// lame
 	frame = CGRectMake(0, 0, imageWidth, imageHeight);

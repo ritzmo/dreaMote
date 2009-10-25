@@ -79,7 +79,7 @@
 
 - (UIButton *)allocSendButton
 {
-	CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	const CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"mail-forward.png"];
 	[button setImage:image forState:UIControlStateNormal];
@@ -150,17 +150,16 @@
 
 - (void)sendMessage: (id)sender
 {
+	NSString *failureMessage = nil;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:4];
+	NSString *message = _messageTextField.text;
+	NSString *caption = _captionTextField.text;
+	const NSInteger type = _type;
+	const NSInteger timeout = [_timeoutTextField.text integerValue];
+
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath
 								animated: YES
 								scrollPosition: UITableViewScrollPositionNone];
-
-	NSString *failureMessage = nil;
-
-	NSString *message = _messageTextField.text;
-	NSString *caption = _captionTextField.text;
-	NSInteger type = _type;
-	NSInteger timeout = [_timeoutTextField.text integerValue];
 
 	// XXX: we could also join these messages
 	if(message == nil || [message isEqualToString: @""])
@@ -240,47 +239,50 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 1)
+	switch(section)
 	{
-		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
-			return 0;
-	}
-	else if(section == 2)
-	{
-		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
-			return 0;
-	}
-	else if(section == 3)
-	{
-		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
-			return 0;
+		case 1:
+			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
+				return 0;
+			break;
+		case 2:
+			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
+				return 0;
+			break;
+		case 3:
+			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
+				return 0;
+			break;
+		default:
+			break;
 	}
 	return 1;
 }
-
 
 // as some rows are hidden we want to hide the gap created by empty sections by
 // resizing the header fields.
 //
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	if(section == 0 || section == 4)
-		return 34.0;
-	
-	if(section == 1)
+	switch(section)
 	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
+		case 0:
+		case 4:
 			return 34.0;
-	}
-	else if(section == 2)
-	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
-			return 34.0;
-	}
-	else if(section == 3)
-	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
-			return 34.0;
+		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
+				return 34.0;
+			break;
+		case 2:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
+				return 34.0;
+			break;
+		case 3:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
+				return 34.0;
+			break;
+		default:
+			break;
 	}
 
 	return 0.0;
@@ -291,24 +293,26 @@
 //
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
-	if(section == 0 || section == 4)
-		return kUIRowHeight;
-
-	if(section == 1)
+	const NSInteger section = indexPath.section;
+	switch(section)
 	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
+		case 0:
+		case 4:
 			return kUIRowHeight;
-	}
-	else if(section == 2)
-	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
-			return kUIRowHeight;
-	}
-	else if(section == 3)
-	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
-			return kUIRowHeight;
+		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
+				return kUIRowHeight;
+			break;
+		case 2:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
+				return kUIRowHeight;
+			break;
+		case 3:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
+				return kUIRowHeight;
+			break;
+		default:
+			break;
 	}
 
 	return 0.0;
@@ -318,8 +322,6 @@
 //
 - (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-	
 	UITableViewCell *cell = nil;
 	
 	switch (section) {
@@ -357,7 +359,7 @@
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
+	const NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: tableView: section];
 
 	// we are creating a new cell, setup its attributes
@@ -396,7 +398,7 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
+	const NSInteger section = indexPath.section;
 	if(self.editing && section == 3)
 	{
 		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
@@ -417,7 +419,6 @@
 
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
-
 	// notify other cells to end editing
 	if (![cell isEqual: _messageCell])
 		[_messageCell stopEditing];

@@ -81,8 +81,6 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
-
 	UITableViewCell *cell = nil;
 
 	cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
@@ -128,7 +126,7 @@
 /* select row */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 
 	[tableView deselectRowAtIndexPath: indexPath animated: YES];
 

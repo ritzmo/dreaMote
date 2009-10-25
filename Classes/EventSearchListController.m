@@ -23,8 +23,8 @@
 /* initialize */
 - (id)init
 {
-	self = [super init];
-	if (self) {
+	if(self = [super init])
+	{
 		self.title = NSLocalizedString(@"Search Events", @"Default Title of EventSearchListController");
 	}
 	return self;
@@ -55,7 +55,7 @@
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	CGSize size = self.view.bounds.size;
+	const CGSize size = self.view.bounds.size;
 	CGRect frame = CGRectMake(0.0, 0.0, size.width, kSearchBarHeight);
 
 	_searchBar = [[UISearchBar alloc] initWithFrame: frame];
@@ -179,7 +179,7 @@
 	//[UIView setAnimationDuration: kTransitionDuration];
 
 	// adjust size of _searchBar & _tableView
-	CGSize mainViewSize = self.view.bounds.size;
+	const CGSize mainViewSize = self.view.bounds.size;
 	_searchBar.frame = CGRectMake(0.0, 0.0, mainViewSize.width, kSearchBarHeight);
 	_tableView.frame = CGRectMake(0.0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
 

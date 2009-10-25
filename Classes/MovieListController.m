@@ -22,8 +22,8 @@
 /* initialize */
 - (id)init
 {
-	self = [super init];
-	if (self) {
+	if(self = [super init])
+	{
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray array] retain];
 		_refreshMovies = YES;
@@ -209,7 +209,7 @@
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {	
-	NSInteger index = indexPath.row;
+	const NSInteger index = indexPath.row;
 	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: index];
 
 	if(!movie.valid)
@@ -226,7 +226,7 @@
 	else
 	{
 		// alert user if movie could not be deleted
-		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
 														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
 		[alert release];

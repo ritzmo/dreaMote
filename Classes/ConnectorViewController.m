@@ -93,7 +93,6 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
 	UITableViewCell *cell = nil;
 
 	cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];

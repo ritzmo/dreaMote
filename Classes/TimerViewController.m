@@ -355,7 +355,7 @@
 		// Show error message if one occured
 		if(message != nil)
 		{
-			UIAlertView *notification = [[UIAlertView alloc]
+			const UIAlertView *notification = [[UIAlertView alloc]
 										 initWithTitle:NSLocalizedString(@"Error", @"")
 										 message:message
 										 delegate:nil
@@ -552,7 +552,6 @@
 //
 - (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
 	BOOL setEditingStyle = YES;
 	UITableViewCell *cell = nil;
 

@@ -34,8 +34,8 @@
 /* initialize */
 - (id)init
 {
-	self = [super init];
-	if (self) {
+	if(self = [super init])
+	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
 		_shouldSave = NO;
@@ -177,7 +177,6 @@
 /* cell for section */
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
 {
-	static NSString *kVanilla_ID = @"Vanilla_ID";
 	UITableViewCell *cell = nil;
 
 	switch(section)
@@ -202,7 +201,7 @@
 /* determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
+	const NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	NSString *hostTitle = nil;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];

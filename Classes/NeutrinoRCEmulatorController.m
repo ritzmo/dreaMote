@@ -14,29 +14,23 @@
 
 - (void)loadView
 {
+	const CGFloat imageWidth = 45;
+	const CGFloat imageHeight = 35;
+	CGFloat currX;
+	CGFloat currY;
+	UIButton *roundedButtonType;
+	CGRect frame;
+	
 	[super loadView];
 
 	CGSize mainViewSize = self.view.bounds.size;
-	CGRect frame;
-
-#pragma mark RC View
 
 	// create the rc views (i think its easier to have two views than to keep track of all buttons and add/remove them as pleased)
 	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
 	rcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:rcView];
 
-	UIButton *roundedButtonType;
-
-	CGFloat imageWidth;
-	CGFloat imageHeight;
-	CGFloat currX;
-	CGFloat currY;
-
 	/* Begin Keypad */
-	imageWidth = 45;
-	imageHeight = 35;
-	
 	// new row
 	currX = kTopMargin;
 	currY = 75;

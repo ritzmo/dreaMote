@@ -44,7 +44,7 @@
 	[contentView release];
 
 	CGRect frame;
-	CGSize size = self.view.bounds.size;
+	const CGSize size = self.view.bounds.size;
 
 	frame = CGRectMake(0.0, 0.0, size.width, 310.0);
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
@@ -79,7 +79,7 @@
 
 /* load url? */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType; {
-	NSURL *requestURL = [[request URL] retain];
+	const NSURL *requestURL = [[request URL] retain];
 
 	// Check to see what protocol/scheme the requested URL is.
 	if ( ([requestURL.scheme isEqualToString: @"http"]
