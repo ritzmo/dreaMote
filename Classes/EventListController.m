@@ -24,8 +24,8 @@
 /* initialize */
 - (id)init
 {
-	self = [super init];
-	if (self) {
+	if(self = [super init])
+	{
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
 		_dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -99,7 +99,7 @@
 /* layout */
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	const UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = 48.0;
