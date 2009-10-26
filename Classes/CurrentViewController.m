@@ -69,9 +69,9 @@
 	myTextView.editable = NO;
 	myTextView.backgroundColor = [UIColor whiteColor];
 	
-	NSString *edescription = event.edescription;
-	if(edescription != nil)
-		myTextView.text = edescription;
+	NSString *description = event.edescription;
+	if(description != nil)
+		myTextView.text = description;
 	else
 		myTextView.text = @"";
 
@@ -262,6 +262,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	[(UITableView *)self.view reloadData];
+
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
@@ -278,7 +280,6 @@
 	_next = nil;
 	[_currentXMLDoc release];
 	_currentXMLDoc = nil;
-	[(UITableView *)self.view reloadData];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

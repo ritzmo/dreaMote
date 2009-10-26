@@ -150,15 +150,17 @@
 	
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];
-	if([_event.sdescription length])
-		[text appendString: _event.sdescription];
+	NSString *description = _event.sdescription;
+	if([description length])
+		[text appendString: description];
 	else
 		[text appendString: _event.title];
 
-	if([_event.edescription length])
+	description = _event.edescription;
+	if([description length])
 	{
 		[text appendString: @"\n\n"];
-		[text appendString: _event.edescription];
+		[text appendString: description];
 	}
 
 	myTextView.text = text;
