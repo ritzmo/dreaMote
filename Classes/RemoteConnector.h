@@ -87,6 +87,8 @@ enum connectorFeatures {
 	 to bother about neutrino/svdrp :-)
 	 */
 	kFeaturesSimpleRepeated,
+	/*! @brief Allows to display currently playing service and event. */
+	kFeaturesCurrent,
 };
 
 /*!
@@ -291,7 +293,13 @@ enum buttonCodes {
  */
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
 
-
+/*!
+ @brief Get information on currently playing service and now/new event.
+ 
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
 
 // Functions
 // XXX: we might want to return a dictionary which contains retval / explain for these

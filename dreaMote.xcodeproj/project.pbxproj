@@ -133,6 +133,9 @@
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAB97AAB0F7FBCC400464B66 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB97AAA0F7FBCC400464B66 /* document-save.png */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
+		DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */; };
+		DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */; };
+		DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
@@ -365,6 +368,12 @@
 		DAB97AAA0F7FBCC400464B66 /* document-save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "document-save.png"; path = "Images/document-save.png"; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
+		DACA8AF71096467100B03BE8 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
+		DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
+		DACA8AFC109647B200B03BE8 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
+		DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
+		DACA8B221096498300B03BE8 /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
+		DACA8B231096498300B03BE8 /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
@@ -688,6 +697,8 @@
 		DA7D23680F101F1500BB8BE7 /* Enigma */ = {
 			isa = PBXGroup;
 			children = (
+				DACA8AF71096467100B03BE8 /* CurrentXMLReader.h */,
+				DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */,
 				DA7D23690F101F1500BB8BE7 /* EventXMLReader.h */,
 				DA7D236A0F101F1500BB8BE7 /* EventXMLReader.m */,
 				DA7D236B0F101F1500BB8BE7 /* MovieXMLReader.h */,
@@ -703,6 +714,8 @@
 		DA7D236F0F101F1500BB8BE7 /* Enigma2 */ = {
 			isa = PBXGroup;
 			children = (
+				DACA8AFC109647B200B03BE8 /* CurrentXMLReader.h */,
+				DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */,
 				DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */,
 				DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */,
 				DA7D23720F101F1500BB8BE7 /* MovieXMLReader.h */,
@@ -761,6 +774,8 @@
 				DAB579EE0E94CA580093721B /* ConnectorViewController.m */,
 				DA19BDF90D8553180074AE48 /* ControlViewController.h */,
 				DA19BDFA0D8553180074AE48 /* ControlViewController.m */,
+				DACA8B221096498300B03BE8 /* CurrentViewController.h */,
+				DACA8B231096498300B03BE8 /* CurrentViewController.m */,
 				DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */,
 				DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */,
 				DAB5FA010D845F7A0074D998 /* EventViewController.h */,
@@ -1065,6 +1080,9 @@
 				DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */,
 				DAF197730FF5764D009CA6A0 /* AppDelegate.m in Sources */,
 				DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */,
+				DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */,
+				DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */,
+				DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1129,6 +1147,7 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Pwned Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";
@@ -1136,7 +1155,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.1;
+				SDKROOT = iphoneos3.0;
 			};
 			name = Debug;
 		};
@@ -1147,13 +1166,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Pwned Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = "";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "/usr/include/libxml2/**";
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				SDKROOT = iphoneos2.1;
+				SDKROOT = iphoneos3.0;
 			};
 			name = Release;
 		};

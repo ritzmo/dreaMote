@@ -55,6 +55,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 #endif
 	{
 		const UIView *myContentView = self.contentView;
+		_showService = NO;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -108,9 +109,9 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	{
 		// Not generated, do so...
 		[_formatter setDateStyle:NSDateFormatterMediumStyle];
-		NSString *begin = [_formatter stringFromDate: newEvent.begin];
+		const NSString *begin = [_formatter stringFromDate: newEvent.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
-		NSString *end = [_formatter stringFromDate: newEvent.end];
+		const NSString *end = [_formatter stringFromDate: newEvent.end];
 		if(begin && end)
 			newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}

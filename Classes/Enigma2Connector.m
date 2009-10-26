@@ -14,6 +14,7 @@
 #import "Objects/TimerProtocol.h"
 
 #import "XMLReader/Enigma2/EventXMLReader.h"
+#import "XMLReader/Enigma2/CurrentXMLReader.h"
 #import "XMLReader/Enigma2/MovieXMLReader.h"
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
 #import "XMLReader/Enigma2/SignalXMLReader.h"
@@ -531,6 +532,16 @@ enum enigma2MessageTypes {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: _baseAddress];
 	
 	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString: @"/web/getcurrent" relativeToURL: _baseAddress];
+	
+	const BaseXMLReader *streamReader = [[Enigma2CurrentXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;

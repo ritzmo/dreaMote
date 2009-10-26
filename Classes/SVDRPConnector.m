@@ -858,6 +858,12 @@
 	return nil;
 }
 
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	return nil;
+}
+
 - (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];

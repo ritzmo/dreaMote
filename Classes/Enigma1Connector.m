@@ -16,6 +16,7 @@
 #import "ServiceSourceDelegate.h"
 #import "VolumeSourceDelegate.h"
 #import "XMLReader/Enigma/EventXMLReader.h"
+#import "XMLReader/Enigma/CurrentXMLReader.h"
 #import "XMLReader/Enigma/MovieXMLReader.h"
 #import "XMLReader/Enigma/SignalXMLReader.h"
 #import "XMLReader/Enigma/TimerXMLReader.h"
@@ -53,7 +54,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesRecordDelete) ||
 		(feature == kFeaturesInstantRecord) ||
 		(feature == kFeaturesSatFinder) ||
-		(feature == kFeaturesSimpleRepeated);
+		(feature == kFeaturesSimpleRepeated) ||
+		(feature == kFeaturesCurrent);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -707,6 +709,16 @@ enum enigma1MessageTypes {
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 	return nil;
+}
+
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString: @"/xml/currentservicedata" relativeToURL: _baseAddress];
+	
+	const BaseXMLReader *streamReader = [[EnigmaCurrentXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
 - (BOOL)instantRecord

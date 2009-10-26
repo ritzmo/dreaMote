@@ -24,9 +24,10 @@
 	UIViewController *_configListController; /*!< @brief Cached Configuration List. */
 	UIViewController *_aboutViewController; /*!< @brief Cached Abour View. */
 	NSDictionary *_bouquetDictionary; /*!< @brief Dictionary describing Bouquet List Item. */
+	NSDictionary *_currentDictionary; /*!< @brief Dictionary describing "Currently playing" List Item. */
+	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
 	NSDictionary *_serviceDictionary; /*!< @brief Dictionary describing Service List Item. */
-	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */
 }
 

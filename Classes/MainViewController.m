@@ -12,17 +12,19 @@
 #import "Constants.h"
 
 #import "MainTableViewCell.h"
+
+#import "AboutViewController.h"
 #import "BouquetListController.h"
-#import "ServiceListController.h"
-#import "EventSearchListController.h"
-#import "TimerListController.h"
-#import "ControlViewController.h"
-#import "MovieListController.h"
-#import "SignalViewController.h"
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
+#import "ControlViewController.h"
+#import "CurrentViewController.h"
+#import "EventSearchListController.h"
 #import "MessageViewController.h"
-#import "AboutViewController.h"
+#import "MovieListController.h"
+#import "ServiceListController.h"
+#import "SignalViewController.h"
+#import "TimerListController.h"
 
 @implementation MainViewController
 
@@ -47,9 +49,10 @@
 	[_configListController release];
 	[_aboutViewController release];
 	[_bouquetDictionary release];
+	[_currentDictionary release];
+	[_eventSearchDictionary release];
 	[_recordDictionary release];
 	[_serviceDictionary release];
-	[_eventSearchDictionary release];
 	[_signalDictionary release];
 
 	[super dealloc];
@@ -61,10 +64,6 @@
 	_configListController = nil;
 	[_aboutViewController release];
 	_aboutViewController = nil;
-	[_eventSearchDictionary release];
-	_eventSearchDictionary = nil;
-	[_signalDictionary release];
-	_signalDictionary = nil;
 
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
@@ -81,6 +80,14 @@
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
 
 	UIViewController *targetViewController;
+
+	targetViewController = [[CurrentViewController alloc] init];
+	_currentDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						   NSLocalizedString(@"Currently playing List Title", @""), @"title",
+						   NSLocalizedString(@"Currentply playing List Explain", @""), @"explainText",
+						   targetViewController, @"viewController",
+						   nil] retain];
+	[targetViewController release];
 
 	targetViewController = [[BouquetListController alloc] init];
 	_bouquetDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
@@ -292,6 +299,24 @@
 		if([menuList containsObject: _eventSearchDictionary])
 		{
 			[menuList removeObject: _eventSearchDictionary];
+			reload = YES;
+		}
+	}
+	
+	// Add/Remove currently playing
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
+	{
+		if(![menuList containsObject: _currentDictionary])
+		{
+			[menuList insertObject: _currentDictionary atIndex: 0];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _currentDictionary])
+		{
+			[menuList removeObject: _currentDictionary];
 			reload = YES;
 		}
 	}
