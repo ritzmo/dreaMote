@@ -31,7 +31,7 @@
 {
 	if(_tdescription == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
 			self.tdescription = [currentChild stringValue];
@@ -53,7 +53,7 @@
 {
 	if(_title == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2name" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2name" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
 			self.title = [currentChild stringValue];
@@ -127,7 +127,7 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2timeend" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2timeend" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
 			_end = [[NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]] retain];
@@ -149,7 +149,7 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2timebegin" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2timebegin" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
 			_begin = [[NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]] retain];
@@ -171,7 +171,7 @@
 {
 	if(_eit == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eit" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2eit" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.eit = [resultElement stringValue];
@@ -193,7 +193,7 @@
 {
 	if(!_disabledSet)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2disabled" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2disabled" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			_disabledSet = YES;
@@ -213,7 +213,7 @@
 {
 	if(!_justplaySet)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2justplay" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2justplay" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			_justplaySet = YES;
@@ -233,7 +233,7 @@
 {
 	if(!_repeatedSet)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2repeated" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2repeated" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			_repeatedSet = YES;
@@ -253,7 +253,7 @@
 {
 	if(!_aftereventSet)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2afterevent" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2afterevent" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			_aftereventSet = YES;
@@ -273,7 +273,7 @@
 {
 	if(!_stateSet)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2state" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2state" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			_stateSet = YES;

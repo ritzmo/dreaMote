@@ -64,7 +64,7 @@
 
 - (NSString *)sref
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -99,7 +99,7 @@
 
 - (NSString *)title
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		// We have to un-escape some characters here...

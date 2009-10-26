@@ -15,7 +15,7 @@
 
 - (NSString *)sref
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -30,8 +30,8 @@
 
 - (NSString *)sname
 {
-	// TODO: how can this possible crash?
-	NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
+	// TODO: how can this possibly crash?
+	const NSArray *resultNodes = [_node nodesForXPath:@"name" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];

@@ -38,7 +38,7 @@ enum enigma1MessageTypes {
 
 @implementation Enigma1Connector
 
-- (const BOOL)hasFeature: (enum connectorFeatures)feature
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
 {
 	return
 		(feature == kFeaturesBouquets) ||
@@ -56,7 +56,7 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesSimpleRepeated);
 }
 
-- (NSInteger)getMaxVolume
+- (const NSUInteger const)getMaxVolume
 {
 	return 63;
 }
@@ -593,7 +593,7 @@ enum enigma1MessageTypes {
 	return NO;
 }
 
-- (NSInteger)getMaxMessageType
+- (const NSUInteger const)getMaxMessageType
 {
 	return kEnigma1MessageTypeMax;
 }

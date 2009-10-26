@@ -15,7 +15,7 @@
 
 - (NSString *)sref
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -30,7 +30,7 @@
 
 - (NSString *)sname
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -60,7 +60,7 @@
 
 - (BOOL)isValid
 {
-	NSString *sref = self.sref;
+	const NSString *sref = self.sref;
 	return sref != nil && ![[sref substringToIndex: 5] isEqualToString: @"1:64:"];
 }
 

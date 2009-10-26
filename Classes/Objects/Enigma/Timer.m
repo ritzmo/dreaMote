@@ -51,7 +51,7 @@
 {
 	if(_title == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"event/description" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"event/description" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			self.title = [resultElement stringValue];
@@ -125,7 +125,7 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"event/duration" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"event/duration" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setEndFromDurationString: [resultElement stringValue]];
@@ -147,7 +147,7 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"event/start" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"event/start" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setBeginFromString: [resultElement stringValue]];
@@ -371,10 +371,10 @@
 
 - (void)getTypedata
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"typedata" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"typedata" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
-		NSInteger typeData = [[currentChild stringValue] integerValue];
+		const NSInteger typeData = [[currentChild stringValue] integerValue];
 		
 		// We translate to Enigma2 States here
 		if(typeData & stateRunning)

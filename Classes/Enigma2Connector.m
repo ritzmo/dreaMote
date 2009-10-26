@@ -41,13 +41,13 @@ enum enigma2MessageTypes {
 
 @implementation Enigma2Connector
 
-- (const BOOL)hasFeature: (enum connectorFeatures)feature
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
 {
 	return 
 		(feature != kFeaturesMessageCaption);
 }
 
-- (NSInteger)getMaxVolume
+- (const NSUInteger const)getMaxVolume
 {
 	return 100;
 }
@@ -433,7 +433,7 @@ enum enigma2MessageTypes {
 	return NO;
 }
 
-- (NSInteger)getMaxMessageType
+- (const NSUInteger const)getMaxMessageType
 {
 	return kEnigma2MessageTypeMax;
 }

@@ -102,9 +102,8 @@
 
 - (id)initWithTimer:(NSObject<TimerProtocol> *)timer
 {
-	self = [super init];
-	
-	if (self) {
+	if(self = [super init])
+	{
 		_begin = [timer.begin copy];
 		_end = [timer.end copy];
 		_eit = [timer.eit copy];

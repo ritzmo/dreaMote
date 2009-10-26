@@ -51,9 +51,8 @@
 
 - (id)initWithSVDRPTimer:(SVDRPTimer *)timer
 {
-	self = [super init];
-	
-	if (self) {
+	if(self = [super init])
+	{
 		_begin = [timer.begin copy];
 		_end = [timer.end copy];
 		_eit = [timer.eit copy];
@@ -108,10 +107,10 @@
 	else
 		newFlags &= ~1;
 
-	NSCalendar *gregorian = [[NSCalendar alloc]
+	const NSCalendar *gregorian = [[NSCalendar alloc]
 								initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _begin];
-	NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _end];
+	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _begin];
+	const NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _end];
 	[gregorian release];
 
 	NSString *dayStr;

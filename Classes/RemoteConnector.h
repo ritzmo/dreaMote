@@ -185,14 +185,14 @@ enum buttonCodes {
  @param feature Feature to check for.
  @return YES if this Feature is supported.
  */
-- (const BOOL)hasFeature: (enum connectorFeatures)feature;
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature;;
 
 /*!
  @brief Returns upper bound of Volume setting.
  
  @return Upper bound of Volume.
  */
-- (NSInteger)getMaxVolume;
+- (const NSUInteger const)getMaxVolume;
 
 /*!
  @brief Returns whether to Receiver is currently reachable or not.
@@ -413,7 +413,7 @@ enum buttonCodes {
  
  @return Upper bound of message types.
  */
-- (NSInteger)getMaxMessageType;
+- (const NSUInteger const)getMaxMessageType;
 
 /*!
  @brief Textual representation of given message type.

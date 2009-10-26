@@ -27,7 +27,7 @@
 
 - (NSString *)edescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"info2" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"info2" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -42,7 +42,7 @@
 
 - (NSString *)sdescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"info1" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"info1" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -57,7 +57,7 @@
 
 - (NSString *)title
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -72,7 +72,7 @@
 
 - (NSDate *)end
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"stop_sec" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"stop_sec" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
@@ -87,7 +87,7 @@
 
 - (NSDate *)begin
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"start_sec" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"start_sec" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 			return [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
@@ -102,7 +102,7 @@
 
 - (NSString *)eit
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"eventid" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"eventid" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 			return [resultElement stringValue];

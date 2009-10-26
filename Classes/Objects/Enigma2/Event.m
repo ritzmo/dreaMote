@@ -18,7 +18,7 @@
 - (NSObject<ServiceProtocol> *)service
 {
 	NSObject<ServiceProtocol> *service = nil;
-	NSArray *resultNodes = nil;
+	const NSArray *resultNodes = nil;
 	NSString *sname = nil;
 	NSString *sref = nil;
 
@@ -55,7 +55,7 @@
 
 - (NSString *)edescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescriptionextended" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescriptionextended" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -71,7 +71,7 @@
 
 - (NSString *)sdescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescription" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2eventdescription" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -87,7 +87,7 @@
 
 - (NSString *)title
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -104,7 +104,7 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventduration" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2eventduration" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setEndFromDurationString: [resultElement stringValue]];
@@ -126,7 +126,7 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[_timeString release];
@@ -148,7 +148,7 @@
 
 - (NSString *)eit
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2eventid" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2eventid" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];

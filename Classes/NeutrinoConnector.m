@@ -36,7 +36,7 @@ enum neutrinoMessageTypes {
 
 @implementation NeutrinoConnector
 
-- (const BOOL)hasFeature: (enum connectorFeatures)feature
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
 {
 	// Screenshots do not work yet... :-/
 	return
@@ -45,7 +45,7 @@ enum neutrinoMessageTypes {
 		(feature == kFeaturesMessageType);
 }
 
-- (NSInteger)getMaxVolume
+- (const NSUInteger const)getMaxVolume
 {
 	return 100;
 }
@@ -694,7 +694,7 @@ enum neutrinoMessageTypes {
 	return ([response statusCode] == 200);
 }
 
-- (NSInteger)getMaxMessageType
+- (const NSUInteger const)getMaxMessageType
 {
 	return kNeutrinoMessageTypeMax;
 }

@@ -16,11 +16,11 @@
 {
 	if(_tags == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2tags" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2tags" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
+			const NSString *newTags = [currentChild stringValue];
 			[_tags release];
-			NSString *newTags = [currentChild stringValue];
 			if([newTags isEqualToString: @""])
 				_tags = [[NSArray array] retain];
 			else
@@ -41,7 +41,7 @@
 
 - (NSNumber *)size
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2filesize" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2filesize" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [NSNumber numberWithLongLong: [[currentChild stringValue] longLongValue]];
@@ -58,10 +58,10 @@
 {
 	if(_length == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2length" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2length" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
-			NSString *elementValue = [currentChild stringValue];
+			const NSString *elementValue = [currentChild stringValue];
 			if([elementValue isEqualToString: @"disabled"])
 				self.length = [NSNumber numberWithInteger: -1];
 			else
@@ -84,7 +84,7 @@
 {
 	if(_time == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"e2time" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2time" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
 			_time = [[NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]] retain];
@@ -104,7 +104,7 @@
 
 - (NSString *)sname
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -119,7 +119,7 @@
 
 - (NSString *)sref
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -134,7 +134,7 @@
 
 - (NSString *)edescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2descriptionextended" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2descriptionextended" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -149,7 +149,7 @@
 
 - (NSString *)sdescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2description" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -164,7 +164,7 @@
 
 - (NSString *)title
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2title" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2title" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];

@@ -27,7 +27,7 @@
 
 - (NSString *)edescription
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"details" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"details" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -52,7 +52,7 @@
 
 - (NSString *)title
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
+	const NSArray *resultNodes = [_node nodesForXPath:@"description" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
@@ -69,7 +69,7 @@
 {
 	if(_end == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"duration" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"duration" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[self setEndFromDurationString: [resultElement stringValue]];
@@ -91,7 +91,7 @@
 {
 	if(_begin == nil)
 	{
-		NSArray *resultNodes = [_node nodesForXPath:@"start" error:nil];
+		const NSArray *resultNodes = [_node nodesForXPath:@"start" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			[_timeString release];

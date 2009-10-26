@@ -15,9 +15,8 @@
 
 - (id)initWithService:(NSObject<ServiceProtocol> *)service
 {
-	self = [super init];
-	
-	if (self) {
+	if(self = [super init])
+	{
 		_sref = [service.sref copy];
 		_sname = [service.sname copy];
 	}

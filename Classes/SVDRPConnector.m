@@ -30,7 +30,7 @@
 
 @implementation SVDRPConnector
 
-- (const BOOL)hasFeature: (enum connectorFeatures)feature
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
 {
 	return
 		(feature == kFeaturesRecordInfo) ||
@@ -38,7 +38,7 @@
 		(feature == kFeaturesRecordDelete);
 }
 
-- (NSInteger)getMaxVolume
+- (const NSUInteger const)getMaxVolume
 {
 	return 255;
 }
@@ -812,7 +812,7 @@
 	return [ret isEqualToString: @"250 Message queued"];
 }
 
-- (NSInteger)getMaxMessageType
+- (const NSUInteger const)getMaxMessageType
 {
 	return 0;
 }
