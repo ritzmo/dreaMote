@@ -139,7 +139,7 @@
     returnTextField.backgroundColor = [UIColor whiteColor];
 	// no auto correction support
 	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-
+	returnTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	returnTextField.keyboardType = UIKeyboardTypeDefault;
 	returnTextField.returnKeyType = UIReturnKeyDone;
 
