@@ -202,11 +202,17 @@
 	{
 		case 0:
 		{
+			NSString *sname = _service.sname;
+
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
-			TABLEVIEWCELL_TEXT(sourceCell) = _service.sname;
+			
+			if(sname == nil)
+				sname = NSLocalizedString(@"Nothing playing.", @"");
+
+			TABLEVIEWCELL_TEXT(sourceCell) = sname;
 			break;
 		}
 		case 1:

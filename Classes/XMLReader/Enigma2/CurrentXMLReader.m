@@ -54,7 +54,7 @@
 	{
 		// An e2service in the xml represents a service, so create an instance of it.
 		NSObject<ServiceProtocol> *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
-		
+
 		[_delegate performSelectorOnMainThread: @selector(addService:)
 									withObject: newService
 								 waitUntilDone: NO];

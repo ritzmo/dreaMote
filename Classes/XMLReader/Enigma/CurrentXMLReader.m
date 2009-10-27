@@ -76,10 +76,18 @@
 			NSRange range;
 			range.location = 1;
 			range.length = [rawDurationString length] - 2;
-			[newEvent setEndFromDurationString: [rawDurationString substringWithRange: range]];
+			rawDurationString = [rawDurationString substringWithRange: range];
+			newEvent.end = [[newEvent.begin addTimeInterval: [rawDurationString doubleValue] * 60.0] retain];
 			break;
 		}
 
+		childNodes = [resultElement nodesForXPath:@"details" error:nil];
+		for(childElement in childNodes)
+		{
+			newEvent.edescription = [childElement stringValue];
+			break;
+		}
+		
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: newEvent
 									waitUntilDone: NO];
