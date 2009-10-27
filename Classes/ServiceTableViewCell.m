@@ -54,7 +54,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
-												  fontSize: 14.0
+												  fontSize: 16.0
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
@@ -96,7 +96,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if (!self.editing)
 	{
 		// Place the location label.
-		const CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 1, contentRect.size.width - kRightMargin, 20);
+		const CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 1, contentRect.size.width - kRightMargin, contentRect.size.height - 2);
 		_serviceNameLabel.frame = frame;
 	}
 }
