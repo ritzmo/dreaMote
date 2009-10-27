@@ -133,9 +133,9 @@
 		case 0:
 			return NSLocalizedString(@"Service", @"");
 		case 1:
-			return NSLocalizedString(@"Now", @"");
+			return (_now != nil) ? NSLocalizedString(@"Now", @"") : nil;
 		case 2:
-			return NSLocalizedString(@"Next", @"");
+			return (_next != nil) ? NSLocalizedString(@"Next", @"") : nil;
 		default:
 			return nil;
 	}
