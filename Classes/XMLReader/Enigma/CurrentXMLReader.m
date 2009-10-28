@@ -114,16 +114,23 @@
 			break;
 		}
 
-		childNodes = [resultElement nodesForXPath:@"reference" error:nil];
-		for(childElement in childNodes)
+		if(newService.sname == nil)
 		{
-			newService.sref = [childElement stringValue];
-			break;
+			newService.sname = NSLocalizedString(@"Nothing playing.", @"");
+		}
+		else
+		{
+			childNodes = [resultElement nodesForXPath:@"reference" error:nil];
+			for(childElement in childNodes)
+			{
+				newService.sref = [childElement stringValue];
+				break;
+			}
 		}
 
 		[_delegate performSelectorOnMainThread: @selector(addService:)
-								withObject: newService
-								waitUntilDone: NO];
+									withObject: newService
+									waitUntilDone: NO];
 		[newService release];
 		break;
 	}

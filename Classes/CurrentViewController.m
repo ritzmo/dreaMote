@@ -12,6 +12,7 @@
 #import "RemoteConnectorObject.h"
 
 #import "EventTableViewCell.h"
+#import "ServiceTableViewCell.h"
 #import "CellTextView.h"
 #import "DisplayCell.h"
 #import "Constants.h"
@@ -202,25 +203,10 @@
 	{
 		case 0:
 		{
-			NSString *sname;
-
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
+			sourceCell = [tableView dequeueReusableCellWithIdentifier:kServiceCell_ID];
 			if(sourceCell == nil)
-				sourceCell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
-
-			if(_service == nil)
-			{
-				sname = @"";
-			}
-			else
-			{
-				sname = _service.sname;
-				if(sname == nil)
-					sname = NSLocalizedString(@"Nothing playing.", @"");
-			}
-
-			TABLEVIEWCELL_TEXT(sourceCell) = sname;
+				sourceCell = [[[ServiceTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kServiceCell_ID] autorelease];
+			((ServiceTableViewCell *)sourceCell).service = _service;
 			break;
 		}
 		case 1:
