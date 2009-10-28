@@ -104,26 +104,9 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 /* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-	UIColor *backgroundColor = nil;
-
-	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background,
-	 so in newLabelForMainText: the labels are made opaque and given a white background.
-	 
-	 To show selection properly, however, the views need to be transparent (so that the selection
-	 color shows through).
-	 */
 	[super setSelected:selected animated:animated];
 
-	if (selected) {
-		backgroundColor = [UIColor clearColor];
-	} else {
-		backgroundColor = [UIColor whiteColor];
-	}
-
-	_serviceNameLabel.backgroundColor = backgroundColor;
 	_serviceNameLabel.highlighted = selected;
-	_serviceNameLabel.opaque = !selected;
 }
 
 /* Create and configure a label. */
@@ -137,18 +120,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	} else {
 		font = [UIFont systemFontOfSize:fontSize];
 	}
-	
-	/*
-	 Views are drawn most efficiently when they are opaque and do not have a clear background,
-	 so in newLabelForMainText: the labels are made opaque and given a white background.
-	 
-	 To show selection properly, however, the views need to be transparent (so that the selection
-	 color shows through).
-	 This is handled in setSelected:animated:
-	 */
+
 	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	newLabel.backgroundColor = [UIColor whiteColor];
-	newLabel.opaque = YES;
+	newLabel.backgroundColor = [UIColor clearColor];
+	newLabel.opaque = NO;
 	newLabel.textColor = primaryColor;
 	newLabel.highlightedTextColor = selectedColor;
 	newLabel.font = font;
