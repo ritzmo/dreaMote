@@ -106,9 +106,10 @@
 	NSURLRequest *request = [NSURLRequest requestWithURL: URL
 											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: _timeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
-											returningResponse: &response error: nil];
+											returningResponse: &response error: &localError];
 
-	_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
+	if(localError == nil)
+		_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	_finished = YES;

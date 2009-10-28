@@ -37,6 +37,10 @@ enum enigma1MessageTypes {
 	kEnigma1MessageTypeMax = 4
 };
 
+@interface NSURLRequest(DummyInterface)
++ (void)setAllowsAnyHTTPSCertificate:(BOOL)allow forHost:(NSString*)host;
+@end
+
 @implementation Enigma1Connector
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature;
@@ -85,6 +89,7 @@ enum enigma1MessageTypes {
 		
 			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
+		[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[_baseAddress host]];
 		[_baseAddress retain];
 	}
 	return self;

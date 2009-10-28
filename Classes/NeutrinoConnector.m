@@ -34,6 +34,10 @@ enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeMax = 2,
 };
 
+@interface NSURLRequest(DummyInterface)
++ (void)setAllowsAnyHTTPSCertificate:(BOOL)allow forHost:(NSString*)host;
+@end
+
 @implementation NeutrinoConnector
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature;
@@ -72,6 +76,7 @@ enum neutrinoMessageTypes {
 			
 			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
+		[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[_baseAddress host]];
 		[_baseAddress retain];
 	}
 	return self;
