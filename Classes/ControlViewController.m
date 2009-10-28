@@ -193,11 +193,8 @@
 -(void)shutdown:(id)sender
 {
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
-	NSIndexPath *indexPath;
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
-		indexPath = [NSIndexPath indexPathForRow: 3 inSection: section];
-	else
-		indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
+	const NSInteger row = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart] ? 3: 2;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: row inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
@@ -310,6 +307,7 @@
 		case 1:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
 			{
+				sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 				sourceCell.nameLabel.text = NSLocalizedString(@"Instant Record", @"");
 				sourceCell.view = [self create_InstantRecordButton];
 				break;
