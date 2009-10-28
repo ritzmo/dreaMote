@@ -141,6 +141,13 @@
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
+		DAD7E35D10990A2000D0D76B /* key_ff.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35610990A2000D0D76B /* key_ff.png */; };
+		DAD7E35E10990A2000D0D76B /* key_fr.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35710990A2000D0D76B /* key_fr.png */; };
+		DAD7E35F10990A2000D0D76B /* key_help_round.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35810990A2000D0D76B /* key_help_round.png */; };
+		DAD7E36010990A2000D0D76B /* key_pp.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35910990A2000D0D76B /* key_pp.png */; };
+		DAD7E36110990A2000D0D76B /* key_pvr.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35A10990A2000D0D76B /* key_pvr.png */; };
+		DAD7E36210990A2000D0D76B /* key_rec.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35B10990A2000D0D76B /* key_rec.png */; };
+		DAD7E36310990A2000D0D76B /* key_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35C10990A2000D0D76B /* key_stop.png */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
 		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
@@ -384,6 +391,13 @@
 		DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceTableViewCell.m; sourceTree = "<group>"; };
 		DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatePickerController.h; sourceTree = "<group>"; };
 		DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
+		DAD7E35610990A2000D0D76B /* key_ff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_ff.png; path = Images/key_ff.png; sourceTree = "<group>"; };
+		DAD7E35710990A2000D0D76B /* key_fr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_fr.png; path = Images/key_fr.png; sourceTree = "<group>"; };
+		DAD7E35810990A2000D0D76B /* key_help_round.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_help_round.png; path = Images/key_help_round.png; sourceTree = "<group>"; };
+		DAD7E35910990A2000D0D76B /* key_pp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_pp.png; path = Images/key_pp.png; sourceTree = "<group>"; };
+		DAD7E35A10990A2000D0D76B /* key_pvr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_pvr.png; path = Images/key_pvr.png; sourceTree = "<group>"; };
+		DAD7E35B10990A2000D0D76B /* key_rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_rec.png; path = Images/key_rec.png; sourceTree = "<group>"; };
+		DAD7E35C10990A2000D0D76B /* key_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_stop.png; path = Images/key_stop.png; sourceTree = "<group>"; };
 		DADE1AE70F115A2500807A25 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
@@ -616,6 +630,13 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DAD7E35610990A2000D0D76B /* key_ff.png */,
+				DAD7E35710990A2000D0D76B /* key_fr.png */,
+				DAD7E35810990A2000D0D76B /* key_help_round.png */,
+				DAD7E35910990A2000D0D76B /* key_pp.png */,
+				DAD7E35A10990A2000D0D76B /* key_pvr.png */,
+				DAD7E35B10990A2000D0D76B /* key_rec.png */,
+				DAD7E35C10990A2000D0D76B /* key_stop.png */,
 				DA997A8B1093A75B003AFA17 /* 4-sided-arrow.png */,
 				DAB97AAA0F7FBCC400464B66 /* document-save.png */,
 				DA09870D0EC206ED009C91B9 /* preferences-system.png */,
@@ -982,6 +1003,13 @@
 				DA09870E0EC206EE009C91B9 /* preferences-system.png in Resources */,
 				DAB97AAB0F7FBCC400464B66 /* document-save.png in Resources */,
 				DA997A8C1093A75B003AFA17 /* 4-sided-arrow.png in Resources */,
+				DAD7E35D10990A2000D0D76B /* key_ff.png in Resources */,
+				DAD7E35E10990A2000D0D76B /* key_fr.png in Resources */,
+				DAD7E35F10990A2000D0D76B /* key_help_round.png in Resources */,
+				DAD7E36010990A2000D0D76B /* key_pp.png in Resources */,
+				DAD7E36110990A2000D0D76B /* key_pvr.png in Resources */,
+				DAD7E36210990A2000D0D76B /* key_rec.png in Resources */,
+				DAD7E36310990A2000D0D76B /* key_stop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

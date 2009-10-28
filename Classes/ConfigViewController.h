@@ -38,6 +38,12 @@
 	UIButton *_makeDefaultButton; /*!< @brief "Make Default" Button. */
 	UIButton *_connectButton; /*!< @brief "Connect" Button. */
 	UISwitch *_singleBouquetSwitch; /*!< @brief Switch for "Single Bouquet Mode" if Connector supports it. */
+	/*!
+	 @brief Switch for "Advanced Remote" if Connector supports it.
+	 
+	 @todo This might be of use in other connectors too, recheck!
+	 */
+	UISwitch *_advancedRemoteSwitch;
 
 	BOOL _shouldSave; /*!< @brief Settings should be Saved. */
 	NSInteger _connector; /*!< @brief Selected Connector. */

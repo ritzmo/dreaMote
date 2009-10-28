@@ -8,6 +8,7 @@
 
 #import "EnigmaRCEmulatorController.h"
 #import "RemoteConnector.h"
+#import "RemoteConnectorObject.h"
 #import "Constants.h"
 
 @implementation EnigmaRCEmulatorController
@@ -16,6 +17,7 @@
 {
 	const CGFloat imageWidth = 45;
 	const CGFloat imageHeight = 35;
+	const BOOL usesAdvancedRemote = [RemoteConnectorObject usesAdvancedRemote];
 	CGFloat currX;
 	CGFloat currY;
 	UIButton *roundedButtonType;
@@ -172,24 +174,46 @@
 	roundedButtonType = [self newButton:frame withImage:@"key_info.png" andKeyCode: kButtonCodeInfo];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
-	
-	// audio
-	frame = CGRectMake(currY, currX+40, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"key_audio.png" andKeyCode: kButtonCodeAudio];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
-	
+
+	if(usesAdvancedRemote)
+	{
+		// help
+		frame = CGRectMake(currY, currX+40, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_help_round.png" andKeyCode: kButtonCodeHelp];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
+	else
+	{
+		// audio
+		frame = CGRectMake(currY, currX+40, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_audio.png" andKeyCode: kButtonCodeAudio];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
+
 	// menu
 	frame = CGRectMake(currY+100, currX-40, imageWidth, imageHeight);
 	roundedButtonType = [self newButton:frame withImage:@"key_menu.png" andKeyCode: kButtonCodeMenu];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 	
-	// video
-	frame = CGRectMake(currY+100, currX+40, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"key_video.png" andKeyCode: kButtonCodeVideo];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
+	if(usesAdvancedRemote)
+	{
+		// PVR
+		frame = CGRectMake(currY+100, currX+40, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_pvr.png" andKeyCode: kButtonCodePVR];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
+	else
+	{
+		// video
+		frame = CGRectMake(currY+100, currX+40, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_video.png" andKeyCode: kButtonCodeVideo];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
 
 	/* End Navigation pad */
 
@@ -248,12 +272,23 @@
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
-	
-	// help
-	frame = CGRectMake(currY, currX, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"key_help.png" andKeyCode: kButtonCodeHelp];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
+
+	if(usesAdvancedRemote)
+	{
+		// record
+		frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_rec.png" andKeyCode: kButtonCodeRecord];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
+	else
+	{
+		// help
+		frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_help.png" andKeyCode: kButtonCodeHelp];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
 
 	/* End lower pad */
 	
@@ -310,6 +345,39 @@
 	roundedButtonType = [self newButton:frame withImage:@"key_exit.png" andKeyCode: kButtonCodeLame];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
+	
+	if(usesAdvancedRemote)
+	{
+		// play/pause
+		currX = 210;
+		currY = kLeftMargin + 5;
+		frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+
+		// stop
+		currX += imageHeight + kTweenMargin;
+		frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_stop.png" andKeyCode: kButtonCodeStop];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+
+		// ff
+		currX = 210;
+		currY = 255;
+		frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_ff.png" andKeyCode: kButtonCodeFFwd];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+
+		// rwd
+		currX += imageHeight + kTweenMargin;
+		frame = CGRectMake(currY, currX, imageWidth, imageHeight);
+		roundedButtonType = [self newButton:frame withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
+		[rcView addSubview: roundedButtonType];
+		[roundedButtonType release];
+	}
 }
 
 @end

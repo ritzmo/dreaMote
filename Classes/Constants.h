@@ -58,6 +58,7 @@
 #define kConnector				@"connectorKey"
 #define kSingleBouquet			@"singleBouquetKey"
 #define kPort					@"portKey"
+#define kAdvancedRemote			@"advancedRemote"
 
 // keys in nsuserdefaults
 #define kActiveConnection		@"activeConnector"

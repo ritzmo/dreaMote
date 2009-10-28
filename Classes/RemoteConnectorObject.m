@@ -172,6 +172,14 @@ static NSDictionary *_connection;
 	return [value boolValue];
 }
 
++ (BOOL)usesAdvancedRemote
+{
+	const id value = [_connection objectForKey: kAdvancedRemote];
+	if(value == nil)
+		return NO;
+	return [value boolValue];
+}
+
 + (NSInteger)getConnectedId
 {
 	const NSUInteger index = [_connections indexOfObject: _connection];

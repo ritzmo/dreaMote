@@ -132,6 +132,14 @@ enum buttonCodes {
 	kButtonCodeRadio = 385,
 	kButtonCodeText = 388,
 	kButtonCodeHelp = 138,
+	// Advanced Remote
+	kButtonCodeRecord = 167,
+	kButtonCodePVR = 366,
+	kButtonCodePlayPause = 164,
+	kButtonCodeFFwd = 159,
+	kButtonCodeFRwd = 168,
+	kButtonCodeStop = 128,
+	
 };
 
 

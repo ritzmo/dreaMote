@@ -70,11 +70,19 @@
 
 /*!
  @brief Returns if active Connection uses Single Bouquet mode.
- @note This function is requires for Enigma2 to function properly in said mode.
+ @note This function is required for Enigma2 to function properly in said mode.
 
  @return YES if active Connection uses Single Bouquet mode.
  */
 + (BOOL)isSingleBouquet;
+
+/*!
+ @brief Returns if active Connection uses Advanced Remote.
+ @note This function is required for Enigma2 to function properly in said mode.
+ 
+ @return YES if active Connection uses Advanced Remote.
+ */
++ (BOOL)usesAdvancedRemote;
 
 /*!
  @brief Returns Id of currently active Connection.

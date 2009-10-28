@@ -122,6 +122,7 @@
 	[_makeDefaultButton release];
 	[_connectButton release];
 	[_singleBouquetSwitch release];
+	[_advancedRemoteSwitch release];
 
 	[super dealloc];
 }
@@ -226,9 +227,14 @@
 	// Single bouquet switch
 	_singleBouquetSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
 	_singleBouquetSwitch.on = [[_connection objectForKey: kSingleBouquet] boolValue];
+	
+	// Single bouquet switch
+	_advancedRemoteSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
+	_advancedRemoteSwitch.on = [[_connection objectForKey: kAdvancedRemote] boolValue];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_singleBouquetSwitch.backgroundColor = [UIColor clearColor];
+	_advancedRemoteSwitch.backgroundColor = [UIColor clearColor];
 
 	[self setEditing: (_connectionIndex == -1) animated: NO];
 }
@@ -251,6 +257,7 @@
 		[_usernameCell stopEditing];
 		[_passwordCell stopEditing];
 		_singleBouquetSwitch.enabled = NO;
+		_advancedRemoteSwitch.enabled = NO;
 
 		if(_shouldSave)
 		{
@@ -261,6 +268,7 @@
 			[_connection setObject: _passwordTextField.text forKey: kPassword];
 			[_connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
 			[_connection setObject: _singleBouquetSwitch.on ? @"YES" : @"NO" forKey: kSingleBouquet];
+			[_connection setObject: _advancedRemoteSwitch.on ? @"YES" : @"NO" forKey: kAdvancedRemote];
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(_connectionIndex == -1)
@@ -291,6 +299,7 @@
 	{
 		_shouldSave = YES;
 		_singleBouquetSwitch.enabled = YES;
+		_advancedRemoteSwitch.enabled = YES;
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 		[cancelButtonItem release];
@@ -445,11 +454,11 @@
 			return 2;
 		case 2:
 			/*!
-			 @brief Add "single bouquet" switch for Enigma2 based STBs.
+			 @brief Add "single bouquet" & "advanced remote" switch for Enigma2 based STBs.
 			 @note Actually this is an ugly hack but I really wanted this feature :P
 			 */
 			if(_connector == kEnigma2Connector)
-				return 2;
+				return 3;
 			return 1;
 		case 3:
 			if(_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
@@ -545,6 +554,14 @@
 
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
 					((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
+					break;
+				case 2:
+					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+					if(sourceCell == nil)
+						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+					
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Advanced Remote", @"");
+					((DisplayCell *)sourceCell).view = _advancedRemoteSwitch;
 					break;
 			}
 			break;
