@@ -62,10 +62,17 @@
 		for(CXMLElement *currentChild in resultNodes)
 		{
 			const NSString *elementValue = [currentChild stringValue];
-			if([elementValue isEqualToString: @"disabled"])
+			if([elementValue isEqualToString: @"disabled"] || [elementValue isEqualToString: @"?:??"])
+			{
 				self.length = [NSNumber numberWithInteger: -1];
+			}
 			else
-				self.length = [NSNumber numberWithInteger: [elementValue integerValue]];
+			{
+				const NSRange range = [elementValue rangeOfString: @":"];
+				const NSInteger minutes = [[elementValue substringToIndex: range.location] integerValue];
+				const NSInteger seconds = [[elementValue substringFromIndex: range.location + 1] integerValue];
+				self.length = [NSNumber numberWithInteger: (minutes * 60) + seconds];
+			}
 			break;
 		}
 	}
