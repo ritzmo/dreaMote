@@ -87,7 +87,13 @@
 
 - (NSString *)title
 {
-	const NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
+	{
+		return [resultElement stringValue];
+	}
+	// XXX: Workaround for old WebInterface
+	resultNodes = [_node nodesForXPath:@"e2eventname" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
