@@ -76,7 +76,7 @@
 	@try {
 		[_socket connectToHostName: _address port: _port];
 		[_socket setBlocking: YES];
-		[_socket readDataUpToString: @"\n"]; // XXX: we need to skip the welcome line
+		[_socket readDataUpToString: @"\n"]; // NOTE: we need to skip the welcome line
 	}
 	@catch (NSException * e) {
 		return;
@@ -145,7 +145,7 @@
 }
 
 // TODO: does the vdr actually have bouquets?
-// XXX: for now we just return a fake service, we don't support favourite online mode anyway
+// FIXME: for now we just return a fake service, we don't support favourite online mode anyway
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate
 {
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
@@ -565,8 +565,7 @@
 
 - (void)restart
 {
-	// XXX: not available
-	return;
+	// NOTE: not available
 }
 
 - (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate

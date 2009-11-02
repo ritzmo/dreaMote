@@ -301,7 +301,7 @@ enum enigma1MessageTypes {
 
 - (void)standby
 {
-	// XXX: we send remote control command button power here as we want to toggle standby
+	// NOTE: we send remote control command button power here as we want to toggle standby
 	[self sendButton: kButtonCodePower];
 }
 

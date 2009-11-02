@@ -220,7 +220,7 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// XXX: this is kinda hackish
+	// FIXME: this is kinda hackish
 	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 	@try {
 		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];

@@ -152,7 +152,7 @@
 	if(indexPath.section != 0)
 		return nil;
 
-	// XXX: seen some crashlogs which supposedly ran into this case...
+	// FIXME: seen some crashlogs which supposedly ran into this case...
 	if([_connections count] <= indexPath.row)
 	{
 		NSLog(@"ERROR: about to select out of bounds, aborting...");
@@ -375,8 +375,7 @@
 /* about to hide */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
-	// won't reset the editButtonItem
+	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this won't reset the editButtonItem
 	if(self.editing && !_viewWillReapper)
 	{
 		_shouldSave = NO;

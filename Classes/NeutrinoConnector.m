@@ -225,7 +225,7 @@ enum neutrinoMessageTypes {
 
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
-	// XXX: Maybe we should not hardcode "max"
+	// TODO: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate: delegate];
@@ -279,7 +279,7 @@ enum neutrinoMessageTypes {
 		// eventID eventType eventRepeat repcount announceTime alarmTime stopTime data
 		NSArray *timerStringComponents = [timerString componentsSeparatedByString:@" "];
 
-		if([timerStringComponents count] < 8) // XXX: should not happen...
+		if([timerStringComponents count] < 8) // NOTE: should not happen... but hopefully not our fault if it does...
 			continue;
 
 		NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
@@ -297,9 +297,9 @@ enum neutrinoMessageTypes {
 			continue;
 		}
 
-		timer.eit = [timerStringComponents objectAtIndex: 0]; // XXX: actually wrong but we need it :-)
+		timer.eit = [timerStringComponents objectAtIndex: 0]; // NOTE: actually wrong but we need it :-)
 		timer.title = [NSString stringWithFormat: @"Timer %@", timer.eit];
-		timer.repeated = [[timerStringComponents objectAtIndex: 2] integerValue]; // XXX: as long as we don't offer to edit this via gui we can just keep the value and not change it to some common interpretation
+		timer.repeated = [[timerStringComponents objectAtIndex: 2] integerValue]; // FIXME: as long as we don't offer to edit this via gui we can just keep the value and not change it to some common interpretation
 		timer.repeatcount = [[timerStringComponents objectAtIndex: 3] integerValue];
 		[timer setBeginFromString: [timerStringComponents objectAtIndex: 5]];
 		[timer setEndFromString: [timerStringComponents objectAtIndex: 6]];
@@ -326,7 +326,7 @@ enum neutrinoMessageTypes {
 		}
 		else
 		{
-			// XXX: we set a fake sref here as the service is valid enough for timers...
+			// NOTE: we set a fake sref here as the service is valid enough for timers...
 			service.sref = @"dc";
 		}
 		timer.service = service;
@@ -356,7 +356,7 @@ enum neutrinoMessageTypes {
 
 - (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
 {
-	// XXX: is this actually possible?
+	// TODO: is this actually possible?
 	return nil;
 }
 
@@ -416,7 +416,7 @@ enum neutrinoMessageTypes {
 
 - (void)restart
 {
-	// XXX: not available
+	// NOTE: not available
 }
 
 - (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
@@ -511,7 +511,7 @@ enum neutrinoMessageTypes {
 {
 	// neutrino expect volume to be a multiple of 5
 	const NSUInteger diff = newVolume % 5;
-	// XXX: to make this code easier we could just add/remove the diff but lets try it fair first :-)
+	// NOTE: to make this code easier we could just add/remove the diff but lets try it fair first :-)
 	if(diff < 3)
 		newVolume -= diff;
 	else
@@ -538,7 +538,7 @@ enum neutrinoMessageTypes {
 - (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
-	// XXX: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
+	// FIXME: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSString *add = [NSString stringWithFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	add = [add stringByAppendingFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	add = [add stringByAppendingString: @"&channel_name="];
@@ -563,7 +563,7 @@ enum neutrinoMessageTypes {
 - (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
-	// XXX: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
+	// FIXME: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSString *add = [NSString stringWithFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	add = [add stringByAppendingFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	add = [add stringByAppendingString: @"&channel_name="];
@@ -675,7 +675,6 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: is this status code correct?
 	return ([response statusCode] == 200);
 }
 
@@ -695,7 +694,6 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// XXX: is this status code correct?
 	return ([response statusCode] == 200);
 }
 

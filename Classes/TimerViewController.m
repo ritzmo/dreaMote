@@ -709,7 +709,7 @@
 			if(_afterEventViewController == nil)
 				_afterEventViewController = [[AfterEventViewController alloc] init];
 			_afterEventViewController.selectedItem = _timer.afterevent;
-			// XXX: why gives directly assigning this an error?
+			// FIXME: why gives directly assigning this an error?
 			const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
 			_afterEventViewController.showAuto = showAuto;
 			[_afterEventViewController setDelegate: self];

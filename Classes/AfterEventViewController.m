@@ -77,7 +77,7 @@
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	// XXX: This is a hack - but works for now...
+	// TODO: This is a hack - but works for now...
 	if(_showAuto)
 		return kAfterEventMax;
 	return kAfterEventAuto;

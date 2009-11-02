@@ -108,6 +108,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	const CGRect contentRect = self.contentView.bounds;
 
 	// XXX: we should never be editing.
+	// really?! 
 	if (!self.editing) {
 		CGRect frame;
 		

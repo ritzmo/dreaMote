@@ -200,7 +200,7 @@
 	_remotePortTextField = [[self create_TextField] retain];
 	_remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
 	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
-	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // XXX: we lack a better one :-)
+	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
 	// Username
 	_usernameTextField = [[self create_TextField] retain];
@@ -276,7 +276,7 @@
 				[(UITableView *)self.view beginUpdates];
 				_connectionIndex = [connections count];
 				[connections addObject: _connection];
-				// XXX: ugly!
+				// FIXME: ugly!
 				if(_connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || _connectionIndex != [RemoteConnectorObject getConnectedId])
 					[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
 											withRowAnimation: UITableViewRowAnimationFade];
@@ -649,7 +649,7 @@
 	else
 		[_remoteAddressCell stopEditing];
 
-	// XXX: _usernameCell & _passwordCell will track this themselves
+	// NOTE: _usernameCell & _passwordCell will track this themselves
 
 	return self.editing;
 }

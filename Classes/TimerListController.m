@@ -126,8 +126,7 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
-	// won't reset the editButtonItem
+	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this won't reset the editButtonItem
 	if(self.editing)
 		[self setEditing:NO animated: YES];
 }
@@ -208,7 +207,7 @@
 			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"New Timer", @"");
-		TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize]; // XXX: Looks a little weird though
+		TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize]; // FIXME: Looks a little weird though
 
 		return cell;
 	}
@@ -259,7 +258,7 @@
 
 	[self.navigationController pushViewController: _timerViewController animated: YES];
 
-	// XXX: set this here so the edit button won't get screwed
+	// NOTE: set this here so the edit button won't get screwed
 	_timerViewController.creatingNewTimer = NO;
 }
 
@@ -341,7 +340,7 @@
 			// Else reload data
 			else
 			{
-				// XXX: this WILL reset our scroll position..
+				// NOTE: this WILL reset our scroll position..
 				for(section = 0; section < kTimerStateMax; section++)
 					_dist[section] = 0;
 
@@ -380,7 +379,7 @@
 
 		[self.navigationController pushViewController: _timerViewController animated: YES];
 
-		// XXX: set this here so the edit button won't get screwed
+		// NOTE: set this here so the edit button won't get screwed
 		_timerViewController.creatingNewTimer = YES;
 	}
 }

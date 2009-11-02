@@ -41,7 +41,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// XXX: interval should be configurable
+	// FIXME: interval should be configurable
 	_timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
 					target: self selector:@selector(fetchSignalDefer)
 					userInfo: nil repeats: YES];

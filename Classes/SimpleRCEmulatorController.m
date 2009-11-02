@@ -30,7 +30,7 @@
 	rcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:rcView];
 
-	// XXX: add dummy page, maybe volume slider, menu button, ...
+	// TODO: we could add a volume slider too...
 
 	// lame
 	frame = CGRectMake(0, 0, imageWidth, imageHeight);

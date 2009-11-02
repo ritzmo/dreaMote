@@ -80,7 +80,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
-	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
+	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
 	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self title: title] retain];
@@ -129,7 +129,7 @@
 	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 	NSObject<ServiceProtocol> *service = nil;
 
-	// XXX: if we encounter an exception we assume an invalid service
+	// NOTE: if we encounter an exception we assume an invalid service
 	@try {
 		service = event.service;
 	}

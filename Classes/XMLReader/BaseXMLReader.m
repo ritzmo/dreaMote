@@ -156,13 +156,13 @@
 /* send fake object back to callback */
 - (void)sendErroneousObject
 {
-	// XXX: descending classes should implement this
+	// NOTE: descending classes should implement this
 }
 
 /* parse complete xml document */
 - (void)parseFull
 {
-	// XXX: descending classes should implement this
+	// NOTE: descending classes should implement this
 }
 
 @end

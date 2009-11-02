@@ -92,7 +92,8 @@
 	{
 		return [resultElement stringValue];
 	}
-	// XXX: Workaround for old WebInterface
+	// NOTE: Workaround for old WebInterface
+	// FIXME: remove after some time, but we should at least wait for the "major images" to ship a more recent WebInterface...
 	resultNodes = [_node nodesForXPath:@"e2eventname" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -190,7 +191,7 @@
 
 - (NSString *)description
 {
-	// XXX: because we don't cache values this might lag a little...
+	// NOTE: because we don't cache values this might lag a little...
 	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 

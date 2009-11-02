@@ -223,7 +223,7 @@ enum enigma2MessageTypes {
 
 - (void)standby
 {
-	// XXX: we send remote control command button power here as we want to toggle standby
+	// NOTE: we send remote control command button power here as we want to toggle standby
 	[self sendButton: kButtonCodePower];
 }
 
@@ -523,7 +523,7 @@ enum enigma2MessageTypes {
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
-	// XXX: iso8859-1 is currently hardcoded, we might want to fix that
+	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
@@ -555,7 +555,7 @@ enum enigma2MessageTypes {
 - (BOOL)instantRecord
 {
 	// Generate URI
-	// XXX: we only allow infinite instant records for now
+	// TODO: we only allow infinite instant records for now
 	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:_baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -593,7 +593,7 @@ enum enigma2MessageTypes {
 
 - (void)freeCaches
 {
-	// XXX: We don't use any caches
+	// NOTE: We don't use any caches
 }
 
 @end

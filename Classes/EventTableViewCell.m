@@ -140,8 +140,8 @@ NSString *kEventCell_ID = @"EventCell_ID";
 {	
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
-	
-	// XXX: We actually should never be editing...
+
+	// NOTE: We actually should never be editing...
 	if (!self.editing) {
 		CGRect frame;
 		

@@ -45,7 +45,8 @@
 }
 
 /* translate date to string */
-// XXX: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
+// NOTE: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
+// TODO: recheck with 3.0 sdk, I know there is some new stuff on SL that does so, maybe we also have it.
 - (NSString *)stringForObjectValue:(id)date
 {
 	// Argument error, return nothing

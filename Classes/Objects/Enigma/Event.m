@@ -145,7 +145,7 @@
 
 - (NSString *)description
 {
-	// XXX: because we don't cache values this might lag a little...
+	// NOTE: because we don't cache values this might lag a little...
 	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
 }
 

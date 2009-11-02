@@ -286,7 +286,7 @@
 	_toolbar.frame = CGRectMake(0.0, edgeY, width, _toolbarHeight);
 	_scrollView.frame = CGRectMake(0.0, 0.0, width, edgeY);
 
-	// XXX: we load a new image as I'm currently unable to figure out how to readjust the old one
+	// FIXME: we load a new image as I'm currently unable to figure out how to readjust the old one
 	if(_screenView.superview)
 		[self loadImage: nil];
 

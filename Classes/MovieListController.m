@@ -93,8 +93,7 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this
-	// wouldn't reset the editButtonItem
+	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this wouldn't reset the editButtonItem
 	if(self.editing)
 		[self setEditing:NO animated: YES];
 }

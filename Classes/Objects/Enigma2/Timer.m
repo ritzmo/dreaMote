@@ -338,7 +338,7 @@
 		_isValid = timer.valid;
 		_afterevent = timer.afterevent;
 
-		// XXX: we don't copy the node...
+		// NOTE: we don't copy the node...
 		// by accessing the properties we can be sure to have all the values though :P
 	}
 
