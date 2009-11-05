@@ -17,6 +17,10 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
+@interface EventViewController()
+- (UITextView *)create_Summary;
+@end
+
 @implementation EventViewController
 
 @synthesize service = _service;
@@ -64,6 +68,7 @@
 	[_similarEvents release];
 	[_dateFormatter release];
 	[_eventXMLDoc release];
+	[_summaryView release];
 
 	[super dealloc];
 }
@@ -83,6 +88,8 @@
 
 	_similarFetched = NO;
 	[_similarEvents removeAllObjects];
+	[_summaryView release];
+	_summaryView = [[self create_Summary] retain];
 
 	if(newEvent != nil)
 		self.title = newEvent.title;
@@ -324,8 +331,8 @@
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
-			
-			((CellTextView *)sourceCell).view = [self create_Summary];
+
+			((CellTextView *)sourceCell).view = _summaryView;
 			break;
 		case 1:
 		case 2:

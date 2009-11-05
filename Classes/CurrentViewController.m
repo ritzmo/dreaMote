@@ -17,6 +17,10 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
+@interface  CurrentViewController()
+- (UITextView *)create_Summary: (NSObject<EventProtocol> *)event;
+@end
+
 @implementation CurrentViewController
 
 - (id)init
@@ -43,6 +47,8 @@
 	[_service release];
 	[_dateFormatter release];
 	[_currentXMLDoc release];
+	[_nowSummary release];
+	[_nextSummary release];
 
 	[super dealloc];
 }
@@ -105,12 +111,14 @@
 	if(_now == nil)
 	{
 		_now = [event retain];
+		_nowSummary = [[self create_Summary: _now] retain];
 	}
 	else
 	{
 		if(_next != nil)
 			[_next release];
 		_next = [event retain];
+		_nextSummary = [[self create_Summary: _next] retain];
 	}
 	[(UITableView *)self.view reloadData];
 }
@@ -226,7 +234,7 @@
 				if(sourceCell == nil)
 					sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 				
-				((CellTextView *)sourceCell).view = [self create_Summary: _now];
+				((CellTextView *)sourceCell).view = _nowSummary;
 			}
 			break;
 		}
@@ -247,7 +255,7 @@
 				if(sourceCell == nil)
 					sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 				
-				((CellTextView *)sourceCell).view = [self create_Summary: _next];
+				((CellTextView *)sourceCell).view = _nextSummary;
 			}
 			break;
 		}

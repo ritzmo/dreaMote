@@ -28,6 +28,7 @@
 	NSMutableArray *_similarEvents; /*!< @brief List of similar Events. */
 	NSObject<EventProtocol> *_event; /*!< @brief Associated Events. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Current Service. */
+	UITextView *_summaryView; /*!< @brief Summary of current event. */
 	BOOL _similarFetched; /*!< @brief List of similar Events was already fetched. */
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
 
