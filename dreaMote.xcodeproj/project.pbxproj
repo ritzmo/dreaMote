@@ -47,6 +47,8 @@
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
+		DA43E4C610A316B500D50998 /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = DA43E4C410A316B500D50998 /* exit.png */; };
+		DA43E4C710A316B500D50998 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = DA43E4C510A316B500D50998 /* menu.png */; };
 		DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutViewController.m */; };
 		DA51BC430EAA45A500AF9146 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DA51BC410EAA45A500AF9146 /* emblem-favorite.png */; };
 		DA51BC440EAA45A500AF9146 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DA51BC420EAA45A500AF9146 /* network-wired.png */; };
@@ -240,6 +242,8 @@
 		DA3AA1D70F0D828D001B2057 /* BouquetListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetListController.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
+		DA43E4C410A316B500D50998 /* exit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = exit.png; path = Images/exit.png; sourceTree = "<group>"; };
+		DA43E4C510A316B500D50998 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = Images/menu.png; sourceTree = "<group>"; };
 		DA51BAFF0EAA344200AF9146 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		DA51BB000EAA344200AF9146 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		DA51BC410EAA45A500AF9146 /* emblem-favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "emblem-favorite.png"; path = "Images/emblem-favorite.png"; sourceTree = "<group>"; };
@@ -630,6 +634,8 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DA43E4C410A316B500D50998 /* exit.png */,
+				DA43E4C510A316B500D50998 /* menu.png */,
 				DAD7E35610990A2000D0D76B /* key_ff.png */,
 				DAD7E35710990A2000D0D76B /* key_fr.png */,
 				DAD7E35810990A2000D0D76B /* key_help_round.png */,
@@ -1010,6 +1016,8 @@
 				DAD7E36110990A2000D0D76B /* key_pvr.png in Resources */,
 				DAD7E36210990A2000D0D76B /* key_rec.png in Resources */,
 				DAD7E36310990A2000D0D76B /* key_stop.png in Resources */,
+				DA43E4C610A316B500D50998 /* exit.png in Resources */,
+				DA43E4C710A316B500D50998 /* menu.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

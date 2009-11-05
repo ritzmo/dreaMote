@@ -34,13 +34,13 @@
 
 	// lame
 	frame = CGRectMake(0, 0, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"key_exit.png" andKeyCode: kButtonCodeLame];
+	roundedButtonType = [self newButton:frame withImage:@"exit.png" andKeyCode: kButtonCodeLame];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 
 	// menu
 	frame = CGRectMake(mainViewSize.width - imageWidth, 0, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"key_menu.png" andKeyCode: kButtonCodeMenu];
+	roundedButtonType = [self newButton:frame withImage:@"menu.png" andKeyCode: kButtonCodeMenu];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 
