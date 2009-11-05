@@ -57,7 +57,7 @@ enum enigma2MessageTypes {
 	return 100;
 }
 
-- (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
+- (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
 	if(self = [super init])
 	{
@@ -69,10 +69,11 @@ enum enigma2MessageTypes {
 		else
 		{
 			NSString *remoteAddress = nil;
+			const NSString *scheme = ssl ? @"https://" : @"http://";
 			if([inUsername isEqualToString: @""])
-				remoteAddress = [NSString stringWithFormat: @"http://%@", address];
+				remoteAddress = [NSString stringWithFormat: @"%@%@", scheme, address];
 			else
-				remoteAddress = [NSString stringWithFormat: @"http://%@:%@@%@", inUsername,
+				remoteAddress = [NSString stringWithFormat: @"%@%@:%@@%@", scheme, inUsername,
 								 inPassword, address];
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
@@ -92,9 +93,9 @@ enum enigma2MessageTypes {
 	[super dealloc];
 }
 
-+ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort
++ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
-	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort];
+	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
 }
 
 - (BOOL)isReachable

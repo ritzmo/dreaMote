@@ -174,9 +174,10 @@ enum buttonCodes {
  @param username Username on Remote Host.
  @param password Password on Remote Host.
  @param port Port on Remote Host.
+ @param ssl Whether or not the connection is encrypted.
  @return RemoteConnector Object.
  */
-- (id)initWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
+- (id)initWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port useSSL: (BOOL)ssl;
 
 /*!
  @brief Standard constructor for RemoteConnectors.
@@ -185,9 +186,10 @@ enum buttonCodes {
  @param username Username on Remote Host.
  @param password Password on Remote Host.
  @param port Port on Remote Host.
+ @param ssl Whether or not the connection is encrypted.
  @return RemoteConnector Object.
  */
-+ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port;
++ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port useSSL: (BOOL)ssl;
 
 /*!
  @brief Check if a Connector supports a given Feature.

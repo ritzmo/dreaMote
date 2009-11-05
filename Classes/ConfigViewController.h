@@ -44,6 +44,7 @@
 	 @todo This might be of use in other connectors too, recheck!
 	 */
 	UISwitch *_advancedRemoteSwitch;
+	UISwitch *_sslSwitch; /*!< @brief Switch to enable SSL. */
 
 	BOOL _shouldSave; /*!< @brief Settings should be Saved. */
 	NSInteger _connector; /*!< @brief Selected Connector. */

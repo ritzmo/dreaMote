@@ -59,6 +59,7 @@
 #define kSingleBouquet			@"singleBouquetKey"
 #define kPort					@"portKey"
 #define kAdvancedRemote			@"advancedRemote"
+#define kSSL					@"ssl"
 
 // keys in nsuserdefaults
 #define kActiveConnection		@"activeConnector"

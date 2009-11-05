@@ -201,6 +201,10 @@
 	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
 	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
+	// SSL
+	_sslSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
+	_sslSwitch.on = [[_connection objectForKey: kSSL] boolValue];
+
 	// Username
 	_usernameTextField = [[self create_TextField] retain];
 	_usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
@@ -227,7 +231,7 @@
 	_singleBouquetSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
 	_singleBouquetSwitch.on = [[_connection objectForKey: kSingleBouquet] boolValue];
 	
-	// Single bouquet switch
+	// Advanced Remote switch
 	_advancedRemoteSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
 	_advancedRemoteSwitch.on = [[_connection objectForKey: kAdvancedRemote] boolValue];
 
@@ -257,6 +261,7 @@
 		[_passwordCell stopEditing];
 		_singleBouquetSwitch.enabled = NO;
 		_advancedRemoteSwitch.enabled = NO;
+		_sslSwitch.enabled = NO;
 
 		if(_shouldSave)
 		{
@@ -268,6 +273,7 @@
 			[_connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
 			[_connection setObject: _singleBouquetSwitch.on ? @"YES" : @"NO" forKey: kSingleBouquet];
 			[_connection setObject: _advancedRemoteSwitch.on ? @"YES" : @"NO" forKey: kAdvancedRemote];
+			[_connection setObject: _sslSwitch.on ? @"YES" : @"NO" forKey: kSSL];
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(_connectionIndex == -1)
@@ -299,6 +305,7 @@
 		_shouldSave = YES;
 		_singleBouquetSwitch.enabled = YES;
 		_advancedRemoteSwitch.enabled = YES;
+		_sslSwitch.enabled = YES;
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 		[cancelButtonItem release];
@@ -376,6 +383,7 @@
 								_remotePortTextField.text, kPort,
 								_usernameTextField.text, kUsername,
 								_passwordTextField.text, kPassword,
+								_sslSwitch.on ? @"YES" : @"NO", kSSL,
 								nil];
 
 		_connector = [RemoteConnectorObject autodetectConnector: tempConnection];
@@ -450,7 +458,9 @@
 	switch(section)
 	{
 		case 0:
-			return 3;
+			if(_connector == kSVDRPConnector)
+				return 3;
+			return 4;
 		case 1:
 			if(_connector == kSVDRPConnector)
 				return 0;
@@ -496,6 +506,17 @@
 	switch(section)
 	{
 		case 0:
+			if(row == 3)
+			{
+				sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+				if(sourceCell == nil)
+					sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Use SSL", @"");
+				((DisplayCell *)sourceCell).view = _sslSwitch;
+				break;
+			}
+
 			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
