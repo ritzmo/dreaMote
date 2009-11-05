@@ -172,7 +172,6 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -434,6 +433,8 @@
 		case 0:
 			return NSLocalizedString(@"Remote Host", @"");
 		case 1:
+			if(_connector == kSVDRPConnector)
+				return nil;
 			return NSLocalizedString(@"Credential", @"");
 		case 2:
 			return NSLocalizedString(@"Remote Box Type", @"");
@@ -451,6 +452,8 @@
 		case 0:
 			return 3;
 		case 1:
+			if(_connector == kSVDRPConnector)
+				return 0;
 			return 2;
 		case 2:
 			/*!
@@ -467,6 +470,19 @@
 			return 2;
 	}
 	return 0;
+}
+
+// to determine specific row height for each cell, override this. 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	switch (indexPath.section)
+	{
+		case 1:
+			if(_connector == kSVDRPConnector)
+				return 0.0;
+		default:
+			return kUIRowHeight;
+	}
 }
 
 /* determine which UITableViewCell to be used on a given row. */
