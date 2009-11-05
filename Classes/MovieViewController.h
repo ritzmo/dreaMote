@@ -20,6 +20,7 @@
 {
 @private
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
+	UITextView *_summaryView; /*!< @brief Summary of the movie. */
 }
 
 /*!

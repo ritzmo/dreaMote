@@ -16,6 +16,10 @@
 #import "CellTextView.h"
 #import "DisplayCell.h"
 
+@interface MovieViewController()
+- (UITextView *)create_Summary;
+@end
+
 @implementation MovieViewController
 
 - (id)init
@@ -41,6 +45,7 @@
 - (void)dealloc
 {
 	[_movie release];
+	[_summaryView release];
 
 	[super dealloc];
 }
@@ -60,6 +65,9 @@
 
 	if(newMovie != nil)
 		self.title = newMovie.title;
+
+	[_summaryView release];
+	_summaryView = [[self create_Summary] retain];
 
 	[(UITableView *)self.view reloadData];
 	[(UITableView *)self.view
@@ -358,7 +366,7 @@
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
-			((CellTextView *)sourceCell).view = [self create_Summary];
+			((CellTextView *)sourceCell).view = _summaryView;
 			break;
 		case 1:
 			TABLEVIEWCELL_TEXT(sourceCell) = _movie.sname;
