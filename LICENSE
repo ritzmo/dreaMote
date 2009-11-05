@@ -18,7 +18,9 @@ The following Icons were made by mfgeg, their exact license is unknown to me
 but they were made specifically for this Application.
 
 Filenames (relative to Images) :
+4-sided-arrow.png
 Icon.png
+exit.png
 key_0.png
 key_1.png
 key_2.png
@@ -33,8 +35,11 @@ key_audio.png
 key_blue.png
 key_down.png
 key_exit.png
+key_ff.png
+key_fr.png
 key_green.png
 key_help.png
+key_help_round.png
 key_info.png
 key_left.png
 key_leftarrow.png
@@ -42,8 +47,11 @@ key_menu.png
 key_minus.png
 key_mute.png
 key_ok.png
+key_pp.png
+key_pvr.png
 key_plus.png
 key_radio.png
+key_rec.png
 key_red.png
 key_right.png
 key_rightarrow.png
@@ -52,6 +60,7 @@ key_tv.png
 key_up.png
 key_video.png
 key_yellow.png
+menu.png
 
 The following Icons are part of the tango-icon-theme-0.8.90 package and thus
 part of the Tango Icon Library (http://tango.freedesktop.org).
