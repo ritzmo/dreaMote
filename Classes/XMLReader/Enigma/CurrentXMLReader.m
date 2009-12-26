@@ -41,7 +41,7 @@
 	[fakeObject release];
 }
 
-- (void)parseEvent: (NSArray *)resultNodes
+- (NSObject<EventProtocol> *)parseEvent: (NSArray *)resultNodes
 {
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -58,7 +58,7 @@
 		if(newEvent.title == nil)
 		{
 			[newEvent release];
-			return;
+			return nil;
 		}
 
 		childNodes = [resultElement nodesForXPath:@"start" error:nil];
@@ -91,9 +91,10 @@
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: newEvent
 									waitUntilDone: NO];
-		[newEvent release];
-		break;
+		[newEvent autorelease];
+		return newEvent;
 	}
+	return nil;
 }
 
 /*
@@ -101,6 +102,7 @@
  */
 - (void)parseFull
 {
+	const NSObject<EventProtocol> *current_event = [self parseEvent: [_parser nodesForXPath:@"/currentservicedata/current_event" error:nil]];
 	const NSArray *resultNodes = [_parser nodesForXPath:@"/currentservicedata/service" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
@@ -116,7 +118,16 @@
 
 		if(newService.sname == nil)
 		{
-			newService.sname = NSLocalizedString(@"Nothing playing.", @"");
+			// NOTE: fall back to current event title because it looks weird for
+			// recordings otherwise, but if we are playing a recording back
+			// we won't be able to distinguish between standby and running...
+			if(current_event && current_event.title != nil)
+			{
+				newService.sname = current_event.title;
+			}
+			else {
+				newService.sname = NSLocalizedString(@"Nothing playing.", @"");
+			}
 		}
 		else
 		{
@@ -135,7 +146,6 @@
 		break;
 	}
 
-	[self parseEvent: [_parser nodesForXPath:@"/currentservicedata/current_event" error:nil]];
 	[self parseEvent: [_parser nodesForXPath:@"/currentservicedata/next_event" error:nil]];
 }
 
