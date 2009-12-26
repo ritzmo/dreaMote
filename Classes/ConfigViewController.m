@@ -380,7 +380,7 @@
 
 		NSDictionary *tempConnection = [NSDictionary dictionaryWithObjectsAndKeys:
 								_remoteAddressTextField.text, kRemoteHost,
-								_remotePortTextField.text, kPort,
+								//_remotePortTextField.text, kPort,
 								_usernameTextField.text, kUsername,
 								_passwordTextField.text, kPassword,
 								_sslSwitch.on ? @"YES" : @"NO", kSSL,
