@@ -3,7 +3,7 @@
 //  dreaMote
 //
 //  Created by Moritz Venn on 08.06.09.
-//  Copyright 2009 __MyCompanyName__. All rights reserved.
+//  Copyright 2009-2010 Moritz Venn. All rights reserved.
 //
 
 #import "SignalXMLReader.h"

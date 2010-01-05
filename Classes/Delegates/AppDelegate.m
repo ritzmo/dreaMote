@@ -3,7 +3,7 @@
 //  dreaMote
 //
 //  Created by Moritz Venn on 08.03.08.
-//  Copyright __MyCompanyName__ 2008. All rights reserved.
+//  Copyright 2008-2010 Moritz Venn. All rights reserved.
 //
 
 #import "AppDelegate.h"
