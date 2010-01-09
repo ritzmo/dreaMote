@@ -159,4 +159,9 @@
 	[self.service isEqualToService: otherEvent.service];
 }
 
+- (NSComparisonResult)compare: (NSObject<EventProtocol> *)otherEvent
+{
+	return [otherEvent.begin compare: self.begin];
+}
+
 @end

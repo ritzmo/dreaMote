@@ -16,6 +16,8 @@
 
 #import "Objects/EventProtocol.h"
 
+#import "Insort/NSArray+CWSortedInsert.h"
+
 #define kTransitionDuration	0.6
 
 @implementation EventSearchListController
@@ -92,9 +94,10 @@
 {
 	if(event != nil)
 	{
-		[_events addObject: event];
+		NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
+		[_events insertObject: event atIndex: index];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:index inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else

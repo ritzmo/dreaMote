@@ -78,4 +78,12 @@
  */
 - (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent;
 
+/*!
+ @brief Compare to another event based on begin.
+ 
+ @param otherEvent Event to compare to.
+ @return NSOrderedAscending if otherEvent is earlier
+ */
+- (NSComparisonResult)compare: (NSObject<EventProtocol> *)otherEvent;
+
 @end

@@ -81,17 +81,8 @@ view-refresh.png
 Any file below the TouchXML folder is part of the TouchXML package by touchcode
 and is licensed under the MIT license.
 
-Any file below the Classe/SmallSockets folder is spart of the SmallSockets
-library and are distributed acording to the following terms:
-SmallSockets is copyright © 2001 Steven Frank
+Any file below the Classe/SmallSockets folder is part of the SmallSockets
+library and are distributed acording to the zlib/libpng license.
 
-This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
-
-Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation (and/or about box) would be appreciated but is not required.
-
-2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-
-3. This notice may not be removed or altered from any source distribution. 
-
+Any file below the Classe/Insort folder is part of Fredrik Olsson's sorted
+inserts code and distributed acording to the 3-clause BSD license.

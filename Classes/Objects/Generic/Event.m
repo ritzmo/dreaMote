@@ -96,4 +96,9 @@
 	[self.end isEqualToDate: otherEvent.end];
 }
 
+- (NSComparisonResult)compare: (NSObject<EventProtocol> *)otherEvent
+{
+	return [otherEvent.begin compare: self.begin];
+}
+
 @end

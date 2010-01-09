@@ -134,6 +134,7 @@
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAB97AAB0F7FBCC400464B66 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB97AAA0F7FBCC400464B66 /* document-save.png */; };
+		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
 		DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */; };
 		DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */; };
@@ -377,6 +378,8 @@
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAB97AAA0F7FBCC400464B66 /* document-save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "document-save.png"; path = "Images/document-save.png"; sourceTree = "<group>"; };
+		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
+		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		DACA8AF71096467100B03BE8 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
@@ -444,6 +447,7 @@
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DAF197540FF574DB009CA6A0 /* Delegates */,
+				DABF639F10F8BE3E002658DD /* Insort */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
@@ -777,6 +781,15 @@
 				DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */,
 			);
 			path = Creation;
+			sourceTree = "<group>";
+		};
+		DABF639F10F8BE3E002658DD /* Insort */ = {
+			isa = PBXGroup;
+			children = (
+				DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */,
+				DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */,
+			);
+			name = Insort;
 			sourceTree = "<group>";
 		};
 		DADE1AE60F115A2500807A25 /* SVDRP */ = {
@@ -1119,6 +1132,7 @@
 				DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */,
 				DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */,
 				DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */,
+				DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

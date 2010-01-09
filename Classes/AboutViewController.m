@@ -46,7 +46,7 @@
 	CGRect frame;
 	const CGSize size = self.view.bounds.size;
 
-	frame = CGRectMake(0.0, 0.0, size.width, 310.0);
+	frame = CGRectMake(0.0, 0.0, size.width, 360.0);
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
 	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"] usedEncoding: nil error: nil] baseURL: [NSURL URLWithString: @""]];
 	aboutText.backgroundColor = [UIColor clearColor];
@@ -55,7 +55,7 @@
 	[self.view addSubview: aboutText];
 	[aboutText release];
 
-	frame = CGRectMake(((size.width - 100.0) / 2), 310.0 + kTweenMargin, 100.0, 34.0);
+	frame = CGRectMake(((size.width - 100.0) / 2), 360.0 + kTweenMargin, 100.0, 34.0);
 	_doneButton = [[UIButton buttonWithType: UIButtonTypeRoundedRect] retain];
 	_doneButton.frame = frame;
 	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
