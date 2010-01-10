@@ -114,8 +114,10 @@ enum neutrinoMessageTypes {
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+- (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
+	Result *result = [Result createResult];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
@@ -130,14 +132,15 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	// TODO: is the status code correct?
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)playMovie: (NSObject<MovieProtocol> *)movie
+- (Result *)playMovie: (NSObject<MovieProtocol> *)movie
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
-	return NO;
+	return nil;
 }
 
 /*
@@ -508,8 +511,10 @@ enum neutrinoMessageTypes {
 	return !equalsRes;
 }
 
-- (BOOL)setVolume:(NSInteger) newVolume
+- (Result *)setVolume:(NSInteger) newVolume
 {
+	Result *result = [Result createResult];
+
 	// neutrino expect volume to be a multiple of 5
 	const NSUInteger diff = newVolume % 5;
 	// NOTE: to make this code easier we could just add/remove the diff but lets try it fair first :-)
@@ -533,11 +538,15 @@ enum neutrinoMessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	// Sourcecode suggests that they always return ok, so we only do this simple check
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	// FIXME: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSString *add = [NSString stringWithFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
@@ -558,11 +567,15 @@ enum neutrinoMessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	// Sourcecode suggests that they always return ok, so we only do this simple check
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	// FIXME: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSString *add = [NSString stringWithFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
@@ -587,11 +600,15 @@ enum neutrinoMessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	// Sourcecode suggests that they always return ok, so we only do this simple check
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: _baseAddress];
 
@@ -607,11 +624,15 @@ enum neutrinoMessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// Sourcecode suggests that they always return ok, so we only do this simple check
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)sendButton:(NSInteger) type
+- (Result *)sendButton:(NSInteger) type
 {
+	Result *result = [Result createResult];
+	
 	// We fake some button codes (namely tv/radio) so we have to be able to set a custom uri
 	NSURL *myURI = nil;
 
@@ -659,7 +680,11 @@ enum neutrinoMessageTypes {
 	if(myURI == nil)
 	{
 		if(buttonCode == nil)
-			return NO;
+		{
+			result.result = NO;
+			result.resulttext = NSLocalizedString(@"Unable to map button to keycode!", @"");
+			return result;
+		}
 
 		// Generate URI
 		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: _baseAddress];
@@ -676,11 +701,15 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
+- (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
@@ -695,7 +724,9 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
 - (const NSUInteger const)getMaxMessageType
@@ -836,10 +867,10 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
-- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
-	return NO;
+	return nil;
 }
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
@@ -860,10 +891,10 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
-- (BOOL)instantRecord
+- (Result *)instantRecord
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
-	return NO;
+	return nil;
 }
 
 - (void)openRCEmulator: (UINavigationController *)navigationController

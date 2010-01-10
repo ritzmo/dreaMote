@@ -14,6 +14,8 @@
 
 #import "DisplayCell.h"
 
+#import "Objects/Generic/Result.h"
+
 /*!
  @brief Private functions of MessageViewController.
  */
@@ -173,9 +175,20 @@
 	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType]
 			&& _type >= [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType])
 		failureMessage = NSLocalizedString(@"Invalid message type.", @"");
-	else if(![[RemoteConnectorObject sharedRemoteConnector] sendMessage:
-															   message :caption :type :timeout])
-		failureMessage = NSLocalizedString(@"Could not send message.", @"");
+	else
+	{
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] sendMessage:
+															message :caption :type :timeout];
+		if(!result.result)
+		{
+			UIAlertView *notification = [[UIAlertView alloc]
+										 initWithTitle:NSLocalizedString(@"Could not send message.", @"")
+										 message:result.resulttext
+										 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+		}
+	}
 
 	if(failureMessage != nil)
 	{

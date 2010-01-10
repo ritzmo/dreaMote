@@ -63,6 +63,7 @@
 		DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
 		DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
 		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
+		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
@@ -270,6 +271,8 @@
 		DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NeutrinoRCEmulatorController.m; sourceTree = "<group>"; };
 		DA661FAA0F1635A50030A40B /* SVDRPRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVDRPRCEmulatorController.h; sourceTree = "<group>"; };
 		DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVDRPRCEmulatorController.m; sourceTree = "<group>"; };
+		DA66430310FA0CFF000C96F4 /* Result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Result.h; sourceTree = "<group>"; };
+		DA66430410FA0CFF000C96F4 /* Result.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Result.m; sourceTree = "<group>"; };
 		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA664CD70EA8E2C100A37F55 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
@@ -612,6 +615,8 @@
 				DA0BF44F0F0C1066004B488C /* Event.m */,
 				DA0BF4500F0C1066004B488C /* Movie.h */,
 				DA0BF4510F0C1066004B488C /* Movie.m */,
+				DA66430310FA0CFF000C96F4 /* Result.h */,
+				DA66430410FA0CFF000C96F4 /* Result.m */,
 				DA0BF4520F0C1066004B488C /* Service.h */,
 				DA0BF4530F0C1066004B488C /* Service.m */,
 				DA0B0EEC0FE6537D00684EDC /* Signal.h */,
@@ -1133,6 +1138,7 @@
 				DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */,
 				DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */,
 				DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */,
+				DA66430510FA0CFF000C96F4 /* Result.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -145,6 +145,7 @@ enum buttonCodes {
 
 // Forward declarations...
 @class CXMLDocument;
+@class Result;
 @protocol EventProtocol;
 @protocol MovieProtocol;
 @protocol ServiceProtocol;
@@ -312,14 +313,13 @@ enum buttonCodes {
 - (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
 
 // Functions
-// XXX: we might want to return a dictionary which contains retval / explain for these
 /*!
  @brief Zap to given service.
 
  @param service Service to zap to.
  @return YES if zapping succeeded.
  */
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service;
+- (Result *)zapTo:(NSObject<ServiceProtocol> *) service;
 
 /*!
  @brief Start playback of given movie.
@@ -327,7 +327,7 @@ enum buttonCodes {
  @param movie Movie to start playback of.
  @return YES if starting playback succeeded.
  */
-- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie;
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie;
 
 /*!
  @brief Delete a given Movie from Receiver HDD.
@@ -335,7 +335,7 @@ enum buttonCodes {
  @param movie Movie to delete.
  @return YES if deletion succeeded.
  */
-- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie;
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie;
 
 /*!
  @brief Invoke Shutdown procedure of Receiver.
@@ -370,7 +370,7 @@ enum buttonCodes {
  @param newVolume Volume level to set.
  @return YES if change succeeded.
  */
-- (BOOL)setVolume:(NSInteger) newVolume;
+- (Result *)setVolume:(NSInteger) newVolume;
 
 /*!
  @brief Schedule a Timer for recording on Receiver.
@@ -378,7 +378,7 @@ enum buttonCodes {
  @param newTimer Timer to add.
  @return YES if Timer was added successfully.
  */
-- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer;
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer;
 
 /*!
  @brief Change existing Timer.
@@ -387,7 +387,7 @@ enum buttonCodes {
  @param newTimer New values for Timer.
  @return YES if Timer was changed successfully.
  */
-- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer;
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer;
 
 /*!
  @brief Remove a Timer on Receiver.
@@ -395,7 +395,7 @@ enum buttonCodes {
  @param oldTimer Timer to remove.
  @return YES if Timer was removed.
  */
-- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer;
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer;
 
 /*!
  @brief Send Remote Control Code to Receiver.
@@ -403,7 +403,7 @@ enum buttonCodes {
  @param type Button Code.
  @return YES if code was sent successfully.
  */
-- (BOOL)sendButton:(NSInteger) type;
+- (Result *)sendButton:(NSInteger) type;
 
 /*!
  @brief Send GUI Message to Receiver.
@@ -414,14 +414,14 @@ enum buttonCodes {
  @param timeout Message timeout.
  @return YES if message was sent successfully.
  */
-- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
+- (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
 
 /*!
  @brief Start instant Record on Receiver.
  
  @return YES if record was started.
  */
-- (BOOL)instantRecord;
+- (Result *)instantRecord;
 
 
 

@@ -18,6 +18,7 @@
 #import "DisplayCell.h"
 
 #import "Objects/Generic/Timer.h"
+#import "Objects/Generic/Result.h"
 
 /*!
  @brief Private functions of TimerViewController.
@@ -338,15 +339,17 @@
 		{
 			if(_creatingNewTimer)
 			{
-				if(![[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer])
-					message = NSLocalizedString(@"Error adding new timer.", @"");
+				Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer];
+				if(!result.result)
+					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext];
 				else
 					[self.navigationController popViewControllerAnimated: YES];
 			}
 			else
 			{
-				if(![[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer])
-					message = NSLocalizedString(@"Error editing timer.", @"");
+				Result *result = [[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer];
+				if(!result.result)
+					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing timer: %@", @""), result.resulttext];
 				else
 					[self.navigationController popViewControllerAnimated: YES];
 			}

@@ -17,6 +17,7 @@
 #import "TimerTableViewCell.h"
 
 #import "Objects/Generic/Timer.h"
+#import "Objects/Generic/Result.h"
 
 @implementation TimerListController
 
@@ -323,7 +324,8 @@
 			return;
 
 		// Try to delete timer
-		if([[RemoteConnectorObject sharedRemoteConnector] delTimer: timer])
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delTimer: timer];
+		if(result.result)
 		{
 			// If we have a constant timer Id don't refresh all data
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesConstantTimerId])
@@ -359,7 +361,7 @@
 		else
 		{
 			// Alert user
-			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
 														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
 			[alert release];

@@ -7,28 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Result.h"
 
 /*!
  @brief Generic Volume.
  */
-@interface GenericVolume : NSObject
+@interface GenericVolume : Result
 {
 @private
-	BOOL _result; /*!< @brief Did the request succeed? */
-	NSString *_resulttext; /*!< @brief Textual representation or explanation of result. */
 	NSInteger _current; /*!< @brief Current audio level. */
 	BOOL _ismuted; /*!< @brief Audio currently muted? */
 }
-
-/*!
- @brief YES if request succeeded.
- */
-@property (assign) BOOL result;
-
-/*!
- @brief Textual representation or explanation of result.
- */
-@property (nonatomic, retain) NSString *resulttext;
 
 /*!
  @brief Current audio level.

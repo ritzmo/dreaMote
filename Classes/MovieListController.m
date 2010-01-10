@@ -17,6 +17,8 @@
 
 #import "MovieProtocol.h"
 
+#import "Objects/Generic/Result.h"
+
 @implementation MovieListController
 
 /* initialize */
@@ -214,7 +216,8 @@
 	if(!movie.valid)
 		return;
 
-	if([[RemoteConnectorObject sharedRemoteConnector] delMovie: movie])
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] delMovie: movie];
+	if(result.result)
 	{
 
 		[_movies removeObjectAtIndex: index];
@@ -225,7 +228,7 @@
 	else
 	{
 		// alert user if movie could not be deleted
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:nil
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
 														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
 		[alert release];

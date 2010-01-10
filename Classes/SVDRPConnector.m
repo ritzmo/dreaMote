@@ -108,8 +108,10 @@
 	return [_socket isConnected];
 }
 
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+- (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -121,13 +123,17 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	const NSString *ret = [self readSocketLine];
+	NSString *ret = [self readSocketLine];
 	NSLog(@"%@", ret);
-	return YES;
+	result.result = YES;
+	result.resulttext = ret;
+	return result;
 }
 
-- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -139,9 +145,11 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	const NSString *ret = [self readSocketLine];
+	NSString *ret = [self readSocketLine];
 	NSLog(@"%@", ret);
-	return YES;
+	result.result = YES;
+	result.resulttext = ret;
+	return result;
 }
 
 // TODO: does the vdr actually have bouquets?
@@ -625,8 +633,10 @@
 	return [ret isEqualToString: @"250 Audio is mute"];
 }
 
-- (BOOL)setVolume:(NSInteger) newVolume
+- (Result *)setVolume:(NSInteger) newVolume
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -637,12 +647,16 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSString *ret = [self readSocketLine];
-	return [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
+	NSString *ret = [self readSocketLine];
+	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
+	result.resulttext = ret;
+	return result;
 }
 
-- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -669,14 +683,24 @@
 	[_socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSString *ret = [self readSocketLine];
-	if([ret length] < 4)
-		return NO;
-	return [[ret substringFromIndex: 4] isEqualToString: timerString];
+	NSString *ret = [self readSocketLine];
+	if([ret length] < 4 || ![[ret substringFromIndex: 4] isEqualToString: timerString])
+	{
+		result.result = NO;
+		result.resulttext = ret;
+	}
+	else
+	{
+		result.result = YES;
+	}
+
+	return result;
 }
 
-- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -692,12 +716,16 @@
 	[_socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSString *ret = [self readSocketLine];
-	return [ret isEqualToString: [NSString stringWithFormat: @"250 %@", timerString]];
+	NSString *ret = [self readSocketLine];
+	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 %@", timerString]];
+	result.resulttext = ret;
+	return result;
 }
 
-- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -712,12 +740,15 @@
 	[_socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSString *ret = [self readSocketLine];
-	return [ret isEqualToString: [NSString stringWithFormat: @"250 Timer \"%@\" deleted", ((SVDRPTimer *)oldTimer).tid]];
+	NSString *ret = [self readSocketLine];
+	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Timer \"%@\" deleted", ((SVDRPTimer *)oldTimer).tid]];
+	result.resulttext = ret;
+	return result;
 }
 
-- (BOOL)sendButton:(NSInteger) type
+- (Result *)sendButton:(NSInteger) type
 {
+	Result *result = [Result createResult];
 	NSString *buttonCode = nil;
 	switch(type)
 	{
@@ -781,7 +812,11 @@
 */
 	}
 	if(buttonCode == nil)
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to map button to keycode!", @"");
+		return result;
+	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
@@ -792,12 +827,16 @@
 	[_socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSString *ret = [self readSocketLine];
-	return [ret isEqualToString: [NSString stringWithFormat: @"250 Key \"%@\" accepted", buttonCode]];
+	NSString *ret = [self readSocketLine];
+	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Key \"%@\" accepted", buttonCode]];
+	result.resulttext = ret;
+	return result;
 }
 
-- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
+- (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -807,8 +846,10 @@
 	[_socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSString *ret = [self readSocketLine];
-	return [ret isEqualToString: @"250 Message queued"];
+	NSString *ret = [self readSocketLine];
+	result.result = [ret isEqualToString: @"250 Message queued"];
+	result.resulttext = ret;
+	return result;
 }
 
 - (const NSUInteger const)getMaxMessageType
@@ -827,8 +868,10 @@
 	return nil;
 }
 
-- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
+	Result *result = [Result createResult];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -840,9 +883,11 @@
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// XXX: we should really parse the return message
-	const NSString *ret = [self readSocketLine];
+	NSString *ret = [self readSocketLine];
 	NSLog(@"%@", ret);
-	return YES;
+	result.result = YES;
+	result.resulttext = ret;
+	return result;
 }
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
@@ -868,10 +913,10 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
 }
 
-- (BOOL)instantRecord
+- (Result *)instantRecord
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:nil];
-	return NO;
+	return nil;
 }
 
 - (void)openRCEmulator: (UINavigationController *)navigationController

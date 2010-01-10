@@ -116,8 +116,10 @@ enum enigma2MessageTypes {
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapInternal:(NSString *) sref
+- (Result *)zapInternal:(NSString *) sref
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
 
@@ -132,15 +134,16 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([response statusCode] == 200);
+	result.result = ([response statusCode] == 200);
+	return result;
 }
 
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+- (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	return [self zapInternal: service.sref];
 }
 
-- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
 {
 	return [self zapInternal: movie.sref];
 }
@@ -276,14 +279,13 @@ enum enigma2MessageTypes {
 
 	const NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
 	[myString release];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	return (myRange.length > 0);
 }
 
-- (BOOL)setVolume:(NSInteger) newVolume
+- (Result *)setVolume:(NSInteger) newVolume
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/vol?set=set%d", newVolume] relativeToURL: _baseAddress];
 
@@ -296,20 +298,21 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
-- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated] relativeToURL: _baseAddress];
 
@@ -322,20 +325,21 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
-- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
 
@@ -348,20 +352,21 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
-- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
 
@@ -374,20 +379,21 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
-- (BOOL)sendButton:(NSInteger) type
+- (Result *)sendButton:(NSInteger) type
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/remotecontrol?command=%d", type] relativeToURL: _baseAddress];
 
@@ -400,20 +406,21 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
-- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
+- (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/message?text=%@&type=%d&timeout=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], type, timeout] relativeToURL: _baseAddress];
 
@@ -426,18 +433,30 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	const NSString *myString = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 	if(myRange.length)
-		return YES;
-	myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	{
+		result.result = YES;
+	}
+	else
+	{
+		myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+		if(myRange.length)
+		{
+			result.result = YES;
+		}
+		else
+		{
+			result.result = NO;
+			result.resulttext = @"";
+		}
+	}
+	[myString release];
+	return result;
 }
 
 - (const NSUInteger const)getMaxMessageType
@@ -496,8 +515,10 @@ enum enigma2MessageTypes {
 	return data;
 }
 
-- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
 	
@@ -510,16 +531,15 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 											returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
 	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
@@ -553,8 +573,10 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
-- (BOOL)instantRecord
+- (Result *)instantRecord
 {
+	Result *result = [Result createResult];
+	
 	// Generate URI
 	// TODO: we only allow infinite instant records for now
 	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:_baseAddress];
@@ -568,16 +590,15 @@ enum enigma2MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 						returningResponse: &response error: nil];
 
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+	result.result = (myRange.length > 0);
+	result.resulttext = @"";
 	[myString release];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	return result;
 }
 
 - (void)openRCEmulator: (UINavigationController *)navigationController

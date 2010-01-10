@@ -127,8 +127,10 @@ enum enigma1MessageTypes {
 	return ([response statusCode] == 200);
 }
 
-- (BOOL)zapInternal: (NSString *)sref
+- (Result *)zapInternal: (NSString *)sref
 {
+	Result *result = [Result createResult];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 	
@@ -142,16 +144,18 @@ enum enigma1MessageTypes {
 						  returningResponse: &response error: nil];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	return ([response statusCode] == 204);
+
+	result.result = ([response statusCode] == 204);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)zapTo:(NSObject<ServiceProtocol> *) service
+- (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	return [self zapInternal: service.sref];
 }
 
-- (BOOL)playMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
 {
 	return [self zapInternal: movie.sref];
 }
@@ -400,14 +404,13 @@ enum enigma1MessageTypes {
 
 	const NSRange myRange = [myString rangeOfString: @"mute: 1"];
 	[myString release];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	return (myRange.length > 0);
 }
 
-- (BOOL)setVolume:(NSInteger) newVolume
+- (Result *)setVolume:(NSInteger) newVolume
 {
+	Result *result = [Result createResult];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/audio?volume=%d", 63 - newVolume] relativeToURL: _baseAddress];
 
@@ -420,21 +423,21 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"Volume set."];
+	result.result = (myRange.length > 0);
+	result.resulttext = myString;
 	[myString release];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	return result;
 }
 
-- (BOOL)addTimer:(NSObject<TimerProtocol> *) newTimer
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	const NSUInteger repeated = newTimer.repeated;
+	Result *result = [Result createResult];
 	NSUInteger afterEvent = 0;
 	NSURL *myURI = nil;
 
@@ -474,34 +477,55 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
+	result.result = (myRange.length > 0);
+	result.resulttext = myString;
 	[myString release];
-	if(myRange.length)
-		return YES;
-	
-	return NO;
+	return result;
 }
 
-- (BOOL)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
 	// This is the only way I found in enigma sources as changeTimerEvent does not allow us e.g. to change the service
-	if([self delTimer: oldTimer])
-	{
-		if([self addTimer: newTimer])
-			return YES;
+	Result *result = [self delTimer: oldTimer];
 
-		// XXX: We might run into serious problems if this fails too :-)
-		[self addTimer: oldTimer]; // We failed to add the new timer, try to add the old one again
+	// removing original timer succeeded
+	if(result.result)
+	{
+		result = [self addTimer: newTimer];
+		// failed to add new one, try to recover from failure
+		if(result.result == NO)
+		{
+			Result *result2 = [self addTimer: oldTimer];
+			// old timer re-added
+			if(result2.result)
+			{
+				result.result = NO;
+				result.resulttext = [NSString stringWithFormat: NSLocalizedString(@"Could not add new timer (%@)!", @""), result.resulttext];
+			}
+			// could not re-add old timer
+			else {
+				result.result = NO;
+				result.resulttext = [NSString stringWithFormat: NSLocalizedString(@"Could not add new timer and failed to retain original one! (%@)", @""), result2.resulttext];
+			}
+		}
+
+		return result;
 	}
-	return NO;
+
+	result.result = NO;
+	result.resulttext = [NSString stringWithFormat: NSLocalizedString(@"Could not remove base timer (%@)!", @""), result.resulttext];
+	return result;
 }
 
-- (BOOL)delTimer:(NSObject<TimerProtocol> *) oldTimer
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
+	Result *result = [Result createResult];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: _baseAddress];
 
@@ -514,20 +538,21 @@ enum enigma1MessageTypes {
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
+	result.result = (myRange.length > 0);
+	result.resulttext = myString;
 	[myString release];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	return result;
 }
 
-- (BOOL)sendButton:(NSInteger) type
+- (Result *)sendButton:(NSInteger) type
 {
+	Result *result = [Result createResult];
+
 	// Fix some Buttoncodes
 	switch(type)
 	{
@@ -553,11 +578,15 @@ enum enigma1MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([response statusCode] == 204);
+	result.result = ([response statusCode] == 204);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
-- (BOOL)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
+- (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
+	Result *result = [Result createResult];
+
 	NSInteger translatedType = -1;
 	switch(type)
 	{
@@ -583,22 +612,21 @@ enum enigma1MessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
-	NSURLResponse *response;
+	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"+ok"];
+	result.result = (myRange.length > 0);
+	result.resulttext = myString;
 	[myString release];
-	if(myRange.length)
-		return YES;
-
-	return NO;
+	return result;
 }
 
 - (const NSUInteger const)getMaxMessageType
@@ -686,8 +714,10 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
-- (BOOL)delMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
+	Result *result = [Result createResult];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/cgi-bin/deleteMovie?ref=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
 
@@ -702,7 +732,9 @@ enum enigma1MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([response statusCode] == 204);
+	result.result = ([response statusCode] == 204);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
@@ -727,8 +759,10 @@ enum enigma1MessageTypes {
 	return doc;
 }
 
-- (BOOL)instantRecord
+- (Result *)instantRecord
 {
+	Result *result = [Result createResult];
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/cgi-bin/videocontrol?command=record" relativeToURL:_baseAddress];
 
@@ -743,7 +777,9 @@ enum enigma1MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	return ([response statusCode] == 500);
+	result.result = ([response statusCode] == 500);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
 - (void)openRCEmulator: (UINavigationController *)navigationController
