@@ -437,14 +437,14 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	if(myRange.length)
 	{
 		result.result = YES;
 	}
 	else
 	{
-		myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
+		myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
 		if(myRange.length)
 		{
 			result.result = YES;
@@ -535,7 +535,7 @@ enum enigma2MessageTypes {
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	
-	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
+	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
 	result.result = (myRange.length > 0);
 	result.resulttext = @"";
 	[myString release];
