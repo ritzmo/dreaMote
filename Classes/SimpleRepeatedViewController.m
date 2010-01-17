@@ -19,7 +19,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Repeated", @"Default title of SimpleRepeatedViewController");
 	}

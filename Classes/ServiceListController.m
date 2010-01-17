@@ -15,12 +15,19 @@
 
 #import "ServiceTableViewCell.h"
 
+@interface ServiceListController()
+/*!
+ @brief fetch service list
+ */
+- (void)fetchServices;
+@end
+
 @implementation ServiceListController
 
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
 		_services = [[NSMutableArray array] retain];

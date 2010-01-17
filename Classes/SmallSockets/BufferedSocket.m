@@ -121,7 +121,7 @@
 }
 
 
-- (NSMutableData*)readData:(int)n
+- (NSMutableData*)readData:(NSUInteger)n
 {
     while ( [buffer length] < n )
     {

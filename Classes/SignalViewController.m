@@ -15,11 +15,27 @@
 
 #import "DisplayCell.h"
 
+@interface SignalViewController()
+/*!
+ @brief spawn a new thread to fetch signal data
+ This selector is called on a regular basis through the timer that is active
+ when the view is in forgeground.
+ It simply spawns a new thread to fetch the signal data in background rather
+ than in foreground.
+ */
+- (void)fetchSignalDefer;
+
+/*!
+ @brief entry point of thread which fetches signal data
+ */
+- (void)fetchSignal;
+@end
+
 @implementation SignalViewController
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Signal", @"Title of SignalViewController");
 	}

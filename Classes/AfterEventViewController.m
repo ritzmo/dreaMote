@@ -20,7 +20,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"After Event", @"Default title of AfterEventViewController");
 	}
@@ -28,7 +28,7 @@
 }
 
 /* new AfterEventViewController */
-+ (AfterEventViewController *)withAfterEvent: (NSInteger)afterEvent andAuto: (BOOL)showAuto
++ (AfterEventViewController *)withAfterEvent: (NSUInteger)afterEvent andAuto: (BOOL)showAuto
 {
 	AfterEventViewController *afterEventViewController = [[AfterEventViewController alloc] init];
 	afterEventViewController.selectedItem = afterEvent;

@@ -28,7 +28,7 @@
 	UITextField *_timeoutTextField; /*!< @brief Timeout Field. */
 	CellTextField *_timeoutCell; /*!< @brief Timeout Cell. */
 	UIButton *_sendButton; /*!< @brief "Send" Button. */
-	NSInteger _type; /*!< @brief Selected message type. */
+	NSUInteger _type; /*!< @brief Selected message type. */
 	UITableViewCell *_typeCell; /*!< @brief Cell with textual representation of message type. */
 }
 

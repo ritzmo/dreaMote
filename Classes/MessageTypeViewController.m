@@ -18,7 +18,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController");
 		_delegate = nil;
@@ -27,18 +27,12 @@
 }
 
 /* create MessageTypeViewController with given type preselected */
-+ (MessageTypeViewController *)withType: (NSInteger) typeKey
++ (MessageTypeViewController *)withType: (NSUInteger) typeKey
 {
 	MessageTypeViewController *messageTypeViewController = [[MessageTypeViewController alloc] init];
 	messageTypeViewController.selectedItem = typeKey;
 
 	return [messageTypeViewController autorelease];
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[super dealloc];
 }
 
 /* layout */
@@ -91,7 +85,7 @@
 	// we are creating a new cell, setup its attributes
 	TABLEVIEWCELL_TEXT(cell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: row];
 
-	if(row == _selectedItem)
+	if((NSUInteger)row == _selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;

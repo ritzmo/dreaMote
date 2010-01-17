@@ -22,7 +22,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		NSNumber *invalidNumber = [NSNumber numberWithInteger: -1];
 		self.length = invalidNumber;

@@ -124,7 +124,7 @@
 
 - (id)initWithNode: (CXMLNode *)node
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		_begin = nil;
 		_end = nil;

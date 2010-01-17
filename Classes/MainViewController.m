@@ -26,13 +26,26 @@
 #import "SignalViewController.h"
 #import "TimerListController.h"
 
+@interface MainViewController()
+/*!
+ @brief open settings dialog
+ @param sender ui element
+ */
+- (void)settingsAction:(id)sender;
+/*!
+ @brief display about dialog
+ @param sender ui element
+ */
+- (void)aboutAction: (id)sender;
+@end
+
 @implementation MainViewController
 
 @synthesize myTableView;
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		// make the title of this page the same as the title of this app
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];

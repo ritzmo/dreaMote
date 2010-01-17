@@ -244,7 +244,7 @@
 
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_duration = -1;
 		_service = nil;
@@ -259,7 +259,7 @@
 
 - (id)initWithNode: (CXMLNode *)node
 {
-	if(self = [self init])
+	if((self = [self init]))
 	{
 		_node = [node retain];
 	}
@@ -268,7 +268,7 @@
 
 - (id)initWithTimer:(NSObject<TimerProtocol> *)timer
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_typedataSet = YES;
 

@@ -19,6 +19,13 @@
 #import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Result.h"
 
+@interface TimerListController()
+/*!
+ @brief fetch timer list
+ */
+- (void)fetchTimers;
+@end
+
 @implementation TimerListController
 
 @synthesize timers = _timers;
@@ -27,7 +34,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");

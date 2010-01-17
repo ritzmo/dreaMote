@@ -13,12 +13,19 @@
 
 #import "ServiceTableViewCell.h"
 
+@interface BouquetListController()
+/*!
+ @brief entry point of thread which fetches bouquets
+ */
+- (void)fetchBouquets;
+@end
+
 @implementation BouquetListController
 
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
 		_bouquets = [[NSMutableArray array] retain];

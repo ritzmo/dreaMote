@@ -29,7 +29,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_finished = NO;
 		_timeout = 5; // set default timeout

@@ -43,7 +43,7 @@ enum enigma1MessageTypes {
 
 @implementation Enigma1Connector
 
-- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
 	return
 		(feature == kFeaturesBouquets) ||
@@ -69,7 +69,7 @@ enum enigma1MessageTypes {
 
 - (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
@@ -634,7 +634,7 @@ enum enigma1MessageTypes {
 	return kEnigma1MessageTypeMax;
 }
 
-- (NSString *)getMessageTitle: (NSInteger)type
+- (NSString *)getMessageTitle: (NSUInteger)type
 {
 	switch(type)
 	{

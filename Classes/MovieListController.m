@@ -19,12 +19,20 @@
 
 #import "Objects/Generic/Result.h"
 
+@interface  MovieListController()
+/*!
+ @brief fetch movie list
+ */
+- (void)fetchMovies;
+@end
+
+
 @implementation MovieListController
 
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray array] retain];

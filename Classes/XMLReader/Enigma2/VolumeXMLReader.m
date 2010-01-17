@@ -15,7 +15,7 @@
 /* initialize */
 - (id)initWithDelegate:(NSObject<VolumeSourceDelegate> *)delegate
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
 	}

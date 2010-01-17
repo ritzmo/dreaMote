@@ -68,7 +68,7 @@
 
 // Reading and writing data
 
-- (NSMutableData*)readData: (int)n;
+- (NSMutableData*)readData: (NSUInteger)n;
 - (NSMutableData*)readDataUpToData:(NSData*) d;
 - (NSMutableData*)readDataUpToString:(NSString*) s;
 

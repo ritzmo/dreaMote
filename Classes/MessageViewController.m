@@ -27,6 +27,12 @@
  @param movedUp YES if moving down again.
  */
 - (void)setViewMovedUp:(BOOL)movedUp;
+
+/*!
+ @brief send message
+ @param sender ui element
+ */
+- (void)sendMessage: (id)sender;
 @end
 
 @implementation MessageViewController
@@ -39,7 +45,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Message", @"Default title of MessageViewController");
 		_typeCell = nil;
@@ -133,7 +139,7 @@
 	[self setEditing: YES animated: NO];
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
 
@@ -214,7 +220,7 @@
 	if(newType == nil)
 		return;
 
-	_type = [newType integerValue];
+	_type = [newType unsignedIntegerValue];
 
 	TABLEVIEWCELL_TEXT(_typeCell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 }

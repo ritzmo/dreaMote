@@ -24,7 +24,7 @@ static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 static NSMutableArray *_connections = nil;
 static NSDictionary *_connection;
 
-+ (BOOL)connectTo: (NSInteger)connectionIndex
++ (BOOL)connectTo: (NSUInteger)connectionIndex
 {
 	if(!_connections || connectionIndex >= [_connections count])
 		return NO;

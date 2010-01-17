@@ -17,7 +17,7 @@
 /* initialize */
 - (id)initWithDelegate:(NSObject<SignalSourceDelegate> *)delegate
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
 	}

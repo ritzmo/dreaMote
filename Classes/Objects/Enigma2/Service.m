@@ -45,7 +45,7 @@
 
 - (id)initWithNode: (CXMLNode *)node
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		_node = [node retain];
 	}

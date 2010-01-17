@@ -34,7 +34,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
@@ -100,7 +100,7 @@
 }
 
 /* (un)set editing */
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
 	[(UITableView*)self.view setEditing: editing animated: animated];

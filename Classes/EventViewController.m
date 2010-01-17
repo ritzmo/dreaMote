@@ -27,7 +27,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Event", @"");
 		_dateFormatter = [[FuzzyDateFormatter alloc] init];

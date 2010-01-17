@@ -16,11 +16,44 @@
 #define kTransitionDuration	0.6
 #define kImageScale			0.45
 
+@interface RCEmulatorController()
+/*!
+ @brief entry point of thread which loads the screenshot
+ @param dummy ui element
+ */
+- (void)loadImageThread:(id)dummy;
+
+/*!
+ @param set screenshot type to osd
+ @param sender ui element
+ */
+- (void)setOSDType:(id)sender;
+
+/*!
+ @param set screenshot type to video
+ @param sender ui element
+ */
+- (void)setVideoType:(id)sender;
+
+/*!
+ @param set screenshot type to both
+ @param sender ui element
+ */
+- (void)setBothType:(id)sender;
+
+/*!
+ @param a button was pressed
+ @param sender ui element
+ */
+- (void)buttonPressed:(RCButton *)sender;
+
+@end
+
 @implementation RCEmulatorController
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Remote Control", @"Title of RCEmulatorController");
 		_screenshotType = kScreenshotTypeOSD;

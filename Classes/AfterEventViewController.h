@@ -18,7 +18,7 @@
 @interface AfterEventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
-	NSInteger _selectedItem; /*!< @brief Selected Item. */
+	NSUInteger _selectedItem; /*!< @brief Selected Item. */
 	id<AfterEventDelegate> _delegate; /*!< @brief Delegate. */
 	BOOL _showAuto; /*!< @brief Show "kAfterEventAuto" Item? */
 }
@@ -32,7 +32,7 @@
  @param showAuto Show "kAfterEventAuto" Item?
  @return AfterEventViewController instance.
  */
-+ (AfterEventViewController *)withAfterEvent: (NSInteger)afterEvent andAuto: (BOOL)showAuto;
++ (AfterEventViewController *)withAfterEvent: (NSUInteger)afterEvent andAuto: (BOOL)showAuto;
 
 /*!
  @brief Set Delegate.
@@ -49,7 +49,7 @@
 /*!
  @brief Selected Item.
  */
-@property (assign) NSInteger selectedItem;
+@property (assign) NSUInteger selectedItem;
 
 /*!
  @brief Show "kAfterEventAuto" Item?

@@ -291,7 +291,7 @@
 
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_service = nil;
 		_isValid = YES;
@@ -308,7 +308,7 @@
 
 - (id)initWithNode: (CXMLNode *)node
 {
-	if(self = [self init])
+	if((self = [self init]))
 	{
 		_node = [node retain];
 	}
@@ -317,7 +317,7 @@
 
 - (id)initWithTimer:(NSObject<TimerProtocol> *)timer
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_disabledSet = YES;
 		_justplaySet = YES;

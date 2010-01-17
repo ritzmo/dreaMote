@@ -24,7 +24,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Movie", @"Default title of MovieViewController");
 		_movie = nil;

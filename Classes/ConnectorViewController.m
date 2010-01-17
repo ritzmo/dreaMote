@@ -11,6 +11,14 @@
 #import "Constants.h"
 #import "RemoteConnector.h"
 
+@interface ConnectorViewController()
+/*!
+ @brief start autodetection
+ @param sender ui element
+ */
+- (void)doAutodetect: (id)sender;
+@end
+
 @implementation ConnectorViewController
 
 @synthesize selectedItem = _selectedItem;
@@ -18,7 +26,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Connector", @"Default title of ConnectorViewController");
 		_selectedItem = kInvalidConnector;
@@ -119,7 +127,7 @@
 			break;
 	}
 
-	if(indexPath.row == _selectedItem)
+	if((NSInteger)indexPath.row == _selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;

@@ -15,6 +15,50 @@
 
 #import "Volume.h"
 
+@interface ControlViewController()
+/*!
+ @brief start recording
+ @param sender ui element
+ */
+- (void)record:(id)sender;
+
+/*!
+ @brief send receiver to standby
+ @param sender ui element
+ */
+- (void)standby:(id)sender;
+
+/*!
+ @brief initiate reboot
+ @param sender ui element
+ */
+- (void)reboot:(id)sender;
+
+/*!
+ @brief initiate restart of gui
+ @param sender ui element
+ */
+- (void)restart:(id)sender;
+
+/*!
+ @brief initiate shutdown
+ @param sender ui element
+ */
+-(void)shutdown:(id)sender;
+
+/*!
+ @brief toggle muted state
+ @param sender ui element
+ */
+- (void)toggleMuted:(id)sender;
+
+/*!
+ @brief change volume
+ @param volumeSlider ui element
+ */
+- (void)volumeChanged:(UISlider *)volumeSlider;
+@end
+
 @implementation ControlViewController
 
 @synthesize switchControl = _switchControl;
@@ -23,7 +67,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Controls", @"Title of ControlViewController");
 	}

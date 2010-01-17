@@ -31,6 +31,12 @@
  @param movedUp YES if moving down again.
  */
 - (void)setViewMovedUp:(BOOL)movedUp;
+
+/*!
+ @brief stop editing
+ @param sender ui element
+ */
+- (void)cancelEdit:(id)sender;
 @end
 
 @implementation TimerViewController
@@ -45,7 +51,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Timer", @"Default title of TimerViewController");
 
@@ -273,7 +279,7 @@
 	[self setEditing: _creatingNewTimer];
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	if(!_creatingNewTimer && _oldTimer.state != 0)
 	{

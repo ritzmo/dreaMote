@@ -30,7 +30,7 @@
 
 @implementation SVDRPConnector
 
-- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
 	return
 		(feature == kFeaturesRecordInfo) ||
@@ -45,7 +45,7 @@
 
 - (id)initWithAddress: (NSString *)inAddress andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_address = [inAddress retain];
 		_port = inPort > 0 ? inPort : 2001;
@@ -192,7 +192,7 @@
 	NSString *line = nil;
 	NSRange range;
 	NSObject<ServiceProtocol> *newService = nil;
-	while(line = [self readSocketLine])
+	while((line = [self readSocketLine]))
 	{
 		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
@@ -257,7 +257,7 @@
 	NSString *line = nil;
 	NSRange range;
 	NSObject<EventProtocol> *newEvent = nil;
-	while(line = [self readSocketLine])
+	while((line = [self readSocketLine]))
 	{
 		if([line length] < 5 || [line isEqualToString: @"215 End of EPG data"])
 		{
@@ -346,7 +346,7 @@
 	const NSCalendar *gregorian = [[NSCalendar alloc]
 							initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	while(line = [self readSocketLine])
+	while((line = [self readSocketLine]))
 	{
 		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
@@ -498,7 +498,7 @@
 	const NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	while(line = [self readSocketLine])
+	while((line = [self readSocketLine]))
 	{
 		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
 		{
@@ -857,7 +857,7 @@
 	return 0;
 }
 
-- (NSString *)getMessageTitle: (NSInteger)type
+- (NSString *)getMessageTitle: (NSUInteger)type
 {
 	return nil;
 }

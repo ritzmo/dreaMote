@@ -20,7 +20,7 @@
 														UITableViewDataSource>
 {
 @private
-	NSInteger _selectedItem; /*!< @brief Selected Item. */
+	NSUInteger _selectedItem; /*!< @brief Selected Item. */
 	id<MessageTypeDelegate> _delegate; /*!< @brief Delegate. */
 }
 
@@ -30,7 +30,7 @@
  @param typeKey Selected message type.
  @return MessageTypeViewController instance.
  */
-+ (MessageTypeViewController *)withType: (NSInteger) typeKey;
++ (MessageTypeViewController *)withType: (NSUInteger) typeKey;
 
 /*!
  @brief Set Delegate.
@@ -47,7 +47,7 @@
 /*!
  @brief Selected Item.
  */
-@property (nonatomic) NSInteger selectedItem;
+@property (nonatomic) NSUInteger selectedItem;
 
 @end
 

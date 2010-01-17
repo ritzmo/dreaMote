@@ -9,12 +9,20 @@
 #import "AboutViewController.h"
 #import "Constants.h"
 
+@interface AboutViewController()
+/*!
+ @brief "done" button was pressed
+ @param sender ui element
+ */
+- (void)buttonPressed: (id)sender;
+@end
+
 @implementation AboutViewController
 
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"About", @"Title of AboutViewController");
 	}
@@ -78,7 +86,8 @@
 #pragma mark - UIWebView delegates
 
 /* load url? */
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType; {
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
 	const NSURL *requestURL = [[request URL] retain];
 
 	// Check to see what protocol/scheme the requested URL is.

@@ -11,6 +11,19 @@
 
 #import "Constants.h"
 
+@interface  DatePickerController()
+/*!
+ @brief selected date was changed
+ */
+- (void)timeChanged: (id)sender;
+
+/*!
+ @brief done editing
+ */
+- (void)doneAction:(id)sender;
+@end
+
+
 @implementation DatePickerController
 
 #define kPickerSegmentControlHeight 30.0
@@ -21,7 +34,7 @@
 /* initialize */
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		// this title will appear in the navigation bar
 		self.title = NSLocalizedString(@"Date Picker", @"");

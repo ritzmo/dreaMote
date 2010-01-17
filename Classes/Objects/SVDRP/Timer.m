@@ -39,7 +39,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		_service = nil;
 		_isValid = YES;
@@ -51,7 +51,7 @@
 
 - (id)initWithSVDRPTimer:(SVDRPTimer *)timer
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_begin = [timer.begin copy];
 		_end = [timer.end copy];

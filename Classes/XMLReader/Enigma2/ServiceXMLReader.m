@@ -18,7 +18,7 @@
 /* initialize */
 - (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
 	}

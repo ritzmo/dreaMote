@@ -35,7 +35,7 @@
 
 - (id)initWithNode: (CXMLElement *)node
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		_node = [node retain];
 	}

@@ -23,7 +23,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_thisNight = nil;
 	}

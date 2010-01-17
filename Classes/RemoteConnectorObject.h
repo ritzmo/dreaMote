@@ -23,7 +23,7 @@
  @param connectionIndex Index of Connection in List.
  @return YES if Connector instance was created.
  */
-+ (BOOL)connectTo: (NSInteger)connectionIndex;
++ (BOOL)connectTo: (NSUInteger)connectionIndex;
 
 /*!
  @brief Close active connection.

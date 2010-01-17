@@ -17,6 +17,18 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
 
+@interface EventListController()
+/*!
+ @brief start download of event list
+ */
+- (void)fetchEvents;
+/*!
+ @brief initiate zap 
+ @param sender ui element
+ */
+- (void)zapAction:(id)sender;
+@end
+
 @implementation EventListController
 
 @synthesize dateFormatter = _dateFormatter;
@@ -24,7 +36,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
 		_dateFormatter = [[FuzzyDateFormatter alloc] init];

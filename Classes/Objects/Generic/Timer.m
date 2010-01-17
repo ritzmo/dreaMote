@@ -90,7 +90,7 @@
 
 - (id)init
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		_duration = -1;
 		_service = nil;
@@ -102,7 +102,7 @@
 
 - (id)initWithTimer:(NSObject<TimerProtocol> *)timer
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		_begin = [timer.begin copy];
 		_end = [timer.end copy];

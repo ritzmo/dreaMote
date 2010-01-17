@@ -40,7 +40,7 @@ enum neutrinoMessageTypes {
 
 @implementation NeutrinoConnector
 
-- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
 	// Screenshots do not work yet... :-/
 	return
@@ -56,7 +56,7 @@ enum neutrinoMessageTypes {
 
 - (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
@@ -734,7 +734,7 @@ enum neutrinoMessageTypes {
 	return kNeutrinoMessageTypeMax;
 }
 
-- (NSString *)getMessageTitle: (NSInteger)type
+- (NSString *)getMessageTitle: (NSUInteger)type
 {
 	switch(type)
 	{

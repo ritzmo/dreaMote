@@ -55,7 +55,14 @@
  @param sender Unused instance of sender.
  */
 - (void)doConnect: (id)sender;
+
+/*!
+ @brief stop editing
+ @param sender ui element
+ */
+- (void)cancelEdit: (id)sender;
 @end
+
 
 @implementation ConfigViewController
 
@@ -76,7 +83,7 @@
 /* initialize */
 - (id)init
 {
-	if(self = [super init])
+	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
 		_connectorCell = nil;
@@ -85,7 +92,7 @@
 }
 
 /* initiate ConfigViewController with given connection and index */
-+ (ConfigViewController *)withConnection: (NSMutableDictionary *)newConnection: (NSInteger)atIndex;
++ (ConfigViewController *)withConnection: (NSMutableDictionary *)newConnection: (NSInteger)atIndex
 {
 	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
 	configViewController.connection = newConnection;
@@ -243,7 +250,7 @@
 }
 
 /* (un)set editing */
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
 

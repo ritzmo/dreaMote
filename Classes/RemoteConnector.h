@@ -198,7 +198,7 @@ enum buttonCodes {
  @param feature Feature to check for.
  @return YES if this Feature is supported.
  */
-- (const BOOL const)hasFeature: (enum connectorFeatures)feature;;
+- (const BOOL const)hasFeature: (enum connectorFeatures)feature;
 
 /*!
  @brief Returns upper bound of Volume setting.
@@ -439,7 +439,7 @@ enum buttonCodes {
  @param type Message type.
  @return Textual Representation.
  */
-- (NSString *)getMessageTitle: (NSInteger)type;
+- (NSString *)getMessageTitle: (NSUInteger)type;
 
 /*!
  @brief Open Remote Control Emulator of Connector.
