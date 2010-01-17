@@ -38,10 +38,10 @@
 @implementation MessageViewController
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kOFFSET_FOR_KEYBOARD					90.0
+#define kOFFSET_FOR_KEYBOARD					90
 
 // the duration of the animation for the view shift
-#define kVerticalOffsetAnimationDuration		0.30
+#define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 - (id)init
 {
@@ -71,7 +71,7 @@
 	returnTextField.leftViewMode = UITextFieldViewModeNever;
 	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
 	returnTextField.textColor = [UIColor blackColor];
-	returnTextField.font = [UIFont systemFontOfSize:17.0];
+	returnTextField.font = [UIFont systemFontOfSize:17];
 	returnTextField.backgroundColor = [UIColor whiteColor];
 	// no auto correction support
 	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -87,7 +87,7 @@
 
 - (UIButton *)allocSendButton
 {
-	const CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	const CGRect frame = CGRectMake(0, 0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"mail-forward.png"];
 	[button setImage:image forState:UIControlStateNormal];
@@ -103,8 +103,8 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.sectionFooterHeight = 1.0;
-	tableView.sectionHeaderHeight = 1.0;
+	tableView.sectionFooterHeight = 1;
+	tableView.sectionHeaderHeight = 1;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -287,24 +287,24 @@
 	{
 		case 0:
 		case 4:
-			return 34.0;
+			return 34;
 		case 1:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
-				return 34.0;
+				return 34;
 			break;
 		case 2:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
-				return 34.0;
+				return 34;
 			break;
 		case 3:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
-				return 34.0;
+				return 34;
 			break;
 		default:
 			break;
 	}
 
-	return 0.0;
+	return 0;
 }
 
 // determine the adjustable height of a row. these are determined by the sections and if a
@@ -334,7 +334,7 @@
 			break;
 	}
 
-	return 0.0;
+	return 0;
 }
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.

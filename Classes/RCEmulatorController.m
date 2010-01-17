@@ -13,8 +13,8 @@
 #import "RCButton.h"
 #import "Constants.h"
 
-#define kTransitionDuration	0.6
-#define kImageScale			0.45
+#define kTransitionDuration	(CGFloat)0.6
+#define kImageScale			(CGFloat)0.45
 
 @interface RCEmulatorController()
 /*!
@@ -157,7 +157,7 @@
 	CGRect frame;
 
 	// ImageView for Screenshots
-	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
+	frame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
 	_screenView = [[UIView alloc] initWithFrame: frame];
 
 	_toolbar = [UIToolbar new];
@@ -167,24 +167,24 @@
 	[_toolbar sizeToFit];
 	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
 	mainViewSize = _screenView.bounds.size;
-	_toolbar.frame = CGRectMake(0.0,
-							   mainViewSize.height - (_toolbarHeight * 2.0) + 2.0,
+	_toolbar.frame = CGRectMake(0,
+							   mainViewSize.height - (_toolbarHeight * 2) + 2,
 							   mainViewSize.width,
 							   _toolbarHeight);
 	[_screenView addSubview:_toolbar];
 
-	frame = CGRectMake(0.0,
-					   0.0,
+	frame = CGRectMake(0,
+					   0,
 					   mainViewSize.width,
-					   mainViewSize.height - (_toolbarHeight * 2.0) + 2.0);
+					   mainViewSize.height - (_toolbarHeight * 2) + 2);
 	_scrollView = [[UIScrollView alloc] initWithFrame: frame];
 	_scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	_scrollView.autoresizesSubviews = YES;
 	_screenView.clipsToBounds = NO;
 	_scrollView.contentMode = (UIViewContentModeScaleAspectFit);
 	_scrollView.delegate = self;
-	_scrollView.maximumZoomScale = 2.6;
-	_scrollView.minimumZoomScale = 1.0;
+	_scrollView.maximumZoomScale = (CGFloat)2.6;
+	_scrollView.minimumZoomScale = (CGFloat)1.0;
 	_scrollView.exclusiveTouch = NO;
 	[_screenView addSubview: _scrollView];
 	_imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
@@ -251,7 +251,7 @@
 
 		_imageView.image = image;
 		_scrollView.contentSize = size;
-		_imageView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
+		_imageView.frame = CGRectMake(0, 0, size.width, size.height);
 	}
 
 	[pool release];
@@ -310,14 +310,14 @@
 
 	// adjust size of _screenView, _toolbar & _scrollView
 	CGSize mainViewSize = self.view.bounds.size;
-	_screenView.frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
+	_screenView.frame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
 	[_toolbar sizeToFit];
 	//mainViewSize = _screenView.bounds.size;
 	CGFloat _toolbarHeight = _toolbar.frame.size.height;
 	CGFloat edgeY = mainViewSize.height - _toolbarHeight;
 	CGFloat width = mainViewSize.width;
-	_toolbar.frame = CGRectMake(0.0, edgeY, width, _toolbarHeight);
-	_scrollView.frame = CGRectMake(0.0, 0.0, width, edgeY);
+	_toolbar.frame = CGRectMake(0, edgeY, width, _toolbarHeight);
+	_scrollView.frame = CGRectMake(0, 0, width, edgeY);
 
 	// FIXME: we load a new image as I'm currently unable to figure out how to readjust the old one
 	if(_screenView.superview)

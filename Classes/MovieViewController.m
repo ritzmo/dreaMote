@@ -82,8 +82,8 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.sectionFooterHeight = 1.0;
-	tableView.sectionHeaderHeight = 1.0;
+	tableView.sectionFooterHeight = 1;
+	tableView.sectionHeaderHeight = 1;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -154,7 +154,7 @@
 
 - (UIButton *)create_PlayButton
 {
-	const CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	const CGRect frame = CGRectMake(0, 0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed:@"media-playback-start.png"];
 	[button setImage:image forState:UIControlStateNormal];
@@ -285,16 +285,16 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if(section == 0)
-		return 34.0;
+		return 34;
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
 		if(section == 5 && [_movie.length integerValue] == -1)
-			return 0.0;
-		return 34.0;
+			return 0;
+		return 34;
 	}
 
-	return 0.0;
+	return 0;
 }
 
 // determine the adjustable height of a row. these are determined by the sections and if a
@@ -311,11 +311,11 @@
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
 		if(section == 5 && [_movie.length integerValue] == -1)
-			return 0.0;
+			return 0;
 		return kUIRowHeight;
 	}
 
-	return 0.0;
+	return 0;
 }
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.

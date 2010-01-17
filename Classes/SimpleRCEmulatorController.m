@@ -26,7 +26,7 @@
 	const CGSize mainViewSize = self.view.bounds.size;
 
 	// create the rc views (i think its easier to have two views than to keep track of all buttons and add/remove them as pleased)
-	frame = CGRectMake(0.0, 0.0, mainViewSize.width, mainViewSize.height);
+	frame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
 	rcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:rcView];
 
@@ -71,8 +71,8 @@
 	const CGPoint location = [touch locationInView: self.view];
 	const CGFloat xDisplacement = location.x - lastLocation.x;
 	const CGFloat yDisplacement = location.y - lastLocation.y;
-	const CGFloat xDisplacementAbs = fabs(xDisplacement);
-	const CGFloat yDisplacementAbs = fabs(yDisplacement);
+	const CGFloat xDisplacementAbs = (CGFloat)fabs(xDisplacement);
+	const CGFloat yDisplacementAbs = (CGFloat)fabs(yDisplacement);
 
 	// double tap
 	if([touch tapCount] > 1)

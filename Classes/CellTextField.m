@@ -91,7 +91,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 	// In this example we will never be editing, but this illustrates the appropriate pattern
 	CGRect frame = CGRectMake(	contentRect.origin.x + kCellLeftOffset,
 								contentRect.origin.y + kCellTopOffset,
-								contentRect.size.width - (kCellLeftOffset*2.0),
+								contentRect.size.width - (kCellLeftOffset*2),
 								kTextFieldHeight);
 	self.view.frame  = frame;
 }

@@ -52,7 +52,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 // cell identifier for this custom cell
 NSString* kCellTextView_ID = @"CellTextView_ID";
 
-#define kInsertValue	8.0
+#define kInsertValue	8
 
 @implementation CellTextView
 

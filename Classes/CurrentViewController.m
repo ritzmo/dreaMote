@@ -179,7 +179,7 @@
 		case 1:
 		{
 			if(_now == nil)
-				return 0.0;
+				return 0;
 			if(indexPath.row == 1)
 				return kTextViewHeight;
 			break;
@@ -187,7 +187,7 @@
 		case 2:
 		{
 			if(_next == nil)
-				return 0.0;
+				return 0;
 			if(indexPath.row == 1)
 				return kTextViewHeight;
 		}

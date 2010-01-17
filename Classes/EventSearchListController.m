@@ -58,18 +58,18 @@
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	const CGSize size = self.view.bounds.size;
-	CGRect frame = CGRectMake(0.0, 0.0, size.width, kSearchBarHeight);
+	CGRect frame = CGRectMake(0, 0, size.width, kSearchBarHeight);
 
 	_searchBar = [[UISearchBar alloc] initWithFrame: frame];
 	_searchBar.delegate = self;
 	_searchBar.showsCancelButton = YES;
 	[contentView addSubview: _searchBar];
 
-	frame = CGRectMake(0.0, kSearchBarHeight, size.width, size.height - 2 * kSearchBarHeight);
+	frame = CGRectMake(0, kSearchBarHeight, size.width, size.height - 2 * kSearchBarHeight);
 	_tableView = [[UITableView alloc] initWithFrame: frame style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = 48.0;
+	_tableView.rowHeight = 48;
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	_tableView.sectionHeaderHeight = 0;
 	[contentView addSubview: _tableView];
@@ -183,8 +183,8 @@
 
 	// adjust size of _searchBar & _tableView
 	const CGSize mainViewSize = self.view.bounds.size;
-	_searchBar.frame = CGRectMake(0.0, 0.0, mainViewSize.width, kSearchBarHeight);
-	_tableView.frame = CGRectMake(0.0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
+	_searchBar.frame = CGRectMake(0, 0, mainViewSize.width, kSearchBarHeight);
+	_tableView.frame = CGRectMake(0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
 
 	//[UIView commitAnimations];
 }

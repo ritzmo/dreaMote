@@ -75,10 +75,10 @@
  @brief Keyboard offset.
  The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
  */
-#define kOFFSET_FOR_KEYBOARD					150.0
+#define kOFFSET_FOR_KEYBOARD					150
 
 /*! @brief The duration of the animation for the view shift. */
-#define kVerticalOffsetAnimationDuration		0.30
+#define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 /* initialize */
 - (id)init
@@ -143,7 +143,7 @@
 	returnTextField.leftViewMode = UITextFieldViewModeNever;
 	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
     returnTextField.textColor = [UIColor blackColor];
-	returnTextField.font = [UIFont systemFontOfSize:17.0];
+	returnTextField.font = [UIFont systemFontOfSize:17];
     returnTextField.backgroundColor = [UIColor whiteColor];
 	// no auto correction support
 	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -160,7 +160,7 @@
 /* create a button */
 - (UIButton *)create_Button: (NSString *)imageName: (SEL)action
 {
-	const CGRect frame = CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight);
+	const CGRect frame = CGRectMake(0, 0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
 	UIImage *image = [UIImage imageNamed: imageName];
 	[button setImage: image forState: UIControlStateNormal];
@@ -496,7 +496,7 @@
 	{
 		case 1:
 			if(_connector == kSVDRPConnector)
-				return 0.0;
+				return 0;
 		default:
 			return kUIRowHeight;
 	}

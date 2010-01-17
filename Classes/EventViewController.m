@@ -188,7 +188,7 @@
 - (UIButton *)create_AddTimerButton
 {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
-	button.frame = CGRectMake(0.0, 0.0, 25.0, 25.0);
+	button.frame = CGRectMake(0, 0, 25, 25);
 	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
 
 	return button;

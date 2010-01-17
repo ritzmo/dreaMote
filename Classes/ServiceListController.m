@@ -10,6 +10,7 @@
 
 #import "EventListController.h"
 
+#import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "Objects/ServiceProtocol.h"
 
@@ -94,7 +95,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.rowHeight = 38.0;
+	tableView.rowHeight = kUISmallRowHeight;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
 

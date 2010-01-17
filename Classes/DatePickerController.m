@@ -65,10 +65,10 @@
 	self.view = contentView;
 	[contentView release];
 
-	CGRect frame = CGRectMake(	0.0,
-								0.0, //kTopMargin + kPickerSegmentControlHeight,
-								self.view.bounds.size.width - (kRightMargin * 2.0),
-								self.view.bounds.size.height - 110.0);
+	CGRect frame = CGRectMake(	0,
+								0, //kTopMargin + kPickerSegmentControlHeight,
+								self.view.bounds.size.width - (kRightMargin * 2),
+								self.view.bounds.size.height - 110);
 	_datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
 	_datePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	_datePickerView.datePickerMode = UIDatePickerModeDateAndTime;
@@ -84,8 +84,8 @@
 	
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
-									kTweenMargin + 220.0,
-									self.view.bounds.size.width - (kRightMargin * 2.0),
+									kTweenMargin + 220,
+									self.view.bounds.size.width - (kRightMargin * 2),
 									kTextFieldHeight);
 	_label = [[UILabel alloc] initWithFrame:frame];
 	_label.font = [UIFont systemFontOfSize:14];

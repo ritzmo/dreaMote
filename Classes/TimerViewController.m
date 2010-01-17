@@ -42,10 +42,10 @@
 @implementation TimerViewController
 
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
-#define kOFFSET_FOR_KEYBOARD					100.0
+#define kOFFSET_FOR_KEYBOARD					100
 
 // the duration of the animation for the view shift
-#define kVerticalOffsetAnimationDuration		0.30
+#define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 @synthesize oldTimer = _oldTimer;
 
@@ -202,7 +202,7 @@
 	returnTextField.leftViewMode = UITextFieldViewModeNever;
 	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
 	returnTextField.textColor = [UIColor blackColor];
-	returnTextField.font = [UIFont systemFontOfSize:17.0];
+	returnTextField.font = [UIFont systemFontOfSize:17];
 	returnTextField.backgroundColor = [UIColor whiteColor];
 	// no auto correction support
 	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;

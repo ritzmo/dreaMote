@@ -54,7 +54,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
-												  fontSize: 16.0
+												  fontSize: (CGFloat)16.0
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];

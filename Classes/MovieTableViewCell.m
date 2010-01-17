@@ -60,7 +60,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		// A label that displays the Eventname.
 		_eventNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 14.0
+												fontSize: 14
 													bold: YES];
 		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
@@ -68,7 +68,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		// A label that displays the Eventtime.
 		_eventTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 10.0
+												fontSize: 10
 													bold: NO];
 		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];

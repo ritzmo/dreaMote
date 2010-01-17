@@ -177,7 +177,7 @@
 	[targetViewController release];
 
 	// Add the "Settings" button to the navigation bar
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, 22.0, 22.0)];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 22, 22)];
 	UIImage *image = [UIImage imageNamed:@"preferences-system.png"];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(settingsAction:) forControlEvents:UIControlEventTouchUpInside];

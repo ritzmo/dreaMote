@@ -126,7 +126,7 @@
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_slider.backgroundColor = [UIColor clearColor];
 
-	_slider.minimumValue = 0.0;
+	_slider.minimumValue = 0;
 	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
 	_slider.continuous = NO;
 
@@ -141,7 +141,7 @@
 /* create "instant record" button */
 - (UIButton *)create_InstantRecordButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"document-save.png"];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(record:) forControlEvents:UIControlEventTouchUpInside];
@@ -152,7 +152,7 @@
 /* create "standby" button */
 - (UIButton *)create_StandbyButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
@@ -163,7 +163,7 @@
 /* create "reboot" button */
 - (UIButton *)create_RebootButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
@@ -174,7 +174,7 @@
 /* create "restart gui" button */
 - (UIButton *)create_RestartButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
@@ -185,7 +185,7 @@
 /* create "shutdown" button */
 - (UIButton *)create_ShutdownButton
 {
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0.0, 0.0, kUIRowHeight, kUIRowHeight)];
+	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
 	UIImage *image = [UIImage imageNamed:@"system-shutdown.png"];
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];

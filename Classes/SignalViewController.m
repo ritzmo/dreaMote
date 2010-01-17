@@ -121,24 +121,24 @@
 	[tableView release];
 
 	// SNR
-	_snr = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 240, kSliderHeight)];
+	_snr = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, 240, kSliderHeight)];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_snr.backgroundColor = [UIColor clearColor];
 
-	_snr.minimumValue = 0.0;
-	_snr.maximumValue = 100.0;
+	_snr.minimumValue = 0;
+	_snr.maximumValue = 100;
 	_snr.continuous = NO;
 	_snr.enabled = NO;
 
 	// AGC
-	_agc = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 240, kSliderHeight)];
+	_agc = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, 240, kSliderHeight)];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_agc.backgroundColor = [UIColor clearColor];
 
-	_agc.minimumValue = 0.0;
-	_agc.maximumValue = 100.0;
+	_agc.minimumValue = 0;
+	_agc.maximumValue = 100;
 	_agc.continuous = NO;
 	_agc.enabled = NO;
 

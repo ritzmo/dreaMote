@@ -63,7 +63,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
-												  fontSize: 14.0
+												  fontSize: 14
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
@@ -71,7 +71,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		// A label that displays the Timername.
 		_timerNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 12.0
+												fontSize: 12
 													bold: YES];
 		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerNameLabel];
@@ -79,7 +79,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		// A label that displays the Timer time.
 		_timerTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 12.0
+												fontSize: 12
 													bold: NO];
 		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerTimeLabel];

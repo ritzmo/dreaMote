@@ -48,7 +48,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "DisplayCell.h"
 #import "Constants.h"
 
-#define kCellHeight	25.0
+#define kCellHeight	25
 
 // cell identifier for this custom cell
 NSString *kDisplayCell_ID = @"DisplayCell_ID";
@@ -109,7 +109,7 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	}
 
 	CGRect uiFrame = CGRectMake(contentRect.size.width - self.view.bounds.size.width - kCellLeftOffset,
-								round((contentRect.size.height - self.view.bounds.size.height) / 2.0),
+								(CGFloat)round((contentRect.size.height - self.view.bounds.size.height) / 2.0),
 								self.view.bounds.size.width,
 								self.view.bounds.size.height);
 	view.frame = uiFrame;
