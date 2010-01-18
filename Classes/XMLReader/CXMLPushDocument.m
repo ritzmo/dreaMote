@@ -30,7 +30,7 @@
 /* initialize */
 - (id)initWithError: (NSError **)outError
 {
-	if (self = [super init])
+	if((self = [super init]))
 	{
 		if(outError)
 		{

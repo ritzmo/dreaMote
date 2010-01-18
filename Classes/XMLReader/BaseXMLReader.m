@@ -60,7 +60,7 @@
 	if(localError)
 	{
 		if(error)
-			*error = localError
+			*error = localError;
 		[self sendErroneousObject];
 		return nil;
 	}
