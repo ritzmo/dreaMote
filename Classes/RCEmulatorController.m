@@ -24,25 +24,25 @@
 - (void)loadImageThread:(id)dummy;
 
 /*!
- @param set screenshot type to osd
+ @brief set screenshot type to osd
  @param sender ui element
  */
 - (void)setOSDType:(id)sender;
 
 /*!
- @param set screenshot type to video
+ @brief set screenshot type to video
  @param sender ui element
  */
 - (void)setVideoType:(id)sender;
 
 /*!
- @param set screenshot type to both
+ @brief set screenshot type to both
  @param sender ui element
  */
 - (void)setBothType:(id)sender;
 
 /*!
- @param a button was pressed
+ @brief a button was pressed
  @param sender ui element
  */
 - (void)buttonPressed:(RCButton *)sender;
