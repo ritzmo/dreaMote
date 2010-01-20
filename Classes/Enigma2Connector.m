@@ -116,6 +116,43 @@ enum enigma2MessageTypes {
 	return ([response statusCode] == 200);
 }
 
+- (Result *)simpleXmlResultToResult:(NSString *) xml
+{
+	NSError *error = nil;
+	const NSArray *resultNodes = nil;
+	Result *result = [Result createResult];
+	CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:xml options:0 error:&error];
+	
+	result.result = NO;
+
+	if(error != nil)
+	{
+		result.resulttext = [error localizedDescription];
+		[dom release];
+		return result;
+	}
+	
+	resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2state" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
+	{
+		if([[currentChild stringValue] isEqualToString: @"True"])
+		{
+			result.result = YES;
+		}
+		break;
+	}
+	
+	resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2statetext" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
+	{
+		result.resulttext = [currentChild stringValue];
+		break;
+	}
+
+	[dom release];
+	return result;
+}
+
 - (Result *)zapInternal:(NSString *) sref
 {
 	Result *result = [Result createResult];
@@ -135,6 +172,7 @@ enum enigma2MessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
 }
 
@@ -284,8 +322,6 @@ enum enigma2MessageTypes {
 
 - (Result *)setVolume:(NSInteger) newVolume
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/vol?set=set%d", newVolume] relativeToURL: _baseAddress];
 
@@ -302,17 +338,13 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
 
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated] relativeToURL: _baseAddress];
 
@@ -329,17 +361,13 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
 
 - (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, oldTimer.service.sref, (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
 
@@ -356,17 +384,13 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
 
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
 
@@ -383,17 +407,13 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
 
 - (Result *)sendButton:(NSInteger) type
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/remotecontrol?command=%d", type] relativeToURL: _baseAddress];
 
@@ -410,17 +430,13 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSRange myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
 
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/message?text=%@&type=%d&timeout=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], type, timeout] relativeToURL: _baseAddress];
 
@@ -437,24 +453,7 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	if(myRange.length)
-	{
-		result.result = YES;
-	}
-	else
-	{
-		myRange = [myString rangeOfString: @"<e2result>True</e2result>"];
-		if(myRange.length)
-		{
-			result.result = YES;
-		}
-		else
-		{
-			result.result = NO;
-			result.resulttext = @"";
-		}
-	}
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
@@ -517,11 +516,9 @@ enum enigma2MessageTypes {
 
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	
 	// Create URL Object and download it
@@ -534,10 +531,8 @@ enum enigma2MessageTypes {
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
@@ -575,8 +570,6 @@ enum enigma2MessageTypes {
 
 - (Result *)instantRecord
 {
-	Result *result = [Result createResult];
-	
 	// Generate URI
 	// TODO: we only allow infinite instant records for now
 	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:_baseAddress];
@@ -594,9 +587,7 @@ enum enigma2MessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	const NSRange myRange = [myString rangeOfString: @"<e2state>True</e2state>"];
-	result.result = (myRange.length > 0);
-	result.resulttext = @"";
+	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
 }
