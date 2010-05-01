@@ -391,7 +391,7 @@
 		DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
 		DACA8B221096498300B03BE8 /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		DACA8B231096498300B03BE8 /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
-		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
 		DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma2Connector.m; sourceTree = "<group>"; };
