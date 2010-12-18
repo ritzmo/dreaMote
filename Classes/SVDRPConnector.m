@@ -616,7 +616,7 @@
 
 - (void)getSignal:(id)target action:(SEL)action
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (BOOL)toggleMuted
@@ -892,30 +892,30 @@
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 	return nil;
 }
 
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 	return nil;
 }
 
 - (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 	return nil;
 }
 
 - (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (Result *)instantRecord
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 	return nil;
 }
 

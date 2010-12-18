@@ -25,7 +25,7 @@
 
 - (void)setSref: (NSString *)new
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (NSString *)sname
@@ -41,7 +41,7 @@
 
 - (void)setSname: (NSString *)new
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (id)initWithNode: (CXMLNode *)node

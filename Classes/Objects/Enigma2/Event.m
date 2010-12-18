@@ -50,7 +50,7 @@
 
 - (void)setService: (NSObject<ServiceProtocol> *)service
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (NSString *)edescription
@@ -66,7 +66,7 @@
 
 - (void)setEdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (NSString *)sdescription
@@ -82,7 +82,7 @@
 
 - (void)setSdescription: (NSString *)new
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (NSString *)title
@@ -104,7 +104,7 @@
 
 - (void)setTitle: (NSString *)new
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (NSDate *)end
@@ -165,7 +165,7 @@
 
 - (void)setEit: (NSString *)new
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -197,7 +197,7 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:nil];
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
@@ -206,7 +206,7 @@
 	_timeString = nil;
 
 	if(self.begin == nil)
-		[NSException raise:@"ExcBeginNull" format:nil];
+		[NSException raise:@"ExcBeginNull" format:@""];
 
 	[_end release];
 	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
