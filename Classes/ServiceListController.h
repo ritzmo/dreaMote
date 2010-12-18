@@ -22,8 +22,8 @@
  Lists services of a Bouquet and opens EventListController for this Service upon
  selection.
  */
-@interface ServiceListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate,
-													UITableViewDataSource, ServiceSourceDelegate>
+@interface ServiceListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													ServiceSourceDelegate>
 {
 @private
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */

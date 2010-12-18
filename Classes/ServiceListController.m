@@ -203,29 +203,9 @@
 		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
 		[self.navigationController popToViewController: _delegate animated: YES];
 	}
-	// Show UIActionSheet
+	// Load events
 	else
 	{
-		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"What to do with the currently selected Service?", @"UIActionSheet when List Item in ServiceListController selected")
-																delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Zap", @""), NSLocalizedString(@"Show EPG", @""), nil];
-		[actionSheet showInView: tableView];
-		[actionSheet release];
-	}
-}
-
-/* action sheet callback */
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex: (NSInteger)buttonIndex
-{
-	NSObject<ServiceProtocol> *service = [(ServiceTableViewCell *)[(UITableView*)self.view cellForRowAtIndexPath: [(UITableView*)self.view indexPathForSelectedRow]] service];
-
-	if (buttonIndex == 0)
-	{
-		// Second Button: zap
-		[[RemoteConnectorObject sharedRemoteConnector] zapTo: service];
-	}
-	else if (buttonIndex == 1)
-	{
-		// Third Button: epg
 		if(_eventListController == nil)
 			_eventListController = [[EventListController alloc] init];
 
@@ -234,9 +214,6 @@
 		_refreshServices = NO;
 		[self.navigationController pushViewController: _eventListController animated:YES];
 	}
-
-	NSIndexPath *tableSelection = [(UITableView*)self.view indexPathForSelectedRow];
-	[(UITableView*)self.view deselectRowAtIndexPath:tableSelection animated: NO]; // NOTE: looks buggy if animated...
 }
 
 /* number of sections */
