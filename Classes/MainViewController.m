@@ -191,7 +191,6 @@
 	[button addTarget:self action:@selector(aboutAction:) forControlEvents:UIControlEventTouchUpInside];
 	buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
 	self.navigationItem.leftBarButtonItem = buttonItem;
-	[button release];
 	[buttonItem release];
 
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods

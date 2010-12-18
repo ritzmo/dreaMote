@@ -398,7 +398,7 @@
 		if(tmpInteger == 7)
 		{
 			[comps release];
-			comps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]];
+			comps = [[gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]] retain];
 			newTimer.repeat = line;
 		}
 		// repeating timer with startdate in MTWTF--@YYYY-MM-DD
