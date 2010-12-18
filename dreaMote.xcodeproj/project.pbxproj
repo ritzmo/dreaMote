@@ -160,6 +160,7 @@
 		DADFB1A20EABB2C800D99545 /* mail-forward.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1A10EABB2C800D99545 /* mail-forward.png */; };
 		DAF197730FF5764D009CA6A0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF1976C0FF5764D009CA6A0 /* AppDelegate.m */; };
 		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
+		DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */; };
 		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -425,6 +426,7 @@
 		DAF197720FF5764D009CA6A0 /* VolumeSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VolumeSourceDelegate.h; path = Delegates/VolumeSourceDelegate.h; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
+		DAFBB54F12BD2BE1004DAE5E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
 		DAFE42A20E94220800896017 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -523,6 +525,7 @@
 				8D1107310486CEB800E47090 /* Info.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
 				DACFCCEE0E33CAD100348996 /* MainWindow.xib */,
+				DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -957,6 +960,7 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "dreaMote" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -964,6 +968,7 @@
 				French,
 				German,
 				de,
+				en,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -1036,6 +1041,7 @@
 				DAD7E36310990A2000D0D76B /* key_stop.png in Resources */,
 				DA43E4C610A316B500D50998 /* exit.png in Resources */,
 				DA43E4C710A316B500D50998 /* menu.png in Resources */,
+				DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1162,6 +1168,14 @@
 			name = MainWindow.xib;
 			sourceTree = "<group>";
 		};
+		DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DAFBB54F12BD2BE1004DAE5E /* en */,
+			);
+			name = "MainWindow-iPad.xib";
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1178,6 +1192,7 @@
 				INFOPLIST_FILE = Info.plist;
 				PREBINDING = NO;
 				PRODUCT_NAME = dreaMote;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -1192,6 +1207,7 @@
 				INFOPLIST_FILE = Info.plist;
 				PREBINDING = NO;
 				PRODUCT_NAME = dreaMote;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1224,7 +1240,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
 		};
@@ -1255,7 +1271,7 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "-lxml2";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos4.2;
 			};
 			name = Release;
 		};
