@@ -74,8 +74,13 @@
 	const CGFloat xDisplacementAbs = (CGFloat)fabs(xDisplacement);
 	const CGFloat yDisplacementAbs = (CGFloat)fabs(yDisplacement);
 
+	// triple+ tap
+	if([touch tapCount] > 2)
+	{
+		return;
+	}
 	// double tap
-	if([touch tapCount] > 1)
+	if([touch tapCount] == 2)
 	{
 		[self sendButton: [NSNumber numberWithInteger: kButtonCodeOK]];
 	}
