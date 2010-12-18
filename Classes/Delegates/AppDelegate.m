@@ -103,6 +103,14 @@
 	[RemoteConnectorObject disconnect];
 }
 
+/* backgrounded */
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+	// Save our connection array
+	[RemoteConnectorObject saveConnections];
+	[RemoteConnectorObject disconnect];
+}
+
 /* dealloc */
 - (void)dealloc
 {
