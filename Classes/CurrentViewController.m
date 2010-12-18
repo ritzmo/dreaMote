@@ -74,7 +74,6 @@
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
-	myTextView.backgroundColor = [UIColor whiteColor];
 	
 	NSString *description = event.edescription;
 	if(description != nil)
@@ -235,6 +234,7 @@
 					sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 				
 				((CellTextView *)sourceCell).view = _nowSummary;
+				_nowSummary.backgroundColor = sourceCell.backgroundColor;
 			}
 			break;
 		}
@@ -256,6 +256,7 @@
 					sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 				
 				((CellTextView *)sourceCell).view = _nextSummary;
+				_nextSummary.backgroundColor = sourceCell.backgroundColor;
 			}
 			break;
 		}

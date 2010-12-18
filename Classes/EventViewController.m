@@ -153,7 +153,6 @@
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
-	myTextView.backgroundColor = [UIColor whiteColor];
 	
 	// We display short description (or title) and extended description (if available) in our textview
 	NSMutableString *text = [[NSMutableString alloc] init];
@@ -333,6 +332,7 @@
 				sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
 
 			((CellTextView *)sourceCell).view = _summaryView;
+			_summaryView.backgroundColor = sourceCell.backgroundColor;
 			break;
 		case 1:
 		case 2:
