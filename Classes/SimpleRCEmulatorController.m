@@ -16,10 +16,11 @@
 
 - (void)loadView
 {
-	const CGFloat imageWidth = 135;
-	const CGFloat imageHeight = 105;
 	CGRect frame;
 	UIButton *roundedButtonType;
+	const CGFloat factor = (IS_IPAD()) ? 2.0f : 1.0f;
+	const CGFloat imageWidth = 135 * factor;
+	const CGFloat imageHeight = 105 * factor;
 
 	[super loadView];
 
