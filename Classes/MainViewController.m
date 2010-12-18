@@ -227,7 +227,7 @@
 {
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
-	[myTableView deselectRowAtIndexPath:tableSelection animated:NO];
+	[myTableView deselectRowAtIndexPath:tableSelection animated:YES];
 
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])

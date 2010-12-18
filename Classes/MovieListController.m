@@ -94,6 +94,12 @@
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
 	}
+	else
+	{
+		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
+		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+	}
 
 	_refreshMovies = YES;
 
@@ -200,7 +206,7 @@
 
 	_refreshMovies = NO;
 
-	return nil;
+	return indexPath;
 }
 
 /* row count */

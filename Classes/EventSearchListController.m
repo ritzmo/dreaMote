@@ -149,7 +149,7 @@
 
 	[self.navigationController pushViewController: _eventViewController animated: YES];
 
-	return nil;
+	return indexPath;
 }
 
 #pragma mark UISearchBarDelegate delegate methods

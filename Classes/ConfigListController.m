@@ -163,8 +163,7 @@
 	UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
 	[self.navigationController pushViewController: targetViewController animated: YES];
 
-	// Do not actually select row
-	return nil;
+	return indexPath;
 }
 
 /* indent when editing? */
@@ -370,7 +369,11 @@
 	// Assume we won't reappear, will be fixed if we actually do so
 	_viewWillReapper = NO;
 
+	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
 	[(UITableView *)self.view reloadData];
+	[(UITableView *)self.view selectRowAtIndexPath:tableSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
 }
 
 /* about to hide */

@@ -127,6 +127,12 @@
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
 	}
+	else
+	{
+		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
+		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+	}
 
 	_refreshServices = YES;
 
@@ -189,14 +195,14 @@
 	return cell;
 }
 
-/* row selected */
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+/* select row */
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<ServiceProtocol> *service = [_services objectAtIndex: indexPath.row];
 
 	// Check for invalid service
 	if(!service.valid)
-		[tableView deselectRowAtIndexPath: indexPath animated: YES];
+		return nil;
 	// Callback mode
 	else if(_delegate != nil)
 	{
@@ -214,6 +220,7 @@
 		_refreshServices = NO;
 		[self.navigationController pushViewController: _eventListController animated:YES];
 	}
+	return indexPath;
 }
 
 /* number of sections */

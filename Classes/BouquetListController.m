@@ -89,6 +89,12 @@
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchBouquets) toTarget:self withObject:nil];
 	}
+	else
+	{
+		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
+		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+	}
 
 	_refreshBouquets = YES;
 
@@ -173,9 +179,7 @@
 	_refreshBouquets = NO;
 
 	[self.navigationController pushViewController: _serviceListController animated:YES];
-
-	// Do not actually select row
-	return nil;
+	return indexPath;
 }
 
 /* number of sections */
