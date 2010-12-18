@@ -328,7 +328,8 @@
 	{
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 		NSInteger currentDefault = [stdDefaults integerForKey: kActiveConnection];
-		NSInteger index = indexPath.row - 1;
+		NSInteger index = indexPath.row;
+		if(self.editing) --index;
 
 		// Shift index
 		if(currentDefault > index)
