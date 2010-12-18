@@ -18,7 +18,7 @@
  */
 @interface RCButton : UIButton {
 @public
-	NSInteger rcCode; /*!< @brief Assigned RC Code. */
+	IBOutlet NSInteger rcCode; /*!< @brief Assigned RC Code. */
 }
 
 /*!
