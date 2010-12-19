@@ -113,11 +113,11 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		CGRect frame;
 		
 		// Place the name label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 16);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, kEventNameTextSize + 2);
 		_eventNameLabel.frame = frame;
 
 		// Place the time label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, 14);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, kEventDetailsTextSize + 2);
 		_eventTimeLabel.frame = frame;
 	}
 }
