@@ -63,6 +63,7 @@
 	_searchBar = [[UISearchBar alloc] initWithFrame: frame];
 	_searchBar.delegate = self;
 	_searchBar.showsCancelButton = YES;
+	_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[contentView addSubview: _searchBar];
 
 	frame = CGRectMake(0, kSearchBarHeight, size.width, size.height - 2 * kSearchBarHeight);
@@ -72,6 +73,7 @@
 	_tableView.rowHeight = 48;
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	_tableView.sectionHeaderHeight = 0;
+	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[contentView addSubview: _tableView];
 
 	[contentView release];
