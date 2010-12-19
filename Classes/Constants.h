@@ -23,9 +23,8 @@
 #define kSliderHeight			7
 #define kSwitchButtonWidth		94
 #define kSwitchButtonHeight		27
-#define kTextFieldHeight		30
+#define kTextFieldHeight		((IS_IPAD()) ? 35 : 30)
 #define kTextViewHeight			220
-#define kTextFieldHeight		30
 #define kSearchBarHeight		40
 #define kLabelHeight			20
 #define kProgressIndicatorSize	40
@@ -36,12 +35,12 @@
 
 // specific font metrics used in our text fields and text views
 #define kFontName				@"Arial"
-#define kTextFieldFontSize		(IS_IPAD()) ? 22 : 18
-#define kTextViewFontSize		(IS_IPAD()) ? 22 : 18
+#define kTextFieldFontSize		((IS_IPAD()) ? 22 : 18)
+#define kTextViewFontSize		((IS_IPAD()) ? 22 : 18)
 
 // UITableView row heights
 #define kUISmallRowHeight		38
-#define kUIRowHeight			50
+#define kUIRowHeight			((IS_IPAD()) ? 55 : 50)
 #define kUIRowLabelHeight		22
 
 // table view cell content offsets
