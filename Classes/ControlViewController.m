@@ -107,7 +107,7 @@
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = kUIRowHeight;
@@ -125,6 +125,7 @@
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_slider.backgroundColor = [UIColor clearColor];
+	_slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
 	_slider.minimumValue = 0;
 	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
