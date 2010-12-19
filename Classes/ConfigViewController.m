@@ -336,10 +336,20 @@
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnection = [NSNumber numberWithInteger: _connectionIndex];
 
-	[(UITableView *)self.view beginUpdates];
+	if(![RemoteConnectorObject connectTo: _connectionIndex])
+	{
+		// error connecting... what now?
+		UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
+									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+		return;
+	}
 	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
-	[RemoteConnectorObject connectTo: _connectionIndex];
 
+	[(UITableView *)self.view beginUpdates];
 	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 								withRowAnimation: UITableViewRowAnimationFade];
 	[(UITableView *)self.view endUpdates];
@@ -350,9 +360,19 @@
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 
-	[(UITableView *)self.view beginUpdates];
-	[RemoteConnectorObject connectTo: _connectionIndex];
+	if(![RemoteConnectorObject connectTo: _connectionIndex])
+	{
+		// error connecting... what now?
+		UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
+									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+		return;
+	}
 
+	[(UITableView *)self.view beginUpdates];
 	if(_connectionIndex == [stdDefaults integerForKey: kActiveConnection])
 		[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 									withRowAnimation: UITableViewRowAnimationFade];
