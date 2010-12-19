@@ -108,7 +108,6 @@
 {
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
-	[RemoteConnectorObject disconnect];
 }
 
 /* dealloc */
