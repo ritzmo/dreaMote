@@ -91,6 +91,10 @@ static NSDictionary *_connection;
 {
 	NSString *finalPath = [configPath stringByExpandingTildeInPath];
 
+	if(_connections)
+	{
+		[_connections release];
+	}
 	_connections = [[NSMutableArray arrayWithContentsOfFile: finalPath] retain];
 
 	if(_connections == nil)
@@ -110,10 +114,7 @@ static NSDictionary *_connection;
 + (void)saveConnections
 {
 	NSString *finalPath = [configPath stringByExpandingTildeInPath];
-
 	[_connections writeToFile: finalPath atomically: YES];
-	[_connections release];
-	_connections = nil;
 }
 
 + (enum availableConnectors)autodetectConnector: (NSDictionary *)connection
