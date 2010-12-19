@@ -608,6 +608,7 @@
 						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"SVDRP", @"");
 					else
 						TABLEVIEWCELL_TEXT(sourceCell) = @"???";
+					TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 					
 					_connectorCell = sourceCell;
 					break;

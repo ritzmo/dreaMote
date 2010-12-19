@@ -241,6 +241,7 @@
 			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			TABLEVIEWCELL_TEXT(sourceCell) = hostTitle;
+			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 
 			break;
 
