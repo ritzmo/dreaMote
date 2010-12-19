@@ -62,14 +62,13 @@ NSString *kMainCell_ID = @"MainCell_ID";
 
 	[super layoutSubviews];
 	const CGRect contentRect = [self.contentView bounds];
+	CGFloat offset = (IS_IPAD()) ? 3 : 0;
 
-	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - kRightMargin, 26);
 	_nameLabel.frame = frame;
 
-	if(IS_IPAD())
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 25, contentRect.size.width - kRightMargin, 22);
-	else
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 21, contentRect.size.width - kRightMargin, 22);
+	offset = (IS_IPAD()) ? 28 : 21;
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - kRightMargin, 22);
 	_explainLabel.frame = frame;
 }
 
