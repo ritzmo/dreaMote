@@ -16,6 +16,10 @@
 #define kTransitionDuration	(CGFloat)0.6
 #define kImageScale			(CGFloat)0.45
 
+@interface UIDevice()
+- (void)setOrientation:(UIInterfaceOrientation)orientation;
+@end
+
 @interface RCEmulatorController()
 /*!
  @brief entry point of thread which loads the screenshot
@@ -139,6 +143,8 @@
 
 - (void)loadView
 {
+	[[UIDevice currentDevice] setOrientation:UIInterfaceOrientationPortrait];
+
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	if(IS_IPAD())
