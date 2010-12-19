@@ -66,7 +66,10 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
 	_nameLabel.frame = frame;
 
-	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 21, contentRect.size.width - kRightMargin, 22);
+	if(IS_IPAD())
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 25, contentRect.size.width - kRightMargin, 22);
+	else
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 21, contentRect.size.width - kRightMargin, 22);
 	_explainLabel.frame = frame;
 }
 
