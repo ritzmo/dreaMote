@@ -189,4 +189,12 @@
 	//[UIView commitAnimations];
 }
 
+/* about to display */
+- (void)viewWillAppear:(BOOL)animated
+{
+	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
+}
+
 @end
