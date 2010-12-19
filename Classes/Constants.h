@@ -36,8 +36,8 @@
 
 // specific font metrics used in our text fields and text views
 #define kFontName				@"Arial"
-#define kTextFieldFontSize		18
-#define kTextViewFontSize		18
+#define kTextFieldFontSize		(IS_IPAD()) ? 22 : 18
+#define kTextViewFontSize		(IS_IPAD()) ? 22 : 18
 
 // UITableView row heights
 #define kUISmallRowHeight		38
@@ -47,6 +47,16 @@
 // table view cell content offsets
 #define kCellLeftOffset			8
 #define kCellTopOffset			12
+
+// various text sizes
+#define kMainTextSize			((IS_IPAD()) ? 22 : 18)
+#define kMainDetailsSize		((IS_IPAD()) ? 20 : 14)
+#define kServiceTextSize		((IS_IPAD()) ? 22 : 16)
+#define kEventNameTextSize		((IS_IPAD()) ? 20 : 14)
+#define kEventDetailsTextSize	((IS_IPAD()) ? 15 : 12)
+#define kTimerServiceTextSize	((IS_IPAD()) ? 20 : 14)
+#define kTimerNameTextSize		((IS_IPAD()) ? 15 : 12)
+#define kTimerTimeTextSize		((IS_IPAD()) ? 15 : 12)
 
 //
 #define kVanilla_ID				@"Vanilla_ID"

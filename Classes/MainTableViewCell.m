@@ -39,7 +39,7 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		_nameLabel.opaque = NO;
 		_nameLabel.textColor = [UIColor blackColor];
 		_nameLabel.highlightedTextColor = [UIColor whiteColor];
-		_nameLabel.font = [UIFont boldSystemFontOfSize:18];
+		_nameLabel.font = [UIFont boldSystemFontOfSize:kMainTextSize];
 		[self.contentView addSubview:_nameLabel];
 
 		// Explanation label
@@ -48,7 +48,7 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		_explainLabel.opaque = NO;
 		_explainLabel.textColor = [UIColor grayColor];
 		_explainLabel.highlightedTextColor = [UIColor whiteColor];
-		_explainLabel.font = [UIFont systemFontOfSize:14];
+		_explainLabel.font = [UIFont systemFontOfSize:kMainDetailsSize];
 		[self.contentView addSubview:_explainLabel];
 	}
 	
@@ -66,7 +66,7 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kRightMargin, 26);
 	_nameLabel.frame = frame;
 
-	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 23, contentRect.size.width - kRightMargin, 20);
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, 21, contentRect.size.width - kRightMargin, 22);
 	_explainLabel.frame = frame;
 }
 

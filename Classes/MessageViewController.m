@@ -71,7 +71,7 @@
 	returnTextField.leftViewMode = UITextFieldViewModeNever;
 	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
 	returnTextField.textColor = [UIColor blackColor];
-	returnTextField.font = [UIFont systemFontOfSize:17];
+	returnTextField.font = [UIFont systemFontOfSize:kTextFieldFontSize];
 	returnTextField.backgroundColor = [UIColor whiteColor];
 	// no auto correction support
 	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;

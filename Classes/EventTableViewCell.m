@@ -63,7 +63,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		// A label that displays the Eventname.
 		_eventNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 14
+												fontSize: kEventNameTextSize
 													bold: YES];
 		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
@@ -71,7 +71,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		// A label that displays the Eventtime.
 		_eventTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 10
+												fontSize: kEventDetailsTextSize
 													bold: NO];
 		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
@@ -79,7 +79,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		// A label that displays the Service name.
 		_eventServiceLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 10
+												fontSize: kEventDetailsTextSize
 													bold: NO];
 		_eventServiceLabel.textAlignment = UITextAlignmentRight; // default
 		[myContentView addSubview: _eventServiceLabel];

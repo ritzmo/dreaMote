@@ -63,7 +63,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
-												  fontSize: 14
+												  fontSize: kTimerServiceTextSize
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
@@ -71,7 +71,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		// A label that displays the Timername.
 		_timerNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 12
+												fontSize: kTimerNameTextSize
 													bold: YES];
 		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerNameLabel];
@@ -79,7 +79,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		// A label that displays the Timer time.
 		_timerTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 										   selectedColor: [UIColor whiteColor]
-												fontSize: 12
+												fontSize: kTimerTimeTextSize
 													bold: NO];
 		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerTimeLabel];
@@ -133,17 +133,26 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 	if (!self.editing) {
 		CGRect frame;
+		CGFloat offset = 7;
 
 		// Place the name label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, 14);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - kRightMargin, kTimerNameTextSize + 2);
 		_serviceNameLabel.frame = frame;
+		if(IS_IPAD())
+			offset += kTimerServiceTextSize;
+		else
+			offset = 25;
 
 		// Place the other name label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 25, contentRect.size.width - kRightMargin, 14);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset - 1, contentRect.size.width - kRightMargin, kTimerNameTextSize + 2);
 		_timerNameLabel.frame = frame;
+		if(IS_IPAD())
+			offset += kTimerNameTextSize;
+		else
+			offset = 40;
 
 		// Place the time label.
-		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 41, contentRect.size.width - kRightMargin, 14);
+		frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - kRightMargin, kTimerTimeTextSize + 2);
 		_timerTimeLabel.frame = frame;
 	}
 }
