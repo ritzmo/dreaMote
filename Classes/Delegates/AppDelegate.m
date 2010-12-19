@@ -103,11 +103,20 @@
 	[RemoteConnectorObject disconnect];
 }
 
+/* back to foreground */
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+	[navigationController viewWillAppear:YES];
+	[navigationController viewDidAppear:YES];
+}
+
 /* backgrounded */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
+	[navigationController viewWillDisappear:NO];
+	[navigationController viewDidDisappear:NO];
 }
 
 /* dealloc */
