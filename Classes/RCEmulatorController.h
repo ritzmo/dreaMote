@@ -27,8 +27,13 @@
 
 	NSInteger _screenshotType; /*!< @brief Selected Screenshot type. */
 @protected
-	UIView *rcView; /*!< @brief Remote Controller view. */
+	IBOutlet UIView *rcView; /*!< @brief Remote Controller view. */
 }
+
+/*!
+ @brief Actual RC Emulator.
+ */
+@property (nonatomic,retain) IBOutlet UIView *rcView;
 
 /*!
  @brief Create custom Button.
@@ -52,7 +57,7 @@
  
  @param sender Unused parameter required by Buttons.
  */
-- (void)flipView:(id)sender;
+- (IBAction)flipView:(id)sender;
 
 /*!
  * @brief Send RC code.
@@ -60,5 +65,12 @@
  * @param rcCode Code to send.
  */
 - (void)sendButton: (NSNumber *)rcCode;
+
+/*!
+ * @brief Button from xib pressed.
+ *
+ * @param sender Button instance triggering this action.
+ */
+- (IBAction)buttonPressedIB: (id)sender;
 
 @end

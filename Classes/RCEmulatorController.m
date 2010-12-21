@@ -14,7 +14,7 @@
 #import "Constants.h"
 
 #define kTransitionDuration	(CGFloat)0.6
-#define kImageScale			(CGFloat)0.45
+#define kImageScale			((IS_IPAD()) ? (CGFloat)1.0 : (CGFloat)0.45)
 
 @interface RCEmulatorController()
 /*!
@@ -50,6 +50,8 @@
 @end
 
 @implementation RCEmulatorController
+
+@synthesize rcView;
 
 - (id)init
 {
@@ -216,7 +218,7 @@
 	return uiButton;
 }
 
-- (void)flipView:(id)sender
+- (IBAction)flipView:(id)sender
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: kTransitionDuration];
@@ -291,15 +293,29 @@
 							withObject: [NSNumber numberWithInteger: sender.rcCode]];
 }
 
-- (void)sendButton: (NSNumber *)rcCode
+- (IBAction)buttonPressedIB:(UIButton *)sender
+{
+	// Spawn a thread to send the request so that the UI is not blocked while
+	// waiting for the response.
+	[NSThread detachNewThreadSelector:@selector(sendButton:)
+							toTarget:self
+							withObject: [NSNumber numberWithInteger: sender.tag]];
+}
+
+- (void)sendButtonInternal: (NSInteger)rcCode
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: [rcCode integerValue]]
-			&& _shouldVibrate)
+	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: rcCode]
+	   && _shouldVibrate)
 		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
 
 	[pool release];
+}
+
+- (void)sendButton: (NSNumber *)rcCode
+{
+	[self sendButtonInternal: [rcCode integerValue]];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
