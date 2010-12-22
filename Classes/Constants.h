@@ -56,6 +56,7 @@
 #define kTimerServiceTextSize	((IS_IPAD()) ? 20 : 14)
 #define kTimerNameTextSize		((IS_IPAD()) ? 15 : 12)
 #define kTimerTimeTextSize		((IS_IPAD()) ? 15 : 12)
+#define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
 
 //
 #define kVanilla_ID				@"Vanilla_ID"

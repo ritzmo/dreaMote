@@ -67,10 +67,10 @@
 
 	CGRect frame = CGRectMake(	0,
 								0, //kTopMargin + kPickerSegmentControlHeight,
-								self.view.bounds.size.width - (kRightMargin * 2),
-								self.view.bounds.size.height - 110);
+								self.view.bounds.size.width,
+								0 );
 	_datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
-	_datePickerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_datePickerView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	_datePickerView.datePickerMode = UIDatePickerModeDateAndTime;
 	_datePickerView.date = _date;
 	[_datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
@@ -81,14 +81,15 @@
 	self.navigationItem.rightBarButtonItem = button;
 
 	[button release];
-	
+
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
-									kTweenMargin + 220,
-									self.view.bounds.size.width - (kRightMargin * 2),
-									kTextFieldHeight);
+						(IS_IPAD()) ? 400 : 300,
+						self.view.bounds.size.width - kLeftMargin - kRightMargin,
+						0);
 	_label = [[UILabel alloc] initWithFrame:frame];
-	_label.font = [UIFont systemFontOfSize:14];
+	_label.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_label.font = [UIFont systemFontOfSize:kDatePickerFontSize];
 	_label.textAlignment = UITextAlignmentCenter;
 	_label.textColor = [UIColor whiteColor];
 	_label.backgroundColor = [UIColor clearColor];
