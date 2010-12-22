@@ -176,45 +176,39 @@
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
 
+	frame = CGRectMake(currY * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
+	// help
 	if(usesAdvancedRemote)
 	{
-		// help
-		frame = CGRectMake(currY * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
 		roundedButtonType = [self newButton:frame withImage:@"key_help_round.png" andKeyCode: kButtonCodeHelp];
-		[rcView addSubview: roundedButtonType];
-		[roundedButtonType release];
 	}
+	// audio
 	else
 	{
-		// audio
-		frame = CGRectMake(currY * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
 		roundedButtonType = [self newButton:frame withImage:@"key_audio.png" andKeyCode: kButtonCodeAudio];
-		[rcView addSubview: roundedButtonType];
-		[roundedButtonType release];
 	}
+	[rcView addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	// menu
 	frame = CGRectMake((currY+100) * factor, (currX-40) * factor, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_menu.png" andKeyCode: kButtonCodeMenu];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
-	
+
+	frame = CGRectMake((currY+100) * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
+	// PVR
 	if(usesAdvancedRemote)
 	{
-		// PVR
-		frame = CGRectMake((currY+100) * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
 		roundedButtonType = [self newButton:frame withImage:@"key_pvr.png" andKeyCode: kButtonCodePVR];
-		[rcView addSubview: roundedButtonType];
-		[roundedButtonType release];
 	}
+	// video
 	else
 	{
-		// video
-		frame = CGRectMake((currY+100) * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
 		roundedButtonType = [self newButton:frame withImage:@"key_video.png" andKeyCode: kButtonCodeVideo];
-		[rcView addSubview: roundedButtonType];
-		[roundedButtonType release];
 	}
+	[rcView addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	/* End Navigation pad */
 
@@ -274,22 +268,19 @@
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 
+	frame = CGRectMake(currY * factor, currX * factor, imageWidth * factor, imageHeight * factor);
+	// record
 	if(usesAdvancedRemote)
 	{
-		// record
-		frame = CGRectMake(currY * factor, currX * factor, imageWidth * factor, imageHeight * factor);
 		roundedButtonType = [self newButton:frame withImage:@"key_rec.png" andKeyCode: kButtonCodeRecord];
-		[rcView addSubview: roundedButtonType];
-		[roundedButtonType release];
 	}
+	// help
 	else
 	{
-		// help
-		frame = CGRectMake(currY * factor, currX * factor, imageWidth * factor, imageHeight * factor);
 		roundedButtonType = [self newButton:frame withImage:@"key_help.png" andKeyCode: kButtonCodeHelp];
-		[rcView addSubview: roundedButtonType];
-		[roundedButtonType release];
 	}
+	[rcView addSubview: roundedButtonType];
+	[roundedButtonType release];
 
 	/* End lower pad */
 	
