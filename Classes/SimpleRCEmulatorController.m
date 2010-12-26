@@ -14,6 +14,20 @@
 
 @implementation SimpleRCEmulatorController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	if((self = [super initWithNibName: @"SimpleRCEmulator" bundle: nil]))
+	{
+		//
+	}
+	return self;
+}
+
+- (void)viewDidLoad
+{
+	[self.view addSubview: self.rcView];
+}
+
 - (void)loadView
 {
 	CGRect frame;
