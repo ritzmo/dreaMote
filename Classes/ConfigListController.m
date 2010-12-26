@@ -211,6 +211,8 @@
 		/* Connections */
 		case 0:
 			sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+
 			/*!
 			 @brief When editing we add a fake first item to the list so cover this here.
 			 */
@@ -241,7 +243,6 @@
 			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
 			TABLEVIEWCELL_TEXT(sourceCell) = hostTitle;
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 
 			break;
 
