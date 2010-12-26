@@ -68,9 +68,9 @@
 	CGRect frame = CGRectMake(	0,
 								0, //kTopMargin + kPickerSegmentControlHeight,
 								self.view.bounds.size.width,
-								0 );
+								220 );
 	_datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
-	_datePickerView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_datePickerView.autoresizingMask = (UIViewAutoresizingFlexibleWidth);// | UIViewAutoresizingFlexibleHeight);
 	_datePickerView.datePickerMode = UIDatePickerModeDateAndTime;
 	_datePickerView.date = _date;
 	[_datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
