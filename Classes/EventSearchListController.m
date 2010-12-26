@@ -66,14 +66,14 @@
 	_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	[contentView addSubview: _searchBar];
 
-	frame = CGRectMake(0, kSearchBarHeight, size.width, size.height - 2 * kSearchBarHeight);
+	frame = CGRectMake(0, kSearchBarHeight, size.width, size.height - kSearchBarHeight);
 	_tableView = [[UITableView alloc] initWithFrame: frame style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = 48;
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	_tableView.sectionHeaderHeight = 0;
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	[contentView addSubview: _tableView];
 
 	[contentView release];
