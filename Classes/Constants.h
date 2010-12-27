@@ -39,9 +39,10 @@
 #define kTextViewFontSize		((IS_IPAD()) ? 22 : 18)
 
 // UITableView row heights
-#define kUISmallRowHeight		38
+#define kUISmallRowHeight		((IS_IPAD()) ? 43 : 38)
 #define kUIRowHeight			((IS_IPAD()) ? 55 : 50)
 #define kUIRowLabelHeight		22
+#define kServiceCellHeight		((IS_IPAD()) ? 53 : 48)
 
 // table view cell content offsets
 #define kCellLeftOffset			8

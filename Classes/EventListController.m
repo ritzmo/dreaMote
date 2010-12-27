@@ -11,6 +11,7 @@
 #import "EventTableViewCell.h"
 #import "EventViewController.h"
 
+#import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "FuzzyDateFormatter.h"
 
@@ -114,7 +115,7 @@
 	const UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;
-	tableView.rowHeight = 48;
+	tableView.rowHeight = kServiceCellHeight;
 	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	tableView.sectionHeaderHeight = 0;
 
