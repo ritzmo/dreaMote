@@ -399,10 +399,10 @@
 	[self.navigationController popViewControllerAnimated: YES];
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)serviceSelected: (NSObject<ServiceProtocol> *)newService

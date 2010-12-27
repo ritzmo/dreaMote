@@ -400,9 +400,9 @@
 	return sourceCell;
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// We only allow to rotate "back" to our favourite orientation...
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 @end

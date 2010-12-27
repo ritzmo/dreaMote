@@ -257,10 +257,9 @@
 	[[RemoteConnectorObject sharedRemoteConnector] setVolume:(NSInteger)[volumeSlider value]];
 }
 
-/* rotate to portrait mode */
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 #pragma mark - UITableView delegates

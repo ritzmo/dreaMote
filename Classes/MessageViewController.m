@@ -209,10 +209,10 @@
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	return YES;
 }
 
 - (void)typeSelected: (NSNumber *) newType

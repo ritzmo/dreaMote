@@ -407,6 +407,7 @@
 	return cell;
 }
 
+/* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
 }

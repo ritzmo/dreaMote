@@ -354,8 +354,9 @@
 	if([_screenView superview])
 		return YES;
 
-	// RC should only be displayed in portrait mode
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	// RC should only be displayed in (either) portrait mode
+	return (interfaceOrientation == UIInterfaceOrientationPortrait)
+		|| (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
 #pragma mark UIScrollView delegates
