@@ -65,6 +65,7 @@
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
 	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"] usedEncoding: nil error: nil] baseURL: [NSURL URLWithString: @""]];
 	aboutText.backgroundColor = [UIColor clearColor];
+	aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
 	aboutText.opaque = NO;
 	aboutText.delegate = self;
 	[self.view addSubview: aboutText];
@@ -86,8 +87,13 @@
 
 /* rotate to portrait orientation only */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// Return YES for supported orientations
-	return (interfaceOrientation == UIInterfaceOrientationPortrait);
+	// allow all orientations on ipad
+	if(IS_IPAD())
+		return YES;
+
+	// accept any portrait orientation
+	return (interfaceOrientation == UIInterfaceOrientationPortrait)
+		|| (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
 #pragma mark - UIWebView delegates
