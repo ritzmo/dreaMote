@@ -89,6 +89,8 @@ enum connectorFeatures {
 	kFeaturesSimpleRepeated,
 	/*! @brief Allows to display currently playing service and event. */
 	kFeaturesCurrent,
+	/*! @brief Supports radio mode. */
+	kFeaturesRadioMode,
 };
 
 /*!
