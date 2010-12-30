@@ -118,6 +118,24 @@
 						nil] retain];
 	[targetViewController release];
 
+	targetViewController = [[BouquetListController alloc] init];
+	((BouquetListController *)targetViewController).isRadio = YES;
+	_radioBouquetDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						   NSLocalizedString(@"Radio Bouquet List Title", @""), @"title",
+						   NSLocalizedString(@"Radio Bouquet List Explain", @""), @"explainText",
+						   targetViewController, @"viewController",
+						   nil] retain];
+	[targetViewController release];
+
+	targetViewController = [[ServiceListController alloc] init];
+	((ServiceListController *)targetViewController).isRadio = YES;
+	_radioServiceDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						   NSLocalizedString(@"Radio Service List Title", @""), @"title",
+						   NSLocalizedString(@"Radio Service List Explain", @""), @"explainText",
+						   targetViewController, @"viewController",
+						   nil] retain];
+	[targetViewController release];
+
 	targetViewController = [[EventSearchListController alloc] init];
 	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Event Search Title", @""), @"title",
@@ -236,6 +254,11 @@
 		if(![RemoteConnectorObject connectTo: [connId integerValue]])
 			return;
 
+	const BOOL isSingleBouquet =
+		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+		&& (
+			[RemoteConnectorObject isSingleBouquet] ||
+			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
 	BOOL reload = NO;
 	/* The menu reorganization might be buggy, this should be redone
 	   as it was a bad hack to begin with */
@@ -276,11 +299,7 @@
 	}
 
 	// Handle Single-Bouquet mode
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
-		&& (
-			[RemoteConnectorObject isSingleBouquet] ||
-			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets])
-		)
+	if(isSingleBouquet)
 	{
 		if(![menuList containsObject: _serviceDictionary])
 		{
@@ -317,6 +336,32 @@
 		}
 	}
 	
+	// Add/Remove radio mode
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
+	{
+		if(isSingleBouquet)
+		{
+			if(![menuList containsObject: _radioServiceDictionary])
+			{
+				[menuList removeObject: _radioBouquetDictionary];
+				[menuList insertObject: _radioServiceDictionary atIndex: 1];
+			}
+		}
+		else
+		{
+			if(![menuList containsObject: _radioBouquetDictionary])
+			{
+				[menuList removeObject: _radioServiceDictionary];
+				[menuList insertObject: _radioBouquetDictionary atIndex: 1];
+			}
+		}
+	}
+	else
+	{
+		[menuList removeObject: _radioServiceDictionary];
+		[menuList removeObject: _radioBouquetDictionary];
+	}
+
 	// Add/Remove currently playing
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
 	{

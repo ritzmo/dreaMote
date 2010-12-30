@@ -154,8 +154,14 @@
 
 // TODO: does the vdr actually have bouquets?
 // FIXME: for now we just return a fake service, we don't support favourite online mode anyway
-- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate
+- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
+	if(isRadio)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+	
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	newService.sname = NSLocalizedString(@"All Services", @"");
 	newService.sref = @"dc";
@@ -167,8 +173,14 @@
 	return nil;
 }
 
-- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
+	if(isRadio)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];

@@ -30,6 +30,7 @@
 	NSMutableArray *_services; /*!< @brief Service List. */
 	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
+	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 
 	CXMLDocument *_serviceXMLDoc; /*!< Current Service XML Document. */
@@ -51,6 +52,11 @@
  @brief Bouquet.
  */
 @property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
+
+/*!
+ @brief Currently in radio mode?
+ */
+@property (nonatomic) BOOL isRadio;
 
 @end
 

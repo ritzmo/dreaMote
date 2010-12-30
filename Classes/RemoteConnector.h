@@ -224,9 +224,10 @@ enum buttonCodes {
  @brief Fetch list of available Bouquets.
  
  @param delegate Delegate to be called back.
+ @param isRadio Fetch radio bouquets?
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate;
+- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
 
 /*!
  @brief Fetch Services of a given Bouquet.
@@ -234,9 +235,10 @@ enum buttonCodes {
  
  @param delegate Delegate to be called back.
  @param bouquet Bouquet to request Services of.
+ @param isRadio Fetch radio services?
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request EPG of given Service from Receiver.

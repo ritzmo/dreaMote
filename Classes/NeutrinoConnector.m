@@ -161,8 +161,14 @@ enum neutrinoMessageTypes {
 	[streamReader release];
 }
 
-- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate
+- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
+	if(isRadio)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+	
 	NSArray *resultNodes = nil;
 
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
@@ -188,8 +194,14 @@ enum neutrinoMessageTypes {
 	return _cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
+	if(isRadio)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+	
 	NSArray *resultNodes = nil;
 	
 	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];

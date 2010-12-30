@@ -178,8 +178,14 @@ enum enigma1MessageTypes {
 	[streamReader release];
 }
 
-- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate
+- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
+	if(isRadio)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
 			[_cachedBouquetsXML release];
@@ -209,8 +215,14 @@ enum enigma1MessageTypes {
 	return _cachedBouquetsXML;
 }
 
-- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
+	if(isRadio)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 

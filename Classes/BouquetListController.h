@@ -26,6 +26,7 @@
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
 	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
+	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 
 	CXMLDocument *_bouquetXMLDoc; /*!< @brief Bouquet XML. */
@@ -40,5 +41,12 @@
  @param delegate New delegate object.
  */
 - (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
+
+
+
+/*!
+ @brief Currently in radio mode?
+ */
+@property (nonatomic) BOOL isRadio;
 
 @end

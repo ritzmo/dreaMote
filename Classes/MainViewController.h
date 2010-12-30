@@ -26,6 +26,8 @@
 	NSDictionary *_bouquetDictionary; /*!< @brief Dictionary describing Bouquet List Item. */
 	NSDictionary *_currentDictionary; /*!< @brief Dictionary describing "Currently playing" List Item. */
 	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
+	NSDictionary *_radioBouquetDictionary; /*!< @brief Dictionary describing Radio Bouqet List Item. */
+	NSDictionary *_radioServiceDictionary; /*!< @brief Dictionary describing Radio Service List Item. */
 	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
 	NSDictionary *_serviceDictionary; /*!< @brief Dictionary describing Service List Item. */
 	NSDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */

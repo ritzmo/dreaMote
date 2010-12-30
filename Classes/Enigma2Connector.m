@@ -186,9 +186,14 @@ enum enigma2MessageTypes {
 	return [self zapInternal: movie.sref];
 }
 
-- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate
+- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
-	NSURL *myURI = [NSURL URLWithString: @"/web/getservices" relativeToURL: _baseAddress];
+	NSString *sref = nil;
+	if(isRadio)
+		sref = @"sRef=1:7:2:0:0:0:0:0:0:0:(type%20==%202)FROM%20BOUQUET%20%22bouquets.radio%22%20ORDER%20BY%20bouquet";
+	else
+		sref = @"";
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/getservices?%@", sref] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -196,11 +201,16 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
-- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet
+- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = nil;
 	if(!bouquet) // single bouquet mode
-		sref =  @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet";
+	{
+		if(isRadio)
+			sref =  @"1:7:2:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.radio%22%20ORDER%20BY%20bouquet";
+		else
+			sref =  @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet";
+	}
 	else
 		sref = [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];

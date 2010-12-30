@@ -30,6 +30,7 @@
 		self.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
 		_bouquets = [[NSMutableArray array] retain];
 		_refreshBouquets = YES;
+		_isRadio = NO;
 		_serviceListController = nil;
 		_delegate = nil;
 	}
@@ -53,6 +54,27 @@
 	_serviceListController = nil;
 
 	[super didReceiveMemoryWarning];
+}
+
+/* getter for isRadio property */
+- (BOOL)isRadio
+{
+	return _isRadio;
+}
+
+/* setter for isRadio property */
+- (void)setIsRadio:(BOOL)new
+{
+	if(_isRadio == new) return;
+
+	if(new)
+		self.title = NSLocalizedString(@"Radio Bouquets", @"Title of radio mode of BouquetListController");
+	else
+		self.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
+	_isRadio = new;
+
+	// make sure we are going to refresh
+	_refreshBouquets = YES;
 }
 
 /* layout */
@@ -121,7 +143,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_bouquetXMLDoc release];
-	_bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets: self] retain];
+	_bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets: self isRadio:_isRadio] retain];
 	[pool release];
 }
 

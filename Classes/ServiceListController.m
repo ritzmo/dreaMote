@@ -34,6 +34,7 @@
 		_services = [[NSMutableArray array] retain];
 		_refreshServices = YES;
 		_eventListController = nil;
+		_isRadio = NO;
 		_delegate = nil;
 	}
 	return self;
@@ -87,6 +88,27 @@
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+}
+
+/* getter for isRadio property */
+- (BOOL)isRadio
+{
+	return _isRadio;
+}
+
+/* setter for isRadio property */
+- (void)setIsRadio:(BOOL)new
+{
+	if(_isRadio == new) return;
+
+	if(new)
+		self.title = NSLocalizedString(@"Radio Services", @"Title of Radio mode of ServiceListController");
+	else
+		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
+	_isRadio = new;
+
+	// make sure we are going to refresh
+	_refreshServices = YES;
 }
 
 /* layout */
@@ -158,7 +180,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_serviceXMLDoc release];
-	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet] retain];
+	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
 	[pool release];
 }
 
