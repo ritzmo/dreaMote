@@ -20,6 +20,17 @@
     return self;
 }
 
+- (void)dealloc {
+    [super dealloc];
+	[_splitViewController release];
+	[_bouquetListController release];
+	[_serviceListController release];
+}
+
+#pragma mark -
+#pragma mark UIViewController methods
+#pragma mark -
+
 - (void)loadView
 {
     [super loadView];
@@ -31,6 +42,9 @@
 	_bouquetListController.serviceListController = _serviceListController;
 	_splitViewController = [[UISplitViewController alloc] init];
 
+	// Make service list delegate of split view
+	_splitViewController.delegate = _serviceListController;
+
 	// Setup navigation controllers and add to split view
 	UIViewController *navController1, *navController2;
 	navController1 = [[UINavigationController alloc] initWithRootViewController: _bouquetListController];
@@ -39,11 +53,20 @@
 	[navController1 release];
 	[navController2 release];
 
-	// Make service list delegate of split view
-	_splitViewController.delegate = _serviceListController;
-	
 	// Link view to us
 	self.view = _splitViewController.view;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	[_splitViewController willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	[_splitViewController didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -51,33 +74,28 @@
     return YES;
 }
 
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
-}
-
 - (void)viewWillAppear: (BOOL)animated
 {
 	[super viewWillAppear: animated];
-	[_bouquetListController viewWillAppear: YES];
-	[_serviceListController viewWillAppear: YES];
+	[_splitViewController viewWillAppear: animated];
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+- (void)viewDidAppear: (BOOL)animated
+{
+	[super viewDidAppear: animated];
+	[_splitViewController viewDidAppear: animated];
 }
 
-
-- (void)dealloc {
-    [super dealloc];
-	[_splitViewController release];
-	[_bouquetListController release];
-	[_serviceListController release];
+- (void)viewWillDisppear: (BOOL)animated
+{
+	[super viewWillDisappear: animated];
+	[_splitViewController viewWillDisappear: animated];
 }
 
+- (void)viewDidDisappear: (BOOL)animated
+{
+	[super viewDidDisappear: animated];
+	[_splitViewController viewDidDisappear: animated];
+}
 
 @end
