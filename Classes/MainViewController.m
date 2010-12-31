@@ -13,19 +13,17 @@
 
 #import "MainTableViewCell.h"
 
-#import "AboutViewController.h"
 #import "BouquetListController.h"
 #import "ConfigViewController.h"
-#import "ConfigListController.h"
-#import "ControlViewController.h"
 #import "CurrentViewController.h"
-#import "EventSearchListController.h"
-#import "MessageViewController.h"
-#import "MovieListController.h"
 #import "ServiceListController.h"
-#import "SignalViewController.h"
 #import "TimerListController.h"
 #import "OtherListController.h"
+
+@interface MainViewController (Private)
+- (void)handleReconnect;
+@end
+
 
 @implementation MainViewController
 
@@ -65,6 +63,8 @@
 
 - (void)awakeFromNib
 {	
+	UINavigationController *navController = nil;
+	UIViewController *viewController = nil;
 	menuList = [[NSMutableArray alloc] init];
 
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
@@ -72,21 +72,29 @@
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
 
 	_currentController = [[CurrentViewController alloc] init];
-	_bouquetController = [[BouquetListController alloc] init];
-	_serviceController = [[ServiceListController alloc] init];
-	_timerController = [[TimerListController alloc] init];
+	viewController = [[BouquetListController alloc] init];
+	_bouquetController = [[UINavigationController alloc] initWithRootViewController: viewController];
+	[viewController release];
+	viewController = [[ServiceListController alloc] init];
+	_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
+	[viewController release];
+	viewController = [[TimerListController alloc] init];
+	_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
+	[viewController release];
 	_rcController = nil;
 	_otherController = [[OtherListController alloc] init];
+	navController = [[UINavigationController alloc] initWithRootViewController: _otherController];
 
 	[menuList addObject: _timerController];
-	[menuList addObject: _otherController];
+	[menuList addObject: navController];
+
+	[navController release];
 
 	[self setViewControllers: menuList];
+	self.delegate = self;
 }
 
-#pragma mark UIViewController delegates
-
-- (void)viewWillAppear:(BOOL)animated
+- (void)handleReconnect
 {
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
@@ -135,10 +143,21 @@
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
 	
 	[self setViewControllers: menuList];
+	self.selectedIndex = 0; // force re-selection
+}
+
+#pragma mark UIViewController delegates
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[self handleReconnect];
+	[self.selectedViewController viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+	[self.selectedViewController viewDidAppear:animated];
+
 	// viewWillAppear makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
@@ -146,12 +165,12 @@
 									 initWithTitle:NSLocalizedString(@"Error", @"")
 									 message:NSLocalizedString(@"You need to configure this application before you can use it.", @"")
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		//[notification show];
+		[notification show];
 		[notification release];
 
 		UIViewController *targetViewController = [ConfigViewController newConnection];
-		//self.selectedIndex = [menuList count] - 1;
-		//[_otherController.navigationController pushViewController: targetViewController animated: YES];
+		self.selectedIndex = [menuList count] - 1;
+		[_otherController.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
 	}
 
@@ -170,6 +189,21 @@
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+#pragma mark UITabBarController delegates
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
+{
+	[self.selectedViewController viewWillDisappear:YES];
+	[viewController viewWillAppear:YES];
+	[self.selectedViewController viewDidDisappear:YES]; // XXX: we don't know the previous controller in didSelectViewController, so call this here
+	return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+	[viewController viewDidAppear:YES];
 }
 
 @end

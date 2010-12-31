@@ -17,12 +17,8 @@
 @synthesize tabBarController;
 
 /* finished launching */
-- (void)applicationDidFinishLaunching:(UIApplication *)application
+- (void)awakeFromNib
 {
-	// Show the window and view
-	[window addSubview: tabBarController.view];
-	[window makeKeyAndVisible];
-
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *testValue = nil;
@@ -93,6 +89,10 @@
 
 	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
+	
+	// Show the window and view
+	[window addSubview: tabBarController.view];
+	[window makeKeyAndVisible];
 }
 
 /* close app */

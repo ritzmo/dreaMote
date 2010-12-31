@@ -67,6 +67,7 @@
 		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
+		DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA6D41C812CDE0C90027493C /* OtherList.xib */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
 		DA7A232A0E372AB800455D11 /* key_2.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A23290E372AB800455D11 /* key_2.png */; };
@@ -155,7 +156,6 @@
 		DAD7E36210990A2000D0D76B /* key_rec.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35B10990A2000D0D76B /* key_rec.png */; };
 		DAD7E36310990A2000D0D76B /* key_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35C10990A2000D0D76B /* key_stop.png */; };
 		DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB9FC12CD61BC00BAF10B /* OtherListController.m */; };
-		DADBBC6112CD817000BAF10B /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DADBBC5F12CD817000BAF10B /* OtherList.xib */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
 		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
@@ -284,6 +284,7 @@
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
 		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
+		DA6D41C912CDE0C90027493C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
 		DA7A22780E371ACA00455D11 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
@@ -417,7 +418,6 @@
 		DAD7E35C10990A2000D0D76B /* key_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_stop.png; path = Images/key_stop.png; sourceTree = "<group>"; };
 		DADBB9FB12CD61BC00BAF10B /* OtherListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherListController.h; sourceTree = "<group>"; };
 		DADBB9FC12CD61BC00BAF10B /* OtherListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherListController.m; sourceTree = "<group>"; };
-		DADBBC6012CD817000BAF10B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DADE1AE70F115A2500807A25 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
@@ -514,6 +514,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				DA6D41C812CDE0C90027493C /* OtherList.xib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -530,7 +531,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DADBBC5F12CD817000BAF10B /* OtherList.xib */,
 				DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */,
 				DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */,
 				DA0FA5750EB1D189009A1898 /* about.html */,
@@ -1058,7 +1058,7 @@
 				DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */,
 				DA5CB8F312C007B50070D368 /* EnigmaRCEmulator.xib in Resources */,
 				DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */,
-				DADBBC6112CD817000BAF10B /* OtherList.xib in Resources */,
+				DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1177,6 +1177,14 @@
 			name = EnigmaRCEmulator.xib;
 			sourceTree = "<group>";
 		};
+		DA6D41C812CDE0C90027493C /* OtherList.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA6D41C912CDE0C90027493C /* en */,
+			);
+			name = OtherList.xib;
+			sourceTree = "<group>";
+		};
 		DA7FD6C80D8428F900974B1A /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1200,14 +1208,6 @@
 				DACFCCEF0E33CAD100348996 /* en */,
 			);
 			name = MainWindow.xib;
-			sourceTree = "<group>";
-		};
-		DADBBC5F12CD817000BAF10B /* OtherList.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DADBBC6012CD817000BAF10B /* en */,
-			);
-			name = OtherList.xib;
 			sourceTree = "<group>";
 		};
 		DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */ = {

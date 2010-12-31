@@ -16,7 +16,7 @@
  If no connection is configured yet the user is immediately redirected to the
  configuration screen.
  */
-@interface MainViewController : UITabBarController
+@interface MainViewController : UITabBarController <UITabBarControllerDelegate>
 {
 	IBOutlet UITabBar		*myTabBar; /*!< @brief Tab bar. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */

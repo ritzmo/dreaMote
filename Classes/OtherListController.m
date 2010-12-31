@@ -81,7 +81,7 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)awakeFromNibs
+- (void)viewDidLoad
 {
 	menuList = [[NSMutableArray alloc] init];
 
@@ -169,13 +169,16 @@
 	self.navigationItem.leftBarButtonItem = buttonItem;
 	[buttonItem release];
 	
-	NSLog(@"%@", (self.view == myTableView) ? @"Yes" : @"Ney");
+	//NSLog(@"%@", (self.view == myTableView) ? @"Yes" : @"Ney");
 
 #if 0
 	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
 	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	myTableView.delegate = self;
 	myTableView.dataSource = self;
+	self.view = myTableView;
+	[myTableView release];
+#endif
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(IS_IPAD())
 		myTableView.rowHeight = kUIRowHeight;
@@ -183,10 +186,6 @@
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
 	myTableView.autoresizesSubviews = YES;
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = myTableView;
-	[myTableView release];
-#endif
 }
 
 - (void)settingsAction:(id)sender
