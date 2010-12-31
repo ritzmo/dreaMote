@@ -194,9 +194,9 @@
 	}
 }
 
-/* rotate with device */
+/* rotation depends on active view */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	return YES;
+	return [self.selectedViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
 #pragma mark UITabBarController delegates
