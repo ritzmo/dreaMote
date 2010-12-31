@@ -348,7 +348,7 @@
 	}
 	// Try to refresh cache if none present
 	if(_serviceCache == nil)
-		[self fetchServices: nil bouquet: nil];	
+		[self fetchServices: nil bouquet: nil isRadio: NO];
 
 	[_socket writeString: @"LSTT\r\n"];
 
