@@ -32,11 +32,6 @@
  @param sender ui element
  */
 - (void)settingsAction:(id)sender;
-/*!
- @brief display about dialog
- @param sender ui element
- */
-- (void)aboutAction: (id)sender;
 @end
 
 @implementation OtherListController
@@ -60,7 +55,6 @@
 	[myTableView release];
 	[menuList release];
 	[_configListController release];
-	[_aboutViewController release];
 	[_eventSearchDictionary release];
 	[_recordDictionary release];
 	[_signalDictionary release];
@@ -72,8 +66,6 @@
 {
 	[_configListController release];
 	_configListController = nil;
-	[_aboutViewController release];
-	_aboutViewController = nil;
 
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
@@ -149,7 +141,14 @@
 						 NSLocalizedString(@"Message View Explain", @""), @"explainText",
 						 targetViewController, @"viewController",
 						 nil]];
+	[targetViewController release];
 
+	targetViewController = [[AboutViewController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"About View Title", @""), @"title",
+						 NSLocalizedString(@"About View Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
 	[targetViewController release];
 
 	// Add the "Settings" button to the navigation bar
@@ -162,23 +161,6 @@
 	[button release];
 	[buttonItem release];
 
-	// Add the "About" button to the navigation bar
-	button = [UIButton buttonWithType: UIButtonTypeInfoLight];
-	[button addTarget:self action:@selector(aboutAction:) forControlEvents:UIControlEventTouchUpInside];
-	buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
-	self.navigationItem.leftBarButtonItem = buttonItem;
-	[buttonItem release];
-	
-	//NSLog(@"%@", (self.view == myTableView) ? @"Yes" : @"Ney");
-
-#if 0
-	// finally create a our table, its contents will be populated by "menuList" using the UITableView delegate methods
-	myTableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	myTableView.delegate = self;
-	myTableView.dataSource = self;
-	self.view = myTableView;
-	[myTableView release];
-#endif
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(IS_IPAD())
 		myTableView.rowHeight = kUIRowHeight;
@@ -193,13 +175,6 @@
 	if(_configListController == nil)
 		_configListController = [[ConfigListController alloc] init];
 	[self.navigationController pushViewController: _configListController animated: YES];
-}
-
-- (void)aboutAction: (id)sender
-{
-	if(_aboutViewController == nil)
-		_aboutViewController = [[AboutViewController alloc] init];
-	[self.navigationController presentModalViewController: _aboutViewController animated:YES];
 }
 
 #pragma mark UIViewController delegates
