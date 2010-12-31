@@ -19,6 +19,7 @@
 #import "ServiceListController.h"
 #import "TimerListController.h"
 #import "OtherListController.h"
+#import "BouquetSplitViewController.h"
 
 @interface MainViewController (Private)
 - (void)handleReconnect;
@@ -72,12 +73,19 @@
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
 
 	_currentController = [[CurrentViewController alloc] init];
-	viewController = [[BouquetListController alloc] init];
-	_bouquetController = [[UINavigationController alloc] initWithRootViewController: viewController];
-	[viewController release];
-	viewController = [[ServiceListController alloc] init];
-	_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
-	[viewController release];
+	if(IS_IPAD())
+	{
+		_bouquetController = [[BouquetSplitViewController alloc] init];
+	}
+	else
+	{
+		viewController = [[BouquetListController alloc] init];
+		_bouquetController = [[UINavigationController alloc] initWithRootViewController: viewController];
+		[viewController release];
+		viewController = [[ServiceListController alloc] init];
+		_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
+		[viewController release];
+	}
 	viewController = [[TimerListController alloc] init];
 	_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
 	[viewController release];
@@ -107,7 +115,7 @@
 			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
 
 	// Toggle single bouquet mode
-	if(isSingleBouquet)
+	if(!IS_IPAD() && isSingleBouquet)
 	{
 		if(![menuList containsObject: _serviceController])
 		{

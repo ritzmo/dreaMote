@@ -493,11 +493,13 @@
 			return 2;
 		case 2:
 			/*!
-			 @brief Add "single bouquet" & "advanced remote" switch for Enigma2 based STBs.
+			 @brief Add "single bouquet" & "advanced remote" switch for Enigma2 based STBs
+			  on iPhone, but iPad does not know single bouquet mode, so there is only two
+			  rows.
 			 @note Actually this is an ugly hack but I really wanted this feature :P
 			 */
 			if(_connector == kEnigma2Connector)
-				return 3;
+				return (IS_IPAD()) ? 2 : 3;
 			return 1;
 		case 3:
 			if(_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
@@ -612,13 +614,17 @@
 					_connectorCell = sourceCell;
 					break;
 				case 1:
-					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-					if(sourceCell == nil)
-						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+					if(!IS_IPAD())
+					{
+						sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+						if(sourceCell == nil)
+							sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
-					((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
-					break;
+						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
+						((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
+						break;
+					}
+					/* FALL THROUGH */
 				case 2:
 					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
 					if(sourceCell == nil)

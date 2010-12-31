@@ -22,6 +22,9 @@
 
 @implementation BouquetListController
 
+@synthesize serviceListController = _serviceListController;
+@synthesize isSplit = _isSplit;
+
 /* initialize */
 - (id)init
 {
@@ -31,8 +34,10 @@
 		_bouquets = [[NSMutableArray array] retain];
 		_refreshBouquets = YES;
 		_isRadio = NO;
+		_isSplit = NO;
 		_serviceListController = nil;
 		_delegate = nil;
+		self.contentSizeForViewInPopover = CGSizeMake(320.0f, 600.0f);
 	}
 	return self;
 }
@@ -218,7 +223,8 @@
 	// We do not want to refresh bouquet list when we return
 	_refreshBouquets = NO;
 
-	[self.navigationController pushViewController: _serviceListController animated:YES];
+	if(!_isSplit)
+		[self.navigationController pushViewController: _serviceListController animated:YES];
 	return indexPath;
 }
 

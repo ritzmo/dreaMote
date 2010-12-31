@@ -157,6 +157,7 @@
 		DAD7E36310990A2000D0D76B /* key_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35C10990A2000D0D76B /* key_stop.png */; };
 		DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB9FC12CD61BC00BAF10B /* OtherListController.m */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
+		DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
 		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
 		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
 		DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1410EABAD4300D99545 /* system-shutdown.png */; };
@@ -420,6 +421,8 @@
 		DADBB9FC12CD61BC00BAF10B /* OtherListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherListController.m; sourceTree = "<group>"; };
 		DADE1AE70F115A2500807A25 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
+		DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetSplitViewController.h; sourceTree = "<group>"; };
+		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
 		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
 		DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "preferences-desktop-screensaver.png"; path = "Images/preferences-desktop-screensaver.png"; sourceTree = "<group>"; };
 		DADFB1410EABAD4300D99545 /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "system-shutdown.png"; path = "Images/system-shutdown.png"; sourceTree = "<group>"; };
@@ -465,6 +468,7 @@
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
+				DADEF27E12CE12900047E45E /* SplitViewController */,
 				DA0BF0470F0BC011004B488C /* TouchXML */,
 				DAF0D5460E38FF16001F7CF1 /* ViewController */,
 				DA7D23630F101F1500BB8BE7 /* XMLReader */,
@@ -821,6 +825,15 @@
 			path = SVDRP;
 			sourceTree = "<group>";
 		};
+		DADEF27E12CE12900047E45E /* SplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
+				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
+			);
+			name = SplitViewController;
+			sourceTree = "<group>";
+		};
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1163,6 +1176,7 @@
 				DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */,
 				DA66430510FA0CFF000C96F4 /* Result.m in Sources */,
 				DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */,
+				DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

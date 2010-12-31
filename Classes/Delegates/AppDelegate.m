@@ -17,7 +17,7 @@
 @synthesize tabBarController;
 
 /* finished launching */
-- (void)awakeFromNib
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
@@ -93,6 +93,8 @@
 	// Show the window and view
 	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];
+	
+	return YES;
 }
 
 /* close app */
