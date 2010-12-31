@@ -154,6 +154,8 @@
 		DAD7E36110990A2000D0D76B /* key_pvr.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35A10990A2000D0D76B /* key_pvr.png */; };
 		DAD7E36210990A2000D0D76B /* key_rec.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35B10990A2000D0D76B /* key_rec.png */; };
 		DAD7E36310990A2000D0D76B /* key_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35C10990A2000D0D76B /* key_stop.png */; };
+		DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB9FC12CD61BC00BAF10B /* OtherListController.m */; };
+		DADBBC6112CD817000BAF10B /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DADBBC5F12CD817000BAF10B /* OtherList.xib */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
 		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
@@ -413,6 +415,9 @@
 		DAD7E35A10990A2000D0D76B /* key_pvr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_pvr.png; path = Images/key_pvr.png; sourceTree = "<group>"; };
 		DAD7E35B10990A2000D0D76B /* key_rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_rec.png; path = Images/key_rec.png; sourceTree = "<group>"; };
 		DAD7E35C10990A2000D0D76B /* key_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_stop.png; path = Images/key_stop.png; sourceTree = "<group>"; };
+		DADBB9FB12CD61BC00BAF10B /* OtherListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherListController.h; sourceTree = "<group>"; };
+		DADBB9FC12CD61BC00BAF10B /* OtherListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherListController.m; sourceTree = "<group>"; };
+		DADBBC6012CD817000BAF10B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DADE1AE70F115A2500807A25 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
@@ -525,6 +530,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DADBBC5F12CD817000BAF10B /* OtherList.xib */,
 				DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */,
 				DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */,
 				DA0FA5750EB1D189009A1898 /* about.html */,
@@ -863,6 +869,8 @@
 		DAF0D5470E38FF1E001F7CF1 /* ListController */ = {
 			isa = PBXGroup;
 			children = (
+				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
+				DADBB9FC12CD61BC00BAF10B /* OtherListController.m */,
 				DA3AA1D60F0D828D001B2057 /* BouquetListController.h */,
 				DA3AA1D70F0D828D001B2057 /* BouquetListController.m */,
 				DAA21E7E0E99288600DD749C /* ConfigListController.h */,
@@ -1050,6 +1058,7 @@
 				DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */,
 				DA5CB8F312C007B50070D368 /* EnigmaRCEmulator.xib in Resources */,
 				DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */,
+				DADBBC6112CD817000BAF10B /* OtherList.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1153,6 +1162,7 @@
 				DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */,
 				DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */,
 				DA66430510FA0CFF000C96F4 /* Result.m in Sources */,
+				DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1190,6 +1200,14 @@
 				DACFCCEF0E33CAD100348996 /* en */,
 			);
 			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		DADBBC5F12CD817000BAF10B /* OtherList.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DADBBC6012CD817000BAF10B /* en */,
+			);
+			name = OtherList.xib;
 			sourceTree = "<group>";
 		};
 		DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */ = {

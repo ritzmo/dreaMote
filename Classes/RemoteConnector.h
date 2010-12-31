@@ -446,11 +446,11 @@ enum buttonCodes {
 - (NSString *)getMessageTitle: (NSUInteger)type;
 
 /*!
- @brief Open Remote Control Emulator of Connector.
+ @brief Create instance of RC Emulator.
  
- @param navigationController UINavigationController instance.
+ @return instance of rc emulator.
  */
-- (void)openRCEmulator: (UINavigationController *)navigationController;
+- (UIViewController *)createRCEmulator;
 
 
 

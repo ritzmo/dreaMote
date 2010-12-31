@@ -16,26 +16,22 @@
  If no connection is configured yet the user is immediately redirected to the
  configuration screen.
  */
-@interface MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController : UITabBarController
 {
-	IBOutlet UITableView		*myTableView; /*!< @brief Table View. */
+	IBOutlet UITabBar		*myTabBar; /*!< @brief Tab bar. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
-	UIViewController *_configListController; /*!< @brief Cached Configuration List. */
-	UIViewController *_aboutViewController; /*!< @brief Cached Abour View. */
-	NSDictionary *_bouquetDictionary; /*!< @brief Dictionary describing Bouquet List Item. */
-	NSDictionary *_currentDictionary; /*!< @brief Dictionary describing "Currently playing" List Item. */
-	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
-	NSDictionary *_radioBouquetDictionary; /*!< @brief Dictionary describing Radio Bouqet List Item. */
-	NSDictionary *_radioServiceDictionary; /*!< @brief Dictionary describing Radio Service List Item. */
-	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
-	NSDictionary *_serviceDictionary; /*!< @brief Dictionary describing Service List Item. */
-	NSDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */
+	UIViewController *_currentController;
+	UIViewController *_bouquetController;
+	UIViewController *_serviceController;
+	UIViewController *_timerController;
+	UIViewController *_rcController;
+	UIViewController *_otherController;
 }
 
 /*!
  @brief Table View.
  */
-@property (nonatomic, retain) UITableView *myTableView;
+@property (nonatomic, retain) UITabBar *myTabBar;
 
 @end

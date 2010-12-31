@@ -14,13 +14,13 @@
 @implementation AppDelegate
 
 @synthesize window;
-@synthesize navigationController;
+@synthesize tabBarController;
 
 /* finished launching */
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {
 	// Show the window and view
-	[window addSubview: navigationController.view];
+	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -106,8 +106,8 @@
 /* back to foreground */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	[navigationController viewWillAppear:YES];
-	[navigationController viewDidAppear:YES];
+	[tabBarController viewWillAppear:YES];
+	[tabBarController viewDidAppear:YES];
 }
 
 /* backgrounded */
@@ -115,15 +115,15 @@
 {
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
-	[navigationController viewWillDisappear:NO];
-	[navigationController viewDidDisappear:NO];
+	[tabBarController viewWillDisappear:NO];
+	[tabBarController viewDidDisappear:NO];
 }
 
 /* dealloc */
 - (void)dealloc
 {
 	[window release];
-	[navigationController release];
+	[tabBarController release];
 
 	[super dealloc];
 }

@@ -913,7 +913,7 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
-- (void)openRCEmulator: (UINavigationController *)navigationController
+- (UIViewController *)createRCEmulator
 {
 	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
 	UIViewController *targetViewController = nil;
@@ -921,8 +921,7 @@ enum neutrinoMessageTypes {
 		targetViewController = [[SimpleRCEmulatorController alloc] init];
 	else
 		targetViewController = [[NeutrinoRCEmulatorController alloc] init];
-	[navigationController pushViewController:targetViewController animated:YES];
-	[targetViewController release];
+	return targetViewController;
 }
 
 - (void)freeCaches
