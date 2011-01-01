@@ -84,24 +84,6 @@
 
 	UIViewController *targetViewController;
 
-	targetViewController = [[BouquetListController alloc] init];
-	((BouquetListController *)targetViewController).isRadio = YES;
-	_radioBouquetDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
-						   NSLocalizedString(@"Radio Bouquet List Title", @""), @"title",
-						   NSLocalizedString(@"Radio Bouquet List Explain", @""), @"explainText",
-						   targetViewController, @"viewController",
-						   nil] retain];
-	[targetViewController release];
-
-	targetViewController = [[ServiceListController alloc] init];
-	((ServiceListController *)targetViewController).isRadio = YES;
-	_radioServiceDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
-						   NSLocalizedString(@"Radio Service List Title", @""), @"title",
-						   NSLocalizedString(@"Radio Service List Explain", @""), @"explainText",
-						   targetViewController, @"viewController",
-						   nil] retain];
-	[targetViewController release];
-
 	targetViewController = [[EventSearchListController alloc] init];
 	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Event Search Title", @""), @"title",
