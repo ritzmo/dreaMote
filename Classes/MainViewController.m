@@ -154,16 +154,17 @@
 	{
 		[menuList removeObject: _currentController];
 	}
-	
+
 	// RC second to last
 	[menuList removeObject: _rcController];
 	[_rcController release];
 	_rcController = [[RemoteConnectorObject sharedRemoteConnector] newRCEmulator];
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
 
-	//NSUInteger idx = self.selectedIndex;
 	[self setViewControllers: menuList];
-	//self.selectedIndex = (idx == NSNotFound) ? 0 : idx;
+	// initial load
+	if(self.selectedIndex == NSNotFound)
+		self.selectedIndex = 0;
 }
 
 - (BOOL)checkConnection
@@ -230,13 +231,13 @@
 	}
 
 	[self.selectedViewController viewWillDisappear:YES];
-	[viewController viewWillAppear:YES];
-	[self.selectedViewController viewDidDisappear:YES]; // XXX: we don't know the previous controller in didSelectViewController, so call this here
+	[self.selectedViewController viewDidDisappear:YES];
 	return YES;
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
+	[viewController viewWillAppear:YES];
 	[viewController viewDidAppear:YES];
 }
 
