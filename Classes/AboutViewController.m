@@ -32,35 +32,23 @@
 /* layout */
 - (void)loadView
 {
-	// setup our parent content view and embed it to your view controller
-	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"] usedEncoding: nil error: nil] baseURL: [NSURL URLWithString: @""]];
+	aboutText.backgroundColor = [UIColor clearColor];
+	aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	aboutText.opaque = NO;
+	aboutText.delegate = self;
+
 	if(IS_IPAD())
 	{
-		contentView.backgroundColor = [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
+		aboutText.backgroundColor = [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
 	}
 	else
 	{
-		contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
+		aboutText.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
 	}
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	contentView.autoresizesSubviews = YES;
-	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = contentView;
-	[contentView release];
-
-	CGRect frame;
-	const CGSize size = self.view.bounds.size;
-
-	frame = CGRectMake(0, 0, size.width, 360);
-	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
-	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"] usedEncoding: nil error: nil] baseURL: [NSURL URLWithString: @""]];
-	aboutText.backgroundColor = [UIColor clearColor];
-	aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
-	aboutText.opaque = NO;
-	aboutText.delegate = self;
-	[self.view addSubview: aboutText];
+	self.view = aboutText;
 	[aboutText release];
 }
 
