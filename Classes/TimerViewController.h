@@ -30,9 +30,15 @@
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, AfterEventDelegate,
 													SimpleRepeatedDelegate,
-													EditableTableViewCellDelegate>
+													EditableTableViewCellDelegate,
+													UIPopoverControllerDelegate,
+													UISplitViewControllerDelegate>
 {
 @private
+	UIPopoverController *popoverController;
+	UIBarButtonItem *_cancelButtonItem;
+	UIBarButtonItem *_popoverButtonItem;
+
 	UITextField *_timerTitle; /*!< @brief Title Field. */
 	CellTextField *_timerTitleCell; /*!< @brief Title Cell. */
 	UITextField *_timerDescription; /*!< @brief Description Field. */

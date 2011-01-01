@@ -23,9 +23,11 @@
  selection.
  */
 @interface ServiceListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
-													ServiceSourceDelegate>
+													UIPopoverControllerDelegate, ServiceSourceDelegate,
+													UISplitViewControllerDelegate>
 {
 @private
+	UIPopoverController *popoverController;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief Service List. */
 	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */

@@ -27,6 +27,7 @@
 	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
+	BOOL _isSplit; /*!< @brief Split mode? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 
@@ -44,10 +45,19 @@
 - (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
 
-
 /*!
  @brief Currently in radio mode?
  */
 @property (nonatomic) BOOL isRadio;
+
+/*!
+ @brief Controlled by a split view controller?
+ */
+@property (nonatomic) BOOL isSplit;
+
+/*!
+ @brief Service List
+ */
+@property (nonatomic, retain) IBOutlet ServiceListController *serviceListController;
 
 @end

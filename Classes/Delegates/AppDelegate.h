@@ -11,10 +11,11 @@
 /*!
  @brief Application Delegate.
  */
-@interface AppDelegate : NSObject  <UIApplicationDelegate>
+@interface AppDelegate : NSObject  <UIApplicationDelegate, UITabBarControllerDelegate>
 {
+	BOOL wasSleeping;
 	UIWindow *window; /*!< @brief Application window. */
-	UINavigationController *navigationController; /*!< @brief Navigation Controller. */
+	UITabBarController *tabBarController; /*!< @brief Tab Bar Controller. */
 }
 
 /*!
@@ -23,8 +24,8 @@
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
 /*!
- @brief Navigation Controller.
+ @brief Tab Bar Controller.
  */
-@property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
+@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 
 @end

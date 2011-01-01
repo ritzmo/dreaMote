@@ -37,6 +37,7 @@
  @param sender ui element
  */
 - (void)cancelEdit:(id)sender;
+@property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
 @implementation TimerViewController
@@ -48,6 +49,7 @@
 #define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 @synthesize oldTimer = _oldTimer;
+@synthesize popoverController;
 
 - (id)init
 {
@@ -64,6 +66,7 @@
 		_timerBeginCell = nil;
 		_timerEndCell = nil;
 		_repeatedCell = nil;
+		_popoverButtonItem = nil;
 	}
 	return self;
 }
@@ -118,6 +121,9 @@
 	[_timerDescription release];
 	[_timerEnabled release];
 	[_timerJustplay release];
+	[_cancelButtonItem release];
+	[_popoverButtonItem release];
+	[popoverController release];
 
 	[_bouquetListController release];
 	[_afterEventViewController release];
@@ -153,8 +159,13 @@
 	{
 		[_timer release];
 		_timer = [newTimer retain];
+		
+		// stop editing
+		_shouldSave = NO;
+		[self cellShouldBeginEditing: nil];
+		[self setEditing: NO animated: YES];
 	}
-
+	
 	_timerTitle.text = newTimer.title;
 	_timerDescription.text = newTimer.tdescription;
 	[_timerEnabled setOn: !newTimer.disabled];
@@ -165,6 +176,11 @@
 						scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
 						atScrollPosition: UITableViewScrollPositionTop
 						animated: NO];
+	
+	// Eventually remove popover
+	if(self.popoverController != nil) {
+        [self.popoverController dismissPopoverAnimated:YES];
+    }
 }
 
 - (BOOL)creatingNewTimer
@@ -237,12 +253,12 @@
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
-							initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-							target: self
-							action: @selector(cancelEdit:)];
-	self.navigationItem.leftBarButtonItem = cancelButtonItem;
-	[cancelButtonItem release];
+
+	_cancelButtonItem = [[UIBarButtonItem alloc]
+						initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+						target: self
+						action: @selector(cancelEdit:)];
+	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
@@ -296,7 +312,8 @@
 		}
 		else
 		{
-			self.navigationItem.leftBarButtonItem = nil;
+			self.navigationItem.leftBarButtonItem = _popoverButtonItem;
+
 			[super setEditing: NO animated: animated];
 			[self cellShouldBeginEditing: nil];
 			[_timerTitleCell setEditing: NO animated: animated];
@@ -310,12 +327,7 @@
 
 	if(editing)
 	{
-		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc]
-											 initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-											 target: self
-											 action: @selector(cancelEdit:)];
-		self.navigationItem.leftBarButtonItem = cancelButtonItem;
-		[cancelButtonItem release];
+		self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 	}
 	else if(_shouldSave)
 	{
@@ -376,10 +388,12 @@
 			return;
 		}
 
-		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
 	}
 	else
-		self.navigationItem.leftBarButtonItem = nil;
+	{
+		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
+	}
 
 	[super setEditing: editing animated: animated];
 
@@ -839,6 +853,35 @@
 	_afterEventViewController = nil;
 	_datePickerController = nil;
 	_simpleRepeatedViewController = nil;
+}
+
+#pragma mark -
+#pragma mark Split view support
+#pragma mark -
+
+- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
+{
+	barButtonItem.title = aViewController.title;
+	[_popoverButtonItem release];
+	_popoverButtonItem = [barButtonItem retain];
+	if(!self.editing)
+	{
+		self.navigationItem.leftBarButtonItem = barButtonItem;
+	}
+	self.popoverController = pc;
+}
+
+
+// Called when the view is shown again in the split view, invalidating the button and popover controller.
+- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+	[_popoverButtonItem release];
+	_popoverButtonItem = nil;
+	if(!self.editing)
+	{
+		self.navigationItem.leftBarButtonItem = nil;
+	}
+	self.popoverController = nil;
 }
 
 @end

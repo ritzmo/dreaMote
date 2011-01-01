@@ -132,6 +132,9 @@
 		[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
 		[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
 		[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
+
+		// we need to post a notification in case the rc emulator was changed...
+		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	}
 
 	// If we did not save this time we are supposed to save if this is opened again
@@ -329,6 +332,7 @@
 	{
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 		NSInteger currentDefault = [stdDefaults integerForKey: kActiveConnection];
+		NSInteger currentConnected = [RemoteConnectorObject getConnectedId];
 		NSInteger index = indexPath.row;
 		if(self.editing) --index;
 
@@ -342,11 +346,20 @@
 			[RemoteConnectorObject disconnect];
 			[(UITableView *)self.view reloadData];
 		}
+		// connected is removed
+		if(currentConnected == index && currentConnected != currentDefault)
+		{
+			[RemoteConnectorObject disconnect];
+			[(UITableView *)self.view reloadData];
+		}
 
 		// Remove item
 		[_connections removeObjectAtIndex: index];
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 						 withRowAnimation: UITableViewRowAnimationFade];
+		
+		// post notification
+		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	}
 	// Add new connection
 	else if(editingStyle == UITableViewCellEditingStyleInsert)

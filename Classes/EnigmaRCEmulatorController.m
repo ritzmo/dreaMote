@@ -13,6 +13,20 @@
 
 @implementation EnigmaRCEmulatorController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	if((self = [super initWithNibName: @"EnigmaRCEmulator" bundle: nil]))
+	{
+		//
+	}
+	return self;
+}
+
+- (void)viewDidLoad
+{
+	[self.view addSubview: self.rcView];
+}
+
 - (void)loadView
 {
 	const CGFloat factor = (IS_IPAD()) ? 2.38f : 1.0f;

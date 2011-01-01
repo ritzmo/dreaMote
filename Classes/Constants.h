@@ -62,6 +62,9 @@
 //
 #define kVanilla_ID				@"Vanilla_ID"
 
+// custom notifications
+#define kReconnectNotification	@"dreaMoteDidReconnect"
+
 // keys in connection dict
 #define kRemoteName				@"remoteNameKey"
 #define kRemoteHost				@"remoteHostKey"

@@ -14,15 +14,20 @@
 @implementation AppDelegate
 
 @synthesize window;
-@synthesize navigationController;
+@synthesize tabBarController;
+
+- (id)init
+{
+	if((self = [super init]))
+	{
+		wasSleeping = NO;
+	}
+	return self;
+}
 
 /* finished launching */
-- (void)applicationDidFinishLaunching:(UIApplication *)application
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	// Show the window and view
-	[window addSubview: navigationController.view];
-	[window makeKeyAndVisible];
-
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *testValue = nil;
@@ -93,6 +98,12 @@
 
 	if([RemoteConnectorObject loadConnections])
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
+	
+	// Show the window and view
+	[window addSubview: tabBarController.view];
+	[window makeKeyAndVisible];
+	
+	return YES;
 }
 
 /* close app */
@@ -106,8 +117,11 @@
 /* back to foreground */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	[navigationController viewWillAppear:YES];
-	[navigationController viewDidAppear:YES];
+	if(wasSleeping)
+	{
+		[tabBarController viewWillAppear:YES];
+		[tabBarController viewDidAppear:YES];
+	}
 }
 
 /* backgrounded */
@@ -115,15 +129,16 @@
 {
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
-	[navigationController viewWillDisappear:NO];
-	[navigationController viewDidDisappear:NO];
+	[tabBarController viewWillDisappear:NO];
+	[tabBarController viewDidDisappear:NO];
+	wasSleeping = YES;
 }
 
 /* dealloc */
 - (void)dealloc
 {
 	[window release];
-	[navigationController release];
+	[tabBarController release];
 
 	[super dealloc];
 }

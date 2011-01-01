@@ -16,24 +16,22 @@
  If no connection is configured yet the user is immediately redirected to the
  configuration screen.
  */
-@interface MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface MainViewController : UITabBarController <UITabBarControllerDelegate>
 {
-	IBOutlet UITableView		*myTableView; /*!< @brief Table View. */
+	IBOutlet UITabBar		*myTabBar; /*!< @brief Tab bar. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
-	UIViewController *_configListController; /*!< @brief Cached Configuration List. */
-	UIViewController *_aboutViewController; /*!< @brief Cached Abour View. */
-	NSDictionary *_bouquetDictionary; /*!< @brief Dictionary describing Bouquet List Item. */
-	NSDictionary *_currentDictionary; /*!< @brief Dictionary describing "Currently playing" List Item. */
-	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
-	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
-	NSDictionary *_serviceDictionary; /*!< @brief Dictionary describing Service List Item. */
-	NSDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */
+	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
+	UIViewController *_bouquetController; /*!< @brief Bouquet List Tab. */
+	UIViewController *_serviceController; /*!< @brief Service List Tab. */
+	UIViewController *_timerController;  /*!< @brief Timer Tab. */
+	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */
+	UIViewController *_otherController;  /*!< @brief "Other" Tab. */
 }
 
 /*!
  @brief Table View.
  */
-@property (nonatomic, retain) UITableView *myTableView;
+@property (nonatomic, retain) UITabBar *myTabBar;
 
 @end

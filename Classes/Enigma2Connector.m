@@ -602,7 +602,7 @@ enum enigma2MessageTypes {
 	return result;
 }
 
-- (void)openRCEmulator: (UINavigationController *)navigationController
+- (UIViewController *)newRCEmulator
 {
 	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
 	UIViewController *targetViewController = nil;
@@ -610,8 +610,7 @@ enum enigma2MessageTypes {
 		targetViewController = [[SimpleRCEmulatorController alloc] init];
 	else
 		targetViewController = [[EnigmaRCEmulatorController alloc] init];
-	[navigationController pushViewController:targetViewController animated:YES];
-	[targetViewController release];
+	return targetViewController;
 }
 
 - (void)freeCaches

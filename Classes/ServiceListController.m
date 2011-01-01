@@ -21,9 +21,12 @@
  @brief fetch service list
  */
 - (void)fetchServices;
+@property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
 @implementation ServiceListController
+
+@synthesize popoverController;
 
 /* initialize */
 - (id)init
@@ -85,6 +88,11 @@
 	[_serviceXMLDoc release];
 	_serviceXMLDoc = nil;
 	_refreshServices = NO;
+
+	// Eventually remove popover
+	if(self.popoverController != nil) {
+        [self.popoverController dismissPopoverAnimated:YES];
+    }
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
@@ -305,6 +313,25 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark Split view support
+#pragma mark -
+
+- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
+{
+	barButtonItem.title = aViewController.title;
+	self.navigationItem.leftBarButtonItem = barButtonItem;
+	self.popoverController = pc;
+}
+
+
+// Called when the view is shown again in the split view, invalidating the button and popover controller.
+- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+	self.navigationItem.leftBarButtonItem = nil;
+	self.popoverController = nil;
 }
 
 @end

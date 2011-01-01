@@ -41,6 +41,7 @@
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
+		DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */; };
 		DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
@@ -60,12 +61,15 @@
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
+		DA5CB8F312C007B50070D368 /* EnigmaRCEmulator.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */; };
 		DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
 		DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
 		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
 		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
+		DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */; };
+		DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA6D41C812CDE0C90027493C /* OtherList.xib */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
 		DA7A232A0E372AB800455D11 /* key_2.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A23290E372AB800455D11 /* key_2.png */; };
@@ -124,6 +128,7 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
+		DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */; };
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
 		DA997A8C1093A75B003AFA17 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA997A8B1093A75B003AFA17 /* 4-sided-arrow.png */; };
@@ -152,7 +157,9 @@
 		DAD7E36110990A2000D0D76B /* key_pvr.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35A10990A2000D0D76B /* key_pvr.png */; };
 		DAD7E36210990A2000D0D76B /* key_rec.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35B10990A2000D0D76B /* key_rec.png */; };
 		DAD7E36310990A2000D0D76B /* key_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = DAD7E35C10990A2000D0D76B /* key_stop.png */; };
+		DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB9FC12CD61BC00BAF10B /* OtherListController.m */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
+		DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
 		DADFB1430EABAD4300D99545 /* media-playback-start.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13E0EABAD4300D99545 /* media-playback-start.png */; };
 		DADFB1440EABAD4300D99545 /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */; };
 		DADFB1460EABAD4300D99545 /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DADFB1410EABAD4300D99545 /* system-shutdown.png */; };
@@ -232,6 +239,8 @@
 		DA2713260D84056800C25B85 /* EventListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListController.m; sourceTree = "<group>"; };
 		DA27136A0D84071100C25B85 /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		DA27136B0D84071100C25B85 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
+		DA27463012CF71DA000B490B /* IntelligentSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IntelligentSplitViewController.h; path = IntelligentSplitViewController/IntelligentSplitViewController.h; sourceTree = "<group>"; };
+		DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IntelligentSplitViewController.m; path = IntelligentSplitViewController/IntelligentSplitViewController.m; sourceTree = "<group>"; };
 		DA27E29410924F010008A82E /* SimpleRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRCEmulatorController.h; sourceTree = "<group>"; };
 		DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRCEmulatorController.m; sourceTree = "<group>"; };
 		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
@@ -266,6 +275,7 @@
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		DA5CB8F212C007B50070D368 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/EnigmaRCEmulator.xib"; sourceTree = "<group>"; };
 		DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
 		DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
 		DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoRCEmulatorController.h; sourceTree = "<group>"; };
@@ -279,6 +289,9 @@
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
 		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
+		DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSplitViewController.h; sourceTree = "<group>"; };
+		DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSplitViewController.m; sourceTree = "<group>"; };
+		DA6D41C912CDE0C90027493C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
 		DA7A22780E371ACA00455D11 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
@@ -362,6 +375,7 @@
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		DA80C4920E37A254008A42AE /* MovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieViewController.h; sourceTree = "<group>"; };
 		DA80C4930E37A254008A42AE /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
+		DA95710F12C779F7003CD96B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/SimpleRCEmulator.xib"; sourceTree = "<group>"; };
 		DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DA9789890F9DBB8F005C7390 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -409,8 +423,12 @@
 		DAD7E35A10990A2000D0D76B /* key_pvr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_pvr.png; path = Images/key_pvr.png; sourceTree = "<group>"; };
 		DAD7E35B10990A2000D0D76B /* key_rec.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_rec.png; path = Images/key_rec.png; sourceTree = "<group>"; };
 		DAD7E35C10990A2000D0D76B /* key_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = key_stop.png; path = Images/key_stop.png; sourceTree = "<group>"; };
+		DADBB9FB12CD61BC00BAF10B /* OtherListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherListController.h; sourceTree = "<group>"; };
+		DADBB9FC12CD61BC00BAF10B /* OtherListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherListController.m; sourceTree = "<group>"; };
 		DADE1AE70F115A2500807A25 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
+		DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetSplitViewController.h; sourceTree = "<group>"; };
+		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
 		DADFB13E0EABAD4300D99545 /* media-playback-start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "media-playback-start.png"; path = "Images/media-playback-start.png"; sourceTree = "<group>"; };
 		DADFB13F0EABAD4300D99545 /* preferences-desktop-screensaver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "preferences-desktop-screensaver.png"; path = "Images/preferences-desktop-screensaver.png"; sourceTree = "<group>"; };
 		DADFB1410EABAD4300D99545 /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "system-shutdown.png"; path = "Images/system-shutdown.png"; sourceTree = "<group>"; };
@@ -453,9 +471,11 @@
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DAF197540FF574DB009CA6A0 /* Delegates */,
 				DABF639F10F8BE3E002658DD /* Insort */,
+				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
+				DADEF27E12CE12900047E45E /* SplitViewController */,
 				DA0BF0470F0BC011004B488C /* TouchXML */,
 				DAF0D5460E38FF16001F7CF1 /* ViewController */,
 				DA7D23630F101F1500BB8BE7 /* XMLReader */,
@@ -505,6 +525,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				DA6D41C812CDE0C90027493C /* OtherList.xib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -521,6 +542,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */,
+				DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */,
 				DA0FA5750EB1D189009A1898 /* about.html */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
@@ -641,6 +664,15 @@
 				DA0BF6D30F0C2D56004B488C /* Event.m */,
 			);
 			path = Neutrino;
+			sourceTree = "<group>";
+		};
+		DA27462F12CF71BD000B490B /* IntelligentSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DA27463012CF71DA000B490B /* IntelligentSplitViewController.h */,
+				DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */,
+			);
+			name = IntelligentSplitViewController;
 			sourceTree = "<group>";
 		};
 		DA7A23250E372A8800455D11 /* Images */ = {
@@ -809,6 +841,17 @@
 			path = SVDRP;
 			sourceTree = "<group>";
 		};
+		DADEF27E12CE12900047E45E /* SplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
+				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
+				DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */,
+				DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */,
+			);
+			name = SplitViewController;
+			sourceTree = "<group>";
+		};
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -867,6 +910,8 @@
 				DA784CF40F7D147F00A8050F /* EventSearchListController.m */,
 				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
 				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
+				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
+				DADBB9FC12CD61BC00BAF10B /* OtherListController.m */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DA7FD7540D84307700974B1A /* TimerListController.h */,
@@ -1042,6 +1087,9 @@
 				DA43E4C610A316B500D50998 /* exit.png in Resources */,
 				DA43E4C710A316B500D50998 /* menu.png in Resources */,
 				DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */,
+				DA5CB8F312C007B50070D368 /* EnigmaRCEmulator.xib in Resources */,
+				DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */,
+				DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1145,12 +1193,32 @@
 				DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */,
 				DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */,
 				DA66430510FA0CFF000C96F4 /* Result.m in Sources */,
+				DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */,
+				DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */,
+				DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */,
+				DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA5CB8F212C007B50070D368 /* en */,
+			);
+			name = EnigmaRCEmulator.xib;
+			sourceTree = "<group>";
+		};
+		DA6D41C812CDE0C90027493C /* OtherList.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA6D41C912CDE0C90027493C /* en */,
+			);
+			name = OtherList.xib;
+			sourceTree = "<group>";
+		};
 		DA7FD6C80D8428F900974B1A /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1158,6 +1226,14 @@
 				DA664CC10EA8C80100A37F55 /* de */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DA95710F12C779F7003CD96B /* en */,
+			);
+			name = SimpleRCEmulator.xib;
 			sourceTree = "<group>";
 		};
 		DACFCCEE0E33CAD100348996 /* MainWindow.xib */ = {

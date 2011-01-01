@@ -70,6 +70,7 @@
 @synthesize connectionIndex = _connectionIndex;
 @synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
+@synthesize mustSave = _mustSave;
 
 /*!
  @brief Keyboard offset.
@@ -87,6 +88,7 @@
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
 		_connectorCell = nil;
+		_mustSave = NO;
 	}
 	return self;
 }
@@ -300,7 +302,12 @@
 
 				// Reconnect because changes won't be applied otherwise
 				if(_connectionIndex == [RemoteConnectorObject getConnectedId])
+				{
 					[RemoteConnectorObject connectTo: _connectionIndex];
+				
+					// post notification
+					[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+				}
 			}
 		}
 
@@ -325,9 +332,21 @@
 /* cancel and close */
 - (void)cancelEdit: (id)sender
 {
-	_shouldSave = NO;
-	[self setEditing: NO animated: YES];
-	[self.navigationController popViewControllerAnimated: YES];
+	if(_mustSave)
+	{
+		UIAlertView *notification = [[UIAlertView alloc]
+									initWithTitle:NSLocalizedString(@"Error", @"")
+									message:NSLocalizedString(@"You have to enter connection details to use this application.", @"")
+									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+	}
+	else
+	{
+		_shouldSave = NO;
+		[self setEditing: NO animated: YES];
+		[self.navigationController popViewControllerAnimated: YES];
+	}
 }
 
 /* "make default" button pressed */
@@ -353,6 +372,9 @@
 	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 								withRowAnimation: UITableViewRowAnimationFade];
 	[(UITableView *)self.view endUpdates];
+	
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 }
 
 /* "connect" button pressed */
@@ -382,6 +404,9 @@
 											[NSIndexPath indexPathForRow:0 inSection:3]]
 				withRowAnimation: UITableViewRowAnimationFade];
 	[(UITableView *)self.view endUpdates];
+
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 }
 
 /* rotate with device */
@@ -493,11 +518,13 @@
 			return 2;
 		case 2:
 			/*!
-			 @brief Add "single bouquet" & "advanced remote" switch for Enigma2 based STBs.
+			 @brief Add "single bouquet" & "advanced remote" switch for Enigma2 based STBs
+			  on iPhone, but iPad does not know single bouquet mode, so there is only two
+			  rows.
 			 @note Actually this is an ugly hack but I really wanted this feature :P
 			 */
 			if(_connector == kEnigma2Connector)
-				return 3;
+				return (IS_IPAD()) ? 2 : 3;
 			return 1;
 		case 3:
 			if(_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
@@ -612,13 +639,17 @@
 					_connectorCell = sourceCell;
 					break;
 				case 1:
-					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-					if(sourceCell == nil)
-						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+					if(!IS_IPAD())
+					{
+						sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+						if(sourceCell == nil)
+							sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
-					((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
-					break;
+						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
+						((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
+						break;
+					}
+					/* FALL THROUGH */
 				case 2:
 					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
 					if(sourceCell == nil)

@@ -14,6 +14,20 @@
 
 @implementation SimpleRCEmulatorController
 
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	if((self = [super initWithNibName: @"SimpleRCEmulator" bundle: nil]))
+	{
+		//
+	}
+	return self;
+}
+
+- (void)viewDidLoad
+{
+	[self.view addSubview: self.rcView];
+}
+
 - (void)loadView
 {
 	CGRect frame;
@@ -46,7 +60,7 @@
 	[roundedButtonType release];
 
 	// swipe
-	frame = CGRectMake(0, 100, mainViewSize.width, mainViewSize.height - 145);
+	frame = CGRectMake(0, 100, mainViewSize.width, mainViewSize.height - 160);
 	roundedButtonType = [[UIButton alloc] initWithFrame: frame];
 	roundedButtonType.userInteractionEnabled = NO;
 	UIImage *image = [UIImage imageNamed:@"4-sided-arrow.png"];

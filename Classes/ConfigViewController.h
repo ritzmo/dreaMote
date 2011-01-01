@@ -46,6 +46,7 @@
 	UISwitch *_advancedRemoteSwitch;
 	UISwitch *_sslSwitch; /*!< @brief Switch to enable SSL. */
 
+	BOOL _mustSave;
 	BOOL _shouldSave; /*!< @brief Settings should be Saved. */
 	NSInteger _connector; /*!< @brief Selected Connector. */
 }
@@ -63,13 +64,12 @@
 
 /*!
  @brief Standard Constructor.
-
+ 
  Create new Connection.
  
  @return ConfigViewController instance.
  */
 + (ConfigViewController *)newConnection;
-
 
 
 /*!
@@ -91,5 +91,10 @@
  @brief Index in List of known Connections.
  */
 @property (nonatomic) NSInteger connectionIndex;
+
+/*!
+ @brief Force user to save this entry.
+ */
+@property (nonatomic) BOOL mustSave;
 
 @end
