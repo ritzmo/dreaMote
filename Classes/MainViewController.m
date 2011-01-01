@@ -158,7 +158,7 @@
 	// RC second to last
 	[menuList removeObject: _rcController];
 	[_rcController release];
-	_rcController = [[RemoteConnectorObject sharedRemoteConnector] createRCEmulator];
+	_rcController = [[RemoteConnectorObject sharedRemoteConnector] newRCEmulator];
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
 
 	//NSUInteger idx = self.selectedIndex;
@@ -178,7 +178,8 @@
 		[notification show];
 		[notification release];
 		
-		UIViewController *targetViewController = [ConfigViewController firstConnection];
+		ConfigViewController *targetViewController = [ConfigViewController newConnection];
+		targetViewController.mustSave = YES;
 		self.selectedIndex = [menuList count] - 1;
 		[_otherController.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];

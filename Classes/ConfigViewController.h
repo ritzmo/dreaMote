@@ -71,16 +71,6 @@
  */
 + (ConfigViewController *)newConnection;
 
-/*!
- @brief Standard Constructor.
- 
- Create first Connection.
- 
- @return ConfigViewController instance.
- */
-+ (ConfigViewController *)firstConnection;
-
-
 
 /*!
  @brief Connection Dictionary.

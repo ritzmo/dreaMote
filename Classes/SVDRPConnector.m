@@ -931,7 +931,7 @@
 	return nil;
 }
 
-- (UIViewController *)createRCEmulator
+- (UIViewController *)newRCEmulator
 {
 	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
 	UIViewController *targetViewController = nil;

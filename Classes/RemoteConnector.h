@@ -450,7 +450,7 @@ enum buttonCodes {
  
  @return instance of rc emulator.
  */
-- (UIViewController *)createRCEmulator;
+- (UIViewController *)newRCEmulator;
 
 
 

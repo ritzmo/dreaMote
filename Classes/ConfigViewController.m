@@ -120,24 +120,6 @@
 	return configViewController;
 }
 
-/* initiate ConfigViewController for the first connection */
-+ (ConfigViewController *)firstConnection
-{
-	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
-	configViewController.connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									   @"", kRemoteHost,
-									   @"", kRemoteName,
-									   @"", kUsername,
-									   @"", kPassword,
-									   [NSNumber numberWithInteger:
-										kEnigma2Connector], kConnector,
-									   nil];
-	configViewController.connectionIndex = -1;
-	configViewController.mustSave = YES;
-	
-	return configViewController;
-}
-
 /* dealloc */
 - (void)dealloc
 {
