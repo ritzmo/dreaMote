@@ -19,6 +19,7 @@
 @interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
+	UIPopoverController *popoverController;
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
 	UITextView *_summaryView; /*!< @brief Summary of the movie. */
 }

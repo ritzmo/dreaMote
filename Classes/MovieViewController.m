@@ -18,9 +18,12 @@
 
 @interface MovieViewController()
 - (UITextView *)create_Summary;
+@property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
 @implementation MovieViewController
+
+@synthesize popoverController;
 
 - (id)init
 {
@@ -68,6 +71,11 @@
 
 	[_summaryView release];
 	_summaryView = [[self create_Summary] retain];
+	
+	// Eventually remove popover
+	if(self.popoverController != nil) {
+        [self.popoverController dismissPopoverAnimated:YES];
+    }
 
 	[(UITableView *)self.view reloadData];
 	[(UITableView *)self.view

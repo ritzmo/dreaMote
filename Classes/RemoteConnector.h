@@ -91,6 +91,8 @@ enum connectorFeatures {
 	kFeaturesCurrent,
 	/*! @brief Supports radio mode. */
 	kFeaturesRadioMode,
+	/*! @brief Support recording locations. */
+	kFeaturesRecordingLocations,
 };
 
 /*!
@@ -153,6 +155,7 @@ enum buttonCodes {
 @protocol ServiceProtocol;
 @protocol TimerProtocol;
 @protocol EventSourceDelegate;
+@protocol LocationSourceDelegate;
 @protocol MovieSourceDelegate;
 @protocol ServiceSourceDelegate;
 @protocol SignalSourceDelegate;
@@ -258,12 +261,21 @@ enum buttonCodes {
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
 
 /*!
- @brief Request Movielist from the Receiver.
+ @brief Request Recording Locations from the Receiver.
  
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate;
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+
+/*!
+ @brief Request Movielist from the Receiver.
+ 
+ @param delegate Delegate to be called back.
+ @param location Directory to search for movies
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
 
 /*!
  @brief Get current Volume settings.

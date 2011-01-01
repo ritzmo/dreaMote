@@ -484,9 +484,21 @@
 	return nil;
 }
 
-// TODO: test this
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+// TODO: test this
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+{
+	if(location != nil)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];

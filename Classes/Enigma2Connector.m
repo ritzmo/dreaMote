@@ -16,6 +16,7 @@
 #import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
 #import "XMLReader/Enigma2/MovieXMLReader.h"
+#import "XMLReader/Enigma2/LocationXMLReader.h"
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
 #import "XMLReader/Enigma2/SignalXMLReader.h"
 #import "XMLReader/Enigma2/TimerXMLReader.h"
@@ -241,9 +242,24 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
-- (CXMLDocument *)fetchMovielist:(NSObject<MovieSourceDelegate> *)delegate
+- (CXMLDocument *)fetchLocationlist:(NSObject <LocationSourceDelegate> *)delegate
 {
-	NSURL *myURI = [NSURL URLWithString: @"/web/movielist" relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: @"/web/getlocations" relativeToURL: _baseAddress];
+	
+	const BaseXMLReader *streamReader = [[Enigma2LocationXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)fetchMovielist:(NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+{
+	NSString *dirname = nil;
+	if(location == nil)
+		dirname = @"/hdd/movie/";
+	else
+		dirname = [location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/movielist?dirname=%@", dirname] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];

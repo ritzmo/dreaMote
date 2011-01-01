@@ -24,10 +24,14 @@
  @brief fetch movie list
  */
 - (void)fetchMovies;
+@property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
-
 @implementation MovieListController
+
+@synthesize popoverController;
+@synthesize isSplit = _isSplit;
+@synthesize movieViewController = _movieViewController;
 
 /* initialize */
 - (id)init
@@ -37,6 +41,7 @@
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray array] retain];
 		_refreshMovies = YES;
+		_isSplit = NO;
 
 		_dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -58,11 +63,49 @@
 	[super dealloc];
 }
 
+/* getter of currentLocation property */
+- (NSString *)currentLocation
+{
+	return _currentLocation;
+}
+
+/* setter of currentLocation property */
+- (void)setCurrentLocation: (NSString *)newLocation
+{
+	if([_currentLocation isEqualToString: newLocation]) return;
+	
+	// Free old bouquet, retain new one
+	[_currentLocation release];
+	_currentLocation = [newLocation retain];
+	
+	// Set Title
+	self.title = newLocation;
+	
+	// Free Caches and reload data
+	[_movies removeAllObjects];
+	[(UITableView *)self.view reloadData];
+	[_movieXMLDoc release];
+	_movieXMLDoc = nil;
+	_refreshMovies = NO;
+	
+	// Eventually remove popover
+	if(self.popoverController != nil) {
+        [self.popoverController dismissPopoverAnimated:YES];
+    }
+	
+	// Spawn a thread to fetch the movie data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
+}
+
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[_movieViewController release];
-	_movieViewController = nil;
+	if(!IS_IPAD())
+	{
+		[_movieViewController release];
+		_movieViewController = nil;
+	}
 
     [super didReceiveMemoryWarning];
 }
@@ -121,8 +164,11 @@
 	if(_refreshMovies)
 	{
 		[_movies removeAllObjects];
-		[_movieViewController release];
-		_movieViewController = nil;
+		if(!IS_IPAD())
+		{
+			[_movieViewController release];
+			_movieViewController = nil;
+		}
 		[_movieXMLDoc release];
 		_movieXMLDoc = nil;
 	}
@@ -153,7 +199,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_movieXMLDoc release];
-	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self] retain];
+	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self withLocation: _currentLocation] retain];
 	[pool release];
 }
 
@@ -202,7 +248,8 @@
 		_movieViewController = [[MovieViewController alloc] init];
 	_movieViewController.movie = movie;
 
-	[self.navigationController pushViewController: _movieViewController animated: YES];
+	if(!_isSplit)
+		[self.navigationController pushViewController: _movieViewController animated: YES];
 
 	_refreshMovies = NO;
 

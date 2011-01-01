@@ -370,7 +370,14 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	// TODO: is this actually possible?
 	return nil;
@@ -882,6 +889,7 @@ enum neutrinoMessageTypes {
 
 	return nil;
 }
+
 
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {

@@ -25,12 +25,31 @@
 													MovieSourceDelegate>
 {
 @private
+	UIPopoverController *popoverController;
 	NSMutableArray *_movies; /*!< @brief Movie List. */
 	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
 	CXMLDocument *_movieXMLDoc; /*!< Current Movie XML Document. */
 	BOOL _refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
+	BOOL _isSplit; /*!< @brief Split mode? */	
+
+	NSString *_currentLocation; /*!< @brief Current Location. */
 }
+
+/*!
+ @brief Currently displayed directory
+ */
+@property (nonatomic, retain) NSString *currentLocation;
+
+/*!
+ @brief Controlled by a split view controller?
+ */
+@property (nonatomic) BOOL isSplit;
+
+/*!
+ @brief Movie View Controller
+ */
+@property (nonatomic, retain) MovieViewController *movieViewController;
 
 @end

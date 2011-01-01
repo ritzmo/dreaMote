@@ -282,8 +282,20 @@ enum enigma1MessageTypes {
 	return doc;
 }
 
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location
+{
+	if(location != nil)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=3&submode=4" relativeToURL: _baseAddress];
 	
 	NSError *parseError = nil;

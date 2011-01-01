@@ -42,6 +42,10 @@
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
 		DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */; };
+		DA27485312CFC830000B490B /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27485212CFC830000B490B /* Location.m */; };
+		DA27485612CFC83D000B490B /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27485512CFC83D000B490B /* Location.m */; };
+		DA27485A12CFC86D000B490B /* LocationXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27485912CFC86D000B490B /* LocationXMLReader.m */; };
+		DA27487412CFCC20000B490B /* LocationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27487312CFCC20000B490B /* LocationListController.m */; };
 		DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
@@ -241,6 +245,16 @@
 		DA27136B0D84071100C25B85 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
 		DA27463012CF71DA000B490B /* IntelligentSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IntelligentSplitViewController.h; path = IntelligentSplitViewController/IntelligentSplitViewController.h; sourceTree = "<group>"; };
 		DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IntelligentSplitViewController.m; path = IntelligentSplitViewController/IntelligentSplitViewController.m; sourceTree = "<group>"; };
+		DA27485012CFC81F000B490B /* LocationSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationSourceDelegate.h; path = Delegates/LocationSourceDelegate.h; sourceTree = "<group>"; };
+		DA27485112CFC830000B490B /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		DA27485212CFC830000B490B /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		DA27485412CFC83D000B490B /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		DA27485512CFC83D000B490B /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		DA27485712CFC85C000B490B /* LocationProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationProtocol.h; sourceTree = "<group>"; };
+		DA27485812CFC86D000B490B /* LocationXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationXMLReader.h; sourceTree = "<group>"; };
+		DA27485912CFC86D000B490B /* LocationXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationXMLReader.m; sourceTree = "<group>"; };
+		DA27487212CFCC20000B490B /* LocationListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationListController.h; sourceTree = "<group>"; };
+		DA27487312CFCC20000B490B /* LocationListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationListController.m; sourceTree = "<group>"; };
 		DA27E29410924F010008A82E /* SimpleRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRCEmulatorController.h; sourceTree = "<group>"; };
 		DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRCEmulatorController.m; sourceTree = "<group>"; };
 		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
@@ -597,6 +611,7 @@
 				DA0BF4580F0C1066004B488C /* Neutrino */,
 				DADE1AE60F115A2500807A25 /* SVDRP */,
 				DA0BF44C0F0C1066004B488C /* EventProtocol.h */,
+				DA27485712CFC85C000B490B /* LocationProtocol.h */,
 				DA0BF5C80F0C19C4004B488C /* MovieProtocol.h */,
 				DA36F6B70F0D2D8F005608CC /* ServiceProtocol.h */,
 				DA0BF7510F0C3113004B488C /* TimerProtocol.h */,
@@ -624,6 +639,8 @@
 			children = (
 				DA0BF44A0F0C1066004B488C /* Event.h */,
 				DA0BF44B0F0C1066004B488C /* Event.m */,
+				DA27485112CFC830000B490B /* Location.h */,
+				DA27485212CFC830000B490B /* Location.m */,
 				DA0BF5C50F0C19B5004B488C /* Movie.h */,
 				DA0BF5C60F0C19B5004B488C /* Movie.m */,
 				DA36F6B90F0D2D9A005608CC /* Service.h */,
@@ -639,6 +656,8 @@
 			children = (
 				DA0BF44E0F0C1066004B488C /* Event.h */,
 				DA0BF44F0F0C1066004B488C /* Event.m */,
+				DA27485412CFC83D000B490B /* Location.h */,
+				DA27485512CFC83D000B490B /* Location.m */,
 				DA0BF4500F0C1066004B488C /* Movie.h */,
 				DA0BF4510F0C1066004B488C /* Movie.m */,
 				DA66430310FA0CFF000C96F4 /* Result.h */,
@@ -789,6 +808,8 @@
 				DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */,
 				DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */,
 				DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */,
+				DA27485812CFC86D000B490B /* LocationXMLReader.h */,
+				DA27485912CFC86D000B490B /* LocationXMLReader.m */,
 				DA7D23720F101F1500BB8BE7 /* MovieXMLReader.h */,
 				DA7D23730F101F1500BB8BE7 /* MovieXMLReader.m */,
 				DA7D23740F101F1500BB8BE7 /* ServiceXMLReader.h */,
@@ -908,6 +929,8 @@
 				DA2713260D84056800C25B85 /* EventListController.m */,
 				DA784CF30F7D147F00A8050F /* EventSearchListController.h */,
 				DA784CF40F7D147F00A8050F /* EventSearchListController.m */,
+				DA27487212CFCC20000B490B /* LocationListController.h */,
+				DA27487312CFCC20000B490B /* LocationListController.m */,
 				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
 				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
 				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
@@ -969,6 +992,7 @@
 				DAF1976B0FF5764D009CA6A0 /* AppDelegate.h */,
 				DAF1976C0FF5764D009CA6A0 /* AppDelegate.m */,
 				DAF1976D0FF5764D009CA6A0 /* EventSourceDelegate.h */,
+				DA27485012CFC81F000B490B /* LocationSourceDelegate.h */,
 				DAF1976E0FF5764D009CA6A0 /* MovieSourceDelegate.h */,
 				DAF1976F0FF5764D009CA6A0 /* ServiceSourceDelegate.h */,
 				DAF197700FF5764D009CA6A0 /* SignalSourceDelegate.h */,
@@ -1197,6 +1221,10 @@
 				DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */,
 				DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */,
 				DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */,
+				DA27485312CFC830000B490B /* Location.m in Sources */,
+				DA27485612CFC83D000B490B /* Location.m in Sources */,
+				DA27485A12CFC86D000B490B /* LocationXMLReader.m in Sources */,
+				DA27487412CFCC20000B490B /* LocationListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

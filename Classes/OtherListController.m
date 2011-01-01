@@ -22,6 +22,7 @@
 #import "EventSearchListController.h"
 #import "MessageViewController.h"
 #import "MovieListController.h"
+#import "LocationListController.h"
 #import "ServiceListController.h"
 #import "SignalViewController.h"
 #import "TimerListController.h"
@@ -45,7 +46,6 @@
 		// make the title of this page the same as the title of this app
 		self.title = NSLocalizedString(@"Other", @"Title of OtherListController");
 		_configListController = nil;
-		_aboutViewController = nil;
 	}
 	return self;
 }
@@ -56,6 +56,7 @@
 	[menuList release];
 	[_configListController release];
 	[_eventSearchDictionary release];
+	[_locationsDictionary release];
 	[_recordDictionary release];
 	[_signalDictionary release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -100,13 +101,20 @@
 							   nil] retain];
 	[targetViewController release];
 
+	targetViewController = [[LocationListController alloc] init];
+	_locationsDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Location List Title", @""), @"title",
+						 NSLocalizedString(@"Location List Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil] retain];
+	[targetViewController release];
+
 	targetViewController = [[MovieListController alloc] init];
 	_recordDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Movie List Title", @""), @"title",
 						 NSLocalizedString(@"Movie List Explain", @""), @"explainText",
 						 targetViewController, @"viewController",
 						 nil] retain];
-
 	[targetViewController release];
 
 	targetViewController = [[ControlViewController alloc] init];
@@ -115,7 +123,6 @@
 						NSLocalizedString(@"Control View Explain", @""), @"explainText",
 						targetViewController, @"viewController",
 						nil]];
-
 	[targetViewController release];
 
 	targetViewController = [[MessageViewController alloc] init];
@@ -179,17 +186,32 @@
 	// Add/Remove Record
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
 	{
-		if(![menuList containsObject: _recordDictionary])
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 		{
-			[menuList insertObject:_recordDictionary atIndex: 2];
-			reload = YES;
+			if(![menuList containsObject: _locationsDictionary])
+			{
+				[menuList removeObject:_recordDictionary];
+				[menuList insertObject:_locationsDictionary atIndex: 2];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if(![menuList containsObject: _recordDictionary])
+			{
+				[menuList removeObject:_locationsDictionary];
+				[menuList insertObject:_recordDictionary atIndex: 2];
+				reload = YES;
+			}
 		}
 	}
 	else
 	{
-		if([menuList containsObject: _recordDictionary])
+		if([menuList containsObject: _recordDictionary]
+		   || [menuList containsObject: _locationsDictionary])
 		{
 			[menuList removeObject: _recordDictionary];
+			[menuList removeObject: _locationsDictionary];
 			reload = YES;
 		}
 	}
