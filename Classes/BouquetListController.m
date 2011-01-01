@@ -77,9 +77,27 @@
 	_refreshBouquets = YES;
 }
 
+/* switch radio mode */
+- (void)switchRadio:(id)sender
+{
+	self.isRadio = !_isRadio;
+	if(_isRadio)
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"TV", @"TV switch button");
+	else
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Radio", @"Radio switch button");
+	[self viewWillAppear: NO];
+}
+
 /* layout */
 - (void)loadView
 {
+	UIBarButtonItem *radioButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(switchRadio:)];
+	if(_isRadio)
+		radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
+	else
+		radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
+	self.navigationItem.rightBarButtonItem = radioButton;
+
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
 	tableView.dataSource = self;

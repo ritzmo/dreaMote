@@ -336,32 +336,6 @@
 		}
 	}
 	
-	// Add/Remove radio mode
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
-	{
-		if(isSingleBouquet)
-		{
-			if(![menuList containsObject: _radioServiceDictionary])
-			{
-				[menuList removeObject: _radioBouquetDictionary];
-				[menuList insertObject: _radioServiceDictionary atIndex: 1];
-			}
-		}
-		else
-		{
-			if(![menuList containsObject: _radioBouquetDictionary])
-			{
-				[menuList removeObject: _radioServiceDictionary];
-				[menuList insertObject: _radioBouquetDictionary atIndex: 1];
-			}
-		}
-	}
-	else
-	{
-		[menuList removeObject: _radioServiceDictionary];
-		[menuList removeObject: _radioBouquetDictionary];
-	}
-
 	// Add/Remove currently playing
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
 	{
