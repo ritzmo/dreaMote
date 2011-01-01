@@ -81,8 +81,12 @@ view-refresh.png
 Any file below the TouchXML folder is part of the TouchXML package by touchcode
 and is licensed under the MIT license.
 
-Any file below the Classe/SmallSockets folder is part of the SmallSockets
+Any file below the Classes/SmallSockets folder is part of the SmallSockets
 library and are distributed acording to the zlib/libpng license.
 
-Any file below the Classe/Insort folder is part of Fredrik Olsson's sorted
+Any file below the Classes/Insort folder is part of Fredrik Olsson's sorted
 inserts code and distributed acording to the 3-clause BSD license.
+
+Any file below the Classes/IntelligentSplitViewController is part of
+Gregory S. Combs's IntelligentSplitViewController class and distributed
+according to the Creative Commons Attribution-ShareAlike 3.0 Unported license.

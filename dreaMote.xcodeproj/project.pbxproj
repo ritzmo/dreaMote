@@ -41,6 +41,7 @@
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
+		DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */; };
 		DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
@@ -67,7 +68,6 @@
 		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
-		DA6C52F412CE3FB000968EBE /* BaseSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C52F312CE3FB000968EBE /* BaseSplitViewController.m */; };
 		DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */; };
 		DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA6D41C812CDE0C90027493C /* OtherList.xib */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
@@ -239,6 +239,8 @@
 		DA2713260D84056800C25B85 /* EventListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListController.m; sourceTree = "<group>"; };
 		DA27136A0D84071100C25B85 /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
 		DA27136B0D84071100C25B85 /* EventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventTableViewCell.m; sourceTree = "<group>"; };
+		DA27463012CF71DA000B490B /* IntelligentSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IntelligentSplitViewController.h; path = IntelligentSplitViewController/IntelligentSplitViewController.h; sourceTree = "<group>"; };
+		DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = IntelligentSplitViewController.m; path = IntelligentSplitViewController/IntelligentSplitViewController.m; sourceTree = "<group>"; };
 		DA27E29410924F010008A82E /* SimpleRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRCEmulatorController.h; sourceTree = "<group>"; };
 		DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRCEmulatorController.m; sourceTree = "<group>"; };
 		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
@@ -287,8 +289,6 @@
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
 		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
-		DA6C52F212CE3FB000968EBE /* BaseSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSplitViewController.h; sourceTree = "<group>"; };
-		DA6C52F312CE3FB000968EBE /* BaseSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSplitViewController.m; sourceTree = "<group>"; };
 		DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSplitViewController.h; sourceTree = "<group>"; };
 		DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSplitViewController.m; sourceTree = "<group>"; };
 		DA6D41C912CDE0C90027493C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
@@ -471,6 +471,7 @@
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DAF197540FF574DB009CA6A0 /* Delegates */,
 				DABF639F10F8BE3E002658DD /* Insort */,
+				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
@@ -665,6 +666,15 @@
 			path = Neutrino;
 			sourceTree = "<group>";
 		};
+		DA27462F12CF71BD000B490B /* IntelligentSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DA27463012CF71DA000B490B /* IntelligentSplitViewController.h */,
+				DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */,
+			);
+			name = IntelligentSplitViewController;
+			sourceTree = "<group>";
+		};
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -834,8 +844,6 @@
 		DADEF27E12CE12900047E45E /* SplitViewController */ = {
 			isa = PBXGroup;
 			children = (
-				DA6C52F212CE3FB000968EBE /* BaseSplitViewController.h */,
-				DA6C52F312CE3FB000968EBE /* BaseSplitViewController.m */,
 				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
 				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
 				DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */,
@@ -1187,8 +1195,8 @@
 				DA66430510FA0CFF000C96F4 /* Result.m in Sources */,
 				DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */,
 				DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */,
-				DA6C52F412CE3FB000968EBE /* BaseSplitViewController.m in Sources */,
 				DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */,
+				DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
