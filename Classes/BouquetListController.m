@@ -97,6 +97,7 @@
 	else
 		radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 	self.navigationItem.rightBarButtonItem = radioButton;
+	[radioButton release];
 
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;

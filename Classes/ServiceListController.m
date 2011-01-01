@@ -140,6 +140,7 @@
 	// Toggle single bouquet mode
 	if(!IS_IPAD() && isSingleBouquet)
 		self.navigationItem.rightBarButtonItem = radioButton;
+	[radioButton release];
 
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
