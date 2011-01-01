@@ -900,8 +900,6 @@
 		DAF0D5470E38FF1E001F7CF1 /* ListController */ = {
 			isa = PBXGroup;
 			children = (
-				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
-				DADBB9FC12CD61BC00BAF10B /* OtherListController.m */,
 				DA3AA1D60F0D828D001B2057 /* BouquetListController.h */,
 				DA3AA1D70F0D828D001B2057 /* BouquetListController.m */,
 				DAA21E7E0E99288600DD749C /* ConfigListController.h */,
@@ -912,6 +910,8 @@
 				DA784CF40F7D147F00A8050F /* EventSearchListController.m */,
 				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
 				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
+				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
+				DADBB9FC12CD61BC00BAF10B /* OtherListController.m */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DA7FD7540D84307700974B1A /* TimerListController.h */,
