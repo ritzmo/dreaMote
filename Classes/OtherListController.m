@@ -172,11 +172,7 @@
 	if(![RemoteConnectorObject isConnected])
 		if(![RemoteConnectorObject connectTo: [connId integerValue]])
 			return;
-	const BOOL isSingleBouquet =
-		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
-		&& (
-			[RemoteConnectorObject isSingleBouquet] ||
-			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+
 	BOOL reload = NO;
 	/* The menu reorganization might be buggy, this should be redone
 	   as it was a bad hack to begin with */
