@@ -70,6 +70,7 @@
 @synthesize connectionIndex = _connectionIndex;
 @synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
+@synthesize mustSave = _mustSave;
 
 /*!
  @brief Keyboard offset.
@@ -87,6 +88,7 @@
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
 		_connectorCell = nil;
+		_mustSave = NO;
 	}
 	return self;
 }
@@ -115,6 +117,24 @@
 																nil];
 	configViewController.connectionIndex = -1;
 
+	return configViewController;
+}
+
+/* initiate ConfigViewController for the first connection */
++ (ConfigViewController *)firstConnection
+{
+	ConfigViewController *configViewController = [[ConfigViewController alloc] init];
+	configViewController.connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+									   @"", kRemoteHost,
+									   @"", kRemoteName,
+									   @"", kUsername,
+									   @"", kPassword,
+									   [NSNumber numberWithInteger:
+										kEnigma2Connector], kConnector,
+									   nil];
+	configViewController.connectionIndex = -1;
+	configViewController.mustSave = YES;
+	
 	return configViewController;
 }
 
@@ -300,7 +320,12 @@
 
 				// Reconnect because changes won't be applied otherwise
 				if(_connectionIndex == [RemoteConnectorObject getConnectedId])
+				{
 					[RemoteConnectorObject connectTo: _connectionIndex];
+				
+					// post notification
+					[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+				}
 			}
 		}
 
@@ -325,9 +350,21 @@
 /* cancel and close */
 - (void)cancelEdit: (id)sender
 {
-	_shouldSave = NO;
-	[self setEditing: NO animated: YES];
-	[self.navigationController popViewControllerAnimated: YES];
+	if(_mustSave)
+	{
+		UIAlertView *notification = [[UIAlertView alloc]
+									initWithTitle:NSLocalizedString(@"Error", @"")
+									message:NSLocalizedString(@"You have to enter connection details to use this application.", @"")
+									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+	}
+	else
+	{
+		_shouldSave = NO;
+		[self setEditing: NO animated: YES];
+		[self.navigationController popViewControllerAnimated: YES];
+	}
 }
 
 /* "make default" button pressed */
@@ -353,6 +390,9 @@
 	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 								withRowAnimation: UITableViewRowAnimationFade];
 	[(UITableView *)self.view endUpdates];
+	
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 }
 
 /* "connect" button pressed */
@@ -382,6 +422,9 @@
 											[NSIndexPath indexPathForRow:0 inSection:3]]
 				withRowAnimation: UITableViewRowAnimationFade];
 	[(UITableView *)self.view endUpdates];
+
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 }
 
 /* rotate with device */

@@ -89,7 +89,7 @@
 	_refreshServices = NO;
 
 	// Eventually remove popover
-	if (self.popoverController != nil) {
+	if(self.popoverController != nil) {
         [self.popoverController dismissPopoverAnimated:YES];
     }
 

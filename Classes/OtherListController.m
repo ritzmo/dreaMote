@@ -58,6 +58,7 @@
 	[_eventSearchDictionary release];
 	[_recordDictionary release];
 	[_signalDictionary release];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super dealloc];
 }
@@ -185,6 +186,10 @@
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
 	[myTableView deselectRowAtIndexPath:tableSelection animated:YES];
 
+	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
+	if(![RemoteConnectorObject isConnected])
+		if(![RemoteConnectorObject connectTo: [connId integerValue]])
+			return;
 	const BOOL isSingleBouquet =
 		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
 		&& (

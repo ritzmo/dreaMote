@@ -67,6 +67,8 @@
 		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
+		DA6C52F412CE3FB000968EBE /* BaseSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C52F312CE3FB000968EBE /* BaseSplitViewController.m */; };
+		DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */; };
 		DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA6D41C812CDE0C90027493C /* OtherList.xib */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
@@ -285,6 +287,10 @@
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
 		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
+		DA6C52F212CE3FB000968EBE /* BaseSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseSplitViewController.h; sourceTree = "<group>"; };
+		DA6C52F312CE3FB000968EBE /* BaseSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseSplitViewController.m; sourceTree = "<group>"; };
+		DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSplitViewController.h; sourceTree = "<group>"; };
+		DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSplitViewController.m; sourceTree = "<group>"; };
 		DA6D41C912CDE0C90027493C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
@@ -828,8 +834,12 @@
 		DADEF27E12CE12900047E45E /* SplitViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DA6C52F212CE3FB000968EBE /* BaseSplitViewController.h */,
+				DA6C52F312CE3FB000968EBE /* BaseSplitViewController.m */,
 				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
 				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
+				DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */,
+				DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */,
 			);
 			name = SplitViewController;
 			sourceTree = "<group>";
@@ -1177,6 +1187,8 @@
 				DA66430510FA0CFF000C96F4 /* Result.m in Sources */,
 				DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */,
 				DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */,
+				DA6C52F412CE3FB000968EBE /* BaseSplitViewController.m in Sources */,
+				DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

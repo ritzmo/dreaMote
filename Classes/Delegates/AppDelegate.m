@@ -16,6 +16,15 @@
 @synthesize window;
 @synthesize tabBarController;
 
+- (id)init
+{
+	if((self = [super init]))
+	{
+		wasSleeping = NO;
+	}
+	return self;
+}
+
 /* finished launching */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -108,8 +117,11 @@
 /* back to foreground */
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-	[tabBarController viewWillAppear:YES];
-	[tabBarController viewDidAppear:YES];
+	if(wasSleeping)
+	{
+		[tabBarController viewWillAppear:YES];
+		[tabBarController viewDidAppear:YES];
+	}
 }
 
 /* backgrounded */
@@ -119,6 +131,7 @@
 	[RemoteConnectorObject saveConnections];
 	[tabBarController viewWillDisappear:NO];
 	[tabBarController viewDidDisappear:NO];
+	wasSleeping = YES;
 }
 
 /* dealloc */

@@ -13,6 +13,7 @@
  */
 @interface AppDelegate : NSObject  <UIApplicationDelegate, UITabBarControllerDelegate>
 {
+	BOOL wasSleeping;
 	UIWindow *window; /*!< @brief Application window. */
 	UITabBarController *tabBarController; /*!< @brief Tab Bar Controller. */
 }

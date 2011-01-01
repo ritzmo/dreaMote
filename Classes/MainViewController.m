@@ -20,9 +20,11 @@
 #import "TimerListController.h"
 #import "OtherListController.h"
 #import "BouquetSplitViewController.h"
+#import "TimerSplitViewController.h"
 
 @interface MainViewController (Private)
-- (void)handleReconnect;
+- (void)handleReconnect: (NSNotification *)note;
+- (BOOL)checkConnection;
 @end
 
 
@@ -76,6 +78,7 @@
 	if(IS_IPAD())
 	{
 		_bouquetController = [[BouquetSplitViewController alloc] init];
+		_timerController = [[TimerSplitViewController alloc] init];
 	}
 	else
 	{
@@ -85,10 +88,10 @@
 		viewController = [[ServiceListController alloc] init];
 		_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
 		[viewController release];
+		viewController = [[TimerListController alloc] init];
+		_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
+		[viewController release];
 	}
-	viewController = [[TimerListController alloc] init];
-	_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
-	[viewController release];
 	_rcController = nil;
 	_otherController = [[OtherListController alloc] init];
 	navController = [[UINavigationController alloc] initWithRootViewController: _otherController];
@@ -100,9 +103,16 @@
 
 	[self setViewControllers: menuList];
 	self.delegate = self;
+	
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 }
 
-- (void)handleReconnect
+#pragma mark -
+#pragma mark MainViewController private methods
+#pragma mark -
+
+- (void)handleReconnect: (NSNotification *)note
 {
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
@@ -147,26 +157,18 @@
 	
 	// RC second to last
 	[menuList removeObject: _rcController];
+	[_rcController release];
 	_rcController = [[RemoteConnectorObject sharedRemoteConnector] createRCEmulator];
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
-	
+
+	//NSUInteger idx = self.selectedIndex;
 	[self setViewControllers: menuList];
-	self.selectedIndex = 0; // force re-selection
+	//self.selectedIndex = (idx == NSNotFound) ? 0 : idx;
 }
 
-#pragma mark UIViewController delegates
-
-- (void)viewWillAppear:(BOOL)animated
-{
-	[self handleReconnect];
-	[self.selectedViewController viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[self.selectedViewController viewDidAppear:animated];
-
-	// viewWillAppear makes sure that a connection is established unless impossible
+- (BOOL)checkConnection
+{	
+	// handleReconnect makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
 		UIAlertView *notification = [[UIAlertView alloc]
@@ -175,13 +177,14 @@
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
-
-		UIViewController *targetViewController = [ConfigViewController newConnection];
+		
+		UIViewController *targetViewController = [ConfigViewController firstConnection];
 		self.selectedIndex = [menuList count] - 1;
 		[_otherController.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
+		return NO;
 	}
-
+	
 	else if([[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]
 			&& ![[RemoteConnectorObject sharedRemoteConnector] isReachable])
 	{
@@ -191,7 +194,23 @@
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
+		return NO;
 	}
+	return YES;
+}
+
+#pragma mark UIViewController delegates
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[self handleReconnect: nil];
+	[self.selectedViewController viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	if([self checkConnection])
+		[self.selectedViewController viewDidAppear:animated];
 }
 
 /* rotation depends on active view */
@@ -203,6 +222,12 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
+	if(![self checkConnection])
+	{
+		self.selectedIndex = [menuList count] - 1;
+		return NO;
+	}
+
 	[self.selectedViewController viewWillDisappear:YES];
 	[viewController viewWillAppear:YES];
 	[self.selectedViewController viewDidDisappear:YES]; // XXX: we don't know the previous controller in didSelectViewController, so call this here

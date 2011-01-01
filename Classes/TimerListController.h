@@ -34,6 +34,7 @@
 	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	TimerViewController *_timerViewController; /*!< @brief Cached Timer Detail View. */
 	BOOL _willReappear; /*!< @brief Used to guard free of ressources on close if we are opening a subview. */
+	BOOL _isSplit; /*!< @brief Split mode? */
 
 	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
 }
@@ -47,5 +48,15 @@
  @brief Date Formatter.
  */
 @property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
+
+/*!
+ @brief Controlled by a split view controller?
+ */
+@property (nonatomic) BOOL isSplit;
+
+/*!
+ @brief Timer View
+ */
+@property (nonatomic, retain) IBOutlet TimerViewController *timerViewController;
 
 @end

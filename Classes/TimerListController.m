@@ -30,6 +30,8 @@
 
 @synthesize timers = _timers;
 @synthesize dateFormatter = _dateFormatter;
+@synthesize isSplit = _isSplit;
+@synthesize timerViewController = _timerViewController;
 
 /* initialize */
 - (id)init
@@ -42,6 +44,7 @@
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_timerViewController = nil;
 		_willReappear = NO;
+		_isSplit = NO;
 	}
 	return self;
 }
@@ -239,7 +242,7 @@
 }
 
 /* row selected */
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger index = indexPath.row;
 	const NSInteger section = indexPath.section - 1;
@@ -250,7 +253,7 @@
 	if(!timer.valid)
 	{
 		[tableView deselectRowAtIndexPath: indexPath animated: YES];
-		return;
+		return nil;
 	}
 
 	NSObject<TimerProtocol> *ourCopy = [timer copy];
@@ -264,10 +267,12 @@
 	_timerViewController.oldTimer = ourCopy;
 	[ourCopy release];
 
-	[self.navigationController pushViewController: _timerViewController animated: YES];
+	if(!_isSplit)
+		[self.navigationController pushViewController: _timerViewController animated: YES];
 
 	// NOTE: set this here so the edit button won't get screwed
 	_timerViewController.creatingNewTimer = NO;
+	return indexPath;
 }
 
 /* number of sections */
@@ -386,7 +391,8 @@
 		_timerViewController.timer = newTimer;
 		_timerViewController.oldTimer = nil;
 
-		[self.navigationController pushViewController: _timerViewController animated: YES];
+		if(!_isSplit)
+			[self.navigationController pushViewController: _timerViewController animated: YES];
 
 		// NOTE: set this here so the edit button won't get screwed
 		_timerViewController.creatingNewTimer = YES;

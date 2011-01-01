@@ -9,14 +9,6 @@
 #import "AboutViewController.h"
 #import "Constants.h"
 
-@interface AboutViewController()
-/*!
- @brief "done" button was pressed
- @param sender ui element
- */
-- (void)buttonPressed: (id)sender;
-@end
-
 @implementation AboutViewController
 
 /* initialize */
@@ -70,19 +62,6 @@
 	aboutText.delegate = self;
 	[self.view addSubview: aboutText];
 	[aboutText release];
-
-	frame = CGRectMake(((size.width - 100) / 2), 360 + kTweenMargin, 100, 34);
-	_doneButton = [[UIButton buttonWithType: UIButtonTypeRoundedRect] retain];
-	_doneButton.frame = frame;
-	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
-	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: _doneButton];
-}
-
-/* "done" button pressed */
-- (void)buttonPressed: (id)sender
-{
-	[self.parentViewController dismissModalViewControllerAnimated: YES];
 }
 
 /* rotate to portrait orientation only */
