@@ -56,8 +56,11 @@
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[_serviceListController release];
-	_serviceListController = nil;
+	if(!IS_IPAD())
+	{
+		[_serviceListController release];
+		_serviceListController = nil;
+	}
 
 	[super didReceiveMemoryWarning];
 }
@@ -160,8 +163,11 @@
 	{
 		[_bouquets removeAllObjects];
 
-		[_serviceListController release];
-		_serviceListController = nil;
+		if(!IS_IPAD())
+		{
+			[_serviceListController release];
+			_serviceListController = nil;
+		}
 		[_bouquetXMLDoc release];
 		_bouquetXMLDoc = nil;
 	}

@@ -62,8 +62,11 @@
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[_timerViewController release];
-	_timerViewController = nil;
+	if(!IS_IPAD())
+	{
+		[_timerViewController release];
+		_timerViewController = nil;
+	}
 	
     [super didReceiveMemoryWarning];
 }
@@ -157,8 +160,11 @@
 	// Clear remaining caches if not reappearing
 	if(!_willReappear)
 	{
-		[_timerViewController release];
-		_timerViewController = nil;
+		if(!IS_IPAD())
+		{
+			[_timerViewController release];
+			_timerViewController = nil;
+		}
 		[_timerXMLDoc release];
 		_timerXMLDoc = nil;
 	}
