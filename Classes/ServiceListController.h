@@ -32,6 +32,7 @@
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
+	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 
 	CXMLDocument *_serviceXMLDoc; /*!< Current Service XML Document. */
 }

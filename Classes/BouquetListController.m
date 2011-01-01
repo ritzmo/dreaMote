@@ -43,6 +43,7 @@
 	[_bouquets release];
 	[_serviceListController release];
 	[_bouquetXMLDoc release];
+	[_radioButton release];
 
 	[super dealloc];
 }
@@ -82,22 +83,20 @@
 {
 	self.isRadio = !_isRadio;
 	if(_isRadio)
-		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"TV", @"TV switch button");
+		_radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
 	else
-		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Radio", @"Radio switch button");
+		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 	[self viewWillAppear: NO];
 }
 
 /* layout */
 - (void)loadView
 {
-	UIBarButtonItem *radioButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(switchRadio:)];
+	_radioButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(switchRadio:)];
 	if(_isRadio)
-		radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
+		_radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
 	else
-		radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
-	self.navigationItem.rightBarButtonItem = radioButton;
-	[radioButton release];
+		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	tableView.delegate = self;
@@ -117,6 +116,12 @@
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	// add button to navigation bar if radio mode supported
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
+		self.navigationItem.rightBarButtonItem = _radioButton;
+	else
+		self.navigationItem.rightBarButtonItem = nil;
+
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets)
 	{

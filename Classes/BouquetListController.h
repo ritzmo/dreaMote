@@ -28,6 +28,7 @@
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
+	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 
 	CXMLDocument *_bouquetXMLDoc; /*!< @brief Bouquet XML. */
 }
