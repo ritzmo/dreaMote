@@ -158,20 +158,23 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	const BOOL isSingleBouquet =
-	[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
-	&& (
-		[RemoteConnectorObject isSingleBouquet] ||
-		![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
-
-	// show radio button if in single bouquet mode and supported
-	if(isSingleBouquet &&
-	   [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
+	if(!IS_IPAD())
 	{
-		self.navigationItem.rightBarButtonItem = _radioButton;
+		const BOOL isSingleBouquet =
+			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+			&& (
+				[RemoteConnectorObject isSingleBouquet] ||
+				![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+
+		// show radio button if in single bouquet mode and supported
+		if(isSingleBouquet &&
+			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
+		{
+			self.navigationItem.rightBarButtonItem = _radioButton;
+		}
+		else
+			self.navigationItem.rightBarButtonItem = nil;
 	}
-	else
-		self.navigationItem.rightBarButtonItem = nil;
 
 	/*!
 	 @brief See if we should refresh services
