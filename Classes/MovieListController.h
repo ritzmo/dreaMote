@@ -22,7 +22,8 @@
  Removing a movie is also allowed but not always shown as not all RemoteConnectors allow it.
  */
 @interface MovieListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
-													MovieSourceDelegate>
+													MovieSourceDelegate,
+													UISplitViewControllerDelegate>
 {
 @private
 	UIPopoverController *popoverController;

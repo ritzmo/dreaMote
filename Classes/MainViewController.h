@@ -21,12 +21,13 @@
 	IBOutlet UITabBar		*myTabBar; /*!< @brief Tab bar. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
-	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
 	UIViewController *_bouquetController; /*!< @brief Bouquet List Tab. */
+	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
+	UIViewController *_movieController; /*!< @brief "Movies" Tab on iPad. */
+	UIViewController *_otherController;  /*!< @brief "Other" Tab. */
+	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */
 	UIViewController *_serviceController; /*!< @brief Service List Tab. */
 	UIViewController *_timerController;  /*!< @brief Timer Tab. */
-	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */
-	UIViewController *_otherController;  /*!< @brief "Other" Tab. */
 }
 
 /*!

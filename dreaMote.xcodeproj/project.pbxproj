@@ -132,6 +132,7 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
+		DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B834F12D0031700981350 /* MovieSplitViewController.m */; };
 		DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */; };
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
@@ -389,6 +390,8 @@
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		DA80C4920E37A254008A42AE /* MovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieViewController.h; sourceTree = "<group>"; };
 		DA80C4930E37A254008A42AE /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
+		DA8B834E12D0031700981350 /* MovieSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieSplitViewController.h; sourceTree = "<group>"; };
+		DA8B834F12D0031700981350 /* MovieSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieSplitViewController.m; sourceTree = "<group>"; };
 		DA95710F12C779F7003CD96B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/SimpleRCEmulator.xib"; sourceTree = "<group>"; };
 		DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
@@ -867,6 +870,8 @@
 			children = (
 				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
 				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
+				DA8B834E12D0031700981350 /* MovieSplitViewController.h */,
+				DA8B834F12D0031700981350 /* MovieSplitViewController.m */,
 				DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */,
 				DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */,
 			);
@@ -1225,6 +1230,7 @@
 				DA27485612CFC83D000B490B /* Location.m in Sources */,
 				DA27485A12CFC86D000B490B /* LocationXMLReader.m in Sources */,
 				DA27487412CFCC20000B490B /* LocationListController.m in Sources */,
+				DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

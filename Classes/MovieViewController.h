@@ -16,7 +16,8 @@
  Display further information about a movie. Also allows to start playback if RemoteConnector
  supports it.
  */
-@interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													UISplitViewControllerDelegate>
 {
 @private
 	UIPopoverController *popoverController;

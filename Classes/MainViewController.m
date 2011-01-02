@@ -11,22 +11,21 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
-#import "MainTableViewCell.h"
+#import "BouquetSplitViewController.h"
+#import "MovieSplitViewController.h"
+#import "TimerSplitViewController.h"
 
 #import "BouquetListController.h"
 #import "ConfigViewController.h"
 #import "CurrentViewController.h"
+#import "OtherListController.h"
 #import "ServiceListController.h"
 #import "TimerListController.h"
-#import "OtherListController.h"
-#import "BouquetSplitViewController.h"
-#import "TimerSplitViewController.h"
 
 @interface MainViewController (Private)
 - (void)handleReconnect: (NSNotification *)note;
 - (BOOL)checkConnection;
 @end
-
 
 @implementation MainViewController
 
@@ -53,6 +52,8 @@
 	[_rcController release];
 	[_otherController release];
 
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	[super dealloc];
 }
 
@@ -65,7 +66,7 @@
 }
 
 - (void)awakeFromNib
-{	
+{
 	UINavigationController *navController = nil;
 	UIViewController *viewController = nil;
 	menuList = [[NSMutableArray alloc] init];
@@ -79,6 +80,7 @@
 	{
 		_bouquetController = [[BouquetSplitViewController alloc] init];
 		_timerController = [[TimerSplitViewController alloc] init];
+		_movieController = [[MovieSplitViewController alloc] init];
 	}
 	else
 	{
@@ -103,7 +105,7 @@
 
 	[self setViewControllers: menuList];
 	self.delegate = self;
-	
+
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 }
@@ -141,7 +143,7 @@
 			[menuList insertObject: _bouquetController atIndex: 0];
 		}
 	}
-	
+
 	// Add/Remove currently playing
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
 	{
@@ -153,6 +155,21 @@
 	else
 	{
 		[menuList removeObject: _currentController];
+	}
+
+	if(IS_IPAD())
+	{
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+		{
+			if(![menuList containsObject: _movieController])
+			{
+				[menuList insertObject: _movieController atIndex: 2];
+			}
+		}
+		else
+		{
+			[menuList removeObject: _movieController];
+		}
 	}
 
 	// RC second to last
@@ -168,7 +185,7 @@
 }
 
 - (BOOL)checkConnection
-{	
+{
 	// handleReconnect makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
@@ -178,7 +195,7 @@
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
-		
+
 		ConfigViewController *targetViewController = [ConfigViewController newConnection];
 		targetViewController.mustSave = YES;
 		self.selectedIndex = [menuList count] - 1;
@@ -186,7 +203,7 @@
 		[targetViewController release];
 		return NO;
 	}
-	
+
 	else if([[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]
 			&& ![[RemoteConnectorObject sharedRemoteConnector] isReachable])
 	{

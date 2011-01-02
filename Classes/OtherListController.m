@@ -101,21 +101,24 @@
 							   nil] retain];
 	[targetViewController release];
 
-	targetViewController = [[LocationListController alloc] init];
-	_locationsDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
-						 NSLocalizedString(@"Location List Title", @""), @"title",
-						 NSLocalizedString(@"Location List Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
-						 nil] retain];
-	[targetViewController release];
+	if(!IS_IPAD())
+	{
+		targetViewController = [[LocationListController alloc] init];
+		_locationsDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							NSLocalizedString(@"Location List Title", @""), @"title",
+							NSLocalizedString(@"Location List Explain", @""), @"explainText",
+							targetViewController, @"viewController",
+							nil] retain];
+		[targetViewController release];
 
-	targetViewController = [[MovieListController alloc] init];
-	_recordDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
-						 NSLocalizedString(@"Movie List Title", @""), @"title",
-						 NSLocalizedString(@"Movie List Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
-						 nil] retain];
-	[targetViewController release];
+		targetViewController = [[MovieListController alloc] init];
+		_recordDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							NSLocalizedString(@"Movie List Title", @""), @"title",
+							NSLocalizedString(@"Movie List Explain", @""), @"explainText",
+							targetViewController, @"viewController",
+							nil] retain];
+		[targetViewController release];
+	}
 
 	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -184,35 +187,38 @@
 	/* The menu reorganization might be buggy, this should be redone
 	   as it was a bad hack to begin with */
 	// Add/Remove Record
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+	if(!IS_IPAD())
 	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
 		{
-			if(![menuList containsObject: _locationsDictionary])
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 			{
-				[menuList removeObject:_recordDictionary];
-				[menuList insertObject:_locationsDictionary atIndex: 2];
-				reload = YES;
+				if(![menuList containsObject: _locationsDictionary])
+				{
+					[menuList removeObject:_recordDictionary];
+					[menuList insertObject:_locationsDictionary atIndex: 2];
+					reload = YES;
+				}
+			}
+			else
+			{
+				if(![menuList containsObject: _recordDictionary])
+				{
+					[menuList removeObject:_locationsDictionary];
+					[menuList insertObject:_recordDictionary atIndex: 2];
+					reload = YES;
+				}
 			}
 		}
 		else
 		{
-			if(![menuList containsObject: _recordDictionary])
+			if([menuList containsObject: _recordDictionary]
+			   || [menuList containsObject: _locationsDictionary])
 			{
-				[menuList removeObject:_locationsDictionary];
-				[menuList insertObject:_recordDictionary atIndex: 2];
+				[menuList removeObject: _recordDictionary];
+				[menuList removeObject: _locationsDictionary];
 				reload = YES;
 			}
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _recordDictionary]
-		   || [menuList containsObject: _locationsDictionary])
-		{
-			[menuList removeObject: _recordDictionary];
-			[menuList removeObject: _locationsDictionary];
-			reload = YES;
 		}
 	}
 
