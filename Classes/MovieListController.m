@@ -79,7 +79,10 @@
 	_currentLocation = [newLocation retain];
 	
 	// Set Title
-	self.title = newLocation;
+	if(newLocation)
+		self.title = newLocation;
+	else
+		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 	
 	// Free Caches and reload data
 	[_movies removeAllObjects];

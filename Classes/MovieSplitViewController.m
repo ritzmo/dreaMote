@@ -76,6 +76,7 @@
 	{
 		navController1 = [[UINavigationController alloc] initWithRootViewController: _movieListController];
 		navController2 = [[UINavigationController alloc] initWithRootViewController: _movieViewController];
+		_movieListController.currentLocation = nil;
 		_movieListController.isSplit = YES;
 		self.delegate = _movieViewController;
 	}
