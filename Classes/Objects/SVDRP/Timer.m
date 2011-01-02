@@ -176,4 +176,14 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
+- (NSString *)location
+{
+	return nil;
+}
+
+- (void)setLocation:(NSString *)new
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+}
+
 @end

@@ -71,6 +71,31 @@
 	_title = [new retain];
 }
 
+- (NSString *)location
+{
+	if(_location == nil)
+	{
+		const NSArray *resultNodes = [_node nodesForXPath:@"e2location" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
+		{
+			self.location = [currentChild stringValue];
+			break;
+		}
+	}
+	return _location;
+}
+
+- (void)setLocation:(NSString *)new
+{
+	if(_location == new)
+		return;
+	[_location release];
+	if([new isEqualToString: @"None"])
+		_location = nil;
+	else
+		_location = [new retain];
+}
+
 - (NSObject<ServiceProtocol> *)service
 {
 	if(_service == nil)

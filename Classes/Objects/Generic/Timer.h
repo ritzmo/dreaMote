@@ -59,6 +59,7 @@ enum neutrinoTimerRepeat {
 @interface GenericTimer : NSObject <TimerProtocol>
 {
 @private
+	NSString *_location; /*!< @brief Record location. */
 	NSString *_eit; /*!< @brief Event Id. */
 	NSDate *_begin; /*!< @brief Begin. */
 	NSDate *_end; /*!< @brief End. */

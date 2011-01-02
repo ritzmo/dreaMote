@@ -215,6 +215,11 @@ enum weekDays {
 @property (assign) NSInteger afterevent;
 
 /*!
+ @brief Record location
+ */
+@property (nonatomic, retain) NSString *location;
+
+/*!
  @brief Valid or Fake Timer?
  */
 @property (nonatomic, assign) BOOL valid;

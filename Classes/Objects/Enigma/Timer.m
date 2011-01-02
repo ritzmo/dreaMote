@@ -69,6 +69,16 @@
 	_title = [new retain];
 }
 
+- (NSString *)location
+{
+	return nil;
+}
+
+- (void)setLocation:(NSString *)new
+{
+	// IGNORE
+}
+
 - (NSObject<ServiceProtocol> *)service
 {
 	if(_service == nil)

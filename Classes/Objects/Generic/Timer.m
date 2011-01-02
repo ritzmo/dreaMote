@@ -26,6 +26,7 @@
 @synthesize sname = _sname;
 @synthesize state = _state;
 @synthesize afterevent = _afterevent;
+@synthesize location = _location;
 @synthesize valid = _isValid;
 @synthesize timeString = _timeString;
 
