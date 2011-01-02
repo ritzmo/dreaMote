@@ -34,6 +34,7 @@
 		_refreshLocations = YES;
 		_isSplit = NO;
 		_movieListController = nil;
+		_delegate = nil;
 	}
 	return self;
 }
@@ -44,6 +45,7 @@
 	[_locations release];
 	[_movieListController release];
 	[_locationXMLDoc release];
+	[_delegate release];
 
 	[super dealloc];
 }
@@ -184,17 +186,26 @@
 	NSObject<LocationProtocol> *location = [_locations objectAtIndex: indexPath.row];
 	if(!location.valid)
 		return nil;
+	// Callback mode
+	else if(_delegate != nil)
+	{
+		[_delegate performSelector:@selector(locationSelected:) withObject: location];
+		[self.navigationController popToViewController: (UIViewController *)_delegate animated: YES];
+	}
+	// Open movie list
+	else
+	{
+		// Check for cached MovieListController instance
+		if(_movieListController == nil)
+			_movieListController = [[MovieListController alloc] init];
+		_movieListController.currentLocation = location.fullpath;
 
-	// Check for cached MovieListController instance
-	if(_movieListController == nil)
-		_movieListController = [[MovieListController alloc] init];
-	_movieListController.currentLocation = location.fullpath;
+		// We do not want to refresh bouquet list when we return
+		_refreshLocations = NO;
 
-	// We do not want to refresh bouquet list when we return
-	_refreshLocations = NO;
-
-	if(!_isSplit)
-		[self.navigationController pushViewController: _movieListController animated:YES];
+		if(!_isSplit)
+			[self.navigationController pushViewController: _movieListController animated:YES];
+	}
 	return indexPath;
 }
 
@@ -208,6 +219,13 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_locations count];
+}
+
+/* set delegate */
+- (void)setDelegate: (id<LocationListDelegate, NSCoding>) delegate
+{
+	[_delegate release];
+	_delegate = [delegate retain];
 }
 
 /* support rotation */

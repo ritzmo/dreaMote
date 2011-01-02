@@ -419,6 +419,30 @@
 	return YES;
 }
 
+- (void)beginSelected: (NSDate *)newDate
+{
+	if(newDate == nil)
+		return;
+	
+	_timer.begin = newDate;
+	if(_timerBeginCell)
+		TABLEVIEWCELL_TEXT(_timerBeginCell) = [self format_BeginEnd: newDate];
+}
+
+- (void)endSelected: (NSDate *)newDate
+{
+	if(newDate == nil)
+		return;
+	
+	_timer.end = newDate;
+	if(_timerEndCell)
+		TABLEVIEWCELL_TEXT(_timerEndCell) = [self format_BeginEnd: newDate];
+}
+
+#pragma mark -
+#pragma mark ServiceListDelegate methods
+#pragma mark -
+
 - (void)serviceSelected: (NSObject<ServiceProtocol> *)newService
 {
 	if(newService == nil)
@@ -431,25 +455,9 @@
 		TABLEVIEWCELL_TEXT(_timerServiceNameCell) = _timer.service.sname;
 }
 
-- (void)beginSelected: (NSDate *)newDate
-{
-	if(newDate == nil)
-		return;
-
-	_timer.begin = newDate;
-	if(_timerBeginCell)
-		TABLEVIEWCELL_TEXT(_timerBeginCell) = [self format_BeginEnd: newDate];
-}
-
-- (void)endSelected: (NSDate *)newDate
-{
-	if(newDate == nil)
-		return;
-
-	_timer.end = newDate;
-	if(_timerEndCell)
-		TABLEVIEWCELL_TEXT(_timerEndCell) = [self format_BeginEnd: newDate];
-}
+#pragma mark -
+#pragma mark SimpleRepeatedDelegate methods
+#pragma mark -
 
 - (void)simpleRepeatedSelected: (NSNumber *)newRepeated
 {
@@ -502,6 +510,10 @@
 	}
 }
 
+#pragma mark -
+#pragma mark AfterEventDelegate methods
+#pragma mark -
+
 - (void)afterEventSelected: (NSNumber *)newAfterEvent
 {
 	if(newAfterEvent == nil)
@@ -522,7 +534,23 @@
 		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Auto", @"");
 }
 
-#pragma mark - UITableView delegates
+#pragma mark -
+#pragma mark LocationListDelegate methods
+#pragma mark -
+
+- (void)locationSelected:(NSObject <LocationProtocol>*)newLocation
+{
+	if(newLocation == nil)
+		return;
+
+	//if(_locationCell == nil)
+		return;
+	//TABLEVIEWCELL_TEXT(_locationCell) = newLocation.fullpath;
+}
+
+#pragma mark -
+#pragma mark UITableView delegates
+#pragma mark -
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -760,6 +788,7 @@
 
 #pragma mark -
 #pragma mark <EditableTableViewCellDelegate> Methods and editing management
+#pragma mark -
 
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
@@ -818,7 +847,9 @@
 		[self setViewMovedUp:NO];
 }
 
-#pragma mark - UIViewController delegate methods
+#pragma mark -
+#pragma mark UIViewController delegate methods
+#pragma mark -
 
 - (void)viewWillAppear:(BOOL)animated
 {

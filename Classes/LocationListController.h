@@ -13,6 +13,7 @@
 
 // Forward declaration
 @class CXMLDocument;
+@protocol LocationListDelegate;
 
 /*!
  @brief Location list.
@@ -27,9 +28,20 @@
 	BOOL _refreshLocations; /*!< @brief Refresh Location List on next open? */
 	BOOL _isSplit; /*!< @brief Split mode? */
 	MovieListController *_movieListController; /*!< @brief Caches Movie List instance. */
+	NSObject<LocationListDelegate> *_delegate; /*!< @brief Delegate. */
 
 	CXMLDocument *_locationXMLDoc; /*!< @brief Location XML. */
 }
+
+/*!
+ @brief Set Service Selection Delegate.
+ 
+ This Function is required for Timers as they will use the provided Callback when you change the
+ Service of a Timer.
+ 
+ @param delegate New delegate object.
+ */
+- (void)setDelegate: (NSObject<LocationListDelegate> *) delegate;
 
 /*!
  @brief Prefetch location list
@@ -47,5 +59,23 @@
  @brief Movie List
  */
 @property (nonatomic, retain) IBOutlet MovieListController *movieListController;
+
+@end
+
+
+
+/*!
+ @brief Delegate for LocationListController.
+ 
+ Objects wanting to be called back by a LocationListController need to implement this Protocol.
+ */
+@protocol LocationListDelegate <NSObject>
+
+/*!
+ @brief Location was selected.
+ 
+ @param newLocation Location that was selected.
+ */
+- (void)locationSelected: (NSObject<LocationProtocol> *)newLocation;
 
 @end

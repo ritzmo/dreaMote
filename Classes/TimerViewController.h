@@ -14,6 +14,7 @@
 #import "CellTextField.h" /* CellTextField */
 
 #import "AfterEventViewController.h" /* AfterEventDelegate */
+#import "LocationListController.h" /* LocationListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "SimpleRepeatedViewController.h" /* SimpleRepeatedDelegate */
 
@@ -29,7 +30,7 @@
 @interface TimerViewController : UIViewController <UIActionSheetDelegate, UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, AfterEventDelegate,
-													SimpleRepeatedDelegate,
+													SimpleRepeatedDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													UISplitViewControllerDelegate>
@@ -56,9 +57,10 @@
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
 
-	BouquetListController *_bouquetListController; /*!< @brief Cached Bouquet List. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
+	BouquetListController *_bouquetListController; /*!< @brief Cached Bouquet List. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
+	LocationListController *_locationListController; /*!< @brief Cached Location List. */
 	SimpleRepeatedViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
 }
 
