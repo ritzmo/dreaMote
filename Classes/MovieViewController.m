@@ -67,10 +67,16 @@
 	}
 
 	if(newMovie != nil)
+	{
 		self.title = newMovie.title;
 
-	[_summaryView release];
-	_summaryView = [[self create_Summary] retain];
+		[_summaryView release];
+		_summaryView = [[self create_Summary] retain];
+	}
+	else
+	{
+		self.title = NSLocalizedString(@"Movie", @"Default title of MovieViewController");
+	}
 	
 	// Eventually remove popover
 	if(self.popoverController != nil) {
@@ -126,7 +132,8 @@
 	// We display short description (or title) and extended description (if available)
 	// in our textview
 	NSMutableString *text;
-	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
+	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo]
+	   || !_movie)
 		text = [_movie.title copy];
 	else
 	{
@@ -421,6 +428,7 @@
 {
 	barButtonItem.title = aViewController.title;
 	self.navigationItem.leftBarButtonItem = barButtonItem;
+	pc.contentViewController = aViewController;
 	self.popoverController = pc;
 }
 

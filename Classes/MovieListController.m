@@ -313,6 +313,7 @@
 {
 	barButtonItem.title = aViewController.title;
 	self.navigationItem.leftBarButtonItem = barButtonItem;
+	pc.contentViewController = aViewController;
 	self.popoverController = pc;
 }
 

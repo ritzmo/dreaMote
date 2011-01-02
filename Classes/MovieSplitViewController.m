@@ -30,7 +30,9 @@
 {
 	[_locationListController release];
 	[_movieListController release];
-	[_movieViewController release];
+	[_movieListNavigationController release];
+
+	[_viewArrayLocation release];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -49,11 +51,16 @@
 	_locationListController = [[LocationListController alloc] init];
 	_locationListController.isSplit = YES;
 	_movieListController = [[MovieListController alloc] init];
-	_movieViewController = [[MovieViewController alloc] init];
+
+	// Build Navigation arrays
+	UIViewController *navController;
+	navController = [[UINavigationController alloc] initWithRootViewController: _locationListController];
+	_movieListNavigationController = [[UINavigationController alloc] initWithRootViewController: _movieListController];
+	_viewArrayLocation = [[NSArray arrayWithObjects: navController, _movieListNavigationController, nil] retain];
+	[navController release];
 
 	// Build connection
 	_locationListController.movieListController = _movieListController;
-	_movieListController.movieViewController = _movieViewController;
 
 	[self linkViewControllers: nil];
 
@@ -63,26 +70,33 @@
 
 - (void)linkViewControllers: (NSNotification *)note
 {
-	// Setup navigation controllers and add to split view
-	UIViewController *navController1, *navController2;
+	NSArray *newViewControllers = nil;
+
+	// Reset current location
+	_movieListController.currentLocation = nil;
+
+	// Do we have location support?
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 	{
-		navController1 = [[UINavigationController alloc] initWithRootViewController: _locationListController];
-		navController2 = [[UINavigationController alloc] initWithRootViewController: _movieListController];
+		_movieListController.movieViewController = nil;
 		_movieListController.isSplit = NO;
 		self.delegate = _movieListController;
+		newViewControllers = _viewArrayLocation;
 	}
+	// Use "regular" view controllers
 	else
 	{
-		navController1 = [[UINavigationController alloc] initWithRootViewController: _movieListController];
-		navController2 = [[UINavigationController alloc] initWithRootViewController: _movieViewController];
-		_movieListController.currentLocation = nil;
+		MovieViewController *viewController = [[MovieViewController alloc] init];
+		UIViewController *navController = [[UINavigationController alloc] initWithRootViewController: viewController];
+		[_movieListNavigationController popToRootViewControllerAnimated: NO];
+		_movieListController.navigationItem.leftBarButtonItem = nil; // FIXME: GAAAAAH!
+		_movieListController.movieViewController = viewController;
 		_movieListController.isSplit = YES;
-		self.delegate = _movieViewController;
+		self.delegate = viewController;
+		newViewControllers = [NSArray arrayWithObjects: _movieListNavigationController, navController, nil];
+		[navController release];
 	}
-	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
-	[navController1 release];
-	[navController2 release];
+	self.viewControllers = newViewControllers;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

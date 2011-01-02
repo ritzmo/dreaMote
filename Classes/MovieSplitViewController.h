@@ -17,7 +17,9 @@
 @private
 	LocationListController *_locationListController;
 	MovieListController *_movieListController;
-	MovieViewController *_movieViewController;
+
+	NSArray *_viewArrayLocation;
+	UINavigationController *_movieListNavigationController;
 }
 
 @end
