@@ -32,7 +32,7 @@
 	if((self = [super init]))
 	{
 		_finished = NO;
-		_timeout = 5; // set default timeout
+		_timeout = 7; // set default timeout
 	}
 	return self;
 }
