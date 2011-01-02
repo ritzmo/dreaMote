@@ -50,6 +50,8 @@
 	// Instantiate view controllers
 	_locationListController = [[LocationListController alloc] init];
 	_locationListController.isSplit = YES;
+	// force fetch of location list else we might run into a timeout
+	[_locationListController forceRefresh];
 	_movieListController = [[MovieListController alloc] init];
 
 	// Build Navigation arrays

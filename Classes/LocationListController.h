@@ -32,6 +32,13 @@
 }
 
 /*!
+ @brief Prefetch location list
+ @note We use this to force a refresh of the location list before the movie list or else we
+  might run into a timeout there
+ */
+- (void)forceRefresh;
+
+/*!
  @brief Controlled by a split view controller?
  */
 @property (nonatomic) BOOL isSplit;

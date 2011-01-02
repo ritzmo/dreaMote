@@ -150,6 +150,16 @@
 		[(UITableView *)self.view reloadData];
 }
 
+/* force a refresh */
+- (void)forceRefresh
+{
+	[_locations removeAllObjects];
+	// Spawn a thread to fetch the service data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchLocations) toTarget:self withObject:nil];
+	_refreshLocations = NO;
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
