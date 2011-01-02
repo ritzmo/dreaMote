@@ -109,15 +109,24 @@
 - (void)setIsRadio:(BOOL)new
 {
 	if(_isRadio == new) return;
+	_isRadio = new;
 
+	// Set title
 	if(new)
 		self.title = NSLocalizedString(@"Radio Services", @"Title of Radio mode of ServiceListController");
 	else
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
-	_isRadio = new;
 
-	// make sure we are going to refresh
-	_refreshServices = YES;
+	// Refresh services
+	if(_bouquet != nil)
+	{
+		self.bouquet = nil;
+	}
+	else
+	{
+		_refreshServices = YES;
+		[self viewWillAppear: NO];
+	}
 }
 
 /* switch radio mode */
@@ -128,7 +137,6 @@
 		_radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
 	else
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
-	[self viewWillAppear: NO];
 }
 
 /* layout */
