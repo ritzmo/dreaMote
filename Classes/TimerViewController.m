@@ -543,9 +543,12 @@
 	if(newLocation == nil)
 		return;
 
-	//if(_locationCell == nil)
+	_timer.location = newLocation.fullpath;
+
+	if(_locationCell == nil)
 		return;
-	//TABLEVIEWCELL_TEXT(_locationCell) = newLocation.fullpath;
+
+	TABLEVIEWCELL_TEXT(_locationCell) = newLocation.fullpath;
 }
 
 #pragma mark -
@@ -559,6 +562,8 @@
 		++sections;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
 		++sections;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
+		++sections;
 	return sections;
 }
 
@@ -567,6 +572,8 @@
 	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
 		++section;
 	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+		++section;
+	if(section > 7 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 		++section;
 		
 	switch (section) {
@@ -586,6 +593,8 @@
 			return NSLocalizedString(@"After Event", @"");
 		case 7:
 			return NSLocalizedString(@"Repeated", @"");
+		case 8:
+			return NSLocalizedString(@"Location", @"");
 		default:
 			return nil;
 	}
@@ -624,6 +633,7 @@
 		case 5:
 		case 6:
 		case 7:
+		case 8:
 			cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
@@ -656,6 +666,8 @@
 	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
 		++section;
 	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+		++section;
+	if(section > 7 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 		++section;
 
 	sourceCell = [self obtainTableCellForSection: tableView: section];
@@ -709,6 +721,10 @@
 		case 7:
 			_repeatedCell = sourceCell;
 			[self simpleRepeatedSelected: [NSNumber numberWithInteger: _timer.repeated]];
+			break;
+		case 8:
+			_locationCell = sourceCell;
+			TABLEVIEWCELL_TEXT(sourceCell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
 		default:
 			break;
@@ -775,6 +791,14 @@
 			[_simpleRepeatedViewController setDelegate: self];
 			
 			targetViewController = _simpleRepeatedViewController;
+		}
+		else if(section == 8)
+		{
+			if(_locationListController == nil)
+				_locationListController = [[LocationListController alloc] init];
+			[_locationListController setDelegate: self];
+
+			targetViewController = _locationListController;
 		}
 		else
 			return nil;

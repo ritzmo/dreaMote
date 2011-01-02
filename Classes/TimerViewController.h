@@ -50,6 +50,7 @@
 	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */
 	UISwitch *_timerJustplay; /*!< @brief Justplay Switch. */
 	UITableViewCell *_afterEventCell; /*!< @brief After Event Cell. */
+	UITableViewCell *_locationCell; /*!< @brief Location Cell. */
 	UITableViewCell *_repeatedCell; /*!< @brief Repeated Cell. */
 	
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */
