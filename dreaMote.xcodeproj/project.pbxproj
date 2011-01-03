@@ -11,6 +11,8 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		DA04245A12D165D800BCE769 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = DA04245812D165D800BCE769 /* Icon-72.png */; };
+		DA04245B12D165D800BCE769 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA04245912D165D800BCE769 /* Icon@2x.png */; };
 		DA09870E0EC206EE009C91B9 /* preferences-system.png in Resources */ = {isa = PBXBuildFile; fileRef = DA09870D0EC206ED009C91B9 /* preferences-system.png */; };
 		DA0A2A580E840E8600726F58 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA0A2A570E840E8600726F58 /* Icon.png */; };
 		DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */; };
@@ -65,7 +67,6 @@
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
-		DA5CB8F312C007B50070D368 /* EnigmaRCEmulator.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */; };
 		DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
 		DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
 		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
@@ -133,7 +134,6 @@
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
 		DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B834F12D0031700981350 /* MovieSplitViewController.m */; };
-		DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */; };
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
 		DA997A8C1093A75B003AFA17 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA997A8B1093A75B003AFA17 /* 4-sided-arrow.png */; };
@@ -184,6 +184,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* dreaMote_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dreaMote_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.info-plist"; sourceTree = "<group>"; };
+		DA04245812D165D800BCE769 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72.png"; path = "Images/Icon-72.png"; sourceTree = "<group>"; };
+		DA04245912D165D800BCE769 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Images/Icon@2x.png"; sourceTree = "<group>"; };
 		DA09870D0EC206ED009C91B9 /* preferences-system.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "preferences-system.png"; path = "Images/preferences-system.png"; sourceTree = "<group>"; };
 		DA0A2A570E840E8600726F58 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = Images/Icon.png; sourceTree = "<group>"; };
 		DA0B0EE60FE6522E00684EDC /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
@@ -290,7 +292,6 @@
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		DA5CB8F212C007B50070D368 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/EnigmaRCEmulator.xib"; sourceTree = "<group>"; };
 		DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
 		DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
 		DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoRCEmulatorController.h; sourceTree = "<group>"; };
@@ -392,7 +393,6 @@
 		DA80C4930E37A254008A42AE /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
 		DA8B834E12D0031700981350 /* MovieSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieSplitViewController.h; sourceTree = "<group>"; };
 		DA8B834F12D0031700981350 /* MovieSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieSplitViewController.m; sourceTree = "<group>"; };
-		DA95710F12C779F7003CD96B /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/SimpleRCEmulator.xib"; sourceTree = "<group>"; };
 		DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DA9789890F9DBB8F005C7390 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -559,8 +559,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */,
-				DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */,
 				DA0FA5750EB1D189009A1898 /* about.html */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
@@ -720,7 +718,9 @@
 				DADFB1420EABAD4300D99545 /* view-refresh.png */,
 				DA51BC410EAA45A500AF9146 /* emblem-favorite.png */,
 				DA51BC420EAA45A500AF9146 /* network-wired.png */,
+				DA04245812D165D800BCE769 /* Icon-72.png */,
 				DA0A2A570E840E8600726F58 /* Icon.png */,
+				DA04245912D165D800BCE769 /* Icon@2x.png */,
 				DA7A249F0E37398400455D11 /* key_0.png */,
 				DA7A232B0E372AC100455D11 /* key_1.png */,
 				DA7A23290E372AB800455D11 /* key_2.png */,
@@ -1116,9 +1116,9 @@
 				DA43E4C610A316B500D50998 /* exit.png in Resources */,
 				DA43E4C710A316B500D50998 /* menu.png in Resources */,
 				DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */,
-				DA5CB8F312C007B50070D368 /* EnigmaRCEmulator.xib in Resources */,
-				DA95711012C779F7003CD96B /* SimpleRCEmulator.xib in Resources */,
 				DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */,
+				DA04245A12D165D800BCE769 /* Icon-72.png in Resources */,
+				DA04245B12D165D800BCE769 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1237,14 +1237,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DA5CB8F112C007B50070D368 /* EnigmaRCEmulator.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DA5CB8F212C007B50070D368 /* en */,
-			);
-			name = EnigmaRCEmulator.xib;
-			sourceTree = "<group>";
-		};
 		DA6D41C812CDE0C90027493C /* OtherList.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1260,14 +1252,6 @@
 				DA664CC10EA8C80100A37F55 /* de */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		DA95710E12C779F7003CD96B /* SimpleRCEmulator.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DA95710F12C779F7003CD96B /* en */,
-			);
-			name = SimpleRCEmulator.xib;
 			sourceTree = "<group>";
 		};
 		DACFCCEE0E33CAD100348996 /* MainWindow.xib */ = {

@@ -16,6 +16,10 @@
 {
 @private
 	CGPoint lastLocation; /*!< @brief Last touch location. */
+
+	UIButton *_lameButton; /*!< @brief Lame/Exit Button. */
+	UIButton *_menuButton; /*!< @brief Menu Button. */
+	UIButton *_swipeArea; /*!< @brief Swipe Area (4-sided-arrow). */
 }
 
 @end

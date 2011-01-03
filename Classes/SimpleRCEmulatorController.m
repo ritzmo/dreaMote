@@ -12,8 +12,13 @@
 
 #define SWIPE_MIN_DISPLACEMENT 10.0
 
+@interface SimpleRCEmulatorController()
+- (void)manageViews:(UIInterfaceOrientation)interfaceOrientation;
+@end
+
 @implementation SimpleRCEmulatorController
 
+#if 0
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
 	if((self = [super initWithNibName: @"SimpleRCEmulator" bundle: nil]))
@@ -27,11 +32,20 @@
 {
 	[self.view addSubview: self.rcView];
 }
+#endif
+
+- (void)dealloc
+{
+	[_lameButton release];
+	[_menuButton release];
+	[_swipeArea release];
+
+	[super dealloc];
+}
 
 - (void)loadView
 {
 	CGRect frame;
-	UIButton *roundedButtonType;
 	const CGFloat factor = (IS_IPAD()) ? 2.0f : 1.0f;
 	const CGFloat imageWidth = 135 * factor;
 	const CGFloat imageHeight = 105 * factor;
@@ -49,25 +63,22 @@
 
 	// lame
 	frame = CGRectMake(0, 0, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"exit.png" andKeyCode: kButtonCodeLame];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
+	_lameButton = [self newButton:frame withImage:@"exit.png" andKeyCode: kButtonCodeLame];
+	[rcView addSubview: _lameButton];
 
 	// menu
 	frame = CGRectMake(mainViewSize.width - imageWidth, 0, imageWidth, imageHeight);
-	roundedButtonType = [self newButton:frame withImage:@"menu.png" andKeyCode: kButtonCodeMenu];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
+	_menuButton = [self newButton:frame withImage:@"menu.png" andKeyCode: kButtonCodeMenu];
+	[rcView addSubview: _menuButton];
 
 	// swipe
 	frame = CGRectMake(0, 100, mainViewSize.width, mainViewSize.height - 160);
-	roundedButtonType = [[UIButton alloc] initWithFrame: frame];
-	roundedButtonType.userInteractionEnabled = NO;
+	_swipeArea = [[UIButton alloc] initWithFrame: frame];
+	_swipeArea.userInteractionEnabled = NO;
 	UIImage *image = [UIImage imageNamed:@"4-sided-arrow.png"];
-	[roundedButtonType setBackgroundImage:image forState:UIControlStateHighlighted];
-	[roundedButtonType setBackgroundImage:image forState:UIControlStateNormal];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
+	[_swipeArea setBackgroundImage:image forState:UIControlStateHighlighted];
+	[_swipeArea setBackgroundImage:image forState:UIControlStateNormal];
+	[rcView addSubview: _swipeArea];
 }
 
 #pragma mark -
@@ -135,10 +146,56 @@
 	}
 }
 
+/* touch stopped */
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	// TODO: anything?
 	return;
+}
+
+/* move frames */
+- (void)manageViews:(UIInterfaceOrientation)interfaceOrientation
+{
+	const CGFloat factor = (IS_IPAD()) ? 2.0f : 1.0f;
+	const CGFloat imageWidth = 135 * factor;
+	const CGFloat imageHeight = 105 * factor;
+	CGSize mainViewSize = self.view.bounds.size;
+
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+	{
+		_lameButton.frame = CGRectMake(mainViewSize.width - imageWidth, kTopMargin, imageWidth, imageHeight);
+		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, mainViewSize.height - imageHeight, imageWidth, imageHeight);
+		_swipeArea.frame = CGRectMake(kLeftMargin, kTopMargin, mainViewSize.width - imageWidth - kTweenMargin, mainViewSize.height - kTopMargin - kBottomMargin);
+	}
+	else
+	{
+		_lameButton.frame = CGRectMake(0, 0, imageWidth, imageHeight);
+		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, 0, imageWidth, imageHeight);
+		_swipeArea.frame = CGRectMake(kLeftMargin, 100, mainViewSize.width - kLeftMargin - kRightMargin, mainViewSize.height - 100 - kBottomMargin);
+	}
+}
+
+/* view will appear */
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+
+	[self manageViews:self.interfaceOrientation];
+}
+
+/* did rotate */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	// FIXME: we give arbitrary value for landscape / non landscape since this is all we need to know
+	[self manageViews:UIInterfaceOrientationIsLandscape(fromInterfaceOrientation) ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft];
+}
+
+/* allow rotation */
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
 }
 
 @end
