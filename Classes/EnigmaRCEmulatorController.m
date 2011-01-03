@@ -44,7 +44,7 @@
 
 	const CGSize mainViewSize = self.view.bounds.size;
 
-	// create the rc views (i think its easier to have two views than to keep track of all buttons and add/remove them as pleased)
+	// create the rc view and prepare different frames used for orientations
 	_portraitFrame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
 	if(IS_IPAD())
 	{

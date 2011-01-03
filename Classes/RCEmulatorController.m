@@ -334,7 +334,7 @@
 {
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
-		_keyPad.frame = CGRectMake(74, -400, 0, 0);
+		_keyPad.frame = CGRectMake(74, -500, 0, 0);
 		_navigationPad.frame = _landscapeNavigationFrame;
 		rcView.frame = _landscapeFrame;
 	}
