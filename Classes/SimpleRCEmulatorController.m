@@ -76,7 +76,7 @@
 		frame = CGRectMake(0, 200, 750, 690);
 	}
 	else
-		frame = CGRectMake(0, 100, mainViewSize.width - kLeftMargin - kRightMargin, mainViewSize.height - 220);
+		frame = CGRectMake(0, 100, mainViewSize.width - kLeftMargin - kRightMargin, mainViewSize.height - 225);
 	_swipeArea = [[UIButton alloc] initWithFrame: frame];
 	_swipeArea.userInteractionEnabled = NO;
 	UIImage *image = [UIImage imageNamed:@"4-sided-arrow.png"];
