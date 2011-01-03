@@ -187,7 +187,7 @@
 	[roundedButtonType release];
 	
 	// video
-	frame = CGRectMake((currY+100) * factor, (currX+40) * factor, imageWidth, imageHeight);
+	frame = CGRectMake((currY+100) * factor, (currX+40) * factor, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_video.png" andKeyCode: kButtonCodeVideo];
 	[rcView addSubview: roundedButtonType];
 	[roundedButtonType release];
