@@ -18,6 +18,7 @@
 - (void)manageViews:(UIInterfaceOrientation)interfaceOrientation;
 @end
 
+
 @implementation EnigmaRCEmulatorController
 
 #if 0
@@ -83,8 +84,8 @@
 
 	/* Begin Keypad */
 	// intialize view
-	frame = CGRectMake(currY * factor, currX * factor, 165 * factor, 135 * factor);
-	_keyPad = [[UIView alloc] initWithFrame: frame];
+	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 165 * factor, 135 * factor);
+	_keyPad = [[UIView alloc] initWithFrame: _portraitKeyFrame];
 	// new row
 	localX = 0;
 	localY = 0;
@@ -448,14 +449,13 @@
 {
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
-		[_keyPad removeFromSuperview];
+		_keyPad.frame = CGRectMake(74, -400, 0, 0);
 		_navigationPad.frame = _landscapeNavigationFrame;
 		rcView.frame = _landscapeFrame;
 	}
 	else
 	{
-		if(![_keyPad superview])
-			[rcView addSubview: _keyPad];
+		_keyPad.frame = _portraitKeyFrame;
 		_navigationPad.frame = _portraitNavigationFrame;
 		rcView.frame = _portraitFrame;
 	}
@@ -474,7 +474,10 @@
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: duration];
 	[self manageViews:toInterfaceOrientation];
+	[UIView commitAnimations];
 }
 
 /* allow rotation */

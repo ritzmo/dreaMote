@@ -72,7 +72,11 @@
 	[rcView addSubview: _menuButton];
 
 	// swipe
-	frame = CGRectMake(0, 100, mainViewSize.width, mainViewSize.height - 160);
+	if(IS_IPAD()){
+		frame = CGRectMake(0, 200, 750, 690);
+	}
+	else
+		frame = CGRectMake(0, 100, mainViewSize.width - kLeftMargin - kRightMargin, mainViewSize.height - 220);
 	_swipeArea = [[UIButton alloc] initWithFrame: frame];
 	_swipeArea.userInteractionEnabled = NO;
 	UIImage *image = [UIImage imageNamed:@"4-sided-arrow.png"];
@@ -165,13 +169,16 @@
 	{
 		_lameButton.frame = CGRectMake(mainViewSize.width - imageWidth, kTopMargin, imageWidth, imageHeight);
 		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, mainViewSize.height - imageHeight, imageWidth, imageHeight);
-		_swipeArea.frame = CGRectMake(kLeftMargin, kTopMargin, mainViewSize.width - imageWidth - kTweenMargin, mainViewSize.height - kTopMargin - kBottomMargin);
+		_swipeArea.frame = CGRectMake(kLeftMargin, kTopMargin, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
 	}
 	else
 	{
 		_lameButton.frame = CGRectMake(0, 0, imageWidth, imageHeight);
 		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, 0, imageWidth, imageHeight);
-		_swipeArea.frame = CGRectMake(kLeftMargin, 100, mainViewSize.width - kLeftMargin - kRightMargin, mainViewSize.height - 100 - kBottomMargin);
+		if(IS_IPAD())
+			_swipeArea.frame = CGRectMake(kLeftMargin, 220, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
+		else
+			_swipeArea.frame = CGRectMake(kLeftMargin, 130, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
 	}
 }
 
@@ -188,8 +195,11 @@
 {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: 0.3f];
 	// FIXME: we give arbitrary value for landscape / non landscape since this is all we need to know
 	[self manageViews:UIInterfaceOrientationIsLandscape(fromInterfaceOrientation) ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft];
+	[UIView commitAnimations];
 }
 
 /* allow rotation */

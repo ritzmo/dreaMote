@@ -25,6 +25,7 @@
 	CGRect _portraitFrame; /*!< @brief Frame for rcView in portrait orientation. */
 	CGRect _landscapeNavigationFrame; /*!< @brief Frame for _navigationPad in landscape orientation. */
 	CGRect _portraitNavigationFrame; /*!< @brief Frame for _navigationPad in portrait orientation. */
+	CGRect _portraitKeyFrame; /*!< @brief Frame of _keyPad in portrait orientation. */
 }
 
 @end
