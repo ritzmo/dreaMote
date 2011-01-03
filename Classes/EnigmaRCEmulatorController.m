@@ -11,14 +11,6 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
-@interface EnigmaRCEmulatorController()
-/*!
- @brief Change frames/views according to orientation
- */
-- (void)manageViews:(UIInterfaceOrientation)interfaceOrientation;
-@end
-
-
 @implementation EnigmaRCEmulatorController
 
 #if 0
@@ -36,14 +28,6 @@
 	[self.view addSubview: self.rcView];
 }
 #endif
-
-- (void)dealloc
-{
-	[_keyPad release];
-	[_navigationPad release];
-
-	[super dealloc];
-}
 
 - (void)loadView
 {
@@ -442,48 +426,6 @@
 		[rcView addSubview: roundedButtonType];
 		[roundedButtonType release];
 	}
-}
-
-/* alter views */
-- (void)manageViews:(UIInterfaceOrientation)interfaceOrientation
-{
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
-	{
-		_keyPad.frame = CGRectMake(74, -400, 0, 0);
-		_navigationPad.frame = _landscapeNavigationFrame;
-		rcView.frame = _landscapeFrame;
-	}
-	else
-	{
-		_keyPad.frame = _portraitKeyFrame;
-		_navigationPad.frame = _portraitNavigationFrame;
-		rcView.frame = _portraitFrame;
-	}
-}
-
-/* view is going to appear */
-- (void)viewWillAppear:(BOOL)animated
-{
-	[super viewWillAppear:animated];
-
-	[self manageViews:self.interfaceOrientation];
-}
-
-/* about to rotate */
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: duration];
-	[self manageViews:toInterfaceOrientation];
-	[UIView commitAnimations];
-}
-
-/* allow rotation */
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 @end

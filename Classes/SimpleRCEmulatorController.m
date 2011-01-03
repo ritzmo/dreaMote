@@ -187,6 +187,8 @@
 {
 	[super viewWillAppear:animated];
 
+	// RCEmulatorController sends this message only when _navigationPad is set which we don't
+	// we want to run this independent of them anyway ;-)
 	[self manageViews:self.interfaceOrientation];
 }
 

@@ -47,6 +47,10 @@
  */
 - (void)buttonPressed:(RCButton *)sender;
 
+/*!
+ @brief Change frames/views according to orientation
+ */
+- (void)manageViews:(UIInterfaceOrientation)interfaceOrientation;
 @end
 
 @implementation RCEmulatorController
@@ -73,6 +77,9 @@
 	[_scrollView release];
 	[_imageView release];
 	[_screenshotButton release];
+
+	[_keyPad release];
+	[_navigationPad release];
 
 	[super dealloc];
 }
@@ -135,6 +142,10 @@
 		if([_screenView superview])
 			[self flipView: nil];
 	}
+
+	// fix up views
+	if(_navigationPad != nil)
+		[self manageViews:self.interfaceOrientation];
 
 	[super viewWillAppear: animated];
 }
@@ -318,14 +329,41 @@
 	[self sendButtonInternal: [rcCode integerValue]];
 }
 
+/* alter views */
+- (void)manageViews:(UIInterfaceOrientation)interfaceOrientation
+{
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+	{
+		_keyPad.frame = CGRectMake(74, -400, 0, 0);
+		_navigationPad.frame = _landscapeNavigationFrame;
+		rcView.frame = _landscapeFrame;
+	}
+	else
+	{
+		_keyPad.frame = _portraitKeyFrame;
+		_navigationPad.frame = _portraitNavigationFrame;
+		rcView.frame = _portraitFrame;
+	}
+}
+
+/* about to rotate */
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	_imageView.image = nil;
 	_toolbar.frame = CGRectInfinite;
 
+	if(_navigationPad != nil)
+	{
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration: duration];
+		[self manageViews:toInterfaceOrientation];
+		[UIView commitAnimations];
+	}
+
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
+/* finished rotation */
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	//[UIView beginAnimations:nil context:NULL];
@@ -354,8 +392,9 @@
 	if([_screenView superview])
 		return YES;
 
-	// RC should only be displayed in (either) portrait mode
-	return (interfaceOrientation == UIInterfaceOrientationPortrait)
+	// RC should only be displayed in (either) portrait mode unless we have a _navigationPad
+	return _navigationPad != nil
+		|| (interfaceOrientation == UIInterfaceOrientationPortrait)
 		|| (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
 }
 
