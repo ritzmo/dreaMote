@@ -69,6 +69,7 @@
 {
 	UINavigationController *navController = nil;
 	UIViewController *viewController = nil;
+	UIImage *image = nil;
 	menuList = [[NSMutableArray alloc] init];
 
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
@@ -81,6 +82,10 @@
 		_bouquetController = [[BouquetSplitViewController alloc] init];
 		_timerController = [[TimerSplitViewController alloc] init];
 		_movieController = [[MovieSplitViewController alloc] init];
+
+		// set up movie controller image here because it does not exist on iphone
+		image = [UIImage imageNamed: @"movie.png"];
+		_movieController.tabBarItem.image = image;
 	}
 	else
 	{
@@ -97,6 +102,17 @@
 	_rcController = nil;
 	_otherController = [[OtherListController alloc] init];
 	navController = [[UINavigationController alloc] initWithRootViewController: _otherController];
+
+	// assign tab bar images
+	image = [UIImage imageNamed: @"bouquet.png"];
+	_bouquetController.tabBarItem.image = image;
+	_serviceController.tabBarItem.image = image;
+	image = [UIImage imageNamed: @"timer.png"];
+	_timerController.tabBarItem.image = image;
+	image = [UIImage imageNamed: @"current.png"];
+	_currentController.tabBarItem.image = image;
+	image = [UIImage imageNamed: @"others.png"];
+	_otherController.tabBarItem.image = image;
 
 	[menuList addObject: _timerController];
 	[menuList addObject: navController];
@@ -177,6 +193,8 @@
 	[_rcController release];
 	_rcController = [[RemoteConnectorObject sharedRemoteConnector] newRCEmulator];
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
+	UIImage *image = [UIImage imageNamed: @"remote.png"];
+	_rcController.tabBarItem.image = image;
 
 	[self setViewControllers: menuList];
 	// initial load

@@ -43,8 +43,7 @@
 {
 	if((self = [super init]))
 	{
-		// make the title of this page the same as the title of this app
-		self.title = NSLocalizedString(@"Other", @"Title of OtherListController");
+		self.title = NSLocalizedString(@"More", @"Title of OtherListController");
 		_configListController = nil;
 	}
 	return self;

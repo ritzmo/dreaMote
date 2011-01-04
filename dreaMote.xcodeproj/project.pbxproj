@@ -133,6 +133,12 @@
 		DA7FD7560D84307700974B1A /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7550D84307700974B1A /* TimerListController.m */; };
 		DA7FD7660D84338600974B1A /* TimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7FD7650D84338600974B1A /* TimerTableViewCell.m */; };
 		DA80C4940E37A254008A42AE /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA80C4930E37A254008A42AE /* MovieViewController.m */; };
+		DA87C08012D287CA00121842 /* bouquet.png in Resources */ = {isa = PBXBuildFile; fileRef = DA87C07A12D287CA00121842 /* bouquet.png */; };
+		DA87C08112D287CA00121842 /* current.png in Resources */ = {isa = PBXBuildFile; fileRef = DA87C07B12D287CA00121842 /* current.png */; };
+		DA87C08212D287CA00121842 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = DA87C07C12D287CA00121842 /* movie.png */; };
+		DA87C08312D287CA00121842 /* others.png in Resources */ = {isa = PBXBuildFile; fileRef = DA87C07D12D287CA00121842 /* others.png */; };
+		DA87C08412D287CA00121842 /* remote.png in Resources */ = {isa = PBXBuildFile; fileRef = DA87C07E12D287CA00121842 /* remote.png */; };
+		DA87C08512D287CA00121842 /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = DA87C07F12D287CA00121842 /* timer.png */; };
 		DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B834F12D0031700981350 /* MovieSplitViewController.m */; };
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
@@ -391,6 +397,12 @@
 		DA7FD7720D84345100974B1A /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		DA80C4920E37A254008A42AE /* MovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieViewController.h; sourceTree = "<group>"; };
 		DA80C4930E37A254008A42AE /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
+		DA87C07A12D287CA00121842 /* bouquet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bouquet.png; path = Images/bouquet.png; sourceTree = "<group>"; };
+		DA87C07B12D287CA00121842 /* current.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = current.png; path = Images/current.png; sourceTree = "<group>"; };
+		DA87C07C12D287CA00121842 /* movie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = movie.png; path = Images/movie.png; sourceTree = "<group>"; };
+		DA87C07D12D287CA00121842 /* others.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = others.png; path = Images/others.png; sourceTree = "<group>"; };
+		DA87C07E12D287CA00121842 /* remote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = remote.png; path = Images/remote.png; sourceTree = "<group>"; };
+		DA87C07F12D287CA00121842 /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = timer.png; path = Images/timer.png; sourceTree = "<group>"; };
 		DA8B834E12D0031700981350 /* MovieSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieSplitViewController.h; sourceTree = "<group>"; };
 		DA8B834F12D0031700981350 /* MovieSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieSplitViewController.m; sourceTree = "<group>"; };
 		DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
@@ -698,6 +710,12 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DA87C07A12D287CA00121842 /* bouquet.png */,
+				DA87C07B12D287CA00121842 /* current.png */,
+				DA87C07C12D287CA00121842 /* movie.png */,
+				DA87C07D12D287CA00121842 /* others.png */,
+				DA87C07E12D287CA00121842 /* remote.png */,
+				DA87C07F12D287CA00121842 /* timer.png */,
 				DA43E4C410A316B500D50998 /* exit.png */,
 				DA43E4C510A316B500D50998 /* menu.png */,
 				DAD7E35610990A2000D0D76B /* key_ff.png */,
@@ -1119,6 +1137,12 @@
 				DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */,
 				DA04245A12D165D800BCE769 /* Icon-72.png in Resources */,
 				DA04245B12D165D800BCE769 /* Icon@2x.png in Resources */,
+				DA87C08012D287CA00121842 /* bouquet.png in Resources */,
+				DA87C08112D287CA00121842 /* current.png in Resources */,
+				DA87C08212D287CA00121842 /* movie.png in Resources */,
+				DA87C08312D287CA00121842 /* others.png in Resources */,
+				DA87C08412D287CA00121842 /* remote.png in Resources */,
+				DA87C08512D287CA00121842 /* timer.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
