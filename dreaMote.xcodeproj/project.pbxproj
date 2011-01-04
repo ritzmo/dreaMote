@@ -307,6 +307,7 @@
 		DA5A048F0E3798BC0062F924 /* MovieListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieListController.m; sourceTree = "<group>"; };
 		DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieTableViewCell.h; sourceTree = "<group>"; };
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
+		DA5B70CA12D383D200840890 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
 		DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
@@ -1110,6 +1111,7 @@
 				German,
 				de,
 				en,
+				fr,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
@@ -1332,6 +1334,7 @@
 			children = (
 				DA7FD6C40D8428E500974B1A /* en */,
 				DA664CC10EA8C80100A37F55 /* de */,
+				DA5B70CA12D383D200840890 /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
