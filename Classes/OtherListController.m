@@ -222,7 +222,7 @@
 	}
 
 	// Add/Remove Signal Finder
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSatFinder])
 	{
 		if(![menuList containsObject: _signalDictionary])
 		{
