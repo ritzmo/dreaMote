@@ -42,10 +42,13 @@
 
 @implementation TimerViewController
 
-// the amount of vertical shift upwards keep the text field in view as the keyboard appears
+/*!
+ @brief Keyboard offset.
+ The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
+ */
 #define kOFFSET_FOR_KEYBOARD					100
 
-// the duration of the animation for the view shift
+/*! @brief The duration of the animation for the view shift. */
 #define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 @synthesize oldTimer = _oldTimer;
@@ -839,7 +842,7 @@
 - (void)setViewMovedUp:(BOOL)movedUp
 {
 	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.3];
+	[UIView setAnimationDuration:kVerticalOffsetAnimationDuration];
 	// Make changes to the view's frame inside the animation block. They will be animated instead
 	// of taking place immediately.
 	CGRect rect = self.view.frame;
