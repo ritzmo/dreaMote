@@ -273,6 +273,10 @@
 	{
 		if([line length] < 5 || [line isEqualToString: @"215 End of EPG data"])
 		{
+			// send nil to indicate that we're done parsing
+			[delegate performSelectorOnMainThread: @selector(addEvent:)
+									withObject: nil
+									waitUntilDone: NO];
 			break;
 		}
 
