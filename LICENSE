@@ -19,7 +19,11 @@ but they were made specifically for this Application.
 
 Filenames (relative to Images) :
 4-sided-arrow.png
+Icon-72.png
 Icon.png
+Icon@2x.png
+bouquet.png
+current.png
 exit.png
 key_0.png
 key_1.png
@@ -47,9 +51,9 @@ key_menu.png
 key_minus.png
 key_mute.png
 key_ok.png
+key_plus.png
 key_pp.png
 key_pvr.png
-key_plus.png
 key_radio.png
 key_rec.png
 key_red.png
@@ -61,6 +65,10 @@ key_up.png
 key_video.png
 key_yellow.png
 menu.png
+movie.png
+others.png
+remote.png
+timer.png
 
 The following Icons are part of the tango-icon-theme-0.8.90 package and thus
 part of the Tango Icon Library (http://tango.freedesktop.org).
@@ -90,3 +98,7 @@ inserts code and distributed acording to the 3-clause BSD license.
 Any file below the Classes/IntelligentSplitViewController is part of
 Gregory S. Combs's IntelligentSplitViewController class and distributed
 according to the Creative Commons Attribution-ShareAlike 3.0 Unported license.
+
+Any file below the Classes/EGOTableViewPullRefresh and
+Images/EGOTableViewPullRefresh folders is part of enormego's "Pull to Refresh"
+UI extension and licensed under the MIT license.
