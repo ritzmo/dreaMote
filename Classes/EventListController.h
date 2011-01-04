@@ -35,6 +35,8 @@
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
+
+	BOOL _reloading; /*!< @brief Currently reloading. */
 }
 
 /*!

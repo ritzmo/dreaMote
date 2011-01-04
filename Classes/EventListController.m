@@ -45,6 +45,7 @@
 		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
+		_reloading = NO;
 	}
 	return self;
 }
@@ -151,6 +152,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
 	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self service: _service] retain];
+	_reloading = YES;
 	[pool release];
 }
 
@@ -171,6 +173,7 @@
 	{
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)self.view];
 		[(UITableView *)self.view reloadData];
+		_reloading = NO;
 	}
 }
 
@@ -263,7 +266,8 @@
 {
 	// Clean event list
 	[_events removeAllObjects];
-	[(UITableView *)self.view reloadData];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[_eventXMLDoc release];
 	_eventXMLDoc = nil;
 
@@ -275,7 +279,7 @@
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
 {
 	// we make our live a little easy here, but thats ok for now
-	return ![_events count];
+	return _reloading;
 }
 
 @end
