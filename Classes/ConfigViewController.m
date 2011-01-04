@@ -19,14 +19,6 @@
  */
 @interface ConfigViewController()
 /*!
- @brief Animate View up or down.
- Animate the entire view up or down, to prevent the keyboard from covering the text field.
- 
- @param movedUp YES if moving down again.
- */
-- (void)setViewMovedUp:(BOOL)movedUp;
-
-/*!
  @brief Create standardized UITextField.
  
  @return UITextField instance.
@@ -71,15 +63,6 @@
 @synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
 @synthesize mustSave = _mustSave;
-
-/*!
- @brief Keyboard offset.
- The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
- */
-#define kOFFSET_FOR_KEYBOARD					150
-
-/*! @brief The duration of the animation for the view shift. */
-#define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 /* initialize */
 - (id)init
@@ -752,62 +735,29 @@
 /* cell stopped editing */
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	/*!
-	 @note We're only interested in _usernameCell and _passwordCell since
-	 those might have messed with our view.
-	 */
-	if(([cell isEqual: _usernameCell] && ! _passwordCell.isInlineEditing)
-		|| ([cell isEqual: _passwordCell] && !_usernameCell.isInlineEditing))
-	{
-        // Restore the position of the main view if it was animated to make room for the keyboard.
-        if  (self.view.frame.origin.y < 0)
-		{
-            [self setViewMovedUp:NO];
-        }
-    }
-}
-
-/* Animate the entire view up or down, to prevent the keyboard from covering the text field. */
-- (void)setViewMovedUp:(BOOL)movedUp
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration: kVerticalOffsetAnimationDuration];
-
-    // Make changes to the view's frame inside the animation block. They will be animated instead
-    // of taking place immediately.
-    CGRect rect = self.view.frame;
-    if (movedUp)
-	{
-        // If moving up, not only decrease the origin but increase the height so the view 
-        // covers the entire screen behind the keyboard.
-        rect.origin.y -= kOFFSET_FOR_KEYBOARD;
-        rect.size.height += kOFFSET_FOR_KEYBOARD;
-    }
-	else
-	{
-        // If moving down, not only increase the origin but decrease the height.
-        rect.origin.y += kOFFSET_FOR_KEYBOARD;
-        rect.size.height -= kOFFSET_FOR_KEYBOARD;
-    }
-    self.view.frame = rect;
-
-    [UIView commitAnimations];
+	//
 }
 
 /* keyboard about to show */
 - (void)keyboardWillShow:(NSNotification *)notif
 {
-	/*!
-	 @note The keyboard will be shown. If the user is editing the username or password, adjust
-	 the display so that the field will not be covered by the keyboard.
-	 */
-	if(_usernameCell.isInlineEditing || _passwordCell.isInlineEditing)
-	{
-		if(self.view.frame.origin.y >= 0)
-			[self setViewMovedUp:YES];
-	}
-	else if(self.view.frame.origin.y < 0)
-		[self setViewMovedUp:NO];
+	NSIndexPath *indexPath;
+	UITableViewScrollPosition scrollPosition = UITableViewScrollPositionMiddle;
+	if(_remoteNameCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	else if(_remoteAddressCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
+	else if(_remotePortCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+	else if(_usernameCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	else if(_passwordCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
+	else return;
+
+	if(!IS_IPAD() && UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+		scrollPosition = UITableViewScrollPositionTop;
+	[(UITableView *)self.view scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
 }
 
 #pragma mark - UIViewController delegate methods
