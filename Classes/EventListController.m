@@ -96,6 +96,7 @@
 	[_dateFormatter release];
 	[_eventViewController release];
 	[_eventXMLDoc release];
+	[_refreshHeaderView release];
 
 	[super dealloc];
 }
@@ -130,6 +131,12 @@
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
 	[zapButton release];
+
+	// add header view
+	EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+	view.delegate = self;
+	[self.view addSubview:view];
+	_refreshHeaderView = view;
 }
 
 /* zap */
@@ -161,7 +168,10 @@
 #else
 	}
 #endif
-	[(UITableView *)self.view reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)self.view];
+		[(UITableView *)self.view reloadData];
+	}
 }
 
 #pragma mark	-
@@ -229,6 +239,43 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[_dateFormatter resetReferenceDate];
+}
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark -
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+#pragma mark -
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
+	// Clean event list
+	[_events removeAllObjects];
+	[(UITableView *)self.view reloadData];
+	[_eventXMLDoc release];
+	_eventXMLDoc = nil;
+
+	// Spawn a thread to fetch the event data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
+	// we make our live a little easy here, but thats ok for now
+	return ![_events count];
 }
 
 @end

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "EventSourceDelegate.h"
+#import "EGORefreshTableHeaderView.h"
 
 // Forward declarations...
 @protocol ServiceProtocol;
@@ -22,7 +23,9 @@
  Lists events and opens an EventViewController upon selection.
  */
 @interface EventListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
-													EventSourceDelegate>
+													EventSourceDelegate,
+													EGORefreshTableHeaderDelegate,
+													UIScrollViewDelegate>
 {
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
@@ -31,6 +34,7 @@
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
+	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 }
 
 /*!

@@ -153,6 +153,16 @@
 		DAB97AAB0F7FBCC400464B66 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB97AAA0F7FBCC400464B66 /* document-save.png */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
+		DAC701EF12D2F71C00C53E37 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701E712D2F71C00C53E37 /* blackArrow.png */; };
+		DAC701F012D2F71C00C53E37 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701E812D2F71C00C53E37 /* blackArrow@2x.png */; };
+		DAC701F112D2F71C00C53E37 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701E912D2F71C00C53E37 /* blueArrow.png */; };
+		DAC701F212D2F71C00C53E37 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701EA12D2F71C00C53E37 /* blueArrow@2x.png */; };
+		DAC701F312D2F71C00C53E37 /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701EB12D2F71C00C53E37 /* grayArrow.png */; };
+		DAC701F412D2F71C00C53E37 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701EC12D2F71C00C53E37 /* grayArrow@2x.png */; };
+		DAC701F512D2F71C00C53E37 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701ED12D2F71C00C53E37 /* whiteArrow.png */; };
+		DAC701F612D2F71C00C53E37 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC701EE12D2F71C00C53E37 /* whiteArrow@2x.png */; };
+		DAC701FB12D2F73300C53E37 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC701FA12D2F73300C53E37 /* EGORefreshTableHeaderView.m */; };
+		DAC7023212D2FCEE00C53E37 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */; };
 		DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */; };
 		DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */; };
 		DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
@@ -429,6 +439,17 @@
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
+		DAC701E712D2F71C00C53E37 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blackArrow.png; path = Images/EGOTableViewPullRefresh/blackArrow.png; sourceTree = "<group>"; };
+		DAC701E812D2F71C00C53E37 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blackArrow@2x.png"; path = "Images/EGOTableViewPullRefresh/blackArrow@2x.png"; sourceTree = "<group>"; };
+		DAC701E912D2F71C00C53E37 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = blueArrow.png; path = Images/EGOTableViewPullRefresh/blueArrow.png; sourceTree = "<group>"; };
+		DAC701EA12D2F71C00C53E37 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "blueArrow@2x.png"; path = "Images/EGOTableViewPullRefresh/blueArrow@2x.png"; sourceTree = "<group>"; };
+		DAC701EB12D2F71C00C53E37 /* grayArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = grayArrow.png; path = Images/EGOTableViewPullRefresh/grayArrow.png; sourceTree = "<group>"; };
+		DAC701EC12D2F71C00C53E37 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "grayArrow@2x.png"; path = "Images/EGOTableViewPullRefresh/grayArrow@2x.png"; sourceTree = "<group>"; };
+		DAC701ED12D2F71C00C53E37 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = whiteArrow.png; path = Images/EGOTableViewPullRefresh/whiteArrow.png; sourceTree = "<group>"; };
+		DAC701EE12D2F71C00C53E37 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "whiteArrow@2x.png"; path = "Images/EGOTableViewPullRefresh/whiteArrow@2x.png"; sourceTree = "<group>"; };
+		DAC701F912D2F73300C53E37 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		DAC701FA12D2F73300C53E37 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DACA8AF71096467100B03BE8 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
 		DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
 		DACA8AFC109647B200B03BE8 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
@@ -487,6 +508,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */,
 				DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */,
+				DAC7023212D2FCEE00C53E37 /* QuartzCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,6 +521,7 @@
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DAF197540FF574DB009CA6A0 /* Delegates */,
+				DAC701F812D2F73300C53E37 /* EGOTableViewPullRefresh */,
 				DABF639F10F8BE3E002658DD /* Insort */,
 				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
 				DA0BF4470F0C1066004B488C /* Objects */,
@@ -526,6 +549,7 @@
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -710,6 +734,7 @@
 		DA7A23250E372A8800455D11 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DAC701E012D2F70400C53E37 /* EGOTableViewPullRefresh */,
 				DA87C07A12D287CA00121842 /* bouquet.png */,
 				DA87C07B12D287CA00121842 /* current.png */,
 				DA87C07C12D287CA00121842 /* movie.png */,
@@ -872,6 +897,30 @@
 				DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */,
 			);
 			name = Insort;
+			sourceTree = "<group>";
+		};
+		DAC701E012D2F70400C53E37 /* EGOTableViewPullRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				DAC701E712D2F71C00C53E37 /* blackArrow.png */,
+				DAC701E812D2F71C00C53E37 /* blackArrow@2x.png */,
+				DAC701E912D2F71C00C53E37 /* blueArrow.png */,
+				DAC701EA12D2F71C00C53E37 /* blueArrow@2x.png */,
+				DAC701EB12D2F71C00C53E37 /* grayArrow.png */,
+				DAC701EC12D2F71C00C53E37 /* grayArrow@2x.png */,
+				DAC701ED12D2F71C00C53E37 /* whiteArrow.png */,
+				DAC701EE12D2F71C00C53E37 /* whiteArrow@2x.png */,
+			);
+			name = EGOTableViewPullRefresh;
+			sourceTree = "<group>";
+		};
+		DAC701F812D2F73300C53E37 /* EGOTableViewPullRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				DAC701F912D2F73300C53E37 /* EGORefreshTableHeaderView.h */,
+				DAC701FA12D2F73300C53E37 /* EGORefreshTableHeaderView.m */,
+			);
+			path = EGOTableViewPullRefresh;
 			sourceTree = "<group>";
 		};
 		DADE1AE60F115A2500807A25 /* SVDRP */ = {
@@ -1143,6 +1192,14 @@
 				DA87C08312D287CA00121842 /* others.png in Resources */,
 				DA87C08412D287CA00121842 /* remote.png in Resources */,
 				DA87C08512D287CA00121842 /* timer.png in Resources */,
+				DAC701EF12D2F71C00C53E37 /* blackArrow.png in Resources */,
+				DAC701F012D2F71C00C53E37 /* blackArrow@2x.png in Resources */,
+				DAC701F112D2F71C00C53E37 /* blueArrow.png in Resources */,
+				DAC701F212D2F71C00C53E37 /* blueArrow@2x.png in Resources */,
+				DAC701F312D2F71C00C53E37 /* grayArrow.png in Resources */,
+				DAC701F412D2F71C00C53E37 /* grayArrow@2x.png in Resources */,
+				DAC701F512D2F71C00C53E37 /* whiteArrow.png in Resources */,
+				DAC701F612D2F71C00C53E37 /* whiteArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1255,6 +1312,7 @@
 				DA27485A12CFC86D000B490B /* LocationXMLReader.m in Sources */,
 				DA27487412CFCC20000B490B /* LocationListController.m in Sources */,
 				DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */,
+				DAC701FB12D2F73300C53E37 /* EGORefreshTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
