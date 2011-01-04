@@ -226,7 +226,7 @@
 	{
 		if(![menuList containsObject: _signalDictionary])
 		{
-			[menuList insertObject: _signalDictionary atIndex: 3];
+			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 2 : 3];
 			reload = YES;
 		}
 	}
