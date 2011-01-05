@@ -304,11 +304,11 @@
 				if(_connectionIndex == [RemoteConnectorObject getConnectedId])
 				{
 					[RemoteConnectorObject connectTo: _connectionIndex];
-				
-					// post notification
-					[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 				}
 			}
+
+			// post notification
+			[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 		}
 
 		if(_connectorCell)
