@@ -57,7 +57,7 @@
 	else
 	{
 		// Make frame a little smaller than full screen to cut off advanced rc buttons
-		_landscapeFrame = CGRectMake(75, 30, mainViewSize.height - 75, mainViewSize.width - 50);
+		_landscapeFrame = CGRectMake(85, 40, mainViewSize.height - 85, mainViewSize.width - 50);
 	}
 	rcView = [[UIView alloc] initWithFrame: _portraitFrame];
 	[self.view addSubview:rcView];

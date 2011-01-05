@@ -31,7 +31,7 @@
 	if(IS_IPAD())
 		_landscapeFrame = CGRectMake(140, 95, mainViewSize.height - 140, mainViewSize.width - 95);
 	else
-		_landscapeFrame = CGRectMake(75, 30, mainViewSize.height - 75, mainViewSize.width - 30);
+		_landscapeFrame = CGRectMake(85, 30, mainViewSize.height - 85, mainViewSize.width - 30);
 	rcView = [[UIView alloc] initWithFrame: _portraitFrame];
 	[self.view addSubview:rcView];
 
