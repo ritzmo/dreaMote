@@ -28,6 +28,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Currently playing", @"");
+		self.tabBarItem.title = NSLocalizedString(@"Playing", @"TabBar Title of CurrentViewController");
 		_dateFormatter = [[FuzzyDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
