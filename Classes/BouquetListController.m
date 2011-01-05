@@ -235,8 +235,11 @@
 	// We do not want to refresh bouquet list when we return
 	_refreshBouquets = NO;
 
+	// when in split view go back to service list, else push it on the stack
 	if(!_isSplit)
 		[self.navigationController pushViewController: _serviceListController animated:YES];
+	else
+		[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
 	return indexPath;
 }
 

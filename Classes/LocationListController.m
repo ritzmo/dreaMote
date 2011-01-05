@@ -203,8 +203,11 @@
 		// We do not want to refresh bouquet list when we return
 		_refreshLocations = NO;
 
+		// when in split view go back to movie list, else push it on the stack
 		if(!_isSplit)
 			[self.navigationController pushViewController: _movieListController animated:YES];
+		else
+			[_movieListController.navigationController popToRootViewControllerAnimated: YES];
 	}
 	return indexPath;
 }

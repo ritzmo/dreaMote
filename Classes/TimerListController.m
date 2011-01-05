@@ -273,8 +273,11 @@
 	_timerViewController.oldTimer = ourCopy;
 	[ourCopy release];
 
+	// when in split view go back to timer view, else push it on the stack
 	if(!_isSplit)
-		[self.navigationController pushViewController: _timerViewController animated: YES];
+		[self.navigationController pushViewController: _timerViewController animated:YES];
+	else
+		[_timerViewController.navigationController popToRootViewControllerAnimated: YES];
 
 	// NOTE: set this here so the edit button won't get screwed
 	_timerViewController.creatingNewTimer = NO;
@@ -397,8 +400,14 @@
 		_timerViewController.timer = newTimer;
 		_timerViewController.oldTimer = nil;
 
+		// when in split view go back to timer view, else push it on the stack
 		if(!_isSplit)
-			[self.navigationController pushViewController: _timerViewController animated: YES];
+			[self.navigationController pushViewController: _timerViewController animated:YES];
+		else
+		{
+			[_timerViewController.navigationController popToRootViewControllerAnimated: YES];
+			[self setEditing:NO animated:YES];
+		}
 
 		// NOTE: set this here so the edit button won't get screwed
 		_timerViewController.creatingNewTimer = YES;
