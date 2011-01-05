@@ -54,6 +54,7 @@
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
 		DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
 		DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247EB0E3B3A7500B09600 /* DisplayCell.m */; };
+		DA54E1D612D501CC00C90863 /* NSString+URLEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */; };
 		DA5536BE0FE6A38C00FBAF18 /* SignalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */; };
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
@@ -298,6 +299,8 @@
 		DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditableTableViewCell.m; sourceTree = "<group>"; };
 		DA5247EA0E3B3A7500B09600 /* DisplayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayCell.h; sourceTree = "<group>"; };
 		DA5247EB0E3B3A7500B09600 /* DisplayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayCell.m; sourceTree = "<group>"; };
+		DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncode.h"; sourceTree = "<group>"; };
+		DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+URLEncode.m"; sourceTree = "<group>"; };
 		DA5536BC0FE6A38C00FBAF18 /* SignalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalViewController.h; sourceTree = "<group>"; };
 		DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalViewController.m; sourceTree = "<group>"; };
 		DA5A048E0E3798BC0062F924 /* MovieListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieListController.h; sourceTree = "<group>"; };
@@ -559,8 +562,8 @@
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
 				DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */,
 				DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */,
-				DA2CC2890E378FCC006AE171 /* RCButton.h */,
-				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
+				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
+				DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -940,6 +943,8 @@
 		DAAC518C12D4817500B3B443 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DA2CC2890E378FCC006AE171 /* RCButton.h */,
+				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
 				DAAC518D12D481A100B3B443 /* FileListView.h */,
 				DAAC518E12D481A100B3B443 /* FileListView.m */,
 			);
@@ -1365,6 +1370,7 @@
 				DAAC51F712D48F3500B3B443 /* AppDelegate.m in Sources */,
 				DAAC520412D492CE00B3B443 /* MediaPlayerController.m in Sources */,
 				DA6CE9C812D498F100F1F52D /* FileXMLReader.m in Sources */,
+				DA54E1D612D501CC00C90863 /* NSString+URLEncode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

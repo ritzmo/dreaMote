@@ -26,6 +26,8 @@
 #import "EnigmaRCEmulatorController.h"
 #import "SimpleRCEmulatorController.h"
 
+#import "NSString+URLEncode.h"
+
 #import "Constants.h"
 
 enum powerStates {
@@ -178,7 +180,7 @@ enum enigma2MessageTypes {
 	Result *result = [Result createResult];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [sref urlencode]] relativeToURL:_baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -227,7 +229,7 @@ enum enigma2MessageTypes {
 			sref =  @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet";
 	}
 	else
-		sref = [bouquet.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+		sref = [bouquet.sref urlencode];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate: delegate];
@@ -238,7 +240,7 @@ enum enigma2MessageTypes {
 
 - (CXMLDocument *)fetchEPG:(NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -249,7 +251,7 @@ enum enigma2MessageTypes {
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title urlencodeWithEncoding:NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -259,7 +261,7 @@ enum enigma2MessageTypes {
 
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref urlencode], event.eit] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -283,7 +285,7 @@ enum enigma2MessageTypes {
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location urlencode]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -306,7 +308,7 @@ enum enigma2MessageTypes {
 - (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location urlencode], [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -329,7 +331,7 @@ enum enigma2MessageTypes {
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -373,7 +375,7 @@ enum enigma2MessageTypes {
 	if(location == nil)
 		dirname = @"/hdd/movie/";
 	else
-		dirname = [location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+		dirname = [location urlencode];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/movielist?dirname=%@", dirname] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate: delegate];
@@ -385,7 +387,7 @@ enum enigma2MessageTypes {
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref urlencode]] relativeToURL:_baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -433,7 +435,7 @@ enum enigma2MessageTypes {
 
 - (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerlist?path=%@", [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerlist?path=%@", [path urlencode]] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2FileXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -455,7 +457,7 @@ enum enigma2MessageTypes {
 		action = @"add";
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root urlencode], [track.sref urlencode]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -478,7 +480,7 @@ enum enigma2MessageTypes {
 - (Result *)playTrack:(NSObject<FileProtocol> *) track
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref urlencode]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -501,7 +503,7 @@ enum enigma2MessageTypes {
 - (Result *)removeTrack:(NSObject<FileProtocol> *) track
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref urlencode]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -688,7 +690,7 @@ enum enigma2MessageTypes {
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/message?text=%@&type=%d&timeout=%d", [message  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], type, timeout] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/message?text=%@&type=%d&timeout=%d", [message  urlencode], type, timeout] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 

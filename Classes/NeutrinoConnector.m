@@ -26,6 +26,8 @@
 #import "NeutrinoRCEmulatorController.h"
 #import "SimpleRCEmulatorController.h"
 
+#import "NSString+URLEncode.h"
+
 #import "Constants.h"
 
 enum neutrinoMessageTypes {
@@ -138,7 +140,7 @@ enum neutrinoMessageTypes {
 	Result *result = [Result createResult];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -395,7 +397,7 @@ enum neutrinoMessageTypes {
 	[add appendFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+	[add appendString: [newTimer.service.sname urlencode]];
 	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
@@ -426,7 +428,7 @@ enum neutrinoMessageTypes {
 	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+	[add appendString: [newTimer.service.sname urlencode]];
 	[add appendString: @"&rep="];
 	[add appendFormat: @"%d", newTimer.repeated];
 	[add appendString: @"&repcount="];
@@ -743,7 +745,7 @@ enum neutrinoMessageTypes {
 	Result *result = [Result createResult];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message urlencode]] relativeToURL: _baseAddress];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
