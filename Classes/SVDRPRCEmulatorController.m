@@ -29,9 +29,9 @@
 	// create the rc view and prepare different frames used for orientations
 	_portraitFrame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
 	if(IS_IPAD())
-		_landscapeFrame = CGRectMake(140, 95, mainViewSize.width - 140, mainViewSize.height - 95);
+		_landscapeFrame = CGRectMake(140, 95, mainViewSize.height - 140, mainViewSize.width - 95);
 	else
-		_landscapeFrame = CGRectMake(75, 30, mainViewSize.width - 75, mainViewSize.height - 30);
+		_landscapeFrame = CGRectMake(75, 30, mainViewSize.height - 75, mainViewSize.width - 30);
 	rcView = [[UIView alloc] initWithFrame: _portraitFrame];
 	[self.view addSubview:rcView];
 
@@ -41,7 +41,7 @@
 
 	/* Begin Keypad */
 	// intialize view
-	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 165 * factor, 135 * factor);
+	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 135 * factor, 165 * factor);
 	_keyPad = [[UIView alloc] initWithFrame: _portraitKeyFrame];
 	// new row
 	localX = 0;
@@ -153,10 +153,10 @@
 	currX += 2*imageWidth; // currX is used as center here
 	//initialize view
 	if(IS_IPAD())
-		_landscapeNavigationFrame = CGRectMake(195, 95, 190, 240);
+		_landscapeNavigationFrame = CGRectMake(195, 95, 360, 240);
 	else
-		_landscapeNavigationFrame = CGRectMake(80, 35, 80, 100);
-	_portraitNavigationFrame = CGRectMake(currY * factor, (currX - 40) * factor, 80 * factor, 100 * factor);
+		_landscapeNavigationFrame = CGRectMake(80, 35, 150, 100);
+	_portraitNavigationFrame = CGRectMake(currY * factor, (currX - 40) * factor, 150 * factor, 100 * factor);
 	_navigationPad = [[UIView alloc] initWithFrame:_portraitNavigationFrame];
 	// internal offset
 	localX = 40;

@@ -50,14 +50,14 @@
 	{
 		if(usesAdvancedRemote)
 			// XXX: wtf is wrong here? -20 ?!
-			_landscapeFrame = CGRectMake(140, -20, mainViewSize.width - 140, mainViewSize.height);
+			_landscapeFrame = CGRectMake(140, -20, mainViewSize.height - 140, mainViewSize.width);
 		else
-			_landscapeFrame = CGRectMake(140, 95, mainViewSize.width - 140, mainViewSize.height - 95);
+			_landscapeFrame = CGRectMake(140, 95, mainViewSize.height - 140, mainViewSize.width - 95);
 	}
 	else
 	{
 		// Make frame a little smaller than full screen to cut off advanced rc buttons
-		_landscapeFrame = CGRectMake(75, 30, mainViewSize.width - 75, mainViewSize.height - 50);
+		_landscapeFrame = CGRectMake(75, 30, mainViewSize.height - 75, mainViewSize.width - 50);
 	}
 	rcView = [[UIView alloc] initWithFrame: _portraitFrame];
 	[self.view addSubview:rcView];
@@ -68,7 +68,7 @@
 
 	/* Begin Keypad */
 	// intialize view
-	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 165 * factor, 135 * factor);
+	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 135 * factor, 165 * factor);
 	_keyPad = [[UIView alloc] initWithFrame: _portraitKeyFrame];
 	// new row
 	localX = 0;
@@ -182,13 +182,13 @@
 	if(IS_IPAD())
 	{
 		if(usesAdvancedRemote)
-			_landscapeNavigationFrame = CGRectMake(195, 237, 190, 240);
+			_landscapeNavigationFrame = CGRectMake(195, 237, 360, 240);
 		else
-			_landscapeNavigationFrame = CGRectMake(195, 95, 190, 240);
+			_landscapeNavigationFrame = CGRectMake(195, 95, 360, 240);
 	}
 	else
-		_landscapeNavigationFrame = CGRectMake(80, 35, 80, 100);
-	_portraitNavigationFrame = CGRectMake(currY * factor, (currX - 40) * factor, 80 * factor, 100 * factor);
+		_landscapeNavigationFrame = CGRectMake(80, 35, 150, 100);
+	_portraitNavigationFrame = CGRectMake(currY * factor, (currX - 40) * factor, 150 * factor, 100 * factor);
 	_navigationPad = [[UIView alloc] initWithFrame:_portraitNavigationFrame];
 	// internal offset
 	localX = 40;
