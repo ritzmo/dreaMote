@@ -54,8 +54,9 @@
 
 	const CGSize mainViewSize = self.view.bounds.size;
 
-	// create the rc views (i think its easier to have two views than to keep track of all buttons and add/remove them as pleased)
-	frame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
+	// create the rc view
+	// NOTE: we size it height*height because this is the largest area we might fill
+	frame = CGRectMake(0, 0, mainViewSize.height, mainViewSize.height);
 	rcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:rcView];
 
@@ -165,6 +166,15 @@
 	const CGFloat imageHeight = 105 * factor;
 	CGSize mainViewSize = self.view.bounds.size;
 
+	// check if we are going to rotate and eventually adjust size
+	if(self.interfaceOrientation != interfaceOrientation)
+	{
+		CGFloat tabBarHeight = self.tabBarController.tabBar.frame.size.height;
+		CGFloat width = mainViewSize.width;
+		mainViewSize.width  = mainViewSize.height + tabBarHeight;
+		mainViewSize.height = width - tabBarHeight;
+	}
+
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
 		_lameButton.frame = CGRectMake(mainViewSize.width - imageWidth, kTopMargin, imageWidth, imageHeight);
@@ -192,15 +202,14 @@
 	[self manageViews:self.interfaceOrientation];
 }
 
-/* did rotate */
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+/* will rotate */
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: 0.3f];
-	// FIXME: we give arbitrary value for landscape / non landscape since this is all we need to know
-	[self manageViews:UIInterfaceOrientationIsLandscape(fromInterfaceOrientation) ? UIInterfaceOrientationPortrait : UIInterfaceOrientationLandscapeLeft];
+	[UIView setAnimationDuration: duration];
+	[self manageViews:toInterfaceOrientation];
 	[UIView commitAnimations];
 }
 
