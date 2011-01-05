@@ -61,7 +61,8 @@
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor blackColor];
-
+	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	self.view = contentView;
 	[contentView release];
 
@@ -79,16 +80,15 @@
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 														target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-
 	[button release];
 
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
-						(IS_IPAD()) ? 400 : 300,
+						_datePickerView.frame.size.height + 3 * kTweenMargin,
 						self.view.bounds.size.width - kLeftMargin - kRightMargin,
-						0);
+						kDatePickerFontSize);
 	_label = [[UILabel alloc] initWithFrame:frame];
-	_label.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_label.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
 	_label.font = [UIFont systemFontOfSize:kDatePickerFontSize];
 	_label.textAlignment = UITextAlignmentCenter;
 	_label.textColor = [UIColor whiteColor];
