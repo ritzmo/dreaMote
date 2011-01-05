@@ -74,7 +74,7 @@ enum neutrinoMessageTypes {
 								 inPassword, address];
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
-			
+
 			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
 		[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[_baseAddress host]];
@@ -91,9 +91,26 @@ enum neutrinoMessageTypes {
 	[super dealloc];
 }
 
+- (void)freeCaches
+{
+	[_cachedBouquetsXML release];
+	_cachedBouquetsXML = nil;
+}
+
 + (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
 	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
+}
+
+- (UIViewController *)newRCEmulator
+{
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	UIViewController *targetViewController = nil;
+	if(useSimpleRemote)
+		targetViewController = [[SimpleRCEmulatorController alloc] init];
+	else
+		targetViewController = [[NeutrinoRCEmulatorController alloc] init];
+	return targetViewController;
 }
 
 - (BOOL)isReachable
@@ -113,6 +130,8 @@ enum neutrinoMessageTypes {
 
 	return ([response statusCode] == 200);
 }
+
+#pragma mark Services
 
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
@@ -135,12 +154,6 @@ enum neutrinoMessageTypes {
 	result.result = ([response statusCode] == 200);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
-}
-
-- (Result *)playMovie: (NSObject<MovieProtocol> *)movie
-{
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-	return nil;
 }
 
 /*
@@ -168,7 +181,7 @@ enum neutrinoMessageTypes {
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
 		return nil;
 	}
-	
+
 	NSArray *resultNodes = nil;
 
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
@@ -201,9 +214,9 @@ enum neutrinoMessageTypes {
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
 		return nil;
 	}
-	
+
 	NSArray *resultNodes = nil;
-	
+
 	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];
 	if(!resultNodes || ![resultNodes count])
 	{
@@ -212,7 +225,7 @@ enum neutrinoMessageTypes {
 			[_cachedBouquetsXML release];
 			[self refreshBouquetsXMLCache];
 		}
-		
+
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
 						[NSString stringWithFormat: @"/zapit/Bouquet[@name=\"%@\"]/channel", bouquet.sname]
 						error:nil];
@@ -249,6 +262,8 @@ enum neutrinoMessageTypes {
 	[streamReader autorelease];
 	return doc;
 }
+
+#pragma mark Timer
 
 // TODO: reimplement this as streaming parser some day :-)
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
@@ -299,7 +314,7 @@ enum neutrinoMessageTypes {
 			continue;
 
 		NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
-		
+
 		// Determine type, reject unhandled
 		const NSInteger timerType = [[timerStringComponents objectAtIndex: 1] integerValue];
 		if(timerType == neutrinoTimerTypeRecord)
@@ -315,7 +330,7 @@ enum neutrinoMessageTypes {
 
 		timer.eit = [timerStringComponents objectAtIndex: 0]; // NOTE: actually wrong but we need it :-)
 		timer.title = [NSString stringWithFormat: @"Timer %@", timer.eit];
-		timer.repeated = [[timerStringComponents objectAtIndex: 2] integerValue]; // FIXME: as long as we don't offer to edit this via gui we can just keep the value and not change it to some common interpretation
+		timer.repeated = [[timerStringComponents objectAtIndex: 2] integerValue]; // NOTE: as long as we don't offer to edit this via gui we can just keep the value and not change it to some common interpretation
 		timer.repeatcount = [[timerStringComponents objectAtIndex: 3] integerValue];
 		[timer setBeginFromString: [timerStringComponents objectAtIndex: 5]];
 		[timer setEndFromString: [timerStringComponents objectAtIndex: 6]];
@@ -370,18 +385,105 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
-- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-	return nil;
+	Result *result = [Result createResult];
+
+	// Generate URI
+	// NOTE: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
+	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
+	[add appendFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
+	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
+	[add appendString: @"&channel_name="];
+	[add appendString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
+	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+						  returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// Sourcecode suggests that they always return ok, so we only do this simple check
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
 }
 
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
+{
+	Result *result = [Result createResult];
+
+	// Generate URI
+	// NOTE: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
+	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
+	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
+	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
+	[add appendString: @"&channel_name="];
+	[add appendString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
+	[add appendString: @"&rep="];
+	[add appendFormat: @"%d", newTimer.repeated];
+	[add appendString: @"&repcount="];
+	[add appendFormat: @"%d", newTimer.repeatcount];
+	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
+	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+						  returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// Sourcecode suggests that they always return ok, so we only do this simple check
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
+}
+
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
+{
+	Result *result = [Result createResult];
+
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	[NSURLConnection sendSynchronousRequest: request
+						  returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// Sourcecode suggests that they always return ok, so we only do this simple check
+	result.result = ([response statusCode] == 200);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
+	return result;
+}
+
+#pragma mark Recordings
 
 - (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
-	// TODO: is this actually possible?
+	// is this possible?
 	return nil;
 }
+
+#pragma mark Control
 
 - (void)sendPowerstate: (NSString *) newState
 {
@@ -409,7 +511,7 @@ enum neutrinoMessageTypes {
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/standby" relativeToURL: _baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
@@ -448,16 +550,16 @@ enum neutrinoMessageTypes {
 
 	// Generate URI (mute)
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
+
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	if([myString isEqualToString: @"1"])
 		volumeObject.ismuted = YES;
@@ -468,13 +570,13 @@ enum neutrinoMessageTypes {
 
 	// Generate URI (volume)
 	myURI = [NSURL URLWithString: @"/control/volume" relativeToURL: _baseAddress];
-	
+
 	// Create URL Object and download it
 	request = [NSURLRequest requestWithURL: myURI
 							   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	data = [NSURLConnection sendSynchronousRequest: request
 						  returningResponse: &response error: nil];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -488,18 +590,13 @@ enum neutrinoMessageTypes {
 	[volumeObject release];
 }
 
-- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
-{
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-}
-
 - (BOOL)toggleMuted
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
@@ -544,106 +641,16 @@ enum neutrinoMessageTypes {
 
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%d", newVolume] relativeToURL: _baseAddress];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	[NSURLConnection sendSynchronousRequest: request
 						  returningResponse: &response error: nil];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	// Sourcecode suggests that they always return ok, so we only do this simple check
-	result.result = ([response statusCode] == 200);
-	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
-	return result;
-}
 
-- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
-{
-	Result *result = [Result createResult];
-	
-	// Generate URI
-	// FIXME: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
-	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
-	[add appendFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
-	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
-	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	// Create URL Object and download it
-	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	// Sourcecode suggests that they always return ok, so we only do this simple check
-	result.result = ([response statusCode] == 200);
-	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
-	return result;
-}
-
-- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
-{
-	Result *result = [Result createResult];
-	
-	// Generate URI
-	// FIXME: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
-	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
-	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
-	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]];
-	[add appendString: @"&rep="];
-	[add appendFormat: @"%d", newTimer.repeated];
-	[add appendString: @"&repcount="];
-	[add appendFormat: @"%d", newTimer.repeatcount];
-	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
-	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	// Create URL Object and download it
-	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
-	// Sourcecode suggests that they always return ok, so we only do this simple check
-	result.result = ([response statusCode] == 200);
-	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
-	return result;
-}
-
-- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
-{
-	Result *result = [Result createResult];
-	
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: _baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// Sourcecode suggests that they always return ok, so we only do this simple check
@@ -655,7 +662,7 @@ enum neutrinoMessageTypes {
 - (Result *)sendButton:(NSInteger) type
 {
 	Result *result = [Result createResult];
-	
+
 	// We fake some button codes (namely tv/radio) so we have to be able to set a custom uri
 	NSURL *myURI = nil;
 
@@ -729,10 +736,12 @@ enum neutrinoMessageTypes {
 	return result;
 }
 
+#pragma mark Messaging
+
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	Result *result = [Result createResult];
-	
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 
@@ -770,6 +779,8 @@ enum neutrinoMessageTypes {
 	}
 }
 
+#pragma mark Screenshots
+
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
 	if(type == kScreenshotTypeOSD)
@@ -790,7 +801,7 @@ enum neutrinoMessageTypes {
 		{
 			// Generate URI
 			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: _baseAddress];
-			
+
 			// Create URL Object and download it
 			request = [NSURLRequest requestWithURL: myURI
 									   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
@@ -804,7 +815,7 @@ enum neutrinoMessageTypes {
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
-		
+
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
 												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
@@ -836,15 +847,15 @@ enum neutrinoMessageTypes {
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
-		
+
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
 								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 		[NSURLConnection sendSynchronousRequest: request
 							  returningResponse: &response error: nil];
-		
+
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-		
+
 		return data;
 	}
 	else// We actually generate a combined picture here
@@ -852,9 +863,9 @@ enum neutrinoMessageTypes {
 		// We need to trigger a capture and individually fetch the picture
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
-		
+
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-		
+
 		// Create URL Object and download it
 		NSURLResponse *response;
 		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
@@ -875,7 +886,7 @@ enum neutrinoMessageTypes {
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
-		
+
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
 								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
@@ -890,6 +901,7 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
+#pragma mark Unsupported
 
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
@@ -957,21 +969,21 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
-- (UIViewController *)newRCEmulator
+- (Result *)playMovie: (NSObject<MovieProtocol> *)movie
 {
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[NeutrinoRCEmulatorController alloc] init];
-	return targetViewController;
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
 }
 
-- (void)freeCaches
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
-	[_cachedBouquetsXML release];
-	_cachedBouquetsXML = nil;
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
 @end
