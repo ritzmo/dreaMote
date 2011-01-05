@@ -137,6 +137,7 @@
 		DA6CF01612D4D38D00F1F52D /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCF12D4D38D00F1F52D /* system-shutdown.png */; };
 		DA6CF01712D4D38D00F1F52D /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD012D4D38D00F1F52D /* timer.png */; };
 		DA6CF01812D4D38D00F1F52D /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD112D4D38D00F1F52D /* view-refresh.png */; };
+		DA6CF15F12D4F04400F1F52D /* audio-volume-high.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */; };
 		DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA6D41C812CDE0C90027493C /* OtherList.xib */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
@@ -393,6 +394,7 @@
 		DA6CEFCF12D4D38D00F1F52D /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "system-shutdown.png"; sourceTree = "<group>"; };
 		DA6CEFD012D4D38D00F1F52D /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
 		DA6CEFD112D4D38D00F1F52D /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "view-refresh.png"; sourceTree = "<group>"; };
+		DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-volume-high.png"; sourceTree = "<group>"; };
 		DA6D41C912CDE0C90027493C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
@@ -762,6 +764,7 @@
 			children = (
 				DA6CEF8E12D4D38D00F1F52D /* EGOTableViewPullRefresh */,
 				DA6CEF8A12D4D38D00F1F52D /* 4-sided-arrow.png */,
+				DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */,
 				DA6CEF8B12D4D38D00F1F52D /* bouquet.png */,
 				DA6CEF8C12D4D38D00F1F52D /* current.png */,
 				DA6CEF8D12D4D38D00F1F52D /* document-save.png */,
@@ -1243,6 +1246,7 @@
 				DA6CF01612D4D38D00F1F52D /* system-shutdown.png in Resources */,
 				DA6CF01712D4D38D00F1F52D /* timer.png in Resources */,
 				DA6CF01812D4D38D00F1F52D /* view-refresh.png in Resources */,
+				DA6CF15F12D4F04400F1F52D /* audio-volume-high.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

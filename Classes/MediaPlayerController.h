@@ -8,14 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+#import "EventSourceDelegate.h" /* EventSourceDelegate */
 #import "FileListView.h" /* FileListDelegate */
+#import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
+
 
 /*!
  @brief Media Player Controller.
  */
-@interface MediaPlayerController : UIViewController <FileListDelegate>
+@interface MediaPlayerController : UIViewController <FileListDelegate, EventSourceDelegate,
+													ServiceSourceDelegate>
 {
 @private
+	NSTimer *_timer; /*!< @brief Refresh timer. */
 	FileListView *_fileList; /*!< @brief File browser. */
 	FileListView *_playlist; /*!< @brief Playlist. */
 	UIView *_frontend; /*!< @brief Main Interface. */
@@ -23,6 +28,8 @@
 	
 	CGRect _landscapeControlsFrame; /*!< @brief Landscape frame of controls. */
 	CGRect _portraitControlsFrame; /*!< @brief Portrait frame of controls. */
+
+	CXMLDocument *_currentXMLDoc; /*!< @brief Currently played. */
 }
 
 /*!

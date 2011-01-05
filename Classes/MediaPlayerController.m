@@ -9,7 +9,6 @@
 #import "MediaPlayerController.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-
 #import "Result.h"
 #import "RCButton.h"
 #import "FileListView.h"
@@ -28,6 +27,8 @@
  */
 - (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
+- (void)fetchCurrent;
+- (void)fetchCurrentDefer;
 @end
 
 @implementation MediaPlayerController
@@ -48,6 +49,8 @@
 	[_playlist release];
 	[_frontend release];
 	[_controls release];
+	[_timer release];
+	[_currentXMLDoc release];
 
 	[super dealloc];
 }
@@ -57,7 +60,21 @@
 	[_playlist refreshData];
 	[self placeControls:self.interfaceOrientation duration:0];
 
+	// FIXME: interval should be configurable
+	_timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
+											  target: self selector:@selector(fetchCurrentDefer)
+											userInfo: nil repeats: YES];
+	[_timer fire];
+
 	[super viewWillAppear: animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[_timer invalidate];
+	_timer = nil;
+
+	[super viewWillDisappear:animated];
 }
 
 - (void)loadView
@@ -171,6 +188,26 @@
 			[self flipView: nil];
 		self.navigationItem.leftBarButtonItem = nil;
 	}
+}
+
+- (void)fetchCurrentDefer
+{
+	// Spawn a thread to fetch the signal data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
+}
+
+- (void)fetchCurrent
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[_currentXMLDoc release];
+	@try {
+		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
+	}
+	@catch (NSException * e) {
+		_currentXMLDoc = nil;
+	}
+	[pool release];
 }
 
 - (void)sendCommand:(NSString *)command
@@ -287,13 +324,36 @@
 	// playlist
 	if([fileListView isEqual: _playlist])
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] playTrack:file];
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] playTrack:file];
+		if(result.result)
+		{
+			[_playlist selectPlayingByTitle:file.title];
+		}
+		else
+		{
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to start playback", @"") message:result.resulttext
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[alert show];
+			[alert release];
+		}
 	}
 	// filelist
 	else
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:NO];
-		[_playlist refreshData];
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:NO];
+		if(result.result)
+		{
+			[_playlist refreshData];
+		}
+		else
+		{
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not add song to playlist", @"") message:result.resulttext
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[alert show];
+			[alert release];
+		}
 	}
 }
 
@@ -313,6 +373,24 @@
 	{
 		[fileListView removeFile:file];
 	}
+}
+
+#pragma mark -
+#pragma mark ServiceSourceDelegate
+#pragma mark -
+
+- (void)addService: (NSObject<ServiceProtocol> *)service
+{
+	[_playlist selectPlayingByTitle: service.sname];
+}
+
+#pragma mark -
+#pragma mark EventSourceDelegate
+#pragma mark -
+
+- (void)addEvent: (NSObject<EventProtocol> *)event
+{
+	//
 }
 
 @end

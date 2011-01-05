@@ -34,6 +34,7 @@
 		self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 		_files = [[NSMutableArray alloc] init];
+		_playing = -1;
     }
     return self;
 }
@@ -103,6 +104,25 @@
 	[pool release];
 }
 
+/* select file by name */
+- (void)selectPlayingByTitle:(NSString *)filename
+{
+	NSInteger idx = 0;
+	for(NSObject<FileProtocol> *file in _files)
+	{
+		if([file.title isEqualToString: filename])
+		{
+			if(_playing != idx)
+			{
+				_playing = idx;
+				[self reloadData];
+			}
+			return;
+		}
+		++idx;
+	}
+}
+
 #pragma mark	-
 #pragma mark	UITableView delegate methods
 #pragma mark	-
@@ -115,19 +135,13 @@
 		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	NSUInteger row = indexPath.row;
-	if(_isPlaylist)
-	{
-		// remove path from file name
-		NSObject<FileProtocol> *file = [_files objectAtIndex:row];
-		NSString *fullpath = file.sref;
-		NSArray *comps = [fullpath componentsSeparatedByString:@"/"];
-		TABLEVIEWCELL_TEXT(cell) = [comps lastObject];
-		return cell;
-	}
-
-	NSObject<FileProtocol> *file = [_files objectAtIndex:row];
+	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
 	TABLEVIEWCELL_TEXT(cell) = file.title;
+
+	if(indexPath.row == _playing)
+		TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-volume-high.png"];
+	else
+		TABLEVIEWCELL_IMAGE(cell) = nil;
 
 	return cell;
 }
@@ -180,13 +194,13 @@
 }
 
 /* number of sections */
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return 1;
 }
 
 /* number of rows */
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	return [_files count];
 }

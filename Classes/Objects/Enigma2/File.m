@@ -39,6 +39,11 @@
 		NSString *stringValue = [currentChild stringValue];
 		if([stringValue isEqualToString: @"None"])
 			return NSLocalizedString(@"Filesystems", @"Label for Filesystems Item in MediaPlayer Filelist");
+		else if([self.root isEqualToString: @"playlist"])
+		{
+			NSArray *comps = [stringValue componentsSeparatedByString:@"/"];
+			return [comps lastObject];
+		}
 		return [stringValue stringByReplacingOccurrencesOfString:self.root withString:@""];
 	}
 	return nil;

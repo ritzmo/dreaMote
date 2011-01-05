@@ -19,6 +19,7 @@
 @private
 	NSString *_path; /*!< @brief Current path. */
 	BOOL _isPlaylist; /*!< @brief Is playlist? */
+	NSInteger _playing; /*!< @brief Item marked as currently playing. */
 
 	CXMLDocument *_fileXMLDoc; /*!< @brief XML Document. */
 	UIViewController<FileListDelegate> *_fileDelegate; /*!< @brief Delegate. */
@@ -33,10 +34,17 @@
 /*!
  @brief Remove track from list
  @note Normally called by delegate after remove from remote list succeeded
- 
+
  @param file File that was removed
  */
 - (void)removeFile:(NSObject<FileProtocol> *)file;
+
+/*!
+ @brief Select item by title
+
+ @param filename Filename of the file to select
+ */
+- (void)selectPlayingByTitle:(NSString *)filename;
 
 @property (nonatomic, retain) UIViewController<FileListDelegate> *fileDelegate;
 @property (nonatomic) BOOL isPlaylist;
@@ -47,14 +55,14 @@
 @protocol FileListDelegate
 /*!
  @brief File was selected.
- 
+
  @param fileListView View the file was selected in
  @param file File in question
  */
 - (void)fileListView:(FileListView *)fileListView fileSelected:(NSObject<FileProtocol> *)file;
 
 /*!@brief File was removed.
- 
+
  @param fileListView View the file was removed in
  @param file File in question
  */
