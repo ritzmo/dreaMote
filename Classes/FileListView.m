@@ -34,7 +34,7 @@
 		self.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 		_files = [[NSMutableArray alloc] init];
-		_playing = -1;
+		_playing = NSNotFound;
     }
     return self;
 }
@@ -107,7 +107,7 @@
 /* select file by name */
 - (void)selectPlayingByTitle:(NSString *)filename
 {
-	NSInteger idx = 0;
+	NSUInteger idx = 0;
 	for(NSObject<FileProtocol> *file in _files)
 	{
 		if([file.title isEqualToString: filename])
