@@ -141,10 +141,10 @@
 	currX += 2*imageWidth; // currX is used as center here
 	//initialize view
 	if(IS_IPAD())
-		_landscapeNavigationFrame = CGRectMake(195, 95, 360, 240);
+		_landscapeNavigationFrame = CGRectMake(195, 95, 360, 285);
 	else
-		_landscapeNavigationFrame = CGRectMake(80, 35, 150, 100);
-	_portraitNavigationFrame = CGRectMake(currY * factor, (currX - 40) * factor, 150 * factor, 100 * factor);
+		_landscapeNavigationFrame = CGRectMake(80, 35, 150, 120);
+	_portraitNavigationFrame = CGRectMake(currY * factor, (currX - 40) * factor, 150 * factor, 120 * factor);
 	_navigationPad = [[UIView alloc] initWithFrame:_portraitNavigationFrame];
 	// internal offset
 	localX = 40;
