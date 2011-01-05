@@ -50,7 +50,7 @@ enum enigma2MessageTypes {
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
-	return 
+	return
 		(feature != kFeaturesMessageCaption);
 }
 
@@ -79,7 +79,7 @@ enum enigma2MessageTypes {
 								 inPassword, address];
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
-			
+
 			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
 		[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[_baseAddress host]];
@@ -95,9 +95,25 @@ enum enigma2MessageTypes {
 	[super dealloc];
 }
 
+- (void)freeCaches
+{
+	// NOTE: We don't use any caches
+}
+
 + (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
 	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
+}
+
+- (UIViewController *)newRCEmulator
+{
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	UIViewController *targetViewController = nil;
+	if(useSimpleRemote)
+		targetViewController = [[SimpleRCEmulatorController alloc] init];
+	else
+		targetViewController = [[EnigmaRCEmulatorController alloc] init];
+	return targetViewController;
 }
 
 - (BOOL)isReachable
@@ -124,7 +140,7 @@ enum enigma2MessageTypes {
 	const NSArray *resultNodes = nil;
 	Result *result = [Result createResult];
 	CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:xml options:0 error:&error];
-	
+
 	result.result = NO;
 
 	if(error != nil)
@@ -133,7 +149,7 @@ enum enigma2MessageTypes {
 		[dom release];
 		return result;
 	}
-	
+
 	resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2state" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
@@ -143,7 +159,7 @@ enum enigma2MessageTypes {
 		}
 		break;
 	}
-	
+
 	resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2statetext" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
@@ -155,10 +171,12 @@ enum enigma2MessageTypes {
 	return result;
 }
 
+#pragma mark Services
+
 - (Result *)zapInternal:(NSString *) sref
 {
 	Result *result = [Result createResult];
-	
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
 
@@ -181,11 +199,6 @@ enum enigma2MessageTypes {
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	return [self zapInternal: service.sref];
-}
-
-- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
-{
-	return [self zapInternal: movie.sref];
 }
 
 - (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
@@ -233,6 +246,30 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
+- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
+{
+	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
+{
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+
+#pragma mark Timer
+
 - (CXMLDocument *)fetchTimers:(NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: _baseAddress];
@@ -243,10 +280,87 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
+- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+#pragma mark Recordings
+#pragma mark Screenshots
+
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
+{
+	return [self zapInternal: movie.sref];
+}
+
 - (CXMLDocument *)fetchLocationlist:(NSObject <LocationSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/getlocations" relativeToURL: _baseAddress];
-	
+
 	const BaseXMLReader *streamReader = [[Enigma2LocationXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
@@ -267,6 +381,55 @@ enum enigma2MessageTypes {
 	[streamReader autorelease];
 	return doc;
 }
+
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+- (Result *)instantRecord
+{
+	// Generate URI
+	// TODO: we only allow infinite instant records for now
+	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:_baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSHTTPURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+#pragma mark MediaPlayer
 
 - (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path
 {
@@ -290,24 +453,24 @@ enum enigma2MessageTypes {
 		action = @"play";
 	else
 		action = @"add";
-	
+
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 	NSLog(@"%@", [myURI absoluteString]);
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
+
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
@@ -318,7 +481,7 @@ enum enigma2MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 	NSLog(@"%@", [myURI absoluteString]);
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 	// Create URL Object and download it
@@ -342,20 +505,20 @@ enum enigma2MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
 	NSLog(@"%@", [myURI absoluteString]);
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
+
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
@@ -366,23 +529,35 @@ enum enigma2MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayercmd?command=%@", command] relativeToURL: _baseAddress];
 	NSLog(@"%@", [myURI absoluteString]);
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
+
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
+
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	
+
 	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
+}
+
+#pragma mark Control
+
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString: @"/web/getcurrent" relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2CurrentXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
 }
 
 - (void)sendPowerstate: (NSInteger) newState
@@ -432,15 +607,6 @@ enum enigma2MessageTypes {
 	[streamReader autorelease];
 }
 
-- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
-{
-	NSURL *myURI = [NSURL URLWithString: @"/web/signal" relativeToURL: _baseAddress];
-	
-	const BaseXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate: delegate];
-	[streamReader parseXMLFileAtURL:myURI parseError: nil];
-	[streamReader autorelease];
-}
-
 - (BOOL)toggleMuted
 {
 	// Generate URI
@@ -454,7 +620,7 @@ enum enigma2MessageTypes {
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
+
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -477,76 +643,7 @@ enum enigma2MessageTypes {
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
-}
-
-- (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
-{
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL: _baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
-}
-
-- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
-{
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [newTimer.tdescription stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, [newTimer.location stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
-}
-
-- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
-{
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-	
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -569,7 +666,7 @@ enum enigma2MessageTypes {
 											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
-	
+
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -578,6 +675,19 @@ enum enigma2MessageTypes {
 	[myString release];
 	return result;
 }
+
+#pragma mark Signal
+
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString: @"/web/signal" relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate: delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError: nil];
+	[streamReader autorelease];
+}
+
+#pragma mark Messaging
 
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
@@ -624,6 +734,8 @@ enum enigma2MessageTypes {
 	}
 }
 
+#pragma mark Screenshots
+
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
 	NSString *appendType = nil;
@@ -656,100 +768,6 @@ enum enigma2MessageTypes {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	return data;
-}
-
-- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
-{
-	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]] relativeToURL:_baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	
-	// Create URL Object and download it
-	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-											returningResponse: &response error: nil];
-	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
-}
-
-- (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
-{
-	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title stringByAddingPercentEscapesUsingEncoding: NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
-
-	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
-	[streamReader autorelease];
-	return doc;
-}
-
-- (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
-{
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding], event.eit] relativeToURL: _baseAddress];
-	
-	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
-	[streamReader autorelease];
-	return doc;
-}
-
-- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
-{
-	NSURL *myURI = [NSURL URLWithString: @"/web/getcurrent" relativeToURL: _baseAddress];
-	
-	const BaseXMLReader *streamReader = [[Enigma2CurrentXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
-	[streamReader autorelease];
-	return doc;
-}
-
-- (Result *)instantRecord
-{
-	// Generate URI
-	// TODO: we only allow infinite instant records for now
-	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:_baseAddress];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-						returningResponse: &response error: nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
-}
-
-- (UIViewController *)newRCEmulator
-{
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[EnigmaRCEmulatorController alloc] init];
-	return targetViewController;
-}
-
-- (void)freeCaches
-{
-	// NOTE: We don't use any caches
 }
 
 @end
