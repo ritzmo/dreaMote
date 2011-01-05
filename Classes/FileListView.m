@@ -61,7 +61,6 @@
 	// Free old bouquet, retain new one
 	[_path release];
 	_path = [new retain];
-	NSLog(@"setting path to %@", new);
 
 	// Free Caches and reload data
 	[_files removeAllObjects];

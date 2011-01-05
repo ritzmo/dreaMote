@@ -116,9 +116,6 @@
 	}
 	_controls = [[UIView alloc] initWithFrame:_portraitControlsFrame];
 	
-	NSLog(@"%.2f %.2f %.2f %.2f", _portraitControlsFrame.origin.x, _portraitControlsFrame.origin.y, _portraitControlsFrame.size.width, _portraitControlsFrame.size.height);
-	NSLog(@"%.2f %.2f %.2f %.2f", _landscapeControlsFrame.origin.x, _landscapeControlsFrame.origin.y, _landscapeControlsFrame.size.width, _landscapeControlsFrame.size.height);
-
 	// controls
 	UIButton *roundedButtonType;
 	CGFloat localX = (_controls.frame.size.width / factor) / 2 - 2 * ((imageWidth + kTweenMargin));

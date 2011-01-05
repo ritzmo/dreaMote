@@ -456,7 +456,6 @@ enum enigma2MessageTypes {
 
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
-	NSLog(@"%@", [myURI absoluteString]);
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -480,7 +479,6 @@ enum enigma2MessageTypes {
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
-	NSLog(@"%@", [myURI absoluteString]);
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -504,7 +502,6 @@ enum enigma2MessageTypes {
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
-	NSLog(@"%@", [myURI absoluteString]);
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
@@ -528,7 +525,6 @@ enum enigma2MessageTypes {
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayercmd?command=%@", command] relativeToURL: _baseAddress];
-	NSLog(@"%@", [myURI absoluteString]);
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
