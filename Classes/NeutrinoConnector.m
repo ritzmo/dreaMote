@@ -921,6 +921,42 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
+- (CXMLDocument *)fetchPlaylist:(NSObject <FileSourceDelegate>*)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (CXMLDocument *)fetchFiles:(NSObject <FileSourceDelegate>*)delegate path:(NSString *)path
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)removeTrack:(NSObject<FileProtocol> *) track
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)playTrack:(NSObject<FileProtocol> *) track
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)mediaplayerCommand:(NSString *)command
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 - (UIViewController *)newRCEmulator
 {
 	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];

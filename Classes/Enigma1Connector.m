@@ -783,6 +783,42 @@ enum enigma1MessageTypes {
 	return doc;
 }
 
+- (CXMLDocument *)fetchPlaylist:(NSObject <FileSourceDelegate>*)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (CXMLDocument *)fetchFiles:(NSObject <FileSourceDelegate>*)delegate path:(NSString *)path
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)removeTrack:(NSObject<FileProtocol> *) track
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)playTrack:(NSObject<FileProtocol> *) track
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (Result *)mediaplayerCommand:(NSString *)command
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 - (Result *)instantRecord
 {
 	Result *result = [Result createResult];

@@ -21,6 +21,7 @@
 @private
 	UIViewController *_configListController; /*!< @brief Cached Configuration List. */
 	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
+	NSDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */
 	NSDictionary *_locationsDictionary; /*!< @brief Dictionary describing Locations List Item. */
 	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
 	NSDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */

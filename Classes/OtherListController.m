@@ -26,6 +26,7 @@
 #import "ServiceListController.h"
 #import "SignalViewController.h"
 #import "TimerListController.h"
+#import "MediaPlayerController.h"
 
 @interface OtherListController()
 /*!
@@ -55,6 +56,7 @@
 	[menuList release];
 	[_configListController release];
 	[_eventSearchDictionary release];
+	[_mediaPlayerDictionary release];
 	[_locationsDictionary release];
 	[_recordDictionary release];
 	[_signalDictionary release];
@@ -118,6 +120,14 @@
 							nil] retain];
 		[targetViewController release];
 	}
+
+	targetViewController = [[MediaPlayerController alloc] init];
+	_mediaPlayerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+								   NSLocalizedString(@"Media Player Title", @""), @"title",
+								   NSLocalizedString(@"Media Player Explain", @""), @"explainText",
+								   targetViewController, @"viewController",
+								   nil] retain];
+	[targetViewController release];
 
 	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -253,6 +263,24 @@
 		if([menuList containsObject: _eventSearchDictionary])
 		{
 			[menuList removeObject: _eventSearchDictionary];
+			reload = YES;
+		}
+	}
+
+	// Add/Remove Media Player
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
+	{
+		if(![menuList containsObject: _mediaPlayerDictionary])
+		{
+			[menuList insertObject: _mediaPlayerDictionary atIndex: 1];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _mediaPlayerDictionary])
+		{
+			[menuList removeObject: _mediaPlayerDictionary];
 			reload = YES;
 		}
 	}

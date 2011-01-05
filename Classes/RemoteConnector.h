@@ -93,6 +93,8 @@ enum connectorFeatures {
 	kFeaturesRadioMode,
 	/*! @brief Support recording locations. */
 	kFeaturesRecordingLocations,
+	/*! @brief Offers interface to a media player. */
+	kFeaturesMediaPlayer,
 };
 
 /*!
@@ -154,6 +156,7 @@ enum buttonCodes {
 @protocol MovieProtocol;
 @protocol ServiceProtocol;
 @protocol TimerProtocol;
+@protocol FileProtocol;
 @protocol EventSourceDelegate;
 @protocol LocationSourceDelegate;
 @protocol MovieSourceDelegate;
@@ -161,6 +164,7 @@ enum buttonCodes {
 @protocol SignalSourceDelegate;
 @protocol TimerSourceDelegate;
 @protocol VolumeSourceDelegate;
+@protocol FileSourceDelegate;
 
 
 
@@ -278,6 +282,23 @@ enum buttonCodes {
 - (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
 
 /*!
+ @brief Request filelist from the receiver.
+ 
+ @param delegate Delegate to be called back.
+ @param path Directory to be searched for files.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path;
+
+/*!
+ @brief Request playlist from the receiver.
+ 
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
+
+/*!
  @brief Get current Volume settings.
  
  @param delegate Delegate to be called back.
@@ -352,6 +373,39 @@ enum buttonCodes {
  @return YES if deletion succeeded.
  */
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie;
+
+/*!
+ @brief Add a given track to playlist.
+ 
+ @param fullpath Path to the track.
+ @param play Start playing the track?
+ @return YES if track was added successfully and (eventually) playback was started.
+ */
+- (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play;
+
+/*!
+ @brief Remove a given track from playlist.
+ 
+ @param fullpath Path to the track.
+ @return YES if track was removed successfully.
+ */
+- (Result *)removeTrack:(NSObject<FileProtocol> *) track;
+
+/*!
+ @brief Play a given track.
+ 
+ @param fullpath Path to the track.
+ @return YES if starting playback succeeded.
+ */
+- (Result *)playTrack:(NSObject<FileProtocol> *) track;
+
+/*!
+ @brief Send command to MediaPlayer.
+ 
+ @param command Textual representation of command.
+ @return YES if command was sent successfully.
+ */
+- (Result *)mediaplayerCommand:(NSString *)command;
 
 /*!
  @brief Invoke Shutdown procedure of Receiver.

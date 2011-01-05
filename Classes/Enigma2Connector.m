@@ -13,8 +13,9 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
 
-#import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
+#import "XMLReader/Enigma2/EventXMLReader.h"
+#import "XMLReader/Enigma2/FileXMLReader.h"
 #import "XMLReader/Enigma2/MovieXMLReader.h"
 #import "XMLReader/Enigma2/LocationXMLReader.h"
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
@@ -265,6 +266,123 @@ enum enigma2MessageTypes {
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
+}
+
+- (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path
+{
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerlist?path=%@", [path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2FileXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate
+{
+	return [self fetchFiles:delegate path:@"playlist"];
+}
+
+- (Result *)addTrack:(NSObject<FileProtocol> *)track startPlayback:(BOOL)play
+{
+	NSString *action = nil;
+	if(play)
+		action = @"play";
+	else
+		action = @"add";
+	
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSLog(@"%@", [myURI absoluteString]);
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+- (Result *)playTrack:(NSObject<FileProtocol> *) track
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSLog(@"%@", [myURI absoluteString]);
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+- (Result *)removeTrack:(NSObject<FileProtocol> *) track
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] relativeToURL: _baseAddress];
+	NSLog(@"%@", [myURI absoluteString]);
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
+}
+
+- (Result *)mediaplayerCommand:(NSString *)command
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayercmd?command=%@", command] relativeToURL: _baseAddress];
+	NSLog(@"%@", [myURI absoluteString]);
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+	
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	
+	Result *result = [self simpleXmlResultToResult: myString];
+	[myString release];
+	return result;
 }
 
 - (void)sendPowerstate: (NSInteger) newState
