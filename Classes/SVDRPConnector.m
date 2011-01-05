@@ -63,10 +63,29 @@
 	[super dealloc];
 }
 
+- (void)freeCaches
+{
+	[_serviceCache release];
+	_serviceCache = nil;
+}
+
 + (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
 	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
 }
+
+- (UIViewController *)newRCEmulator
+{
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	UIViewController *targetViewController = nil;
+	if(useSimpleRemote)
+		targetViewController = [[SimpleRCEmulatorController alloc] init];
+	else
+		targetViewController = [[SVDRPRCEmulatorController alloc] init];
+	return targetViewController;
+}
+
+#pragma mark Common
 
 - (void)getSocket
 {
@@ -108,6 +127,8 @@
 	return [_socket isConnected];
 }
 
+#pragma mark Services
+
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service
 {
 	Result *result = [Result createResult];
@@ -130,28 +151,6 @@
 	return result;
 }
 
-- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
-{
-	Result *result = [Result createResult];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!_socket || ![_socket isConnected])
-		[self getSocket];
-	if(![_socket isConnected])
-		return NO;
-
-	[_socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	// XXX: we should really parse the return message
-	NSString *ret = [self readSocketLine];
-	NSLog(@"%@", ret);
-	result.result = YES;
-	result.resulttext = ret;
-	return result;
-}
-
 // TODO: does the vdr actually have bouquets?
 // FIXME: for now we just return a fake service, we don't support favourite online mode anyway
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
@@ -161,7 +160,7 @@
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
 		return nil;
 	}
-	
+
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	newService.sname = NSLocalizedString(@"All Services", @"");
 	newService.sref = @"dc";
@@ -180,7 +179,7 @@
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
 		return nil;
 	}
-	
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
@@ -331,6 +330,8 @@
 
 	return nil;
 }
+
+#pragma mark Timer
 
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
@@ -488,199 +489,6 @@
 	return nil;
 }
 
-- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
-{
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-	return nil;
-}
-
-// TODO: test this
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
-{
-	if(location != nil)
-	{
-		[NSException raise:@"ExcUnsupportedFunction" format:@""];
-		return nil;
-	}
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!_socket || ![_socket isConnected])
-		[self getSocket];
-	if(![_socket isConnected])
-	{
-		NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
-		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-		[delegate performSelectorOnMainThread: @selector(addMovie:)
-								   withObject: fakeObject
-								waitUntilDone: NO];
-		[fakeObject release];
-		
-		return nil;
-	}
-
-	[_socket writeString: @"LSTR\r\n"];
-
-	NSString *line = nil;
-	NSObject<MovieProtocol> *movie = nil;
-	NSRange range;
-	const NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier: NSGregorianCalendar];
-	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	while((line = [self readSocketLine]))
-	{
-		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
-		{
-			break;
-		}
-
-		movie = [[GenericMovie alloc] init];
-
-		range.location = 4;
-		range.length = [line length] - 4;
-		range = [line rangeOfString: @" " options: NSLiteralSearch range: range];
-		range.length = range.location - 4;
-		range.location = 4;
-		movie.sref = [line substringWithRange: range];
-		line = [line substringFromIndex: range.location + range.length];
-
-		const NSArray *components = [line componentsSeparatedByString: @" "];
-		line = [components objectAtIndex: 0];
-		range.location = 0;
-		range.length = 2;
-		[comps setDay: [[line substringWithRange: range] integerValue]];
-		range.location = 3;
-		[comps setMonth: [[line substringWithRange: range] integerValue]];
-		range.location = 6;
-		[comps setYear: 2000 + [[line substringWithRange: range] integerValue]];
-		line = [components objectAtIndex: 1];
-		range.location = 0;
-		[comps setHour: [[line substringWithRange: range] integerValue]];
-		range.location = 3;
-		[comps setMinute: [[line substringWithRange: range] integerValue]];
-
-		range.location = 3;
-		range.length = [components count] - 3;
-		movie.title = [[components subarrayWithRange: range] componentsJoinedByString: @" "];
-
-		[delegate performSelectorOnMainThread: @selector(addMovie:)
-								   withObject: movie
-								waitUntilDone: NO];
-		[movie release];
-
-		// Last line
-		if([[line substringToIndex: 4] isEqualToString: @"250 "])
-			break;
-	}
-	[comps release];
-	[gregorian release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	return nil;
-}
-
-- (void)sendPowerstate: (NSString *) newState
-{
-	// XXX: not possible with svdrp?
-	return;
-}
-
-- (void)shutdown
-{
-	return;
-}
-
-- (void)standby
-{
-	return;
-}
-
-- (void)reboot
-{
-	return;
-}
-
-- (void)restart
-{
-	// NOTE: not available
-}
-
-- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
-{
-	GenericVolume *volumeObject = nil;
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!_socket || ![_socket isConnected])
-		[self getSocket];
-	if(![_socket isConnected])
-		return;
-	
-	[_socket writeString: @"VOLU\r\n"];
-
-	volumeObject = [[GenericVolume alloc] init];
-	
-	const NSString *line = [self readSocketLine];
-	if([line isEqualToString: @"250 Audio is mute"])
-	{
-		volumeObject.current = 0;
-		volumeObject.ismuted = YES;
-	}
-	else
-	{
-		// 250 Audio volume is ?
-		NSRange range;
-		range.location = 21;
-		range.length = [line length] - 21 - 2;
-		volumeObject.current = [[line substringWithRange: range] integerValue];
-		volumeObject.ismuted = NO;
-	}
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	[delegate performSelectorOnMainThread: @selector(addVolume:)
-							   withObject: volumeObject
-							waitUntilDone: NO];
-	[volumeObject release];
-}
-
-- (void)getSignal:(id)target action:(SEL)action
-{
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-}
-
-- (BOOL)toggleMuted
-{
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!_socket || ![_socket isConnected])
-		[self getSocket];
-	if(![_socket isConnected])
-		return NO;
-
-	[_socket writeString: @"VOLU mute\r\n"];
-
-	const NSString *ret = [self readSocketLine];
-	return [ret isEqualToString: @"250 Audio is mute"];
-}
-
-- (Result *)setVolume:(NSInteger) newVolume
-{
-	Result *result = [Result createResult];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!_socket || ![_socket isConnected])
-		[self getSocket];
-	if(![_socket isConnected])
-		return NO;
-	
-	[_socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	NSString *ret = [self readSocketLine];
-	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
-	result.resulttext = ret;
-	return result;
-}
-
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
 	Result *result = [Result createResult];
@@ -774,6 +582,215 @@
 	return result;
 }
 
+#pragma mark Recordings
+
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
+{
+	Result *result = [Result createResult];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!_socket || ![_socket isConnected])
+		[self getSocket];
+	if(![_socket isConnected])
+		return NO;
+
+	[_socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// XXX: we should really parse the return message
+	NSString *ret = [self readSocketLine];
+	NSLog(@"%@", ret);
+	result.result = YES;
+	result.resulttext = ret;
+	return result;
+}
+
+// TODO: test this
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+{
+	if(location != nil)
+	{
+		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+		return nil;
+	}
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!_socket || ![_socket isConnected])
+		[self getSocket];
+	if(![_socket isConnected])
+	{
+		NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
+		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+		[delegate performSelectorOnMainThread: @selector(addMovie:)
+								   withObject: fakeObject
+								waitUntilDone: NO];
+		[fakeObject release];
+
+		return nil;
+	}
+
+	[_socket writeString: @"LSTR\r\n"];
+
+	NSString *line = nil;
+	NSObject<MovieProtocol> *movie = nil;
+	NSRange range;
+	const NSCalendar *gregorian = [[NSCalendar alloc]
+							 initWithCalendarIdentifier: NSGregorianCalendar];
+	NSDateComponents *comps = [[NSDateComponents alloc] init];
+	while((line = [self readSocketLine]))
+	{
+		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+		{
+			break;
+		}
+
+		movie = [[GenericMovie alloc] init];
+
+		range.location = 4;
+		range.length = [line length] - 4;
+		range = [line rangeOfString: @" " options: NSLiteralSearch range: range];
+		range.length = range.location - 4;
+		range.location = 4;
+		movie.sref = [line substringWithRange: range];
+		line = [line substringFromIndex: range.location + range.length];
+
+		const NSArray *components = [line componentsSeparatedByString: @" "];
+		line = [components objectAtIndex: 0];
+		range.location = 0;
+		range.length = 2;
+		[comps setDay: [[line substringWithRange: range] integerValue]];
+		range.location = 3;
+		[comps setMonth: [[line substringWithRange: range] integerValue]];
+		range.location = 6;
+		[comps setYear: 2000 + [[line substringWithRange: range] integerValue]];
+		line = [components objectAtIndex: 1];
+		range.location = 0;
+		[comps setHour: [[line substringWithRange: range] integerValue]];
+		range.location = 3;
+		[comps setMinute: [[line substringWithRange: range] integerValue]];
+
+		range.location = 3;
+		range.length = [components count] - 3;
+		movie.title = [[components subarrayWithRange: range] componentsJoinedByString: @" "];
+
+		[delegate performSelectorOnMainThread: @selector(addMovie:)
+								   withObject: movie
+								waitUntilDone: NO];
+		[movie release];
+
+		// Last line
+		if([[line substringToIndex: 4] isEqualToString: @"250 "])
+			break;
+	}
+	[comps release];
+	[gregorian release];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	return nil;
+}
+
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
+{
+	Result *result = [Result createResult];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!_socket || ![_socket isConnected])
+		[self getSocket];
+	if(![_socket isConnected])
+		return NO;
+
+	[_socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	// XXX: we should really parse the return message
+	NSString *ret = [self readSocketLine];
+	NSLog(@"%@", ret);
+	result.result = YES;
+	result.resulttext = ret;
+	return result;
+}
+
+#pragma mark Control
+
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate
+{
+	GenericVolume *volumeObject = nil;
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!_socket || ![_socket isConnected])
+		[self getSocket];
+	if(![_socket isConnected])
+		return;
+
+	[_socket writeString: @"VOLU\r\n"];
+
+	volumeObject = [[GenericVolume alloc] init];
+
+	const NSString *line = [self readSocketLine];
+	if([line isEqualToString: @"250 Audio is mute"])
+	{
+		volumeObject.current = 0;
+		volumeObject.ismuted = YES;
+	}
+	else
+	{
+		// 250 Audio volume is ?
+		NSRange range;
+		range.location = 21;
+		range.length = [line length] - 21 - 2;
+		volumeObject.current = [[line substringWithRange: range] integerValue];
+		volumeObject.ismuted = NO;
+	}
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	[delegate performSelectorOnMainThread: @selector(addVolume:)
+							   withObject: volumeObject
+							waitUntilDone: NO];
+	[volumeObject release];
+}
+
+- (void)getSignal:(id)target action:(SEL)action
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+}
+
+- (BOOL)toggleMuted
+{
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!_socket || ![_socket isConnected])
+		[self getSocket];
+	if(![_socket isConnected])
+		return NO;
+
+	[_socket writeString: @"VOLU mute\r\n"];
+
+	const NSString *ret = [self readSocketLine];
+	return [ret isEqualToString: @"250 Audio is mute"];
+}
+
+- (Result *)setVolume:(NSInteger) newVolume
+{
+	Result *result = [Result createResult];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	if(!_socket || ![_socket isConnected])
+		[self getSocket];
+	if(![_socket isConnected])
+		return NO;
+
+	[_socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	NSString *ret = [self readSocketLine];
+	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
+	result.resulttext = ret;
+	return result;
+}
+
 - (Result *)sendButton:(NSInteger) type
 {
 	Result *result = [Result createResult];
@@ -861,6 +878,8 @@
 	return result;
 }
 
+#pragma mark Messaging
+
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
 	Result *result = [Result createResult];
@@ -890,32 +909,40 @@
 	return nil;
 }
 
+#pragma mark Screenshots
+
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
 	// XXX: somehow possible, but a long way :-)
 	return nil;
 }
 
-- (Result *)delMovie:(NSObject<MovieProtocol> *) movie
+#pragma mark Unsupported
+
+- (void)sendPowerstate: (NSString *) newState
 {
-	Result *result = [Result createResult];
+	// XXX: not possible with svdrp?
+	return;
+}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	if(!_socket || ![_socket isConnected])
-		[self getSocket];
-	if(![_socket isConnected])
-		return NO;
+- (void)shutdown
+{
+	return;
+}
 
-	[_socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
+- (void)standby
+{
+	return;
+}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+- (void)reboot
+{
+	return;
+}
 
-	// XXX: we should really parse the return message
-	NSString *ret = [self readSocketLine];
-	NSLog(@"%@", ret);
-	result.result = YES;
-	result.resulttext = ret;
-	return result;
+- (void)restart
+{
+	// NOTE: not available
 }
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
@@ -983,21 +1010,10 @@
 	return nil;
 }
 
-- (UIViewController *)newRCEmulator
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[SVDRPRCEmulatorController alloc] init];
-	return targetViewController;
-}
-
-- (void)freeCaches
-{
-	[_serviceCache release];
-	_serviceCache = nil;
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
 }
 
 @end
