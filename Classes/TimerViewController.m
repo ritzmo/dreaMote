@@ -330,7 +330,18 @@
 
 	if(editing)
 	{
-		self.navigationItem.leftBarButtonItem = _cancelButtonItem;
+		/*!
+		 @note don't show cancel button for new timers on ipad, very confusing since
+		 view is opened in editing mode and therefore the popover button might not be seen
+		 and since no harm can be done by not saving a new timer this is unnecessary.
+		 however it is still shown for old timers to indicate that the changes won't be applied.
+		 also an existing timer has to be selected by the user so he should know what got
+		 him in the situation and be able to find the popover button again.
+		 */
+		if(_creatingNewTimer && IS_IPAD())
+			self.navigationItem.leftBarButtonItem = _popoverButtonItem;
+		else
+			self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 	}
 	else if(_shouldSave)
 	{
@@ -922,7 +933,9 @@
 	barButtonItem.title = aViewController.title;
 	[_popoverButtonItem release];
 	_popoverButtonItem = [barButtonItem retain];
-	if(!self.editing)
+
+	// assign popover button if there is no left button assigned.
+	if(!self.navigationItem.leftBarButtonItem)
 	{
 		self.navigationItem.leftBarButtonItem = barButtonItem;
 	}
