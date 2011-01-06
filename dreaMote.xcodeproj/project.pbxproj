@@ -543,12 +543,10 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DA2F329012D514BF00583612 /* Categories */,
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DAAC51EC12D48F3500B3B443 /* Delegates */,
-				DAC701F812D2F73300C53E37 /* EGOTableViewPullRefresh */,
-				DABF639F10F8BE3E002658DD /* Insort */,
-				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
@@ -562,8 +560,6 @@
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
 				DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */,
 				DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */,
-				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
-				DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -762,6 +758,16 @@
 			name = IntelligentSplitViewController;
 			sourceTree = "<group>";
 		};
+		DA2F329012D514BF00583612 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				DABF639F10F8BE3E002658DD /* Insort */,
+				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
+				DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		DA6CEF8912D4D38D00F1F52D /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -943,6 +949,7 @@
 		DAAC518C12D4817500B3B443 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DAC701F812D2F73300C53E37 /* EGOTableViewPullRefresh */,
 				DA2CC2890E378FCC006AE171 /* RCButton.h */,
 				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
 				DAAC518D12D481A100B3B443 /* FileListView.h */,
@@ -998,6 +1005,7 @@
 		DADEF27E12CE12900047E45E /* SplitViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
 				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
 				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
 				DA8B834E12D0031700981350 /* MovieSplitViewController.h */,
