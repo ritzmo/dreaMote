@@ -20,10 +20,6 @@
 
 @interface EventListController()
 /*!
- @brief start download of event list
- */
-- (void)fetchEvents;
-/*!
  @brief initiate zap 
  @param sender ui element
  */
@@ -45,7 +41,6 @@
 		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
-		_reloading = NO;
 	}
 	return self;
 }
@@ -80,13 +75,13 @@
 
 	// Clean event list
 	[_events removeAllObjects];
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 	[_eventXMLDoc release];
 	_eventXMLDoc = nil;
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 /* dealloc */
@@ -97,7 +92,6 @@
 	[_dateFormatter release];
 	[_eventViewController release];
 	[_eventXMLDoc release];
-	[_refreshHeaderView release];
 
 	[super dealloc];
 }
@@ -114,30 +108,17 @@
 /* layout */
 - (void)loadView
 {
-	const UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kServiceCellHeight;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
-	[tableView release];
+	[super loadView];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kServiceCellHeight;
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.sectionHeaderHeight = 0;
 
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
 	[zapButton release];
-
-	// add header view
-	EGORefreshTableHeaderView *view = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-	view.delegate = self;
-	[self.view addSubview:view];
-	_refreshHeaderView = view;
 }
 
 /* zap */
@@ -147,7 +128,7 @@
 }
 
 /* start download of event list */
-- (void)fetchEvents
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
@@ -156,6 +137,18 @@
 	[pool release];
 }
 
+/* remove content data */
+- (void)emptyData
+{
+	// Clean event list
+	[_events removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_eventXMLDoc release];
+	_eventXMLDoc = nil;
+}
+
+
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
@@ -163,7 +156,7 @@
 	{
 		[_events addObject: event];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
@@ -171,8 +164,8 @@
 	}
 #endif
 	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)self.view];
-		[(UITableView *)self.view reloadData];
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
 		_reloading = NO;
 	}
 }
@@ -234,52 +227,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 }
 
 /* disappeared */
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[_dateFormatter resetReferenceDate];
-}
-
-#pragma mark -
-#pragma mark UIScrollViewDelegate Methods
-#pragma mark -
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-}
-
-#pragma mark -
-#pragma mark EGORefreshTableHeaderDelegate Methods
-#pragma mark -
-
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
-{
-	// Clean event list
-	[_events removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[_eventXMLDoc release];
-	_eventXMLDoc = nil;
-
-	// Spawn a thread to fetch the event data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
-}
-
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
-{
-	// we make our live a little easy here, but thats ok for now
-	return _reloading;
 }
 
 @end

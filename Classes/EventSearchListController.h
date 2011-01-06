@@ -18,7 +18,6 @@
 {
 @private
 	UISearchBar	*_searchBar; /*!< @brief Search Bar. */
-	UITableView *_tableView; /*!< @brief Table View. */
 }
 
 @end

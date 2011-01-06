@@ -49,6 +49,7 @@
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
+		DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA497EAC12D67E6000B26B83 /* ReloadableListController.m */; };
 		DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutViewController.m */; };
 		DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247BF0E3B33FA00B09600 /* CellTextField.m */; };
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
@@ -289,6 +290,8 @@
 		DA3AA1D70F0D828D001B2057 /* BouquetListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetListController.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
+		DA497EAB12D67E6000B26B83 /* ReloadableListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadableListController.h; sourceTree = "<group>"; };
+		DA497EAC12D67E6000B26B83 /* ReloadableListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadableListController.m; sourceTree = "<group>"; };
 		DA51BAFF0EAA344200AF9146 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
 		DA51BB000EAA344200AF9146 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		DA5247BE0E3B33FA00B09600 /* CellTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextField.h; sourceTree = "<group>"; };
@@ -1080,6 +1083,8 @@
 				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
 				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
 				DADBB9FC12CD61BC00BAF10B /* OtherListController.m */,
+				DA497EAB12D67E6000B26B83 /* ReloadableListController.h */,
+				DA497EAC12D67E6000B26B83 /* ReloadableListController.m */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DA7FD7540D84307700974B1A /* TimerListController.h */,
@@ -1379,6 +1384,7 @@
 				DAAC520412D492CE00B3B443 /* MediaPlayerController.m in Sources */,
 				DA6CE9C812D498F100F1F52D /* FileXMLReader.m in Sources */,
 				DA54E1D612D501CC00C90863 /* NSString+URLEncode.m in Sources */,
+				DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

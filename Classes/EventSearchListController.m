@@ -80,7 +80,7 @@
 }
 
 /* fetch event list */
-- (void)fetchEvents
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
@@ -168,7 +168,7 @@
 	
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];	
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 /* called when cancel button pressed */
