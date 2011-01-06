@@ -86,7 +86,7 @@
 	frame = CGRectMake(	kLeftMargin,
 						_datePickerView.frame.size.height + 3 * kTweenMargin,
 						self.view.bounds.size.width - kLeftMargin - kRightMargin,
-						kDatePickerFontSize);
+						kDatePickerFontSize + 2);
 	_label = [[UILabel alloc] initWithFrame:frame];
 	_label.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
 	_label.font = [UIFont systemFontOfSize:kDatePickerFontSize];
