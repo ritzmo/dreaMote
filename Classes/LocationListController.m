@@ -12,13 +12,6 @@
 #import "RemoteConnectorObject.h"
 #import "Objects/LocationProtocol.h"
 
-@interface LocationListController()
-/*!
- @brief entry point of thread which fetches locations
- */
-- (void)fetchLocations;
-@end
-
 @implementation LocationListController
 
 @synthesize movieListController = _movieListController;
@@ -65,19 +58,11 @@
 /* layout */
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = 38;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
-	[tableView release];
+	[super loadView];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = 38;
+	_tableView.sectionHeaderHeight = 0;
 }
 
 /* about to display */
@@ -88,19 +73,19 @@
 	{
 		[_locations removeAllObjects];
 
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 		[_locationXMLDoc release];
 		_locationXMLDoc = nil;
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchLocations) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 	else
 	{
 		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+		NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
 	_refreshLocations = YES;
@@ -127,12 +112,23 @@
 }
 
 /* fetch contents */
-- (void)fetchLocations
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_locationXMLDoc release];
 	_locationXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist: self] retain];
 	[pool release];
+}
+
+/* remove content data */
+- (void)emptyData
+{
+	// Clean location list
+	[_locations removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_locationXMLDoc release];
+	_locationXMLDoc = nil;
 }
 
 /* add location to list */
@@ -142,14 +138,18 @@
 	{
 		[_locations addObject: location];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_locations count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_locations count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-		[(UITableView *)self.view reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
 }
 
 /* force a refresh */
@@ -158,7 +158,7 @@
 	[_locations removeAllObjects];
 	// Spawn a thread to fetch the service data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchLocations) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	_refreshLocations = NO;
 }
 

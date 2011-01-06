@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MovieListController.h"
 #import "LocationSourceDelegate.h"
+#import "MovieListController.h"
+#import "ReloadableListController.h"
 
 // Forward declaration
 @class CXMLDocument;
@@ -20,7 +21,8 @@
  
  Display list of known locations and start MovieListController on selected ones.
  */
-@interface LocationListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate,
+@interface LocationListController : ReloadableListController <UIActionSheetDelegate,
+													UITableViewDelegate,
 													UITableViewDataSource, LocationSourceDelegate>
 {
 @private

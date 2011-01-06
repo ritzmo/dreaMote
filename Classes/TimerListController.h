@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "Objects/TimerProtocol.h"
+#import "ReloadableListController.h"
 #import "TimerSourceDelegate.h"
 
 // Forward Declarations...
@@ -25,7 +26,8 @@
  @note The list is always reloaded when appearing to avoid problems with missing / wrong
  timer ids.
  */
-@interface TimerListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+@interface TimerListController : ReloadableListController <UITableViewDelegate,
+													UITableViewDataSource,
 													TimerSourceDelegate>
 {
 @private

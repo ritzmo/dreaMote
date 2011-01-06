@@ -485,6 +485,10 @@
 	[comps release];
 	[gregorian release];
 
+	[_delegate performSelectorOnMainThread: @selector(addTimer:)
+								withObject: nil
+							 waitUntilDone: NO];
+
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	return nil;
 }

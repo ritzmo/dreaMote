@@ -63,6 +63,9 @@ Example:
 								 waitUntilDone: NO];
 		[newLocation release];
 	}
+	[_delegate performSelectorOnMainThread: @selector(addLocation:)
+								withObject: nil
+							 waitUntilDone: NO];
 }
 
 @end

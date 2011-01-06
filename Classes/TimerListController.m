@@ -19,13 +19,6 @@
 #import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Result.h"
 
-@interface TimerListController()
-/*!
- @brief fetch timer list
- */
-- (void)fetchTimers;
-@end
-
 @implementation TimerListController
 
 @synthesize timers = _timers;
@@ -74,44 +67,35 @@
 /* layout */
 - (void)loadView
 {
+	[super loadView];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = 62;
+
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = 62;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	[tableView reloadData];
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
-	[tableView release];
 }
 
 /* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
-	[(UITableView*)self.view setEditing: editing animated: animated];
+	[_tableView setEditing: editing animated: animated];
 
 	if(animated)
 	{
 		if(editing)
 		{
-			[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
+			[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
 							withRowAnimation: UITableViewRowAnimationTop];
 		}
 		else
 		{
-			[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
+			[_tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:0 inSection:0]]
 							withRowAnimation: UITableViewRowAnimationTop];
 		}
 	}
 	else
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 }
 
 /* about to appear */
@@ -126,13 +110,13 @@
 	// Clear caches
 	[_timers removeAllObjects];
 	_willReappear = NO;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 	[_timerXMLDoc release];
 	_timerXMLDoc = nil;
 
 	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
 }
@@ -174,12 +158,27 @@
 }
 
 /* fetch timer list */
-- (void)fetchTimers
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_timerXMLDoc release];
 	_timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers: self] retain];
 	[pool release];
+}
+
+/* remove content data */
+- (void)emptyData
+{
+	NSUInteger i = 0;
+
+	// Clean timer list
+	for(i = 0; i < kTimerStateMax; i++)
+		_dist[i] = 0;
+	[_timers removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_timerXMLDoc release];
+	_timerXMLDoc = nil;
 }
 
 /* add timer to list */
@@ -200,14 +199,18 @@
 		if(state > 0)
 			index -= _dist[state - 1];
 
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-		[(UITableView *)self.view reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
 }
 
 /* to determine which UITableViewCell to be used on a given row. */
@@ -369,13 +372,13 @@
 
 				// Free caches
 				[_timers removeAllObjects];
-				[(UITableView *)self.view reloadData];
+				[_tableView reloadData];
 				[_timerXMLDoc release];
 				_timerXMLDoc = nil;
 
 				// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 				// application parses the XML file.
-				[NSThread detachNewThreadSelector:@selector(fetchTimers) toTarget:self withObject:nil];
+				[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 			}
 		}
 		// Timer could not be deleted

@@ -384,6 +384,9 @@ enum neutrinoMessageTypes {
 	}
 	[baseString release];
 
+	[_delegate performSelectorOnMainThread: @selector(addTimer:)
+								withObject: nil
+							 waitUntilDone: NO];
 	return nil;
 }
 
