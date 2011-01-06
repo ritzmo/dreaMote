@@ -485,7 +485,7 @@
 	[comps release];
 	[gregorian release];
 
-	[_delegate performSelectorOnMainThread: @selector(addTimer:)
+	[delegate performSelectorOnMainThread: @selector(addTimer:)
 								withObject: nil
 							 waitUntilDone: NO];
 
