@@ -47,7 +47,6 @@
 {
 	[_fileList release];
 	[_playlist release];
-	[_frontend release];
 	[_controls release];
 	[_timer release];
 	[_currentXMLDoc release];
@@ -133,7 +132,7 @@
 	self.navigationItem.leftBarButtonItem = nil;
 
 	[UIView setAnimationTransition:
-				([_frontend superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
+				([_fileList superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft)
 				forView: self.view
 				cache: YES];
 
@@ -244,9 +243,6 @@
 	// frontend
 	// FIXME: wtf?!
 	frame = CGRectMake(0, 0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
-	_frontend = [[UIView alloc] initWithFrame:frame];
-	_frontend.autoresizesSubviews = YES;
-	_frontend.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	if(IS_IPAD())
 		frame = CGRectMake(0, 0, self.view.frame.size.width, frame.size.height * 4 / 5);
 	else
@@ -270,6 +266,7 @@
 	// controls
 	UIButton *roundedButtonType;
 	CGFloat localX = (_controls.frame.size.width / factor) / 2 - 2 * ((imageWidth + kTweenMargin));
+
 	// prev
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
@@ -298,9 +295,8 @@
 	[roundedButtonType release];
 	//localX += imageWidth + kTweenMargin;
 
-	[_frontend addSubview: _controls];
-	[_frontend addSubview: _playlist];
-	[self.view addSubview: _frontend];
+	[self.view addSubview: _playlist];
+	[self.view addSubview: _controls];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }

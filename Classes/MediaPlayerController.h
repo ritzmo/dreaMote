@@ -23,7 +23,6 @@
 	NSTimer *_timer; /*!< @brief Refresh timer. */
 	FileListView *_fileList; /*!< @brief File browser. */
 	FileListView *_playlist; /*!< @brief Playlist. */
-	UIView *_frontend; /*!< @brief Main Interface. */
 	UIView *_controls; /*!< @brief Media Player controls. */
 	
 	CGRect _landscapeControlsFrame; /*!< @brief Landscape frame of controls. */
