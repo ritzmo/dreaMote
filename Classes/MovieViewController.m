@@ -125,6 +125,7 @@
 - (UITextView *)create_Summary
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
+	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
