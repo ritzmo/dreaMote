@@ -11,6 +11,7 @@
 #import "Objects/EventProtocol.h"
 #import "Objects/ServiceProtocol.h"
 #import "EventSourceDelegate.h"
+#import "ReloadableListController.h"
 #import "ServiceSourceDelegate.h"
 
 // Forward declarations...
@@ -22,7 +23,8 @@
  
  Displays the currently playing service and - if present - the current and next event.
  */
-@interface CurrentViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+@interface CurrentViewController : ReloadableListController <UITableViewDelegate,
+													UITableViewDataSource,
 													EventSourceDelegate, ServiceSourceDelegate>
 {
 @private

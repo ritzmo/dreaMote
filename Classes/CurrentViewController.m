@@ -54,24 +54,33 @@
 	[super dealloc];
 }
 
+/* layout */
 - (void)loadView
 {
-	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
+	// create table view
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	self.view = tableView;
-	[tableView release];
+	self.view = _tableView;
+
+	// add header view
+#if 0
+	_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+	_refreshHeaderView.delegate = self;
+	[self.view addSubview:_refreshHeaderView];
+#endif
 }
 
 - (UITextView *)create_Summary: (NSObject<EventProtocol> *)event
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
+	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
@@ -85,11 +94,12 @@
 	return [myTextView autorelease];
 }
 
-- (void)fetchCurrent
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_currentXMLDoc release];
 	@try {
+		_reloading = YES;
 		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
 	}
 	@catch (NSException * e) {
@@ -98,12 +108,29 @@
 	[pool release];
 }
 
+- (void)emptyData
+{
+	[_service release];
+	_service = nil;
+	[_now release];
+	_now = nil;
+	[_next release];
+	_next = nil;
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+	[_currentXMLDoc release];
+	_currentXMLDoc = nil;
+}
+
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
 	if(_service != nil)
 		[_service release];
 	_service = [service retain];
-	[(UITableView *)self.view reloadData];
+
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	_reloading = NO;
+	[_tableView reloadData];
 }
 
 - (void)addEvent: (NSObject<EventProtocol> *)event
@@ -120,7 +147,10 @@
 		_next = [event retain];
 		_nextSummary = [[self create_Summary: _next] retain];
 	}
-	[(UITableView *)self.view reloadData];
+
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	_reloading = NO;
+	[_tableView reloadData];
 }
 
 #pragma mark - UITableView delegates
@@ -272,12 +302,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
-		[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
