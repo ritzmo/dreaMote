@@ -14,7 +14,7 @@
 #import "Objects/FileProtocol.h"
 
 @interface FileListView()
-- (void)fetchFiles;
+- (void)fetchData;
 @end
 
 @implementation FileListView
@@ -35,6 +35,12 @@
 
 		_files = [[NSMutableArray alloc] init];
 		_playing = NSNotFound;
+		_reloading = NO;
+
+		// add header view
+		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.bounds.size.height, self.bounds.size.width, self.bounds.size.height)];
+		_refreshHeaderView.delegate = self;
+		[self addSubview:_refreshHeaderView];
     }
     return self;
 }
@@ -45,6 +51,7 @@
 	[_files release];
 	[_fileDelegate release];
 	[_fileXMLDoc release];
+	[_refreshHeaderView release];
 
     [super dealloc];
 }
@@ -72,7 +79,7 @@
 
 	// Spawn a thread to fetch the files so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchFiles) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 /* add file to list */
@@ -82,18 +89,22 @@
 	{
 		[_files addObject: file];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_movies count]-1 inSection:0]]
+		[self insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_files count]-1 inSection:0]]
 									   withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-	[self reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
+		[self reloadData];
+		_reloading = NO;
+	}
 }
 
 /* start download of file list */
-- (void)fetchFiles
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_fileXMLDoc release];
@@ -101,6 +112,7 @@
 		_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist: self] retain];
 	else
 		_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchFiles: self path: _path] retain];
+	_reloading = YES;
 	[pool release];
 }
 
@@ -121,6 +133,30 @@
 		}
 		++idx;
 	}
+}
+
+/* re-download data */
+- (void)refreshData
+{
+	// Free Caches and reload data
+	[_files removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_fileXMLDoc release];
+	_fileXMLDoc = nil;
+
+	// Spawn a thread to fetch the files so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
+/* remove file from list */
+- (void)removeFile:(NSObject<FileProtocol> *)file
+{
+	NSInteger idx = [_files indexOfObject:file];
+	NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
+	[_files removeObjectAtIndex:idx];
+	[self deleteRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark	-
@@ -205,27 +241,32 @@
 	return [_files count];
 }
 
-/* re-download data */
-- (void)refreshData
-{
-	// Free Caches and reload data
-	[_files removeAllObjects];
-	[self reloadData];
-	[_fileXMLDoc release];
-	_fileXMLDoc = nil;
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark -
 
-	// Spawn a thread to fetch the files so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchFiles) toTarget:self withObject:nil];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-/* remove file from list */
-- (void)removeFile:(NSObject<FileProtocol> *)file
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-	NSInteger idx = [_files indexOfObject:file];
-	NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
-	[_files removeObjectAtIndex:idx];
-	[self deleteRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
+	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+#pragma mark -
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
+	[self refreshData];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
+	return _reloading;
 }
 
 @end

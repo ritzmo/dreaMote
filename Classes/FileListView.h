@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#import "EGORefreshTableHeaderView.h"
 #import "FileSourceDelegate.h"
 
 @class CXMLDocument;
@@ -14,14 +16,16 @@
 @protocol FileListDelegate;
 
 @interface FileListView : UITableView <UITableViewDelegate, UITableViewDataSource,
-										FileSourceDelegate>
+										EGORefreshTableHeaderDelegate, FileSourceDelegate>
 {
 @private
 	NSString *_path; /*!< @brief Current path. */
 	BOOL _isPlaylist; /*!< @brief Is playlist? */
 	NSUInteger _playing; /*!< @brief Item marked as currently playing. */
 
+	BOOL _reloading; /*!< @brief Currently reloading. */
 	CXMLDocument *_fileXMLDoc; /*!< @brief XML Document. */
+	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 	UIViewController<FileListDelegate> *_fileDelegate; /*!< @brief Delegate. */
 	NSMutableArray *_files; /*!< @brief Current List of Files. */
 }
