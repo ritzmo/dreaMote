@@ -76,7 +76,7 @@
 
 	// Free old bouquet, retain new one
 	[_bouquet release];
-	_bouquet = [new retain];
+	_bouquet = [new copy];
 
 	// Set Title
 	self.title = new.sname;
