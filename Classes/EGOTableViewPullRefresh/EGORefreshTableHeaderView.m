@@ -27,7 +27,7 @@
 #import "EGORefreshTableHeaderView.h"
 
 
-#define TEXT_COLOR	 [UIColor colorWithRed:87.0/255.0 green:108.0/255.0 blue:137.0/255.0 alpha:1.0]
+#define TEXT_COLOR	 [UIColor colorWithRed:87.0f/255.0f green:108.0f/255.0f blue:137.0f/255.0f alpha:1.0f]
 #define FLIP_ANIMATION_DURATION 0.18f
 
 
@@ -41,7 +41,7 @@
 
 
 - (id)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+    if ((self = [super initWithFrame:frame])) {
 		
 		self.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		self.backgroundColor = [UIColor clearColor];
@@ -134,7 +134,7 @@
 			_statusLabel.text = NSLocalizedString(@"Release to refresh...", @"Release to refresh status");
 			[CATransaction begin];
 			[CATransaction setAnimationDuration:FLIP_ANIMATION_DURATION];
-			_arrowImage.transform = CATransform3DMakeRotation((M_PI / 180.0) * 180.0f, 0.0f, 0.0f, 1.0f);
+			_arrowImage.transform = CATransform3DMakeRotation((CGFloat)(M_PI / 180.0) * 180.0f, 0.0f, 0.0f, 1.0f);
 			[CATransaction commit];
 			
 			break;
