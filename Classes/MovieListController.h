@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "MovieSourceDelegate.h"
+#import "ReloadableListController.h"
 
 // Forward declarations...
 @class FuzzyDateFormatter;
@@ -21,7 +22,8 @@
  Lists movies and opens MovieViewController upon selection.
  Removing a movie is also allowed but not always shown as not all RemoteConnectors allow it.
  */
-@interface MovieListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+@interface MovieListController : ReloadableListController <UITableViewDelegate,
+													UITableViewDataSource,
 													MovieSourceDelegate,
 													UISplitViewControllerDelegate>
 {

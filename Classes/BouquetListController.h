@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ReloadableListController.h"
 #import "ServiceListController.h"
 #import "ServiceSourceDelegate.h"
 
@@ -19,7 +20,8 @@
  
  Display list of known bouquets and start ServiceListController on selected ones.
  */
-@interface BouquetListController : UIViewController <UIActionSheetDelegate, UITableViewDelegate,
+@interface BouquetListController : ReloadableListController <UIActionSheetDelegate,
+													UITableViewDelegate,
 													UITableViewDataSource, ServiceSourceDelegate>
 {
 @private

@@ -13,13 +13,6 @@
 
 #import "ServiceTableViewCell.h"
 
-@interface BouquetListController()
-/*!
- @brief entry point of thread which fetches bouquets
- */
-- (void)fetchBouquets;
-@end
-
 @implementation BouquetListController
 
 @synthesize serviceListController = _serviceListController;
@@ -106,19 +99,11 @@
 	else
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = 38;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
-	[tableView release];
+	[super loadView];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = 38;
+	_tableView.sectionHeaderHeight = 0;
 }
 
 /* about to display */
@@ -135,19 +120,19 @@
 	{
 		[_bouquets removeAllObjects];
 
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 		[_bouquetXMLDoc release];
 		_bouquetXMLDoc = nil;
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchBouquets) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 	else
 	{
 		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+		NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
 	_refreshBouquets = YES;
@@ -174,12 +159,23 @@
 }
 
 /* fetch contents */
-- (void)fetchBouquets
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_bouquetXMLDoc release];
 	_bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets: self isRadio:_isRadio] retain];
 	[pool release];
+}
+
+/* remove content data */
+- (void)emptyData
+{
+	// Clean event list
+	[_bouquets removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_bouquetXMLDoc release];
+	_bouquetXMLDoc = nil;
 }
 
 /* add service to list */
@@ -189,14 +185,18 @@
 	{
 		[_bouquets addObject: bouquet];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_bouquets count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_bouquets count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-		[(UITableView *)self.view reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
 }
 
 #pragma mark	-

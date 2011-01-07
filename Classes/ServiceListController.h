@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ReloadableListController.h"
 #import "ServiceSourceDelegate.h"
 
 // Forward declarations
@@ -22,7 +23,8 @@
  Lists services of a Bouquet and opens EventListController for this Service upon
  selection.
  */
-@interface ServiceListController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+@interface ServiceListController : ReloadableListController <UITableViewDelegate,
+													UITableViewDataSource,
 													UIPopoverControllerDelegate, ServiceSourceDelegate,
 													UISplitViewControllerDelegate>
 {

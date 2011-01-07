@@ -19,11 +19,10 @@
 
 #import "Objects/Generic/Result.h"
 
-@interface  MovieListController()
+@interface MovieListController()
 /*!
- @brief fetch movie list
+ @brief Popover Controller.
  */
-- (void)fetchMovies;
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
@@ -86,7 +85,7 @@
 	
 	// Free Caches and reload data
 	[_movies removeAllObjects];
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 	[_movieXMLDoc release];
 	_movieXMLDoc = nil;
 	_refreshMovies = NO;
@@ -98,7 +97,7 @@
 	
 	// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 /* memory warning */
@@ -117,7 +116,7 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
-	[(UITableView*)self.view setEditing: editing animated: animated];
+	[_tableView setEditing: editing animated: animated];
 }
 
 /* about to appear */
@@ -132,19 +131,19 @@
 	{
 		[_movies removeAllObjects];
 
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 		[_movieXMLDoc release];
 		_movieXMLDoc = nil;
 
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchMovies) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 	else
 	{
 		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+		NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
 	_refreshMovies = YES;
@@ -182,28 +181,31 @@
 /* layout */
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
-	[tableView release];
+	[super loadView];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.sectionHeaderHeight = 0;
 }
 
 /* fetch movie list */
-- (void)fetchMovies
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_movieXMLDoc release];
 	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self withLocation: _currentLocation] retain];
 	[pool release];
+}
+
+/* remove content data */
+- (void)emptyData
+{
+	// Clean event list
+	[_movies removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_movieXMLDoc release];
+	_movieXMLDoc = nil;
 }
 
 /* add movie to list */
@@ -213,14 +215,18 @@
 	{
 		[_movies addObject: movie];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_movies count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_movies count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-		[(UITableView *)self.view reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
 }
 
 #pragma mark	-

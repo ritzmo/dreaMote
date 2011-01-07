@@ -18,9 +18,8 @@
 
 @interface ServiceListController()
 /*!
- @brief fetch service list
+ @brief Popover Controller.
  */
-- (void)fetchServices;
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
@@ -84,7 +83,7 @@
 
 	// Free Caches and reload data
 	[_services removeAllObjects];
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 	[_serviceXMLDoc release];
 	_serviceXMLDoc = nil;
 	_refreshServices = NO;
@@ -96,7 +95,7 @@
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 /* getter for isRadio property */
@@ -148,19 +147,11 @@
 	else
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUISmallRowHeight;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
-	[tableView release];
+	[super loadView];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUISmallRowHeight;
+	_tableView.sectionHeaderHeight = 0;
 }
 
 /* about to appear */
@@ -193,19 +184,19 @@
 	{
 		[_services removeAllObjects];
 
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 		[_serviceXMLDoc release];
 		_serviceXMLDoc = nil;
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 	else
 	{
 		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-		NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-		[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+		NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
 	_refreshServices = YES;
@@ -228,12 +219,23 @@
 }
 
 /* fetch service list */
-- (void)fetchServices
+- (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_serviceXMLDoc release];
 	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
 	[pool release];
+}
+
+/* remove content data */
+- (void)emptyData
+{
+	// Clean event list
+	[_services removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_serviceXMLDoc release];
+	_serviceXMLDoc = nil;
 }
 
 /* add service to list */
@@ -243,14 +245,18 @@
 	{
 		[_services addObject: service];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_services count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_services count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
 #else
 	}
 #endif
-		[(UITableView *)self.view reloadData];
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
 }
 
 #pragma mark	-
