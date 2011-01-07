@@ -147,22 +147,36 @@
 	}
 
 	[UIView commitAnimations];
+
+	// fix up frame on iphone
+	if(!IS_IPAD())
+		_fileList.frame = self.view.frame;
 }
 
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
+	CGRect frame = self.view.frame;
+	if(duration && IS_IPAD())
+	{
+		const CGFloat width = frame.size.width;
+		const CGFloat offset = self.tabBarController.tabBar.frame.size.height + self.navigationController.navigationBar.frame.size.height + 20;
+
+		frame.size.width = frame.size.height + offset;
+		frame.size.height = width - offset;
+	}
+
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: duration];
 
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
 		_controls.frame = _landscapeControlsFrame;
-		_fileList.frame = _landscapeFilesFrame;
+		_fileList.frame = frame;
 	}
 	else
 	{
 		_controls.frame = _portraitControlsFrame;
-		_fileList.frame = _portraitFilesFrame;
+		_fileList.frame = frame;
 	}
 
 	[UIView commitAnimations];
@@ -220,15 +234,15 @@
 	[contentView release];
 
 	// file list
-	// FIXME: wtf?!
-	_portraitFilesFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
-	_landscapeFilesFrame = CGRectMake(0, 0, self.view.frame.size.height + 20, self.view.frame.size.width - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20);
-	_fileList = [[FileListView alloc] initWithFrame: _portraitFilesFrame];
-	_fileList.autoresizingMask = UIViewAutoresizingNone;
+	frame = self.view.frame;
+	_fileList = [[FileListView alloc] initWithFrame: frame];
+	if(IS_IPAD())
+		_fileList.autoresizingMask = UIViewAutoresizingNone;
 	_fileList.path = @"/";
 	_fileList.fileDelegate = self;
 
 	// frontend
+	// FIXME: wtf?!
 	frame = CGRectMake(0, 0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
 	_frontend = [[UIView alloc] initWithFrame:frame];
 	_frontend.autoresizesSubviews = YES;
@@ -236,7 +250,7 @@
 	if(IS_IPAD())
 		frame = CGRectMake(0, 0, self.view.frame.size.width, frame.size.height * 4 / 5);
 	else
-		frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
+		frame = CGRectMake(0, 0, self.view.frame.size.width, frame.size.height);
 	_playlist = [[FileListView alloc] initWithFrame:frame];
 	_playlist.fileDelegate = self;
 	_playlist.isPlaylist = YES;
@@ -315,7 +329,6 @@
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 	[self placeControls: toInterfaceOrientation duration:duration];
-
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
