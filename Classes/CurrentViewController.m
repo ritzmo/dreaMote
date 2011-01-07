@@ -70,11 +70,13 @@
 	self.view = _tableView;
 
 	// add header view
-#if 0
-	_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-	_refreshHeaderView.delegate = self;
-	[self.view addSubview:_refreshHeaderView];
-#endif
+	// NOTE: looks ugly on ipad, so only enable this on iphone for now
+	if(!IS_IPAD())
+	{
+		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+		_refreshHeaderView.delegate = self;
+		[self.view addSubview:_refreshHeaderView];
+	}
 }
 
 - (UITextView *)create_Summary: (NSObject<EventProtocol> *)event
