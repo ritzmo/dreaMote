@@ -170,6 +170,7 @@
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
 		DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */; };
+		DAA029A212D77A21000564F0 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
@@ -460,6 +461,8 @@
 		DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
 		DA9AD37B0FEBE29C00A59612 /* SimpleRepeatedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRepeatedViewController.h; sourceTree = "<group>"; };
 		DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRepeatedViewController.m; sourceTree = "<group>"; };
+		DAA029A012D77A21000564F0 /* CXMLNamespaceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNamespaceNode.h; sourceTree = "<group>"; };
+		DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNamespaceNode.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
 		DAA21E7F0E99288600DD749C /* ConfigListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigListController.m; sourceTree = "<group>"; };
 		DAA2222A0E998CE900DD749C /* AfterEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AfterEventViewController.h; sourceTree = "<group>"; };
@@ -652,6 +655,8 @@
 				DA0BF0510F0BC011004B488C /* CXMLElement_CreationExtensions.m */,
 				DA0BF0520F0BC011004B488C /* CXMLElement_ElementTreeExtensions.h */,
 				DA0BF0530F0BC011004B488C /* CXMLElement_ElementTreeExtensions.m */,
+				DAA029A012D77A21000564F0 /* CXMLNamespaceNode.h */,
+				DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */,
 				DA0BF0540F0BC011004B488C /* CXMLNode.h */,
 				DA0BF0550F0BC011004B488C /* CXMLNode.m */,
 				DA0BF0580F0BC011004B488C /* CXMLNode_PrivateExtensions.h */,
@@ -661,7 +666,7 @@
 				DA0BF05C0F0BC011004B488C /* TouchXML.h */,
 			);
 			name = TouchXML;
-			path = TouchXML/Common/Source;
+			path = TouchXML/Source;
 			sourceTree = SOURCE_ROOT;
 		};
 		DA0BF4470F0C1066004B488C /* Objects */ = {
@@ -1385,6 +1390,7 @@
 				DA6CE9C812D498F100F1F52D /* FileXMLReader.m in Sources */,
 				DA54E1D612D501CC00C90863 /* NSString+URLEncode.m in Sources */,
 				DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */,
+				DAA029A212D77A21000564F0 /* CXMLNamespaceNode.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
