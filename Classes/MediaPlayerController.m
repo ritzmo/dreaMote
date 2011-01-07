@@ -19,7 +19,7 @@
 @interface MediaPlayerController()
 /*!
  @brief Create custom Button.
- 
+
  @param frame Button Frame.
  @param imagePath Path to Button Image.
  @param keyCode RC Code.
@@ -54,6 +54,123 @@
 
 	[super dealloc];
 }
+
+- (void)fetchCurrentDefer
+{
+	// Spawn a thread to fetch the signal data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
+}
+
+- (void)fetchCurrent
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[_currentXMLDoc release];
+	@try {
+		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
+	}
+	@catch (NSException * e) {
+		_currentXMLDoc = nil;
+	}
+	[pool release];
+}
+
+- (void)sendCommand:(NSString *)command
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
+	if(!result.result)
+	{
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
+															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+	}
+
+	[pool release];
+}
+
+- (void)buttonPressed:(RCButton *)sender
+{
+	NSString *command;
+	switch(sender.rcCode)
+	{
+		case kButtonCodeFRwd: command = @"previous"; break;
+		case kButtonCodeFFwd: command = @"next"; break;
+		case kButtonCodeStop: command = @"stop"; break;
+		case kButtonCodePlayPause: command = @"pause"; break;
+		default: return;
+	}
+
+	// Spawn a thread to send the request so that the UI is not blocked while
+	// waiting for the response.
+	[NSThread detachNewThreadSelector:@selector(sendCommand:)
+							 toTarget:self
+						   withObject: command];
+}
+
+- (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
+{
+	RCButton *uiButton = [[RCButton alloc] initWithFrame: frame];
+	uiButton.rcCode = keyCode;
+	if(imagePath != nil){
+		UIImage *image = [UIImage imageNamed:imagePath];
+		[uiButton setBackgroundImage:image forState:UIControlStateHighlighted];
+		[uiButton setBackgroundImage:image forState:UIControlStateNormal];
+	}
+	[uiButton addTarget:self action:@selector(buttonPressed:)
+	   forControlEvents:UIControlEventTouchUpInside];
+
+	return uiButton;
+}
+
+- (IBAction)flipView:(id)sender
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: kTransitionDuration];
+	self.navigationItem.leftBarButtonItem = nil;
+
+	[UIView setAnimationTransition:
+				([_frontend superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
+				forView: self.view
+				cache: YES];
+
+	if ([_fileList superview])
+	{
+		[_fileList removeFromSuperview];
+	}
+	else
+	{
+		[self.view addSubview: _fileList];
+	}
+
+	[UIView commitAnimations];
+}
+
+- (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration: duration];
+
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+	{
+		_controls.frame = _landscapeControlsFrame;
+		_fileList.frame = _landscapeFilesFrame;
+	}
+	else
+	{
+		_controls.frame = _portraitControlsFrame;
+		_fileList.frame = _portraitFilesFrame;
+	}
+
+	[UIView commitAnimations];
+}
+
+#pragma mark -
+#pragma mark UIViewController
+#pragma mark -
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -104,19 +221,22 @@
 
 	// file list
 	// FIXME: wtf?!
-	frame = CGRectMake(0, 0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
-	_fileList = [[FileListView alloc] initWithFrame: frame];
+	_portraitFilesFrame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
+	_landscapeFilesFrame = CGRectMake(0, 0, self.view.frame.size.height + 20, self.view.frame.size.width - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20);
+	_fileList = [[FileListView alloc] initWithFrame: _portraitFilesFrame];
+	_fileList.autoresizingMask = UIViewAutoresizingNone;
 	_fileList.path = @"/";
 	_fileList.fileDelegate = self;
 
 	// frontend
+	frame = CGRectMake(0, 0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
 	_frontend = [[UIView alloc] initWithFrame:frame];
 	_frontend.autoresizesSubviews = YES;
 	_frontend.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	if(IS_IPAD())
-		frame = CGRectMake(0, 0, _frontend.frame.size.width, _frontend.frame.size.height * 4 / 5);
+		frame = CGRectMake(0, 0, self.view.frame.size.width, frame.size.height * 4 / 5);
 	else
-		frame = CGRectMake(0, 0, _frontend.frame.size.width, _frontend.frame.size.height);
+		frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
 	_playlist = [[FileListView alloc] initWithFrame:frame];
 	_playlist.fileDelegate = self;
 	_playlist.isPlaylist = YES;
@@ -132,7 +252,7 @@
 		_landscapeControlsFrame = CGRectMake(85, 170, 367, 35);
 	}
 	_controls = [[UIView alloc] initWithFrame:_portraitControlsFrame];
-	
+
 	// controls
 	UIButton *roundedButtonType;
 	CGFloat localX = (_controls.frame.size.width / factor) / 2 - 2 * ((imageWidth + kTweenMargin));
@@ -142,21 +262,21 @@
 	[_controls addSubview: roundedButtonType];
 	[roundedButtonType release];
 	localX += imageWidth + kTweenMargin;
-	
+
 	// stop
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_stop.png" andKeyCode: kButtonCodeStop];
 	[_controls addSubview: roundedButtonType];
 	[roundedButtonType release];
 	localX += imageWidth + kTweenMargin;
-	
+
 	// play/pause
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause];
 	[_controls addSubview: roundedButtonType];
 	[roundedButtonType release];
 	localX += imageWidth + kTweenMargin;
-	
+
 	// next
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_ff.png" andKeyCode: kButtonCodeFFwd];
@@ -167,7 +287,7 @@
 	[_frontend addSubview: _controls];
 	[_frontend addSubview: _playlist];
 	[self.view addSubview: _frontend];
-	
+
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
@@ -190,121 +310,10 @@
 	}
 }
 
-- (void)fetchCurrentDefer
-{
-	// Spawn a thread to fetch the signal data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
-}
-
-- (void)fetchCurrent
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_currentXMLDoc release];
-	@try {
-		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
-	}
-	@catch (NSException * e) {
-		_currentXMLDoc = nil;
-	}
-	[pool release];
-}
-
-- (void)sendCommand:(NSString *)command
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
-	Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
-	if(!result.result)
-	{
-		// Alert user
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
-															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-		[alert show];
-		[alert release];
-	}
-	
-	[pool release];
-}
-
-- (void)buttonPressed:(RCButton *)sender
-{
-	NSString *command;
-	switch(sender.rcCode)
-	{
-		case kButtonCodeFRwd: command = @"previous"; break;
-		case kButtonCodeFFwd: command = @"next"; break;
-		case kButtonCodeStop: command = @"stop"; break;
-		case kButtonCodePlayPause: command = @"pause"; break;
-		default: return;
-	}
-
-	// Spawn a thread to send the request so that the UI is not blocked while
-	// waiting for the response.
-	[NSThread detachNewThreadSelector:@selector(sendCommand:)
-							 toTarget:self
-						   withObject: command];
-}
-
-- (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
-{
-	RCButton *uiButton = [[RCButton alloc] initWithFrame: frame];
-	uiButton.rcCode = keyCode;
-	if(imagePath != nil){
-		UIImage *image = [UIImage imageNamed:imagePath];
-		[uiButton setBackgroundImage:image forState:UIControlStateHighlighted];
-		[uiButton setBackgroundImage:image forState:UIControlStateNormal];
-	}
-	[uiButton addTarget:self action:@selector(buttonPressed:)
-	   forControlEvents:UIControlEventTouchUpInside];
-	
-	return uiButton;
-}
-
-- (IBAction)flipView:(id)sender
-{
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: kTransitionDuration];
-	self.navigationItem.leftBarButtonItem = nil;
-
-	[UIView setAnimationTransition:
-				([_frontend superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
-				forView: self.view
-				cache: YES];
-
-	if ([_fileList superview])
-	{
-		[_fileList removeFromSuperview];
-	}
-	else
-	{
-		[self.view addSubview: _fileList];
-	}
-
-	[UIView commitAnimations];
-}
-
-- (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
-{
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration: duration];
-
-	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
-	{
-		_controls.frame = _landscapeControlsFrame;
-	}
-	else
-	{
-		_controls.frame = _portraitControlsFrame;
-	}
-
-	[UIView commitAnimations];
-}
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	
+
 	[self placeControls: toInterfaceOrientation duration:duration];
 
 }

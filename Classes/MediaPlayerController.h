@@ -27,7 +27,9 @@
 	UIView *_controls; /*!< @brief Media Player controls. */
 	
 	CGRect _landscapeControlsFrame; /*!< @brief Landscape frame of controls. */
+	CGRect _landscapeFilesFrame; /*!< @brief Landscape frame of file list. */
 	CGRect _portraitControlsFrame; /*!< @brief Portrait frame of controls. */
+	CGRect _portraitFilesFrame; /*!< @brief Portrait frame of file list. */
 
 	CXMLDocument *_currentXMLDoc; /*!< @brief Currently played. */
 }
