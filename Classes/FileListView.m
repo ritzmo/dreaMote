@@ -108,11 +108,11 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_fileXMLDoc release];
+	_reloading = YES;
 	if(self.isPlaylist)
 		_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist: self] retain];
 	else
 		_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchFiles: self path: _path] retain];
-	_reloading = YES;
 	[pool release];
 }
 

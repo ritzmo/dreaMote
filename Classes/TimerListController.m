@@ -162,6 +162,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_timerXMLDoc release];
+	_reloading = YES;
 	_timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers: self] retain];
 	[pool release];
 }

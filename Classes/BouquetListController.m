@@ -163,6 +163,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_bouquetXMLDoc release];
+	_reloading = YES;
 	_bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets: self isRadio:_isRadio] retain];
 	[pool release];
 }

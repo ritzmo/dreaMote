@@ -116,6 +116,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_locationXMLDoc release];
+	_reloading = YES;
 	_locationXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist: self] retain];
 	[pool release];
 }
