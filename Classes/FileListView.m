@@ -126,8 +126,12 @@
 		{
 			if(_playing != idx)
 			{
+				NSMutableArray *idxPaths = [NSMutableArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+				if(_playing != NSNotFound)
+					[idxPaths addObject:[NSIndexPath indexPathForRow:_playing inSection: 0]];
+
 				_playing = idx;
-				[self reloadData];
+				[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
 			}
 			return;
 		}
