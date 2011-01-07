@@ -148,7 +148,6 @@
 	_eventXMLDoc = nil;
 }
 
-
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
