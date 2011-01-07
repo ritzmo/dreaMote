@@ -76,7 +76,8 @@
 		NSObject<EventProtocol> *newEvent = [[Enigma2Event alloc] initWithNode: (CXMLNode *)resultElement];
 
 		// Workaround unknown now/next
-		if(newEvent.title == nil)
+		NSString *title = newEvent.title;
+		if(title == nil || [title isEqualToString:@""])
 		{
 			[newEvent release];
 			continue;
