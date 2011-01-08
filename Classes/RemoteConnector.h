@@ -142,8 +142,8 @@ enum buttonCodes {
 	kButtonCodeRecord = 167,
 	kButtonCodePVR = 393,
 	kButtonCodePlayPause = 164,
-	kButtonCodeFFwd = 159,
-	kButtonCodeFRwd = 168,
+	kButtonCodeFFwd = 163,
+	kButtonCodeFRwd = 165,
 	kButtonCodeStop = 128,
 	
 };
