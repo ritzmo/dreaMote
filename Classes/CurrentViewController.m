@@ -120,6 +120,10 @@
 	_next = nil;
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+	[_nowSummary release];
+	_nowSummary = nil;
+	[_nextSummary release];
+	_nextSummary = nil;
 	[_currentXMLDoc release];
 	_currentXMLDoc = nil;
 }
@@ -128,7 +132,7 @@
 {
 	if(_service != nil)
 		[_service release];
-	_service = [service retain];
+	_service = [service copy];
 
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;
@@ -139,20 +143,23 @@
 {
 	if(_now == nil)
 	{
-		_now = [event retain];
+		_now = [event copy];
+		[_nowSummary release];
 		_nowSummary = [[self create_Summary: _now] retain];
 	}
 	else
 	{
 		if(_next != nil)
 			[_next release];
-		_next = [event retain];
+		_next = [event copy];
+		[_nextSummary release];
 		_nextSummary = [[self create_Summary: _next] retain];
 	}
 
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;
-	[_tableView reloadData];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - UITableView delegates
@@ -304,8 +311,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	[_tableView reloadData];
-
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
@@ -314,14 +319,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[_service release];
-	_service = nil;
-	[_now release];
-	_now = nil;
-	[_next release];
-	_next = nil;
-	[_currentXMLDoc release];
-	_currentXMLDoc = nil;
+	[self emptyData];
 }
 
 /* rotate with device */
