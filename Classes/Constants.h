@@ -24,7 +24,7 @@
 #define kSwitchButtonWidth		94
 #define kSwitchButtonHeight		27
 #define kTextFieldHeight		((IS_IPAD()) ? 35 : 30)
-#define kTextViewHeight			220
+#define kTextViewHeight			((IS_IPAD()) ? 300 : 220)
 #define kSearchBarHeight		40
 #define kLabelHeight			20
 #define kProgressIndicatorSize	40
