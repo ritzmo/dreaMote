@@ -948,9 +948,9 @@
 {
 	[_popoverButtonItem release];
 	_popoverButtonItem = nil;
-	if(!self.editing)
+	if([self.navigationItem.leftBarButtonItem isEqual: barButtonItem])
 	{
-		self.navigationItem.leftBarButtonItem = nil;
+		[self.navigationItem setLeftBarButtonItem:nil animated:YES];
 	}
 	self.popoverController = nil;
 }
