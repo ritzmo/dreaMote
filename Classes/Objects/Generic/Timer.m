@@ -8,6 +8,7 @@
 
 #import "Timer.h"
 
+#import "RemoteConnectorObject.h"
 #import "Service.h"
 
 @implementation GenericTimer
@@ -32,23 +33,11 @@
 
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
-	NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
-	timer.title = ourEvent.title;
-	timer.tdescription = ourEvent.sdescription;
-	timer.begin = ourEvent.begin;
-	timer.end = ourEvent.end;
-	timer.eit = ourEvent.eit;
-	timer.disabled = NO;
-	timer.justplay = NO;
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
-	timer.service = newService;
+	NSObject<TimerProtocol> *timer = [GenericTimer withEventAndService:ourEvent :newService];
 	[newService release];
-	timer.repeated = 0;
-	timer.repeatcount = 0;
-	timer.state = 0;
-	timer.afterevent = 0;
 
-	return [timer autorelease];
+	return timer;
 }
 
 + (NSObject<TimerProtocol> *)withEventAndService: (NSObject<EventProtocol> *)ourEvent: (NSObject<ServiceProtocol> *)ourService
@@ -65,6 +54,12 @@
 	timer.repeated = 0;
 	timer.repeatcount = 0;
 	timer.state = 0;
+
+	// use "auto" by default if backend supports it
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEventAuto])
+		timer.afterevent = kAfterEventAuto;
+	else
+		timer.afterevent = kAfterEventNothing;
 
 	return [timer autorelease];
 }
@@ -85,6 +80,12 @@
 	timer.repeated = 0;
 	timer.repeatcount = 0;
 	timer.state = 0;
+
+	// use "auto" by default if backend supports it
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEventAuto])
+		timer.afterevent = kAfterEventAuto;
+	else
+		timer.afterevent = kAfterEventNothing;
 
 	return [timer autorelease];
 }
