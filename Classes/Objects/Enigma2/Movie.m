@@ -94,7 +94,7 @@
 		const NSArray *resultNodes = [_node nodesForXPath:@"e2time" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
-			self.time = [[NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]] retain];
+			self.time = [NSDate dateWithTimeIntervalSince1970: [[currentChild stringValue] doubleValue]];
 			break;
 		}
 	}
