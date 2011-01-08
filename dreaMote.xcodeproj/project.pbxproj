@@ -50,7 +50,7 @@
 		DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA497EAC12D67E6000B26B83 /* ReloadableListController.m */; };
-		DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutViewController.m */; };
+		DA51BB010EAA344200AF9146 /* AboutDreamoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */; };
 		DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247BF0E3B33FA00B09600 /* CellTextField.m */; };
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
 		DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
@@ -293,8 +293,8 @@
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
 		DA497EAB12D67E6000B26B83 /* ReloadableListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadableListController.h; sourceTree = "<group>"; };
 		DA497EAC12D67E6000B26B83 /* ReloadableListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadableListController.m; sourceTree = "<group>"; };
-		DA51BAFF0EAA344200AF9146 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
-		DA51BB000EAA344200AF9146 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		DA51BAFF0EAA344200AF9146 /* AboutDreamoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutDreamoteViewController.h; sourceTree = "<group>"; };
+		DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutDreamoteViewController.m; sourceTree = "<group>"; };
 		DA5247BE0E3B33FA00B09600 /* CellTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextField.h; sourceTree = "<group>"; };
 		DA5247BF0E3B33FA00B09600 /* CellTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellTextField.m; sourceTree = "<group>"; };
 		DA5247C00E3B33FA00B09600 /* CellTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextView.h; sourceTree = "<group>"; };
@@ -1027,8 +1027,8 @@
 		DAF0D5460E38FF16001F7CF1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				DA51BAFF0EAA344200AF9146 /* AboutViewController.h */,
-				DA51BB000EAA344200AF9146 /* AboutViewController.m */,
+				DA51BAFF0EAA344200AF9146 /* AboutDreamoteViewController.h */,
+				DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */,
 				DAA2222A0E998CE900DD749C /* AfterEventViewController.h */,
 				DAA2222B0E998CE900DD749C /* AfterEventViewController.m */,
 				DAFE42A10E94220800896017 /* ConfigViewController.h */,
@@ -1313,7 +1313,7 @@
 				DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */,
 				DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */,
 				DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */,
-				DA51BB010EAA344200AF9146 /* AboutViewController.m in Sources */,
+				DA51BB010EAA344200AF9146 /* AboutDreamoteViewController.m in Sources */,
 				DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */,
 				DA0BF05F0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA0BF0600F0BC011004B488C /* CXMLElement.m in Sources */,

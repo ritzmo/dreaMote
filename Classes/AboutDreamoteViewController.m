@@ -1,22 +1,22 @@
 //
-//  AboutViewController.m
+//  AboutDreamoteViewController.m
 //  dreaMote
 //
 //  Created by Moritz Venn on 18.10.08.
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
-#import "AboutViewController.h"
+#import "AboutDreamoteViewController.h"
 #import "Constants.h"
 
-@implementation AboutViewController
+@implementation AboutDreamoteViewController
 
 /* initialize */
 - (id)init
 {
 	if((self = [super init]))
 	{
-		self.title = NSLocalizedString(@"About", @"Title of AboutViewController");
+		self.title = NSLocalizedString(@"About", @"Title of AboutDreamoteViewController");
 	}
 
 	return self;

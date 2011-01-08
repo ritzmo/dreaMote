@@ -1,5 +1,5 @@
 //
-//  AboutViewController.h
+//  AboutDreamoteViewController.h
 //  dreaMote
 //
 //  Created by Moritz Venn on 18.10.08.
@@ -13,7 +13,7 @@
  
  Displays a webkit widget which renders the about.html bundled with this application.
  */
-@interface AboutViewController : UIViewController <UIWebViewDelegate>
+@interface AboutDreamoteViewController : UIViewController <UIWebViewDelegate>
 {
 @private
 	UIButton *_doneButton; /*!< @brief "Done" Button. */

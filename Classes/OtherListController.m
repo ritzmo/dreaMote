@@ -13,7 +13,7 @@
 
 #import "MainTableViewCell.h"
 
-#import "AboutViewController.h"
+#import "AboutDreamoteViewController.h"
 #import "BouquetListController.h"
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
@@ -145,7 +145,7 @@
 						 nil]];
 	[targetViewController release];
 
-	targetViewController = [[AboutViewController alloc] init];
+	targetViewController = [[AboutDreamoteViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"About View Title", @""), @"title",
 						 NSLocalizedString(@"About View Explain", @""), @"explainText",
