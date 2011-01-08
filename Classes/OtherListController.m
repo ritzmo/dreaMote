@@ -86,6 +86,14 @@
 
 	UIViewController *targetViewController;
 
+	targetViewController = [[AboutDreamoteViewController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"About View Title", @""), @"title",
+						 NSLocalizedString(@"About View Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
+	[targetViewController release];
+
 	targetViewController = [[EventSearchListController alloc] init];
 	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Event Search Title", @""), @"title",
@@ -145,14 +153,6 @@
 						 nil]];
 	[targetViewController release];
 
-	targetViewController = [[AboutDreamoteViewController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 NSLocalizedString(@"About View Title", @""), @"title",
-						 NSLocalizedString(@"About View Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
-						 nil]];
-	[targetViewController release];
-
 	// Add the "Settings" button to the navigation bar
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 22, 22)];
 	UIImage *image = [UIImage imageNamed:@"preferences-system.png"];
@@ -205,7 +205,7 @@
 				if(![menuList containsObject: _locationsDictionary])
 				{
 					[menuList removeObject:_recordDictionary];
-					[menuList insertObject:_locationsDictionary atIndex: 2];
+					[menuList insertObject:_locationsDictionary atIndex: 3];
 					reload = YES;
 				}
 			}
@@ -214,7 +214,7 @@
 				if(![menuList containsObject: _recordDictionary])
 				{
 					[menuList removeObject:_locationsDictionary];
-					[menuList insertObject:_recordDictionary atIndex: 2];
+					[menuList insertObject:_recordDictionary atIndex: 3];
 					reload = YES;
 				}
 			}
@@ -236,7 +236,7 @@
 	{
 		if(![menuList containsObject: _signalDictionary])
 		{
-			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 2 : 3];
+			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 3 : 4];
 			reload = YES;
 		}
 	}
@@ -254,7 +254,7 @@
 	{
 		if(![menuList containsObject: _eventSearchDictionary])
 		{
-			[menuList insertObject: _eventSearchDictionary atIndex: 1];
+			[menuList insertObject: _eventSearchDictionary atIndex: 2];
 			reload = YES;
 		}
 	}
@@ -272,7 +272,7 @@
 	{
 		if(![menuList containsObject: _mediaPlayerDictionary])
 		{
-			[menuList insertObject: _mediaPlayerDictionary atIndex: 1];
+			[menuList insertObject: _mediaPlayerDictionary atIndex: 2];
 			reload = YES;
 		}
 	}
