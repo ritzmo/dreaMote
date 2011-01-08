@@ -991,4 +991,10 @@ enum neutrinoMessageTypes {
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
+- (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 @end

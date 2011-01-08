@@ -198,6 +198,10 @@
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
 		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
+		DAFBA40812D8EFF60059B5C4 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA40712D8EFF60059B5C4 /* About.m */; };
+		DAFBA43112D8F3150059B5C4 /* Harddisk.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA43012D8F3150059B5C4 /* Harddisk.m */; };
+		DAFBA47E12D8F8870059B5C4 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA47D12D8F8870059B5C4 /* AboutViewController.m */; };
+		DAFBA4CF12D8FF960059B5C4 /* AboutXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA4CE12D8FF960059B5C4 /* AboutXMLReader.m */; };
 		DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */; };
 		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 /* End PBXBuildFile section */
@@ -525,6 +529,16 @@
 		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
+		DAFBA40612D8EFF60059B5C4 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
+		DAFBA40712D8EFF60059B5C4 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
+		DAFBA41D12D8F1830059B5C4 /* AboutProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutProtocol.h; sourceTree = "<group>"; };
+		DAFBA42F12D8F3150059B5C4 /* Harddisk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Harddisk.h; sourceTree = "<group>"; };
+		DAFBA43012D8F3150059B5C4 /* Harddisk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Harddisk.m; sourceTree = "<group>"; };
+		DAFBA47C12D8F8870059B5C4 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		DAFBA47D12D8F8870059B5C4 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
+		DAFBA4C712D8FEEE0059B5C4 /* AboutSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutSourceDelegate.h; sourceTree = "<group>"; };
+		DAFBA4CD12D8FF960059B5C4 /* AboutXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutXMLReader.h; sourceTree = "<group>"; };
+		DAFBA4CE12D8FF960059B5C4 /* AboutXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutXMLReader.m; sourceTree = "<group>"; };
 		DAFBB54F12BD2BE1004DAE5E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
 		DAFE42A20E94220800896017 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
@@ -677,6 +691,7 @@
 				DA0BF44D0F0C1066004B488C /* Generic */,
 				DA0BF4580F0C1066004B488C /* Neutrino */,
 				DADE1AE60F115A2500807A25 /* SVDRP */,
+				DAFBA41D12D8F1830059B5C4 /* AboutProtocol.h */,
 				DA0BF44C0F0C1066004B488C /* EventProtocol.h */,
 				DAAC517312D47EFD00B3B443 /* FileProtocol.h */,
 				DA27485712CFC85C000B490B /* LocationProtocol.h */,
@@ -705,6 +720,8 @@
 		DA0BF4490F0C1066004B488C /* Enigma2 */ = {
 			isa = PBXGroup;
 			children = (
+				DAFBA40612D8EFF60059B5C4 /* About.h */,
+				DAFBA40712D8EFF60059B5C4 /* About.m */,
 				DA0BF44A0F0C1066004B488C /* Event.h */,
 				DA0BF44B0F0C1066004B488C /* Event.m */,
 				DAAC517412D47F0700B3B443 /* File.h */,
@@ -728,6 +745,8 @@
 				DA0BF44F0F0C1066004B488C /* Event.m */,
 				DAAC517712D47F0E00B3B443 /* File.h */,
 				DAAC517812D47F0E00B3B443 /* File.m */,
+				DAFBA42F12D8F3150059B5C4 /* Harddisk.h */,
+				DAFBA43012D8F3150059B5C4 /* Harddisk.m */,
 				DA27485412CFC83D000B490B /* Location.h */,
 				DA27485512CFC83D000B490B /* Location.m */,
 				DA0BF4500F0C1066004B488C /* Movie.h */,
@@ -912,6 +931,8 @@
 		DA7D236F0F101F1500BB8BE7 /* Enigma2 */ = {
 			isa = PBXGroup;
 			children = (
+				DAFBA4CD12D8FF960059B5C4 /* AboutXMLReader.h */,
+				DAFBA4CE12D8FF960059B5C4 /* AboutXMLReader.m */,
 				DACA8AFC109647B200B03BE8 /* CurrentXMLReader.h */,
 				DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */,
 				DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */,
@@ -969,6 +990,7 @@
 		DAAC51EC12D48F3500B3B443 /* Delegates */ = {
 			isa = PBXGroup;
 			children = (
+				DAFBA4C712D8FEEE0059B5C4 /* AboutSourceDelegate.h */,
 				DAAC51ED12D48F3500B3B443 /* AppDelegate.h */,
 				DAAC51EE12D48F3500B3B443 /* AppDelegate.m */,
 				DAAC51EF12D48F3500B3B443 /* EventSourceDelegate.h */,
@@ -1029,6 +1051,8 @@
 			children = (
 				DA51BAFF0EAA344200AF9146 /* AboutDreamoteViewController.h */,
 				DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */,
+				DAFBA47C12D8F8870059B5C4 /* AboutViewController.h */,
+				DAFBA47D12D8F8870059B5C4 /* AboutViewController.m */,
 				DAA2222A0E998CE900DD749C /* AfterEventViewController.h */,
 				DAA2222B0E998CE900DD749C /* AfterEventViewController.m */,
 				DAFE42A10E94220800896017 /* ConfigViewController.h */,
@@ -1391,6 +1415,10 @@
 				DA54E1D612D501CC00C90863 /* NSString+URLEncode.m in Sources */,
 				DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */,
 				DAA029A212D77A21000564F0 /* CXMLNamespaceNode.m in Sources */,
+				DAFBA40812D8EFF60059B5C4 /* About.m in Sources */,
+				DAFBA43112D8F3150059B5C4 /* Harddisk.m in Sources */,
+				DAFBA47E12D8F8870059B5C4 /* AboutViewController.m in Sources */,
+				DAFBA4CF12D8FF960059B5C4 /* AboutXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

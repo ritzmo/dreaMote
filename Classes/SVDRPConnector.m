@@ -1020,4 +1020,10 @@
 	return nil;
 }
 
+- (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 @end

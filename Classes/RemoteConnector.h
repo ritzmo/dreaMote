@@ -95,6 +95,8 @@ enum connectorFeatures {
 	kFeaturesRecordingLocations,
 	/*! @brief Offers interface to a media player. */
 	kFeaturesMediaPlayer,
+	/*! @brief Can provide further information on the remote receiver. */
+	kFeaturesAbout,
 };
 
 /*!
@@ -157,6 +159,7 @@ enum buttonCodes {
 @protocol ServiceProtocol;
 @protocol TimerProtocol;
 @protocol FileProtocol;
+@protocol AboutSourceDelegate;
 @protocol EventSourceDelegate;
 @protocol LocationSourceDelegate;
 @protocol MovieSourceDelegate;
@@ -340,6 +343,14 @@ enum buttonCodes {
  @return Pointer to parsed CXMLDocument.
  */
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
+
+/*!
+ @brief Get information on receiver.
+ 
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate;
 
 /*!
  @brief Get information on currently playing service and now/new event.

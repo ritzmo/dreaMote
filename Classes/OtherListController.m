@@ -13,6 +13,7 @@
 
 #import "MainTableViewCell.h"
 
+#import "AboutViewController.h"
 #import "AboutDreamoteViewController.h"
 #import "BouquetListController.h"
 #import "ConfigViewController.h"
@@ -27,14 +28,6 @@
 #import "SignalViewController.h"
 #import "TimerListController.h"
 #import "MediaPlayerController.h"
-
-@interface OtherListController()
-/*!
- @brief open settings dialog
- @param sender ui element
- */
-- (void)settingsAction:(id)sender;
-@end
 
 @implementation OtherListController
 
@@ -81,10 +74,26 @@
 
 	UIViewController *targetViewController;
 
+	targetViewController = [[AboutViewController alloc] init];
+	_aboutDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							 NSLocalizedString(@"About Receiver Title", @""), @"title",
+							 NSLocalizedString(@"About Receiver Explain", @""), @"explainText",
+							 targetViewController, @"viewController",
+							 nil] retain];
+	[targetViewController release];
+
 	targetViewController = [[AboutDreamoteViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"About View Title", @""), @"title",
 						 NSLocalizedString(@"About View Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
+	[targetViewController release];
+	
+	targetViewController = [[ConfigListController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Config List Title", @""), @"title",
+						 NSLocalizedString(@"Config List Explain", @""), @"explainText",
 						 targetViewController, @"viewController",
 						 nil]];
 	[targetViewController release];
@@ -148,14 +157,6 @@
 						 nil]];
 	[targetViewController release];
 
-	targetViewController = [[ConfigListController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 NSLocalizedString(@"Config List Title", @""), @"title",
-						 NSLocalizedString(@"Config List Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
-						 nil]];
-	[targetViewController release];
-
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(IS_IPAD())
 		myTableView.rowHeight = kUIRowHeight;
@@ -191,7 +192,7 @@
 				if(![menuList containsObject: _locationsDictionary])
 				{
 					[menuList removeObject:_recordDictionary];
-					[menuList insertObject:_locationsDictionary atIndex: 3];
+					[menuList insertObject:_locationsDictionary atIndex: 4];
 					reload = YES;
 				}
 			}
@@ -200,7 +201,7 @@
 				if(![menuList containsObject: _recordDictionary])
 				{
 					[menuList removeObject:_locationsDictionary];
-					[menuList insertObject:_recordDictionary atIndex: 3];
+					[menuList insertObject:_recordDictionary atIndex: 4];
 					reload = YES;
 				}
 			}
@@ -222,7 +223,7 @@
 	{
 		if(![menuList containsObject: _signalDictionary])
 		{
-			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 3 : 4];
+			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 4 : 5];
 			reload = YES;
 		}
 	}
@@ -240,7 +241,7 @@
 	{
 		if(![menuList containsObject: _eventSearchDictionary])
 		{
-			[menuList insertObject: _eventSearchDictionary atIndex: 2];
+			[menuList insertObject: _eventSearchDictionary atIndex: 3];
 			reload = YES;
 		}
 	}
@@ -258,7 +259,7 @@
 	{
 		if(![menuList containsObject: _mediaPlayerDictionary])
 		{
-			[menuList insertObject: _mediaPlayerDictionary atIndex: 2];
+			[menuList insertObject: _mediaPlayerDictionary atIndex: 3];
 			reload = YES;
 		}
 	}
@@ -267,6 +268,24 @@
 		if([menuList containsObject: _mediaPlayerDictionary])
 		{
 			[menuList removeObject: _mediaPlayerDictionary];
+			reload = YES;
+		}
+	}
+
+	// Add/Remove About Receiver
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
+	{
+		if(![menuList containsObject: _aboutDictionary])
+		{
+			[menuList insertObject: _aboutDictionary atIndex: 1];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _aboutDictionary])
+		{
+			[menuList removeObject: _aboutDictionary];
 			reload = YES;
 		}
 	}

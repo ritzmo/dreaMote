@@ -13,6 +13,7 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
 
+#import "XMLReader/Enigma2/AboutXMLReader.h"
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/FileXMLReader.h"
@@ -352,7 +353,6 @@ enum enigma2MessageTypes {
 }
 
 #pragma mark Recordings
-#pragma mark Screenshots
 
 - (Result *)playMovie:(NSObject<MovieProtocol> *) movie
 {
@@ -547,6 +547,16 @@ enum enigma2MessageTypes {
 }
 
 #pragma mark Control
+
+- (CXMLDocument *)getAbout:(NSObject <AboutSourceDelegate>*)delegate
+{
+	NSURL *myURI = [NSURL URLWithString: @"/web/about" relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2AboutXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
 
 - (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
