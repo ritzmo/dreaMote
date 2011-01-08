@@ -2,8 +2,8 @@
 //  LocationXMLReader.m
 //  dreaMote
 //
-//  Created by Moritz Venn on 31.12.08.
-//  Copyright 2008-2011 Moritz Venn. All rights reserved.
+//  Created by Moritz Venn on 01.01.11.
+//  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
 #import "LocationXMLReader.h"
