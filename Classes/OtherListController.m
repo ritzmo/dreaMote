@@ -45,7 +45,6 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"More", @"Title of OtherListController");
-		_configListController = nil;
 	}
 	return self;
 }
@@ -54,7 +53,6 @@
 {
 	[myTableView release];
 	[menuList release];
-	[_configListController release];
 	[_eventSearchDictionary release];
 	[_mediaPlayerDictionary release];
 	[_locationsDictionary release];
@@ -67,9 +65,6 @@
 
 - (void)didReceiveMemoryWarning
 {
-	[_configListController release];
-	_configListController = nil;
-
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
 
@@ -153,15 +148,13 @@
 						 nil]];
 	[targetViewController release];
 
-	// Add the "Settings" button to the navigation bar
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, 22, 22)];
-	UIImage *image = [UIImage imageNamed:@"preferences-system.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(settingsAction:) forControlEvents:UIControlEventTouchUpInside];
-	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
-	self.navigationItem.rightBarButtonItem = buttonItem;
-	[button release];
-	[buttonItem release];
+	targetViewController = [[ConfigListController alloc] init];
+	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"Config List Title", @""), @"title",
+						 NSLocalizedString(@"Config List Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil]];
+	[targetViewController release];
 
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(IS_IPAD())
@@ -170,13 +163,6 @@
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
 	myTableView.autoresizesSubviews = YES;
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-}
-
-- (void)settingsAction:(id)sender
-{
-	if(_configListController == nil)
-		_configListController = [[ConfigListController alloc] init];
-	[self.navigationController pushViewController: _configListController animated: YES];
 }
 
 #pragma mark UIViewController delegates
