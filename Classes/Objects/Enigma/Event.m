@@ -9,6 +9,7 @@
 #import "Event.h"
 
 #import "CXMLElement.h"
+#import "../Generic/Event.h"
 
 @implementation EnigmaEvent
 
@@ -180,6 +181,17 @@
 - (NSComparisonResult)compare: (NSObject<EventProtocol> *)otherEvent
 {
 	return [otherEvent.begin compare: self.begin];
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[GenericEvent alloc] initWithEvent: self];
+
+	return newElement;
 }
 
 @end

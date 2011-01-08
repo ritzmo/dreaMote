@@ -27,4 +27,13 @@
 	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 }
 
+/*!
+ @brief Init with existing Event.
+
+ @note Required to create a Copy.
+ @param event Event to copy.
+ @return Event instance.
+ */
+- (id)initWithEvent:(NSObject<EventProtocol> *)event;
+
 @end

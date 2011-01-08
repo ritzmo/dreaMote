@@ -41,6 +41,21 @@
 	return self;
 }
 
+- (id)initWithEvent:(NSObject <EventProtocol>*)event
+{
+	if((self = [super init]))
+	{
+		// don't try to copy service, only one backend knows it anyway
+		_eit = [event.eit copy];
+		_begin = [event.begin copy];
+		_end = [event.end copy];
+		_title = [event.title copy];
+		_sdescription = [event.sdescription copy];
+		_edescription = [event.edescription copy];
+	}
+	return self;
+}
+
 - (void)dealloc
 {
 	[_eit release];
@@ -99,6 +114,18 @@
 - (NSComparisonResult)compare: (NSObject<EventProtocol> *)otherEvent
 {
 	return [otherEvent.begin compare: self.begin];
+}
+
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[[self class] alloc] initWithEvent: self];
+
+	return newElement;
 }
 
 @end

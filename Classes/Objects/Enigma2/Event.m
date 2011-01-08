@@ -8,6 +8,7 @@
 
 #import "Event.h"
 #import "../Generic/Service.h"
+#import "../Generic/Event.h"
 
 #import "CXMLElement.h"
 
@@ -226,6 +227,17 @@
 - (NSComparisonResult)compare: (NSObject<EventProtocol> *)otherEvent
 {
 	return [otherEvent.begin compare: self.begin];
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[GenericEvent alloc] initWithEvent: self];
+
+	return newElement;
 }
 
 @end
