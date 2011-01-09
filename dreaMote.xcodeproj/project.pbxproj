@@ -10,7 +10,7 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
-		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */; };
 		DA0B0EEE0FE6537D00684EDC /* Signal.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EED0FE6537D00684EDC /* Signal.m */; };
 		DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0490F0BC011004B488C /* CXMLDocument.m */; };
@@ -49,6 +49,7 @@
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
+		DA42BE1312DA434200F14E3C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA42BE1112DA434100F14E3C /* OtherList.xib */; };
 		DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA497EAC12D67E6000B26B83 /* ReloadableListController.m */; };
 		DA51BB010EAA344200AF9146 /* AboutDreamoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */; };
 		DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247BF0E3B33FA00B09600 /* CellTextField.m */; };
@@ -140,7 +141,6 @@
 		DA6CF01712D4D38D00F1F52D /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD012D4D38D00F1F52D /* timer.png */; };
 		DA6CF01812D4D38D00F1F52D /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD112D4D38D00F1F52D /* view-refresh.png */; };
 		DA6CF15F12D4F04400F1F52D /* audio-volume-high.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */; };
-		DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA6D41C812CDE0C90027493C /* OtherList.xib */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
 		DA7D235F0F101F0500BB8BE7 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */; };
@@ -295,6 +295,7 @@
 		DA3AA1D70F0D828D001B2057 /* BouquetListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetListController.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
 		DA426A490D86BE4400444631 /* RemoteConnectorObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteConnectorObject.m; sourceTree = "<group>"; };
+		DA42BE1212DA434100F14E3C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA497EAB12D67E6000B26B83 /* ReloadableListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadableListController.h; sourceTree = "<group>"; };
 		DA497EAC12D67E6000B26B83 /* ReloadableListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadableListController.m; sourceTree = "<group>"; };
 		DA51BAFF0EAA344200AF9146 /* AboutDreamoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutDreamoteViewController.h; sourceTree = "<group>"; };
@@ -406,7 +407,6 @@
 		DA6CEFD012D4D38D00F1F52D /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
 		DA6CEFD112D4D38D00F1F52D /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "view-refresh.png"; sourceTree = "<group>"; };
 		DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-volume-high.png"; sourceTree = "<group>"; };
-		DA6D41C912CDE0C90027493C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
 		DA7A22780E371ACA00455D11 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
@@ -620,7 +620,6 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				DA6D41C812CDE0C90027493C /* OtherList.xib */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -637,6 +636,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DA42BE1112DA434100F14E3C /* OtherList.xib */,
 				DA0FA5750EB1D189009A1898 /* about.html */,
 				8D1107310486CEB800E47090 /* Info.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
@@ -1221,7 +1221,6 @@
 				DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */,
 				DA0FA5760EB1D189009A1898 /* about.html in Resources */,
 				DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */,
-				DA6D41CA12CDE0C90027493C /* OtherList.xib in Resources */,
 				DA6CEFD212D4D38D00F1F52D /* 4-sided-arrow.png in Resources */,
 				DA6CEFD312D4D38D00F1F52D /* bouquet.png in Resources */,
 				DA6CEFD412D4D38D00F1F52D /* current.png in Resources */,
@@ -1294,6 +1293,7 @@
 				DA6CF01712D4D38D00F1F52D /* timer.png in Resources */,
 				DA6CF01812D4D38D00F1F52D /* view-refresh.png in Resources */,
 				DA6CF15F12D4F04400F1F52D /* audio-volume-high.png in Resources */,
+				DA42BE1312DA434200F14E3C /* OtherList.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1425,10 +1425,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DA6D41C812CDE0C90027493C /* OtherList.xib */ = {
+		DA42BE1112DA434100F14E3C /* OtherList.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DA6D41C912CDE0C90027493C /* en */,
+				DA42BE1212DA434100F14E3C /* en */,
 			);
 			name = OtherList.xib;
 			sourceTree = "<group>";

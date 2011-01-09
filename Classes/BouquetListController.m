@@ -30,7 +30,9 @@
 		_isSplit = NO;
 		_serviceListController = nil;
 		_delegate = nil;
-		self.contentSizeForViewInPopover = CGSizeMake(320.0f, 600.0f);
+
+		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
+			self.contentSizeForViewInPopover = CGSizeMake(320.0f, 600.0f);
 	}
 	return self;
 }
