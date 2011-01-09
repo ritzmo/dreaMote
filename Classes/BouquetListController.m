@@ -71,11 +71,24 @@
 {
 	if(_isRadio == new) return;
 
+	// Set title
 	if(new)
+	{
 		self.title = NSLocalizedString(@"Radio Bouquets", @"Title of radio mode of BouquetListController");
+		// since "radio" loses the (imo) most important information lets lose the less important one
+		self.navigationController.tabBarItem.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
+	}
 	else
+	{
 		self.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
+		self.navigationController.tabBarItem.title = self.title;
+	}
+
 	_isRadio = new;
+
+	// on ipad also set service list to radio mode, unnecessary on iphone
+	if(IS_IPAD())
+		_serviceListController.isRadio = new;
 
 	// make sure we are going to refresh
 	_refreshBouquets = YES;

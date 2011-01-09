@@ -112,9 +112,19 @@
 
 	// Set title
 	if(new)
+	{
 		self.title = NSLocalizedString(@"Radio Services", @"Title of Radio mode of ServiceListController");
+		// since "radio" loses the (imo) most important information lets lose the less important one
+		self.navigationController.tabBarItem.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
+	}
 	else
+	{
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
+		self.navigationController.tabBarItem.title = self.title;
+	}
+
+	// pop to root view, needed on ipad when switching to radio in bouquet list
+	[self.navigationController popToRootViewControllerAnimated: YES];
 
 	// Refresh services
 	if(_bouquet != nil)
