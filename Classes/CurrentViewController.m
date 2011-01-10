@@ -311,6 +311,9 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	// empty again, sometimes now/next gets stuck
+	[self emptyData];
+
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
