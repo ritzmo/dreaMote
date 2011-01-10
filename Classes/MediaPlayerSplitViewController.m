@@ -57,12 +57,18 @@
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
 	[navController1 release];
 	[navController2 release];
-	
+
+	// add add/flip button
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:detailsController action:@selector(flipView:)];
 	playListController.navigationItem.leftBarButtonItem = barButtonItem;
 	[barButtonItem release];
-	
+
+	// details is delegate
 	self.delegate = detailsController;
+
+	// release allocated ressources
+	[playListController release];
+	[detailsController release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
