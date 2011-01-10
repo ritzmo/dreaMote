@@ -57,26 +57,9 @@
 /* layout */
 - (void)loadView
 {
-	// create table view
-	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	[self loadGroupedTableView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	_tableView.autoresizesSubviews = YES;
-	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = _tableView;
-
-	// add header view
-	// NOTE: looks ugly on ipad, so only enable this on iphone for now
-	if(!IS_IPAD())
-	{
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-		_refreshHeaderView.delegate = self;
-		[self.view addSubview:_refreshHeaderView];
-	}
 }
 
 - (UITextView *)create_Summary: (NSObject<EventProtocol> *)event

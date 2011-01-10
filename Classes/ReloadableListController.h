@@ -25,6 +25,11 @@
 }
 
 /*!
+ @brief loadView variant using UITableViewStyleGrouped.
+ */
+- (void)loadGroupedTableView;
+
+/*!
  @brief start download of data
  */
 - (void)fetchData;
