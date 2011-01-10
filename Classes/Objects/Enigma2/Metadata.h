@@ -23,8 +23,8 @@
 /*!
  @brief Standard initializer.
  
- @param node Pointer to CXMLNode describing this Location.
- @return Enigma2Location instance.
+ @param node Pointer to CXMLNode describing this Metadata.
+ @return Enigma2Metadata instance.
  */
 - (id)initWithNode: (CXMLNode *)node;
 
