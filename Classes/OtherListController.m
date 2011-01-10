@@ -216,6 +216,24 @@
 				reload = YES;
 			}
 		}
+		
+		// Add/Remove Media Player
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
+		{
+			if(![menuList containsObject: _mediaPlayerDictionary])
+			{
+				[menuList insertObject: _mediaPlayerDictionary atIndex: 3];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject: _mediaPlayerDictionary])
+			{
+				[menuList removeObject: _mediaPlayerDictionary];
+				reload = YES;
+			}
+		}
 	}
 
 	// Add/Remove Signal Finder
@@ -250,24 +268,6 @@
 		if([menuList containsObject: _eventSearchDictionary])
 		{
 			[menuList removeObject: _eventSearchDictionary];
-			reload = YES;
-		}
-	}
-
-	// Add/Remove Media Player
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
-	{
-		if(![menuList containsObject: _mediaPlayerDictionary])
-		{
-			[menuList insertObject: _mediaPlayerDictionary atIndex: 3];
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _mediaPlayerDictionary])
-		{
-			[menuList removeObject: _mediaPlayerDictionary];
 			reload = YES;
 		}
 	}

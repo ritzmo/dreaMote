@@ -17,6 +17,7 @@
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/FileXMLReader.h"
+#import "XMLReader/Enigma2/MetadataXMLReader.h"
 #import "XMLReader/Enigma2/MovieXMLReader.h"
 #import "XMLReader/Enigma2/LocationXMLReader.h"
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
@@ -544,6 +545,35 @@ enum enigma2MessageTypes {
 	Result *result = [self simpleXmlResultToResult: myString];
 	[myString release];
 	return result;
+}
+
+- (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString: @"/web/mediaplayercurrent" relativeToURL: _baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2MetadataXMLReader alloc] initWithDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (NSData *)getFile: (NSString *)fullpath;
+{
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/file?file=%@", [fullpath urlencode]] relativeToURL: _baseAddress];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
+	// Create URL Object and download it
+	NSURLResponse *response;
+	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+	NSData *data = [NSURLConnection sendSynchronousRequest: request
+										 returningResponse: &response error: nil];
+
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+
+	return data;
 }
 
 #pragma mark Control

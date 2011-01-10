@@ -1,0 +1,41 @@
+//
+//  Metadata.m
+//  dreaMote
+//
+//  Created by Moritz Venn on 10.01.11.
+//  Copyright 2011 Moritz Venn. All rights reserved.
+//
+
+#import "Metadata.h"
+
+
+@implementation GenericMetadata
+
+@synthesize title, artist, album, genre, year, coverpath;
+
+- (id)initWithMetadata: (NSObject<MetadataProtocol> *)meta
+{
+	if((self = [super init]))
+	{
+		title = [meta.title copy];
+		artist = [meta.artist copy];
+		album = [meta.album copy];
+		genre = [meta.genre copy];
+		year = [meta.year copy];
+		coverpath = [meta.coverpath copy];
+	}
+	return self;
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[[self class] alloc] initWithMetadata: self];
+	
+	return newElement;
+}
+
+@end

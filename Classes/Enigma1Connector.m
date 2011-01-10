@@ -883,4 +883,16 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
+- (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (NSData *)getFile: (NSString *)fullpath;
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 @end

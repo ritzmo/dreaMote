@@ -22,6 +22,9 @@
     if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Recordings", @"Title of MovieSplitViewController");
+
+		UIImage *image = [UIImage imageNamed: @"movie.png"];
+		self.tabBarItem.image = image;
     }
     return self;
 }

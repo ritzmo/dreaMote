@@ -23,6 +23,7 @@
 @private
 	UIViewController *_bouquetController; /*!< @brief Bouquet List Tab. */
 	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
+	UIViewController *_mediaplayerController; /*!< @brief "MediaPlayer" Tab on iPad. */
 	UIViewController *_movieController; /*!< @brief "Movies" Tab on iPad. */
 	UIViewController *_otherController;  /*!< @brief "Other" Tab. */
 	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */

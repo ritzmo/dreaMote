@@ -12,6 +12,7 @@
 #import "Constants.h"
 
 #import "BouquetSplitViewController.h"
+#import "MediaPlayerSplitViewController.h"
 #import "MovieSplitViewController.h"
 #import "TimerSplitViewController.h"
 
@@ -45,12 +46,14 @@
 {
 	[myTabBar release];
 	[menuList release];
-	[_currentController release];
 	[_bouquetController release];
+	[_currentController release];
+	[_mediaplayerController release];
+	[_movieController release];
+	[_otherController release];
+	[_rcController release];
 	[_serviceController release];
 	[_timerController release];
-	[_rcController release];
-	[_otherController release];
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -81,11 +84,8 @@
 	{
 		_bouquetController = [[BouquetSplitViewController alloc] init];
 		_timerController = [[TimerSplitViewController alloc] init];
+		_mediaplayerController = [[MediaPlayerSplitViewController alloc] init];
 		_movieController = [[MovieSplitViewController alloc] init];
-
-		// set up movie controller image here because it does not exist on iphone
-		image = [UIImage imageNamed: @"movie.png"];
-		_movieController.tabBarItem.image = image;
 	}
 	else
 	{
@@ -113,7 +113,7 @@
 	_currentController.tabBarItem.image = image;
 	image = [UIImage imageNamed: @"others.png"];
 	_otherController.tabBarItem.image = image;
-
+	
 	[menuList addObject: _timerController];
 	[menuList addObject: navController];
 
@@ -175,6 +175,18 @@
 
 	if(IS_IPAD())
 	{
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+		{
+			if(![menuList containsObject: _mediaplayerController])
+			{
+				[menuList insertObject: _mediaplayerController atIndex: 2];
+			}
+		}
+		else
+		{
+			[menuList removeObject: _mediaplayerController];
+		}
+
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
 		{
 			if(![menuList containsObject: _movieController])

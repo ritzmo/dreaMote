@@ -17,21 +17,19 @@
 #define kTransitionDuration	(CGFloat)0.6
 
 @interface MediaPlayerController()
-/*!
- @brief Create custom Button.
-
- @param frame Button Frame.
- @param imagePath Path to Button Image.
- @param keyCode RC Code.
- @return UIButton instance.
- */
-- (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode;
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 - (void)fetchCurrent;
 - (void)fetchCurrentDefer;
+
+/*!
+ @brief Popover Controller.
+ */
+@property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
 @implementation MediaPlayerController
+
+@synthesize popoverController;
 
 - (id)init
 {
@@ -52,6 +50,11 @@
 	[_currentXMLDoc release];
 
 	[super dealloc];
+}
+
+- (void)newTrackPlaying
+{
+	//
 }
 
 - (void)fetchCurrentDefer
@@ -129,7 +132,8 @@
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: kTransitionDuration];
-	self.navigationItem.leftBarButtonItem = nil;
+	if(!IS_IPAD())
+		self.navigationItem.leftBarButtonItem = nil;
 
 	[UIView setAnimationTransition:
 				([_fileList superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft)
@@ -345,7 +349,8 @@
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] playTrack:file];
 		if(result.result)
 		{
-			[_playlist selectPlayingByTitle:file.title];
+			if([_playlist selectPlayingByTitle:file.title])
+				[self newTrackPlaying];
 		}
 		else
 		{
@@ -399,7 +404,8 @@
 
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
-	[_playlist selectPlayingByTitle: service.sname];
+	if([_playlist selectPlayingByTitle: service.sname])
+		[self newTrackPlaying];
 }
 
 #pragma mark -
@@ -409,6 +415,25 @@
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	//
+}
+
+#pragma mark -
+#pragma mark Split view support
+#pragma mark -
+
+- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
+{
+	barButtonItem.title = aViewController.title;
+	self.navigationItem.leftBarButtonItem = barButtonItem;
+	self.popoverController = pc;
+}
+
+
+// Called when the view is shown again in the split view, invalidating the button and popover controller.
+- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+	self.navigationItem.leftBarButtonItem = nil;
+	self.popoverController = nil;
 }
 
 @end

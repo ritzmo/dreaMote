@@ -117,7 +117,7 @@
 }
 
 /* select file by name */
-- (void)selectPlayingByTitle:(NSString *)filename
+- (BOOL)selectPlayingByTitle:(NSString *)filename
 {
 	NSUInteger idx = 0;
 	for(NSObject<FileProtocol> *file in _files)
@@ -132,11 +132,13 @@
 
 				_playing = idx;
 				[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
+				return YES;
 			}
-			return;
+			return NO;
 		}
 		++idx;
 	}
+	return NO;
 }
 
 /* re-download data */

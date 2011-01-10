@@ -47,8 +47,9 @@
  @brief Select item by title
 
  @param filename Filename of the file to select
+ @return YES if playing track was changed.
  */
-- (void)selectPlayingByTitle:(NSString *)filename;
+- (BOOL)selectPlayingByTitle:(NSString *)filename;
 
 @property (nonatomic, retain) UIViewController<FileListDelegate> *fileDelegate;
 @property (nonatomic) BOOL isPlaylist;

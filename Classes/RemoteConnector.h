@@ -95,6 +95,10 @@ enum connectorFeatures {
 	kFeaturesRecordingLocations,
 	/*! @brief Offers interface to a media player. */
 	kFeaturesMediaPlayer,
+	/*! @brief Can retrieve metadata from media player. */
+	kFeaturesMediaPlayerMetadata,
+	/*! @brief Can fetch files from receiver. */
+	kFeaturesFileDownload,
 	/*! @brief Can provide further information on the remote receiver. */
 	kFeaturesAbout,
 };
@@ -162,6 +166,7 @@ enum buttonCodes {
 @protocol AboutSourceDelegate;
 @protocol EventSourceDelegate;
 @protocol LocationSourceDelegate;
+@protocol MetadataSourceDelegate;
 @protocol MovieSourceDelegate;
 @protocol ServiceSourceDelegate;
 @protocol SignalSourceDelegate;
@@ -300,6 +305,22 @@ enum buttonCodes {
  @return Pointer to parsed CXMLDocument.
  */
 - (CXMLDocument *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
+
+/*!
+ @brief Request metadata of currently played track from the receiver.
+ 
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
+
+/*!
+ @brief Request a file from the Receiver.
+ 
+ @param type Full path to file.
+ @return Pointer to file or nil on failure.
+ */
+- (NSData *)getFile: (NSString *)fullpath;
 
 /*!
  @brief Get current Volume settings.
