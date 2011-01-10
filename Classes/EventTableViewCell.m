@@ -144,6 +144,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	// NOTE: We actually should never be editing...
 	if (!self.editing) {
 		CGRect frame;
+		NSInteger serviceOffset = 50;
 		
 		// Place the name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, kEventNameTextSize + 2);
@@ -154,7 +155,9 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		_eventTimeLabel.frame = frame;
 		
 		// Place the service name label.
-		frame = CGRectMake(contentRect.size.width - kRightMargin - 50, 30, 50, kEventDetailsTextSize + 2);
+		if(IS_IPAD())
+			serviceOffset = 200;
+		frame = CGRectMake(contentRect.size.width - kRightMargin - serviceOffset, 30, serviceOffset, kEventDetailsTextSize + 2);
 		_eventServiceLabel.frame = frame;
 	}
 }
