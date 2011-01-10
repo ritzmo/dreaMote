@@ -14,8 +14,9 @@
 #import "RemoteConnectorObject.h"
 
 @interface MediaPlayerDetailsController()
-- (void)loadCoverart;
-- (void)loadCurrent;
+- (void)emptyData;
+- (void)fetchCoverart;
+- (void)fetchData;
 @end
 
 
@@ -67,13 +68,17 @@
 	_fileList.fileDelegate = self;
 }
 
+/* new track started playing */
 - (void)newTrackPlaying
 {
+	[self emptyData];
+
 	// playing track changed, update local metadata
-	[NSThread detachNewThreadSelector:@selector(loadCurrent) toTarget:self withObject:nil];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
-- (void)loadCurrent
+/* fetch contents */
+- (void)fetchData
 {	
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_metadataXMLDoc release];
@@ -81,13 +86,28 @@
 	[pool release];
 }
 
-- (void)loadCoverart
+/* remove content data */
+- (void)emptyData
+{
+	[_currentTrack release];
+	_currentTrack = nil;
+	[_currentCover release];
+	_currentCover = nil;
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_metadataXMLDoc release];
+	_metadataXMLDoc = nil;
+}
+
+/* fetch coverart */
+- (void)fetchCoverart
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSData *imageData = [[RemoteConnectorObject sharedRemoteConnector] getFile:_currentTrack.coverpath];
 	[_currentCover release];
 	_currentCover = [[UIImage alloc] initWithData:imageData];
-	[(UITableView *)self.view reloadData];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:1];
+	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[pool release];
 }
 
@@ -265,16 +285,17 @@
 	if(anItem == nil) return;
 	[_currentTrack release];
 	_currentTrack = [anItem retain];
-	[(UITableView *)self.view reloadData];
+	NSMutableIndexSet *idxSet = [NSMutableIndexSet indexSetWithIndex:0];
 
 	if(!(_currentTrack.coverpath == nil || [_currentTrack.coverpath isEqualToString: @""]))
-		[NSThread detachNewThreadSelector:@selector(loadCoverart) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchCoverart) toTarget:self withObject:nil];
 	else
 	{
 		[_currentCover release];
 		_currentCover = nil;
-		[(UITableView *)self.view reloadData];
+		[idxSet addIndex:1];
 	}
+	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }
 
 @end
