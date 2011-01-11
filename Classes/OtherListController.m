@@ -29,6 +29,14 @@
 #import "TimerListController.h"
 #import "MediaPlayerController.h"
 
+@interface OtherListController()
+/*!
+ @brief display about dialog
+ @param sender ui element
+ */
+- (void)aboutDreamoteAction: (id)sender;
+@end
+
 @implementation OtherListController
 
 @synthesize myTableView;
@@ -46,6 +54,7 @@
 {
 	[myTableView release];
 	[menuList release];
+	[_aboutDreamoteViewController release];
 	[_eventSearchDictionary release];
 	[_mediaPlayerDictionary release];
 	[_locationsDictionary release];
@@ -58,6 +67,9 @@
 
 - (void)didReceiveMemoryWarning
 {
+	[_aboutDreamoteViewController release];
+	_aboutDreamoteViewController = nil;
+
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
 
@@ -76,18 +88,10 @@
 
 	targetViewController = [[AboutViewController alloc] init];
 	_aboutDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
-							 NSLocalizedString(@"About Receiver Title", @""), @"title",
-							 NSLocalizedString(@"About Receiver Explain", @""), @"explainText",
-							 targetViewController, @"viewController",
-							 nil] retain];
-	[targetViewController release];
-
-	targetViewController = [[AboutDreamoteViewController alloc] init];
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-						 NSLocalizedString(@"About View Title", @""), @"title",
-						 NSLocalizedString(@"About View Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
-						 nil]];
+						NSLocalizedString(@"About Receiver Title", @""), @"title",
+						NSLocalizedString(@"About Receiver Explain", @""), @"explainText",
+						targetViewController, @"viewController",
+						nil] retain];
 	[targetViewController release];
 	
 	targetViewController = [[ConfigListController alloc] init];
@@ -157,6 +161,13 @@
 						 nil]];
 	[targetViewController release];
 
+	// Add the "About" button to the navigation bar
+	UIButton *button = [UIButton buttonWithType: UIButtonTypeInfoLight];
+	[button addTarget:self action:@selector(aboutDreamoteAction:) forControlEvents:UIControlEventTouchUpInside];
+	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
+	self.navigationItem.leftBarButtonItem = buttonItem;
+	[buttonItem release];
+
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(IS_IPAD())
 		myTableView.rowHeight = kUIRowHeight;
@@ -164,6 +175,13 @@
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
 	myTableView.autoresizesSubviews = YES;
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+}
+
+- (void)aboutDreamoteAction: (id)sender
+{
+	if(_aboutDreamoteViewController == nil)
+		_aboutDreamoteViewController = [[AboutDreamoteViewController alloc] init];
+	[self.navigationController presentModalViewController: _aboutDreamoteViewController animated:YES];
 }
 
 #pragma mark UIViewController delegates
@@ -192,7 +210,7 @@
 				if(![menuList containsObject: _locationsDictionary])
 				{
 					[menuList removeObject:_recordDictionary];
-					[menuList insertObject:_locationsDictionary atIndex: 4];
+					[menuList insertObject:_locationsDictionary atIndex: 3];
 					reload = YES;
 				}
 			}
@@ -201,7 +219,7 @@
 				if(![menuList containsObject: _recordDictionary])
 				{
 					[menuList removeObject:_locationsDictionary];
-					[menuList insertObject:_recordDictionary atIndex: 4];
+					[menuList insertObject:_recordDictionary atIndex: 3];
 					reload = YES;
 				}
 			}
@@ -222,7 +240,7 @@
 		{
 			if(![menuList containsObject: _mediaPlayerDictionary])
 			{
-				[menuList insertObject: _mediaPlayerDictionary atIndex: 3];
+				[menuList insertObject: _mediaPlayerDictionary atIndex: 2];
 				reload = YES;
 			}
 		}
@@ -241,7 +259,7 @@
 	{
 		if(![menuList containsObject: _signalDictionary])
 		{
-			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 4 : 5];
+			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 3 : 4];
 			reload = YES;
 		}
 	}
@@ -259,7 +277,7 @@
 	{
 		if(![menuList containsObject: _eventSearchDictionary])
 		{
-			[menuList insertObject: _eventSearchDictionary atIndex: 3];
+			[menuList insertObject: _eventSearchDictionary atIndex: 2];
 			reload = YES;
 		}
 	}
@@ -277,7 +295,7 @@
 	{
 		if(![menuList containsObject: _aboutDictionary])
 		{
-			[menuList insertObject: _aboutDictionary atIndex: 1];
+			[menuList insertObject: _aboutDictionary atIndex: 0];
 			reload = YES;
 		}
 	}

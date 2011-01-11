@@ -19,6 +19,7 @@
 	IBOutlet UITableView		*myTableView; /*!< @brief Table View. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
+	UIViewController *_aboutDreamoteViewController; /*!< @brief Cached About View. */
 	NSDictionary *_aboutDictionary; /*!< @brief Dictionary describing About (Receiver) Item. */
 	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */
