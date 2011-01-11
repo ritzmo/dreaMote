@@ -25,6 +25,7 @@
 @synthesize dateFormatter = _dateFormatter;
 @synthesize isSplit = _isSplit;
 @synthesize timerViewController = _timerViewController;
+@synthesize willReappear = _willReappear;
 
 /* initialize */
 - (id)init
@@ -75,6 +76,16 @@
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)setWillReappear:(BOOL)new
+{
+	// allow to skip refresh only if there is any data
+	/*
+	 @note this prevents problems with iOS3.2 where sections were not properly reloaded
+	 resulting in double section headers with the first set hiding the first timer.
+	 */
+	if(_dist[0] > 0) _willReappear = new;
+}
+
 /* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
@@ -101,22 +112,28 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	NSUInteger i;
-	
-	// Reset _dist array
-	for(i = 0; i < kTimerStateMax; i++)
-		_dist[i] = 0;
+	if(!_willReappear)
+	{
+		/*
+		 @note Not using [self emptyData] here because reloadSections is buggy in iOS 3.2
+		 */
+		NSUInteger i = 0;
 
-	// Clear caches
-	[_timers removeAllObjects];
+		// Reset _dist array
+		for(i = 0; i < kTimerStateMax; i++)
+			_dist[i] = 0;
+
+		// Clear caches
+		[_timers removeAllObjects];
+		[_tableView reloadData];
+		[_timerXMLDoc release];
+		_timerXMLDoc = nil;
+
+		// Spawn a thread to fetch the timer data so that the UI is not blocked while the
+		// application parses the XML file.
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	}
 	_willReappear = NO;
-	[_tableView reloadData];
-	[_timerXMLDoc release];
-	_timerXMLDoc = nil;
-
-	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 
 	[super viewWillAppear: animated];
 }
@@ -132,15 +149,6 @@
 /* did disappear */
 - (void)viewDidDisappear:(BOOL)animated
 {
-	NSUInteger i;
-
-	// Reset _dist array
-	for(i = 0; i < kTimerStateMax; i++)
-		_dist[i] = 0;
-
-	// Clear Timer list
-	[_timers removeAllObjects];
-
 	// Clear remaining caches if not reappearing
 	if(!_willReappear)
 	{
@@ -148,9 +156,9 @@
 		{
 			[_timerViewController release];
 			_timerViewController = nil;
+
+			[self emptyData];
 		}
-		[_timerXMLDoc release];
-		_timerXMLDoc = nil;
 	}
 
 	// Reset reference date of FuzzyDateFormatter
@@ -271,7 +279,9 @@
 	if(_timerViewController == nil)
 		_timerViewController = [[TimerViewController alloc] init];
 
-	_willReappear = YES;
+	// don't reload on ipad
+	if(IS_IPAD())
+		_willReappear = YES;
 
 	_timerViewController.timer = timer;
 	_timerViewController.oldTimer = ourCopy;
@@ -368,14 +378,7 @@
 			else
 			{
 				// NOTE: this WILL reset our scroll position..
-				for(section = 0; section < kTimerStateMax; section++)
-					_dist[section] = 0;
-
-				// Free caches
-				[_timers removeAllObjects];
-				[_tableView reloadData];
-				[_timerXMLDoc release];
-				_timerXMLDoc = nil;
+				[self emptyData];
 
 				// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 				// application parses the XML file.
@@ -398,7 +401,9 @@
 		if(_timerViewController == nil)
 			_timerViewController = [[TimerViewController alloc] init];
 
-		_willReappear = YES;
+		// don't reload on ipad
+		if(IS_IPAD())
+			_willReappear = YES;
 
 		NSObject<TimerProtocol> *newTimer = [GenericTimer timer];
 		_timerViewController.timer = newTimer;

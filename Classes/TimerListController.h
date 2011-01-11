@@ -61,4 +61,9 @@
  */
 @property (nonatomic, retain) IBOutlet TimerViewController *timerViewController;
 
+/*!
+ @breif View will reapper.
+ */
+@property (nonatomic) BOOL willReappear;
+
 @end
