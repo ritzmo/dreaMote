@@ -23,6 +23,7 @@
 @private
 	NSObject<MetadataProtocol> *_currentTrack; /*!< @brief Meta-information to currently playing track. */
 	UIImage *_currentCover; /*!< @brief Coverart to currently playing track. */
+	UITableView *_tableView; /*!< @brief "Main" Table view. */
 	
 	CXMLDocument *_metadataXMLDoc; /*!< @brief Track metadata. */
 }

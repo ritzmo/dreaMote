@@ -19,7 +19,6 @@
 - (void)fetchData;
 @end
 
-
 @implementation MediaPlayerDetailsController
 
 /* dealloc */
@@ -28,6 +27,7 @@
 	[_currentTrack release];
 	[_currentCover release];
 	[_metadataXMLDoc release];
+	[_tableView release];
 
 	[super dealloc];
 }
@@ -42,7 +42,7 @@
 - (void)setPlaylist:(FileListView *)new
 {
 	if([new isEqual: _playlist]) return;
-	
+
 	[_playlist release];
 	_playlist = [new retain];
 	_playlist.fileDelegate = self;
@@ -50,18 +50,38 @@
 
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	// setup our parent content view and embed it to your view controller
+	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	if(IS_IPAD())
+	{
+		contentView.backgroundColor = [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
+	}
+	else
+	{
+		contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
+	}
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	self.view = tableView;
-	[tableView release];
-	
+	self.view = contentView;
+	[contentView release];
+
+	// setup our table view
+	// FIXME: wtf?!
+	CGRect frame = self.view.frame;
+	frame.origin.x = 0;
+	frame.origin.y = 0;
+	_tableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
+	[self.view addSubview: _tableView];
+
 	// file list
 	_fileList = [[FileListView alloc] initWithFrame: self.view.frame];
 	_fileList.path = @"/";
@@ -79,7 +99,7 @@
 
 /* fetch contents */
 - (void)fetchData
-{	
+{
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_metadataXMLDoc release];
 	_metadataXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getMetadata:self] retain];
@@ -94,7 +114,7 @@
 	[_currentCover release];
 	_currentCover = nil;
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
-	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[_metadataXMLDoc release];
 	_metadataXMLDoc = nil;
 }
@@ -107,8 +127,21 @@
 	[_currentCover release];
 	_currentCover = [[UIImage alloc] initWithData:imageData];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:1];
-	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[pool release];
+}
+
+- (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
+{
+	// parent class would screw up the fileList frame otherwise
+}
+
+- (IBAction)flipView:(id)sender
+{
+	// fix up frame
+	_fileList.frame = self.view.frame;
+
+	[super flipView:nil];
 }
 
 #pragma mark - UITableView delegates
@@ -269,7 +302,7 @@
 					break;
 				default: break;
 			}
-		}	
+		}
 		default: break;
 	}
 
@@ -295,7 +328,7 @@
 		_currentCover = nil;
 		[idxSet addIndex:1];
 	}
-	[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }
 
 @end
