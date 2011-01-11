@@ -22,11 +22,11 @@
 	UIView *_screenView; /*!< @brief Screenshot View. */
 	UIScrollView *_scrollView; /*!< @brief Container of Screenshot View. */
 	UIImageView *_imageView; /*!< @brief Actual Screenshot UI Item. */
-	UIToolbar *_toolbar; /*!< @brief Toolbar. */
 	UIBarButtonItem *_screenshotButton; /*!< @brief Button to quickly change to Screenshot View. */
 
 	NSInteger _screenshotType; /*!< @brief Selected Screenshot type. */
 @protected
+	UIToolbar *_toolbar; /*!< @brief Toolbar. */
 	IBOutlet UIView *rcView; /*!< @brief Remote Controller view. */
 	UIView *_keyPad; /*!< @brief View containing Number keys. */
 	UIView *_navigationPad; /*!< @brief View containing Navigation keys. */

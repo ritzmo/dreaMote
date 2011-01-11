@@ -46,7 +46,7 @@
 - (void)loadView
 {
 	CGRect frame;
-	const CGFloat factor = (IS_IPAD()) ? 2.0f : 1.0f;
+	const CGFloat factor = (IS_IPAD()) ? 2.0f : 0.9f;
 	const CGFloat imageWidth = 135 * factor;
 	const CGFloat imageHeight = 105 * factor;
 
@@ -56,7 +56,7 @@
 
 	// create the rc view
 	// NOTE: we size it height*height because this is the largest area we might fill
-	frame = CGRectMake(0, 0, mainViewSize.height, mainViewSize.height);
+	frame = CGRectMake(0, _toolbar.frame.size.height, mainViewSize.height, mainViewSize.height - _toolbar.frame.size.height);
 	rcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:rcView];
 
@@ -74,10 +74,10 @@
 
 	// swipe
 	if(IS_IPAD()){
-		frame = CGRectMake(0, 200, 750, 690);
+		frame = CGRectMake(0, 200, 700, 645);
 	}
 	else
-		frame = CGRectMake(0, 100, mainViewSize.width - kLeftMargin - kRightMargin, mainViewSize.height - 225);
+		frame = CGRectMake(0, 100, 217, 217);
 	_swipeArea = [[UIButton alloc] initWithFrame: frame];
 	_swipeArea.userInteractionEnabled = NO;
 	UIImage *image = [UIImage imageNamed:@"4-sided-arrow.png"];
@@ -161,7 +161,7 @@
 /* move frames */
 - (void)manageViews:(UIInterfaceOrientation)interfaceOrientation
 {
-	const CGFloat factor = (IS_IPAD()) ? 2.0f : 1.0f;
+	const CGFloat factor = (IS_IPAD()) ? 2.0f : 0.9f;
 	const CGFloat imageWidth = 135 * factor;
 	const CGFloat imageHeight = 105 * factor;
 	CGSize mainViewSize = self.view.bounds.size;
@@ -177,18 +177,27 @@
 
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
-		_lameButton.frame = CGRectMake(mainViewSize.width - imageWidth, kTopMargin, imageWidth, imageHeight);
-		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, mainViewSize.height - imageHeight, imageWidth, imageHeight);
-		_swipeArea.frame = CGRectMake(kLeftMargin, kTopMargin, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
+		if(IS_IPAD())
+		{
+			_lameButton.frame = CGRectMake(mainViewSize.width - imageWidth, kTopMargin, imageWidth, imageHeight);
+			_swipeArea.frame = CGRectMake(kLeftMargin, kTopMargin, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
+		}
+		else
+		{
+			_lameButton.frame = CGRectMake(mainViewSize.width - imageWidth, -10, imageWidth, imageHeight);
+			_swipeArea.frame = CGRectMake(kLeftMargin, -10, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
+		}
+
+		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, mainViewSize.height - imageHeight - 55, imageWidth, imageHeight);
 	}
 	else
 	{
 		_lameButton.frame = CGRectMake(0, 0, imageWidth, imageHeight);
 		_menuButton.frame = CGRectMake(mainViewSize.width - imageWidth, 0, imageWidth, imageHeight);
 		if(IS_IPAD())
-			_swipeArea.frame = CGRectMake(kLeftMargin, 220, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
+			_swipeArea.frame = CGRectMake(30, 220, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
 		else
-			_swipeArea.frame = CGRectMake(kLeftMargin, 130, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
+			_swipeArea.frame = CGRectMake(50, 130, _swipeArea.frame.size.width, _swipeArea.frame.size.height);
 	}
 }
 

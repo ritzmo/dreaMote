@@ -90,10 +90,6 @@
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
 	{
-		const UIBarButtonItem *systemItem = [[UIBarButtonItem alloc]
-									   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-									   target:self action:@selector(flipView:)];
-
 		// flex item used to separate the left groups items and right grouped items
 		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																	target:nil
@@ -119,29 +115,30 @@
 		
 		NSArray *items;
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
-			items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, videoItem, bothItem, nil];
+			items = [NSArray arrayWithObjects: _screenshotButton, flexItem, osdItem, videoItem, bothItem, nil];
 		else
-			items = [NSArray arrayWithObjects: systemItem, flexItem, osdItem, bothItem, nil];
+			items = [NSArray arrayWithObjects: _screenshotButton, flexItem, osdItem, bothItem, nil];
 		[_toolbar setItems:items animated:NO];
 
-		[systemItem release];
 		[flexItem release];
 		[osdItem release];
 		[videoItem release];
 		[bothItem release];
-
-		self.navigationItem.rightBarButtonItem = _screenshotButton;
 
 		if([_screenView superview])
 			[self loadImage: nil];
 	}
 	else
 	{
-		self.navigationItem.rightBarButtonItem = nil;
-
 		if([_screenView superview])
 			[self flipView: nil];
 	}
+
+	// eventually fix toolbar size
+	[_toolbar sizeToFit];
+	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	const CGFloat width = self.view.frame.size.width;
+	_toolbar.frame = CGRectMake(0, -1, width, _toolbarHeight);
 
 	// fix up views
 	if(_navigationPad != nil)
@@ -171,14 +168,13 @@
 	[contentView release];
 
 	// Flip Button
-	_screenshotButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"image-x-generic.png"] style:UIBarButtonItemStylePlain target:self action:@selector(flipView:)];
+	_screenshotButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Screenshot", @"")
+														style:UIBarButtonItemStyleBordered
+														target:self
+														action:@selector(flipView:)];
 
 	CGSize mainViewSize = self.view.bounds.size;
 	CGRect frame;
-
-	// ImageView for Screenshots
-	frame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
-	_screenView = [[UIView alloc] initWithFrame: frame];
 
 	_toolbar = [UIToolbar new];
 	_toolbar.barStyle = UIBarStyleDefault;
@@ -186,17 +182,17 @@
 	// size up the _toolbar and set its frame
 	[_toolbar sizeToFit];
 	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
-	mainViewSize = _screenView.bounds.size;
 	_toolbar.frame = CGRectMake(0,
-							   mainViewSize.height - (_toolbarHeight * 2) + 2,
-							   mainViewSize.width,
-							   _toolbarHeight);
-	[_screenView addSubview:_toolbar];
+								-1,
+								mainViewSize.width,
+								_toolbarHeight);
+	[self.view addSubview:_toolbar];
 
-	frame = CGRectMake(0,
-					   0,
-					   mainViewSize.width,
-					   mainViewSize.height - (_toolbarHeight * 2) + 2);
+	// ImageView for Screenshots
+	frame = CGRectMake(0, _toolbarHeight, mainViewSize.width, mainViewSize.height - _toolbarHeight - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
+	_screenView = [[UIView alloc] initWithFrame: frame];
+
+	frame.origin.y = 0;
 	_scrollView = [[UIScrollView alloc] initWithFrame: frame];
 	_scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	_scrollView.autoresizesSubviews = YES;
@@ -242,12 +238,14 @@
 	if ([_screenView superview])
 	{
 		[_screenView removeFromSuperview];
+		_screenshotButton.title = NSLocalizedString(@"Screenshot", @"");
 		[self.view addSubview: rcView];
 	}
 	else
 	{
 		[self loadImage: nil];
 		[rcView removeFromSuperview];
+		_screenshotButton.title = NSLocalizedString(@"Done", @"");
 		[self.view addSubview: _screenView];
 	}
 
@@ -280,19 +278,28 @@
 - (void)setOSDType:(id)sender
 {
 	_screenshotType = kScreenshotTypeOSD;
-	[self loadImage: nil];
+	if([_screenView superview])
+		[self loadImage: nil];
+	else
+		[self flipView: nil];
 }
 
 - (void)setVideoType:(id)sender
 {
 	_screenshotType = kScreenshotTypeVideo;
-	[self loadImage: nil];
+	if([_screenView superview])
+		[self loadImage: nil];
+	else
+		[self flipView: nil];
 }
 
 - (void)setBothType:(id)sender
 {
 	_screenshotType = kScreenshotTypeBoth;
-	[self loadImage: nil];
+	if([_screenView superview])
+		[self loadImage: nil];
+	else
+		[self flipView: nil];
 }
 
 - (void)buttonPressed:(RCButton *)sender
@@ -334,7 +341,7 @@
 {
 	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
 	{
-		_keyPad.frame = CGRectMake(74, -500, 0, 0);
+		_keyPad.frame = CGRectMake(74, -600, 0, 0);
 		_navigationPad.frame = _landscapeNavigationFrame;
 		rcView.frame = _landscapeFrame;
 	}
@@ -371,14 +378,12 @@
 
 	// adjust size of _screenView, _toolbar & _scrollView
 	CGSize mainViewSize = self.view.bounds.size;
-	_screenView.frame = CGRectMake(0, 0, mainViewSize.width, mainViewSize.height);
 	[_toolbar sizeToFit];
-	//mainViewSize = _screenView.bounds.size;
-	CGFloat _toolbarHeight = _toolbar.frame.size.height;
-	CGFloat edgeY = mainViewSize.height - _toolbarHeight;
-	CGFloat width = mainViewSize.width;
-	_toolbar.frame = CGRectMake(0, edgeY, width, _toolbarHeight);
-	_scrollView.frame = CGRectMake(0, 0, width, edgeY);
+	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	const CGFloat width = mainViewSize.width;
+	_toolbar.frame = CGRectMake(0, -1, width, _toolbarHeight);
+	_screenView.frame = CGRectMake(0, _toolbarHeight, width, mainViewSize.height - _toolbarHeight);
+	_scrollView.frame = CGRectMake(0, 0, width, mainViewSize.height);
 
 	// FIXME: we load a new image as I'm currently unable to figure out how to readjust the old one
 	if(_screenView.superview)
