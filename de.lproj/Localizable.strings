@@ -32,7 +32,7 @@
 "<remote username>" = "<Benutzername: z.B. root>";
 
 /* Title of AboutDreamoteViewController */
-/*"About" = "About";*/
+"About" = "Über dreaMote";
 
 /* No comment provided by engineer. */
 "About Receiver" = "Receiverinfo";
@@ -53,25 +53,25 @@
 "After Event" = "Nach der Aufnahme";
 
 /* No comment provided by engineer. */
-/*"AGC" = "AGC";*/
+"AGC" = "AGC";
 
 /* No comment provided by engineer. */
-/*"Album" = "Album";*/
+"Album" = "Album";
 
 /* No comment provided by engineer. */
 "All" = "Alle";
 
 /* No comment provided by engineer. */
-/*"All Services" = "All Services";*/
+"All Services" = "Alle Sender";
 
 /* No comment provided by engineer. */
-/*"Artist" = "Artist";*/
+"Artist" = "Interpret";
 
 /* No comment provided by engineer. */
 "Attention" = "Warnung";
 
 /* No comment provided by engineer. */
-/*"Auto" = "Auto";*/
+"Auto" = "Automatisch";
 
 /* No comment provided by engineer. */
 "Autodetect" = "Erkenne";
@@ -80,7 +80,7 @@
 "Begin" = "Anfang";
 
 /* Title of BouquetListController */
-/*"Bouquets" = "Bouquets";*/
+"Bouquets" = "Bouquets";
 
 /* No comment provided by engineer. */
 "Can't edit a running or finished timer." = "Kann aktiven oder beendeten Timer nicht bearbeiten.";
@@ -114,7 +114,7 @@
 "Configured Connections" = "Bekannte Verbindungen";
 
 /* No comment provided by engineer. */
-/*"Confirmed" = "Confirmed";*/
+"Confirmed" = "Bestätigt";
 
 /* No comment provided by engineer. */
 "Connect" = "Verbinde";
@@ -132,19 +132,19 @@
 "Controls" = "Steuerung";
 
 /* No comment provided by engineer. */
-/*"Could not add new timer (%@)!" = "Could not add new timer (%@)!";*/
+"Could not add new timer (%@)!" = "Konnte neuen Timer nicht hinzufügen (%@)!";
 
 /* No comment provided by engineer. */
-/*"Could not add new timer and failed to retain original one! (%@)" = "Could not add new timer and failed to retain original one! (%@)";*/
+"Could not add new timer and failed to retain original one! (%@)" = "Konnte neuen Timer nicht hinzufügen und Originaltimer verloren! (%@)";
 
 /* No comment provided by engineer. */
-/*"Could not add song to playlist" = "Could not add song to playlist";*/
+"Could not add song to playlist" = "Lied konnte nicht zur Wiedergabeliste hinzugefügt werden";
 
 /* No comment provided by engineer. */
 "Could not determine remote box type." = "Konnte Receivertyp nicht autoamtisch erkennen!";
 
 /* No comment provided by engineer. */
-/*"Could not remove base timer (%@)!" = "Could not remove base timer (%@)!";*/
+"Could not remove base timer (%@)!" = "Konnte Originaltimer nicht löschen (%@)!";
 
 /* No comment provided by engineer. */
 "Could not send message." = "Konnte Nachricht nicht senden.";
@@ -165,7 +165,7 @@
 "Deep Standby" = "Herunterfahren";
 
 /* No comment provided by engineer. */
-/*"Default Location" = "Default Location";*/
+"Default Location" = "Standardverzeichnis";
 
 /* No comment provided by engineer. */
 "Delete failed" = "Entfernen fehlgeschlagen";
@@ -192,10 +192,10 @@
 "Error" = "Fehler";
 
 /* No comment provided by engineer. */
-/*"Error adding new timer: %@" = "Error adding new timer: %@";*/
+"Error adding new timer: %@" = "Konnte neuen Timer nicht hinzufügen: %@";
 
 /* No comment provided by engineer. */
-/*"Error editing timer: %@" = "Error editing timer: %@";*/
+"Error editing timer: %@" = "Konnte Timer nicht bearbeiten: %@";
 
 /* No comment provided by engineer. */
 "Error retrieving Data" = "Konnte keine Daten empfangen";
@@ -216,7 +216,7 @@
 "Exact" = "Exakt";
 
 /* Label for Filesystems Item in MediaPlayer Filelist */
-/*"Filesystems" = "Filesystems";*/
+"Filesystems" = "Medien";
 
 /* No comment provided by engineer. */
 "Finished" = "Beendet";
@@ -231,7 +231,7 @@
 "General" = "Allgemein";
 
 /* No comment provided by engineer. */
-/*"Genre" = "Genre";*/
+"Genre" = "Genre";
 
 /* No comment provided by engineer. */
 "GUI Version" = "GUI Version";
@@ -255,10 +255,10 @@
 "Justplay" = "Nur wiedergeben";
 
 /* Loading Status */
-/*"Loading..." = "Loading...";*/
+"Loading..." = "Lade...";
 
 /* No comment provided by engineer. */
-/*"Location" = "Location";*/
+"Location" = "Verzeichnis";
 
 /* No comment provided by engineer. */
 "Location List Explain" = "Aufnahmeordner anzeigen";
@@ -267,7 +267,7 @@
 "Location List Title" = "Filmverzeichnisse";
 
 /* Title of LocationListController */
-/*"Locations" = "Locations";*/
+"Locations" = "Verzeichnisse";
 
 /* No comment provided by engineer. */
 "Make Default" = "Zu Standard machen";
@@ -280,7 +280,7 @@
 
 /* Title of MediaPlayerController
    Title of MediaPlayerSplitViewController */
-/*"MediaPlayer" = "MediaPlayer";*/
+"MediaPlayer" = "MediaPlayer";
 
 /* Default title of MessageViewController */
 "Message" = "Nachricht";
@@ -304,7 +304,7 @@
 "Monday" = "Montag";
 
 /* Title of OtherListController */
-/*"More" = "More";*/
+"More" = "Mehr";
 
 /* Default title of MovieViewController */
 "Movie" = "Aufnahme";
@@ -340,7 +340,7 @@
 "Next" = "Danach";
 
 /* No comment provided by engineer. */
-/*"No Data…" = "No Data…";*/
+"No Data…" = "Keine Daten…";
 
 /* No comment provided by engineer. */
 "No similar Events" = "Keine ähnlichen Sendungen";
@@ -349,7 +349,7 @@
 "None" = "Keine";
 
 /* No comment provided by engineer. */
-/*"Normal" = "Normal";*/
+"Normal" = "Normal";
 
 /* After Event */
 "Nothing" = "Nichts tun";
@@ -361,7 +361,7 @@
 "Now" = "Jetzt";
 
 /* No comment provided by engineer. */
-/*"Now Playing" = "Now Playing";*/
+"Now Playing" = "Aktuelles Lied";
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";
@@ -373,13 +373,13 @@
 "Play" = "Wiedergabe";
 
 /* No comment provided by engineer. */
-/*"Play/Pause" = "Play/Pause";*/
+"Play/Pause" = "Wiedergabe/Pause";
 
 /* TabBar Title of CurrentViewController */
 "Playing" = "Aktive Sendung";
 
 /* Title of PlayListController */
-/*"Playlist" = "Playlist";*/
+"Playlist" = "Wiedergabeliste";
 
 /* No comment provided by engineer. */
 "Please provide a valid timeout interval." = "Bitte gib eine gültige Dauer an.";
@@ -391,16 +391,16 @@
 "Prepared" = "Startet in Kürze";
 
 /* No comment provided by engineer. */
-/*"Previous" = "Previous";*/
+"Previous" = "Vorheriges Lied";
 
 /* Pull down to refresh status */
-/*"Pull down to refresh..." = "Pull down to refresh...";*/
+"Pull down to refresh..." = "Herunterziehen zum Aktualisieren...";
 
 /* No comment provided by engineer. */
-/*"Question" = "Question";*/
+"Question" = "Frage";
 
 /* Radio switch button */
-/*"Radio" = "Radio";*/
+"Radio" = "Radio";
 
 /* Title of radio mode of BouquetListController */
 "Radio Bouquets" = "Radio Bouquets";
@@ -418,10 +418,10 @@
 "Record" = "Aufnahme";
 
 /* Title of MovieSplitViewController */
-/*"Recordings" = "Recordings";*/
+"Recordings" = "Aufnahmen";
 
 /* Release to refresh status */
-/*"Release to refresh..." = "Release to refresh...";*/
+"Release to refresh..." = "Loslassen zum Aktualisieren...";
 
 /* No comment provided by engineer. */
 "Remote Box Type" = "Receivertyp";
@@ -436,7 +436,7 @@
 "Remote host unreachable!\nPlease check your network settings or connect to another host." = "Entfernter Host nicht erreichbar!\nBitte überprüfen Sie ihre Netzwerkverbindung oder verbinden Sie sich zu einem anderen Server.";
 
 /* No comment provided by engineer. */
-/*"Removing track failed" = "Removing track failed";*/
+"Removing track failed" = "Lied konnte nicht entfernt werden";
 
 /* Default title of SimpleRepeatedViewController */
 "Repeated" = "Wiederholung";
@@ -463,7 +463,7 @@
 "Send" = "Senden";
 
 /* No comment provided by engineer. */
-/*"Sending command failed" = "Sending command failed";*/
+"Sending command failed" = "Befehl konnte nicht gesendet werden";
 
 /* No comment provided by engineer. */
 "Service" = "Sender";
@@ -496,13 +496,13 @@
 "Size" = "Größe";
 
 /* No comment provided by engineer. */
-/*"SNR" = "SNR";*/
+"SNR" = "SNR";
 
 /* No comment provided by engineer. */
 "Standby" = "Standby";
 
 /* No comment provided by engineer. */
-/*"Stop" = "Stop";*/
+"Stop" = "Stop";
 
 /* Weekday */
 "Sun" = "Son";
@@ -511,7 +511,7 @@
 "Sunday" = "Sonntag";
 
 /* No comment provided by engineer. */
-/*"SVDRP" = "SVDRP";*/
+"SVDRP" = "SVDRP";
 
 /* No comment provided by engineer. */
 "Tags" = "Tags";
@@ -553,7 +553,7 @@
 "Tuners" = "Tuner";
 
 /* TV switch button */
-/*"TV" = "TV";*/
+"TV" = "TV";
 
 /* No comment provided by engineer. */
 "Type" = "Typ";
@@ -562,10 +562,10 @@
 "Unable to connect to host.\nPlease restart the application." = "Konnte nicht zum Server verbinden.\nBitte starten Sie die Applikation neu.";
 
 /* No comment provided by engineer. */
-/*"Unable to map button to keycode!" = "Unable to map button to keycode!";*/
+"Unable to map button to keycode!" = "Konnte Taste keine Funktion zuweisen!";
 
 /* No comment provided by engineer. */
-/*"Unable to start playback" = "Unable to start playback";*/
+"Unable to start playback" = "Wiedergabe konnte nicht gestartet werden";
 
 /* No comment provided by engineer. */
 "Use SSL" = "SSL benutzen";
@@ -586,7 +586,7 @@
 "Waiting" = "Wartend";
 
 /* No comment provided by engineer. */
-/*"Warning" = "Warning";*/
+"Warning" = "Warnung";
 
 /* Weekday */
 "Wed" = "Mit";
@@ -598,7 +598,7 @@
 "Weekdays" = "Wochentags";
 
 /* No comment provided by engineer. */
-/*"Year" = "Year";*/
+"Year" = "Jahr";
 
 /* No comment provided by engineer. */
 "Yes/No" = "Ja/Nein";
@@ -607,7 +607,7 @@
 "Yesterday" = "Gestern";
 
 /* No comment provided by engineer. */
-/*"You have to enter connection details to use this application." = "You have to enter connection details to use this application.";*/
+"You have to enter connection details to use this application." = "Sie müssen Verbindungsdaten eingeben um dreaMote zu Nutzen.";
 
 /* No comment provided by engineer. */
 "You need to configure this application before you can use it." = "Sie müssen diese Anwendung konfigurieren bevor Sie diese nutzen können!";
