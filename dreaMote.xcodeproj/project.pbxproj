@@ -195,6 +195,7 @@
 		DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */; };
 		DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */; };
 		DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
+		DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
@@ -531,6 +532,8 @@
 		DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
 		DACA8B221096498300B03BE8 /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		DACA8B231096498300B03BE8 /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
+		DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerMetadataCell.h; sourceTree = "<group>"; };
+		DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerMetadataCell.m; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
@@ -1169,6 +1172,8 @@
 				DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */,
 				DA27136A0D84071100C25B85 /* EventTableViewCell.h */,
 				DA27136B0D84071100C25B85 /* EventTableViewCell.m */,
+				DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */,
+				DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */,
 				DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */,
 				DA5A04D00E379C500062F924 /* MovieTableViewCell.m */,
 				DA7FD6D40D84296500974B1A /* MainTableViewCell.h */,
@@ -1459,6 +1464,7 @@
 				DA12F88812DBB48E009FF8DD /* Metadata.m in Sources */,
 				DA12F89912DBB52B009FF8DD /* Metadata.m in Sources */,
 				DA12F8C512DBB7C5009FF8DD /* MetadataXMLReader.m in Sources */,
+				DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

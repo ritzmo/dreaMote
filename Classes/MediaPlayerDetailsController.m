@@ -10,7 +10,7 @@
 
 #import "Constants.h"
 #import "DisplayCell.h"
-#import "MainTableViewCell.h"
+#import "MediaPlayerMetadataCell.h"
 #import "RemoteConnectorObject.h"
 
 @interface MediaPlayerDetailsController()
@@ -113,7 +113,7 @@
 	_currentTrack = nil;
 	[_currentCover release];
 	_currentCover = nil;
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[_metadataXMLDoc release];
 	_metadataXMLDoc = nil;
@@ -126,7 +126,7 @@
 	NSData *imageData = [[RemoteConnectorObject sharedRemoteConnector] getFile:_currentTrack.coverpath];
 	[_currentCover release];
 	_currentCover = [[UIImage alloc] initWithData:imageData];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:1];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[pool release];
 }
@@ -163,7 +163,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 3;
+	return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -176,12 +176,6 @@
 				return NSLocalizedString(@"Now Playing", @"");
 			return nil;
 		case 1:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
-				&& [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesFileDownload]
-				&& _currentCover != nil)
-				return NSLocalizedString(@"Coverart", @"");
-			return nil;
-		case 2:
 			return NSLocalizedString(@"Controls", @"");
 		default:
 			return nil;
@@ -195,15 +189,9 @@
 		case 0:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
 				&& _currentTrack != nil)
-				return 5;
-			return 0;
-		case 1:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
-				&& [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesFileDownload]
-				&& _currentCover != nil)
 				return 1;
 			return 0;
-		case 2:
+		case 1:
 			return 4;
 		default:
 			return 0;
@@ -212,7 +200,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.section == 1) return 250;
+	if(indexPath.section == 0)
+		return kMetadataCellHeight;
 	return kUIRowHeight;
 }
 
@@ -224,59 +213,19 @@
 	{
 		case 0:
 		{
-			NSDictionary *dataDictionary = nil;
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
+			UIImageView *imageView = nil;
+			sourceCell = [tableView dequeueReusableCellWithIdentifier:kMetadataCell_ID];
 			if(sourceCell == nil)
-				sourceCell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+				sourceCell = [[[MediaPlayerMetadataCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMetadataCell_ID] autorelease];
 
-			switch(indexPath.row)
-			{
-				case 0:
-					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Title", @""), @"title",
-									  _currentTrack.title, @"explainText", nil];
-					break;
-				case 1:
-					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Artist", @""), @"title",
-									  _currentTrack.artist, @"explainText", nil];
-					break;
-				case 2:
-					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Album", @""), @"title",
-									  _currentTrack.album, @"explainText", nil];
-					break;
-				case 3:
-					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Year", @""), @"title",
-									  _currentTrack.year, @"explainText", nil];
-					break;
-				case 4:
-					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Genre", @""), @"title",
-									  _currentTrack.genre, @"explainText", nil];
-					break;
-				default: break;
-			}
-
-			((MainTableViewCell *)sourceCell).dataDictionary = dataDictionary;
-			sourceCell.accessoryType = UITableViewCellAccessoryNone;
-			break;
-		}
-		case 1:
-		{
-			UIImageView *imageView = [[UIImageView alloc] initWithImage: _currentCover];
-			imageView.frame = CGRectMake(0, 0, 250, 250);
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
-
-			((DisplayCell *)sourceCell).nameLabel.text = nil;
-			((DisplayCell *)sourceCell).view = imageView;
+			((MediaPlayerMetadataCell *)sourceCell).metadata = _currentTrack;
+			if(_currentCover)
+				imageView = [[UIImageView alloc] initWithImage:_currentCover];
+			((MediaPlayerMetadataCell *)sourceCell).coverart = imageView;
 			[imageView release];
 			break;
 		}
-		case 2:
+		case 1:
 		{
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(sourceCell == nil)
@@ -318,15 +267,15 @@
 	if(anItem == nil) return;
 	[_currentTrack release];
 	_currentTrack = [anItem retain];
-	NSMutableIndexSet *idxSet = [NSMutableIndexSet indexSetWithIndex:0];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 
-	if(!(_currentTrack.coverpath == nil || [_currentTrack.coverpath isEqualToString: @""]))
+	if(!(_currentTrack.coverpath == nil || [_currentTrack.coverpath isEqualToString: @""])
+	   && [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesFileDownload])
 		[NSThread detachNewThreadSelector:@selector(fetchCoverart) toTarget:self withObject:nil];
 	else
 	{
 		[_currentCover release];
 		_currentCover = nil;
-		[idxSet addIndex:1];
 	}
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }

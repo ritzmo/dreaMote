@@ -32,6 +32,8 @@
 #define kUIProgressBarWidth		160
 #define kUIProgressBarHeight	24
 #define kWideButtonWidth		220
+#define kMetadataDimensionPortrait	250
+#define kMetadataDimensionLandscape	150
 
 // specific font metrics used in our text fields and text views
 #define kFontName				@"Arial"
@@ -43,6 +45,7 @@
 #define kUIRowHeight			((IS_IPAD()) ? 55 : 50)
 #define kUIRowLabelHeight		22
 #define kServiceCellHeight		((IS_IPAD()) ? 53 : 48)
+#define kMetadataCellHeight		275
 
 // table view cell content offsets
 #define kCellLeftOffset			8
