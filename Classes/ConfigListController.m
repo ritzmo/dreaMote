@@ -260,9 +260,13 @@
 					break;
 				/* Vibration */
 				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
-					((DisplayCell *)sourceCell).view = _vibrateInRC;
-					break;
+					if(!IS_IPAD())
+					{
+						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
+						((DisplayCell *)sourceCell).view = _vibrateInRC;
+						break;
+					}
+					/* FALL THROUGH */
 				/* Connectivity check */
 				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Check Connectivity", @"");
@@ -294,7 +298,7 @@
 			return [_connections count] + 1;
 		return [_connections count];
 	}
-	return 3;
+	return (IS_IPAD()) ? 2 : 3;
 }
 
 /* section header */
