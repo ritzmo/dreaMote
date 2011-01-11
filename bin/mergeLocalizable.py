@@ -67,9 +67,11 @@ def updateLanguage(lang):
 				newtext[idx] = '/*"%s" = "%s";*/\n' % (key, value)
 
 		idx += 1
-	if translated and None:
+	if translated:
 		print "There are remaining strings:"
+		newtext.append("\n\n/* old strings */\n")
 		for key, value in translated.iteritems():
+			newtext.append('"%s" = "%s";\n' % (key, value))
 			print key, "=", value
 
 	# Save merged file
