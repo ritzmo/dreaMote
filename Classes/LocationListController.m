@@ -28,6 +28,9 @@
 		_isSplit = NO;
 		_movieListController = nil;
 		_delegate = nil;
+
+		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
+			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 450.0f);
 	}
 	return self;
 }

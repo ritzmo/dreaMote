@@ -47,6 +47,9 @@
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		_movieViewController = nil;
+
+		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
+			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 600.0f);
 	}
 	return self;
 }
