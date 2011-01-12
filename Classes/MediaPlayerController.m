@@ -245,12 +245,11 @@
 	_fileList.fileDelegate = self;
 
 	// frontend
-	// FIXME: wtf?!
-	frame = CGRectMake(0, 0, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height, self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
 	if(IS_IPAD())
-		frame = CGRectMake(0, 0, self.view.frame.size.width, frame.size.height * 4 / 5);
+		// FIXME: wtf?!
+		frame = CGRectMake(0, 0, self.view.frame.size.width, (self.view.frame.size.height - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height) * 4 / 5);
 	else
-		frame = CGRectMake(0, 0, self.view.frame.size.width, frame.size.height);
+		frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height * 7/8);
 	_playlist = [[FileListView alloc] initWithFrame:frame];
 	_playlist.fileDelegate = self;
 	_playlist.isPlaylist = YES;
@@ -262,8 +261,8 @@
 	}
 	else
 	{
-		_portraitControlsFrame = CGRectMake(0, 300, 320, 35);
-		_landscapeControlsFrame = CGRectMake(85, 170, 367, 35);
+		_portraitControlsFrame = CGRectMake(0, 320, 320, 35);
+		_landscapeControlsFrame = CGRectMake(85, 175, 367, 35);
 	}
 	_controls = [[UIView alloc] initWithFrame:_portraitControlsFrame];
 
