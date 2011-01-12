@@ -233,7 +233,9 @@
 		switch(section)
 		{
 			case 1:
-				return NSLocalizedString(@"Service", @"");
+				if([_movie.sname length])
+					return NSLocalizedString(@"Service", @"");
+				break;
 			case 2:
 				return NSLocalizedString(@"Size", @"");
 			case 3:
@@ -243,6 +245,7 @@
 			case 5:
 				if([_movie.length integerValue] != -1)
 					return NSLocalizedString(@"End", @"");
+				/* FALL THROUGH */
 			default:
 				return nil;
 		}
@@ -264,6 +267,10 @@
 		 */
 		switch(section)
 		{
+			case 1:
+				if(![_movie.sname length])
+					return 0;
+				return 1;
 			case 3:
 				count = [_movie.tags count];
 				if(!count)
@@ -304,8 +311,18 @@
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
-		if(section == 5 && [_movie.length integerValue] == -1)
-			return 0;
+		switch(section)
+		{
+			case 1:
+				if(![_movie.sname length])
+					return 0;
+				break;
+			case 5:
+				if([_movie.length integerValue] == -1)
+					return 0;
+				break;
+			default: break;
+		}
 		return 34;
 	}
 
@@ -325,8 +342,18 @@
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
-		if(section == 5 && [_movie.length integerValue] == -1)
-			return 0;
+		switch(section)
+		{
+			case 1:
+				if(![_movie.sname length])
+					return 0;
+				break;
+			case 5:
+				if([_movie.length integerValue] == -1)
+					return 0;
+				break;
+			default: break;
+		}
 		return kUIRowHeight;
 	}
 
