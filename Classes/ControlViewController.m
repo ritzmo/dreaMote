@@ -267,13 +267,11 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// FIXME: this is kinda hackish
 	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
-	@try {
-		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
-	}
-	@catch (NSException * e) {
-		//
+	if([cell respondsToSelector: @selector(view)]
+	   && [((DisplayCell *)cell).view respondsToSelector:@selector(sendActionsForControlEvents:)])
+	{
+		[(UIButton *)((DisplayCell *)cell).view sendActionsForControlEvents: UIControlEventTouchUpInside];
 	}
 	return nil;
 }

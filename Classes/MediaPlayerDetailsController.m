@@ -150,13 +150,11 @@
 {
 	if(indexPath.section != 2) return nil;
 
-	// FIXME: this is kinda hackish
 	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
-	@try {
-		[((UIControl *)((DisplayCell *)cell).view) sendActionsForControlEvents: UIControlEventTouchUpInside];
-	}
-	@catch (NSException * e) {
-		//
+	if([cell respondsToSelector: @selector(view)]
+	   && [((DisplayCell *)cell).view respondsToSelector:@selector(sendActionsForControlEvents:)])
+	{
+		[(UIButton *)((DisplayCell *)cell).view sendActionsForControlEvents: UIControlEventTouchUpInside];
 	}
 	return nil;
 }
