@@ -62,6 +62,11 @@
  */
 @property (nonatomic, retain) IBOutlet MovieListController *movieListController;
 
+/*!
+ @breif View will reapper.
+ */
+@property (nonatomic) BOOL willReappear;
+
 @end
 
 

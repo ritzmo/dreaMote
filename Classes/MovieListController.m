@@ -100,6 +100,18 @@
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
+/* getter of willReapper */
+- (BOOL)willReappear
+{
+	return !_refreshMovies;
+}
+
+/* setter of willReapper */
+- (void)setWillReappear:(BOOL)new
+{
+	if([_movies count]) _refreshMovies = !new;
+}
+
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {

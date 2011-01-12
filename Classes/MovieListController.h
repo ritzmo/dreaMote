@@ -55,4 +55,9 @@
  */
 @property (nonatomic, retain) MovieViewController *movieViewController;
 
+/*!
+ @breif View will reapper.
+ */
+@property (nonatomic) BOOL willReappear;
+
 @end

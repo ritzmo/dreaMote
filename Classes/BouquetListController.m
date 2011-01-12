@@ -48,6 +48,18 @@
 	[super dealloc];
 }
 
+/* getter of willReapper */
+- (BOOL)willReappear
+{
+	return !_refreshBouquets;
+}
+
+/* setter of willReapper */
+- (void)setWillReappear:(BOOL)new
+{
+	if([_bouquets count]) _refreshBouquets = !new;
+}
+
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {

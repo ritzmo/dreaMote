@@ -62,4 +62,9 @@
  */
 @property (nonatomic, retain) IBOutlet ServiceListController *serviceListController;
 
+/*!
+ @breif View will reapper.
+ */
+@property (nonatomic) BOOL willReappear;
+
 @end

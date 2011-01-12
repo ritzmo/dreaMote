@@ -55,6 +55,18 @@
 	[super didReceiveMemoryWarning];
 }
 
+/* getter of willReapper */
+- (BOOL)willReappear
+{
+	return !_refreshLocations;
+}
+
+/* setter of willReapper */
+- (void)setWillReappear:(BOOL)new
+{
+	if([_locations count]) _refreshLocations = !new;
+}
+
 /* layout */
 - (void)loadView
 {
