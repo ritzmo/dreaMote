@@ -14,7 +14,7 @@
 #import "Constants.h"
 
 #define kTransitionDuration	(CGFloat)0.6
-#define kImageScale			((IS_IPAD()) ? (CGFloat)1.0 : (CGFloat)0.45)
+#define kImageScale			((IS_IPAD()) ? (CGFloat)1.1 : (CGFloat)0.45)
 
 @interface RCEmulatorController()
 /*!
@@ -181,15 +181,16 @@
 
 	// size up the _toolbar and set its frame
 	[_toolbar sizeToFit];
-	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	const CGFloat toolbarOrigin = -1;
+	const CGFloat toolbarHeight = _toolbar.frame.size.height;
 	_toolbar.frame = CGRectMake(0,
-								-1,
+								toolbarOrigin,
 								mainViewSize.width,
-								_toolbarHeight);
+								toolbarHeight);
 	[self.view addSubview:_toolbar];
 
 	// ImageView for Screenshots
-	frame = CGRectMake(0, _toolbarHeight, mainViewSize.width, mainViewSize.height - _toolbarHeight - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
+	frame = CGRectMake(0, toolbarOrigin + toolbarHeight, mainViewSize.width, mainViewSize.height - toolbarHeight - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
 	_screenView = [[UIView alloc] initWithFrame: frame];
 
 	frame.origin.y = 0;
@@ -379,10 +380,11 @@
 	// adjust size of _screenView, _toolbar & _scrollView
 	CGSize mainViewSize = self.view.bounds.size;
 	[_toolbar sizeToFit];
-	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	const CGFloat toolbarOrigin = -1;
+	const CGFloat toolbarHeight = _toolbar.frame.size.height;
 	const CGFloat width = mainViewSize.width;
-	_toolbar.frame = CGRectMake(0, -1, width, _toolbarHeight);
-	_screenView.frame = CGRectMake(0, _toolbarHeight, width, mainViewSize.height - _toolbarHeight);
+	_toolbar.frame = CGRectMake(0, toolbarOrigin, width, toolbarHeight);
+	_screenView.frame = CGRectMake(0, toolbarOrigin + toolbarHeight, width, mainViewSize.height - toolbarHeight);
 	_scrollView.frame = CGRectMake(0, 0, width, mainViewSize.height);
 
 	// FIXME: we load a new image as I'm currently unable to figure out how to readjust the old one
