@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class ConfigListController;
+
 /*!
  @brief Other Items
  
@@ -21,6 +23,7 @@
 @private
 	UIViewController *_aboutDreamoteViewController; /*!< @brief Cached About View. */
 	NSDictionary *_aboutDictionary; /*!< @brief Dictionary describing About (Receiver) Item. */
+	ConfigListController *_configListController; /*!< @brief Config List. */
 	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */
 	NSDictionary *_locationsDictionary; /*!< @brief Dictionary describing Locations List Item. */
@@ -32,5 +35,10 @@
  @brief Table View.
  */
 @property (nonatomic, retain) UITableView *myTableView;
+
+/*!
+ @brief Config List.
+ */
+@property (nonatomic, retain) IBOutlet ConfigListController *configListController;
 
 @end

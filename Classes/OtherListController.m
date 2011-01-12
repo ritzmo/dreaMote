@@ -39,6 +39,7 @@
 
 @implementation OtherListController
 
+@synthesize configListController = _configListController;
 @synthesize myTableView;
 
 - (id)init
@@ -46,6 +47,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"More", @"Title of OtherListController");
+		_configListController = nil;
 	}
 	return self;
 }
@@ -55,6 +57,7 @@
 	[myTableView release];
 	[menuList release];
 	[_aboutDreamoteViewController release];
+	[_configListController release];
 	[_eventSearchDictionary release];
 	[_mediaPlayerDictionary release];
 	[_locationsDictionary release];
@@ -93,14 +96,14 @@
 						targetViewController, @"viewController",
 						nil] retain];
 	[targetViewController release];
-	
-	targetViewController = [[ConfigListController alloc] init];
+
+	if(!_configListController)
+		_configListController = [[ConfigListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Config List Title", @""), @"title",
 						 NSLocalizedString(@"Config List Explain", @""), @"explainText",
-						 targetViewController, @"viewController",
+						 _configListController, @"viewController",
 						 nil]];
-	[targetViewController release];
 
 	targetViewController = [[EventSearchListController alloc] init];
 	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:

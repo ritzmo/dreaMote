@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class OtherListController;
+
 /*!
  @brief Main View.
  
@@ -25,7 +27,7 @@
 	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
 	UIViewController *_mediaplayerController; /*!< @brief "MediaPlayer" Tab on iPad. */
 	UIViewController *_movieController; /*!< @brief "Movies" Tab on iPad. */
-	UIViewController *_otherController;  /*!< @brief "Other" Tab. */
+	OtherListController *_otherController;  /*!< @brief "Other" Tab. */
 	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */
 	UIViewController *_serviceController; /*!< @brief Service List Tab. */
 	UIViewController *_timerController;  /*!< @brief Timer Tab. */

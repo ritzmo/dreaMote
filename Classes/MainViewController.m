@@ -17,6 +17,7 @@
 #import "TimerSplitViewController.h"
 
 #import "BouquetListController.h"
+#import "ConfigListController.h"
 #import "ConfigViewController.h"
 #import "CurrentViewController.h"
 #import "OtherListController.h"
@@ -243,6 +244,15 @@
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
+
+		self.selectedIndex = [menuList count] - 1;
+		if(!_otherController.configListController)
+		{
+			ConfigListController *configListController = [[ConfigListController alloc] init];
+			_otherController.configListController = configListController;
+			[configListController release];
+		}
+		[_otherController.navigationController pushViewController: (UIViewController *)_otherController.configListController animated: YES];
 		return NO;
 	}
 	return YES;
