@@ -190,7 +190,7 @@
 	[self.view addSubview:_toolbar];
 
 	// ImageView for Screenshots
-	frame = CGRectMake(0, toolbarOrigin + toolbarHeight, mainViewSize.width, mainViewSize.height - toolbarHeight - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
+	frame = CGRectMake(0, toolbarOrigin + toolbarHeight, mainViewSize.width, mainViewSize.height - (toolbarOrigin + toolbarHeight) - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
 	_screenView = [[UIView alloc] initWithFrame: frame];
 
 	frame.origin.y = 0;
@@ -270,6 +270,7 @@
 
 		_imageView.image = image;
 		_scrollView.contentSize = size;
+		_scrollView.zoomScale = 1.0f;
 		_imageView.frame = CGRectMake(0, 0, size.width, size.height);
 	}
 
@@ -378,14 +379,16 @@
 	//[UIView setAnimationDuration: kTransitionDuration];
 
 	// adjust size of _screenView, _toolbar & _scrollView
-	CGSize mainViewSize = self.view.bounds.size;
+	CGRect frame = self.view.frame;
 	[_toolbar sizeToFit];
 	const CGFloat toolbarOrigin = -1;
 	const CGFloat toolbarHeight = _toolbar.frame.size.height;
-	const CGFloat width = mainViewSize.width;
+	const CGFloat width = frame.size.width;
 	_toolbar.frame = CGRectMake(0, toolbarOrigin, width, toolbarHeight);
-	_screenView.frame = CGRectMake(0, toolbarOrigin + toolbarHeight, width, mainViewSize.height - toolbarHeight);
-	_scrollView.frame = CGRectMake(0, 0, width, mainViewSize.height);
+	frame = CGRectMake(0, toolbarOrigin + toolbarHeight, width, frame.size.height - (toolbarOrigin + toolbarHeight));
+	_screenView.frame = frame;
+	frame.origin.y = 0;
+	_scrollView.frame = frame;
 
 	// FIXME: we load a new image as I'm currently unable to figure out how to readjust the old one
 	if(_screenView.superview)
