@@ -39,6 +39,6 @@
 /*!
  @brief Config List.
  */
-@property (nonatomic, retain) IBOutlet ConfigListController *configListController;
+@property (nonatomic, readonly) ConfigListController *configListController;
 
 @end

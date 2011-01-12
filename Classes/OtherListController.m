@@ -39,7 +39,6 @@
 
 @implementation OtherListController
 
-@synthesize configListController = _configListController;
 @synthesize myTableView;
 
 - (id)init
@@ -79,6 +78,14 @@
     [super didReceiveMemoryWarning];
 }
 
+/* getter of (readonly) configListController property */
+- (ConfigListController *)configListController
+{
+	if(!_configListController)
+		_configListController = [[ConfigListController alloc] init];
+	return _configListController;
+}
+
 - (void)viewDidLoad
 {
 	menuList = [[NSMutableArray alloc] init];
@@ -97,12 +104,10 @@
 						nil] retain];
 	[targetViewController release];
 
-	if(!_configListController)
-		_configListController = [[ConfigListController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Config List Title", @""), @"title",
 						 NSLocalizedString(@"Config List Explain", @""), @"explainText",
-						 _configListController, @"viewController",
+						 self.configListController, @"viewController",
 						 nil]];
 
 	targetViewController = [[EventSearchListController alloc] init];
@@ -313,6 +318,33 @@
 
 	if(reload)
 		[myTableView reloadData];
+}
+
+/* view did appear */
+- (void)viewDidAppear:(BOOL)animated
+{
+	// check if we should be in config right now
+	if([[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]
+	   && ![[RemoteConnectorObject sharedRemoteConnector] isReachable])
+	{
+		UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"Remote host unreachable!\nPlease check your network settings or connect to another host.", @"")
+									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+
+		// config list already open, (eventually) go back to it and abort
+		if([[self.navigationController viewControllers] containsObject: _configListController])
+		{
+			[self.navigationController popToViewController:(UIViewController *)_configListController animated:YES];
+		}
+		// push config list
+		else
+		{
+			[self.navigationController pushViewController:(UIViewController *)_configListController animated:YES];
+		}
+	}
 }
 
 #pragma mark UITableView delegates

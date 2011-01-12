@@ -176,7 +176,7 @@
 
 	if(IS_IPAD())
 	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
 		{
 			if(![menuList containsObject: _mediaplayerController])
 			{
@@ -229,8 +229,10 @@
 
 		ConfigViewController *targetViewController = [ConfigViewController newConnection];
 		targetViewController.mustSave = YES;
-		self.selectedIndex = [menuList count] - 1;
+		self.selectedViewController = [menuList lastObject];
 		[_otherController.navigationController pushViewController: targetViewController animated: YES];
+		[self.selectedViewController viewWillAppear:YES];
+		[self.selectedViewController viewDidAppear:YES];
 		[targetViewController release];
 		return NO;
 	}
@@ -245,14 +247,19 @@
 		[notification show];
 		[notification release];
 
-		self.selectedIndex = [menuList count] - 1;
-		if(!_otherController.configListController)
+		self.selectedViewController = [menuList lastObject];
+		// config list already open, (eventually) go back to it and abort
+		if([[_otherController.navigationController viewControllers] containsObject: _otherController.configListController])
 		{
-			ConfigListController *configListController = [[ConfigListController alloc] init];
-			_otherController.configListController = configListController;
-			[configListController release];
+			[_otherController.navigationController popToViewController:(UIViewController *)_otherController.configListController animated:YES];
 		}
-		[_otherController.navigationController pushViewController: (UIViewController *)_otherController.configListController animated: YES];
+		// push config list
+		else
+		{
+			[_otherController.navigationController pushViewController:(UIViewController *)_otherController.configListController animated:YES];
+			[self.selectedViewController viewWillAppear:YES];
+			[self.selectedViewController viewDidAppear:YES];
+		}
 		return NO;
 	}
 	return YES;
@@ -281,14 +288,17 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
+	[self.selectedViewController viewWillDisappear:YES];
+	[self.selectedViewController viewDidDisappear:YES];
+
 	if(![self checkConnection])
 	{
-		self.selectedIndex = [menuList count] - 1;
+		self.selectedViewController = [menuList lastObject];
+		[self.selectedViewController viewWillAppear:YES];
+		[self.selectedViewController viewDidAppear:YES];
 		return NO;
 	}
 
-	[self.selectedViewController viewWillDisappear:YES];
-	[self.selectedViewController viewDidDisappear:YES];
 	return YES;
 }
 
