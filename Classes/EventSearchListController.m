@@ -20,7 +20,20 @@
 
 #define kTransitionDuration	0.6
 
+@interface EventSearchListController()
+/*!
+ @brief Show search history.
+ 
+ @param sender Sender of this action.
+ */
+- (IBAction)showHistory:(id)sender;
+
+@property (nonatomic, retain) UIPopoverController *popoverController;
+@end
+
 @implementation EventSearchListController
+
+@synthesize popoverController;
 
 /* initialize */
 - (id)init
@@ -41,9 +54,28 @@
 	[super dealloc];
 }
 
+/* getter of searchHistory */
+- (SearchHistoryListController *)searchHistory
+{
+	if(!_searchHistory)
+	{
+		_searchHistory = [[SearchHistoryListController alloc] init];
+		_searchHistory.historyDelegate = self;
+	}
+	return _searchHistory;
+}
+
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
+	// if on iphone and history is not visible, release it
+	if(!IS_IPAD() && _searchHistory
+		&& ![self.navigationController.visibleViewController isEqual:_searchHistory])
+	{
+		[_searchHistory saveHistory];
+		[_searchHistory release];
+		_searchHistory = nil;
+	}
     [super didReceiveMemoryWarning];
 }
 
@@ -77,6 +109,33 @@
 	[contentView addSubview: _tableView];
 
 	[contentView release];
+
+	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(showHistory:)];
+	self.navigationItem.rightBarButtonItem = barButtonItem;
+	[barButtonItem release];
+}
+
+- (IBAction)showHistory:(id)sender
+{
+	if(IS_IPAD())
+	{
+		// hide popover if already visible
+		if([popoverController isPopoverVisible])
+		{
+			[popoverController dismissPopoverAnimated:YES];
+			self.popoverController = nil;
+			return;
+		}
+
+		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
+		[popoverController presentPopoverFromBarButtonItem:sender
+									permittedArrowDirections:UIPopoverArrowDirectionUp
+									animated:YES];
+	}
+	else
+	{
+		[self.navigationController pushViewController:self.searchHistory animated:YES];
+	}
 }
 
 /* fetch event list */
@@ -87,9 +146,41 @@
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
+	[self.searchHistory prepend:title];
 	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPG: self title: title] retain];
 	[pool release];
 }
+
+#pragma mark -
+#pragma mark SearchHistoryListViewDelegate methods
+#pragma mark -
+
+/* set text in search bar */
+- (void)startSearch:(NSString *)text
+{
+	// set search text
+	NSString *textCopy = [text copy];
+	_searchBar.text = textCopy;
+	[textCopy release];
+
+	// initiate search
+	[self searchBarSearchButtonClicked:nil];
+
+	// hide history
+	if(IS_IPAD())
+	{
+		[self.popoverController dismissPopoverAnimated: YES];
+		self.popoverController = nil;
+	}
+	else
+	{
+		[self.navigationController popToViewController:self animated:YES];
+	}
+}
+
+#pragma mark -
+#pragma mark EventSourceDelegate methods
+#pragma mark -
 
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
@@ -154,6 +245,17 @@
 	return indexPath;
 }
 
+#pragma mark -
+#pragma mark UIPopoverControllerDelegate methods
+#pragma mark -
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)pc
+{
+	// cleanup memory
+	if([pc isEqual:self.popoverController])
+		self.popoverController = nil;
+}
+
 #pragma mark UISearchBarDelegate delegate methods
 
 /* called when keyboard search button pressed */
@@ -197,6 +299,18 @@
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
 	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
+}
+
+/* about to disappear */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[_searchHistory saveHistory];
+	if(!IS_IPAD())
+	{
+		[_searchHistory release];
+		_searchHistory = nil;
+	}
+	[super viewWillDisappear:animated];
 }
 
 @end

@@ -35,6 +35,7 @@
 		DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AD0F0CBEDB004B488C /* Timer.m */; };
 		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
 		DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA114AD60F0EA77100CB94AE /* Bouquet.m */; };
+		DA117E3712DF4C2B00796389 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */; };
 		DA12F67512DB970A009FF8DD /* MediaPlayerDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */; };
 		DA12F68312DBA0B1009FF8DD /* MediaPlayerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F68212DBA0B1009FF8DD /* MediaPlayerSplitViewController.m */; };
 		DA12F6AD12DBA43F009FF8DD /* PlayListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F6AC12DBA43F009FF8DD /* PlayListController.m */; };
@@ -272,6 +273,8 @@
 		DA0FA5750EB1D189009A1898 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = Other/about.html; sourceTree = "<group>"; };
 		DA114AD50F0EA77100CB94AE /* Bouquet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bouquet.h; sourceTree = "<group>"; };
 		DA114AD60F0EA77100CB94AE /* Bouquet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bouquet.m; sourceTree = "<group>"; };
+		DA117E3512DF4C2B00796389 /* SearchHistoryListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchHistoryListController.h; sourceTree = "<group>"; };
+		DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchHistoryListController.m; sourceTree = "<group>"; };
 		DA12F67312DB970A009FF8DD /* MediaPlayerDetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerDetailsController.h; sourceTree = "<group>"; };
 		DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerDetailsController.m; sourceTree = "<group>"; };
 		DA12F68112DBA0B1009FF8DD /* MediaPlayerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerSplitViewController.h; sourceTree = "<group>"; };
@@ -1151,6 +1154,8 @@
 				DA12F6AC12DBA43F009FF8DD /* PlayListController.m */,
 				DA497EAB12D67E6000B26B83 /* ReloadableListController.h */,
 				DA497EAC12D67E6000B26B83 /* ReloadableListController.m */,
+				DA117E3512DF4C2B00796389 /* SearchHistoryListController.h */,
+				DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DA7FD7540D84307700974B1A /* TimerListController.h */,
@@ -1465,6 +1470,7 @@
 				DA12F89912DBB52B009FF8DD /* Metadata.m in Sources */,
 				DA12F8C512DBB7C5009FF8DD /* MetadataXMLReader.m in Sources */,
 				DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */,
+				DA117E3712DF4C2B00796389 /* SearchHistoryListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
