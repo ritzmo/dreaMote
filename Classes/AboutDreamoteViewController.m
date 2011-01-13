@@ -25,6 +25,9 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"About", @"Title of AboutDreamoteViewController");
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
 	}
 
 	return self;
@@ -94,6 +97,18 @@
 	// accept any portrait orientation
 	return (interfaceOrientation == UIInterfaceOrientationPortrait)
 		|| (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+}
+
+/* view about to appear */
+-(void)viewWillAppear:(BOOL)animated
+{
+	if(IS_IPAD())
+	{
+		// we have to fix this up on ipad
+		const CGSize size = self.view.bounds.size;
+		CGRect frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
+		_doneButton.frame = frame;
+	}
 }
 
 #pragma mark - UIWebView delegates
