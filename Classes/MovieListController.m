@@ -279,10 +279,7 @@
 
 	if(!_isSplit)
 	{
-		if(IS_IPAD())
-			[self.navigationController presentModalViewController:_movieViewController animated:YES];
-		else
-			[self.navigationController pushViewController: _movieViewController animated: YES];
+		[self.navigationController pushViewController: _movieViewController animated: YES];
 	}
 
 	_refreshMovies = NO;
