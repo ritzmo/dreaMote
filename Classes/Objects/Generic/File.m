@@ -16,10 +16,24 @@
 @synthesize root = _root;
 @synthesize valid = _valid;
 
+- (id)initWithFile:(NSObject <FileProtocol>*)file
+{
+	if((self = [super init]))
+	{
+		_sref = [file.sref copy];
+		_title = [file.title copy];
+		_isDirectory = file.isDirectory;
+		_root = [file.root copy];
+		_valid = file.valid;
+	}
+	return self;
+}
+
 - (void)dealloc
 {
-	[_sref release];
 	[_root release];
+	[_sref release];
+	[_title release];
 
 	[super dealloc];
 }
@@ -27,6 +41,16 @@
 - (BOOL)isValid
 {
 	return _valid;
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[[self class] alloc] initWithFile: self];
+	return newElement;
 }
 
 @end

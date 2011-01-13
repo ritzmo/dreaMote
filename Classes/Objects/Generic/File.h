@@ -22,4 +22,13 @@
 	BOOL _valid; /*!< @brief Valid file? */
 }
 
+/*!
+ @brief Init with existing fie.
+ 
+ @note Required to create a copy.
+ @param file File to copy.
+ @return File instance.
+ */
+- (id)initWithFile: (NSObject<FileProtocol> *)file;
+
 @end

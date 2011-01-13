@@ -109,4 +109,14 @@
 	[super dealloc];
 }
 
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[GenericFile alloc] initWithFile: self];
+	return newElement;
+}
+
 @end
