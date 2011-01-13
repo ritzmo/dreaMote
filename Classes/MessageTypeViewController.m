@@ -22,6 +22,12 @@
 	{
 		self.title = NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController");
 		_delegate = nil;
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }
@@ -104,6 +110,11 @@
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
 	_selectedItem = indexPath.row;
+
+	if(IS_IPAD())
+	{
+		[self dismissModalViewControllerAnimated:YES];
+	}
 }
 
 /* set delegate */

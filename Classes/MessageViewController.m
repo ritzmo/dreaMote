@@ -422,7 +422,10 @@
 	{
 		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
 		[targetViewController setDelegate: self];
-		[self.navigationController pushViewController: targetViewController animated: YES];
+		if(IS_IPAD())
+			[self.navigationController presentModalViewController:targetViewController animated:YES];
+		else
+			[self.navigationController pushViewController: targetViewController animated: YES];
 	}
 	else if(section == 4)
 	{

@@ -23,6 +23,12 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"After Event", @"Default title of AfterEventViewController");
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }
@@ -130,6 +136,11 @@
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	
 	_selectedItem = indexPath.row;
+
+	if(IS_IPAD())
+	{
+		[self dismissModalViewControllerAnimated:YES];
+	}
 }
 
 /* set delegate */

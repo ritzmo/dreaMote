@@ -31,6 +31,12 @@
 		self.title = NSLocalizedString(@"Connector", @"Default title of ConnectorViewController");
 		_selectedItem = kInvalidConnector;
 		_delegate = nil;
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }

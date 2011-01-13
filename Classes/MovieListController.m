@@ -49,7 +49,11 @@
 		_movieViewController = nil;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
+		{
 			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 600.0f);
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }
@@ -274,7 +278,12 @@
 	_movieViewController.movie = movie;
 
 	if(!_isSplit)
-		[self.navigationController pushViewController: _movieViewController animated: YES];
+	{
+		if(IS_IPAD())
+			[self.navigationController presentModalViewController:_movieViewController animated:YES];
+		else
+			[self.navigationController pushViewController: _movieViewController animated: YES];
+	}
 
 	_refreshMovies = NO;
 

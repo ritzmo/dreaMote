@@ -30,7 +30,11 @@
 		_delegate = nil;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
+		{
 			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 450.0f);
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }
@@ -206,7 +210,11 @@
 	else if(_delegate != nil)
 	{
 		[_delegate performSelector:@selector(locationSelected:) withObject: location];
-		[self.navigationController popToViewController: (UIViewController *)_delegate animated: YES];
+
+		if(IS_IPAD())
+			[self.navigationController dismissModalViewControllerAnimated:YES];
+		else
+			[self.navigationController popToViewController: (UIViewController *)_delegate animated: YES];
 	}
 	// Open movie list
 	else

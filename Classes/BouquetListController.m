@@ -32,7 +32,11 @@
 		_delegate = nil;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
+		{
 			self.contentSizeForViewInPopover = CGSizeMake(320.0f, 600.0f);
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }

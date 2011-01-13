@@ -38,6 +38,12 @@
 		_eventListController = nil;
 		_isRadio = NO;
 		_delegate = nil;
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }
@@ -298,7 +304,10 @@
 	else if(_delegate != nil)
 	{
 		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
-		[self.navigationController popToViewController: _delegate animated: YES];
+		if(IS_IPAD())
+			[self.navigationController dismissModalViewControllerAnimated:YES];
+		else
+			[self.navigationController popToViewController: _delegate animated: YES];
 	}
 	// Load events
 	else

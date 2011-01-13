@@ -9,6 +9,7 @@
 #import "TimerViewController.h"
 
 #import "BouquetListController.h"
+#import "ServiceListController.h"
 #import "DatePickerController.h"
 
 #import "RemoteConnectorObject.h"
@@ -38,6 +39,12 @@
  */
 - (void)cancelEdit:(id)sender;
 @property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, readonly) UIViewController *bouquetListController;
+@property (nonatomic, readonly) DatePickerController *datePickerController;
+@property (nonatomic, readonly) UIViewController *datePickerNavigationController;
+@property (nonatomic, readonly) UIViewController *locationListController;
+@property (nonatomic, readonly) UIViewController *simpleRepeatedViewController;
+
 @end
 
 @implementation TimerViewController
@@ -131,6 +138,7 @@
 	[_bouquetListController release];
 	[_afterEventViewController release];
 	[_datePickerController release];
+	[_datePickerNavigationController release];
 	[_simpleRepeatedViewController release];
 
 	[super dealloc];
@@ -141,14 +149,117 @@
 	[_bouquetListController release];
 	[_afterEventViewController release];
 	[_datePickerController release];
+	[_datePickerNavigationController release];
 	[_simpleRepeatedViewController release];
 	
 	_bouquetListController = nil;
 	_afterEventViewController = nil;
 	_datePickerController = nil;
+	_datePickerNavigationController = nil;
 	_simpleRepeatedViewController = nil;
 	
 	[super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+#pragma mark Properties
+#pragma mark -
+
+- (UIViewController *)bouquetListController
+{
+	if(_bouquetListController == nil)
+	{
+		UIViewController *rootViewController = nil;
+		const BOOL isSingleBouquet =
+		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+		&& (
+			[RemoteConnectorObject isSingleBouquet] ||
+			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+
+		if(isSingleBouquet)
+		{
+			rootViewController = [[ServiceListController alloc] init];
+			[(ServiceListController *)rootViewController setDelegate: self];
+		}
+		else
+		{
+			rootViewController = [[BouquetListController alloc] init];
+			[(BouquetListController *)rootViewController setDelegate: self];
+		}
+
+		if(IS_IPAD())
+		{
+			_bouquetListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+
+			[rootViewController release];
+		}
+		else
+			_bouquetListController = rootViewController;
+	}
+	return _bouquetListController;
+}
+
+- (DatePickerController *)datePickerController
+{
+	if(_datePickerController == nil)
+	{
+		_datePickerController = [[DatePickerController alloc] init];
+		if(IS_IPAD())
+		{
+			_datePickerNavigationController = [[UINavigationController alloc] initWithRootViewController:_datePickerController];
+			_datePickerNavigationController.modalPresentationStyle = _datePickerController.modalPresentationStyle;
+			_datePickerNavigationController.modalTransitionStyle = _datePickerController.modalTransitionStyle;
+		}
+	}
+	return _datePickerController;
+}
+
+- (UIViewController *)datePickerNavigationController
+{
+	if(IS_IPAD())
+		return _datePickerNavigationController;
+	return _datePickerController;
+}
+
+- (UIViewController *)locationListController
+{
+	if(_locationListController == nil)
+	{
+		LocationListController *rootViewController = [[LocationListController alloc] init];
+		[rootViewController setDelegate: self];
+
+		if(IS_IPAD())
+		{
+			_locationListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+			_locationListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+			_locationListController.modalTransitionStyle = rootViewController.modalTransitionStyle;
+		}
+		else
+			_locationListController = rootViewController;
+	}
+	return _locationListController;
+}
+
+- (UIViewController *)simpleRepeatedViewController
+{
+	if(_simpleRepeatedViewController == nil)
+	{
+		SimpleRepeatedViewController *rootViewController = [[SimpleRepeatedViewController alloc] init];
+		rootViewController.repeated = _timer.repeated;
+		[rootViewController setDelegate: self];
+
+		if(IS_IPAD())
+		{
+			_simpleRepeatedViewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+			_simpleRepeatedViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+			_simpleRepeatedViewController.modalTransitionStyle = rootViewController.modalTransitionStyle;
+		}
+		else
+			_simpleRepeatedViewController = rootViewController;
+	}
+	return _simpleRepeatedViewController;
 }
 
 - (NSObject<TimerProtocol> *)timer
@@ -203,6 +314,10 @@
 	[self setEditing: newValue animated: YES];
 }
 
+#pragma mark -
+#pragma mark Helper methods
+#pragma mark -
+
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	// Date Formatter
@@ -253,6 +368,10 @@
 	return returnTextField;
 }
 
+#pragma mark -
+#pragma mark UView
+#pragma mark -
+
 - (void)loadView
 {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -297,6 +416,10 @@
 	_shouldSave = NO;
 	[self setEditing: _creatingNewTimer];
 }
+
+#pragma mark -
+#pragma mark UIViewController
+#pragma mark -
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
@@ -432,6 +555,10 @@
 {
 	return YES;
 }
+
+#pragma mark -
+#pragma mark DatePickerController callbacks
+#pragma mark -
 
 - (void)beginSelected: (NSDate *)newDate
 {
@@ -761,29 +888,24 @@
 
 		if(section == 3)
 		{
-			if(_bouquetListController == nil)
-				_bouquetListController = [[BouquetListController alloc] init];
-			[_bouquetListController setDelegate: self];
-
-			targetViewController = _bouquetListController;
+			// property takes care of overly complex initialization
+			targetViewController = self.bouquetListController;
 		}
 		else if(section == 4)
 		{
-			if(_datePickerController == nil)
-				_datePickerController = [[DatePickerController alloc] init];
- 			_datePickerController.date = [_timer.begin copy];
-			[_datePickerController setTarget: self action: @selector(beginSelected:)];
+			// property takes care of initialization (including navigation controller)
+			self.datePickerController.date = [_timer.begin copy];
+			[self.datePickerController setTarget: self action: @selector(beginSelected:)];
 
-			targetViewController = _datePickerController;
+			targetViewController = self.datePickerNavigationController;
 		}
 		else if(section == 5)
 		{
-			if(_datePickerController == nil)
-				_datePickerController = [[DatePickerController alloc] init];
- 			_datePickerController.date = [_timer.end copy];
-			[_datePickerController setTarget: self action: @selector(endSelected:)];
+			// property takes care of initialization (including navigation controller)
+			self.datePickerController.date = [_timer.end copy];
+			[self.datePickerController setTarget: self action: @selector(endSelected:)];
 
-			targetViewController = _datePickerController;
+			targetViewController = self.datePickerNavigationController;
 		}
 		else if(section == 6)
 		{
@@ -799,25 +921,21 @@
 		}
 		else if(section == 7)
 		{
-			if(_simpleRepeatedViewController == nil)
-				_simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
-			_simpleRepeatedViewController.repeated = _timer.repeated;
-			[_simpleRepeatedViewController setDelegate: self];
-			
-			targetViewController = _simpleRepeatedViewController;
+			// property takes care of initialization
+			targetViewController = self.simpleRepeatedViewController;
 		}
 		else if(section == 8)
 		{
-			if(_locationListController == nil)
-				_locationListController = [[LocationListController alloc] init];
-			[_locationListController setDelegate: self];
-
-			targetViewController = _locationListController;
+			// property takes care of initialization
+			targetViewController = self.locationListController;
 		}
 		else
 			return nil;
 
-		[self.navigationController pushViewController: targetViewController animated: YES];
+		if(IS_IPAD())
+			[self.navigationController presentModalViewController:targetViewController animated:YES];
+		else
+			[self.navigationController pushViewController: targetViewController animated: YES];
 	}
 
 	// We don't want any actual response :-)
@@ -916,11 +1034,13 @@
 	[_bouquetListController release];
 	[_afterEventViewController release];
 	[_datePickerController release];
+	[_datePickerNavigationController release];
 	[_simpleRepeatedViewController release];
 	
 	_bouquetListController = nil;
 	_afterEventViewController = nil;
 	_datePickerController = nil;
+	_datePickerNavigationController = nil;
 	_simpleRepeatedViewController = nil;
 }
 

@@ -41,6 +41,12 @@
 		_format = [[NSDateFormatter alloc] init];
 		[_format setDateStyle:NSDateFormatterFullStyle];
 		[_format setTimeStyle:NSDateFormatterShortStyle];
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	
 	return self;
@@ -55,9 +61,19 @@
 	return [datePickerController autorelease];
 }
 
+- (void)setDate:(NSDate *)new
+{
+	if([_date isEqual:new]) return;
+
+	[_date release];
+	_date = [new retain];
+
+	_datePickerView.date = _date;
+}
+
 /* layout */
 - (void)loadView
-{		
+{
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.backgroundColor = [UIColor blackColor];
@@ -105,7 +121,10 @@
 		[_selectTarget performSelector:(SEL)_selectCallback withObject: [_datePickerView date]];
 	}
 
-	[self.navigationController popViewControllerAnimated: YES];
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated: YES];
 }
 
 /* dealloc */

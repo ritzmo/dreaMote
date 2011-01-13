@@ -12,6 +12,10 @@
 
 #import "TimerProtocol.h"
 
+@interface SimpleRepeatedViewController()
+- (IBAction)doneAction:(id)sender;
+@end
+
 @implementation SimpleRepeatedViewController
 
 @synthesize repeated = _repeated;
@@ -22,6 +26,12 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Repeated", @"Default title of SimpleRepeatedViewController");
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	return self;
 }
@@ -56,11 +66,24 @@
 
 	self.view = tableView;
 	[tableView release];
+
+	if(IS_IPAD())
+	{
+		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
+		self.navigationItem.rightBarButtonItem = barButtonItem;
+		[barButtonItem release];
+	}
 }
 
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+/* done editing */
+- (IBAction)doneAction:(id)sender
+{
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark - UITableView delegates

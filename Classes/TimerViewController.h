@@ -19,7 +19,6 @@
 #import "SimpleRepeatedViewController.h" /* SimpleRepeatedDelegate */
 
 // Forward declarations...
-@class BouquetListController;
 @class DatePickerController;
 
 /*!
@@ -59,10 +58,11 @@
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
 
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
-	BouquetListController *_bouquetListController; /*!< @brief Cached Bouquet List. */
+	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
+	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
-	LocationListController *_locationListController; /*!< @brief Cached Location List. */
-	SimpleRepeatedViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
+	UIViewController *_locationListController; /*!< @brief Cached Location List. */
+	UIViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
 }
 
 /*!

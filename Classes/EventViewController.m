@@ -36,6 +36,12 @@
 		_similarEvents = [[NSMutableArray array] retain];
 		_isSearch = NO;
 		_eventXMLDoc = nil;
+
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+		{
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		}
 	}
 	
 	return self;
