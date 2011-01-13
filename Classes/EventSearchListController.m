@@ -128,9 +128,25 @@
 		}
 
 		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
-		[popoverController presentPopoverFromBarButtonItem:sender
-									permittedArrowDirections:UIPopoverArrowDirectionUp
-									animated:YES];
+		/*!
+		 @note In case I want to bind this to the search bar at some point in the future,
+		 but currently I prefer it bound to an extra button.
+		 */
+#if 0
+		if([sender isEqual:_searchBar])
+		{
+			[popoverController presentPopoverFromRect:_searchBar.frame
+										inView:_searchBar
+										permittedArrowDirections:UIPopoverArrowDirectionUp
+										animated:YES];
+		}
+		else
+#endif
+		{
+			[popoverController presentPopoverFromBarButtonItem:sender
+										permittedArrowDirections:UIPopoverArrowDirectionUp
+										animated:YES];
+		}
 	}
 	else
 	{
@@ -259,9 +275,9 @@
 #pragma mark UISearchBarDelegate delegate methods
 
 /* called when keyboard search button pressed */
-- (void)searchBarSearchButtonClicked:(UISearchBar *)callingSearchBar
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-	[_searchBar resignFirstResponder];
+	[searchBar resignFirstResponder];
 
 	[_events removeAllObjects];
 	[_tableView reloadData];
@@ -274,9 +290,9 @@
 }
 
 /* called when cancel button pressed */
-- (void)searchBarCancelButtonClicked:(UISearchBar *)callingSearchBar
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-	[_searchBar resignFirstResponder];
+	[searchBar resignFirstResponder];
 }
 
 /* rotation finished */
