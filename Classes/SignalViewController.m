@@ -125,6 +125,7 @@
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_snr.backgroundColor = [UIColor clearColor];
+	_snr.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
 	_snr.minimumValue = 0;
 	_snr.maximumValue = 100;
@@ -136,6 +137,7 @@
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_agc.backgroundColor = [UIColor clearColor];
+	_agc.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
 	_agc.minimumValue = 0;
 	_agc.maximumValue = 100;
