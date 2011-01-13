@@ -10,6 +10,7 @@
 
 #import "EventSourceDelegate.h" /* EventSourceDelegate */
 #import "FileListView.h" /* FileListDelegate */
+#import "RecursiveFileAdder.h" /* RecursiveFileAdderDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
 
 
@@ -17,10 +18,15 @@
  @brief Media Player Controller.
  */
 @interface MediaPlayerController : UIViewController <FileListDelegate, EventSourceDelegate,
-													ServiceSourceDelegate>
+													RecursiveFileAdderDelegate,
+													ServiceSourceDelegate, UIActionSheetDelegate>
 {
 @private
-	UIPopoverController *popoverController;
+	UIPopoverController *popoverController; /*!< @brief Current Popover Controller. */
+	UIActivityIndicatorView *activityIndicatorView; /*!< @brief Activity indicator view (for recursive add to playlist). */
+	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
+	BOOL _adding; /*!< @brief Adding tracks to playlist. */
+	BOOL _massAdd; /*!< @brief Performing a mass-add operation. */
 	NSTimer *_timer; /*!< @brief Refresh timer. */
 	UIView *_controls; /*!< @brief Media Player controls. */
 	

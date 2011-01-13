@@ -36,6 +36,7 @@
 		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
 		DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA114AD60F0EA77100CB94AE /* Bouquet.m */; };
 		DA117E3712DF4C2B00796389 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */; };
+		DA11820112DFAEEC00796389 /* RecursiveFileAdder.m in Sources */ = {isa = PBXBuildFile; fileRef = DA11820012DFAEEC00796389 /* RecursiveFileAdder.m */; };
 		DA12F67512DB970A009FF8DD /* MediaPlayerDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */; };
 		DA12F68312DBA0B1009FF8DD /* MediaPlayerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F68212DBA0B1009FF8DD /* MediaPlayerSplitViewController.m */; };
 		DA12F6AD12DBA43F009FF8DD /* PlayListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F6AC12DBA43F009FF8DD /* PlayListController.m */; };
@@ -275,6 +276,8 @@
 		DA114AD60F0EA77100CB94AE /* Bouquet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bouquet.m; sourceTree = "<group>"; };
 		DA117E3512DF4C2B00796389 /* SearchHistoryListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchHistoryListController.h; sourceTree = "<group>"; };
 		DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchHistoryListController.m; sourceTree = "<group>"; };
+		DA1181FF12DFAEEC00796389 /* RecursiveFileAdder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecursiveFileAdder.h; sourceTree = "<group>"; };
+		DA11820012DFAEEC00796389 /* RecursiveFileAdder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecursiveFileAdder.m; sourceTree = "<group>"; };
 		DA12F67312DB970A009FF8DD /* MediaPlayerDetailsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerDetailsController.h; sourceTree = "<group>"; };
 		DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerDetailsController.m; sourceTree = "<group>"; };
 		DA12F68112DBA0B1009FF8DD /* MediaPlayerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerSplitViewController.h; sourceTree = "<group>"; };
@@ -606,6 +609,8 @@
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
 				DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */,
 				DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */,
+				DA1181FF12DFAEEC00796389 /* RecursiveFileAdder.h */,
+				DA11820012DFAEEC00796389 /* RecursiveFileAdder.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -1471,6 +1476,7 @@
 				DA12F8C512DBB7C5009FF8DD /* MetadataXMLReader.m in Sources */,
 				DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */,
 				DA117E3712DF4C2B00796389 /* SearchHistoryListController.m in Sources */,
+				DA11820112DFAEEC00796389 /* RecursiveFileAdder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -165,6 +165,21 @@
 	[self deleteRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
 }
 
+/* get list of files */
+- (void)getFiles
+{
+	if(_isPlaylist) return;
+
+	for(NSObject<FileProtocol> *file in _files)
+	{
+		// file is no directory, just add
+		if(!file.isDirectory)
+		{
+			[_fileDelegate fileListView:self fileSelected:file];
+		}
+	}
+}
+
 #pragma mark	-
 #pragma mark	UITableView delegate methods
 #pragma mark	-

@@ -31,6 +31,12 @@
 }
 
 /*!
+ @brief Get list of files in this folder.
+ Uses the normal fileSelected callback for indication.
+ */
+- (void)getFiles;
+
+/*!
  @brief Redownload data and refresh contents.
  */
 - (void)refreshData;

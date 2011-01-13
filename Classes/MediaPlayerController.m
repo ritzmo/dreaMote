@@ -7,8 +7,11 @@
 //
 
 #import "MediaPlayerController.h"
-#import "RemoteConnectorObject.h"
+
 #import "Constants.h"
+#import "RecursiveFileAdder.h"
+#import "RemoteConnectorObject.h"
+
 #import "Result.h"
 #import "RCButton.h"
 #import "FileListView.h"
@@ -20,22 +23,35 @@
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 - (void)fetchCurrent;
 - (void)fetchCurrentDefer;
+- (IBAction)addFolderQuestion:(id)sender;
+- (IBAction)toggleAddPlay:(id)sender;
+/*!
+ @brief Assign toolbar elements.
+ */
+- (void)configureToolbar;
 
 /*!
  @brief Popover Controller.
  */
 @property (nonatomic, retain) UIPopoverController *popoverController;
+
+/*!
+ @brief Activity Indicator.
+ */
+@property (nonatomic, retain) UIActivityIndicatorView *activityIndicatorView;
 @end
 
 @implementation MediaPlayerController
 
-@synthesize popoverController;
+@synthesize activityIndicatorView, popoverController;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"MediaPlayer", @"Title of MediaPlayerController");
+		_adding = YES;
+		_massAdd = NO;
 	}
 
 	return self;
@@ -43,11 +59,13 @@
 
 - (void)dealloc
 {
+	[_addPlayToggle release];
 	[_fileList release];
 	[_playlist release];
 	[_controls release];
 	[_timer release];
 	[_currentXMLDoc release];
+	[activityIndicatorView release];
 
 	[super dealloc];
 }
@@ -143,10 +161,12 @@
 	if ([_fileList superview])
 	{
 		[_fileList removeFromSuperview];
+		[self.navigationController setToolbarHidden:YES animated:YES];
 	}
 	else
 	{
 		[self.view addSubview: _fileList];
+		[self.navigationController setToolbarHidden:NO animated:YES];
 	}
 
 	[UIView commitAnimations];
@@ -185,6 +205,122 @@
 	[UIView commitAnimations];
 }
 
+- (void)configureToolbar
+{
+	// "Add Folder" Button
+	const UIBarButtonItem *addFolderItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Folder", @"")
+																	style:UIBarButtonItemStyleBordered
+																	target:self
+																	action:@selector(addFolderQuestion:)];
+
+	// flex item used to separate the left groups items and right grouped items
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+
+	// create a bordered style button with custom title
+	[_addPlayToggle release];
+	_addPlayToggle = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Adding to Playlist", @"")
+																	style:UIBarButtonItemStyleBordered
+																	target:self
+																	action:@selector(toggleAddPlay:)];
+
+	[self setToolbarItems:[NSArray arrayWithObjects:addFolderItem, flexItem, _addPlayToggle, nil] animated:NO];
+
+	[addFolderItem release];
+	[flexItem release];
+}
+
+- (IBAction)addFolderQuestion:(id)sender
+{
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:
+							NSLocalizedString(@"Really add all items in this folder?", @"")
+							delegate: self
+							cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+							destructiveButtonTitle:NSLocalizedString(@"Add recursively", @"")
+							otherButtonTitles: NSLocalizedString(@"Add", @""), nil];
+	[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	[actionSheet release];
+}
+
+- (IBAction)toggleAddPlay:(id)sender
+{
+	_adding = !_adding;
+	if(_adding)
+		_addPlayToggle.title = NSLocalizedString(@"Adding to Playlist", @"");
+	else
+		_addPlayToggle.title = NSLocalizedString(@"Playing immediately", @"");
+}
+
+- (void)addCurrentFolder
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	_massAdd = YES;
+	[_fileList getFiles];
+	_massAdd = NO;
+
+	[_playlist refreshData];
+	[activityIndicatorView stopAnimating];
+	[activityIndicatorView removeFromSuperview];
+	self.view.userInteractionEnabled = YES;
+	self.activityIndicatorView = nil;
+
+	[pool release];
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else // destructive or other
+	{
+		const BOOL recursive = (buttonIndex == actionSheet.destructiveButtonIndex);
+		activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+		activityIndicatorView.frame = CGRectMake(0, 0, 40, 40);
+		activityIndicatorView.center = self.view.center;
+		[self.view addSubview: activityIndicatorView];
+		self.view.userInteractionEnabled = NO;
+		[activityIndicatorView startAnimating];
+
+		if(recursive)
+		{
+			RecursiveFileAdder *rfa = [[RecursiveFileAdder alloc] initWithPath:_fileList.path];
+			[rfa addFilesToDelegate:self];
+			[rfa release];
+		}
+		else
+		{
+			[NSThread detachNewThreadSelector:@selector(addCurrentFolder) toTarget:self withObject:nil];
+		}
+	}
+}
+
+#pragma mark -
+#pragma mark RecursiveFileAdderDelegate methods
+#pragma mark -
+
+- (void)recursiveFileAdder:(RecursiveFileAdder *)rfa addFile:(NSObject<FileProtocol> *)file
+{
+	[[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:NO];
+}
+
+- (void)recursiveFileAdderDoneAddingFiles:(RecursiveFileAdder *)rfa
+{
+	[_playlist refreshData];
+
+	[activityIndicatorView stopAnimating];
+	[activityIndicatorView removeFromSuperview];
+	self.view.userInteractionEnabled = YES;
+	self.activityIndicatorView = nil;
+}
+
 #pragma mark -
 #pragma mark UIViewController
 #pragma mark -
@@ -193,6 +329,10 @@
 {
 	[_playlist refreshData];
 	[self placeControls:self.interfaceOrientation duration:0];
+
+	[self configureToolbar]; // need to know nav before doing this, so unable to do this in loadView
+	if([_fileList superview])
+		[self.navigationController setToolbarHidden:NO animated:YES];
 
 	// FIXME: interval should be configurable
 	_timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
@@ -207,6 +347,8 @@
 {
 	[_timer invalidate];
 	_timer = nil;
+	// NOTE: animating this does only hide the items, not the bar…
+	[self.navigationController setToolbarHidden:YES animated:NO];
 
 	[super viewWillDisappear:animated];
 }
@@ -302,6 +444,7 @@
 	[self.view addSubview: _controls];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	[self configureToolbar];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -363,10 +506,12 @@
 	// filelist
 	else
 	{
-		Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:NO];
+		const BOOL startPlayback = (_massAdd) ? NO : !_adding;
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:startPlayback];
 		if(result.result)
 		{
-			[_playlist refreshData];
+			if(!_massAdd)
+				[_playlist refreshData];
 		}
 		else
 		{
