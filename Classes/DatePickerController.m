@@ -69,6 +69,7 @@
 	_date = [new retain];
 
 	_datePickerView.date = _date;
+	_label.text = [_format stringFromDate: _date];
 }
 
 /* layout */
