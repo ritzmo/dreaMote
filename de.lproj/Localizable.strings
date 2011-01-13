@@ -239,6 +239,9 @@
 /* No comment provided by engineer. */
 "Harddisk" = "Festplatte";
 
+/* Title of SearchHistoryListController */
+"History" = "Verlauf";
+
 /* No comment provided by engineer. */
 "Image Version" = "Image Version";
 
@@ -452,6 +455,9 @@
 
 /* No comment provided by engineer. */
 "Saturday" = "Samstag";
+
+/* No comment provided by engineer. */
+"Screenshot" = "Screenshot";
 
 /* Default Title of EventSearchListController */
 "Search Events" = "Suchen";
