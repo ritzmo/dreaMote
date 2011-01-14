@@ -88,15 +88,12 @@
 	[self.parentViewController dismissModalViewControllerAnimated: YES];
 }
 
-/* rotate to portrait orientation only */
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	// allow all orientations on ipad
+/* rotate with device on ipad, otherwise to portrait */
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
 	if(IS_IPAD())
 		return YES;
-
-	// accept any portrait orientation
-	return (interfaceOrientation == UIInterfaceOrientationPortrait)
-		|| (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 /* view about to appear */
