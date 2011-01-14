@@ -103,3 +103,6 @@ according to the Creative Commons Attribution-ShareAlike 3.0 Unported license.
 Any file below the Classes/EGOTableViewPullRefresh and
 Images/EGOTableViewPullRefresh folders is part of enormego's "Pull to Refresh"
 UI extension and licensed under the MIT license.
+
+Any file below the MBProgressHUD folder is part of MBProgressHUD by
+Matej Bukovinski and licensed under the MIT license.
