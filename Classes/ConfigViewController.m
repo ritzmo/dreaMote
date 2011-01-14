@@ -248,7 +248,7 @@
 	_singleBouquetSwitch.backgroundColor = [UIColor clearColor];
 	_advancedRemoteSwitch.backgroundColor = [UIColor clearColor];
 
-	[self setEditing: (_connectionIndex == -1) animated: NO];
+	[self setEditing:YES animated:NO];
 }
 
 /* (un)set editing */
