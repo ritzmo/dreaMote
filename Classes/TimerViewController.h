@@ -57,12 +57,14 @@
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
 
+	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
 	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
 	UIViewController *_locationListController; /*!< @brief Cached Location List. */
-	UIViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
+	UIViewController *_simpleRepeatedNavigationController; /*!< @brief Navigation Controller of _simpleRepeatedViewController */
+	SimpleRepeatedViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
 }
 
 /*!

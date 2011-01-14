@@ -39,11 +39,14 @@
  */
 - (void)cancelEdit:(id)sender;
 @property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
+@property (nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (nonatomic, readonly) UIViewController *bouquetListController;
 @property (nonatomic, readonly) DatePickerController *datePickerController;
 @property (nonatomic, readonly) UIViewController *datePickerNavigationController;
 @property (nonatomic, readonly) UIViewController *locationListController;
-@property (nonatomic, readonly) UIViewController *simpleRepeatedViewController;
+@property (nonatomic, readonly) SimpleRepeatedViewController *simpleRepeatedViewController;
+@property (nonatomic, readonly) UIViewController *simpleRepeatedNavigationController;
 
 @end
 
@@ -135,10 +138,13 @@
 	[_popoverButtonItem release];
 	[popoverController release];
 
-	[_bouquetListController release];
+	[_afterEventNavigationController release];
 	[_afterEventViewController release];
+	[_bouquetListController release];
 	[_datePickerController release];
 	[_datePickerNavigationController release];
+	[_locationListController release];
+	[_simpleRepeatedNavigationController release];
 	[_simpleRepeatedViewController release];
 
 	[super dealloc];
@@ -146,16 +152,22 @@
 
 - (void)didReceiveMemoryWarning
 {
-	[_bouquetListController release];
+	[_afterEventNavigationController release];
 	[_afterEventViewController release];
+	[_bouquetListController release];
 	[_datePickerController release];
 	[_datePickerNavigationController release];
+	[_locationListController release];
+	[_simpleRepeatedNavigationController release];
 	[_simpleRepeatedViewController release];
 	
-	_bouquetListController = nil;
+	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
+	_bouquetListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
+	_locationListController = nil;
+	_simpleRepeatedNavigationController = nil;
 	_simpleRepeatedViewController = nil;
 	
 	[super didReceiveMemoryWarning];
@@ -164,6 +176,31 @@
 #pragma mark -
 #pragma mark Properties
 #pragma mark -
+
+- (UIViewController *)afterEventNavigationController
+{
+	if(IS_IPAD())
+	{
+		if(_afterEventNavigationController == nil)
+		{
+			_afterEventNavigationController = [[UINavigationController alloc] initWithRootViewController:self.afterEventViewController];
+			_afterEventNavigationController.modalPresentationStyle = _afterEventViewController.modalPresentationStyle;
+			_afterEventNavigationController.modalTransitionStyle = _afterEventViewController.modalTransitionStyle;
+		}
+		return _afterEventNavigationController;
+	}
+	return _afterEventViewController;
+}
+
+- (AfterEventViewController *)afterEventViewController
+{
+	if(_afterEventViewController == nil)
+	{
+		_afterEventViewController = [[AfterEventViewController alloc] init];
+		[_afterEventViewController setDelegate: self];
+	}
+	return _afterEventViewController;
+}
 
 - (UIViewController *)bouquetListController
 {
@@ -199,25 +236,25 @@
 	return _bouquetListController;
 }
 
-- (DatePickerController *)datePickerController
+- (UIViewController *)datePickerNavigationController
 {
-	if(_datePickerController == nil)
+	if(IS_IPAD())
 	{
-		_datePickerController = [[DatePickerController alloc] init];
-		if(IS_IPAD())
+		if(_datePickerNavigationController == nil)
 		{
-			_datePickerNavigationController = [[UINavigationController alloc] initWithRootViewController:_datePickerController];
+			_datePickerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.datePickerController];
 			_datePickerNavigationController.modalPresentationStyle = _datePickerController.modalPresentationStyle;
 			_datePickerNavigationController.modalTransitionStyle = _datePickerController.modalTransitionStyle;
 		}
+		return _datePickerNavigationController;
 	}
 	return _datePickerController;
 }
 
-- (UIViewController *)datePickerNavigationController
+- (DatePickerController *)datePickerController
 {
-	if(IS_IPAD())
-		return _datePickerNavigationController;
+	if(_datePickerController == nil)
+		_datePickerController = [[DatePickerController alloc] init];
 	return _datePickerController;
 }
 
@@ -240,22 +277,27 @@
 	return _locationListController;
 }
 
-- (UIViewController *)simpleRepeatedViewController
+- (UIViewController *)simpleRepeatedNavigationController
+{
+	if(IS_IPAD())
+	{
+		if(_simpleRepeatedNavigationController == nil)
+		{
+			_simpleRepeatedNavigationController = [[UINavigationController alloc] initWithRootViewController:self.simpleRepeatedViewController];
+			_simpleRepeatedNavigationController.modalPresentationStyle = _simpleRepeatedViewController.modalPresentationStyle;
+			_simpleRepeatedNavigationController.modalTransitionStyle = _simpleRepeatedViewController.modalTransitionStyle;
+		}
+		return _simpleRepeatedNavigationController;
+	}
+	return _simpleRepeatedViewController;
+}
+
+- (SimpleRepeatedViewController *)simpleRepeatedViewController
 {
 	if(_simpleRepeatedViewController == nil)
 	{
-		SimpleRepeatedViewController *rootViewController = [[SimpleRepeatedViewController alloc] init];
-		rootViewController.repeated = _timer.repeated;
-		[rootViewController setDelegate: self];
-
-		if(IS_IPAD())
-		{
-			_simpleRepeatedViewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-			_simpleRepeatedViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-			_simpleRepeatedViewController.modalTransitionStyle = rootViewController.modalTransitionStyle;
-		}
-		else
-			_simpleRepeatedViewController = rootViewController;
+		_simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
+		[_simpleRepeatedViewController setDelegate: self];
 	}
 	return _simpleRepeatedViewController;
 }
@@ -907,20 +949,18 @@
 		}
 		else if(section == 6)
 		{
-			if(_afterEventViewController == nil)
-				_afterEventViewController = [[AfterEventViewController alloc] init];
-			_afterEventViewController.selectedItem = _timer.afterevent;
+			self.afterEventViewController.selectedItem = _timer.afterevent;
 			// FIXME: why gives directly assigning this an error?
 			const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
-			_afterEventViewController.showAuto = showAuto;
-			[_afterEventViewController setDelegate: self];
+			self.afterEventViewController.showAuto = showAuto;
 
-			targetViewController = _afterEventViewController;
+			targetViewController = self.afterEventNavigationController;
 		}
 		else if(section == 7)
 		{
 			// property takes care of initialization
-			targetViewController = self.simpleRepeatedViewController;
+			self.simpleRepeatedViewController.repeated = _timer.repeated;
+			targetViewController = self.simpleRepeatedNavigationController;
 		}
 		else if(section == 8)
 		{
@@ -1029,16 +1069,22 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[_bouquetListController release];
+	[_afterEventNavigationController release];
 	[_afterEventViewController release];
+	[_bouquetListController release];
 	[_datePickerController release];
 	[_datePickerNavigationController release];
+	[_locationListController release];
+	[_simpleRepeatedNavigationController release];
 	[_simpleRepeatedViewController release];
-	
-	_bouquetListController = nil;
+
+	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
+	_bouquetListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
+	_locationListController = nil;
+	_simpleRepeatedNavigationController = nil;
 	_simpleRepeatedViewController = nil;
 }
 
