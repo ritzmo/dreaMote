@@ -351,7 +351,7 @@
 
 	_shouldSave = NO;
 	_creatingNewTimer = newValue;
-	[self setEditing: newValue animated: YES];
+	[self setEditing:YES animated:YES];
 }
 
 #pragma mark -
@@ -494,14 +494,13 @@
 	if(editing)
 	{
 		/*!
-		 @note don't show cancel button for new timers on ipad, very confusing since
-		 view is opened in editing mode and therefore the popover button might not be seen
-		 and since no harm can be done by not saving a new timer this is unnecessary.
-		 however it is still shown for old timers to indicate that the changes won't be applied.
-		 also an existing timer has to be selected by the user so he should know what got
-		 him in the situation and be able to find the popover button again.
+		 @note don't show cancel button on ipad, it should be clear that unless you confirm
+		 the changes through the "done" button they are not applied. on the iphone however
+		 we might be deeper into the navigation stack and therefore have a back button there
+		 that we prefer to override. the ipad either has no button or the popover button
+		 which we'd rather keep.
 		 */
-		if(_creatingNewTimer && IS_IPAD())
+		if(IS_IPAD())
 			self.navigationItem.leftBarButtonItem = _popoverButtonItem;
 		else
 			self.navigationItem.leftBarButtonItem = _cancelButtonItem;
