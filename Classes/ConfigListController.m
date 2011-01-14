@@ -27,6 +27,9 @@
  @return UITableViewCell instance
  */
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section;
+- (void)connectionTestChanged:(id)sender;
+- (void)simpleRemoteChanged:(id)sender;
+- (void)vibrationChanged:(id)sender;
 @end
 
 @implementation ConfigListController
@@ -38,7 +41,6 @@
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
-		_shouldSave = NO;
 		_viewWillReapper = NO;
 	}
 	return self;
@@ -74,26 +76,26 @@
 	// RC Vibration
 	_vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	[_vibrateInRC addTarget:self action:@selector(vibrationChanged:) forControlEvents:UIControlEventValueChanged];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_vibrateInRC.backgroundColor = [UIColor clearColor];
-	_vibrateInRC.enabled = NO;
 
 	// Connectivity test
 	_connectionTest = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
-	
+	[_connectionTest addTarget:self action:@selector(connectionTestChanged:) forControlEvents:UIControlEventValueChanged];
+
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_connectionTest.backgroundColor = [UIColor clearColor];
-	_connectionTest.enabled = NO;
-	
+
 	// Simple remote
 	_simpleRemote = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
+	[_simpleRemote addTarget:self action:@selector(simpleRemoteChanged:) forControlEvents:UIControlEventValueChanged];
 	
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_simpleRemote.backgroundColor = [UIColor clearColor];
-	_simpleRemote.enabled = NO;
 
 	// add edit button
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -103,11 +105,10 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
-	[(UITableView*)self.view setEditing: editing animated: animated];
 
-	_vibrateInRC.enabled = editing;
+	/*_vibrateInRC.enabled = editing;
 	_connectionTest.enabled = editing;
-	_simpleRemote.enabled = editing;
+	_simpleRemote.enabled = editing;*/
 
 	// Animate if requested
 	if(animated)
@@ -125,23 +126,29 @@
 							withRowAnimation: UITableViewRowAnimationFade];
 		}
 	}
-
-	// Save if supposed to
-	if(!editing && _shouldSave)
+	else
 	{
-		[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
-		[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
-		[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
-
-		// we need to post a notification in case the rc emulator was changed...
-		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+		[(UITableView*)self.view reloadData];
 	}
+	[(UITableView*)self.view setEditing: editing animated: animated];
+}
 
-	// If we did not save this time we are supposed to save if this is opened again
-	_shouldSave = YES;
+- (void)connectionTestChanged:(id)sender
+{
+	[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
+}
 
-	// Make sure the UITableView notices the changes we made
-	[(UITableView*)self.view reloadData];
+- (void)simpleRemoteChanged:(id)sender
+{
+	[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
+
+	// we need to post a notification so the main view reloads the rc
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+}
+
+- (void)vibrationChanged:(id)sender
+{
+	[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
 }
 
 #pragma mark	-
@@ -383,7 +390,11 @@
 {
 	// Fix defaults
 	if(!_viewWillReapper)
+	{
+		[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
+		[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
 		[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	}
 
 	// Assume we won't reappear, will be fixed if we actually do so
 	_viewWillReapper = NO;
@@ -401,7 +412,6 @@
 	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this won't reset the editButtonItem
 	if(self.editing && !_viewWillReapper)
 	{
-		_shouldSave = NO;
 		[self setEditing: NO animated: YES];
 	}
 }
