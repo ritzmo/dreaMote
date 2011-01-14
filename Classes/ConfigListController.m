@@ -348,13 +348,13 @@
 		{
 			[stdDefaults setObject: [NSNumber numberWithInteger: 0] forKey: kActiveConnection];
 			[RemoteConnectorObject disconnect];
-			[(UITableView *)self.view reloadData];
+			[tableView reloadData];
 		}
 		// connected is removed
 		if(currentConnected == index && currentConnected != currentDefault)
 		{
 			[RemoteConnectorObject disconnect];
-			[(UITableView *)self.view reloadData];
+			[tableView reloadData];
 		}
 
 		// Remove item
