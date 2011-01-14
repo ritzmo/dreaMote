@@ -12,10 +12,11 @@
 #import "RecursiveFileAdder.h"
 #import "RemoteConnectorObject.h"
 
-#import "Result.h"
-#import "RCButton.h"
 #import "FileListView.h"
 #import "FileProtocol.h"
+#import "MBProgressHUD.h"
+#import "Result.h"
+#import "RCButton.h"
 
 #define kTransitionDuration	(CGFloat)0.6
 
@@ -39,12 +40,12 @@
 /*!
  @brief Activity Indicator.
  */
-@property (nonatomic, retain) UIActivityIndicatorView *activityIndicatorView;
+@property (nonatomic, retain) MBProgressHUD *progressHUD;
 @end
 
 @implementation MediaPlayerController
 
-@synthesize activityIndicatorView, popoverController;
+@synthesize popoverController, progressHUD;
 
 - (id)init
 {
@@ -66,7 +67,7 @@
 	[_controls release];
 	[_timer release];
 	[_currentXMLDoc release];
-	[activityIndicatorView release];
+	[progressHUD release];
 
 	[super dealloc];
 }
@@ -96,8 +97,8 @@
 - (void)fetchAbout
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_currentXMLDoc release];
 	@try {
+		[_currentXMLDoc release];
 		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getAbout: self] retain];
 	}
 	@catch (NSException * e) {
@@ -109,8 +110,8 @@
 - (void)fetchCurrent
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_currentXMLDoc release];
 	@try {
+		[_currentXMLDoc release];
 		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
 	}
 	@catch (NSException * e) {
@@ -285,12 +286,17 @@
 	_massAdd = NO;
 
 	[_playlist refreshData];
-	[activityIndicatorView stopAnimating];
-	[activityIndicatorView removeFromSuperview];
-	self.view.userInteractionEnabled = YES;
-	self.activityIndicatorView = nil;
-
 	[pool release];
+}
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate
+#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[progressHUD removeFromSuperview];
+	self.progressHUD = nil;
 }
 
 #pragma mark -
@@ -306,22 +312,21 @@
 	else // destructive or other
 	{
 		const BOOL recursive = (buttonIndex == actionSheet.destructiveButtonIndex);
-		activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		activityIndicatorView.frame = CGRectMake(0, 0, 40, 40);
-		activityIndicatorView.center = self.view.center;
-		[self.view addSubview: activityIndicatorView];
-		self.view.userInteractionEnabled = NO;
-		[activityIndicatorView startAnimating];
+		progressHUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
+		[self.tabBarController.view addSubview: progressHUD];
+		progressHUD.delegate = self;
 
 		if(recursive)
 		{
 			RecursiveFileAdder *rfa = [[RecursiveFileAdder alloc] initWithPath:_fileList.path];
 			[rfa addFilesToDelegate:self];
+			[progressHUD show:YES];
+			progressHUD.taskInProgress = YES;
 			[rfa release];
 		}
 		else
 		{
-			[NSThread detachNewThreadSelector:@selector(addCurrentFolder) toTarget:self withObject:nil];
+			[progressHUD showWhileExecuting:@selector(addCurrentFolder) onTarget:self withObject:nil animated:YES];
 		}
 	}
 }
@@ -339,10 +344,8 @@
 {
 	[_playlist refreshData];
 
-	[activityIndicatorView stopAnimating];
-	[activityIndicatorView removeFromSuperview];
-	self.view.userInteractionEnabled = YES;
-	self.activityIndicatorView = nil;
+	progressHUD.taskInProgress = NO;
+	[progressHUD hide:YES];
 }
 
 #pragma mark -

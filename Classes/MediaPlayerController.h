@@ -11,8 +11,10 @@
 #import "AboutSourceDelegate.h" /* AboutSourceDelegate */
 #import "EventSourceDelegate.h" /* EventSourceDelegate */
 #import "FileListView.h" /* FileListDelegate */
+#import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 #import "RecursiveFileAdder.h" /* RecursiveFileAdderDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
+
 
 /*!
  @brief Ways to retrieve currently playing track.
@@ -37,12 +39,12 @@ enum retrieveCurrentUsing {
  */
 @interface MediaPlayerController : UIViewController <FileListDelegate, EventSourceDelegate,
 													RecursiveFileAdderDelegate,
-													AboutSourceDelegate,
+													AboutSourceDelegate, MBProgressHUDDelegate,
 													ServiceSourceDelegate, UIActionSheetDelegate>
 {
 @private
 	UIPopoverController *popoverController; /*!< @brief Current Popover Controller. */
-	UIActivityIndicatorView *activityIndicatorView; /*!< @brief Activity indicator view (for recursive add to playlist). */
+	MBProgressHUD *progressHUD; /*!< @brief Activity view (for mass add to playlist). */
 	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
 	BOOL _adding; /*!< @brief Adding tracks to playlist. */
 	BOOL _massAdd; /*!< @brief Performing a mass-add operation. */
