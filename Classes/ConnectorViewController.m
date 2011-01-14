@@ -81,7 +81,10 @@
 - (void)doAutodetect: (id)sender
 {
 	_selectedItem = kInvalidConnector;
-	[self.navigationController popViewControllerAnimated: YES];
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated: YES];
 }
 
 /* rotate with device */
@@ -152,6 +155,9 @@
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
 	_selectedItem = indexPath.row;
+
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
 }
 
 /* set delegate */

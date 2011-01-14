@@ -696,7 +696,18 @@
 	{
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
 		[targetViewController setDelegate: self];
-		[self.navigationController pushViewController: targetViewController animated: YES];
+		if(IS_IPAD())
+		{
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
+			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
+			navController.modalTransitionStyle = targetViewController.modalTransitionStyle;
+			[self.navigationController presentModalViewController:navController animated:YES];
+			[navController release];
+		}
+		else
+		{
+			[self.navigationController pushViewController: targetViewController animated: YES];
+		}
 	}
 	else if(indexPath.section == 3)
 	{
