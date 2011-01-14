@@ -143,7 +143,6 @@
 		DA6CF01112D4D38D00F1F52D /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCA12D4D38D00F1F52D /* network-wired.png */; };
 		DA6CF01212D4D38D00F1F52D /* others.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCB12D4D38D00F1F52D /* others.png */; };
 		DA6CF01312D4D38D00F1F52D /* preferences-desktop-screensaver.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCC12D4D38D00F1F52D /* preferences-desktop-screensaver.png */; };
-		DA6CF01412D4D38D00F1F52D /* preferences-system.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCD12D4D38D00F1F52D /* preferences-system.png */; };
 		DA6CF01512D4D38D00F1F52D /* remote.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCE12D4D38D00F1F52D /* remote.png */; };
 		DA6CF01612D4D38D00F1F52D /* system-shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFCF12D4D38D00F1F52D /* system-shutdown.png */; };
 		DA6CF01712D4D38D00F1F52D /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD012D4D38D00F1F52D /* timer.png */; };
@@ -428,7 +427,6 @@
 		DA6CEFCA12D4D38D00F1F52D /* network-wired.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "network-wired.png"; sourceTree = "<group>"; };
 		DA6CEFCB12D4D38D00F1F52D /* others.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = others.png; sourceTree = "<group>"; };
 		DA6CEFCC12D4D38D00F1F52D /* preferences-desktop-screensaver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preferences-desktop-screensaver.png"; sourceTree = "<group>"; };
-		DA6CEFCD12D4D38D00F1F52D /* preferences-system.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preferences-system.png"; sourceTree = "<group>"; };
 		DA6CEFCE12D4D38D00F1F52D /* remote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = remote.png; sourceTree = "<group>"; };
 		DA6CEFCF12D4D38D00F1F52D /* system-shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "system-shutdown.png"; sourceTree = "<group>"; };
 		DA6CEFD012D4D38D00F1F52D /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
@@ -894,7 +892,6 @@
 				DA6CEFCA12D4D38D00F1F52D /* network-wired.png */,
 				DA6CEFCB12D4D38D00F1F52D /* others.png */,
 				DA6CEFCC12D4D38D00F1F52D /* preferences-desktop-screensaver.png */,
-				DA6CEFCD12D4D38D00F1F52D /* preferences-system.png */,
 				DA6CEFCE12D4D38D00F1F52D /* remote.png */,
 				DA6CEFCF12D4D38D00F1F52D /* system-shutdown.png */,
 				DA6CEFD012D4D38D00F1F52D /* timer.png */,
@@ -1336,7 +1333,6 @@
 				DA6CF01112D4D38D00F1F52D /* network-wired.png in Resources */,
 				DA6CF01212D4D38D00F1F52D /* others.png in Resources */,
 				DA6CF01312D4D38D00F1F52D /* preferences-desktop-screensaver.png in Resources */,
-				DA6CF01412D4D38D00F1F52D /* preferences-system.png in Resources */,
 				DA6CF01512D4D38D00F1F52D /* remote.png in Resources */,
 				DA6CF01612D4D38D00F1F52D /* system-shutdown.png in Resources */,
 				DA6CF01712D4D38D00F1F52D /* timer.png in Resources */,
