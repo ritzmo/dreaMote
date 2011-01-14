@@ -195,10 +195,20 @@
 	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
 	TABLEVIEWCELL_TEXT(cell) = file.title;
 
-	if(indexPath.row == _playing)
-		TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-volume-high.png"];
+	if(_isPlaylist)
+	{
+		if(indexPath.row == _playing)
+			TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-volume-high.png"];
+		else
+			TABLEVIEWCELL_IMAGE(cell) = nil;
+	}
 	else
-		TABLEVIEWCELL_IMAGE(cell) = nil;
+	{
+		if(file.isDirectory)
+			TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"folder.png"];
+		else
+			TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-x-generic.png"];
+	}
 
 	return cell;
 }
