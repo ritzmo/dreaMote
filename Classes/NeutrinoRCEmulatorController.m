@@ -33,6 +33,9 @@
 		_landscapeFrame = CGRectMake(140, 130, mainViewSize.height - 140, mainViewSize.width - 130);
 	else
 		_landscapeFrame = CGRectMake(85, 50, mainViewSize.height - 85, mainViewSize.width - 50);
+	// Workaround when starting in landscape mode
+	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+		_portraitFrame.origin.y += 10;
 	rcView = [[UIView alloc] initWithFrame: _portraitFrame];
 	[self.view addSubview:rcView];
 
