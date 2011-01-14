@@ -114,20 +114,7 @@
 {
 	if(!_willReappear)
 	{
-		/*
-		 @note Not using [self emptyData] here because reloadSections is buggy in iOS 3.2
-		 */
-		NSUInteger i = 0;
-
-		// Reset _dist array
-		for(i = 0; i < kTimerStateMax; i++)
-			_dist[i] = 0;
-
-		// Clear caches
-		[_timers removeAllObjects];
-		[_tableView reloadData];
-		[_timerXMLDoc release];
-		_timerXMLDoc = nil;
+		[self emptyData];
 
 		// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -189,8 +176,22 @@
 	for(i = 0; i < kTimerStateMax; i++)
 		_dist[i] = 0;
 	[_timers removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+
+	/*!
+	 @note at least 3.2 has problems with repositioning the section titles, so only do a
+	 "pretty" reload on 4.0+
+	 */
+	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+	if(currentVersion >= 4.0f)
+	{
+		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
+		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	}
+	else
+	{
+		[_tableView reloadData];
+	}
+
 	[_timerXMLDoc release];
 	_timerXMLDoc = nil;
 }
