@@ -114,6 +114,14 @@
 	[self.view addSubview: _label];
 }
 
+/* rotate with device on ipad, otherwise to portrait */
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	if(IS_IPAD())
+		return YES;
+	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+}
+
 /* finish */
 - (void)doneAction:(id)sender
 {
