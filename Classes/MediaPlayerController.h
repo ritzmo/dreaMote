@@ -14,6 +14,23 @@
 #import "RecursiveFileAdder.h" /* RecursiveFileAdderDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
 
+/*!
+ @brief Ways to retrieve currently playing track.
+ */
+enum retrieveCurrentUsing {
+	/*!
+	 @brief Retrieve currently playing track through "About"
+	 */
+	kRetrieveCurrentUsingAbout,
+	/*!
+	 @brief Retrieve currently playing track through "Current"
+	 */
+	kRetrieveCurrentUsingCurrent,
+	/*!
+	 @brief No known way to retrieve currently playing track
+	 */
+	kRetrieveCurrentUsingNone,
+};
 
 /*!
  @brief Media Player Controller.
@@ -36,6 +53,7 @@
 	CGRect _portraitControlsFrame; /*!< @brief Portrait frame of controls. */
 
 	CXMLDocument *_currentXMLDoc; /*!< @brief Currently played. */
+	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
 @protected
 	FileListView *_fileList; /*!< @brief File browser. */
 	FileListView *_playlist; /*!< @brief Playlist. */

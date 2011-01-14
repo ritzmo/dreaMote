@@ -21,6 +21,7 @@
 
 @interface MediaPlayerController()
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
+- (void)fetchAbout;
 - (void)fetchCurrent;
 - (void)fetchCurrentDefer;
 - (IBAction)addFolderQuestion:(id)sender;
@@ -77,9 +78,32 @@
 
 - (void)fetchCurrentDefer
 {
-	// Spawn a thread to fetch the signal data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
+	switch(_retrieveCurrentUsing)
+	{
+		case kRetrieveCurrentUsingAbout:
+			[NSThread detachNewThreadSelector:@selector(fetchAbout) toTarget:self withObject:nil];
+			break;
+		case kRetrieveCurrentUsingCurrent:
+			[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
+			break;
+		default:
+			[_timer invalidate];
+			_timer = nil;
+			break;
+	}
+}
+
+- (void)fetchAbout
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[_currentXMLDoc release];
+	@try {
+		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getAbout: self] retain];
+	}
+	@catch (NSException * e) {
+		_currentXMLDoc = nil;
+	}
+	[pool release];
 }
 
 - (void)fetchCurrent
@@ -87,7 +111,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_currentXMLDoc release];
 	@try {
-		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getAbout: self] retain];
+		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
 	}
 	@catch (NSException * e) {
 		_currentXMLDoc = nil;
@@ -327,6 +351,13 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAbout])
+		_retrieveCurrentUsing = kRetrieveCurrentUsingAbout;
+	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesCurrent])
+		_retrieveCurrentUsing = kRetrieveCurrentUsingCurrent;
+	else
+		_retrieveCurrentUsing = kRetrieveCurrentUsingNone;
+
 	[_playlist refreshData];
 	[self placeControls:self.interfaceOrientation duration:0];
 
@@ -334,11 +365,15 @@
 	if([_fileList superview])
 		[self.navigationController setToolbarHidden:NO animated:YES];
 
-	// FIXME: interval should be configurable
-	_timer = [NSTimer scheduledTimerWithTimeInterval: 10.0
-											  target: self selector:@selector(fetchCurrentDefer)
+	// only start timer if there is a known way to retrieve currently playing track
+	if(_retrieveCurrentUsing != kRetrieveCurrentUsingNone)
+	{
+		// FIXME: interval should be configurable
+		_timer = [NSTimer scheduledTimerWithTimeInterval: 10.0
+											target: self selector:@selector(fetchCurrentDefer)
 											userInfo: nil repeats: YES];
-	[_timer fire];
+		[_timer fire];
+	}
 
 	[super viewWillAppear: animated];
 }
@@ -548,7 +583,17 @@
 
 - (void)addAbout:(NSObject <AboutProtocol>*)about
 {
-	if([_playlist selectPlayingByTitle: about.sname])
+	NSString *sname = about.sname;
+	// sname == nil indicates no support for sname in about
+	if(sname == nil)
+	{
+		// try current if connector supports it, otherwise abort
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesCurrent])
+			_retrieveCurrentUsing = kRetrieveCurrentUsingCurrent;
+		else
+			_retrieveCurrentUsing = kRetrieveCurrentUsingNone;
+	}
+	else if([_playlist selectPlayingByTitle: sname])
 		[self newTrackPlaying];
 }
 
