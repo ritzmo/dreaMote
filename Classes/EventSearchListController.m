@@ -320,6 +320,13 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
+	// eventually remove popover
+	if(popoverController)
+	{
+		[popoverController dismissPopoverAnimated:YES];
+		self.popoverController = nil;
+	}
+
 	[_searchHistory saveHistory];
 	if(!IS_IPAD())
 	{
