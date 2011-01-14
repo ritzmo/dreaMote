@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "AboutSourceDelegate.h" /* AboutSourceDelegate */
 #import "EventSourceDelegate.h" /* EventSourceDelegate */
 #import "FileListView.h" /* FileListDelegate */
 #import "RecursiveFileAdder.h" /* RecursiveFileAdderDelegate */
@@ -19,6 +20,7 @@
  */
 @interface MediaPlayerController : UIViewController <FileListDelegate, EventSourceDelegate,
 													RecursiveFileAdderDelegate,
+													AboutSourceDelegate,
 													ServiceSourceDelegate, UIActionSheetDelegate>
 {
 @private

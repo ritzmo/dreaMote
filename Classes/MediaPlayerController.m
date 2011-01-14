@@ -87,7 +87,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_currentXMLDoc release];
 	@try {
-		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
+		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getAbout: self] retain];
 	}
 	@catch (NSException * e) {
 		_currentXMLDoc = nil;
@@ -335,7 +335,7 @@
 		[self.navigationController setToolbarHidden:NO animated:YES];
 
 	// FIXME: interval should be configurable
-	_timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
+	_timer = [NSTimer scheduledTimerWithTimeInterval: 10.0
 											  target: self selector:@selector(fetchCurrentDefer)
 											userInfo: nil repeats: YES];
 	[_timer fire];
@@ -540,6 +540,16 @@
 	{
 		[fileListView removeFile:file];
 	}
+}
+
+#pragma mark -
+#pragma mark AboutSourceDelegate
+#pragma mark -
+
+- (void)addAbout:(NSObject <AboutProtocol>*)about
+{
+	if([_playlist selectPlayingByTitle: about.sname])
+		[self newTrackPlaying];
 }
 
 #pragma mark -
