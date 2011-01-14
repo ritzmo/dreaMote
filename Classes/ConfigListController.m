@@ -395,7 +395,8 @@
 /* about to hide */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[self setEditing: NO animated: YES];
+	if(self.editing)
+		[self setEditing: NO animated: YES];
 }
 
 @end
