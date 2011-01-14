@@ -353,7 +353,10 @@
 
 	_shouldSave = NO;
 	_creatingNewTimer = newValue;
-	[self setEditing:YES animated:YES];
+
+	// start editing here for new, waiting or disabled timers
+	if(newValue || _oldTimer.state == kTimerStateWaiting || _oldTimer.disabled)
+		[self setEditing:YES animated:YES];
 }
 
 #pragma mark -
