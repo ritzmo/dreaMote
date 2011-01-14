@@ -40,7 +40,6 @@
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
-		break;
 	}
 	return nil;
 }
@@ -51,7 +50,6 @@
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
-		break;
 	}
 	return nil;
 }
@@ -62,7 +60,6 @@
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		return [resultElement stringValue];
-		break;
 	}
 	return nil;
 }
@@ -106,6 +103,16 @@
 		[_tuners addObject:[resultElement stringValue]];
 	}
 	return _tuners;
+}
+
+- (NSString *)sname
+{
+	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	for(CXMLElement *resultElement in resultNodes)
+	{
+		return [resultElement stringValue];
+	}
+	return nil;
 }
 
 @end

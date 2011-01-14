@@ -40,4 +40,9 @@
  */
 @property (nonatomic, readonly) NSArray *tuners;
 
+/*!
+ @brief Current Service Name.
+ */
+@property (nonatomic, readonly) NSString *sname;
+
 @end
