@@ -20,6 +20,7 @@
 
 // Forward declarations...
 @class DatePickerController;
+@protocol TimerViewDelegate;
 
 /*!
  @brief Timer View.
@@ -51,7 +52,8 @@
 	UITableViewCell *_afterEventCell; /*!< @brief After Event Cell. */
 	UITableViewCell *_locationCell; /*!< @brief Location Cell. */
 	UITableViewCell *_repeatedCell; /*!< @brief Repeated Cell. */
-	
+
+	NSObject<TimerViewDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */
 	NSObject<TimerProtocol> *_oldTimer; /*!< @brief Old Timer when changing existing one. */
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
@@ -116,4 +118,38 @@
  */
 @property (assign) BOOL creatingNewTimer;
 
+/*!
+ @brief Delegate.
+ */
+@property (nonatomic, retain) NSObject<TimerViewDelegate> *delegate;
+
+@end
+
+
+
+@protocol TimerViewDelegate
+/*!
+ @brief A timer was added successfully.
+
+ @param tvc TimerViewController instance
+ @param timer Timer that was added
+ */
+- (void)timerViewController:(TimerViewController *)tvc timerWasAdded:(NSObject<TimerProtocol> *)timer;
+
+/*!
+ @brief Timer was changed successfully.
+
+ @param tvc TimerViewController instance
+ @param timer Modified timer
+ @param oldTimer Original timer
+ */
+- (void)timerViewController:(TimerViewController *)tvc timerWasEdited:(NSObject<TimerProtocol> *)timer :(NSObject<TimerProtocol> *)oldTimer;
+
+/*
+ @brief Editing was canceled.
+
+ @param tvc TimerViewController instance
+ @param timer Timer that was supposed to be changed
+ */
+- (void)timerViewController:(TimerViewController *)tvc editingWasCanceled:(NSObject<TimerProtocol> *)timer;
 @end

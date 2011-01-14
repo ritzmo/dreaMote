@@ -11,11 +11,11 @@
 #import "Objects/TimerProtocol.h"
 #import "ReloadableListController.h"
 #import "TimerSourceDelegate.h"
+#import "TimerViewController.h" /* TimerViewDelegate */
 
 // Forward Declarations...
 @class CXMLDocument;
 @class FuzzyDateFormatter;
-@class TimerViewController;
 
 /*!
  @brief Timer List.
@@ -28,7 +28,8 @@
  */
 @interface TimerListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource,
-													TimerSourceDelegate>
+													TimerSourceDelegate,
+													TimerViewDelegate>
 {
 @private
 	NSMutableArray *_timers; /*!< @brief Timer List. */

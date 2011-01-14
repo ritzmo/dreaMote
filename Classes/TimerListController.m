@@ -133,6 +133,11 @@
 		// application parses the XML file.
 		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
+	else
+	{
+		[_tableView deselectRowAtIndexPath:[_tableView indexPathForSelectedRow] animated:YES];
+	}
+
 	_willReappear = NO;
 
 	[super viewWillAppear: animated];
@@ -279,10 +284,10 @@
 	if(_timerViewController == nil)
 		_timerViewController = [[TimerViewController alloc] init];
 
-	// don't reload on ipad
-	if(IS_IPAD())
+	if(!IS_IPAD())
 		_willReappear = YES;
 
+	_timerViewController.delegate = self;
 	_timerViewController.timer = timer;
 	_timerViewController.oldTimer = ourCopy;
 	[ourCopy release];
@@ -401,11 +406,11 @@
 		if(_timerViewController == nil)
 			_timerViewController = [[TimerViewController alloc] init];
 
-		// don't reload on ipad
-		if(IS_IPAD())
+		if(!IS_IPAD())
 			_willReappear = YES;
 
 		NSObject<TimerProtocol> *newTimer = [GenericTimer timer];
+		_timerViewController.delegate = self;
 		_timerViewController.timer = newTimer;
 		_timerViewController.oldTimer = nil;
 
@@ -427,6 +432,29 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark TimerViewControllerDelegate
+#pragma mark -
+
+- (void)timerViewController:(TimerViewController *)tvc timerWasAdded:(NSObject<TimerProtocol> *)timer
+{
+	// TODO: check if we can implement optimized reload
+	[self emptyData];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
+- (void)timerViewController:(TimerViewController *)tvc timerWasEdited:(NSObject<TimerProtocol> *)timer :(NSObject<TimerProtocol> *)oldTimer;
+{
+	// TODO: check if we can implement optimized reload
+	[self emptyData];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
+- (void)timerViewController:(TimerViewController *)tvc editingWasCanceled:(NSObject<TimerProtocol> *)timer;
+{
+	// do we need this for anything?
 }
 
 @end

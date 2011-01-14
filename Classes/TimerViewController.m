@@ -61,6 +61,7 @@
 /*! @brief The duration of the animation for the view shift. */
 #define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
+@synthesize delegate = _delegate;
 @synthesize oldTimer = _oldTimer;
 @synthesize popoverController;
 
@@ -129,6 +130,7 @@
 {
 	[_timer release];
 	[_oldTimer release];
+	[_delegate release];
 
 	[_timerTitle release];
 	[_timerDescription release];
@@ -463,7 +465,7 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-	if(!_creatingNewTimer && _oldTimer.state != 0)
+	if(!_creatingNewTimer && _oldTimer.state != 0 && !_oldTimer.disabled)
 	{
 		if(editing)
 		{
@@ -488,6 +490,7 @@
 			_timerJustplay.enabled = NO;
 		}
 
+		[_delegate timerViewController:self editingWasCanceled:_oldTimer];
 		return;
 	}
 
@@ -537,7 +540,10 @@
 				if(!result.result)
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext];
 				else
+				{
+					[_delegate timerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
+				}
 			}
 			else
 			{
@@ -545,7 +551,10 @@
 				if(!result.result)
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing timer: %@", @""), result.resulttext];
 				else
+				{
+					[_delegate timerViewController:self timerWasEdited:_timer :_oldTimer];
 					[self.navigationController popViewControllerAnimated: YES];
+				}
 			}
 		}
 
@@ -561,6 +570,7 @@
 			[notification show];
 			[notification release];
 
+			[_delegate timerViewController:self editingWasCanceled:_oldTimer];
 			return;
 		}
 
@@ -571,6 +581,7 @@
 		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
 	}
 
+	_shouldSave = editing;
 	[super setEditing: editing animated: animated];
 
 	[_timerTitleCell setEditing:editing animated:animated];
@@ -1051,11 +1062,6 @@
 												selector:@selector(keyboardWillShow:) 
 												name:UIKeyboardWillShowNotification
 												object:self.view.window]; 
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	_shouldSave = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
