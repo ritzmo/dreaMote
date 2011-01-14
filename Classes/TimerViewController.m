@@ -170,13 +170,11 @@
 	if(_bouquetListController == nil)
 	{
 		UIViewController *rootViewController = nil;
-		const BOOL isSingleBouquet =
-		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
-		&& (
-			[RemoteConnectorObject isSingleBouquet] ||
-			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+		const BOOL forceSingleBouquet =
+			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+			&& ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets];
 
-		if(isSingleBouquet)
+		if(forceSingleBouquet || (!IS_IPAD() && [RemoteConnectorObject isSingleBouquet]))
 		{
 			rootViewController = [[ServiceListController alloc] init];
 			[(ServiceListController *)rootViewController setDelegate: self];
