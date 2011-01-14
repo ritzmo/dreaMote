@@ -20,7 +20,6 @@
 	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
 	UISwitch *_connectionTest; /*!< @brief "Connection Test" UISwitch. */
 	UISwitch *_simpleRemote; /*!< @brief "Use simple remote" UISwitch. */
-	BOOL _viewWillReapper; /*!< @brief Should Data be reloaded on next open? */
 }
 
 @end

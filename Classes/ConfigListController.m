@@ -41,7 +41,6 @@
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
-		_viewWillReapper = NO;
 	}
 	return self;
 }
@@ -375,8 +374,6 @@
 	// Add new connection
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		_viewWillReapper = YES;
-
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
@@ -388,17 +385,6 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	// Fix defaults
-	if(!_viewWillReapper)
-	{
-		[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
-		[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
-		[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
-	}
-
-	// Assume we won't reappear, will be fixed if we actually do so
-	_viewWillReapper = NO;
-
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
 	[(UITableView *)self.view reloadData];
@@ -409,11 +395,7 @@
 /* about to hide */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this won't reset the editButtonItem
-	if(self.editing && !_viewWillReapper)
-	{
-		[self setEditing: NO animated: YES];
-	}
+	[self setEditing: NO animated: YES];
 }
 
 @end
