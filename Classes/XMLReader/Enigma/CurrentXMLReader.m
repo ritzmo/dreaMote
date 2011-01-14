@@ -116,12 +116,12 @@
 			break;
 		}
 
-		if(newService.sname == nil)
+		if(newService.sname == nil || [newService.sname isEqualToString:@""])
 		{
 			// NOTE: fall back to current event title because it looks weird for
 			// recordings otherwise, but if we are playing a recording back
 			// we won't be able to distinguish between standby and running...
-			if(current_event && current_event.title != nil)
+			if(current_event && current_event.title != nil && ![current_event.title isEqualToString:@""])
 			{
 				newService.sname = current_event.title;
 			}

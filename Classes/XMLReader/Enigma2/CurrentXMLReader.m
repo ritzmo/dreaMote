@@ -56,7 +56,7 @@
 		NSObject<ServiceProtocol> *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
 
 		// *grml*
-		if(newService.sname == nil)
+		if(newService.sname == nil || [newService.sname isEqualToString:@""])
 		{
 			[newService release];
 			newService = [[GenericService alloc] init];
