@@ -44,7 +44,19 @@
 "About Receiver Title" = "Über den Receiver";
 
 /* No comment provided by engineer. */
+"Add" = "Hinzufügen";
+
+/* No comment provided by engineer. */
+"Add Folder" = "Ordner hinzufügen";
+
+/* No comment provided by engineer. */
+"Add recursively" = "Ordner MIT Unterordnern";*/
+
+/* No comment provided by engineer. */
 "Add Timer" = "Neuer Timer";
+
+/* No comment provided by engineer. */
+"Adding to Playlist" = "Füge Playlist an";
 
 /* No comment provided by engineer. */
 "Advanced Remote" = "Erweiterte FB";
@@ -90,6 +102,9 @@
 
 /* No comment provided by engineer. */
 "Can't save a timer without a service." = "Kann keinen Timer ohne Sender sichern.";
+
+/* No comment provided by engineer. */
+"Cancel" = "Abbrechen";
 
 /* No comment provided by engineer. */
 "Caption" = "Titel";
@@ -381,6 +396,9 @@
 /* TabBar Title of CurrentViewController */
 "Playing" = "Aktive Sendung";
 
+/* No comment provided by engineer. */
+"Playing immediately" = "Sofortige Wiedergabe";
+
 /* Title of PlayListController */
 "Playlist" = "Wiedergabeliste";
 
@@ -410,6 +428,9 @@
 
 /* Title of Radio mode of ServiceListController */
 "Radio Services" = "Radiosender";
+
+/* No comment provided by engineer. */
+"Really add all items in this folder?" = "Wirklich alle Dateien in diesem Ordner hinzufügen?";
 
 /* No comment provided by engineer. */
 "Reboot" = "Neu starten";

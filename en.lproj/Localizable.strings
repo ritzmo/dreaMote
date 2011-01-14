@@ -44,7 +44,19 @@
 "About Receiver Title" = "About Receiver";
 
 /* No comment provided by engineer. */
+/*"Add" = "Add";*/
+
+/* No comment provided by engineer. */
+/*"Add Folder" = "Add Folder";*/
+
+/* No comment provided by engineer. */
+/*"Add recursively" = "Add recursively";*/
+
+/* No comment provided by engineer. */
 "Add Timer" = "Add Timer";
+
+/* No comment provided by engineer. */
+/*"Adding to Playlist" = "Adding to Playlist";*/
 
 /* No comment provided by engineer. */
 "Advanced Remote" = "Advanced Remote";
@@ -90,6 +102,9 @@
 
 /* No comment provided by engineer. */
 /*"Can't save a timer without a service." = "Can't save a timer without a service.";*/
+
+/* No comment provided by engineer. */
+/*"Cancel" = "Cancel";*/
 
 /* No comment provided by engineer. */
 /*"Caption" = "Caption";*/
@@ -381,6 +396,9 @@
 /* TabBar Title of CurrentViewController */
 "Playing" = "Playing";
 
+/* No comment provided by engineer. */
+/*"Playing immediately" = "Playing immediately";*/
+
 /* Title of PlayListController */
 /*"Playlist" = "Playlist";*/
 
@@ -410,6 +428,9 @@
 
 /* Title of Radio mode of ServiceListController */
 "Radio Services" = "Radio Services";
+
+/* No comment provided by engineer. */
+/*"Really add all items in this folder?" = "Really add all items in this folder?";*/
 
 /* No comment provided by engineer. */
 "Reboot" = "Reboot";
