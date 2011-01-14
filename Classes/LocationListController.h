@@ -21,8 +21,7 @@
  
  Display list of known locations and start MovieListController on selected ones.
  */
-@interface LocationListController : ReloadableListController <UIActionSheetDelegate,
-													UITableViewDelegate,
+@interface LocationListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource, LocationSourceDelegate>
 {
 @private

@@ -20,8 +20,7 @@
  
  Display list of known bouquets and start ServiceListController on selected ones.
  */
-@interface BouquetListController : ReloadableListController <UIActionSheetDelegate,
-													UITableViewDelegate,
+@interface BouquetListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource, ServiceSourceDelegate>
 {
 @private
