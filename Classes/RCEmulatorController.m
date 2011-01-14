@@ -136,9 +136,11 @@
 
 	// eventually fix toolbar size
 	[_toolbar sizeToFit];
-	const CGFloat _toolbarHeight = _toolbar.frame.size.height;
+	const CGFloat toolbarHeight = _toolbar.frame.size.height;
 	const CGFloat width = self.view.frame.size.width;
-	_toolbar.frame = CGRectMake(0, -1, width, _toolbarHeight);
+	_toolbar.frame = CGRectMake(0, -1, width, toolbarHeight);
+	// XXX: hackish
+	[self didRotateFromInterfaceOrientation:self.interfaceOrientation];
 
 	// fix up views
 	if(_navigationPad != nil)
@@ -359,7 +361,9 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	_imageView.image = nil;
-	_toolbar.frame = CGRectInfinite;
+    [_toolbar performSelector:@selector(sizeToFit)
+                         withObject:nil
+                         afterDelay:(0.5f * duration)];
 
 	if(_navigationPad != nil)
 	{
@@ -375,17 +379,10 @@
 /* finished rotation */
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-	//[UIView beginAnimations:nil context:NULL];
-	//[UIView setAnimationDuration: kTransitionDuration];
-
-	// adjust size of _screenView, _toolbar & _scrollView
-	CGRect frame = self.view.frame;
-	[_toolbar sizeToFit];
-	const CGFloat toolbarOrigin = -1;
-	const CGFloat toolbarHeight = _toolbar.frame.size.height;
-	const CGFloat width = frame.size.width;
-	_toolbar.frame = CGRectMake(0, toolbarOrigin, width, toolbarHeight);
-	frame = CGRectMake(0, toolbarOrigin + toolbarHeight, width, frame.size.height - (toolbarOrigin + toolbarHeight));
+	// adjust size of _screenView & _scrollView
+	CGRect frame = _toolbar.frame;
+	frame.origin.y += frame.size.height;
+	frame.size.height = self.view.frame.size.height - frame.origin.y;
 	_screenView.frame = frame;
 	frame.origin.y = 0;
 	_scrollView.frame = frame;
@@ -393,8 +390,6 @@
 	// FIXME: we load a new image as I'm currently unable to figure out how to readjust the old one
 	if(_screenView.superview)
 		[self loadImage: nil];
-
-	//[UIView commitAnimations];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
