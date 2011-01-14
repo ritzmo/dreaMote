@@ -76,9 +76,10 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_fileXMLDoc release];
-	NSString *path = [_remainingPaths lastObject];
-	_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path] retain];
+	NSString *path = [[_remainingPaths lastObject] retain];
 	[_remainingPaths removeLastObject];
+	_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path] retain];
+	[path release];
 	[pool release];
 }
 
