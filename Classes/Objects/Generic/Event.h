@@ -10,12 +10,15 @@
 
 #import "EventProtocol.h"
 
+@protocol ServiceProtocol;
+
 /*!
  @brief Generic Event.
  */
 @interface GenericEvent : NSObject <EventProtocol>
 {
-@private	
+@private
+	NSObject<ServiceProtocol> *_service; /*!< @brief Associated service. */
 	NSString *_eit; /*!< @brief Event Id. */
 	NSDate *_begin; /*!< @brief Begin. */
 	NSDate *_end; /*!< @brief End. */

@@ -8,8 +8,11 @@
 
 #import "Event.h"
 
+#import "ServiceProtocol.h"
+
 @implementation GenericEvent
 
+@synthesize service = _service;
 @synthesize eit = _eit;
 @synthesize begin = _begin;
 @synthesize end = _end;
@@ -18,19 +21,9 @@
 @synthesize edescription = _edescription;
 @synthesize timeString = _timeString;
 
-- (NSObject<ServiceProtocol> *)service
-{
-	return nil;
-}
-
-- (void)setService: (NSObject<ServiceProtocol> *)service
-{
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-}
-
 - (BOOL)isValid
 {
-	return _begin && _end;
+	return _service || (_begin && _end);
 }
 
 - (id)init
@@ -62,6 +55,7 @@
 
 - (void)dealloc
 {
+	[_service release];
 	[_eit release];
 	[_begin release];
 	[_end release];
