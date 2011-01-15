@@ -48,9 +48,6 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	{
 		const UIView *myContentView = self.contentView;
 
-		// you can do this here specifically or at the table level for all cells
-		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
@@ -81,6 +78,11 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
+
+	if(newService.valid)
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	else
+		self.accessoryType = UITableViewCellAccessoryNone;
 
 	// Redraw
 	[self setNeedsDisplay];
