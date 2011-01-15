@@ -360,6 +360,9 @@
 /* No comment provided by engineer. */
 /*"No Data…" = "No Data…";*/
 
+/* Placeholder text in Now/Next-ServiceList if no EPG data present */
+/*"No EPG" = "No EPG";*/
+
 /* No comment provided by engineer. */
 "No similar Events" = "No similar Events";
 
