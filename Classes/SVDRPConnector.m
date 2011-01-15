@@ -1038,4 +1038,16 @@
 	return nil;
 }
 
+- (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 @end

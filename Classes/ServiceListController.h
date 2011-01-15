@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "ReloadableListController.h"
+#import "NowNextSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
 
 // Forward declarations
@@ -25,20 +26,27 @@
  */
 @interface ServiceListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource,
-													UIPopoverControllerDelegate, ServiceSourceDelegate,
+													UIPopoverControllerDelegate,
+													ServiceSourceDelegate,
+													NowSourceDelegate,
+													NextSourceDelegate,
 													UISplitViewControllerDelegate>
 {
 @private
 	UIPopoverController *popoverController;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
-	NSMutableArray *_services; /*!< @brief Service List. */
+	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
+	NSMutableArray *_subList; /*!< @brief Next Event List. */
 	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
+	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 
-	CXMLDocument *_serviceXMLDoc; /*!< Current Service XML Document. */
+	CXMLDocument *_mainXMLDoc; /*!< Current Service/Event XML Document. */
+	CXMLDocument *_subXMLDoc; /*!< Next Event XML Document. */
 }
 
 /*!

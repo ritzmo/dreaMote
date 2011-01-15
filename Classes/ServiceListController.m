@@ -14,9 +14,12 @@
 #import "RemoteConnectorObject.h"
 #import "Objects/ServiceProtocol.h"
 
+#import "ServiceEventTableViewCell.h"
 #import "ServiceTableViewCell.h"
 
 @interface ServiceListController()
+- (void)fetchAdditionalData;
+
 /*!
  @brief Popover Controller.
  */
@@ -33,11 +36,15 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
-		_services = [[NSMutableArray array] retain];
+		_mainList = [[NSMutableArray array] retain];
+		_subList = [[NSMutableArray array] retain];
 		_refreshServices = YES;
 		_eventListController = nil;
 		_isRadio = NO;
 		_delegate = nil;
+		_supportsNowNext = NO;
+		_dateFormatter = [[NSDateFormatter alloc] init];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -51,10 +58,13 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_services release];
+	[_mainList release];
+	[_subList release];
 	[_eventListController release];
-	[_serviceXMLDoc release];
+	[_mainXMLDoc release];
+	[_subXMLDoc release];
 	[_radioButton release];
+	[_dateFormatter release];
 
 	[super dealloc];
 }
@@ -88,10 +98,8 @@
 	self.title = new.sname;
 
 	// Free Caches and reload data
-	[_services removeAllObjects];
-	[_tableView reloadData];
-	[_serviceXMLDoc release];
-	_serviceXMLDoc = nil;
+	_supportsNowNext = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesNowNext];
+	[self emptyData];
 	_refreshServices = NO;
 
 	// Eventually remove popover
@@ -166,7 +174,6 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = kUISmallRowHeight;
 	_tableView.sectionHeaderHeight = 0;
 }
 
@@ -198,11 +205,9 @@
 	 */
 	if(_refreshServices && _bouquet == nil)
 	{
-		[_services removeAllObjects];
+		_supportsNowNext = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesNowNext];
 
-		[_tableView reloadData];
-		[_serviceXMLDoc release];
-		_serviceXMLDoc = nil;
+		[self emptyData];
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -225,22 +230,34 @@
 {
 	if(_refreshServices && _bouquet == nil)
 	{
-		[_services removeAllObjects];
-
-		[_eventListController release];
-		_eventListController = nil;
-		[_serviceXMLDoc release];
-		_serviceXMLDoc = nil;
+		[self emptyData];
 	}
 }
 
-/* fetch service list */
+/* fetch main list */
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_serviceXMLDoc release];
+	[_mainXMLDoc release];
 	_reloading = YES;
-	_serviceXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
+	if(_supportsNowNext)
+	{
+		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getNow: self bouquet: _bouquet isRadio:_isRadio] retain];
+		[NSThread detachNewThreadSelector:@selector(fetchAdditionalData) toTarget:self withObject:nil];
+	}
+	else
+	{
+		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
+	}
+	[pool release];
+}
+
+/* fetch sub list */
+- (void)fetchAdditionalData
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[_subXMLDoc release];
+	_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getNext: self bouquet: _bouquet isRadio:_isRadio] retain];
 	[pool release];
 }
 
@@ -248,21 +265,78 @@
 - (void)emptyData
 {
 	// Clean event list
-	[_services removeAllObjects];
+	[_mainList removeAllObjects];
+	[_subList removeAllObjects];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[_serviceXMLDoc release];
-	_serviceXMLDoc = nil;
+	[_mainXMLDoc release];
+	_mainXMLDoc = nil;
+	[_subXMLDoc release];
+	_subXMLDoc = nil;
 }
+
+#pragma mark -
+#pragma mark NowSourceDelegate
+#pragma mark -
+
+/* add event to list */
+- (void)addNowEvent:(NSObject <EventProtocol>*)event
+{
+	if(event != nil)
+	{
+		[_mainList addObject: event];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_mainList count]-1 inSection:0]]
+						  withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+#else
+	}
+#endif
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
+}
+
+#pragma mark -
+#pragma mark NextSourceDelegate
+#pragma mark -
+
+/* add event to list */
+- (void)addNextEvent:(NSObject <EventProtocol>*)event
+{
+	if(event != nil)
+	{
+		[_subList addObject: event];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[_tableView reloadRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_subList count]-1 inSection:0]]
+						  withRowAnimation: UITableViewRowAnimationTop];
+	}
+	else
+#else
+	}
+#endif
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
+}
+
+#pragma mark -
+#pragma mark ServiceSourceDelegate
+#pragma mark -
 
 /* add service to list */
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
 	if(service != nil)
 	{
-		[_services addObject: service];
+		[_mainList addObject: service];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_services count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_mainList count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
@@ -280,14 +354,41 @@
 #pragma mark		Table View
 #pragma mark	-
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(_supportsNowNext)
+		return kServiceEventCellHeight;
+	return kServiceCellHeight;
+}
+
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	ServiceTableViewCell *cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
-	if(cell == nil)
-		cell = [[[ServiceTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceCell_ID] autorelease];
+	UITableViewCell *cell = nil;
+	if(_supportsNowNext)
+	{
+		cell = [tableView dequeueReusableCellWithIdentifier: kServiceEventCell_ID];
+		if(cell == nil)
+			cell = [[[ServiceEventTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceEventCell_ID] autorelease];
 
-	cell.service = [_services objectAtIndex:indexPath.row];
+		NSObject<EventProtocol> *event = [_mainList objectAtIndex:indexPath.row];
+		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
+		((ServiceEventTableViewCell *)cell).now = event;
+		@try {
+			[(ServiceEventTableViewCell *)cell setNext:[_subList objectAtIndex:indexPath.row]];
+		}
+		@catch (NSException * e) {
+			[(ServiceEventTableViewCell *)cell setNext:nil];
+		}
+	}
+	else
+	{
+		cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
+		if(cell == nil)
+			cell = [[[ServiceTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceCell_ID] autorelease];
+
+		((ServiceTableViewCell *)cell).service = [_mainList objectAtIndex:indexPath.row];
+	}
 
 	return cell;
 }
@@ -295,10 +396,14 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSObject<ServiceProtocol> *service = [_services objectAtIndex: indexPath.row];
+	NSObject<ServiceProtocol> *service = nil;
+	if(_supportsNowNext)
+		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	else
+		service = [_mainList objectAtIndex: indexPath.row];
 
 	// Check for invalid service
-	if(!service.valid)
+	if(!service || !service.valid)
 		return nil;
 	// Callback mode
 	else if(_delegate != nil)
@@ -333,7 +438,7 @@
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [_services count];
+	return [_mainList count];
 }
 
 /* set delegate */

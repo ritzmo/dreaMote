@@ -271,6 +271,45 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
+- (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	NSString *sref = nil;
+	if(!bouquet) // single bouquet mode
+	{
+		if(isRadio)
+			sref =  @"1:7:2:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.radio%22%20ORDER%20BY%20bouquet";
+		else
+			sref =  @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet";
+	}
+	else
+		sref = [bouquet.sref urlencode];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgnow?bRef=%@", sref] relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNowDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	NSString *sref = nil;
+	if(!bouquet) // single bouquet mode
+	{
+		if(isRadio)
+			sref =  @"1:7:2:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.radio%22%20ORDER%20BY%20bouquet";
+		else
+			sref =  @"1:7:1:0:0:0:0:0:0:0:FROM%20BOUQUET%20%22userbouquet.favourites.tv%22%20ORDER%20BY%20bouquet";
+	}
+	else
+		sref = [bouquet.sref urlencode];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgnext?bRef=%@", sref] relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNextDelegate: delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
+	[streamReader autorelease];
+	return doc;
+}
 
 #pragma mark Timer
 

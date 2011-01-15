@@ -49,7 +49,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 		const UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
-		self.accessoryType = UITableViewCellAccessoryNone;
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]

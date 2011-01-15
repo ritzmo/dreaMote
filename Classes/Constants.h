@@ -44,7 +44,9 @@
 #define kUISmallRowHeight		((IS_IPAD()) ? 43 : 38)
 #define kUIRowHeight			((IS_IPAD()) ? 55 : 50)
 #define kUIRowLabelHeight		22
-#define kServiceCellHeight		((IS_IPAD()) ? 53 : 48)
+#define kEventCellHeight		((IS_IPAD()) ? 53 : 48)
+#define kServiceCellHeight		38
+#define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
 
 // table view cell content offsets
@@ -55,6 +57,8 @@
 #define kMainTextSize			((IS_IPAD()) ? 22 : 18)
 #define kMainDetailsSize		((IS_IPAD()) ? 20 : 14)
 #define kServiceTextSize		((IS_IPAD()) ? 20 : 16)
+#define kServiceEventServiceSize ((IS_IPAD()) ? 18 : 14)
+#define kServiceEventEventSize	((IS_IPAD()) ? 15 : 12)
 #define kEventNameTextSize		((IS_IPAD()) ? 20 : 14)
 #define kEventDetailsTextSize	((IS_IPAD()) ? 15 : 12)
 #define kTimerServiceTextSize	((IS_IPAD()) ? 20 : 14)

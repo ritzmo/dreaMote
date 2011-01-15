@@ -111,7 +111,7 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = kServiceCellHeight;
+	_tableView.rowHeight = kEventCellHeight;
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	_tableView.sectionHeaderHeight = 0;
 

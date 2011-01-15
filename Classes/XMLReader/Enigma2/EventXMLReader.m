@@ -19,6 +19,29 @@
 	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
+		_delegateType = kDelegateTypeEvent;
+	}
+	return self;
+}
+
+/* initialize */
+- (id)initWithNowDelegate:(NSObject<NowSourceDelegate> *)delegate
+{
+	if((self = [super init]))
+	{
+		_delegate = [delegate retain];
+		_delegateType = kDelegateTypeNow;
+	}
+	return self;
+}
+
+/* initialize */
+- (id)initWithNextDelegate:(NSObject<NextSourceDelegate> *)delegate
+{
+	if((self = [super init]))
+	{
+		_delegate = [delegate retain];
+		_delegateType = kDelegateTypeNext;
 	}
 	return self;
 }
@@ -33,9 +56,24 @@
 /* send fake object */
 - (void)sendErroneousObject
 {
+	SEL selector;
+	switch(_delegateType)
+	{
+		case kDelegateTypeEvent:
+			selector = @selector(addEvent:);
+			break;
+		case kDelegateTypeNow:
+			selector = @selector(addNowEvent:);
+			break;
+		case kDelegateTypeNext:
+			selector = @selector(addNextEvent:);
+			break;
+		default: return;
+	}
+
 	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
+	[_delegate performSelectorOnMainThread: selector
 								withObject: fakeObject
 							 waitUntilDone: NO];
 	[fakeObject release];
@@ -60,20 +98,34 @@
 - (void)parseFull
 {
 	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2eventlist/e2event" error:nil];
+	SEL selector;
+	switch(_delegateType)
+	{
+		case kDelegateTypeEvent:
+			selector = @selector(addEvent:);
+			break;
+		case kDelegateTypeNow:
+			selector = @selector(addNowEvent:);
+			break;
+		case kDelegateTypeNext:
+			selector = @selector(addNextEvent:);
+			break;
+		default: return;
+	}
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		// An e2event in the xml represents an event, so create an instance of it.
 		NSObject<EventProtocol> *newEvent = [[Enigma2Event alloc] initWithNode: (CXMLNode *)resultElement];
 
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
+		[_delegate performSelectorOnMainThread: selector
 									withObject: newEvent
 								 waitUntilDone: NO];
 		[newEvent release];
 	}
 
 	// send invalid element to indicate that we're done with parsing
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
+	[_delegate performSelectorOnMainThread: selector
 								withObject: nil
 							 waitUntilDone: NO];
 }

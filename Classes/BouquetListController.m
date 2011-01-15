@@ -8,6 +8,7 @@
 
 #import "BouquetListController.h"
 
+#import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "Objects/ServiceProtocol.h"
 
@@ -133,7 +134,7 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = 38;
+	_tableView.rowHeight = kServiceCellHeight;
 	_tableView.sectionHeaderHeight = 0;
 }
 

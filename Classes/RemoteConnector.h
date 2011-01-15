@@ -101,6 +101,11 @@ enum connectorFeatures {
 	kFeaturesFileDownload,
 	/*! @brief Can provide further information on the remote receiver. */
 	kFeaturesAbout,
+	/*!
+	 @brief Allows to retrieve now/next through event-like interface.
+	 @note I don't think this will be of any use outside of Enigma2, but who cares :-D
+	 */
+	kFeaturesNowNext,
 };
 
 /*!
@@ -168,6 +173,8 @@ enum buttonCodes {
 @protocol LocationSourceDelegate;
 @protocol MetadataSourceDelegate;
 @protocol MovieSourceDelegate;
+@protocol NowSourceDelegate;
+@protocol NextSourceDelegate;
 @protocol ServiceSourceDelegate;
 @protocol SignalSourceDelegate;
 @protocol TimerSourceDelegate;
@@ -313,6 +320,26 @@ enum buttonCodes {
  @return Pointer to parsed CXMLDocument.
  */
 - (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
+
+/*!
+ @brief Request bouquet list by currently playing event from the receiver.
+ 
+ @param delegate Delegate to be called back.
+ @param bouquet Bouquet to request currently playing events from.
+ @param isRadio Fetch radio services?
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+/*!
+ @brief Request bouquet list by upcoming event from the receiver.
+ 
+ @param delegate Delegate to be called back.
+ @param bouquet Bouquet to request upcoming events of.
+ @param isRadio Fetch radio services?
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request a file from the Receiver.
