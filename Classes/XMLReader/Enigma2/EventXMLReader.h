@@ -8,30 +8,27 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseXMLReader.h"
+#import "SaxXmlReader.h"
+
 #import "EventSourceDelegate.h"
 #import "NowNextSourceDelegate.h"
 
-enum delegateType
-{
-	kDelegateTypeEvent,
-	kDelegateTypeNow,
-	kDelegateTypeNext,
-};
-
 /*!
  @brief Enigma2 Event XML Reader.
+ This XMLReader is implemented as streaming parser based on the SAX interface
+ of libxml2.
  */
-@interface Enigma2EventXMLReader : BaseXMLReader
+@interface Enigma2EventXMLReader : SaxXmlReader
 {
 @private
-	enum delegateType _delegateType; /*!< @brief Type of delegate. */
+	SEL _delegateSelector; /*!< @brief Selector to perform on delegate. */
 	NSObject *_delegate; /*!< @brief Delegate. */
+	NSObject<EventProtocol> *_currentEvent;
 }
 
 /*!
  @brief Standard initializer.
- 
+
  @param target Delegate.
  @return Enigma2EventXMLReader instance.
  */
@@ -39,7 +36,7 @@ enum delegateType
 
 /*!
  @brief Standard initializer.
- 
+
  @param target Delegate.
  @return Enigma2EventXMLReader instance.
  */
@@ -47,7 +44,7 @@ enum delegateType
 
 /*!
  @brief Standard initializer.
- 
+
  @param target Delegate.
  @return Enigma2EventXMLReader instance.
  */
