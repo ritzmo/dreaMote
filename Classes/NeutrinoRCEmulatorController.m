@@ -45,7 +45,7 @@
 
 	/* Begin Keypad */
 	// intialize view
-	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 135 * factor, 165 * factor);
+	_portraitKeyFrame = CGRectMake(currY * factor, currX * factor, 155 * factor, 185 * factor);
 	_keyPad = [[UIView alloc] initWithFrame: _portraitKeyFrame];
 	// new row
 	localX = 0;
