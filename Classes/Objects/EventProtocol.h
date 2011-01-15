@@ -54,6 +54,11 @@
  */
 @property (nonatomic, retain) NSObject<ServiceProtocol> *service;
 
+/*!
+ @brief Valid or Fake Service.
+ */
+@property (nonatomic, readonly, getter = isValid) BOOL valid;
+
 
 
 /*!

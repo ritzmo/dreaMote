@@ -20,13 +20,17 @@
 
 - (NSObject<ServiceProtocol> *)service
 {
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 	return nil;
 }
 
 - (void)setService: (NSObject<ServiceProtocol> *)service
 {
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+}
+
+- (BOOL)isValid
+{
+	return _begin && _end;
 }
 
 - (id)init

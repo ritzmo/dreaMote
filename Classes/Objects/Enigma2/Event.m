@@ -18,35 +18,37 @@
 
 - (NSObject<ServiceProtocol> *)service
 {
-	NSObject<ServiceProtocol> *service = nil;
-	const NSArray *resultNodes = nil;
-	NSString *sname = nil;
-	NSString *sref = nil;
-
-	resultNodes = [_node nodesForXPath:@"e2eventservicename" error:nil];
-	for(CXMLElement *currentChild in resultNodes)
+	if(_service == nil)
 	{
-		sname = [[currentChild stringValue] retain];
-		break;
+		const NSArray *resultNodes = nil;
+		NSString *sname = nil;
+		NSString *sref = nil;
+
+		resultNodes = [_node nodesForXPath:@"e2eventservicename" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
+		{
+			sname = [[currentChild stringValue] copy];
+			break;
+		}
+
+		resultNodes = [_node nodesForXPath:@"e2eventservicereference" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
+		{
+			sref = [[currentChild stringValue] copy];
+			break;
+		}
+
+		if(sname && sref)
+		{
+			_service = [[GenericService alloc] init];
+			_service.sname = sname;
+			_service.sref = sref;
+		}
+		[sname release];
+		[sref release];
 	}
 
-	resultNodes = [_node nodesForXPath:@"e2eventservicereference" error:nil];
-	for(CXMLElement *currentChild in resultNodes)
-	{
-		sref = [[currentChild stringValue] retain];
-		break;
-	}
-
-	if(sname && sref)
-	{
-		service = [[[GenericService alloc] init] autorelease];
-		service.sname = sname;
-		service.sref = sref;
-	}
-	[sname release];
-	[sref release];
-
-	return service;
+	return _service;
 }
 
 - (void)setService: (NSObject<ServiceProtocol> *)service
@@ -169,6 +171,11 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
+- (BOOL)isValid
+{
+	return _node != nil;
+}
+
 - (id)initWithNode: (CXMLNode *)node
 {
 	if((self = [super init]))
@@ -185,6 +192,7 @@
 	[_begin release];
 	[_end release];
 	[_node release];
+	[_service release];
 	[_timeString release];
 
 	[super dealloc];

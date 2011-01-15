@@ -123,6 +123,11 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
+- (BOOL)isValid
+{
+	return _node != nil;
+}
+
 - (id)initWithNode: (CXMLNode *)node
 {
 	if((self = [super init]))
