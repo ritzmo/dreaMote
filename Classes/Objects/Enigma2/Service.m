@@ -15,7 +15,12 @@
 
 - (NSString *)sref
 {
-	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
+	{
+		return [currentChild stringValue];
+	}
+	resultNodes = [_node nodesForXPath:@"e2eventservicereference" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -30,7 +35,12 @@
 
 - (NSString *)sname
 {
-	const NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	for(CXMLElement *currentChild in resultNodes)
+	{
+		return [currentChild stringValue];
+	}
+	resultNodes = [_node nodesForXPath:@"e2eventservicename" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
