@@ -385,7 +385,7 @@
 "OSD" = "OSD";
 
 /* No comment provided by engineer. */
-"Percentage" = "Prozent";
+"Percentage" = "Prozentual";
 
 /* No comment provided by engineer. */
 "Play" = "Wiedergabe";
@@ -508,7 +508,7 @@
 "Signal Explain" = "Aktuelle SNR/AGC anzeigen";
 
 /* No comment provided by engineer. */
-"Signal Title" = "Signal Finder";
+"Signal Title" = "Signalsuche";
 
 /* No comment provided by engineer. */
 "Similar Events" = "Ähnliche Sendungen";
