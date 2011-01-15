@@ -33,6 +33,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 - (void)dealloc
 {
 	[_formatter release];
+	[_next release];
 	[_nextLabel release];
 	[_nextTimeLabel release];
 	[_now release];
@@ -106,7 +107,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	// Abort if same event assigned
 	if([_now isEqual:new]) return;
 
-	// Free old service, assign new one
+	// Free old event, assign new one
 	[_now release];
 	_now = [new retain];
 
@@ -161,9 +162,22 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	[self setNeedsDisplay];
 }
 
-/* helper function so set text of nextLabel */
+/* getter of next property */
+- (NSObject<EventProtocol> *)next
+{
+	return _next;
+}
+
+/* setter of next property */
 - (void)setNext:(NSObject<EventProtocol> *)new
 {
+	// Abort if same event assigned
+	if([_next isEqual:new]) return;
+
+	// Free old event, assign new one
+	[_next release];
+	_next = [new retain];
+
 	NSDate *beginDate = new.begin;
 
 	// Check if valid event data

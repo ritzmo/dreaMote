@@ -22,6 +22,7 @@ extern NSString *kServiceEventCell_ID;
 {
 @private
 	NSObject<EventProtocol> *_now; /*!< @brief Current event. */
+	NSObject<EventProtocol> *_next; /*!< @brief Next event. */
 	UILabel *_serviceNameLabel; /*!< @brief Name Label. */
 	UILabel *_nowLabel; /*!< @brief Current Event Label. */
 	UILabel *_nowTimeLabel; /*!< @brief Current Event Time Label. */
@@ -29,13 +30,6 @@ extern NSString *kServiceEventCell_ID;
 	UILabel *_nextTimeLabel; /*!< @brief Current Event Time Label. */
 	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
-
-/*!
- @brief Set text of next label by event.
- 
- @param new Event to use.
- */
-- (void)setNext:(NSObject <EventProtocol>*)new;
 
 /*!
  @brief Date Formatter.
@@ -51,6 +45,11 @@ extern NSString *kServiceEventCell_ID;
  @brief Current Event.
  */
 @property (nonatomic, retain) NSObject<EventProtocol> *now;
+
+/*!
+ @brief Next Event.
+ */
+@property (nonatomic, retain) NSObject<EventProtocol> *next;
 
 @end
 
