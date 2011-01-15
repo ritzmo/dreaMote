@@ -231,7 +231,7 @@
 "Exact" = "Exakt";
 
 /* Label for Filesystems Item in MediaPlayer Filelist */
-"Filesystems" = "Medien";
+"Filesystems" = "<Medien>";
 
 /* No comment provided by engineer. */
 "Finished" = "Beendet";
