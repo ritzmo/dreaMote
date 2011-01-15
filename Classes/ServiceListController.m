@@ -18,7 +18,8 @@
 #import "ServiceTableViewCell.h"
 
 @interface ServiceListController()
-- (void)fetchAdditionalData;
+- (void)fetchNowData;
+- (void)fetchNextData;
 
 /*!
  @brief Popover Controller.
@@ -242,8 +243,8 @@
 	_reloading = YES;
 	if(_supportsNowNext)
 	{
-		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getNow: self bouquet: _bouquet isRadio:_isRadio] retain];
-		[NSThread detachNewThreadSelector:@selector(fetchAdditionalData) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchNextData) toTarget:self withObject:nil];
+		[NSThread detachNewThreadSelector:@selector(fetchNowData) toTarget:self withObject:nil];
 	}
 	else
 	{
@@ -252,8 +253,16 @@
 	[pool release];
 }
 
-/* fetch sub list */
-- (void)fetchAdditionalData
+/* fetch now list */
+- (void)fetchNowData
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getNow: self bouquet: _bouquet isRadio:_isRadio] retain];
+	[pool release];
+}
+
+/* fetch next list */
+- (void)fetchNextData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_subXMLDoc release];
@@ -285,18 +294,8 @@
 	if(event != nil)
 	{
 		[_mainList addObject: event];
-#ifdef ENABLE_LAGGY_ANIMATIONS
 		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_mainList count]-1 inSection:0]]
-						  withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
-#endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
+						  withRowAnimation: UITableViewRowAnimationNone];
 	}
 }
 
@@ -310,19 +309,14 @@
 	if(event != nil)
 	{
 		[_subList addObject: event];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView reloadRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_subList count]-1 inSection:0]]
-						  withRowAnimation: UITableViewRowAnimationTop];
 	}
 	else
-#else
-	}
-#endif
 	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
 		_reloading = NO;
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	}
+
 }
 
 #pragma mark -
