@@ -45,7 +45,6 @@ enum retrieveCurrentUsing {
 @private
 	UIPopoverController *popoverController; /*!< @brief Current Popover Controller. */
 	MBProgressHUD *progressHUD; /*!< @brief Activity view (for mass add to playlist). */
-	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
 	BOOL _adding; /*!< @brief Adding tracks to playlist. */
 	BOOL _massAdd; /*!< @brief Performing a mass-add operation. */
 	NSTimer *_timer; /*!< @brief Refresh timer. */
@@ -57,6 +56,8 @@ enum retrieveCurrentUsing {
 	CXMLDocument *_currentXMLDoc; /*!< @brief Currently played. */
 	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
 @protected
+	UIBarButtonItem *_addFolderItem; /*!< @brief "Add Folder" Button. */
+	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
 	FileListView *_fileList; /*!< @brief File browser. */
 	FileListView *_playlist; /*!< @brief Playlist. */
 }
@@ -84,5 +85,15 @@ enum retrieveCurrentUsing {
  @note Not used by us, but interesting for inheriting classes, e.g. MediaPlayerDetailsController
  */
 - (void)newTrackPlaying;
+
+/*!
+ @brief Hide toolbar.
+ */
+- (void)hideToolbar;
+
+/*!
+ @brief Show toolbar.
+ */
+- (void)showToolbar;
 
 @end

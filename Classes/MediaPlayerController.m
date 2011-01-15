@@ -61,6 +61,7 @@
 
 - (void)dealloc
 {
+	[_addFolderItem release];
 	[_addPlayToggle release];
 	[_fileList release];
 	[_playlist release];
@@ -186,12 +187,12 @@
 	if ([_fileList superview])
 	{
 		[_fileList removeFromSuperview];
-		[self.navigationController setToolbarHidden:YES animated:YES];
+		[self hideToolbar];
 	}
 	else
 	{
 		[self.view addSubview: _fileList];
-		[self.navigationController setToolbarHidden:NO animated:YES];
+		[self showToolbar];
 	}
 
 	[UIView commitAnimations];
@@ -233,7 +234,8 @@
 - (void)configureToolbar
 {
 	// "Add Folder" Button
-	const UIBarButtonItem *addFolderItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Folder", @"")
+	[_addFolderItem release];
+	_addFolderItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Folder", @"")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
 																	action:@selector(addFolderQuestion:)];
@@ -250,10 +252,19 @@
 																	target:self
 																	action:@selector(toggleAddPlay:)];
 
-	[self setToolbarItems:[NSArray arrayWithObjects:addFolderItem, flexItem, _addPlayToggle, nil] animated:NO];
+	[self setToolbarItems:[NSArray arrayWithObjects:_addFolderItem, flexItem, _addPlayToggle, nil] animated:NO];
 
-	[addFolderItem release];
 	[flexItem release];
+}
+
+- (void)hideToolbar
+{
+	[self.navigationController setToolbarHidden:YES animated:YES];
+}
+
+- (void)showToolbar
+{
+	[self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (IBAction)addFolderQuestion:(id)sender
@@ -264,6 +275,7 @@
 							cancelButtonTitle:NSLocalizedString(@"Cancel", "")
 							destructiveButtonTitle:NSLocalizedString(@"Add recursively", @"")
 							otherButtonTitles: NSLocalizedString(@"Add", @""), nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
 }
@@ -366,7 +378,7 @@
 
 	[self configureToolbar]; // need to know nav before doing this, so unable to do this in loadView
 	if([_fileList superview])
-		[self.navigationController setToolbarHidden:NO animated:YES];
+		[self showToolbar];
 
 	// only start timer if there is a known way to retrieve currently playing track
 	if(_retrieveCurrentUsing != kRetrieveCurrentUsingNone)
@@ -482,7 +494,6 @@
 	[self.view addSubview: _controls];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	[self configureToolbar];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated

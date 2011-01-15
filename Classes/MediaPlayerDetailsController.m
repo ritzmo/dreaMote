@@ -97,6 +97,24 @@
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
+/*!
+ @brief Hide toolbar.
+ */
+- (void)hideToolbar
+{
+	[self.navigationItem setLeftBarButtonItem:nil animated:YES];
+	[self.navigationItem setRightBarButtonItem:nil animated:YES];
+}
+
+/*!
+ @brief Show toolbar.
+ */
+- (void)showToolbar
+{
+	[self.navigationItem setLeftBarButtonItem:_addFolderItem animated:YES];
+	[self.navigationItem setRightBarButtonItem:_addPlayToggle animated:YES];
+}
+
 /* fetch contents */
 - (void)fetchData
 {
