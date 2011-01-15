@@ -24,14 +24,12 @@
 
 @implementation BaseXMLReader
 
-@synthesize finished = _finished;
-
 /* initialize */
 - (id)init
 {
 	if((self = [super init]))
 	{
-		_finished = NO;
+		_done = NO;
 		_timeout = 7; // set default timeout
 	}
 	return self;
@@ -48,7 +46,7 @@
 /* download and parse xml document */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	_finished = NO;
+	_done = NO;
 	NSError *localError = nil;
 	if(error)
 		*error = nil;
@@ -83,7 +81,7 @@
 							forMode: DataDownloaderRunMode];
 	[connection start];
 
-	while (!_finished) // a BOOL flagged in the delegate methods
+	while (!_done) // a BOOL flagged in the delegate methods
 	{
 		[[NSRunLoop currentRunLoop] runMode: DataDownloaderRunMode
 								beforeDate:[NSDate dateWithTimeIntervalSinceNow:15.0]];
@@ -112,7 +110,7 @@
 		_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
 	
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-	_finished = YES;
+	_done = YES;
 
 	// bail out if we encountered an error
 	if(localError)
@@ -138,15 +136,15 @@
 /* connection failed */
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	_finished = YES;
+	_done = YES;
 
 	[_parser abortParsing];
 }
 
-/* _finished */
+/* _done */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-	_finished = YES;
+	_done = YES;
 
 	[_parser doneParsing];
 }

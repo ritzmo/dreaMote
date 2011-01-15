@@ -193,6 +193,7 @@
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
+		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
 		DAC701FB12D2F73300C53E37 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC701FA12D2F73300C53E37 /* EGORefreshTableHeaderView.m */; };
 		DAC7023212D2FCEE00C53E37 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */; };
@@ -534,6 +535,8 @@
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
+		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
+		DABF7D7112E2599600866CC2 /* SaxXmlReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaxXmlReader.m; sourceTree = "<group>"; };
 		DAC3B7E90D85A55A00696B06 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		DAC701F912D2F73300C53E37 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
@@ -956,6 +959,8 @@
 				DA7D23650F101F1500BB8BE7 /* BaseXMLReader.m */,
 				DA7D23660F101F1500BB8BE7 /* CXMLPushDocument.h */,
 				DA7D23670F101F1500BB8BE7 /* CXMLPushDocument.m */,
+				DABF7D7012E2599600866CC2 /* SaxXmlReader.h */,
+				DABF7D7112E2599600866CC2 /* SaxXmlReader.m */,
 				DA7D23680F101F1500BB8BE7 /* Enigma */,
 				DA7D236F0F101F1500BB8BE7 /* Enigma2 */,
 				DA7D237A0F101F1500BB8BE7 /* Neutrino */,
@@ -1499,6 +1504,7 @@
 				DA11820112DFAEEC00796389 /* RecursiveFileAdder.m in Sources */,
 				DA045ADC12E0FC2500F7DB69 /* MBProgressHUD.m in Sources */,
 				DA7A1A2E12E1CC56004DEEB7 /* ServiceEventTableViewCell.m in Sources */,
+				DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,9 +25,8 @@ typedef CXMLDocument OurXMLDocument;
  */
 @interface BaseXMLReader : NSObject
 {
-@private
-	BOOL	_finished; /*!< @brief Finished parsing? */
 @protected
+	BOOL	_done; /*!< @brief Finished parsing? */
 	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
 	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
 }
@@ -40,12 +39,5 @@ typedef CXMLDocument OurXMLDocument;
  @return Parsed XML Document.
  */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
-
-
-
-/*!
- @brief Finished parsing?
- */
-@property (readonly) BOOL finished;
 
 @end
