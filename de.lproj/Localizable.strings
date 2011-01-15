@@ -43,19 +43,19 @@
 /* No comment provided by engineer. */
 "About Receiver Title" = "Über den Receiver";
 
-/* No comment provided by engineer. */
+/* Used in MediaPlayer, add only the current folder */
 "Add" = "Ja, OHNE Unterordner";
 
 /* No comment provided by engineer. */
 "Add Folder" = "Ordner hinzufügen";
 
-/* No comment provided by engineer. */
+/* Used in MediaPlayer, add shown folders recursively */
 "Add recursively" = "Ja, MIT Unterordnern";
 
 /* No comment provided by engineer. */
 "Add Timer" = "Neuer Timer";
 
-/* No comment provided by engineer. */
+/* Used in MediaPlayer, append tracks to playlist */
 "Adding to Playlist" = "Füge Playlist an";
 
 /* No comment provided by engineer. */
@@ -396,7 +396,7 @@
 /* TabBar Title of CurrentViewController */
 "Playing" = "Aktive Sendung";
 
-/* No comment provided by engineer. */
+/* Used in MediaPlayer, append track to playlist and start playback */
 "Playing immediately" = "Sofortige Wiedergabe";
 
 /* Title of PlayListController */
@@ -429,7 +429,7 @@
 /* Title of Radio mode of ServiceListController */
 "Radio Services" = "Radiosender";
 
-/* No comment provided by engineer. */
+/* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
 "Really add all items in this folder?" = "Wirklich alle Dateien in diesem Ordner hinzufügen?";
 
 /* No comment provided by engineer. */

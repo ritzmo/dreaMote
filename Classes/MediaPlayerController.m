@@ -270,11 +270,11 @@
 - (IBAction)addFolderQuestion:(id)sender
 {
 	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:
-							NSLocalizedString(@"Really add all items in this folder?", @"")
+							NSLocalizedString(@"Really add all items in this folder?", @"Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist")
 							delegate: self
 							cancelButtonTitle:NSLocalizedString(@"Cancel", "")
-							destructiveButtonTitle:NSLocalizedString(@"Add recursively", @"")
-							otherButtonTitles: NSLocalizedString(@"Add", @""), nil];
+							destructiveButtonTitle:NSLocalizedString(@"Add recursively", @"Used in MediaPlayer, add shown folders recursively")
+							otherButtonTitles: NSLocalizedString(@"Add", @"Used in MediaPlayer, add only the current folder"), nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
@@ -284,9 +284,9 @@
 {
 	_adding = !_adding;
 	if(_adding)
-		_addPlayToggle.title = NSLocalizedString(@"Adding to Playlist", @"");
+		_addPlayToggle.title = NSLocalizedString(@"Adding to Playlist", @"Used in MediaPlayer, append tracks to playlist");
 	else
-		_addPlayToggle.title = NSLocalizedString(@"Playing immediately", @"");
+		_addPlayToggle.title = NSLocalizedString(@"Playing immediately", @"Used in MediaPlayer, append track to playlist and start playback");
 }
 
 - (void)addCurrentFolder
