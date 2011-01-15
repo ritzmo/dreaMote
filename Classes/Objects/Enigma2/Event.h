@@ -12,7 +12,7 @@
 
 #import "EventProtocol.h"
 
-@class GenericService;
+@protocol ServiceProtocol;
 
 /*!
  @brief Event in Enigma2.
@@ -23,7 +23,7 @@
 	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 	NSDate *_begin; /*!< @brief Begin. */
 	NSDate *_end; /*!< @brief End. */
-	GenericService *_service; /*!< @brief Cached Service. */
+	NSObject<ServiceProtocol> *_service; /*!< @brief Cached Service. */
 
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Event. */
 }

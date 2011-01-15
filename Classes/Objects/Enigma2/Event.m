@@ -7,7 +7,8 @@
 //
 
 #import "Event.h"
-#import "../Generic/Service.h"
+
+#import "Service.h"
 #import "../Generic/Event.h"
 
 #import "CXMLElement.h"
@@ -19,35 +20,7 @@
 - (NSObject<ServiceProtocol> *)service
 {
 	if(_service == nil)
-	{
-		const NSArray *resultNodes = nil;
-		NSString *sname = nil;
-		NSString *sref = nil;
-
-		resultNodes = [_node nodesForXPath:@"e2eventservicename" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			sname = [[currentChild stringValue] copy];
-			break;
-		}
-
-		resultNodes = [_node nodesForXPath:@"e2eventservicereference" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
-		{
-			sref = [[currentChild stringValue] copy];
-			break;
-		}
-
-		if(sname && sref)
-		{
-			_service = [[GenericService alloc] init];
-			_service.sname = sname;
-			_service.sref = sref;
-		}
-		[sname release];
-		[sref release];
-	}
-
+		_service = [[Enigma2Service alloc] initWithNode:_node];
 	return _service;
 }
 
@@ -93,14 +66,20 @@
 	NSArray *resultNodes = [_node nodesForXPath:@"e2eventtitle" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		return [resultElement stringValue];
+		NSString *title = [resultElement stringValue];
+		if([title isEqualToString:@"None"])
+			return nil;
+		return title;
 	}
 	// NOTE: Workaround for old WebInterface
 	// FIXME: remove after some time, but we should at least wait for the "major images" to ship a more recent WebInterface...
 	resultNodes = [_node nodesForXPath:@"e2eventname" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{
-		return [resultElement stringValue];
+		NSString *title = [resultElement stringValue];
+		if([title isEqualToString:@"None"])
+			return nil;
+		return title;
 	}
 	return nil;
 }
@@ -139,9 +118,11 @@
 		const NSArray *resultNodes = [_node nodesForXPath:@"e2eventstart" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
+			double begin = [[resultElement stringValue] doubleValue];
 			[_timeString release];
 			_timeString = nil;
-			_begin = [[NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]] retain];
+			if(begin)
+				_begin = [[NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]] retain];
 			break;
 		}
 	}
@@ -192,8 +173,8 @@
 	[_begin release];
 	[_end release];
 	[_node release];
-	[_service release];
 	[_timeString release];
+	[_service release];
 
 	[super dealloc];
 }
@@ -214,8 +195,12 @@
 	[_timeString release];
 	_timeString = nil;
 
+	// no begin, die quietly
 	if(self.begin == nil)
-		[NSException raise:@"ExcBeginNull" format:@""];
+	{
+		_end = nil;
+		return;
+	}
 
 	[_end release];
 	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
