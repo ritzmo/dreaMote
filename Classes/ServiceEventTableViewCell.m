@@ -90,6 +90,12 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 										   fontSize: kServiceEventEventSize
 											   bold:	NO];
 		[myContentView addSubview: _nextTimeLabel];
+
+		NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];
+		if([localeIdentifier isEqualToString:@"de"])
+			timeWidth = (IS_IPAD()) ? 100 : 80;
+		else // tested for en_US
+			timeWidth = (IS_IPAD()) ? 150 : 110;
 	}
 
 	return self;
@@ -220,12 +226,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	else
 	{
 		const NSInteger offset = (IS_IPAD()) ? 3 : 3;
-		NSInteger timeWidth = 0;
-		NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];
-		if([localeIdentifier isEqualToString:@"de"])
-			timeWidth = (IS_IPAD()) ? 100 : 80;
-		else // tested for en_US
-			timeWidth = (IS_IPAD()) ? 150 : 110;
 
 		// Base frame
 		CGRect frame = CGRectMake(kLeftMargin, 1, contentRect.size.width - kRightMargin, kServiceEventServiceSize + offset);

@@ -29,6 +29,7 @@ extern NSString *kServiceEventCell_ID;
 	UILabel *_nextLabel; /*!< @brief Next Event Label. */
 	UILabel *_nextTimeLabel; /*!< @brief Current Event Time Label. */
 	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
+	NSInteger timeWidth;
 }
 
 /*!
