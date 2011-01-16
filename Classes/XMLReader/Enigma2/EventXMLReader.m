@@ -47,6 +47,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 	{
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addEvent:);
+		_getServices = YES; // needed for similar search, we should fix that ;)
 	}
 	return self;
 }
@@ -58,6 +59,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 	{
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addNowEvent:);
+		_getServices = YES;
 	}
 	return self;
 }
@@ -69,6 +71,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 	{
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addNextEvent:);
+		_getServices = NO;
 	}
 	return self;
 }
@@ -121,10 +124,13 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 {
 	if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
-		GenericService *service = [[GenericService alloc] init];
 		self.currentEvent = [[[GenericEvent alloc] init] autorelease];
-		self.currentEvent.service = service;
-		[service release];
+		if(_getServices)
+		{
+			GenericService *service = [[GenericService alloc] init];
+			self.currentEvent.service = service;
+			[service release];
+		}
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2EventExtendedDescription, kEnigma2EventExtendedDescriptionLength)
 			||	!strncmp((const char *)localname, kEnigma2EventDescription, kEnigma2EventDescriptionLength)
@@ -133,8 +139,10 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 			||	!strncmp((const char *)localname, kEnigma2EventDuration, kEnigma2EventDurationLength)
 			||	!strncmp((const char *)localname, kEnigma2EventBegin, kEnigma2EventBeginLength)
 			||	!strncmp((const char *)localname, kEnigma2EventEventId, kEnigma2EventEventIdLength)
-			||	!strncmp((const char *)localname, kEnigma2EventSref, kEnigma2EventSrefLength)
-			||	!strncmp((const char *)localname, kEnigma2EventSname, kEnigma2EventSnameLength)
+			||	(_getServices && (
+					!strncmp((const char *)localname, kEnigma2EventSref, kEnigma2EventSrefLength)
+				||	!strncmp((const char *)localname, kEnigma2EventSname, kEnigma2EventSnameLength)
+			)	)
 		)
 	{
 		currentString = [[NSMutableString alloc] init];
@@ -181,22 +189,25 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 	{
 		_currentEvent.eit = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigma2EventSref, kEnigma2EventSrefLength))
+	else if(_getServices)
 	{
-		// if service begins with 1:64: this is a marker
-		if([[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
+		if(!strncmp((const char *)localname, kEnigma2EventSref, kEnigma2EventSrefLength))
 		{
-			// ignore value to mark service invalid
-			_currentEvent.service.sref = nil;
+			// if service begins with 1:64: this is a marker
+			if([[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
+			{
+				// ignore value to mark service invalid
+				_currentEvent.service.sref = nil;
+			}
+			else
+			{
+				_currentEvent.service.sref = currentString;
+			}
 		}
-		else
+		else if(!strncmp((const char *)localname, kEnigma2EventSname, kEnigma2EventSnameLength))
 		{
-			_currentEvent.service.sref = currentString;
+			_currentEvent.service.sname = currentString;
 		}
-	}
-	else if(!strncmp((const char *)localname, kEnigma2EventSname, kEnigma2EventSnameLength))
-	{
-		_currentEvent.service.sname = currentString;
 	}
 
 	// this either does nothing or releases the string that was in use
