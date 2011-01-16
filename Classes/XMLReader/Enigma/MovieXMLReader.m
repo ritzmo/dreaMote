@@ -8,6 +8,8 @@
 
 #import "MovieXMLReader.h"
 
+#import "Constants.h"
+
 #import "../../Objects/Enigma/Movie.h"
 #import "../../Objects/Generic/Movie.h"
 
@@ -19,7 +21,7 @@
 	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
-		_timeout = 20; // a lot higher timeout to allow to spin up hdd
+		_timeout = kDefaultTimeout * 4; // a lot higher timeout to allow to spin up hdd
 	}
 	return self;
 }

@@ -5,7 +5,10 @@
 //  Created by Moritz Venn on 31.12.08.
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
+
 #import "BaseXMLReader.h"
+
+#import "Constants.h"
 
 /*!
  @brief Private functions of BaseXMLReader.
@@ -30,7 +33,7 @@
 	if((self = [super init]))
 	{
 		_done = NO;
-		_timeout = 7; // set default timeout
+		_timeout = kDefaultTimeout;
 	}
 	return self;
 }
@@ -67,7 +70,7 @@
 		return nil;
 	}
 
-	NSURLRequest *request = [NSURLRequest requestWithURL: URL cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 50];
+	NSURLRequest *request = [NSURLRequest requestWithURL: URL cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: _timeout];
 	NSURLConnection *connection = [[NSURLConnection alloc]
 									initWithRequest:request
 									delegate:self

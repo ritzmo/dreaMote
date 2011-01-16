@@ -8,6 +8,8 @@
 
 #import "EventXMLReader.h"
 
+#import "Constants.h"
+
 #import "../../Objects/Generic/Event.h"
 #import "../../Objects/Generic/Service.h"
 
@@ -53,7 +55,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addEvent:);
 		_getServices = getServices;
-		_timeout = 13;
+		_timeout = kDefaultTimeout * 2; // encountered some services with a crazy long epg
 	}
 	return self;
 }

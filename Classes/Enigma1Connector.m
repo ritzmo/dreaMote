@@ -126,7 +126,7 @@ enum enigma1MessageTypes {
 
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -160,7 +160,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	[NSURLConnection sendSynchronousRequest: request
 						  returningResponse: &response error: nil];
 
@@ -339,7 +339,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -400,7 +400,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -452,7 +452,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	[NSURLConnection sendSynchronousRequest: request
 						  returningResponse: &response error: nil];
 
@@ -475,7 +475,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	[NSURLConnection sendSynchronousRequest: request
 						  returningResponse: &response error: nil];
 
@@ -508,7 +508,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -546,7 +546,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -599,7 +599,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -624,7 +624,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -662,7 +662,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	[NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -719,7 +719,7 @@ enum enigma1MessageTypes {
 	// Create URL Object and download it
 	NSHTTPURLResponse *response;
 	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 	NSData *data = [NSURLConnection sendSynchronousRequest: request
 										 returningResponse: &response error: nil];
 
@@ -770,7 +770,7 @@ enum enigma1MessageTypes {
 		// Create URL Object and download it
 		NSURLResponse *response;
 		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 		NSData *data = [NSURLConnection sendSynchronousRequest: request
 											returningResponse: &response error: nil];
 
@@ -789,7 +789,7 @@ enum enigma1MessageTypes {
 		// Create URL Object and download it
 		NSURLResponse *response;
 		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 		NSData *data = [NSURLConnection sendSynchronousRequest: request
 											returningResponse: &response error: nil];
 
@@ -809,7 +809,7 @@ enum enigma1MessageTypes {
 
 		// Create URL Object and download it
 		request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: 5];
+											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
 		data = [NSURLConnection sendSynchronousRequest: request
 											returningResponse: &response error: nil];
 

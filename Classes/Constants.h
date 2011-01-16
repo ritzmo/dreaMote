@@ -66,6 +66,9 @@ extern NSString *kFontName;
 #define kTimerTimeTextSize		((IS_IPAD()) ? 15 : 12)
 #define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
 
+// default timeout
+#define kDefaultTimeout			7
+
 //
 extern NSString *kVanilla_ID;
 
