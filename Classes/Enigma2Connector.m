@@ -244,7 +244,7 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
-	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:NO];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
@@ -255,7 +255,7 @@ enum enigma2MessageTypes {
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title urlencodeWithEncoding:NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
 
-	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegate: delegate];
+	const BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
