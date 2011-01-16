@@ -8,25 +8,16 @@
 
 #import "TimerXMLReader.h"
 
+#import "Constants.h"
 #import "../../Objects/Generic/Service.h"
 #import "../../Objects/Generic/Timer.h"
 
 static const char *kEnigma2TimerElement = "e2timer";
 static const NSUInteger kEnigma2TimerElementLength = 8;
-static const char *kEnigma2TimerSref = "e2servicereference";
-static const NSUInteger kEnigma2TimerSrefLength = 19;
-static const char *kEnigma2TimerSname = "e2servicename";
-static const NSUInteger kEnigma2TimerSnameLength = 14;
 static const char *kEnigma2TimerEventId = "e2eit";
 static const NSUInteger kEnigma2TimerEventIdLength = 6;
 static const char *kEnigma2TimerName = "e2name";
 static const NSUInteger kEnigma2TimerNameLength = 7;
-static const char *kEnigma2TimerDescription = "e2description";
-static const NSUInteger kEnigma2TimerDescriptionLength = 14;
-#if 0
-static const char *kEnigma2TimerDescriptionExtended = "e2descriptionextended";
-static const NSUInteger kEnigma2TimerDescriptionExtendedLength = 22;
-#endif
 static const char *kEnigma2TimerDisabled = "e2disabled";
 static const NSUInteger kEnigma2TimerDisabledLength = 11;
 static const char *kEnigma2TimerBegin = "e2timebegin";
@@ -134,13 +125,13 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 		currentTimer.service = service;
 		[service release];
 	}
-	else if(	!strncmp((const char *)localname, kEnigma2TimerSref, kEnigma2TimerSrefLength)
-			||	!strncmp((const char *)localname, kEnigma2TimerSname, kEnigma2TimerSnameLength)
+	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
+			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)
 			||	!strncmp((const char *)localname, kEnigma2TimerEventId, kEnigma2TimerEventIdLength)
 			||	!strncmp((const char *)localname, kEnigma2TimerName, kEnigma2TimerNameLength)
-			||	!strncmp((const char *)localname, kEnigma2TimerDescription, kEnigma2TimerDescriptionLength)
+			||	!strncmp((const char *)localname, kEnigma2Description, kEnigma2DescriptionLength)
 #if 0
-			||	!strncmp((const char *)localname, kEnigma2TimerDescriptionExtended, kEnigma2TimerDescriptionExtendedLength)
+			||	!strncmp((const char *)localname, kEnigma2DescriptionExtended, kEnigma2DescriptionExtendedLength)
 #endif
 			||	!strncmp((const char *)localname, kEnigma2TimerDisabled, kEnigma2TimerDisabledLength)
 			||	!strncmp((const char *)localname, kEnigma2TimerBegin, kEnigma2TimerBeginLength)
@@ -164,11 +155,11 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 									withObject: currentTimer
 								 waitUntilDone: NO];
 	}
-	else if(!strncmp((const char *)localname, kEnigma2TimerSref, kEnigma2TimerSrefLength))
+	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
 		currentTimer.service.sref = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigma2TimerSname, kEnigma2TimerSnameLength))
+	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
 		currentTimer.service.sname = currentString;
 	}
@@ -180,12 +171,12 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 	{
 		currentTimer.title = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigma2TimerDescription, kEnigma2TimerDescriptionLength))
+	else if(!strncmp((const char *)localname, kEnigma2Description, kEnigma2DescriptionLength))
 	{
 		currentTimer.tdescription = currentString;
 	}
 #if 0
-	else if(!strncmp((const char *)localname, kEnigma2TimerDescriptionExtended, kEnigma2TimerDescriptionExtendedLength))
+	else if(!strncmp((const char *)localname, kEnigma2DescriptionExtended, kEnigma2DescriptionExtendedLength))
 	{
 		currentTimer.edescription = currentString;
 	}

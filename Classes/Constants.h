@@ -89,3 +89,13 @@ extern NSString *kVibratingRC;
 extern NSString *kConnectionTest;
 extern NSString *kMessageTimeout;
 extern NSString *kPrefersSimpleRemote;
+
+// shared e2 xml element names
+extern const char *kEnigma2Servicereference;
+#define kEnigma2ServicereferenceLength 19
+extern const char *kEnigma2Servicename;
+#define kEnigma2ServicenameLength 14
+extern const char *kEnigma2Description;
+#define kEnigma2DescriptionLength 14
+extern const char *kEnigma2DescriptionExtended;
+#define kEnigma2DescriptionExtendedLength 22

@@ -8,20 +8,13 @@
 
 #import "MovieXMLReader.h"
 
+#import "Constants.h"
 #import "../../Objects/Generic/Movie.h"
 
 static const char *kEnigma2MovieElement = "e2movie";
 static const NSUInteger kEnigma2MovieElementLength = 7;
-static const char *kEnigma2MovieSref = "e2servicereference";
-static const NSUInteger kEnigma2MovieSrefLength = 19;
 static const char *kEnigma2MovieTitle = "e2title";
 static const NSUInteger kEnigma2MovieTitleLength = 8;
-static const char *kEnigma2MovieDescription = "e2description";
-static const NSUInteger kEnigma2MovieDescriptionLength = 14;
-static const char *kEnigma2MovieExtendedDescription = "e2descriptionextended";
-static const NSUInteger kEnigma2MovieExtendedDescriptionLength = 21;
-static const char *kEnigma2MovieSname = "e2servicename";
-static const NSUInteger kEnigma2MovieSnameLength = 14;
 static const char *kEnigma2MovieTime = "e2time";
 static const NSUInteger kEnigma2MovieTimeLength = 7;
 static const char *kEnigma2MovieLength = "e2length";
@@ -106,12 +99,12 @@ Example:
 	{
 		self.currentMovie = [[[GenericMovie alloc] init] autorelease];
 	}
-	else if(	!strncmp((const char *)localname, kEnigma2MovieSref, kEnigma2MovieSrefLength)
+	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieTitle, kEnigma2MovieTitleLength)
-			||  !strncmp((const char *)localname, kEnigma2MovieExtendedDescription, kEnigma2MovieExtendedDescriptionLength)
-			||	!strncmp((const char *)localname, kEnigma2MovieDescription, kEnigma2MovieDescriptionLength)
+			||  !strncmp((const char *)localname, kEnigma2DescriptionExtended, kEnigma2DescriptionExtendedLength)
+			||	!strncmp((const char *)localname, kEnigma2Description, kEnigma2DescriptionLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieTime, kEnigma2MovieTimeLength)
-			||	!strncmp((const char *)localname, kEnigma2MovieSname, kEnigma2MovieSnameLength)
+			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieLength, kEnigma2MovieLengthLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieTags, kEnigma2MovieTagsLength)
 #if 0
@@ -132,11 +125,11 @@ Example:
 									withObject: currentMovie
 								 waitUntilDone: NO];
 	}
-	else if(!strncmp((const char *)localname, kEnigma2MovieExtendedDescription, kEnigma2MovieExtendedDescriptionLength))
+	else if(!strncmp((const char *)localname, kEnigma2DescriptionExtended, kEnigma2DescriptionExtendedLength))
 	{
 		currentMovie.edescription = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigma2MovieDescription, kEnigma2MovieDescriptionLength))
+	else if(!strncmp((const char *)localname, kEnigma2Description, kEnigma2DescriptionLength))
 	{
 		currentMovie.sdescription = currentString;
 	}
@@ -176,11 +169,11 @@ Example:
 	{
 		currentMovie.size = [NSNumber numberWithLongLong: [currentString longLongValue]];;
 	}
-	else if(!strncmp((const char *)localname, kEnigma2MovieSref, kEnigma2MovieSrefLength))
+	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
 		currentMovie.sref = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigma2MovieSname, kEnigma2MovieSnameLength))
+	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
 		currentMovie.sname = currentString;
 	}
