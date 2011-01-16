@@ -64,9 +64,22 @@
 		if(error)
 			*error = localError;
 		[self sendErroneousObject];
+
 		// delegate wants to be informated about errors
-		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
-			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:localError];
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
+		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
+		{
+			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+			[invocation retainArguments];
+			[invocation setTarget:_delegate];
+			[invocation setSelector:errorParsing];
+			[invocation setArgument:&self atIndex:2];
+			[invocation setArgument:&_parser atIndex:3];
+			[invocation setArgument:&localError atIndex:4];
+			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+									  waitUntilDone:NO];
+		}
 		return nil;
 	}
 
@@ -100,9 +113,22 @@
 	if(!_parser.success)
 	{
 		[self sendErroneousObject];
+
 		// delegate wants to be informated about errors
-		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
-			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:localError];
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
+		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
+		{
+			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+			[invocation retainArguments];
+			[invocation setTarget:_delegate];
+			[invocation setSelector:errorParsing];
+			[invocation setArgument:&self atIndex:2];
+			[invocation setArgument:&_parser atIndex:3];
+			[invocation setArgument:&localError atIndex:4];
+			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+									  waitUntilDone:NO];
+		}
 		return nil;
 
 	}
@@ -128,17 +154,42 @@
 		if(error)
 			*error = localError;
 		[self sendErroneousObject];
+
 		// delegate wants to be informated about errors
-		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
-			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:localError];
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
+		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
+		{
+			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+			[invocation retainArguments];
+			[invocation setTarget:_delegate];
+			[invocation setSelector:errorParsing];
+			[invocation setArgument:&self atIndex:2];
+			[invocation setArgument:&_parser atIndex:3];
+			[invocation setArgument:&localError atIndex:4];
+			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+									  waitUntilDone:NO];
+		}
 		return nil;
 	}
 #endif
 
 	[self parseFull];
+
 	// delegate wants to be informated about parsing end
-	if(_delegate && !localError && [_delegate respondsToSelector:@selector(dataSourceDelegate:finishedParsingDocument:)])
-		[_delegate dataSourceDelegate:self finishedParsingDocument:nil];
+	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
+	if(_delegate && [_delegate respondsToSelector:finishedParsing] && sig)
+	{
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:_delegate];
+		[invocation setSelector:finishedParsing];
+		[invocation setArgument:&self atIndex:2];
+		[invocation setArgument:&_parser atIndex:3];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
 	return _parser;
 }
 
