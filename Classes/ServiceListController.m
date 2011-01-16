@@ -298,7 +298,7 @@
 	{
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationRight];
+		[_tableView reloadData];
 
 		// Alert user
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
@@ -317,7 +317,7 @@
 	{
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationRight];
+		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 
@@ -330,11 +330,10 @@
 {
 	if(event != nil)
 	{
-		//const NSInteger idx = _mainList.count;
+		const NSInteger idx = _mainList.count;
 		[_mainList addObject: event];
-		/*[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 						  withRowAnimation: UITableViewRowAnimationLeft];
-		 */
 	}
 }
 
