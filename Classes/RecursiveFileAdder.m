@@ -39,20 +39,8 @@
 /* add file to list */
 - (void)addFile: (NSObject<FileProtocol> *)file
 {
-	// end of list
-	if(file == nil)
-	{
-		if([_remainingPaths count])
-		{
-			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
-		}
-		else
-		{
-			[_delegate recursiveFileAdderDoneAddingFiles:self]; 
-		}
-	}
 	// directory
-	else if(file.isDirectory)
+	if(file.isDirectory)
 	{
 		// check if this is ".."
 		NSString *sref = file.sref;
@@ -64,7 +52,7 @@
 		[_remainingPaths addObject:sref];
 	}
 	// file
-	else
+	else if(file != nil)
 	{
 		[_delegate recursiveFileAdder:self addFile:file];
 	}
@@ -86,6 +74,44 @@
 {
 	self.delegate = delegate;
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// alert user
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+														  message:[error localizedDescription]
+														 delegate:nil
+												cancelButtonTitle:@"OK"
+												otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+
+	// TODO: is it a good idea to try to continue at any cost?
+	if([_remainingPaths count])
+	{
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	}
+	else
+	{
+		[_delegate recursiveFileAdderDoneAddingFiles:self];
+	}
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	if([_remainingPaths count])
+	{
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	}
+	else
+	{
+		[_delegate recursiveFileAdderDoneAddingFiles:self];
+	}
 }
 
 @end
