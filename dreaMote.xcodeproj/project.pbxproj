@@ -43,6 +43,7 @@
 		DA12F88812DBB48E009FF8DD /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F88712DBB48E009FF8DD /* Metadata.m */; };
 		DA12F89912DBB52B009FF8DD /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F89812DBB52B009FF8DD /* Metadata.m */; };
 		DA12F8C512DBB7C5009FF8DD /* MetadataXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F8C412DBB7C5009FF8DD /* MetadataXMLReader.m */; };
+		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
@@ -294,6 +295,7 @@
 		DA12F8B412DBB703009FF8DD /* MetadataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataSourceDelegate.h; sourceTree = "<group>"; };
 		DA12F8C312DBB7C5009FF8DD /* MetadataXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataXMLReader.h; sourceTree = "<group>"; };
 		DA12F8C412DBB7C5009FF8DD /* MetadataXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataXMLReader.m; sourceTree = "<group>"; };
+		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
 		DA2713250D84056800C25B85 /* EventListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListController.h; sourceTree = "<group>"; };
@@ -612,6 +614,7 @@
 				DAF0D5460E38FF16001F7CF1 /* ViewController */,
 				DA7D23630F101F1500BB8BE7 /* XMLReader */,
 				DA7FD7720D84345100974B1A /* Constants.h */,
+				DA1870F212E2854E0034E74B /* Constants.m */,
 				DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */,
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
 				DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */,
@@ -1499,6 +1502,7 @@
 				DA045ADC12E0FC2500F7DB69 /* MBProgressHUD.m in Sources */,
 				DA7A1A2E12E1CC56004DEEB7 /* ServiceEventTableViewCell.m in Sources */,
 				DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */,
+				DA1870F312E2854E0034E74B /* Constants.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
