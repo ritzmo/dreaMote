@@ -9,7 +9,7 @@
 #import "Constants.h"
 #import "MovieTableViewCell.h"
 
-#import "FuzzyDateFormatter.h"
+#import "NSDateFormatter+FuzzyFormatting.h"
 
 /*!
  @brief Cell identifier for this cell.
@@ -95,7 +95,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 	// Set new label contents
 	_eventNameLabel.text = newMovie.title;
-	_eventTimeLabel.text = [_formatter stringFromDate: newMovie.time];
+	_eventTimeLabel.text = [_formatter fuzzyDate: newMovie.time];
 
 	// Redraw
 	[self setNeedsDisplay];

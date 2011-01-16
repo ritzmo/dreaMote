@@ -9,6 +9,8 @@
 #import "Constants.h"
 #import "EventTableViewCell.h"
 
+#import "NSDateFormatter+FuzzyFormatting.h"
+
 /*!
  @brief Cell identifier for this cell.
  */
@@ -109,7 +111,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	{
 		// Not generated, do so...
 		[_formatter setDateStyle:NSDateFormatterMediumStyle];
-		const NSString *begin = [_formatter stringFromDate: newEvent.begin];
+		const NSString *begin = [_formatter fuzzyDate: newEvent.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
 		const NSString *end = [_formatter stringFromDate: newEvent.end];
 		if(begin && end)

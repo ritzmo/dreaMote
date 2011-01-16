@@ -15,7 +15,6 @@
 
 // Forward Declarations...
 @class CXMLDocument;
-@class FuzzyDateFormatter;
 
 /*!
  @brief Timer List.
@@ -34,7 +33,7 @@
 @private
 	NSMutableArray *_timers; /*!< @brief Timer List. */
 	NSInteger _dist[kTimerStateMax]; /*!< @brief Offset of State in Timer List. */
-	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	TimerViewController *_timerViewController; /*!< @brief Cached Timer Detail View. */
 	BOOL _willReappear; /*!< @brief Used to guard free of ressources on close if we are opening a subview. */
 	BOOL _isSplit; /*!< @brief Split mode? */
@@ -50,7 +49,7 @@
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
+@property (nonatomic, retain) NSDateFormatter *dateFormatter;
 
 /*!
  @brief Controlled by a split view controller?

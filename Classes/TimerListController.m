@@ -10,9 +10,9 @@
 
 #import "TimerViewController.h"
 
+#import "NSDateFormatter+FuzzyFormatting.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-#import "FuzzyDateFormatter.h"
 
 #import "TimerTableViewCell.h"
 
@@ -34,7 +34,8 @@
 	{
 		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
-		self.dateFormatter = [FuzzyDateFormatter sharedFormatter];
+		_dateFormatter = [[NSDateFormatter alloc] init];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_timerViewController = nil;
 		_willReappear = NO;
 		_isSplit = NO;
@@ -152,7 +153,7 @@
 		}
 	}
 
-	// Reset reference date of FuzzyDateFormatter
+	// Reset reference date of date formatter
 	[_dateFormatter resetReferenceDate];
 }
 

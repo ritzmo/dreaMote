@@ -9,8 +9,9 @@
 #import "EventViewController.h"
 
 #import "TimerViewController.h"
-#import "FuzzyDateFormatter.h"
 #import "RemoteConnectorObject.h"
+
+#import "NSDateFormatter+FuzzyFormatting.h"
 
 #import "EventTableViewCell.h"
 #import "CellTextView.h"
@@ -30,7 +31,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Event", @"");
-		_dateFormatter = [[FuzzyDateFormatter sharedFormatter] retain];
+		_dateFormatter = [[NSDateFormatter alloc] init];
 		_event = nil;
 		_similarFetched = NO;
 		_similarEvents = [[NSMutableArray array] retain];
@@ -185,7 +186,9 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	return [_dateFormatter stringFromDate: dateTime];
+	[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+	return [_dateFormatter fuzzyDate: dateTime];
 }
 
 - (UIButton *)create_AddTimerButton

@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Objects/MovieProtocol.h"
 
-#import "FuzzyDateFormatter.h"
 
 /*!
  @brief Cell identifier for this cell.
@@ -25,7 +24,7 @@ extern NSString *kMovieCell_ID;
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
 	UILabel *_eventNameLabel; /*!< @brief Name Label. */
 	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
-	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
+	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
 /*!
@@ -46,7 +45,7 @@ extern NSString *kMovieCell_ID;
 /*!
  @brief Date Formatter instance.
  */
-@property (nonatomic, retain) FuzzyDateFormatter *formatter;
+@property (nonatomic, retain) NSDateFormatter *formatter;
 
 @end
 

@@ -11,9 +11,9 @@
 #import "MovieTableViewCell.h"
 #import "MovieViewController.h"
 
+#import "NSDateFormatter+FuzzyFormatting.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-#import "FuzzyDateFormatter.h"
 
 #import "MovieProtocol.h"
 
@@ -42,7 +42,9 @@
 		_refreshMovies = YES;
 		_isSplit = NO;
 
-		_dateFormatter = [[FuzzyDateFormatter sharedFormatter] retain];
+		_dateFormatter = [[NSDateFormatter alloc] init];
+		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		_movieViewController = nil;
 

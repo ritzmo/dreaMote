@@ -11,7 +11,8 @@
 #import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
 #import "Constants.h"
-#import "FuzzyDateFormatter.h"
+
+#import "NSDateFormatter+FuzzyFormatting.h"
 
 #import "CellTextView.h"
 #import "DisplayCell.h"
@@ -165,8 +166,12 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	const FuzzyDateFormatter *format = [FuzzyDateFormatter sharedFormatter];
-	return [format stringFromDate: dateTime];
+	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
+	NSString *dateString = [format fuzzyDate: dateTime];
+	[format release];
+	return dateString;
 }
 
 - (UIButton *)create_PlayButton

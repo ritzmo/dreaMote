@@ -16,7 +16,6 @@
 
 // Forward declarations...
 @class CXMLDocument;
-@class FuzzyDateFormatter;
 
 /*!
  @brief Current View.
@@ -34,7 +33,7 @@
 	UITextView *_nowSummary; /*!< @brief Summary of current event. */
 	UITextView *_nextSummary; /*!< @brief Summary of next event. */
 
-	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	CXMLDocument *_currentXMLDoc; /*!< @brief Current XML Document. */
 }
 

@@ -206,7 +206,7 @@
 		DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB9FC12CD61BC00BAF10B /* OtherListController.m */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
-		DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */; };
+		DAF42A9E0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */; };
 		DAFBA40812D8EFF60059B5C4 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA40712D8EFF60059B5C4 /* About.m */; };
 		DAFBA43112D8F3150059B5C4 /* Harddisk.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA43012D8F3150059B5C4 /* Harddisk.m */; };
 		DAFBA47E12D8F8870059B5C4 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA47D12D8F8870059B5C4 /* AboutViewController.m */; };
@@ -557,8 +557,8 @@
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetSplitViewController.h; sourceTree = "<group>"; };
 		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
-		DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FuzzyDateFormatter.h; sourceTree = "<group>"; };
-		DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FuzzyDateFormatter.m; sourceTree = "<group>"; };
+		DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+FuzzyFormatting.h"; sourceTree = "<group>"; };
+		DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+FuzzyFormatting.m"; sourceTree = "<group>"; };
 		DAFBA40612D8EFF60059B5C4 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
 		DAFBA40712D8EFF60059B5C4 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
 		DAFBA41D12D8F1830059B5C4 /* AboutProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutProtocol.h; sourceTree = "<group>"; };
@@ -609,8 +609,6 @@
 				DA1870F212E2854E0034E74B /* Constants.m */,
 				DAD52A710D89E1BE000DB1A1 /* DatePickerController.h */,
 				DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */,
-				DAF42A9C0E446BAB00954079 /* FuzzyDateFormatter.h */,
-				DAF42A9D0E446BAB00954079 /* FuzzyDateFormatter.m */,
 				DA1181FF12DFAEEC00796389 /* RecursiveFileAdder.h */,
 				DA11820012DFAEEC00796389 /* RecursiveFileAdder.m */,
 			);
@@ -828,6 +826,8 @@
 			isa = PBXGroup;
 			children = (
 				DABF639F10F8BE3E002658DD /* Insort */,
+				DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */,
+				DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */,
 				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
 				DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */,
 			);
@@ -1387,7 +1387,7 @@
 				DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */,
 				DA5247E60E3B3A3500B09600 /* EditableTableViewCell.m in Sources */,
 				DA5247EC0E3B3A7500B09600 /* DisplayCell.m in Sources */,
-				DAF42A9E0E446BAB00954079 /* FuzzyDateFormatter.m in Sources */,
+				DAF42A9E0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m in Sources */,
 				DA7DEB050E8310AA00B15F7C /* Enigma1Connector.m in Sources */,
 				DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */,
 				DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */,

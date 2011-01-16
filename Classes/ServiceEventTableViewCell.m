@@ -130,12 +130,10 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			if(new.timeString == nil)
 			{
 				// Not generated, do so...
-				[_formatter setDateStyle:NSDateFormatterNoStyle];
 				const NSString *begin = [_formatter stringFromDate: beginDate];
 				const NSString *end = [_formatter stringFromDate: new.end];
 				if(begin && end)
 					new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
-				[_formatter setDateStyle:NSDateFormatterMediumStyle];
 			}
 
 			_nowLabel.text = new.title;
@@ -194,12 +192,10 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		if(new.timeString == nil)
 		{
 			// Not generated, do so...
-			[_formatter setDateStyle:NSDateFormatterNoStyle];
 			const NSString *begin = [_formatter stringFromDate: beginDate];
 			const NSString *end = [_formatter stringFromDate: new.end];
 			if(begin && end)
 				new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
-			[_formatter setDateStyle:NSDateFormatterMediumStyle];
 		}
 
 		_nextLabel.text = new.title;

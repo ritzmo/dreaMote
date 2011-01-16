@@ -12,7 +12,6 @@
 #import "ReloadableListController.h"
 
 // Forward declarations...
-@class FuzzyDateFormatter;
 @class MovieViewController;
 @class CXMLDocument;
 
@@ -30,7 +29,7 @@
 @private
 	UIPopoverController *popoverController;
 	NSMutableArray *_movies; /*!< @brief Movie List. */
-	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
 	CXMLDocument *_movieXMLDoc; /*!< Current Movie XML Document. */

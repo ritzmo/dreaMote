@@ -13,7 +13,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "FuzzyDateFormatter.h"
+#import "NSDateFormatter+FuzzyFormatting.h"
 
 #import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
@@ -36,7 +36,8 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
-		self.dateFormatter = [FuzzyDateFormatter sharedFormatter];
+		_dateFormatter = [[NSDateFormatter alloc] init];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];

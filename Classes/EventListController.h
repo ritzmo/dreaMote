@@ -13,7 +13,6 @@
 
 // Forward declarations...
 @protocol ServiceProtocol;
-@class FuzzyDateFormatter;
 @class EventViewController;
 @class CXMLDocument;
 
@@ -30,7 +29,7 @@
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Current Service. */
-	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
@@ -54,6 +53,6 @@
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) FuzzyDateFormatter *dateFormatter;
+@property (nonatomic, retain) NSDateFormatter *dateFormatter;
 
 @end

@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "Objects/EventProtocol.h"
 
-#import "FuzzyDateFormatter.h"
-
 /*!
  @brief Cell identifier for this cell.
  */
@@ -26,7 +24,7 @@ extern NSString *kEventCell_ID;
 	UILabel *_eventNameLabel; /*!< @brief Name Label. */
 	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
 	UILabel *_eventServiceLabel; /*!< @brief Service Label. */
-	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
+	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 	BOOL _showService; /*!< @brief Display service name? */
 }
 
@@ -53,7 +51,7 @@ extern NSString *kEventCell_ID;
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) FuzzyDateFormatter *formatter;
+@property (nonatomic, retain) NSDateFormatter *formatter;
 
 /*!
  @brief Display service name?

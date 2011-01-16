@@ -14,7 +14,6 @@
 
 // Forward declarations...
 @class CXMLDocument;
-@class FuzzyDateFormatter;
 
 /*!
  @brief Event View.
@@ -32,7 +31,7 @@
 	BOOL _similarFetched; /*!< @brief List of similar Events was already fetched. */
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
 
-	FuzzyDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	CXMLDocument *_eventXMLDoc; /*!< @brief Current Event XML Document. */
 }
 

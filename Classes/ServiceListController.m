@@ -45,6 +45,7 @@
 		_delegate = nil;
 		_supportsNowNext = NO;
 		_dateFormatter = [[NSDateFormatter alloc] init];
+		[_dateFormatter setDateStyle:NSDateFormatterNoStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
@@ -297,7 +298,7 @@
 	{
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
+		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationRight];
 
 		// Alert user
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
@@ -316,7 +317,7 @@
 	{
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
+		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationRight];
 	}
 }
 
@@ -329,10 +330,10 @@
 {
 	if(event != nil)
 	{
-		const NSInteger idx = [_mainList count];
+		const NSInteger idx = _mainList.count;
 		[_mainList addObject: event];
 		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-						  withRowAnimation: UITableViewRowAnimationNone];
+						  withRowAnimation: UITableViewRowAnimationLeft];
 	}
 }
 
@@ -361,7 +362,7 @@
 		const NSInteger idx = [_mainList count];
 		[_mainList addObject: service];
 		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-						  withRowAnimation: UITableViewRowAnimationNone];
+						  withRowAnimation: UITableViewRowAnimationLeft];
 	}
 }
 

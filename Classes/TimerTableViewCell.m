@@ -9,7 +9,7 @@
 #import "TimerTableViewCell.h"
 
 #import "Constants.h"
-
+#import "NSDateFormatter+FuzzyFormatting.h"
 #import "Service.h"
 
 /*!
@@ -108,12 +108,12 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	if(newTimer.timeString == nil)
 	{
 		// It's not, create it
-		const NSString *begin = [_formatter stringFromDate: newTimer.begin];
+		[_formatter setDateStyle:NSDateFormatterMediumStyle];
+		const NSString *begin = [_formatter fuzzyDate: newTimer.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
 		const NSString *end = [_formatter stringFromDate: newTimer.end];
 		if(begin && end)
 			newTimer.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
-		[_formatter setDateStyle:NSDateFormatterMediumStyle];
 	}
 
 	// Change label texts

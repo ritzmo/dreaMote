@@ -1,26 +1,26 @@
 //
-//  FuzzyDateFormatter.h
+//  NSDateFormatter+FuzzyFormatting.h
 //  dreaMote
 //
 //  Created by Moritz Venn on 02.08.08.
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 /*!
  @brief A "Fuzzy" DateFormatter.
  
  Partially resolves the date to ease readability by a human user.
  */
-@interface FuzzyDateFormatter : NSDateFormatter
-{
-@private
-	NSDate *_thisNight; /*!< @brief Cached NSDate refering to 00:00 today. */
-}
+@interface NSDateFormatter(FuzzyFormatting)
 
 /*!
- @brief Shared formatter
+ @brief Request a fuzzy date.
+
+ @param date Date to format.
  */
-+ (FuzzyDateFormatter *)sharedFormatter;
+- (NSString *)fuzzyDate:(NSDate *)date;
 
 /*!
  @brief Request a reset of the reference date.

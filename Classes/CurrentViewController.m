@@ -8,7 +8,6 @@
 
 #import "CurrentViewController.h"
 
-#import "FuzzyDateFormatter.h"
 #import "RemoteConnectorObject.h"
 
 #import "EventTableViewCell.h"
@@ -29,7 +28,9 @@
 	{
 		self.title = NSLocalizedString(@"Currently playing", @"");
 		self.tabBarItem.title = NSLocalizedString(@"Playing", @"TabBar Title of CurrentViewController");
-		_dateFormatter = [[FuzzyDateFormatter sharedFormatter] retain];
+		_dateFormatter = [[NSDateFormatter alloc] init];
+		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_now = nil;
 		_next = nil;
 		_service = nil;

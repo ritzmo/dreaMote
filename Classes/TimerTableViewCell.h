@@ -10,8 +10,6 @@
 
 #import "Objects/TimerProtocol.h"
 
-#import "FuzzyDateFormatter.h"
-
 /*!
  @brief Cell identifier for this cell.
  */
@@ -27,7 +25,7 @@ extern NSString *kTimerCell_ID;
 	UILabel *_serviceNameLabel; /*!< @brief Service Label. */
 	UILabel *_timerNameLabel; /*!< @brief Name Label. */
 	UILabel *_timerTimeLabel; /*!< @brief Time Label. */
-	FuzzyDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
+	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
 /*!
@@ -53,6 +51,6 @@ extern NSString *kTimerCell_ID;
 /*!
  @brief Date Formatter instance.
  */
-@property (nonatomic, retain) FuzzyDateFormatter *formatter;
+@property (nonatomic, retain) NSDateFormatter *formatter;
 
 @end

@@ -14,9 +14,10 @@
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-#import "FuzzyDateFormatter.h"
 
 #import "DisplayCell.h"
+
+#import "NSDateFormatter+FuzzyFormatting.h"
 
 #import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Result.h"
@@ -365,9 +366,12 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	// Date Formatter
-	const FuzzyDateFormatter *format = [FuzzyDateFormatter sharedFormatter];
-	return [format stringFromDate: dateTime];
+	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
+	NSString *dateString = [format fuzzyDate: dateTime];
+	[format release];
+	return dateString;
 }
 
 - (UITextField *)allocTextField
