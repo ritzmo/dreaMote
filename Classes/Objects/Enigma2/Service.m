@@ -16,7 +16,7 @@
 
 - (NSString *)sref
 {
-	NSArray *resultNodes = [_node nodesForXPath:kEnigma2Servicereference error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -36,7 +36,7 @@
 
 - (NSString *)sname
 {
-	NSArray *resultNodes = [_node nodesForXPath:kEnigma2Servicename error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicerename" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
