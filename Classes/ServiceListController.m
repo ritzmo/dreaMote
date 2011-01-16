@@ -245,10 +245,12 @@
 	{
 		[NSThread detachNewThreadSelector:@selector(fetchNextData) toTarget:self withObject:nil];
 		[NSThread detachNewThreadSelector:@selector(fetchNowData) toTarget:self withObject:nil];
+		pendingRequests = 2;
 	}
 	else
 	{
 		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
+		pendingRequests = 1;
 	}
 	[pool release];
 }
@@ -285,6 +287,40 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// NOTE: this might hide an error, but we prefer missing one over getting the same one twice
+	if(--pendingRequests == 0)
+	{
+		[_tableView reloadData];
+		_reloading = NO;
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+															  message:[error localizedDescription]
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	if(--pendingRequests == 0)
+	{
+		[_tableView reloadData];
+		_reloading = NO;
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	}
+}
+
+#pragma mark -
 #pragma mark NowSourceDelegate
 #pragma mark -
 
@@ -310,13 +346,6 @@
 	{
 		[_subList addObject: event];
 	}
-	else
-	{
-		[_tableView reloadData];
-		_reloading = NO;
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	}
-
 }
 
 #pragma mark -

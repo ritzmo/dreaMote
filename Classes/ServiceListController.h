@@ -33,7 +33,8 @@
 													UISplitViewControllerDelegate>
 {
 @private
-	UIPopoverController *popoverController;
+	NSInteger pendingRequests; /*!< @brief Number of currently pending requests. */
+	UIPopoverController *popoverController; /*!< @brief Popover Controller. */
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
