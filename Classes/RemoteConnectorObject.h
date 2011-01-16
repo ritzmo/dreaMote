@@ -85,6 +85,14 @@
 + (BOOL)usesAdvancedRemote;
 
 /*!
+ @brief Returns if service list should show now/next.
+ @note This function is required for Enigma2 to function properly in said mode.
+
+ @return YES if service list should show now/next.
+ */
++ (BOOL)showNowNext;
+
+/*!
  @brief Returns Id of currently active Connection.
  @note If active Connection is not found in List of known Connections this function
  returns the Id of current default Connection.

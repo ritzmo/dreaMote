@@ -99,7 +99,7 @@
 	self.title = new.sname;
 
 	// Free Caches and reload data
-	_supportsNowNext = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesNowNext];
+	_supportsNowNext = [RemoteConnectorObject showNowNext];
 	[self emptyData];
 	_refreshServices = NO;
 
@@ -206,7 +206,7 @@
 	 */
 	if(_refreshServices && _bouquet == nil)
 	{
-		_supportsNowNext = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesNowNext];
+		_supportsNowNext = [RemoteConnectorObject showNowNext];
 
 		[self emptyData];
 
@@ -243,14 +243,14 @@
 	_reloading = YES;
 	if(_supportsNowNext)
 	{
+		pendingRequests = 2;
 		[NSThread detachNewThreadSelector:@selector(fetchNextData) toTarget:self withObject:nil];
 		[NSThread detachNewThreadSelector:@selector(fetchNowData) toTarget:self withObject:nil];
-		pendingRequests = 2;
 	}
 	else
 	{
-		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
 		pendingRequests = 1;
+		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
 	}
 	[pool release];
 }
@@ -329,8 +329,9 @@
 {
 	if(event != nil)
 	{
+		const NSInteger idx = [_mainList count];
 		[_mainList addObject: event];
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_mainList count]-1 inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 						  withRowAnimation: UITableViewRowAnimationNone];
 	}
 }
@@ -357,19 +358,10 @@
 {
 	if(service != nil)
 	{
+		const NSInteger idx = [_mainList count];
 		[_mainList addObject: service];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_mainList count]-1 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
-#endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+						  withRowAnimation: UITableViewRowAnimationNone];
 	}
 }
 
@@ -398,7 +390,8 @@
 		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
 		((ServiceEventTableViewCell *)cell).now = event;
 		@try {
-			[(ServiceEventTableViewCell *)cell setNext:[_subList objectAtIndex:indexPath.row]];
+			event = [_subList objectAtIndex:indexPath.row];
+			[(ServiceEventTableViewCell *)cell setNext:event];
 		}
 		@catch (NSException * e) {
 			[(ServiceEventTableViewCell *)cell setNext:nil];

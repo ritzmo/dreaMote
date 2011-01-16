@@ -44,6 +44,7 @@
 	 @todo This might be of use in other connectors too, recheck!
 	 */
 	UISwitch *_advancedRemoteSwitch;
+	UISwitch *_nowNextSwitch; /*!< @brief Switch to enable Now/Next in Servicelist. */
 	UISwitch *_sslSwitch; /*!< @brief Switch to enable SSL. */
 
 	BOOL _mustSave;

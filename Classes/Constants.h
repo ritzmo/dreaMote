@@ -85,6 +85,7 @@ extern NSString *kSingleBouquet;
 extern NSString *kPort;
 extern NSString *kAdvancedRemote;
 extern NSString *kSSL;
+extern NSString *kShowNowNext;
 
 // keys in nsuserdefaults
 extern NSString *kActiveConnection;

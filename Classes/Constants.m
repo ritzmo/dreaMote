@@ -24,6 +24,7 @@ NSString *kSingleBouquet = @"singleBouquetKey";
 NSString *kPort = @"portKey";
 NSString *kAdvancedRemote = @"advancedRemote";
 NSString *kSSL = @"ssl";
+NSString *kShowNowNext = @"showNowNext";
 
 // keys in nsuserdefaults
 NSString *kActiveConnection = @"activeConnector";

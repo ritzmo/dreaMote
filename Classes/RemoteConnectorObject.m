@@ -183,6 +183,17 @@ static NSDictionary *_connection;
 	return [value boolValue];
 }
 
++ (BOOL)showNowNext
+{
+	if([_sharedRemoteConnector hasFeature:kFeaturesNowNext])
+	{
+		const id value = [_connection objectForKey: kShowNowNext];
+		if(value)
+			return [value boolValue];
+	}
+	return NO;
+}
+
 + (NSInteger)getConnectedId
 {
 	const NSUInteger index = [_connections indexOfObject: _connection];

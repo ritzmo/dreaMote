@@ -132,6 +132,7 @@
 	[_connectButton release];
 	[_singleBouquetSwitch release];
 	[_advancedRemoteSwitch release];
+	[_nowNextSwitch release];
 
 	[super dealloc];
 }
@@ -244,9 +245,14 @@
 	_advancedRemoteSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
 	_advancedRemoteSwitch.on = [[_connection objectForKey: kAdvancedRemote] boolValue];
 
+	// Now/Next switch
+	_nowNextSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
+	_nowNextSwitch.on = [[_connection objectForKey: kShowNowNext] boolValue];
+
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_singleBouquetSwitch.backgroundColor = [UIColor clearColor];
 	_advancedRemoteSwitch.backgroundColor = [UIColor clearColor];
+	_nowNextSwitch.backgroundColor = [UIColor clearColor];
 
 	[self setEditing:YES animated:NO];
 }
@@ -270,6 +276,7 @@
 		[_passwordCell stopEditing];
 		_singleBouquetSwitch.enabled = NO;
 		_advancedRemoteSwitch.enabled = NO;
+		_nowNextSwitch.enabled = NO;
 		_sslSwitch.enabled = NO;
 
 		if(_shouldSave)
@@ -282,6 +289,7 @@
 			[_connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
 			[_connection setObject: _singleBouquetSwitch.on ? @"YES" : @"NO" forKey: kSingleBouquet];
 			[_connection setObject: _advancedRemoteSwitch.on ? @"YES" : @"NO" forKey: kAdvancedRemote];
+			[_connection setObject: _nowNextSwitch.on ? @"YES" : @"NO" forKey: kShowNowNext];
 			[_connection setObject: _sslSwitch.on ? @"YES" : @"NO" forKey: kSSL];
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
@@ -319,6 +327,7 @@
 		_shouldSave = YES;
 		_singleBouquetSwitch.enabled = YES;
 		_advancedRemoteSwitch.enabled = YES;
+		_nowNextSwitch.enabled = YES;
 		_sslSwitch.enabled = YES;
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
@@ -518,13 +527,13 @@
 			return 2;
 		case 2:
 			/*!
-			 @brief Add "single bouquet" & "advanced remote" switch for Enigma2 based STBs
-			  on iPhone, but iPad does not know single bouquet mode, so there is only two
-			  rows.
+			 @brief Add "single bouquet", "advanced remote" & "now/next" switch for Enigma2
+			  based STBs on iPhone, but iPad does not know single bouquet mode, so there is
+			  only three rows.
 			 @note Actually this is an ugly hack but I really wanted this feature :P
 			 */
 			if(_connector == kEnigma2Connector)
-				return (IS_IPAD()) ? 2 : 3;
+				return (IS_IPAD()) ? 3 : 4;
 			return 1;
 		case 3:
 			if(_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
@@ -639,6 +648,14 @@
 					_connectorCell = sourceCell;
 					break;
 				case 1:
+					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
+					if(sourceCell == nil)
+						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Now/Next in Servicelist", @"");
+					((DisplayCell *)sourceCell).view = _nowNextSwitch;
+					break;
+				case 2:
 					if(!IS_IPAD())
 					{
 						sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
@@ -650,7 +667,7 @@
 						break;
 					}
 					/* FALL THROUGH */
-				case 2:
+				case 3:
 					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
 					if(sourceCell == nil)
 						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
