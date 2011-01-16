@@ -8,21 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseXMLReader.h"
+#import "SaxXmlReader.h"
 #import "FileSourceDelegate.h"
 
 /*!
  @brief Enigma2 File XML Reader.
  */
-@interface Enigma2FileXMLReader : BaseXMLReader
+@interface Enigma2FileXMLReader : SaxXmlReader
 {
 @private
 	NSObject<FileSourceDelegate> *_delegate; /*!< @brief Delegate. */
+	NSObject<FileProtocol> *currentFile; /*!< @brief Current File. */
 }
 
 /*!
  @brief Standard initializer.
- 
+
  @param target Delegate.
  @return Enigma2FileXMLReader instance.
  */

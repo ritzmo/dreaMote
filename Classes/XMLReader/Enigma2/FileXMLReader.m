@@ -8,10 +8,23 @@
 
 #import "FileXMLReader.h"
 
-#import "../../Objects/Enigma2/File.h"
+#import "Constants.h"
 #import "../../Objects/Generic/File.h"
 
+static const char *kEnigma2FileElement = "e2file";
+static const NSUInteger kEnigma2FileElementLength = 7;
+static const char *kEnigma2FileIsDirectory = "e2isdirectory";
+static const NSUInteger kEnigma2FileIsDirectoryLength = 14;
+static const char *kEnigma2FileRoot = "e2root";
+static const NSUInteger kEnigma2FileRootLength = 7;
+
+@interface Enigma2FileXMLReader()
+@property (nonatomic, retain) NSObject<FileProtocol> *currentFile;
+@end
+
 @implementation Enigma2FileXMLReader
+
+@synthesize currentFile;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<FileSourceDelegate> *)delegate
@@ -27,6 +40,8 @@
 - (void)dealloc
 {
 	[_delegate release];
+	[currentFile release];
+
 	[super dealloc];
 }
 
@@ -34,48 +49,93 @@
 - (void)sendErroneousObject
 {
 	NSObject<FileProtocol> *fakeObject = [[GenericFile alloc] init];
-	fakeObject.sref = NSLocalizedString(@"Error retrieving Data", @"");
+	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[_delegate performSelectorOnMainThread: @selector(addFile:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
 	[fakeObject release];
 }
 
-/*
- Example:
-<?xml version="1.0" encoding="UTF-8"?> 
-<e2filelist> 
- <e2file> 
-  <e2servicereference>/</e2servicereference> 
-  <e2isdirectory>True</e2isdirectory> 
-  <e2root>/hdd/MyMP3s</e2root> 
- </e2file> 
- <e2file> 
-  <e2servicereference>/hdd/MyMP3s/audio.mp3</e2servicereference> 
-  <e2isdirectory>False</e2isdirectory> 
-  <e2root>/hdd/MyMP3s</e2root> 
- </e2file> 
-<e2filelist> 
-*/
-- (void)parseFull
+/* send terminating object */
+- (void)sendTerminatingObject
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2filelist/e2file" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
-	{
-		// An e2event in the xml represents an event, so create an instance of it.
-		NSObject<FileProtocol> *newFile = [[Enigma2File alloc] initWithNode: (CXMLNode *)resultElement];
-
-		[_delegate performSelectorOnMainThread: @selector(addFile:)
-									withObject: newFile
-								 waitUntilDone: NO];
-		[newFile release];
-	}
-
-	// send invalid element to indicate that we're done with parsing
 	[_delegate performSelectorOnMainThread: @selector(addFile:)
 								withObject: nil
 							 waitUntilDone: NO];
+}
+
+/*
+ Example:
+<?xml version="1.0" encoding="UTF-8"?>
+<e2filelist>
+ <e2file>
+  <e2servicereference>/</e2servicereference>
+  <e2isdirectory>True</e2isdirectory>
+  <e2root>/hdd/MyMP3s</e2root>
+ </e2file>
+ <e2file>
+  <e2servicereference>/hdd/MyMP3s/audio.mp3</e2servicereference>
+  <e2isdirectory>False</e2isdirectory>
+  <e2root>/hdd/MyMP3s</e2root>
+ </e2file>
+<e2filelist>
+*/
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
+{
+	if(!strncmp((const char *)localname, kEnigma2FileElement, kEnigma2FileElementLength))
+	{
+		self.currentFile = [[[GenericFile alloc] init] autorelease];
+		currentFile.valid = YES;
+	}
+	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
+			||	!strncmp((const char *)localname, kEnigma2FileRoot, kEnigma2FileRootLength)
+			||	!strncmp((const char *)localname, kEnigma2FileIsDirectory, kEnigma2FileIsDirectoryLength)
+			)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2FileElement, kEnigma2FileElementLength))
+	{
+		[_delegate performSelectorOnMainThread: @selector(addFile:)
+									withObject: currentFile
+								 waitUntilDone: NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
+	{
+		if([currentString isEqualToString: @"None"])
+		{
+			currentFile.title = NSLocalizedString(@"Filesystems", @"Label for Filesystems Item in MediaPlayer Filelist");
+			currentFile.sref = @"Filesystems";
+		}
+		else
+		{
+			currentFile.sref = currentString;
+		}
+	}
+	else if(!strncmp((const char *)localname, kEnigma2FileRoot, kEnigma2FileRootLength))
+	{
+		if([currentString isEqualToString: @"playlist"])
+		{
+			NSArray *comps = [currentFile.sref componentsSeparatedByString:@"/"];
+			currentFile.title = [comps lastObject];
+		}
+		else
+		{
+			currentFile.title = [currentFile.sref stringByReplacingOccurrencesOfString:currentString withString:@""];
+		}
+		currentFile.root = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2FileIsDirectory, kEnigma2FileIsDirectoryLength))
+	{
+		currentFile.isDirectory = [currentString isEqualToString:@"True"];
+	}
+
+	// this either does nothing or releases the string that was in use
+	self.currentString = nil;
 }
 
 @end

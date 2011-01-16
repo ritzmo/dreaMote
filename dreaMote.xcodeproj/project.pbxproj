@@ -184,7 +184,6 @@
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
 		DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */; };
-		DAAC517612D47F0700B3B443 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC517512D47F0700B3B443 /* File.m */; };
 		DAAC517912D47F0E00B3B443 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC517812D47F0E00B3B443 /* File.m */; };
 		DAAC518F12D481A100B3B443 /* FileListView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC518E12D481A100B3B443 /* FileListView.m */; };
 		DAAC51F712D48F3500B3B443 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC51EE12D48F3500B3B443 /* AppDelegate.m */; };
@@ -507,8 +506,6 @@
 		DAAC444E0FE6CECE00F3169F /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
 		DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignalXMLReader.m; sourceTree = "<group>"; };
 		DAAC517312D47EFD00B3B443 /* FileProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileProtocol.h; sourceTree = "<group>"; };
-		DAAC517412D47F0700B3B443 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
-		DAAC517512D47F0700B3B443 /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
 		DAAC517712D47F0E00B3B443 /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		DAAC517812D47F0E00B3B443 /* File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = File.m; sourceTree = "<group>"; };
 		DAAC518D12D481A100B3B443 /* FileListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileListView.h; sourceTree = "<group>"; };
@@ -772,8 +769,6 @@
 				DAFBA40712D8EFF60059B5C4 /* About.m */,
 				DA0BF44A0F0C1066004B488C /* Event.h */,
 				DA0BF44B0F0C1066004B488C /* Event.m */,
-				DAAC517412D47F0700B3B443 /* File.h */,
-				DAAC517512D47F0700B3B443 /* File.m */,
 				DA27485112CFC830000B490B /* Location.h */,
 				DA27485212CFC830000B490B /* Location.m */,
 				DA12F89712DBB52B009FF8DD /* Metadata.h */,
@@ -1471,7 +1466,6 @@
 				DA27487412CFCC20000B490B /* LocationListController.m in Sources */,
 				DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */,
 				DAC701FB12D2F73300C53E37 /* EGORefreshTableHeaderView.m in Sources */,
-				DAAC517612D47F0700B3B443 /* File.m in Sources */,
 				DAAC517912D47F0E00B3B443 /* File.m in Sources */,
 				DAAC518F12D481A100B3B443 /* FileListView.m in Sources */,
 				DAAC51F712D48F3500B3B443 /* AppDelegate.m in Sources */,
