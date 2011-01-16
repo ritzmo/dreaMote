@@ -42,9 +42,7 @@
 		_refreshMovies = YES;
 		_isSplit = NO;
 
-		_dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		_dateFormatter = [[FuzzyDateFormatter sharedFormatter] retain];
 
 		_movieViewController = nil;
 

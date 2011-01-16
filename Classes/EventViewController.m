@@ -30,7 +30,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Event", @"");
-		_dateFormatter = [[FuzzyDateFormatter alloc] init];
+		_dateFormatter = [[FuzzyDateFormatter sharedFormatter] retain];
 		_event = nil;
 		_similarFetched = NO;
 		_similarEvents = [[NSMutableArray array] retain];
@@ -185,9 +185,6 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-
 	return [_dateFormatter stringFromDate: dateTime];
 }
 

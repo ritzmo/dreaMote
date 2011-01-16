@@ -27,6 +27,7 @@ static FuzzyDateFormatter *_sharedFormatter = nil;
 {
 	if(_sharedFormatter == nil)
 		_sharedFormatter = [[FuzzyDateFormatter alloc] init];
+	[_sharedFormatter setDateStyle:NSDateFormatterMediumStyle];
 	[_sharedFormatter setTimeStyle:NSDateFormatterShortStyle];
 	return _sharedFormatter;
 }

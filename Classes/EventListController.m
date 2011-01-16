@@ -36,8 +36,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
-		_dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		self.dateFormatter = [FuzzyDateFormatter sharedFormatter];
 		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];

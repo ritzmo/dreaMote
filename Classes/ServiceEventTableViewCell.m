@@ -135,6 +135,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 				const NSString *end = [_formatter stringFromDate: new.end];
 				if(begin && end)
 					new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+				[_formatter setDateStyle:NSDateFormatterMediumStyle];
 			}
 
 			_nowLabel.text = new.title;
@@ -198,6 +199,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			const NSString *end = [_formatter stringFromDate: new.end];
 			if(begin && end)
 				new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+			[_formatter setDateStyle:NSDateFormatterMediumStyle];
 		}
 
 		_nextLabel.text = new.title;

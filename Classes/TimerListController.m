@@ -34,8 +34,7 @@
 	{
 		self.timers = [NSMutableArray array];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
-		_dateFormatter = [[FuzzyDateFormatter alloc] init];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		self.dateFormatter = [FuzzyDateFormatter sharedFormatter];
 		_timerViewController = nil;
 		_willReappear = NO;
 		_isSplit = NO;

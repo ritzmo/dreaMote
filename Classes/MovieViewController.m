@@ -165,11 +165,7 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	// Date Formatter
-	const FuzzyDateFormatter *format = [[[FuzzyDateFormatter alloc] init] autorelease];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	
+	const FuzzyDateFormatter *format = [FuzzyDateFormatter sharedFormatter];
 	return [format stringFromDate: dateTime];
 }
 
