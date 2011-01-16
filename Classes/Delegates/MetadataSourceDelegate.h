@@ -8,13 +8,15 @@
 
 #import "MetadataProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief MetadataSourceDelegate.
 
  Objects wanting to be called back by a Metadata Source (e.g. Mediaplayer)
  need to implement this Protocol.
  */
-@protocol MetadataSourceDelegate <NSObject>
+@protocol MetadataSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

@@ -8,13 +8,15 @@
 
 #import "EventProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief EventSourceDelegate.
 
  Objects wanting to be called back by a Event Source (e.g. EPG reader)
  need to implement this Protocol.
  */
-@protocol EventSourceDelegate <NSObject>
+@protocol EventSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

@@ -8,13 +8,15 @@
 
 #import "MovieProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief MovieSourceDelegate.
 
  Objects wanting to be called back by a Movie Source (e.g. Movie list
  reader) need to implement this Protocol.
  */
-@protocol MovieSourceDelegate <NSObject>
+@protocol MovieSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

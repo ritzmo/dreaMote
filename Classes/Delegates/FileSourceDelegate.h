@@ -8,13 +8,15 @@
 
 #import "FileProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief FileSourceDelegate.
 
  Objects wanting to be called back by a File Source (e.g. MediaPlayer Playlist)
  need to implement this Protocol.
  */
-@protocol FileSourceDelegate <NSObject>
+@protocol FileSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

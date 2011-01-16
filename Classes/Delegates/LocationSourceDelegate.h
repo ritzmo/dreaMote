@@ -8,13 +8,15 @@
 
 #import "LocationProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief LocationSourceDelegate.
 
  Objects wanting to be called back by a Location Source (e.g. Location list
  reader) need to implement this Protocol.
  */
-@protocol LocationSourceDelegate <NSObject>
+@protocol LocationSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

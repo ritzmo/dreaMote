@@ -519,6 +519,7 @@
 		DAAC51F612D48F3500B3B443 /* VolumeSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeSourceDelegate.h; sourceTree = "<group>"; };
 		DAAC520212D492CE00B3B443 /* MediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerController.h; sourceTree = "<group>"; };
 		DAAC520312D492CE00B3B443 /* MediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerController.m; sourceTree = "<group>"; };
+		DAB0676C12E315D8008D39F5 /* DataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSourceDelegate.h; sourceTree = "<group>"; };
 		DAB579ED0E94CA580093721B /* ConnectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectorViewController.h; sourceTree = "<group>"; };
 		DAB579EE0E94CA580093721B /* ConnectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectorViewController.m; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
@@ -1036,6 +1037,7 @@
 				DAFBA4C712D8FEEE0059B5C4 /* AboutSourceDelegate.h */,
 				DAAC51ED12D48F3500B3B443 /* AppDelegate.h */,
 				DAAC51EE12D48F3500B3B443 /* AppDelegate.m */,
+				DAB0676C12E315D8008D39F5 /* DataSourceDelegate.h */,
 				DAAC51EF12D48F3500B3B443 /* EventSourceDelegate.h */,
 				DAAC51F012D48F3500B3B443 /* FileSourceDelegate.h */,
 				DAAC51F112D48F3500B3B443 /* LocationSourceDelegate.h */,

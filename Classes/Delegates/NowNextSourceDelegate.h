@@ -8,13 +8,15 @@
 
 #import "EventProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief NowSourceDelegate.
 
  Objects wanting to be called back by a Now Source (e.g. Service list)
  need to implement this Protocol.
  */
-@protocol NowSourceDelegate <NSObject>
+@protocol NowSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.
@@ -31,7 +33,7 @@
  Objects wanting to be called back by a Next Source (e.g. Service list)
  need to implement this Protocol.
  */
-@protocol NextSourceDelegate <NSObject>
+@protocol NextSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

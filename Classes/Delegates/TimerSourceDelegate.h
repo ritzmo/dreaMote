@@ -8,13 +8,15 @@
 
 #import "TimerProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief TimerSourceDelegate.
 
  Objects wanting to be called back by a Timer Source (e.g. Timer reader)
  need to implement this Protocol.
  */
-@protocol TimerSourceDelegate <NSObject>
+@protocol TimerSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

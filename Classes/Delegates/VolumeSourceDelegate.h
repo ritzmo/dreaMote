@@ -8,13 +8,15 @@
 
 #import "Volume.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief VolumeSourceDelegate.
 
  Objects wanting to be called back by a Volume Source (e.g. Volume reader)
  need to implement this Protocol.
  */
-@protocol VolumeSourceDelegate <NSObject>
+@protocol VolumeSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

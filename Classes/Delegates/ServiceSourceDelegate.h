@@ -8,13 +8,15 @@
 
 #import "ServiceProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief ServiceSourceDelegate.
 
  Objects wanting to be called back by a Service Source (e.g. Favourites
  reader) need to implement this Protocol.
  */
-@protocol ServiceSourceDelegate <NSObject>
+@protocol ServiceSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.

@@ -8,13 +8,15 @@
 
 #import "AboutProtocol.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief AboutSourceDelegate.
 
  Objects wanting to be called back by a About Source (e.g. Receiver information)
  need to implement this Protocol.
  */
-@protocol AboutSourceDelegate <NSObject>
+@protocol AboutSourceDelegate <DataSourceDelegate>
 
 /*!
  @brief New object was created and should be added to list.
