@@ -359,11 +359,10 @@
 {
 	if(service != nil)
 	{
-		//const NSInteger idx = [_mainList count];
+		const NSInteger idx = [_mainList count];
 		[_mainList addObject: service];
-		/*[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 						  withRowAnimation: UITableViewRowAnimationLeft];
-		 */
 	}
 }
 
