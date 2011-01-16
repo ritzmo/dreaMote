@@ -36,7 +36,7 @@
 
 - (NSString *)sname
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicerename" error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
