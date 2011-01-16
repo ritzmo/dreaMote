@@ -18,6 +18,11 @@
 }
 
 /*!
+ @brief Shared formatter
+ */
++ (FuzzyDateFormatter *)sharedFormatter;
+
+/*!
  @brief Request a reset of the reference date.
  */
 - (void)resetReferenceDate;

@@ -18,7 +18,18 @@
  */
 #define TWODAY 172800
 
+static FuzzyDateFormatter *_sharedFormatter = nil;
+
 @implementation FuzzyDateFormatter
+
+/* return shared formatter */
++ (FuzzyDateFormatter *)sharedFormatter
+{
+	if(_sharedFormatter == nil)
+		_sharedFormatter = [[FuzzyDateFormatter alloc] init];
+	[_sharedFormatter setTimeStyle:NSDateFormatterShortStyle];
+	return _sharedFormatter;
+}
 
 /* initialize */
 - (id)init
