@@ -236,6 +236,7 @@
 			if(sourceCell == nil)
 				sourceCell = [[[ServiceTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kServiceCell_ID] autorelease];
 			((ServiceTableViewCell *)sourceCell).service = _service;
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 1:
