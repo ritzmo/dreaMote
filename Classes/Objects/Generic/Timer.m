@@ -120,6 +120,7 @@
 		_duration = -1;
 		_isValid = timer.valid;
 		_afterevent = timer.afterevent;
+		_location = [timer.location copy];
 	}
 
 	return self;
@@ -128,14 +129,15 @@
 - (void)dealloc
 {
 	[_begin release];
-	[_end release];
 	[_eit release];
-	[_title release];
-	[_tdescription release];
+	[_end release];
+	[_location release];
 	[_service release];
 	[_sname release];
 	[_sref release];
+	[_title release];
 	[_timeString release];
+	[_tdescription release];
 
 	[super dealloc];
 }

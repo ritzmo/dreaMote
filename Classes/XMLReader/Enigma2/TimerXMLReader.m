@@ -8,10 +8,49 @@
 
 #import "TimerXMLReader.h"
 
-#import "../../Objects/Enigma2/Timer.h"
+#import "../../Objects/Generic/Service.h"
 #import "../../Objects/Generic/Timer.h"
 
+static const char *kEnigma2TimerElement = "e2timer";
+static const NSUInteger kEnigma2TimerElementLength = 8;
+static const char *kEnigma2TimerSref = "e2servicereference";
+static const NSUInteger kEnigma2TimerSrefLength = 19;
+static const char *kEnigma2TimerSname = "e2servicename";
+static const NSUInteger kEnigma2TimerSnameLength = 14;
+static const char *kEnigma2TimerEventId = "e2eit";
+static const NSUInteger kEnigma2TimerEventIdLength = 6;
+static const char *kEnigma2TimerName = "e2name";
+static const NSUInteger kEnigma2TimerNameLength = 7;
+static const char *kEnigma2TimerDescription = "e2description";
+static const NSUInteger kEnigma2TimerDescriptionLength = 14;
+#if 0
+static const char *kEnigma2TimerDescriptionExtended = "e2descriptionextended";
+static const NSUInteger kEnigma2TimerDescriptionExtendedLength = 22;
+#endif
+static const char *kEnigma2TimerDisabled = "e2disabled";
+static const NSUInteger kEnigma2TimerDisabledLength = 11;
+static const char *kEnigma2TimerBegin = "e2timebegin";
+static const NSUInteger kEnigma2TimerBeginLength = 12;
+static const char *kEnigma2TimerEnd = "e2timeend";
+static const NSUInteger kEnigma2TimerEndLength = 10;
+static const char *kEnigma2TimerJustplay = "e2justplay";
+static const NSUInteger kEnigma2TimerJustplayLength = 11;
+static const char *kEnigma2TimerAfterEvent = "e2afterevent";
+static const NSUInteger kEnigma2TimerAfterEventLength = 13;
+static const char *kEnigma2TimerState = "e2state";
+static const NSUInteger kEnigma2TimerStateLength = 8;
+static const char *kEnigma2TimerRepeated = "e2repeated";
+static const NSUInteger kEnigma2TimerRepeatedLength = 11;
+static const char *kEnigma2TimerLocation = "e2location";
+static const NSUInteger kEnigma2TimerLocationLength = 11;
+
+@interface Enigma2TimerXMLReader()
+@property (nonatomic,retain) NSObject<TimerProtocol> *currentTimer;
+@end
+
 @implementation Enigma2TimerXMLReader
+
+@synthesize currentTimer;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<TimerSourceDelegate> *)delegate
@@ -27,6 +66,8 @@
 - (void)dealloc
 {
 	[_delegate release];
+	[currentTimer release];
+
 	[super dealloc];
 }
 
@@ -41,6 +82,14 @@
 								withObject: fakeObject
 							 waitUntilDone: NO];
 	[fakeObject release];
+}
+
+/* send terminating object */
+- (void)sendTerminatingObject
+{
+	[_delegate performSelectorOnMainThread: @selector(addTimer:)
+								withObject: nil
+							 waitUntilDone: NO];
 }
 
 /*
@@ -76,23 +125,107 @@
   </e2timer>
  </e2timerlist>
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2timerlist/e2timer" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigma2TimerElement, kEnigma2TimerElementLength))
 	{
-		// An e2timer in the xml represents a timer, so create an instance of it.
-		Enigma2Timer *newTimer = [[Enigma2Timer alloc] initWithNode:(CXMLNode *)resultElement];
-
-		[_delegate performSelectorOnMainThread: @selector(addTimer:)
-									withObject: newTimer
-								 waitUntilDone: NO];
-		[newTimer release];
+		GenericService *service = [[GenericService alloc] init];
+		self.currentTimer = [[[GenericTimer alloc] init] autorelease];
+		currentTimer.service = service;
+		[service release];
 	}
-	[_delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: nil
-							 waitUntilDone: NO];
+	else if(	!strncmp((const char *)localname, kEnigma2TimerSref, kEnigma2TimerSrefLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerSname, kEnigma2TimerSnameLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerEventId, kEnigma2TimerEventIdLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerName, kEnigma2TimerNameLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerDescription, kEnigma2TimerDescriptionLength)
+#if 0
+			||	!strncmp((const char *)localname, kEnigma2TimerDescriptionExtended, kEnigma2TimerDescriptionExtendedLength)
+#endif
+			||	!strncmp((const char *)localname, kEnigma2TimerDisabled, kEnigma2TimerDisabledLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerBegin, kEnigma2TimerBeginLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerEnd, kEnigma2TimerEndLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerJustplay, kEnigma2TimerJustplayLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerAfterEvent, kEnigma2TimerAfterEventLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerState, kEnigma2TimerStateLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerRepeated, kEnigma2TimerRepeatedLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerLocation, kEnigma2TimerLocationLength)
+		)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2TimerElement, kEnigma2TimerElementLength))
+	{
+		[_delegate performSelectorOnMainThread: @selector(addTimer:)
+									withObject: currentTimer
+								 waitUntilDone: NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerSref, kEnigma2TimerSrefLength))
+	{
+		currentTimer.service.sref = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerSname, kEnigma2TimerSnameLength))
+	{
+		currentTimer.service.sname = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerEventId, kEnigma2TimerEventIdLength))
+	{
+		currentTimer.eit = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerName, kEnigma2TimerNameLength))
+	{
+		currentTimer.title = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerDescription, kEnigma2TimerDescriptionLength))
+	{
+		currentTimer.tdescription = currentString;
+	}
+#if 0
+	else if(!strncmp((const char *)localname, kEnigma2TimerDescriptionExtended, kEnigma2TimerDescriptionExtendedLength))
+	{
+		currentTimer.edescription = currentString;
+	}
+#endif
+	else if(!strncmp((const char *)localname, kEnigma2TimerDisabled, kEnigma2TimerDisabledLength))
+	{
+		currentTimer.disabled = [currentString isEqualToString:@"1"];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerBegin, kEnigma2TimerBeginLength))
+	{
+		currentTimer.begin = [NSDate dateWithTimeIntervalSince1970: [currentString doubleValue]];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerEnd, kEnigma2TimerEndLength))
+	{
+		currentTimer.end = [NSDate dateWithTimeIntervalSince1970: [currentString doubleValue]];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerJustplay, kEnigma2TimerJustplayLength))
+	{
+		currentTimer.justplay = [currentString isEqualToString:@"1"];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerAfterEvent, kEnigma2TimerAfterEventLength))
+	{
+		currentTimer.afterevent = [currentString integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerState, kEnigma2TimerStateLength))
+	{
+		currentTimer.state = [currentString integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerRepeated, kEnigma2TimerRepeatedLength))
+	{
+		currentTimer.repeated = [currentString integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerLocation, kEnigma2TimerLocationLength))
+	{
+		if(![currentString isEqualToString:@"None"])
+			currentTimer.location = currentString;
+	}
+
+	// this either does nothing or releases the string that was in use
+	self.currentString = nil;
 }
 
 @end
