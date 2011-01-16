@@ -127,7 +127,8 @@
 			return;
 		}
 
-		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
+		[popoverController release];
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
 		/*!
 		 @note In case I want to bind this to the search bar at some point in the future,
 		 but currently I prefer it bound to an extra button.
