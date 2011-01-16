@@ -51,16 +51,39 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	if(failureReason)
 	{
 		[self sendErroneousObject];
+
 		// delegate wants to be informated about errors
-		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
-			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:failureReason];
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
+		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
+		{
+			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+			[invocation retainArguments];
+			[invocation setTarget:_delegate];
+			[invocation setSelector:errorParsing];
+			[invocation setArgument:&self atIndex:2];
+			[invocation setArgument:&failureReason atIndex:4];
+			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+									  waitUntilDone:NO];
+		}
 	}
 	else
 	{
 		[self sendTerminatingObject];
+
 		// delegate wants to be informated about parsing end
-		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:finishedParsingDocument:)])
-			[_delegate dataSourceDelegate:self finishedParsingDocument:nil];
+		SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+		NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
+		if(_delegate && [_delegate respondsToSelector:finishedParsing] && sig)
+		{
+			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+			[invocation retainArguments];
+			[invocation setTarget:_delegate];
+			[invocation setSelector:finishedParsing];
+			[invocation setArgument:&self atIndex:2];
+			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+										  waitUntilDone:NO];
+		}
 	}
 
 	[con release];
