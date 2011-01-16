@@ -36,6 +36,15 @@
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate;
 
 /*!
+ @brief Initializer with explicit value for getServices.
+
+ @param target Delegate.
+ @param getServices Value of _getServices to use.
+ @return Enigma2EventXMLReader instance.
+ */
+- (id)initWithDelegateAndGetServices:(NSObject<EventSourceDelegate> *)delegate getServices:(BOOL)getServices;
+
+/*!
  @brief Standard initializer.
 
  @param target Delegate.

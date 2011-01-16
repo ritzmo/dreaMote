@@ -43,11 +43,16 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
 {
+	return [self initWithDelegateAndGetServices:delegate getServices:NO];
+}
+
+- (id)initWithDelegateAndGetServices:(NSObject<EventSourceDelegate> *)delegate getServices:(BOOL)getServices
+{
 	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addEvent:);
-		_getServices = YES; // needed for similar search, we should fix that ;)
+		_getServices = getServices;
 	}
 	return self;
 }
