@@ -8,10 +8,26 @@
 
 #import "EventXMLReader.h"
 
-#import "../../Objects/Enigma/Event.h"
 #import "../../Objects/Generic/Event.h"
 
+static const char *kEnigmaEventElement = "event";
+static const NSUInteger kEnigmaEventElementLength = 6;
+static const char *kEnigmaEventExtendedDescription = "details";
+static const NSUInteger kEnigmaEventExtendedDescriptionLength = 8;
+static const char *kEnigmaEventTitle = "description";
+static const NSUInteger kEnigmaEventTitleLength = 12;
+static const char *kEnigmaEventDuration = "duration";
+static const NSUInteger kEnigmaEventDurationLength = 9;
+static const char *kEnigmaEventBegin = "start";
+static const NSUInteger kEnigmaEventBeginLength = 6;
+
+@interface EnigmaEventXMLReader()
+@property (nonatomic, retain) NSObject<EventProtocol> *currentEvent;
+@end
+
 @implementation EnigmaEventXMLReader
+
+@synthesize currentEvent;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
@@ -27,6 +43,8 @@
 - (void)dealloc
 {
 	[_delegate release];
+	[currentEvent release];
+
 	[super dealloc];
 }
 
@@ -39,6 +57,13 @@
 								withObject: fakeObject
 							 waitUntilDone: NO];
 	[fakeObject release];
+}
+
+- (void)sendTerminatingObject
+{
+	[_delegate performSelectorOnMainThread: @selector(addEvent:)
+								withObject: nil
+							 waitUntilDone: NO];
 }
 
 /*
@@ -62,25 +87,48 @@
  </event>
  </service_epg>
  */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/service_epg/event" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigmaEventElement, kEnigmaEventElementLength))
 	{
-		// An service in the xml represents an event, so create an instance of it.
-		EnigmaEvent *newEvent = [[EnigmaEvent alloc] initWithNode: (CXMLNode *)resultElement];
-		
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
-									withObject: newEvent
-								 waitUntilDone: NO];
-		[newEvent release];
+		self.currentEvent = [[[GenericEvent alloc] init] autorelease];
 	}
-
-	// send invalid element to indicate that we're done with parsing
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
-								withObject: nil
-							 waitUntilDone: NO];
+	else if(	!strncmp((const char *)localname, kEnigmaEventExtendedDescription, kEnigmaEventExtendedDescriptionLength)
+			||	!strncmp((const char *)localname, kEnigmaEventTitle, kEnigmaEventTitleLength)
+			||	!strncmp((const char *)localname, kEnigmaEventDuration, kEnigmaEventDurationLength)
+			||	!strncmp((const char *)localname, kEnigmaEventBegin, kEnigmaEventBeginLength)
+		)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
 }
 
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigmaEventElement, kEnigmaEventElementLength))
+	{
+		[_delegate performSelectorOnMainThread: @selector(addEvent:)
+									withObject: currentEvent
+								 waitUntilDone: NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigmaEventExtendedDescription, kEnigmaEventExtendedDescriptionLength))
+	{
+		currentEvent.edescription = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigmaEventTitle, kEnigmaEventTitleLength))
+	{
+		currentEvent.title = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigmaEventDuration, kEnigmaEventDurationLength))
+	{
+		[currentEvent setEndFromDurationString:currentString];
+	}
+	else if(!strncmp((const char *)localname, kEnigmaEventBegin, kEnigmaEventBeginLength))
+	{
+		[currentEvent setBeginFromString:currentString];
+	}
+
+	// this either does nothing or releases the string that was in use
+	self.currentString = nil;
+}
 @end

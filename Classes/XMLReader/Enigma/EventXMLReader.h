@@ -8,21 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseXMLReader.h"
+#import "SaxXmlReader.h"
 #import "EventSourceDelegate.h"
 
 /*!
  @brief Enigma Event XML Reader.
  */
-@interface EnigmaEventXMLReader : BaseXMLReader
+@interface EnigmaEventXMLReader : SaxXmlReader
 {
 @private
 	NSObject<EventSourceDelegate> *_delegate; /*!< @brief Delegate. */
+	NSObject<EventProtocol> *currentEvent; /*!< @brief Current Event. */
 }
 
 /*!
  @brief Standard initializer.
- 
+
  @param target Delegate.
  @return EnigmaEventXMLReader instance.
  */
