@@ -8,6 +8,7 @@
 
 #import "Service.h"
 
+#import "Constants.h"
 #import "../Generic/Service.h"
 #import "CXMLElement.h"
 
@@ -15,7 +16,7 @@
 
 - (NSString *)sref
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicereference" error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:kEnigma2Servicereference error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];
@@ -35,7 +36,7 @@
 
 - (NSString *)sname
 {
-	NSArray *resultNodes = [_node nodesForXPath:@"e2servicename" error:nil];
+	NSArray *resultNodes = [_node nodesForXPath:kEnigma2Servicename error:nil];
 	for(CXMLElement *currentChild in resultNodes)
 	{
 		return [currentChild stringValue];

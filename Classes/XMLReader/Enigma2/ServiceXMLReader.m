@@ -8,12 +8,19 @@
 
 #import "ServiceXMLReader.h"
 
-#import "../../Objects/Enigma2/Service.h"
+#import "Constants.h"
 #import "../../Objects/Generic/Service.h"
 
-#import "CXMLElement.h"
+static const char *kEnigma2ServiceElement = "e2service";
+static const NSUInteger kEnigma2ServiceElementLength = 10;
+
+@interface Enigma2ServiceXMLReader()
+@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
+@end
 
 @implementation Enigma2ServiceXMLReader
+
+@synthesize currentService;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate
@@ -29,6 +36,8 @@
 - (void)dealloc
 {
 	[_delegate release];
+	[currentService release];
+
 	[super dealloc];
 }
 
@@ -43,6 +52,14 @@
 	[fakeService release];
 }
 
+/* send terminating object */
+- (void)sendTerminatingObject
+{
+	[_delegate performSelectorOnMainThread: @selector(addService:)
+								withObject: nil
+							 waitUntilDone: NO];
+}
+
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -53,20 +70,41 @@
   </e2service>
  </e2servicelist>
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2servicelist/e2service" error:nil];
-	
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigma2ServiceElement, kEnigma2ServiceElementLength))
 	{
-		// An e2service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
-		
-		[_delegate performSelectorOnMainThread: @selector(addService:)
-									withObject: newService
-								 waitUntilDone: NO];
-		[newService release];
+		self.currentService = [[[GenericService alloc] init] autorelease];
 	}
+	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
+			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)
+		)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2ServiceElement, kEnigma2ServiceElementLength))
+	{
+		[_delegate performSelectorOnMainThread: @selector(addService:)
+									withObject: currentService
+								 waitUntilDone: NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
+	{
+		// if service begins with 1:64: this is a marker
+		if(![[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
+			currentService.sref = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
+	{
+			currentService.sname = currentString;
+	}
+
+	// this either does nothing or releases the string that was in use
+	self.currentString = nil;
 }
 
 @end
