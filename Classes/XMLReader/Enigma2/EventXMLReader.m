@@ -53,6 +53,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addEvent:);
 		_getServices = getServices;
+		_timeout = 13;
 	}
 	return self;
 }
