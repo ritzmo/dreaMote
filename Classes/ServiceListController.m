@@ -295,9 +295,9 @@
 	// NOTE: this might hide an error, but we prefer missing one over getting the same one twice
 	if(--pendingRequests == 0)
 	{
-		[_tableView reloadData];
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
 
 		// Alert user
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
@@ -314,9 +314,9 @@
 {
 	if(--pendingRequests == 0)
 	{
-		[_tableView reloadData];
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
 	}
 }
 
