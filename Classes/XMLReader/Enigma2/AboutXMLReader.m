@@ -22,13 +22,6 @@
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_delegate release];
-	[super dealloc];
-}
-
 /* send fake object */
 - (void)sendErroneousObject
 {

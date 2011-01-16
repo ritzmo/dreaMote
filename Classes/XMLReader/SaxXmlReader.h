@@ -28,6 +28,7 @@ typedef struct
 @interface SaxXmlReader : BaseXMLReader
 {
 @private
+	NSError *failureReason;
 	xmlParserCtxtPtr _xmlParserContext;
 @protected
 	NSMutableString *currentString;

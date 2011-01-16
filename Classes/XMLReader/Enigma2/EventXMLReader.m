@@ -86,7 +86,6 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 - (void)dealloc
 {
 	[_currentEvent release];
-	[_delegate release];
 
 	[super dealloc];
 }

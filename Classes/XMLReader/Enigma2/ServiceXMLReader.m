@@ -35,7 +35,6 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 /* dealloc */
 - (void)dealloc
 {
-	[_delegate release];
 	[currentService release];
 
 	[super dealloc];

@@ -17,7 +17,6 @@
 @interface Enigma2MovieXMLReader : SaxXmlReader
 {
 @private
-	NSObject<MovieSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<MovieProtocol> *currentMovie; /*!< @brief Current Movie. */
 }
 

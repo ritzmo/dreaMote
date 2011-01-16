@@ -17,7 +17,6 @@
 @interface Enigma2ServiceXMLReader : SaxXmlReader
 {
 @private
-	NSObject<ServiceSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<ServiceProtocol> *currentService; /*!< @brief Current Service. */
 }
 

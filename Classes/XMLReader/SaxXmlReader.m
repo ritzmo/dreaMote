@@ -23,6 +23,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)dealloc
 {
+	[failureReason release];
 	[currentString release];
 	xmlFreeParserCtxt(_xmlParserContext);
 	_xmlParserContext = NULL;
@@ -47,7 +48,20 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	} while (!_done);
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
-	[self sendTerminatingObject];
+	if(failureReason)
+	{
+		[self sendErroneousObject];
+		// delegate wants to be informated about errors
+		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
+			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:failureReason];
+	}
+	else
+	{
+		[self sendTerminatingObject];
+		// delegate wants to be informated about parsing end
+		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:finishedParsingDocument:)])
+			[_delegate dataSourceDelegate:self finishedParsingDocument:nil];
+	}
 
 	[con release];
 	return nil;
@@ -71,8 +85,6 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)parsingError:(const char *)msg, ...
 {
-	// TODO: add proper error handling
-#if 0
 	NSString *format = [[NSString alloc] initWithBytes:msg
 												length:strlen(msg)
 											  encoding:NSUTF8StringEncoding];
@@ -84,15 +96,12 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(NSString*)resultString forKey:@"error_message"];
 	NSError *error = [NSError errorWithDomain:@"ParsingDomain" code:101 userInfo:userInfo];
-#endif
 
-	[self sendErroneousObject];
+	failureReason = [error retain];
 	_done = YES;
 
-#if 0
 	[(NSString*)resultString release];
 	[format release];
-#endif
 }
 
 - (void)endDocument
@@ -133,7 +142,8 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	[self sendErroneousObject];
+	failureReason = [error retain];
+
 	_done = YES;
 }
 

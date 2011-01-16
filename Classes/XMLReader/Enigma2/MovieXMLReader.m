@@ -50,7 +50,6 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 /* dealloc */
 - (void)dealloc
 {
-	[_delegate release];
 	[currentMovie release];
 
 	[super dealloc];

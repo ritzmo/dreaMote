@@ -16,8 +16,6 @@
  */
 @interface NeutrinoEventXMLReader : BaseXMLReader
 {
-@private
-	NSObject<EventSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

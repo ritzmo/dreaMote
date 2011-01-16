@@ -17,7 +17,6 @@
 @interface EnigmaEventXMLReader : SaxXmlReader
 {
 @private
-	NSObject<EventSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<EventProtocol> *currentEvent; /*!< @brief Current Event. */
 }
 

@@ -17,8 +17,6 @@
  */
 @interface EnigmaCurrentXMLReader : BaseXMLReader
 {
-@private
-	NSObject<EventSourceDelegate, ServiceSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

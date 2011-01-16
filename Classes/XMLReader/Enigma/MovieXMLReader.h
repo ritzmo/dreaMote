@@ -16,8 +16,6 @@
  */
 @interface EnigmaMovieXMLReader : BaseXMLReader
 {
-@private
-	NSObject<MovieSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

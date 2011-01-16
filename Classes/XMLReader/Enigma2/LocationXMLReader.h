@@ -16,8 +16,6 @@
  */
 @interface Enigma2LocationXMLReader : BaseXMLReader
 {
-@private
-	NSObject<LocationSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

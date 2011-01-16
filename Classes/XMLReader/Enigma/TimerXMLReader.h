@@ -16,8 +16,6 @@
  */
 @interface EnigmaTimerXMLReader : BaseXMLReader
 {
-@private
-	NSObject<TimerSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

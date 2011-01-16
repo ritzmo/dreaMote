@@ -16,8 +16,6 @@
  */
 @interface Enigma2VolumeXMLReader : BaseXMLReader
 {
-@private
-	NSObject<VolumeSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

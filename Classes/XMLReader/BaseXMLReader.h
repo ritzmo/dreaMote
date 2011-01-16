@@ -17,6 +17,8 @@ typedef CXMLDocument OurXMLDocument;
 
 #import "RemoteConnector.h"
 
+#import "DataSourceDelegate.h"
+
 /*!
  @brief Basic XML Reader Class.
 
@@ -27,6 +29,7 @@ typedef CXMLDocument OurXMLDocument;
 {
 @protected
 	BOOL	_done; /*!< @brief Finished parsing? */
+	NSObject<DataSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
 	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
 }

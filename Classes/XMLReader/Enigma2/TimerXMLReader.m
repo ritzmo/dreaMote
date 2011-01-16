@@ -56,7 +56,6 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 /* dealloc */
 - (void)dealloc
 {
-	[_delegate release];
 	[currentTimer release];
 
 	[super dealloc];

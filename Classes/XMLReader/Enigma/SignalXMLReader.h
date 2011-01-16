@@ -16,8 +16,6 @@
  */
 @interface EnigmaSignalXMLReader : BaseXMLReader
 {
-@private
-	NSObject<SignalSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

@@ -16,8 +16,6 @@
  */
 @interface Enigma2MetadataXMLReader : BaseXMLReader
 {
-@private
-	NSObject<MetadataSourceDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!

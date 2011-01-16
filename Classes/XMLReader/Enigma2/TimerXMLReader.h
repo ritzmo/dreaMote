@@ -17,7 +17,6 @@
 @interface Enigma2TimerXMLReader : SaxXmlReader
 {
 @private
-	NSObject<TimerSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<TimerProtocol> *currentTimer; /*!< @brief Current Timer. */
 }
 

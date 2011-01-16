@@ -39,7 +39,6 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 /* dealloc */
 - (void)dealloc
 {
-	[_delegate release];
 	[currentFile release];
 
 	[super dealloc];

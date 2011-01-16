@@ -38,6 +38,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[_delegate release];
 	[_parser release];
 
 	[super dealloc];
@@ -60,6 +61,9 @@
 		if(error)
 			*error = localError;
 		[self sendErroneousObject];
+		// delegate wants to be informated about errors
+		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
+			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:localError];
 		return nil;
 	}
 
@@ -93,6 +97,9 @@
 	if(!_parser.success)
 	{
 		[self sendErroneousObject];
+		// delegate wants to be informated about errors
+		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
+			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:localError];
 		return nil;
 
 	}
@@ -118,11 +125,17 @@
 		if(error)
 			*error = localError;
 		[self sendErroneousObject];
+		// delegate wants to be informated about errors
+		if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
+			[_delegate dataSourceDelegate:self errorParsingDocument:nil error:localError];
 		return nil;
 	}
 #endif
 
 	[self parseFull];
+	// delegate wants to be informated about parsing end
+	if(_delegate && !localError && [_delegate respondsToSelector:@selector(dataSourceDelegate:finishedParsingDocument:)])
+		[_delegate dataSourceDelegate:self finishedParsingDocument:nil];
 	return _parser;
 }
 
@@ -136,6 +149,10 @@
 /* connection failed */
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+	// delegate wants to be informated about errors
+	if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
+		[_delegate dataSourceDelegate:self errorParsingDocument:nil error:error];
+
 	_done = YES;
 
 	[_parser abortParsing];

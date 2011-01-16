@@ -24,13 +24,6 @@
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_delegate release];
-	[super dealloc];
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8" ?>

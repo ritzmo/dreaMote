@@ -17,7 +17,6 @@
 @interface Enigma2FileXMLReader : SaxXmlReader
 {
 @private
-	NSObject<FileSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<FileProtocol> *currentFile; /*!< @brief Current File. */
 }
 
