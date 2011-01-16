@@ -55,14 +55,13 @@
 	else if(file.isDirectory)
 	{
 		// check if this is ".."
-		NSString *original = file.sref;
-		NSRange rangeOfString = [file.sref rangeOfString:file.root];
+		NSString *sref = file.sref;
+		NSRange rangeOfString = [sref rangeOfString:file.root];
 		if(rangeOfString.location == NSNotFound) return;
 
-		// it's not, add a copy of it to our queue
-		NSString *copy = [original copy];
-		[_remainingPaths addObject:copy];
-		[copy release];
+		// it's not, add to our queue
+		// TODO: add copy back if this actually uses a cxmldocument
+		[_remainingPaths addObject:sref];
 	}
 	// file
 	else
