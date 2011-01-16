@@ -28,7 +28,6 @@
 		DA0BF45C0F0C1066004B488C /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4530F0C1066004B488C /* Service.m */; };
 		DA0BF45D0F0C1066004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4550F0C1066004B488C /* Timer.m */; };
 		DA0BF45E0F0C1066004B488C /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4570F0C1066004B488C /* Volume.m */; };
-		DA0BF5C70F0C19B5004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF5C60F0C19B5004B488C /* Movie.m */; };
 		DA0BF6D40F0C2D56004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF6D30F0C2D56004B488C /* Event.m */; };
 		DA0BF7500F0C3105004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF74F0F0C3105004B488C /* Timer.m */; };
 		DA0BF8AE0F0CBEDB004B488C /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8A90F0CBEDB004B488C /* Event.m */; };
@@ -262,8 +261,6 @@
 		DA0BF4550F0C1066004B488C /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DA0BF4560F0C1066004B488C /* Volume.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Volume.h; sourceTree = "<group>"; };
 		DA0BF4570F0C1066004B488C /* Volume.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Volume.m; sourceTree = "<group>"; };
-		DA0BF5C50F0C19B5004B488C /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
-		DA0BF5C60F0C19B5004B488C /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		DA0BF5C80F0C19C4004B488C /* MovieProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieProtocol.h; sourceTree = "<group>"; };
 		DA0BF6D20F0C2D56004B488C /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		DA0BF6D30F0C2D56004B488C /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
@@ -781,8 +778,6 @@
 				DA27485212CFC830000B490B /* Location.m */,
 				DA12F89712DBB52B009FF8DD /* Metadata.h */,
 				DA12F89812DBB52B009FF8DD /* Metadata.m */,
-				DA0BF5C50F0C19B5004B488C /* Movie.h */,
-				DA0BF5C60F0C19B5004B488C /* Movie.m */,
 				DA36F6B90F0D2D9A005608CC /* Service.h */,
 				DA36F6BA0F0D2D9A005608CC /* Service.m */,
 				DA0BF74E0F0C3105004B488C /* Timer.h */,
@@ -1426,7 +1421,6 @@
 				DA0BF45C0F0C1066004B488C /* Service.m in Sources */,
 				DA0BF45D0F0C1066004B488C /* Timer.m in Sources */,
 				DA0BF45E0F0C1066004B488C /* Volume.m in Sources */,
-				DA0BF5C70F0C19B5004B488C /* Movie.m in Sources */,
 				DA0BF6D40F0C2D56004B488C /* Event.m in Sources */,
 				DA0BF7500F0C3105004B488C /* Timer.m in Sources */,
 				DA0BF8AE0F0CBEDB004B488C /* Event.m in Sources */,

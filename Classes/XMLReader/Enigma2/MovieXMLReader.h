@@ -8,21 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseXMLReader.h"
+#import "SaxXmlReader.h"
 #import "MovieSourceDelegate.h"
 
 /*!
  @brief Enigma2 Movie XML Reader.
  */
-@interface Enigma2MovieXMLReader : BaseXMLReader
+@interface Enigma2MovieXMLReader : SaxXmlReader
 {
 @private
 	NSObject<MovieSourceDelegate> *_delegate; /*!< @brief Delegate. */
+	NSObject<MovieProtocol> *currentMovie; /*!< @brief Current Movie. */
 }
 
 /*!
  @brief Standard initializer.
- 
+
  @param target Delegate.
  @return EnigmaMovieXMLReader instance.
  */

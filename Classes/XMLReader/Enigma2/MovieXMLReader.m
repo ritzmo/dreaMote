@@ -8,10 +8,40 @@
 
 #import "MovieXMLReader.h"
 
-#import "../../Objects/Enigma2/Movie.h"
 #import "../../Objects/Generic/Movie.h"
 
+static const char *kEnigma2MovieElement = "e2movie";
+static const NSUInteger kEnigma2MovieElementLength = 7;
+static const char *kEnigma2MovieSref = "e2servicereference";
+static const NSUInteger kEnigma2MovieSrefLength = 19;
+static const char *kEnigma2MovieTitle = "e2title";
+static const NSUInteger kEnigma2MovieTitleLength = 8;
+static const char *kEnigma2MovieDescription = "e2description";
+static const NSUInteger kEnigma2MovieDescriptionLength = 14;
+static const char *kEnigma2MovieExtendedDescription = "e2descriptionextended";
+static const NSUInteger kEnigma2MovieExtendedDescriptionLength = 21;
+static const char *kEnigma2MovieSname = "e2servicename";
+static const NSUInteger kEnigma2MovieSnameLength = 14;
+static const char *kEnigma2MovieTime = "e2time";
+static const NSUInteger kEnigma2MovieTimeLength = 7;
+static const char *kEnigma2MovieLength = "e2length";
+static const NSUInteger kEnigma2MovieLengthLength = 9;
+static const char *kEnigma2MovieTags = "e2tags";
+static const NSUInteger kEnigma2MovieTagsLength = 7;
+#if 0
+static const char *kEnigma2MovieFilename = "e2filename";
+static const NSUInteger kEnigma2MovieFilenameLength = 11;
+#endif
+static const char *kEnigma2MovieFilesize = "e2filesize";
+static const NSUInteger kEnigma2MovieFilesizeLength = 11;
+
+@interface Enigma2MovieXMLReader()
+@property (nonatomic, retain) NSObject<MovieProtocol> *currentMovie;
+@end
+
 @implementation Enigma2MovieXMLReader
+
+@synthesize currentMovie;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<MovieSourceDelegate> *)delegate
@@ -28,6 +58,8 @@
 - (void)dealloc
 {
 	[_delegate release];
+	[currentMovie release];
+
 	[super dealloc];
 }
 
@@ -40,6 +72,14 @@
 								withObject: fakeObject
 							 waitUntilDone: NO];
 	[fakeObject release];
+}
+
+/* send terminating object */
+- (void)sendTerminatingObject
+{
+	[_delegate performSelectorOnMainThread: @selector(addMovie:)
+								withObject: nil
+							 waitUntilDone: NO];
 }
 
 /*
@@ -60,20 +100,93 @@ Example:
  </e2movie>
  </e2movielist>
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2movielist/e2movie" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigma2MovieElement, kEnigma2MovieElementLength))
 	{
-		// An e2movie in the xml represents a movie, so create an instance of it.
-		NSObject<MovieProtocol> *newMovie = [[Enigma2Movie alloc] initWithNode: (CXMLNode *)resultElement];
-		
-		[_delegate performSelectorOnMainThread: @selector(addMovie:)
-									withObject: newMovie
-								 waitUntilDone: NO];
-		[newMovie release];
+		self.currentMovie = [[[GenericMovie alloc] init] autorelease];
 	}
+	else if(	!strncmp((const char *)localname, kEnigma2MovieSref, kEnigma2MovieSrefLength)
+			||	!strncmp((const char *)localname, kEnigma2MovieTitle, kEnigma2MovieTitleLength)
+			||  !strncmp((const char *)localname, kEnigma2MovieExtendedDescription, kEnigma2MovieExtendedDescriptionLength)
+			||	!strncmp((const char *)localname, kEnigma2MovieDescription, kEnigma2MovieDescriptionLength)
+			||	!strncmp((const char *)localname, kEnigma2MovieTime, kEnigma2MovieTimeLength)
+			||	!strncmp((const char *)localname, kEnigma2MovieSname, kEnigma2MovieSnameLength)
+			||	!strncmp((const char *)localname, kEnigma2MovieLength, kEnigma2MovieLengthLength)
+			||	!strncmp((const char *)localname, kEnigma2MovieTags, kEnigma2MovieTagsLength)
+#if 0
+			||	!strncmp((const char *)localname, kEnigma2MovieFilename, kEnigma2MovieFilenameLength)
+#endif
+			||	!strncmp((const char *)localname, kEnigma2MovieFilesize, kEnigma2MovieFilesizeLength)
+			)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2MovieElement, kEnigma2MovieElementLength))
+	{
+		[_delegate performSelectorOnMainThread: @selector(addMovie:)
+									withObject: currentMovie
+								 waitUntilDone: NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieExtendedDescription, kEnigma2MovieExtendedDescriptionLength))
+	{
+		currentMovie.edescription = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieDescription, kEnigma2MovieDescriptionLength))
+	{
+		currentMovie.sdescription = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieTitle, kEnigma2MovieTitleLength))
+	{
+		currentMovie.title = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieLength, kEnigma2MovieLengthLength))
+	{
+		if([currentString isEqualToString: @"disabled"] || [currentString isEqualToString: @"?:??"])
+		{
+			currentMovie.length = [NSNumber numberWithInteger: -1];
+		}
+		else
+		{
+			const NSRange range = [currentString rangeOfString: @":"];
+			const NSInteger minutes = [[currentString substringToIndex: range.location] integerValue];
+			const NSInteger seconds = [[currentString substringFromIndex: range.location + 1] integerValue];
+			currentMovie.length = [NSNumber numberWithInteger: (minutes * 60) + seconds];
+		}
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieTime, kEnigma2MovieTimeLength))
+	{
+		[currentMovie setTimeFromString:currentString];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieTags, kEnigma2MovieTagsLength))
+	{
+		[currentMovie setTagsFromString: currentString];
+	}
+#if 0
+	else if(!strncmp((const char *)localname, kEnigma2MovieFilename, kEnigma2MovieFilenameLength))
+	{
+		currentMovie.filename = currentString;
+	}
+#endif
+	else if(!strncmp((const char *)localname, kEnigma2MovieFilesize, kEnigma2MovieFilesizeLength))
+	{
+		currentMovie.size = [NSNumber numberWithLongLong: [currentString longLongValue]];;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieSref, kEnigma2MovieSrefLength))
+	{
+		currentMovie.sref = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2MovieSname, kEnigma2MovieSnameLength))
+	{
+		currentMovie.sname = currentString;
+	}
+
+	// this either does nothing or releases the string that was in use
+	self.currentString = nil;
 }
 
 @end
