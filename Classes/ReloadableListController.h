@@ -10,6 +10,9 @@
 
 #import "EGORefreshTableHeaderView.h"
 
+@class BaseXMLReader;
+@class CXMLDocument;
+
 /*!
  @brief Reloadable List Controller
  
@@ -38,5 +41,15 @@
  @brief Empty content data
  */
 - (void)emptyData;
+
+/*!
+ @brief Default implementation of xml parser error callback.
+ */
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
+
+/*!
+ @brief Default implementation of xml parser success callback.
+ */
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
 
 @end

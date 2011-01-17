@@ -216,15 +216,7 @@
 
 		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
 						withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
 #endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
 	}
 }
 

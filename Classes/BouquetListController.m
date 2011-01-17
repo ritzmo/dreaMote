@@ -211,6 +211,29 @@
 	_bouquetXMLDoc = nil;
 }
 
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// assume details will fail too if in split
+	if(_isSplit)
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
+	else
+	{
+		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+	}
+}
+
+#pragma mark -
+#pragma mark ServiceSourceDelegate
+#pragma mark -
+
 /* add service to list */
 - (void)addService: (NSObject<ServiceProtocol> *)bouquet
 {
@@ -220,15 +243,7 @@
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_bouquets count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
 #endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
 	}
 }
 

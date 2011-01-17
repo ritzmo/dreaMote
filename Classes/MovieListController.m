@@ -228,24 +228,37 @@
 	_movieXMLDoc = nil;
 }
 
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	if(_isSplit)
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
+	else
+	{
+		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+	}
+}
+
+#pragma mark -
+#pragma mark MovieSourceDelegate methods
+#pragma mark -
+
 /* add movie to list */
 - (void)addMovie: (NSObject<MovieProtocol> *)movie
 {
 	if(movie != nil)
 	{
+		const NSUInteger idx = _movies.count;
 		[_movies addObject: movie];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_movies count]-1 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
-#endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+						withRowAnimation: UITableViewRowAnimationLeft];
 	}
 }
 

@@ -151,6 +151,39 @@
 	_locationXMLDoc = nil;
 }
 
+/* force a refresh */
+- (void)forceRefresh
+{
+	[_locations removeAllObjects];
+	// Spawn a thread to fetch the service data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	_refreshLocations = NO;
+}
+
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// assume details will fail too if in split
+	if(_isSplit)
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+	}
+	else
+	{
+		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+	}
+}
+
+#pragma mark -
+#pragma mark LocationSourceDelegate
+#pragma mark -
+
 /* add location to list */
 - (void)addLocation: (NSObject<LocationProtocol> *)location
 {
@@ -160,26 +193,8 @@
 #ifdef ENABLE_LAGGY_ANIMATIONS
 		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_locations count]-1 inSection:0]]
 						withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
 #endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
 	}
-}
-
-/* force a refresh */
-- (void)forceRefresh
-{
-	[_locations removeAllObjects];
-	// Spawn a thread to fetch the service data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
-	_refreshLocations = NO;
 }
 
 #pragma mark	-

@@ -149,33 +149,6 @@
 }
 
 #pragma mark -
-#pragma mark DataSourceDelegate
-#pragma mark -
-
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
-{
-	_reloading = NO;
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	[_tableView reloadData];
-
-	// Alert user
-	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
-														  message:[error localizedDescription]
-														 delegate:nil
-												cancelButtonTitle:@"OK"
-												otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-}
-
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
-{
-	_reloading = NO;
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-}
-
-#pragma mark -
 #pragma mark EventSourceDelegate methods
 #pragma mark -
 
