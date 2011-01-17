@@ -8,6 +8,15 @@
 
 #import "TimerSplitViewController.h"
 
+#import "Constants.h"
+
+#import "Objects/Generic/Timer.h"
+
+@interface TimerSplitViewController()
+- (void)reinitializeTimerView:(NSNotification *)notif;
+@end
+
+
 @implementation TimerSplitViewController
 
 - (id)init
@@ -21,9 +30,11 @@
 
 - (void)dealloc
 {
-    [super dealloc];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_timerListController release];
 	[_timerViewController release];
+
+	[super dealloc];
 }
 
 #pragma mark -
@@ -50,6 +61,17 @@
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
 	[navController1 release];
 	[navController2 release];
+
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reinitializeTimerView:) name:kReconnectNotification object:nil];
+}
+
+- (void)reinitializeTimerView:(NSNotification *)notif
+{
+	// so we don't accidentally have auto here if we don't support it…
+	// disables top secret timer-transfer capability though :-D
+	_timerViewController.timer = [GenericTimer timer];
+	_timerViewController.creatingNewTimer = YES;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -62,8 +84,8 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Overriden to allow any orientation.
-    return YES;
+	// Overriden to allow any orientation.
+	return YES;
 }
 
 @end
