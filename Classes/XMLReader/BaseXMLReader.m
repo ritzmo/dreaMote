@@ -8,7 +8,7 @@
 
 #import "BaseXMLReader.h"
 
-#import "SynchonousRequestReader.h"
+#import "SynchronousRequestReader.h"
 #import "Constants.h"
 
 /*!
@@ -135,7 +135,7 @@
 	}
 #else //!LAME_ASYNCHRONOUS_DOWNLOAD
 	NSURLResponse *response;
-	NSData *data = [SynchonousRequestReader sendSynchronousRequest:URL
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:URL
 												 returningResponse:&response
 															 error:&localError
 													   withTimeout:_timeout];

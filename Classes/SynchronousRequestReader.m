@@ -1,16 +1,16 @@
 //
-//  SynchonousRequestReader.m
+//  SynchronousRequestReader.m
 //  dreaMote
 //
 //  Created by Moritz Venn on 17.01.11.
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import "SynchonousRequestReader.h"
+#import "SynchronousRequestReader.h"
 
 #import "Constants.h"
 
-@interface SynchonousRequestReader()
+@interface SynchronousRequestReader()
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace;
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
@@ -25,7 +25,7 @@
 @property (nonatomic) BOOL running;
 @end
 
-@implementation SynchonousRequestReader
+@implementation SynchronousRequestReader
 
 @synthesize data = _data;
 @synthesize error = _error;
@@ -53,7 +53,7 @@
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
 {
-	SynchonousRequestReader *srr = [[SynchonousRequestReader alloc] init];
+	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
 	NSData *data = [srr.data retain];
 	NSURLRequest *request = [NSURLRequest requestWithURL:url
 											 cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -80,7 +80,7 @@
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error
 {
-	return [SynchonousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kDefaultTimeout];
+	return [SynchronousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kDefaultTimeout];
 	
 }
 

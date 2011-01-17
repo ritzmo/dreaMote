@@ -13,7 +13,7 @@
 
  Used to retrieve data via http(s) from remote hosts synchronously.
  */
-@interface SynchonousRequestReader : NSObject
+@interface SynchronousRequestReader : NSObject
 {
 @private
 	NSMutableData *_data; /*!< @brief Incoming data. */
