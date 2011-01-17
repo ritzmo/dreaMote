@@ -19,13 +19,7 @@
 	{
 		self.title = NSLocalizedString(@"MediaPlayer", @"Title of MediaPlayerSplitViewController");
 
-		@try {
-			[self setValue:[NSNumber numberWithInteger:512] forKey:@"_masterColumnWidth"];
-		}
-		@catch (NSException * e) {
-			NSLog(@"_masterColumnWidth no longer working, ignoring…");//
-		}
-
+		self.splitPosition = 512;
 		UIImage *image = [UIImage imageNamed: @"mediaplayer.png"];
 		self.tabBarItem.image = image;
     }
@@ -69,12 +63,6 @@
 	// release allocated ressources
 	[playListController release];
 	[detailsController release];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Overriden to allow any orientation.
-    return YES;
 }
 
 @end

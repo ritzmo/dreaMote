@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "IntelligentSplitViewController/IntelligentSplitViewController.h"
+#import "MGSplitViewController/MGSplitViewController.h"
 
-@interface MediaPlayerSplitViewController : IntelligentSplitViewController {
+@interface MediaPlayerSplitViewController : MGSplitViewController {
 }
 
 @end

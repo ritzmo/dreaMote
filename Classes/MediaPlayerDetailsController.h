@@ -12,12 +12,13 @@
 #import "MediaPlayerController.h"
 #import "MetadataProtocol.h"
 #import "MetadataSourceDelegate.h"
+#import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 @class CXMLDocument;
 
 @interface MediaPlayerDetailsController : MediaPlayerController <UITableViewDelegate,
 															UITableViewDataSource,
-															UISplitViewControllerDelegate,
+															MGSplitViewControllerDelegate,
 															MetadataSourceDelegate>
 {
 @private
