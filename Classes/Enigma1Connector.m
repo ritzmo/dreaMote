@@ -13,6 +13,7 @@
 #import "Objects/TimerProtocol.h"
 #import "Objects/MovieProtocol.h"
 
+#import "SynchronousRequestReader.h"
 #import "ServiceSourceDelegate.h"
 #import "VolumeSourceDelegate.h"
 #import "XMLReader/Enigma/EventXMLReader.h"
@@ -38,10 +39,6 @@ enum enigma1MessageTypes {
 	kEnigma1MessageTypeError = 3,
 	kEnigma1MessageTypeMax = 4
 };
-
-@interface NSURLRequest(DummyInterface)
-+ (void)setAllowsAnyHTTPSCertificate:(BOOL)allow forHost:(NSString*)host;
-@end
 
 @implementation Enigma1Connector
 
@@ -97,7 +94,6 @@ enum enigma1MessageTypes {
 
 			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
-		[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[_baseAddress host]];
 		[_baseAddress retain];
 	}
 	return self;
@@ -122,15 +118,10 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/xml/boxstatus"  relativeToURL:_baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	return ([response statusCode] == 200);
 }
@@ -155,16 +146,10 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/zapTo?mode=zap&path=%@", [sref urlencode]] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	result.result = ([response statusCode] == 204);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -334,18 +319,12 @@ enum enigma1MessageTypes {
 		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=repeating&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@&mo=%@&tu=%@&we=%@&th=%@&fr=%@&sa=%@&su=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title urlencode], afterEvent, newTimer.justplay ? @"zap" : @"record", (repeated & weekdayMon) > 0 ? @"on" : @"off", (repeated & weekdayTue) > 0 ? @"on" : @"off", (repeated & weekdayWed) > 0 ? @"on" : @"off", (repeated & weekdayThu) > 0 ? @"on" : @"off", (repeated & weekdayFri) > 0 ? @"on" : @"off", (repeated & weekdaySat) > 0 ? @"on" : @"off", (repeated & weekdaySun) > 0 ? @"on" : @"off"] relativeToURL: _baseAddress];
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
 	result.result = (myRange.length > 0);
@@ -395,18 +374,12 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
 	result.result = (myRange.length > 0);
@@ -447,16 +420,10 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/cgi-bin/deleteMovie?ref=%@", [movie.sref urlencode]] relativeToURL:_baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	result.result = ([response statusCode] == 204);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -470,16 +437,10 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/cgi-bin/videocontrol?command=record" relativeToURL:_baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	result.result = ([response statusCode] == 500);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -503,16 +464,10 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/admin?command=%@", newState] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	NSHTTPURLResponse *response;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 }
 
 - (void)shutdown
@@ -541,18 +496,12 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio" relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	GenericVolume *volumeObject = [[GenericVolume alloc] init];
 	NSInteger volume = -1;
@@ -594,18 +543,12 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio?mute=xy" relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"mute: 1"];
 	[myString release];
@@ -619,18 +562,12 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/audio?volume=%d", 63 - newVolume] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"Volume set."];
 	result.result = (myRange.length > 0);
@@ -657,16 +594,10 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/rc?%d", type] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											  error:nil];
 
 	result.result = ([response statusCode] == 204);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -714,18 +645,12 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d&icon=%d", [message  urlencode], [caption  urlencode], timeout, translatedType] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	const NSRange myRange = [myString rangeOfString: @"+ok"];
 	result.result = (myRange.length > 0);
@@ -765,16 +690,10 @@ enum enigma1MessageTypes {
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot" relativeToURL: _baseAddress];
 
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-		// Create URL Object and download it
-		NSURLResponse *response;
-		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		NSData *data = [NSURLConnection sendSynchronousRequest: request
-											returningResponse: &response error: nil];
-
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		NSHTTPURLResponse *response;
+		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+													  returningResponse:&response
+																  error:nil];
 
 		return data;
 	}
@@ -784,16 +703,10 @@ enum enigma1MessageTypes {
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/body?mode=controlScreenShot" relativeToURL: _baseAddress];
 
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-		// Create URL Object and download it
-		NSURLResponse *response;
-		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		NSData *data = [NSURLConnection sendSynchronousRequest: request
-											returningResponse: &response error: nil];
-
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		NSHTTPURLResponse *response;
+		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+													  returningResponse:&response
+																  error:nil];
 
 		const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
@@ -805,15 +718,9 @@ enum enigma1MessageTypes {
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: _baseAddress];
 
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-		// Create URL Object and download it
-		request = [NSURLRequest requestWithURL: myURI
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		data = [NSURLConnection sendSynchronousRequest: request
-											returningResponse: &response error: nil];
-
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		data = [SynchronousRequestReader sendSynchronousRequest:myURI
+											  returningResponse:&response
+														  error:nil];
 
 		return data;
 	}

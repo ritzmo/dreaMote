@@ -15,6 +15,7 @@
 #import "Objects/Generic/Volume.h"
 #import "Objects/Generic/Timer.h"
 
+#import "SynchronousRequestReader.h"
 #import "MovieSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
 #import "SignalSourceDelegate.h"
@@ -35,10 +36,6 @@ enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeConfirmed = 1,
 	kNeutrinoMessageTypeMax = 2,
 };
-
-@interface NSURLRequest(DummyInterface)
-+ (void)setAllowsAnyHTTPSCertificate:(BOOL)allow forHost:(NSString*)host;
-@end
 
 @implementation NeutrinoConnector
 
@@ -79,7 +76,6 @@ enum neutrinoMessageTypes {
 
 			_baseAddress = [NSURL URLWithString: remoteAddress];
 		}
-		[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[_baseAddress host]];
 		[_baseAddress retain];
 	}
 	return self;
@@ -120,15 +116,10 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/control/info"  relativeToURL:_baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	return ([response statusCode] == 200);
 }
@@ -142,16 +133,10 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	result.result = ([response statusCode] == 200);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -277,17 +262,11 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSError *error;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: &error];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:&error];
 
 	// Error occured, so send fake object
 	if(error || !data)
@@ -404,16 +383,10 @@ enum neutrinoMessageTypes {
 	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	// Sourcecode suggests that they always return ok, so we only do this simple check
 	result.result = ([response statusCode] == 200);
@@ -439,16 +412,10 @@ enum neutrinoMessageTypes {
 	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	// Sourcecode suggests that they always return ok, so we only do this simple check
 	result.result = ([response statusCode] == 200);
@@ -463,16 +430,10 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/timer?action=remove&id=%@", oldTimer.eit] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	// Sourcecode suggests that they always return ok, so we only do this simple check
 	result.result = ([response statusCode] == 200);
@@ -495,16 +456,10 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/%@", newState] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	NSHTTPURLResponse *response;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 }
 
 - (void)shutdown
@@ -519,12 +474,10 @@ enum neutrinoMessageTypes {
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	const BOOL equalsOn = [myString isEqualToString: @"on"];
@@ -556,15 +509,11 @@ enum neutrinoMessageTypes {
 	// Generate URI (mute)
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
+	
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	if([myString isEqualToString: @"1"])
 		volumeObject.ismuted = YES;
@@ -576,14 +525,10 @@ enum neutrinoMessageTypes {
 	// Generate URI (volume)
 	myURI = [NSURL URLWithString: @"/control/volume" relativeToURL: _baseAddress];
 
-	// Create URL Object and download it
-	request = [NSURLRequest requestWithURL: myURI
-							   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	data = [NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
+	data = [SynchronousRequestReader sendSynchronousRequest:myURI
+										  returningResponse:&response
+													  error:nil];
+	
 	myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	volumeObject.current = [myString integerValue];
 
@@ -600,15 +545,11 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/volume?status" relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
-	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
+	NSHTTPURLResponse *response;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
+	
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	const BOOL equalsRes = [myString isEqualToString: @"1"];
 	[myString release];
@@ -621,13 +562,9 @@ enum neutrinoMessageTypes {
 	// Generate new URI
 	myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%@", myString] relativeToURL: _baseAddress];
 
-	// Create URL Object and download it
-	request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	return !equalsRes;
 }
@@ -647,16 +584,10 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/volume?%d", newVolume] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-						  returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	// Sourcecode suggests that they always return ok, so we only do this simple check
 	result.result = ([response statusCode] == 200);
@@ -725,16 +656,10 @@ enum neutrinoMessageTypes {
 		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/rcem?%@", buttonCode] relativeToURL: _baseAddress];
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	result.result = ([response statusCode] == 200);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -750,16 +675,10 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message urlencode]] relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSHTTPURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-	[NSURLConnection sendSynchronousRequest: request
-										 returningResponse: &response error: nil];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
 
 	result.result = ([response statusCode] == 200);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
@@ -793,27 +712,19 @@ enum neutrinoMessageTypes {
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/GLJ-snapBMP.htm" relativeToURL: _baseAddress];
 
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-		// Create URL Object and download it
 		NSHTTPURLResponse *response;
-		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		[NSURLConnection sendSynchronousRequest: request
-							  returningResponse: &response error: nil];
+		[SynchronousRequestReader sendSynchronousRequest:myURI
+									   returningResponse:&response
+												   error:nil];
 
 		if([response statusCode] == 200)
 		{
 			// Generate URI
 			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: _baseAddress];
 
-			// Create URL Object and download it
-			request = [NSURLRequest requestWithURL: myURI
-									   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-			NSData *data = [NSURLConnection sendSynchronousRequest: request
-												 returningResponse: &response error: nil];
-
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+														  returningResponse:&response
+																	  error:nil];
 
 			return data;
 		}
@@ -821,11 +732,9 @@ enum neutrinoMessageTypes {
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 
-		// Create URL Object and download it
-		request = [NSURLRequest requestWithURL: myURI
-												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		[NSURLConnection sendSynchronousRequest: request
-											 returningResponse: &response error: nil];
+		[SynchronousRequestReader sendSynchronousRequest:myURI
+									   returningResponse:&response
+												   error:nil];
 
 		// do we actually get a status != 200 back?
 		// maybe check if data is not empty...
@@ -834,32 +743,24 @@ enum neutrinoMessageTypes {
 			// Generate URI
 			myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 
-			// Create URL Object and download it
-			request = [NSURLRequest requestWithURL: myURI
-										cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-			[NSURLConnection sendSynchronousRequest: request
-												returningResponse: &response error: nil];
+			[SynchronousRequestReader sendSynchronousRequest:myURI
+										   returningResponse:&response
+													   error:nil];
 		}
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 
-		// Create URL Object and download it
-		request = [NSURLRequest requestWithURL: myURI
-								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		NSData *data = [NSURLConnection sendSynchronousRequest: request
-											 returningResponse: &response error: nil];
+		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+													  returningResponse:&response
+																  error:nil];
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
 
-		// Create URL Object and download it
-		request = [NSURLRequest requestWithURL: myURI
-								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		[NSURLConnection sendSynchronousRequest: request
-							  returningResponse: &response error: nil];
-
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[SynchronousRequestReader sendSynchronousRequest:myURI
+									   returningResponse:&response
+												   error:nil];
 
 		return data;
 	}
@@ -869,36 +770,27 @@ enum neutrinoMessageTypes {
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
 
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
 		// Create URL Object and download it
 		NSURLResponse *response;
-		NSURLRequest *request = [NSURLRequest requestWithURL: myURI
-												 cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		[NSURLConnection sendSynchronousRequest: request
-											 returningResponse: &response error: nil];
+		[SynchronousRequestReader sendSynchronousRequest:myURI
+									   returningResponse:&response
+												   error:nil];
 
 		// XXX: check status?
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
 
-		// Create URL Object and download it
-		request = [NSURLRequest requestWithURL: myURI
-								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		NSData *data = [NSURLConnection sendSynchronousRequest: request
-									 returningResponse: &response error: nil];
+		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+													  returningResponse:&response
+																  error:nil];
 
 		// Generate URI
 		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
 
-		// Create URL Object and download it
-		request = [NSURLRequest requestWithURL: myURI
-								   cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: kDefaultTimeout];
-		[NSURLConnection sendSynchronousRequest: request
-											 returningResponse: &response error: nil];
-
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[SynchronousRequestReader sendSynchronousRequest:myURI
+									   returningResponse:&response
+												   error:nil];
 
 		return data;
 	}
