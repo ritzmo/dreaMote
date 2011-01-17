@@ -148,24 +148,46 @@
 	_eventXMLDoc = nil;
 }
 
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	[_tableView reloadData];
+
+	// Alert user
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+														  message:[error localizedDescription]
+														 delegate:nil
+												cancelButtonTitle:@"OK"
+												otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	[_tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark EventSourceDelegate methods
+#pragma mark -
+
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	if(event != nil)
 	{
+		const NSInteger idx = [_events count];
 		[_events addObject: event];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_events count]-1 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
-#endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-		[_tableView reloadData];
-		_reloading = NO;
+		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+						withRowAnimation: UITableViewRowAnimationLeft];
 	}
 }
 
