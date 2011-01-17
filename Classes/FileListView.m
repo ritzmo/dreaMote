@@ -82,27 +82,6 @@
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
-/* add file to list */
-- (void)addFile: (NSObject<FileProtocol> *)file
-{
-	if(file != nil)
-	{
-		[_files addObject: file];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		[self insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_files count]-1 inSection:0]]
-									   withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
-#else
-	}
-#endif
-	{
-		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
-		[self reloadData];
-		_reloading = NO;
-	}
-}
-
 /* start download of file list */
 - (void)fetchData
 {
@@ -177,6 +156,43 @@
 		{
 			[_fileDelegate fileListView:self fileSelected:file];
 		}
+	}
+}
+
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
+	[self reloadData];
+
+	// TODO: find a good way to alert the user without spamming him with them
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
+	[self reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark -
+#pragma mark FileSourceDelegate
+#pragma mark -
+
+/* add file to list */
+- (void)addFile: (NSObject<FileProtocol> *)file
+{
+	if(file != nil)
+	{
+		[_files addObject: file];
+#ifdef ENABLE_LAGGY_ANIMATIONS
+		[self insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_files count]-1 inSection:0]]
+					withRowAnimation: UITableViewRowAnimationTop];
+#endif
 	}
 }
 
