@@ -188,7 +188,7 @@
 	{
 		case 0:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
-				&& _currentTrack != nil)
+				&& _currentTrack.valid)
 				return NSLocalizedString(@"Now Playing", @"");
 			return nil;
 		case 1:
@@ -204,7 +204,7 @@
 	{
 		case 0:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
-				&& _currentTrack != nil)
+				&& _currentTrack.valid)
 				return 1;
 			return 0;
 		case 1:
