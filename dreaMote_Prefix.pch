@@ -26,7 +26,7 @@
 #endif
 
 // SDK 3.2+
-#ifdef UI_USER_INTERFACE_IDIOM()
+#ifdef UI_USER_INTERFACE_IDIOM
 	#define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 #else
 	#define IS_IPAD() (NO)
