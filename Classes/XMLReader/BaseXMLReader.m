@@ -8,6 +8,7 @@
 
 #import "BaseXMLReader.h"
 
+#import "SynchonousRequestReader.h"
 #import "Constants.h"
 
 /*!
@@ -133,15 +134,11 @@
 
 	}
 #else //!LAME_ASYNCHRONOUS_DOWNLOAD
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	// Create URL Object and download it
 	NSURLResponse *response;
-	NSURLRequest *request = [NSURLRequest requestWithURL: URL
-											cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: _timeout];
-	NSData *data = [NSURLConnection sendSynchronousRequest: request
-											returningResponse: &response error: &localError];
-
+	NSData *data = [SynchonousRequestReader sendSynchronousRequest:URL
+												 returningResponse:&response
+															 error:&localError
+													   withTimeout:_timeout];
 	if(localError == nil)
 		_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
 	
@@ -194,6 +191,31 @@
 }
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
+
+/* should authenticate? */
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+	return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+/* do authenticate */
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+	if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+	{
+		// TODO: ask user to accept certificate
+		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
+			 forAuthenticationChallenge:challenge];
+	}
+	else
+	{
+		// NOTE: continue just swallows all errors while cancel gives a weird message,
+		// but a weird message is better than no response
+		//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+		[challenge.sender cancelAuthenticationChallenge:challenge];
+	}
+}
+
 /* received data */
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
