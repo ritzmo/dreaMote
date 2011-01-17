@@ -433,9 +433,8 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/file?file=%@", [fullpath urlencode]] relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 	
 	return data;
@@ -506,9 +505,8 @@ enum enigma2MessageTypes {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol?set=mute" relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -592,9 +590,8 @@ enum enigma2MessageTypes {
 
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/grab?format=jpg%@", appendType] relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	return data;
