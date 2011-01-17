@@ -38,8 +38,7 @@
 {
 	if((self = [super init]))
 	{
-		// make the title of this page the same as the title of this app
-		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+		//
 	}
 	return self;
 }
@@ -217,7 +216,7 @@
 	[self setViewControllers: menuList];
 	// initial load
 	if(self.selectedIndex == NSNotFound)
-		self.selectedIndex = 0;
+		self.selectedViewController = [menuList lastObject];
 }
 
 - (BOOL)checkConnection

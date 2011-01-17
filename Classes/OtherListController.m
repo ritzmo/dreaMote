@@ -45,7 +45,8 @@
 {
 	if((self = [super init]))
 	{
-		self.title = NSLocalizedString(@"More", @"Title of OtherListController");
+		self.title = @"dreaMote";
+		self.tabBarItem.title = NSLocalizedString(@"More", @"Tab Title of OtherListController");
 		_configListController = nil;
 	}
 	return self;
