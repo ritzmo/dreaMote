@@ -80,6 +80,8 @@
 
 - (void)fetchCurrentDefer
 {
+	if(_playlist.reloading) return;
+
 	switch(_retrieveCurrentUsing)
 	{
 		case kRetrieveCurrentUsingAbout:
@@ -373,7 +375,8 @@
 	else
 		_retrieveCurrentUsing = kRetrieveCurrentUsingNone;
 
-	[_playlist refreshData];
+	if(!_playlist.reloading)
+		[_playlist refreshData];
 	[self placeControls:self.interfaceOrientation duration:0];
 
 	[self configureToolbar]; // need to know nav before doing this, so unable to do this in loadView
@@ -387,7 +390,6 @@
 		_timer = [NSTimer scheduledTimerWithTimeInterval: 10.0
 											target: self selector:@selector(fetchCurrentDefer)
 											userInfo: nil repeats: YES];
-		[_timer fire];
 	}
 
 	[super viewWillAppear: animated];
