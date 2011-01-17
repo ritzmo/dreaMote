@@ -196,6 +196,15 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	[_tableView reloadData];
+}
+
+#pragma mark -
 #pragma mark EventSourceDelegate methods
 #pragma mark -
 
@@ -204,17 +213,10 @@
 {
 	if(event != nil)
 	{
-		NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
+		const NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
 		[_events insertObject: event atIndex: index];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:index inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
+		[_tableView reloadData];
 	}
-	else
-#else
-	}
-#endif
-	[_tableView reloadData];
 }
 
 
