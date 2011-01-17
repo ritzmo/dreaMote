@@ -80,14 +80,8 @@
 		DA6CEFD312D4D38D00F1F52D /* bouquet.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF8B12D4D38D00F1F52D /* bouquet.png */; };
 		DA6CEFD412D4D38D00F1F52D /* current.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF8C12D4D38D00F1F52D /* current.png */; };
 		DA6CEFD512D4D38D00F1F52D /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF8D12D4D38D00F1F52D /* document-save.png */; };
-		DA6CEFD612D4D38D00F1F52D /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF8F12D4D38D00F1F52D /* blackArrow.png */; };
-		DA6CEFD712D4D38D00F1F52D /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9012D4D38D00F1F52D /* blackArrow@2x.png */; };
 		DA6CEFD812D4D38D00F1F52D /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9112D4D38D00F1F52D /* blueArrow.png */; };
 		DA6CEFD912D4D38D00F1F52D /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9212D4D38D00F1F52D /* blueArrow@2x.png */; };
-		DA6CEFDA12D4D38D00F1F52D /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9312D4D38D00F1F52D /* grayArrow.png */; };
-		DA6CEFDB12D4D38D00F1F52D /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9412D4D38D00F1F52D /* grayArrow@2x.png */; };
-		DA6CEFDC12D4D38D00F1F52D /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9512D4D38D00F1F52D /* whiteArrow.png */; };
-		DA6CEFDD12D4D38D00F1F52D /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9612D4D38D00F1F52D /* whiteArrow@2x.png */; };
 		DA6CEFDE12D4D38D00F1F52D /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9712D4D38D00F1F52D /* emblem-favorite.png */; };
 		DA6CEFDF12D4D38D00F1F52D /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9812D4D38D00F1F52D /* exit.png */; };
 		DA6CEFE012D4D38D00F1F52D /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF9912D4D38D00F1F52D /* Icon-72.png */; };
@@ -1316,14 +1310,8 @@
 				DA6CEFD312D4D38D00F1F52D /* bouquet.png in Resources */,
 				DA6CEFD412D4D38D00F1F52D /* current.png in Resources */,
 				DA6CEFD512D4D38D00F1F52D /* document-save.png in Resources */,
-				DA6CEFD612D4D38D00F1F52D /* blackArrow.png in Resources */,
-				DA6CEFD712D4D38D00F1F52D /* blackArrow@2x.png in Resources */,
 				DA6CEFD812D4D38D00F1F52D /* blueArrow.png in Resources */,
 				DA6CEFD912D4D38D00F1F52D /* blueArrow@2x.png in Resources */,
-				DA6CEFDA12D4D38D00F1F52D /* grayArrow.png in Resources */,
-				DA6CEFDB12D4D38D00F1F52D /* grayArrow@2x.png in Resources */,
-				DA6CEFDC12D4D38D00F1F52D /* whiteArrow.png in Resources */,
-				DA6CEFDD12D4D38D00F1F52D /* whiteArrow@2x.png in Resources */,
 				DA6CEFDE12D4D38D00F1F52D /* emblem-favorite.png in Resources */,
 				DA6CEFDF12D4D38D00F1F52D /* exit.png in Resources */,
 				DA6CEFE012D4D38D00F1F52D /* Icon-72.png in Resources */,
