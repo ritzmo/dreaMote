@@ -112,7 +112,7 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	if(!_willReappear)
+	if(!_willReappear && !_reloading)
 	{
 		[self emptyData];
 

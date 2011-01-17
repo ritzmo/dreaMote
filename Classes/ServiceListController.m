@@ -205,7 +205,7 @@
 	 @note If bouquet is nil we are in single bouquet mode and therefore we refresh here
 	 and not in setBouquet:
 	 */
-	if(_refreshServices && _bouquet == nil)
+	if(_refreshServices && _bouquet == nil && !_reloading)
 	{
 		_supportsNowNext = [RemoteConnectorObject showNowNext];
 

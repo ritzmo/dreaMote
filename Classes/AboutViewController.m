@@ -247,15 +247,19 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// Spawn a thread to fetch the event data so that the UI is not blocked while the
-	// application parses the XML file.
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	if(!_reloading)
+	{
+		// Spawn a thread to fetch the event data so that the UI is not blocked while the
+		// application parses the XML file.
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
+			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[self emptyData];
+	if(!_reloading)
+		[self emptyData];
 }
 
 /* rotate with device */

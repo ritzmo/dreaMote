@@ -88,7 +88,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	// Refresh cache if we have a cleared one
-	if(_refreshLocations)
+	if(_refreshLocations && !_reloading)
 	{
 		[_locations removeAllObjects];
 

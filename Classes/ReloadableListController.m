@@ -129,6 +129,7 @@
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
+	if(_reloading) return;
 	[self emptyData];
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the

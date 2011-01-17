@@ -294,18 +294,22 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// empty again, sometimes now/next gets stuck
-	[self emptyData];
+	if(!_reloading)
+	{
+		// empty again, sometimes now/next gets stuck
+		[self emptyData];
 
-	// Spawn a thread to fetch the event data so that the UI is not blocked while the
-	// application parses the XML file.
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		// Spawn a thread to fetch the event data so that the UI is not blocked while the
+		// application parses the XML file.
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
+			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[self emptyData];
+	if(!_reloading)
+		[self emptyData];
 }
 
 /* rotate with device */

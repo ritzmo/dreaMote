@@ -146,7 +146,7 @@
 	else
 		self.navigationItem.rightBarButtonItem = nil;
 
-	if(_refreshMovies)
+	if(_refreshMovies && !_reloading)
 	{
 		[_movies removeAllObjects];
 
