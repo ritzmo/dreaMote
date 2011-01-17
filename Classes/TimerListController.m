@@ -196,6 +196,27 @@
 	_timerXMLDoc = nil;
 }
 
+/* rotate with device */
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
+
+#pragma mark -
+#pragma mark -
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	[_tableView reloadData];
+}
+
+#pragma mark -
+#pragma mark TimerSourceDelegate
+#pragma mark -
+
 /* add timer to list */
 - (void)addTimer: (NSObject<TimerProtocol> *)newTimer
 {
@@ -219,6 +240,10 @@
 #endif
 	}
 }
+
+#pragma mark	-
+#pragma mark		Table View
+#pragma mark	-
 
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -419,12 +444,6 @@
 		// NOTE: set this here so the edit button won't get screwed
 		_timerViewController.creatingNewTimer = YES;
 	}
-}
-
-/* rotate with device */
-- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark -
