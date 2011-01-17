@@ -158,6 +158,28 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 #pragma mark NSURLConnection delegate methods
 #pragma mark -
 
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+	return YES;
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+	if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+	{
+		// TODO: ask user to accept certificate
+		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
+			 forAuthenticationChallenge:challenge];
+	}
+	else
+	{
+		// NOTE: continue just swallows all errors while cancel gives a weird message,
+		// but a weird message is better than no response
+		//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+		[challenge.sender cancelAuthenticationChallenge:challenge];
+	}
+}
+
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
 {
 	return nil;
