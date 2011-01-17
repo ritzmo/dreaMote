@@ -31,8 +31,6 @@
 
 #import "NSString+URLEncode.h"
 
-#import "Constants.h"
-
 enum powerStates {
 	kShutdownState = 1,
 	kRebootState = 2,
@@ -67,7 +65,7 @@ enum enigma2MessageTypes {
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
 		{
-			_baseAddress = [NSURL URLWithString: address];
+			_baseAddress = [[NSURL alloc] initWithString:address];
 		}
 		else
 		{
@@ -81,9 +79,8 @@ enum enigma2MessageTypes {
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 
-			_baseAddress = [NSURL URLWithString: remoteAddress];
+			_baseAddress = [[NSURL alloc] initWithString:remoteAddress];
 		}
-		[_baseAddress retain];
 	}
 	return self;
 }
@@ -107,13 +104,7 @@ enum enigma2MessageTypes {
 
 - (UIViewController *)newRCEmulator
 {
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[EnigmaRCEmulatorController alloc] init];
-	return targetViewController;
+	return [[EnigmaRCEmulatorController alloc] init];
 }
 
 - (BOOL)isReachable

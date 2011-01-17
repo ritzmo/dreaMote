@@ -22,6 +22,7 @@
 #import "CurrentViewController.h"
 #import "OtherListController.h"
 #import "ServiceListController.h"
+#import "SimpleRCEmulatorController.h"
 #import "TimerListController.h"
 
 @interface MainViewController (Private)
@@ -142,6 +143,7 @@
 		&& (
 			[RemoteConnectorObject isSingleBouquet] ||
 			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
 
 	// Toggle single bouquet mode
 	if(!IS_IPAD() && isSingleBouquet)
@@ -204,7 +206,10 @@
 	// RC second to last
 	[menuList removeObject: _rcController];
 	[_rcController release];
-	_rcController = [[RemoteConnectorObject sharedRemoteConnector] newRCEmulator];
+	if(useSimpleRemote)
+		_rcController = [[SimpleRCEmulatorController alloc] init];
+	else
+		_rcController = [[RemoteConnectorObject sharedRemoteConnector] newRCEmulator];
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
 	UIImage *image = [UIImage imageNamed: @"remote.png"];
 	_rcController.tabBarItem.image = image;

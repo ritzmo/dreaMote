@@ -27,8 +27,6 @@
 
 #import "NSString+URLEncode.h"
 
-#import "Constants.h"
-
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
@@ -127,13 +125,7 @@ enum enigma1MessageTypes {
 
 - (UIViewController *)newRCEmulator
 {
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[EnigmaRCEmulatorController alloc] init];
-	return targetViewController;
+	return [[EnigmaRCEmulatorController alloc] init];
 }
 
 # pragma mark Services

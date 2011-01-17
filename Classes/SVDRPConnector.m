@@ -26,8 +26,6 @@
 #import "SVDRPRCEmulatorController.h"
 #import "SimpleRCEmulatorController.h"
 
-#import "Constants.h"
-
 @implementation SVDRPConnector
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
@@ -76,13 +74,7 @@
 
 - (UIViewController *)newRCEmulator
 {
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[SVDRPRCEmulatorController alloc] init];
-	return targetViewController;
+	return [[SVDRPRCEmulatorController alloc] init];
 }
 
 #pragma mark Common

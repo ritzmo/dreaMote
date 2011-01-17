@@ -29,8 +29,6 @@
 
 #import "NSString+URLEncode.h"
 
-#import "Constants.h"
-
 enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeNormal = 0,
 	kNeutrinoMessageTypeConfirmed = 1,
@@ -60,7 +58,7 @@ enum neutrinoMessageTypes {
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
 		{
-			_baseAddress = [NSURL URLWithString: address];
+			_baseAddress = [[NSURL alloc] initWithString:address];
 		}
 		else
 		{
@@ -74,9 +72,8 @@ enum neutrinoMessageTypes {
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 
-			_baseAddress = [NSURL URLWithString: remoteAddress];
+			_baseAddress = [[NSURL alloc] initWithString:remoteAddress];
 		}
-		[_baseAddress retain];
 	}
 	return self;
 }
@@ -102,13 +99,7 @@ enum neutrinoMessageTypes {
 
 - (UIViewController *)newRCEmulator
 {
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
-	UIViewController *targetViewController = nil;
-	if(useSimpleRemote)
-		targetViewController = [[SimpleRCEmulatorController alloc] init];
-	else
-		targetViewController = [[NeutrinoRCEmulatorController alloc] init];
-	return targetViewController;
+	return [[NeutrinoRCEmulatorController alloc] init];
 }
 
 - (BOOL)isReachable
