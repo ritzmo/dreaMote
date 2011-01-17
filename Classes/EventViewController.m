@@ -12,6 +12,7 @@
 #import "RemoteConnectorObject.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "NSString+URLEncode.h"
 
 #import "EventTableViewCell.h"
 #import "CellTextView.h"
@@ -20,6 +21,11 @@
 
 @interface EventViewController()
 - (UITextView *)create_Summary;
+@end
+
+@interface EventViewController(IMDb)
+- (void)addIMDbButton;
+- (void)openIMDb:(id)sender;
 @end
 
 @implementation EventViewController
@@ -212,6 +218,10 @@
 	}
 	[pool release];
 }
+
+#pragma mark -
+#pragma mark EventSourceDelegate
+#pragma mark -
 
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
@@ -433,6 +443,27 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark IMDb
+
+- (void)openIMDb:(id)sender
+{
+	NSString *encoded = [[_event.title urlencode] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)addIMDbButton
+{
+	// check if imdb (2.0) installed (and url valid)
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
+	{
+		UIBarButtonItem *imdbButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"IMDb", @"") style:UIBarButtonItemStylePlain target:self action:@selector(openIMDb:)];
+		self.navigationItem.rightBarButtonItem = imdbButton;
+		[imdbButton release];
+	}
 }
 
 @end

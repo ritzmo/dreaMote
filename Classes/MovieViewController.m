@@ -13,6 +13,7 @@
 #import "Constants.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "NSString+URLEncode.h"
 
 #import "CellTextView.h"
 #import "DisplayCell.h"
@@ -20,6 +21,11 @@
 @interface MovieViewController()
 - (UITextView *)create_Summary;
 @property (nonatomic, retain) UIPopoverController *popoverController;
+@end
+
+@interface MovieViewController(IMDb)
+- (void)addIMDbButton;
+- (void)openIMDb:(id)sender;
 @end
 
 @implementation MovieViewController
@@ -470,6 +476,27 @@
 {
 	self.navigationItem.leftBarButtonItem = nil;
 	self.popoverController = nil;
+}
+
+#pragma mark IMDb
+
+- (void)openIMDb:(id)sender
+{
+	NSString *encoded = [[_movie.title urlencode] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)addIMDbButton
+{
+	// check if imdb (2.0) installed
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
+	{
+		UIBarButtonItem *imdbButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"IMDb", @"") style:UIBarButtonItemStylePlain target:self action:@selector(openIMDb:)];
+		self.navigationItem.rightBarButtonItem = imdbButton;
+		[imdbButton release];
+	}
 }
 
 @end
