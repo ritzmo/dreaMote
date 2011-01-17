@@ -230,6 +230,9 @@
 /* No comment provided by engineer. */
 "Exact" = "Exakt";
 
+/* No comment provided by engineer. */
+"Failed to retrieve data" = "Datenübertragung fehlgeschlagen";
+
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "Filesystems" = "<Medien>";
 
@@ -383,6 +386,9 @@
 
 /* No comment provided by engineer. */
 "Now Playing" = "Aktuelles Lied";
+
+/* No comment provided by engineer. */
+"Now/Next in Servicelist" = "Erweiterte Senderliste";
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";

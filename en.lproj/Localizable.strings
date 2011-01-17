@@ -230,6 +230,9 @@
 /* No comment provided by engineer. */
 "Exact" = "Exact";
 
+/* No comment provided by engineer. */
+/*"Failed to retrieve data" = "Failed to retrieve data";*/
+
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "Filesystems" = "<Filesystems>";
 
@@ -383,6 +386,9 @@
 
 /* No comment provided by engineer. */
 /*"Now Playing" = "Now Playing";*/
+
+/* No comment provided by engineer. */
+/*"Now/Next in Servicelist" = "Now/Next in Servicelist";*/
 
 /* No comment provided by engineer. */
 /*"OSD" = "OSD";*/
