@@ -12,7 +12,7 @@
 #import "../../Objects/Generic/Movie.h"
 
 static const char *kEnigma2MovieElement = "e2movie";
-static const NSUInteger kEnigma2MovieElementLength = 7;
+static const NSUInteger kEnigma2MovieElementLength = 8;
 static const char *kEnigma2MovieTitle = "e2title";
 static const NSUInteger kEnigma2MovieTitleLength = 8;
 static const char *kEnigma2MovieTime = "e2time";
