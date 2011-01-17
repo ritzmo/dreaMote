@@ -78,7 +78,7 @@ enum enigma1MessageTypes {
 		// Protect from unexpected input and assume a full URL if address starts with http
 		if([address rangeOfString: @"http"].location == 0)
 		{
-			_baseAddress = [NSURL URLWithString: address];
+			_baseAddress = [[NSURL alloc] initWithString:address];
 		}
 		else
 		{
@@ -92,9 +92,8 @@ enum enigma1MessageTypes {
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 
-			_baseAddress = [NSURL URLWithString: remoteAddress];
+			_baseAddress = [[NSURL alloc] initWithString:remoteAddress];
 		}
-		[_baseAddress retain];
 	}
 	return self;
 }
@@ -319,9 +318,8 @@ enum enigma1MessageTypes {
 		myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/addTimerEvent?timer=repeating&ref=%@&start=%d&duration=%d&descr=%@&after_event=%d&action=%@&mo=%@&tu=%@&we=%@&th=%@&fr=%@&sa=%@&su=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)([newTimer.end timeIntervalSince1970] - [newTimer.begin timeIntervalSince1970]), [newTimer.title urlencode], afterEvent, newTimer.justplay ? @"zap" : @"record", (repeated & weekdayMon) > 0 ? @"on" : @"off", (repeated & weekdayTue) > 0 ? @"on" : @"off", (repeated & weekdayWed) > 0 ? @"on" : @"off", (repeated & weekdayThu) > 0 ? @"on" : @"off", (repeated & weekdayFri) > 0 ? @"on" : @"off", (repeated & weekdaySat) > 0 ? @"on" : @"off", (repeated & weekdaySun) > 0 ? @"on" : @"off"] relativeToURL: _baseAddress];
 	}
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -374,9 +372,8 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -464,9 +461,8 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/admin?command=%@", newState] relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	[SynchronousRequestReader sendSynchronousRequest:myURI
-								   returningResponse:&response
+								   returningResponse:nil
 											   error:nil];
 }
 
@@ -496,9 +492,8 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio" relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -543,9 +538,8 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/audio?mute=xy" relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -562,9 +556,8 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/cgi-bin/audio?volume=%d", 63 - newVolume] relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -645,9 +638,8 @@ enum enigma1MessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/cgi-bin/xmessage?body=%@&caption=%@&timeout=%d&icon=%d", [message  urlencode], [caption  urlencode], timeout, translatedType] relativeToURL: _baseAddress];
 
-	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
+												  returningResponse:nil
 															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -690,9 +682,8 @@ enum enigma1MessageTypes {
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot" relativeToURL: _baseAddress];
 
-		NSHTTPURLResponse *response;
 		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-													  returningResponse:&response
+													  returningResponse:nil
 																  error:nil];
 
 		return data;
@@ -703,9 +694,8 @@ enum enigma1MessageTypes {
 		// Generate URI
 		NSURL *myURI = [NSURL URLWithString: @"/body?mode=controlScreenShot" relativeToURL: _baseAddress];
 
-		NSHTTPURLResponse *response;
 		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-													  returningResponse:&response
+													  returningResponse:nil
 																  error:nil];
 
 		const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -719,7 +709,7 @@ enum enigma1MessageTypes {
 		myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: _baseAddress];
 
 		data = [SynchronousRequestReader sendSynchronousRequest:myURI
-											  returningResponse:&response
+											  returningResponse:nil
 														  error:nil];
 
 		return data;
