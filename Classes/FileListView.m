@@ -169,7 +169,17 @@
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
 	[self reloadData];
 
-	// TODO: find a good way to alert the user without spamming him with them
+	// only show alert if in front
+	if([self superview])
+	{
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+															  message:[error localizedDescription]
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
 }
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
