@@ -29,6 +29,11 @@
 	[super dealloc];
 }
 
+- (BOOL)isValid
+{
+	return _node != nil;
+}
+
 - (NSString *)artist
 {
 	const NSArray *resultNodes = [_node nodesForXPath:@"e2artist" error:nil];

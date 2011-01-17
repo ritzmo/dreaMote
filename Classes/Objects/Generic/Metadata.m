@@ -39,6 +39,12 @@
 	[super dealloc];
 }
 
+- (BOOL)isValid
+{
+	// require title and artist for a valid service
+	return title && artist;
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -

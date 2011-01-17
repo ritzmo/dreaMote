@@ -43,4 +43,9 @@
  */
 @property (nonatomic, retain) NSString *coverpath;
 
+/*!
+ @brief Valid or fake metadata.
+ */
+@property (nonatomic, readonly, getter = isValid) BOOL valid;
+
 @end
