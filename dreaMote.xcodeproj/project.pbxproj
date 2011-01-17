@@ -191,6 +191,9 @@
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAB65EAE12E495A200699EC8 /* SynchronousRequestReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB65EAD12E495A200699EC8 /* SynchronousRequestReader.m */; };
+		DAB660EB12E4C1C000699EC8 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB660E612E4C1C000699EC8 /* MGSplitCornersView.m */; };
+		DAB660EC12E4C1C000699EC8 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB660E812E4C1C000699EC8 /* MGSplitDividerView.m */; };
+		DAB660ED12E4C1C000699EC8 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB660EA12E4C1C000699EC8 /* MGSplitViewController.m */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
@@ -529,6 +532,12 @@
 		DAB5FA020D845F7A0074D998 /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		DAB65EAC12E495A200699EC8 /* SynchronousRequestReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SynchronousRequestReader.h; sourceTree = "<group>"; };
 		DAB65EAD12E495A200699EC8 /* SynchronousRequestReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SynchronousRequestReader.m; sourceTree = "<group>"; };
+		DAB660E512E4C1C000699EC8 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitCornersView.h; sourceTree = "<group>"; };
+		DAB660E612E4C1C000699EC8 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitCornersView.m; sourceTree = "<group>"; };
+		DAB660E712E4C1C000699EC8 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitDividerView.h; sourceTree = "<group>"; };
+		DAB660E812E4C1C000699EC8 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
+		DAB660E912E4C1C000699EC8 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
+		DAB660EA12E4C1C000699EC8 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1061,6 +1070,19 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
+		DAB660E412E4C1C000699EC8 /* MGSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DAB660E512E4C1C000699EC8 /* MGSplitCornersView.h */,
+				DAB660E612E4C1C000699EC8 /* MGSplitCornersView.m */,
+				DAB660E712E4C1C000699EC8 /* MGSplitDividerView.h */,
+				DAB660E812E4C1C000699EC8 /* MGSplitDividerView.m */,
+				DAB660E912E4C1C000699EC8 /* MGSplitViewController.h */,
+				DAB660EA12E4C1C000699EC8 /* MGSplitViewController.m */,
+			);
+			path = MGSplitViewController;
+			sourceTree = "<group>";
+		};
 		DABF639F10F8BE3E002658DD /* Insort */ = {
 			isa = PBXGroup;
 			children = (
@@ -1091,6 +1113,7 @@
 		DADEF27E12CE12900047E45E /* SplitViewController */ = {
 			isa = PBXGroup;
 			children = (
+				DAB660E412E4C1C000699EC8 /* MGSplitViewController */,
 				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
 				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
 				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
@@ -1497,6 +1520,9 @@
 				DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */,
 				DA1870F312E2854E0034E74B /* Constants.m in Sources */,
 				DAB65EAE12E495A200699EC8 /* SynchronousRequestReader.m in Sources */,
+				DAB660EB12E4C1C000699EC8 /* MGSplitCornersView.m in Sources */,
+				DAB660EC12E4C1C000699EC8 /* MGSplitDividerView.m in Sources */,
+				DAB660ED12E4C1C000699EC8 /* MGSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
