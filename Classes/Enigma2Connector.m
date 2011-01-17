@@ -128,39 +128,45 @@ enum enigma2MessageTypes {
 	return ([response statusCode] == 200);
 }
 
-- (Result *)simpleXmlResultToResult:(NSString *) xml
+- (Result *)getResultFromSimpleXmlWithRelativeString:(NSString *)relativeURL
 {
 	NSError *error = nil;
-	const NSArray *resultNodes = nil;
+	NSURL *myURI = [[NSURL alloc] initWithString:relativeURL relativeToURL:_baseAddress];
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:nil
+															  error:nil];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+
 	Result *result = [Result createResult];
-	CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:xml options:0 error:&error];
+	CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:myString options:0 error:&error];
 
 	result.result = NO;
-
 	if(error != nil)
 	{
 		result.resulttext = [error localizedDescription];
-		[dom release];
-		return result;
 	}
-
-	resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2state" error:nil];
-	for(CXMLElement *currentChild in resultNodes)
+	else
 	{
-		if([[currentChild stringValue] isEqualToString: @"True"])
+		const NSArray *resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2state" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
 		{
-			result.result = YES;
+			if([[currentChild stringValue] isEqualToString: @"True"])
+			{
+				result.result = YES;
+			}
+			break;
 		}
-		break;
+
+		resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2statetext" error:nil];
+		for(CXMLElement *currentChild in resultNodes)
+		{
+			result.resulttext = [currentChild stringValue];
+			break;
+		}
 	}
 
-	resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2statetext" error:nil];
-	for(CXMLElement *currentChild in resultNodes)
-	{
-		result.resulttext = [currentChild stringValue];
-		break;
-	}
-
+	[myString release];
+	[myURI release];
 	[dom release];
 	return result;
 }
@@ -307,51 +313,20 @@ enum enigma2MessageTypes {
 
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @""] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @""];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @"", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @"", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
-}
+	NSString *relativeURL = [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];}
 
 #pragma mark Recordings
 
@@ -387,35 +362,14 @@ enum enigma2MessageTypes {
 
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie
 {
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref urlencode]] relativeToURL:_baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)instantRecord
 {
 	// TODO: we only allow infinite instant records for now
-	NSURL *myURI = [NSURL URLWithString:@"/web/recordnow?recordnow=infinite" relativeToURL:_baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	return [self getResultFromSimpleXmlWithRelativeString: @"/web/recordnow?recordnow=infinite"];
 }
 
 #pragma mark MediaPlayer
@@ -443,66 +397,26 @@ enum enigma2MessageTypes {
 	else
 		action = @"add";
 
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root urlencode], [track.sref urlencode]] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root urlencode], [track.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)playTrack:(NSObject<FileProtocol> *) track
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref urlencode]] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayerplay?root=playlist&file=%@", [track.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)removeTrack:(NSObject<FileProtocol> *) track
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref urlencode]] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayerremove?file=%@", [track.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)mediaplayerCommand:(NSString *)command
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayercmd?command=%@", command] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayercmd?command=%@", command];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate
@@ -606,34 +520,14 @@ enum enigma2MessageTypes {
 
 - (Result *)setVolume:(NSInteger) newVolume
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/vol?set=set%d", newVolume] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/vol?set=set%d", newVolume];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (Result *)sendButton:(NSInteger) type
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/remotecontrol?command=%d", type] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat: @"/web/remotecontrol?command=%d", type];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 #pragma mark Signal
@@ -651,18 +545,8 @@ enum enigma2MessageTypes {
 
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout
 {
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/message?text=%@&type=%d&timeout=%d", [message  urlencode], type, timeout] relativeToURL: _baseAddress];
-
-	NSHTTPURLResponse *response;
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-												  returningResponse:&response
-															  error:nil];
-
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
-	Result *result = [self simpleXmlResultToResult: myString];
-	[myString release];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat: @"/web/message?text=%@&type=%d&timeout=%d", [message  urlencode], type, timeout];
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
 - (const NSUInteger const)getMaxMessageType
