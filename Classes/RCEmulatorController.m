@@ -113,13 +113,14 @@
 																	target:self
 																	action:@selector(setBothType:)];
 		
-		NSArray *items;
+		NSArray *items = [NSArray alloc];
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
-			items = [NSArray arrayWithObjects: _screenshotButton, flexItem, osdItem, videoItem, bothItem, nil];
+			items = [items initWithObjects: _screenshotButton, flexItem, osdItem, videoItem, bothItem, nil];
 		else
-			items = [NSArray arrayWithObjects: _screenshotButton, flexItem, osdItem, bothItem, nil];
+			items = [items initWithObjects: _screenshotButton, flexItem, osdItem, bothItem, nil];
 		[_toolbar setItems:items animated:NO];
 
+		[items release];
 		[flexItem release];
 		[osdItem release];
 		[videoItem release];
