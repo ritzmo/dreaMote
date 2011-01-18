@@ -33,12 +33,11 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	NSURLRequest *request = [NSURLRequest requestWithURL: URL
-											 cachePolicy: NSURLRequestReloadIgnoringCacheData
-										 timeoutInterval: _timeout];
-	NSURLConnection *con = [[NSURLConnection alloc]
-							initWithRequest:request
-							delegate:self];
+	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
+												  cachePolicy:NSURLRequestReloadIgnoringCacheData
+											  timeoutInterval:_timeout];
+	NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request
+														   delegate:self];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, self, NULL, 0, NULL);
@@ -86,6 +85,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		}
 	}
 
+	[request release];
 	[con release];
 	return nil;
 }
