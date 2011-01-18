@@ -121,16 +121,21 @@ enum enigma2MessageTypes {
 
 - (Result *)getResultFromSimpleXmlWithRelativeString:(NSString *)relativeURL
 {
+	CXMLDocument *dom = nil;
 	NSError *error = nil;
 	NSURL *myURI = [[NSURL alloc] initWithString:relativeURL relativeToURL:_baseAddress];
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
 												  returningResponse:nil
-															  error:nil];
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+															  error:&error];
+
+	if(error == nil)
+	{
+		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		dom = [[CXMLDocument alloc] initWithXMLString:myString options:0 error:&error];
+		[myString release];
+	}
 
 	Result *result = [Result createResult];
-	CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:myString options:0 error:&error];
-
 	result.result = NO;
 	if(error != nil)
 	{
@@ -156,7 +161,6 @@ enum enigma2MessageTypes {
 		}
 	}
 
-	[myString release];
 	[myURI release];
 	[dom release];
 	return result;
