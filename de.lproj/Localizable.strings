@@ -233,6 +233,9 @@
 /* No comment provided by engineer. */
 "Failed to retrieve data" = "Datenübertragung fehlgeschlagen";
 
+/* No comment provided by engineer. */
+"Failed to start instant record" = "Sofortaufnahme konnte nicht gestartet werden";
+
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "Filesystems" = "<Medien>";
 
@@ -264,7 +267,7 @@
 "Image Version" = "Image Version";
 
 /* No comment provided by engineer. */
-/*"IMDb" = "IMDb";*/
+"IMDb" = "IMDb";
 
 /* No comment provided by engineer. */
 "Info" = "Info";
@@ -297,6 +300,9 @@
 "Make Default" = "Zu Standard machen";
 
 /* No comment provided by engineer. */
+/*"Master" = "Master";*/
+
+/* No comment provided by engineer. */
 "Media Player Explain" = "Medianwiedergabe auf der Dreambox";
 
 /* No comment provided by engineer. */
@@ -327,7 +333,7 @@
 /* No comment provided by engineer. */
 "Monday" = "Montag";
 
-/* Title of OtherListController */
+/* Tab Title of OtherListController */
 "More" = "Mehr";
 
 /* Default title of MovieViewController */
@@ -599,6 +605,9 @@
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Konnte nicht zum Server verbinden.\nBitte starten Sie die Applikation neu.";
+
+/* No comment provided by engineer. */
+"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Konnte nicht erkennen ob die Aktion erfolgreich war. Für volle Funktionalität bitte das WebInterface aktualisieren.";
 
 /* No comment provided by engineer. */
 "Unable to map button to keycode!" = "Konnte Taste keine Funktion zuweisen!";

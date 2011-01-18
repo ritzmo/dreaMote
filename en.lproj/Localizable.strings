@@ -233,6 +233,9 @@
 /* No comment provided by engineer. */
 /*"Failed to retrieve data" = "Failed to retrieve data";*/
 
+/* No comment provided by engineer. */
+/*"Failed to start instant record" = "Failed to start instant record";*/
+
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "Filesystems" = "<Filesystems>";
 
@@ -297,6 +300,9 @@
 /*"Make Default" = "Make Default";*/
 
 /* No comment provided by engineer. */
+/*"Master" = "Master";*/
+
+/* No comment provided by engineer. */
 "Media Player Explain" = "Control the remote media player";
 
 /* No comment provided by engineer. */
@@ -327,7 +333,7 @@
 /* No comment provided by engineer. */
 "Monday" = "Monday";
 
-/* Title of OtherListController */
+/* Tab Title of OtherListController */
 /*"More" = "More";*/
 
 /* Default title of MovieViewController */
@@ -599,6 +605,9 @@
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Unable to connect to host.\nPlease restart the application.";
+
+/* No comment provided by engineer. */
+/*"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality";*/
 
 /* No comment provided by engineer. */
 /*"Unable to map button to keycode!" = "Unable to map button to keycode!";*/
