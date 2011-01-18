@@ -134,9 +134,8 @@
 
 	}
 #else //!LAME_ASYNCHRONOUS_DOWNLOAD
-	NSURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:URL
-												 returningResponse:&response
+												 returningResponse:nil
 															 error:&localError
 													   withTimeout:_timeout];
 	if(localError == nil)
