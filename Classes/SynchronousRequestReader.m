@@ -55,9 +55,9 @@
 {
 	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
 	NSData *data = [srr.data retain];
-	NSURLRequest *request = [NSURLRequest requestWithURL:url
-											 cachePolicy:NSURLRequestReloadIgnoringCacheData
-										 timeoutInterval:kDefaultTimeout];
+	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
+												  cachePolicy:NSURLRequestReloadIgnoringCacheData
+											  timeoutInterval:kDefaultTimeout];
 	NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request delegate:srr];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -75,6 +75,7 @@
 
 	[con release];
 	[srr release];
+	[request release];
 	return [data autorelease];
 }
 
