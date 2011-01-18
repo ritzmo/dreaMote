@@ -139,57 +139,12 @@
 	_switchControl.backgroundColor = [UIColor clearColor];
 }
 
-/* create "instant record" button */
-- (UIButton *)create_InstantRecordButton
+- (UIButton *)createButton:(SEL)selector withImage:(NSString *)imageName
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
-	UIImage *image = [UIImage imageNamed:@"document-save.png"];
+	UIImage *image = [UIImage imageNamed:imageName];
 	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(record:) forControlEvents:UIControlEventTouchUpInside];
-	
-	return [button autorelease];
-}
-
-/* create "standby" button */
-- (UIButton *)create_StandbyButton
-{
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
-	UIImage *image = [UIImage imageNamed:@"preferences-desktop-screensaver.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(standby:) forControlEvents:UIControlEventTouchUpInside];
-
-	return [button autorelease];
-}
-
-/* create "reboot" button */
-- (UIButton *)create_RebootButton
-{
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
-	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(reboot:) forControlEvents:UIControlEventTouchUpInside];
-
-	return [button autorelease];
-}
-
-/* create "restart gui" button */
-- (UIButton *)create_RestartButton
-{
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
-	UIImage *image = [UIImage imageNamed:@"view-refresh.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(restart:) forControlEvents:UIControlEventTouchUpInside];
-
-	return [button autorelease];
-}
-
-/* create "shutdown" button */
-- (UIButton *)create_ShutdownButton
-{
-	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];
-	UIImage *image = [UIImage imageNamed:@"system-shutdown.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(shutdown:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 	
 	return [button autorelease];
 }
@@ -351,7 +306,7 @@
 			{
 				sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 				sourceCell.nameLabel.text = NSLocalizedString(@"Instant Record", @"");
-				sourceCell.view = [self create_InstantRecordButton];
+				sourceCell.view = [self createButton:@selector(record:) withImage:@"document-save.png"];
 				break;
 			}
 		case 2:
@@ -359,22 +314,22 @@
 			switch (indexPath.row){
 				case 0:
 					sourceCell.nameLabel.text = NSLocalizedString(@"Standby", @"");
-					sourceCell.view = [self create_StandbyButton];
+					sourceCell.view = [self createButton:@selector(standby:) withImage:@"preferences-desktop-screensaver.png"];
 					break;
 				case 1:
 					sourceCell.nameLabel.text = NSLocalizedString(@"Reboot", @"");
-					sourceCell.view = [self create_RebootButton];
+					sourceCell.view = [self createButton:@selector(reboot:) withImage:@"view-refresh.png"];
 					break;
 				case 2:
 					if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart])
 					{
 						sourceCell.nameLabel.text = NSLocalizedString(@"Restart", @"");
-						sourceCell.view = [self create_RestartButton];
+						sourceCell.view = [self createButton:@selector(restart:) withImage:@"view-refresh.png"];
 						break;
 					}
 				case 3:
 					sourceCell.nameLabel.text = NSLocalizedString(@"Shutdown", @"");
-					sourceCell.view = [self create_ShutdownButton];
+					sourceCell.view = [self createButton:@selector(shutdown:) withImage:@"system-shutdown.png"];
 					break;
 				default:
 					break;
