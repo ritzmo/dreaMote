@@ -23,7 +23,7 @@
 {
 	if((self = [super init]))
 	{
-		_remainingPaths = [[NSMutableArray arrayWithObject:path] retain];
+		_remainingPaths = [[NSMutableArray alloc] initWithObjects:path, nil];
 	}
 	return self;
 }
@@ -32,6 +32,7 @@
 {
 	[_remainingPaths release];
 	[_delegate release];
+	[_fileXMLDoc release];
 
 	[super dealloc];
 }
