@@ -56,8 +56,10 @@
 + (DatePickerController *)withDate: (NSDate *)ourDate
 {
 	DatePickerController *datePickerController = [[DatePickerController alloc] init];
-	datePickerController.date = [ourDate copy];
-	
+	NSDate *newDate = [ourDate copy];
+	datePickerController.date = newDate;
+	[newDate release];
+
 	return [datePickerController autorelease];
 }
 
