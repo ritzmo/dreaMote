@@ -154,8 +154,19 @@
 {
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated: YES scrollPosition: UITableViewScrollPositionNone];
-	[[RemoteConnectorObject sharedRemoteConnector] instantRecord];
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] instantRecord];
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
+
+	if(!result.result)
+	{
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to start instant record", @"")
+															  message:result.resulttext
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
 }
 
 // TODO: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
