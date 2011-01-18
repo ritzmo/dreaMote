@@ -364,7 +364,14 @@ enum enigma2MessageTypes {
 - (Result *)instantRecord
 {
 	// TODO: we only allow infinite instant records for now
-	return [self getResultFromSimpleXmlWithRelativeString: @"/web/recordnow?recordnow=infinite"];
+	Result *result = [self getResultFromSimpleXmlWithRelativeString: @"/web/recordnow?recordnow=infinite"];
+
+	// work around buggy webif
+	if(!result.result && [result.resulttext hasPrefix:@"Entity 'nbsp' not defined"])
+	{
+		result.resulttext = NSLocalizedString(@"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality", @"");
+	}
+	return result;
 }
 
 #pragma mark MediaPlayer
