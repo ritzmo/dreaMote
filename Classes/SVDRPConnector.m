@@ -119,6 +119,42 @@
 	return [_socket isConnected];
 }
 
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate
+{
+	// check if delegate wants to be informated about errors
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
+	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
+	{
+		NSError *error = [NSError errorWithDomain:@"myDomain"
+											 code:100
+										 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Remote host unreachable.", @"") forKey:NSLocalizedDescriptionKey]];
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:delegate];
+		[invocation setSelector:errorParsing];
+		[invocation setArgument:&error atIndex:4];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
+}
+
+- (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
+{
+	// check if delegate wants to be informated about parsing end
+	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
+	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
+	{
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:delegate];
+		[invocation setSelector:finishedParsing];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone: NO];
+	}
+}
+
 #pragma mark Services
 
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service
@@ -161,6 +197,8 @@
 							   withObject: newService
 							waitUntilDone: NO];
 	[newService release];
+
+	[self indicateSuccess:delegate];
 	return nil;
 }
 
@@ -184,6 +222,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
+		[self indicateError:delegate];
 		return nil;
 	}
 	if(_serviceCache != nil)
@@ -235,6 +274,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
+	[self indicateSuccess:delegate];
 	return nil;
 }
 
@@ -252,6 +292,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
+		[self indicateError:delegate];
 		return nil;
 	}
 
@@ -320,6 +361,7 @@
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
+	[self indicateSuccess:delegate];
 	return nil;
 }
 
@@ -341,6 +383,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
+		[self indicateError:delegate];
 		return nil;
 	}
 	// Try to refresh cache if none present
@@ -482,6 +525,7 @@
 							 waitUntilDone: NO];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[self indicateSuccess:delegate];
 	return nil;
 }
 
@@ -623,6 +667,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
+		[self indicateError:delegate];
 		return nil;
 	}
 
@@ -683,6 +728,7 @@
 	[gregorian release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[self indicateSuccess:delegate];
 	return nil;
 }
 

@@ -9,6 +9,7 @@
 #import "Enigma1Connector.h"
 
 #import "Objects/Enigma/Service.h"
+#import "Objects/Generic/Service.h"
 #import "Objects/Generic/Volume.h"
 #import "Objects/TimerProtocol.h"
 #import "Objects/MovieProtocol.h"
@@ -128,6 +129,39 @@ enum enigma1MessageTypes {
 	return [[EnigmaRCEmulatorController alloc] init];
 }
 
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+{
+	// check if delegate wants to be informated about errors
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
+	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
+	{
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:delegate];
+		[invocation setSelector:errorParsing];
+		[invocation setArgument:&error atIndex:4];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
+}
+
+- (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
+{
+	// check if delegate wants to be informated about parsing end
+	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
+	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
+	{
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:delegate];
+		[invocation setSelector:finishedParsing];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
+}
+
 # pragma mark Services
 
 - (Result *)zapInternal: (NSString *)sref
@@ -161,13 +195,15 @@ enum enigma1MessageTypes {
  </bouquet>
  </bouquets>
  */
-- (void)refreshBouquetsXMLCache
+- (NSError *)refreshBouquetsXMLCache
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
+	NSError *returnValue = nil;
 
 	const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
-	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
+	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
 	[streamReader release];
+	return returnValue;
 }
 
 - (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
@@ -180,8 +216,20 @@ enum enigma1MessageTypes {
 
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
-			[_cachedBouquetsXML release];
-			[self refreshBouquetsXMLCache];
+		[_cachedBouquetsXML release];
+		NSError *error = [self refreshBouquetsXMLCache];
+		if(error)
+		{
+			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+			fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+			[delegate performSelectorOnMainThread: @selector(addService:)
+										withObject: fakeService
+									 waitUntilDone: NO];
+			[fakeService release];
+
+			[self indicateError:delegate error:error];
+			return nil;
+		}
 	}
 
 	NSArray *resultNodes = nil;
@@ -203,8 +251,8 @@ enum enigma1MessageTypes {
 		[newService release];
 	}
 
-	// I don't assume we really need this but for the sake of it... :-)
-	return _cachedBouquetsXML;
+	[self indicateSuccess:delegate];
+	return nil;
 }
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -224,7 +272,19 @@ enum enigma1MessageTypes {
 		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 		{
 			[_cachedBouquetsXML release];
-			[self refreshBouquetsXMLCache];
+			NSError *error = [self refreshBouquetsXMLCache];
+			if(error)
+			{
+				NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+				fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+				[delegate performSelectorOnMainThread: @selector(addService:)
+											withObject: fakeService
+										 waitUntilDone: NO];
+				[fakeService release];
+
+				[self indicateError:delegate error:error];
+				return nil;
+			}
 		}
 
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
@@ -246,8 +306,8 @@ enum enigma1MessageTypes {
 		[newService release];
 	}
 
-	// I don't assume we really need this but for the sake of it... :-)
-	return _cachedBouquetsXML;
+	[self indicateSuccess:delegate];
+	return nil;
 }
 
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service

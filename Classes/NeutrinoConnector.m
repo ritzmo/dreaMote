@@ -115,6 +115,41 @@ enum neutrinoMessageTypes {
 	return ([response statusCode] == 200);
 }
 
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+{
+	// check if delegate wants to be informated about errors
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
+	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
+	{
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:delegate];
+		[invocation setSelector:errorParsing];
+		[invocation setArgument:&self atIndex:2];
+		[invocation setArgument:&error atIndex:4];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
+}
+
+- (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
+{
+	// check if delegate wants to be informated about parsing end
+	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
+	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
+	{
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:delegate];
+		[invocation setSelector:finishedParsing];
+		[invocation setArgument:&self atIndex:2];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
+}
+
 #pragma mark Services
 
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service
@@ -143,13 +178,15 @@ enum neutrinoMessageTypes {
  </Bouquet>
  </zapit>
  */
-- (void)refreshBouquetsXMLCache
+- (NSError *)refreshBouquetsXMLCache
 {
 	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: _baseAddress];
+	NSError *returnValue = nil;
 
 	const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
-	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: nil] retain];
+	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
 	[streamReader release];
+	return returnValue;
 }
 
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
@@ -165,7 +202,19 @@ enum neutrinoMessageTypes {
 	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 	{
 		[_cachedBouquetsXML release];
-		[self refreshBouquetsXMLCache];
+		NSError *error = [self refreshBouquetsXMLCache];
+		if(error)
+		{
+			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+			fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+			[delegate performSelectorOnMainThread: @selector(addService:)
+									   withObject: fakeService
+									waitUntilDone: NO];
+			[fakeService release];
+
+			[self indicateError:delegate error:error];
+			return nil;
+		}
 	}
 
 	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
@@ -181,8 +230,8 @@ enum neutrinoMessageTypes {
 		[newService release];
 	}
 
-	// I don't assume we really need this but for the sake of it... :-)
-	return _cachedBouquetsXML;
+	[self indicateSuccess:delegate];
+	return nil;
 }
 
 - (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -201,7 +250,19 @@ enum neutrinoMessageTypes {
 		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
 		{
 			[_cachedBouquetsXML release];
-			[self refreshBouquetsXMLCache];
+			NSError *error = [self refreshBouquetsXMLCache];
+			if(error)
+			{
+				NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+				fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+				[delegate performSelectorOnMainThread: @selector(addService:)
+										   withObject: fakeService
+										waitUntilDone: NO];
+				[fakeService release];
+
+				[self indicateError:delegate error:error];
+				return nil;
+			}
 		}
 
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
@@ -226,8 +287,8 @@ enum neutrinoMessageTypes {
 		[newService release];
 	}
 
-	// I don't assume we really need this but for the sake of it... :-)
-	return _cachedBouquetsXML;
+	[self indicateSuccess:delegate];
+	return nil;
 }
 
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
@@ -271,6 +332,7 @@ enum neutrinoMessageTypes {
 								waitUntilDone: NO];
 		[fakeObject release];
 
+		[self indicateError:delegate error:error];
 		return nil;
 	}
 
@@ -354,9 +416,7 @@ enum neutrinoMessageTypes {
 	}
 	[baseString release];
 
-	[delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: nil
-							 waitUntilDone: NO];
+	[self indicateSuccess:delegate];
 	return nil;
 }
 
