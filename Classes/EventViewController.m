@@ -220,23 +220,32 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// ignore error
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	//[(UITableView*)self.view reloadData];
+}
+
+#pragma mark -
 #pragma mark EventSourceDelegate
 #pragma mark -
 
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
-	if(event != nil)
-	{
-		[_similarEvents addObject: event];
+	[_similarEvents addObject: event];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_similarEvents count]-1 inSection:0]]
-		 withRowAnimation: UITableViewRowAnimationTop];
-	}
-	else
+	[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_similarEvents count]-1 inSection:0]]
+								   withRowAnimation: UITableViewRowAnimationTop];
 #else
-	}
+	[(UITableView*)self.view reloadData];
 #endif
-	[(UITableView *)self.view reloadData];
 }
 
 #pragma mark - UITableView delegates

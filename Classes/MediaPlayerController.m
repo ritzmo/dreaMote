@@ -614,6 +614,21 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// we want the playlist to indicate errors, since this is a recurring event
+	// the annoyance would be huge
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	//
+}
+
+#pragma mark -
 #pragma mark ServiceSourceDelegate
 #pragma mark -
 

@@ -90,21 +90,6 @@
 	[pool release];
 }
 
-- (void)addSignal: (GenericSignal *)signal
-{
-	if(signal == nil)
-		return;
-
-	_snr.value = (float)(signal.snr);
-	_agc.value = (float)(signal.agc);
-
-	_hasSnrdB = signal.snrdb > -1;
-	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
-	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
-
-	[(UITableView *)self.view reloadData];
-}
-
 - (void)loadView
 {
 	// create and configure the table view
@@ -240,6 +225,49 @@
 	}
 	
 	return sourceCell;
+}
+
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// Alert user
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+														  message:[error localizedDescription]
+														 delegate:nil
+												cancelButtonTitle:@"OK"
+												otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+
+	// stop timer
+	[_timer invalidate];
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	//
+}
+
+#pragma mark -
+#pragma mark SignalSourceDelegate
+#pragma mark -
+
+- (void)addSignal: (GenericSignal *)signal
+{
+	if(signal == nil)
+		return;
+	
+	_snr.value = (float)(signal.snr);
+	_agc.value = (float)(signal.agc);
+	
+	_hasSnrdB = signal.snrdb > -1;
+	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
+	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
+	
+	[(UITableView *)self.view reloadData];
 }
 
 @end

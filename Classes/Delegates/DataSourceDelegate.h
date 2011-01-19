@@ -17,7 +17,6 @@
  */
 @protocol DataSourceDelegate <NSObject>
 
-@optional
 /*!
  @brief Document was parsed successfully.
 
@@ -40,4 +39,3 @@
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
 
 @end
-

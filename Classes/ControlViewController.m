@@ -93,16 +93,6 @@
 	[pool release];
 }
 
-/* volume received */
-- (void)addVolume: (GenericVolume *)volume
-{
-	if(volume == nil)
-		return;
-
-	_switchControl.on = volume.ismuted;
-	_slider.value = (float)(volume.current);
-}
-
 /* layout */
 - (void)loadView
 {
@@ -369,6 +359,41 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
+}
+
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	// Alert user
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+														  message:[error localizedDescription]
+														 delegate:nil
+												cancelButtonTitle:@"OK"
+												otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	//
+}
+
+#pragma mark -
+#pragma mark VolumeSourceDelegate
+#pragma mark -
+
+/* volume received */
+- (void)addVolume: (GenericVolume *)volume
+{
+	if(volume == nil)
+		return;
+	
+	_switchControl.on = volume.ismuted;
+	_slider.value = (float)(volume.current);
 }
 
 @end

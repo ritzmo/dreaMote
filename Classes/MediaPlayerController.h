@@ -96,4 +96,14 @@ enum retrieveCurrentUsing {
  */
 - (void)showToolbar;
 
+/*!
+ @brief Default implementation of xml parser error callback.
+ */
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
+
+/*!
+ @brief Default implementation of xml parser success callback.
+ */
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
+
 @end
