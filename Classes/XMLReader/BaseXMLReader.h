@@ -7,7 +7,6 @@
 //
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-#define DataDownloaderRunMode @"your_namespace.run_mode"
 #import "CXMLPushDocument.h"
 typedef CXMLPushDocument OurXMLDocument;
 #else

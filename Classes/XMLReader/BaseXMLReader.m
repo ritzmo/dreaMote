@@ -84,11 +84,13 @@
 		return nil;
 	}
 
-	NSURLRequest *request = [NSURLRequest requestWithURL: URL cachePolicy: NSURLRequestReloadIgnoringCacheData timeoutInterval: _timeout];
+	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
+												  cachePolicy:NSURLRequestReloadIgnoringCacheData
+											  timeoutInterval:_timeout];
 	NSURLConnection *connection = [[NSURLConnection alloc]
 									initWithRequest:request
-									delegate:self
-									startImmediately:NO];
+									delegate:self];
+	[request release];
 
 	if(!connection)
 	{
@@ -97,16 +99,10 @@
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-
-	[connection scheduleInRunLoop:[NSRunLoop currentRunLoop]
-							forMode: DataDownloaderRunMode];
-	[connection start];
-
-	while (!_done) // a BOOL flagged in the delegate methods
+	do
 	{
-		[[NSRunLoop currentRunLoop] runMode: DataDownloaderRunMode
-								beforeDate:[NSDate dateWithTimeIntervalSinceNow:15.0]];
-	}
+		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+	} while (!_done);
 	[connection release];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -131,7 +127,6 @@
 									  waitUntilDone:NO];
 		}
 		return nil;
-
 	}
 #else //!LAME_ASYNCHRONOUS_DOWNLOAD
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:URL
