@@ -244,6 +244,7 @@
 
 	// stop timer
 	[_timer invalidate];
+	_timer = nil;
 }
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
