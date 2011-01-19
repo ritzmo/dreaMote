@@ -248,7 +248,7 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
-	//
+	[(UITableView *)self.view reloadData];
 }
 
 #pragma mark -
@@ -266,8 +266,6 @@
 	_hasSnrdB = signal.snrdb > -1;
 	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
 	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
-	
-	[(UITableView *)self.view reloadData];
 }
 
 @end

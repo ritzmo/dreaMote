@@ -111,6 +111,18 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	_reloading = NO;
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark -
 #pragma mark ServiceSourceDelegate
 #pragma mark -
 
@@ -119,10 +131,6 @@
 	if(_service != nil)
 		[_service release];
 	_service = [service copy];
-
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	_reloading = NO;
-	[_tableView reloadData];
 }
 
 #pragma mark -
@@ -145,11 +153,6 @@
 		[_nextSummary release];
 		_nextSummary = [self newSummary: event];
 	}
-
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	_reloading = NO;
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - UITableView delegates

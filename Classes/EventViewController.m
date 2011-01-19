@@ -240,12 +240,7 @@
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	[_similarEvents addObject: event];
-#ifdef ENABLE_LAGGY_ANIMATIONS
-	[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_similarEvents count]-1 inSection:0]]
-								   withRowAnimation: UITableViewRowAnimationTop];
-#else
 	[(UITableView*)self.view reloadData];
-#endif
 }
 
 #pragma mark - UITableView delegates

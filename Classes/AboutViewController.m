@@ -69,6 +69,18 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	_reloading = NO;
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark -
 #pragma mark AboutSourceDelegate
 #pragma mark -
 
@@ -77,11 +89,6 @@
 	if(_about != nil)
 		[_about release];
 	_about = [about retain];
-
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	_reloading = NO;
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - UITableView delegates
