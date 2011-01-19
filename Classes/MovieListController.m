@@ -253,13 +253,10 @@
 /* add movie to list */
 - (void)addMovie: (NSObject<MovieProtocol> *)movie
 {
-	if(movie != nil)
-	{
-		const NSUInteger idx = _movies.count;
-		[_movies addObject: movie];
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-						withRowAnimation: UITableViewRowAnimationLeft];
-	}
+	const NSUInteger idx = _movies.count;
+	[_movies addObject: movie];
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+					  withRowAnimation: UITableViewRowAnimationLeft];
 }
 
 #pragma mark	-

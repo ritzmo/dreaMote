@@ -211,12 +211,9 @@
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
-	if(event != nil)
-	{
-		const NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
-		[_events insertObject: event atIndex: index];
-		[_tableView reloadData];
-	}
+	const NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
+	[_events insertObject: event atIndex: index];
+	[_tableView reloadData];
 }
 
 

@@ -237,14 +237,11 @@
 /* add service to list */
 - (void)addService: (NSObject<ServiceProtocol> *)bouquet
 {
-	if(bouquet != nil)
-	{
-		[_bouquets addObject: bouquet];
+	[_bouquets addObject: bouquet];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_bouquets count]-1 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_bouquets count]-1 inSection:0]]
+					  withRowAnimation: UITableViewRowAnimationTop];
 #endif
-	}
 }
 
 #pragma mark	-

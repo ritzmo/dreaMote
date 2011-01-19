@@ -187,14 +187,11 @@
 /* add location to list */
 - (void)addLocation: (NSObject<LocationProtocol> *)location
 {
-	if(location != nil)
-	{
-		[_locations addObject: location];
+	[_locations addObject: location];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_locations count]-1 inSection:0]]
-						withRowAnimation: UITableViewRowAnimationTop];
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_locations count]-1 inSection:0]]
+					  withRowAnimation: UITableViewRowAnimationTop];
 #endif
-	}
 }
 
 #pragma mark	-

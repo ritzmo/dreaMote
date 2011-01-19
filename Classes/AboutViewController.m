@@ -68,6 +68,10 @@
 	_aboutXMLDoc = nil;
 }
 
+#pragma mark -
+#pragma mark AboutSourceDelegate
+#pragma mark -
+
 - (void)addAbout: (NSObject<AboutProtocol> *)about
 {
 	if(_about != nil)

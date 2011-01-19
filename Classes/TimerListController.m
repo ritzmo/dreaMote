@@ -220,25 +220,22 @@
 /* add timer to list */
 - (void)addTimer: (NSObject<TimerProtocol> *)newTimer
 {
-	if(newTimer != nil)
-	{
-		NSUInteger state = newTimer.state;
-		NSUInteger index = _dist[state];
+	NSUInteger state = newTimer.state;
+	NSUInteger index = _dist[state];
 
-		[_timers insertObject: newTimer atIndex: index];
+	[_timers insertObject: newTimer atIndex: index];
 
-		for(; state < kTimerStateMax; state++){
-			_dist[state]++;
-		}
-#ifdef ENABLE_LAGGY_ANIMATIONS
-		state = newTimer.state;
-		if(state > 0)
-			index -= _dist[state - 1];
-
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
-						withRowAnimation: UITableViewRowAnimationTop];
-#endif
+	for(; state < kTimerStateMax; state++){
+		_dist[state]++;
 	}
+#ifdef ENABLE_LAGGY_ANIMATIONS
+	state = newTimer.state;
+	if(state > 0)
+		index -= _dist[state - 1];
+
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow: index inSection: state + 1]]
+					  withRowAnimation: UITableViewRowAnimationTop];
+#endif
 }
 
 #pragma mark	-

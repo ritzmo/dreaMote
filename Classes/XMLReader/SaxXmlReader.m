@@ -68,8 +68,6 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	}
 	else
 	{
-		[self sendTerminatingObject];
-
 		// delegate wants to be informated about parsing end
 		SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
 		NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
@@ -145,11 +143,6 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 }
 
 - (void)sendErroneousObject
-{
-	// dummy
-}
-
-- (void)sendTerminatingObject
 {
 	// dummy
 }

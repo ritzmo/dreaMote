@@ -51,14 +51,6 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 	[fakeService release];
 }
 
-/* send terminating object */
-- (void)sendTerminatingObject
-{
-	[_delegate performSelectorOnMainThread: @selector(addService:)
-								withObject: nil
-							 waitUntilDone: NO];
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>

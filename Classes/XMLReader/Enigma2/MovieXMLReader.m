@@ -66,14 +66,6 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 	[fakeObject release];
 }
 
-/* send terminating object */
-- (void)sendTerminatingObject
-{
-	[_delegate performSelectorOnMainThread: @selector(addMovie:)
-								withObject: nil
-							 waitUntilDone: NO];
-}
-
 /*
 Example:
  <?xml version="1.0" encoding="UTF-8"?>

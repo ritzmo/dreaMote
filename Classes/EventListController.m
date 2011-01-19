@@ -155,13 +155,10 @@
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
-	if(event != nil)
-	{
-		const NSInteger idx = [_events count];
-		[_events addObject: event];
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-						withRowAnimation: UITableViewRowAnimationLeft];
-	}
+	const NSInteger idx = [_events count];
+	[_events addObject: event];
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+					  withRowAnimation: UITableViewRowAnimationLeft];
 }
 
 #pragma mark	-

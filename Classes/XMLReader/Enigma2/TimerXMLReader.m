@@ -74,14 +74,6 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 	[fakeObject release];
 }
 
-/* send terminating object */
-- (void)sendTerminatingObject
-{
-	[_delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: nil
-							 waitUntilDone: NO];
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>

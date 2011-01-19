@@ -58,13 +58,6 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 	[fakeObject release];
 }
 
-- (void)sendTerminatingObject
-{
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
-								withObject: nil
-							 waitUntilDone: NO];
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>

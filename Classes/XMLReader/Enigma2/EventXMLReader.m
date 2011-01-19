@@ -105,14 +105,6 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 	[fakeObject release];
 }
 
-/* send terminating object */
-- (void)sendTerminatingObject
-{
-	[_delegate performSelectorOnMainThread: _delegateSelector
-								withObject: nil
-							 waitUntilDone: NO];
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>

@@ -328,13 +328,10 @@
 /* add event to list */
 - (void)addNowEvent:(NSObject <EventProtocol>*)event
 {
-	if(event != nil)
-	{
-		const NSInteger idx = _mainList.count;
-		[_mainList addObject: event];
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-						  withRowAnimation: UITableViewRowAnimationLeft];
-	}
+	const NSInteger idx = _mainList.count;
+	[_mainList addObject: event];
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+					  withRowAnimation: UITableViewRowAnimationLeft];
 }
 
 #pragma mark -
@@ -344,10 +341,7 @@
 /* add event to list */
 - (void)addNextEvent:(NSObject <EventProtocol>*)event
 {
-	if(event != nil)
-	{
-		[_subList addObject: event];
-	}
+	[_subList addObject: event];
 }
 
 #pragma mark -
@@ -357,13 +351,10 @@
 /* add service to list */
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
-	if(service != nil)
-	{
-		const NSInteger idx = [_mainList count];
-		[_mainList addObject: service];
-		[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-						  withRowAnimation: UITableViewRowAnimationLeft];
-	}
+	const NSInteger idx = [_mainList count];
+	[_mainList addObject: service];
+	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
+					  withRowAnimation: UITableViewRowAnimationLeft];
 }
 
 #pragma mark	-

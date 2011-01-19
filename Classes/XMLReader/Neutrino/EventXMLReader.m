@@ -69,11 +69,6 @@
 							   waitUntilDone: NO];
 		[newEvent release];
 	}
-
-	// send invalid element to indicate that we're done with parsing
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
-								withObject: nil
-							 waitUntilDone: NO];
 }
 
 @end

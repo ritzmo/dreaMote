@@ -37,7 +37,6 @@ typedef struct
 - (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes;
 - (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI;
 - (void)sendErroneousObject;
-- (void)sendTerminatingObject;
 
 @property (nonatomic, retain) NSMutableString *currentString;
 
