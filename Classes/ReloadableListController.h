@@ -14,11 +14,30 @@
 @class CXMLDocument;
 
 /*!
+ @brief Protocol for a subclass of ReloadableListController.
+ This protocol is used to make sure that subclasses of ReloadableListController
+ properly implement these methods as this might be hidden by the default implementation
+ in ReloadableListController otherwise.
+ */
+@protocol ReloadableView
+/*!
+ @brief start download of data
+ */
+- (void)fetchData;
+
+/*!
+ @brief Empty content data
+ */
+- (void)emptyData;
+@end
+
+/*!
  @brief Reloadable List Controller
  
  Abstract parent class for reloadable list views.
  */
 @interface ReloadableListController : UIViewController <EGORefreshTableHeaderDelegate,
+														ReloadableView,
 														UIScrollViewDelegate>
 {
 @protected
@@ -31,16 +50,6 @@
  @brief loadView variant using UITableViewStyleGrouped.
  */
 - (void)loadGroupedTableView;
-
-/*!
- @brief start download of data
- */
-- (void)fetchData;
-
-/*!
- @brief Empty content data
- */
-- (void)emptyData;
 
 /*!
  @brief Default implementation of xml parser error callback.

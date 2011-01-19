@@ -23,21 +23,48 @@ typedef struct
 } xmlSAX2Attributes;
 
 /*!
+ @brief Protocol for streaming readers
+ */
+@protocol StreamingReader
+/*!
+ @brief Element has begun.
+
+ @param localname the local name of the element
+ @param prefix the element namespace prefix if available
+ @param uri the element namespace name if available
+ @param namespaceCount number of namespace definitions on that node
+ @param namespaces pointer to the array of prefix/URI pairs namespace definitions
+ @param attributeCount the number of attributes on that node
+ @param defaultAttributeCount the number of defaulted attributes.
+ @param attributes pointer to the array of (localname/prefix/URI/value/end) attribute values.
+ */
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes;
+
+/*!
+ @brief Element has ended.
+
+ @param localname the local name of the element
+ @param prefix the element namespace prefix if available
+ @param uri the element namespace name if available
+ */
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI;
+@end
+
+/*!
  @brief SAX XML Reader.
  */
-@interface SaxXmlReader : BaseXMLReader
+@interface SaxXmlReader : BaseXMLReader <StreamingReader>
 {
 @private
-	NSError *failureReason;
-	xmlParserCtxtPtr _xmlParserContext;
+	NSError *failureReason; /*!< @brief Reason for parsing failure. */
+	xmlParserCtxtPtr _xmlParserContext; /*!< @brief Parser context of libxml2. */
 @protected
-	NSMutableString *currentString;
+	NSMutableString *currentString; /*!< @brief String that is currently being completed. */
 }
 
-- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes;
-- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI;
-- (void)sendErroneousObject;
-
+/*!
+ @brief Currently received string.
+ */
 @property (nonatomic, retain) NSMutableString *currentString;
 
 @end

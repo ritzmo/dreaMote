@@ -19,12 +19,22 @@ typedef CXMLDocument OurXMLDocument;
 #import "DataSourceDelegate.h"
 
 /*!
+ @brief Protocol used to guarantee that XML readers implement common functionality.
+ */
+@protocol XMLReader
+/*!
+ @brief Send fake object back to delegate to indicate a failure
+ */
+- (void)sendErroneousObject;
+@end
+
+/*!
  @brief Basic XML Reader Class.
 
  Download a website and read it in as XML.
  Stores contents in a CXMLDocument.
  */
-@interface BaseXMLReader : NSObject
+@interface BaseXMLReader : NSObject <XMLReader>
 {
 @protected
 	BOOL	_done; /*!< @brief Finished parsing? */
