@@ -478,6 +478,9 @@
 "Remote host unreachable!\nPlease check your network settings or connect to another host." = "Entfernter Host nicht erreichbar!\nBitte überprüfen Sie ihre Netzwerkverbindung oder verbinden Sie sich zu einem anderen Server.";
 
 /* No comment provided by engineer. */
+"Remote host unreachable." = "Netzwerkverbindung fehlgeschlagen.";
+
+/* No comment provided by engineer. */
 "Removing track failed" = "Lied konnte nicht entfernt werden";
 
 /* Default title of SimpleRepeatedViewController */
