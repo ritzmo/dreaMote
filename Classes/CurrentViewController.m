@@ -17,7 +17,7 @@
 #import "Constants.h"
 
 @interface  CurrentViewController()
-- (UITextView *)create_Summary: (NSObject<EventProtocol> *)event;
+- (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
 @end
 
 @implementation CurrentViewController
@@ -61,7 +61,7 @@
 	_tableView.dataSource = self;
 }
 
-- (UITextView *)create_Summary: (NSObject<EventProtocol> *)event
+- (UITextView *)newSummary: (NSObject<EventProtocol> *)event
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -75,7 +75,7 @@
 	else
 		myTextView.text = @"";
 
-	return [myTextView autorelease];
+	return myTextView;
 }
 
 - (void)fetchData
@@ -110,6 +110,10 @@
 	_currentXMLDoc = nil;
 }
 
+#pragma mark -
+#pragma mark ServiceSourceDelegate
+#pragma mark -
+
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
 	if(_service != nil)
@@ -121,13 +125,17 @@
 	[_tableView reloadData];
 }
 
+#pragma mark -
+#pragma mark EventSourceDelegate
+#pragma mark -
+
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	if(_now == nil)
 	{
 		_now = [event copy];
 		[_nowSummary release];
-		_nowSummary = [[self create_Summary: _now] retain];
+		_nowSummary = [self newSummary: event];
 	}
 	else
 	{
@@ -135,7 +143,7 @@
 			[_next release];
 		_next = [event copy];
 		[_nextSummary release];
-		_nextSummary = [[self create_Summary: _next] retain];
+		_nextSummary = [self newSummary: event];
 	}
 
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
