@@ -101,6 +101,7 @@
 
 	// Free Caches and reload data
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	_refreshServices = NO;
 
@@ -208,6 +209,7 @@
 	if(_refreshServices && _bouquet == nil && !_reloading)
 	{
 		_supportsNowNext = [RemoteConnectorObject showNowNext];
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
 		[self emptyData];
 

@@ -150,11 +150,8 @@
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)
 	{
-		[_bouquets removeAllObjects];
-
-		[_tableView reloadData];
-		[_bouquetXMLDoc release];
-		_bouquetXMLDoc = nil;
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+		[self emptyData];
 
 		// Spawn a thread to fetch the service data so that the UI is not blocked while the
 		// application parses the XML file.

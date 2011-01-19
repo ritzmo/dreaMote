@@ -62,6 +62,16 @@
 	return _path;
 }
 
+- (void)emptyData
+{
+	// Free Caches and reload data
+	[_files removeAllObjects];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_fileXMLDoc release];
+	_fileXMLDoc = nil;
+}
+
 - (void)setPath:(NSString *)new
 {
 	// Same bouquet assigned, abort
@@ -72,11 +82,8 @@
 	_path = [new retain];
 
 	// Free Caches and reload data
-	[_files removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[_fileXMLDoc release];
-	_fileXMLDoc = nil;
+	[self emptyData];
+	[_refreshHeaderView setTableLoadingWithinScrollView:self];
 
 	// Spawn a thread to fetch the files so that the UI is not blocked while the
 	// application parses the XML file.
@@ -124,12 +131,8 @@
 /* re-download data */
 - (void)refreshData
 {
-	// Free Caches and reload data
-	[_files removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[_fileXMLDoc release];
-	_fileXMLDoc = nil;
+	[self emptyData];
+	[_refreshHeaderView setTableLoadingWithinScrollView:self];
 
 	// Spawn a thread to fetch the files so that the UI is not blocked while the
 	// application parses the XML file.
@@ -197,14 +200,11 @@
 /* add file to list */
 - (void)addFile: (NSObject<FileProtocol> *)file
 {
-	if(file != nil)
-	{
-		[_files addObject: file];
+	[_files addObject: file];
 #ifdef ENABLE_LAGGY_ANIMATIONS
-		[self insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_files count]-1 inSection:0]]
-					withRowAnimation: UITableViewRowAnimationTop];
+	[self insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_files count]-1 inSection:0]]
+				withRowAnimation: UITableViewRowAnimationTop];
 #endif
-	}
 }
 
 #pragma mark	-

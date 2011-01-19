@@ -74,10 +74,8 @@
 	self.title = newService.sname;
 
 	// Clean event list
-	[_events removeAllObjects];
-	[_tableView reloadData];
-	[_eventXMLDoc release];
-	_eventXMLDoc = nil;
+	[self emptyData];
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.

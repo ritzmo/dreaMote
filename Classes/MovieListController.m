@@ -78,7 +78,8 @@
 /* setter of currentLocation property */
 - (void)setCurrentLocation: (NSString *)newLocation
 {
-	if([_currentLocation isEqualToString: newLocation]) return;
+	if(_currentLocation == newLocation ||
+	   [_currentLocation isEqualToString: newLocation]) return;
 	
 	// Free old bouquet, retain new one
 	[_currentLocation release];
@@ -91,11 +92,8 @@
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 	
 	// Free Caches and reload data
-	[_movies removeAllObjects];
-	[_tableView reloadData];
-	[_movieXMLDoc release];
-	_movieXMLDoc = nil;
-	_refreshMovies = NO;
+	[self emptyData];
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	
 	// Eventually remove popover
 	if(self.popoverController != nil) {
@@ -148,11 +146,8 @@
 
 	if(_refreshMovies && !_reloading)
 	{
-		[_movies removeAllObjects];
-
-		[_tableView reloadData];
-		[_movieXMLDoc release];
-		_movieXMLDoc = nil;
+		[self emptyData];
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.

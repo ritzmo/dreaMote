@@ -115,6 +115,7 @@
 	if(!_willReappear && !_reloading)
 	{
 		[self emptyData];
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
 		// Spawn a thread to fetch the timer data so that the UI is not blocked while the
 		// application parses the XML file.
