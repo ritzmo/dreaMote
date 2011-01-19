@@ -53,80 +53,31 @@
 {
 	_done = NO;
 	NSError *localError = nil;
-	if(error)
-		*error = nil;
-
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	_parser = [[CXMLPushDocument alloc] initWithError: &localError];
-
-	// bail out if we encountered an error
-	if(localError)
-	{
-		if(error)
-			*error = localError;
-		[self sendErroneousObject];
-
-		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
-		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
-		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
-		{
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:errorParsing];
-			[invocation setArgument:&self atIndex:2];
-			[invocation setArgument:&_parser atIndex:3];
-			[invocation setArgument:&localError atIndex:4];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
-		return nil;
-	}
 
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:_timeout];
 	NSURLConnection *connection = [[NSURLConnection alloc]
 									initWithRequest:request
-									delegate:self];
+									delegate:_parser];
 	[request release];
-
-	if(!connection)
+	if(connection)
 	{
-		[self sendErroneousObject];
-		return nil;
-	}
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	do
-	{
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-	} while (!_done);
-	[connection release];
-
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-
-	if(!_parser.success)
-	{
-		[self sendErroneousObject];
-
-		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
-		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
-		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		do
 		{
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:errorParsing];
-			[invocation setArgument:&self atIndex:2];
-			[invocation setArgument:&_parser atIndex:3];
-			[invocation setArgument:&localError atIndex:4];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
-		return nil;
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+		} while (!_parser.done);
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[connection release];
+	}
+	else
+	{
+		localError = [NSError errorWithDomain:@"myDomain"
+										 code:101
+									 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Connection could not be established.", @"") forKey:NSLocalizedDescriptionKey]];
 	}
 #else //!LAME_ASYNCHRONOUS_DOWNLOAD
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:URL
@@ -135,15 +86,15 @@
 													   withTimeout:_timeout];
 	if(localError == nil)
 		_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
-	
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+#endif
 	_done = YES;
+	// set error to eventual local error
+	if(error)
+		*error = localError;
 
 	// bail out if we encountered an error
 	if(localError)
 	{
-		if(error)
-			*error = localError;
 		[self sendErroneousObject];
 
 		// delegate wants to be informated about errors
@@ -163,7 +114,6 @@
 		}
 		return nil;
 	}
-#endif
 
 	[self parseFull];
 
@@ -183,60 +133,6 @@
 	}
 	return _parser;
 }
-
-#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-
-/* should authenticate? */
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
-{
-	return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
-}
-
-/* do authenticate */
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-	if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
-	{
-		// TODO: ask user to accept certificate
-		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
-			 forAuthenticationChallenge:challenge];
-	}
-	else
-	{
-		// NOTE: continue just swallows all errors while cancel gives a weird message,
-		// but a weird message is better than no response
-		//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-		[challenge.sender cancelAuthenticationChallenge:challenge];
-	}
-}
-
-/* received data */
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-	[_parser parseChunk: data];
-}
-
-/* connection failed */
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	// delegate wants to be informated about errors
-	if(_delegate && [_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:error:)])
-		[_delegate dataSourceDelegate:self errorParsingDocument:nil error:error];
-
-	_done = YES;
-
-	[_parser abortParsing];
-}
-
-/* _done */
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-	_done = YES;
-
-	[_parser doneParsing];
-}
-
-#endif //LAME_ASYNCHRONOUS_DOWNLOAD
 
 /* send fake object back to callback */
 - (void)sendErroneousObject

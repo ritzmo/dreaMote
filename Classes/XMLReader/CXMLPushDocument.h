@@ -24,6 +24,7 @@
  */
 @interface CXMLPushDocument : CXMLDocument {
 @private
+	BOOL _done; /*!< @brief Done parsing document. */
 	NSError **_parseError; /*!< @brief Pointer to error. */
 	xmlParserCtxtPtr _ctxt; /*!< @brief libxml2 parser context */
 }
@@ -35,33 +36,12 @@
  */
 - (id)initWithError: (NSError **)outError;
 
-/*!
- @brief Parse a chunk of data.
- 
- @param chunk Chunk of data.
- */
-- (void)parseChunk: (NSData *)chunk;
-
-/*!
- @brief Abort parsing.
- 
- @note Will be called by creator when we should prematurely end parsing.
- */
-- (void)abortParsing;
-
-/*!
- @brief Finish parsing.
- 
- @note Will be called by creator when no more data units should be parsed.
- */
-- (void)doneParsing;
-
 
 
 /*!
- @brief Successfully parsed Document?
+ @brief Finished parsing document?
  */
-@property (readonly) BOOL success;
+@property (readonly) BOOL done;
 
 @end
 

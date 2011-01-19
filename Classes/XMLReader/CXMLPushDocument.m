@@ -10,13 +10,18 @@
 
 #import "CXMLPushDocument.h"
 
+@interface CXMLPushDocument()
+/*!
+ @brief Finish parsing.
+
+ @note Will be called by creator when no more data units should be parsed.
+ */
+- (void)doneParsing;
+@end
+
 @implementation CXMLPushDocument
 
-/* did we successfully parse the document? */
-- (BOOL)success
-{
-	return _node != NULL;
-}
+@synthesize done = _done;
 
 /* dealloc */
 - (void)dealloc
@@ -37,29 +42,12 @@
 			*outError = nil;
 			_parseError = outError;
 		}
+		_done = NO;
 	}
 	else if(outError)
 		*outError = [NSError errorWithDomain:@"CXMLErrorUnk" code:1 userInfo:NULL];
 
 	return self;
-}
-
-/* parse a chunk of data */
-- (void)parseChunk: (NSData *)chunk
-{
-	if(!_ctxt)
-		_ctxt = xmlCreatePushParserCtxt(NULL, NULL, [chunk bytes], [chunk length], NULL);
-	else
-		xmlParseChunk(_ctxt, [chunk bytes], [chunk length], 0);
-}
-
-/* abort parsing */
-- (void)abortParsing
-{
-	// Is this enough?
-	if(_ctxt)
-		xmlFreeParserCtxt(_ctxt);
-	_ctxt = NULL;
 }
 
 /* finish parsing */
@@ -90,6 +78,61 @@
 
     xmlFreeParserCtxt(_ctxt);
 	_ctxt = NULL;
+}
+
+#pragma mark NSURLConnection delegate methods
+
+/* should authenticate? */
+- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
+{
+	return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+}
+
+/* do authenticate */
+- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+	if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+	{
+		// TODO: ask user to accept certificate
+		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
+			 forAuthenticationChallenge:challenge];
+	}
+	else
+	{
+		// NOTE: continue just swallows all errors while cancel gives a weird message,
+		// but a weird message is better than no response
+		//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+		[challenge.sender cancelAuthenticationChallenge:challenge];
+	}
+}
+
+/* received data */
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+	if(!_ctxt)
+		_ctxt = xmlCreatePushParserCtxt(NULL, NULL, [data bytes], [data length], NULL);
+	else
+		xmlParseChunk(_ctxt, [data bytes], [data length], 0);
+}
+
+/* connection failed */
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+	*_parseError = error;
+	_done = YES;
+
+	// cleanup
+	if(_ctxt)
+		xmlFreeParserCtxt(_ctxt);
+	_ctxt = NULL;
+}
+
+/* _done */
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+	[self doneParsing];
+
+	_done = YES;
 }
 
 @end
