@@ -62,9 +62,6 @@ Example:
 								 waitUntilDone: NO];
 		[newMetadata release];
 	}
-	[_delegate performSelectorOnMainThread: @selector(addMetadata:)
-								withObject: nil
-							 waitUntilDone: NO];
 }
 
 @end

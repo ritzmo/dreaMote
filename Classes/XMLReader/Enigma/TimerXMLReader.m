@@ -75,9 +75,6 @@
 								 waitUntilDone: NO];
 		[newTimer release];
 	}
-	[_delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: nil
-							 waitUntilDone: NO];
 }
 
 @end

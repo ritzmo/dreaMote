@@ -305,10 +305,6 @@
 	{
 		if([line length] < 5 || [line isEqualToString: @"215 End of EPG data"])
 		{
-			// send nil to indicate that we're done parsing
-			[delegate performSelectorOnMainThread: @selector(addEvent:)
-									withObject: nil
-									waitUntilDone: NO];
 			break;
 		}
 
@@ -519,10 +515,6 @@
 	}
 	[comps release];
 	[gregorian release];
-
-	[delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: nil
-							 waitUntilDone: NO];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	[self indicateSuccess:delegate];
