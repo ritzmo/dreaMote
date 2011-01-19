@@ -126,6 +126,16 @@
 
 }
 
+- (void)setTableLoadingWithinScrollView:(UIScrollView*)scrollView {
+	if (_state != EGOOPullRefreshLoading) {
+		[self setState:EGOOPullRefreshLoading];
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.2];
+		scrollView.contentInset = UIEdgeInsetsMake(60.0f, 0.0f, 0.0f, 0.0f);
+		[UIView commitAnimations];
+	}
+}
+
 - (void)setState:(EGOPullRefreshState)aState{
 	
 	switch (aState) {
