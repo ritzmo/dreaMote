@@ -36,7 +36,7 @@
 #define kMetadataDimensionLandscape	150
 
 // specific font metrics used in our text fields and text views
-extern NSString *kFontName;
+#define kFontName				@"Arial"
 #define kTextFieldFontSize		((IS_IPAD()) ? 22 : 18)
 #define kTextViewFontSize		((IS_IPAD()) ? 22 : 18)
 
@@ -70,29 +70,29 @@ extern NSString *kFontName;
 #define kDefaultTimeout			7
 
 //
-extern NSString *kVanilla_ID;
+#define kVanilla_ID				@"Vanilla_ID"
 
 // custom notifications
-extern NSString *kReconnectNotification;
+#define kReconnectNotification	@"dreaMoteDidReconnect"
 
 // keys in connection dict
-extern NSString *kRemoteName;
-extern NSString *kRemoteHost;
-extern NSString *kUsername;
-extern NSString *kPassword;
-extern NSString *kConnector;
-extern NSString *kSingleBouquet;
-extern NSString *kPort;
-extern NSString *kAdvancedRemote;
-extern NSString *kSSL;
-extern NSString *kShowNowNext;
+#define kRemoteName				@"remoteNameKey"
+#define kRemoteHost				@"remoteHostKey"
+#define kUsername				@"usernameKey"
+#define kPassword				@"passwordKey"
+#define kConnector				@"connectorKey"
+#define kSingleBouquet			@"singleBouquetKey"
+#define kPort					@"portKey"
+#define kAdvancedRemote			@"advancedRemote"
+#define kSSL					@"ssl"
+#define kShowNowNext			@"showNowNext"
 
 // keys in nsuserdefaults
-extern NSString *kActiveConnection;
-extern NSString *kVibratingRC;
-extern NSString *kConnectionTest;
-extern NSString *kMessageTimeout;
-extern NSString *kPrefersSimpleRemote;
+#define kActiveConnection		@"activeConnector"
+#define kVibratingRC			@"vibrateInRC"
+#define kConnectionTest			@"connectionTest"
+#define kMessageTimeout			@"messageTimeout"
+#define kPrefersSimpleRemote	@"prefersSimpleRemote"
 
 // shared e2 xml element names
 extern const char *kEnigma2Servicereference;
