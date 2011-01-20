@@ -70,6 +70,17 @@
 	}
 }
 
+/* view did appear */
+- (void)viewDidAppear:(BOOL)animated
+{
+	if(_reloading)
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+}
+
+#pragma mark -
+#pragma mark ReloadableView methods
+#pragma mark -
+
 /* start download of content data */
 - (void)fetchData
 {
