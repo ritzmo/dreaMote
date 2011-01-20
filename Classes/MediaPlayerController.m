@@ -254,8 +254,10 @@
 																	target:self
 																	action:@selector(toggleAddPlay:)];
 
-	[self setToolbarItems:[NSArray arrayWithObjects:_addFolderItem, flexItem, _addPlayToggle, nil] animated:NO];
+	NSArray *items = [[NSArray alloc] initWithObjects:_addFolderItem, flexItem, _addPlayToggle, nil];
+	[self setToolbarItems:items animated:NO];
 
+	[items release];
 	[flexItem release];
 }
 
@@ -278,7 +280,10 @@
 							destructiveButtonTitle:NSLocalizedString(@"Add recursively", @"Used in MediaPlayer, add shown folders recursively")
 							otherButtonTitles: NSLocalizedString(@"Add", @"Used in MediaPlayer, add only the current folder"), nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+		[actionSheet showInView:self.view];
+	else
+		[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
 }
 
