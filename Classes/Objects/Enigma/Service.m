@@ -64,6 +64,17 @@
 	return _node && self.sref != nil;
 }
 
+- (UIImage *)picon
+{
+	NSString *sref = self.sref;
+	NSRange range = [sref rangeOfString:@":" options:NSBackwardsSearch];
+	NSString *cleanName = [sref substringToIndex:range.location];
+	UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"Documents/%@.png", [cleanName stringByReplacingOccurrencesOfString:@":" withString:@"_"]]];
+	if(!image)
+		image = [UIImage imageNamed:[NSString stringWithFormat:@"Documents/%@.png", self.sname]];
+	return image;
+}
+
 - (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
 {
 	if(!_node)

@@ -151,9 +151,13 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		_serviceNameLabel.text = service.sname;
 		
 		if(serviceValid)
+		{
 			self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		}
 		else
+		{
 			self.accessoryType = UITableViewCellAccessoryNone;
+		}
 	}
 	else
 	{
@@ -223,10 +227,11 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	}
 	else
 	{
-		const NSInteger offset = (IS_IPAD()) ? 3 : 3;
+		const NSInteger offset = 3;
+		const NSInteger leftMargin = (self.imageView.image) ? (self.imageView.image.size.width + offset) : contentRect.origin.x + kLeftMargin;
 
 		// Base frame
-		CGRect frame = CGRectMake(kLeftMargin, 1, contentRect.size.width - kRightMargin, kServiceEventServiceSize + offset);
+		CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, kServiceEventServiceSize + offset);
 		_serviceNameLabel.frame = frame;
 
 		frame.origin.y += frame.size.height;
@@ -238,7 +243,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		frame.size.width = contentRect.size.width - frame.origin.x - kRightMargin;
 		_nowLabel.frame = frame;
 
-		frame.origin.x = contentRect.origin.x + kLeftMargin;
+		frame.origin.x = leftMargin;
 		frame.origin.y += frame.size.height;
 		frame.size.width = timeWidth;
 		_nextTimeLabel.frame = frame;

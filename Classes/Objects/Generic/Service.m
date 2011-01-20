@@ -37,6 +37,16 @@
 	return _sref != nil;
 }
 
+- (UIImage *)picon
+{
+	NSRange range = [_sref rangeOfString:@":" options:NSBackwardsSearch];
+	NSString *cleanName = [_sref substringToIndex:range.location];
+	UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"Documents/%@.png", [cleanName stringByReplacingOccurrencesOfString:@":" withString:@"_"]]];
+	if(!image)
+		image = [UIImage imageNamed:[NSString stringWithFormat:@"Documents/%@.png", _sname]];
+	return image;
+}
+
 - (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
 {
 	return nil;

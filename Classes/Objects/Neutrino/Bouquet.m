@@ -53,6 +53,11 @@
 	return _node && self.sref != nil;
 }
 
+- (UIImage *)picon
+{
+	return nil;
+}
+
 - (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
 {
 	if(!_node)

@@ -28,6 +28,11 @@
  */
 @property (nonatomic, readonly, getter = isValid) BOOL valid;
 
+/*!
+ @brief Picon.
+ */
+@property (nonatomic, readonly) UIImage *picon;
+
 
 
 /*!

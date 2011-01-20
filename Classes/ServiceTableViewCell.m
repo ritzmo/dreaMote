@@ -80,9 +80,13 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	_serviceNameLabel.text = newService.sname;
 
 	if(newService.valid)
+	{
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 	else
+	{
 		self.accessoryType = UITableViewCellAccessoryNone;
+	}
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -97,8 +101,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	// In this example we will never be editing, but this illustrates the appropriate pattern
 	if (!self.editing)
 	{
+		const NSInteger leftMargin = (self.imageView.image) ? (self.imageView.image.size.width + 3) : contentRect.origin.x + kLeftMargin;
+
 		// Place the location label.
-		const CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 1, contentRect.size.width - kRightMargin, contentRect.size.height - 2);
+		const CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, contentRect.size.height - 2);
 		_serviceNameLabel.frame = frame;
 	}
 }
