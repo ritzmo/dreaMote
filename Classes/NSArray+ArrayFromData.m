@@ -8,6 +8,8 @@
 
 #import "NSArray+ArrayFromData.h"
 
+#import "UIDevice+SystemVersion.h"
+
 @implementation NSArray(ArrayFromData)
 
 + (id)arrayWithData:(NSData *)data
@@ -18,8 +20,7 @@
 - (id)initWithData:(NSData *)data
 {
 	NSPropertyListSerialization *plist = nil;
-	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	if(currentVersion >= 4.0)
+	if([UIDevice runsIos4OrBetter])
 	{
 		plist = [NSPropertyListSerialization propertyListWithData:data
 														  options:NSPropertyListImmutable

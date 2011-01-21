@@ -182,8 +182,7 @@
 	 @note at least 3.2 has problems with repositioning the section titles, so only do a
 	 "pretty" reload on 4.0+
 	 */
-	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	if(currentVersion >= 4.0f)
+	if([UIDevice runsIos4OrBetter])
 	{
 		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
