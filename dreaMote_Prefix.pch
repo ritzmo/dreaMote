@@ -31,6 +31,15 @@
 #else
 	#define IS_IPAD() (NO)
 #endif
+#define IS_IPHONE (!IS_IPAD())
+
+// lite/full
+#ifdef BUILD_DREAMOTE_LITE
+	#define IS_LITE() (YES)
+#else
+	#define IS_LITE() (NO)
+#endif
+#define IS_FULL() (!IS_LITE())
 
 #ifndef NSINTEGER_DEFINED
 	#define NSInteger int
