@@ -106,6 +106,19 @@
 	return YES;
 }
 
+/* open url after ios 4.2 */
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+	return [self application:application handleOpenURL:url];
+}
+
+/* open url prior to ios 4.2 */
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+	//
+	return NO;
+}
+
 /* close app */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
