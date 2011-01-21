@@ -284,7 +284,7 @@ static char *NewBase64Encode(
 {
 	size_t outputLength;
 	char *outputBuffer =
-		NewBase64Encode([self bytes], [self length], true, &outputLength);
+		NewBase64Encode([self bytes], [self length], false, &outputLength);
 	
 	NSString *result =
 		[[[NSString alloc]
