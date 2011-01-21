@@ -134,6 +134,9 @@
 /* No comment provided by engineer. */
 "Connect" = "Verbinde";
 
+/* No comment provided by engineer. */
+"Connection could not be established." = "Verbindung konnte nicht hergestellt werden.";
+
 /* Default title of ConnectorViewController */
 "Connector" = "Connector";
 
@@ -229,6 +232,9 @@
 
 /* No comment provided by engineer. */
 "Exact" = "Exakt";
+
+/* No comment provided by engineer. */
+"Export to dreaMote Full" = "Export zur Vollversion";
 
 /* No comment provided by engineer. */
 "Failed to retrieve data" = "Datenübertragung fehlgeschlagen";

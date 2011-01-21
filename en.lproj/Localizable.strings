@@ -134,6 +134,9 @@
 /* No comment provided by engineer. */
 /*"Connect" = "Connect";*/
 
+/* No comment provided by engineer. */
+/*"Connection could not be established." = "Connection could not be established.";*/
+
 /* Default title of ConnectorViewController */
 /*"Connector" = "Connector";*/
 
@@ -229,6 +232,9 @@
 
 /* No comment provided by engineer. */
 "Exact" = "Exact";
+
+/* No comment provided by engineer. */
+/*"Export to dreaMote Full" = "Export to dreaMote Full";*/
 
 /* No comment provided by engineer. */
 /*"Failed to retrieve data" = "Failed to retrieve data";*/
