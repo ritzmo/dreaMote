@@ -251,6 +251,8 @@
 		DA165F6812E9CB8D00A6D894 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = DA165F5612E9CB5A00A6D894 /* Icon-72.png */; };
 		DA165F6912E9CB8E00A6D894 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA165F5712E9CB5A00A6D894 /* Icon.png */; };
 		DA165F6A12E9CB8E00A6D894 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA165F5812E9CB5A00A6D894 /* Icon@2x.png */; };
+		DA16602712E9E03700A6D894 /* NSDictionary+DictionaryFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16602612E9E03700A6D894 /* NSDictionary+DictionaryFromData.m */; };
+		DA16602812E9E03700A6D894 /* NSDictionary+DictionaryFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16602612E9E03700A6D894 /* NSDictionary+DictionaryFromData.m */; };
 		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
@@ -504,6 +506,8 @@
 		DA165F5612E9CB5A00A6D894 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		DA165F5712E9CB5A00A6D894 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
 		DA165F5812E9CB5A00A6D894 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		DA16602512E9E03700A6D894 /* NSDictionary+DictionaryFromData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+DictionaryFromData.h"; sourceTree = "<group>"; };
+		DA16602612E9E03700A6D894 /* NSDictionary+DictionaryFromData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+DictionaryFromData.m"; sourceTree = "<group>"; };
 		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
@@ -1091,6 +1095,8 @@
 				DA165E1B12E9C5BA00A6D894 /* NSData+Base64.m */,
 				DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */,
 				DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */,
+				DA16602512E9E03700A6D894 /* NSDictionary+DictionaryFromData.h */,
+				DA16602612E9E03700A6D894 /* NSDictionary+DictionaryFromData.m */,
 				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
 				DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */,
 			);
@@ -1858,6 +1864,7 @@
 				DAB660EC12E4C1C000699EC8 /* MGSplitDividerView.m in Sources */,
 				DAB660ED12E4C1C000699EC8 /* MGSplitViewController.m in Sources */,
 				DA165E1C12E9C5BA00A6D894 /* NSData+Base64.m in Sources */,
+				DA16602712E9E03700A6D894 /* NSDictionary+DictionaryFromData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1994,6 +2001,7 @@
 				DA165F3212E9CA2700A6D894 /* MGSplitDividerView.m in Sources */,
 				DA165F3312E9CA2700A6D894 /* MGSplitViewController.m in Sources */,
 				DA165F3412E9CA2700A6D894 /* NSData+Base64.m in Sources */,
+				DA16602812E9E03700A6D894 /* NSDictionary+DictionaryFromData.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
