@@ -233,8 +233,8 @@
 /* No comment provided by engineer. */
 "Exact" = "Exakt";
 
-/* No comment provided by engineer. */
-"Export to dreaMote Full" = "Export zur Vollversion";
+/* export data from lite to full version */
+"Export to dreaMote" = "Export zur Vollversion";
 
 /* No comment provided by engineer. */
 "Failed to retrieve data" = "Datenübertragung fehlgeschlagen";
@@ -671,4 +671,3 @@
 
 /* No comment provided by engineer. */
 "Zap" = "Umschalten";
-

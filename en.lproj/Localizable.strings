@@ -233,8 +233,8 @@
 /* No comment provided by engineer. */
 "Exact" = "Exact";
 
-/* No comment provided by engineer. */
-/*"Export to dreaMote Full" = "Export to dreaMote Full";*/
+/* export data from lite to full version */
+/*"Export to dreaMote" = "Export to dreaMote";*/
 
 /* No comment provided by engineer. */
 /*"Failed to retrieve data" = "Failed to retrieve data";*/
