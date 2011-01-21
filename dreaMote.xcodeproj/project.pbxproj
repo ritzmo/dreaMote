@@ -41,6 +41,7 @@
 		DA12F88812DBB48E009FF8DD /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F88712DBB48E009FF8DD /* Metadata.m */; };
 		DA12F89912DBB52B009FF8DD /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F89812DBB52B009FF8DD /* Metadata.m */; };
 		DA12F8C512DBB7C5009FF8DD /* MetadataXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F8C412DBB7C5009FF8DD /* MetadataXMLReader.m */; };
+		DA165E1C12E9C5BA00A6D894 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DA165E1B12E9C5BA00A6D894 /* NSData+Base64.m */; };
 		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
@@ -287,6 +288,8 @@
 		DA12F8B412DBB703009FF8DD /* MetadataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataSourceDelegate.h; sourceTree = "<group>"; };
 		DA12F8C312DBB7C5009FF8DD /* MetadataXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MetadataXMLReader.h; sourceTree = "<group>"; };
 		DA12F8C412DBB7C5009FF8DD /* MetadataXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MetadataXMLReader.m; sourceTree = "<group>"; };
+		DA165E1A12E9C5BA00A6D894 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		DA165E1B12E9C5BA00A6D894 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
@@ -838,6 +841,8 @@
 			isa = PBXGroup;
 			children = (
 				DABF639F10F8BE3E002658DD /* Insort */,
+				DA165E1A12E9C5BA00A6D894 /* NSData+Base64.h */,
+				DA165E1B12E9C5BA00A6D894 /* NSData+Base64.m */,
 				DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */,
 				DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */,
 				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
@@ -1511,6 +1516,7 @@
 				DAB660EB12E4C1C000699EC8 /* MGSplitCornersView.m in Sources */,
 				DAB660EC12E4C1C000699EC8 /* MGSplitDividerView.m in Sources */,
 				DAB660ED12E4C1C000699EC8 /* MGSplitViewController.m in Sources */,
+				DA165E1C12E9C5BA00A6D894 /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

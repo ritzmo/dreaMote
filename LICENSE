@@ -111,3 +111,6 @@ Matej Bukovinski and licensed under the MIT license.
 Any file below the Classes/MGSplitViewController folder is part of
 Matt Legend Gemmell's MGSplitViewController class and distributed
 according to it's license as found in the corresponding folder.
+
+Both Classes/NSData+Base64.h and Classes/NSData+Base64.m are slightly modified
+copies of Matt Gallagher's Base64 implementation for iOS.
