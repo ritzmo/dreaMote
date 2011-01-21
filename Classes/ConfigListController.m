@@ -8,6 +8,8 @@
 
 #import "ConfigListController.h"
 
+#import "NSArray+ArrayFromData.h"
+#import "NSData+Base64.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -30,6 +32,7 @@
 - (void)connectionTestChanged:(id)sender;
 - (void)simpleRemoteChanged:(id)sender;
 - (void)vibrationChanged:(id)sender;
+- (void)rereadData:(NSNotification *)note;
 @end
 
 @implementation ConfigListController
@@ -41,6 +44,9 @@
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [[RemoteConnectorObject getConnections] retain];
+
+		// listen to changes in available connections
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 	}
 	return self;
 }
@@ -48,6 +54,8 @@
 /* dealloc */
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	[_connections release];
 	[_vibrateInRC release];
 	[_connectionTest release];
@@ -150,6 +158,17 @@
 	[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
 }
 
+- (void)rereadData:(NSNotification *)note
+{
+	[_connections release];
+	_connections = [[RemoteConnectorObject getConnections] retain];
+
+	// just in case, read them too
+	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
+	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
@@ -157,6 +176,25 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+#if IS_LITE()
+	if(indexPath.section == 2)
+	{
+		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+		NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
+		NSString *importString = [data base64EncodedString];
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
+						@"dreaMote://?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i",
+										   importString,
+										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
+										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],
+										   kConnectionTest, [stdDefaults boolForKey:kConnectionTest],
+										   kMessageTimeout, [stdDefaults integerForKey:kMessageTimeout],
+										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote]]];
+		[[UIApplication sharedApplication] openURL:url];
+
+		return nil;
+	}
+#endif
 	// Only do something in section 0
 	if(indexPath.section != 0)
 		return nil;
@@ -189,6 +227,9 @@
 
 	switch(section)
 	{
+#if IS_LITE()
+		case 2:
+#endif
 		case 0:
 			cell = [(UITableView *)self.view dequeueReusableCellWithIdentifier: kVanilla_ID];
 			if (cell == nil) 
@@ -282,6 +323,14 @@
 					break;
 			}
 			break;
+#if IS_LITE()
+		case 2:
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+			TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote Full", @"");
+#endif
 		default:
 			break;
 	}
@@ -292,19 +341,31 @@
 /* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
+#if IS_LITE()
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]])
+		return 3;
+#endif
 	return 2;
 }
 
 /* number of rows in given section */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	if(section == 0)
+	switch(section)
 	{
-		if(self.editing)
-			return [_connections count] + 1;
-		return [_connections count];
+		case 0:
+			if(self.editing)
+				return [_connections count] + 1;
+			return [_connections count];
+		case 1:
+			return (IS_IPAD()) ? 2 : 3;
+#if IS_LITE()
+		case 2:
+			return 1;
+#endif
+		default:
+			return 0;
 	}
-	return (IS_IPAD()) ? 2 : 3;
 }
 
 /* section header */
@@ -395,6 +456,9 @@
 /* about to hide */
 - (void)viewWillDisappear:(BOOL)animated
 {
+	// in case we changed something, sometimes changes got lost
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 	if(self.editing)
 		[self setEditing: NO animated: YES];
 }

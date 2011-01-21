@@ -16,8 +16,6 @@
 #import "NeutrinoConnector.h"
 #import "SVDRPConnector.h"
 
-#define configPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
-
 @implementation RemoteConnectorObject
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
@@ -89,7 +87,8 @@ static NSDictionary *_connection;
 
 + (BOOL)loadConnections
 {
-	NSString *finalPath = [configPath stringByExpandingTildeInPath];
+	NSString *finalPath = [kConfigPath stringByExpandingTildeInPath];
+	BOOL retVal = YES;
 
 	if(_connections)
 	{
@@ -100,9 +99,12 @@ static NSDictionary *_connection;
 	if(_connections == nil)
 	{
 		_connections = [[NSMutableArray array] retain];
-		return NO;
+		retVal = NO;
 	}
-	return YES;
+
+	// post notification
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReadConnectionsNotification object:self userInfo:nil];
+	return retVal;
 }
 
 + (NSMutableArray *)getConnections
@@ -113,7 +115,7 @@ static NSDictionary *_connection;
 
 + (void)saveConnections
 {
-	NSString *finalPath = [configPath stringByExpandingTildeInPath];
+	NSString *finalPath = [kConfigPath stringByExpandingTildeInPath];
 	[_connections writeToFile: finalPath atomically: YES];
 }
 

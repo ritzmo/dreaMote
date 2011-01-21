@@ -73,7 +73,12 @@
 #define kVanilla_ID				@"Vanilla_ID"
 
 // custom notifications
-#define kReconnectNotification	@"dreaMoteDidReconnect"
+#define kReadConnectionsNotification	@"dreaMoteDidReadConnections"
+#define kReconnectNotification			@"dreaMoteDidReconnect"
+
+// paths for custom configuration files
+#define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
+#define kHistoryPath @"~/Library/Preferences/com.ritzMo.dreaMote.SearchHistory.plist"
 
 // keys in connection dict
 #define kRemoteName				@"remoteNameKey"

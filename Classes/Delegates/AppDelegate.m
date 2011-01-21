@@ -9,6 +9,10 @@
 #import "AppDelegate.h"
 #import "Constants.h"
 
+#import "NSData+Base64.h"
+#import "NSArray+ArrayFromData.h"
+#import "UIDevice+SystemVersion.h"
+
 #import "RemoteConnectorObject.h"
 
 @implementation AppDelegate
@@ -102,7 +106,16 @@
 	// Show the window and view
 	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];
-	
+
+	// for some reason handleOpenURL did not get called in my tests on iOS prior to 4.0
+	// so we call it here manually… the worst thing that can happen is that the data
+	// gets parsed twice so we have a little more computation to do.
+	NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+	if(url && ![UIDevice runsIos4OrBetter])
+	{
+		[self application:application handleOpenURL:url];
+	}
+
 	return YES;
 }
 
@@ -115,8 +128,66 @@
 /* open url prior to ios 4.2 */
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-	//
-	return NO;
+	NSString *queryString = [url query];
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+
+	// iterate over components
+	for(NSString *components in [queryString componentsSeparatedByString:@"&"])
+	{
+		NSArray *compArr = [components componentsSeparatedByString:@":"];
+		if([compArr count] != 2)
+		{
+			// how to handle failure?
+			continue; //return NO;
+		}
+		NSString *key = [compArr objectAtIndex:0];
+		NSString *value = [compArr objectAtIndex:1];
+
+		// base64 encoded connection plist
+		if([key isEqualToString:@"import"])
+		{
+			NSData *data = [NSData dataFromBase64String:value];
+			if(!data) return NO;
+			NSArray *arr = [NSArray arrayWithData:data];
+			if(!arr) return NO;
+			[arr writeToFile: [kConfigPath stringByExpandingTildeInPath] atomically: YES];
+
+			// trigger reload
+			[RemoteConnectorObject disconnect];
+			[RemoteConnectorObject loadConnections];
+		}
+		else if([key isEqualToString:kActiveConnection])
+		{
+			[stdDefaults setObject:[NSNumber numberWithInteger:[value integerValue]] forKey:kActiveConnection];
+		}
+		else if([key isEqualToString:kVibratingRC])
+		{
+			[stdDefaults setBool:[value boolValue] forKey:kVibratingRC];
+		}
+		else if([key isEqualToString:kConnectionTest])
+		{
+			[stdDefaults setBool:[value boolValue] forKey:kConnectionTest];
+		}
+		else if([key isEqualToString:kMessageTimeout])
+		{
+			[stdDefaults setValue:value forKey:kMessageTimeout];
+		}
+		else if([key isEqualToString:kPrefersSimpleRemote])
+		{
+			[stdDefaults setBool:[value boolValue] forKey:kPrefersSimpleRemote];
+		}
+		else
+		{
+			// hmm?
+			continue; //return NO;
+		}
+	}
+	// make sure data is safe
+	[stdDefaults synchronize];
+
+	// let main view reload its data
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+	return YES;
 }
 
 /* close app */

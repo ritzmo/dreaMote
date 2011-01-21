@@ -11,7 +11,7 @@
 #import "Constants.h"
 
 #define MAX_HISTORY_LENGTH ((IS_IPAD()) ? 12 : 9)
-#define historyPath @"~/Library/Preferences/com.ritzMo.dreaMote.SearchHistory.plist"
+
 
 @implementation SearchHistoryListController
 
@@ -23,7 +23,7 @@
 	{
 		self.title = NSLocalizedString(@"History", @"Title of SearchHistoryListController");
 
-		NSString *finalPath = [historyPath stringByExpandingTildeInPath];
+		NSString *finalPath = [kHistoryPath stringByExpandingTildeInPath];
 		_history = [[NSMutableArray arrayWithContentsOfFile:finalPath] retain];
 		if(_history == nil) // no history yet
 			_history = [[NSMutableArray alloc] init];
@@ -86,7 +86,7 @@
 
 - (void)saveHistory
 {
-	NSString *finalPath = [historyPath stringByExpandingTildeInPath];
+	NSString *finalPath = [kHistoryPath stringByExpandingTildeInPath];
     [_history writeToFile:finalPath atomically:YES];
 }
 
