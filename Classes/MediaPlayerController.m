@@ -331,8 +331,13 @@
 	else // destructive or other
 	{
 		const BOOL recursive = (buttonIndex == actionSheet.destructiveButtonIndex);
-		progressHUD = [[MBProgressHUD alloc] initWithView:self.tabBarController.view];
-		[self.tabBarController.view addSubview: progressHUD];
+		UIView *baseView = nil;
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			baseView = self.view;
+		else
+			baseView = self.tabBarController.view;
+		progressHUD = [[MBProgressHUD alloc] initWithView:baseView];
+		[baseView addSubview: progressHUD];
 		progressHUD.delegate = self;
 
 		if(recursive)
