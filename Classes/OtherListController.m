@@ -45,7 +45,7 @@
 {
 	if((self = [super init]))
 	{
-		self.title = @"dreaMote";
+		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 		self.tabBarItem.title = NSLocalizedString(@"More", @"Tab Title of OtherListController");
 		_configListController = nil;
 	}
