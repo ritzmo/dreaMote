@@ -1,18 +1,18 @@
 //
-//  NSDictionary+DictionaryFromData.m
+//  NSArray+ArrayFromData.m
 //  dreaMote
 //
 //  Created by Moritz Venn on 21.01.11.
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import "NSDictionary+DictionaryFromData.h"
+#import "NSArray+ArrayFromData.h"
 
-@implementation NSDictionary(DictionaryFromData)
+@implementation NSArray(ArrayFromData)
 
-+ (id)dictionaryWithData:(NSData *)data
++ (id)arrayWithData:(NSData *)data
 {
-	return [[[NSDictionary alloc] initWithData:data] autorelease];
+	return [[[NSArray alloc] initWithData:data] autorelease];
 }
 
 - (id)initWithData:(NSData *)data
@@ -33,7 +33,7 @@
 														   format:nil
 												 errorDescription:nil];
 	}
-	return [self initWithDictionary:(NSDictionary *)plist];
+	return [self initWithArray:(NSArray *)plist];
 }
 
 @end

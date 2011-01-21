@@ -1,5 +1,5 @@
 //
-//  NSDictionary+DictionaryFromData.h
+//  NSArray+ArrayFromData.h
 //  dreaMote
 //
 //  Created by Moritz Venn on 21.01.11.
@@ -9,22 +9,22 @@
 #import <Foundation/Foundation.h>
 
 
-@interface NSDictionary(DictionaryFromData)
+@interface NSArray(ArrayFromData)
 
 /*!
- @brief Return new dictionary from data.
+ @brief Return new array from data.
 
  @param data Data to use
- @return dictionary object
+ @return array object
  */
-+ (id)dictionaryWithData:(NSData *)data;
++ (id)arrayWithData:(NSData *)data;
 
 /*!
  @brief Initialize with data.
 
  @param data Data to initialize with
- @return dictionary object
+ @return array object
  */
-- (id)initWithData:(NSData *)data; 
+- (id)initWithData:(NSData *)data;
 
 @end
