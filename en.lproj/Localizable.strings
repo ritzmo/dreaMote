@@ -85,7 +85,7 @@
 /* No comment provided by engineer. */
 /*"Artist" = "Artist";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Attention" = "Attention";*/
 
 /* No comment provided by engineer. */
@@ -134,7 +134,7 @@
 /* No comment provided by engineer. */
 /*"Configured Connections" = "Configured Connections";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Confirmed" = "Confirmed";*/
 
 /* No comment provided by engineer. */
@@ -182,7 +182,7 @@
 /* Repeated */
 "Daily" = "Daily";
 
-/* No comment provided by engineer. */
+/* Title of DatePickerController */
 "Date Picker" = "Date Picker";
 
 /* No comment provided by engineer. */
@@ -212,7 +212,7 @@
 /* No comment provided by engineer. */
 /*"Enigma 2" = "Enigma 2";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 "Error" = "Error";
 
 /* No comment provided by engineer. */
@@ -251,7 +251,7 @@
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "Filesystems" = "<Filesystems>";
 
-/* No comment provided by engineer. */
+/* Timer type */
 "Finished" = "Finished";
 
 /* Weekday */
@@ -284,7 +284,7 @@
 /* Button executing import */
 /*"Import" = "Import";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Info" = "Info";*/
 
 /* No comment provided by engineer. */
@@ -327,7 +327,8 @@
    Title of MediaPlayerSplitViewController */
 /*"MediaPlayer" = "MediaPlayer";*/
 
-/* Default title of MessageViewController */
+/* Default title of MessageViewController
+   Message type */
 /*"Message" = "Message";*/
 
 /* No comment provided by engineer. */
@@ -396,7 +397,7 @@
 /* No comment provided by engineer. */
 /*"None" = "None";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Normal" = "Normal";*/
 
 /* After Event */
@@ -441,7 +442,7 @@
 /* No comment provided by engineer. */
 /*"Power" = "Power";*/
 
-/* No comment provided by engineer. */
+/* Timer type */
 "Prepared" = "Prepared";
 
 /* No comment provided by engineer. */
@@ -450,7 +451,7 @@
 /* Pull down to refresh status */
 /*"Pull down to refresh..." = "Pull down to refresh...";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Question" = "Question";*/
 
 /* Radio switch button */
@@ -504,7 +505,7 @@
 /* No comment provided by engineer. */
 "Restart" = "Restart";
 
-/* No comment provided by engineer. */
+/* Timer type */
 "Running" = "Running";
 
 /* Weekday */
@@ -648,10 +649,10 @@
 /* No comment provided by engineer. */
 /*"Volume" = "Volume";*/
 
-/* No comment provided by engineer. */
+/* Timer type */
 "Waiting" = "Waiting";
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Warning" = "Warning";*/
 
 /* Weekday */
@@ -666,7 +667,7 @@
 /* No comment provided by engineer. */
 /*"Year" = "Year";*/
 
-/* No comment provided by engineer. */
+/* Message type */
 /*"Yes/No" = "Yes/No";*/
 
 /* No comment provided by engineer. */

@@ -332,13 +332,13 @@
 	--section;
 
 	if(section == kTimerStateWaiting)
-		return NSLocalizedString(@"Waiting", @"");
+		return NSLocalizedString(@"Waiting", @"Timer type");
 	else if(section == kTimerStatePrepared)
-		return NSLocalizedString(@"Prepared", @"");
+		return NSLocalizedString(@"Prepared", @"Timer type");
 	else if (section == kTimerStateRunning)
-		return NSLocalizedString(@"Running", @"");
+		return NSLocalizedString(@"Running", @"Timer type");
 	else
-		return NSLocalizedString(@"Finished", @"");
+		return NSLocalizedString(@"Finished", @"Timer type");
 }
 
 /* rows in section */

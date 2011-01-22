@@ -713,13 +713,13 @@ enum enigma1MessageTypes {
 	switch(type)
 	{
 		case kEnigma1MessageTypeInfo:
-			return NSLocalizedString(@"Info", @"");
+			return NSLocalizedString(@"Info", @"Message type");
 		case kEnigma1MessageTypeWarning:
-			return NSLocalizedString(@"Warning", @"");
+			return NSLocalizedString(@"Warning", @"Message type");
 		case kEnigma1MessageTypeQuestion:
-			return NSLocalizedString(@"Question", @"");
+			return NSLocalizedString(@"Question", @"Message type");
 		case kEnigma1MessageTypeError:
-			return NSLocalizedString(@"Error", @"");
+			return NSLocalizedString(@"Error", @"Message type");
 		default:
 			return @"???";
 	}

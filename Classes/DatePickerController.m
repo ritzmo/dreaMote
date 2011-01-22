@@ -37,7 +37,7 @@
 	if((self = [super init]))
 	{
 		// this title will appear in the navigation bar
-		self.title = NSLocalizedString(@"Date Picker", @"");
+		self.title = NSLocalizedString(@"Date Picker", @"Title of DatePickerController");
 		_format = [[NSDateFormatter alloc] init];
 		[_format setDateStyle:NSDateFormatterFullStyle];
 		[_format setTimeStyle:NSDateFormatterShortStyle];

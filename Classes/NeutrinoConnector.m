@@ -746,9 +746,9 @@ enum neutrinoMessageTypes {
 	switch(type)
 	{
 		case kNeutrinoMessageTypeNormal:
-			return NSLocalizedString(@"Normal", @"");
+			return NSLocalizedString(@"Normal", @"Message type");
 		case kNeutrinoMessageTypeConfirmed:
-			return NSLocalizedString(@"Confirmed", @"");
+			return NSLocalizedString(@"Confirmed", @"Message type");
 		default:
 			return @"???";
 	}

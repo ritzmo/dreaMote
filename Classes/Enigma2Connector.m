@@ -559,13 +559,13 @@ enum enigma2MessageTypes {
 	switch(type)
 	{
 		case kEnigma2MessageTypeAttention:
-			return NSLocalizedString(@"Attention", @"");
+			return NSLocalizedString(@"Attention", @"Message type");
 		case kEnigma2MessageTypeInfo:
-			return NSLocalizedString(@"Info", @"");
+			return NSLocalizedString(@"Info", @"Message type");
 		case kEnigma2MessageTypeMessage:
-			return NSLocalizedString(@"Message", @"");
+			return NSLocalizedString(@"Message", @"Message type");
 		case kEnigma2MessageTypeYesNo:
-			return NSLocalizedString(@"Yes/No", @"");
+			return NSLocalizedString(@"Yes/No", @"Message type");
 		default:
 			return @"???";
 	}
