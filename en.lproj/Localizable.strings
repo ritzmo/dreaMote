@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "<remote username>" = "<username: usually root>";
 
+/* No hostname entered in ConfigView. */
+/*"A connection needs at least a hostname." = "A connection needs at least a hostname.";*/
+
 /* Title of AboutDreamoteViewController */
 /*"About" = "About";*/
 
@@ -42,6 +45,9 @@
 
 /* No comment provided by engineer. */
 "About Receiver Title" = "About Receiver";
+
+/* Title of Alert when import triggered */
+/*"About to import data" = "About to import data";*/
 
 /* Used in MediaPlayer, add only the current folder */
 /*"Add" = "Add";*/
@@ -274,6 +280,9 @@
 
 /* No comment provided by engineer. */
 /*"IMDb" = "IMDb";*/
+
+/* Button executing import */
+/*"Import" = "Import";*/
 
 /* No comment provided by engineer. */
 /*"Info" = "Info";*/
@@ -662,6 +671,9 @@
 
 /* No comment provided by engineer. */
 /*"Yesterday" = "Yesterday";*/
+
+/* Message explaining what will happen on import */
+/*"You are about to import data into this application. All existing settings will be lost!" = "You are about to import data into this application. All existing settings will be lost!";*/
 
 /* No comment provided by engineer. */
 /*"You have to enter connection details to use this application." = "You have to enter connection details to use this application.";*/

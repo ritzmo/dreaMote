@@ -11,11 +11,14 @@
 /*!
  @brief Application Delegate.
  */
-@interface AppDelegate : NSObject  <UIApplicationDelegate, UITabBarControllerDelegate>
+@interface AppDelegate : NSObject  <UIApplicationDelegate, UITabBarControllerDelegate,
+									UIAlertViewDelegate>
 {
-	BOOL wasSleeping;
+@private
+	BOOL wasSleeping; /*!< @brief Application was in background before. */
 	UIWindow *window; /*!< @brief Application window. */
 	UITabBarController *tabBarController; /*!< @brief Tab Bar Controller. */
+	NSURL *cachedURL; /*!< @brief Cached URL request. */
 }
 
 /*!
@@ -27,5 +30,10 @@
  @brief Tab Bar Controller.
  */
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+
+/*!
+ @brief Currently importing?
+ */
+@property (nonatomic, readonly) BOOL importing;
 
 @end

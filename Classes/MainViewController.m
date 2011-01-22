@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 
+#import "AppDelegate.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -221,6 +222,9 @@
 
 - (BOOL)checkConnection
 {
+	// ignore if import in progress
+	if(((AppDelegate *)[UIApplication sharedApplication].delegate).importing) return YES;
+
 	// handleReconnect makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
@@ -230,6 +234,13 @@
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
+
+		// dialog (probably) already visible
+		if([self.selectedViewController isEqual:[menuList lastObject]]
+		   && [_otherController.navigationController.visibleViewController isKindOfClass:[ConfigViewController class]])
+		{
+			return NO;
+		}
 
 		ConfigViewController *targetViewController = [ConfigViewController newConnection];
 		targetViewController.mustSave = YES;

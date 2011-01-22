@@ -167,6 +167,8 @@
 	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
 	[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
 	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
+
+	[(UITableView *)self.view reloadData];
 }
 
 #pragma mark	-
@@ -183,7 +185,7 @@
 		NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
 		NSString *importString = [data base64EncodedString];
 		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
-						@"dreaMote://?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i",
+						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i",
 										   importString,
 										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
 										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],

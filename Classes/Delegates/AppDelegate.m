@@ -25,9 +25,29 @@
 	if((self = [super init]))
 	{
 		wasSleeping = NO;
+		cachedURL = nil;
 	}
 	return self;
 }
+
+/* dealloc */
+- (void)dealloc
+{
+	[window release];
+	[tabBarController release];
+	[cachedURL release];
+
+	[super dealloc];
+}
+
+- (BOOL)importing
+{
+	return cachedURL != nil;
+}
+
+#pragma mark -
+#pragma mark UIApplicationDelegate
+#pragma mark -
 
 /* finished launching */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -128,65 +148,18 @@
 /* open url prior to ios 4.2 */
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
-	NSString *queryString = [url query];
-	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-
-	// iterate over components
-	for(NSString *components in [queryString componentsSeparatedByString:@"&"])
+	if([url.path isEqualToString:@"/settings"])
 	{
-		NSArray *compArr = [components componentsSeparatedByString:@":"];
-		if([compArr count] != 2)
-		{
-			// how to handle failure?
-			continue; //return NO;
-		}
-		NSString *key = [compArr objectAtIndex:0];
-		NSString *value = [compArr objectAtIndex:1];
-
-		// base64 encoded connection plist
-		if([key isEqualToString:@"import"])
-		{
-			NSData *data = [NSData dataFromBase64String:value];
-			if(!data) return NO;
-			NSArray *arr = [NSArray arrayWithData:data];
-			if(!arr) return NO;
-			[arr writeToFile: [kConfigPath stringByExpandingTildeInPath] atomically: YES];
-
-			// trigger reload
-			[RemoteConnectorObject disconnect];
-			[RemoteConnectorObject loadConnections];
-		}
-		else if([key isEqualToString:kActiveConnection])
-		{
-			[stdDefaults setObject:[NSNumber numberWithInteger:[value integerValue]] forKey:kActiveConnection];
-		}
-		else if([key isEqualToString:kVibratingRC])
-		{
-			[stdDefaults setBool:[value boolValue] forKey:kVibratingRC];
-		}
-		else if([key isEqualToString:kConnectionTest])
-		{
-			[stdDefaults setBool:[value boolValue] forKey:kConnectionTest];
-		}
-		else if([key isEqualToString:kMessageTimeout])
-		{
-			[stdDefaults setValue:value forKey:kMessageTimeout];
-		}
-		else if([key isEqualToString:kPrefersSimpleRemote])
-		{
-			[stdDefaults setBool:[value boolValue] forKey:kPrefersSimpleRemote];
-		}
-		else
-		{
-			// hmm?
-			continue; //return NO;
-		}
+		[cachedURL release];
+		cachedURL = [url retain];
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"About to import data", @"Title of Alert when import triggered")
+															  message:NSLocalizedString(@"You are about to import data into this application. All existing settings will be lost!", @"Message explaining what will happen on import")
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+													otherButtonTitles:NSLocalizedString(@"Import", @"Button executing import"), nil];
+		[alert show];
+		[alert release];
 	}
-	// make sure data is safe
-	[stdDefaults synchronize];
-
-	// let main view reload its data
-	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	return YES;
 }
 
@@ -218,13 +191,77 @@
 	wasSleeping = YES;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[window release];
-	[tabBarController release];
+#pragma mark -
+#pragma mark UIAlertViewDelegate
+#pragma mark -
 
-	[super dealloc];
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	// import
+	if(buttonIndex == alertView.firstOtherButtonIndex)
+	{
+		NSString *queryString = [cachedURL query];
+		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+
+		// iterate over components
+		for(NSString *components in [queryString componentsSeparatedByString:@"&"])
+		{
+			NSArray *compArr = [components componentsSeparatedByString:@":"];
+			if([compArr count] != 2)
+			{
+				// how to handle failure?
+				continue;
+			}
+			NSString *key = [compArr objectAtIndex:0];
+			NSString *value = [compArr objectAtIndex:1];
+
+			// base64 encoded connection plist
+			if([key isEqualToString:@"import"])
+			{
+				NSData *data = [NSData dataFromBase64String:value];
+				if(!data) return;
+				NSArray *arr = [NSArray arrayWithData:data];
+				if(!arr) return;
+				[arr writeToFile: [kConfigPath stringByExpandingTildeInPath] atomically: YES];
+
+				// trigger reload
+				[RemoteConnectorObject disconnect];
+				[RemoteConnectorObject loadConnections];
+			}
+			else if([key isEqualToString:kActiveConnection])
+			{
+				[stdDefaults setObject:[NSNumber numberWithInteger:[value integerValue]] forKey:kActiveConnection];
+			}
+			else if([key isEqualToString:kVibratingRC])
+			{
+				[stdDefaults setBool:[value boolValue] forKey:kVibratingRC];
+			}
+			else if([key isEqualToString:kConnectionTest])
+			{
+				[stdDefaults setBool:[value boolValue] forKey:kConnectionTest];
+			}
+			else if([key isEqualToString:kMessageTimeout])
+			{
+				[stdDefaults setValue:value forKey:kMessageTimeout];
+			}
+			else if([key isEqualToString:kPrefersSimpleRemote])
+			{
+				[stdDefaults setBool:[value boolValue] forKey:kPrefersSimpleRemote];
+			}
+			else
+			{
+				// hmm?
+				continue;
+			}
+		}
+		// make sure data is safe
+		[stdDefaults synchronize];
+
+		// let main view reload its data
+		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+	}
+	[cachedURL release];
+	cachedURL = nil;
 }
 
 @end

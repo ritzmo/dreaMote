@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "<remote username>" = "<Benutzername: z.B. root>";
 
+/* No hostname entered in ConfigView. */
+"A connection needs at least a hostname." = "Eine Verbindung muss wenigstens eine Adresse besitzen.";
+
 /* Title of AboutDreamoteViewController */
 "About" = "Über dreaMote";
 
@@ -42,6 +45,9 @@
 
 /* No comment provided by engineer. */
 "About Receiver Title" = "Über den Receiver";
+
+/* Title of Alert when import triggered */
+"About to import data" = "Datentransfer erbeten";
 
 /* Used in MediaPlayer, add only the current folder */
 "Add" = "Ja, OHNE Unterordner";
@@ -274,6 +280,9 @@
 
 /* No comment provided by engineer. */
 "IMDb" = "IMDb";
+
+/* Button executing import */
+"Import" = "Daten importieren";
 
 /* No comment provided by engineer. */
 "Info" = "Info";
@@ -663,6 +672,9 @@
 /* No comment provided by engineer. */
 "Yesterday" = "Gestern";
 
+/* Message explaining what will happen on import */
+"You are about to import data into this application. All existing settings will be lost!" = "Sie sind im Begriff die Einstellungen aus einer anderen Applikation zu übernehmen. Alle hier getätigten Einstellungen gehen dabei verloren!";
+
 /* No comment provided by engineer. */
 "You have to enter connection details to use this application." = "Sie müssen Verbindungsdaten eingeben um dreaMote zu Nutzen.";
 
@@ -671,3 +683,4 @@
 
 /* No comment provided by engineer. */
 "Zap" = "Umschalten";
+

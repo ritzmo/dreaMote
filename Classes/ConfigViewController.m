@@ -260,25 +260,8 @@
 /* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-	[super setEditing: editing animated: animated];
-
-	/*_makeDefaultButton.enabled = editing;
-	_connectButton.enabled = editing;*/
-
 	if(!editing)
 	{
-		[self.navigationItem setLeftBarButtonItem: nil animated: YES];
-
-		[_remoteNameCell stopEditing];
-		[_remoteAddressCell stopEditing];
-		[_remotePortCell stopEditing];
-		[_usernameCell stopEditing];
-		[_passwordCell stopEditing];
-		_singleBouquetSwitch.enabled = NO;
-		_advancedRemoteSwitch.enabled = NO;
-		_nowNextSwitch.enabled = NO;
-		_sslSwitch.enabled = NO;
-
 		if(_shouldSave)
 		{
 			[_connection setObject: _remoteNameTextField.text forKey: kRemoteName];
@@ -291,6 +274,17 @@
 			[_connection setObject: _advancedRemoteSwitch.on ? @"YES" : @"NO" forKey: kAdvancedRemote];
 			[_connection setObject: _nowNextSwitch.on ? @"YES" : @"NO" forKey: kShowNowNext];
 			[_connection setObject: _sslSwitch.on ? @"YES" : @"NO" forKey: kSSL];
+
+			if(!_remoteNameTextField.text.length)
+			{
+				UIAlertView *notification = [[UIAlertView alloc]
+											 initWithTitle:NSLocalizedString(@"Error", @"")
+											 message:NSLocalizedString(@"A connection needs at least a hostname.", @"No hostname entered in ConfigView.")
+											 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[notification show];
+				[notification release];
+				return;
+			}
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(_connectionIndex == -1)
@@ -319,6 +313,18 @@
 			[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 		}
 
+		[self.navigationItem setLeftBarButtonItem: nil animated: YES];
+
+		[_remoteNameCell stopEditing];
+		[_remoteAddressCell stopEditing];
+		[_remotePortCell stopEditing];
+		[_usernameCell stopEditing];
+		[_passwordCell stopEditing];
+		_singleBouquetSwitch.enabled = NO;
+		_advancedRemoteSwitch.enabled = NO;
+		_nowNextSwitch.enabled = NO;
+		_sslSwitch.enabled = NO;
+
 		if(_connectorCell)
 			_connectorCell.accessoryType = UITableViewCellAccessoryNone;
 	}
@@ -336,12 +342,17 @@
 		if(_connectorCell)
 			_connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
+
+	[super setEditing: editing animated: animated];
+
+	/*_makeDefaultButton.enabled = editing;
+	 _connectButton.enabled = editing;*/
 }
 
 /* cancel and close */
 - (void)cancelEdit: (id)sender
 {
-	if(_mustSave)
+	if(_mustSave && ![[RemoteConnectorObject getConnections] count])
 	{
 		UIAlertView *notification = [[UIAlertView alloc]
 									initWithTitle:NSLocalizedString(@"Error", @"")
