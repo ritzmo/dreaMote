@@ -431,7 +431,6 @@ enum neutrinoMessageTypes {
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	[add appendString: @"&channel_name="];
 	[add appendString: [newTimer.service.sname urlencode]];
-	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
@@ -460,7 +459,6 @@ enum neutrinoMessageTypes {
 	[add appendFormat: @"%d", newTimer.repeated];
 	[add appendString: @"&repcount="];
 	[add appendFormat: @"%d", newTimer.repeatcount];
-	[add replaceOccurrencesOfString:@"+" withString:@"%2B" options:0 range:NSMakeRange(0, [add length])];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
