@@ -275,7 +275,7 @@
 			[_connection setObject: _nowNextSwitch.on ? @"YES" : @"NO" forKey: kShowNowNext];
 			[_connection setObject: _sslSwitch.on ? @"YES" : @"NO" forKey: kSSL];
 
-			if(!_remoteNameTextField.text.length)
+			if(!_remoteAddressTextField.text.length)
 			{
 				UIAlertView *notification = [[UIAlertView alloc]
 											 initWithTitle:NSLocalizedString(@"Error", @"")
