@@ -1,134 +1,687 @@
+﻿/* No comment provided by engineer. */
+"%@ of %@ free" = "%@ de %@ libre";
+
+/* Placeholder of _timerDescription */
 "<enter description>" = "<Entrer une description>";
+
+/* Placeholder of _timerTitle */
 "<enter title>" = "<Entrer un titre>";
+
+/* No comment provided by engineer. */
+"<message caption>" = "<Exemple: Attention>";
+
+/* No comment provided by engineer. */
 "<message text>" = "<Texte à afficher>";
+
+/* No comment provided by engineer. */
 "<message timeout>" = "<Temps d'affichage>";
+
+/* No comment provided by engineer. */
 "<name>" = "<Nom: Ex: DM Salon>";
+
+/* No comment provided by engineer. */
 "<remote address>" = "<Adresse IP: Ex: 192.168.1.10>";
+
+/* No comment provided by engineer. */
 "<remote password>" = "<Mot de passe>";
+
+/* No comment provided by engineer. */
 "<remote port>" = "<Port: Normalement 80>";
+
+/* No comment provided by engineer. */
 "<remote username>" = "<Nom d'utilisateur: root>";
+
+/* No hostname entered in ConfigView. */
+"A connection needs at least a hostname." = "La connexion a besoin d'un nom d'hôte";
+
+/* Title of AboutDreamoteViewController */
+"About" = "A propos";
+
+/* No comment provided by engineer. */
+"About Receiver" = "A propos";
+
+/* No comment provided by engineer. */
+"About Receiver Explain" = "Informations sur votre récepteur";
+
+/* No comment provided by engineer. */
+"About Receiver Title" = "A propos du récepteur";
+
+/* Title of Alert when import triggered */
+"About to import data" = "A propos des données importées";
+
+/* Used in MediaPlayer, add only the current folder */
+"Add" = "Ajouter";
+
+/* No comment provided by engineer. */
+"Add Folder" = "Ajouter dossier";
+
+/* Used in MediaPlayer, add shown folders recursively */
+"Add recursively" = "Ajoutez récursivement";
+
+/* No comment provided by engineer. */
 "Add Timer" = "Ajouter un enregistrement";
+
+/* Used in MediaPlayer, append tracks to playlist */
+"Adding to Playlist" = "Ajouter à la Playlist";
+
+/* No comment provided by engineer. */
 "Advanced Remote" = "Télécommande avancée";
+
+/* Default title of AfterEventViewController */
 "After Event" = "Après l'émission";
+
+/* No comment provided by engineer. */
+"AGC" = "AGC";
+
+/* No comment provided by engineer. */
+"Album" = "Album";
+
+/* No comment provided by engineer. */
 "All" = "Tout";
+
+/* No comment provided by engineer. */
+"All Services" = "Tous les services";
+
+/* No comment provided by engineer. */
+"Artist" = "Artiste";
+
+/* Message type */
+"Attention" = "Attention";
+
+/* No comment provided by engineer. */
+"Auto" = "Auto";
+
+/* No comment provided by engineer. */
+"Autodetect" = "Détection automatique";
+
+/* No comment provided by engineer. */
 "Begin" = "Début";
-"Begin:" = "Début:";
-"Bouquet List Explain" = "Liste de vos bouquets";
-"Bouquet List Title" = "Bouquets";
+
+/* Title of BouquetListController */
+"Bouquets" = "Bouquets";
+
+/* No comment provided by engineer. */
 "Can't edit a running or finished timer." = "Ne peux pas éditer un enregistrement en cours ou fini.";
+
+/* No comment provided by engineer. */
 "Can't save a timer with an empty title." = "Ne peux pas sauvegarder un enregistrement sans titre.";
+
+/* No comment provided by engineer. */
+"Can't save a timer without a service." = "Ne peux pas sauvegarder un enregistrement sans chaîne.";
+
+/* No comment provided by engineer. */
 "Cancel" = "Anuler";
+
+/* No comment provided by engineer. */
+"Caption" = "Titre de la fenêtre";
+
+/* No comment provided by engineer. */
+"Caption cannot be empty." = "Le titre ne peut pas être vide.";
+
+/* No comment provided by engineer. */
 "Check Connectivity" = "Contrôle connexion";
+
+/* No comment provided by engineer. */
+"Config List Explain" = "Configuration des connexions";
+
+/* No comment provided by engineer. */
+"Config List Title" = "Configuration";
+
+/* Default Title of ConfigListController
+   Default title of ConfigViewController */
+"Configuration" = "Configuration";
+
+/* No comment provided by engineer. */
 "Configured Connections" = "Connexions configurées";
+
+/* Message type */
+"Confirmed" = "Confirmé";
+
+/* No comment provided by engineer. */
 "Connect" = "Connecter maintenant";
+
+/* No comment provided by engineer. */
+"Connection could not be established." = "La connexion ne peut pas être établi.";
+
+/* Default title of ConnectorViewController */
+"Connector" = "Connecteur";
+
+/* No comment provided by engineer. */
 "Control View Explain" = "Contrôle du volume et de l'alimentation";
+
+/* No comment provided by engineer. */
 "Control View Title" = "Contrôles";
+
+/* Title of ControlViewController */
 "Controls" = "Contrôles";
+
+/* No comment provided by engineer. */
+"Could not add new timer (%@)!" = "Ne peut pas ajouter un nouvel enregistrement (%@)!";
+
+/* No comment provided by engineer. */
+"Could not add new timer and failed to retain original one! (%@)" = "Ne peut pas ajouter le nouvel enregistrement et a échoué pour conserver l'original! (%@)";
+
+/* No comment provided by engineer. */
+"Could not add song to playlist" = "Ne peut pas ajouter la chanson à la playlist";
+
+/* No comment provided by engineer. */
+"Could not determine remote box type." = "Ne peut pas déterminer le type de récepteur";
+
+/* No comment provided by engineer. */
+"Could not remove base timer (%@)!" = "Ne peut pas retirer l'enregistrement de base (%@)!";
+
+/* No comment provided by engineer. */
+"Could not send message." = "Ne peut pas envoyer de message.";
+
+/* No comment provided by engineer. */
 "Credential" = "Authentification:";
+
+/* No comment provided by engineer. */
 "Currently playing" = "Actuellement regardé";
-"Currently playing List Title" = "Actuellement sur votre écran";
-"Currentply playing List Explain" = "Voir la chaîne et l'EPG";
+
+/* Repeated */
 "Daily" = "Quotidiennement";
-"Date Picker" = "Date Picker";
+
+/* Title of DatePickerController */
+"Date Picker" = "Date";
+
+/* No comment provided by engineer. */
 "Deep Standby" = "Veille profonde";
-"Delete" = "Supprimer";
+
+/* No comment provided by engineer. */
+"Default Location" = "Emplacement par défaut";
+
+/* No comment provided by engineer. */
 "Delete failed" = "Suppression impossible";
-"Description:" = "Description:";
-"Do you really want to delete the selected timer?" = "Voulez-vous vraiment supprimer l'enregistrement sélectionné?";
-"Enabled" = "Permis";
+
+/* No comment provided by engineer. */
+"Description" = "Description";
+
+/* No comment provided by engineer. */
+"Done" = "Fait";
+
+/* No comment provided by engineer. */
+"Enabled" = "Actif";
+
+/* No comment provided by engineer. */
 "End" = "Fin";
-"End:" = "Fin:";
+
+/* No comment provided by engineer. */
+"Enigma" = "Enigma";
+
+/* No comment provided by engineer. */
+"Enigma 2" = "Enigma 2";
+
+/* Message type */
 "Error" = "Erreur";
-"Error adding new timer." = "Erreur d'ajout d'enregistrement";
-"Error editing timer." = "Erreur dans l'édition de l'enregistrement";
+
+/* No comment provided by engineer. */
+"Error adding new timer: %@" = "Erreur d'ajout d'enregistrement: %@";
+
+/* No comment provided by engineer. */
+"Error editing timer: %@" = "Erreur d'édition d'enregistrement: %@";
+
+/* No comment provided by engineer. */
+"Error retrieving Data" = "Erreur de réception de données";
+
+/* No comment provided by engineer. */
 "Event" = "Emission";
+
+/* No comment provided by engineer. */
 "Event Search Explain" = "Rechercher les titres d'émissions dans l'EPG";
+
+/* No comment provided by engineer. */
 "Event Search Title" = "Recherche EPG";
+
+/* Default Title of EventListController */
 "Events" = "Emissions";
+
+/* No comment provided by engineer. */
 "Exact" = "Plus précisément:";
+
+/* export data from lite to full version */
+"Export to dreaMote" = "Exporter vers dreaMote";
+
+/* No comment provided by engineer. */
+"Failed to retrieve data" = "Echec de réception de données";
+
+/* No comment provided by engineer. */
+"Failed to start instant record" = "Echec de l'enregistrement instantané";
+
+/* Label for Filesystems Item in MediaPlayer Filelist */
+"Filesystems" = "Systèmes de fichiers";
+
+/* Timer type */
 "Finished" = "Terminé";
+
+/* Weekday */
 "Fri" = "Ven ";
+
+/* No comment provided by engineer. */
 "Friday" = "Vendredi";
+
+/* in timer settings dialog */
 "General" = "Général";
+
+/* No comment provided by engineer. */
+"Genre" = "Genre";
+
+/* No comment provided by engineer. */
+"GUI Version" = "IUG Version";
+
+/* No comment provided by engineer. */
+"Harddisk" = "Disque dur";
+
+/* Title of SearchHistoryListController */
+"History" = "Historique";
+
+/* No comment provided by engineer. */
+"Image Version" = "Image Version";
+
+/* No comment provided by engineer. */
+"IMDb" = "IMDb";
+
+/* Button executing import */
+"Import" = "Importer";
+
+/* Message type */
 "Info" = "Information";
+
+/* No comment provided by engineer. */
 "Instant Record" = "Enregistrement instantané";
-"Justplay" = "Justplay";
+
+/* No comment provided by engineer. */
+"Invalid message type." = "Type de message invalide.";
+
+/* No comment provided by engineer. */
+"Justplay" = "Zapping";
+
+/* Loading Status */
+"Loading..." = "Chargement...";
+
+/* No comment provided by engineer. */
+"Location" = "Emplacement";
+
+/* No comment provided by engineer. */
+"Location List Explain" = "Emplacement de vos enregistrements";
+
+/* No comment provided by engineer. */
+"Location List Title" = "Emplacements";
+
+/* Title of LocationListController */
+"Locations" = "Emplacements";
+
+/* No comment provided by engineer. */
 "Make Default" = "Connexion par défaut";
+
+/* No comment provided by engineer. */
+"Master" = "Maître";
+
+/* No comment provided by engineer. */
+"Media Player Explain" = "Ouvrir le Media Player";
+
+/* No comment provided by engineer. */
+"Media Player Title" = "Media Player";
+
+/* Title of MediaPlayerController
+   Title of MediaPlayerSplitViewController */
+"MediaPlayer" = "Media Player";
+
+/* Default title of MessageViewController
+   Message type */
+"Message" = "Message";
+
+/* No comment provided by engineer. */
+"Message cannot be empty." = "Le message ne peut pas être vide.";
+
+/* Default title of MessageTypeViewController */
+"Message Type" = "Type de message";
+
+/* No comment provided by engineer. */
 "Message View Explain" = "Envoyer un message court";
+
+/* No comment provided by engineer. */
 "Message View Title" = "Messages";
+
+/* Weekday */
 "Mon" = "Lun ";
+
+/* No comment provided by engineer. */
 "Monday" = "Lundi";
+
+/* Tab Title of OtherListController */
+"More" = "Plus";
+
+/* Default title of MovieViewController */
 "Movie" = "Vidéo";
+
+/* No comment provided by engineer. */
 "Movie List Explain" = "Vidéos enregistrées";
+
+/* No comment provided by engineer. */
 "Movie List Title" = "Vidéo";
+
+/* Title of MovieListController */
 "Movies" = "Vidéos";
-"Mute:" = "Mute:";
+
+/* No comment provided by engineer. */
+"Mute" = "Muet";
+
+/* No comment provided by engineer. */
 "N/A" = "N/A";
-"Name:" = "Nom:";
+
+/* No comment provided by engineer. */
+"Neutrino" = "Neutrino";
+
+/* Repeated */
 "Never" = "Jamais";
+
+/* No comment provided by engineer. */
 "New Connection" = "Nouvelle connexion";
+
+/* No comment provided by engineer. */
 "New Timer" = "Nouvel enregistrement";
+
+/* No comment provided by engineer. */
 "Next" = "Suivi de";
+
+/* No comment provided by engineer. */
+"No Data…" = "Pas de données…";
+
+/* Placeholder text in Now/Next-ServiceList if no EPG data present */
+"No EPG" = "Aucun EPG";
+
+/* No comment provided by engineer. */
 "No similar Events" = "Pas d'émissions similaires";
+
+/* No comment provided by engineer. */
+"None" = "Aucun";
+
+/* Message type */
+"Normal" = "Normal";
+
+/* After Event */
 "Nothing" = "Ne rien faire";
-"Nothing playing." = "Nothing playing.";
+
+/* No comment provided by engineer. */
+"Nothing playing." = "Rien actuellement.";
+
+/* No comment provided by engineer. */
 "Now" = "Actuellement";
+
+/* No comment provided by engineer. */
+"Now Playing" = "Actuellement";
+
+/* No comment provided by engineer. */
+"Now/Next in Servicelist" = "EPG dans Bouquets";
+
+/* No comment provided by engineer. */
+"OSD" = "OSD";
+
+/* No comment provided by engineer. */
 "Percentage" = "Pourcentage";
+
+/* No comment provided by engineer. */
 "Play" = "Lecture";
-"Prepared" = "Prepared";
+
+/* No comment provided by engineer. */
+"Play/Pause" = "Play/Pause";
+
+/* TabBar Title of CurrentViewController */
+"Playing" = "En cours";
+
+/* Used in MediaPlayer, append track to playlist and start playback */
+"Playing immediately" = "Jouer immédiatement";
+
+/* Title of PlayListController */
+"Playlist" = "Playlist";
+
+/* No comment provided by engineer. */
+"Please provide a valid timeout interval." = "Fournissez s'il vous plaît un intervalle de temps valide.";
+
+/* No comment provided by engineer. */
+"Power" = "Power";
+
+/* Timer type */
+"Prepared" = "En préparation";
+
+/* No comment provided by engineer. */
+"Previous" = "Précédent";
+
+/* Pull down to refresh status */
+"Pull down to refresh..." = "Descendez pour mettre à jour...";
+
+/* Message type */
+"Question" = "Question";
+
+/* Radio switch button */
+"Radio" = "Radio";
+
+/* Title of radio mode of BouquetListController */
+"Radio Bouquets" = "Radio Bouquets";
+
+/* Title of Radio mode of ServiceListController */
+"Radio Services" = "Radio Services";
+
+/* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
+"Really add all items in this folder?" = "Ajoutez vraiment tous les choix dans ce dossier ?";
+
+/* No comment provided by engineer. */
 "Reboot" = "Redémarrer";
+
+/* No comment provided by engineer. */
+"Receiver model" = "Model du récepteur";
+
+/* No comment provided by engineer. */
 "Record" = "Enregistrement";
-"Remote Box Type" = "Type de démodulateur:";
+
+/* Title of MovieSplitViewController */
+"Recordings" = "Enregistrements";
+
+/* Release to refresh status */
+"Release to refresh..." = "Relachez pour mettre à jour";
+
+/* No comment provided by engineer. */
+"Remote Box Type" = "Type de récepteur:";
+
+/* Title of RCEmulatorController */
 "Remote Control" = "Télécommande";
-"Remote Control Explain" = "Télécommande virtuelle";
-"Remote Control Title" = "Télécommande";
+
+/* No comment provided by engineer. */
 "Remote Host" = "Informations serveur:";
+
+/* No comment provided by engineer. */
+"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Hôte inaccessible!\nVérifiez s'il vous plaît vos paramètres réseau ou entrez un autre hôte.";
+
+/* No comment provided by engineer. */
+"Remote host unreachable." = "Hôte inaccessible.";
+
+/* No comment provided by engineer. */
+"Removing track failed" = "Echec de suppression de la piste";
+
+/* Default title of SimpleRepeatedViewController */
 "Repeated" = "Répétition";
+
+/* No comment provided by engineer. */
 "Restart" = "Relancer IGU";
-"Running" = "En cours...";
+
+/* Timer type */
+"Running" = "En cours";
+
+/* Weekday */
 "Sat" = "Sam ";
+
+/* No comment provided by engineer. */
 "Saturday" = "Samedi";
+
+/* No comment provided by engineer. */
+"Screenshot" = "Capture";
+
+/* Default Title of EventSearchListController */
 "Search Events" = "Chercher une émission";
+
+/* No comment provided by engineer. */
 "Select Service" = "Sélectionner une chaîne";
+
+/* No comment provided by engineer. */
 "Send" = "Envoyer";
+
+/* No comment provided by engineer. */
+"Sending command failed" = "Echec d'envoi de la commande";
+
+/* No comment provided by engineer. */
 "Service" = "Chaîne";
-"Service List Explain" = "Listes de chaînes";
-"Service List Title" = "Chaînes";
-"Service:" = "Chaîne:";
+
+/* Title of ServiceListController */
 "Services" = "Chaînes";
-"Settings" = "Préférences";
-"Show EPG" = "Voir EPG";
+
+/* No comment provided by engineer. */
 "Shutdown" = "Veille profonde";
+
+/* Title of SignalViewController */
 "Signal" = "Recherche de signal";
+
+/* No comment provided by engineer. */
 "Signal Explain" = "Voir SNR/AGC actuels";
+
+/* No comment provided by engineer. */
 "Signal Title" = "Recherche de signal";
+
+/* No comment provided by engineer. */
 "Similar Events" = "Emissions similaires";
+
+/* No comment provided by engineer. */
 "Simple Remote" = "Télécommande simple";
+
+/* No comment provided by engineer. */
 "Single Bouquet" = "Bouquet simple";
+
+/* No comment provided by engineer. */
+"Size" = "Taille";
+
+/* No comment provided by engineer. */
+"SNR" = "SNR";
+
+/* No comment provided by engineer. */
 "Standby" = "Veille";
+
+/* No comment provided by engineer. */
+"Stop" = "Stop";
+
+/* Weekday */
 "Sun" = "Dim ";
+
+/* No comment provided by engineer. */
 "Sunday" = "Dimanche";
+
+/* No comment provided by engineer. */
+"SVDRP" = "SVDRP";
+
+/* No comment provided by engineer. */
+"Tags" = "Mots clés";
+
+/* No comment provided by engineer. */
 "Text" = "Texte du message:";
-"Thu" = "Jeu ";
+
+/* Weekday */
+"Thu" = "Jeu";
+
+/* No comment provided by engineer. */
 "Thursday" = "Jeudi";
+
+/* No comment provided by engineer. */
 "Timeout" = "Temps d'affichage (sec):";
+
+/* Default title of TimerViewController */
 "Timer" = "Programmation";
-"Timer List Explain" = "Ajouter et modifier les enregistrement";
-"Timer List Title" = "Enregistrements";
+
+/* Title of TimerListController */
 "Timers" = "Enregistrements";
+
+/* No comment provided by engineer. */
 "Title" = "Titre";
+
+/* No comment provided by engineer. */
 "Today" = "Aujourd'hui";
+
+/* No comment provided by engineer. */
 "Tomorrow" = "Demain";
+
+/* Weekday */
 "Tue" = "Mar ";
+
+/* No comment provided by engineer. */
 "Tuesday" = "Mardi";
+
+/* No comment provided by engineer. */
+"Tuners" = "Tuner(s)";
+
+/* TV switch button */
+"TV" = "TV";
+
+/* No comment provided by engineer. */
 "Type" = "Type de message:";
+
+/* No comment provided by engineer. */
+"Unable to connect to host.\nPlease restart the application." = "Connexion impossible.\nRedémarrez l'application s'il vous plaît.";
+
+/* No comment provided by engineer. */
+"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Inpossible de déterminer le résultat, mettez s'il vous plaît à jour votre WebInterface si vous avez l'intention d'employer cette fonctionnalité";
+
+/* No comment provided by engineer. */
+"Unable to map button to keycode!" = "Impossible d'associer les touches aux codes";
+
+/* No comment provided by engineer. */
+"Unable to start playback" = "Impossible de commencer la lecture";
+
+/* No comment provided by engineer. */
 "Use SSL" = "Utiliser SSL";
+
+/* No comment provided by engineer. */
+"Version Information" = "Information version";
+
+/* No comment provided by engineer. */
 "Vibrate in RC" = "Vibrations";
-"Volume:" = "Volume:";
+
+/* No comment provided by engineer. */
+"Video" = "Video";
+
+/* No comment provided by engineer. */
+"Volume" = "Volume";
+
+/* Timer type */
 "Waiting" = "En attente";
+
+/* Message type */
+"Warning" = "Attention";
+
+/* Weekday */
 "Wed" = "Mer ";
+
+/* No comment provided by engineer. */
 "Wednesday" = "Mercredi";
+
+/* Repeated */
 "Weekdays" = "Jours ouvrables";
-"What to do with the currently selected Service?" = "Que voulez-vous faire avec la chaîne actuellement sélectionnée?";
+
+/* No comment provided by engineer. */
+"Year" = "Année";
+
+/* Message type */
 "Yes/No" = "Oui / Non";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Hier";
+
+/* Message explaining what will happen on import */
+"You are about to import data into this application. All existing settings will be lost!" = "Vous êtes sur le point d'importer des données dans cette application. Tous les réglages existants seront perdus!";
+
+/* No comment provided by engineer. */
+"You have to enter connection details to use this application." = "Vous devez configurer votre connexion pour utiliser cette application.";
+
+/* No comment provided by engineer. */
+"You need to configure this application before you can use it." = "Vous devez configurer cette application avant de pouvoir l'utiliser.";
+
+/* No comment provided by engineer. */
 "Zap" = "Zap";
+
