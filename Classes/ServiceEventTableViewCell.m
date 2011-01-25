@@ -161,6 +161,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	}
 	else
 	{
+		self.accessoryType = UITableViewCellAccessoryNone;
 		_serviceNameLabel.text = new.title;
 		_nowLabel.text = nil;
 		_nowTimeLabel.text = nil;
