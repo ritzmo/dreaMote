@@ -332,6 +332,7 @@
 			TABLEVIEWCELL_IMAGE(sourceCell) = nil;
 			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 			TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
+			break;
 #endif
 		default:
 			break;
