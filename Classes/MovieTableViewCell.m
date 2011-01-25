@@ -93,6 +93,9 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	[_movie release];
 	_movie = [newMovie retain];
 
+	if(!newMovie.valid)
+		self.accessoryType = UITableViewCellAccessoryNone;
+
 	// Set new label contents
 	_eventNameLabel.text = newMovie.title;
 	_eventTimeLabel.text = [_formatter fuzzyDate: newMovie.time];
