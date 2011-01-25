@@ -102,6 +102,9 @@
 		[navController release];
 	}
 	self.viewControllers = newViewControllers;
+
+	// pretend to rotate, or the master might be hidden
+	[self willRotateToInterfaceOrientation:self.interfaceOrientation duration:0.0];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
