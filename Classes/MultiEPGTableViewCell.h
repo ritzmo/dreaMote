@@ -29,6 +29,14 @@ extern NSString *kMultiEPGCell_ID;
 }
 
 /*!
+ @brief Retrieve event at a given point.
+ 
+ @param point Position of touch.
+ @return Event at point or nil if invalid.
+ */
+- (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point;
+
+/*!
  @brief Servicename Label.
  */
 @property (nonatomic, retain) UILabel *serviceNameLabel;

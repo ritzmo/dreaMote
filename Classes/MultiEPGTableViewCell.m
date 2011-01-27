@@ -110,9 +110,10 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	if([new count])
 	{
 		const NSObject<EventProtocol> *event = [new objectAtIndex:0];
-		const CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
-		if(left > 0)
-			[lines addObject:[NSNumber numberWithFloat:left]];
+		CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
+		if(left < 0)
+			left = 0;
+		[lines addObject:[NSNumber numberWithFloat:left]];
 	}
 
 	for(NSObject<EventProtocol> *event in _events)
@@ -128,6 +129,27 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	[self setNeedsDisplay];
 }
 
+- (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
+{
+	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / 7200.0f;
+	const NSInteger count = [_events count] - 1;
+	NSInteger idx = 0;
+	for(NSObject<EventProtocol> *event in _events)
+	{
+		const CGFloat leftLine = kServiceWidth + [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
+		const CGFloat rightLine = (idx < count) ? kServiceWidth + [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: self.bounds.size.width;
+
+		// if x withing bounds of event, return it… ignore y for now, should not matter anyway.
+		if(point.x >= leftLine && point.x < rightLine)
+		{
+			return [[event retain] autorelease];
+		}
+		idx += 1;
+	}
+	return nil;
+}
+
+/* draw cell */
 - (void)drawRect:(CGRect)rect
 {
 	const CGRect contentRect = self.contentView.bounds;
