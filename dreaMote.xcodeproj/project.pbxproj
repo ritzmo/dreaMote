@@ -268,6 +268,7 @@
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
+		DA372DAC12F22A5200FF97C4 /* MultiEPGTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA372DAB12F22A5200FF97C4 /* MultiEPGTableView.m */; };
 		DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA42BE1312DA434200F14E3C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA42BE1112DA434100F14E3C /* OtherList.xib */; };
@@ -544,6 +545,8 @@
 		DA36F6BA0F0D2D9A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DA36F7050F0D2F0A005608CC /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
 		DA36F7060F0D2F0A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
+		DA372DAA12F22A5200FF97C4 /* MultiEPGTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGTableView.h; sourceTree = "<group>"; };
+		DA372DAB12F22A5200FF97C4 /* MultiEPGTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGTableView.m; sourceTree = "<group>"; };
 		DA3AA1D60F0D828D001B2057 /* BouquetListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetListController.h; sourceTree = "<group>"; };
 		DA3AA1D70F0D828D001B2057 /* BouquetListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetListController.m; sourceTree = "<group>"; };
 		DA426A480D86BE4400444631 /* RemoteConnectorObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnectorObject.h; sourceTree = "<group>"; };
@@ -1323,6 +1326,8 @@
 			children = (
 				DA045A7A12E0FC2500F7DB69 /* MBProgressHUD */,
 				DAC701F812D2F73300C53E37 /* EGOTableViewPullRefresh */,
+				DA372DAA12F22A5200FF97C4 /* MultiEPGTableView.h */,
+				DA372DAB12F22A5200FF97C4 /* MultiEPGTableView.m */,
 				DA2CC2890E378FCC006AE171 /* RCButton.h */,
 				DA2CC28A0E378FCC006AE171 /* RCButton.m */,
 				DAAC518D12D481A100B3B443 /* FileListView.h */,
@@ -1906,6 +1911,7 @@
 				DA4E0C2312F1907A00022A1B /* MultiEPGTableViewCell.m in Sources */,
 				DA4E0C4412F197AF00022A1B /* EPGCache.m in Sources */,
 				DA4E0D0712F1BF8F00022A1B /* MultiEPGListController.m in Sources */,
+				DA372DAC12F22A5200FF97C4 /* MultiEPGTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
