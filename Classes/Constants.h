@@ -39,6 +39,7 @@
 #define kFontName				@"Arial"
 #define kTextFieldFontSize		((IS_IPAD()) ? 22 : 18)
 #define kTextViewFontSize		((IS_IPAD()) ? 22 : 18)
+#define kMultiEPGFontSize		((IS_IPAD()) ? 16 : 10)
 
 // UITableView row heights
 #define kUISmallRowHeight		((IS_IPAD()) ? 43 : 38)
@@ -48,6 +49,7 @@
 #define kServiceCellHeight		38
 #define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
+#define kMultiEPGCellHeight		((IS_IPAD()) ? 40 : 25)
 
 // table view cell content offsets
 #define kCellLeftOffset			8
@@ -79,6 +81,7 @@
 // paths for custom configuration files
 #define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
 #define kHistoryPath @"~/Library/Preferences/com.ritzMo.dreaMote.SearchHistory.plist"
+#define kEPGCachePath @"~/Library/Preferences/com.ritzMo.dreaMote.EPGCache.sqlite"
 
 // keys in connection dict
 #define kRemoteName				@"remoteNameKey"

@@ -272,6 +272,11 @@
 		DA426A4A0D86BE4400444631 /* RemoteConnectorObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DA426A490D86BE4400444631 /* RemoteConnectorObject.m */; };
 		DA42BE1312DA434200F14E3C /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA42BE1112DA434100F14E3C /* OtherList.xib */; };
 		DA497EAD12D67E6000B26B83 /* ReloadableListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA497EAC12D67E6000B26B83 /* ReloadableListController.m */; };
+		DA4E0C2312F1907A00022A1B /* MultiEPGTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4E0C2212F1907A00022A1B /* MultiEPGTableViewCell.m */; };
+		DA4E0C4412F197AF00022A1B /* EPGCache.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4E0C4312F197AF00022A1B /* EPGCache.m */; };
+		DA4E0C4A12F19EFC00022A1B /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */; };
+		DA4E0C5F12F1A21900022A1B /* epgcache.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = DA4E0C5E12F1A21900022A1B /* epgcache.sqlite */; };
+		DA4E0D0712F1BF8F00022A1B /* MultiEPGListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4E0D0612F1BF8F00022A1B /* MultiEPGListController.m */; };
 		DA51BB010EAA344200AF9146 /* AboutDreamoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */; };
 		DA5247C20E3B33FA00B09600 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247BF0E3B33FA00B09600 /* CellTextField.m */; };
 		DA5247C30E3B33FA00B09600 /* CellTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247C10E3B33FA00B09600 /* CellTextView.m */; };
@@ -546,6 +551,14 @@
 		DA42BE1212DA434100F14E3C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/OtherList.xib"; sourceTree = "<group>"; };
 		DA497EAB12D67E6000B26B83 /* ReloadableListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReloadableListController.h; sourceTree = "<group>"; };
 		DA497EAC12D67E6000B26B83 /* ReloadableListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReloadableListController.m; sourceTree = "<group>"; };
+		DA4E0C2112F1907A00022A1B /* MultiEPGTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGTableViewCell.h; sourceTree = "<group>"; };
+		DA4E0C2212F1907A00022A1B /* MultiEPGTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGTableViewCell.m; sourceTree = "<group>"; };
+		DA4E0C4212F197AF00022A1B /* EPGCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGCache.h; sourceTree = "<group>"; };
+		DA4E0C4312F197AF00022A1B /* EPGCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGCache.m; sourceTree = "<group>"; };
+		DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		DA4E0C5E12F1A21900022A1B /* epgcache.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = epgcache.sqlite; path = Other/epgcache.sqlite; sourceTree = "<group>"; };
+		DA4E0D0512F1BF8F00022A1B /* MultiEPGListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGListController.h; sourceTree = "<group>"; };
+		DA4E0D0612F1BF8F00022A1B /* MultiEPGListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGListController.m; sourceTree = "<group>"; };
 		DA51BAFF0EAA344200AF9146 /* AboutDreamoteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutDreamoteViewController.h; sourceTree = "<group>"; };
 		DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutDreamoteViewController.m; sourceTree = "<group>"; };
 		DA5247BE0E3B33FA00B09600 /* CellTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellTextField.h; sourceTree = "<group>"; };
@@ -815,6 +828,7 @@
 				DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */,
 				DAC7023212D2FCEE00C53E37 /* QuartzCore.framework in Frameworks */,
 				DA88832912E48B3800D4B710 /* libxml2.dylib in Frameworks */,
+				DA4E0C4A12F19EFC00022A1B /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -841,6 +855,7 @@
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
 				DAAC51EC12D48F3500B3B443 /* Delegates */,
+				DA4E0C4112F1979F00022A1B /* EPGCache */,
 				DA0BF4470F0C1066004B488C /* Objects */,
 				DAF0D5470E38FF1E001F7CF1 /* ListController */,
 				DA7D23560F101F0500BB8BE7 /* SmallSockets */,
@@ -870,6 +885,7 @@
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */,
 				DA88832812E48B3800D4B710 /* libxml2.dylib */,
+				DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -917,6 +933,7 @@
 			children = (
 				DA42BE1112DA434100F14E3C /* OtherList.xib */,
 				DA0FA5750EB1D189009A1898 /* about.html */,
+				DA4E0C5E12F1A21900022A1B /* epgcache.sqlite */,
 				8D1107310486CEB800E47090 /* Info Full.plist */,
 				DA165F4112E9CA2700A6D894 /* Info Lite.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
@@ -1107,6 +1124,15 @@
 				DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		DA4E0C4112F1979F00022A1B /* EPGCache */ = {
+			isa = PBXGroup;
+			children = (
+				DA4E0C4212F197AF00022A1B /* EPGCache.h */,
+				DA4E0C4312F197AF00022A1B /* EPGCache.m */,
+			);
+			path = EPGCache;
 			sourceTree = "<group>";
 		};
 		DA6CEF8912D4D38D00F1F52D /* Images */ = {
@@ -1449,6 +1475,8 @@
 				DA27487312CFCC20000B490B /* LocationListController.m */,
 				DA5A048E0E3798BC0062F924 /* MovieListController.h */,
 				DA5A048F0E3798BC0062F924 /* MovieListController.m */,
+				DA4E0D0512F1BF8F00022A1B /* MultiEPGListController.h */,
+				DA4E0D0612F1BF8F00022A1B /* MultiEPGListController.m */,
 				DADBB9FB12CD61BC00BAF10B /* OtherListController.h */,
 				DADBB9FC12CD61BC00BAF10B /* OtherListController.m */,
 				DA12F6AB12DBA43F009FF8DD /* PlayListController.h */,
@@ -1468,8 +1496,6 @@
 		DAF0D5490E38FF70001F7CF1 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				DA7A1A2C12E1CC56004DEEB7 /* ServiceEventTableViewCell.h */,
-				DA7A1A2D12E1CC56004DEEB7 /* ServiceEventTableViewCell.m */,
 				DA5247BE0E3B33FA00B09600 /* CellTextField.h */,
 				DA5247BF0E3B33FA00B09600 /* CellTextField.m */,
 				DA5247C00E3B33FA00B09600 /* CellTextView.h */,
@@ -1480,12 +1506,16 @@
 				DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */,
 				DA27136A0D84071100C25B85 /* EventTableViewCell.h */,
 				DA27136B0D84071100C25B85 /* EventTableViewCell.m */,
+				DA7FD6D40D84296500974B1A /* MainTableViewCell.h */,
+				DA7FD6D50D84296500974B1A /* MainTableViewCell.m */,
 				DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */,
 				DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */,
 				DA5A04CF0E379C500062F924 /* MovieTableViewCell.h */,
 				DA5A04D00E379C500062F924 /* MovieTableViewCell.m */,
-				DA7FD6D40D84296500974B1A /* MainTableViewCell.h */,
-				DA7FD6D50D84296500974B1A /* MainTableViewCell.m */,
+				DA4E0C2112F1907A00022A1B /* MultiEPGTableViewCell.h */,
+				DA4E0C2212F1907A00022A1B /* MultiEPGTableViewCell.m */,
+				DA7A1A2C12E1CC56004DEEB7 /* ServiceEventTableViewCell.h */,
+				DA7A1A2D12E1CC56004DEEB7 /* ServiceEventTableViewCell.m */,
 				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
 				DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */,
 				DA7FD7640D84338600974B1A /* TimerTableViewCell.h */,
@@ -1653,6 +1683,7 @@
 				DA165F4612E9CA8400A6D894 /* Icon-72.png in Resources */,
 				DA165F4712E9CA8400A6D894 /* Icon.png in Resources */,
 				DA165F4812E9CA8400A6D894 /* Icon@2x.png in Resources */,
+				DA4E0C5F12F1A21900022A1B /* epgcache.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1872,6 +1903,9 @@
 				DA165E1C12E9C5BA00A6D894 /* NSData+Base64.m in Sources */,
 				DA16602712E9E03700A6D894 /* NSArray+ArrayFromData.m in Sources */,
 				DA16620A12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */,
+				DA4E0C2312F1907A00022A1B /* MultiEPGTableViewCell.m in Sources */,
+				DA4E0C4412F197AF00022A1B /* EPGCache.m in Sources */,
+				DA4E0D0712F1BF8F00022A1B /* MultiEPGListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
