@@ -285,11 +285,10 @@ static EPGCache *_sharedInstance = nil;
 
 	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
 	{
-		const char *stmt = "SELECT * FROM events WHERE begin >= ? AND begin <= ?;";
+		const char *stmt = "SELECT * FROM events WHERE end >= ? AND begin <= ?;";
 		sqlite3_stmt *compiledStatement = NULL;
 		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 		{
-			NSLog(@"SELECT * FROM events WHERE begin >= %.2f AND begin <= %.2f", [begin timeIntervalSince1970], [end timeIntervalSince1970]);
 			sqlite3_bind_int64(compiledStatement, 1, [begin timeIntervalSince1970]);
 			sqlite3_bind_int64(compiledStatement, 2, [end timeIntervalSince1970]);
 			while(sqlite3_step(compiledStatement) == SQLITE_ROW)
