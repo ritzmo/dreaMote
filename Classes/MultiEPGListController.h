@@ -12,6 +12,7 @@
 
 #import "EPGCache.h"
 #import "EventSourceDelegate.h"
+#import "EventViewController.h"
 #import "ServiceSourceDelegate.h"
 
 // forward declare
@@ -24,10 +25,12 @@
 															ServiceSourceDelegate>
 {
 @private
-	EPGCache *_epgCache;
-	NSMutableArray *_services;
-	CXMLDocument *_serviceXMLDocument;
-	NSMutableDictionary *_events;
+	EPGCache *_epgCache; /*!< @brief EPGCache Singleton. */
+	NSMutableArray *_services; /*!< @brief List of services. */
+	CXMLDocument *_serviceXMLDocument; /*!< @brief Current Service XML-Document. */
+	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
+
+	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 }
 
 @end

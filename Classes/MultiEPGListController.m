@@ -11,7 +11,13 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
+#import "MultiEPGTableView.h"
 #import "MultiEPGTableViewCell.h"
+
+@interface MultiEPGListController()
+@property (nonatomic, retain) EventViewController *eventViewController;
+@end
+
 
 @implementation MultiEPGListController
 
@@ -30,6 +36,7 @@
 - (void)dealloc
 {
 	[_events release];
+	[_eventViewController release];
 	[_services release];
 	[_serviceXMLDocument release];
 
@@ -39,11 +46,25 @@
 /* layout */
 - (void)loadView
 {
-	[super loadView];
+	// create table view
+	_tableView = [[MultiEPGTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+
+	// setup our content view so that it auto-rotates along with the UViewController
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kMultiEPGCellHeight;
 	_tableView.sectionHeaderHeight = 0;
+
+	self.view = _tableView;
+
+	// add header view
+	_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+	_refreshHeaderView.delegate = self;
+	[self.view addSubview:_refreshHeaderView];
 }
 
 - (void)fetchData
@@ -64,6 +85,21 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	return YES;
+}
+
+- (EventViewController *)eventViewController
+{
+	if(_eventViewController == nil)
+		_eventViewController = [[EventViewController alloc] init];
+	return _eventViewController;
+}
+
+- (void)setEventViewController:(EventViewController *)new
+{
+	if(_eventViewController == new) return;
+
+	[_eventViewController release];
+	_eventViewController = [new retain];
 }
 
 #pragma mark -
@@ -145,6 +181,23 @@
 #pragma mark -
 #pragma mark UITableViewCell
 #pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+	const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
+	const CGPoint lastTouch = ((MultiEPGTableView *)_tableView).lastTouch;
+	CGPoint locationInCell;
+	locationInCell.x = lastTouch.x;
+	locationInCell.y = lastTouch.y - cellRect.origin.y;
+	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
+	EventViewController *eventViewController = self.eventViewController;
+	eventViewController.event = event;
+	eventViewController.service = cell.service;
+
+	[self.navigationController pushViewController:eventViewController animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
