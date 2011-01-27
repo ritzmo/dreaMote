@@ -132,7 +132,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
 {
 	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / 7200.0f;
-	const NSInteger count = [_events count] - 1;
+	const NSInteger count = [_lines count] - 1;
 	NSInteger idx = 0;
 	for(NSObject<EventProtocol> *event in _events)
 	{
@@ -193,12 +193,15 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	[self.contentView addSubview:_serviceNameLabel];
 
 	NSInteger idx = 0;
-	const NSInteger count = [_events count] - 1;
+	const NSInteger count = [_lines count] - 1;
 	for(NSObject<EventProtocol> *event in _events)
 	{
 		const CGFloat leftLine = [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
 		CGFloat rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
 		rightLine -= leftLine;
+		// TODO: why is this off on ipad 3.2? make sure and force this one just in case.
+		if(kServiceWidth+leftLine+rightLine > contentRect.size.width)
+			rightLine = contentRect.size.width - kServiceWidth - leftLine;
 		const CGRect frame = CGRectMake(kServiceWidth + leftLine, 0, rightLine, contentRect.size.height);
 		idx += 1;
 
