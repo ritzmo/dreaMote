@@ -20,6 +20,7 @@
 {
 	const UITouch *touch = [[event allTouches] anyObject];
 	_lastTouch = [touch locationInView: self];
+	_lastSwipe = swipeTypeNone;
 	[super touchesBegan:touches withEvent:event];
 }
 
