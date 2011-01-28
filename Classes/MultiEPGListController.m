@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "NSDateFormatter+FuzzyFormatting.h"
 
 #import "MultiEPGTableViewCell.h"
 #import "SwipeTableView.h"
@@ -57,7 +58,6 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kMultiEPGCellHeight;
-	_tableView.sectionHeaderHeight = 0;
 
 	self.view = _tableView;
 
@@ -146,9 +146,7 @@
 	[gregorian release];
 	[_events removeAllObjects];
 	[_tableView reloadData];
-	
-	self.title = [NSString stringWithFormat:@"%.2f", [_curBegin timeIntervalSince1970]];
-	self.tabBarItem.title = NSLocalizedString(@"Multi EPG", @"Default title of MultiEPGListController");
+
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
 }
@@ -280,6 +278,18 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	return [_services count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
+	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setTimeStyle:NSDateFormatterShortStyle];
+	NSString *firstString = [format fuzzyDate:_curBegin];
+	[format setDateStyle:NSDateFormatterNoStyle];
+	NSString *secondString = [format fuzzyDate:[_curBegin dateByAddingTimeInterval:60*60*2]];
+	[format release];
+	return [NSString stringWithFormat:@"%@ - %@", firstString, secondString];
 }
 
 @end
