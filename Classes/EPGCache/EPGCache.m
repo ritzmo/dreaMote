@@ -241,7 +241,8 @@ static EPGCache *_sharedInstance = nil;
 /* stop current transaction */
 - (void)stopTransaction
 {
-	NSParameterAssert(database != NULL);
+	if(database == NULL) return;
+
 	[_service release];
 	_service = nil;
 
