@@ -257,6 +257,9 @@
 	{
 		_supportsNowNext = [RemoteConnectorObject showNowNext];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#if IS_FULL()
+		_multiEPG.bouquet = nil;
+#endif
 
 		[self emptyData];
 

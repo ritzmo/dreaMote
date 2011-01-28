@@ -75,6 +75,7 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	// TODO: show progress hud
+	_reloading = YES;
 	[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
 	[pool release];
 }
@@ -101,15 +102,16 @@
 - (void)setBouquet: (NSObject<ServiceProtocol> *)new
 {
 	// Same bouquet assigned, abort
-	if(_bouquet == new) return;
+	if(_bouquet != nil && _bouquet == new) return;
 
 	// Free old bouquet, retain new one
 	[_bouquet release];
 	_bouquet = [new copy];
 
 	// Free Caches and reload data
-	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+	_reloading = YES;
 	[self emptyData];
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	self.curBegin = [NSDate date];
 
 	// NOTE: We let the ServiceList passively refresh our data, so just die hiere
@@ -159,6 +161,7 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
+	if(dataSource == nil) return;
 	[_tableView reloadData];
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -201,7 +204,8 @@
 
 - (void)finishedRefreshingCache
 {
-	// FIXME: implement
+	// TODO: hide hud which we still need to show :-)
+	_reloading = NO;
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
 }
