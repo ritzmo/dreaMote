@@ -165,6 +165,20 @@ static EPGCache *_sharedInstance = nil;
 {
 	NSObject<ServiceProtocol> *copy = [service copy];
 	[_serviceList addObject:copy];
+
+	// delete existing entries for this bouquet
+	const char *stmt = "DELETE FROM events WHERE sref = ?;";
+	sqlite3_stmt *compiledStatement = NULL;
+	if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+	{
+		sqlite3_bind_text(compiledStatement, 1, [copy.sref UTF8String], -1, SQLITE_TRANSIENT);
+		if(sqlite3_step(compiledStatement) != SQLITE_OK)
+		{
+			// TODO: do we want to handle this?
+		}
+	}
+	sqlite3_finalize(compiledStatement);
+
 	[copy release];
 }
 
@@ -254,20 +268,10 @@ static EPGCache *_sharedInstance = nil;
 		return;
 	}
 
-	// delete existing entries
-	const char *stmt = "DELETE FROM events WHERE 1;";
-	sqlite3_stmt *compiledStatement = NULL;
-	if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
-	{
-		if(sqlite3_step(compiledStatement) != SQLITE_OK)
-		{
-			// TODO: do we want to handle this?
-		}
-	}
-	sqlite3_finalize(compiledStatement);
-
 	[_delegate release];
 	_delegate = [delegate retain];
+	[_bouquet release];
+	_bouquet = [bouquet copy];
 
 	// fetch list of services, followed by epg for each service
 	[_serviceList release];
