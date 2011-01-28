@@ -120,7 +120,9 @@ static EPGCache *_sharedInstance = nil;
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
 {
+#if 0
 	// alert user
+	// NOTE: die quietly for now, since otherwise we might spam
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
 														  message:[error localizedDescription]
 														 delegate:nil
@@ -128,6 +130,7 @@ static EPGCache *_sharedInstance = nil;
 												otherButtonTitles:nil];
 	[alert show];
 	[alert release];
+#endif
 
 	if([_serviceList count])
 	{
