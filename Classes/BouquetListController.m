@@ -143,9 +143,9 @@
 {
 	// add button to navigation bar if radio mode supported
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
-		self.navigationItem.rightBarButtonItem = _radioButton;
+		self.navigationItem.leftBarButtonItem = _radioButton;
 	else
-		self.navigationItem.rightBarButtonItem = nil;
+		self.navigationItem.leftBarButtonItem = nil;
 
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)

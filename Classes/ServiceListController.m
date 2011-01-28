@@ -195,10 +195,10 @@
 		if(isSingleBouquet &&
 			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
 		{
-			self.navigationItem.rightBarButtonItem = _radioButton;
+			self.navigationItem.leftBarButtonItem = _radioButton;
 		}
 		else
-			self.navigationItem.rightBarButtonItem = nil;
+			self.navigationItem.leftBarButtonItem = nil;
 	}
 
 	/*!
