@@ -18,6 +18,10 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
 
+#if IS_FULL()
+	#import "EPGCache.h"
+#endif
+
 @interface EventListController()
 /*!
  @brief initiate zap 
@@ -130,6 +134,9 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_eventXMLDoc release];
+#if IS_FULL()
+	[[EPGCache sharedInstance] startTransaction:_service];
+#endif
 	_reloading = YES;
 	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self service: _service] retain];
 	[pool release];
@@ -157,6 +164,9 @@
 	[_events addObject: event];
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
+#if IS_FULL()
+	[[EPGCache sharedInstance] addEvent:event];
+#endif
 }
 
 #pragma mark	-
@@ -224,6 +234,9 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[_dateFormatter resetReferenceDate];
+#if IS_FULL()
+	[[EPGCache sharedInstance] stopTransaction];
+#endif
 }
 
 @end
