@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "EGORefreshTableHeaderView.h"
+#import "SwipeTableView.h"
 
 @class BaseXMLReader;
 @class CXMLDocument;
@@ -43,7 +44,7 @@
 @protected
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 	BOOL _reloading; /*!< @brief Currently reloading. */
-	UITableView *_tableView; /*!< @brief Table view. */
+	SwipeTableView *_tableView; /*!< @brief Table view. */
 }
 
 /*!
