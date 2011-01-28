@@ -11,6 +11,7 @@
 #import "ReloadableListController.h"
 #import "NowNextSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
+#import "EventViewController.h"
 #if IS_FULL()
 	#import "MultiEPGListController.h" /* MultiEPGDelegate */
 #endif

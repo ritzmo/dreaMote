@@ -12,7 +12,6 @@
 
 #import "EPGCache.h"
 #import "EventSourceDelegate.h"
-#import "EventViewController.h"
 #import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 #import "ServiceSourceDelegate.h"
 

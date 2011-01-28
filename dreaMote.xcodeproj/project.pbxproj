@@ -420,6 +420,7 @@
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
 		DADBB9FD12CD61BC00BAF10B /* OtherListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB9FC12CD61BC00BAF10B /* OtherListController.m */; };
+		DADCDC7512F2F22D00C0E7A2 /* SwipeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA372DAB12F22A5200FF97C4 /* SwipeTableView.m */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
 		DAF42A9E0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */; };
@@ -2050,6 +2051,7 @@
 				DA165F3412E9CA2700A6D894 /* NSData+Base64.m in Sources */,
 				DA16602812E9E03700A6D894 /* NSArray+ArrayFromData.m in Sources */,
 				DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */,
+				DADCDC7512F2F22D00C0E7A2 /* SwipeTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
