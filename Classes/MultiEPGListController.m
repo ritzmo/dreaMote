@@ -15,12 +15,21 @@
 #import "MultiEPGTableViewCell.h"
 
 @interface MultiEPGListController()
+/*!
+ @brief Current Begin.
+ */
 @property (nonatomic, retain) NSDate *curBegin;
+
+/*!
+ @brief Activity Indicator.
+ */
+@property (nonatomic, retain) MBProgressHUD *progressHUD;
 @end
 
 @implementation MultiEPGListController
 
 @synthesize multiEpgDelegate = _mepgDelegate;
+@synthesize progressHUD;
 
 - (id)init
 {
@@ -67,6 +76,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_serviceXMLDocument release];
 	_reloading = YES;
+	++pendingRequests;
 	_serviceXMLDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:NO];
 	[pool release];
 }
@@ -74,8 +84,17 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	// TODO: show progress hud
+	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	[self.view addSubview: progressHUD];
+	progressHUD.delegate = self;
+	[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
+	[progressHUD show:YES];
+	progressHUD.taskInProgress = YES;
+
 	_reloading = YES;
+	++pendingRequests;
 	[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
 	[pool release];
 }
@@ -114,6 +133,7 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	self.curBegin = [NSDate date];
 
+	++pendingRequests;
 	// NOTE: We let the ServiceList passively refresh our data, so just die hiere
 }
 
@@ -136,7 +156,18 @@
 	[_tableView reloadData];
 
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+	++pendingRequests;
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+}
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate
+#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[progressHUD removeFromSuperview];
+	self.progressHUD = nil;
 }
 
 #pragma mark -
@@ -145,26 +176,31 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
 {
-	// alert user
-	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
-														  message:[error localizedDescription]
-														 delegate:nil
-												cancelButtonTitle:@"OK"
-												otherButtonTitles:nil];
-	[alert show];
-	[alert release];
+	if(--pendingRequests == 0)
+	{
+		// alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+															  message:[error localizedDescription]
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
 
-	[_tableView reloadData];
-	_reloading = NO;
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+		_reloading = NO;
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	}
 }
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
-	if(dataSource == nil) return;
-	[_tableView reloadData];
-	_reloading = NO;
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	if(--pendingRequests == 0)
+	{
+		[_tableView reloadData];
+		_reloading = NO;
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	}
 }
 
 #pragma mark -
@@ -204,7 +240,9 @@
 
 - (void)finishedRefreshingCache
 {
-	// TODO: hide hud which we still need to show :-)
+	progressHUD.taskInProgress = NO;
+	[progressHUD hide:YES];
+
 	_reloading = NO;
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];

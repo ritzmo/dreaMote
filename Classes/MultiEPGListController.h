@@ -13,6 +13,7 @@
 #import "EPGCache.h"
 #import "EventSourceDelegate.h"
 #import "EventViewController.h"
+#import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 #import "ServiceSourceDelegate.h"
 
 // forward declare
@@ -29,6 +30,7 @@
 															UITableViewDataSource,
 															EPGCacheDelegate,
 															EventSourceDelegate,
+															MBProgressHUDDelegate,
 															ServiceSourceDelegate>
 {
 @private
@@ -39,6 +41,8 @@
 	CXMLDocument *_serviceXMLDocument; /*!< @brief Current Service XML-Document. */
 	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
+	MBProgressHUD *progressHUD; /*!< @brief Progress Hud. */
+	NSInteger pendingRequests; /*!< @brief Pending requests. */
 }
 
 /*!
