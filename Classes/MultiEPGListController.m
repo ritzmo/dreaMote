@@ -67,21 +67,37 @@
 	[self.view addSubview:_refreshHeaderView];
 }
 
-- (void)fetchData
+- (void)emptyData
+{
+	[_services removeAllObjects];
+	[_events removeAllObjects];
+	[_tableView reloadData];
+	[_serviceXMLDocument release];
+	_serviceXMLDocument = nil;
+}
+
+- (void)fetchServices
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_serviceXMLDocument release];
 	_reloading = YES;
-	_serviceXMLDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:nil isRadio:NO];
+	_serviceXMLDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:NO];
 	[pool release];
 }
 
+- (void)fetchData
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	// TODO: show progress hud
+	[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
+	[pool release];
+}
+
+/* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+	// reset visible area to to "now"
 	self.curBegin = [NSDate date];
-
-	[self fetchData];
-	//[_epgCache refreshBouquet:nil delegate:self isRadio:NO];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -89,11 +105,38 @@
 	return YES;
 }
 
+/* getter for bouquet property */
+- (NSObject<ServiceProtocol> *)bouquet
+{
+	return _bouquet;
+}
+
+/* setter for bouquet property */
+- (void)setBouquet: (NSObject<ServiceProtocol> *)new
+{
+	// Same bouquet assigned, abort
+	if(_bouquet == new) return;
+
+	// Free old bouquet, retain new one
+	[_bouquet release];
+	_bouquet = [new copy];
+
+	// Free Caches and reload data
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+	[self emptyData];
+	self.curBegin = [NSDate date];
+	_refreshServices = NO;
+
+	// NOTE: We let the ServiceList passively refresh our data, so just die hiere
+}
+
+/* getter of curBegin property */
 - (NSDate *)curBegin
 {
 	return _curBegin;
 }
 
+/* setter of curBegin property */
 - (void)setCurBegin:(NSDate *)now
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -111,6 +154,7 @@
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
 }
 
+/* getter of eventViewController property */
 - (EventViewController *)eventViewController
 {
 	if(_eventViewController == nil)
@@ -118,6 +162,7 @@
 	return _eventViewController;
 }
 
+/* setter of eventViewController property */
 - (void)setEventViewController:(EventViewController *)new
 {
 	if(_eventViewController == new) return;
@@ -225,11 +270,14 @@
 			locationInCell.x = lastTouch.x;
 			locationInCell.y = lastTouch.y - cellRect.origin.y;
 			NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-			EventViewController *eventViewController = self.eventViewController;
-			eventViewController.event = event;
-			eventViewController.service = cell.service;
+			if(event)
+			{
+				EventViewController *eventViewController = self.eventViewController;
+				eventViewController.event = event;
+				eventViewController.service = cell.service;
 
-			[self.navigationController pushViewController:eventViewController animated:YES];
+				[self.navigationController pushViewController:eventViewController animated:YES];
+			}
 			break;
 		}
 	}
