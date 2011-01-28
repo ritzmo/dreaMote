@@ -47,6 +47,9 @@
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterNoStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+#if IS_FULL()
+		_multiEPG = [[MultiEPGListController alloc] init];
+#endif
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -67,6 +70,9 @@
 	[_subXMLDoc release];
 	[_radioButton release];
 	[_dateFormatter release];
+#if IS_FULL()
+	[_multiEPG release];
+#endif
 
 	[super dealloc];
 }
@@ -110,6 +116,11 @@
         [self.popoverController dismissPopoverAnimated:YES];
     }
 
+#if IS_FULL()
+	// make multi epg aware of current bouquet
+	_multiEPG.bouquet = new;
+#endif
+
 	// Spawn a thread to fetch the event data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
@@ -143,6 +154,8 @@
 	// pop to root view, needed on ipad when switching to radio in bouquet list
 	[self.navigationController popToRootViewControllerAnimated: YES];
 
+	// TODO: do we need to hand this down to multi epg? (single bouquet on iphone possibly)
+
 	// Refresh services
 	if(_bouquet != nil)
 	{
@@ -165,6 +178,23 @@
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 }
 
+#if IS_FULL()
+/* show multi epg */
+- (void)openMultiEPG:(id)sender
+{
+	if([_multiEPG.view superview])
+	{
+		[_multiEPG viewWillDisappear:YES];
+		self.view = _tableView;
+	}
+	else
+	{
+		[_multiEPG viewWillAppear:YES];
+		self.view = _multiEPG.view;
+	}
+}
+#endif
+
 /* layout */
 - (void)loadView
 {
@@ -173,6 +203,12 @@
 		_radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
 	else
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
+
+#if IS_FULL()
+	UIBarButtonItem *multiEPG = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
+	self.navigationItem.rightBarButtonItem = multiEPG;
+	[multiEPG release];
+#endif
 
 	[super loadView];
 	_tableView.delegate = self;
@@ -310,6 +346,9 @@
 													otherButtonTitles:nil];
 		[alert show];
 		[alert release];
+#if IS_FULL()
+		[_multiEPG dataSourceDelegate:dataSource finishedParsingDocument:document];
+#endif
 	}
 }
 
@@ -320,6 +359,9 @@
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+#if IS_FULL()
+		[_multiEPG dataSourceDelegate:dataSource finishedParsingDocument:document];
+#endif
 	}
 }
 
@@ -334,6 +376,10 @@
 	[_mainList addObject: event];
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
+
+#if IS_FULL()
+	[_multiEPG addService:event.service];
+#endif
 }
 
 #pragma mark -
@@ -357,6 +403,10 @@
 	[_mainList addObject: service];
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
+
+#if IS_FULL()
+	[_multiEPG addService:service];
+#endif
 }
 
 #pragma mark	-

@@ -11,6 +11,9 @@
 #import "ReloadableListController.h"
 #import "NowNextSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
+#if IS_FULL()
+	#import "MultiEPGListController.h"
+#endif
 
 // Forward declarations
 @class EventListController;
@@ -45,6 +48,9 @@
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
+#if IS_FULL()
+	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
+#endif
 
 	CXMLDocument *_mainXMLDoc; /*!< Current Service/Event XML Document. */
 	CXMLDocument *_subXMLDoc; /*!< Next Event XML Document. */
