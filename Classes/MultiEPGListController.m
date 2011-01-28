@@ -13,7 +13,6 @@
 #import "NSDateFormatter+FuzzyFormatting.h"
 
 #import "MultiEPGTableViewCell.h"
-#import "SwipeTableView.h"
 
 @interface MultiEPGListController()
 @property (nonatomic, retain) NSDate *curBegin;
@@ -47,25 +46,12 @@
 /* layout */
 - (void)loadView
 {
-	// create table view
-	_tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-
-	// setup our content view so that it auto-rotates along with the UViewController
-	_tableView.autoresizesSubviews = YES;
-	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
+	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kMultiEPGCellHeight;
-
-	self.view = _tableView;
-
-	// add header view
-	_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-	_refreshHeaderView.delegate = self;
-	[self.view addSubview:_refreshHeaderView];
 }
+
 
 - (void)emptyData
 {
@@ -226,7 +212,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	const SwipeType lastSwipe = ((SwipeTableView *)_tableView).lastSwipe;
+	const SwipeType lastSwipe = _tableView.lastSwipe;
 	switch(lastSwipe)
 	{
 		case swipeTypeRight:
@@ -245,7 +231,7 @@
 		{
 			const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 			const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
-			const CGPoint lastTouch = ((SwipeTableView *)_tableView).lastTouch;
+			const CGPoint lastTouch = _tableView.lastTouch;
 			CGPoint locationInCell;
 			locationInCell.x = lastTouch.x;
 			locationInCell.y = lastTouch.y - cellRect.origin.y;
