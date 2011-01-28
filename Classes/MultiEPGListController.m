@@ -11,8 +11,8 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
-#import "MultiEPGTableView.h"
 #import "MultiEPGTableViewCell.h"
+#import "SwipeTableView.h"
 
 @interface MultiEPGListController()
 @property (nonatomic, retain) EventViewController *eventViewController;
@@ -48,7 +48,7 @@
 - (void)loadView
 {
 	// create table view
-	_tableView = [[MultiEPGTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	_tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
 	// setup our content view so that it auto-rotates along with the UViewController
@@ -190,7 +190,7 @@
 {
 	const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 	const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
-	const CGPoint lastTouch = ((MultiEPGTableView *)_tableView).lastTouch;
+	const CGPoint lastTouch = ((SwipeTableView *)_tableView).lastTouch;
 	CGPoint locationInCell;
 	locationInCell.x = lastTouch.x;
 	locationInCell.y = lastTouch.y - cellRect.origin.y;
