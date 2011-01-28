@@ -35,6 +35,7 @@
 
 - (void)dealloc
 {
+	[_curBegin release];
 	[_events release];
 	[_eventViewController release];
 	[_services release];
@@ -78,6 +79,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	NSDate *now = [NSDate date];
+	NSCalendar *gregorian = [[NSCalendar alloc]
+							 initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:now];
+	_curBegin = [[gregorian dateFromComponents:components] retain];
 	[self fetchData];
 	//[_epgCache refreshBouquet:nil delegate:self isRadio:NO];
 }
@@ -126,9 +132,8 @@
 {
 	if(![_events count])
 	{
-		NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
-		NSDate *two = [NSDate dateWithTimeIntervalSinceNow:60*60*2];
-		[_epgCache readEPGForTimeIntervalFrom:now until:two to:self];
+		NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+		[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
 	}
 	[_tableView reloadData];
 	_reloading = NO;
@@ -173,9 +178,8 @@
 - (void)finishedRefreshingCache
 {
 	// FIXME: implement
-	NSDate *now = [NSDate dateWithTimeIntervalSinceNow:0];
-	NSDate *two = [NSDate dateWithTimeIntervalSinceNow:60*60*2];
-	[_epgCache readEPGForTimeIntervalFrom:now until:two to:self];
+	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
 }
 
 #pragma mark -
@@ -208,7 +212,7 @@
 
 	NSObject<ServiceProtocol> *service = [_services objectAtIndex:indexPath.row];
 	cell.service = service;
-	cell.begin = [NSDate dateWithTimeIntervalSinceNow:0];
+	cell.begin = _curBegin;
 	cell.events = [_events valueForKey:service.sref];
 
 	return cell;
