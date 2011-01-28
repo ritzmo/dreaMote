@@ -25,6 +25,11 @@
  @brief Popover Controller.
  */
 @property (nonatomic, retain) UIPopoverController *popoverController;
+
+/*!
+ @brief Event View.
+ */
+@property (nonatomic, retain) EventViewController *eventViewController;
 @end
 
 @implementation ServiceListController
@@ -49,6 +54,7 @@
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 #if IS_FULL()
 		_multiEPG = [[MultiEPGListController alloc] init];
+		_multiEPG.multiEpgDelegate = self;
 #endif
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
@@ -66,6 +72,7 @@
 	[_mainList release];
 	[_subList release];
 	[_eventListController release];
+	[_eventViewController release];
 	[_mainXMLDoc release];
 	[_subXMLDoc release];
 	[_radioButton release];
@@ -82,6 +89,8 @@
 {
 	[_eventListController release];
 	_eventListController = nil;
+	[_eventViewController release];
+	_eventViewController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -184,11 +193,13 @@
 {
 	if([_multiEPG.view superview])
 	{
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Multi EPG", @"Multi EPG Button title");
 		[_multiEPG viewWillDisappear:YES];
 		self.view = _tableView;
 	}
 	else
 	{
+		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Service List", @"Service List (former Multi EPG) Button title");
 		[_multiEPG viewWillAppear:YES];
 		self.view = _multiEPG.view;
 	}
@@ -325,6 +336,39 @@
 	_subXMLDoc = nil;
 }
 
+/* getter of eventViewController property */
+- (EventViewController *)eventViewController
+{
+	if(_eventViewController == nil)
+		_eventViewController = [[EventViewController alloc] init];
+	return _eventViewController;
+}
+
+/* setter of eventViewController property */
+- (void)setEventViewController:(EventViewController *)new
+{
+	if(_eventViewController == new) return;
+
+	[_eventViewController release];
+	_eventViewController = [new retain];
+}
+
+#pragma mark -
+#pragma mark MultiEPGDelegate
+#pragma mark -
+#if IS_FULL()
+
+- (void)multiEPG:(MultiEPGListController *)multiEPG didSelectEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
+{
+	EventViewController *evc = self.eventViewController;
+	evc.event = event;
+	evc.service = service;
+
+	_refreshServices = NO;
+	[self.navigationController pushViewController:evc animated:YES];
+}
+
+#endif
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -

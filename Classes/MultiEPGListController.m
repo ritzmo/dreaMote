@@ -16,10 +16,11 @@
 
 @interface MultiEPGListController()
 @property (nonatomic, retain) NSDate *curBegin;
-@property (nonatomic, retain) EventViewController *eventViewController;
 @end
 
 @implementation MultiEPGListController
+
+@synthesize multiEpgDelegate = _mepgDelegate;
 
 - (id)init
 {
@@ -36,7 +37,6 @@
 {
 	[_curBegin release];
 	[_events release];
-	[_eventViewController release];
 	[_services release];
 	[_serviceXMLDocument release];
 
@@ -125,7 +125,6 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	self.curBegin = [NSDate date];
-	_refreshServices = NO;
 
 	// NOTE: We let the ServiceList passively refresh our data, so just die hiere
 }
@@ -152,23 +151,6 @@
 	self.tabBarItem.title = NSLocalizedString(@"Multi EPG", @"Default title of MultiEPGListController");
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
-}
-
-/* getter of eventViewController property */
-- (EventViewController *)eventViewController
-{
-	if(_eventViewController == nil)
-		_eventViewController = [[EventViewController alloc] init];
-	return _eventViewController;
-}
-
-/* setter of eventViewController property */
-- (void)setEventViewController:(EventViewController *)new
-{
-	if(_eventViewController == new) return;
-
-	[_eventViewController release];
-	_eventViewController = [new retain];
 }
 
 #pragma mark -
@@ -272,11 +254,7 @@
 			NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
 			if(event)
 			{
-				EventViewController *eventViewController = self.eventViewController;
-				eventViewController.event = event;
-				eventViewController.service = cell.service;
-
-				[self.navigationController pushViewController:eventViewController animated:YES];
+				[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
 			}
 			break;
 		}

@@ -17,7 +17,14 @@
 
 // forward declare
 @class CXMLDocument;
+@protocol MultiEPGDelegate;
 
+/*!
+ @brief MultiEPG Controller.
+ Provides MultiEPG including all management Code.
+
+ @todo Reconsider implementing this as a view, because this is pretty much what we use of it.
+ */
 @interface MultiEPGListController : ReloadableListController <UITableViewDelegate,
 															UITableViewDataSource,
 															EPGCacheDelegate,
@@ -26,14 +33,12 @@
 {
 @private
 	EPGCache *_epgCache; /*!< @brief EPGCache Singleton. */
+	NSObject<MultiEPGDelegate> *_mepgDelegate;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief List of services. */
 	CXMLDocument *_serviceXMLDocument; /*!< @brief Current Service XML-Document. */
 	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
-	BOOL _refreshServices; /*!< @brief Refresh services on next view? */
-
-	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 }
 
 /*!
@@ -41,4 +46,25 @@
  */
 @property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
 
+/*!
+ @brief MultiEPG Delegate.
+ */
+@property (nonatomic, retain) NSObject<MultiEPGDelegate> *multiEpgDelegate;
+
+@end
+
+
+
+/*!
+ @brief Delegate for MultiEPG List.
+ */
+@protocol MultiEPGDelegate
+/*!
+ @brief Event was selected in Multi EPG.
+
+ @param multiEPG MultiEPG the selection was made in.
+ @param event Event selected.
+ @param service Service event is on.
+ */
+- (void)multiEPG:(MultiEPGListController *)multiEPG didSelectEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service;
 @end
