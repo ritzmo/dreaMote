@@ -234,6 +234,21 @@ static EPGCache *_sharedInstance = nil;
 			database = NULL;
 			retVal = NO;
 		}
+		else if(service != nil)
+		{
+			// delete existing entries for this bouquet
+			const char *stmt = "DELETE FROM events WHERE sref = ?;";
+			sqlite3_stmt *compiledStatement = NULL;
+			if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+			{
+				sqlite3_bind_text(compiledStatement, 1, [service.sref UTF8String], -1, SQLITE_TRANSIENT);
+				if(sqlite3_step(compiledStatement) != SQLITE_OK)
+				{
+					// TODO: do we want to handle this?
+				}
+			}
+			sqlite3_finalize(compiledStatement);
+		}
 	}
 	return retVal;
 }
