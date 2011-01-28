@@ -15,9 +15,9 @@
 #import "SwipeTableView.h"
 
 @interface MultiEPGListController()
+@property (nonatomic, retain) NSDate *curBegin;
 @property (nonatomic, retain) EventViewController *eventViewController;
 @end
-
 
 @implementation MultiEPGListController
 
@@ -25,7 +25,6 @@
 {
 	if((self = [super init]))
 	{
-		self.title = NSLocalizedString(@"Multi EPG", @"Default title of MultiEPGListController");
 		_epgCache = [EPGCache sharedInstance];
 		_events = [[NSMutableDictionary alloc] init];
 		_services = [[NSMutableArray alloc] init];
@@ -79,11 +78,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	NSDate *now = [NSDate date];
-	NSCalendar *gregorian = [[NSCalendar alloc]
-							 initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:now];
-	_curBegin = [[gregorian dateFromComponents:components] retain];
+	self.curBegin = [NSDate date];
+
 	[self fetchData];
 	//[_epgCache refreshBouquet:nil delegate:self isRadio:NO];
 }
@@ -91,6 +87,28 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	return YES;
+}
+
+- (NSDate *)curBegin
+{
+	return _curBegin;
+}
+
+- (void)setCurBegin:(NSDate *)now
+{
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:now];
+	
+	[_curBegin release];
+	_curBegin = [[gregorian dateFromComponents:components] retain];
+	[gregorian release];
+	[_events removeAllObjects];
+	[_tableView reloadData];
+	
+	self.title = [NSString stringWithFormat:@"%.2f", [_curBegin timeIntervalSince1970]];
+	self.tabBarItem.title = NSLocalizedString(@"Multi EPG", @"Default title of MultiEPGListController");
+	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
 }
 
 - (EventViewController *)eventViewController
@@ -130,11 +148,6 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
-	if(![_events count])
-	{
-		NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
-		[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
-	}
 	[_tableView reloadData];
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -188,18 +201,38 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-	const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
-	const CGPoint lastTouch = ((SwipeTableView *)_tableView).lastTouch;
-	CGPoint locationInCell;
-	locationInCell.x = lastTouch.x;
-	locationInCell.y = lastTouch.y - cellRect.origin.y;
-	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-	EventViewController *eventViewController = self.eventViewController;
-	eventViewController.event = event;
-	eventViewController.service = cell.service;
+	const SwipeType lastSwipe = ((SwipeTableView *)_tableView).lastSwipe;
+	switch(lastSwipe)
+	{
+		case swipeTypeRight:
+		{
+			NSDate *twoHours = [_curBegin dateByAddingTimeInterval:-(60*60*2)];
+			self.curBegin = twoHours;
+			break;
+		}
+		case swipeTypeLeft:
+		{
+			NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+			self.curBegin = twoHours;
+			break;
+		}
+		default:
+		{
+			const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+			const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
+			const CGPoint lastTouch = ((SwipeTableView *)_tableView).lastTouch;
+			CGPoint locationInCell;
+			locationInCell.x = lastTouch.x;
+			locationInCell.y = lastTouch.y - cellRect.origin.y;
+			NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
+			EventViewController *eventViewController = self.eventViewController;
+			eventViewController.event = event;
+			eventViewController.service = cell.service;
 
-	[self.navigationController pushViewController:eventViewController animated:YES];
+			[self.navigationController pushViewController:eventViewController animated:YES];
+			break;
+		}
+	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
