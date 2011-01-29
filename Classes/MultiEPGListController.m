@@ -16,11 +16,6 @@
 
 @interface MultiEPGListController()
 /*!
- @brief Current Begin.
- */
-@property (nonatomic, retain) NSDate *curBegin;
-
-/*!
  @brief Activity Indicator.
  */
 @property (nonatomic, retain) MBProgressHUD *progressHUD;

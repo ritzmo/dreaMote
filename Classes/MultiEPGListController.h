@@ -50,6 +50,11 @@
 @property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
 
 /*!
+ @brief Current Begin.
+ */
+@property (nonatomic, retain) NSDate *curBegin;
+
+/*!
  @brief MultiEPG Delegate.
  */
 @property (nonatomic, retain) NSObject<MultiEPGDelegate> *multiEpgDelegate;

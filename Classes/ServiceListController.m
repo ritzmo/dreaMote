@@ -230,6 +230,12 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+#if IS_FULL()
+	// force reload of events
+	if([_multiEPG.view superview])
+		_multiEPG.curBegin = _multiEPG.curBegin;
+#endif
+
 	if(!IS_IPAD())
 	{
 		const BOOL isSingleBouquet =
