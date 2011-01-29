@@ -165,7 +165,7 @@
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
 #if IS_FULL()
-	[[EPGCache sharedInstance] addEvent:event];
+	[NSThread detachNewThreadSelector:@selector(addEventThreaded:) toTarget:[EPGCache sharedInstance] withObject:event];
 #endif
 }
 
