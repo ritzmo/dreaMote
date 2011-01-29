@@ -244,10 +244,10 @@
 }
 
 #pragma mark -
-#pragma mark UITableViewCell
+#pragma mark SwipeTableViewDelegate
 #pragma mark -
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	const SwipeType lastSwipe = _tableView.lastSwipe;
 	switch(lastSwipe)
@@ -264,19 +264,25 @@
 			self.curBegin = twoHours;
 			break;
 		}
-		default:
-		{
-			const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-			const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
-			const CGPoint lastTouch = _tableView.lastTouch;
-			CGPoint locationInCell;
-			locationInCell.x = lastTouch.x;
-			locationInCell.y = lastTouch.y - cellRect.origin.y;
-			NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-			[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
-			break;
-		}
+		default: break;
 	}
+}
+
+#pragma mark -
+#pragma mark UITableView
+#pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+	const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
+	const CGPoint lastTouch = _tableView.lastTouch;
+	CGPoint locationInCell;
+	locationInCell.x = lastTouch.x;
+	locationInCell.y = lastTouch.y - cellRect.origin.y;
+	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
+	[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 

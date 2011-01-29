@@ -477,6 +477,49 @@
 #endif
 }
 
+#pragma mark -
+#pragma mark SwipeTableViewDelegate
+#pragma mark -
+
+- (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSObject<ServiceProtocol> *service = nil;
+	if(_supportsNowNext)
+		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	else
+		service = [_mainList objectAtIndex: indexPath.row];
+
+	// Check for invalid service
+	if(!service || !service.valid)
+		return;
+
+	// Callback mode
+	if(_delegate != nil)
+	{
+		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
+		if(IS_IPAD())
+			[self.navigationController dismissModalViewControllerAnimated:YES];
+		else
+			[self.navigationController popToViewController: _delegate animated: YES];
+	}
+	// Handle swipe
+	else
+	{
+		NSObject<EventProtocol> *evt = nil;
+		if(tableView.lastSwipe == swipeTypeLeft)
+			evt = (NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row];
+		else
+			evt = (NSObject<EventProtocol > *)[_subList objectAtIndex: indexPath.row];
+
+		EventViewController *evc = self.eventViewController;
+		evc.event = evt;
+		evc.service = service;
+
+		_refreshServices = NO;
+		[self.navigationController pushViewController:evc animated:YES];
+	}
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
@@ -534,7 +577,6 @@
 	if(!service || !service.valid)
 		return nil;
 
-	const SwipeType lastSwipe = _tableView.lastSwipe;
 	// Callback mode
 	if(_delegate != nil)
 	{
@@ -543,22 +585,6 @@
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		else
 			[self.navigationController popToViewController: _delegate animated: YES];
-	}
-	// Check for swipe
-	else if(_supportsNowNext && (lastSwipe == swipeTypeLeft || lastSwipe == swipeTypeRight))
-	{
-		NSObject<EventProtocol> *evt = nil;
-		if(lastSwipe == swipeTypeLeft)
-			evt = (NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row];
-		else
-			evt = (NSObject<EventProtocol > *)[_subList objectAtIndex: indexPath.row];
-
-		EventViewController *evc = self.eventViewController;
-		evc.event = evt;
-		evc.service = service;
-
-		_refreshServices = NO;
-		[self.navigationController pushViewController:evc animated:YES];
 	}
 	// Load events
 	else

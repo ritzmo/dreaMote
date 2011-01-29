@@ -51,8 +51,17 @@
 				_lastSwipe = swipeTypeRight;
 			else
 				_lastSwipe = swipeTypeLeft;
+
+			if([self.delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
+			{
+				NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
+				[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
+				[super touchesEnded:nil withEvent:nil];
+				return;
+			}
 		}
 	}
+#if 0
 	// vertical swipe
 	else
 	{
@@ -64,6 +73,7 @@
 				_lastSwipe = swipeTypeUp;
 		}
 	}
+#endif
 	[super touchesEnded:touches withEvent:event];
 }
 

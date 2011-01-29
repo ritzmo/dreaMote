@@ -34,6 +34,7 @@
 													ServiceSourceDelegate,
 													NowSourceDelegate,
 													NextSourceDelegate,
+													SwipeTableViewDelegate,
 #if IS_FULL()
 													MultiEPGDelegate,
 #endif

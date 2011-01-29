@@ -30,6 +30,7 @@
 															EPGCacheDelegate,
 															EventSourceDelegate,
 															MBProgressHUDDelegate,
+															SwipeTableViewDelegate,
 															ServiceSourceDelegate>
 {
 @private
