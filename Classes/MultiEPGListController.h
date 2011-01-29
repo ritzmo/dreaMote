@@ -64,6 +64,9 @@
 @protocol MultiEPGDelegate
 /*!
  @brief Event was selected in Multi EPG.
+ A event has been selected, please note that for convenience reasons the event can be nil.
+ This can be used to open e.g. the Event List instead, thereby fetching new events if none
+ were known before.
 
  @param multiEPG MultiEPG the selection was made in.
  @param event Event selected.

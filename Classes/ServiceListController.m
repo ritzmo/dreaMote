@@ -363,12 +363,25 @@
 
 - (void)multiEPG:(MultiEPGListController *)multiEPG didSelectEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
 {
-	EventViewController *evc = self.eventViewController;
-	evc.event = event;
-	evc.service = service;
+	UIViewController *targetViewController = nil;
+	if(event)
+	{
+		self.eventViewController.event = event;
+		_eventViewController.service = service;
+
+		targetViewController = _eventViewController;
+	}
+	else
+	{
+		if(_eventListController == nil)
+			_eventListController = [[EventListController alloc] init];
+		_eventListController.service = service;
+
+		targetViewController = _eventListController;
+	}
 
 	_refreshServices = NO;
-	[self.navigationController pushViewController:evc animated:YES];
+	[self.navigationController pushViewController:targetViewController animated:YES];
 }
 
 #endif

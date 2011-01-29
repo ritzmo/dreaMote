@@ -278,10 +278,7 @@
 			locationInCell.x = lastTouch.x;
 			locationInCell.y = lastTouch.y - cellRect.origin.y;
 			NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-			if(event)
-			{
-				[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
-			}
+			[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
 			break;
 		}
 	}
