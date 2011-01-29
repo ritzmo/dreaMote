@@ -230,12 +230,6 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-#if IS_FULL()
-	// force reload of events
-	if([_multiEPG.view superview])
-		_multiEPG.curBegin = _multiEPG.curBegin;
-#endif
-
 	if(!IS_IPAD())
 	{
 		const BOOL isSingleBouquet =
@@ -275,6 +269,12 @@
 	}
 	else
 	{
+#if IS_FULL()
+		// force reload of events
+		if(!_reloading && [_multiEPG.view superview])
+			_multiEPG.curBegin = _multiEPG.curBegin;
+#endif
+
 		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 		NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
 		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
