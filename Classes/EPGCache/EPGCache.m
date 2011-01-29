@@ -292,6 +292,29 @@ static EPGCache *_sharedInstance = nil;
 	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
 }
 
+/* remove old events from cache */
+- (void)cleanCache
+{
+	sqlite3 *db = NULL;
+	[self checkDatabase];
+
+	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	{
+		const char *stmt = "DELETE FROM events WHERE end <= ?";
+		sqlite3_stmt *compiledStatement = NULL;
+		if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		{
+			// TODO: make interval configurable? previous events could be interesting.
+			NSDate *now = [NSDate date];
+			sqlite3_bind_int64(compiledStatement, 1, [now timeIntervalSince1970]);
+			sqlite3_step(compiledStatement); // ignore error
+		}
+		sqlite3_finalize(compiledStatement);
+	}
+
+	sqlite3_close(db);
+}
+
 /* read epg for given time interval */
 - (void)readEPGForTimeIntervalFrom:(NSDate *)begin until:(NSDate *)end to:(NSObject<EventSourceDelegate> *)delegate
 {

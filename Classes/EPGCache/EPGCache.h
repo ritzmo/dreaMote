@@ -43,6 +43,11 @@
 + (EPGCache *)sharedInstance;
 
 /*!
+ @brief Remove old events.
+ */
+- (void)cleanCache;
+
+/*!
  @brief Refresh a bouquet.
  
  @param bouquet Bouquet to refresh the EPG for.

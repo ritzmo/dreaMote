@@ -15,6 +15,10 @@
 
 #import "RemoteConnectorObject.h"
 
+#if IS_FULL()
+	#import "EPGCache.h"
+#endif
+
 @implementation AppDelegate
 
 @synthesize window;
@@ -166,6 +170,10 @@
 /* close app */
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+#if IS_FULL()
+	// remove past event
+	[[EPGCache sharedInstance] cleanCache];
+#endif
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
 	[RemoteConnectorObject disconnect];
@@ -184,6 +192,10 @@
 /* backgrounded */
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+#if IS_FULL()
+	// remove past event
+	[[EPGCache sharedInstance] cleanCache];
+#endif
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
 	[tabBarController viewWillDisappear:NO];
