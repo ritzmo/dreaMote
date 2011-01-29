@@ -191,25 +191,18 @@ static EPGCache *_sharedInstance = nil;
 
 - (void)addEvent:(NSObject <EventProtocol>*)event
 {
-	// just to be sure, make synchronized…
-	@synchronized(self)
-	{
-		sqlite3_bind_text(insert_stmt, 1, [event.eit UTF8String], -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int64(insert_stmt, 2, [event.begin timeIntervalSince1970]);
-		sqlite3_bind_int64(insert_stmt, 3, [event.end timeIntervalSince1970]);
-		sqlite3_bind_text(insert_stmt, 4, [event.title UTF8String], -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(insert_stmt, 5, [event.sdescription UTF8String], -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(insert_stmt, 6, [event.edescription UTF8String], -1, SQLITE_TRANSIENT);
-		if(_service != nil)
-			sqlite3_bind_text(insert_stmt, 7, [_service.sref UTF8String], -1, SQLITE_TRANSIENT);
-		else
-			sqlite3_bind_text(insert_stmt, 7, [event.service.sref UTF8String], -1, SQLITE_TRANSIENT);
+	sqlite3_reset(insert_stmt);
+	sqlite3_bind_text(insert_stmt, 1, [event.eit UTF8String], -1, SQLITE_TRANSIENT);
+	sqlite3_bind_int64(insert_stmt, 2, [event.begin timeIntervalSince1970]);
+	sqlite3_bind_int64(insert_stmt, 3, [event.end timeIntervalSince1970]);
+	sqlite3_bind_text(insert_stmt, 4, [event.title UTF8String], -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(insert_stmt, 5, [event.sdescription UTF8String], -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(insert_stmt, 6, [event.edescription UTF8String], -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(insert_stmt, 7, [_service.sref UTF8String], -1, SQLITE_TRANSIENT);
 
-		if(sqlite3_step(insert_stmt) != SQLITE_DONE)
-		{
-			// handle error
-		}
-		sqlite3_reset(insert_stmt);
+	if(sqlite3_step(insert_stmt) != SQLITE_DONE)
+	{
+		// handle error
 	}
 }
 
