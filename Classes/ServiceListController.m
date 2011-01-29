@@ -369,6 +369,8 @@
 
 - (void)multiEPG:(MultiEPGListController *)multiEPG didSelectEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
 {
+	if(!service.valid) return;
+
 	UIViewController *targetViewController = nil;
 	if(event)
 	{
