@@ -99,6 +99,15 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 {
 	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+
+	if(_getServices)
+	{
+		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		fakeObject.service = fakeService;
+		[fakeService release];
+	}
+
 	[_delegate performSelectorOnMainThread: _delegateSelector
 								withObject: fakeObject
 							 waitUntilDone: NO];

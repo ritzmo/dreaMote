@@ -446,9 +446,7 @@
 					  withRowAnimation: UITableViewRowAnimationLeft];
 
 #if IS_FULL()
-	// XXX: add invalid service?
-	if(event.valid)
-		[_multiEPG addService:event.service];
+	[_multiEPG addService:event.service];
 #endif
 }
 
