@@ -38,6 +38,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	[_service release];
 	[_events release];
 	[_begin release];
+	[_lines release];
 
 	[super dealloc];
 }
@@ -63,6 +64,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 		// no accessory
 		self.accessoryType = UITableViewCellAccessoryNone;
+		
+		_lines = [[NSMutableArray alloc] init];
 	}
 
 	return self;
@@ -106,24 +109,22 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	_events = [new retain];
 
 	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / 7200.0f;
-	NSMutableArray *lines = [[NSMutableArray alloc] init];
+	[_lines removeAllObjects];
 	if([new count])
 	{
 		const NSObject<EventProtocol> *event = [new objectAtIndex:0];
 		CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
 		if(left < 0)
 			left = 0;
-		[lines addObject:[NSNumber numberWithFloat:left]];
+		[_lines addObject:[NSNumber numberWithFloat:left]];
 	}
 
 	for(NSObject<EventProtocol> *event in _events)
 	{
 		const CGFloat right = (CGFloat)[event.end timeIntervalSinceDate:_begin];
 		if(kServiceWidth + right < self.bounds.size.width / widthPerSecond)
-			[lines addObject:[NSNumber numberWithFloat:right]];
+			[_lines addObject:[NSNumber numberWithFloat:right]];
 	}
-	[_lines release];
-	_lines = lines;
 
 	// Redraw
 	[self setNeedsDisplay];
