@@ -210,6 +210,7 @@ static EPGCache *_sharedInstance = nil;
 #pragma mark Externally visible
 #pragma mark -
 
+/* threadsafe wrapper of addEvent */
 - (void)addEventThreaded:(NSObject<EventProtocol> *)event
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -310,9 +311,9 @@ static EPGCache *_sharedInstance = nil;
 
 	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
 	{
-		const char *stmt = "DELETE FROM events WHERE end <= ?";
+		const char *stmt = "DELETE FROM events WHERE end <= ?;";
 		sqlite3_stmt *compiledStatement = NULL;
-		if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 		{
 			// TODO: make interval configurable? previous events could be interesting.
 			NSDate *now = [NSDate date];
