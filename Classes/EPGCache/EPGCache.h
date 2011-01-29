@@ -43,6 +43,13 @@
 + (EPGCache *)sharedInstance;
 
 /*!
+ @brief Threadsafe version of addEvent
+
+ @param event Event to add to cache.
+ */
+- (void)addEventThreaded:(NSObject<EventProtocol> *)event;
+
+/*!
  @brief Remove old events.
  */
 - (void)cleanCache;

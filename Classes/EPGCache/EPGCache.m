@@ -189,7 +189,7 @@ static EPGCache *_sharedInstance = nil;
 #pragma mark EventSourceDelegate
 #pragma mark -
 
-- (void)addEvent:(NSObject <EventProtocol>*)event
+- (void)addEvent:(NSObject<EventProtocol> *)event
 {
 	sqlite3_reset(insert_stmt);
 	sqlite3_bind_text(insert_stmt, 1, [event.eit UTF8String], -1, SQLITE_TRANSIENT);
@@ -209,6 +209,16 @@ static EPGCache *_sharedInstance = nil;
 #pragma mark -
 #pragma mark Externally visible
 #pragma mark -
+
+- (void)addEventThreaded:(NSObject<EventProtocol> *)event
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@synchronized(self)
+	{
+		[self addEvent:event];
+	}
+	[pool release];
+}
 
 /* start new transaction */
 - (BOOL)startTransaction:(NSObject<ServiceProtocol> *)service
