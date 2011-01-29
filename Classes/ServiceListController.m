@@ -511,6 +511,9 @@
 		else
 			evt = (NSObject<EventProtocol > *)[_subList objectAtIndex: indexPath.row];
 
+		// FIXME: for convenience reasons a valid service marks an event valid, also if it may
+		// be invalid, so we have to check begin here too
+		if(!evt.valid || !evt.begin) return;
 		EventViewController *evc = self.eventViewController;
 		evc.event = evt;
 		evc.service = service;
