@@ -233,11 +233,6 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-#if IS_FULL()
-	if([_multiEPG.view superview])
-		[self.navigationController setToolbarHidden:NO animated:YES];
-#endif
-
 	if(!IS_IPAD())
 	{
 		const BOOL isSingleBouquet =
@@ -296,14 +291,11 @@
 /* will disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-#if IS_FULL()
-	[self.navigationController setToolbarHidden:YES animated:YES];
-#endif
-
 	if(_refreshServices && _bouquet == nil)
 	{
 		[self emptyData];
 	}
+	[super viewWillDisappear:animated];
 }
 
 /* fetch main list */

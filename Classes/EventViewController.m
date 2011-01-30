@@ -43,6 +43,7 @@
 		_similarEvents = [[NSMutableArray array] retain];
 		_isSearch = NO;
 		_eventXMLDoc = nil;
+		self.hidesBottomBarWhenPushed = YES;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
