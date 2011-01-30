@@ -175,15 +175,13 @@
 	// Clean caches if supposed to
 	if(_refreshBouquets)
 	{
-		[_bouquets removeAllObjects];
+		[self emptyData];
 
 		if(!IS_IPAD())
 		{
 			[_serviceListController release];
 			_serviceListController = nil;
 		}
-		[_bouquetXMLDoc release];
-		_bouquetXMLDoc = nil;
 	}
 }
 
