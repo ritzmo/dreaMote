@@ -235,6 +235,11 @@
 {
 	[_dateFormatter resetReferenceDate];
 #if IS_FULL()
+	// end transaction here because there can only be a single active transaction at a time
+	// if we didn't stop now the possibility of a corrupted cache is higher, though this way
+	// we still could end up with a corrupted cache… the better way might be to add a
+	// "transaction context" on the epgcache end and manage the cache from the event parsers
+	// instead from the view.
 	[[EPGCache sharedInstance] stopTransaction];
 #endif
 }
