@@ -195,6 +195,7 @@
 	{
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Multi EPG", @"Multi EPG Button title");
 		[_multiEPG viewWillDisappear:YES];
+		[self.navigationController setToolbarHidden:YES animated:YES];
 		self.view = _tableView;
 	}
 	else
@@ -202,6 +203,8 @@
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Service List", @"Service List (former Multi EPG) Button title");
 		[_multiEPG viewWillAppear:YES];
 		self.view = _multiEPG.view;
+		[self setToolbarItems:_multiEPG.toolbarItems];
+		[self.navigationController setToolbarHidden:NO animated:YES];
 	}
 }
 #endif
@@ -230,6 +233,11 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+#if IS_FULL()
+	if([_multiEPG.view superview])
+		[self.navigationController setToolbarHidden:NO animated:YES];
+#endif
+
 	if(!IS_IPAD())
 	{
 		const BOOL isSingleBouquet =
@@ -288,6 +296,10 @@
 /* did disappear */
 - (void)viewDidDisappear:(BOOL)animated
 {
+#if IS_FULL()
+	[self.navigationController setToolbarHidden:YES animated:YES];
+#endif
+
 	if(_refreshServices && _bouquet == nil)
 	{
 		[self emptyData];

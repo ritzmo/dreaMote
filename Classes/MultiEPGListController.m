@@ -16,6 +16,11 @@
 
 @interface MultiEPGListController()
 /*!
+ @brief Setup and assign toolbar items.
+ */
+- (void)configureToolbar;
+
+/*!
  @brief Activity Indicator.
  */
 @property (nonatomic, retain) MBProgressHUD *progressHUD;
@@ -54,6 +59,8 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kMultiEPGCellHeight;
+
+	[self configureToolbar];
 }
 
 
@@ -153,6 +160,72 @@
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	++pendingRequests;
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+}
+
+/* go back two hours in time */
+- (void)backButtonPressed:(id)sender
+{
+	self.curBegin = [_curBegin dateByAddingTimeInterval:-(60*60*2)];
+}
+
+/* go forward two hours in time */
+- (void)forwardButtonPressed:(id)sender
+{
+	self.curBegin = [_curBegin dateByAddingTimeInterval:60*60*2];
+}
+
+/* go to current hour */
+- (void)nowButtonPressed:(id)sender
+{
+	self.curBegin = [NSDate date];
+}
+
+/* go to 20:00 */
+- (void)primetimeButtonPressed:(id)sender
+{
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:_curBegin];
+	[components setHour: 20];
+	self.curBegin = [gregorian dateFromComponents:components];
+	[gregorian release];
+}
+
+/* setup toolbar */
+- (void)configureToolbar
+{
+	// XXX: use Rewind/FFwd SystemItems for back/forward? Check HIG!
+	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"<<"
+																   style:UIBarButtonItemStyleBordered
+																  target:self
+																  action:@selector(backButtonPressed:)];
+	UIBarButtonItem *nowButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Now", @"MultiEPG change to current hour")
+																  style:UIBarButtonItemStyleBordered
+																 target:self
+																 action:@selector(nowButtonPressed:)];
+
+	// flex item used to separate the left groups items and right grouped items
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+
+	UIBarButtonItem *primetimeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Primetime", @"MultiEPG change to 20:00")
+																		style:UIBarButtonItemStyleBordered
+																	   target:self
+																	   action:@selector(primetimeButtonPressed:)];
+	UIBarButtonItem *fwdButton = [[UIBarButtonItem alloc] initWithTitle:@">>"
+																  style:UIBarButtonItemStyleBordered
+																 target:self
+																 action:@selector(forwardButtonPressed:)];
+
+	NSArray *items = [[NSArray alloc] initWithObjects:backButton, nowButton, flexItem, primetimeButton, fwdButton, nil];
+	[self setToolbarItems:items animated:NO];
+
+	[items release];
+	[fwdButton release];
+	[primetimeButton release];
+	[flexItem release];
+	[nowButton release];
+	[backButton release];
 }
 
 #pragma mark -
