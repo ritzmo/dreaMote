@@ -267,13 +267,16 @@ static EPGCache *_sharedInstance = nil;
 {
 	if(database == NULL) return;
 
-	[_service release];
-	_service = nil;
+	@synchronized(self)
+	{
+		[_service release];
+		_service = nil;
 
-	sqlite3_finalize(insert_stmt);
-	insert_stmt = NULL;
-	sqlite3_close(database);
-	database = NULL;
+		sqlite3_finalize(insert_stmt);
+		insert_stmt = NULL;
+		sqlite3_close(database);
+		database = NULL;
+	}
 }
 
 /* start refreshing a bouquet */
