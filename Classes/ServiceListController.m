@@ -293,8 +293,8 @@
 	[super viewWillAppear: animated];
 }
 
-/* did disappear */
-- (void)viewDidDisappear:(BOOL)animated
+/* will disappear */
+- (void)viewWillDisappear:(BOOL)animated
 {
 #if IS_FULL()
 	[self.navigationController setToolbarHidden:YES animated:YES];
