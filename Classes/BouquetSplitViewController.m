@@ -22,9 +22,10 @@
 
 - (void)dealloc
 {
-    [super dealloc];
 	[_bouquetListController release];
 	[_serviceListController release];
+
+	[super dealloc];
 }
 
 #pragma mark -
@@ -65,6 +66,12 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+- (void)setShowsMasterInLandscape:(BOOL)flag
+{
+	_bouquetListController.willReappear = YES;
+	[super setShowsMasterInLandscape:flag];
 }
 
 @end

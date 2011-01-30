@@ -164,9 +164,13 @@
 		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
-	_refreshBouquets = YES;
-
 	[super viewWillAppear: animated];
+}
+
+/* did appear */
+- (void)viewDidAppear:(BOOL)animated
+{
+	_refreshBouquets = YES;
 }
 
 /* did hide */
