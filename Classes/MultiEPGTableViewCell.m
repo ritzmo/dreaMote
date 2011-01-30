@@ -66,6 +66,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		self.accessoryType = UITableViewCellAccessoryNone;
 		
 		_lines = [[NSMutableArray alloc] init];
+		_secondsSinceBegin = -1;
 	}
 
 	return self;
@@ -122,19 +123,17 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 }
 
 
-/* getter of now property */
-- (NSDate *)now
+/* getter of secondsSinceBegin property */
+- (NSTimeInterval)secondsSinceBegin
 {
-	return _now;
+	return _secondsSinceBegin;
 }
 
 /* setter of now property */
-- (void)setNow:(NSDate *)now
+- (void)setSecondsSinceBegin:(NSTimeInterval)secondsSinceBegin
 {
-	if(_now == now) return;
-
-	[_now release];
-	_now = [now retain];
+	if(_secondsSinceBegin == secondsSinceBegin) return;
+	_secondsSinceBegin = secondsSinceBegin;
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -178,11 +177,11 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	CGContextStrokePath(ctx);
 
 	// now
-	if(_now)
+	if(_secondsSinceBegin > -1)
 	{
-		CGContextSetRGBStrokeColor(ctx, 1.0f, 0.0f, 0.0f, 1.0f);
+		CGContextSetRGBStrokeColor(ctx, 1.0f, 0.0f, 0.0f, 0.8f);
 		CGContextSetLineWidth(ctx, 0.4f);
-		const CGFloat xPos = kServiceWidth + (CGFloat)[_now timeIntervalSinceDate:_begin] * widthPerSecond;
+		const CGFloat xPos = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
 		CGContextMoveToPoint(ctx, xPos, 0);
 		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
 		CGContextStrokePath(ctx);

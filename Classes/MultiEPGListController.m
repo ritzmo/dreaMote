@@ -43,6 +43,7 @@
 		_epgCache = [EPGCache sharedInstance];
 		_events = [[NSMutableDictionary alloc] init];
 		_services = [[NSMutableArray alloc] init];
+		_secondsSinceBegin = -1;
 	}
 	return self;
 }
@@ -53,7 +54,6 @@
 	[_events release];
 	[_services release];
 	[_serviceXMLDocument release];
-	[_now release];
 
 	[super dealloc];
 }
@@ -246,30 +246,27 @@
 /* refresh "now" timestamp */
 - (void)refreshNow
 {
-	// check if we are in visible timespan
-	_now = [[NSDate alloc] init];
-	const NSTimeInterval interval = [_now timeIntervalSinceDate:_curBegin];
-	if(interval > 0 && interval < 60*60*2)
+	// create timer
+	if(_refreshTimer == nil)
 	{
-		if(_refreshTimer == nil)
-		{
-			_refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60*5
-															 target:self
-														   selector:@selector(refreshNow)
-														   userInfo:nil
-															repeats:YES];
-		}
+		_refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60
+														 target:self
+													   selector:@selector(refreshNow)
+													   userInfo:nil
+														repeats:YES];
+	}
+
+	// check if we are in visible timespan
+	NSDate *now = [[NSDate alloc] init];
+	_secondsSinceBegin = [now timeIntervalSinceDate:_curBegin];
+	[now release];
+	if(_secondsSinceBegin > 0 && _secondsSinceBegin < 60*60*2)
+	{
 		[_tableView reloadData];
 	}
 	else
 	{
-		if(_refreshTimer)
-		{
-			[_refreshTimer invalidate];
-			_refreshTimer = nil;
-		}
-		[_now release];
-		_now = nil;
+		_secondsSinceBegin = -1;
 	}
 }
 
@@ -415,7 +412,7 @@
 	cell.service = service;
 	cell.begin = _curBegin;
 	cell.events = [_events valueForKey:service.sref];
-	cell.now = _now;
+	cell.secondsSinceBegin = _secondsSinceBegin;
 
 	return cell;
 }
