@@ -26,6 +26,7 @@ extern NSString *kMultiEPGCell_ID;
 	NSMutableArray *_lines; /*!< @brief Positions of vertical Lines. */
 	NSDate *_begin; /*!< @brief Begin of currently displayed timeframe. */
 	UILabel *_serviceNameLabel; /*!< @brief Servicename Label. */
+	NSDate *_now; /*!< @brief Currently highlighted point in time. */
 }
 
 /*!
@@ -55,5 +56,10 @@ extern NSString *kMultiEPGCell_ID;
  @brief Begin of current timeframe.
  */
 @property (nonatomic, retain) NSDate *begin;
+
+/*!
+ @brief (Almost) current time.
+ */
+@property (nonatomic, retain) NSDate *now;
 
 @end

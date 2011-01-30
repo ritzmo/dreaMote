@@ -121,6 +121,25 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	[self setNeedsDisplay];
 }
 
+
+/* getter of now property */
+- (NSDate *)now
+{
+	return _now;
+}
+
+/* setter of now property */
+- (void)setNow:(NSDate *)now
+{
+	if(_now == now) return;
+
+	[_now release];
+	_now = [now retain];
+
+	// Redraw
+	[self setNeedsDisplay];
+}
+
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
 {
 	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / 7200.0f;
@@ -157,6 +176,17 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
 	}
 	CGContextStrokePath(ctx);
+
+	// now
+	if(_now)
+	{
+		CGContextSetRGBStrokeColor(ctx, 1.0f, 0.0f, 0.0f, 1.0f);
+		CGContextSetLineWidth(ctx, 0.4f);
+		const CGFloat xPos = kServiceWidth + (CGFloat)[_now timeIntervalSinceDate:_begin] * widthPerSecond;
+		CGContextMoveToPoint(ctx, xPos, 0);
+		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
+		CGContextStrokePath(ctx);
+	}
 
 	[super drawRect:rect];
 }
