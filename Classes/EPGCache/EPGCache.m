@@ -377,7 +377,7 @@ static EPGCache *_sharedInstance = nil;
 	{
 		error = [NSError errorWithDomain:@"myDomain"
 									code:111
-								userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unable to open database.", @"") forKey:NSLocalizedDescriptionKey]];
+								userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Could not open connection to database.", @"") forKey:NSLocalizedDescriptionKey]];
 	}
 
 	// handle error/success
