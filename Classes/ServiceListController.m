@@ -34,6 +34,7 @@
 
 @implementation ServiceListController
 
+@synthesize mgSplitViewController = _mgSplitViewController;
 @synthesize popoverController;
 
 /* initialize */
@@ -77,6 +78,8 @@
 	[_subXMLDoc release];
 	[_radioButton release];
 	[_dateFormatter release];
+	[popoverController release];
+	[_mgSplitViewController release];
 #if IS_FULL()
 	[_multiEPG release];
 #endif
@@ -197,6 +200,7 @@
 		[_multiEPG viewWillDisappear:YES];
 		[self.navigationController setToolbarHidden:YES animated:YES];
 		self.view = _tableView;
+		self.mgSplitViewController.showsMasterInLandscape = YES;
 	}
 	else
 	{
@@ -205,6 +209,7 @@
 		self.view = _multiEPG.view;
 		[self setToolbarItems:_multiEPG.toolbarItems];
 		[self.navigationController setToolbarHidden:NO animated:YES];
+		self.mgSplitViewController.showsMasterInLandscape = NO;
 	}
 }
 #endif
@@ -640,7 +645,7 @@
 #pragma mark Split view support
 #pragma mark -
 
-- (void)splitViewController: (UISplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
+- (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
 	self.navigationItem.leftBarButtonItem = barButtonItem;
@@ -649,7 +654,7 @@
 
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
-- (void)splitViewController: (UISplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+- (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
 	self.navigationItem.leftBarButtonItem = nil;
 	self.popoverController = nil;

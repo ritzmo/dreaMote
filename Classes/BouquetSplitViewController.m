@@ -1,4 +1,4 @@
-    //
+//
 //  BouquetSplitViewController.m
 //  dreaMote
 //
@@ -43,6 +43,7 @@
 
 	// Make service list delegate of split view
 	self.delegate = _serviceListController;
+	_serviceListController.mgSplitViewController = self;
 
 	// Setup navigation controllers and add to split view
 	UIViewController *navController1, *navController2;
@@ -63,7 +64,6 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Overriden to allow any orientation.
     return YES;
 }
 

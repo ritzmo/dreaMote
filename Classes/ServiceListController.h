@@ -12,6 +12,7 @@
 #import "NowNextSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
 #import "EventViewController.h"
+#import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 #if IS_FULL()
 	#import "MultiEPGListController.h" /* MultiEPGDelegate */
 #endif
@@ -38,7 +39,7 @@
 #if IS_FULL()
 													MultiEPGDelegate,
 #endif
-													UISplitViewControllerDelegate>
+													MGSplitViewControllerDelegate>
 {
 @private
 	NSInteger pendingRequests; /*!< @brief Number of currently pending requests. */
@@ -54,6 +55,7 @@
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
+	MGSplitViewController *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
 #if IS_FULL()
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif
@@ -73,7 +75,6 @@
 - (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
 
-
 /*!
  @brief Bouquet.
  */
@@ -83,6 +84,11 @@
  @brief Currently in radio mode?
  */
 @property (nonatomic) BOOL isRadio;
+
+/*!
+ @brief Associated MGSplitViewController.
+ */
+@property (nonatomic, retain) MGSplitViewController *mgSplitViewController;
 
 @end
 
