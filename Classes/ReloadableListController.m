@@ -51,7 +51,7 @@
 - (void)loadGroupedTableView
 {
 	// create table view
-	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
 	// setup our content view so that it auto-rotates along with the UViewController
