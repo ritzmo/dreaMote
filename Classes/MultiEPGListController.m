@@ -21,6 +21,11 @@
 - (void)configureToolbar;
 
 /*!
+ @brief Refresh "now" timestamp and take care of timer.
+ */
+- (void)refreshNow;
+
+/*!
  @brief Activity Indicator.
  */
 @property (nonatomic, retain) MBProgressHUD *progressHUD;
@@ -48,6 +53,7 @@
 	[_events release];
 	[_services release];
 	[_serviceXMLDocument release];
+	[_now release];
 
 	[super dealloc];
 }
@@ -108,6 +114,13 @@
 	self.curBegin = [NSDate date];
 }
 
+/* about to disappear */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	[_refreshTimer invalidate];
+	_refreshTimer = nil;
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
 	return YES;
@@ -150,12 +163,14 @@
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:now];
-	
+
 	[_curBegin release];
 	_curBegin = [[gregorian dateFromComponents:components] retain];
 	[gregorian release];
 	[_events removeAllObjects];
 	[_tableView reloadData];
+
+	[self refreshNow];
 
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	++pendingRequests;
@@ -226,6 +241,36 @@
 	[flexItem release];
 	[nowButton release];
 	[backButton release];
+}
+
+/* refresh "now" timestamp */
+- (void)refreshNow
+{
+	// check if we are in visible timespan
+	_now = [[NSDate alloc] init];
+	const NSTimeInterval interval = [_now timeIntervalSinceDate:_curBegin];
+	if(interval > 0 && interval < 60*60*2)
+	{
+		if(_refreshTimer == nil)
+		{
+			_refreshTimer = [NSTimer scheduledTimerWithTimeInterval:60*5
+															 target:self
+														   selector:@selector(refreshNow)
+														   userInfo:nil
+															repeats:YES];
+		}
+		[_tableView reloadData];
+	}
+	else
+	{
+		if(_refreshTimer)
+		{
+			[_refreshTimer invalidate];
+			_refreshTimer = nil;
+		}
+		[_now release];
+		_now = nil;
+	}
 }
 
 #pragma mark -
@@ -370,6 +415,7 @@
 	cell.service = service;
 	cell.begin = _curBegin;
 	cell.events = [_events valueForKey:service.sref];
+	cell.now = _now;
 
 	return cell;
 }

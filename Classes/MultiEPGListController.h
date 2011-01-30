@@ -43,6 +43,8 @@
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
 	MBProgressHUD *progressHUD; /*!< @brief Progress Hud. */
 	NSInteger pendingRequests; /*!< @brief Pending requests. */
+	NSTimer *_refreshTimer; /*!< @brief Timer used to refresh "now". */
+	NSDate *_now; /*!< @brief Currently marked time. */
 }
 
 /*!
