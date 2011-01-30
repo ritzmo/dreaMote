@@ -168,6 +168,9 @@
 /*"Could not determine remote box type." = "Could not determine remote box type.";*/
 
 /* No comment provided by engineer. */
+/*"Could not open connection to database." = "Could not open connection to database.";*/
+
+/* No comment provided by engineer. */
 /*"Could not remove base timer (%@)!" = "Could not remove base timer (%@)!";*/
 
 /* No comment provided by engineer. */
@@ -296,6 +299,9 @@
 /* No comment provided by engineer. */
 /*"Justplay" = "Justplay";*/
 
+/* Label of Progress HUD in MultiEPG */
+/*"Loading EPG…" = "Loading EPG…";*/
+
 /* Loading Status */
 /*"Loading..." = "Loading...";*/
 
@@ -364,6 +370,9 @@
 /* Title of MovieListController */
 "Movies" = "Movies";
 
+/* Multi EPG Button title */
+/*"Multi EPG" = "Multi EPG";*/
+
 /* No comment provided by engineer. */
 /*"Mute" = "Mute";*/
 
@@ -406,7 +415,7 @@
 /* No comment provided by engineer. */
 "Nothing playing." = "Nothing playing.";
 
-/* No comment provided by engineer. */
+/* MultiEPG change to current hour */
 "Now" = "Now";
 
 /* No comment provided by engineer. */
@@ -447,6 +456,9 @@
 
 /* No comment provided by engineer. */
 /*"Previous" = "Previous";*/
+
+/* MultiEPG change to 20:00 */
+/*"Primetime" = "Primetime";*/
 
 /* Pull down to refresh status */
 /*"Pull down to refresh..." = "Pull down to refresh...";*/
@@ -531,6 +543,9 @@
 
 /* No comment provided by engineer. */
 /*"Service" = "Service";*/
+
+/* Service List (former Multi EPG) Button title */
+/*"Service List" = "Service List";*/
 
 /* Title of ServiceListController */
 "Services" = "Services";
@@ -621,6 +636,9 @@
 
 /* No comment provided by engineer. */
 /*"Type" = "Type";*/
+
+/* No comment provided by engineer. */
+/*"Unable to compile SQL-Query." = "Unable to compile SQL-Query.";*/
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Unable to connect to host.\nPlease restart the application.";

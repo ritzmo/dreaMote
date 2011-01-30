@@ -168,6 +168,9 @@
 "Could not determine remote box type." = "Konnte Receivertyp nicht autoamtisch erkennen!";
 
 /* No comment provided by engineer. */
+"Could not open connection to database." = "Verbindung zur Datenbank konnte nicht hergestellt werden.";
+
+/* No comment provided by engineer. */
 "Could not remove base timer (%@)!" = "Konnte Originaltimer nicht löschen (%@)!";
 
 /* No comment provided by engineer. */
@@ -296,6 +299,9 @@
 /* No comment provided by engineer. */
 "Justplay" = "Nur wiedergeben";
 
+/* Label of Progress HUD in MultiEPG */
+"Loading EPG…" = "Lade EPG…";
+
 /* Loading Status */
 "Loading..." = "Lade...";
 
@@ -315,7 +321,7 @@
 "Make Default" = "Zu Standard machen";
 
 /* No comment provided by engineer. */
-/*"Master" = "Master";*/
+"Master" = "Master";
 
 /* No comment provided by engineer. */
 "Media Player Explain" = "Medianwiedergabe auf der Dreambox";
@@ -364,6 +370,9 @@
 /* Title of MovieListController */
 "Movies" = "Aufnahmen";
 
+/* Multi EPG Button title */
+"Multi EPG" = "Multi EPG";
+
 /* No comment provided by engineer. */
 "Mute" = "Stumm";
 
@@ -406,7 +415,7 @@
 /* No comment provided by engineer. */
 "Nothing playing." = "Kein Programm.";
 
-/* No comment provided by engineer. */
+/* MultiEPG change to current hour */
 "Now" = "Jetzt";
 
 /* No comment provided by engineer. */
@@ -447,6 +456,9 @@
 
 /* No comment provided by engineer. */
 "Previous" = "Vorheriges Lied";
+
+/* MultiEPG change to 20:00 */
+"Primetime" = "Primetime";
 
 /* Pull down to refresh status */
 "Pull down to refresh..." = "Herunterziehen zum Aktualisieren...";
@@ -531,6 +543,9 @@
 
 /* No comment provided by engineer. */
 "Service" = "Sender";
+
+/* Service List (former Multi EPG) Button title */
+"Service List" = "Programmliste";
 
 /* Title of ServiceListController */
 "Services" = "Favoriten";
@@ -621,6 +636,9 @@
 
 /* No comment provided by engineer. */
 "Type" = "Typ";
+
+/* No comment provided by engineer. */
+"Unable to compile SQL-Query." = "Konnte SQL-Anfrage nicht ausführen.";
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Konnte nicht zum Server verbinden.\nBitte starten Sie die Applikation neu.";
