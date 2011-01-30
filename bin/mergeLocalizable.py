@@ -80,8 +80,12 @@ def updateLanguage(lang):
 	new.close()
 
 def main():
+	import sys
+	langs = sys.argv[1:]
+	if not langs: langs = ('de', 'en', 'fr')
+
 	generateUpdateTemplate()
-	for lang in ('de', 'en'):
+	for lang in langs:
 		print "\n\n"
 		updateLanguage(lang)
 	removeUpdateTemplate()
