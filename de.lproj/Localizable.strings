@@ -545,7 +545,7 @@
 "Service" = "Sender";
 
 /* Service List (former Multi EPG) Button title */
-"Service List" = "Programmliste";
+"Service List" = "Programme";
 
 /* Title of ServiceListController */
 "Services" = "Favoriten";
