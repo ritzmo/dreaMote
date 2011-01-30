@@ -278,9 +278,14 @@
 	else
 	{
 #if IS_FULL()
-		// force reload of events
-		if(!_reloading && [_multiEPG.view superview])
-			_multiEPG.curBegin = _multiEPG.curBegin;
+		/*!
+		 @brief force reload of events and restart of timer
+		 @note in single bouquet mode setting bouquet to nil will also trigger
+		 curBegin being reset and therefore the timer being restarted, so we "hide"
+		 this here for convenience reasons.
+		 */
+		if([_multiEPG.view superview])
+			[_multiEPG viewWillAppear:animated];
 #endif
 
 		// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
@@ -296,6 +301,10 @@
 /* will disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
+#if IS_FULL()
+	if([_multiEPG.view superview])
+		[_multiEPG viewWillDisappear:animated];
+#endif
 	if(_refreshServices && _bouquet == nil)
 	{
 		[self emptyData];
