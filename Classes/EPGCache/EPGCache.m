@@ -191,6 +191,8 @@ static EPGCache *_sharedInstance = nil;
 
 - (void)addEvent:(NSObject<EventProtocol> *)event
 {
+	if(insert_stmt == NULL) return;
+
 	sqlite3_reset(insert_stmt);
 	sqlite3_bind_text(insert_stmt, 1, [event.eit UTF8String], -1, SQLITE_TRANSIENT);
 	sqlite3_bind_int64(insert_stmt, 2, [event.begin timeIntervalSince1970]);
@@ -335,7 +337,7 @@ static EPGCache *_sharedInstance = nil;
 
 	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
 	{
-		const char *stmt = "SELECT * FROM events WHERE end >= ? AND begin <= ?;";
+		const char *stmt = "SELECT * FROM events WHERE end >= ? AND begin <= ? ORDER BY begin ASC;";
 		sqlite3_stmt *compiledStatement = NULL;
 		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 		{
