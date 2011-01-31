@@ -110,15 +110,30 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	// reset visible area to to "now"
-	self.curBegin = [NSDate date];
+	NSDate *newBegin = nil;
+	if(!_willReapper)
+	{
+		// reset visible area to to "now"
+		newBegin = [NSDate date];
+	}
+	else
+	{
+		// don't change visible area, but reload event data
+		newBegin = _curBegin;
+	}
+	self.curBegin = newBegin;
+
+	_willReapper = NO;
 }
 
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[_refreshTimer invalidate];
-	_refreshTimer = nil;
+	if(!_willReapper)
+	{
+		[_refreshTimer invalidate];
+		_refreshTimer = nil;
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -175,6 +190,18 @@
 	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	++pendingRequests;
 	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+}
+
+/* getter of willReapper */
+- (BOOL)willReappear
+{
+	return _willReapper;
+}
+
+/* setter of willReapper */
+- (void)setWillReappear:(BOOL)new
+{
+	if([_events count]) _willReapper = new;
 }
 
 /* go back two hours in time */

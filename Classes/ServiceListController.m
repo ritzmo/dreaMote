@@ -197,6 +197,7 @@
 	if([_multiEPG.view superview])
 	{
 		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Multi EPG", @"Multi EPG Button title");
+		_multiEPG.willReappear = NO;
 		[_multiEPG viewWillDisappear:YES];
 		[self.navigationController setToolbarHidden:YES animated:YES];
 		self.view = _tableView;
@@ -407,6 +408,7 @@
 	}
 
 	_refreshServices = NO;
+	multiEPG.willReappear = YES;
 	[self.navigationController pushViewController:targetViewController animated:YES];
 }
 

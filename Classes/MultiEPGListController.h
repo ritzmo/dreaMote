@@ -34,6 +34,7 @@
 															ServiceSourceDelegate>
 {
 @private
+	BOOL _willReapper; /*!< @brief Not removed from stack. */
 	EPGCache *_epgCache; /*!< @brief EPGCache Singleton. */
 	NSObject<MultiEPGDelegate> *_mepgDelegate;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
@@ -61,6 +62,11 @@
  @brief MultiEPG Delegate.
  */
 @property (nonatomic, retain) NSObject<MultiEPGDelegate> *multiEpgDelegate;
+
+/*!
+ @brief View will reapper.
+ */
+@property (nonatomic) BOOL willReappear;
 
 @end
 
