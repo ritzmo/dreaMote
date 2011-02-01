@@ -103,7 +103,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	// In this example we will never be editing, but this illustrates the appropriate pattern
 	if (!self.editing)
 	{
-		const NSInteger leftMargin = (self.imageView.image) ? (self.imageView.image.size.width + 3) : contentRect.origin.x + kLeftMargin;
+		const NSInteger leftMargin = (self.imageView.image) ? (self.imageView.frame.size.width + 3) : contentRect.origin.x + kLeftMargin;
 
 		// Place the location label.
 		const CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, contentRect.size.height - 2);
