@@ -246,6 +246,8 @@
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kServiceCell_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[ServiceTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kServiceCell_ID] autorelease];
+			sourceCell.imageView.layer.masksToBounds = YES;
+			sourceCell.imageView.layer.cornerRadius = 5.0f;
 			((ServiceTableViewCell *)sourceCell).service = _service;
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			break;
