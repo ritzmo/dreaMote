@@ -16,11 +16,13 @@
 #import "Constants.h"
 
 #import "DisplayCell.h"
+#import "ServiceTableViewCell.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 
-#import "Objects/Generic/Timer.h"
 #import "Objects/Generic/Result.h"
+#import "Objects/Generic/Service.h"
+#import "Objects/Generic/Timer.h"
 
 /*!
  @brief Private functions of TimerViewController.
@@ -77,7 +79,6 @@
 		_datePickerController = nil;
 		_afterEventViewController = nil;
 		_simpleRepeatedViewController = nil;
-		_timerServiceNameCell = nil;
 		_timerBeginCell = nil;
 		_timerEndCell = nil;
 		_repeatedCell = nil;
@@ -646,8 +647,7 @@
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.
 	_timer.service = [newService copy];
-	if(_timerServiceNameCell)
-		TABLEVIEWCELL_TEXT(_timerServiceNameCell) = _timer.service.sname;
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -824,6 +824,14 @@
 				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 			break;
 		case 3:
+			cell = [tableView dequeueReusableCellWithIdentifier:kServiceCell_ID];
+			if(cell == nil)
+				cell = [[[ServiceTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kServiceCell_ID] autorelease];
+			cell.imageView.layer.masksToBounds = YES;
+			cell.imageView.layer.cornerRadius = 5.0f;
+			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			setEditingStyle = NO;
+			break;
 		case 4:
 		case 5:
 		case 6:
@@ -896,10 +904,22 @@
 			break;
 		case 3:
 			if([self.timer.service.sname length])
-				TABLEVIEWCELL_TEXT(sourceCell) = _timer.service.sname;
+			{
+				((ServiceTableViewCell *)sourceCell).service = _timer.service;
+			}
 			else
-				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Select Service", @"");
-			_timerServiceNameCell = sourceCell;
+			{
+				GenericService *service = [[GenericService alloc] init];
+				service.sname = NSLocalizedString(@"Select Service", @"");
+				((ServiceTableViewCell *)sourceCell).service = service;
+				[service release];
+			}
+
+			if(self.editing)
+				sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			else
+				sourceCell.accessoryType = UITableViewCellAccessoryNone;
+
 			break;
 		case 4:
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.begin];
