@@ -208,7 +208,11 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 			_serviceNameLabel.frame = CGRectZero;
 		}
 		else
+		{
+			_serviceNameLabel.numberOfLines = 0;
+			_serviceNameLabel.adjustsFontSizeToFitWidth = YES;
 			_serviceNameLabel.frame = frame;
+		}
 	}
 	else
 	{
