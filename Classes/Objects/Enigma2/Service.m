@@ -77,13 +77,14 @@
 
 - (UIImage *)picon
 {
-	NSString *sref = self.sref;
-	NSRange range = [sref rangeOfString:@":" options:NSBackwardsSearch];
-	NSString *cleanName = [sref substringToIndex:range.location];
-	UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"Documents/%@.png", [cleanName stringByReplacingOccurrencesOfString:@":" withString:@"_"]]];
-	if(!image)
-		image = [UIImage imageNamed:[NSString stringWithFormat:@"Documents/%@.png", self.sname]];
-	return image;
+	UIImage *picon = nil;
+	if(IS_IPAD())
+	{
+		NSString *piconName = [[NSString alloc] initWithFormat:@"Documents/%@.png", self.sname];
+		picon = [UIImage imageNamed:piconName];
+		[piconName release];
+	}
+	return picon;
 }
 
 - (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error

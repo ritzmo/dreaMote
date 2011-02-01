@@ -82,10 +82,12 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if(newService.valid)
 	{
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		self.imageView.image = newService.picon;
 	}
 	else
 	{
 		self.accessoryType = UITableViewCellAccessoryNone;
+		self.imageView.image = nil;
 	}
 
 	// Redraw

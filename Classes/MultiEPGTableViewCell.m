@@ -14,7 +14,7 @@
  */
 NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
-#define kServiceWidth ((IS_IPAD()) ? 150 : 75)
+#define kServiceWidth ((IS_IPAD()) ? 110 : 75)
 
 /*!
  @brief Private functions of ServiceTableViewCell.
@@ -90,6 +90,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
+	self.imageView.image = newService.picon;
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -201,7 +202,13 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	if(_service.valid)
 	{
 		const CGRect frame = CGRectMake(contentRect.origin.x, 0, kServiceWidth, contentRect.size.height);
-		_serviceNameLabel.frame = frame;
+		if(self.imageView.image)
+		{
+			self.imageView.frame = frame;
+			_serviceNameLabel.frame = CGRectZero;
+		}
+		else
+			_serviceNameLabel.frame = frame;
 	}
 	else
 	{
@@ -212,6 +219,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	}
 	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	[self.contentView addSubview:_serviceNameLabel];
+	[self.contentView addSubview:self.imageView];
 
 	NSInteger idx = 0;
 	const NSInteger count = [_lines count] - 1;

@@ -49,7 +49,7 @@
 #define kServiceCellHeight		38
 #define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
-#define kMultiEPGCellHeight		((IS_IPAD()) ? 40 : 25)
+#define kMultiEPGCellHeight		((IS_IPAD()) ? 55 : 25)
 
 // table view cell content offsets
 #define kCellLeftOffset			8
