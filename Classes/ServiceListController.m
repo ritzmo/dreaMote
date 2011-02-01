@@ -225,9 +225,13 @@
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 
 #if IS_FULL()
-	UIBarButtonItem *multiEPG = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
-	self.navigationItem.rightBarButtonItem = multiEPG;
-	[multiEPG release];
+	// hide multi epg button if there is a delegate
+	if(_delegate == nil)
+	{
+		UIBarButtonItem *multiEPG = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
+		self.navigationItem.rightBarButtonItem = multiEPG;
+		[multiEPG release];
+	}
 #endif
 
 	[super loadView];
