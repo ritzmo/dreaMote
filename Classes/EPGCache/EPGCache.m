@@ -21,7 +21,13 @@ static EPGCache *_sharedInstance = nil;
 + (EPGCache *)sharedInstance
 {
 	if(_sharedInstance == nil)
-		_sharedInstance = [[EPGCache alloc] init];
+	{
+		@synchronized(self)
+		{
+			if(_sharedInstance == nil)
+				_sharedInstance = [[EPGCache alloc] init];
+		}
+	}
 	return _sharedInstance;
 }
 
