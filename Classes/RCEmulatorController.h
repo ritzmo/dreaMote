@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ZoomingScrollView.h"
+
 /*!
  @brief Basic Emulated Remote Control.
  
@@ -20,7 +22,7 @@
 	BOOL _shouldVibrate; /*!< @brief Vibrate as response to successfully sent RC code? */
 
 	UIView *_screenView; /*!< @brief Screenshot View. */
-	UIScrollView *_scrollView; /*!< @brief Container of Screenshot View. */
+	ZoomingScrollView *_scrollView; /*!< @brief Container of Screenshot View. */
 	UIImageView *_imageView; /*!< @brief Actual Screenshot UI Item. */
 	UIBarButtonItem *_screenshotButton; /*!< @brief Button to quickly change to Screenshot View. */
 

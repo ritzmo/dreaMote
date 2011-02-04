@@ -197,7 +197,7 @@
 	_screenView = [[UIView alloc] initWithFrame: frame];
 
 	frame.origin.y = 0;
-	_scrollView = [[UIScrollView alloc] initWithFrame: frame];
+	_scrollView = [[ZoomingScrollView alloc] initWithFrame: frame];
 	_scrollView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	_scrollView.autoresizesSubviews = YES;
 	_screenView.clipsToBounds = NO;

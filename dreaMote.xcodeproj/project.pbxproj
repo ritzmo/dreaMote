@@ -357,6 +357,8 @@
 		DA6CF01712D4D38D00F1F52D /* timer.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD012D4D38D00F1F52D /* timer.png */; };
 		DA6CF01812D4D38D00F1F52D /* view-refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEFD112D4D38D00F1F52D /* view-refresh.png */; };
 		DA6CF15F12D4F04400F1F52D /* audio-volume-high.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */; };
+		DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA712A8412FCB65000675E91 /* ZoomingScrollView.m */; };
+		DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA712A8412FCB65000675E91 /* ZoomingScrollView.m */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DA7A1A2E12E1CC56004DEEB7 /* ServiceEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A1A2D12E1CC56004DEEB7 /* ServiceEventTableViewCell.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
@@ -667,6 +669,8 @@
 		DA6CEFD012D4D38D00F1F52D /* timer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = timer.png; sourceTree = "<group>"; };
 		DA6CEFD112D4D38D00F1F52D /* view-refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "view-refresh.png"; sourceTree = "<group>"; };
 		DA6CF15E12D4F04400F1F52D /* audio-volume-high.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-volume-high.png"; sourceTree = "<group>"; };
+		DA712A8312FCB65000675E91 /* ZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomingScrollView.h; sourceTree = "<group>"; };
+		DA712A8412FCB65000675E91 /* ZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZoomingScrollView.m; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
 		DA7A19DF12E1C76A004DEEB7 /* NowNextSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NowNextSourceDelegate.h; sourceTree = "<group>"; };
@@ -1333,6 +1337,8 @@
 				DA372DAB12F22A5200FF97C4 /* SwipeTableView.m */,
 				DAAC518D12D481A100B3B443 /* FileListView.h */,
 				DAAC518E12D481A100B3B443 /* FileListView.m */,
+				DA712A8312FCB65000675E91 /* ZoomingScrollView.h */,
+				DA712A8412FCB65000675E91 /* ZoomingScrollView.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1913,6 +1919,7 @@
 				DA4E0C4412F197AF00022A1B /* EPGCache.m in Sources */,
 				DA4E0D0712F1BF8F00022A1B /* MultiEPGListController.m in Sources */,
 				DA372DAC12F22A5200FF97C4 /* SwipeTableView.m in Sources */,
+				DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2052,6 +2059,7 @@
 				DA16602812E9E03700A6D894 /* NSArray+ArrayFromData.m in Sources */,
 				DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */,
 				DADCDC7512F2F22D00C0E7A2 /* SwipeTableView.m in Sources */,
+				DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
