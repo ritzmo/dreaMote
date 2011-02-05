@@ -62,6 +62,7 @@ typedef enum
 @interface SwipeTableView : UITableView
 {
 @private
+	UIEvent *_lastEvent; /*!< @brief Last event. */
 	SwipeType _lastSwipe; /*!< @brief Last swipe. */
 	CGPoint _lastTouch; /*!< @brief Last touch location. */
 }
