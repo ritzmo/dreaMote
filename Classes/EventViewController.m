@@ -135,7 +135,7 @@
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	UITableView *tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 
@@ -242,6 +242,17 @@
 {
 	[_similarEvents addObject: event];
 	[(UITableView*)self.view reloadData];
+}
+
+#pragma mark -
+#pragma mark SwipeTableViewDelegate
+#pragma mark -
+
+- (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// TODO: implement prev/next on two finger left/right swipe
+	// either use epg cache for this (-> full only, but easy to implement) or extend all
+	// possible parents (service list, multi epg, event list)
 }
 
 #pragma mark - UITableView delegates

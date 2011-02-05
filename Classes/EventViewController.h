@@ -11,6 +11,7 @@
 #import "Objects/EventProtocol.h"
 #import "Objects/ServiceProtocol.h"
 #import "EventSourceDelegate.h"
+#import "SwipeTableView.h" /* SwipeTableViewDelegate */
 
 // Forward declarations...
 @class CXMLDocument;
@@ -21,7 +22,7 @@
  Display further information of an Event and offer to program a timer for this event.
  */
 @interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
-													EventSourceDelegate>
+													EventSourceDelegate, SwipeTableViewDelegate>
 {
 @private
 	NSMutableArray *_similarEvents; /*!< @brief List of similar Events. */
