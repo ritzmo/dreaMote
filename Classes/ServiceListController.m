@@ -507,11 +507,8 @@
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSObject<ServiceProtocol> *service = nil;
-	if(_supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
-	else
-		service = [_mainList objectAtIndex: indexPath.row];
+	if(!_supportsNowNext) return;
+	NSObject<ServiceProtocol> *service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;;
 
 	// Check for invalid service
 	if(!service || !service.valid)
