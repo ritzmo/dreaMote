@@ -527,7 +527,6 @@
 	else if(tableView.lastSwipe & oneFinger)
 	{
 		NSObject<EventProtocol> *evt = nil;
-		NSLog(@"%d %d", (int)tableView.lastSwipe, (int)swipeTypeLeft);
 		if(tableView.lastSwipe & swipeTypeLeft)
 			evt = (NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row];
 		else
