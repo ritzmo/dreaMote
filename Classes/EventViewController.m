@@ -247,14 +247,34 @@
 #pragma mark -
 #pragma mark SwipeTableViewDelegate
 #pragma mark -
+#if IS_FULL()
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// TODO: implement prev/next on two finger left/right swipe
-	// either use epg cache for this (-> full only, but easy to implement) or extend all
-	// possible parents (service list, multi epg, event list)
+	if(tableView.lastSwipe & twoFingers)
+	{
+		NSObject<EventProtocol> *newEvent = nil;
+		if(tableView.lastSwipe & swipeTypeLeft)
+			newEvent = [[EPGCache sharedInstance] getPreviousEvent:_event onService:_service];
+		else // if(tableView.lastSwipe & swipeTypeRight)
+			newEvent = [[EPGCache sharedInstance] getNextEvent:_event onService:_service];
+
+		if(newEvent)
+			self.event = newEvent;
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No events found", @"")
+																  message:NSLocalizedString(@"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service.", @"")
+																 delegate:nil
+														cancelButtonTitle:@"OK"
+														otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	}
 }
 
+#endif
 #pragma mark - UITableView delegates
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

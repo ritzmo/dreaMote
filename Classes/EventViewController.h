@@ -22,7 +22,10 @@
  Display further information of an Event and offer to program a timer for this event.
  */
 @interface EventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
-													EventSourceDelegate, SwipeTableViewDelegate>
+#if IS_FULL()
+													SwipeTableViewDelegate,
+#endif
+													EventSourceDelegate>
 {
 @private
 	NSMutableArray *_similarEvents; /*!< @brief List of similar Events. */
