@@ -524,10 +524,11 @@
 			[self.navigationController popToViewController: _delegate animated: YES];
 	}
 	// Handle swipe
-	else
+	else if(tableView.lastSwipe & oneFinger)
 	{
 		NSObject<EventProtocol> *evt = nil;
-		if(tableView.lastSwipe == swipeTypeLeft)
+		NSLog(@"%d %d", (int)tableView.lastSwipe, (int)swipeTypeLeft);
+		if(tableView.lastSwipe & swipeTypeLeft)
 			evt = (NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row];
 		else
 			evt = (NSObject<EventProtocol > *)[_subList objectAtIndex: indexPath.row];

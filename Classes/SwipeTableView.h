@@ -16,25 +16,38 @@ typedef enum
 	/*!
 	 @brief No swipe detected.
 	 */
-	swipeTypeNone,
+	swipeTypeNone = 0,
 	/*!
 	 @brief Left swipe detected.
 	 */
-	swipeTypeLeft,
+	swipeTypeLeft = 1,
 	/*!
 	 @brief Right swipe detected.
 	 */
-	swipeTypeRight,
+	swipeTypeRight = 2,
 #if 0
 	/*!
 	 @brief Upwards swipe detected.
 	 */
-	swipeTypeUp,
+	swipeTypeUp = 3,
 	/*!
 	 @brief Downwards swipe detected.
 	 */
-	swipeTypeDown,
+	swipeTypeDown = 4,
 #endif
+	/*!
+	 @brief Swipe was executed with just one finger.
+	 */
+	oneFinger = 8,
+	/*!
+	 @brief Swipe was executed with two fingers.
+	 */
+	twoFingers = 16,
+	/*!
+	 @brief Swipe was executed with three fingers.
+	 @note iPad only afair, should not be expected to work.
+	 */
+	threeFingers = 32,
 } SwipeType;
 
 /*!

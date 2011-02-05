@@ -42,21 +42,37 @@
 	const CGFloat xDisplacementAbs = (CGFloat)fabs(xDisplacement);
 	const CGFloat yDisplacementAbs = (CGFloat)fabs(yDisplacement);
 
+	switch([[event allTouches] count])
+	{
+		case 1:
+			_lastSwipe = oneFinger;
+			break;
+		case 2:
+			_lastSwipe = twoFingers;
+			break;
+		case 3:
+			_lastSwipe = threeFingers;
+			break;
+		default:
+			_lastSwipe = swipeTypeNone; // huh?
+			break;
+	}
+
 	// horizontal swipe
 	if(xDisplacementAbs > yDisplacementAbs)
 	{
 		if(xDisplacementAbs > SWIPE_MIN_DISPLACEMENT)
 		{
 			if(xDisplacement > 0.0)
-				_lastSwipe = swipeTypeRight;
+				_lastSwipe |= swipeTypeRight;
 			else
-				_lastSwipe = swipeTypeLeft;
+				_lastSwipe |= swipeTypeLeft;
 
 			if([self.delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
 			{
 				NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
 				[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
-				[super touchesEnded:nil withEvent:nil];
+				[super touchesEnded:nil withEvent:nil]; // prevent delegate calls
 				return;
 			}
 		}
@@ -68,9 +84,9 @@
 		if(yDisplacementAbs > SWIPE_MIN_DISPLACEMENT)
 		{
 			if(yDisplacement > 0.0)
-				_lastSwipe = swipeTypeDown;
+				_lastSwipe |= swipeTypeDown;
 			else
-				_lastSwipe = swipeTypeUp;
+				_lastSwipe |= swipeTypeUp;
 		}
 	}
 #endif

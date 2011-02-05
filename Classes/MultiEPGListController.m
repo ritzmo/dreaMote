@@ -391,7 +391,8 @@
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	const SwipeType lastSwipe = _tableView.lastSwipe;
+	// only detect left&right swipes
+	const SwipeType lastSwipe = _tableView.lastSwipe & (swipeTypeLeft | swipeTypeRight);
 	switch(lastSwipe)
 	{
 		case swipeTypeRight:
