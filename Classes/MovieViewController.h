@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #import "MovieProtocol.h"
+#import "SwipeTableView.h" /* SwipeTableViewDelegate */
+
+@class MovieListController;
 
 /*!
  @brief Movie View.
@@ -17,10 +20,14 @@
  supports it.
  */
 @interface MovieViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+#if IS_FULL()
+													SwipeTableViewDelegate,
+#endif
 													UISplitViewControllerDelegate>
 {
 @private
-	UIPopoverController *popoverController;
+	MovieListController *movieList; /*!< @brief Parent movie list. */
+	UIPopoverController *popoverController; /*!< @brief Popover controller. */
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
 	UITextView *_summaryView; /*!< @brief Summary of the movie. */
 }
@@ -40,4 +47,8 @@
  */
 @property (nonatomic, retain) NSObject<MovieProtocol> *movie;
 
+/*!
+ @brief Movie List.
+ */
+@property (nonatomic, retain) MovieListController *movieList;
 @end

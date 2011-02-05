@@ -8,9 +8,10 @@
 
 #import "MovieViewController.h"
 
+#import "Constants.h"
+#import "MovieListController.h"
 #import "RemoteConnectorObject.h"
 #import "TimerViewController.h"
-#import "Constants.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "NSString+URLEncode.h"
@@ -30,7 +31,7 @@
 
 @implementation MovieViewController
 
-@synthesize popoverController;
+@synthesize movieList, popoverController;
 
 - (id)init
 {
@@ -60,6 +61,8 @@
 
 - (void)dealloc
 {
+	[movieList release];
+	[popoverController release];
 	[_movie release];
 	[_summaryView release];
 
@@ -106,7 +109,7 @@
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	UITableView *tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.sectionFooterHeight = 1;
@@ -213,6 +216,37 @@
 	return [NSString stringWithFormat: @"%1.1f GB", floatSize];
 }
 
+#pragma mark -
+#pragma mark SwipeTableViewDelegate
+#pragma mark -
+#if IS_FULL()
+
+- (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(tableView.lastSwipe & twoFingers)
+	{
+		NSObject<MovieProtocol> *newMovie = nil;
+		if(tableView.lastSwipe & swipeTypeLeft)
+			newMovie = [movieList previousMovie];
+		else // if(tableView.lastSwipe & swipeTypeRight)
+			newMovie = [movieList nextMovie];
+
+		if(newMovie)
+			self.movie = newMovie;
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"End of list reached", @"")
+																  message:NSLocalizedString(@"You have reached either the end or the beginning of your movie list.", @"")
+																 delegate:nil
+														cancelButtonTitle:@"OK"
+														otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	}
+}
+
+#endif
 #pragma mark - UITableView delegates
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -30,7 +30,6 @@
 
 @synthesize popoverController;
 @synthesize isSplit = _isSplit;
-@synthesize movieViewController = _movieViewController;
 
 /* initialize */
 - (id)init
@@ -117,14 +116,43 @@
 	if([_movies count]) _refreshMovies = !new;
 }
 
+/* getter of movieViewController */
+- (MovieViewController *)movieViewController
+{
+	if(_movieViewController == nil)
+	{
+		@synchronized(self)
+		{
+			if(_movieViewController == nil)
+			{
+				_movieViewController = [[MovieViewController alloc] init];
+				_movieViewController.movieList = self;
+			}
+		}
+	}
+	return _movieViewController;
+}
+
+/* setter of movieViewController */
+- (void)setMovieViewController:(MovieViewController *)new
+{
+	@synchronized(self)
+	{
+		if(new == _movieViewController) return;
+
+		if(_movieViewController.movieList == self)
+			_movieViewController.movieList = nil;
+		[_movieViewController release];
+		_movieViewController = [new retain];
+		_movieViewController.movieList = self;
+	}
+}
+
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	if(!IS_IPAD())
-	{
-		[_movieViewController release];
-		_movieViewController = nil;
-	}
+	if(IS_IPHONE())
+		self.movieViewController = nil;
 
     [super didReceiveMemoryWarning];
 }
@@ -180,11 +208,8 @@
 	if(_refreshMovies)
 	{
 		[_movies removeAllObjects];
-		if(!IS_IPAD())
-		{
-			[_movieViewController release];
-			_movieViewController = nil;
-		}
+		if(IS_IPHONE())
+			self.movieViewController = nil;
 		[_movieXMLDoc release];
 		_movieXMLDoc = nil;
 	}
@@ -221,6 +246,32 @@
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[_movieXMLDoc release];
 	_movieXMLDoc = nil;
+}
+
+/* select and return next movie */
+- (NSObject<MovieProtocol> *)nextMovie
+{
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	if(indexPath.row < ([_movies count] - 1))
+	{
+		indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+		return [_movies objectAtIndex:indexPath.row];
+	}
+	return nil;
+}
+
+/* select and return previous movie */
+- (NSObject<MovieProtocol> *)previousMovie
+{
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	if(indexPath.row > 0)
+	{
+		indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+		return [_movies objectAtIndex:indexPath.row];
+	}
+	return nil;
 }
 
 #pragma mark -
@@ -278,9 +329,7 @@
 	if(!movie.valid)
 		return nil;
 
-	if(_movieViewController == nil)
-		_movieViewController = [[MovieViewController alloc] init];
-	_movieViewController.movie = movie;
+	self.movieViewController.movie = movie;
 
 	if(!_isSplit)
 	{

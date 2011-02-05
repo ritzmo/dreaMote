@@ -40,6 +40,22 @@
 }
 
 /*!
+ @brief Move movie selection to next item and return movie.
+ @note If current movie is last in list, don't move selection and return nil.
+
+ @return Newly selected movie.
+ */
+- (NSObject<MovieProtocol> *)nextMovie;
+
+/*!
+ @brief Move movie selection to previous item and return movie.
+ @note If current movie is first in list, don't move selection and return nil.
+
+ @return Newly selected movie.
+ */
+- (NSObject<MovieProtocol> *)previousMovie;
+
+/*!
  @brief Currently displayed directory
  */
 @property (nonatomic, retain) NSString *currentLocation;
@@ -52,7 +68,7 @@
 /*!
  @brief Movie View Controller
  */
-@property (nonatomic, retain) MovieViewController *movieViewController;
+@property (retain) MovieViewController *movieViewController;
 
 /*!
  @breif View will reapper.
