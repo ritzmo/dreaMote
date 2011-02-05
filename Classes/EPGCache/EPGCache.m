@@ -16,6 +16,18 @@
 
 static EPGCache *_sharedInstance = nil;
 
+@interface EPGCache()
+/*!
+ @brief Get event following or preceding the one given in parameters.
+
+ @param event Event used as base.
+ @param service Service for this search.
+ @param next return next event if YES, else preceding.
+ @return Event on this service matching search parameters.
+ */
+- (NSObject<EventProtocol> *)getEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service returnNext:(BOOL)next;
+@end
+
 @implementation EPGCache
 
 + (EPGCache *)sharedInstance
@@ -98,6 +110,47 @@ static EPGCache *_sharedInstance = nil;
 		NSString *dummyPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"epgcache.sqlite"];
 		[fileManager copyItemAtPath:dummyPath toPath:_databasePath error:nil];
 	}
+}
+
+/* search previous/next event */
+- (NSObject<EventProtocol> *)getEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service returnNext:(BOOL)next
+{
+	sqlite3 *db = NULL;
+	GenericEvent *newEvent = nil;
+	[self checkDatabase];
+
+	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	{
+		char *stmt = NULL;
+		if(next)
+			stmt = "SELECT * FROM events WHERE begin > ? AND sref = ? LIMIT 0,1;";
+		else
+			stmt = "SELECT * FROM events WHERE begin < ? AND sref = ? LIMIT 0,1;";
+
+		sqlite3_stmt *compiledStatement = NULL;
+		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		{
+			sqlite3_bind_int64(compiledStatement, 1, [event.begin timeIntervalSince1970]);
+			sqlite3_bind_text(compiledStatement, 2, [service.sref UTF8String], -1, SQLITE_TRANSIENT);
+			if(sqlite3_step(compiledStatement) == SQLITE_ROW)
+			{
+				newEvent = [[GenericEvent alloc] init];
+				newEvent.service = service;
+
+				// read event data
+				newEvent.eit = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
+				newEvent.begin = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 1)];
+				newEvent.end = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 2)];
+				newEvent.title = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 3)];
+				newEvent.sdescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 4)];
+				newEvent.edescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 5)];
+			}
+		}
+		sqlite3_finalize(compiledStatement);
+	}
+	sqlite3_close(db);
+
+	return [newEvent autorelease];
 }
 
 - (void)fetchServices
@@ -400,6 +453,16 @@ static EPGCache *_sharedInstance = nil;
 	}
 
 	sqlite3_close(db);
+}
+
+- (NSObject<EventProtocol> *)getNextEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
+{
+	return [self getEvent:event onService:service returnNext:YES];
+}
+
+- (NSObject<EventProtocol> *)getPreviousEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
+{
+	return [self getEvent:event onService:service returnNext:NO];
 }
 
 @end

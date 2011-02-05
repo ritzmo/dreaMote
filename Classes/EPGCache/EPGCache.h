@@ -73,6 +73,24 @@
 - (void)readEPGForTimeIntervalFrom:(NSDate *)begin until:(NSDate *)end to:(NSObject<EventSourceDelegate> *)delegate;
 
 /*!
+ @brief Get event following the one given in parameters.
+
+ @param event Event used as base.
+ @param service Service for this search.
+ @return Next event on this service.
+ */
+- (NSObject<EventProtocol> *)getNextEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service;
+
+/*!
+ @brief Get event preceding the one given in parameters.
+
+ @param event Event used as base.
+ @param service Service for this search.
+ @return Preceding event on this service.
+ */
+- (NSObject<EventProtocol> *)getPreviousEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service;
+
+/*!
  @brief Start new transaction.
  Can be used e.g. to refresh the cache passively from the ServiceList.
  Call this method before starting the refresh, then call addEvent: for incoming events and
