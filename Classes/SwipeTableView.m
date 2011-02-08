@@ -92,9 +92,12 @@
 			if([self.delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
 			{
 				NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
-				[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
-				[super touchesEnded:nil withEvent:nil]; // prevent delegate calls
-				return;
+				if(indexPath)
+				{
+					[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
+					[super touchesEnded:nil withEvent:nil]; // prevent delegate calls
+					return;
+				}
 			}
 		}
 	}
