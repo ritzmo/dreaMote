@@ -223,7 +223,7 @@
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(tableView.lastSwipe & twoFingers)
+	//if(tableView.lastSwipe & twoFingers)
 	{
 		NSObject<MovieProtocol> *newMovie = nil;
 		if(tableView.lastSwipe & swipeTypeLeft)
