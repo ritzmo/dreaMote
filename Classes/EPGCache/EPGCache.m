@@ -123,9 +123,9 @@ static EPGCache *_sharedInstance = nil;
 	{
 		char *stmt = NULL;
 		if(next)
-			stmt = "SELECT * FROM events WHERE begin > ? AND sref = ? LIMIT 0,1;";
+			stmt = "SELECT * FROM events WHERE begin > ? AND sref = ? ORDER BY begin ASC LIMIT 0,1;";
 		else
-			stmt = "SELECT * FROM events WHERE begin < ? AND sref = ? LIMIT 0,1;";
+			stmt = "SELECT * FROM events WHERE begin < ? AND sref = ? ORDER BY begin DESC LIMIT 0,1;";
 
 		sqlite3_stmt *compiledStatement = NULL;
 		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
