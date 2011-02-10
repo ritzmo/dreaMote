@@ -263,7 +263,7 @@
 			self.event = newEvent;
 		else
 		{
-			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No events found", @"")
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No events found", @"Title of message when trying to select next/previous event by swiping but cache did not return results.")
 																  message:NSLocalizedString(@"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service.", @"")
 																 delegate:nil
 														cancelButtonTitle:@"OK"

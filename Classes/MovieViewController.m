@@ -235,7 +235,7 @@
 			self.movie = newMovie;
 		else
 		{
-			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"End of list reached", @"")
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"End of list reached", @"Title of message when trying to select next/previous movie by swiping but end was reached.")
 																  message:NSLocalizedString(@"You have reached either the end or the beginning of your movie list.", @"")
 																 delegate:nil
 														cancelButtonTitle:@"OK"
