@@ -8,11 +8,14 @@
 
 #import "EPGCache.h"
 
+#import <unistd.h>
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
 #import "../Objects/Generic/Event.h"
 #import "../Objects/Generic/Service.h"
+
+#define kMaxRetries	10
 
 static EPGCache *_sharedInstance = nil;
 
@@ -401,37 +404,54 @@ static EPGCache *_sharedInstance = nil;
 	{
 		const char *stmt = "SELECT * FROM events WHERE end >= ? AND begin <= ? ORDER BY begin ASC;";
 		sqlite3_stmt *compiledStatement = NULL;
-		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		int rc = SQLITE_BUSY;
+		NSInteger retries = 0;
+		do
 		{
-			sqlite3_bind_int64(compiledStatement, 1, [begin timeIntervalSince1970]);
-			sqlite3_bind_int64(compiledStatement, 2, [end timeIntervalSince1970]);
-			while(sqlite3_step(compiledStatement) == SQLITE_ROW)
+			int rc = sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL);
+
+			/* database busy and still retries */
+			if(rc == SQLITE_BUSY && retries < kMaxRetries)
 			{
-				GenericEvent *event = [[GenericEvent alloc] init];
-				GenericService *service = [[GenericService alloc] init];
-				event.service = service;
-
-				// read event data
-				event.eit = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
-				event.begin = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 1)];
-				event.end = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 2)];
-				event.title = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 3)];
-				event.sdescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 4)];
-				event.edescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 5)];
-				service.sref = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 6)];
-
-				// send to delegate
-				[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
-				[service release];
-				[event release];
+				usleep(200);
+				++retries;
 			}
-		}
-		else
-		{
-			error = [NSError errorWithDomain:@"myDomain"
-										code:110
-									userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unable to compile SQL-Query.", @"") forKey:NSLocalizedDescriptionKey]];
-		}
+			/* database free */
+			else if(rc == SQLITE_OK)
+			{
+				sqlite3_bind_int64(compiledStatement, 1, [begin timeIntervalSince1970]);
+				sqlite3_bind_int64(compiledStatement, 2, [end timeIntervalSince1970]);
+				while(sqlite3_step(compiledStatement) == SQLITE_ROW)
+				{
+					GenericEvent *event = [[GenericEvent alloc] init];
+					GenericService *service = [[GenericService alloc] init];
+					event.service = service;
+
+					// read event data
+					event.eit = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
+					event.begin = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 1)];
+					event.end = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 2)];
+					event.title = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 3)];
+					event.sdescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 4)];
+					event.edescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 5)];
+					service.sref = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 6)];
+
+					// send to delegate
+					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
+					[service release];
+					[event release];
+				}
+				break; // XXX: why do I need to do this?
+			}
+			/* unhandled error or kMaxRetries hit */
+			else
+			{
+				error = [NSError errorWithDomain:@"myDomain"
+											code:110
+										userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Unable to compile SQL-Query (Error-Code %d).", @""), rc] forKey:NSLocalizedDescriptionKey]];
+				break;
+			}
+		} while(rc == SQLITE_BUSY);
 
 		sqlite3_finalize(compiledStatement);
 	}

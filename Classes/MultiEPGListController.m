@@ -26,6 +26,11 @@
 - (void)refreshNow;
 
 /*!
+ @brief Entry point for thread fetching events from database.
+ */
+- (void)readEPG;
+
+/*!
  @brief Activity Indicator.
  */
 @property (nonatomic, retain) MBProgressHUD *progressHUD;
@@ -187,9 +192,8 @@
 
 	[self refreshNow];
 
-	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
 	++pendingRequests;
-	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+	[NSThread detachNewThreadSelector:@selector(readEPG) toTarget:self withObject:nil];
 }
 
 /* getter of willReapper */
@@ -297,6 +301,17 @@
 	}
 }
 
+/* entry point for thread fetching epg entries */
+- (void)readEPG
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+
+	[pool release];
+}
+
 #pragma mark -
 #pragma mark MBProgressHUDDelegate
 #pragma mark -
@@ -381,8 +396,8 @@
 	[progressHUD hide:YES];
 
 	_reloading = NO;
-	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
-	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+
+	[NSThread detachNewThreadSelector:@selector(readEPG) toTarget:self withObject:nil];
 }
 
 #pragma mark -
