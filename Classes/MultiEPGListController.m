@@ -103,6 +103,7 @@
 	[self.view addSubview: progressHUD];
 	progressHUD.delegate = self;
 	[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
+	[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
 	[progressHUD show:YES];
 	progressHUD.taskInProgress = YES;
 
