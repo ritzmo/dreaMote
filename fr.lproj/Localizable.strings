@@ -34,6 +34,9 @@
 /* No hostname entered in ConfigView. */
 "A connection needs at least a hostname." = "La connexion a besoin d'un nom d'hôte";
 
+/* No comment provided by engineer. */
+/*"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "A search did not return any event.\nTry refreshing the cache by reloading the event list for this service.";*/
+
 /* Title of AboutDreamoteViewController */
 "About" = "A propos";
 
@@ -208,6 +211,9 @@
 
 /* No comment provided by engineer. */
 "End" = "Fin";
+
+/* Title of message when trying to select next/previous movie by swiping but end was reached. */
+/*"End of list reached" = "End of list reached";*/
 
 /* No comment provided by engineer. */
 "Enigma" = "Enigma";
@@ -399,6 +405,9 @@
 
 /* Placeholder text in Now/Next-ServiceList if no EPG data present */
 "No EPG" = "Aucun EPG";
+
+/* Title of message when trying to select next/previous event by swiping but cache did not return results. */
+/*"No events found" = "No events found";*/
 
 /* No comment provided by engineer. */
 "No similar Events" = "Pas d'émissions similaires";
@@ -598,6 +607,9 @@
 /* No comment provided by engineer. */
 "Text" = "Texte du message:";
 
+/* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
+/*"This can take a while." = "This can take a while.";*/
+
 /* Weekday */
 "Thu" = "Jeu";
 
@@ -638,7 +650,7 @@
 "Type" = "Type de message:";
 
 /* No comment provided by engineer. */
-/*"Unable to compile SQL-Query." = "Unable to compile SQL-Query.";*/
+/*"Unable to compile SQL-Query (Error-Code %d)." = "Unable to compile SQL-Query (Error-Code %d).";*/
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Connexion impossible.\nRedémarrez l'application s'il vous plaît.";
@@ -693,6 +705,9 @@
 
 /* Message explaining what will happen on import */
 "You are about to import data into this application. All existing settings will be lost!" = "Vous êtes sur le point d'importer des données dans cette application. Tous les réglages existants seront perdus!";
+
+/* No comment provided by engineer. */
+/*"You have reached either the end or the beginning of your movie list." = "You have reached either the end or the beginning of your movie list.";*/
 
 /* No comment provided by engineer. */
 "You have to enter connection details to use this application." = "Vous devez configurer votre connexion pour utiliser cette application.";

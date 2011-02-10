@@ -34,6 +34,9 @@
 /* No hostname entered in ConfigView. */
 "A connection needs at least a hostname." = "Eine Verbindung muss wenigstens eine Adresse besitzen.";
 
+/* No comment provided by engineer. */
+"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "Es konnte keine Sendung gefunden werden.\nEventuell hilft es den Cache durch neu laden der Sendungsliste zu Aktualisieren.";
+
 /* Title of AboutDreamoteViewController */
 "About" = "Über dreaMote";
 
@@ -208,6 +211,9 @@
 
 /* No comment provided by engineer. */
 "End" = "Ende";
+
+/* Title of message when trying to select next/previous movie by swiping but end was reached. */
+"End of list reached" = "Ende der Liste erreicht.";
 
 /* No comment provided by engineer. */
 "Enigma" = "Enigma";
@@ -399,6 +405,9 @@
 
 /* Placeholder text in Now/Next-ServiceList if no EPG data present */
 "No EPG" = "Keine Programminformationen";
+
+/* Title of message when trying to select next/previous event by swiping but cache did not return results. */
+"No events found" = "Keine Sendungen gefunden.";
 
 /* No comment provided by engineer. */
 "No similar Events" = "Keine ähnlichen Sendungen";
@@ -598,6 +607,9 @@
 /* No comment provided by engineer. */
 "Text" = "Text";
 
+/* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
+"This can take a while." = "Diese Aktion dauert einige Minuten.";
+
 /* Weekday */
 "Thu" = "Don";
 
@@ -638,7 +650,7 @@
 "Type" = "Typ";
 
 /* No comment provided by engineer. */
-"Unable to compile SQL-Query." = "Konnte SQL-Anfrage nicht ausführen.";
+"Unable to compile SQL-Query (Error-Code %d)." = "Konnte SQL-Anfrage nicht ausführen (Fehler-Code %d).";
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Konnte nicht zum Server verbinden.\nBitte starten Sie die Applikation neu.";
@@ -693,6 +705,9 @@
 
 /* Message explaining what will happen on import */
 "You are about to import data into this application. All existing settings will be lost!" = "Sie sind im Begriff die Einstellungen aus einer anderen Applikation zu übernehmen. Alle hier getätigten Einstellungen gehen dabei verloren!";
+
+/* No comment provided by engineer. */
+"You have reached either the end or the beginning of your movie list." = "Sie haben den Anfang oder das Ende der Filmliste erreicht.";
 
 /* No comment provided by engineer. */
 "You have to enter connection details to use this application." = "Sie müssen Verbindungsdaten eingeben um dreaMote zu Nutzen.";
