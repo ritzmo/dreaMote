@@ -35,7 +35,7 @@
 "A connection needs at least a hostname." = "La connexion a besoin d'un nom d'hôte";
 
 /* No comment provided by engineer. */
-/*"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "A search did not return any event.\nTry refreshing the cache by reloading the event list for this service.";*/
+"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "La recherche n'a trouvé aucun événement.\nEssayez de rafraîchir la liste d'événement pour cette chaîne.";
 
 /* Title of AboutDreamoteViewController */
 "About" = "A propos";
@@ -171,7 +171,7 @@
 "Could not determine remote box type." = "Ne peut pas déterminer le type de récepteur";
 
 /* No comment provided by engineer. */
-/*"Could not open connection to database." = "Could not open connection to database.";*/
+"Could not open connection to database." = "Ne peux pas se connecter à la base de données.";
 
 /* No comment provided by engineer. */
 "Could not remove base timer (%@)!" = "Ne peut pas retirer l'enregistrement de base (%@)!";
@@ -204,7 +204,7 @@
 "Description" = "Description";
 
 /* No comment provided by engineer. */
-"Done" = "Fait";
+"Done" = "Ok";
 
 /* No comment provided by engineer. */
 "Enabled" = "Actif";
@@ -213,7 +213,7 @@
 "End" = "Fin";
 
 /* Title of message when trying to select next/previous movie by swiping but end was reached. */
-/*"End of list reached" = "End of list reached";*/
+"End of list reached" = "Fin de la liste atteint";
 
 /* No comment provided by engineer. */
 "Enigma" = "Enigma";
@@ -306,7 +306,7 @@
 "Justplay" = "Zapping";
 
 /* Label of Progress HUD in MultiEPG */
-/*"Loading EPG…" = "Loading EPG…";*/
+"Loading EPG…" = "Chargement EPG…";
 
 /* Loading Status */
 "Loading..." = "Chargement...";
@@ -377,7 +377,7 @@
 "Movies" = "Vidéos";
 
 /* Multi EPG Button title */
-/*"Multi EPG" = "Multi EPG";*/
+"Multi EPG" = "Multi EPG";
 
 /* No comment provided by engineer. */
 "Mute" = "Muet";
@@ -407,7 +407,7 @@
 "No EPG" = "Aucun EPG";
 
 /* Title of message when trying to select next/previous event by swiping but cache did not return results. */
-/*"No events found" = "No events found";*/
+"No events found" = "Aucun événement trouvé";
 
 /* No comment provided by engineer. */
 "No similar Events" = "Pas d'émissions similaires";
@@ -467,7 +467,7 @@
 "Previous" = "Précédent";
 
 /* MultiEPG change to 20:00 */
-/*"Primetime" = "Primetime";*/
+"Primetime" = "Primetime";
 
 /* Pull down to refresh status */
 "Pull down to refresh..." = "Descendez pour mettre à jour...";
@@ -554,7 +554,7 @@
 "Service" = "Chaîne";
 
 /* Service List (former Multi EPG) Button title */
-/*"Service List" = "Service List";*/
+"Service List" = "Liste de chaînes";
 
 /* Title of ServiceListController */
 "Services" = "Chaînes";
@@ -608,7 +608,7 @@
 "Text" = "Texte du message:";
 
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
-/*"This can take a while." = "This can take a while.";*/
+"This can take a while." = "Cela peut prendre quelques minutes.";
 
 /* Weekday */
 "Thu" = "Jeu";
@@ -650,7 +650,7 @@
 "Type" = "Type de message:";
 
 /* No comment provided by engineer. */
-/*"Unable to compile SQL-Query (Error-Code %d)." = "Unable to compile SQL-Query (Error-Code %d).";*/
+"Unable to compile SQL-Query (Error-Code %d)." = "Ipossible de compiler SQL-Query (Erreur-Code %d).";
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Connexion impossible.\nRedémarrez l'application s'il vous plaît.";
@@ -707,7 +707,7 @@
 "You are about to import data into this application. All existing settings will be lost!" = "Vous êtes sur le point d'importer des données dans cette application. Tous les réglages existants seront perdus!";
 
 /* No comment provided by engineer. */
-/*"You have reached either the end or the beginning of your movie list." = "You have reached either the end or the beginning of your movie list.";*/
+"You have reached either the end or the beginning of your movie list." = "Vous avez atteint la fin ou le début de votre liste de film.";
 
 /* No comment provided by engineer. */
 "You have to enter connection details to use this application." = "Vous devez configurer votre connexion pour utiliser cette application.";
