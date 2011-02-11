@@ -21,10 +21,10 @@
 
 @interface EventViewController()
 - (UITextView *)create_Summary;
+- (UIButton *)createButtonForSelector:(SEL)selector withType:(UIButtonType)type;
 @end
 
 @interface EventViewController(IMDb)
-- (void)addIMDbButton;
 - (void)openIMDb:(id)sender;
 @end
 
@@ -198,11 +198,11 @@
 	return [_dateFormatter fuzzyDate: dateTime];
 }
 
-- (UIButton *)create_AddTimerButton
+- (UIButton *)createButtonForSelector:(SEL)selector withType:(UIButtonType)type
 {
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeContactAdd];
+	UIButton *button = [UIButton buttonWithType:type];
 	button.frame = CGRectMake(0, 0, 25, 25);
-	[button addTarget:self action:@selector(addTimer:) forControlEvents:UIControlEventTouchUpInside];
+	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 
 	return button;
 }
@@ -331,6 +331,15 @@
 		const NSUInteger count = [_similarEvents count];
 		return count ? count : 1;
 	}
+	else if(section == 5)
+	{
+		NSUInteger rows = 1;
+#if 0
+		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
+			++rows;
+#endif
+		return rows;
+	}
 
 	return 1;
 }
@@ -442,12 +451,37 @@
 			}
 			break;
 		case 5:
+		{
+			NSInteger row = indexPath.row;
 			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
 			if(sourceCell == nil)
 				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add Timer", @"");
-			((DisplayCell *)sourceCell).view = [self create_AddTimerButton];
+#if 0
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
+				++row;
+#else
+			if(row > 0)
+				++row;
+#endif
+
+			switch(row)
+			{
+				default:
+				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add Timer", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(addTimer:) withType:UIButtonTypeContactAdd];
+					break;
+				case 1:
+					// NOTE: should never happen currently… it's really time for a new bug-free imdb release :-)
+#if 0
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withType:UIButtonTypeCustom];
+#endif
+					break;
+			}
+			break;
+		}
 		default:
 			break;
 	}
@@ -489,17 +523,6 @@
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
 
 	[[UIApplication sharedApplication] openURL:url];
-}
-
-- (void)addIMDbButton
-{
-	// check if imdb (2.0) installed (and url valid)
-	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
-	{
-		UIBarButtonItem *imdbButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"IMDb", @"") style:UIBarButtonItemStylePlain target:self action:@selector(openIMDb:)];
-		self.navigationItem.rightBarButtonItem = imdbButton;
-		[imdbButton release];
-	}
 }
 
 @end
