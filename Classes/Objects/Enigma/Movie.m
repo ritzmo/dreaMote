@@ -22,6 +22,16 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 }
 
+- (NSString *)filename
+{
+	return nil;
+}
+
+- (void)setFilename:(NSString *)new
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+}
+
 - (NSNumber *)size
 {
 	return _size;

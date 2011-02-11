@@ -21,10 +21,8 @@ static const char *kEnigma2MovieLength = "e2length";
 static const NSUInteger kEnigma2MovieLengthLength = 9;
 static const char *kEnigma2MovieTags = "e2tags";
 static const NSUInteger kEnigma2MovieTagsLength = 7;
-#if 0
 static const char *kEnigma2MovieFilename = "e2filename";
 static const NSUInteger kEnigma2MovieFilenameLength = 11;
-#endif
 static const char *kEnigma2MovieFilesize = "e2filesize";
 static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 
@@ -98,9 +96,7 @@ Example:
 			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieLength, kEnigma2MovieLengthLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieTags, kEnigma2MovieTagsLength)
-#if 0
 			||	!strncmp((const char *)localname, kEnigma2MovieFilename, kEnigma2MovieFilenameLength)
-#endif
 			||	!strncmp((const char *)localname, kEnigma2MovieFilesize, kEnigma2MovieFilesizeLength)
 			)
 	{
@@ -150,12 +146,10 @@ Example:
 	{
 		[currentMovie setTagsFromString: currentString];
 	}
-#if 0
 	else if(!strncmp((const char *)localname, kEnigma2MovieFilename, kEnigma2MovieFilenameLength))
 	{
 		currentMovie.filename = currentString;
 	}
-#endif
 	else if(!strncmp((const char *)localname, kEnigma2MovieFilesize, kEnigma2MovieFilesizeLength))
 	{
 		currentMovie.size = [NSNumber numberWithLongLong: [currentString longLongValue]];;

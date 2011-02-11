@@ -23,6 +23,7 @@
 	NSString *_sdescription; /*!< @brief Short Description. */
 	NSString *_edescription; /*!< @brief Extended Description. */
 	NSNumber *_length; /*!< @brief Length. */
+	NSString *_name; /*!< @brief Filename. */
 	NSNumber *_size; /*!< @brief Filesize. */
 	NSArray *_tags; /*!< @brief Tags. */
 }

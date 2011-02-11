@@ -17,6 +17,7 @@
 @synthesize sdescription = _sdescription;
 @synthesize edescription = _edescription;
 @synthesize length = _length;
+@synthesize filename = _name;
 @synthesize size = _size;
 @synthesize tags = _tags;
 

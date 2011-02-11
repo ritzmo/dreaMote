@@ -54,6 +54,11 @@
 @property (nonatomic, retain) NSNumber *size;
 
 /*!
+ @brief Filename.
+ */
+@property (nonatomic, retain) NSString *filename;
+
+/*!
  @brief Tags.
  */
 @property (nonatomic, retain) NSArray *tags;
