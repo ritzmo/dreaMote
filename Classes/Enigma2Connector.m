@@ -50,7 +50,8 @@ enum enigma2MessageTypes {
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
 	return
-		(feature != kFeaturesMessageCaption);
+		(feature != kFeaturesMessageCaption) &&
+		(feature != kFeaturesStreaming);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -294,6 +295,13 @@ enum enigma2MessageTypes {
 	return doc;
 }
 
+- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
+{
+	// TODO: add support for custom port and un/pw but lets stick to the defaults for testing
+	NSURL *streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8001/%@", [_baseAddress host], [service.sref urlencode]]];
+	return streamURL;
+}
+
 #pragma mark Timer
 
 - (CXMLDocument *)fetchTimers:(NSObject<TimerSourceDelegate> *)delegate
@@ -372,6 +380,12 @@ enum enigma2MessageTypes {
 		result.resulttext = NSLocalizedString(@"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality", @"");
 	}
 	return result;
+}
+
+- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
+{
+	NSURL *streamURL = [NSURL URLWithString: [NSString stringWithFormat: @"/file?file=%@", [movie.filename urlencode]] relativeToURL: _baseAddress];
+	return streamURL;
 }
 
 #pragma mark MediaPlayer

@@ -106,6 +106,13 @@ enum connectorFeatures {
 	 @note I don't think this will be of any use outside of Enigma2, but who cares :-D
 	 */
 	kFeaturesNowNext,
+	/*!
+	 @brief Remote host allows to stream services.
+	 @note Due to licensing issues I currently do not intend to incorporate a streaming
+	 client directly, but this feature can also be used to show/hide buttons to defer the
+	 request to an external app.
+	 */
+	kFeaturesStreaming,
 };
 
 /*!
@@ -370,6 +377,22 @@ enum buttonCodes {
  @return Pointer to Screenshot or nil on failure.
  */
 - (NSData *)getScreenshot: (enum screenshotType)type;
+
+/*!
+ @brief Request stream URL for given movie.
+
+ @param movie Movie to stream.
+ @return Stream URL.
+ */
+- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie;
+
+/*!
+ @brief Request stream URL for given service.
+
+ @param service Service to stream.
+ @return Stream URL.
+ */
+- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service;
 
 /*!
  @brief Invoke an EPG Search for Title.

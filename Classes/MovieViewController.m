@@ -21,12 +21,17 @@
 
 @interface MovieViewController()
 - (UITextView *)create_Summary;
+- (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
 @interface MovieViewController(IMDb)
-- (void)addIMDbButton;
 - (void)openIMDb:(id)sender;
+@end
+
+@interface MovieViewController(OPlayer)
+- (void)openOPlayer:(id)sender;
+- (void)openOPlayerLite:(id)sender;
 @end
 
 @implementation MovieViewController
@@ -183,13 +188,16 @@
 	return dateString;
 }
 
-- (UIButton *)create_PlayButton
+- (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName
 {
 	const CGRect frame = CGRectMake(0, 0, kUIRowHeight, kUIRowHeight);
 	UIButton *button = [[UIButton alloc] initWithFrame: frame];
-	UIImage *image = [UIImage imageNamed:@"media-playback-start.png"];
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(playAction:)
+	if(imageName)
+	{
+		UIImage *image = [UIImage imageNamed:imageName];
+		[button setImage:image forState:UIControlStateNormal];
+	}
+	[button addTarget:self action:selector
 				forControlEvents:UIControlEventTouchUpInside];
 
 	return [button autorelease];
@@ -302,6 +310,23 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	NSUInteger count = 0;
+
+	if(section == 6)
+	{
+		NSUInteger rows = 1;
+#if 0
+		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
+			++rows;
+#endif
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+		{
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+				++rows;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+				++rows;
+		}
+		return rows;
+	}
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
@@ -478,9 +503,52 @@
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
 			break;
 		case 6:
+		{
+			NSInteger row = indexPath.row;
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-			((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
-			((DisplayCell *)sourceCell).view = [self create_PlayButton];
+
+#if 0
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
+				++row;
+#else
+			if(row > 0)
+				++row;
+#endif
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+			{
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 1)
+					++row;
+				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 2)
+				//	++row;
+			}
+			else if(row > 1)
+			{
+				row += 2;
+			}
+			switch(row)
+			{
+				default:
+				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(playAction:) withImage:@"media-playback-start.png"];
+					break;
+				case 1:
+					// NOTE: should never happen currently… it's really time for a new bug-free imdb release :-)
+#if 0
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withImage:nil];
+#endif
+					break;
+				case 2:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"OPlayer", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
+					break;
+				case 3:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"OPlayer Lite", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
+					break;
+			}
+		}
 		default:
 			break;
 	}
@@ -522,15 +590,22 @@
 	[[UIApplication sharedApplication] openURL:url];
 }
 
-- (void)addIMDbButton
+#pragma mark OPlayer
+
+- (void)openOPlayer:(id)sender
 {
-	// check if imdb (2.0) installed
-	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
-	{
-		UIBarButtonItem *imdbButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"IMDb", @"") style:UIBarButtonItemStylePlain target:self action:@selector(openIMDb:)];
-		self.navigationItem.rightBarButtonItem = imdbButton;
-		[imdbButton release];
-	}
+	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)openOPlayerLite:(id)sender
+{
+	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+
+	[[UIApplication sharedApplication] openURL:url];
 }
 
 @end

@@ -962,4 +962,16 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
+- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
+- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
+{
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+	return nil;
+}
+
 @end
