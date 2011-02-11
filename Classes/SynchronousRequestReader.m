@@ -57,7 +57,7 @@
 	NSData *data = [srr.data retain];
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
-											  timeoutInterval:kDefaultTimeout];
+											  timeoutInterval:timeout];
 	NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request delegate:srr];
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
