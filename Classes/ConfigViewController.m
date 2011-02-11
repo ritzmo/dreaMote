@@ -133,6 +133,7 @@
 	[_singleBouquetSwitch release];
 	[_advancedRemoteSwitch release];
 	[_nowNextSwitch release];
+	[_sslSwitch release];
 
 	[super dealloc];
 }
