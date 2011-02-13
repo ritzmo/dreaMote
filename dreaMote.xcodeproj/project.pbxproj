@@ -266,6 +266,8 @@
 		DA27487412CFCC20000B490B /* LocationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27487312CFCC20000B490B /* LocationListController.m */; };
 		DA27E29610924F010008A82E /* SimpleRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */; };
 		DA2CC28B0E378FCC006AE171 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2CC28A0E378FCC006AE171 /* RCButton.m */; };
+		DA323A5813075B2B00F7FF54 /* ServiceZapListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA323A5713075B2B00F7FF54 /* ServiceZapListController.m */; };
+		DA323A5913075B2B00F7FF54 /* ServiceZapListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA323A5713075B2B00F7FF54 /* ServiceZapListController.m */; };
 		DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
 		DA36F7070F0D2F0A005608CC /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DA372DAC12F22A5200FF97C4 /* SwipeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA372DAB12F22A5200FF97C4 /* SwipeTableView.m */; };
@@ -543,6 +545,8 @@
 		DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRCEmulatorController.m; sourceTree = "<group>"; };
 		DA2CC2890E378FCC006AE171 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
 		DA2CC28A0E378FCC006AE171 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
+		DA323A5613075B2B00F7FF54 /* ServiceZapListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceZapListController.h; sourceTree = "<group>"; };
+		DA323A5713075B2B00F7FF54 /* ServiceZapListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceZapListController.m; sourceTree = "<group>"; };
 		DA36F6B70F0D2D8F005608CC /* ServiceProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceProtocol.h; sourceTree = "<group>"; };
 		DA36F6B90F0D2D9A005608CC /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
 		DA36F6BA0F0D2D9A005608CC /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
@@ -1499,6 +1503,8 @@
 				DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */,
 				DAD51D710D8303FF00A769F3 /* ServiceListController.h */,
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
+				DA323A5613075B2B00F7FF54 /* ServiceZapListController.h */,
+				DA323A5713075B2B00F7FF54 /* ServiceZapListController.m */,
 				DA7FD7540D84307700974B1A /* TimerListController.h */,
 				DA7FD7550D84307700974B1A /* TimerListController.m */,
 			);
@@ -1920,6 +1926,7 @@
 				DA4E0D0712F1BF8F00022A1B /* MultiEPGListController.m in Sources */,
 				DA372DAC12F22A5200FF97C4 /* SwipeTableView.m in Sources */,
 				DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */,
+				DA323A5813075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2060,6 +2067,7 @@
 				DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */,
 				DADCDC7512F2F22D00C0E7A2 /* SwipeTableView.m in Sources */,
 				DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */,
+				DA323A5913075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

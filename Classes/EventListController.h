@@ -10,6 +10,7 @@
 
 #import "EventSourceDelegate.h"
 #import "ReloadableListController.h"
+#import "ServiceZapListController.h" /* ServiceZapListDelegate */
 
 // Forward declarations...
 @protocol ServiceProtocol;
@@ -24,12 +25,16 @@
 @interface EventListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource,
 													EventSourceDelegate,
-													UIScrollViewDelegate>
+													UIScrollViewDelegate,
+													UIPopoverControllerDelegate,
+													UIActionSheetDelegate,
+													ServiceZapListDelegate>
 {
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Current Service. */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	UIPopoverController *popoverController; /*!< @brief Popover controller */
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
@@ -54,5 +59,10 @@
  @brief Date Formatter.
  */
 @property (nonatomic, retain) NSDateFormatter *dateFormatter;
+
+/*!
+ @brief Popover Controller.
+ */
+@property (nonatomic, retain) UIPopoverController *popoverController;
 
 @end

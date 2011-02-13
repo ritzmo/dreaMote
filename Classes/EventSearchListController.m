@@ -27,13 +27,9 @@
  @param sender Sender of this action.
  */
 - (IBAction)showHistory:(id)sender;
-
-@property (nonatomic, retain) UIPopoverController *popoverController;
 @end
 
 @implementation EventSearchListController
-
-@synthesize popoverController;
 
 /* initialize */
 - (id)init

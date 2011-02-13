@@ -33,6 +33,7 @@
 @implementation EventListController
 
 @synthesize dateFormatter = _dateFormatter;
+@synthesize popoverController;
 
 /* initialize */
 - (id)init
@@ -95,6 +96,7 @@
 	[_dateFormatter release];
 	[_eventViewController release];
 	[_eventXMLDoc release];
+	[popoverController release];
 
 	[super dealloc];
 }
@@ -127,7 +129,52 @@
 /* zap */
 - (void)zapAction:(id)sender
 {
-	[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
+	// if streaming supported, show popover on ipad and action sheet on iphone
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+	{
+		if(IS_IPAD())
+		{
+			// hide popover if already visible
+			if([popoverController isPopoverVisible])
+			{
+				[popoverController dismissPopoverAnimated:YES];
+				self.popoverController = nil;
+				return;
+			}
+
+			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+			zlc.zapDelegate = self;
+			[popoverController release];
+			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
+			[zlc release];
+
+			[popoverController presentPopoverFromBarButtonItem:sender
+									  permittedArrowDirections:UIPopoverArrowDirectionUp
+													  animated:YES];
+		}
+		else
+		{
+			const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
+																		   delegate:self
+																  cancelButtonTitle:nil
+															 destructiveButtonTitle:nil
+																  otherButtonTitles:nil];
+			[actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+				[actionSheet addButtonWithTitle:NSLocalizedString(@"OPlayer", @"")];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+				[actionSheet addButtonWithTitle:NSLocalizedString(@"OPlayer Lite", @"")];
+
+			actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+			[actionSheet showFromTabBar:self.tabBarController.tabBar];
+			[actionSheet release];
+		}
+	}
+	// else just zap on remote host
+	else
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
+	}
 }
 
 /* start download of event list */
@@ -152,6 +199,101 @@
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[_eventXMLDoc release];
 	_eventXMLDoc = nil;
+}
+
+/* rotate with device */
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
+
+/* about to display */
+- (void)viewWillAppear:(BOOL)animated
+{
+	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
+	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
+}
+
+/* about to disappear */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// eventually remove popover
+	if(popoverController)
+	{
+		[popoverController dismissPopoverAnimated:animated];
+		self.popoverController = nil;
+	}
+	[super viewWillDisappear:animated];
+}
+
+/* disappeared */
+- (void)viewDidDisappear:(BOOL)animated
+{
+	[_dateFormatter resetReferenceDate];
+#if IS_FULL()
+	// end transaction here because there can only be a single active transaction at a time
+	// if we didn't stop now the possibility of a corrupted cache is higher, though this way
+	// we still could end up with a corrupted cache… the better way might be to add a
+	// "transaction context" on the epgcache end and manage the cache from the event parsers
+	// instead from the view.
+	[[EPGCache sharedInstance] stopTransaction];
+#endif
+}
+
+#pragma mark -
+#pragma mark ServiceZapListDelegate methods
+#pragma mark -
+
+- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
+{
+	switch(selectedAction)
+	{
+		default:
+		case zapActionRemote:
+			[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
+			break;
+		case zapActionOPlayer:
+		{
+			NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
+
+			[[UIApplication sharedApplication] openURL:url];
+			break;
+		}
+		case zapActionOPlayerLite:
+		{
+			NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+
+			[[UIApplication sharedApplication] openURL:url];
+			break;
+		}
+	}
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else
+	{
+		buttonIndex -= actionSheet.firstOtherButtonIndex; // should be zero, but better make sure
+		//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+		{
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
+				++buttonIndex;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
+			//	++buttonIndex;
+		}
+		[self serviceZapListController:nil selectedAction:(zapAction)buttonIndex];
+	}
 }
 
 #pragma mark -
@@ -217,32 +359,15 @@
 	return [_events count];
 }
 
-/* rotate with device */
-- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
-}
+#pragma mark -
+#pragma mark UIPopoverControllerDelegate methods
+#pragma mark -
 
-/* about to display */
-- (void)viewWillAppear:(BOOL)animated
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)pc
 {
-	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
-	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
-}
-
-/* disappeared */
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[_dateFormatter resetReferenceDate];
-#if IS_FULL()
-	// end transaction here because there can only be a single active transaction at a time
-	// if we didn't stop now the possibility of a corrupted cache is higher, though this way
-	// we still could end up with a corrupted cache… the better way might be to add a
-	// "transaction context" on the epgcache end and manage the cache from the event parsers
-	// instead from the view.
-	[[EPGCache sharedInstance] stopTransaction];
-#endif
+	// cleanup memory
+	if([pc isEqual:self.popoverController])
+		self.popoverController = nil;
 }
 
 @end

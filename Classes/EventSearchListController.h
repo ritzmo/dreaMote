@@ -23,7 +23,6 @@
 @private
 	UISearchBar	*_searchBar; /*!< @brief Search Bar. */
 	SearchHistoryListController *_searchHistory; /*!< @brief Search History */
-	UIPopoverController *popoverController; /*!< @brief Popover controller */
 }
 
 @property (nonatomic, readonly) SearchHistoryListController *searchHistory;
