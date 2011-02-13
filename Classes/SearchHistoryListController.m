@@ -37,6 +37,7 @@
 - (void)dealloc
 {
 	[_history release];
+	[_historyDelegate release];
 
     [super dealloc];
 }
