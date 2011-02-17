@@ -296,6 +296,10 @@
 		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
 		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
+		DA67D68D130D4A1F00953B16 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA67D68C130D4A1E00953B16 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA67D705130D4A4200953B16 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA67D68C130D4A1E00953B16 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA67D70D130D4B9900953B16 /* internet-mail.png in Resources */ = {isa = PBXBuildFile; fileRef = DA67D70C130D4B9900953B16 /* internet-mail.png */; };
+		DA67D70E130D4B9900953B16 /* internet-mail.png in Resources */ = {isa = PBXBuildFile; fileRef = DA67D70C130D4B9900953B16 /* internet-mail.png */; };
 		DA6C530712CE40CC00968EBE /* TimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */; };
 		DA6CE9C812D498F100F1F52D /* FileXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6CE9C712D498F100F1F52D /* FileXMLReader.m */; };
 		DA6CEFD212D4D38D00F1F52D /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6CEF8A12D4D38D00F1F52D /* 4-sided-arrow.png */; };
@@ -602,6 +606,8 @@
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
 		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
+		DA67D68C130D4A1E00953B16 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		DA67D70C130D4B9900953B16 /* internet-mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internet-mail.png"; sourceTree = "<group>"; };
 		DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSplitViewController.h; sourceTree = "<group>"; };
 		DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerSplitViewController.m; sourceTree = "<group>"; };
 		DA6CE9C612D498F100F1F52D /* FileXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileXMLReader.h; sourceTree = "<group>"; };
@@ -841,6 +847,7 @@
 				DAC7023212D2FCEE00C53E37 /* QuartzCore.framework in Frameworks */,
 				DA88832912E48B3800D4B710 /* libxml2.dylib in Frameworks */,
 				DA4E0C4A12F19EFC00022A1B /* libsqlite3.dylib in Frameworks */,
+				DA67D705130D4A4200953B16 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,6 +861,7 @@
 				DA165F3912E9CA2700A6D894 /* AudioToolbox.framework in Frameworks */,
 				DA165F3A12E9CA2700A6D894 /* QuartzCore.framework in Frameworks */,
 				DA165F3B12E9CA2700A6D894 /* libxml2.dylib in Frameworks */,
+				DA67D68D130D4A1F00953B16 /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,9 +901,10 @@
 			children = (
 				DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */,
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
-				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				DA67D68C130D4A1E00953B16 /* MessageUI.framework */,
 				DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				DA88832812E48B3800D4B710 /* libxml2.dylib */,
 				DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */,
 			);
@@ -1162,6 +1171,7 @@
 				DA6CEF9712D4D38D00F1F52D /* emblem-favorite.png */,
 				DA6CEF9812D4D38D00F1F52D /* exit.png */,
 				DA8753B012E1178100CE841E /* folder.png */,
+				DA67D70C130D4B9900953B16 /* internet-mail.png */,
 				DA6CEF9D12D4D38D00F1F52D /* key_0.png */,
 				DA6CEF9E12D4D38D00F1F52D /* key_1.png */,
 				DA6CEF9F12D4D38D00F1F52D /* key_2.png */,
@@ -1702,6 +1712,7 @@
 				DA165F4712E9CA8400A6D894 /* Icon.png in Resources */,
 				DA165F4812E9CA8400A6D894 /* Icon@2x.png in Resources */,
 				DA4E0C5F12F1A21900022A1B /* epgcache.sqlite in Resources */,
+				DA67D70D130D4B9900953B16 /* internet-mail.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1780,6 +1791,7 @@
 				DA165F6812E9CB8D00A6D894 /* Icon-72.png in Resources */,
 				DA165F6912E9CB8E00A6D894 /* Icon.png in Resources */,
 				DA165F6A12E9CB8E00A6D894 /* Icon@2x.png in Resources */,
+				DA67D70E130D4B9900953B16 /* internet-mail.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

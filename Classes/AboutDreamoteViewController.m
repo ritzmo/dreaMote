@@ -7,6 +7,7 @@
 //
 
 #import "AboutDreamoteViewController.h"
+
 #import "Constants.h"
 
 @interface AboutDreamoteViewController()
@@ -15,6 +16,11 @@
  @param sender ui element
  */
 - (void)buttonPressed: (id)sender;
+/*!
+ @brief _mailButton was pressed
+ @param sender ui element
+ */
+- (void)showMailComposer:(id)sender;
 @end
 
 @implementation AboutDreamoteViewController
@@ -66,7 +72,9 @@
 
 	frame = CGRectMake(0, 0, size.width, 400);
 	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
-	[aboutText loadHTMLString: [NSString stringWithContentsOfFile: [[[NSBundle mainBundle] bundlePath] stringByAppendingString: @"/about.html"] usedEncoding: nil error: nil] baseURL: [NSURL URLWithString: @""]];
+	NSString *aboutHTML = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/about.html"] usedEncoding:nil error:nil];
+	aboutHTML = [aboutHTML stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+	[aboutText loadHTMLString:aboutHTML baseURL:nil];
 	aboutText.backgroundColor = [UIColor clearColor];
 	aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
 	aboutText.opaque = NO;
@@ -80,12 +88,45 @@
 	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
 	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: _doneButton];
+
+	if([MFMailComposeViewController canSendMail])
+	{
+		frame = CGRectMake(0, 400 + kTweenMargin, 32, 32);
+		_mailButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+		_mailButton.frame = frame;
+		UIImage *image = [UIImage imageNamed:@"internet-mail.png"];
+		[_mailButton setImage:image forState:UIControlStateNormal];
+		[_mailButton addTarget:self action:@selector(showMailComposer:) forControlEvents:UIControlEventTouchUpInside];
+		[self.view addSubview:_mailButton];
+	}
 }
 
 /* "done" button pressed */
 - (void)buttonPressed: (id)sender
 {
 	[self.parentViewController dismissModalViewControllerAnimated: YES];
+}
+
+/* _mailButton was pressed */
+- (void)showMailComposer:(id)sender
+{
+	MFMailComposeViewController *mvc = [[MFMailComposeViewController alloc] init];
+	mvc.mailComposeDelegate = self;
+	NSString *displayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	UIDevice *currentDevice = [UIDevice currentDevice];
+	[mvc setSubject:[NSString stringWithFormat:@"App Feedback %@", displayName]];
+	[mvc setToRecipients:[NSArray arrayWithObject:@"moritz.venn@freaque.net"]];
+	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@", [currentDevice model], [currentDevice systemVersion], displayName, bundleVersion];
+	[mvc setMessageBody:body isHTML:NO];
+	if([mvc respondsToSelector:@selector(modalTransitionStyle)])
+	{
+		mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	}
+	UIViewController *parentViewController = self.parentViewController;
+	[parentViewController dismissModalViewControllerAnimated:NO];
+	[parentViewController presentModalViewController:mvc animated:YES];
+	[mvc release];
 }
 
 /* rotate with device on ipad, otherwise to portrait */
@@ -105,6 +146,8 @@
 		const CGSize size = self.view.bounds.size;
 		CGRect frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
 		_doneButton.frame = frame;
+		frame = CGRectMake(0, 400 + kTweenMargin, 32, 32);
+		_mailButton.frame = frame;
 	}
 }
 
@@ -129,6 +172,23 @@
 	// If request url is something other than http or https it will open in UIWebView
 	// You could also check for the other following protocols: tel, mailto and sms
 	return YES;
+}
+
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+	if(result == MFMailComposeResultFailed)
+	{
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error sending email!", @"Title of alert when sending/saving of email failed")
+															  message:[error localizedDescription]
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+	[controller.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end
