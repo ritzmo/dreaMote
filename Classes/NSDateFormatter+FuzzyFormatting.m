@@ -8,6 +8,8 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 
+#import "UIDevice+SystemVersion.h"
+
 /*!
  @brief Seconds in a day.
  */
@@ -33,14 +35,23 @@ static NSDate *_thisNight = nil;
 }
 
 /* translate date to string */
-// NOTE: Ok, this sucks - but the iphone sdk lacks a better way I know about :D
-// TODO: recheck with 3.0 sdk, I know there is some new stuff on SL that does so, maybe we also have it.
+// NOTE: Ok, this sucked before iOS4, but let's keep this code around
 - (NSString *)fuzzyDate:(NSDate *)date
 {
 	// Argument error, return nothing
 	if(date == nil)
 		return nil;
-	
+
+	// use builtin mechanism on iOS4+, but use old behavior (reset fuzzy before returning)
+	if([UIDevice runsIos4OrBetter])
+	{
+		const BOOL relativeFormatting = [self doesRelativeDateFormatting];
+		[self setDoesRelativeDateFormatting:YES];
+		NSString *retVal = [self stringFromDate:date];
+		[self setDoesRelativeDateFormatting:relativeFormatting];
+		return retVal;
+	}
+
 	const NSDateFormatterStyle dateStyle = [self dateStyle];
 	if(dateStyle == NSDateFormatterNoStyle)
 		return [self stringForObjectValue:date];
