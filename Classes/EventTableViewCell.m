@@ -110,7 +110,10 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	if(newEvent.timeString == nil)
 	{
 		// Not generated, do so...
-		[_formatter setDateStyle:NSDateFormatterMediumStyle];
+		if(_showService && IS_IPHONE())
+			[_formatter setDateStyle:NSDateFormatterMediumStyle];
+		else
+			[_formatter setDateStyle:NSDateFormatterFullStyle];
 		const NSString *begin = [_formatter fuzzyDate: newEvent.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
 		const NSString *end = [_formatter stringFromDate: newEvent.end];

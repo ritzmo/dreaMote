@@ -181,7 +181,7 @@
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
-	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setDateStyle:NSDateFormatterFullStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *dateString = [format fuzzyDate: dateTime];
 	[format release];
@@ -455,7 +455,7 @@
 			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
 			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			cell.indentationLevel = 1;
+			cell.indentationLevel = 0;
 			break;
 		case 6:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
@@ -498,9 +498,11 @@
 			break;
 		case 4:
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _movie.time];
+			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			break;
 		case 5:
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
+			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			break;
 		case 6:
 		{

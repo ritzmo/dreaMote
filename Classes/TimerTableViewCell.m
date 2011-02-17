@@ -108,7 +108,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	if(newTimer.timeString == nil)
 	{
 		// It's not, create it
-		[_formatter setDateStyle:NSDateFormatterMediumStyle];
+		[_formatter setDateStyle:NSDateFormatterFullStyle];
 		const NSString *begin = [_formatter fuzzyDate: newTimer.begin];
 		[_formatter setDateStyle:NSDateFormatterNoStyle];
 		const NSString *end = [_formatter stringFromDate: newTimer.end];

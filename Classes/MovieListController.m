@@ -42,7 +42,7 @@
 		_isSplit = NO;
 
 		_dateFormatter = [[NSDateFormatter alloc] init];
-		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[_dateFormatter setDateStyle:NSDateFormatterFullStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 
 		_movieViewController = nil;

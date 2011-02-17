@@ -368,7 +368,7 @@
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
 	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
-	[format setDateStyle:NSDateFormatterMediumStyle];
+	[format setDateStyle:NSDateFormatterFullStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *dateString = [format fuzzyDate: dateTime];
 	[format release];
@@ -923,10 +923,12 @@
 			break;
 		case 4:
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.begin];
+			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			_timerBeginCell = sourceCell;
 			break;
 		case 5:
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.end];
+			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			_timerEndCell = sourceCell;
 			break;
 		case 6:
