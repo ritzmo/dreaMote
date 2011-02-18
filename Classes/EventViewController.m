@@ -193,7 +193,7 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	[_dateFormatter setDateStyle:NSDateFormatterFullStyle];
+	[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	return [_dateFormatter fuzzyDate: dateTime];
 }
@@ -403,9 +403,8 @@
 			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
-			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-			sourceCell.indentationLevel = 0;
+			sourceCell.indentationLevel = 1;
 
 			if(section == 1)
 				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.begin];
