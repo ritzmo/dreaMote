@@ -455,7 +455,8 @@
 			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
 			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			cell.indentationLevel = 1;
+			cell.textLabel.adjustsFontSizeToFitWidth = YES;
+			cell.indentationLevel = 0;
 			break;
 		case 6:
 			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];

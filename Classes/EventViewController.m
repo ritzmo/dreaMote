@@ -404,7 +404,8 @@
 			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-			sourceCell.indentationLevel = 1;
+			sourceCell.indentationLevel = 0;
+			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 
 			if(section == 1)
 				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.begin];

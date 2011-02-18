@@ -841,6 +841,7 @@
 			if(cell == nil)
 				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
 			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
+			cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
 			if(self.editing)
 			{
