@@ -20,6 +20,11 @@
  */
 #define TWODAY 172800
 
+/*!
+ @brief Seconds in a week.
+ */
+#define ONEWEEK 604800
+
 @implementation NSDateFormatter(FuzzyFormatting)
 
 /*!
@@ -35,13 +40,19 @@ static NSDate *_thisNight = nil;
 }
 
 /* translate date to string */
-// NOTE: Ok, this sucked before iOS4, but let's keep this code around
+// NOTE: iOS4 brings its own simple fuzzer, but we want a more specific one.
 - (NSString *)fuzzyDate:(NSDate *)date
 {
 	// Argument error, return nothing
 	if(date == nil)
 		return nil;
 
+	/*!
+	 @note while our approach might be unoptimized and complicated, the one from apple
+	 is a little weird too. It uses rarely used relative dates and we want a little more
+	 fuzzing anyway.
+	 */
+#if 0
 	// use builtin mechanism on iOS4+, but use old behavior (reset fuzzy before returning)
 	if([UIDevice runsIos4OrBetter])
 	{
@@ -51,6 +62,7 @@ static NSDate *_thisNight = nil;
 		[self setDoesRelativeDateFormatting:relativeFormatting];
 		return retVal;
 	}
+#endif
 
 	const NSDateFormatterStyle dateStyle = [self dateStyle];
 	if(dateStyle == NSDateFormatterNoStyle)
@@ -97,6 +109,16 @@ static NSDate *_thisNight = nil;
 		NSString *retVal = [NSString stringWithFormat: @"%@, %@", NSLocalizedString(@"Yesterday", @""), [self stringForObjectValue: date]];
 		[self setDateStyle: dateStyle];
 		return retVal;
+	}
+
+	if(secSinceToday >= TWODAY && secSinceToday < ONEWEEK && dateStyle != NSDateFormatterFullStyle)
+	{
+		/* Between two days and a week, display weekday. */
+		NSCalendar *cal = [NSCalendar currentCalendar];
+		NSDateComponents *comps = [cal components:NSWeekdayCalendarUnit fromDate:date];
+		NSString *weekday = [[self weekdaySymbols] objectAtIndex:[comps weekday]-1];
+
+		return [NSString stringWithFormat: @"%@, %@", weekday, [self stringForObjectValue:date]];
 	}
 	
 	// No special handling for this date, so return default one
