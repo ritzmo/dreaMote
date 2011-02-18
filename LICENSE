@@ -21,9 +21,11 @@ Filenames (relative to Images) :
 Full/Icon-72.png
 Full/Icon.png
 Full/Icon@2x.png
+Full/iTunesArtwork
 Lite/Icon-72.png
 Lite/Icon.png
 Lite/Icon@2x.png
+Lite/iTunesArtwork
 4-sided-arrow.png
 bouquet.png
 current.png
@@ -84,6 +86,7 @@ audio-x-generic.png
 document-save.png
 emblem-favorite.png
 folder.png
+internet-mail.png
 mail-forward.png
 media-playback-start.png
 network-wired.png

@@ -407,6 +407,8 @@
 		DAAC518F12D481A100B3B443 /* FileListView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC518E12D481A100B3B443 /* FileListView.m */; };
 		DAAC51F712D48F3500B3B443 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC51EE12D48F3500B3B443 /* AppDelegate.m */; };
 		DAAC520412D492CE00B3B443 /* MediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC520312D492CE00B3B443 /* MediaPlayerController.m */; };
+		DAB469CD130E8DE200B95BC3 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = DAB469CC130E8DE200B95BC3 /* iTunesArtwork */; };
+		DAB469CF130E8DED00B95BC3 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = DAB469CE130E8DED00B95BC3 /* iTunesArtwork */; };
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAB65EAE12E495A200699EC8 /* SynchronousRequestReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB65EAD12E495A200699EC8 /* SynchronousRequestReader.m */; };
@@ -773,6 +775,8 @@
 		DAAC520212D492CE00B3B443 /* MediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerController.h; sourceTree = "<group>"; };
 		DAAC520312D492CE00B3B443 /* MediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerController.m; sourceTree = "<group>"; };
 		DAB0676C12E315D8008D39F5 /* DataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSourceDelegate.h; sourceTree = "<group>"; };
+		DAB469CC130E8DE200B95BC3 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		DAB469CE130E8DED00B95BC3 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		DAB579ED0E94CA580093721B /* ConnectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectorViewController.h; sourceTree = "<group>"; };
 		DAB579EE0E94CA580093721B /* ConnectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectorViewController.m; sourceTree = "<group>"; };
 		DAB5FA010D845F7A0074D998 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
@@ -1106,6 +1110,7 @@
 				DA165F4312E9CA8400A6D894 /* Icon-72.png */,
 				DA165F4412E9CA8400A6D894 /* Icon.png */,
 				DA165F4512E9CA8400A6D894 /* Icon@2x.png */,
+				DAB469CC130E8DE200B95BC3 /* iTunesArtwork */,
 			);
 			path = Full;
 			sourceTree = "<group>";
@@ -1116,6 +1121,7 @@
 				DA165F5612E9CB5A00A6D894 /* Icon-72.png */,
 				DA165F5712E9CB5A00A6D894 /* Icon.png */,
 				DA165F5812E9CB5A00A6D894 /* Icon@2x.png */,
+				DAB469CE130E8DED00B95BC3 /* iTunesArtwork */,
 			);
 			path = Lite;
 			sourceTree = "<group>";
@@ -1713,6 +1719,7 @@
 				DA165F4812E9CA8400A6D894 /* Icon@2x.png in Resources */,
 				DA4E0C5F12F1A21900022A1B /* epgcache.sqlite in Resources */,
 				DA67D70D130D4B9900953B16 /* internet-mail.png in Resources */,
+				DAB469CD130E8DE200B95BC3 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1792,6 +1799,7 @@
 				DA165F6912E9CB8E00A6D894 /* Icon.png in Resources */,
 				DA165F6A12E9CB8E00A6D894 /* Icon@2x.png in Resources */,
 				DA67D70E130D4B9900953B16 /* internet-mail.png in Resources */,
+				DAB469CF130E8DED00B95BC3 /* iTunesArtwork in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
