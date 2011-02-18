@@ -193,7 +193,7 @@
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
 {
-	[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[_dateFormatter setDateStyle:NSDateFormatterFullStyle];
 	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 	return [_dateFormatter fuzzyDate: dateTime];
 }
