@@ -386,79 +386,97 @@ TYPE_E1 = 1
 movies = []
 timers = []
 
-global IS_MUTED
-IS_MUTED = False
+class State:
+	def __init__(self):
+		self.movies = []
+		self.timers = []
+		self.is_muted = False
+		self.reset()
 
-def setupMovies():
-	del movies[:]
-	movies.append(('/hdd/movie/Demofilename.ts', 'Recording title', 'Recording short description', 'Recording description', 'Demo Service'))
+	def reset(self):
+		self.setupMovies()
+		self.setupTimers()
 
-def getMovies(type):
-	moviestrings = ''
-	for movie in movies:
-		fname, title, desc, edesc, sname = movie
+	def setupMovies(self):
+		del self.movies[:]
+		self.movies.append(('/hdd/movie/Demofilename.ts', 'Recording title', 'Recording short description', 'Recording description', 'Demo Service'))
+
+	def getMovies(self, type):
+		moviestrings = ''
+		for movie in self.movies:
+			fname, title, desc, edesc, sname = movie
+			if type == TYPE_E2:
+				moviestrings += MOVIETEMPLATE_E2 % (fname, title, desc, edesc, sname, fname)
+			elif type == TYPE_E1:
+				moviestrings += MOVIETEMPLATE_E1 % (fname, title)
+		return moviestrings
+
+	def deleteMovie(self, sRef, type):
 		if type == TYPE_E2:
-			moviestrings += MOVIETEMPLATE_E2 % (fname, title, desc, edesc, sname, fname)
+			if sRef == '1:0:0:0:0:0:0:0:0:0:/hdd/movie/Demofilename.ts' and len(self.movies):
+				movies.pop()
+				return True
 		elif type == TYPE_E1:
-			moviestrings += MOVIETEMPLATE_E1 % (fname, title)
-	return moviestrings
+			if sRef == '1:0:1:6dcf:44d:1:c00000:93d2d1:0:0:/hdd/movie/Demofilename.ts' and len(self.movies):
+				movies.pop()
+				return True
+		return False
 
-def deleteMovie(sRef, type):
-	if type == TYPE_E2:
-		if sRef == '1:0:0:0:0:0:0:0:0:0:/hdd/movie/Demofilename.ts' and len(movies):
-			movies.pop()
-			return True
-	elif type == TYPE_E1:
-		if sRef == '1:0:1:6dcf:44d:1:c00000:93d2d1:0:0:/hdd/movie/Demofilename.ts' and len(movies):
-			movies.pop()
-			return True
-	return False
+	def addTimer(self, sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated):
+		self.timers.append((sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated))
 
-def addTimer(sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated):
-	timers.append((sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated))
+	def getTimers(self, type):
+		timerstrings = ''
+		now = time.time()
+		for timer in self.timers:
+			sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
+			timerstate = 0
+			if end < now: timerstate = 3
+			elif begin < now: timerstate = 2
 
-def getTimers(type):
-	timerstrings = ''
-	now = time.time()
-	for timer in timers:
-		sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
-		state = 0
-		if end < now: state = 3
-		elif begin < now: state = 2
+			if type == TYPE_E2:
+				timerstrings += TIMERTEMPLATE_E2 % (sRef, 0, name, description, begin, end, end-begin, begin-10, justplay, afterevent, timerstate, repeated)
+			elif type == TYPE_E1:
+				typeString = 'NO TYPESTRING YET'
+				days = 'NO DAYS YET'
+				action = 'NO ACTION YET'
+				postaction = 'NO POSTACTION YET'
+				status = 'NO STATUS YET'
+				typedata = -1
+				dateString = 'NO DATE YET'
+				timeString = 'NO TIME YET'
+				timerstrings += TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, sRef, dateString, timeString, begin, end-begin, description)
+		return timerstrings
 
-		if type == TYPE_E2:
-			timerstrings += TIMERTEMPLATE_E2 % (sRef, 0, name, description, begin, end, end-begin, begin-10, justplay, afterevent, state, repeated)
-		elif type == TYPE_E1:
-			typeString = 'NO TYPESTRING YET'
-			days = 'NO DAYS YET'
-			action = 'NO ACTION YET'
-			postaction = 'NO POSTACTION YET'
-			status = 'NO STATUS YET'
-			typedata = -1
-			dateString = 'NO DATE YET'
-			timeString = 'NO TIME YET'
-			timerstrings += TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, sRef, dateString, timeString, begin, end-begin, description)
-	return timerstrings
+	def deleteTimer(self, sRef, begin, end):
+		idx = 0
+		for timer in self.timers:
+			sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
+			if sRef == sRef and begin == begin and end == end:
+				del self.timers[idx]
+				return True
+			idx += 1
+		return False
 
-def deleteTimer(sRef, begin, end):
-	idx = 0
-	for timer in timers:
-		sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
-		if sRef == sRef and begin == begin and end == end:
-			del timers[idx]
-			return True
-		idx += 1
-	return False
+	def setupTimers(self):
+		del self.timers[:]
+		self.addTimer('1:0:1:445D:453:1:C00000:0:0:0:', 1205093400, 1205097600, "Demo Timer", "Timer description", 0, 0, 0, 0, 0)
 
-def setupTimers():
-	del timers[:]
-	addTimer('1:0:1:445D:453:1:C00000:0:0:0:', 1205093400, 1205097600, "Demo Timer", "Timer description", 0, 0, 0, 0, 0)
+	def toggleMuted(self):
+		self.is_muted = not self.is_muted
+
+	def setMuted(self, mute):
+		self.is_muted = mute
+
+	def isMuted(self):
+		return self.is_muted
+
+state = State()
 
 # returns sample documents, stupid demo contents :-)
 class Simple(resource.Resource):
 	isLeaf = True
 	def render_GET(self, req):
-		global IS_MUTED
 		lastComp = req.postpath[-1]
 # ENIGMA2
 		if lastComp == "getcurrent":
@@ -519,13 +537,13 @@ class Simple(resource.Resource):
 					vol = int(set[3:])
 					message = "Volume set to %d" % (vol,)
 				elif set == 'mute':
-					IS_MUTED = not IS_MUTED
+					state.toggleMuted()
 					message = "Mute toggled"
 				else:
 					message = "OMFG SOMETHING WENT WRONG"
 			else:
 				message = "State"
-			returndoc = VOLUME % (message, 'True' if IS_MUTED else 'False')
+			returndoc = VOLUME % (message, 'True' if state.isMuted() else 'False')
 		elif lastComp == "signal":
 			returndoc = SIGNAL_E2 # TODO: add jitter?
 		elif lastComp == "remotecontrol":
@@ -559,7 +577,7 @@ class Simple(resource.Resource):
 			returndoc = EPGSERVICE % ('',)
 ### TIMERS
 		elif lastComp == "timerlist":
-			timerstrings = getTimers(TYPE_E2)
+			timerstrings = state.getTimers(TYPE_E2)
 			returndoc = TIMERLIST_E2 % (timerstrings,)
 		elif lastComp == "timeradd" or lastComp == "timerchange":
 			if lastComp == "timerchange":
@@ -567,7 +585,7 @@ class Simple(resource.Resource):
 				sRef = req.args.get('channelOld')[0]
 				begin = int(req.args.get('beginOld')[0])
 				end = int(req.args.get('endOld')[0])
-				if delete: deleteTimer(channelOld, beginOld, endOld)
+				if delete: state.deleteTimer(channelOld, beginOld, endOld)
 			sRef = req.args.get('sRef')[0]
 			begin = int(req.args.get('begin')[0])
 			end = int(req.args.get('end')[0])
@@ -578,7 +596,7 @@ class Simple(resource.Resource):
 			justplay = int(req.args.get('justplay')[0])
 			afterevent = int(req.args.get('afterevent')[0])
 			repeated = int(req.args.get('repeated')[0])
-			addTimer(sRef, begin, end, name, desc, eit, disabled, justplay, afterevent, repeated)
+			state.addTimer(sRef, begin, end, name, desc, eit, disabled, justplay, afterevent, repeated)
 			if lastComp == "timerchange":
 				returndoc = SIMPLEXMLRESULT % ('True', 'Timer changed successfully')
 			else:
@@ -587,18 +605,18 @@ class Simple(resource.Resource):
 			sRef = req.args.get('sRef')[0]
 			begin = int(req.args.get('begin')[0])
 			end = int(req.args.get('end')[0])
-			if deleteTimer(sRef, begin, end): returndoc = SIMPLEXMLRESULT % ('True', 'SOME TEXT')
+			if state.deleteTimer(sRef, begin, end): returndoc = SIMPLEXMLRESULT % ('True', 'SOME TEXT')
 			else: returndoc = SIMPLEXMLRESULT % ('False', 'No matching Timer found')
 ### /TIMERS
 ### MOVIES
 		elif lastComp == "getlocations":
 			returndoc = LOCATIONLIST
 		elif lastComp == "movielist":
-			returndoc = MOVIELIST_E2 % (getMovies(TYPE_E2),)
+			returndoc = MOVIELIST_E2 % (state.getMovies(TYPE_E2),)
 		elif lastComp == "moviedelete":
 			sRef = req.args.get('sRef')
 			sRef = sRef and sRef[0]
-			if deleteMovie(sRef, TYPE_E2):
+			if state.deleteMovie(sRef, TYPE_E2):
 				returndoc = SIMPLEXMLRESULT % ('True', "SOME TEXT'")
 			else:
 				returndoc = SIMPLEXMLRESULT % ('False', "Could not delete Movie 'this recording'")
@@ -624,7 +642,7 @@ class Simple(resource.Resource):
 			mode = mode and int(mode[0])
 			submode = submode and int(submode[0])
 			if mode == 3 and submode == 4:
-				returndoc = MOVIELIST_E1 % (getMovies(TYPE_E1),)
+				returndoc = MOVIELIST_E1 % (state.getMovies(TYPE_E1),)
 			else:
 				returndoc = SERVICES_E1
 		elif lastComp == "serviceepg":
@@ -633,7 +651,7 @@ class Simple(resource.Resource):
 			return EPGSERVICE_E1
 ### TIMERS
 		elif lastComp == "timers":
-			timerstrings = getTimers(TYPE_E1)
+			timerstrings = state.getTimers(TYPE_E1)
 			returndoc = TIMERLIST_E1 % (timerstrings,)
 		elif lastComp == "addTimerEvent":
 			returndoc = "UNHANDLED METHOD"
@@ -643,7 +661,7 @@ class Simple(resource.Resource):
 		elif lastComp == "deleteMovie":
 			sRef = req.args.get('ref')
 			sRef = sRef and sRef[0]
-			deleteMovie(sRef, TYPE_E1)
+			state.deleteMovie(sRef, TYPE_E1)
 			returndoc = "IMO RETURN OF E1 SUCKS"
 		elif lastComp == "videocontrol":
 			returndoc = "UNHANDLED METHOD"
@@ -656,14 +674,14 @@ class Simple(resource.Resource):
 		elif lastComp == "audio":
 			toggleMute = 'mute' in req.args
 			if toggleMute:
-				IS_MUTED = not IS_MUTED
+				state.toggleMuted()
 				returndoc = """mute set
 volume: 0
-mute: %d""" % (1 if IS_MUTED else 0,)
+mute: %d""" % (1 if state.isMuted() else 0,)
 			else:
 				returndoc = """Volume set.
 volume: 0
-mute: %d""" % (1 if IS_MUTED else 0,)
+mute: %d""" % (1 if state.isMuted() else 0,)
 			returndoc = "UNHANDLED METHOD"
 		elif lastComp == "rc":
 			returndoc = "UNHANDLED METHOD"
@@ -717,10 +735,10 @@ mute: %d""" % (1 if IS_MUTED else 0,)
 				# XXX: list currently has static response
 				id = req.args.get('id')
 				id = int(id) if id and id[0] else 0
-				if id == 0 or id > len(timers):
+				if id == 0 or id > len(state.timers):
 					pass
 				else:
-					del timers[id]
+					del state.timers[id]
 				returndoc = "IMO RETURN OF NEUTRINO SUCKS"
 			else:
 				returndoc = "UNHANDLED METHOD"
@@ -735,13 +753,12 @@ mute: %d""" % (1 if IS_MUTED else 0,)
 				returndoc = "off" # or on :P
 		elif lastComp == "volume":
 			if 'status' in req.args:
-				if IS_MUTED: returndoc = '1'
-				else: returndoc = '0'
+				returndoc = '1' if state.isMuted() else '0'
 			elif 'mute' in req.args:
-				IS_MUTED = True
+				state.setMuted(True)
 				returndoc = 'mute'
 			elif 'unmute' in req.args:
-				IS_MUTED = False
+				state.setMuted(False)
 				returndoc = 'unmute'
 			else:
 				# gui does not really care about return and i don't feel like implementing this
@@ -759,9 +776,7 @@ mute: %d""" % (1 if IS_MUTED else 0,)
 				returndoc = "UNHANDLED METHOD"
 # CUSTOM
 		elif lastComp == "RESET":
-			IS_MUTED = False
-			setupMovies()
-			setupTimers()
+			state.reset()
 			returndoc = "reset of demo server triggered"
 		elif lastComp == '':
 			# XXX: this actually indicates a trailing slash, but we use this to detect requests for /
@@ -786,8 +801,6 @@ Oh, I almost forgot: to change the listening port, just add the one you want to 
 		return returndoc
 
 def main(port):
-	setupMovies()
-	setupTimers()
 	site = server.Site(Simple())
 	print "Listening on port", port
 	reactor.listenTCP(port, site)
