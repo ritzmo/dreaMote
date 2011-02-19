@@ -708,18 +708,21 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 		elif lastComp == "epg":
 			isXml = req.args.get('xml')
 			isXml = True if isXml and isXml[0] == 'true' else False
-			sRef = req.args.get('channelId')
+			sRef = req.args.get('channelId') or req.args.get('channelid') # XXX: api suggest channelid is correct though channelId seems to be ok too
 			sRef = sRef and sRef[0]
-			details = reg.args.get('details')
+			sname = req.args.get('channel_name')
+			sname = sname and sname[0]
+			details = req.args.get('details')
 			details = True if details and details[0] == 'true' else False
-			max = reg.args.get('max')
+			max = req.args.get('max')
 			max = int(max[0]) if max and max[0] else -1
 			if not isXml or not details or max == -1:
 				returndoc = "UNHANDLED METHOD"
 			else:
-				if sRef != "d175": returndoc = "UNHANDLED METHOD"
-				else:
+				if sRef and sRef in ("d175", "2718f001d175") or sname and sname == "Demo Service":
 					return EPGSERVICE_NEUTRINO
+				else:
+					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "timer":
 			action = req.args.get('action')
 			action = action and action[0]
