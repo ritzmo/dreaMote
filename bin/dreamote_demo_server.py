@@ -795,7 +795,7 @@ Since parts of the functionality removes information from the database (e.g. del
 <a href="/RESET">Just click here!</a><br />
 <pre>So have fun testing your software...
 
-Oh, I almost forgot: to change the listening port, just add the one you want to the command line (e.g. python bin/dreaMote_demo_server.py 31337)</pre>
+Oh, I almost forgot: to change the listening port, just add the one you want to the command line (e.g. python bin/dreamote_demo_server.py 31337)</pre>
 </body></html>"""
 		else:
 			returndoc = "UNHANDLED DOCUMENT"
