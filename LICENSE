@@ -120,3 +120,6 @@ according to it's license as found in the corresponding folder.
 
 Both Classes/NSData+Base64.h and Classes/NSData+Base64.m are slightly modified
 copies of Matt Gallagher's Base64 implementation for iOS.
+
+Any file below the Classes/Appirater folder is part of Appirater by Arash Payan
+and licensed unter the MIT license.

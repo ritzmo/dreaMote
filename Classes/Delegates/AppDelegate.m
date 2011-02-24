@@ -13,6 +13,7 @@
 #import "NSArray+ArrayFromData.h"
 #import "UIDevice+SystemVersion.h"
 
+#import "Appirater.h"
 #import "RemoteConnectorObject.h"
 
 #if IS_FULL()
@@ -131,6 +132,9 @@
 	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];
 
+	// don't prompt for rating if launched with url to avoid (possibly) showing two alerts
+	BOOL promptForRating = YES;
+
 	// for some reason handleOpenURL did not get called in my tests on iOS prior to 4.0
 	// so we call it here manually… the worst thing that can happen is that the data
 	// gets parsed twice so we have a little more computation to do.
@@ -138,7 +142,9 @@
 	if(url && ![UIDevice runsIos4OrBetter])
 	{
 		[self application:application handleOpenURL:url];
+		promptForRating = NO;
 	}
+	[Appirater appLaunched:promptForRating];
 
 	return YES;
 }
@@ -180,8 +186,9 @@
 }
 
 /* back to foreground */
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)applicationWillEnterForeground:(UIApplication *)application
 {
+	[Appirater appEnteredForeground:YES];
 	if(wasSleeping)
 	{
 		[tabBarController viewWillAppear:YES];

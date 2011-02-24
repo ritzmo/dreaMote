@@ -257,6 +257,12 @@
 		DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */; };
 		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
+		DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1D882D13167AE800A6F3CE /* Appirater.m */; };
+		DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1D882D13167AE800A6F3CE /* Appirater.m */; };
+		DA1D883D1316800300A6F3CE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D883C1316800300A6F3CE /* CFNetwork.framework */; };
+		DA1D88411316800B00A6F3CE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D88401316800B00A6F3CE /* SystemConfiguration.framework */; };
+		DA1D88CA1316863E00A6F3CE /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D88401316800B00A6F3CE /* SystemConfiguration.framework */; };
+		DA1D88CB1316864300A6F3CE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D883C1316800300A6F3CE /* CFNetwork.framework */; };
 		DA2713270D84056800C25B85 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
 		DA27136C0D84071100C25B85 /* EventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27136B0D84071100C25B85 /* EventTableViewCell.m */; };
 		DA27463212CF71DA000B490B /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */; };
@@ -532,6 +538,10 @@
 		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
+		DA1D882C13167AE800A6F3CE /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
+		DA1D882D13167AE800A6F3CE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
+		DA1D883C1316800300A6F3CE /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		DA1D88401316800B00A6F3CE /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DA2713250D84056800C25B85 /* EventListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListController.h; sourceTree = "<group>"; };
 		DA2713260D84056800C25B85 /* EventListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventListController.m; sourceTree = "<group>"; };
 		DA27136A0D84071100C25B85 /* EventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventTableViewCell.h; sourceTree = "<group>"; };
@@ -852,6 +862,8 @@
 				DA88832912E48B3800D4B710 /* libxml2.dylib in Frameworks */,
 				DA4E0C4A12F19EFC00022A1B /* libsqlite3.dylib in Frameworks */,
 				DA67D705130D4A4200953B16 /* MessageUI.framework in Frameworks */,
+				DA1D883D1316800300A6F3CE /* CFNetwork.framework in Frameworks */,
+				DA1D88411316800B00A6F3CE /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -866,6 +878,8 @@
 				DA165F3A12E9CA2700A6D894 /* QuartzCore.framework in Frameworks */,
 				DA165F3B12E9CA2700A6D894 /* libxml2.dylib in Frameworks */,
 				DA67D68D130D4A1F00953B16 /* MessageUI.framework in Frameworks */,
+				DA1D88CA1316863E00A6F3CE /* SystemConfiguration.framework in Frameworks */,
+				DA1D88CB1316864300A6F3CE /* CFNetwork.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -875,6 +889,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DA1D882B13167AE800A6F3CE /* Appirater */,
 				DA2F329012D514BF00583612 /* Categories */,
 				DAF0D5490E38FF70001F7CF1 /* Cells */,
 				DAF0D54B0E39000F001F7CF1 /* Connector */,
@@ -904,13 +919,15 @@
 			isa = PBXGroup;
 			children = (
 				DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */,
+				DA1D883C1316800300A6F3CE /* CFNetwork.framework */,
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */,
+				DA88832812E48B3800D4B710 /* libxml2.dylib */,
 				DA67D68C130D4A1E00953B16 /* MessageUI.framework */,
 				DAC7023112D2FCEE00C53E37 /* QuartzCore.framework */,
+				DA1D88401316800B00A6F3CE /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
-				DA88832812E48B3800D4B710 /* libxml2.dylib */,
-				DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -1124,6 +1141,15 @@
 				DAB469CE130E8DED00B95BC3 /* iTunesArtwork */,
 			);
 			path = Lite;
+			sourceTree = "<group>";
+		};
+		DA1D882B13167AE800A6F3CE /* Appirater */ = {
+			isa = PBXGroup;
+			children = (
+				DA1D882C13167AE800A6F3CE /* Appirater.h */,
+				DA1D882D13167AE800A6F3CE /* Appirater.m */,
+			);
+			path = Appirater;
 			sourceTree = "<group>";
 		};
 		DA27462F12CF71BD000B490B /* IntelligentSplitViewController */ = {
@@ -1947,6 +1973,7 @@
 				DA372DAC12F22A5200FF97C4 /* SwipeTableView.m in Sources */,
 				DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */,
 				DA323A5813075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
+				DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2088,6 +2115,7 @@
 				DADCDC7512F2F22D00C0E7A2 /* SwipeTableView.m in Sources */,
 				DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */,
 				DA323A5913075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
+				DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

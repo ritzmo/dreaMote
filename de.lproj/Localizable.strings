@@ -233,6 +233,9 @@
 /* No comment provided by engineer. */
 "Error retrieving Data" = "Konnte keine Daten empfangen";
 
+/* Title of alert when sending/saving of email failed */
+"Error sending email!" = "Konnte E-Mail nicht senden!";
+
 /* No comment provided by engineer. */
 "Event" = "Sendung";
 
@@ -283,6 +286,9 @@
 
 /* Title of SearchHistoryListController */
 "History" = "Verlauf";
+
+/* No comment provided by engineer. */
+"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Wenn euch %@ gefällt, nehmen Sie sich bitte einen Moment Zeit für eine Bewertung. Vielen Dank!";
 
 /* No comment provided by engineer. */
 "Image Version" = "Image Version";
@@ -413,6 +419,9 @@
 "No similar Events" = "Keine ähnlichen Sendungen";
 
 /* No comment provided by engineer. */
+"No, Thanks" = "Nein, Danke";
+
+/* No comment provided by engineer. */
 "None" = "Keine";
 
 /* Message type */
@@ -432,6 +441,12 @@
 
 /* No comment provided by engineer. */
 "Now/Next in Servicelist" = "Erweiterte Senderliste";
+
+/* No comment provided by engineer. */
+"OPlayer" = "OPlayer";
+
+/* No comment provided by engineer. */
+"OPlayer Lite" = "OPlayer Lite";
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";
@@ -484,6 +499,9 @@
 /* Title of Radio mode of ServiceListController */
 "Radio Services" = "Radiosender";
 
+/* No comment provided by engineer. */
+"Rate %@" = "%@ bewerten";
+
 /* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
 "Really add all items in this folder?" = "Wirklich alle Dateien in diesem Ordner hinzufügen?";
 
@@ -501,6 +519,9 @@
 
 /* Release to refresh status */
 "Release to refresh..." = "Loslassen zum Aktualisieren...";
+
+/* No comment provided by engineer. */
+"Remind me later" = "Später erinnern";
 
 /* No comment provided by engineer. */
 "Remote Box Type" = "Receivertyp";
@@ -543,6 +564,9 @@
 
 /* No comment provided by engineer. */
 "Select Service" = "Sender auswählen";
+
+/* Title of ServiceZapListController */
+"Select type of zap" = "Womit umschalten?";
 
 /* No comment provided by engineer. */
 "Send" = "Senden";
@@ -717,4 +741,7 @@
 
 /* No comment provided by engineer. */
 "Zap" = "Umschalten";
+
+/* No comment provided by engineer. */
+"Zap on receiver" = "Auf receiver umschalten";
 
