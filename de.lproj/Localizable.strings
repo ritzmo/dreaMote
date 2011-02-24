@@ -168,7 +168,7 @@
 "Could not add song to playlist" = "Lied konnte nicht zur Wiedergabeliste hinzugefügt werden";
 
 /* No comment provided by engineer. */
-"Could not determine remote box type." = "Konnte Receivertyp nicht autoamtisch erkennen!";
+"Could not determine remote box type." = "Konnte Receivertyp nicht automatisch erkennen!";
 
 /* No comment provided by engineer. */
 "Could not open connection to database." = "Verbindung zur Datenbank konnte nicht hergestellt werden.";
