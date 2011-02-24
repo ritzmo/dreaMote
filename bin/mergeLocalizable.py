@@ -19,7 +19,7 @@ def find(dirname, recursive, *args):
 
 def generateUpdateTemplate():
 	print "Updating template"
-	sourcefiles = find("Classes", True, 'm')
+	sourcefiles = find("Classes", True, 'm', 'h')
 	try: removeUpdateTemplate()
 	except Exception: pass
 	os.system("genstrings -bigEndian -o . %s" % ' '.join(sourcefiles))
