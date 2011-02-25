@@ -70,6 +70,7 @@
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	tableView.delegate = self;
 	tableView.dataSource = self;
+	tableView.allowsSelectionDuringEditing = YES;
 	//tableView.rowHeight = 48.0;
 	//tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 
@@ -178,6 +179,13 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(indexPath.section == 1) return nil;
+	return indexPath;
+}
+
+/* row was selected */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 #if IS_LITE()
 	if(indexPath.section == 2)
 	{
@@ -193,26 +201,26 @@
 										   kMessageTimeout, [stdDefaults integerForKey:kMessageTimeout],
 										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote]]];
 		[[UIApplication sharedApplication] openURL:url];
-
-		return nil;
 	}
+	else
 #endif
 	// Only do something in section 0
-	if(indexPath.section != 0)
-		return nil;
-
-	// FIXME: seen some crashlogs which supposedly ran into this case...
-	if([_connections count] <= indexPath.row)
+	if(indexPath.section == 0)
 	{
-		NSLog(@"ERROR: about to select out of bounds, aborting...");
-		return nil;
+		// FIXME: seen some crashlogs which supposedly ran into this case...
+		if(indexPath.row < [_connections count])
+		{
+			// Open ConfigViewController for selected item
+			UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
+			[self.navigationController pushViewController: targetViewController animated: YES];
+		}
+		else
+		{
+			NSLog(@"ERROR: about to select out of bounds, aborting...");
+		}
 	}
-
-	// Open ConfigViewController for selected item
-	UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
-	[self.navigationController pushViewController: targetViewController animated: YES];
-
-	return indexPath;
+	else
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /* indent when editing? */
@@ -456,14 +464,15 @@
 	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
 }
 
-/* about to hide */
-- (void)viewWillDisappear:(BOOL)animated
+/* did hide */
+- (void)viewDidDisappear:(BOOL)animated
 {
 	// in case we changed something, sometimes changes got lost
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
-	if(self.editing)
-		[self setEditing: NO animated: YES];
+	// unset editing if not going into a subview
+	if(self.editing && [(UITableView *)self.view indexPathForSelectedRow] == nil)
+		[self setEditing:NO animated:animated];
 }
 
 @end
