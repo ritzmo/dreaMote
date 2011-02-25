@@ -242,6 +242,13 @@ enum neutrinoMessageTypes {
 		return nil;
 	}
 
+	// split view on ipad
+	if(!bouquet)
+	{
+		[self indicateSuccess:delegate];
+		return nil;
+	}
+
 	NSArray *resultNodes = nil;
 
 	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];

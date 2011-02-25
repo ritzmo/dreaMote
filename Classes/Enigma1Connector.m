@@ -263,6 +263,13 @@ enum enigma1MessageTypes {
 		return nil;
 	}
 
+	// split view on ipad
+	if(!bouquet)
+	{
+		[self indicateSuccess:delegate];
+		return nil;
+	}
+
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
