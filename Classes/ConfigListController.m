@@ -210,9 +210,40 @@
 		// FIXME: seen some crashlogs which supposedly ran into this case...
 		if(indexPath.row < [_connections count])
 		{
-			// Open ConfigViewController for selected item
-			UIViewController *targetViewController = [ConfigViewController withConnection: [_connections objectAtIndex: indexPath.row]: indexPath.row];
-			[self.navigationController pushViewController: targetViewController animated: YES];
+			// open ConfigViewController if editing
+			if(self.editing)
+			{
+				UIViewController *tvc = [ConfigViewController withConnection:[_connections objectAtIndex:indexPath.row] :indexPath.row];
+				[self.navigationController pushViewController:tvc animated:YES];
+			}
+			// else connect to this host
+			else
+			{
+				NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+				NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
+
+				if(![RemoteConnectorObject connectTo:indexPath.row])
+				{
+					// error connecting... what now?
+					UIAlertView *notification = [[UIAlertView alloc]
+												 initWithTitle:NSLocalizedString(@"Error", @"")
+													   message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
+													  delegate:nil
+											 cancelButtonTitle:@"OK"
+											 otherButtonTitles:nil];
+					[notification show];
+					[notification release];
+				}
+				else
+				{
+					NSArray *reloads = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:connectedIdx inSection:0], indexPath, nil];
+					[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
+
+					// post notification
+					[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+				}
+			}
+
 		}
 		else
 		{
@@ -270,7 +301,8 @@
 	{
 		/* Connections */
 		case 0:
-			sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			sourceCell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 
 			/*!
