@@ -739,7 +739,7 @@ enum enigma1MessageTypes {
 	if(type == kScreenshotTypeOSD)
 	{
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot" relativeToURL: _baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot&display=yes" relativeToURL: _baseAddress];
 
 		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
 													  returningResponse:nil
@@ -758,14 +758,17 @@ enum enigma1MessageTypes {
 																  error:nil];
 
 		const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-
 		const NSRange myRange = [myString rangeOfString: @"/root/tmp/screenshot.jpg"];
+		const NSRange myRangeBmp = [myString rangeOfString: @"/root/tmp/screenshot.bmp"];
 		[myString release];
-		if(!myRange.length)
-			return nil;
 
 		// Generate URI
-		myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: _baseAddress];
+		if(myRange.length)
+			myURI = [NSURL URLWithString: @"/root/tmp/screenshot.jpg" relativeToURL: _baseAddress];
+		else if(myRangeBmp.length)
+			myURI = [NSURL URLWithString: @"/root/tmp/screenshot.bmp" relativeToURL: _baseAddress];
+		else
+			return nil;
 
 		data = [SynchronousRequestReader sendSynchronousRequest:myURI
 											  returningResponse:nil
