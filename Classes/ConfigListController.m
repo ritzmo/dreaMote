@@ -207,19 +207,32 @@
 	// Only do something in section 0
 	if(indexPath.section == 0)
 	{
+		NSUInteger upperBound = [_connections count];
+		if(self.editing) ++upperBound;
+
 		// FIXME: seen some crashlogs which supposedly ran into this case...
-		if(indexPath.row < [_connections count])
+		if(indexPath.row < upperBound)
 		{
 			// open ConfigViewController if editing
 			if(self.editing)
 			{
-				UIViewController *tvc = [ConfigViewController withConnection:[_connections objectAtIndex:indexPath.row] :indexPath.row];
-				[self.navigationController pushViewController:tvc animated:YES];
+				// new connection
+				if(indexPath.row == 0)
+				{
+					UIViewController *targetViewController = [ConfigViewController newConnection];
+					[self.navigationController pushViewController: targetViewController animated: YES];
+					[targetViewController release];
+				}
+				// edit existing one
+				else
+				{
+					UIViewController *tvc = [ConfigViewController withConnection:[_connections objectAtIndex:indexPath.row-1] :indexPath.row-1];
+					[self.navigationController pushViewController:tvc animated:YES];
+				}
 			}
 			// else connect to this host
 			else
 			{
-				NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 				NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
 
 				if(![RemoteConnectorObject connectTo:indexPath.row])
@@ -478,6 +491,7 @@
 	// Add new connection
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
+		[tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
 		[targetViewController release];
