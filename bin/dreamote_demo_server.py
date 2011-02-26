@@ -423,9 +423,196 @@ EPGSERVICE_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
 
 TYPE_E2 = 0
 TYPE_E1 = 1
+TYPE_NEUTRINO = 2
 
 movies = []
 timers = []
+
+class Timer:
+	weekdayMon = 1 << 0
+	weekdayTue = 1 << 1
+	weekdayWed = 1 << 2
+	weekdayThu = 1 << 3
+	weekdayFri = 1 << 4
+	weekdaySat = 1 << 5
+	weekdaySun = 1 << 6
+
+	afterEventNothing = 0
+	afterEventStandby = 1
+	afterEventDeepstandby = 2
+	afterEventAuto = 3
+
+	def __init__(self, sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated):
+		self.sRef = sRef
+		self.begin = begin
+		self.end = end
+		self.name = name
+		self.description = description
+		self.eit = eit
+		self.disabled = disabled
+		self.justplay = justplay
+		self.afterevent = afterevent
+		self.repeated = repeated
+
+	def getType(self):
+		PlaylistEntry=1
+		SwitchTimerEntry=2
+		RecTimerEntry=4
+		recDVR=8
+		recVCR=16
+		recNgrab=131072
+		stateWaiting=32
+		stateRunning=64
+		statePaused=128
+		stateFinished=256
+		stateError=512
+		errorNoSpaceLeft=1024
+		errorUserAborted=2048
+		errorZapFailed=4096
+		errorOutdated=8192
+		boundFile=16384
+		isSmartTimer=32768
+		isRepeating=262144
+		doFinishOnly=65536
+		doShutdown=67108864
+		doGoSleep=134217728
+		Su=524288
+		Mo=1048576
+		Tue=2097152
+		Wed=4194304
+		Thu=8388608
+		Fr=16777216
+		Sa=33554432
+
+		now = time.time()
+		if self.end < now: typedata = stateFinished
+		elif self.begin < now: typedata = stateRunning
+		else: typedata = stateWaiting
+
+		if self.afterevent == self.afterEventStandby: typedata |= doGoSleep
+		elif self.afterevent == self.afterEventDeepstandby: typedata |= doShutdown
+		else:
+			pass # TODO: ???
+
+		# TODO: disabled == statePaused ?
+		if self.justplay: typedata |= SwitchTimerEntry
+		else: typedata |= RecTimerEntry
+
+		typedata |= recDVR # XXX: correctly placed here?
+
+		if self.repeated:
+			typedata |= isRepeating
+			if self.repeated & self.weekdaySun: typedata |= Su
+			if self.repeated & self.weekdayMon: typedata |= Mo
+			if self.repeated & self.weekdayTue: typedata |= Tue
+			if self.repeated & self.weekdayWed: typedata |= Wed
+			if self.repeated & self.weekdayThu: typedata |= Thu
+			if self.repeated & self.weekdayFri: typedata |= Fr
+			if self.repeated & self.weekdaySat: typedata |= Sa
+
+		return typedata
+
+	type = property(getType)
+
+	def getRepresentation(self, type):
+		now = time.time()
+		if type == TYPE_E2:
+			timerstate = 0
+			if self.end < now: timerstate = 3
+			elif self.begin < now: timerstate = 2
+			return TIMERTEMPLATE_E2 % (self.sRef, 0, self.name, self.description, self.begin, self.end, self.end-self.begin, self.begin-10, self.justplay, self.afterevent, timerstate, self.repeated)
+		elif type == TYPE_E1:
+			PlaylistEntry=1
+			SwitchTimerEntry=2
+			RecTimerEntry=4
+			recDVR=8
+			recVCR=16
+			recNgrab=131072
+			stateWaiting=32
+			stateRunning=64
+			statePaused=128
+			stateFinished=256
+			stateError=512
+			errorNoSpaceLeft=1024
+			errorUserAborted=2048
+			errorZapFailed=4096
+			errorOutdated=8192
+			boundFile=16384
+			isSmartTimer=32768
+			isRepeating=262144
+			doFinishOnly=65536
+			doShutdown=67108864
+			doGoSleep=134217728
+			Su=524288
+			Mo=1048576
+			Tue=2097152
+			Wed=4194304
+			Thu=8388608
+			Fr=16777216
+			Sa=33554432
+
+			if self.end < now:
+				typedata = stateFinished
+				status = "FINISHED"
+			elif self.begin < now:
+				typedata = stateRunning
+				status = "ACTIVE"
+			else:
+				typedata = stateWaiting
+				status = "ACTIVE" # ???
+
+			if self.afterevent == self.afterEventStandby:
+				typedata |= doGoSleep
+				postaction = "Standby"
+			elif self.afterevent == self.afterEventDeepstandby:
+				typedata |= doShutdown
+				postaction = "Shutdown"
+			else:
+				# TODO: all ???
+				postaction = "None"
+
+			# TODO: disabled == statePaused ?
+			if self.justplay:
+				typedata |= SwitchTimerEntry
+				action = "ZAP"
+			else:
+				typedata |= RecTimerEntry
+				action = "DVR"
+
+			typedata |= recDVR # XXX: correctly placed here?
+
+			if self.repeated:
+				typeString = "REPEATING"
+				day = ""
+				typedata |= isRepeating
+				if self.repeated & self.weekdaySun:
+					typedata |= Su
+					days += "Su "
+				if self.repeated & self.weekdayMon:
+					typedata |= Mo
+					days += " Mo"
+				if self.repeated & self.weekdayTue:
+					typedata |= Tue
+					days += "Tue "
+				if self.repeated & self.weekdayWed:
+					typedata |= Wed
+					days += "Wed "
+				if self.repeated & self.weekdayThu:
+					typedata |= Thu
+					days += "Thu "
+				if self.repeated & self.weekdayFri:
+					typedata |= Fr
+					days += "Fr "
+				if self.repeated & self.weekdaySat:
+					typedata |= Sa
+					days += "Sa "
+			else:
+				typeString = "SINGLE"
+				days = ""
+
+			dateString = time.strftime('%d.%m.%Y', time.localtime(self.begin))
+			timeString = time.strftime('%H:%M', time.localtime(self.begin))
+			return TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, self.sRef, dateString, timeString, self.begin, self.end-self.begin, self.description)
 
 class State:
 	def __init__(self):
@@ -464,36 +651,20 @@ class State:
 		return False
 
 	def addTimer(self, sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated):
-		self.timers.append((sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated))
+		timer = Timer(sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated)
+		self.timers.append(timer)
+		return timer
 
 	def getTimers(self, type):
 		timerstrings = ''
-		now = time.time()
 		for timer in self.timers:
-			sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
-			timerstate = 0
-			if end < now: timerstate = 3
-			elif begin < now: timerstate = 2
-
-			if type == TYPE_E2:
-				timerstrings += TIMERTEMPLATE_E2 % (sRef, 0, name, description, begin, end, end-begin, begin-10, justplay, afterevent, timerstate, repeated)
-			elif type == TYPE_E1:
-				typeString = 'NO TYPESTRING YET'
-				days = 'NO DAYS YET'
-				action = 'NO ACTION YET'
-				postaction = 'NO POSTACTION YET'
-				status = 'NO STATUS YET'
-				typedata = -1
-				dateString = 'NO DATE YET'
-				timeString = 'NO TIME YET'
-				timerstrings += TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, sRef, dateString, timeString, begin, end-begin, description)
+			timerstrings += timer.getRepresentation(type)
 		return timerstrings
 
 	def deleteTimer(self, sRef, begin, end):
 		idx = 0
 		for timer in self.timers:
-			sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
-			if sRef == sRef and begin == begin and end == end:
+			if timer.sRef == sRef and timer.begin == begin and timer.end == end:
 				del self.timers[idx]
 				return True
 			idx += 1
@@ -501,8 +672,7 @@ class State:
 
 	def findTimer(self, findSref, findBegin):
 		for timer in self.timers:
-			sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
-			if sRef == findSref and begin == findBegin: return timer
+			if timer.sRef == findSref and timer.begin == findBegin: return timer
 		return None
 
 	def setupTimers(self):
@@ -724,10 +894,11 @@ class Simple(resource.Resource):
 		elif lastComp == "deleteTimerEvent":
 			sRef = get('ref')
 			start = int(get('start', -1))
+			type = int(get('type', -1))
 			force = True if get('force', 'no') == "yes" else False
 			timer = state.findTimer(sRef, start)
 			now = time.time()
-			if timer and timer[1] < now and not timer[2] < now and not force:
+			if timer and timer.type == type and timer.begin < now and not timer.end < now and not force:
 				newUri = req.uri.replace('force=no', 'force=yes')
 				if not 'force=yes' in newUri and '?' in newUri:
 					newUri += '&force=yes'
