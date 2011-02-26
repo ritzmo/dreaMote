@@ -233,7 +233,7 @@
 			// else connect to this host
 			else
 			{
-				NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
+				NSUInteger connectedIdx = [RemoteConnectorObject getConnectedId];
 
 				if(![RemoteConnectorObject connectTo:indexPath.row])
 				{
@@ -247,13 +247,17 @@
 					[notification show];
 					[notification release];
 				}
-				else
+				else if(connectedIdx != indexPath.row)
 				{
 					NSArray *reloads = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:connectedIdx inSection:0], indexPath, nil];
 					[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
 
 					// post notification
 					[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+				}
+				else
+				{
+					[tableView deselectRowAtIndexPath:indexPath animated:YES];
 				}
 			}
 
