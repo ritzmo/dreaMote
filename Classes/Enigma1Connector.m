@@ -9,6 +9,7 @@
 #import "Enigma1Connector.h"
 
 #import "Objects/Enigma/Service.h"
+#import "Objects/Enigma/Timer.h"
 #import "Objects/Generic/Service.h"
 #import "Objects/Generic/Volume.h"
 #import "Objects/TimerProtocol.h"
@@ -410,7 +411,8 @@ enum enigma1MessageTypes {
 				result.resulttext = [NSString stringWithFormat: NSLocalizedString(@"Could not add new timer (%@)!", @""), result.resulttext];
 			}
 			// could not re-add old timer
-			else {
+			else
+			{
 				result.result = NO;
 				result.resulttext = [NSString stringWithFormat: NSLocalizedString(@"Could not add new timer and failed to retain original one! (%@)", @""), result2.resulttext];
 			}
@@ -427,9 +429,14 @@ enum enigma1MessageTypes {
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	Result *result = [Result createResult];
+	NSString *append = nil;
+	if([oldTimer respondsToSelector:@selector(getTypedata)])
+		append = [NSString stringWithFormat:@"&type=%d", [(EnigmaTimer *)oldTimer getTypedata]];
+	else
+		append = @"";
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/deleteTimerEvent?ref=%@&start=%d&force=yes%@", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], append] relativeToURL: _baseAddress];
 
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
 												  returningResponse:nil
