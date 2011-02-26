@@ -300,6 +300,47 @@ TIMERTEMPLATE_E1 = """<timer>
    </event>
   </timer>"""
 
+QUERYDELETETIMER_E1 = """<html>
+    <head>
+        <title>Question</title>
+        <link rel="stylesheet" type="text/css" href="webif.css">
+        <script>
+            function yes()
+            {
+                document.location = "%s";
+            }
+            function no()
+            {
+                document.close();
+            }
+        </script>
+    </head>
+    <body>
+        <b>ATTENTION</b>: This timer event is currently active.
+        <br>
+        Do you really want to delete this timer event?
+        <br><br>
+        <input name="yes" type="button" style="width: 100px; height: 22px; background-color: #1FCB12" value="YES" onClick=javascript:yes()>
+        <input name="no" type="button" style="width: 100px; height: 22px; background-color: #CB0303" value="NO" onClick=javascript:no()>
+    </body>
+</html>"""
+
+DELETETIMERCOMPLETE_E1 = """<html>
+    <head>
+        <title>Complete</title>
+        <link rel="stylesheet" type="text/css" href="webif.css">
+        <script>
+            function init()
+            {
+                setTimeout("window.close()", 5000);
+            }
+        </script>
+    </head>
+    <body onLoad="init()" onUnload="parent.window.opener.location.reload(true)">
+        Timer event deleted successfully.
+    </body>
+</html>"""
+
 MOVIELIST_E1 = """<?xml version="1.0" encoding="UTF-8"?>
 <movies>
    %s
@@ -458,6 +499,12 @@ class State:
 			idx += 1
 		return False
 
+	def findTimer(self, findSref, findBegin):
+		for timer in self.timers:
+			sRef, begin, end, name, description, eit, disabled, justplay, afterevent, repeated = timer
+			if sRef == findSref and begin == findBegin: return timer
+		return None
+
 	def setupTimers(self):
 		del self.timers[:]
 		self.addTimer('1:0:1:445D:453:1:C00000:0:0:0:', 1205093400, 1205097600, "Demo Timer", "Timer description", 0, 0, 0, 0, 0)
@@ -477,6 +524,9 @@ state = State()
 class Simple(resource.Resource):
 	isLeaf = True
 	def render_GET(self, req):
+		def get(name, default=None):
+			ret = req.args.get(name)
+			return ret[0] if ret else default
 		lastComp = req.postpath[-1]
 # ENIGMA2
 		if lastComp == "getcurrent":
@@ -654,9 +704,36 @@ class Simple(resource.Resource):
 			timerstrings = state.getTimers(TYPE_E1)
 			returndoc = TIMERLIST_E1 % (timerstrings,)
 		elif lastComp == "addTimerEvent":
+			sRef = get('ref')
+			# TODO: support string time, not just unix timestamps
+			start = int(get('start', -1))
+			duration = int(get('duration', 0))
+			descr = get('descr', '')
+			after_event = int(get('after_event', 0))
+			action = get('action')
+			repeating = True if get('type', '') == "repeating" else False
+			mo = get('mo', '') == 'on'
+			tu = get('tu', '') == 'on'
+			we = get('we', '') == 'on'
+			th = get('th', '') == 'on'
+			fr = get('fr', '') == 'on'
+			sa = get('so', '') == 'on'
+			su = get('su', '') == 'on'
+			# TODO: are there additional parameters I left out b/c dreamote does not use them?
 			returndoc = "UNHANDLED METHOD"
 		elif lastComp == "deleteTimerEvent":
-			returndoc = "UNHANDLED METHOD"
+			sRef = get('ref')
+			start = int(get('start', -1))
+			force = True if get('force', 'no') == "yes" else False
+			timer = state.findTimer(sRef, start)
+			now = time.time()
+			if timer and timer[1] < now and not timer[2] < now and not force:
+				newUri = req.uri.replace('force=no', 'force=yes')
+				if not 'force=yes' in newUri and '?' in newUri:
+					newUri += '&force=yes'
+				returndoc = QUERYDELETETIMER_E1 % (newUri,)
+			else:
+				returndoc = DELETETIMERCOMPLETE_E1
 ### /TIMERS
 		elif lastComp == "deleteMovie":
 			sRef = req.args.get('ref')
