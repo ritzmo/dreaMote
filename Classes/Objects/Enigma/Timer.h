@@ -47,4 +47,9 @@
  */
 - (id)initWithNode: (CXMLNode *)node;
 
+/*!
+ @brief Translate timer flags into common representation.
+ */
+- (NSInteger)getTypedata;
+
 @end

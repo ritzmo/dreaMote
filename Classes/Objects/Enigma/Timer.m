@@ -12,16 +12,6 @@
 
 #import "../Generic/Service.h"
 
-/*!
- @brief Private functions of ConfigListController.
- */
-@interface EnigmaTimer()
-/*!
- @brief Translate timer flags into common representation.
- */
-- (void)getTypedata;
-@end
-
 @implementation EnigmaTimer
 
 @synthesize valid = _isValid;
@@ -379,7 +369,7 @@
 	return;
 }
 
-- (void)getTypedata
+- (NSInteger)getTypedata
 {
 	const NSArray *resultNodes = [_node nodesForXPath:@"typedata" error:nil];
 	for(CXMLElement *currentChild in resultNodes)
@@ -427,8 +417,9 @@
 			_repeated = 0;
 
 		_typedataSet = YES;
-		return;
+		return typeData;
 	}
+	return 0;
 }
 
 @end
