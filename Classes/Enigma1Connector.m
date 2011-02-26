@@ -384,7 +384,7 @@ enum enigma1MessageTypes {
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	const NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
-	result.result = (myRange.length > 0);
+	result.result = (myRange.length != NSNotFound);
 	result.resulttext = myString;
 	[myString release];
 	return result;
@@ -438,7 +438,7 @@ enum enigma1MessageTypes {
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	const NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
-	result.result = (myRange.length > 0);
+	result.result = (myRange.length != NSNotFound);
 	result.resulttext = myString;
 	[myString release];
 	return result;
@@ -605,7 +605,7 @@ enum enigma1MessageTypes {
 
 	const NSRange myRange = [myString rangeOfString: @"mute: 1"];
 	[myString release];
-	return (myRange.length > 0);
+	return (myRange.length != NSNotFound);
 }
 
 - (Result *)setVolume:(NSInteger) newVolume
@@ -622,7 +622,7 @@ enum enigma1MessageTypes {
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	const NSRange myRange = [myString rangeOfString: @"Volume set."];
-	result.result = (myRange.length > 0);
+	result.result = (myRange.length != NSNotFound);
 	result.resulttext = myString;
 	[myString release];
 	return result;
@@ -704,7 +704,7 @@ enum enigma1MessageTypes {
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	const NSRange myRange = [myString rangeOfString: @"+ok"];
-	result.result = (myRange.length > 0);
+	result.result = (myRange.length != NSNotFound);
 	result.resulttext = myString;
 	[myString release];
 	return result;

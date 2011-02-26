@@ -529,7 +529,7 @@ enum enigma2MessageTypes {
 
 	const NSRange myRange = [myString rangeOfString: @"<e2ismuted>True</e2ismuted>"];
 	[myString release];
-	return (myRange.length > 0);
+	return (myRange.length != NSNotFound);
 }
 
 - (Result *)setVolume:(NSInteger) newVolume
