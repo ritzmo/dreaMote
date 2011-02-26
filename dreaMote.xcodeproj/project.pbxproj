@@ -257,6 +257,7 @@
 		DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */; };
 		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
+		DA19C6EA1319B400006E4A0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA19C6E91319B400006E4A0D /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1D882D13167AE800A6F3CE /* Appirater.m */; };
 		DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1D882D13167AE800A6F3CE /* Appirater.m */; };
 		DA1D883D1316800300A6F3CE /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D883C1316800300A6F3CE /* CFNetwork.framework */; };
@@ -536,6 +537,7 @@
 		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
+		DA19C6E91319B400006E4A0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		DA1D882C13167AE800A6F3CE /* Appirater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Appirater.h; sourceTree = "<group>"; };
 		DA1D882D13167AE800A6F3CE /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		DA1D883C1316800300A6F3CE /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -878,6 +880,7 @@
 				DA67D68D130D4A1F00953B16 /* MessageUI.framework in Frameworks */,
 				DA1D88CA1316863E00A6F3CE /* SystemConfiguration.framework in Frameworks */,
 				DA1D88CB1316864300A6F3CE /* CFNetwork.framework in Frameworks */,
+				DA19C6EA1319B400006E4A0D /* iAd.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -920,6 +923,7 @@
 				DA1D883C1316800300A6F3CE /* CFNetwork.framework */,
 				1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
+				DA19C6E91319B400006E4A0D /* iAd.framework */,
 				DA4E0C4912F19EFC00022A1B /* libsqlite3.dylib */,
 				DA88832812E48B3800D4B710 /* libxml2.dylib */,
 				DA67D68C130D4A1E00953B16 /* MessageUI.framework */,

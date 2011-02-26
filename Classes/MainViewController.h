@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#if IS_LITE()
+#import "iAd/ADBannerView.h"
+#endif
+
 @class OtherListController;
 
 /*!
@@ -18,10 +22,14 @@
  If no connection is configured yet the user is immediately redirected to the
  configuration screen.
  */
-@interface MainViewController : UITabBarController <UITabBarControllerDelegate>
+@interface MainViewController : UITabBarController <UITabBarControllerDelegate
+#if IS_LITE()
+													, ADBannerViewDelegate
+#endif
+													>
 {
-	IBOutlet UITabBar		*myTabBar; /*!< @brief Tab bar. */
-	NSMutableArray	*menuList; /*!< @brief Item List. */
+	IBOutlet UITabBar *myTabBar; /*!< @brief Tab bar. */
+	NSMutableArray *menuList; /*!< @brief Item List. */
 @private
 	UIViewController *_bouquetController; /*!< @brief Bouquet List Tab. */
 	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
@@ -31,6 +39,10 @@
 	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */
 	UIViewController *_serviceController; /*!< @brief Service List Tab. */
 	UIViewController *_timerController;  /*!< @brief Timer Tab. */
+#if IS_LITE()
+	id _adBannerView;
+	BOOL _adBannerViewIsVisible;	
+#endif
 }
 
 /*!
