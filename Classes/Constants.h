@@ -101,6 +101,9 @@
 #define kConnectionTest			@"connectionTest"
 #define kMessageTimeout			@"messageTimeout"
 #define kPrefersSimpleRemote	@"prefersSimpleRemote"
+#define kDatabaseVersion		@"databaseVersion" // refers to the epg cache
+
+#define kCurrentDatabaseVersion 2
 
 // shared e2 xml element names
 extern const char *kEnigma2Servicereference;

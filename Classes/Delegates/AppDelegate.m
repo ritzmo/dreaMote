@@ -61,67 +61,46 @@
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *testValue = nil;
 
-	// 0.1-0 configuration
-	testValue = [stdDefaults stringForKey: kRemoteHost];
-	if(testValue != nil)
+	// not configured at all configuration
+	if((testValue = [stdDefaults stringForKey: kActiveConnection]) == nil)
 	{
-		// Build Connection Dict from old defaults
-		NSDictionary *connection = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-									[stdDefaults stringForKey: kRemoteHost], kRemoteHost,
-									[stdDefaults stringForKey: kUsername], kUsername,
-									[stdDefaults stringForKey: kPassword], kPassword,
-									[NSNumber numberWithInteger:
-												[stdDefaults integerForKey: kConnector]], kConnector,
-									nil];
-
-		// Load, edit and save new connections array
-		[RemoteConnectorObject loadConnections];
-		NSMutableArray *connections = [RemoteConnectorObject getConnections];
-		[connections addObject: connection];
-		[RemoteConnectorObject saveConnections];
-
-		// Remove old defaults
-		[stdDefaults removeObjectForKey: kRemoteHost];
-		[stdDefaults removeObjectForKey: kUsername];
-		[stdDefaults removeObjectForKey: kPassword];
-		[stdDefaults removeObjectForKey: kConnector];
-
-		// Register new items
+		NSString *databaseVersion = [NSString stringWithFormat:@"%d", kCurrentDatabaseVersion];
+		// since no default values have been set (i.e. no preferences file created), create it here
 		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 									 activeConnectionId, kActiveConnection,
 									 @"NO", kVibratingRC,
 									 @"YES", kConnectionTest,
 									 @"10", kMessageTimeout,
 									 @"YES", kPrefersSimpleRemote,
+									 databaseVersion, kDatabaseVersion,
 									 nil];
 
 		[stdDefaults registerDefaults: appDefaults];
 		[stdDefaults synchronize];
 	}
-	// 0.2-0 configuration
-	else if((testValue = [stdDefaults stringForKey: kActiveConnection]) == nil)
-	{
-		// since no default values have been set (i.e. no preferences file created), create it here
-		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-										activeConnectionId, kActiveConnection,
-										@"NO", kVibratingRC,
-										@"YES", kConnectionTest,
-										@"10", kMessageTimeout,
-										@"YES", kPrefersSimpleRemote,
-										nil];
-
-		[stdDefaults registerDefaults: appDefaults];
-		[stdDefaults synchronize];
-	}
-	// 0.2+
+	// 1.0+ configuration
 	else
 	{
-		activeConnectionId = [NSNumber numberWithInteger: [testValue integerValue]];
-		// 0.2.808+
-		if([stdDefaults stringForKey: kPrefersSimpleRemote] == nil)
+		activeConnectionId = [NSNumber numberWithInteger: [stdDefaults integerForKey:kActiveConnection]];
+
+		NSInteger integerVersion = -1;
+		if((testValue = [stdDefaults stringForKey: kDatabaseVersion]) != nil) // 1.1+
 		{
-			[stdDefaults setBool:YES forKey:kPrefersSimpleRemote];
-			[stdDefaults synchronize];
+			integerVersion = [testValue integerValue];
+		}
+		// delete database if it exists and has older (or no) version
+		if(integerVersion < kCurrentDatabaseVersion)
+		{
+			const NSFileManager *fileManager = [NSFileManager defaultManager];
+			NSString *databasePath = [[kEPGCachePath stringByExpandingTildeInPath] retain];
+			if([fileManager fileExistsAtPath:databasePath])
+			{
+				[fileManager removeItemAtPath:databasePath error:nil];
+			}
+
+			// new database will be created automatically, so bump version here
+			NSString *databaseVersion = [NSString stringWithFormat:@"%d", kCurrentDatabaseVersion];
+			[stdDefaults setValue:databaseVersion forKey:kDatabaseVersion];
 		}
 	}
 

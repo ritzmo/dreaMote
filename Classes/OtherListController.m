@@ -282,7 +282,15 @@
 	}
 
 	// Add/Remove Event Search
+	/*!
+	 @note Full version does emulated epg search in cache, so only check for native
+	 search ability in lite version.
+	 */
+#if IS_FULL()
+	if(YES)
+#else
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
+#endif
 	{
 		if(![menuList containsObject: _eventSearchDictionary])
 		{

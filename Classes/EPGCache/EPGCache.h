@@ -105,6 +105,14 @@
  @brief Stop a previously started transaction.
  */
 - (void)stopTransaction;
+
+/*!
+ @brief Perform search in EPG Cache.
+
+ @param name Text to search in title.
+ @param delegate Delegate for callbacks
+ */
+- (void)searchEPGForTitle:(NSString *)name delegate:(NSObject<EventSourceDelegate> *)delegate;
 @end
 
 

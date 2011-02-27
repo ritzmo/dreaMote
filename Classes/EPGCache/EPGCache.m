@@ -17,6 +17,12 @@
 
 #define kMaxRetries	10
 
+#define AssignStringIfSet(column, target, obj) do {\
+	char *target = (char *)sqlite3_column_text(compiledStatement, column);\
+	if(target)\
+		obj.target = [NSString stringWithUTF8String:target];\
+	} while(0);
+
 static EPGCache *_sharedInstance = nil;
 
 @interface EPGCache()
@@ -263,6 +269,7 @@ static EPGCache *_sharedInstance = nil;
 	sqlite3_bind_text(insert_stmt, 5, [event.sdescription UTF8String], -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(insert_stmt, 6, [event.edescription UTF8String], -1, SQLITE_TRANSIENT);
 	sqlite3_bind_text(insert_stmt, 7, [_service.sref UTF8String], -1, SQLITE_TRANSIENT);
+	sqlite3_bind_text(insert_stmt, 8, [_service.sname UTF8String], -1, SQLITE_TRANSIENT);
 
 	if(sqlite3_step(insert_stmt) != SQLITE_DONE)
 	{
@@ -298,7 +305,7 @@ static EPGCache *_sharedInstance = nil;
 	retVal = (sqlite3_open([_databasePath UTF8String], &database) == SQLITE_OK);
 	if(retVal)
 	{
-		const char *stmt = "INSERT INTO events (eit, begin, end, title, sdescription, edescription, sref) VALUES (?, ?, ?, ?, ?, ?, ?);";
+		const char *stmt = "INSERT INTO events (eit, begin, end, title, sdescription, edescription, sref, sname) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 		if(sqlite3_prepare_v2(database, stmt, -1, &insert_stmt, NULL) != SQLITE_OK)
 		{
 			sqlite3_close(database);
@@ -428,13 +435,13 @@ static EPGCache *_sharedInstance = nil;
 					event.service = service;
 
 					// read event data
-					event.eit = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
+					AssignStringIfSet(0, eit, event)
 					event.begin = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 1)];
 					event.end = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 2)];
-					event.title = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 3)];
-					event.sdescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 4)];
-					event.edescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 5)];
-					service.sref = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 6)];
+					AssignStringIfSet(3, title, event)
+					AssignStringIfSet(4, sdescription, event)
+					AssignStringIfSet(5, edescription, event)
+					AssignStringIfSet(6, sref, service)
 
 					// send to delegate
 					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
@@ -483,6 +490,90 @@ static EPGCache *_sharedInstance = nil;
 - (NSObject<EventProtocol> *)getPreviousEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
 {
 	return [self getEvent:event onService:service returnNext:NO];
+}
+
+/* perform simple epg search */
+- (void)searchEPGForTitle:(NSString *)name delegate:(NSObject<EventSourceDelegate> *)delegate
+{
+	sqlite3 *db = NULL;
+	NSError *error = nil;
+	[self checkDatabase];
+
+	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	{
+		const char *stmt = "SELECT * FROM events WHERE title LIKE ? ORDER BY begin ASC;";
+		sqlite3_stmt *compiledStatement = NULL;
+		int rc = SQLITE_BUSY;
+		NSInteger retries = 0;
+		do
+		{
+			int rc = sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL);
+
+			/* database busy and still retries */
+			if(rc == SQLITE_BUSY && retries < kMaxRetries)
+			{
+				usleep(200);
+				++retries;
+			}
+			/* database free */
+			else if(rc == SQLITE_OK)
+			{
+				NSString *searchString = [[NSString alloc ] initWithFormat:@"%%%@%%", name];
+				sqlite3_bind_text(compiledStatement, 1, [searchString UTF8String], -1, SQLITE_TRANSIENT);
+				[searchString release];
+				while(sqlite3_step(compiledStatement) == SQLITE_ROW)
+				{
+					GenericEvent *event = [[GenericEvent alloc] init];
+					GenericService *service = [[GenericService alloc] init];
+					event.service = service;
+
+					// read event data
+					AssignStringIfSet(0, eit, event)
+					event.begin = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 1)];
+					event.end = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 2)];
+					AssignStringIfSet(3, title, event)
+					AssignStringIfSet(4, sdescription, event)
+					AssignStringIfSet(5, edescription, event)
+					AssignStringIfSet(6, sref, service)
+					AssignStringIfSet(7, sname, service)
+
+					// send to delegate
+					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
+					[service release];
+					[event release];
+				}
+				break; // XXX: why do I need to do this?
+			}
+			/* unhandled error or kMaxRetries hit */
+			else
+			{
+				error = [NSError errorWithDomain:@"myDomain"
+											code:110
+										userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Unable to compile SQL-Query (Error-Code %d).", @""), rc] forKey:NSLocalizedDescriptionKey]];
+				break;
+			}
+		} while(rc == SQLITE_BUSY);
+
+		sqlite3_finalize(compiledStatement);
+	}
+	else
+	{
+		error = [NSError errorWithDomain:@"myDomain"
+									code:111
+								userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Could not open connection to database.", @"") forKey:NSLocalizedDescriptionKey]];
+	}
+
+	// handle error/success
+	if(error)
+	{
+		[self indicateError:delegate error:error];
+	}
+	else
+	{
+		[self indicateSuccess:delegate];
+	}
+
+	sqlite3_close(db);
 }
 
 @end
