@@ -428,6 +428,35 @@ TYPE_NEUTRINO = 2
 movies = []
 timers = []
 
+PlaylistEntry=1
+SwitchTimerEntry=2
+RecTimerEntry=4
+recDVR=8
+recVCR=16
+recNgrab=131072
+stateWaiting=32
+stateRunning=64
+statePaused=128
+stateFinished=256
+stateError=512
+errorNoSpaceLeft=1024
+errorUserAborted=2048
+errorZapFailed=4096
+errorOutdated=8192
+boundFile=16384
+isSmartTimer=32768
+isRepeating=262144
+doFinishOnly=65536
+doShutdown=67108864
+doGoSleep=134217728
+Su=524288
+Mo=1048576
+Tue=2097152
+Wed=4194304
+Thu=8388608
+Fr=16777216
+Sa=33554432
+
 class Timer:
 	weekdayMon = 1 << 0
 	weekdayTue = 1 << 1
@@ -454,36 +483,23 @@ class Timer:
 		self.afterevent = afterevent
 		self.repeated = repeated
 
-	def getType(self):
-		PlaylistEntry=1
-		SwitchTimerEntry=2
-		RecTimerEntry=4
-		recDVR=8
-		recVCR=16
-		recNgrab=131072
-		stateWaiting=32
-		stateRunning=64
-		statePaused=128
-		stateFinished=256
-		stateError=512
-		errorNoSpaceLeft=1024
-		errorUserAborted=2048
-		errorZapFailed=4096
-		errorOutdated=8192
-		boundFile=16384
-		isSmartTimer=32768
-		isRepeating=262144
-		doFinishOnly=65536
-		doShutdown=67108864
-		doGoSleep=134217728
-		Su=524288
-		Mo=1048576
-		Tue=2097152
-		Wed=4194304
-		Thu=8388608
-		Fr=16777216
-		Sa=33554432
+	def setTypedata(self, action, afterevent, repeating, mo, tu, we, th, fr, sa, su):
+		if (afterevent & doGoSleep) > 0: self.afterevent = self.afterEventStandby
+		elif (afterevent & doShutdown) > 0: self.afterevent = self.afterEventDeepstandby
+		else: self.afterevent = self.afterEventNothing
 
+		self.justplay = action == "zap"
+
+		if repeating:
+			if mo: self.repeated |= self.weekdayMon
+			if tu: self.repeated |= self.weekdayTue
+			if we: self.repeated |= self.weekdayWed
+			if th: self.repeated |= self.weekdayThu
+			if fr: self.repeated |= self.weekdayFri
+			if sa: self.repeated |= self.weekdaySat
+			if su: self.repeated |= self.weekdaySun
+
+	def getType(self):
 		now = time.time()
 		if self.end < now: typedata = stateFinished
 		elif self.begin < now: typedata = stateRunning
@@ -496,9 +512,9 @@ class Timer:
 
 		# TODO: disabled == statePaused ?
 		if self.justplay: typedata |= SwitchTimerEntry
-		else: typedata |= RecTimerEntry
-
-		typedata |= recDVR # XXX: correctly placed here?
+		else:
+			typedata |= RecTimerEntry
+			typedata |= recDVR # TODO: add ngrab?
 
 		if self.repeated:
 			typedata |= isRepeating
@@ -522,35 +538,6 @@ class Timer:
 			elif self.begin < now: timerstate = 2
 			return TIMERTEMPLATE_E2 % (self.sRef, 0, self.name, self.description, self.begin, self.end, self.end-self.begin, self.begin-10, self.justplay, self.afterevent, timerstate, self.repeated)
 		elif type == TYPE_E1:
-			PlaylistEntry=1
-			SwitchTimerEntry=2
-			RecTimerEntry=4
-			recDVR=8
-			recVCR=16
-			recNgrab=131072
-			stateWaiting=32
-			stateRunning=64
-			statePaused=128
-			stateFinished=256
-			stateError=512
-			errorNoSpaceLeft=1024
-			errorUserAborted=2048
-			errorZapFailed=4096
-			errorOutdated=8192
-			boundFile=16384
-			isSmartTimer=32768
-			isRepeating=262144
-			doFinishOnly=65536
-			doShutdown=67108864
-			doGoSleep=134217728
-			Su=524288
-			Mo=1048576
-			Tue=2097152
-			Wed=4194304
-			Thu=8388608
-			Fr=16777216
-			Sa=33554432
-
 			if self.end < now:
 				typedata = stateFinished
 				status = "FINISHED"
@@ -577,13 +564,13 @@ class Timer:
 				action = "ZAP"
 			else:
 				typedata |= RecTimerEntry
+				# TODO: add ngrab o0
 				action = "DVR"
-
-			typedata |= recDVR # XXX: correctly placed here?
+				typedata |= recDVR
 
 			if self.repeated:
 				typeString = "REPEATING"
-				day = ""
+				days = ""
 				typedata |= isRepeating
 				if self.repeated & self.weekdaySun:
 					typedata |= Su
@@ -612,7 +599,7 @@ class Timer:
 
 			dateString = time.strftime('%d.%m.%Y', time.localtime(self.begin))
 			timeString = time.strftime('%H:%M', time.localtime(self.begin))
-			return TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, self.sRef, dateString, timeString, self.begin, self.end-self.begin, self.description)
+			return TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, self.sRef, dateString, timeString, self.begin, self.end-self.begin, self.name)
 
 class State:
 	def __init__(self):
@@ -674,6 +661,14 @@ class State:
 		for timer in self.timers:
 			if timer.sRef == findSref and timer.begin == findBegin: return timer
 		return None
+
+	def findTimerOverlap(self, findSref, findBegin, findEnd):
+		for timer in self.timers:
+			# XXX: we don't support "same transponder" policy... but then again, there is only one demo service :-)
+			# NOTE: different service and begin/end in our timespan or begins before us and ends after us
+			if timer.sRef != findSref and ((timer.begin > findBegin and timer.begin < findEnd) or (timer.end > findBegin and timer.end < findEnd) or (timer.begin < findBegin and timer.end > findEnd)):
+				return True
+		return False
 
 	def setupTimers(self):
 		del self.timers[:]
@@ -881,7 +876,7 @@ class Simple(resource.Resource):
 			descr = get('descr', '')
 			after_event = int(get('after_event', 0))
 			action = get('action')
-			repeating = True if get('type', '') == "repeating" else False
+			repeating = True if get('timer', '') == "repeating" else False
 			mo = get('mo', '') == 'on'
 			tu = get('tu', '') == 'on'
 			we = get('we', '') == 'on'
@@ -890,7 +885,12 @@ class Simple(resource.Resource):
 			sa = get('so', '') == 'on'
 			su = get('su', '') == 'on'
 			# TODO: are there additional parameters I left out b/c dreamote does not use them?
-			returndoc = "UNHANDLED METHOD"
+			if state.findTimerOverlap(sRef, start, start+duration):
+				returndoc = "Timer event could not be added because time of the event overlaps with an already existing event."
+			else:
+				timer = state.addTimer(sRef, start, start+duration, descr, '', -1, 0, 0, 0, 0)
+				timer.setTypedata(action, after_event, repeating, mo, tu, we, th, fr, sa, su)
+				returndoc = "Timer event was created successfully."
 		elif lastComp == "deleteTimerEvent":
 			sRef = get('ref')
 			start = int(get('start', -1))
@@ -904,6 +904,7 @@ class Simple(resource.Resource):
 					newUri += '&force=yes'
 				returndoc = QUERYDELETETIMER_E1 % (newUri,)
 			else:
+				if timer: state.deleteTimer(timer.sRef, timer.begin, timer.end)
 				returndoc = DELETETIMERCOMPLETE_E1
 ### /TIMERS
 		elif lastComp == "deleteMovie":
