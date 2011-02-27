@@ -207,7 +207,6 @@ static NSDictionary *_connection;
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
 {
-	NSParameterAssert(_sharedRemoteConnector != nil);
 	return _sharedRemoteConnector;
 }
 
