@@ -58,7 +58,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesInstantRecord) ||
 		(feature == kFeaturesSatFinder) ||
 		(feature == kFeaturesSimpleRepeated) ||
-		(feature == kFeaturesCurrent);
+		(feature == kFeaturesCurrent) ||
+		(feature == kFeaturesTimerTitle);
 }
 
 - (const NSUInteger const)getMaxVolume

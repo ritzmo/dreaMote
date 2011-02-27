@@ -330,10 +330,15 @@
 	[_timerJustplay setOn: newTimer.justplay];
 
 	[(UITableView *)self.view reloadData];
+	NSIndexPath *scrollPath = nil;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerTitle])
+		scrollPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	else
+		scrollPath = [NSIndexPath indexPathForRow:0 inSection:2];
 	[(UITableView *)self.view
-						scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
-						atScrollPosition: UITableViewScrollPositionTop
-						animated: NO];
+						scrollToRowAtIndexPath:scrollPath
+						atScrollPosition:UITableViewScrollPositionTop
+						animated:NO];
 	
 	// Eventually remove popover
 	if(self.popoverController != nil) {
@@ -750,6 +755,26 @@
 #pragma mark UITableView delegates
 #pragma mark -
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+#ifndef defaultSectionHeaderHeight
+#define defaultSectionHeaderHeight 34
+#endif
+	switch(section)
+	{
+		case 0:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
+				return defaultSectionHeaderHeight;
+			return 0;
+		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
+				return defaultSectionHeaderHeight;
+			return 0;
+		default:
+			return defaultSectionHeaderHeight;
+	}
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	NSInteger sections = 6;
@@ -773,9 +798,13 @@
 		
 	switch (section) {
 		case 0:
-			return NSLocalizedString(@"Title", @"");
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
+				return NSLocalizedString(@"Title", @"");
+			return nil;
 		case 1:
-			return NSLocalizedString(@"Description", @"");
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
+				return NSLocalizedString(@"Description", @"");
+			return nil;
 		case 2:
 			return NSLocalizedString(@"General", @"in timer settings dialog");
 		case 3:
@@ -797,10 +826,23 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 2
-	   && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
-		return 2;
-	return 1;
+	switch(section)
+	{
+		case 0:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
+				return 1;
+			return 0;
+		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
+				return 1;
+			return 0;
+		case 2:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
+				return 2;
+			return 1;
+		default:
+			return 1;
+	}
 }
 
 // utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.

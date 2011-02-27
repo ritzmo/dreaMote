@@ -33,7 +33,8 @@
 	return
 		(feature == kFeaturesRecordInfo) ||
 		(feature == kFeaturesSingleBouquet) ||
-		(feature == kFeaturesRecordDelete);
+		(feature == kFeaturesRecordDelete) ||
+		(feature == kFeaturesTimerTitle);
 }
 
 - (const NSUInteger const)getMaxVolume

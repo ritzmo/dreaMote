@@ -113,6 +113,14 @@ enum connectorFeatures {
 	 request to an external app.
 	 */
 	kFeaturesStreaming,
+	/*!
+	 @brief Timers have a title.
+	 */
+	kFeaturesTimerTitle,
+	/*!
+	 @brief Timer has a description
+	 */
+	kFeaturesTimerDescription,
 };
 
 /*!
