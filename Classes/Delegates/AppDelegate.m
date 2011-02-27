@@ -81,7 +81,7 @@
 	// 1.0+ configuration
 	else
 	{
-		activeConnectionId = [NSNumber numberWithInteger: [stdDefaults integerForKey:kActiveConnection]];
+		activeConnectionId = [NSNumber numberWithInteger:[testValue integerValue]];
 
 		NSInteger integerVersion = -1;
 		if((testValue = [stdDefaults stringForKey: kDatabaseVersion]) != nil) // 1.1+
@@ -92,7 +92,7 @@
 		if(integerVersion < kCurrentDatabaseVersion)
 		{
 			const NSFileManager *fileManager = [NSFileManager defaultManager];
-			NSString *databasePath = [[kEPGCachePath stringByExpandingTildeInPath] retain];
+			NSString *databasePath = [kEPGCachePath stringByExpandingTildeInPath];
 			if([fileManager fileExistsAtPath:databasePath])
 			{
 				[fileManager removeItemAtPath:databasePath error:nil];
