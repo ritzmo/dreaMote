@@ -673,6 +673,9 @@
 /* No comment provided by engineer. */
 "Type" = "Typ";
 
+/* Connection failed due to improper authentication */
+"Unable to authenticate. Wrong password?" = "Authentifizierung fehlgeschlagen. Passwort fehlerhaft?";
+
 /* No comment provided by engineer. */
 "Unable to compile SQL-Query (Error-Code %d)." = "Konnte SQL-Anfrage nicht ausführen (Fehler-Code %d).";
 
