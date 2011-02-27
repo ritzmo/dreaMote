@@ -868,7 +868,7 @@ class Simple(resource.Resource):
 		elif lastComp == "serviceepg":
 			sRef = req.args.get('ref')
 			sRef = sRef and sRef[0]
-			return EPGSERVICE_E1
+			returndoc = EPGSERVICE_E1
 ### TIMERS
 		elif lastComp == "timers":
 			timerstrings = state.getTimers(TYPE_E1)
