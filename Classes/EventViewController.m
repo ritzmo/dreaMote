@@ -251,6 +251,12 @@
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	/*!
+	 @note the way we handle swipes leads to unintuitive results
+	 for searches, so just do nothing instead
+	 */
+	if(_isSearch) return;
+
 	//if(tableView.lastSwipe & twoFingers)
 	{
 		NSObject<EventProtocol> *newEvent = nil;
