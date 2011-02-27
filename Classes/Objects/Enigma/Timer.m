@@ -384,9 +384,9 @@
 		else // stateWaiting or unknown
 			_state =  kTimerStateWaiting;
 
-		if(typeData & doShutdown)
+		if(typeData & doGoSleep)
 			_afterevent = kAfterEventStandby;
-		else if(typeData & doGoSleep)
+		else if(typeData & doShutdown)
 			_afterevent = kAfterEventDeepstandby;
 		else
 			_afterevent = kAfterEventNothing;
