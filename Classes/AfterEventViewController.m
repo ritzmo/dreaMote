@@ -43,6 +43,18 @@
 	return [afterEventViewController autorelease];
 }
 
+- (void)setSelectedItem:(NSUInteger)newSelectedItem
+{
+	_selectedItem = newSelectedItem;
+	[(UITableView *)self.view reloadData];
+}
+
+- (void)setShowAuto:(BOOL)newShowAuto
+{
+	_showAuto = newShowAuto;
+	[(UITableView *)self.view reloadData];
+}
+
 /* dealloc */
 - (void)dealloc
 {

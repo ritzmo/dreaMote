@@ -45,6 +45,12 @@
 	return [simpleRepeatedViewController autorelease];
 }
 
+- (void)setRepeated:(NSInteger)newRepeated
+{
+	_repeated = newRepeated;
+	[(UITableView *)self.view reloadData];
+}
+
 /* dealloc */
 - (void)dealloc
 {
