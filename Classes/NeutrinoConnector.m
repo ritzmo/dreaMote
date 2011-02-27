@@ -315,8 +315,14 @@ enum neutrinoMessageTypes {
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	// Refresh Service Cache if empty, we need it later when resolving service references
-	if(!_cachedBouquetsXML)
-		[self refreshBouquetsXMLCache];
+	/*!
+	 @note we check for retain count > 1 here because otherwise if we call this method to
+	 refresh the cache it would do a reload because of retainCount == 1 which is unwanted.
+	 */
+	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] > 1)
+	{
+		[self maybeRefreshBouquetsXMLCache];
+	}
 
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: _baseAddress];
