@@ -233,6 +233,9 @@
 /* No comment provided by engineer. */
 /*"Error retrieving Data" = "Error retrieving Data";*/
 
+/* Title of alert when sending/saving of email failed */
+/*"Error sending email!" = "Error sending email!";*/
+
 /* No comment provided by engineer. */
 "Event" = "Event";
 
@@ -283,6 +286,9 @@
 
 /* Title of SearchHistoryListController */
 /*"History" = "History";*/
+
+/* No comment provided by engineer. */
+/*"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!";*/
 
 /* No comment provided by engineer. */
 /*"Image Version" = "Image Version";*/
@@ -413,6 +419,9 @@
 "No similar Events" = "No similar Events";
 
 /* No comment provided by engineer. */
+/*"No, Thanks" = "No, Thanks";*/
+
+/* No comment provided by engineer. */
 /*"None" = "None";*/
 
 /* Message type */
@@ -432,6 +441,12 @@
 
 /* No comment provided by engineer. */
 /*"Now/Next in Servicelist" = "Now/Next in Servicelist";*/
+
+/* No comment provided by engineer. */
+/*"OPlayer" = "OPlayer";*/
+
+/* No comment provided by engineer. */
+/*"OPlayer Lite" = "OPlayer Lite";*/
 
 /* No comment provided by engineer. */
 /*"OSD" = "OSD";*/
@@ -484,6 +499,9 @@
 /* Title of Radio mode of ServiceListController */
 "Radio Services" = "Radio Services";
 
+/* No comment provided by engineer. */
+/*"Rate %@" = "Rate %@";*/
+
 /* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
 /*"Really add all items in this folder?" = "Really add all items in this folder?";*/
 
@@ -501,6 +519,9 @@
 
 /* Release to refresh status */
 /*"Release to refresh..." = "Release to refresh...";*/
+
+/* No comment provided by engineer. */
+/*"Remind me later" = "Remind me later";*/
 
 /* No comment provided by engineer. */
 /*"Remote Box Type" = "Remote Box Type";*/
@@ -543,6 +564,9 @@
 
 /* No comment provided by engineer. */
 "Select Service" = "Select Service";
+
+/* Title of ServiceZapListController */
+/*"Select type of zap" = "Select type of zap";*/
 
 /* No comment provided by engineer. */
 /*"Send" = "Send";*/
@@ -717,4 +741,7 @@
 
 /* No comment provided by engineer. */
 "Zap" = "Zap";
+
+/* No comment provided by engineer. */
+/*"Zap on receiver" = "Zap on receiver";*/
 
