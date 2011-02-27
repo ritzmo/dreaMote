@@ -62,7 +62,7 @@ def updateLanguage(lang):
 				newtext[idx] = '"%s" = "%s";\n' % (key, value)
 			else:
 				value = match.group(2)
-				print "Found untranslated string:", key, "=", value
+				print "Found untranslated string:", key
 				# TODO: add interactive translation mechanism
 				newtext[idx] = '/*"%s" = "%s";*/\n' % (key, value)
 
