@@ -196,15 +196,23 @@ enum enigma1MessageTypes {
  </bouquet>
  </bouquets>
  */
-- (NSError *)refreshBouquetsXMLCache
+- (NSError *)maybeRefreshBouquetsXMLCache
 {
-	NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
-	NSError *returnValue = nil;
+	@synchronized(self)
+	{
+		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
+		{
+			[_cachedBouquetsXML release];
+			NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
+			NSError *returnValue = nil;
 
-	const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
-	_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
-	[streamReader release];
-	return returnValue;
+			const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
+			_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
+			[streamReader release];
+			return returnValue;
+		}
+	}
+	return nil;
 }
 
 - (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
@@ -215,22 +223,18 @@ enum enigma1MessageTypes {
 		return nil;
 	}
 
-	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
+	NSError *error = [self maybeRefreshBouquetsXMLCache];
+	if(error)
 	{
-		[_cachedBouquetsXML release];
-		NSError *error = [self refreshBouquetsXMLCache];
-		if(error)
-		{
-			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
-			fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-			[delegate performSelectorOnMainThread: @selector(addService:)
-										withObject: fakeService
-									 waitUntilDone: NO];
-			[fakeService release];
+		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: fakeService
+								waitUntilDone: NO];
+		[fakeService release];
 
-			[self indicateError:delegate error:error];
-			return nil;
-		}
+		[self indicateError:delegate error:error];
+		return nil;
 	}
 
 	NSArray *resultNodes = nil;
@@ -253,7 +257,7 @@ enum enigma1MessageTypes {
 	}
 
 	[self indicateSuccess:delegate];
-	return nil;
+	return _cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -277,22 +281,18 @@ enum enigma1MessageTypes {
 	resultNodes = [bouquet nodesForXPath: @"service" error: nil];
 	if(!resultNodes || ![resultNodes count])
 	{
-		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
+		NSError *error = [self maybeRefreshBouquetsXMLCache];
+		if(error)
 		{
-			[_cachedBouquetsXML release];
-			NSError *error = [self refreshBouquetsXMLCache];
-			if(error)
-			{
-				NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
-				fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-				[delegate performSelectorOnMainThread: @selector(addService:)
-											withObject: fakeService
-										 waitUntilDone: NO];
-				[fakeService release];
+			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+			fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+			[delegate performSelectorOnMainThread: @selector(addService:)
+									   withObject: fakeService
+									waitUntilDone: NO];
+			[fakeService release];
 
-				[self indicateError:delegate error:error];
-				return nil;
-			}
+			[self indicateError:delegate error:error];
+			return nil;
 		}
 
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
