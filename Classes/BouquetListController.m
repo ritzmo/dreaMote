@@ -228,6 +228,16 @@
 		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
 	}
 }
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	if(_isSplit)
+	{
+		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
+		if(idxPath)
+			[self tableView:_tableView willSelectRowAtIndexPath:idxPath];
+	}
+	[super dataSourceDelegate:dataSource finishedParsingDocument:document];
+}
 
 #pragma mark -
 #pragma mark ServiceSourceDelegate
