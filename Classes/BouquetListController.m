@@ -14,6 +14,13 @@
 
 #import "ServiceTableViewCell.h"
 
+@interface BouquetListController()
+/*!
+ @brief done editing
+ */
+- (void)doneAction:(id)sender;
+@end
+
 @implementation BouquetListController
 
 @synthesize serviceListController = _serviceListController;
@@ -147,6 +154,14 @@
 	else
 		self.navigationItem.leftBarButtonItem = nil;
 
+	if(_delegate)
+	{
+		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+																				target:self action:@selector(doneAction:)];
+		self.navigationItem.rightBarButtonItem = button;
+		[button release];
+	}
+
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)
 	{
@@ -165,6 +180,15 @@
 	}
 
 	[super viewWillAppear: animated];
+}
+
+/* cancel in delegate mode */
+- (void)doneAction:(id)sender
+{
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated: YES];
 }
 
 /* did appear */

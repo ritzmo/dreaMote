@@ -11,6 +11,13 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
+@interface MessageTypeViewController()
+/*!
+ @brief done editing
+ */
+- (void)doneAction:(id)sender;
+@end
+
 @implementation MessageTypeViewController
 
 @synthesize selectedItem = _selectedItem;
@@ -56,6 +63,20 @@
 
 	self.view = tableView;
 	[tableView release];
+
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+																			target:self action:@selector(doneAction:)];
+	self.navigationItem.rightBarButtonItem = button;
+	[button release];
+}
+
+/* finish */
+- (void)doneAction:(id)sender
+{
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
 }
 
 /* rotate with device */

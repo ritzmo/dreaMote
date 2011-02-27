@@ -423,7 +423,13 @@
 		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
 		[targetViewController setDelegate: self];
 		if(IS_IPAD())
-			[self.navigationController presentModalViewController:targetViewController animated:YES];
+		{
+			UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
+			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
+			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
+			[self.navigationController presentModalViewController:navController animated:YES];
+			[navController release];
+		}
 		else
 			[self.navigationController pushViewController: targetViewController animated: YES];
 	}

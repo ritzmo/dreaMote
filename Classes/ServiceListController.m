@@ -20,6 +20,10 @@
 @interface ServiceListController()
 - (void)fetchNowData;
 - (void)fetchNextData;
+/*!
+ @brief done editing
+ */
+- (void)doneAction:(id)sender;
 
 /*!
  @brief Popover Controller.
@@ -232,12 +236,39 @@
 		self.navigationItem.rightBarButtonItem = multiEPG;
 		[multiEPG release];
 	}
+	// show "done" button if in delegate and single bouquet mode
+	else
+	{
+		const BOOL isSingleBouquet =
+			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+			&& (
+				[RemoteConnectorObject isSingleBouquet] ||
+				![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+		if(isSingleBouquet)
+		{
+			UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+																					target:self action:@selector(doneAction:)];
+			self.navigationItem.rightBarButtonItem = button;
+			[button release];
+		}
+	}
 #endif
 
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.sectionHeaderHeight = 0;
+}
+
+/* cancel in delegate mode */
+- (void)doneAction:(id)sender
+{
+	if(_delegate == nil) return;
+
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popToViewController:_delegate animated:YES];
 }
 
 /* about to appear */
