@@ -359,10 +359,24 @@ typedef enum
 			{
 				NSLog(@"Already got event... buggy SVDRP?");
 				[newEvent release];
+				newEvent = nil;
 			}
-			newEvent = [[GenericEvent alloc] init];
 
 			const NSArray *components = [line componentsSeparatedByString: @" "];
+			if([components count] < 4)
+			{
+				// NOTE: disabled for next release since the strings are final ;-)
+				/*
+				NSError *error = [NSError errorWithDomain:@"myDomain"
+													 code:111
+												 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Illegal response returned by VDR-server! Aborting.", @"") forKey:NSLocalizedDescriptionKey]];
+				[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+				[self indicateError:delegate error:error];
+				 */
+				break;
+			}
+
+			newEvent = [[GenericEvent alloc] init];
 			newEvent.eit = [components objectAtIndex: 1];
 			[newEvent setBeginFromString: [components objectAtIndex: 2]];
 			[newEvent setEndFromDurationString: [components objectAtIndex: 3]];
