@@ -15,6 +15,15 @@
 @synthesize ber = _ber;
 @synthesize agc = _agc;
 
+- (id)init
+{
+	if((self = [super init]))
+	{
+		_snrdb = -1;
+	}
+	return self;
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@> SNRdB: '%f dB'.\nSNR: '%i %'.\nBER: '%i'.\nAGC: '%i %'.\n", [self class], self.snrdb, self.snr, self.ber, self.agc];
