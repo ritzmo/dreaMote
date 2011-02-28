@@ -246,7 +246,7 @@ typedef enum
 		range = [name rangeOfString: @"," options: NSBackwardsSearch];
 		if(range.length)
 			name = [name substringToIndex: range.location];
-		newService.sname = name;
+		newService.sname = [name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 	}
 
 	// Last line
