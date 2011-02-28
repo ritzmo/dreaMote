@@ -347,12 +347,13 @@ typedef enum
 	NSObject<EventProtocol> *newEvent = nil;
 	while((line = [self readSocketLine]))
 	{
-		if([line length] < 5 || [line isEqualToString: @"215 End of EPG data"])
+		if([line length] < 5 || ![[line substringToIndex:3] isEqualToString:@"215"] || [line isEqualToString:@"215 End of EPG data"])
 		{
 			break;
 		}
 
-		if([[line substringToIndex: 5] isEqualToString: @"215-E"])
+		NSString *firstFive = [line substringToIndex:5];
+		if([firstFive isEqualToString:@"215-E"])
 		{
 			if(newEvent != nil)
 			{
@@ -366,22 +367,22 @@ typedef enum
 			[newEvent setBeginFromString: [components objectAtIndex: 2]];
 			[newEvent setEndFromDurationString: [components objectAtIndex: 3]];
 		}
-		else if([[line substringToIndex:5] isEqualToString: @"215-T"])
+		else if([firstFive isEqualToString:@"215-T"])
 		{
 			newEvent.title = [[line substringFromIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		}
-		else if([[line substringToIndex:5] isEqualToString: @"215-S"])
+		else if([firstFive isEqualToString:@"215-S"])
 		{
 			newEvent.sdescription = [[line substringFromIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		}
-		else if([[line substringToIndex:5] isEqualToString: @"215-D"])
+		else if([firstFive isEqualToString:@"215-D"])
 		{
 			NSMutableString *desc = [[[line substringFromIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
 			// replace | by \n
 			[desc replaceOccurrencesOfString:@"|" withString:@"\n" options:NSLiteralSearch range:NSMakeRange(0, [desc length])];
 			newEvent.edescription = desc;
 		}
-		else if([[line substringToIndex:5] isEqualToString: @"215-e"])
+		else if([firstFive isEqualToString:@"215-e"])
 		{
 			[delegate performSelectorOnMainThread: @selector(addEvent:)
 									   withObject: newEvent
