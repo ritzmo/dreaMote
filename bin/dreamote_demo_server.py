@@ -457,6 +457,14 @@ Thu=8388608
 Fr=16777216
 Sa=33554432
 
+SHUTDOWN = 1
+NEXTPROGRAM = 2
+ZAPTO = 3
+STANDBY = 4
+RECORD = 5
+REMIND = 6
+SLEEPTIMER = 7
+EXEC_PLUGIN = 8
 class Timer:
 	weekdayMon = 1 << 0
 	weekdayTue = 1 << 1
@@ -530,13 +538,13 @@ class Timer:
 
 	type = property(getType)
 
-	def getRepresentation(self, type):
+	def getRepresentation(self, type, useId=False):
 		now = time.time()
 		if type == TYPE_E2:
 			timerstate = 0
 			if self.end < now: timerstate = 3
 			elif self.begin < now: timerstate = 2
-			return TIMERTEMPLATE_E2 % (self.sRef, 0, self.name, self.description, self.begin, self.end, self.end-self.begin, self.begin-10, self.justplay, self.afterevent, timerstate, self.repeated)
+			return TIMERTEMPLATE_E2 % (self.sRef, self.eit, self.name, self.description, self.begin, self.end, self.end-self.begin, self.begin-10, self.justplay, self.afterevent, timerstate, self.repeated)
 		elif type == TYPE_E1:
 			if self.end < now:
 				typedata = stateFinished
@@ -600,6 +608,14 @@ class Timer:
 			dateString = time.strftime('%d.%m.%Y', time.localtime(self.begin))
 			timeString = time.strftime('%H:%M', time.localtime(self.begin))
 			return TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, self.sRef, dateString, timeString, self.begin, self.end-self.begin, self.name)
+		elif type == TYPE_NEUTRINO:
+			# XXX: demo only knows one service anyway
+			data = "2718f001d175" if useId else "Demo Service"
+			type = ZAPTO if self.justplay else RECORD
+			repeat = timer.repeated << 8 # XXX: only support weekdays for now
+			repcount = 0
+			announceTime = self.begin - 10
+			return "%d %d %d %d %d %d %d %s\n" % (self.eit, type, repeat, repcount, announceTime, self.begin, self.end, data)
 
 class State:
 	def __init__(self):
@@ -642,10 +658,10 @@ class State:
 		self.timers.append(timer)
 		return timer
 
-	def getTimers(self, type):
+	def getTimers(self, type, useId=False):
 		timerstrings = ''
 		for timer in self.timers:
-			timerstrings += timer.getRepresentation(type)
+			timerstrings += timer.getRepresentation(type, useId=useId)
 		return timerstrings
 
 	def deleteTimer(self, sRef, begin, end):
@@ -672,7 +688,7 @@ class State:
 
 	def setupTimers(self):
 		del self.timers[:]
-		self.addTimer('1:0:1:445D:453:1:C00000:0:0:0:', 1205093400, 1205097600, "Demo Timer", "Timer description", 0, 0, 0, 0, 0)
+		self.addTimer('1:0:1:445D:453:1:C00000:0:0:0:', 1205093400, 1205097600, "Demo Timer", "Timer description", 1, 0, 0, 0, 0)
 
 	def toggleMuted(self):
 		self.is_muted = not self.is_muted
@@ -973,24 +989,64 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 				else:
 					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "timer":
+			format = get('format')
+			if format is not None:
+				useId = True if useId == 'id' else False
 			action = req.args.get('action')
 			action = action and action[0]
-			if not action:
-				useId = req.args.get('format')
-				useId = True if useId and useId[0] == 'id' else False
-				data = "2718f001d175" if useId else "Demo Service"
-				# XXX: static response based on sample in nhttpd documentation which seemed to be buggy though
-				returndoc = "1 5 0 0 1034309516 1034284376 1034309576 "+data
-			elif action == "new" or action == "modify":
-				returndoc = "UNHANDLED METHOD"
+			# according to nhttpd source format != "" also results in timerlist
+			if not action or format is not None:
+				returndoc = state.getTimers(TYPE_NEUTRINO, useId=useId)
+			elif action == "new":
+				start = int(get('alarm', 0))
+				stop = int(get('stop', 0))
+				type = int(get('type', 0))
+				name = get('channel_id', get('channel_name', ''))
+
+				# check if this is the demo service
+				if name in ("2718f001d175", "Demo Service"):
+					sRef = '1:0:1:445D:453:1:C00000:0:0:0:'
+					timer = state.addTimer(sRef, start, stop, '', '', len(state.timers)+999, 0, 0, 0, 0)
+					timer.justplay = type == ZAPTO
+					returndoc = "IMO RETURN OF NEUTRINO SUCKS"
+				else:
+					returndoc = "WRONG SERVICE, YOU SUCK o0"
+			elif action == "modify":
+				# TODO: figure out behavior without given id
+				id = int(get('id', 0))
+				start = int(get('alarm', 0))
+				stop = int(get('stop', 0))
+				type = int(get('type', 0))
+				name = get('channel_id', get('channel_name', ''))
+				rep = int(get('rep', 0))
+				repcount = int(get('repcount', 0))
+
+				# check if this is the demo service
+				if name in ("2718f001d175", "Demo Service"):
+					name = '1:0:1:445D:453:1:C00000:0:0:0:'
+
+					idx = 0
+					for timer in state.timers:
+						if timer.eit == id:
+							timer.begin = start
+							timer.end = stop
+							timer.justplay = type == ZAPTO
+							timer.sref = name
+							break
+						idx += 1
+					returndoc = "IMO RETURN OF NEUTRINO SUCKS"
+				else:
+					returndoc = "WRONG SERVICE, YOU SUCK o0"
 			elif action == "remove":
-				# XXX: list currently has static response
 				id = req.args.get('id')
 				id = int(id) if id and id[0] else 0
-				if id == 0 or id > len(state.timers):
-					pass
-				else:
-					del state.timers[id]
+
+				idx = 0
+				for timer in state.timers:
+					if timer.eit == id:
+						del state.timers[id]
+						break
+					idx += 1
 				returndoc = "IMO RETURN OF NEUTRINO SUCKS"
 			else:
 				returndoc = "UNHANDLED METHOD"
