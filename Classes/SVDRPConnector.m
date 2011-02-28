@@ -26,6 +26,13 @@
 #import "SVDRPRCEmulatorController.h"
 #import "SimpleRCEmulatorController.h"
 
+typedef enum
+{
+	parserCancel = 1,
+	parserContinue = 2,
+	parserFinished = 3,
+} parserReturn;
+
 @implementation SVDRPConnector
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
@@ -120,16 +127,20 @@
 	return [_socket isConnected];
 }
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
 {
 	// check if delegate wants to be informated about errors
 	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
-		NSError *error = [NSError errorWithDomain:@"myDomain"
-											 code:100
-										 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Remote host unreachable.", @"") forKey:NSLocalizedDescriptionKey]];
+		if(error == nil)
+		{
+			error = [NSError errorWithDomain:@"myDomain"
+										code:100
+									userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Remote host unreachable.", @"") forKey:NSLocalizedDescriptionKey]];
+		}
+
 		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
@@ -203,6 +214,47 @@
 	return nil;
 }
 
+/* parse a service */
+- (parserReturn)parseServie: (NSString *)line service:(NSObject<ServiceProtocol> *)newService
+{
+	if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+	{
+		return parserCancel;
+	}
+
+	// marker
+	if([line characterAtIndex:4] == ':')
+	{
+		newService.sname = [line substringFromIndex:5];
+	}
+	else
+	{
+		NSRange range;
+		const NSArray *components = [line componentsSeparatedByString: @":"];
+		NSString *name = [components objectAtIndex: 0];
+		range.location = 4;
+		range.length = [name length] - 4;
+		range = [name rangeOfString: @" " options: NSLiteralSearch range: range];
+		name = [name substringFromIndex: range.location];
+		range.length = range.location-4;
+		range.location = 4;
+		newService.sref = [[components objectAtIndex: 0] substringWithRange: range];
+
+		range = [name rangeOfString: @";" options: NSBackwardsSearch];
+		if(range.length)
+			name = [name substringToIndex: range.location];
+		range = [name rangeOfString: @"," options: NSBackwardsSearch];
+		if(range.length)
+			name = [name substringToIndex: range.location];
+		newService.sname = name;
+	}
+
+	// Last line
+	if([[line substringToIndex: 4] isEqualToString: @"250 "])
+		return parserFinished;
+	return parserContinue;
+}
+
 - (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	if(isRadio)
@@ -223,7 +275,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
-		[self indicateError:delegate];
+		[self indicateError:delegate error:nil];
 		return nil;
 	}
 	if(_serviceCache != nil)
@@ -233,44 +285,36 @@
 	[_socket writeString: @"LSTC\r\n"];
 
 	NSString *line = nil;
-	NSRange range;
 	NSObject<ServiceProtocol> *newService = nil;
-	while((line = [self readSocketLine]))
+	parserReturn rc = parserContinue;
+	while(rc == parserContinue && (line = [self readSocketLine]))
 	{
-		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
-		{
-			break;
-		}
-
 		newService = [[GenericService alloc] init];
 
-		const NSArray *components = [line componentsSeparatedByString: @":"];
-		NSString *name = [components objectAtIndex: 0];
-		range.location = 4;
-		range.length = [name length] - 4;
-		range = [name rangeOfString: @" " options: NSLiteralSearch range: range];
-		name = [name substringFromIndex: range.location];
-		range.length = range.location-4;
-		range.location = 4;
-		newService.sref = [[components objectAtIndex: 0] substringWithRange: range];
+		@try
+		{
+			rc = [self parseServie:line service:newService];
+		}
+		@catch(NSException *e)
+		{
+			[newService release];
+			NSError *error = [NSError errorWithDomain:@"myDomain"
+												 code:110
+											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			[self indicateError:delegate error:error];
+			return nil;
+		}
 
-		range = [name rangeOfString: @";" options: NSBackwardsSearch];
-		if(range.length)
-			name = [name substringToIndex: range.location];
-		range = [name rangeOfString: @"," options: NSBackwardsSearch];
-		if(range.length)
-			name = [name substringToIndex: range.location];
-		newService.sname = name;
-
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: newService
-								waitUntilDone: NO];
-		[_serviceCache setObject: newService forKey: newService.sref];
+		if(rc != parserCancel)
+		{
+			[delegate performSelectorOnMainThread:@selector(addService:)
+									   withObject:newService
+									waitUntilDone:NO];
+			if(newService.sref)
+				[_serviceCache setObject: newService forKey: newService.sref];
+		}
 		[newService release];
-
-		// Last line
-		if([[line substringToIndex: 4] isEqualToString: @"250 "])
-			break;
 	}
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -293,7 +337,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
-		[self indicateError:delegate];
+		[self indicateError:delegate error:nil];
 		return nil;
 	}
 
@@ -364,6 +408,123 @@
 
 #pragma mark Timer
 
+/* parse a timer */
+- (parserReturn)parseTimer:(NSString *)line timer:(SVDRPTimer *)newTimer calendar:(const NSCalendar *)gregorian components:(NSDateComponents **)comps
+{
+	if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+	{
+		return parserCancel;
+	}
+
+	const NSArray *components = [line componentsSeparatedByString: @":"];
+	NSRange range;
+	NSInteger tmpInteger;
+
+	// Id:
+	line = [components objectAtIndex: 0];
+	range = [line rangeOfString: @" " options: NSBackwardsSearch];
+	range.length = range.location - 4;
+	range.location = 4;
+	newTimer.tid = [line substringWithRange: range];
+
+	// Flags:
+	//		1 the timer is active (and will record if it hits)
+	//		2 this is an instant recording timer
+	//		4 this timer uses VPS
+	//		8 this timer is currently recording (may only be up-to-date with SVDRP)
+	//		All other bits are reserved for future use.
+	line = [components objectAtIndex: 0];
+	tmpInteger = [[line substringFromIndex: range.length + 4] integerValue];
+	newTimer.disabled = (tmpInteger & 1);
+	newTimer.flags = (tmpInteger & ~1);
+
+	// Channel
+	// This is a channel number, so we have to cache the names in fetchServices
+	NSObject<ServiceProtocol> *service = [_serviceCache objectForKey: [components objectAtIndex: 1]];
+	if(service)
+	{
+		newTimer.service = service;
+	}
+	else
+	{
+		service = [[GenericService alloc] init];
+		service.sname = @"???";
+		service.sref = [components objectAtIndex: 1];
+		newTimer.service = service;
+		[service release];
+	}
+
+	// Day
+	line = [components objectAtIndex: 2];
+	// repeating timer with startdate in MTWTF--
+	tmpInteger = [line length];
+	if(tmpInteger == 7)
+	{
+		[*comps release];
+		*comps = [[gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]] retain];
+		newTimer.repeat = line;
+	}
+	// repeating timer with startdate in MTWTF--@YYYY-MM-DD
+	else if(tmpInteger == 18)
+	{
+		newTimer.repeat = [line substringToIndex: 8];
+		line = [line substringFromIndex: 9];
+		tmpInteger = 10;
+	}
+	// a) single timer in ISO-Notation (YYYY-MM-DD)
+	if(tmpInteger == 10)
+	{
+		range.location = 0;
+		range.length = 4;
+		[*comps setYear: [[line substringWithRange: range] integerValue]];
+
+		range.location = 6;
+		range.length = 2;
+		[*comps setMonth: [[line substringWithRange: range] integerValue]];
+
+		range.location = 8;
+		range.length = 2;
+		[*comps setDay: [[line substringWithRange: range] integerValue]];
+	}
+
+	// Start
+	line = [components objectAtIndex: 3];
+	[*comps setHour: [[line substringToIndex: 2] integerValue]];
+	[*comps setMinute: [[line substringFromIndex: 2] integerValue]];
+	newTimer.begin = [gregorian dateFromComponents: *comps];
+
+	// Stop
+	line = [components objectAtIndex: 4];
+	[*comps setHour: [[line substringToIndex: 2] integerValue]];
+	[*comps setMinute: [[line substringFromIndex: 2] integerValue]];
+	NSDate *end = [gregorian dateFromComponents: *comps];
+	if([newTimer.begin compare: end] == NSOrderedDescending)
+		end = [end addTimeInterval: 86400];
+	newTimer.end = end;
+
+	// Determine state
+	if([newTimer.begin timeIntervalSinceNow] > 0)
+		newTimer.state = kTimerStateWaiting;
+	else if([newTimer.end timeIntervalSinceNow] > 0)
+		newTimer.state = kTimerStateRunning;
+	else
+		newTimer.state = kTimerStateFinished;
+
+	// Priority, Lifetime, File, Auxiliary
+	newTimer.priority = [components objectAtIndex: 5];
+	newTimer.lifetime = [components objectAtIndex: 6];
+	newTimer.file = [components objectAtIndex: 7];
+	newTimer.auxiliary = [components objectAtIndex: 8];
+
+	// XXX: we don't get any information about a title, so use the filename for now
+	newTimer.title = newTimer.file;
+
+	// Last line
+	if([[[components objectAtIndex: 0] substringToIndex: 4] isEqualToString: @"250 "])
+		return parserFinished;
+	return parserContinue;
+}
+
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -380,7 +541,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
-		[self indicateError:delegate];
+		[self indicateError:delegate error:nil];
 		return nil;
 	}
 	// Try to refresh cache if none present
@@ -390,129 +551,36 @@
 	[_socket writeString: @"LSTT\r\n"];
 
 	NSString *line = nil;
-	NSRange range;
-	NSInteger tmpInteger;
 	const NSCalendar *gregorian = [[NSCalendar alloc]
 							initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	while((line = [self readSocketLine]))
+	parserReturn rc = parserContinue;
+	while(rc == parserContinue && (line = [self readSocketLine]))
 	{
-		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
-		{
-			break;
-		}
-
 		SVDRPTimer *newTimer = [[SVDRPTimer alloc] init];
 
-		const NSArray *components = [line componentsSeparatedByString: @":"];
-
-		// Id:
-		line = [components objectAtIndex: 0];
-		range = [line rangeOfString: @" " options: NSBackwardsSearch];
-		range.length = range.location - 4;
-		range.location = 4;
-		newTimer.tid = [line substringWithRange: range];
-
-		// Flags:
-		//		1 the timer is active (and will record if it hits)
-		//		2 this is an instant recording timer
-		//		4 this timer uses VPS
-		//		8 this timer is currently recording (may only be up-to-date with SVDRP)
-		//		All other bits are reserved for future use.
-		line = [components objectAtIndex: 0];
-		tmpInteger = [[line substringFromIndex: range.length + 4] integerValue];
-		newTimer.disabled = (tmpInteger & 1);
-		newTimer.flags = (tmpInteger & ~1);
-
-		// Channel
-		// This is a channel number, so we have to cache the names in fetchServices
-		NSObject<ServiceProtocol> *service = [_serviceCache objectForKey: [components objectAtIndex: 1]];
-		if(service)
+		@try
 		{
-			newTimer.service = service;
+			rc = [self parseTimer:line timer:newTimer calendar:gregorian components:&comps];
 		}
-		else
+		@catch (NSException *e)
 		{
-			service = [[GenericService alloc] init];
-			service.sname = @"???";
-			service.sref = [components objectAtIndex: 1];
-			newTimer.service = service;
-			[service release];
+			[newTimer release];
+			NSError *error = [NSError errorWithDomain:@"myDomain"
+												 code:110
+											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			[self indicateError:delegate error:error];
+			return nil;
 		}
 
-		// Day
-		line = [components objectAtIndex: 2];
-		// repeating timer with startdate in MTWTF--
-		tmpInteger = [line length];
-		if(tmpInteger == 7)
+		if(rc != parserCancel)
 		{
-			[comps release];
-			comps = [[gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]] retain];
-			newTimer.repeat = line;
+			[delegate performSelectorOnMainThread:@selector(addTimer:)
+									   withObject:newTimer
+									waitUntilDone:NO];
 		}
-		// repeating timer with startdate in MTWTF--@YYYY-MM-DD
-		else if(tmpInteger == 18)
-		{
-			newTimer.repeat = [line substringToIndex: 8];
-			line = [line substringFromIndex: 9];
-			tmpInteger = 10;
-		}
-		// a) single timer in ISO-Notation (YYYY-MM-DD)
-		if(tmpInteger == 10)
-		{
-			range.location = 0;
-			range.length = 4;
-			[comps setYear: [[line substringWithRange: range] integerValue]];
-
-			range.location = 6;
-			range.length = 2;
-			[comps setMonth: [[line substringWithRange: range] integerValue]];
-
-			range.location = 8;
-			range.length = 2;
-			[comps setDay: [[line substringWithRange: range] integerValue]];
-		}
-
-		// Start
-		line = [components objectAtIndex: 3];
-		[comps setHour: [[line substringToIndex: 2] integerValue]];
-		[comps setMinute: [[line substringFromIndex: 2] integerValue]];
-		newTimer.begin = [gregorian dateFromComponents: comps];
-
-		// Stop
-		line = [components objectAtIndex: 4];
-		[comps setHour: [[line substringToIndex: 2] integerValue]];
-		[comps setMinute: [[line substringFromIndex: 2] integerValue]];
-		NSDate *end = [gregorian dateFromComponents: comps];
-		if([newTimer.begin compare: end] == NSOrderedDescending)
-			end = [end addTimeInterval: 86400];
-		newTimer.end = end;
-
-		// Determine state
-		if([newTimer.begin timeIntervalSinceNow] > 0)
-			newTimer.state = kTimerStateWaiting;
-		else if([newTimer.end timeIntervalSinceNow] > 0)
-			newTimer.state = kTimerStateRunning;
-		else
-			newTimer.state = kTimerStateFinished;
-
-		// Priority, Lifetime, File, Auxiliary
-		newTimer.priority = [components objectAtIndex: 5];
-		newTimer.lifetime = [components objectAtIndex: 6];
-		newTimer.file = [components objectAtIndex: 7];
-		newTimer.auxiliary = [components objectAtIndex: 8];
-
-		// XXX: we don't get any information about a title, so use the filename for now
-		newTimer.title = newTimer.file;
-
-		[delegate performSelectorOnMainThread: @selector(addTimer:)
-								   withObject: newTimer
-								waitUntilDone: NO];
 		[newTimer release];
-
-		// Last line
-		if([[[components objectAtIndex: 0] substringToIndex: 4] isEqualToString: @"250 "])
-			break;
 	}
 	[comps release];
 	[gregorian release];
@@ -639,6 +707,47 @@
 	return result;
 }
 
+/* helper routine to improve readability a bit */
+- (parserReturn)parseMovie: (NSString *)line movie:(NSObject<MovieProtocol> *)movie calendar:(const NSCalendar *)gregorian comps:(NSDateComponents *)comps
+{
+	if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
+	{
+		return parserCancel;
+	}
+
+	NSRange range;
+	parserReturn rc = ([line characterAtIndex:3] == ' ') ? parserFinished : parserContinue;
+
+	range.location = 4;
+	range.length = [line length] - 4;
+	range = [line rangeOfString: @" " options: NSLiteralSearch range: range];
+	range.length = range.location - 4;
+	range.location = 4;
+	movie.sref = [line substringWithRange: range];
+	line = [line substringFromIndex: range.location + range.length];
+
+	const NSArray *components = [line componentsSeparatedByString: @" "];
+	line = [components objectAtIndex: 1];
+	range.location = 0;
+	range.length = 2;
+	[comps setDay: [[line substringWithRange: range] integerValue]];
+	range.location = 3;
+	[comps setMonth: [[line substringWithRange: range] integerValue]];
+	range.location = 6;
+	[comps setYear: 2000 + [[line substringWithRange: range] integerValue]];
+	line = [components objectAtIndex: 2];
+	range.location = 0;
+	[comps setHour: [[line substringWithRange: range] integerValue]];
+	range.location = 3;
+	[comps setMinute: [[line substringWithRange: range] integerValue]];
+	movie.time = [gregorian dateFromComponents: comps];
+
+	range.location = 3;
+	range.length = [components count] - 3;
+	movie.title = [[components subarrayWithRange: range] componentsJoinedByString: @" "];
+	return rc;
+}
+
 // TODO: test this
 - (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
@@ -660,7 +769,7 @@
 								waitUntilDone: NO];
 		[fakeObject release];
 
-		[self indicateError:delegate];
+		[self indicateError:delegate error:nil];
 		return nil;
 	}
 
@@ -668,54 +777,38 @@
 
 	NSString *line = nil;
 	NSObject<MovieProtocol> *movie = nil;
-	NSRange range;
 	const NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier: NSGregorianCalendar];
 	NSDateComponents *comps = [[NSDateComponents alloc] init];
-	while((line = [self readSocketLine]))
+	parserReturn rc = parserContinue;
+	while(rc == parserContinue && (line = [self readSocketLine]))
 	{
-		if([line length] < 4 || ![[line substringToIndex: 3] isEqualToString: @"250"])
-		{
-			break;
-		}
-
 		movie = [[GenericMovie alloc] init];
 
-		range.location = 4;
-		range.length = [line length] - 4;
-		range = [line rangeOfString: @" " options: NSLiteralSearch range: range];
-		range.length = range.location - 4;
-		range.location = 4;
-		movie.sref = [line substringWithRange: range];
-		line = [line substringFromIndex: range.location + range.length];
+		@try
+		{
+			// no indicates something is oddly invalid, abort
+			rc = [self parseMovie:line movie:movie calendar:gregorian comps:comps];
+		}
+		@catch(NSException *e)
+		{
+			[movie release];
+			NSError *error = [NSError errorWithDomain:@"myDomain"
+												 code:110
+											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
+			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			[self indicateError:delegate error:error];
+			return nil;
+		}
 
-		const NSArray *components = [line componentsSeparatedByString: @" "];
-		line = [components objectAtIndex: 0];
-		range.location = 0;
-		range.length = 2;
-		[comps setDay: [[line substringWithRange: range] integerValue]];
-		range.location = 3;
-		[comps setMonth: [[line substringWithRange: range] integerValue]];
-		range.location = 6;
-		[comps setYear: 2000 + [[line substringWithRange: range] integerValue]];
-		line = [components objectAtIndex: 1];
-		range.location = 0;
-		[comps setHour: [[line substringWithRange: range] integerValue]];
-		range.location = 3;
-		[comps setMinute: [[line substringWithRange: range] integerValue]];
+		if(rc != parserCancel)
+		{
+			[delegate performSelectorOnMainThread:@selector(addMovie:)
+									   withObject:movie
+									waitUntilDone:NO];
+		}
 
-		range.location = 3;
-		range.length = [components count] - 3;
-		movie.title = [[components subarrayWithRange: range] componentsJoinedByString: @" "];
-
-		[delegate performSelectorOnMainThread: @selector(addMovie:)
-								   withObject: movie
-								waitUntilDone: NO];
 		[movie release];
-
-		// Last line
-		if([[line substringToIndex: 4] isEqualToString: @"250 "])
-			break;
 	}
 	[comps release];
 	[gregorian release];
