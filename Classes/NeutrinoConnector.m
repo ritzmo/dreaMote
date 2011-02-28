@@ -464,7 +464,7 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	// NOTE: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
-	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&format=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
+	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&type=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	[add appendString: @"&channel_name="];
 	[add appendString: [newTimer.service.sname urlencode]];
