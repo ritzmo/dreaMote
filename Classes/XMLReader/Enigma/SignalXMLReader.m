@@ -81,7 +81,7 @@
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		GenericSignal *newSignal = [[GenericSignal alloc] init];
-		newSignal.snr = -1; // enigma does not support this...
+		newSignal.snrdb = -1; // enigma does not support this...
 
 		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
 		{
@@ -89,7 +89,7 @@
 			const NSString *elementName = [currentChild name];
 			if ([elementName isEqualToString:@"snr"]) {
 				const NSString *str = [currentChild stringValue];
-				newSignal.snrdb = [[str substringToIndex: [str length] - 1] integerValue];
+				newSignal.snr = [[str substringToIndex: [str length] - 1] integerValue];
 				continue;
 			}
 			else if ([elementName isEqualToString:@"ber"]) {
