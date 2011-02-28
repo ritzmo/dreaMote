@@ -115,15 +115,15 @@
 
 	NSString *dayStr;
 	if(_hasRepeatBegin)
-		dayStr = [NSString stringWithFormat: @"%@@%d-%d-%d",
+		dayStr = [NSString stringWithFormat: @"%@@%d-%02d-%02d",
 					_repeat, [beginComponents year], [beginComponents month], [beginComponents day]];
 	else if(_repeat != nil)
 		dayStr = _repeat;
 	else
-		dayStr = [NSString stringWithFormat: @"%d-%d-%d",
+		dayStr = [NSString stringWithFormat: @"%d-%02d-%02d",
 					[beginComponents year], [beginComponents month], [beginComponents day]];
 
-	return [NSString stringWithFormat: @"%d:%@:%@:%d:%d:%@:%@:%@:%@",
+	return [NSString stringWithFormat: @"%d:%@:%@:%04d:%04d:%@:%@:%@:%@",
 		newFlags, _service.sref, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
 		[endComponents hour] * 100 + [endComponents minute], _priority, _lifetime,
 		_file, _auxiliary];
