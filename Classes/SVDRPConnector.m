@@ -344,7 +344,6 @@ typedef enum
 	[_socket writeString: [NSString stringWithFormat: @"LSTE %@\r\n", service.sref]];
 
 	NSString *line = nil;
-	NSRange range;
 	NSObject<EventProtocol> *newEvent = nil;
 	while((line = [self readSocketLine]))
 	{
@@ -367,25 +366,22 @@ typedef enum
 			[newEvent setBeginFromString: [components objectAtIndex: 2]];
 			[newEvent setEndFromDurationString: [components objectAtIndex: 3]];
 		}
-		else if([[line substringToIndex: 5] isEqualToString: @"215-T"])
+		else if([[line substringToIndex:5] isEqualToString: @"215-T"])
 		{
-			range = [line rangeOfString: @" "];
-			// XXX: do we need to cut/replace anything?
-			newEvent.title = [line substringFromIndex: range.location];
+			newEvent.title = [[line substringFromIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		}
-		else if([[line substringToIndex: 5] isEqualToString: @"215-S"])
+		else if([[line substringToIndex:5] isEqualToString: @"215-S"])
 		{
-			range = [line rangeOfString: @" "];
-			// XXX: do we need to cut/replace anything?
-			newEvent.sdescription = [line substringFromIndex: range.location];
+			newEvent.sdescription = [[line substringFromIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 		}
-		else if([[line substringToIndex: 5] isEqualToString: @"215-D"])
+		else if([[line substringToIndex:5] isEqualToString: @"215-D"])
 		{
-			range = [line rangeOfString: @" "];
-			// XXX: do we need to cut/replace anything?
-			newEvent.edescription = [line substringFromIndex: range.location];
+			NSMutableString *desc = [[[line substringFromIndex:5] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
+			// replace | by \n
+			[desc replaceOccurrencesOfString:@"|" withString:@"\n" options:NSLiteralSearch range:NSMakeRange(0, [desc length])];
+			newEvent.edescription = desc;
 		}
-		else if([[line substringToIndex: 5] isEqualToString: @"215-e"])
+		else if([[line substringToIndex:5] isEqualToString: @"215-e"])
 		{
 			[delegate performSelectorOnMainThread: @selector(addEvent:)
 									   withObject: newEvent
