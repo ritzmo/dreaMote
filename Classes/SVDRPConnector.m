@@ -365,14 +365,11 @@ typedef enum
 			const NSArray *components = [line componentsSeparatedByString: @" "];
 			if([components count] < 4)
 			{
-				// NOTE: disabled for next release since the strings are final ;-)
-				/*
 				NSError *error = [NSError errorWithDomain:@"myDomain"
 													 code:111
 												 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Illegal response returned by VDR-server! Aborting.", @"") forKey:NSLocalizedDescriptionKey]];
 				[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 				[self indicateError:delegate error:error];
-				 */
 				break;
 			}
 
