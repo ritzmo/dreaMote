@@ -102,6 +102,7 @@
 #define kMessageTimeout			@"messageTimeout"
 #define kPrefersSimpleRemote	@"prefersSimpleRemote"
 #define kDatabaseVersion		@"databaseVersion" // refers to the epg cache
+#define kSimpleRcWasShown		@"simpleRcWasShown"
 
 #define kCurrentDatabaseVersion 2
 

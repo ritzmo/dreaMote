@@ -206,6 +206,21 @@
 {
 	[super viewWillAppear:animated];
 
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+	if(![stdDefaults boolForKey:kSimpleRcWasShown])
+	{
+		[stdDefaults setBool:YES forKey:kSimpleRcWasShown];
+		[stdDefaults synchronize];
+
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Welcome to the simple remote", @"")
+															  message:NSLocalizedString(@"This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings.", @"")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+
 	// RCEmulatorController sends this message only when _navigationPad is set which we don't
 	// we want to run this independent of them anyway ;-)
 	[self manageViews:self.interfaceOrientation];
