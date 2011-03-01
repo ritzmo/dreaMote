@@ -18,6 +18,8 @@ typedef enum
 	zapActionRemote = 0,
 	zapActionOPlayer = 1,
 	zapActionOPlayerLite = 2,
+	zapActionBuzzPlayer = 3,
+	zapActionMax = 4,
 } zapAction;
 
 @protocol ServiceZapListDelegate;
@@ -34,6 +36,7 @@ typedef enum
 {
 @private
 	NSObject<ServiceZapListDelegate> *_zapDelegate; /*!< @brief Zap delegate. */
+	BOOL hasAction[zapActionMax]; /*!< @brief Cache of supported zap actions */
 }
 
 @property (nonatomic, retain) NSObject<ServiceZapListDelegate> *zapDelegate;

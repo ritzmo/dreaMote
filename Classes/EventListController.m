@@ -161,9 +161,11 @@
 																  otherButtonTitles:nil];
 			[actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
-				[actionSheet addButtonWithTitle:NSLocalizedString(@"OPlayer", @"")];
+				[actionSheet addButtonWithTitle:@"OPlayer"];
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
-				[actionSheet addButtonWithTitle:NSLocalizedString(@"OPlayer Lite", @"")];
+				[actionSheet addButtonWithTitle:@"OPlayer Lite"];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+				[actionSheet addButtonWithTitle:@"BUZZ Player"];
 
 			actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 			[actionSheet showFromTabBar:self.tabBarController.tabBar];
@@ -247,29 +249,37 @@
 
 - (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
 {
+	NSURL *streamingURL = nil;
+	NSURL *url = nil;
+
+	if(selectedAction == zapActionRemote)
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
+		return;
+	}
+	streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+
 	switch(selectedAction)
 	{
-		default:
-		case zapActionRemote:
-			[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
-			break;
+		default: break;
 		case zapActionOPlayer:
 		{
-			NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
-			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
-
-			[[UIApplication sharedApplication] openURL:url];
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
 			break;
 		}
 		case zapActionOPlayerLite:
 		{
-			NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
-			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
-
-			[[UIApplication sharedApplication] openURL:url];
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+			break;
+		}
+		case zapActionBuzzPlayer:
+		{
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
 			break;
 		}
 	}
+	if(url)
+		[[UIApplication sharedApplication] openURL:url];
 }
 
 #pragma mark -
@@ -289,7 +299,9 @@
 		{
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
 				++buttonIndex;
-			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
+				++buttonIndex;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
 			//	++buttonIndex;
 		}
 		[self serviceZapListController:nil selectedAction:(zapAction)buttonIndex];

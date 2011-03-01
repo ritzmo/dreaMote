@@ -29,9 +29,10 @@
 - (void)openIMDb:(id)sender;
 @end
 
-@interface MovieViewController(OPlayer)
+@interface MovieViewController(Streaming)
 - (void)openOPlayer:(id)sender;
 - (void)openOPlayerLite:(id)sender;
+- (void)openBuzzPlayer:(id)sender;
 @end
 
 @implementation MovieViewController
@@ -324,6 +325,8 @@
 				++rows;
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
 				++rows;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+				++rows;
 		}
 		return rows;
 	}
@@ -519,7 +522,9 @@
 			{
 				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 1)
 					++row;
-				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 2)
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 2)
+					++row;
+				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 3)
 				//	++row;
 			}
 			else if(row > 1)
@@ -536,17 +541,21 @@
 				case 1:
 					// NOTE: should never happen currently… it's really time for a new bug-free imdb release :-)
 #if 0
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = @"IMDb";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withImage:nil];
 #endif
 					break;
 				case 2:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"OPlayer", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
 					break;
 				case 3:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"OPlayer Lite", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer Lite";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
+					break;
+				case 4:
+					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
 					break;
 			}
 		}
@@ -591,7 +600,7 @@
 	[[UIApplication sharedApplication] openURL:url];
 }
 
-#pragma mark OPlayer
+#pragma mark Streaming
 
 - (void)openOPlayer:(id)sender
 {
@@ -605,6 +614,14 @@
 {
 	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)openBuzzPlayer:(id)sender
+{
+	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
 
 	[[UIApplication sharedApplication] openURL:url];
 }

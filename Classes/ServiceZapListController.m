@@ -48,6 +48,14 @@
 	[tableView release];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+	hasAction[zapActionRemote] = YES;
+	hasAction[zapActionOPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]];
+	hasAction[zapActionOPlayerLite] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]];
+	hasAction[zapActionBuzzPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]];
+}
+
 #pragma mark	-
 #pragma mark	UITableView delegate methods
 #pragma mark	-
@@ -63,9 +71,11 @@
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 	{
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 0)
+		if(!hasAction[zapActionOPlayer] && row > 0)
 			++row;
-		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 1)
+		if(!hasAction[zapActionOPlayerLite] && row > 1)
+			++row;
+		//if(!hasAction[zapActionBuzzPlayer] && row > 2)
 		//	++row;
 	}
 	switch((zapAction)row)
@@ -75,10 +85,13 @@
 			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Zap on receiver", @"");
 			break;
 		case zapActionOPlayer:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"OPlayer", @"");
+			TABLEVIEWCELL_TEXT(cell) = @"OPlayer";
 			break;
 		case zapActionOPlayerLite:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"OPlayer Lite", @"");
+			TABLEVIEWCELL_TEXT(cell) = @"OPlayer Lite";
+			break;
+		case zapActionBuzzPlayer:
+			TABLEVIEWCELL_TEXT(cell) = @"BUZZ Player";
 			break;
 	}
 	return cell;
@@ -92,9 +105,11 @@
 
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 	{
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 0)
+		if(!hasAction[zapActionOPlayer] && row > 0)
 			++row;
-		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 1)
+		if(!hasAction[zapActionOPlayerLite] && row > 1)
+			++row;
+		//if(!hasAction[zapActionBuzzPlayer] && row > 1)
 		//	++row;
 	}
 	[_zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
@@ -116,12 +131,11 @@
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	NSInteger row = 1;
-	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+	NSInteger row = 0;
+	NSInteger i = 0;
+	for(i = 0; i < zapActionMax; ++i)
 	{
-		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
-			++row;
-		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+		if(hasAction[i])
 			++row;
 	}
 	return row;
