@@ -747,7 +747,7 @@ enum enigma1MessageTypes {
 	if(type == kScreenshotTypeOSD)
 	{
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot&display=yes" relativeToURL: _baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/cgi-bin/osdshot?display=yes" relativeToURL: _baseAddress];
 
 		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
 													  returningResponse:nil
