@@ -19,7 +19,8 @@ typedef enum
 	zapActionOPlayer = 1,
 	zapActionOPlayerLite = 2,
 	zapActionBuzzPlayer = 3,
-	zapActionMax = 4,
+	zapActionYxplayer = 4,
+	zapActionMax = 5,
 } zapAction;
 
 @protocol ServiceZapListDelegate;

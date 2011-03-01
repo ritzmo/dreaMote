@@ -54,6 +54,7 @@
 	hasAction[zapActionOPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]];
 	hasAction[zapActionOPlayerLite] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]];
 	hasAction[zapActionBuzzPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]];
+	hasAction[zapActionYxplayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
 }
 
 #pragma mark	-
@@ -93,6 +94,9 @@
 		case zapActionBuzzPlayer:
 			TABLEVIEWCELL_TEXT(cell) = @"BUZZ Player";
 			break;
+		case zapActionYxplayer:
+			TABLEVIEWCELL_TEXT(cell) = @"yxplayer";
+			break;
 	}
 	return cell;
 }
@@ -109,7 +113,9 @@
 			++row;
 		if(!hasAction[zapActionOPlayerLite] && row > 1)
 			++row;
-		//if(!hasAction[zapActionBuzzPlayer] && row > 1)
+		if(!hasAction[zapActionBuzzPlayer] && row > 2)
+			++row;
+		//if(!hasAction[zapActionYxplayer] && row > 3)
 		//	++row;
 	}
 	[_zapDelegate serviceZapListController:self selectedAction:(zapAction)row];

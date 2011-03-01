@@ -166,6 +166,8 @@
 				[actionSheet addButtonWithTitle:@"OPlayer Lite"];
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
 				[actionSheet addButtonWithTitle:@"BUZZ Player"];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+				[actionSheet addButtonWithTitle:@"yxplayer"];
 
 			actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 			[actionSheet showFromTabBar:self.tabBarController.tabBar];
@@ -263,20 +265,17 @@
 	{
 		default: break;
 		case zapActionOPlayer:
-		{
 			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
 			break;
-		}
 		case zapActionOPlayerLite:
-		{
 			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
 			break;
-		}
 		case zapActionBuzzPlayer:
-		{
 			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
 			break;
-		}
+		case zapActionYxplayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
+			break;
 	}
 	if(url)
 		[[UIApplication sharedApplication] openURL:url];
@@ -294,14 +293,16 @@
 	}
 	else
 	{
-		buttonIndex -= actionSheet.firstOtherButtonIndex; // should be zero, but better make sure
+		buttonIndex = 1;
 		//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 		{
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
 				++buttonIndex;
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
 				++buttonIndex;
-			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
+				++buttonIndex;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > 3)
 			//	++buttonIndex;
 		}
 		[self serviceZapListController:nil selectedAction:(zapAction)buttonIndex];

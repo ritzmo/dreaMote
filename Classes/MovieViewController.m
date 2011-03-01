@@ -33,6 +33,7 @@
 - (void)openOPlayer:(id)sender;
 - (void)openOPlayerLite:(id)sender;
 - (void)openBuzzPlayer:(id)sender;
+- (void)openYxplayer:(id)sender;
 @end
 
 @implementation MovieViewController
@@ -327,6 +328,8 @@
 				++rows;
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
 				++rows;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+				++rows;
 		}
 		return rows;
 	}
@@ -524,7 +527,9 @@
 					++row;
 				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 2)
 					++row;
-				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 3)
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 3)
+					++row;
+				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 4)
 				//	++row;
 			}
 			else if(row > 1)
@@ -556,6 +561,10 @@
 				case 4:
 					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
+					break;
+				case 5:
+					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
 					break;
 			}
 		}
@@ -622,6 +631,14 @@
 {
 	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)openYxplayer:(id)sender
+{
+	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
 
 	[[UIApplication sharedApplication] openURL:url];
 }
