@@ -325,7 +325,7 @@ QUERYDELETETIMER_E1 = """<html>
     </body>
 </html>"""
 
-DELETETIMERCOMPLETE_E1 = """<html>
+CLOSEWINDOW_E1 = """<html>
     <head>
         <title>Complete</title>
         <link rel="stylesheet" type="text/css" href="webif.css">
@@ -337,7 +337,7 @@ DELETETIMERCOMPLETE_E1 = """<html>
         </script>
     </head>
     <body onLoad="init()" onUnload="parent.window.opener.location.reload(true)">
-        Timer event deleted successfully.
+        %s
     </body>
 </html>"""
 
@@ -921,7 +921,7 @@ class Simple(resource.Resource):
 				returndoc = QUERYDELETETIMER_E1 % (newUri,)
 			else:
 				if timer: state.deleteTimer(timer.sRef, timer.begin, timer.end)
-				returndoc = DELETETIMERCOMPLETE_E1
+				returndoc = CLOSEWINDOW_E1 % ("Timer event deleted successfully.",)
 ### /TIMERS
 		elif lastComp == "deleteMovie":
 			sRef = req.args.get('ref')
@@ -961,6 +961,19 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 			caption = caption and caption[0]
 			timeout = timeout and int(timeout[0])
 			icon = icon and int(icon[0])
+			returndoc = "UNHANDLED METHOD"
+		elif lastComp == "osdshot":
+			display = get('display', 'yes')
+			if True: #creating osdshot succeeded ;-)
+				if display == "yes":
+					req.setResponseCode(307)
+					req.setHeader("location", "/root/tmp/osdshot.png")
+					returndoc = "+ok"
+				else:
+					returndoc = CLOSEWINDOW_E1 % ("",)
+			else:
+				returndoc = "-error"
+		elif lastComp == "osdshot.png":
 			returndoc = "UNHANDLED METHOD"
 # NEUTRINO
 		elif lastComp == "info":
