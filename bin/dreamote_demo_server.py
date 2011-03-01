@@ -377,10 +377,10 @@ SIGNAL_E1 = """<?xml version="1.0" encoding="UTF-8" ?>
  <polarisation>n/a</polarisation>
  <inversion>n/a</inversion>
  <fec>n/a</fec>
- <snr>n/a</snr>
- <agc>n/a</agc>
+ <snr>79%</snr>
+ <agc>76%</agc>
 
- <ber>n/a</ber>
+ <ber>0</ber>
  <lock>n/a</lock>
  <sync>n/a</sync>
  <modulation>#MODULATION#</modulation>
