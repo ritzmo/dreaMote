@@ -506,7 +506,7 @@ enum enigma1MessageTypes {
 								   returningResponse:&response
 											   error:nil];
 
-	result.result = ([response statusCode] == 500);
+	result.result = ([response statusCode] == 204);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
 }
