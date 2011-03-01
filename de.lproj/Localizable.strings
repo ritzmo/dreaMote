@@ -291,6 +291,9 @@
 "If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Wenn euch %@ gefällt, nehmen Sie sich bitte einen Moment Zeit für eine Bewertung. Vielen Dank!";
 
 /* No comment provided by engineer. */
+"Illegal response returned by VDR-server! Aborting." = "Ungültige Antwort vom VDR-server! Breche ab.";
+
+/* No comment provided by engineer. */
 "Image Version" = "Image Version";
 
 /* No comment provided by engineer. */
@@ -441,12 +444,6 @@
 
 /* No comment provided by engineer. */
 "Now/Next in Servicelist" = "Erweiterte Senderliste";
-
-/* No comment provided by engineer. */
-"OPlayer" = "OPlayer";
-
-/* No comment provided by engineer. */
-"OPlayer Lite" = "OPlayer Lite";
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";
@@ -634,6 +631,9 @@
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 "This can take a while." = "Diese Aktion dauert einige Minuten.";
 
+/* No comment provided by engineer. */
+"This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings." = "Dies ist eine vereinfachte Fernbedienung.\nFür die Pfeiltasten über das Kreuz streichen und OK wird über zweifaches Drücken ausgelöst.\nZur vollwertigen Fernbedienung kann über die Einstellungen gewechselt werden.";
+
 /* Weekday */
 "Thu" = "Don";
 
@@ -720,6 +720,9 @@
 
 /* Repeated */
 "Weekdays" = "Wochentags";
+
+/* No comment provided by engineer. */
+"Welcome to the simple remote" = "Funktionsweise der Fernbedienung";
 
 /* No comment provided by engineer. */
 "Year" = "Jahr";

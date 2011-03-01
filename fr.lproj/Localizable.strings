@@ -291,6 +291,9 @@
 "If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Si vous appréciez %@, merci de laisser une note ou un avis! Merci pour votre soutien!";
 
 /* No comment provided by engineer. */
+/*"Illegal response returned by VDR-server! Aborting." = "Illegal response returned by VDR-server! Aborting.";*/
+
+/* No comment provided by engineer. */
 "Image Version" = "Image Version";
 
 /* No comment provided by engineer. */
@@ -441,12 +444,6 @@
 
 /* No comment provided by engineer. */
 "Now/Next in Servicelist" = "EPG dans Bouquets";
-
-/* No comment provided by engineer. */
-"OPlayer" = "OPlayer";
-
-/* No comment provided by engineer. */
-"OPlayer Lite" = "OPlayer Lite";
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";
@@ -634,6 +631,9 @@
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 "This can take a while." = "Cela peut prendre quelques minutes.";
 
+/* No comment provided by engineer. */
+/*"This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings." = "This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings.";*/
+
 /* Weekday */
 "Thu" = "Jeu";
 
@@ -720,6 +720,9 @@
 
 /* Repeated */
 "Weekdays" = "Jours ouvrables";
+
+/* No comment provided by engineer. */
+/*"Welcome to the simple remote" = "Welcome to the simple remote";*/
 
 /* No comment provided by engineer. */
 "Year" = "Année";
