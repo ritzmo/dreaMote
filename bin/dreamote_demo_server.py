@@ -14,6 +14,13 @@ from twisted.web import server, resource
 from twisted.internet import reactor
 import time
 
+# changes api to retrieve services
+# 0: recent enigma
+# 1: older enigma (/xml/getservices), current document style
+# 2: older enigma (/xml/getservices), old document style
+# 3: old enigma (/xml/getServices), old document style
+EMULATE_OLD_E1 = 0
+
 ### DOCUMENTS
 GETCURRENT = """<?xml version="1.0" encoding="UTF-8"?>
 <e2currentserviceinformation>
@@ -255,6 +262,11 @@ SERVICES_E1 = """<?xml version="1.0" encoding="UTF-8"?>
    <service><reference>1:0:1:6dca:44d:1:c00000:0:0:0:</reference><name>Demo Service</name><provider>Demo Provider</provider><orbital_position>192</orbital_position></service>
   </bouquet>
 </bouquets>"""
+
+SERVICES_E1_OLD = """<?xml version="1.0" encoding="ISO-8859-1"?>
+<bouquet>
+ <service reference="1:0:1:6dca:44d:1:c00000:0:0:0:" orbitalposition="192">Demo Service</service>
+</bouquet>"""
 
 EPGSERVICE_E1 = """<?xml version="1.0" encoding="UTF-8"?>
  <?xml-stylesheet type="text/xsl" href="/xml/serviceepg.xsl"?>
@@ -721,7 +733,7 @@ class Simple(resource.Resource):
 			sRef = req.args.get('sRef')
 			sRef = sRef and sRef[0]
 			returndoc = SIMPLEXMLRESULT % ('True', 'Active service switched to '+sRef)
-		elif lastComp == "getservices":
+		elif req.path == "/web/getservices":
 			sRef = req.args.get('sRef')
 			sRef = sRef and sRef[0]
 			RADIO = '1:7:2:0:0:0:0:0:0:0:(type == 2)FROM BOUQUET "bouquets.radio" ORDER BY bouquet'
@@ -867,15 +879,39 @@ class Simple(resource.Resource):
 			returndoc = BOXSTATUS
 		elif lastComp == "zapTo":
 			returndoc = "IMO RETURN OF E1 SUCKS"
-		elif lastComp == "services":
-			mode = req.args.get('mode')
-			submode = req.args.get('submode')
-			mode = mode and int(mode[0])
-			submode = submode and int(submode[0])
-			if mode == 3 and submode == 4:
-				returndoc = MOVIELIST_E1 % (state.getMovies(TYPE_E1),)
+		elif req.path == "/xml/getServices":
+			if EMULATE_OLD_E1 != 3:
+				req.setResponseCode(404)
+				returndoc = "emulating younger enigma 1"
+			# OLD DOCUMENT
 			else:
+				returndoc = SERVICES_E1_OLD
+		elif req.path == "/xml/getservices":
+			# OLD API, NEW DOCUMENT
+			if EMULATE_OLD_E1 == 1:
 				returndoc = SERVICES_E1
+			# OLD API, OLD DOCUMENT
+			elif EMULATE_OLD_E1 == 2:
+				returndoc = SERVICES_E1_OLD
+			else:
+				req.setResponseCode(404)
+				if EMULATE_OLD_E1 == 3:
+					returndoc = "emulating older enigma 1"
+				else:
+					returndoc = "emulating younger enigma 1"
+		elif lastComp == "services":
+			if EMULATE_OLD_E1:
+				req.setResponseCode(404)
+				returndoc = "emulating old enigma 1"
+			else:
+				mode = req.args.get('mode')
+				submode = req.args.get('submode')
+				mode = mode and int(mode[0])
+				submode = submode and int(submode[0])
+				if mode == 3 and submode == 4:
+					returndoc = MOVIELIST_E1 % (state.getMovies(TYPE_E1),)
+				else:
+					returndoc = SERVICES_E1
 		elif lastComp == "serviceepg":
 			sRef = req.args.get('ref')
 			sRef = sRef and sRef[0]
