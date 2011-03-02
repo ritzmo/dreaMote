@@ -40,6 +40,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Search Events", @"Default Title of EventSearchListController");
+		self.hidesBottomBarWhenPushed = NO;
 	}
 	return self;
 }
