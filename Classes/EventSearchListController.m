@@ -113,6 +113,10 @@
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(showHistory:)];
 	self.navigationItem.rightBarButtonItem = barButtonItem;
 	[barButtonItem release];
+
+#if IS_LITE()
+	[self createAdBannerView];
+#endif
 }
 
 - (IBAction)showHistory:(id)sender

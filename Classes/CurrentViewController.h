@@ -14,6 +14,10 @@
 #import "ReloadableListController.h"
 #import "ServiceSourceDelegate.h"
 
+#if IS_LITE()
+#import "iAd/ADBannerView.h"
+#endif
+
 // Forward declarations...
 @class CXMLDocument;
 
@@ -23,6 +27,9 @@
  Displays the currently playing service and - if present - the current and next event.
  */
 @interface CurrentViewController : ReloadableListController <UITableViewDelegate,
+#if IS_LITE()
+													ADBannerViewDelegate,
+#endif
 													UITableViewDataSource,
 													EventSourceDelegate, ServiceSourceDelegate>
 {
@@ -35,6 +42,11 @@
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	CXMLDocument *_currentXMLDoc; /*!< @brief Current XML Document. */
+#if IS_LITE()
+@private
+	id _adBannerView;
+	BOOL _adBannerViewIsVisible;
+#endif
 }
 
 @end

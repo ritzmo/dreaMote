@@ -75,7 +75,7 @@
 
 - (CGFloat)getBannerHeight
 {
-	return [self getBannerHeight:[UIDevice currentDevice].orientation];
+	return [self getBannerHeight:self.interfaceOrientation];
 }
 
 - (void)createAdBannerView

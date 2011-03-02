@@ -12,6 +12,10 @@
 #import "ReloadableListController.h"
 #import "ServiceZapListController.h" /* ServiceZapListDelegate */
 
+#if IS_LITE()
+#import "iAd/ADBannerView.h"
+#endif
+
 // Forward declarations...
 @protocol ServiceProtocol;
 @class EventViewController;
@@ -23,6 +27,9 @@
  Lists events and opens an EventViewController upon selection.
  */
 @interface EventListController : ReloadableListController <UITableViewDelegate,
+#if IS_LITE()
+													ADBannerViewDelegate,
+#endif
 													UITableViewDataSource,
 													EventSourceDelegate,
 													UIScrollViewDelegate,
@@ -38,6 +45,12 @@
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
+#if IS_LITE()
+@private
+	id _adBannerView;
+	BOOL _adBannerViewIsVisible;
+	CGFloat _adBannerHeight;
+#endif
 }
 
 /*!
@@ -47,6 +60,13 @@
  @return EventListController instance.
  */
 + (EventListController*)forService: (NSObject<ServiceProtocol> *)ourService;
+
+#if IS_LITE()
+/*!
+ @brief Create banner view
+ */
+- (void)createAdBannerView;
+#endif
 
 
 

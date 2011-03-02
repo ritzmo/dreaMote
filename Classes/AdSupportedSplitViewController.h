@@ -19,11 +19,10 @@
 											<ADBannerViewDelegate>
 #endif
 {
-@private
 #if IS_LITE()
+@private
 	id _adBannerView;
 	BOOL _adBannerViewIsVisible;
-	CGFloat _adBannerHeight;
 #endif
 }
 

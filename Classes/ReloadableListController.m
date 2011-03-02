@@ -40,12 +40,22 @@
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
+#if IS_LITE()
+	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	self.view = contentView;
+	CGRect visibleFrame = CGRectMake(0, 0, contentView.frame.size.width, contentView.frame.size.height);
+	_tableView.frame = visibleFrame;
+	[contentView addSubview:_tableView];
+#else
 	self.view = _tableView;
+#endif
 
 	// add header view
 	_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
 	_refreshHeaderView.delegate = self;
-	[self.view addSubview:_refreshHeaderView];
+	[_tableView addSubview:_refreshHeaderView];
 }
 
 - (void)loadGroupedTableView
@@ -58,7 +68,17 @@
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
+#if IS_LITE()
+	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	self.view = contentView;
+	CGRect visibleFrame = CGRectMake(0, 0, contentView.frame.size.width, contentView.frame.size.height);
+	_tableView.frame = visibleFrame;
+	[contentView addSubview:_tableView];
+#else
 	self.view = _tableView;
+#endif
 
 	// add header view
 	// NOTE: looks ugly on ipad, so only enable this on iphone for now
@@ -66,7 +86,7 @@
 	{
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
 		_refreshHeaderView.delegate = self;
-		[self.view addSubview:_refreshHeaderView];
+		[_tableView addSubview:_refreshHeaderView];
 	}
 }
 

@@ -13,6 +13,10 @@
 #import "TimerSourceDelegate.h"
 #import "TimerViewController.h" /* TimerViewDelegate */
 
+#if IS_LITE()
+#import "iAd/ADBannerView.h"
+#endif
+
 // Forward Declarations...
 @class CXMLDocument;
 
@@ -26,6 +30,9 @@
  timer ids.
  */
 @interface TimerListController : ReloadableListController <UITableViewDelegate,
+#if IS_LITE()
+													ADBannerViewDelegate,
+#endif
 													UITableViewDataSource,
 													TimerSourceDelegate,
 													TimerViewDelegate>
@@ -39,6 +46,11 @@
 	BOOL _isSplit; /*!< @brief Split mode? */
 
 	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
+#if IS_LITE()
+@private
+	id _adBannerView;
+	BOOL _adBannerViewIsVisible;
+#endif
 }
 
 /*!
