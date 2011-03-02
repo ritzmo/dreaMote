@@ -10,6 +10,7 @@
 
 #import "MovieProtocol.h"
 #import "SwipeTableView.h" /* SwipeTableViewDelegate */
+#import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 @class MovieListController;
 
@@ -23,7 +24,7 @@
 #if IS_FULL()
 													SwipeTableViewDelegate,
 #endif
-													UISplitViewControllerDelegate>
+													MGSplitViewControllerDelegate>
 {
 @private
 	MovieListController *movieList; /*!< @brief Parent movie list. */

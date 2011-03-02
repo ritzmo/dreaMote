@@ -10,6 +10,7 @@
 
 #import "MovieSourceDelegate.h"
 #import "ReloadableListController.h"
+#import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 // Forward declarations...
 @class MovieViewController;
@@ -24,7 +25,7 @@
 @interface MovieListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource,
 													MovieSourceDelegate,
-													UISplitViewControllerDelegate>
+													MGSplitViewControllerDelegate>
 {
 @private
 	UIPopoverController *popoverController;

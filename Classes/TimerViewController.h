@@ -17,6 +17,7 @@
 #import "LocationListController.h" /* LocationListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "SimpleRepeatedViewController.h" /* SimpleRepeatedDelegate */
+#import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 // Forward declarations...
 @class DatePickerController;
@@ -33,7 +34,7 @@
 													SimpleRepeatedDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
-													UISplitViewControllerDelegate>
+													MGSplitViewControllerDelegate>
 {
 @private
 	UIPopoverController *popoverController;

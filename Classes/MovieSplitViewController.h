@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "IntelligentSplitViewController/IntelligentSplitViewController.h"
+#import "AdSupportedSplitViewController.h"
 #import "LocationListController.h"
 #import "MovieListController.h"
 #import "MovieViewController.h"
 
-@interface MovieSplitViewController : IntelligentSplitViewController {
+@interface MovieSplitViewController : AdSupportedSplitViewController {
 @private
 	LocationListController *_locationListController;
 	MovieListController *_movieListController;
