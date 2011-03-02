@@ -29,21 +29,11 @@
 @interface MainViewController()
 - (void)handleReconnect: (NSNotification *)note;
 - (BOOL)checkConnection;
-#if IS_LITE()
-- (void)createAdBannerView;
-- (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
-@property (nonatomic, retain) id adBannerView;
-@property (nonatomic) BOOL adBannerViewIsVisible;
-#endif
 @end
 
 @implementation MainViewController
 
 @synthesize myTabBar;
-#if IS_LITE()
-@synthesize adBannerView = _adBannerView;
-@synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
-#endif
 
 - (id)init
 {
@@ -66,9 +56,6 @@
 	[_rcController release];
 	[_serviceController release];
 	[_timerController release];
-#if IS_LITE()
-	[_adBannerView release];
-#endif
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
@@ -136,10 +123,6 @@
 
 	[self setViewControllers: menuList];
 	self.delegate = self;
-
-#if IS_LITE()
-	[self createAdBannerView];
-#endif
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
@@ -301,9 +284,6 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-#if IS_LITE()
-	[self fixupAdView:[UIDevice currentDevice].orientation];
-#endif
 	[self handleReconnect: nil];
 	[self.selectedViewController viewWillAppear:animated];
 }
@@ -321,15 +301,6 @@
 		return YES;
 	else
 		return [cur shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-#if IS_LITE()
-	if(_adBannerViewIsVisible)
-		[self fixupAdView:[UIDevice currentDevice].orientation];
-#endif
-	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 #pragma mark UITabBarController delegates
@@ -355,130 +326,5 @@
 	[viewController viewWillAppear:YES];
 	[viewController viewDidAppear:YES];
 }
-
-#pragma mark ADBannerViewDelegate
-#if IS_LITE()
-
-//#define __BOTTOM_AD__
-
-- (CGFloat)getBannerHeight:(UIDeviceOrientation)orientation
-{
-	if(UIInterfaceOrientationIsLandscape(orientation))
-		return IS_IPAD() ? 66 : 32;
-	else
-		return IS_IPAD() ? 66 : 50;
-}
-
-- (CGFloat)getBannerHeight
-{
-	return [self getBannerHeight:[UIDevice currentDevice].orientation];
-}
-
-- (void)createAdBannerView
-{
-	Class classAdBannerView = NSClassFromString(@"ADBannerView");
-	if(classAdBannerView != nil)
-	{
-		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
-		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
-														  ADBannerContentSizeIdentifierPortrait,
-														  ADBannerContentSizeIdentifierLandscape,
-														  nil]];
-		if(UIInterfaceOrientationIsLandscape([UIDevice currentDevice].orientation))
-		{
-			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
-		}
-		else
-		{
-			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
-		}
-#ifdef __BOTTOM_AD__
-		// Banner at Bottom
-		CGRect cgRect =[[UIScreen mainScreen] bounds];
-		CGSize cgSize = cgRect.size;
-		[_adBannerView setFrame:CGRectOffset([_adBannerView frame], 0, cgSize.height + [self getBannerHeight])];
-#else
-		// Banner at the Top
-		[_adBannerView setFrame:CGRectOffset([_adBannerView frame], 0, -[self getBannerHeight])];
-#endif
-		[_adBannerView setDelegate:self];
-
-		[self.view addSubview:_adBannerView];
-	}
-}
-
-- (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation
-{
-	if (_adBannerView != nil)
-	{
-		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-		{
-			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
-		}
-		else
-		{
-			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
-		}
-		[UIView beginAnimations:@"fixupViews" context:nil];
-		if(_adBannerViewIsVisible)
-		{
-			CGRect adBannerViewFrame = [_adBannerView frame];
-			adBannerViewFrame.origin.x = 0;
-#ifdef __BOTTOM_AD__
-			CGSize cgSize = [[UIScreen mainScreen] bounds].size;
-			adBannerViewFrame.origin.y = cgSize.height - self.tabBar.frame.size.height - [self getBannerHeight:toInterfaceOrientation];
-#else
-			adBannerViewFrame.origin.y = 0;
-#endif
-			[_adBannerView setFrame:adBannerViewFrame];
-
-			CGRect contentViewFrame = self.selectedViewController.view.frame;
-#ifdef __BOTTOM_AD__
-			contentViewFrame.origin.y = 0;
-#else
-			contentViewFrame.origin.y = [self getBannerHeight:toInterfaceOrientation];
-#endif
-			contentViewFrame.size.height = self.view.frame.size.height - self.tabBar.frame.size.height - [self getBannerHeight:toInterfaceOrientation];
-			self.selectedViewController.view.frame = contentViewFrame;
-		}
-		else
-		{
-			CGRect adBannerViewFrame = [_adBannerView frame];
-			adBannerViewFrame.origin.x = 0;
-#ifdef __BOTTOM_AD__
-			CGSize cgSize = [[UIScreen mainScreen] bounds].size;
-			adBannerViewFrame.origin.y = cgSize.height - self.tabBar.frame.size.height;
-#else
-			adBannerViewFrame.origin.y = 0;
-#endif
-			[_adBannerView setFrame:adBannerViewFrame];
-
-			CGRect contentViewFrame = self.selectedViewController.view.frame;
-			contentViewFrame.origin.y = 0;
-			contentViewFrame.size.height = self.view.frame.size.height - self.tabBar.frame.size.height;
-			self.selectedViewController.view.frame = contentViewFrame;
-		}
-		[UIView commitAnimations];
-	}
-}
-
-- (void)bannerViewDidLoadAd:(ADBannerView *)banner
-{
-	if(!_adBannerViewIsVisible)
-	{
-		_adBannerViewIsVisible = YES;
-		[self fixupAdView:[UIDevice currentDevice].orientation];
-	}
-}
-
-- (void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
-{
-	if(_adBannerViewIsVisible)
-	{
-		_adBannerViewIsVisible = NO;
-		[self fixupAdView:[UIDevice currentDevice].orientation];
-	}
-}
-#endif
 
 @end

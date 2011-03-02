@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "IntelligentSplitViewController/IntelligentSplitViewController.h"
+#import "AdSupportedSplitViewController.h"
 #import "TimerListController.h"
 #import "TimerViewController.h"
 
-@interface TimerSplitViewController : IntelligentSplitViewController {
+@interface TimerSplitViewController : AdSupportedSplitViewController {
 @private
 	TimerListController *_timerListController;
 	TimerViewController *_timerViewController;

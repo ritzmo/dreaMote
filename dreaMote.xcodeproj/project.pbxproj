@@ -438,6 +438,8 @@
 		DADCDC7512F2F22D00C0E7A2 /* SwipeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA372DAB12F22A5200FF97C4 /* SwipeTableView.m */; };
 		DADE1AE90F115A2500807A25 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
 		DADEF27C12CE128B0047E45E /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
+		DAE91279131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */; };
+		DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */; };
 		DAF42A9E0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */; };
 		DAFBA40812D8EFF60059B5C4 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA40712D8EFF60059B5C4 /* About.m */; };
 		DAFBA43112D8F3150059B5C4 /* Harddisk.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA43012D8F3150059B5C4 /* Harddisk.m */; };
@@ -832,6 +834,8 @@
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetSplitViewController.h; sourceTree = "<group>"; };
 		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
+		DAE91277131E8A9C00C613CB /* AdSupportedSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdSupportedSplitViewController.h; sourceTree = "<group>"; };
+		DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdSupportedSplitViewController.m; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+FuzzyFormatting.h"; sourceTree = "<group>"; };
 		DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+FuzzyFormatting.m"; sourceTree = "<group>"; };
 		DAFBA40612D8EFF60059B5C4 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
@@ -1457,6 +1461,8 @@
 			children = (
 				DAB660E412E4C1C000699EC8 /* MGSplitViewController */,
 				DA27462F12CF71BD000B490B /* IntelligentSplitViewController */,
+				DAE91277131E8A9C00C613CB /* AdSupportedSplitViewController.h */,
+				DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */,
 				DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */,
 				DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */,
 				DA12F68112DBA0B1009FF8DD /* MediaPlayerSplitViewController.h */,
@@ -1974,6 +1980,7 @@
 				DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */,
 				DA323A5813075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 				DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */,
+				DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2116,6 +2123,7 @@
 				DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */,
 				DA323A5913075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 				DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */,
+				DAE91279131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

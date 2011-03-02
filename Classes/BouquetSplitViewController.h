@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MGSplitViewController/MGSplitViewController.h"
+#import "AdSupportedSplitViewController.h"
 #import "BouquetListController.h"
 #import "ServiceListController.h"
 
-@interface BouquetSplitViewController : MGSplitViewController {
+@interface BouquetSplitViewController : AdSupportedSplitViewController {
 @private
 	BouquetListController *_bouquetListController;
 	ServiceListController *_serviceListController;
