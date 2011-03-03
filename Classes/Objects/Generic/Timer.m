@@ -142,17 +142,6 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark	Copy
-#pragma mark -
-
-- (id)copyWithZone:(NSZone *)zone
-{
-	id newElement = [[[self class] alloc] initWithTimer: self];
-
-	return newElement;
-}
-
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
@@ -235,6 +224,39 @@
 		[_sname release];
 		_sname = [newSname retain];
 	}
+}
+
+- (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
+{
+	// service is taken care of in TimerViewController
+	if(self.repeated) return NO;
+	if(self.disabled) return NO;
+	if(![self.title isEqualToString:event.title]) return NO;
+	if(![self.tdescription isEqualToString:event.sdescription]) return NO;
+	if(![self.begin isEqualToDate:event.begin]) return NO;
+	if(![self.end isEqualToDate:event.end]) return NO;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEventAuto])
+	{
+		if(self.afterevent != kAfterEventAuto)
+			return NO;
+	}
+	else
+	{
+		if(self.afterevent != kAfterEventNothing)
+			return NO;
+	}
+	return YES;
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[[self class] alloc] initWithTimer: self];
+
+	return newElement;
 }
 
 @end

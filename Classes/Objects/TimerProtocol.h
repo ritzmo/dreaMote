@@ -94,6 +94,7 @@ enum weekDays {
 };
 
 // Forward declaration
+@protocol EventProtocol;
 @protocol ServiceProtocol;
 
 /*!
@@ -107,6 +108,13 @@ enum weekDays {
  @return String containing state.
  */
 - (NSString *)getStateString;
+
+/*!
+ @brief Compare timer settings to an event.
+
+ @return YES if the settings are equal, else NO.
+*/
+- (BOOL)isEqualToEvent:(NSObject<EventProtocol> *)event;
 
 /*!
  @brief Set Begin from Timestamp as String.

@@ -10,6 +10,7 @@
 
 #import "CXMLElement.h"
 
+#import "EventProtocol.h"
 #import "../Generic/Service.h"
 
 @implementation EnigmaTimer
@@ -302,15 +303,9 @@
 	[super dealloc];
 }
 
-#pragma mark -
-#pragma mark	Copy
-#pragma mark -
-
-- (id)copyWithZone:(NSZone *)zone
+- (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
 {
-	id newElement = [[[self class] alloc] initWithTimer: self];
-
-	return newElement;
+	return NO;
 }
 
 - (NSString *)description
@@ -420,6 +415,17 @@
 		return typeData;
 	}
 	return 0;
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[[self class] alloc] initWithTimer: self];
+
+	return newElement;
 }
 
 @end

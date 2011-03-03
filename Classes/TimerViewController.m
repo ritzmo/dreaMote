@@ -42,6 +42,7 @@
  */
 - (void)cancelEdit:(id)sender;
 @property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, retain) NSObject<EventProtocol> *event;
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (nonatomic, readonly) UIViewController *bouquetListController;
@@ -65,6 +66,7 @@
 #define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 @synthesize delegate = _delegate;
+@synthesize event = _event;
 @synthesize oldTimer = _oldTimer;
 @synthesize popoverController;
 
@@ -93,6 +95,7 @@
 	NSObject<TimerProtocol> *newTimer = [GenericTimer withEvent: ourEvent];
 	timerViewController.timer = newTimer;
 	timerViewController.creatingNewTimer = YES;
+	timerViewController.event = ourEvent;
 
 	return timerViewController;
 }
@@ -103,6 +106,7 @@
 	NSObject<TimerProtocol> *newTimer = [GenericTimer withEventAndService: ourEvent: ourService];
 	timerViewController.timer = newTimer;
 	timerViewController.creatingNewTimer = YES;
+	timerViewController.event = ourEvent;
 
 	return timerViewController;
 }
@@ -133,6 +137,7 @@
 	[_timer release];
 	[_oldTimer release];
 	[_delegate release];
+	[_event release];
 
 	[_timerTitle release];
 	[_timerDescription release];
@@ -546,6 +551,15 @@
 		{
 			if(_creatingNewTimer)
 			{
+				/*!
+				 @brief reset eit if settings were modified
+				 @note if eit is set when adding a timer a backend can leverage it to base the
+				 timer on it. this is used e.g. in the enigma2 connector since adding a timer
+				 by eit is the only method to take the recording margin into account.
+				 */
+				if(_event && ![_timer isEqualToEvent:_event])
+					_timer.eit = nil;
+
 				Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer];
 				if(!result.result)
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext];
@@ -648,6 +662,18 @@
 {
 	if(newService == nil)
 		return;
+
+	/*!
+	 @brief new timer based on event, reset eit if sref changed
+	 @note if eit is set when adding a timer a backend can leverage it to base the timer
+	 on it. this is used e.g. in the enigma2 connector since adding a timer by eit is the
+	 only method to take the recording margin into account.
+	 */
+	if(_creatingNewTimer && _event)
+	{
+		if(![newService.sref isEqualToString:_timer.service.sref])
+			_timer.eit = nil;
+	}
 
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.

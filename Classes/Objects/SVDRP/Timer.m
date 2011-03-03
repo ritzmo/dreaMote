@@ -129,6 +129,16 @@
 		_file, _auxiliary];
 }
 
+- (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
+{
+	return NO;
+}
+
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
+}
+
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -
@@ -140,10 +150,7 @@
 	return newElement;
 }
 
-- (NSString *)description
-{
-	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
-}
+#pragma mark Unsupported
 
 - (NSString *)getStateString
 {
