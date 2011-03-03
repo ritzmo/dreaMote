@@ -316,7 +316,11 @@ enum enigma2MessageTypes {
 
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
 {
-	NSString *relativeURL = [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @""];
+	NSString *relativeURL = nil;
+	if(newTimer.eit != nil && ![newTimer.eit isEqualToString:@""])
+		relativeURL = [NSString stringWithFormat: @"/web/timeraddbyeventid?sRef=%@&eventid=%@&disabled=%d&justplay=%d&afterevent=%d&dirname=%@", [newTimer.service.sref urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.location ? [newTimer.location urlencode] : @""];
+	else
+		relativeURL = [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @""];
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
