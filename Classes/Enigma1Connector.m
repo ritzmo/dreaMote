@@ -220,7 +220,9 @@ enum enigma1MessageTypes {
 {
 	if(isRadio)
 	{
+#if IS_DEBUG()
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 		return nil;
 	}
 
@@ -265,7 +267,9 @@ enum enigma1MessageTypes {
 {
 	if(isRadio)
 	{
+#if IS_DEBUG()
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 		return nil;
 	}
 
@@ -463,7 +467,9 @@ enum enigma1MessageTypes {
 {
 	if(location != nil)
 	{
+#if IS_DEBUG()
 		[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 		return nil;
 	}
 
@@ -792,97 +798,129 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)fetchPlaylist:(NSObject <FileSourceDelegate>*)delegate
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)fetchFiles:(NSObject <FileSourceDelegate>*)delegate path:(NSString *)path
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (Result *)removeTrack:(NSObject<FileProtocol> *) track
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (Result *)playTrack:(NSObject<FileProtocol> *) track
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (Result *)mediaplayerCommand:(NSString *)command
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (NSData *)getFile: (NSString *)fullpath;
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 

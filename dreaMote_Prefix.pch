@@ -41,6 +41,13 @@
 #endif
 #define IS_FULL() (!IS_LITE())
 
+// enable certain exceptions or debug code
+#if TARGET_IPHONE_SIMULATOR || defined(DEBUG) || (!defined(NS_BLOCK_ASSERTIONS) && !defined(NDEBUG))
+	#define IS_DEBUG() (1)
+#else
+	#define IS_DEBUG()	(0)
+#endif
+
 #ifndef NSINTEGER_DEFINED
 	#define NSInteger int
 #endif

@@ -19,7 +19,9 @@
 
 - (void)setTags: (NSArray *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)filename
@@ -29,7 +31,9 @@
 
 - (void)setFilename:(NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSNumber *)size
@@ -39,7 +43,9 @@
 
 - (void)setSize: (NSNumber *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSNumber *)length
@@ -49,7 +55,9 @@
 
 - (void)setLength: (NSNumber *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSDate *)time
@@ -59,7 +67,9 @@
 
 - (void)setTime: (NSDate *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)sname
@@ -69,7 +79,9 @@
 
 - (void)setSname: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)sref
@@ -84,7 +96,9 @@
 
 - (void)setSref: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)edescription
@@ -94,7 +108,9 @@
 
 - (void)setEdescription: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)sdescription
@@ -104,7 +120,9 @@
 
 - (void)setSdescription: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)title
@@ -120,7 +138,9 @@
 
 - (void)setTitle: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -152,12 +172,16 @@
 
 - (void)setTimeFromString: (NSString *)newTime
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (void)setTagsFromString: (NSString *)newTags
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 @end

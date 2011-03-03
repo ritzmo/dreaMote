@@ -147,33 +147,45 @@
 
 - (NSString *)getStateString
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 	return nil;
 }
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (void)setEndFromString: (NSString *)newEnd
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (void)setSref: (NSString *)newSref
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (void)setSname: (NSString *)newSname
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)location
@@ -183,7 +195,9 @@
 
 - (void)setLocation:(NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 @end

@@ -19,7 +19,9 @@
 
 - (void)setFullpath: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (id)initWithNode: (CXMLNode *)node
@@ -40,7 +42,9 @@
 
 - (void)setValid: (BOOL)newValid
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (BOOL)valid

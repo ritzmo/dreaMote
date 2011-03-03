@@ -42,7 +42,9 @@
 
 - (void)setEdescription: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)sdescription
@@ -58,7 +60,9 @@
 
 - (void)setSdescription: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)title
@@ -86,7 +90,9 @@
 
 - (void)setTitle: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSDate *)end
@@ -149,7 +155,9 @@
 
 - (void)setEit: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (BOOL)isValid
@@ -187,7 +195,9 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration

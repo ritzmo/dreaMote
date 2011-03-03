@@ -46,7 +46,9 @@
 
 - (void)setArtist: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)album
@@ -61,7 +63,9 @@
 
 - (void)setAlbum: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)genre
@@ -76,7 +80,9 @@
 
 - (void)setGenre: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)title
@@ -91,7 +97,9 @@
 
 - (void)setTitle: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)year
@@ -106,7 +114,9 @@
 
 - (void)setYear: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)coverpath
@@ -124,7 +134,9 @@
 
 - (void)setCoverpath: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 #pragma mark -

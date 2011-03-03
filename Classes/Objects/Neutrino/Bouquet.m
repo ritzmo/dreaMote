@@ -20,7 +20,9 @@
 
 - (void)setSref: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (NSString *)sname
@@ -30,7 +32,9 @@
 
 - (void)setSname: (NSString *)new
 {
+#if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
 }
 
 - (id)initWithNode: (CXMLElement *)node
