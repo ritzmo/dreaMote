@@ -823,26 +823,50 @@ class Simple(resource.Resource):
 		elif lastComp == "timerlist":
 			timerstrings = state.getTimers(TYPE_E2)
 			returndoc = TIMERLIST_E2 % (timerstrings,)
-		elif lastComp == "timeradd" or lastComp == "timerchange":
+		elif lastComp in ("timeradd", "timerchange", "timeraddbyeventid"):
+			returndoc = ''
 			if lastComp == "timerchange":
-				delete = int(req.args.get('deleteOldOnSave', 0)[0])
-				sRef = req.args.get('channelOld')[0]
-				begin = int(req.args.get('beginOld')[0])
-				end = int(req.args.get('endOld')[0])
+				delete = int(get('deleteOldOnSave', 0))
+				sRef = get('channelOld')
+				begin = int(get('beginOld'))
+				end = int(get('endOld'))
 				if delete: state.deleteTimer(channelOld, beginOld, endOld)
-			sRef = req.args.get('sRef')[0]
-			begin = int(req.args.get('begin')[0])
-			end = int(req.args.get('end')[0])
-			name = req.args.get('name')[0]
-			desc = req.args.get('description')[0]
-			eit = int(req.args.get('eit')[0])
-			disabled = int(req.args.get('disabled')[0])
-			justplay = int(req.args.get('justplay')[0])
-			afterevent = int(req.args.get('afterevent')[0])
-			repeated = int(req.args.get('repeated')[0])
-			state.addTimer(sRef, begin, end, name, desc, eit, disabled, justplay, afterevent, repeated)
+			sRef = get('sRef')
+			eventid = int(get('eventid', 0))
+			if lastComp == "timeraddbyeventid":
+				# XXX: our events are dynamic and use time() as begin, so just copy that here
+				now = time.time()
+				if sRef == '':
+					returndoc = SIMPLEXMLRESULT % ('False', 'Missing Parameter: sRef')
+				elif eventid == 0:
+					returndoc = SIMPLEXMLRESULT % ('False', 'Missing Parameter: eventid')
+				elif sRef != '1:0:1:445D:453:1:C00000:0:0:0:' or eventid != 45183:
+					returndoc = SIMPLEXMLRESULT % ('False', 'EventId not found')
+				else:
+					begin = now
+					end = now + 1560
+					name = "Demo Event"
+					desc = "Event Short description"
+					afterevent = 3
+					repeated = 0
+					disabled = 0
+			else:
+				begin = int(get('begin'))
+				end = int(get('end'))
+				name = get('name')
+				desc = get('description')
+				afterevent = int(get('afterevent'))
+				repeated = int(get('repeated'))
+				disabled = int(get('disabled'))
+			justplay = int(get('justplay'))
+			dirname = get('dirname')
+			tags = get('tags')
+			state.addTimer(sRef, begin, end, name, desc, eventid, disabled, justplay, afterevent, repeated)
 			if lastComp == "timerchange":
 				returndoc = SIMPLEXMLRESULT % ('True', 'Timer changed successfully')
+			elif lastComp == "timeraddbyeventid":
+				if returndoc == '':
+					returndoc = SIMPLEXMLRESULT % ('True', "Timer '%s' added" % (name,))
 			else:
 				returndoc = SIMPLEXMLRESULT % ('True', 'Timer added successfully')
 		elif lastComp == "timerdelete":
