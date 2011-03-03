@@ -105,7 +105,14 @@
 	}
 
 	if([RemoteConnectorObject loadConnections])
+	{
 		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
+		// by using mg split view loadView is called to early which might lead to the
+		// wrong mode being shown (e.g. only movie list & movie view for enigma2 instead
+		// of location list & movie list). posting this notification will trigger the necessary
+		// reload.
+		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+	}
 	
 	// Show the window and view
 	[window addSubview: tabBarController.view];
