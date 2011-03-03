@@ -1,4 +1,5 @@
 #!/bin/python
+# -*- coding: UTF-8 -*-
 ####
 # Simple Demo Server for dreaMote, powered by twisted web
 # Currently supports most e2 functionality also present in dreaMote, and parts
