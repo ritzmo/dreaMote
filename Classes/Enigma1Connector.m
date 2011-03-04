@@ -197,14 +197,18 @@ enum enigma1MessageTypes {
  </bouquet>
  </bouquets>
  */
-- (NSError *)maybeRefreshBouquetsXMLCache
+- (NSError *)maybeRefreshBouquetsXMLCache:(BOOL)isRadio
 {
 	@synchronized(self)
 	{
-		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
+		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1 || _cacheIsRadio != isRadio)
 		{
+			NSInteger mode = 0;
+			if(isRadio)
+				mode = 1;
+
 			[_cachedBouquetsXML release];
-			NSURL *myURI = [NSURL URLWithString: @"/xml/services?mode=0&submode=4" relativeToURL: _baseAddress];
+			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=4", mode] relativeToURL:_baseAddress];
 			NSError *returnValue = nil;
 
 			const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
@@ -218,15 +222,7 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
-	if(isRadio)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
-		return nil;
-	}
-
-	NSError *error = [self maybeRefreshBouquetsXMLCache];
+	NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
 	if(error)
 	{
 		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
@@ -265,14 +261,6 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
-	if(isRadio)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
-		return nil;
-	}
-
 	// split view on ipad
 	if(!bouquet)
 	{
@@ -286,7 +274,7 @@ enum enigma1MessageTypes {
 	resultNodes = [bouquet nodesForXPath: @"service" error: nil];
 	if(!resultNodes || ![resultNodes count])
 	{
-		NSError *error = [self maybeRefreshBouquetsXMLCache];
+		NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
 		if(error)
 		{
 			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];

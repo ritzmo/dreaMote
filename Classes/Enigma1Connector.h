@@ -27,6 +27,7 @@
 	 the Bouquet list so we have to cache this (already parsed) XML in memory.
 	*/
 	CXMLDocument *_cachedBouquetsXML;
+	BOOL _cacheIsRadio;
 }
 
 @end
