@@ -258,10 +258,10 @@ BOXSTATUS = """<?xml version="1.0" encoding="UTF-8"?>
 <boxstatus><current_time>1298106939</current_time><standby>0</standby><recording>0</recording><mode>0</mode><ip>127.0.0.1</ip></boxstatus>"""
 
 SERVICES_E1 = """<?xml version="1.0" encoding="UTF-8"?>
- <bouquets>
-  <bouquet><reference>4097:7:0:33fc5:0:0:0:0:0:0:/var/tuxbox/config/enigma/userbouquet.33fc5.tv</reference><name>Demo Bouquet</name>
-   <service><reference>1:0:1:6dca:44d:1:c00000:0:0:0:</reference><name>Demo Service</name><provider>Demo Provider</provider><orbital_position>192</orbital_position></service>
-  </bouquet>
+<bouquets>
+ <bouquet><reference>%s</reference><name>%s</name>
+  <service><reference>%s</reference><name>%s</name><provider>Demo Provider</provider><orbital_position>192</orbital_position></service>
+ </bouquet>
 </bouquets>"""
 
 SERVICES_E1_OLD = """<?xml version="1.0" encoding="ISO-8859-1"?>
@@ -914,7 +914,7 @@ class Simple(resource.Resource):
 		elif req.path == "/xml/getservices":
 			# OLD API, NEW DOCUMENT
 			if EMULATE_OLD_E1 == 1:
-				returndoc = SERVICES_E1
+				returndoc = SERVICES_E1 % ("4097:7:0:33fc5:0:0:0:0:0:0:/var/tuxbox/config/enigma/userbouquet.33fc5.tv", "Demo Bouquet", "1:0:1:6dca:44d:1:c00000:0:0:0:", "Demo Service")
 			# OLD API, OLD DOCUMENT
 			elif EMULATE_OLD_E1 == 2:
 				returndoc = SERVICES_E1_OLD
@@ -929,14 +929,17 @@ class Simple(resource.Resource):
 				req.setResponseCode(404)
 				returndoc = "emulating old enigma 1"
 			else:
-				mode = req.args.get('mode')
-				submode = req.args.get('submode')
-				mode = mode and int(mode[0])
-				submode = submode and int(submode[0])
+				mode = int(get('mode', 0))
+				submode = int(get('submode', 2))
 				if mode == 3 and submode == 4:
 					returndoc = MOVIELIST_E1 % (state.getMovies(TYPE_E1),)
+				elif mode == 1 and submode == 4:
+					# TODO: find better sample values
+					returndoc = SERVICES_E1 % ("4097:7:0:33fc5:0:0:0:0:0:0:/var/tuxbox/config/enigma/userbouquet.33fc5.radio", "Demo Bouquet", ":::::::::::DUNNO:::::::::::", "Demo Radio Service")
+				elif mode == 0 and submode == 4:
+					returndoc = SERVICES_E1 % ("4097:7:0:33fc5:0:0:0:0:0:0:/var/tuxbox/config/enigma/userbouquet.33fc5.tv", "Demo Bouquet", "1:0:1:6dca:44d:1:c00000:0:0:0:", "Demo Service")
 				else:
-					returndoc = SERVICES_E1
+					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "serviceepg":
 			sRef = req.args.get('ref')
 			sRef = sRef and sRef[0]
