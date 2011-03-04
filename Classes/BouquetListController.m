@@ -52,6 +52,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_bouquets release];
 	[_serviceListController release];
 	[_bouquetXMLDoc release];
@@ -129,6 +130,18 @@
 	[self viewWillAppear: NO];
 }
 
+- (void)resetRadio:(NSNotification *)note
+{
+	// disable radio mode in case new connector does not support it
+	if(_isRadio)
+		[self switchRadio:nil];
+
+	// eventually deselect row
+	NSIndexPath *idx = [_tableView indexPathForSelectedRow];
+	if(idx)
+		[_tableView deselectRowAtIndexPath:idx animated:NO];
+}
+
 /* layout */
 - (void)loadView
 {
@@ -143,6 +156,9 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kServiceCellHeight;
 	_tableView.sectionHeaderHeight = 0;
+
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRadio:) name:kReconnectNotification object:nil];
 }
 
 /* about to display */

@@ -74,6 +74,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_mainList release];
 	[_subList release];
 	[_eventListController release];
@@ -219,6 +220,16 @@
 }
 #endif
 
+- (void)didReconnect:(NSNotification *)note
+{
+	// disable radio mode in case new connector does not support it
+	if(_isRadio)
+		[self switchRadio:nil];
+
+	// reset bouquet or do nothing if switchRadio did this already
+	self.bouquet = nil;
+}
+
 /* layout */
 - (void)loadView
 {
@@ -258,6 +269,9 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.sectionHeaderHeight = 0;
+
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 }
 
 /* cancel in delegate mode */
