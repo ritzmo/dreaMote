@@ -403,6 +403,19 @@ static EPGCache *_sharedInstance = nil;
 /* read epg for given time interval */
 - (void)readEPGForTimeIntervalFrom:(NSDate *)begin until:(NSDate *)end to:(NSObject<EventSourceDelegate> *)delegate
 {
+	if(!begin || !end || !delegate)
+	{
+#if IS_DEBUG()
+		if(!begin)
+			[NSException raise:NSInvalidArgumentException format:@"begin was nil"];
+		if(!end)
+			[NSException raise:NSInvalidArgumentException format:@"end was nil"];
+		if(!delegate)
+			[NSException raise:NSInvalidArgumentException format:@"delegate was nil"];
+#endif
+		return;
+	}
+
 	sqlite3 *db = NULL;
 	NSError *error = nil;
 	[self checkDatabase];
