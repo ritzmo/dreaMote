@@ -95,6 +95,13 @@
 - (void)setIsRadio:(BOOL)new
 {
 	if(_isRadio == new) return;
+	_isRadio = new;
+	_radioButton.enabled = NO;
+
+	// eventually deselect row
+	NSIndexPath *idx = [_tableView indexPathForSelectedRow];
+	if(idx)
+		[_tableView deselectRowAtIndexPath:idx animated:YES];
 
 	// Set title
 	if(new)
@@ -109,11 +116,12 @@
 		self.navigationController.tabBarItem.title = self.title;
 	}
 
-	_isRadio = new;
-
 	// on ipad also set service list to radio mode, unnecessary on iphone
 	if(IS_IPAD())
+	{
 		_serviceListController.isRadio = new;
+		_serviceListController.bouquet = nil;
+	}
 
 	// make sure we are going to refresh
 	_refreshBouquets = YES;
@@ -256,6 +264,7 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
 {
+	_radioButton.enabled = YES;
 	// assume details will fail too if in split
 	if(_isSplit)
 	{
@@ -270,6 +279,7 @@
 }
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
+	_radioButton.enabled = YES;
 	if(_isSplit)
 	{
 		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];

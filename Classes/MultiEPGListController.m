@@ -156,21 +156,22 @@
 /* setter for bouquet property */
 - (void)setBouquet: (NSObject<ServiceProtocol> *)new
 {
+	++pendingRequests;
 	// Same bouquet assigned, abort
-	if(_bouquet != nil && _bouquet == new) return;
+	if(_bouquet == new) return;
 
 	// Free old bouquet, retain new one
 	[_bouquet release];
 	_bouquet = [new copy];
 
 	// Free Caches and reload data
-	_reloading = YES;
 	[self emptyData];
+	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
-	self.curBegin = [NSDate date];
+	if([self.view superview])
+		self.curBegin = [NSDate date];
 
-	++pendingRequests;
-	// NOTE: We let the ServiceList passively refresh our data, so just die hiere
+	// NOTE: We let the ServiceList passively refresh our data, so just die here
 }
 
 /* getter of curBegin property */
@@ -307,8 +308,11 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
-	[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+	@synchronized(self)
+	{
+		NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
+		[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+	}
 
 	[pool release];
 }

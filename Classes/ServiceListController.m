@@ -120,7 +120,8 @@
 	_bouquet = [new copy];
 
 	// Set Title
-	self.title = new.sname;
+	if(new)
+		self.title = new.sname;
 
 	// Free Caches and reload data
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
@@ -154,6 +155,7 @@
 {
 	if(_isRadio == new) return;
 	_isRadio = new;
+	_radioButton.enabled = NO;
 
 	// Set title
 	if(new)
@@ -471,6 +473,7 @@
 	// NOTE: this might hide an error, but we prefer missing one over getting the same one twice
 	if(--pendingRequests == 0)
 	{
+		_radioButton.enabled = YES;
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
@@ -493,6 +496,7 @@
 {
 	if(--pendingRequests == 0)
 	{
+		_radioButton.enabled = YES;
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
