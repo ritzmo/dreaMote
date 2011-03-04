@@ -60,6 +60,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_movies release];
 	[_dateFormatter release];
 	[_movieViewController release];
@@ -217,6 +218,24 @@
 	[_dateFormatter resetReferenceDate];
 }
 
+- (void)didReconnect:(NSNotification *)note
+{
+	/*!
+	 @brief reset current location
+	 @note do not refresh immediately, so don't use self.currentLocation setter
+	 */
+	if(_currentLocation)
+	{
+		[_currentLocation release];
+		_currentLocation = nil;
+		_refreshMovies = YES;
+	}
+
+	// reset shown movie
+	if(_movieViewController)
+		_movieViewController.movie = nil;
+}
+
 /* layout */
 - (void)loadView
 {
@@ -225,6 +244,9 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kUIRowHeight;
 	_tableView.sectionHeaderHeight = 0;
+
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 }
 
 /* fetch movie list */
