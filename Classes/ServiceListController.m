@@ -183,7 +183,9 @@
 	else
 	{
 		_refreshServices = YES;
-		[self viewWillAppear: NO];
+		// only refresh if visible
+		if([self.view superview])
+			[self viewWillAppear:NO];
 	}
 }
 

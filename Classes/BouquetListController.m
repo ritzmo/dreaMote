@@ -135,7 +135,10 @@
 		_radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
 	else
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
-	[self viewWillAppear: NO];
+
+	// only refresh if visible
+	if([self.view superview])
+		[self viewWillAppear:NO];
 }
 
 - (void)resetRadio:(NSNotification *)note
