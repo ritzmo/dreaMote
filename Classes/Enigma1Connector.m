@@ -45,6 +45,7 @@ enum enigma1MessageTypes {
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
 	return
+		(feature == kFeaturesRadioMode) ||
 		(feature == kFeaturesBouquets) ||
 		(feature == kFeaturesGUIRestart) ||
 		(feature == kFeaturesRecordInfo) ||
