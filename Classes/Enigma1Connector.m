@@ -206,6 +206,7 @@ enum enigma1MessageTypes {
 			NSInteger mode = 0;
 			if(isRadio)
 				mode = 1;
+			_cacheIsRadio = isRadio;
 
 			[_cachedBouquetsXML release];
 			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=4", mode] relativeToURL:_baseAddress];
@@ -271,7 +272,10 @@ enum enigma1MessageTypes {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
-	resultNodes = [bouquet nodesForXPath: @"service" error: nil];
+	// if cache is valid for this request, read services
+	if(_cacheIsRadio == isRadio)
+		resultNodes = [bouquet nodesForXPath:@"service" error:nil];
+
 	if(!resultNodes || ![resultNodes count])
 	{
 		NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
