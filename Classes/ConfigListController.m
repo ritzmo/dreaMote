@@ -176,7 +176,7 @@
 		NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
 		NSString *importString = [data base64EncodedString];
 		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
-						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i",
+						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i",
 										   importString,
 										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
 										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],
@@ -395,7 +395,7 @@
 				return [_connections count] + 1;
 			return [_connections count];
 		case 1:
-			return (IS_IPAD()) ? 2 : 3;
+			return (IS_IPAD()) ? 1 : 2;
 #if IS_LITE()
 		case 2:
 			return 1;
