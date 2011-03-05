@@ -29,7 +29,6 @@
  @return UITableViewCell instance
  */
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section;
-- (void)connectionTestChanged:(id)sender;
 - (void)simpleRemoteChanged:(id)sender;
 - (void)vibrationChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
@@ -58,7 +57,6 @@
 
 	[_connections release];
 	[_vibrateInRC release];
-	[_connectionTest release];
 	[_simpleRemote release];
 
 	[super dealloc];
@@ -89,14 +87,6 @@
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_vibrateInRC.backgroundColor = [UIColor clearColor];
 
-	// Connectivity test
-	_connectionTest = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
-	[_connectionTest addTarget:self action:@selector(connectionTestChanged:) forControlEvents:UIControlEventValueChanged];
-
-	// in case the parent view draws with a custom color or gradient, use a transparent color
-	_connectionTest.backgroundColor = [UIColor clearColor];
-
 	// Simple remote
 	_simpleRemote = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
@@ -115,7 +105,6 @@
 	[super setEditing: editing animated: animated];
 
 	/*_vibrateInRC.enabled = editing;
-	_connectionTest.enabled = editing;
 	_simpleRemote.enabled = editing;*/
 
 	// Animate if requested
@@ -141,11 +130,6 @@
 	[(UITableView*)self.view setEditing: editing animated: animated];
 }
 
-- (void)connectionTestChanged:(id)sender
-{
-	[[NSUserDefaults standardUserDefaults] setBool: _connectionTest.on forKey: kConnectionTest];
-}
-
 - (void)simpleRemoteChanged:(id)sender
 {
 	[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
@@ -166,7 +150,6 @@
 
 	// just in case, read them too
 	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
-	[_connectionTest setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]];
 	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
 
 	[(UITableView *)self.view reloadData];
@@ -197,7 +180,6 @@
 										   importString,
 										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
 										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],
-										   kConnectionTest, [stdDefaults boolForKey:kConnectionTest],
 										   kMessageTimeout, [stdDefaults integerForKey:kMessageTimeout],
 										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote]]];
 		[[UIApplication sharedApplication] openURL:url];
@@ -373,11 +355,6 @@
 						break;
 					}
 					/* FALL THROUGH */
-				/* Connectivity check */
-				case 2:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Check Connectivity", @"");
-					((DisplayCell *)sourceCell).view = _connectionTest;
-					break;
 				default:
 					break;
 			}

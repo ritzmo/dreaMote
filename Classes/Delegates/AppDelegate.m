@@ -69,7 +69,6 @@
 		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 									 activeConnectionId, kActiveConnection,
 									 @"NO", kVibratingRC,
-									 @"YES", kConnectionTest,
 									 @"10", kMessageTimeout,
 									 @"YES", kPrefersSimpleRemote,
 									 databaseVersion, kDatabaseVersion,
@@ -240,10 +239,6 @@
 			else if([key isEqualToString:kVibratingRC])
 			{
 				[stdDefaults setBool:[value boolValue] forKey:kVibratingRC];
-			}
-			else if([key isEqualToString:kConnectionTest])
-			{
-				[stdDefaults setBool:[value boolValue] forKey:kConnectionTest];
 			}
 			else if([key isEqualToString:kMessageTimeout])
 			{

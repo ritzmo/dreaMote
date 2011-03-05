@@ -18,7 +18,6 @@
 @private
 	NSMutableArray *_connections; /*!< @brief List of Connections. */
 	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
-	UISwitch *_connectionTest; /*!< @brief "Connection Test" UISwitch. */
 	UISwitch *_simpleRemote; /*!< @brief "Use simple remote" UISwitch. */
 }
 

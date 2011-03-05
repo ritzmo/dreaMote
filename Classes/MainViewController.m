@@ -251,32 +251,6 @@
 		[targetViewController release];
 		return NO;
 	}
-
-	else if([[NSUserDefaults standardUserDefaults] boolForKey: kConnectionTest]
-			&& ![[RemoteConnectorObject sharedRemoteConnector] isReachable])
-	{
-		UIAlertView *notification = [[UIAlertView alloc]
-									 initWithTitle:NSLocalizedString(@"Error", @"")
-									 message:NSLocalizedString(@"Remote host unreachable!\nPlease check your network settings or connect to another host.", @"")
-									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-
-		self.selectedViewController = [menuList lastObject];
-		// config list already open, (eventually) go back to it and abort
-		if([[_otherController.navigationController viewControllers] containsObject: _otherController.configListController])
-		{
-			[_otherController.navigationController popToViewController:(UIViewController *)_otherController.configListController animated:YES];
-		}
-		// push config list
-		else
-		{
-			[_otherController.navigationController pushViewController:(UIViewController *)_otherController.configListController animated:YES];
-			[self.selectedViewController viewWillAppear:YES];
-			[self.selectedViewController viewDidAppear:YES];
-		}
-		return NO;
-	}
 	return YES;
 }
 

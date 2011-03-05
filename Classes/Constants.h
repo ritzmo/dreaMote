@@ -98,7 +98,6 @@
 // keys in nsuserdefaults
 #define kActiveConnection		@"activeConnector"
 #define kVibratingRC			@"vibrateInRC"
-#define kConnectionTest			@"connectionTest"
 #define kMessageTimeout			@"messageTimeout"
 #define kPrefersSimpleRemote	@"prefersSimpleRemote"
 #define kDatabaseVersion		@"databaseVersion" // refers to the epg cache
