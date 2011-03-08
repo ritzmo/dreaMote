@@ -375,6 +375,7 @@
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnection = [NSNumber numberWithInteger: _connectionIndex];
+	const NSInteger connectedId = [RemoteConnectorObject getConnectedId];
 
 	if(![RemoteConnectorObject connectTo: _connectionIndex])
 	{
@@ -386,6 +387,30 @@
 		[notification show];
 		[notification release];
 		return;
+	}
+	else
+	{
+		// connected to different host than before
+		if(_connectionIndex != connectedId)
+		{
+			const NSError *error = nil;
+			const BOOL doAbort = ![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+			// error without doAbort means e.g. old version
+			if(error)
+			{
+				UIAlertView *notification = [[UIAlertView alloc]
+											 initWithTitle:doAbort ? NSLocalizedString(@"Error", @"") : NSLocalizedString(@"Warning", @"")
+											 message:[error localizedDescription]
+											 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[notification show];
+				[notification release];
+				if(doAbort)
+				{
+					[RemoteConnectorObject connectTo:connectedId];
+					return;
+				}
+			}
+		}
 	}
 	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
 
@@ -401,6 +426,8 @@
 /* "connect" button pressed */
 - (void)doConnect: (id)sender
 {
+	const NSInteger connectedId = [RemoteConnectorObject getConnectedId];
+
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 
 	if(![RemoteConnectorObject connectTo: _connectionIndex])
@@ -414,6 +441,27 @@
 		[notification release];
 		return;
 	}
+	else
+	{
+		const NSError *error = nil;
+		const BOOL doAbort = ![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+		// error without doAbort means e.g. old version
+		if(error)
+		{
+			UIAlertView *notification = [[UIAlertView alloc]
+										 initWithTitle:doAbort ? NSLocalizedString(@"Error", @"") : NSLocalizedString(@"Warning", @"")
+									message:[error localizedDescription]
+									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+			[notification release];
+			if(doAbort)
+			{
+				[RemoteConnectorObject connectTo:connectedId];
+				return;
+			}
+		}
+	}
+
 
 	[(UITableView *)self.view beginUpdates];
 	if(_connectionIndex == [stdDefaults integerForKey: kActiveConnection])

@@ -215,7 +215,7 @@
 			// else connect to this host
 			else
 			{
-				NSUInteger connectedIdx = [RemoteConnectorObject getConnectedId];
+				const NSUInteger connectedIdx = [RemoteConnectorObject getConnectedId];
 
 				if(![RemoteConnectorObject connectTo:indexPath.row])
 				{
@@ -229,17 +229,44 @@
 					[notification show];
 					[notification release];
 				}
-				else if(connectedIdx != indexPath.row)
-				{
-					NSArray *reloads = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:connectedIdx inSection:0], indexPath, nil];
-					[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
-
-					// post notification
-					[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-				}
+				// did connect
 				else
 				{
-					[tableView deselectRowAtIndexPath:indexPath animated:YES];
+					const NSError *error = nil;
+					const BOOL doAbort = ![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+					// error without doAbort means e.g. old version
+					if(error)
+					{
+						UIAlertView *notification = [[UIAlertView alloc]
+													 initWithTitle:doAbort ? NSLocalizedString(@"Error", @"") : NSLocalizedString(@"Warning", @"")
+													 message:[error localizedDescription]
+													 delegate:nil
+											cancelButtonTitle:@"OK"
+											otherButtonTitles:nil];
+						[notification show];
+						[notification release];
+					}
+
+					// not reachable
+					if(doAbort)
+					{
+						[RemoteConnectorObject connectTo:connectedIdx];
+						[tableView deselectRowAtIndexPath:indexPath animated:YES];
+					}
+					// connected to new host
+					else if(connectedIdx != indexPath.row)
+					{
+						NSArray *reloads = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:connectedIdx inSection:0], indexPath, nil];
+						[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
+
+						// post notification
+						[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+					}
+					// connected to same host
+					else
+					{
+						[tableView deselectRowAtIndexPath:indexPath animated:YES];
+					}
 				}
 			}
 

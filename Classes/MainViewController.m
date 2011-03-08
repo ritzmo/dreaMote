@@ -136,8 +136,28 @@
 {
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
-		if(![RemoteConnectorObject connectTo: [connId integerValue]])
+	{
+		if(![RemoteConnectorObject connectTo:[connId integerValue]])
+		{
 			return;
+		}
+		else
+		{
+			const NSError *error = nil;
+			if(![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error])
+			{
+				UIAlertView *notification = [[UIAlertView alloc]
+											 initWithTitle:NSLocalizedString(@"Error", @"")
+												   message:[error localizedDescription]
+												  delegate:nil
+										 cancelButtonTitle:@"OK"
+										 otherButtonTitles:nil];
+				[notification show];
+				[notification release];
+			}
+		}
+
+	}
 	const BOOL isSingleBouquet =
 		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
 		&& (
