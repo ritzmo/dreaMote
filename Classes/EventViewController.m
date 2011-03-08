@@ -285,11 +285,34 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
-	if([cell respondsToSelector: @selector(view)]
-	   && [((DisplayCell *)cell).view respondsToSelector:@selector(sendActionsForControlEvents:)])
+#if 0
+	NSInteger section = indexPath.section;
+	if(section > 2 && !_isSearch)
+		section++;
+	if(section == 4 && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
 	{
-		[(UIButton *)((DisplayCell *)cell).view sendActionsForControlEvents: UIControlEventTouchUpInside];
+		if([_similarEvents count])
+		{
+			self.event = [_similarEvents objectAtIndex:indexPath.row];
+
+			// override local service if event has one
+			if(_event.service != nil)
+				self.service = _event.service;
+			[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+
+			// XXX: animated reload looks weird
+			[(UITableView *)self.view reloadData];
+		}
+	}
+	else
+#endif
+	{
+		const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+		if([cell respondsToSelector: @selector(view)]
+		   && [((DisplayCell *)cell).view respondsToSelector:@selector(sendActionsForControlEvents:)])
+		{
+			[(UIButton *)((DisplayCell *)cell).view sendActionsForControlEvents: UIControlEventTouchUpInside];
+		}
 	}
 	return nil;
 }
