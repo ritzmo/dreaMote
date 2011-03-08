@@ -120,11 +120,25 @@ typedef enum
 	}
 }
 
-- (BOOL)isReachable
+- (BOOL)isReachable:(NSError **)error
 {
 	if(!_socket)
 		[self getSocket];
-	return [_socket isConnected];
+
+	if([_socket isConnected])
+	{
+		return YES;
+	}
+	else
+	{
+		if(error != nil)
+		{
+			*error = [NSError errorWithDomain:@"myDomain"
+										 code:100
+									 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Remote host unreachable.", @"") forKey:NSLocalizedDescriptionKey]];
+		}
+		return NO;
+	}
 }
 
 - (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error

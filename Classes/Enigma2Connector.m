@@ -108,16 +108,31 @@ enum enigma2MessageTypes {
 	return [[EnigmaRCEmulatorController alloc] init];
 }
 
-- (BOOL)isReachable
+- (BOOL)isReachable:(NSError **)error
 {
 	NSURL *myURI = [NSURL URLWithString:@"/web/about" relativeToURL:_baseAddress];
 
 	NSHTTPURLResponse *response;
 	[SynchronousRequestReader sendSynchronousRequest:myURI
 								   returningResponse:&response
-											   error:nil];
+											   error:error];
 
-	return ([response statusCode] == 200);
+	// TODO: check webif version
+	if([response statusCode] == 200)
+	{
+		return YES;
+	}
+	else
+	{
+		// no connection error but unexpected status, generate error
+		if(error != nil && *error == nil)
+		{
+			*error = [NSError errorWithDomain:@"myDomain"
+										 code:99
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+		}
+		return NO;
+	}
 }
 
 - (Result *)getResultFromSimpleXmlWithRelativeString:(NSString *)relativeURL

@@ -250,9 +250,10 @@ enum buttonCodes {
  @brief Returns whether to Receiver is currently reachable or not.
  @note This Function is also used by the Autodetection.
 
+ @param error Pointer to pointer of NSError object. Can give additional information regardless of return value.
  @return YES if the Receiver is reachable and verified as compatible with the Connector.
  */
-- (BOOL)isReachable;
+- (BOOL)isReachable:(NSError **)error;
 
 
 

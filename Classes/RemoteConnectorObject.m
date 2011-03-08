@@ -129,7 +129,7 @@ static NSDictionary *_connection;
 	const BOOL useSSL = [[connection objectForKey: kSSL] boolValue];
 
 	connector = [Enigma2Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0 useSSL: useSSL];
-	if([connector isReachable])
+	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kEnigma2Connector;
@@ -137,7 +137,7 @@ static NSDictionary *_connection;
 
 	[connector release];
 	connector = [Enigma1Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0 useSSL: useSSL];
-	if([connector isReachable])
+	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kEnigma1Connector;
@@ -145,7 +145,7 @@ static NSDictionary *_connection;
 
 	[connector release];
 	connector = [NeutrinoConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0 useSSL: useSSL];
-	if([connector isReachable])
+	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kNeutrinoConnector;
@@ -153,7 +153,7 @@ static NSDictionary *_connection;
 	
 	[connector release];
 	connector = [SVDRPConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001 useSSL: useSSL];
-	if([connector isReachable])
+	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kSVDRPConnector;

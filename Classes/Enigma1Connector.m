@@ -114,7 +114,7 @@ enum enigma1MessageTypes {
 	_cachedBouquetsXML = nil;
 }
 
-- (BOOL)isReachable
+- (BOOL)isReachable:(NSError **)error
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/xml/boxstatus"  relativeToURL:_baseAddress];
@@ -122,9 +122,23 @@ enum enigma1MessageTypes {
 	NSHTTPURLResponse *response;
 	[SynchronousRequestReader sendSynchronousRequest:myURI
 								   returningResponse:&response
-											   error:nil];
+											   error:error];
 
-	return ([response statusCode] == 200);
+	if([response statusCode] == 200)
+	{
+		return YES;
+	}
+	else
+	{
+		// no connection error but unexpected status, generate error
+		if(error != nil && *error == nil)
+		{
+			*error = [NSError errorWithDomain:@"myDomain"
+										 code:99
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+		}
+		return NO;
+	}
 }
 
 - (UIViewController *)newRCEmulator

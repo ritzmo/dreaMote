@@ -102,7 +102,7 @@ enum neutrinoMessageTypes {
 	return [[NeutrinoRCEmulatorController alloc] init];
 }
 
-- (BOOL)isReachable
+- (BOOL)isReachable:(NSError **)error
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/control/info"  relativeToURL:_baseAddress];
@@ -110,9 +110,23 @@ enum neutrinoMessageTypes {
 	NSHTTPURLResponse *response;
 	[SynchronousRequestReader sendSynchronousRequest:myURI
 								   returningResponse:&response
-											   error:nil];
+											   error:error];
 
-	return ([response statusCode] == 200);
+	if([response statusCode] == 200)
+	{
+		return YES;
+	}
+	else
+	{
+		// no connection error but unexpected status, generate error
+		if(error != nil && *error == nil)
+		{
+			*error = [NSError errorWithDomain:@"myDomain"
+										 code:99
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+		}
+		return NO;
+	}
 }
 
 - (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
