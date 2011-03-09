@@ -31,6 +31,8 @@
 
 #import "NSString+URLEncode.h"
 
+#define WEBIF_VERSION_SUGGESTED @"1.6.6"
+
 enum powerStates {
 	kShutdownState = 1,
 	kRebootState = 2,
@@ -109,13 +111,30 @@ enum enigma2MessageTypes {
 	NSURL *myURI = [NSURL URLWithString:@"/web/about" relativeToURL:_baseAddress];
 
 	NSHTTPURLResponse *response;
-	[SynchronousRequestReader sendSynchronousRequest:myURI
-								   returningResponse:&response
-											   error:error];
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:error];
 
 	// TODO: check webif version
 	if([response statusCode] == 200)
 	{
+		if(error != nil && !_wasWarned)
+		{
+			NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+			CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:myString options:0 error:nil];
+			const NSArray *resultNodes = [dom nodesForXPath:@"/e2abouts/e2about/e2webifversion" error:nil];
+			for(CXMLElement *currentChild in resultNodes)
+			{
+				const NSString *stringValue = [currentChild stringValue];
+				if([stringValue compare:WEBIF_VERSION_SUGGESTED] == NSOrderedAscending)
+				{
+					*error = [NSError errorWithDomain:@"myDomain"
+												code:98
+											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, WEBIF_VERSION_SUGGESTED], [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+				}
+			}
+			_wasWarned = YES;
+		}
 		return YES;
 	}
 	else
