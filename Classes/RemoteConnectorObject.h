@@ -108,5 +108,12 @@
  @return Active Connector.
  */
 + (NSObject<RemoteConnector> *)sharedRemoteConnector;
+
+/*!
+ @brief Returns current credential.
+
+ @return Credentials for current connection.
+ */
++ (NSURLCredential *)getCredential;
  	
 @end

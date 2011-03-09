@@ -10,6 +10,8 @@
 
 #import "CXMLPushDocument.h"
 
+#import "RemoteConnectorObject.h"
+
 @interface CXMLPushDocument()
 /*!
  @brief Finish parsing.
@@ -85,7 +87,7 @@
 /* should authenticate? */
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
-	return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+	return YES;
 }
 
 /* do authenticate */
@@ -96,6 +98,10 @@
 		// TODO: ask user to accept certificate
 		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
 			 forAuthenticationChallenge:challenge];
+	}
+	else if([challenge previousFailureCount] < 2) // ssl might have failed already
+	{
+		[[challenge sender] useCredential:[RemoteConnectorObject getCredential] forAuthenticationChallenge:challenge];
 	}
 	else
 	{

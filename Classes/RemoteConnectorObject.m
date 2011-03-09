@@ -16,6 +16,8 @@
 #import "NeutrinoConnector.h"
 #import "SVDRPConnector.h"
 
+#import "NSString+URLEncode.h"
+
 @implementation RemoteConnectorObject
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
@@ -30,8 +32,8 @@ static NSDictionary *_connection;
 	const NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
 
 	NSString *remoteHost = [connection objectForKey: kRemoteHost];
-	NSString *username = [[connection objectForKey: kUsername]  stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
-	NSString *password = [[connection objectForKey: kPassword] stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding];
+	NSString *username = [[connection objectForKey: kUsername] urlencode];
+	NSString *password = [[connection objectForKey: kPassword] urlencode];
 	const NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 	const BOOL useSSL = [[connection objectForKey: kSSL] boolValue];
@@ -208,6 +210,13 @@ static NSDictionary *_connection;
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
 {
 	return _sharedRemoteConnector;
+}
+
++ (NSURLCredential *)getCredential
+{
+	return [NSURLCredential credentialWithUser:[_connection objectForKey:kUsername]
+									  password:[_connection objectForKey:kPassword]
+								   persistence:NSURLCredentialPersistenceNone];
 }
 
 @end

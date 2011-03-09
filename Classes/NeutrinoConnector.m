@@ -64,11 +64,7 @@ enum neutrinoMessageTypes {
 		{
 			NSString *remoteAddress = nil;
 			const NSString *scheme = ssl ? @"https://" : @"http://";
-			if([inUsername isEqualToString: @""])
-				remoteAddress = [NSString stringWithFormat: @"%@%@", scheme, address];
-			else
-				remoteAddress = [NSString stringWithFormat: @"%@%@:%@@%@", scheme, inUsername,
-								 inPassword, address];
+			remoteAddress = [NSString stringWithFormat: @"%@%@", scheme, address];
 			if(inPort > 0)
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 

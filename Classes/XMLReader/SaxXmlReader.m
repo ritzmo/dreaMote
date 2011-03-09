@@ -8,6 +8,8 @@
 
 #import "SaxXmlReader.h"
 
+#import "RemoteConnectorObject.h"
+
 @interface SaxXmlReader()
 - (void)charactersFound:(const xmlChar *)characters length:(int)length;
 - (void)parsingError:(const char *)msg, ...;
@@ -163,6 +165,10 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		// TODO: ask user to accept certificate
 		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
 			 forAuthenticationChallenge:challenge];
+	}
+	else if([challenge previousFailureCount] < 2) // ssl might have failed already
+	{
+		[[challenge sender] useCredential:[RemoteConnectorObject getCredential] forAuthenticationChallenge:challenge];
 	}
 	else
 	{

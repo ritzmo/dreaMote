@@ -9,6 +9,7 @@
 #import "SynchronousRequestReader.h"
 
 #import "Constants.h"
+#import "RemoteConnectorObject.h"
 
 @interface SynchronousRequestReader()
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace;
@@ -91,7 +92,7 @@
 
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
-	return [protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust];
+	return YES;
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -101,6 +102,10 @@
 		// TODO: ask user to accept certificate
 		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
 			 forAuthenticationChallenge:challenge];
+	}
+	else if([challenge previousFailureCount] < 2) // ssl might have failed already
+	{
+		[challenge.sender useCredential:[RemoteConnectorObject getCredential] forAuthenticationChallenge:challenge];
 	}
 	else
 	{
