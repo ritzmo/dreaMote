@@ -99,7 +99,8 @@
 	if(self.popoverController != nil) {
         [self.popoverController dismissPopoverAnimated:YES];
     }
-	
+
+	_refreshMovies = NO;
 	// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 	// application parses the XML file.
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
