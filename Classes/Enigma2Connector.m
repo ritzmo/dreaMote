@@ -120,8 +120,7 @@ enum enigma2MessageTypes {
 	{
 		if(error != nil && !_wasWarned)
 		{
-			NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-			CXMLDocument *dom = [[CXMLDocument alloc] initWithXMLString:myString options:0 error:nil];
+			CXMLDocument *dom = [[CXMLDocument alloc] initWithData:data options:0 error:nil];
 			const NSArray *resultNodes = [dom nodesForXPath:@"/e2abouts/e2about/e2webifversion" error:nil];
 			for(CXMLElement *currentChild in resultNodes)
 			{
@@ -133,6 +132,8 @@ enum enigma2MessageTypes {
 											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, WEBIF_VERSION_SUGGESTED], [response statusCode]] forKey:NSLocalizedDescriptionKey]];
 				}
 			}
+
+			[dom release];
 			_wasWarned = YES;
 		}
 		return YES;
@@ -161,9 +162,7 @@ enum enigma2MessageTypes {
 
 	if(error == nil)
 	{
-		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		dom = [[CXMLDocument alloc] initWithXMLString:myString options:0 error:&error];
-		[myString release];
+		dom = [[CXMLDocument alloc] initWithData:data options:0 error:&error];
 	}
 
 	Result *result = [Result createResult];
