@@ -18,8 +18,6 @@
 
 @implementation SimpleRepeatedViewController
 
-@synthesize repeated = _repeated;
-
 /* initialize */
 - (id)init
 {
@@ -43,6 +41,11 @@
 	simpleRepeatedViewController.repeated = repeated;
 
 	return [simpleRepeatedViewController autorelease];
+}
+
+- (NSInteger)repeated
+{
+	return _repeated;
 }
 
 - (void)setRepeated:(NSInteger)newRepeated

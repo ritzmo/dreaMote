@@ -21,9 +21,6 @@
 
 @implementation AfterEventViewController
 
-@synthesize selectedItem = _selectedItem;
-@synthesize showAuto = _showAuto;
-
 /* initialize */
 - (id)init
 {
@@ -50,10 +47,20 @@
 	return [afterEventViewController autorelease];
 }
 
+- (NSUInteger)selectedItem
+{
+	return _selectedItem;
+}
+
 - (void)setSelectedItem:(NSUInteger)newSelectedItem
 {
 	_selectedItem = newSelectedItem;
 	[(UITableView *)self.view reloadData];
+}
+
+-(BOOL)showAuto
+{
+	return _showAuto;
 }
 
 - (void)setShowAuto:(BOOL)newShowAuto
