@@ -79,6 +79,8 @@ enum enigma2MessageTypes {
 				remoteAddress = [remoteAddress stringByAppendingFormat: @":%d", inPort];
 
 			_baseAddress = [[NSURL alloc] initWithString:remoteAddress];
+			_username = [inUsername retain];
+			_password = [inPassword retain];
 		}
 	}
 	return self;
@@ -87,6 +89,8 @@ enum enigma2MessageTypes {
 - (void)dealloc
 {
 	[_baseAddress release];
+	[_password release];
+	[_username release];
 
 	[super dealloc];
 }
@@ -417,7 +421,12 @@ enum enigma2MessageTypes {
 
 - (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
 {
-	NSURL *streamURL = [NSURL URLWithString: [NSString stringWithFormat: @"/file?file=%@", [movie.filename urlencode]] relativeToURL: _baseAddress];
+	NSURL *streamURL = nil;
+	if([_username isEqualToString:@""])
+		streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"/file?file=%@", [movie.filename urlencode]] relativeToURL:_baseAddress];
+	else // inject username & password into url
+		streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@@%@:%d/file?file=%@", [_baseAddress scheme], _username, _password, [_baseAddress host], [[_baseAddress port] integerValue], [movie.filename urlencode]]];
+
 	return streamURL;
 }
 

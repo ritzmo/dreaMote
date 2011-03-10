@@ -16,6 +16,8 @@
 @interface Enigma2Connector : NSObject <RemoteConnector> {
 @private
 	NSURL *_baseAddress; /*!< @brief Base URL of STB */
+	NSString *_password; /*!< @brief Connection password */
+	NSString *_username; /*!< @brief Connection username */
 	BOOL _wasWarned; /*!< @brief User was warned about old software this session */
 }
 
