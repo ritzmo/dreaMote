@@ -28,7 +28,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #import "NSArray+CWSortedInsert.h"
-#import <objc/runtime.h>
+#import <objc/message.h>
 
 @implementation NSArray (CWSortedInsert)
 
