@@ -77,7 +77,11 @@ enum connectorFeatures {
 	kFeaturesInstantRecord,
 	/*! @brief Offers a SatFinder. */
 	kFeaturesSatFinder,
-	/*! @brief Similar EPG search. */
+	/*!
+	 @brief Similar EPG search.
+	 @note This indicates that a native EPG search is possible and has
+	 nothing to do with the emulated search in the full version.
+	 */
 	kFeaturesEPGSearchSimilar,
 	/*!
 	 @brief "Simple" Repeated timers
