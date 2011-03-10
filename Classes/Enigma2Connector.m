@@ -573,7 +573,21 @@ enum enigma2MessageTypes {
 
 - (Result *)sendButton:(NSInteger) type
 {
-	NSString *relativeURL = [NSString stringWithFormat: @"/web/remotecontrol?command=%d", type];
+	NSString *rcu = @"standard";
+	switch(type)
+	{
+		case kButtonCodeRecord:
+		case kButtonCodePVR:
+		case kButtonCodePlayPause:
+		case kButtonCodeFFwd:
+		case kButtonCodeFRwd:
+		case kButtonCodeStop:
+			rcu = @"advanced";
+			/* FALL THROUGH */
+		default:
+			break;
+	}
+	NSString *relativeURL = [NSString stringWithFormat: @"/web/remotecontrol?command=%d&rcu=%@", type, rcu];
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
