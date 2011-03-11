@@ -328,16 +328,6 @@ enum neutrinoMessageTypes {
 // TODO: reimplement this as streaming parser some day :-)
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
-	// Refresh Service Cache if empty, we need it later when resolving service references
-	/*!
-	 @note we check for retain count > 1 here because otherwise if we call this method to
-	 refresh the cache it would do a reload because of retainCount == 1 which is unwanted.
-	 */
-	if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] > 1)
-	{
-		[self maybeRefreshBouquetsXMLCache];
-	}
-
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: _baseAddress];
 
@@ -404,23 +394,8 @@ enum neutrinoMessageTypes {
 
 		NSObject<ServiceProtocol> *service = [[GenericService alloc] init];
 		service.sname = sname;
-		const NSArray *resultNodes = [_cachedBouquetsXML nodesForXPath:
-									[NSString stringWithFormat: @"/zapit/Bouquet/channel[@name=\"%@\"]", sname]
-									error:nil];
-		// XXX: do we really want this? we don't care about the sref :-)
-		if([resultNodes count])
-		{
-			CXMLElement *resultElement = [resultNodes objectAtIndex: 0];
-			service.sref = [NSString stringWithFormat: @"%@%@%@",
-								[[resultElement attributeForName: @"tsid"] stringValue],
-								[[resultElement attributeForName: @"onid"] stringValue],
-								[[resultElement attributeForName: @"serviceID"] stringValue]];
-		}
-		else
-		{
-			// NOTE: we set a fake sref here as the service is valid enough for timers...
-			service.sref = @"dc";
-		}
+		// NOTE: we set a fake sref here as the service is valid enough for timers...
+		service.sref = @"dc";
 		timer.service = service;
 		[service release];
 
