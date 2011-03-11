@@ -72,6 +72,9 @@
 - (void)dealloc
 {
 	[_node release];
+	[_sname release];
+	[_sref release];
+
 	[super dealloc];
 }
 
