@@ -426,7 +426,7 @@ SERVICES_NEUTRINOHD = """<?xml version="1.0" encoding="UTF-8"?>
 
 EPGSERVICE_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
  <epglist>
- <channel_id>44d00016dca</channel_id>
+ <channel_id>2718f001d175</channel_id>
  <channel_name><![CDATA[Demo Service]]></channel_name>
  <prog>
  <eventid>309903955495411052</eventid>
@@ -1075,7 +1075,7 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 				returndoc = "UNHANDLED METHOD"
 			else:
 				if sRef and sRef in ("d175", "2718f001d175", "1922718f001d175") or sname and sname == "Demo Service":
-					return EPGSERVICE_NEUTRINO
+					returndoc = EPGSERVICE_NEUTRINO
 				else:
 					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "timer":
