@@ -234,7 +234,13 @@ enum neutrinoMessageTypes {
 		return nil;
 	}
 
-	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/zapit/Bouquet" error:nil];
+	/*!
+	 @note We could use an overly complex xpath by using translate or just assume
+	 that this is a valid document if the basic structure is correct.
+	 Let's try the second approach but keep the correct zapit identification here for reference:
+	 *[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='zapit']
+	 */
+	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/*/Bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -288,7 +294,7 @@ enum neutrinoMessageTypes {
 		}
 
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
-						[NSString stringWithFormat: @"/zapit/Bouquet[@name=\"%@\"]/*", bouquet.sname]
+						[NSString stringWithFormat: @"/*/Bouquet[@name=\"%@\"]/*", bouquet.sname]
 						error:nil];
 	}
 
