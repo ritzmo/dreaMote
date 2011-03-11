@@ -22,6 +22,9 @@ import time
 # 3: old enigma (/xml/getServices), old document style
 EMULATE_OLD_E1 = 0
 
+# emulate neutrino hd
+EMULATE_NEUTRINOHD = False
+
 ### DOCUMENTS
 GETCURRENT = """<?xml version="1.0" encoding="UTF-8"?>
 <e2currentserviceinformation>
@@ -411,6 +414,13 @@ SERVICES_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
 <zapit>
  <Bouquet type="0" bouquet_id="0000" name="Demo Bouquet" hidden="0" locked="0">
   <channel serviceID="d175" name="Demo Service" tsid="2718" onid="f001"/>
+ </Bouquet>
+</zapit>"""
+
+SERVICES_NEUTRINOHD = """<?xml version="1.0" encoding="UTF-8"?>
+<zapit>
+ <Bouquet name="[E019.2] Demo Provider" hidden="0" locked="0">
+  <S i="d175" n="Demo Service" t="2718" on="f001" s="192" frq="12188"/>
  </Bouquet>
 </zapit>"""
 
@@ -1046,7 +1056,10 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 			# action depends on arg, there are fixed value but if you give a service name or id it will zap to that channel
 			returndoc = "UNHANDLED METHOD"
 		elif lastComp == "getbouquetsxml":
-			returndoc = SERVICES_NEUTRINO
+			if EMULATE_NEUTRINOHD:
+				returndoc = SERVICES_NEUTRINOHD
+			else:
+				returndoc = SERVICES_NEUTRINO
 		elif lastComp == "epg":
 			isXml = req.args.get('xml')
 			isXml = True if isXml and isXml[0] == 'true' else False
@@ -1061,7 +1074,7 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 			if not isXml or not details or max == -1:
 				returndoc = "UNHANDLED METHOD"
 			else:
-				if sRef and sRef in ("d175", "2718f001d175") or sname and sname == "Demo Service":
+				if sRef and sRef in ("d175", "2718f001d175", "1922718f001d175") or sname and sname == "Demo Service":
 					return EPGSERVICE_NEUTRINO
 				else:
 					returndoc = "UNHANDLED METHOD"
