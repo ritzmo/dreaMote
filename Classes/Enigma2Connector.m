@@ -366,7 +366,14 @@ enum enigma2MessageTypes {
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer
 {
 	NSString *relativeURL = [NSString stringWithFormat: @"/web/timerdelete?sRef=%@&begin=%d&end=%d", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970]];
-	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];}
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+}
+
+- (Result *)cleanupTimers:(const NSArray *)timers
+{
+	NSString *relativeURL = @"/web/timercleanup";
+	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+}
 
 #pragma mark Recordings
 

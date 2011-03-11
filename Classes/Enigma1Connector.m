@@ -60,7 +60,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesSatFinder) ||
 		(feature == kFeaturesSimpleRepeated) ||
 		(feature == kFeaturesCurrent) ||
-		(feature == kFeaturesTimerTitle);
+		(feature == kFeaturesTimerTitle) ||
+		(feature == kFeaturesTimerCleanup);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -456,6 +457,21 @@ enum enigma1MessageTypes {
 	result.result = (myRange.length > 0);
 	result.resulttext = myString;
 	[myString release];
+	return result;
+}
+
+- (Result *)cleanupTimers:(const NSArray *)timers
+{
+	Result *result = [Result createResult];
+	NSURL *myURI = [NSURL URLWithString:@"/cleanupTimerList" relativeToURL:_baseAddress];
+
+	NSHTTPURLResponse *response;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:nil];
+
+	result.result = ([response statusCode] == 204);
+	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]];
 	return result;
 }
 

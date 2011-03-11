@@ -117,14 +117,12 @@ enum connectorFeatures {
 	 request to an external app.
 	 */
 	kFeaturesStreaming,
-	/*!
-	 @brief Timers have a title.
-	 */
+	/*! @brief Timers have a title. */
 	kFeaturesTimerTitle,
-	/*!
-	 @brief Timer has a description
-	 */
+	/*! @brief Timer has a description */
 	kFeaturesTimerDescription,
+	/*! @brief Native timerlist cleanup functionality. */
+	kFeaturesTimerCleanup,
 };
 
 /*!
@@ -561,6 +559,16 @@ enum buttonCodes {
  @return YES if Timer was removed.
  */
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer;
+
+/*!
+ @brief Cleanup timer list.
+
+ @note List of timers must be provided if no native cleanup functionality is
+ available, otherwise the parameter is ignored.
+ @param timers List of timers to remove if cleanup is not available natively.
+ @return YES if timers were removed.
+ */
+- (Result *)cleanupTimers:(const NSArray *)timers;
 
 /*!
  @brief Send Remote Control Code to Receiver.

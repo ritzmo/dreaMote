@@ -1253,4 +1253,12 @@ typedef enum
 	return nil;
 }
 
+- (Result *)cleanupTimers:(const NSArray *)timers
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
 @end
