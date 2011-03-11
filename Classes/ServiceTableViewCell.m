@@ -76,8 +76,17 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	[_service release];
 	_service = [newService retain];
 
-	// Change name
-	_serviceNameLabel.text = newService.sname;
+	/*!
+	 @brief Change name
+
+	 @note Some weird combination of pushing views and refreshing services
+	 on the iPad could result in crashes. The error – funny enough – occured
+	 in the UILabel because the reference was invalid and pointed to the wrong
+	 object. By using a copy this should no longer happen.
+	 */
+	NSString *sname = [newService.sname copy];
+	_serviceNameLabel.text = sname;
+	[sname release];
 
 	if(newService.valid)
 	{
