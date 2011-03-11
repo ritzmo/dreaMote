@@ -11,6 +11,7 @@
 #import "CXMLElement.h"
 
 #import "Objects/Neutrino/Bouquet.h"
+#import "Objects/Neutrino/Service.h"
 #import "Objects/Generic/Service.h"
 #import "Objects/Generic/Volume.h"
 #import "Objects/Generic/Timer.h"
@@ -269,7 +270,7 @@ enum neutrinoMessageTypes {
 
 	NSArray *resultNodes = nil;
 
-	resultNodes = [bouquet nodesForXPath: @"channel" error: nil];
+	resultNodes = [bouquet nodesForXPath: @"*" error: nil];
 	if(!resultNodes || ![resultNodes count])
 	{
 		NSError *error = [self maybeRefreshBouquetsXMLCache];
@@ -287,20 +288,14 @@ enum neutrinoMessageTypes {
 		}
 
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
-						[NSString stringWithFormat: @"/zapit/Bouquet[@name=\"%@\"]/channel", bouquet.sname]
+						[NSString stringWithFormat: @"/zapit/Bouquet[@name=\"%@\"]/*", bouquet.sname]
 						error:nil];
 	}
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		// A channel in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
-
-		newService.sname = [[resultElement attributeForName: @"name"] stringValue];
-		newService.sref = [NSString stringWithFormat: @"%@%@%@",
-						   [[resultElement attributeForName: @"tsid"] stringValue],
-						   [[resultElement attributeForName: @"onid"] stringValue],
-						   [[resultElement attributeForName: @"serviceID"] stringValue]];
+		NSObject<ServiceProtocol> *newService = [[NeutrinoService alloc] initWithNode:resultElement];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: newService

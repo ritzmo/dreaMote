@@ -373,6 +373,8 @@
 		DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA712A8412FCB65000675E91 /* ZoomingScrollView.m */; };
 		DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA712A8412FCB65000675E91 /* ZoomingScrollView.m */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
+		DA78576B132A8C66003BE2FE /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78576A132A8C66003BE2FE /* Service.m */; };
+		DA78576C132A8C66003BE2FE /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78576A132A8C66003BE2FE /* Service.m */; };
 		DA7A1A2E12E1CC56004DEEB7 /* ServiceEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A1A2D12E1CC56004DEEB7 /* ServiceEventTableViewCell.m */; };
 		DA7A227A0E371ACA00455D11 /* RCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7A22790E371ACA00455D11 /* RCEmulatorController.m */; };
 		DA7D235F0F101F0500BB8BE7 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */; };
@@ -697,6 +699,8 @@
 		DA712A8412FCB65000675E91 /* ZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZoomingScrollView.m; sourceTree = "<group>"; };
 		DA784CF30F7D147F00A8050F /* EventSearchListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSearchListController.h; sourceTree = "<group>"; };
 		DA784CF40F7D147F00A8050F /* EventSearchListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventSearchListController.m; sourceTree = "<group>"; };
+		DA785769132A8C66003BE2FE /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
+		DA78576A132A8C66003BE2FE /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DA7A19DF12E1C76A004DEEB7 /* NowNextSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NowNextSourceDelegate.h; sourceTree = "<group>"; };
 		DA7A1A2C12E1CC56004DEEB7 /* ServiceEventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceEventTableViewCell.h; sourceTree = "<group>"; };
 		DA7A1A2D12E1CC56004DEEB7 /* ServiceEventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceEventTableViewCell.m; sourceTree = "<group>"; };
@@ -1123,6 +1127,8 @@
 				DA114AD60F0EA77100CB94AE /* Bouquet.m */,
 				DA0BF6D20F0C2D56004B488C /* Event.h */,
 				DA0BF6D30F0C2D56004B488C /* Event.m */,
+				DA785769132A8C66003BE2FE /* Service.h */,
+				DA78576A132A8C66003BE2FE /* Service.m */,
 			);
 			path = Neutrino;
 			sourceTree = "<group>";
@@ -1981,6 +1987,7 @@
 				DA323A5813075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 				DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */,
 				DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
+				DA78576B132A8C66003BE2FE /* Service.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2124,6 +2131,7 @@
 				DA323A5913075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 				DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */,
 				DAE91279131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
+				DA78576C132A8C66003BE2FE /* Service.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

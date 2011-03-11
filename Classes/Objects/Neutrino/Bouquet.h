@@ -14,8 +14,6 @@
 
 /*!
  @brief Bouquet in Neutrino.
-
- @note Neutrino uses the Generic Service for normal Services.
  */
 @interface NeutrinoBouquet : NSObject <ServiceProtocol>
 {

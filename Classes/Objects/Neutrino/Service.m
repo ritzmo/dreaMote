@@ -1,21 +1,36 @@
 //
-//  Bouquet.m
+//  Service.m
 //  dreaMote
 //
-//  Created by Moritz Venn on 08.03.08.
-//  Copyright 2008-2011 Moritz Venn. All rights reserved.
+//  Created by Moritz Venn on 11.03.11.
+//  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import "Bouquet.h"
+#import "Service.h"
 
 #import "../Generic/Service.h"
 #import "CXMLElement.h"
 
-@implementation NeutrinoBouquet
+@implementation NeutrinoService
 
 - (NSString *)sref
 {
-	return [[_node attributeForName: @"bouquet_id"] stringValue];
+	if(!_sref)
+	{
+		const NSString *s = [[_node attributeForName:@"s"] stringValue];
+		if(s && ![s isEqualToString:@""])
+			_sref = [[NSString stringWithFormat:@"%@%@%@%@",
+					s,
+					[[_node attributeForName:@"t"] stringValue],
+					[[_node attributeForName:@"on"] stringValue],
+					[[_node attributeForName:@"i"] stringValue]] retain];
+		else
+			_sref = [[NSString stringWithFormat:@"%@%@%@",
+					[[_node attributeForName:@"tsid"] stringValue],
+					[[_node attributeForName:@"onid"] stringValue],
+					[[_node attributeForName:@"serviceID"] stringValue]] retain];
+	}
+	return _sref;
 }
 
 - (void)setSref: (NSString *)new
@@ -27,7 +42,15 @@
 
 - (NSString *)sname
 {
-	return [[_node attributeForName: @"name"] stringValue];
+	if(!_sname)
+	{
+		const NSString *n = [[_node attributeForName:@"n"] stringValue];
+		if(n && ![n isEqualToString:@""])
+			_sname = [n retain];
+		else
+			_sname = [[_node attributeForName:@"name"] stringValue];
+	}
+	return _sname;
 }
 
 - (void)setSname: (NSString *)new
