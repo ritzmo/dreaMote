@@ -15,6 +15,7 @@
 
 #import "DisplayCell.h"
 
+#import "AboutDreamoteViewController.h"
 #import "ConfigViewController.h"
 
 /*!
@@ -169,25 +170,33 @@
 /* row was selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#if IS_LITE()
 	if(indexPath.section == 2)
 	{
-		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-		NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
-		NSString *importString = [data base64EncodedString];
-		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
+		if(indexPath.row == 0)
+		{
+			UIViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
+			[self presentModalViewController:welcomeController animated:YES];
+			[welcomeController release];
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		}
+#if IS_LITE()
+		else if(indexPath.row == 1)
+		{
+			NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+			NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
+			NSString *importString = [data base64EncodedString];
+			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
 						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i",
 										   importString,
 										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
 										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],
 										   kMessageTimeout, [stdDefaults integerForKey:kMessageTimeout],
 										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote]]];
-		[[UIApplication sharedApplication] openURL:url];
-	}
-	else
+			[[UIApplication sharedApplication] openURL:url];
+		}
 #endif
-	// Only do something in section 0
-	if(indexPath.section == 0)
+	}
+	else if(indexPath.section == 0)
 	{
 		NSUInteger upperBound = [_connections count];
 		if(self.editing) ++upperBound;
@@ -294,9 +303,7 @@
 
 	switch(section)
 	{
-#if IS_LITE()
 		case 2:
-#endif
 		case 0:
 			cell = [(UITableView *)self.view dequeueReusableCellWithIdentifier: kVanilla_ID];
 			if (cell == nil) 
@@ -386,15 +393,24 @@
 					break;
 			}
 			break;
-#if IS_LITE()
 		case 2:
+#if IS_LITE()
+			if(row == 1)
+			{
+				sourceCell.accessoryType = UITableViewCellAccessoryNone;
+				TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+				TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+				TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
+				break;
+			}
+#endif
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			TABLEVIEWCELL_IMAGE(sourceCell) = nil;
 			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-			TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
+			TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
 			break;
-#endif
 		default:
 			break;
 	}
@@ -405,11 +421,7 @@
 /* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-#if IS_LITE()
-	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]])
-		return 3;
-#endif
-	return 2;
+	return 3;
 }
 
 /* number of rows in given section */
@@ -423,9 +435,11 @@
 			return [_connections count];
 		case 1:
 			return (IS_IPAD()) ? 1 : 2;
-#if IS_LITE()
 		case 2:
+#if IS_FULL()
 			return 1;
+#else
+			return ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]]) ? 2 : 1;
 #endif
 		default:
 			return 0;
