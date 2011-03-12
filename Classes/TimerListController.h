@@ -44,6 +44,7 @@
 	TimerViewController *_timerViewController; /*!< @brief Cached Timer Detail View. */
 	BOOL _willReappear; /*!< @brief Used to guard free of ressources on close if we are opening a subview. */
 	BOOL _isSplit; /*!< @brief Split mode? */
+	UIBarButtonItem *_cleanupButton; /*!< @brief Cleanup button. */
 
 	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
 #if IS_LITE()

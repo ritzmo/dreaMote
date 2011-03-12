@@ -27,6 +27,7 @@
 @property (nonatomic, retain) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
+- (void)cleanupTimers:(id)sender;
 @end
 
 
@@ -61,8 +62,9 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_timers release];
+	[_cleanupButton release];
 	[_dateFormatter release];
+	[_timers release];
 	[_timerViewController release];
 #if IS_LITE()
 	[_adBannerView release];
@@ -83,6 +85,31 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)cleanupTimers:(id)sender
+{
+	// TODO: generate list of timers to clean up if non-native, but for now we don't support that anyway
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] cleanupTimers:nil];
+	if(!result.result)
+	{
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error cleaning up", @"Title of alert when timer cleanup failed")
+															  message:result.resulttext
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+
+	// reload data
+	[self emptyData];
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+
+	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
+	// application parses the XML file.
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
 /* layout */
 - (void)loadView
 {
@@ -90,6 +117,8 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = 62;
+
+	_cleanupButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cleanup", @"Timer cleanup button") style:UIBarButtonItemStylePlain target:self action:@selector(cleanupTimers:)];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 #if IS_LITE()
@@ -134,6 +163,11 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerCleanup])
+		self.navigationItem.leftBarButtonItem = _cleanupButton;
+	else
+		self.navigationItem.leftBarButtonItem = nil;
+
 	if(!_willReappear && !_reloading)
 	{
 		[self emptyData];
