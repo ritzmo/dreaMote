@@ -124,6 +124,9 @@
 /* No comment provided by engineer. */
 "Caption cannot be empty." = "Titel darf nicht leer sein.";
 
+/* Timer cleanup button */
+"Cleanup" = "Aufräumen";
+
 /* No comment provided by engineer. */
 "Config List Explain" = "Konfiguration ändern";
 
@@ -229,6 +232,9 @@
 
 /* No comment provided by engineer. */
 "Error adding new timer: %@" = "Konnte neuen Timer nicht hinzufügen: %@";
+
+/* Title of alert when timer cleanup failed */
+"Error cleaning up" = "Fehler beim Aufräumen";
 
 /* No comment provided by engineer. */
 "Error editing timer: %@" = "Konnte Timer nicht bearbeiten: %@";

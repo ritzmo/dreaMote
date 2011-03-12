@@ -124,6 +124,9 @@
 /* No comment provided by engineer. */
 /*"Caption cannot be empty." = "Caption cannot be empty.";*/
 
+/* Timer cleanup button */
+/*"Cleanup" = "Cleanup";*/
+
 /* No comment provided by engineer. */
 "Config List Explain" = "Change configuration and edit known hosts";
 
@@ -229,6 +232,9 @@
 
 /* No comment provided by engineer. */
 /*"Error adding new timer: %@" = "Error adding new timer: %@";*/
+
+/* Title of alert when timer cleanup failed */
+/*"Error cleaning up" = "Error cleaning up";*/
 
 /* No comment provided by engineer. */
 /*"Error editing timer: %@" = "Error editing timer: %@";*/

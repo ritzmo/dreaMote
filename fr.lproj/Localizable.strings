@@ -124,6 +124,9 @@
 /* No comment provided by engineer. */
 "Caption cannot be empty." = "Le titre ne peut pas être vide.";
 
+/* Timer cleanup button */
+/*"Cleanup" = "Cleanup";*/
+
 /* No comment provided by engineer. */
 "Config List Explain" = "Configuration des connexions";
 
@@ -229,6 +232,9 @@
 
 /* No comment provided by engineer. */
 "Error adding new timer: %@" = "Erreur d'ajout d'enregistrement: %@";
+
+/* Title of alert when timer cleanup failed */
+/*"Error cleaning up" = "Error cleaning up";*/
 
 /* No comment provided by engineer. */
 "Error editing timer: %@" = "Erreur d'édition d'enregistrement: %@";
