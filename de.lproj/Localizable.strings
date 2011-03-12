@@ -586,6 +586,9 @@
 /* Title of ServiceListController */
 "Services" = "Favoriten";
 
+/* show welcome screen (help) */
+"Show Help" = "Hilfe anzeigen";
+
 /* No comment provided by engineer. */
 "Shutdown" = "Herunterfahren";
 
@@ -636,9 +639,6 @@
 
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 "This can take a while." = "Diese Aktion dauert einige Minuten.";
-
-/* No comment provided by engineer. */
-"This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings." = "Dies ist eine vereinfachte Fernbedienung.\nFür die Pfeiltasten über das Kreuz streichen und OK wird über zweifaches Drücken ausgelöst.\nZur vollwertigen Fernbedienung kann über die Einstellungen gewechselt werden.";
 
 /* Weekday */
 "Thu" = "Don";
@@ -726,9 +726,6 @@
 
 /* Repeated */
 "Weekdays" = "Wochentags";
-
-/* No comment provided by engineer. */
-"Welcome to the simple remote" = "Funktionsweise der Fernbedienung";
 
 /* No comment provided by engineer. */
 "Year" = "Jahr";
