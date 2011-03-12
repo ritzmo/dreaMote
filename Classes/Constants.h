@@ -102,6 +102,7 @@
 #define kPrefersSimpleRemote	@"prefersSimpleRemote"
 #define kDatabaseVersion		@"databaseVersion" // refers to the epg cache
 #define kSimpleRcWasShown		@"simpleRcWasShown"
+#define kLastLaunchedVersion	@"lastLaunchedVersion"
 
 #define kCurrentDatabaseVersion 2
 
