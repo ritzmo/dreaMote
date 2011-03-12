@@ -104,11 +104,15 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 }
 
 - (void)showRatingAlert {
-	UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:APPIRATER_MESSAGE_TITLE
+	UIAlertView *alertView = [[[UIAlertView alloc] initWithTitle:(IS_LITE() && IS_IPHONE()) ? nil : APPIRATER_MESSAGE_TITLE
 														 message:APPIRATER_MESSAGE
 														delegate:self
 											   cancelButtonTitle:APPIRATER_CANCEL_BUTTON
+#if IS_FULL()
 											   otherButtonTitles:APPIRATER_RATE_BUTTON, APPIRATER_RATE_LATER, nil] autorelease];
+#else
+											   otherButtonTitles:APPIRATER_RATE_BUTTON, NSLocalizedString(@"Buy full version", @"Button in Appirater alert suggesting to buy paid version"), APPIRATER_RATE_LATER, nil] autorelease];
+#endif
 	[alertView show];
 }
 
@@ -335,7 +339,23 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 #endif
 			break;
 		}
+#if IS_LITE()
 		case 2:
+		{
+#if TARGET_IPHONE_SIMULATOR
+			NSLog(@"APPIRATER NOTE: iTunes App Store is not supported on the iOS simulator. Unable to open App Store page.");
+#else
+			NSString *reviewURL = [@"http://itunes.apple.com/de/app/idAPP_ID?mt=8" stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", 420498819]];
+			[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion]; // not actually true, but hides alert which is what we want here
+			[userDefaults synchronize];
+			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
+#endif
+			break;
+		}
+		case 3:
+#else
+		case 2:
+#endif
 			// remind them later
 			[userDefaults setDouble:[[NSDate date] timeIntervalSince1970] forKey:kAppiraterReminderRequestDate];
 			[userDefaults synchronize];
