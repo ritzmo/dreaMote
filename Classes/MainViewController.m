@@ -17,6 +17,7 @@
 #import "MovieSplitViewController.h"
 #import "TimerSplitViewController.h"
 
+#import "AboutDreamoteViewController.h"
 #import "BouquetListController.h"
 #import "ConfigListController.h"
 #import "ConfigViewController.h"
@@ -25,6 +26,8 @@
 #import "ServiceListController.h"
 #import "SimpleRCEmulatorController.h"
 #import "TimerListController.h"
+
+#define APP_DELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
 
 @interface MainViewController()
 - (void)handleReconnect: (NSNotification *)note;
@@ -243,7 +246,7 @@
 - (BOOL)checkConnection
 {
 	// ignore if import in progress
-	if(((AppDelegate *)[UIApplication sharedApplication].delegate).importing) return YES;
+	if(APP_DELEGATE.isBusy) return YES;
 
 	// handleReconnect makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
@@ -284,7 +287,14 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-	if([self checkConnection])
+	welcomeTypes welcomeType = APP_DELEGATE.welcomeType;
+	if(welcomeType != welcomeTypeNone)
+	{
+		UIViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeType];
+		[self presentModalViewController:welcomeController animated:YES];
+		[welcomeController release];
+	}
+	else if([self checkConnection])
 		[self.selectedViewController viewDidAppear:animated];
 }
 

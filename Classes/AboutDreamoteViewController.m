@@ -34,15 +34,33 @@
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 			self.modalPresentationStyle = UIModalPresentationFormSheet;
+
+		welcomeType = welcomeTypeNone;
 	}
 
+	return self;
+}
+
+/* initialize with welcome type */
+- (id)initWithWelcomeType:(welcomeTypes)inWelcomeType
+{
+	if((self = [super init]))
+	{
+		if([self respondsToSelector:@selector(modalPresentationStyle)])
+			self.modalPresentationStyle = UIModalPresentationFormSheet;
+
+		welcomeType = inWelcomeType;
+	}
 	return self;
 }
 
 /* dealloc */
 - (void)dealloc
 {
+	[_aboutText release];
 	[_doneButton release];
+	[_mailButton release];
+
 	[super dealloc];
 }
 
@@ -71,16 +89,48 @@
 	const CGSize size = self.view.bounds.size;
 
 	frame = CGRectMake(0, 0, size.width, 400);
-	UIWebView *aboutText = [[UIWebView alloc] initWithFrame: frame];
-	NSString *aboutHTML = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/about.html"] usedEncoding:nil error:nil];
-	aboutHTML = [aboutHTML stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-	[aboutText loadHTMLString:aboutHTML baseURL:nil];
-	aboutText.backgroundColor = [UIColor clearColor];
-	aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
-	aboutText.opaque = NO;
-	aboutText.delegate = self;
-	[self.view addSubview: aboutText];
-	[aboutText release];
+	_aboutText = [[UIWebView alloc] initWithFrame: frame];
+	NSString *html = nil;
+	switch(welcomeType)
+	{
+		default:
+		case welcomeTypeNone:
+			html = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/about.html"] usedEncoding:nil error:nil];
+			html = [html stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+			break;
+		case welcomeTypeChanges:
+		{
+			NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];
+			const NSFileManager *fileManager = [NSFileManager defaultManager];
+			NSString *fileName = [NSString stringWithFormat:@"/changes_%@.html", localeIdentifier];
+			NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+			NSString *filePath = [bundlePath stringByAppendingString:fileName];
+			if([fileManager fileExistsAtPath:filePath])
+				html = [NSString stringWithContentsOfFile:filePath usedEncoding:nil error:nil];
+			else
+				html = [NSString stringWithContentsOfFile:[bundlePath stringByAppendingString:@"/changes_en.html"] usedEncoding:nil error:nil];
+			break;
+		}
+		case welcomeTypeFull:
+		{
+			NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];
+			const NSFileManager *fileManager = [NSFileManager defaultManager];
+			NSString *fileName = [NSString stringWithFormat:@"/welcome_%@.html", localeIdentifier];
+			NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
+			NSString *filePath = [bundlePath stringByAppendingString:fileName];
+			if([fileManager fileExistsAtPath:filePath])
+				html = [NSString stringWithContentsOfFile:filePath usedEncoding:nil error:nil];
+			else
+				html = [NSString stringWithContentsOfFile:[bundlePath stringByAppendingString:@"/welcome_en.html"] usedEncoding:nil error:nil];
+			break;
+		}
+	}
+	[_aboutText loadHTMLString:html baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
+	_aboutText.backgroundColor = [UIColor clearColor];
+	_aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
+	_aboutText.opaque = NO;
+	_aboutText.delegate = self;
+	[self.view addSubview:_aboutText];
 
 	frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
 	_doneButton = [[UIButton buttonWithType: UIButtonTypeRoundedRect] retain];
@@ -97,7 +147,8 @@
 		UIImage *image = [UIImage imageNamed:@"internet-mail.png"];
 		[_mailButton setImage:image forState:UIControlStateNormal];
 		[_mailButton addTarget:self action:@selector(showMailComposer:) forControlEvents:UIControlEventTouchUpInside];
-		[self.view addSubview:_mailButton];
+		if(welcomeType == welcomeTypeNone)
+			[self.view addSubview:_mailButton];
 	}
 }
 
@@ -144,9 +195,11 @@
 	{
 		// we have to fix this up on ipad
 		const CGSize size = self.view.bounds.size;
-		CGRect frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
+		CGRect frame = CGRectMake(0, 0, size.width, size.height - kTweenMargin - 40);
+		_aboutText.frame = frame;
+		frame = CGRectMake(((size.width - 100) / 2), size.height - kTweenMargin - 34, 100, 34);
 		_doneButton.frame = frame;
-		frame = CGRectMake(0, 400 + kTweenMargin, 32, 32);
+		frame = CGRectMake(0, size.height - kTweenMargin - 32, 32, 32);
 		_mailButton.frame = frame;
 	}
 }

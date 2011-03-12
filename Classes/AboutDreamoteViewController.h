@@ -9,17 +9,30 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
 
+#import "AppDelegate.h"
+
 /*!
- @brief About.
+ @brief About/Welcome view.
  
- Displays a webkit widget which renders the about.html bundled with this application.
+ Displays a webkit widget which renders the a html file bundled with this application.
  */
 @interface AboutDreamoteViewController : UIViewController <UIWebViewDelegate,
 														MFMailComposeViewControllerDelegate>
 {
 @private
+	UIWebView *_aboutText; /*!< @brief Web view. */
 	UIButton *_doneButton; /*!< @brief "Done" Button. */
 	UIButton *_mailButton; /*!< @brief Mail button. */
+	welcomeTypes welcomeType; /*!< @brief Welcome type. */
 }
+
+/*!
+ @brief Init with welcome type.
+ Use this initializer when opening this view as welcome screen.
+
+ @param welcomeType Welcome type to use.
+ @return AboutDreamoteViewController instance.
+ */
+- (id)initWithWelcomeType:(welcomeTypes)welcomeType;
 
 @end

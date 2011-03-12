@@ -31,6 +31,7 @@
 	{
 		wasSleeping = NO;
 		cachedURL = nil;
+		welcomeType = welcomeTypeNone;
 	}
 	return self;
 }
@@ -45,9 +46,16 @@
 	[super dealloc];
 }
 
-- (BOOL)importing
+- (BOOL)isBusy
 {
 	return cachedURL != nil;
+}
+
+- (welcomeTypes)welcomeType
+{
+	welcomeTypes returnValue = welcomeType;
+	welcomeType = welcomeTypeNone;
+	return returnValue;
 }
 
 #pragma mark -
@@ -59,6 +67,7 @@
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
+	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 	NSString *testValue = nil;
 
 	// not configured at all configuration
@@ -72,8 +81,10 @@
 									 @"10", kMessageTimeout,
 									 @"YES", kPrefersSimpleRemote,
 									 databaseVersion, kDatabaseVersion,
+									 currentVersion, kLastLaunchedVersion,
 									 nil];
 
+		welcomeType = welcomeTypeFull;
 		[stdDefaults registerDefaults: appDefaults];
 		[stdDefaults synchronize];
 	}
@@ -83,7 +94,7 @@
 		activeConnectionId = [NSNumber numberWithInteger:[testValue integerValue]];
 
 		NSInteger integerVersion = -1;
-		if((testValue = [stdDefaults stringForKey: kDatabaseVersion]) != nil) // 1.1+
+		if((testValue = [stdDefaults stringForKey: kDatabaseVersion]) != nil) // 1.0.1+
 		{
 			integerVersion = [testValue integerValue];
 		}
@@ -100,6 +111,26 @@
 			// new database will be created automatically, so bump version here
 			NSString *databaseVersion = [NSString stringWithFormat:@"%d", kCurrentDatabaseVersion];
 			[stdDefaults setValue:databaseVersion forKey:kDatabaseVersion];
+		}
+
+		/*!
+		 @brief Determine whether or not to display welcome screen
+
+		 Since the screen was not present before 1.0.2, we show it in full for any version before it.
+		 In subsequent versions we will only show changes in the current version.
+		 */
+		if((testValue = [stdDefaults stringForKey:kLastLaunchedVersion]) != nil) // 1.0.2+
+		{
+			if(![testValue isEqualToString:currentVersion])
+				welcomeType = welcomeTypeChanges;
+		}
+		else
+			welcomeType = welcomeTypeFull;
+
+		if(welcomeType != welcomeTypeNone)
+		{
+			[stdDefaults setValue:currentVersion forKey:kLastLaunchedVersion];
+			[stdDefaults synchronize];
 		}
 	}
 

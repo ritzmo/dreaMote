@@ -9,6 +9,18 @@
 #import <UIKit/UIKit.h>
 
 /*!
+ @brief What type of welcome notification to show?
+ */
+typedef enum
+{
+	welcomeTypeNone, /*!< @brief None, this version was launched before. */
+	welcomeTypeFull, /*!< @brief Full, first launch of dreaMote. */
+	welcomeTypeChanges, /*!< @brief Only show (major) changes since last version. */
+} welcomeTypes; 
+
+
+
+/*!
  @brief Application Delegate.
  */
 @interface AppDelegate : NSObject  <UIApplicationDelegate, UITabBarControllerDelegate,
@@ -19,6 +31,7 @@
 	UIWindow *window; /*!< @brief Application window. */
 	UITabBarController *tabBarController; /*!< @brief Tab Bar Controller. */
 	NSURL *cachedURL; /*!< @brief Cached URL request. */
+	welcomeTypes welcomeType; /*!< @brief Type of welcome we're showing. */
 }
 
 /*!
@@ -32,8 +45,16 @@
 @property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
 
 /*!
- @brief Currently importing?
+ @brief Currently busy?
  */
-@property (nonatomic, readonly) BOOL importing;
+@property (nonatomic, readonly) BOOL isBusy;
+
+/*!
+ @brief Welcome type.
+ For simplicity we show the welcome screen from our main view.
+
+ @note Getter reset to welcomeTypeNone after first read.
+ */
+@property (nonatomic, readonly) welcomeTypes welcomeType;
 
 @end
