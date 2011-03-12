@@ -103,6 +103,9 @@
 /* Title of BouquetListController */
 "Bouquets" = "Bouquets";
 
+/* Button in Appirater alert suggesting to buy paid version */
+/*"Buy full version" = "Buy full version";*/
+
 /* No comment provided by engineer. */
 "Can't edit a running or finished timer." = "Ne peux pas éditer un enregistrement en cours ou fini.";
 
@@ -120,9 +123,6 @@
 
 /* No comment provided by engineer. */
 "Caption cannot be empty." = "Le titre ne peut pas être vide.";
-
-/* No comment provided by engineer. */
-"Check Connectivity" = "Contrôle connexion";
 
 /* No comment provided by engineer. */
 "Config List Explain" = "Configuration des connexions";
@@ -145,6 +145,9 @@
 
 /* No comment provided by engineer. */
 "Connection could not be established." = "La connexion ne peut pas être établi.";
+
+/* No comment provided by engineer. */
+/*"Connection to remote host failed with status code %d." = "Connection to remote host failed with status code %d.";*/
 
 /* Default title of ConnectorViewController */
 "Connector" = "Connecteur";
@@ -530,9 +533,6 @@
 "Remote Host" = "Informations serveur:";
 
 /* No comment provided by engineer. */
-"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Hôte inaccessible!\nVérifiez s'il vous plaît vos paramètres réseau ou entrez un autre hôte.";
-
-/* No comment provided by engineer. */
 "Remote host unreachable." = "Hôte inaccessible.";
 
 /* No comment provided by engineer. */
@@ -737,6 +737,9 @@
 "You are about to import data into this application. All existing settings will be lost!" = "Vous êtes sur le point d'importer des données dans cette application. Tous les réglages existants seront perdus!";
 
 /* No comment provided by engineer. */
+/*"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "You are using version %1$@ of the web interface.\nFor full functionality updating to version %2$@ is suggested.";*/
+
+/* No comment provided by engineer. */
 "You have reached either the end or the beginning of your movie list." = "Vous avez atteint la fin ou le début de votre liste de film.";
 
 /* No comment provided by engineer. */
@@ -751,3 +754,8 @@
 /* No comment provided by engineer. */
 "Zap on receiver" = "Zapper sur le récepteur";
 
+
+
+/* old strings */
+"Check Connectivity" = "Contrôle connexion";
+"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Hôte inaccessible!\nVérifiez s'il vous plaît vos paramètres réseau ou entrez un autre hôte.";

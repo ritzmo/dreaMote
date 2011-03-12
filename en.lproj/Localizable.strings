@@ -103,6 +103,9 @@
 /* Title of BouquetListController */
 /*"Bouquets" = "Bouquets";*/
 
+/* Button in Appirater alert suggesting to buy paid version */
+/*"Buy full version" = "Buy full version";*/
+
 /* No comment provided by engineer. */
 "Can't edit a running or finished timer." = "Can't edit a running or finished timer.";
 
@@ -120,9 +123,6 @@
 
 /* No comment provided by engineer. */
 /*"Caption cannot be empty." = "Caption cannot be empty.";*/
-
-/* No comment provided by engineer. */
-/*"Check Connectivity" = "Check Connectivity";*/
 
 /* No comment provided by engineer. */
 "Config List Explain" = "Change configuration and edit known hosts";
@@ -145,6 +145,9 @@
 
 /* No comment provided by engineer. */
 /*"Connection could not be established." = "Connection could not be established.";*/
+
+/* No comment provided by engineer. */
+/*"Connection to remote host failed with status code %d." = "Connection to remote host failed with status code %d.";*/
 
 /* Default title of ConnectorViewController */
 /*"Connector" = "Connector";*/
@@ -530,9 +533,6 @@
 /*"Remote Host" = "Remote Host";*/
 
 /* No comment provided by engineer. */
-/*"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Remote host unreachable!\nPlease check your network settings or connect to another host.";*/
-
-/* No comment provided by engineer. */
 /*"Remote host unreachable." = "Remote host unreachable.";*/
 
 /* No comment provided by engineer. */
@@ -735,6 +735,9 @@
 
 /* Message explaining what will happen on import */
 /*"You are about to import data into this application. All existing settings will be lost!" = "You are about to import data into this application. All existing settings will be lost!";*/
+
+/* No comment provided by engineer. */
+/*"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "You are using version %1$@ of the web interface.\nFor full functionality updating to version %2$@ is suggested.";*/
 
 /* No comment provided by engineer. */
 /*"You have reached either the end or the beginning of your movie list." = "You have reached either the end or the beginning of your movie list.";*/

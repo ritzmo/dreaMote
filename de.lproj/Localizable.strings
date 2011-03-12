@@ -103,6 +103,9 @@
 /* Title of BouquetListController */
 "Bouquets" = "Bouquets";
 
+/* Button in Appirater alert suggesting to buy paid version */
+"Buy full version" = "Vollversion kaufen";
+
 /* No comment provided by engineer. */
 "Can't edit a running or finished timer." = "Kann aktiven oder beendeten Timer nicht bearbeiten.";
 
@@ -120,9 +123,6 @@
 
 /* No comment provided by engineer. */
 "Caption cannot be empty." = "Titel darf nicht leer sein.";
-
-/* No comment provided by engineer. */
-"Check Connectivity" = "Erreichbarkeit prüfen";
 
 /* No comment provided by engineer. */
 "Config List Explain" = "Konfiguration ändern";
@@ -145,6 +145,9 @@
 
 /* No comment provided by engineer. */
 "Connection could not be established." = "Verbindung konnte nicht hergestellt werden.";
+
+/* No comment provided by engineer. */
+"Connection to remote host failed with status code %d." = "Verbindungsfehler mit Statuscode %d.";
 
 /* Default title of ConnectorViewController */
 "Connector" = "Connector";
@@ -288,7 +291,7 @@
 "History" = "Verlauf";
 
 /* No comment provided by engineer. */
-"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Wenn euch %@ gefällt, nehmen Sie sich bitte einen Moment Zeit für eine Bewertung. Vielen Dank!";
+"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Ihnen gefällt %@? Nehmen Sie sich bitte einen Moment Zeit für eine Bewertung. Vielen Dank!";
 
 /* No comment provided by engineer. */
 "Illegal response returned by VDR-server! Aborting." = "Ungültige Antwort vom VDR-server! Breche ab.";
@@ -530,9 +533,6 @@
 "Remote Host" = "Entfernter Host";
 
 /* No comment provided by engineer. */
-"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Entfernter Host nicht erreichbar!\nBitte überprüfen Sie ihre Netzwerkverbindung oder verbinden Sie sich zu einem anderen Server.";
-
-/* No comment provided by engineer. */
 "Remote host unreachable." = "Netzwerkverbindung fehlgeschlagen.";
 
 /* No comment provided by engineer. */
@@ -735,6 +735,9 @@
 
 /* Message explaining what will happen on import */
 "You are about to import data into this application. All existing settings will be lost!" = "Sie sind im Begriff die Einstellungen aus einer anderen Applikation zu übernehmen. Alle hier getätigten Einstellungen gehen dabei verloren!";
+
+/* No comment provided by engineer. */
+"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "Sie nutzen version %1$@ des WebInterface.\nFür volle Funktionalität wird ein Upgrade auf %2$@ empfohlen.";
 
 /* No comment provided by engineer. */
 "You have reached either the end or the beginning of your movie list." = "Sie haben den Anfang oder das Ende der Filmliste erreicht.";
