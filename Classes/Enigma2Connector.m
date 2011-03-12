@@ -371,7 +371,7 @@ enum enigma2MessageTypes {
 
 - (Result *)cleanupTimers:(const NSArray *)timers
 {
-	NSString *relativeURL = @"/web/timercleanup";
+	NSString *relativeURL = @"/web/timercleanup?cleanup=true";
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
