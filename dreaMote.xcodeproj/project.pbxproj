@@ -253,6 +253,8 @@
 		DA16602812E9E03700A6D894 /* NSArray+ArrayFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16602612E9E03700A6D894 /* NSArray+ArrayFromData.m */; };
 		DA16620A12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */; };
 		DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */; };
+		DA181088132D0A5700314C3D /* welcome_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DA181087132D0A5700314C3D /* welcome_de.html */; };
+		DA181089132D0A5700314C3D /* welcome_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DA181087132D0A5700314C3D /* welcome_de.html */; };
 		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA19C6EA1319B400006E4A0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA19C6E91319B400006E4A0D /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -544,6 +546,7 @@
 		DA16602612E9E03700A6D894 /* NSArray+ArrayFromData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ArrayFromData.m"; sourceTree = "<group>"; };
 		DA16620812EA075800A6D894 /* UIDevice+SystemVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+SystemVersion.h"; sourceTree = "<group>"; };
 		DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+SystemVersion.m"; sourceTree = "<group>"; };
+		DA181087132D0A5700314C3D /* welcome_de.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_de.html; path = Other/welcome_de.html; sourceTree = "<group>"; };
 		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
@@ -1005,6 +1008,7 @@
 				DACFCCEE0E33CAD100348996 /* MainWindow.xib */,
 				DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */,
 				DA42BE1112DA434100F14E3C /* OtherList.xib */,
+				DA181087132D0A5700314C3D /* welcome_de.html */,
 				DA78576E132C1478003BE2FE /* welcome_en.html */,
 			);
 			name = Resources;
@@ -1780,6 +1784,7 @@
 				DA785776132C149A003BE2FE /* Setup_1.png in Resources */,
 				DA785778132C149A003BE2FE /* Setup_2.png in Resources */,
 				DA78577A132C149A003BE2FE /* Simplerc.png in Resources */,
+				DA181088132D0A5700314C3D /* welcome_de.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1864,6 +1869,7 @@
 				DA785777132C149A003BE2FE /* Setup_1.png in Resources */,
 				DA785779132C149A003BE2FE /* Setup_2.png in Resources */,
 				DA78577B132C149A003BE2FE /* Simplerc.png in Resources */,
+				DA181089132D0A5700314C3D /* welcome_de.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
