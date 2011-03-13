@@ -318,7 +318,7 @@ enum enigma1MessageTypes {
 		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: newService
+								   withObject: [[newService copy] autorelease] // XXX: create copy of service to prevent losing the root document
 								waitUntilDone: NO];
 		[newService release];
 	}
