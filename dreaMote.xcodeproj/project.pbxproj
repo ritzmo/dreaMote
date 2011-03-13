@@ -31,7 +31,6 @@
 		DA0BF8AF0F0CBEDB004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AB0F0CBEDB004B488C /* Movie.m */; };
 		DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AD0F0CBEDB004B488C /* Timer.m */; };
 		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
-		DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA114AD60F0EA77100CB94AE /* Bouquet.m */; };
 		DA117E3712DF4C2B00796389 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */; };
 		DA11820112DFAEEC00796389 /* RecursiveFileAdder.m in Sources */ = {isa = PBXBuildFile; fileRef = DA11820012DFAEEC00796389 /* RecursiveFileAdder.m */; };
 		DA12F67512DB970A009FF8DD /* MediaPlayerDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */; };
@@ -162,7 +161,6 @@
 		DA165EE712E9CA2700A6D894 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
 		DA165EE812E9CA2700A6D894 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DA165EE912E9CA2700A6D894 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
-		DA165EEA12E9CA2700A6D894 /* Bouquet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA114AD60F0EA77100CB94AE /* Bouquet.m */; };
 		DA165EEB12E9CA2700A6D894 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */; };
 		DA165EEC12E9CA2700A6D894 /* BufferedSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235A0F101F0500BB8BE7 /* BufferedSocket.m */; };
 		DA165EED12E9CA2700A6D894 /* MutableDataBufferExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235C0F101F0500BB8BE7 /* MutableDataBufferExtension.m */; };
@@ -255,6 +253,8 @@
 		DA16620B12EA075800A6D894 /* UIDevice+SystemVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */; };
 		DA181088132D0A5700314C3D /* welcome_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DA181087132D0A5700314C3D /* welcome_de.html */; };
 		DA181089132D0A5700314C3D /* welcome_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DA181087132D0A5700314C3D /* welcome_de.html */; };
+		DA1810A1132D6CD200314C3D /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1810A0132D6CD100314C3D /* ServiceXMLReader.m */; };
+		DA1810A2132D6CD200314C3D /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1810A0132D6CD100314C3D /* ServiceXMLReader.m */; };
 		DA1870F312E2854E0034E74B /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = DA1870F212E2854E0034E74B /* Constants.m */; };
 		DA19BDFB0D8553180074AE48 /* ControlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA19BDFA0D8553180074AE48 /* ControlViewController.m */; };
 		DA19C6EA1319B400006E4A0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA19C6E91319B400006E4A0D /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -373,8 +373,6 @@
 		DA712A8512FCB65000675E91 /* ZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA712A8412FCB65000675E91 /* ZoomingScrollView.m */; };
 		DA712A8612FCB65000675E91 /* ZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA712A8412FCB65000675E91 /* ZoomingScrollView.m */; };
 		DA784CF50F7D147F00A8050F /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
-		DA78576B132A8C66003BE2FE /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78576A132A8C66003BE2FE /* Service.m */; };
-		DA78576C132A8C66003BE2FE /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78576A132A8C66003BE2FE /* Service.m */; };
 		DA78576F132C1478003BE2FE /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DA78576D132C1478003BE2FE /* changes_en.html */; };
 		DA785770132C1478003BE2FE /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DA78576D132C1478003BE2FE /* changes_en.html */; };
 		DA785771132C1478003BE2FE /* welcome_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DA78576E132C1478003BE2FE /* welcome_en.html */; };
@@ -547,6 +545,8 @@
 		DA16620812EA075800A6D894 /* UIDevice+SystemVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+SystemVersion.h"; sourceTree = "<group>"; };
 		DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+SystemVersion.m"; sourceTree = "<group>"; };
 		DA181087132D0A5700314C3D /* welcome_de.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_de.html; path = Other/welcome_de.html; sourceTree = "<group>"; };
+		DA18109F132D6CD100314C3D /* ServiceXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceXMLReader.h; sourceTree = "<group>"; };
+		DA1810A0132D6CD100314C3D /* ServiceXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceXMLReader.m; sourceTree = "<group>"; };
 		DA1870F212E2854E0034E74B /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		DA19BDF90D8553180074AE48 /* ControlViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlViewController.h; sourceTree = "<group>"; };
 		DA19BDFA0D8553180074AE48 /* ControlViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlViewController.m; sourceTree = "<group>"; };
@@ -1389,6 +1389,8 @@
 			children = (
 				DA7D237B0F101F1500BB8BE7 /* EventXMLReader.h */,
 				DA7D237C0F101F1500BB8BE7 /* EventXMLReader.m */,
+				DA18109F132D6CD100314C3D /* ServiceXMLReader.h */,
+				DA1810A0132D6CD100314C3D /* ServiceXMLReader.m */,
 			);
 			path = Neutrino;
 			sourceTree = "<group>";
@@ -1933,7 +1935,6 @@
 				DA36F6BB0F0D2D9A005608CC /* Service.m in Sources */,
 				DA36F7070F0D2F0A005608CC /* Service.m in Sources */,
 				DA3AA1D80F0D828D001B2057 /* BouquetListController.m in Sources */,
-				DA114AD70F0EA77100CB94AE /* Bouquet.m in Sources */,
 				DA7D235F0F101F0500BB8BE7 /* AbstractSocket.m in Sources */,
 				DA7D23600F101F0500BB8BE7 /* BufferedSocket.m in Sources */,
 				DA7D23610F101F0500BB8BE7 /* MutableDataBufferExtension.m in Sources */,
@@ -2018,7 +2019,7 @@
 				DA323A5813075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 				DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */,
 				DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
-				DA78576B132A8C66003BE2FE /* Service.m in Sources */,
+				DA1810A1132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2079,7 +2080,6 @@
 				DA165EE712E9CA2700A6D894 /* Service.m in Sources */,
 				DA165EE812E9CA2700A6D894 /* Service.m in Sources */,
 				DA165EE912E9CA2700A6D894 /* BouquetListController.m in Sources */,
-				DA165EEA12E9CA2700A6D894 /* Bouquet.m in Sources */,
 				DA165EEB12E9CA2700A6D894 /* AbstractSocket.m in Sources */,
 				DA165EEC12E9CA2700A6D894 /* BufferedSocket.m in Sources */,
 				DA165EED12E9CA2700A6D894 /* MutableDataBufferExtension.m in Sources */,
@@ -2161,7 +2161,7 @@
 				DA323A5913075B2B00F7FF54 /* ServiceZapListController.m in Sources */,
 				DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */,
 				DAE91279131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
-				DA78576C132A8C66003BE2FE /* Service.m in Sources */,
+				DA1810A2132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2252,7 +2252,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_STRICT_ALIASING = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
@@ -2286,7 +2286,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_STRICT_ALIASING = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
@@ -2359,7 +2359,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Abshoff, Agricola, Prager & Venn GbR";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_STRICT_ALIASING = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;
@@ -2432,7 +2432,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_STRICT_ALIASING = YES;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_NEWLINE = NO;

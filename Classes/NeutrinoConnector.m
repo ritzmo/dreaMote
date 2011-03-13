@@ -22,8 +22,8 @@
 #import "SignalSourceDelegate.h"
 #import "TimerSourceDelegate.h"
 #import "VolumeSourceDelegate.h"
-#import "XMLReader/BaseXMLReader.h"
 #import "XMLReader/Neutrino/EventXMLReader.h"
+#import "XMLReader/Neutrino/ServiceXMLReader.h"
 
 #import "NeutrinoRCEmulatorController.h"
 #import "SimpleRCEmulatorController.h"
@@ -78,15 +78,13 @@ enum neutrinoMessageTypes {
 - (void)dealloc
 {
 	[_baseAddress release];
-	[_cachedBouquetsXML release];
 
 	[super dealloc];
 }
 
 - (void)freeCaches
 {
-	[_cachedBouquetsXML release];
-	_cachedBouquetsXML = nil;
+	// NOTE: We don't use any caches
 }
 
 + (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
@@ -180,34 +178,6 @@ enum neutrinoMessageTypes {
 	return result;
 }
 
-/*
- Example:
- <?xml version="1.0" encoding="UTF-8"?>
- <zapit>
- <Bouquet type="0" bouquet_id="0000" name="Hauptsender" hidden="0" locked="0">
- <channel serviceID="d175" name="ProSieben" tsid="2718" onid="f001"/>
- </Bouquet>
- </zapit>
- */
-- (NSError *)maybeRefreshBouquetsXMLCache
-{
-	@synchronized(self)
-	{
-		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1)
-		{
-			[_cachedBouquetsXML release];
-			NSURL *myURI = [NSURL URLWithString: @"/control/getbouquetsxml" relativeToURL: _baseAddress];
-			NSError *returnValue = nil;
-
-			const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
-			_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
-			[streamReader release];
-			return returnValue;
-		}
-	}
-	return nil;
-}
-
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	if(isRadio)
@@ -218,10 +188,17 @@ enum neutrinoMessageTypes {
 		return nil;
 	}
 
-	NSArray *resultNodes = nil;
+	// Generate URI
+	NSURL *myURI = [NSURL URLWithString: @"/control/getbouquets" relativeToURL: _baseAddress];
 
-	NSError *error = [self maybeRefreshBouquetsXMLCache];
-	if(error)
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:&error];
+
+	// Error occured, so send fake object
+	if(error || !data)
 	{
 		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
@@ -234,27 +211,29 @@ enum neutrinoMessageTypes {
 		return nil;
 	}
 
-	/*!
-	 @note We could use an overly complex xpath by using translate or just assume
-	 that this is a valid document if the basic structure is correct.
-	 Let's try the second approach but keep the correct zapit identification here for reference:
-	 *[translate(local-name(),'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='zapit']
-	 */
-	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/*/Bouquet" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	// Parse
+	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSArray *bouquetStringList = [baseString componentsSeparatedByString: @"\n"];
+	for(NSString *bouquetString in bouquetStringList)
 	{
-		// A channel in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[NeutrinoBouquet alloc] initWithNode: resultElement];
+		// Number Name
+		NSRange firstSpace = [bouquetString rangeOfString:@" " options:NSLiteralSearch range:NSMakeRange(0, [bouquetString length])];
+		if(firstSpace.length == 0 || [bouquetString length] < firstSpace.location + 1) // something bad happened… but maybe it will go away if we just ignore it ;-)
+			continue;
+
+		NSObject<ServiceProtocol> *service = [[GenericService alloc] init];
+		service.sref = [bouquetString substringToIndex:firstSpace.location];
+		service.sname = [bouquetString substringFromIndex:firstSpace.location + 1];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: newService
+								   withObject: service
 								waitUntilDone: NO];
-		[newService release];
+		[service release];
 	}
+	[baseString release];
 
 	[self indicateSuccess:delegate];
-	return _cachedBouquetsXML;
+	return nil;
 }
 
 - (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -274,43 +253,12 @@ enum neutrinoMessageTypes {
 		return nil;
 	}
 
-	NSArray *resultNodes = nil;
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/getbouquet?xml=true&bouquet=%@&mode=TV", bouquet.sref] relativeToURL: _baseAddress];
 
-	resultNodes = [bouquet nodesForXPath: @"*" error: nil];
-	if(!resultNodes || ![resultNodes count])
-	{
-		NSError *error = [self maybeRefreshBouquetsXMLCache];
-		if(error)
-		{
-			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
-			fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-			[delegate performSelectorOnMainThread: @selector(addService:)
-									   withObject: fakeService
-									waitUntilDone: NO];
-			[fakeService release];
-
-			[self indicateError:delegate error:error];
-			return nil;
-		}
-
-		resultNodes = [_cachedBouquetsXML nodesForXPath:
-						[NSString stringWithFormat: @"/*/Bouquet[@name=\"%@\"]/*", bouquet.sname]
-						error:nil];
-	}
-
-	for(CXMLElement *resultElement in resultNodes)
-	{
-		// A channel in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[NeutrinoService alloc] initWithNode:resultElement];
-
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: newService
-								waitUntilDone: NO];
-		[newService release];
-	}
-
-	[self indicateSuccess:delegate];
-	return nil;
+	const BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
 }
 
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
