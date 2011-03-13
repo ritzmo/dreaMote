@@ -8,14 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseXMLReader.h"
+#import "SaxXmlReader.h"
 #import "EventSourceDelegate.h"
 
 /*!
  @brief Neutrino Event XML Reader.
  */
-@interface NeutrinoEventXMLReader : BaseXMLReader
+@interface NeutrinoEventXMLReader : SaxXmlReader
 {
+@private
+	NSObject<EventProtocol> *currentEvent; /*!< @brief Current Event. */
 }
 
 /*!

@@ -8,10 +8,30 @@
 
 #import "EventXMLReader.h"
 
-#import "../../Objects/Neutrino/Event.h"
 #import "../../Objects/Generic/Event.h"
 
+static const char *kNeutrinoEventElement = "prog";
+static const NSUInteger kNeutrinoEventElementLength = 5;
+static const char *kNeutrinoEventExtendedDescription = "info2";
+static const NSUInteger kNeutrinoEventExtendedDescriptionLength = 6;
+static const char *kNeutrinoEventDescription = "info1";
+static const NSUInteger kNeutrinoEventDescriptionLength = 6;
+static const char *kNeutrinoEventTitle = "description";
+static const NSUInteger kNeutrinoEventTitleLength = 12;
+static const char *kNeutrinoEventEnd = "stop_sec";
+static const NSUInteger kNeutrinoEventEndLength = 9;
+static const char *kNeutrinoEventBegin = "start_sec";
+static const NSUInteger kNeutrinoEventBeginLength = 10;
+static const char *kNeutrinoEventId = "eventid";
+static const NSUInteger kNeutrinoEventIdLength = 8;
+
+@interface NeutrinoEventXMLReader()
+@property (nonatomic, retain) NSObject<EventProtocol> *currentEvent;
+@end
+
 @implementation NeutrinoEventXMLReader
+
+@synthesize currentEvent;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
@@ -55,20 +75,59 @@
  </prog>
  </epglist>
  */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/epglist/prog" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kNeutrinoEventElement, kNeutrinoEventElementLength))
 	{
-		// A prog in the xml represents an event, so create an instance of it.
-		NSObject<EventProtocol> *newEvent = [[NeutrinoEvent alloc] initWithNode:(CXMLNode *)resultElement];
-
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
-								  withObject: newEvent
-							   waitUntilDone: NO];
-		[newEvent release];
+		self.currentEvent = [[[GenericEvent alloc] init] autorelease];
 	}
+	else if(	!strncmp((const char *)localname, kNeutrinoEventExtendedDescription, kNeutrinoEventExtendedDescriptionLength)
+			||	!strncmp((const char *)localname, kNeutrinoEventTitle, kNeutrinoEventTitleLength)
+			||	!strncmp((const char *)localname, kNeutrinoEventEnd, kNeutrinoEventEndLength)
+			||	!strncmp((const char *)localname, kNeutrinoEventBegin, kNeutrinoEventBeginLength)
+			||	!strncmp((const char *)localname, kNeutrinoEventDescription, kNeutrinoEventDescriptionLength)
+			||	!strncmp((const char *)localname, kNeutrinoEventId, kNeutrinoEventIdLength)
+			)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kNeutrinoEventElement, kNeutrinoEventElementLength))
+	{
+		[_delegate performSelectorOnMainThread: @selector(addEvent:)
+									withObject: currentEvent
+								 waitUntilDone: NO];
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoEventExtendedDescription, kNeutrinoEventExtendedDescriptionLength))
+	{
+		currentEvent.edescription = currentString;
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoEventTitle, kNeutrinoEventTitleLength))
+	{
+		currentEvent.title = currentString;
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoEventEnd, kNeutrinoEventEndLength))
+	{
+		[currentEvent setEnd:[NSDate dateWithTimeIntervalSince1970:[currentString doubleValue]]];
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoEventBegin, kNeutrinoEventBeginLength))
+	{
+		[currentEvent setBeginFromString:currentString];
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoEventDescription, kNeutrinoEventDescriptionLength))
+	{
+		currentEvent.sdescription = currentString;
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoEventId, kNeutrinoEventIdLength))
+	{
+		currentEvent.eit = currentString;
+	}
+	
+	// this either does nothing or releases the string that was in use
+	self.currentString = nil;
 }
 
 @end
