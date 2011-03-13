@@ -424,6 +424,21 @@ SERVICES_NEUTRINOHD = """<?xml version="1.0" encoding="UTF-8"?>
  </Bouquet>
 </zapit>"""
 
+BOUQUETS_NEUTRINO = """1 Demo Bouquet"""
+
+# (short_)id was guessed
+SERVICES_BOUQUET_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
+<channellist>
+<channel>
+<number>1</number>
+<bouquet>0</bouquet>
+<id>1922718f001d175</id>
+<short_id>2718f001d175</short_id>
+<name>Demo Service</name>
+<logo>/share/tuxbox/neutrino/icons/logo/2718f001d175.jpg</logo>
+</channel>
+</channellist>"""
+
 EPGSERVICE_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
  <epglist>
  <channel_id>2718f001d175</channel_id>
@@ -1055,6 +1070,16 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 		elif lastComp == "zapto":
 			# action depends on arg, there are fixed value but if you give a service name or id it will zap to that channel
 			returndoc = "UNHANDLED METHOD"
+		elif lastComp == "getbouquets":
+			returndoc = BOUQUETS_NEUTRINO
+		elif lastComp == "getbouquet":
+			mode = get("mode", "TV") # not actually default, default is current
+			xml = True if get("xml", "no") == "yes"
+			bouquet = int(get("bouquet", 0))
+			if mode != "TV" or not xml or bouquet != 0:
+				returndoc = "UNHANDLED METHOD"
+			else:
+				returndoc = SERVICES_BOUQUET_NEUTRINO
 		elif lastComp == "getbouquetsxml":
 			if EMULATE_NEUTRINOHD:
 				returndoc = SERVICES_NEUTRINOHD
