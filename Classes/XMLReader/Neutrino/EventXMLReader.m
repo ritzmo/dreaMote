@@ -43,6 +43,14 @@ static const NSUInteger kNeutrinoEventIdLength = 8;
 	return self;
 }
 
+/* dealloc */
+- (void)dealloc
+{
+	[currentEvent release];
+
+	[super dealloc];
+}
+
 /* send fake object */
 - (void)sendErroneousObject
 {
