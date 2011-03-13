@@ -8,8 +8,6 @@
 
 #import "NeutrinoConnector.h"
 
-#import "CXMLElement.h"
-
 #import "Objects/Neutrino/Bouquet.h"
 #import "Objects/Neutrino/Service.h"
 #import "Objects/Generic/Service.h"
