@@ -431,7 +431,7 @@ SERVICES_BOUQUET_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
 <channellist>
 <channel>
 <number>1</number>
-<bouquet>0</bouquet>
+<bouquet>1</bouquet>
 <id>1922718f001d175</id>
 <short_id>2718f001d175</short_id>
 <name>Demo Service</name>
@@ -1074,9 +1074,9 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 			returndoc = BOUQUETS_NEUTRINO
 		elif lastComp == "getbouquet":
 			mode = get("mode", "TV") # not actually default, default is current
-			xml = True if get("xml", "no") == "yes"
+			xml = True if get("xml", "") != "" else False
 			bouquet = int(get("bouquet", 0))
-			if mode != "TV" or not xml or bouquet != 0:
+			if mode != "TV" or not xml or bouquet != 1:
 				returndoc = "UNHANDLED METHOD"
 			else:
 				returndoc = SERVICES_BOUQUET_NEUTRINO
