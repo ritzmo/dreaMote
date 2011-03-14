@@ -50,7 +50,7 @@ extern NSString *kMultiEPGCell_ID;
 /*!
  @brief Events.
  */
-@property (nonatomic, retain) NSArray *events;
+@property (retain) NSArray *events;
 
 /*!
  @brief Begin of current timeframe.

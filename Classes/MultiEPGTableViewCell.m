@@ -99,28 +99,34 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 /* getter of events property */
 - (NSArray *)events
 {
-	return _events;
+	@synchronized(self)
+	{
+		return _events;
+	}
 }
 
 /* setter of events property */
 - (void)setEvents:(NSArray *)new
 {
-	if(_events == new) return;
-
-	[_events release];
-	_events = [new retain];
-
-	[_lines removeAllObjects];
-	for(NSObject<EventProtocol> *event in _events)
+	@synchronized(self)
 	{
-		CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
-		if(left < 0)
-			left = 0;
-		[_lines addObject:[NSNumber numberWithFloat:left]];
-	}
+		if(_events == new) return;
 
-	// Redraw
-	[self setNeedsDisplay];
+		[_events release];
+		_events = [new retain];
+
+		[_lines removeAllObjects];
+		for(NSObject<EventProtocol> *event in _events)
+		{
+			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
+			if(left < 0)
+				left = 0;
+			[_lines addObject:[NSNumber numberWithFloat:left]];
+		}
+
+		// Redraw
+		[self setNeedsDisplay];
+	}
 }
 
 
@@ -227,7 +233,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 	NSInteger idx = 0;
 	const NSInteger count = [_lines count] - 1;
-	for(NSObject<EventProtocol> *event in _events)
+	for(NSObject<EventProtocol> *event in self.events)
 	{
 		const CGFloat leftLine = [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
 		CGFloat rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
