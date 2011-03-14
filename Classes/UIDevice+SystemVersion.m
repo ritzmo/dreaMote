@@ -17,4 +17,10 @@
 	return (currentVersion >= 4.0);
 }
 
++ (BOOL)runsIos42OrBetter
+{
+	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+	return (currentVersion >= 4.2);
+}
+
 @end

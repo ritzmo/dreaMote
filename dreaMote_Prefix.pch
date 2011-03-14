@@ -41,6 +41,11 @@
 #endif
 #define IS_FULL() (!IS_LITE())
 
+// fix for banners in iOS 4.0 and 4.1
+#import "UIDevice+SystemVersion.h"
+#define bannerContentSizeIdentifierPortrait ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50)
+#define bannerContentSizeIdentifierLandscape ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32)
+
 // enable certain exceptions or debug code
 #if TARGET_IPHONE_SIMULATOR || defined(DEBUG) || (!defined(NS_BLOCK_ASSERTIONS) && !defined(NDEBUG))
 	#define IS_DEBUG() (1)

@@ -18,4 +18,11 @@
  */
 + (BOOL)runsIos4OrBetter;
 
+/*!
+ @brief Does the current device run on iOS 4.2 or better?
+
+ @return YES if systemVersion >= 4.2, else NO.
+ */
++ (BOOL)runsIos42OrBetter;
+
 @end
