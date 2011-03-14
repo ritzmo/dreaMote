@@ -543,6 +543,10 @@
 		else
 			_timer.tdescription = @"";
 
+		// check timespan sanity
+		if([_timer.begin compare:_timer.end] != NSOrderedAscending)
+			message = NSLocalizedString(@"End has to be after begin.", @"");
+
 		_timer.disabled = !_timerEnabled.on;
 		_timer.justplay = _timerJustplay.on;
 
