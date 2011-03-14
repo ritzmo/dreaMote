@@ -164,7 +164,7 @@ enum neutrinoMessageTypes {
 	Result *result = [Result createResult];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref urlencodeWithEncoding:NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/zapto?%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
 	[SynchronousRequestReader sendSynchronousRequest:myURI
@@ -301,7 +301,7 @@ enum neutrinoMessageTypes {
 	}
 
 	// Parse
-	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
+	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
 	for(NSString *timerString in timerStringList)
 	{
@@ -379,7 +379,7 @@ enum neutrinoMessageTypes {
 	[add appendFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname urlencodeWithEncoding:NSISOLatin1StringEncoding]];
+	[add appendString: [newTimer.service.sname urlencode]];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
@@ -403,7 +403,7 @@ enum neutrinoMessageTypes {
 	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&type=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname urlencodeWithEncoding:NSISOLatin1StringEncoding]];
+	[add appendString: [newTimer.service.sname urlencode]];
 	[add appendString: @"&rep="];
 	[add appendFormat: @"%d", newTimer.repeated];
 	[add appendString: @"&repcount="];
@@ -671,7 +671,7 @@ enum neutrinoMessageTypes {
 	Result *result = [Result createResult];
 
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message urlencodeWithEncoding:NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/control/message?%@=%@", type == kNeutrinoMessageTypeConfirmed ? @"nmsg" : @"popup", [message urlencode]] relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
 	[SynchronousRequestReader sendSynchronousRequest:myURI
