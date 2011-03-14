@@ -650,7 +650,7 @@ class Timer:
 			# XXX: demo only knows one service anyway
 			data = "2718f001d175" if useId else "Demo Service"
 			type = ZAPTO if self.justplay else RECORD
-			repeat = timer.repeated << 8 # XXX: only support weekdays for now
+			repeat = self.repeated << 8 # XXX: only support weekdays for now
 			repcount = 0
 			announceTime = self.begin - 10
 			return "%d %d %d %d %d %d %d %s\n" % (self.eit, type, repeat, repcount, announceTime, self.begin, self.end, data)
@@ -1105,8 +1105,7 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "timer":
 			format = get('format')
-			if format is not None:
-				useId = True if useId == 'id' else False
+			useId = True if get('useId', 'no') == 'id' else False
 			action = req.args.get('action')
 			action = action and action[0]
 			# according to nhttpd source format != "" also results in timerlist
@@ -1153,13 +1152,12 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 				else:
 					returndoc = "WRONG SERVICE, YOU SUCK o0"
 			elif action == "remove":
-				id = req.args.get('id')
-				id = int(id) if id and id[0] else 0
+				id = int(get('id', 0))
 
 				idx = 0
 				for timer in state.timers:
 					if timer.eit == id:
-						del state.timers[id]
+						del state.timers[idx]
 						break
 					idx += 1
 				returndoc = "IMO RETURN OF NEUTRINO SUCKS"
