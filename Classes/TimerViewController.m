@@ -534,7 +534,7 @@
 		// Sanity Check Title
 		if(_timerTitle.text && [_timerTitle.text length])
 			_timer.title = _timerTitle.text;
-		else
+		else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerTitle])
 			message = NSLocalizedString(@"Can't save a timer with an empty title.", @"");
 
 		// Get Description
