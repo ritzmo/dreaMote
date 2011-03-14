@@ -70,23 +70,25 @@
 	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 	NSString *testValue = nil;
 
-	// not configured at all configuration
+	NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
+								 @"NO", kVibratingRC,
+								 @"10", kMessageTimeout,
+								 @"YES", kPrefersSimpleRemote,
+								 nil];
+	[stdDefaults registerDefaults:appDefaults];
+
+	// not configured at all
 	if((testValue = [stdDefaults stringForKey: kActiveConnection]) == nil)
 	{
 		NSString *databaseVersion = [NSString stringWithFormat:@"%d", kCurrentDatabaseVersion];
-		// since no default values have been set (i.e. no preferences file created), create it here
-		NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
-									 activeConnectionId, kActiveConnection,
-									 @"NO", kVibratingRC,
-									 @"10", kMessageTimeout,
-									 @"YES", kPrefersSimpleRemote,
-									 databaseVersion, kDatabaseVersion,
-									 currentVersion, kLastLaunchedVersion,
-									 nil];
+
+		// write some settings to disk
+		[stdDefaults setObject:activeConnectionId forKey:kActiveConnection];
+		[stdDefaults setObject:databaseVersion forKey:kDatabaseVersion];
+		[stdDefaults setObject:currentVersion forKey:kLastLaunchedVersion];
+		[stdDefaults synchronize];
 
 		welcomeType = welcomeTypeFull;
-		[stdDefaults registerDefaults: appDefaults];
-		[stdDefaults synchronize];
 	}
 	// 1.0+ configuration
 	else
