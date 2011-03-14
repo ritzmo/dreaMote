@@ -210,7 +210,7 @@ enum neutrinoMessageTypes {
 	}
 
 	// Parse
-	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const NSArray *bouquetStringList = [baseString componentsSeparatedByString: @"\n"];
 	for(NSString *bouquetString in bouquetStringList)
 	{
@@ -301,7 +301,7 @@ enum neutrinoMessageTypes {
 	}
 
 	// Parse
-	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
 	for(NSString *timerString in timerStringList)
 	{
@@ -477,7 +477,7 @@ enum neutrinoMessageTypes {
 												  returningResponse:&response
 															  error:nil];
 
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const BOOL equalsOn = [myString isEqualToString: @"on"];
 	[myString release];
 	if(equalsOn)
@@ -512,7 +512,7 @@ enum neutrinoMessageTypes {
 												  returningResponse:&response
 															  error:nil];
 	
-	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	if([myString isEqualToString: @"1"])
 		volumeObject.ismuted = YES;
 	else
@@ -527,7 +527,7 @@ enum neutrinoMessageTypes {
 										  returningResponse:&response
 													  error:nil];
 	
-	myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	volumeObject.current = [myString integerValue];
 
 	[myString release];
@@ -548,7 +548,7 @@ enum neutrinoMessageTypes {
 												  returningResponse:&response
 															  error:nil];
 	
-	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const BOOL equalsRes = [myString isEqualToString: @"1"];
 	[myString release];
 	if(equalsRes)
