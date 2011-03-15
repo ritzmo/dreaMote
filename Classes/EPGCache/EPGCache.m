@@ -200,24 +200,16 @@ static EPGCache *_sharedInstance = nil;
 	[alert release];
 #endif
 
-	if([_serviceList count])
-	{
-		// continue fetching events
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
-	}
-	// indicate that we're done
-	else
-	{
-		[self stopTransaction];
-		[_delegate performSelectorOnMainThread:@selector(finishedRefreshingCache) withObject:nil waitUntilDone:NO];
-	}
+	[self dataSourceDelegate:dataSource finishedParsingDocument:document];
 }
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
-	if([_serviceList count])
+	NSUInteger count = [_serviceList count];
+	if(count)
 	{
-		// start fetching events
+		[_delegate performSelectorOnMainThread:@selector(remainingServicesToRefresh:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
+		// continue fetching events
 		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 	// indicate that we're done

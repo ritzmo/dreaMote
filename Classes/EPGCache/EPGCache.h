@@ -125,4 +125,11 @@
  @brief Cache was successfully refreshed.
  */
 - (void)finishedRefreshingCache;
+
+/*!
+ @brief Inform delegate about number of remaining services to refresh.
+
+ @param count Number of remaining services to refresh.
+ */
+- (void)remainingServicesToRefresh:(NSNumber *)count;
 @end
