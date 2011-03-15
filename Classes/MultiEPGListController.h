@@ -46,6 +46,7 @@
 	NSInteger pendingRequests; /*!< @brief Pending requests. */
 	NSTimer *_refreshTimer; /*!< @brief Timer used to refresh "_secondsSinceBegin". */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Offset to "_curBegin". */
+	float _servicesToRefresh; /*!< @brief Number of services to refresh. */
 }
 
 /*!

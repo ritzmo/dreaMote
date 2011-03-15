@@ -49,6 +49,7 @@
 		_events = [[NSMutableDictionary alloc] init];
 		_services = [[NSMutableArray alloc] init];
 		_secondsSinceBegin = -1;
+		_servicesToRefresh = -1;
 	}
 	return self;
 }
@@ -104,9 +105,11 @@
 	progressHUD.delegate = self;
 	[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
 	[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
+	[progressHUD setMode:MBProgressHUDModeDeterminate];
 	[progressHUD show:YES];
 	progressHUD.taskInProgress = YES;
 
+	_servicesToRefresh = -1;
 	_reloading = YES;
 	++pendingRequests;
 	[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
@@ -400,9 +403,17 @@
 	progressHUD.taskInProgress = NO;
 	[progressHUD hide:YES];
 
+	_servicesToRefresh = -1;
 	_reloading = NO;
 
 	[NSThread detachNewThreadSelector:@selector(readEPG) toTarget:self withObject:nil];
+}
+
+- (void)remainingServicesToRefresh:(NSNumber *)count
+{
+	if(_servicesToRefresh == -1)
+		_servicesToRefresh = [count integerValue];
+	progressHUD.progress = 1 - ([count integerValue] / _servicesToRefresh);
 }
 
 #pragma mark -
