@@ -82,6 +82,22 @@
 	{
 		NSString *databaseVersion = [NSString stringWithFormat:@"%d", kCurrentDatabaseVersion];
 
+		// settings of previous versions might not have been saved correctly, so try to delete old database
+		NSInteger integerVersion = -1;
+		if((testValue = [stdDefaults stringForKey: kDatabaseVersion]) != nil) // 1.0.1+
+		{
+			integerVersion = [testValue integerValue];
+		}
+		if(integerVersion < kCurrentDatabaseVersion)
+		{
+			const NSFileManager *fileManager = [NSFileManager defaultManager];
+			NSString *databasePath = [kEPGCachePath stringByExpandingTildeInPath];
+			if([fileManager fileExistsAtPath:databasePath])
+			{
+				[fileManager removeItemAtPath:databasePath error:nil];
+			}
+		}
+
 		// write some settings to disk
 		[stdDefaults setObject:activeConnectionId forKey:kActiveConnection];
 		[stdDefaults setObject:databaseVersion forKey:kDatabaseVersion];
