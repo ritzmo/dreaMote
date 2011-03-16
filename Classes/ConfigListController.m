@@ -18,6 +18,8 @@
 #import "AboutDreamoteViewController.h"
 #import "ConfigViewController.h"
 
+#define kMultiEPGRowTag 99
+
 /*!
  @brief Private functions of ConfigListController.
  */
@@ -156,6 +158,21 @@
 	[(UITableView *)self.view reloadData];
 }
 
+#pragma mark -
+#pragma mark MultiEPGIntervalDelegate
+#pragma mark -
+
+- (void)didSetInterval
+{
+	NSIndexPath *idx = nil;
+	if(IS_IPAD())
+		idx = [NSIndexPath indexPathForRow:1 inSection:1];
+	else
+		idx = [NSIndexPath indexPathForRow:2 inSection:1];
+
+	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
@@ -163,7 +180,15 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.section == 1) return nil;
+	if(indexPath.section == 1)
+	{
+#if IS_FULL()
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+		if(cell.tag == kMultiEPGRowTag)
+			return indexPath;
+#endif
+		return nil;
+	}
 	return indexPath;
 }
 
@@ -285,6 +310,33 @@
 			NSLog(@"ERROR: about to select out of bounds, aborting...");
 		}
 	}
+#if IS_FULL()
+	else if(indexPath.section == 1)
+	{
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+		if(cell.tag == kMultiEPGRowTag)
+		{
+			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+			MultiEPGIntervalViewController *vc = [MultiEPGIntervalViewController withInterval:[timeInterval integerValue] / 60];
+			[vc setDelegate:self];
+			if(IS_IPAD())
+			{
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+
+				[self.navigationController presentModalViewController:navController animated:YES];
+				[navController release];
+			}
+			else
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
+		}
+
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+#endif
 	else
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -373,6 +425,7 @@
 
 		/* Misc configuration items */
 		case 1:
+			sourceCell.tag = 0;
 			switch(row)
 			{
 				/* Simple remote */
@@ -389,6 +442,22 @@
 						break;
 					}
 					/* FALL THROUGH */
+#if IS_FULL()
+				/* Multi-EPG interval */
+				case 2:
+				{
+					NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+					timeLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					timeLabel.textAlignment = UITextAlignmentRight;
+					timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), [timeInterval integerValue] / 60];
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Multi-EPG Interval", @"Configuration item to choose timespan displayed by MultiEPG");
+					((DisplayCell *)sourceCell).view = timeLabel;
+					sourceCell.tag = kMultiEPGRowTag;
+					[timeLabel release];
+					break;
+				}
+#endif
 				default:
 					break;
 			}
@@ -434,7 +503,13 @@
 				return [_connections count] + 1;
 			return [_connections count];
 		case 1:
-			return (IS_IPAD()) ? 1 : 2;
+		{
+			NSInteger baseCount = (IS_IPAD()) ? 1 : 2;
+#if IS_FULL()
+			++baseCount;
+#endif
+			return baseCount;
+		}
 		case 2:
 #if IS_FULL()
 			return 1;

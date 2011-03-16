@@ -417,6 +417,7 @@
 		DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */; };
 		DA9BF4C1132FD213008193C6 /* Refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9BF4C0132FD213008193C6 /* Refresh.png */; };
 		DA9BF4C2132FD213008193C6 /* Refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9BF4C0132FD213008193C6 /* Refresh.png */; };
+		DA9BF4C51330DC2B008193C6 /* MultiEPGIntervalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9BF4C41330DC2B008193C6 /* MultiEPGIntervalViewController.m */; };
 		DAA029A212D77A21000564F0 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
@@ -781,6 +782,8 @@
 		DA9AD37B0FEBE29C00A59612 /* SimpleRepeatedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleRepeatedViewController.h; sourceTree = "<group>"; };
 		DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleRepeatedViewController.m; sourceTree = "<group>"; };
 		DA9BF4C0132FD213008193C6 /* Refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Refresh.png; sourceTree = "<group>"; };
+		DA9BF4C31330DC2A008193C6 /* MultiEPGIntervalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGIntervalViewController.h; sourceTree = "<group>"; };
+		DA9BF4C41330DC2B008193C6 /* MultiEPGIntervalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGIntervalViewController.m; sourceTree = "<group>"; };
 		DAA029A012D77A21000564F0 /* CXMLNamespaceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNamespaceNode.h; sourceTree = "<group>"; };
 		DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNamespaceNode.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
@@ -1540,6 +1543,8 @@
 				DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */,
 				DA80C4920E37A254008A42AE /* MovieViewController.h */,
 				DA80C4930E37A254008A42AE /* MovieViewController.m */,
+				DA9BF4C31330DC2A008193C6 /* MultiEPGIntervalViewController.h */,
+				DA9BF4C41330DC2B008193C6 /* MultiEPGIntervalViewController.m */,
 				DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */,
 				DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */,
 				DA7A22780E371ACA00455D11 /* RCEmulatorController.h */,
@@ -2026,6 +2031,7 @@
 				DA1D882F13167AE800A6F3CE /* Appirater.m in Sources */,
 				DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
 				DA1810A1132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
+				DA9BF4C51330DC2B008193C6 /* MultiEPGIntervalViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
