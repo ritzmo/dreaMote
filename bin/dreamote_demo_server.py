@@ -441,8 +441,11 @@ SERVICES_BOUQUET_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
 
 EPGSERVICE_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
  <epglist>
- <channel_id>2718f001d175</channel_id>
- <channel_name><![CDATA[Demo Service]]></channel_name>
+ <channel_id>%s</channel_id>
+ <channel_name><![CDATA[Demo Service]]></channel_name>%s
+ </epglist>"""
+
+EPGSERVICE_NEUTRINO_ENTRY = """
  <prog>
  <eventid>309903955495411052</eventid>
  <eventid_hex>44d00016dcadd6c</eventid_hex>
@@ -452,11 +455,13 @@ EPGSERVICE_NEUTRINO = """<?xml version="1.0" encoding="UTF-8"?>
  <stop_sec>1148316600</stop_sec>
  <stop_t>18:50</stop_t>
  <duration_min>30</duration_min>
- <description><![CDATA[Demo Event]]></description>
- <info1><![CDATA[Event short description]]></info1>
- <info2><![CDATA[Event description.]]></info2>
+ <description><![CDATA[Demo Event]]></description>%s
  </prog>
  </epglist>"""
+
+EPGSERVICE_NEUTRINO_DETAILS = """
+ <info1><![CDATA[Event short description]]></info1>
+ <info2><![CDATA[Event description.]]></info2>"""
 ### /DOCUMENTS
 
 TYPE_E2 = 0
@@ -648,7 +653,13 @@ class Timer:
 			return TIMERTEMPLATE_E1 % (typeString, days, action, postaction, status, typedata, self.sRef, dateString, timeString, self.begin, self.end-self.begin, self.name)
 		elif type == TYPE_NEUTRINO:
 			# XXX: demo only knows one service anyway
-			data = "2718f001d175" if useId else "Demo Service"
+			if useId:
+				if EMULATE_NEUTRINOHD:
+					data = "1922718f001d175"
+				else:
+					data = "2718f001d175"
+			else:
+				data = "Demo Service"
 			type = ZAPTO if self.justplay else RECORD
 			repeat = self.repeated << 8 # XXX: only support weekdays for now
 			repcount = 0
@@ -1086,21 +1097,22 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 			else:
 				returndoc = SERVICES_NEUTRINO
 		elif lastComp == "epg":
-			isXml = req.args.get('xml')
-			isXml = True if isXml and isXml[0] == 'true' else False
+			isXml = True if get('xml', 'false') == 'true' else False
 			sRef = req.args.get('channelId') or req.args.get('channelid') # XXX: api suggest channelid is correct though channelId seems to be ok too
 			sRef = sRef and sRef[0]
 			sname = req.args.get('channel_name')
 			sname = sname and sname[0]
 			details = req.args.get('details')
 			details = True if details and details[0] == 'true' else False
-			max = req.args.get('max')
-			max = int(max[0]) if max and max[0] else -1
-			if not isXml or not details or max == -1:
+			max = int(get('max', -1))
+			if not isXml:
 				returndoc = "UNHANDLED METHOD"
 			else:
 				if sRef and sRef in ("d175", "2718f001d175", "1922718f001d175") or sname and sname == "Demo Service":
-					returndoc = EPGSERVICE_NEUTRINO
+					add = ''
+					if max != 0:
+						add = EPGSERVICE_NEUTRINO_ENTRY % (EPGSERVICE_NEUTRINO_DETAILS if details else '',)
+					returndoc = EPGSERVICE_NEUTRINO % ("1922718f001d175" if EMULATE_NEUTRINOHD else "2718f001d175", add,)
 				else:
 					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "timer":
