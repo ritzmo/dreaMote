@@ -1117,7 +1117,7 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 				name = get('channel_id', get('channel_name', ''))
 
 				# check if this is the demo service
-				if name in ("2718f001d175", "Demo Service"):
+				if name in ("1922718f001d175", "2718f001d175", "Demo Service"):
 					sRef = '1:0:1:445D:453:1:C00000:0:0:0:'
 					timer = state.addTimer(sRef, start, stop, '', '', len(state.timers)+999, 0, 0, 0, 0)
 					timer.justplay = type == ZAPTO
@@ -1135,7 +1135,7 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 				repcount = int(get('repcount', 0))
 
 				# check if this is the demo service
-				if name in ("2718f001d175", "Demo Service"):
+				if name in ("1922718f001d175", "2718f001d175", "Demo Service"):
 					name = '1:0:1:445D:453:1:C00000:0:0:0:'
 
 					idx = 0
