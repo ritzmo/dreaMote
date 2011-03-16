@@ -68,12 +68,14 @@
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSNumber *multiEPGdefaultInterval = [NSNumber numberWithInteger:60*60*2];
 	NSString *testValue = nil;
 
 	NSDictionary *appDefaults = [NSDictionary dictionaryWithObjectsAndKeys:
 								 @"NO", kVibratingRC,
 								 @"10", kMessageTimeout,
 								 @"YES", kPrefersSimpleRemote,
+								 multiEPGdefaultInterval, kMultiEPGInterval,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 

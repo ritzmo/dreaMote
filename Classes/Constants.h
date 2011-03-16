@@ -103,6 +103,7 @@
 #define kDatabaseVersion		@"databaseVersion" // refers to the epg cache
 #define kSimpleRcWasShown		@"simpleRcWasShown"
 #define kLastLaunchedVersion	@"lastLaunchedVersion"
+#define kMultiEPGInterval		@"multiEpgInterval"
 
 #define kCurrentDatabaseVersion 2
 

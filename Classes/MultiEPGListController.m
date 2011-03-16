@@ -106,6 +106,7 @@
 	[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
 	[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
 	[progressHUD setMode:MBProgressHUDModeDeterminate];
+	progressHUD.progress = 0.0f;
 	[progressHUD show:YES];
 	progressHUD.taskInProgress = YES;
 
@@ -216,13 +217,17 @@
 /* go back two hours in time */
 - (void)backButtonPressed:(id)sender
 {
-	self.curBegin = [_curBegin dateByAddingTimeInterval:-(60*60*2)];
+	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]];
+	self.curBegin = until;
 }
 
 /* go forward two hours in time */
 - (void)forwardButtonPressed:(id)sender
 {
-	self.curBegin = [_curBegin dateByAddingTimeInterval:60*60*2];
+	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
+	self.curBegin = until;
 }
 
 /* go to current hour */
@@ -313,8 +318,9 @@
 
 	@synchronized(self)
 	{
-		NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
-		[_epgCache readEPGForTimeIntervalFrom:_curBegin until:twoHours to:self];
+		NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+		NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
+		[_epgCache readEPGForTimeIntervalFrom:_curBegin until:until to:self];
 	}
 
 	[pool release];
@@ -428,14 +434,16 @@
 	{
 		case swipeTypeRight:
 		{
-			NSDate *twoHours = [_curBegin dateByAddingTimeInterval:-(60*60*2)];
-			self.curBegin = twoHours;
+			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+			NSDate *until = [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]];
+			self.curBegin = until;
 			break;
 		}
 		case swipeTypeLeft:
 		{
-			NSDate *twoHours = [_curBegin dateByAddingTimeInterval:60*60*2];
-			self.curBegin = twoHours;
+			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+			NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
+			self.curBegin = until;
 			break;
 		}
 		default: break;
@@ -488,7 +496,9 @@
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *firstString = [format fuzzyDate:_curBegin];
 	[format setDateStyle:NSDateFormatterNoStyle];
-	NSString *secondString = [format fuzzyDate:[_curBegin dateByAddingTimeInterval:60*60*2]];
+	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
+	NSString *secondString = [format fuzzyDate:until];
 	[format release];
 	return [NSString stringWithFormat:@"%@ - %@", firstString, secondString];
 }
