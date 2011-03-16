@@ -378,8 +378,16 @@ enum neutrinoMessageTypes {
 	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
 	[add appendFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname urlencode]];
+	if([newTimer.service.sref isEqualToString:@"dc"])
+	{
+		[add appendString: @"&channel_name="];
+		[add appendString: [newTimer.service.sname urlencode]];
+	}
+	else
+	{
+		[add appendString: @"&channel_id="];
+		[add appendString: [newTimer.service.sref urlencode]];
+	}
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
@@ -402,8 +410,16 @@ enum neutrinoMessageTypes {
 	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
 	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&type=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
 	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	[add appendString: @"&channel_name="];
-	[add appendString: [newTimer.service.sname urlencode]];
+	if([newTimer.service.sref isEqualToString:@"dc"])
+	{
+		[add appendString: @"&channel_name="];
+		[add appendString: [newTimer.service.sname urlencode]];
+	}
+	else
+	{
+		[add appendString: @"&channel_id="];
+		[add appendString: [newTimer.service.sref urlencode]];
+	}
 	[add appendString: @"&rep="];
 	[add appendFormat: @"%d", newTimer.repeated];
 	[add appendString: @"&repcount="];
