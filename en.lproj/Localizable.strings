@@ -1,6 +1,9 @@
 ﻿/* No comment provided by engineer. */
 /*"%@ of %@ free" = "%1$@ of %2$@ free";*/
 
+/* Minutes */
+/*"%d min" = "%d min";*/
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<enter description>";
 
@@ -218,6 +221,9 @@
 /* No comment provided by engineer. */
 /*"End" = "End";*/
 
+/* No comment provided by engineer. */
+/*"End has to be after begin." = "End has to be after begin.";*/
+
 /* Title of message when trying to select next/previous movie by swiping but end was reached. */
 /*"End of list reached" = "End of list reached";*/
 
@@ -396,6 +402,10 @@
 
 /* Multi EPG Button title */
 /*"Multi EPG" = "Multi EPG";*/
+
+/* Configuration item to choose timespan displayed by MultiEPG
+   Default title of MultiEPGIntervalViewController */
+/*"Multi-EPG Interval" = "Multi-EPG Interval";*/
 
 /* No comment provided by engineer. */
 /*"Mute" = "Mute";*/
@@ -586,6 +596,9 @@
 /* Title of ServiceListController */
 "Services" = "Services";
 
+/* show welcome screen (help) */
+/*"Show Help" = "Show Help";*/
+
 /* No comment provided by engineer. */
 "Shutdown" = "Shutdown";
 
@@ -636,9 +649,6 @@
 
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 /*"This can take a while." = "This can take a while.";*/
-
-/* No comment provided by engineer. */
-/*"This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings." = "This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings.";*/
 
 /* Weekday */
 "Thu" = "Thu";
@@ -697,6 +707,9 @@
 /* No comment provided by engineer. */
 /*"Unable to start playback" = "Unable to start playback";*/
 
+/* Unable to find service name for service id */
+/*"Unknown Service (%@)" = "Unknown Service (%@)";*/
+
 /* No comment provided by engineer. */
 "Use SSL" = "Use SSL";
 
@@ -726,9 +739,6 @@
 
 /* Repeated */
 "Weekdays" = "Weekdays";
-
-/* No comment provided by engineer. */
-/*"Welcome to the simple remote" = "Welcome to the simple remote";*/
 
 /* No comment provided by engineer. */
 /*"Year" = "Year";*/

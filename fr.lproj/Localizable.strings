@@ -1,6 +1,9 @@
 ﻿/* No comment provided by engineer. */
 "%@ of %@ free" = "%@ de %@ libre";
 
+/* Minutes */
+/*"%d min" = "%d min";*/
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<Entrer une description>";
 
@@ -104,7 +107,7 @@
 "Bouquets" = "Bouquets";
 
 /* Button in Appirater alert suggesting to buy paid version */
-/*"Buy full version" = "Buy full version";*/
+"Buy full version" = "Acheter la version complète";
 
 /* No comment provided by engineer. */
 "Can't edit a running or finished timer." = "Ne peux pas éditer un enregistrement en cours ou fini.";
@@ -125,7 +128,7 @@
 "Caption cannot be empty." = "Le titre ne peut pas être vide.";
 
 /* Timer cleanup button */
-/*"Cleanup" = "Cleanup";*/
+"Cleanup" = "Nettoyer";
 
 /* No comment provided by engineer. */
 "Config List Explain" = "Configuration des connexions";
@@ -150,7 +153,7 @@
 "Connection could not be established." = "La connexion ne peut pas être établi.";
 
 /* No comment provided by engineer. */
-/*"Connection to remote host failed with status code %d." = "Connection to remote host failed with status code %d.";*/
+"Connection to remote host failed with status code %d." = "La connexion au serveur a échouée avec le code %d.";
 
 /* Default title of ConnectorViewController */
 "Connector" = "Connecteur";
@@ -218,6 +221,9 @@
 /* No comment provided by engineer. */
 "End" = "Fin";
 
+/* No comment provided by engineer. */
+/*"End has to be after begin." = "End has to be after begin.";*/
+
 /* Title of message when trying to select next/previous movie by swiping but end was reached. */
 "End of list reached" = "Fin de la liste atteint";
 
@@ -234,7 +240,7 @@
 "Error adding new timer: %@" = "Erreur d'ajout d'enregistrement: %@";
 
 /* Title of alert when timer cleanup failed */
-/*"Error cleaning up" = "Error cleaning up";*/
+"Error cleaning up" = "Erreur de nettoyage";
 
 /* No comment provided by engineer. */
 "Error editing timer: %@" = "Erreur d'édition d'enregistrement: %@";
@@ -300,7 +306,7 @@
 "If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Si vous appréciez %@, merci de laisser une note ou un avis! Merci pour votre soutien!";
 
 /* No comment provided by engineer. */
-/*"Illegal response returned by VDR-server! Aborting." = "Illegal response returned by VDR-server! Aborting.";*/
+"Illegal response returned by VDR-server! Aborting." = "Réponse illégale rendue par VDR-SERVEUR! Abandon.";
 
 /* No comment provided by engineer. */
 "Image Version" = "Image Version";
@@ -396,6 +402,10 @@
 
 /* Multi EPG Button title */
 "Multi EPG" = "Multi EPG";
+
+/* Configuration item to choose timespan displayed by MultiEPG
+   Default title of MultiEPGIntervalViewController */
+/*"Multi-EPG Interval" = "Multi-EPG Interval";*/
 
 /* No comment provided by engineer. */
 "Mute" = "Muet";
@@ -586,6 +596,9 @@
 /* Title of ServiceListController */
 "Services" = "Chaînes";
 
+/* show welcome screen (help) */
+"Show Help" = "Voir l'aide";
+
 /* No comment provided by engineer. */
 "Shutdown" = "Veille profonde";
 
@@ -636,9 +649,6 @@
 
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 "This can take a while." = "Cela peut prendre quelques minutes.";
-
-/* No comment provided by engineer. */
-/*"This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings." = "This is a reduced remote control for easier use.\nSwipe the cross to emulate an arrow key press and double tap it to emulate the OK button.\nYou can change to the \"full\" remote control emulator in the settings.";*/
 
 /* Weekday */
 "Thu" = "Jeu";
@@ -697,6 +707,9 @@
 /* No comment provided by engineer. */
 "Unable to start playback" = "Impossible de commencer la lecture";
 
+/* Unable to find service name for service id */
+/*"Unknown Service (%@)" = "Unknown Service (%@)";*/
+
 /* No comment provided by engineer. */
 "Use SSL" = "Utiliser SSL";
 
@@ -728,9 +741,6 @@
 "Weekdays" = "Jours ouvrables";
 
 /* No comment provided by engineer. */
-/*"Welcome to the simple remote" = "Welcome to the simple remote";*/
-
-/* No comment provided by engineer. */
 "Year" = "Année";
 
 /* Message type */
@@ -743,7 +753,7 @@
 "You are about to import data into this application. All existing settings will be lost!" = "Vous êtes sur le point d'importer des données dans cette application. Tous les réglages existants seront perdus!";
 
 /* No comment provided by engineer. */
-/*"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "You are using version %1$@ of the web interface.\nFor full functionality updating to version %2$@ is suggested.";*/
+"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "Vous utilisez la version %@ de la web interface.\nPour les fonctionalités complètes, nous vous suggérons de mettre la version %@.";
 
 /* No comment provided by engineer. */
 "You have reached either the end or the beginning of your movie list." = "Vous avez atteint la fin ou le début de votre liste de film.";
@@ -760,8 +770,3 @@
 /* No comment provided by engineer. */
 "Zap on receiver" = "Zapper sur le récepteur";
 
-
-
-/* old strings */
-"Check Connectivity" = "Contrôle connexion";
-"Remote host unreachable!\nPlease check your network settings or connect to another host." = "Hôte inaccessible!\nVérifiez s'il vous plaît vos paramètres réseau ou entrez un autre hôte.";

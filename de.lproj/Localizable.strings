@@ -1,6 +1,9 @@
 ﻿/* No comment provided by engineer. */
 "%@ of %@ free" = "%@ von %@ frei";
 
+/* Minutes */
+"%d min" = "%d min.";
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<beschreibung>";
 
@@ -218,6 +221,9 @@
 /* No comment provided by engineer. */
 "End" = "Ende";
 
+/* No comment provided by engineer. */
+"End has to be after begin." = "Das Ende muss nach dem Beginn sein.";
+
 /* Title of message when trying to select next/previous movie by swiping but end was reached. */
 "End of list reached" = "Ende der Liste erreicht.";
 
@@ -396,6 +402,10 @@
 
 /* Multi EPG Button title */
 "Multi EPG" = "Multi EPG";
+
+/* Configuration item to choose timespan displayed by MultiEPG
+   Default title of MultiEPGIntervalViewController */
+"Multi-EPG Interval" = "Multi-EPG Intervall";
 
 /* No comment provided by engineer. */
 "Mute" = "Stumm";
@@ -696,6 +706,9 @@
 
 /* No comment provided by engineer. */
 "Unable to start playback" = "Wiedergabe konnte nicht gestartet werden";
+
+/* Unable to find service name for service id */
+"Unknown Service (%@)" = "Unbekannter Sender (%@)";
 
 /* No comment provided by engineer. */
 "Use SSL" = "SSL benutzen";
