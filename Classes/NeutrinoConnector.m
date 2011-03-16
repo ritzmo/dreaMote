@@ -363,6 +363,7 @@ enum neutrinoMessageTypes {
 				[stringValue release];
 				break;
 			}
+			[xmlReader release];
 
 			// set invalid name if not found
 			if(service.sname == nil)
