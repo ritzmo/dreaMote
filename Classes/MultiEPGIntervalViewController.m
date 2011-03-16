@@ -27,7 +27,7 @@
 {
 	if((self = [super init]))
 	{
-		self.title = NSLocalizedString(@"MultiEPG Interval", @"Default title of MultiEPGIntervalViewController");
+		self.title = NSLocalizedString(@"Multi-EPG Interval", @"Default title of MultiEPGIntervalViewController");
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
