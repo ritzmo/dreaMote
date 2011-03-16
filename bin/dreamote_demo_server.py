@@ -1104,12 +1104,11 @@ mute: %d""" % (1 if state.isMuted() else 0,)
 				else:
 					returndoc = "UNHANDLED METHOD"
 		elif lastComp == "timer":
-			format = get('format')
-			useId = True if get('useId', 'no') == 'id' else False
-			action = req.args.get('action')
-			action = action and action[0]
+			format = get('format', '')
+			useId = True if format == 'id' else False
+			action = get('action')
 			# according to nhttpd source format != "" also results in timerlist
-			if not action or format is not None:
+			if not action or format:
 				returndoc = state.getTimers(TYPE_NEUTRINO, useId=useId)
 			elif action == "new":
 				start = int(get('alarm', 0))
