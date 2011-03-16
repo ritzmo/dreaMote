@@ -20,6 +20,7 @@
 #import "SignalSourceDelegate.h"
 #import "TimerSourceDelegate.h"
 #import "VolumeSourceDelegate.h"
+#import "XMLReader/BaseXMLReader.h"
 #import "XMLReader/Neutrino/EventXMLReader.h"
 #import "XMLReader/Neutrino/ServiceXMLReader.h"
 
@@ -276,7 +277,7 @@ enum neutrinoMessageTypes {
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString: @"/control/timer" relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/control/timer?format=id" relativeToURL:_baseAddress];
 
 	NSHTTPURLResponse *response;
 	NSError *error = nil;
@@ -303,6 +304,8 @@ enum neutrinoMessageTypes {
 	// Parse
 	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
+	[baseString release];
+	const NSMutableDictionary *serviceMap = [NSMutableDictionary dictionary];
 	for(NSString *timerString in timerStringList)
 	{
 		// eventID eventType eventRepeat repcount announceTime alarmTime stopTime data
@@ -337,12 +340,39 @@ enum neutrinoMessageTypes {
 		NSRange objRange;
 		objRange.location = 7;
 		objRange.length = [timerStringComponents count] - 7;
-		NSString *sname = [[timerStringComponents subarrayWithRange: objRange] componentsJoinedByString: @" "];
+		NSString *sref = [[timerStringComponents subarrayWithRange:objRange] componentsJoinedByString:@" "];
 
-		NSObject<ServiceProtocol> *service = [[GenericService alloc] init];
-		service.sname = sname;
-		// NOTE: we set a fake sref here as the service is valid enough for timers...
-		service.sref = @"dc";
+		NSObject<ServiceProtocol> *service = [serviceMap valueForKey:sref];
+		if(service == nil)
+		{
+			// create new service
+			service = [[GenericService alloc] init];
+			service.sref = sref;
+
+			// request epg for channel id with no events (to retrieve name)
+			myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&max=0", [sref urlencode]] relativeToURL:_baseAddress];
+			BaseXMLReader *xmlReader = [[BaseXMLReader alloc] init]; // XXX: is it possible to recycle this?
+			CXMLDocument *dom = [xmlReader parseXMLFileAtURL:myURI parseError:&error];
+
+			// check document for name
+			const NSArray *resultNodes = [dom nodesForXPath:@"/epglist/channel_name" error:nil];
+			for(CXMLElement *resultElement in resultNodes)
+			{
+				NSString *stringValue = [[resultElement stringValue] copy];
+				service.sname = stringValue;
+				[stringValue release];
+				break;
+			}
+
+			// set invalid name if not found
+			if(service.sname == nil)
+			{
+				service.sname = [NSString stringWithFormat:NSLocalizedString(@"Unknown Service (%@)", @"Unable to find service name for service id"), sref];
+			}
+
+			// keep in cache
+			[serviceMap setValue:service forKey:sref];
+		}
 		timer.service = service;
 		[service release];
 
@@ -363,7 +393,6 @@ enum neutrinoMessageTypes {
 								waitUntilDone: NO];
 		[timer release];
 	}
-	[baseString release];
 
 	[self indicateSuccess:delegate];
 	return nil;
