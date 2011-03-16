@@ -23,6 +23,7 @@
 	UIWebView *_aboutText; /*!< @brief Web view. */
 	UIButton *_doneButton; /*!< @brief "Done" Button. */
 	UIButton *_mailButton; /*!< @brief Mail button. */
+	UIButton *_twitterButton; /*!< @brief "Follow us" button. */
 	welcomeTypes welcomeType; /*!< @brief Welcome type. */
 }
 

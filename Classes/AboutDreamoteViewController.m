@@ -21,6 +21,11 @@
  @param sender ui element
  */
 - (void)showMailComposer:(id)sender;
+/*!
+ @brief "Follow us" button was pressed
+ @param sender ui element
+ */
+- (void)openTwitter:(id)sender;
 @end
 
 @implementation AboutDreamoteViewController
@@ -139,16 +144,28 @@
 	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview: _doneButton];
 
-	if([MFMailComposeViewController canSendMail])
+	if(welcomeType == welcomeTypeNone)
 	{
-		frame = CGRectMake(0, 400 + kTweenMargin, 32, 32);
-		_mailButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-		_mailButton.frame = frame;
-		UIImage *image = [UIImage imageNamed:@"internet-mail.png"];
-		[_mailButton setImage:image forState:UIControlStateNormal];
-		[_mailButton addTarget:self action:@selector(showMailComposer:) forControlEvents:UIControlEventTouchUpInside];
-		if(welcomeType == welcomeTypeNone)
+		if([MFMailComposeViewController canSendMail])
+		{
+			frame = CGRectMake(0, 400 + kTweenMargin, 32, 32);
+			_mailButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+			_mailButton.frame = frame;
+			UIImage *image = [UIImage imageNamed:@"internet-mail.png"];
+			[_mailButton setImage:image forState:UIControlStateNormal];
+			[_mailButton addTarget:self action:@selector(showMailComposer:) forControlEvents:UIControlEventTouchUpInside];
+
 			[self.view addSubview:_mailButton];
+		}
+
+		frame = CGRectMake(size.width - 63, 400 + kTweenMargin, 61, 32);
+		_twitterButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+		_twitterButton.frame = frame;
+		UIImage *image = [UIImage imageNamed:@"twitter-b.png"];
+		[_twitterButton setImage:image forState:UIControlStateNormal];
+		[_twitterButton addTarget:self action:@selector(openTwitter:) forControlEvents:UIControlEventTouchUpInside];
+
+		[self.view addSubview:_twitterButton];
 	}
 }
 
@@ -201,7 +218,90 @@
 		_doneButton.frame = frame;
 		frame = CGRectMake(0, size.height - kTweenMargin - 32, 32, 32);
 		_mailButton.frame = frame;
+		frame = CGRectMake(40, size.height - kTweenMargin - 32, 61, 32);
+		_twitterButton.frame = frame;
 	}
+}
+
+#pragma mark - Twitter
+
+/* taken from http://www.cocoanetics.com/2010/02/making-a-follow-us-on-twitter-button/ */
+- (void)openTwitterAppForFollowingUser:(NSString *)twitterUserName
+{
+	UIApplication *app = [UIApplication sharedApplication];
+
+	// Tweetie: http://developer.atebits.com/tweetie-iphone/protocol-reference/
+	NSURL *tweetieURL = [NSURL URLWithString:[NSString stringWithFormat:@"tweetie://user?screen_name=%@", twitterUserName]];
+	if ([app canOpenURL:tweetieURL] && IS_IPHONE()) // custom urls don't work properly on iPad
+	{
+		[app openURL:tweetieURL];
+		return;
+	}
+
+	// Birdfeed: http://birdfeed.tumblr.com/post/172994970/url-scheme
+	NSURL *birdfeedURL = [NSURL URLWithString:[NSString stringWithFormat:@"x-birdfeed://user?screen_name=%@", twitterUserName]];
+	if ([app canOpenURL:birdfeedURL])
+	{
+		[app openURL:birdfeedURL];
+		return;
+	}
+
+	// Twittelator: http://www.stone.com/Twittelator/Twittelator_API.html
+	NSURL *twittelatorURL = [NSURL URLWithString:[NSString stringWithFormat:@"twit:///user?screen_name=%@", twitterUserName]];
+	if ([app canOpenURL:twittelatorURL])
+	{
+		[app openURL:twittelatorURL];
+		return;
+	}
+
+	// Icebird: http://icebirdapp.com/developerdocumentation/
+	NSURL *icebirdURL = [NSURL URLWithString:[NSString stringWithFormat:@"icebird://user?screen_name=%@", twitterUserName]];
+	if ([app canOpenURL:icebirdURL])
+	{
+		[app openURL:icebirdURL];
+		return;
+	}
+
+	// Fluttr: no docs
+	NSURL *fluttrURL = [NSURL URLWithString:[NSString stringWithFormat:@"fluttr://user/%@", twitterUserName]];
+	if ([app canOpenURL:fluttrURL])
+	{
+		[app openURL:fluttrURL];
+		return;
+	}
+
+	// SimplyTweet: http://motionobj.com/blog/url-schemes-in-simplytweet-23
+	NSURL *simplytweetURL = [NSURL URLWithString:[NSString stringWithFormat:@"simplytweet:?link=http://twitter.com/%@", twitterUserName]];
+	if ([app canOpenURL:simplytweetURL])
+	{
+		[app openURL:simplytweetURL];
+		return;
+	}
+
+	// Tweetings: http://tweetings.net/iphone/scheme.html
+	NSURL *tweetingsURL = [NSURL URLWithString:[NSString stringWithFormat:@"tweetings:///user?screen_name=%@", twitterUserName]];
+	if ([app canOpenURL:tweetingsURL])
+	{
+		[app openURL:tweetingsURL];
+		return;
+	}
+
+	// Echofon: http://echofon.com/twitter/iphone/guide.html
+	NSURL *echofonURL = [NSURL URLWithString:[NSString stringWithFormat:@"echofon:///user_timeline?%@", twitterUserName]];
+	if ([app canOpenURL:echofonURL])
+	{
+		[app openURL:echofonURL];
+		return;
+	}
+
+	// --- Fallback: Mobile Twitter in Safari
+	NSURL *safariURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://mobile.twitter.com/%@", twitterUserName]];
+	[app openURL:safariURL];
+}
+
+- (void)openTwitter:(id)sender
+{
+	[self openTwitterAppForFollowingUser:@"dreaMote"];
 }
 
 #pragma mark - UIWebView delegates

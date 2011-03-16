@@ -418,6 +418,8 @@
 		DA9BF4C1132FD213008193C6 /* Refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9BF4C0132FD213008193C6 /* Refresh.png */; };
 		DA9BF4C2132FD213008193C6 /* Refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9BF4C0132FD213008193C6 /* Refresh.png */; };
 		DA9BF4C51330DC2B008193C6 /* MultiEPGIntervalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9BF4C41330DC2B008193C6 /* MultiEPGIntervalViewController.m */; };
+		DA9BF4CA13311E63008193C6 /* twitter-b.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9BF4C913311E63008193C6 /* twitter-b.png */; };
+		DA9BF4CB13311E63008193C6 /* twitter-b.png in Resources */ = {isa = PBXBuildFile; fileRef = DA9BF4C913311E63008193C6 /* twitter-b.png */; };
 		DAA029A212D77A21000564F0 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
@@ -784,6 +786,7 @@
 		DA9BF4C0132FD213008193C6 /* Refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Refresh.png; sourceTree = "<group>"; };
 		DA9BF4C31330DC2A008193C6 /* MultiEPGIntervalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGIntervalViewController.h; sourceTree = "<group>"; };
 		DA9BF4C41330DC2B008193C6 /* MultiEPGIntervalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGIntervalViewController.m; sourceTree = "<group>"; };
+		DA9BF4C913311E63008193C6 /* twitter-b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "twitter-b.png"; sourceTree = "<group>"; };
 		DAA029A012D77A21000564F0 /* CXMLNamespaceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNamespaceNode.h; sourceTree = "<group>"; };
 		DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNamespaceNode.m; sourceTree = "<group>"; };
 		DAA21E7E0E99288600DD749C /* ConfigListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigListController.h; sourceTree = "<group>"; };
@@ -1294,6 +1297,7 @@
 				DA785775132C149A003BE2FE /* Simplerc.png */,
 				DA6CEFCF12D4D38D00F1F52D /* system-shutdown.png */,
 				DA6CEFD012D4D38D00F1F52D /* timer.png */,
+				DA9BF4C913311E63008193C6 /* twitter-b.png */,
 				DA6CEFD112D4D38D00F1F52D /* view-refresh.png */,
 			);
 			path = Images;
@@ -1797,6 +1801,7 @@
 				DA78577A132C149A003BE2FE /* Simplerc.png in Resources */,
 				DA181088132D0A5700314C3D /* welcome_de.html in Resources */,
 				DA9BF4C1132FD213008193C6 /* Refresh.png in Resources */,
+				DA9BF4CA13311E63008193C6 /* twitter-b.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1883,6 +1888,7 @@
 				DA78577B132C149A003BE2FE /* Simplerc.png in Resources */,
 				DA181089132D0A5700314C3D /* welcome_de.html in Resources */,
 				DA9BF4C2132FD213008193C6 /* Refresh.png in Resources */,
+				DA9BF4CB13311E63008193C6 /* twitter-b.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
