@@ -447,6 +447,7 @@
 		DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
 		DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
+		DAD39A1F1332A55400BA4FB8 /* AutoTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
@@ -850,6 +851,8 @@
 		DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerMetadataCell.h; sourceTree = "<group>"; };
 		DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerMetadataCell.m; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
+		DAD39A1D1332A55400BA4FB8 /* AutoTimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerXMLReader.h; sourceTree = "<group>"; };
+		DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerXMLReader.m; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
 		DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma2Connector.m; sourceTree = "<group>"; };
@@ -1375,6 +1378,8 @@
 			children = (
 				DAFBA4CD12D8FF960059B5C4 /* AboutXMLReader.h */,
 				DAFBA4CE12D8FF960059B5C4 /* AboutXMLReader.m */,
+				DAD39A1D1332A55400BA4FB8 /* AutoTimerXMLReader.h */,
+				DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */,
 				DACA8AFC109647B200B03BE8 /* CurrentXMLReader.h */,
 				DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */,
 				DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */,
@@ -2044,6 +2049,7 @@
 				DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
 				DA1810A1132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
 				DA9BF4C51330DC2B008193C6 /* MultiEPGIntervalViewController.m in Sources */,
+				DAD39A1F1332A55400BA4FB8 /* AutoTimerXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

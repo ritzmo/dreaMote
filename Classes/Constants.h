@@ -117,3 +117,6 @@ extern const char *kEnigma2Description;
 #define kEnigma2DescriptionLength 14
 extern const char *kEnigma2DescriptionExtended;
 #define kEnigma2DescriptionExtendedLength 22
+extern const char *kEnigma2Tags;
+#define kEnigma2TagsLength 7
+extern const char *kEnigma2LocationLength;

@@ -19,8 +19,6 @@ static const char *kEnigma2MovieTime = "e2time";
 static const NSUInteger kEnigma2MovieTimeLength = 7;
 static const char *kEnigma2MovieLength = "e2length";
 static const NSUInteger kEnigma2MovieLengthLength = 9;
-static const char *kEnigma2MovieTags = "e2tags";
-static const NSUInteger kEnigma2MovieTagsLength = 7;
 static const char *kEnigma2MovieFilename = "e2filename";
 static const NSUInteger kEnigma2MovieFilenameLength = 11;
 static const char *kEnigma2MovieFilesize = "e2filesize";
@@ -95,7 +93,7 @@ Example:
 			||	!strncmp((const char *)localname, kEnigma2MovieTime, kEnigma2MovieTimeLength)
 			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieLength, kEnigma2MovieLengthLength)
-			||	!strncmp((const char *)localname, kEnigma2MovieTags, kEnigma2MovieTagsLength)
+			||	!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieFilename, kEnigma2MovieFilenameLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieFilesize, kEnigma2MovieFilesizeLength)
 			)
@@ -142,7 +140,7 @@ Example:
 	{
 		[currentMovie setTimeFromString:currentString];
 	}
-	else if(!strncmp((const char *)localname, kEnigma2MovieTags, kEnigma2MovieTagsLength))
+	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
 	{
 		[currentMovie setTagsFromString: currentString];
 	}
