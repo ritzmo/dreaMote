@@ -62,14 +62,17 @@ static const char *kEnigma2ATAvoidDuplicateDescription = "avoidDuplicateDescript
 static const NSUInteger kEnigma2ATAvoidDuplicateDescriptionLength = 26;
 static const char *kEnigma2ATAfterevent = "afterevent";
 static const NSUInteger kEnigma2ATAftereventLength = 11;
+static const char *kEnigma2ATWhere = "where";
+static const NSUInteger kEnigma2ATWhereLength = 6;
 
 @interface Enigma2AutoTimerXMLReader()
 @property (nonatomic, retain) AutoTimer *currentAT;
+@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
 @end
 
 @implementation Enigma2AutoTimerXMLReader
 
-@synthesize currentAT;
+@synthesize currentAT, currentService;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<AutoTimerSourceDelegate> *)delegate
@@ -85,6 +88,7 @@ static const NSUInteger kEnigma2ATAftereventLength = 11;
 - (void)dealloc
 {
 	[currentAT release];
+	[currentService release];
 
 	[super dealloc];
 }
@@ -119,13 +123,138 @@ static const NSUInteger kEnigma2ATAftereventLength = 11;
 	if(!strncmp((const char *)localname, kEnigma2ATElement, kEnigma2ATElementLength))
 	{
 		self.currentAT = [[[AutoTimer alloc] init] autorelease];
-		// read attributes
+		autoTimerWhere = autoTimerWhereInvalid;
+
+		NSInteger i = 0;
+		for(; i < attributeCount; ++i)
+		{
+			const NSInteger valueLength = (int)(attributes[i].end - attributes[i].value);
+			const NSString *value = [[NSString alloc] initWithBytes:(const void *)attributes[i].value
+                                                       length:valueLength
+                                                     encoding:NSUTF8StringEncoding];
+            if(!strncmp((const char*)attributes[i].localname, kEnigma2ATName, kEnigma2ATNameLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATMatch, kEnigma2ATMatchLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATEnabled, kEnigma2ATEnabledLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATId, kEnigma2ATIdLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATFrom, kEnigma2ATFromLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATTo, kEnigma2ATToLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOffset, kEnigma2ATOffsetLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATEncoding, kEnigma2ATEncodingLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchCase, kEnigma2ATSearchCaseLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchType, kEnigma2ATSearchTypeLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOverrideAlternatives, kEnigma2ATOverrideAlternativesLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAvoidDuplicateDescription, kEnigma2ATAvoidDuplicateDescriptionLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAfter, kEnigma2ATAfterLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATBefore, kEnigma2ATBeforeLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATMaxduration, kEnigma2ATMaxdurationLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATLocation, kEnigma2ATLocationLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATLastBegin, kEnigma2ATLastBeginLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATLastActivation, kEnigma2ATLastActivationLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATCounter, kEnigma2ATCounterLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATCounterFormat, kEnigma2ATCounterFormatLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATLeft, kEnigma2ATLeftLength))
+			{
+				//
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATJustplay, kEnigma2ATJustplayLength))
+			{
+				//
+			}
+		}
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2ATInclude, kEnigma2ATIncludeLength)
 			||	!strncmp((const char *)localname, kEnigma2ATExclude, kEnigma2ATExcludeLength))
 	{
-		// required: where (keep in instance variable)
-		currentString = [[NSMutableString alloc] init];
+		NSInteger i = 0;
+		for(; i < attributeCount; ++i)
+		{
+			const NSInteger valueLength = (int)(attributes[i].end - attributes[i].value);
+			const NSString *value = [[NSString alloc] initWithBytes:(const void *)attributes[i].value
+															 length:valueLength
+														   encoding:NSUTF8StringEncoding];
+			if(!strncmp((const char*)attributes[i].localname, kEnigma2ATWhere, kEnigma2ATWhereLength))
+			{
+				if([value isEqualToString:@"title"])
+				{
+					autoTimerWhere = autoTimerWhereTitle;
+				}
+				else if([value isEqualToString:@"shortdescription"])
+				{
+					autoTimerWhere = autoTimerWhereShortdescription;
+				}
+				else if([value isEqualToString:@"description"])
+				{
+					autoTimerWhere = autoTimerWhereDescription;
+				}
+				else if([value isEqualToString:@"dayofweek"])
+				{
+					autoTimerWhere = autoTimerWhereDayOfWeek;
+				}
+			}
+		}
+
+		if(autoTimerWhere != autoTimerWhereInvalid)
+			currentString = [[NSMutableString alloc] init];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATAfterevent, kEnigma2ATAftereventLength))
 	{
@@ -135,6 +264,10 @@ static const NSUInteger kEnigma2ATAftereventLength = 11;
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
 		// create new service
+		if(currentService)
+			self.currentService = nil;
+
+		currentService = [[GenericService alloc] init];
 		currentString = [[NSMutableString alloc] init];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
@@ -162,24 +295,42 @@ static const NSUInteger kEnigma2ATAftereventLength = 11;
 	else if(!strncmp((const char *)localname, kEnigma2ATInclude, kEnigma2ATIncludeLength))
 	{
 		// append to includes
+		autoTimerWhere = autoTimerWhereInvalid;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATExclude, kEnigma2ATExcludeLength))
 	{
 		// append to exclude
+		autoTimerWhere = autoTimerWhereInvalid;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATAfterevent, kEnigma2ATAftereventLength))
 	{
-		// optional: from/to as attribute
-		currentString = [[NSMutableString alloc] init];
+		if([currentString isEqualToString:@"none"])
+		{
+			//kAfterEventNothing
+		}
+		else if([currentString isEqualToString:@"standby"])
+		{
+			//kAfterEventStandby
+		}
+		else if([currentString isEqualToString:@"shutdown"])
+		{
+			//kAfterEventDeepstandby
+		}
+		else if([currentString isEqualToString:@"auto"])
+		{
+			//kAfterEventAuto
+		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
-		//currentService.sname = currentString;
+		currentService.sname = currentString;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
-		//currentService.sref = currentString;
+		currentService.sref = currentString;
 		//TODO: determine type based on sref and append to service/bouquet
+
+		self.currentService = nil;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
 	{

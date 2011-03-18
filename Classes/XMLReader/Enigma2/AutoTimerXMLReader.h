@@ -10,8 +10,19 @@
 
 #import "SaxXmlReader.h"
 
+#import "../../Objects/Generic/Service.h"
+
 @class AutoTimer;
 @protocol AutoTimerSourceDelegate;
+
+typedef enum
+{
+	autoTimerWhereInvalid,
+	autoTimerWhereTitle,
+	autoTimerWhereShortdescription,
+	autoTimerWhereDescription,
+	autoTimerWhereDayOfWeek,
+} autoTimerWhereType;
 
 /*!
  @brief Enigma2 AutoTimer XML Reader.
@@ -21,7 +32,9 @@
 @interface Enigma2AutoTimerXMLReader : SaxXmlReader
 {
 @private
+	autoTimerWhereType autoTimerWhere; /*!< @brief Current Include/Exclude where-Attribute. */
 	AutoTimer *currentAT; /*!< @brief Current AutoTimer. */
+	NSObject<ServiceProtocol> *currentService; /*!< @brief Current Service/Bouquet. */
 }
 
 /*!
