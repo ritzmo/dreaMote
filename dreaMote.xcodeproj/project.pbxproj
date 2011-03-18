@@ -465,6 +465,7 @@
 		DAFBA4CF12D8FF960059B5C4 /* AboutXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA4CE12D8FF960059B5C4 /* AboutXMLReader.m */; };
 		DAFBB55012BD2BE1004DAE5E /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */; };
 		DAFE42A30E94220800896017 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
+		DAFE6BBB13340CEB001F53B3 /* AutoTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE6BBA13340CEB001F53B3 /* AutoTimer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -885,6 +886,8 @@
 		DAFBB54F12BD2BE1004DAE5E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAFE42A10E94220800896017 /* ConfigViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigViewController.h; sourceTree = "<group>"; };
 		DAFE42A20E94220800896017 /* ConfigViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigViewController.m; sourceTree = "<group>"; };
+		DAFE6BB913340CEB001F53B3 /* AutoTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimer.h; sourceTree = "<group>"; };
+		DAFE6BBA13340CEB001F53B3 /* AutoTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1129,6 +1132,8 @@
 		DA0BF44D0F0C1066004B488C /* Generic */ = {
 			isa = PBXGroup;
 			children = (
+				DAFE6BB913340CEB001F53B3 /* AutoTimer.h */,
+				DAFE6BBA13340CEB001F53B3 /* AutoTimer.m */,
 				DA0BF44E0F0C1066004B488C /* Event.h */,
 				DA0BF44F0F0C1066004B488C /* Event.m */,
 				DAAC517712D47F0E00B3B443 /* File.h */,
@@ -2050,6 +2055,7 @@
 				DA1810A1132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
 				DA9BF4C51330DC2B008193C6 /* MultiEPGIntervalViewController.m in Sources */,
 				DAD39A1F1332A55400BA4FB8 /* AutoTimerXMLReader.m in Sources */,
+				DAFE6BBB13340CEB001F53B3 /* AutoTimer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

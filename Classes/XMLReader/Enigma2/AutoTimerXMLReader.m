@@ -42,22 +42,24 @@ static const char *kEnigma2ATMaxduration = "maxduration";
 static const NSUInteger kEnigma2ATMaxdurationLength = 12;
 static const char *kEnigma2ATLocation = "location";
 static const NSUInteger kEnigma2ATLocationLength = 9;
+#if 0
 static const char *kEnigma2ATCounter = "counter";
 static const NSUInteger kEnigma2ATCounterLength = 8;
 static const char *kEnigma2ATCounterFormat = "counterFormat";
 static const NSUInteger kEnigma2ATCounterFormatLength = 14;
 static const char *kEnigma2ATLeft = "left";
 static const NSUInteger kEnigma2ATLeftLength = 5;
+static const char *kEnigma2ATLastBegin = "lastBegin";
+static const NSUInteger kEnigma2ATLastBeginLength = 10;
+static const char *kEnigma2ATLastActivation = "lastActivation";
+static const NSUInteger kEnigma2ATLastActivationLength = 15;
+#endif
 static const char *kEnigma2ATJustplay = "justplay";
 static const NSUInteger kEnigma2ATJustplayLength = 9;
 static const char *kEnigma2ATAfter = "after";
 static const NSUInteger kEnigma2ATAfterLength = 6;
 static const char *kEnigma2ATBefore = "before";
 static const NSUInteger kEnigma2ATBeforeLength = 7;
-static const char *kEnigma2ATLastBegin = "lastBegin";
-static const NSUInteger kEnigma2ATLastBeginLength = 10;
-static const char *kEnigma2ATLastActivation = "lastActivation";
-static const NSUInteger kEnigma2ATLastActivationLength = 15;
 static const char *kEnigma2ATAvoidDuplicateDescription = "avoidDuplicateDescription";
 static const NSUInteger kEnigma2ATAvoidDuplicateDescriptionLength = 26;
 static const char *kEnigma2ATAfterevent = "afterevent";
@@ -129,24 +131,24 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 		for(; i < attributeCount; ++i)
 		{
 			const NSInteger valueLength = (int)(attributes[i].end - attributes[i].value);
-			const NSString *value = [[NSString alloc] initWithBytes:(const void *)attributes[i].value
+			NSString *value = [[NSString alloc] initWithBytes:(const void *)attributes[i].value
                                                        length:valueLength
                                                      encoding:NSUTF8StringEncoding];
             if(!strncmp((const char*)attributes[i].localname, kEnigma2ATName, kEnigma2ATNameLength))
 			{
-				//
+				currentAT.name = value;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATMatch, kEnigma2ATMatchLength))
 			{
-				//
+				currentAT.match = value;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATEnabled, kEnigma2ATEnabledLength))
 			{
-				//
+				currentAT.enabled = [value isEqualToString:@"yes"];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATId, kEnigma2ATIdLength))
 			{
-				//
+				currentAT.idno = [value integerValue];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATFrom, kEnigma2ATFromLength))
 			{
@@ -162,23 +164,23 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATEncoding, kEnigma2ATEncodingLength))
 			{
-				//
+				currentAT.encoding = value;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchCase, kEnigma2ATSearchCaseLength))
 			{
-				//
+				currentAT.searchCase = [value isEqualToString:@"exact"] ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchType, kEnigma2ATSearchTypeLength))
 			{
-				//
+				currentAT.searchType = [value isEqualToString:@"sensitive"] ? CASE_SENSITIVE : CASE_INSENSITIVE;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOverrideAlternatives, kEnigma2ATOverrideAlternativesLength))
 			{
-				//
+				currentAT.overrideAlternatives = [value isEqualToString:@"1"];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAvoidDuplicateDescription, kEnigma2ATAvoidDuplicateDescriptionLength))
 			{
-				//
+				currentAT.avoidDuplicateDescription = [value isEqualToString:@"1"];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAfter, kEnigma2ATAfterLength))
 			{
@@ -190,12 +192,13 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATMaxduration, kEnigma2ATMaxdurationLength))
 			{
-				//
+				currentAT.maxduration = [value integerValue];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATLocation, kEnigma2ATLocationLength))
 			{
-				//
+				currentAT.location = value;
 			}
+#if 0
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATLastBegin, kEnigma2ATLastBeginLength))
 			{
 				//
@@ -216,10 +219,13 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			{
 				//
 			}
+#endif
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATJustplay, kEnigma2ATJustplayLength))
 			{
-				//
+				currentAT.justplay = [value isEqualToString:@"1"];
 			}
+
+			[value release];
 		}
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2ATInclude, kEnigma2ATIncludeLength)
@@ -251,6 +257,8 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 					autoTimerWhere = autoTimerWhereDayOfWeek;
 				}
 			}
+
+			[value release];
 		}
 
 		if(autoTimerWhere != autoTimerWhereInvalid)
@@ -294,31 +302,33 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATInclude, kEnigma2ATIncludeLength))
 	{
-		// append to includes
+		[currentAT addInclude:currentString where:autoTimerWhere];
+
 		autoTimerWhere = autoTimerWhereInvalid;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATExclude, kEnigma2ATExcludeLength))
 	{
-		// append to exclude
+		[currentAT addExclude:currentString where:autoTimerWhere];
+
 		autoTimerWhere = autoTimerWhereInvalid;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATAfterevent, kEnigma2ATAftereventLength))
 	{
 		if([currentString isEqualToString:@"none"])
 		{
-			//kAfterEventNothing
+			currentAT.afterEventAction = kAfterEventNothing;
 		}
 		else if([currentString isEqualToString:@"standby"])
 		{
-			//kAfterEventStandby
+			currentAT.afterEventAction = kAfterEventStandby;
 		}
 		else if([currentString isEqualToString:@"shutdown"])
 		{
-			//kAfterEventDeepstandby
+			currentAT.afterEventAction = kAfterEventDeepstandby;
 		}
 		else if([currentString isEqualToString:@"auto"])
 		{
-			//kAfterEventAuto
+			currentAT.afterEventAction = kAfterEventAuto;
 		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
@@ -334,7 +344,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
 	{
-		// copy [GenericMovie setTagsFromString:]
+		currentAT.tags = [currentString componentsSeparatedByString:@" "];
 	}
 
 	// this either does nothing or releases the string that was in use

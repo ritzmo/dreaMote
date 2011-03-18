@@ -10,19 +10,10 @@
 
 #import "SaxXmlReader.h"
 
+#import "../../Objects/Generic/AutoTimer.h"
 #import "../../Objects/Generic/Service.h"
 
-@class AutoTimer;
 @protocol AutoTimerSourceDelegate;
-
-typedef enum
-{
-	autoTimerWhereInvalid,
-	autoTimerWhereTitle,
-	autoTimerWhereShortdescription,
-	autoTimerWhereDescription,
-	autoTimerWhereDayOfWeek,
-} autoTimerWhereType;
 
 /*!
  @brief Enigma2 AutoTimer XML Reader.
