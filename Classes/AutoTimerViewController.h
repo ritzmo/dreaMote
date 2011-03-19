@@ -44,6 +44,16 @@
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
 
+	UITextField *_titleField; /*!< @brief Textfield for Title. */
+	UITextField *_matchField; /*!< @brief Textfield for Match. */
+	UITextField *_maxdurationField; /*!< @brief Textfield for Maxduration. */
+	UISwitch *_timerEnabled; /*!< @brief Enable/Disable Switch. */
+	UISwitch *_exactSearch; /*!< @brief Exact/Partial Search. */
+	UISwitch *_sensitiveSearch; /*!< @brief Case-(in)sensitive Search. */
+	UISwitch *_overrideAlternatives; /*!< @brief Override Alternatives? */
+	UISwitch *_timerJustplay; /*!< @brief Create zap timers? */
+	UISwitch *_avoidDuplicateDescription; /*!< @brief Avoid duplicate description? */
+
 	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */

@@ -105,6 +105,16 @@
 	[_timer release];
 	[_delegate release];
 
+	[_titleField release];
+	[_matchField release];
+	[_maxdurationField release];
+	[_timerEnabled release];
+	[_exactSearch release];
+	[_sensitiveSearch release];
+	[_overrideAlternatives release];
+	[_timerJustplay release];
+	[_avoidDuplicateDescription release];
+
 	[_cancelButtonItem release];
 	[_popoverButtonItem release];
 	[popoverController release];
@@ -328,6 +338,34 @@
 	return returnTextField;
 }
 
+- (UITextField *)newTitleField
+{
+	UITextField *field = [self allocTextField];
+	field.text = _timer.name;
+	field.placeholder = NSLocalizedStringFromTable(@"<enter title>", @"AutoTimer", @"Placeholder of AutoTimer Title field");
+	return field;
+}
+
+- (UITextField *)newMatchField
+{
+	UITextField *field = [self allocTextField];
+	field.text = _timer.match;
+	field.placeholder = NSLocalizedStringFromTable(@"<text to find in title>", @"AutoTimer", @"Placeholder of AutoTimer Match field");
+	return field;
+}
+
+- (UITextField *)newMaxdurationField
+{
+	UITextField *field = [self allocTextField];
+	if(_timer.maxduration == -1)
+		field.text = nil;
+	else
+		field.text = [NSString stringWithFormat:@"%d", _timer.maxduration];
+	field.placeholder = NSLocalizedStringFromTable(@"<maximum duration>", @"AutoTimer", @"Placeholder of AutoTimer Maxduration field");
+	field.keyboardType = UIKeyboardTypeNumberPad;
+	return field;
+}
+
 #pragma mark -
 #pragma mark UView
 #pragma mark -
@@ -351,9 +389,43 @@
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
+
 	self.view = tableView;
 	[tableView release];
+
+	_titleField = [self newTitleField];
+	_matchField = [self newMatchField];
+	_maxdurationField = [self newMaxdurationField];
+
+	// Enabled
+	_timerEnabled = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_timerEnabled.on = _timer.enabled;
+	_timerEnabled.backgroundColor = [UIColor clearColor];
+
+	// Exact
+	_exactSearch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_exactSearch.on = _timer.searchType == SEARCH_TYPE_EXACT;
+	_exactSearch.backgroundColor = [UIColor clearColor];
+
+	// Case-Sensitive
+	_sensitiveSearch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_sensitiveSearch.on = _timer.searchCase == CASE_SENSITIVE;
+	_sensitiveSearch.backgroundColor = [UIColor clearColor];
+
+	// overrideAlternatives
+	_overrideAlternatives = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_overrideAlternatives.on = _timer.overrideAlternatives;
+	_overrideAlternatives.backgroundColor = [UIColor clearColor];
+
+	// Justplay
+	_timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_timerJustplay.on = _timer.justplay;
+	_timerJustplay.backgroundColor = [UIColor clearColor];
+
+	// avoidDuplicateDescription
+	_avoidDuplicateDescription = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
+	_avoidDuplicateDescription.backgroundColor = [UIColor clearColor];
 
 	// default editing mode depends on our mode
 	_shouldSave = NO;
@@ -558,6 +630,33 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
+	switch(section)
+	{
+		case 0:
+			return NSLocalizedString(@"Title", @"");
+		case 1:
+			return NSLocalizedString(@"Match", @"");
+		case 2:
+			return NSLocalizedString(@"General", @"in timer settings dialog");
+		case 3:
+			return NSLocalizedString(@"Max. Duration", @"");
+		case 4:
+			return NSLocalizedString(@"Services", @"");
+		case 5:
+			return NSLocalizedString(@"Bouquets", @"");
+		case 6:
+			return NSLocalizedString(@"After Event", @"");
+		case 7:
+			return NSLocalizedString(@"Location", @"");
+		case 8:
+			return NSLocalizedString(@"Filter: Shortdescription", @"");
+		case 9:
+			return NSLocalizedString(@"Filter: Description", @"");
+		case 10:
+			return NSLocalizedString(@"Filter: Title", @"");
+		case 11:
+			return NSLocalizedString(@"Filter: Weekday", @"");
+	}
 	// TODO: add section headers
 	return nil;
 }
