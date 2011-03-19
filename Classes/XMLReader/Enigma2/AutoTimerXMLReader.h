@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 #import "SaxXmlReader.h"
+#import "AutoTimerSourceDelegate.h"
 
-#import "../../Objects/Generic/AutoTimer.h"
 #import "../../Objects/Generic/Service.h"
 
 @protocol AutoTimerSourceDelegate;

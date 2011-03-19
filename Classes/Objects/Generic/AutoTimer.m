@@ -110,6 +110,11 @@
 
 #pragma mark - Getter/Setter
 
+- (BOOL)valid
+{
+	return match != nil;
+}
+
 - (NSMutableArray *)includeTitle
 {
 	@synchronized(self)

@@ -70,6 +70,7 @@ typedef enum
 - (void)addInclude:(NSString *)include where:(autoTimerWhereType)where;
 - (void)addExclude:(NSString *)exclude where:(autoTimerWhereType)where;
 
+@property (nonatomic, readonly) BOOL valid;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *match;
 @property (nonatomic) BOOL enabled;

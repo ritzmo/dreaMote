@@ -11,6 +11,7 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA0119201334D59800F1910F /* AutoTimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA01191F1334D59800F1910F /* AutoTimerListController.m */; };
 		DA045ADC12E0FC2500F7DB69 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DA045AB712E0FC2500F7DB69 /* MBProgressHUD.m */; };
 		DA0B0EE80FE6522E00684EDC /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */; };
 		DA0B0EEE0FE6537D00684EDC /* Signal.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EED0FE6537D00684EDC /* Signal.m */; };
@@ -476,6 +477,9 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* dreaMote_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dreaMote_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info Full.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info Full.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.info-plist"; sourceTree = "<group>"; };
+		DA01191E1334D59800F1910F /* AutoTimerListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerListController.h; sourceTree = "<group>"; };
+		DA01191F1334D59800F1910F /* AutoTimerListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerListController.m; sourceTree = "<group>"; };
+		DA0119211334D5E300F1910F /* AutoTimerSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSourceDelegate.h; sourceTree = "<group>"; };
 		DA045AB612E0FC2500F7DB69 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		DA045AB712E0FC2500F7DB69 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		DA0B0EE60FE6522E00684EDC /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
@@ -1454,6 +1458,7 @@
 				DAFBA4C712D8FEEE0059B5C4 /* AboutSourceDelegate.h */,
 				DAAC51ED12D48F3500B3B443 /* AppDelegate.h */,
 				DAAC51EE12D48F3500B3B443 /* AppDelegate.m */,
+				DA0119211334D5E300F1910F /* AutoTimerSourceDelegate.h */,
 				DAB0676C12E315D8008D39F5 /* DataSourceDelegate.h */,
 				DAAC51EF12D48F3500B3B443 /* EventSourceDelegate.h */,
 				DAAC51F012D48F3500B3B443 /* FileSourceDelegate.h */,
@@ -1584,6 +1589,8 @@
 		DAF0D5470E38FF1E001F7CF1 /* ListController */ = {
 			isa = PBXGroup;
 			children = (
+				DA01191E1334D59800F1910F /* AutoTimerListController.h */,
+				DA01191F1334D59800F1910F /* AutoTimerListController.m */,
 				DA3AA1D60F0D828D001B2057 /* BouquetListController.h */,
 				DA3AA1D70F0D828D001B2057 /* BouquetListController.m */,
 				DAA21E7E0E99288600DD749C /* ConfigListController.h */,
@@ -2056,6 +2063,7 @@
 				DA9BF4C51330DC2B008193C6 /* MultiEPGIntervalViewController.m in Sources */,
 				DAD39A1F1332A55400BA4FB8 /* AutoTimerXMLReader.m in Sources */,
 				DAFE6BBB13340CEB001F53B3 /* AutoTimer.m in Sources */,
+				DA0119201334D59800F1910F /* AutoTimerListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
