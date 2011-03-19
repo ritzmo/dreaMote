@@ -8,9 +8,30 @@
 
 #import "AutoTimer.h"
 
+@interface AutoTimer()
+@property (nonatomic, readonly) NSMutableArray *includeTitle;
+@property (nonatomic, readonly) NSMutableArray *includeShortdescription;
+@property (nonatomic, readonly) NSMutableArray *includeDescription;
+@property (nonatomic, readonly) NSMutableArray *includeDayOfWeek;
+@property (nonatomic, readonly) NSMutableArray *excludeTitle;
+@property (nonatomic, readonly) NSMutableArray *excludeShortdescription;
+@property (nonatomic, readonly) NSMutableArray *excludeDescription;
+@property (nonatomic, readonly) NSMutableArray *excludeDayOfWeek;
+@end
+
 @implementation AutoTimer
 
 @synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, before, after, avoidDuplicateDescription, afterEventAction;
+
+- (id)init
+{
+	if((self = [super init]))
+	{
+		services = [[NSMutableArray alloc] init];
+		bouquets = [[NSMutableArray alloc] init];
+	}
+	return self;
+}
 
 - (void)dealloc
 {
@@ -42,16 +63,16 @@
 	switch(where)
 	{
 		case autoTimerWhereTitle:
-			[includeTitle addObject:include];
+			[self.includeTitle addObject:include];
 			break;
 		case autoTimerWhereShortdescription:
-			[includeShortdescription addObject:include];
+			[self.includeShortdescription addObject:include];
 			break;
 		case autoTimerWhereDescription:
-			[includeDescription addObject:include];
+			[self.includeDescription addObject:include];
 			break;
 		case autoTimerWhereDayOfWeek:
-			[includeDayOfWeek addObject:include];
+			[self.includeDayOfWeek addObject:include];
 			break;
 		default:
 			NSLog(@"Invalid 'where' received: %d", (NSInteger)where);
@@ -67,16 +88,16 @@
 	switch(where)
 	{
 		case autoTimerWhereTitle:
-			[excludeTitle addObject:exclude];
+			[self.excludeTitle addObject:exclude];
 			break;
 		case autoTimerWhereShortdescription:
-			[excludeShortdescription addObject:exclude];
+			[self.excludeShortdescription addObject:exclude];
 			break;
 		case autoTimerWhereDescription:
-			[excludeDescription addObject:exclude];
+			[self.excludeDescription addObject:exclude];
 			break;
 		case autoTimerWhereDayOfWeek:
-			[excludeDayOfWeek addObject:exclude];
+			[self.excludeDayOfWeek addObject:exclude];
 			break;
 		default:
 			NSLog(@"Invalid 'where' received: %d", (NSInteger)where);
@@ -85,6 +106,88 @@
 #endif
 			break;
 	}
+}
+
+#pragma mark - Getter/Setter
+
+- (NSMutableArray *)includeTitle
+{
+	@synchronized(self)
+	{
+		if(includeTitle == nil)
+			includeTitle = [[NSMutableArray alloc] init];
+	}
+	return includeTitle;
+}
+
+- (NSMutableArray *)includeShortdescription
+{
+	@synchronized(self)
+	{
+		if(includeShortdescription == nil)
+			includeShortdescription = [[NSMutableArray alloc] init];
+	}
+	return includeShortdescription;
+}
+
+- (NSMutableArray *)includeDescription
+{
+	@synchronized(self)
+	{
+		if(includeDescription == nil)
+			includeDescription = [[NSMutableArray alloc] init];
+	}
+	return includeDescription;
+}
+
+- (NSMutableArray *)includeDayOfWeek
+{
+	@synchronized(self)
+	{
+		if(includeDayOfWeek == nil)
+			includeDayOfWeek = [[NSMutableArray alloc] init];
+	}
+	return includeDayOfWeek;
+}
+
+- (NSMutableArray *)excludeTitle
+{
+	@synchronized(self)
+	{
+		if(excludeTitle == nil)
+			excludeTitle = [[NSMutableArray alloc] init];
+	}
+	return excludeTitle;
+}
+
+- (NSMutableArray *)excludeShortdescription
+{
+	@synchronized(self)
+	{
+		if(excludeShortdescription == nil)
+			excludeShortdescription = [[NSMutableArray alloc] init];
+	}
+	return excludeShortdescription;
+}
+
+- (NSMutableArray *)excludeDescription
+{
+	@synchronized(self)
+	{
+		if(excludeDescription == nil)
+			excludeDescription = [[NSMutableArray alloc] init];
+	}
+	return excludeDescription;
+}
+
+- (NSMutableArray *)excludeDayOfWeek
+{
+	@synchronized(self)
+	{
+		if(excludeDayOfWeek == nil)
+			excludeDayOfWeek = [[NSMutableArray alloc] init];
+	}
+	return excludeDayOfWeek;
 }
 
 @end

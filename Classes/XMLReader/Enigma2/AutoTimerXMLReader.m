@@ -82,6 +82,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
+		gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	}
 	return self;
 }
@@ -91,6 +92,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 {
 	[currentAT release];
 	[currentService release];
+	[gregorian release];
 
 	[super dealloc];
 }
@@ -152,15 +154,58 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATFrom, kEnigma2ATFromLength))
 			{
-				//
+				NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
+
+				const NSArray *comps = [value componentsSeparatedByString:@":"];
+				if([comps count] != 2)
+				{
+#if IS_DEBUG()
+					[NSException raise:NSInternalInconsistencyException format:@"invalid 'from' received"];
+#endif
+					self.currentAT = nil;
+				}
+				else
+				{
+					[components setHour:[[comps objectAtIndex:0] integerValue]];
+					[components setMinute:[[comps objectAtIndex:1] integerValue]];
+
+					currentAT.from = [gregorian dateFromComponents:components];
+				}
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATTo, kEnigma2ATToLength))
 			{
-				//
+				NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
+
+				const NSArray *comps = [value componentsSeparatedByString:@":"];
+				if([comps count] != 2)
+				{
+#if IS_DEBUG()
+					[NSException raise:NSInternalInconsistencyException format:@"invalid 'to' received"];
+#endif
+					self.currentAT = nil;
+				}
+				else
+				{
+					[components setHour:[[comps objectAtIndex:0] integerValue]];
+					[components setMinute:[[comps objectAtIndex:1] integerValue]];
+
+					currentAT.to = [gregorian dateFromComponents:components];
+				}
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOffset, kEnigma2ATOffsetLength))
 			{
-				//
+				NSRange comma = [value rangeOfString:@","];
+				if(comma.location == NSNotFound)
+				{
+					NSInteger offset = [value integerValue];
+					currentAT.offsetBefore = offset;
+					currentAT.offsetAfter = offset;
+				}
+				else
+				{
+					currentAT.offsetBefore = [[value substringToIndex:comma.location] integerValue];
+					currentAT.offsetAfter = [[value substringFromIndex:comma.location + 1] integerValue];
+				}
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATEncoding, kEnigma2ATEncodingLength))
 			{
@@ -184,11 +229,11 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAfter, kEnigma2ATAfterLength))
 			{
-				//
+				currentAT.after = [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATBefore, kEnigma2ATBeforeLength))
 			{
-				//
+				currentAT.before = [NSDate dateWithTimeIntervalSince1970:[value doubleValue]];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATMaxduration, kEnigma2ATMaxdurationLength))
 			{
@@ -338,7 +383,13 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
 		currentService.sref = currentString;
-		//TODO: determine type based on sref and append to service/bouquet
+
+		const NSArray *comps = [currentString componentsSeparatedByString:@":"];
+		const NSString *type = [comps objectAtIndex:1];
+		if([type isEqualToString:@"7"]) // check if this is sane…
+			[currentAT.bouquets addObject:currentService];
+		else
+			[currentAT.services addObject:currentService];
 
 		self.currentService = nil;
 	}

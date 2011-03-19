@@ -26,6 +26,7 @@
 	autoTimerWhereType autoTimerWhere; /*!< @brief Current Include/Exclude where-Attribute. */
 	AutoTimer *currentAT; /*!< @brief Current AutoTimer. */
 	NSObject<ServiceProtocol> *currentService; /*!< @brief Current Service/Bouquet. */
+	NSCalendar *gregorian; /*!< @brief Calendar (for from/to conversion). */
 }
 
 /*!
