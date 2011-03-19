@@ -20,6 +20,7 @@
 	NSDate			*_date; /*!< @brief Date to preselect. */
 	NSDateFormatter *_format; /*!< @brief Cached DateFormatter for textual representation. */
 	UIDatePicker	*_datePickerView; /*!< @brief Actual Date Picker. */
+	UIDatePickerMode datePickerMode;
 	SEL _selectCallback; /*!< @brief Callback selector. */
 	id _selectTarget; /*!< @brief Callback object. */
 }
@@ -46,6 +47,11 @@
  @brief Preselected Date.
  */
 @property (nonatomic, retain) NSDate *date;
+
+/*!
+ @brief Date Picker mode.
+ */
+@property (nonatomic) UIDatePickerMode datePickerMode;
 
 /*!
  @brief Date Formatter.

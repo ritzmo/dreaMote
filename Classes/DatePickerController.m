@@ -39,8 +39,7 @@
 		// this title will appear in the navigation bar
 		self.title = NSLocalizedString(@"Date Picker", @"Title of DatePickerController");
 		_format = [[NSDateFormatter alloc] init];
-		[_format setDateStyle:NSDateFormatterFullStyle];
-		[_format setTimeStyle:NSDateFormatterShortStyle];
+		self.datePickerMode = UIDatePickerModeDateAndTime;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -74,6 +73,37 @@
 	_label.text = [_format stringFromDate: _date];
 }
 
+- (UIDatePickerMode)datePickerMode
+{
+	return datePickerMode;
+}
+
+- (void)setDatePickerMode:(UIDatePickerMode)newDatePickerMode
+{
+	datePickerMode = newDatePickerMode;
+	_datePickerView.datePickerMode = newDatePickerMode;
+
+	switch(newDatePickerMode)
+	{
+		case UIDatePickerModeDateAndTime:
+			[_format setDateStyle:NSDateFormatterFullStyle];
+			[_format setTimeStyle:NSDateFormatterShortStyle];
+			break;
+		case UIDatePickerModeTime:
+			[_format setDateStyle:NSDateFormatterNoStyle];
+			[_format setTimeStyle:NSDateFormatterShortStyle];
+			break;
+		case UIDatePickerModeDate:
+			[_format setDateStyle:NSDateFormatterFullStyle];
+			[_format setTimeStyle:NSDateFormatterNoStyle];
+			break;
+		default:
+			[_format setDateStyle:NSDateFormatterNoStyle];
+			[_format setTimeStyle:NSDateFormatterNoStyle];
+			break;
+	}
+}
+
 /* layout */
 - (void)loadView
 {
@@ -91,7 +121,7 @@
 								220 );
 	_datePickerView = [[UIDatePicker alloc] initWithFrame:frame];
 	_datePickerView.autoresizingMask = (UIViewAutoresizingFlexibleWidth);// | UIViewAutoresizingFlexibleHeight);
-	_datePickerView.datePickerMode = UIDatePickerModeDateAndTime;
+	_datePickerView.datePickerMode = datePickerMode;
 	_datePickerView.date = _date;
 	[_datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview: _datePickerView];
