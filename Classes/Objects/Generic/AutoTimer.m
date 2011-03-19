@@ -26,7 +26,16 @@
 + (AutoTimer *)timer
 {
 	AutoTimer *timer = [[AutoTimer alloc] init];
-	// TODO: anything to be done?
+	timer.encoding = @"ISO8859-15";
+	timer.enabled = YES;
+	timer.searchType = SEARCH_TYPE_PARTIAL;
+	timer.searchCase = CASE_INSENSITIVE;
+	timer.overrideAlternatives = YES;
+	timer.afterEventAction = kAfterEventMax;
+	timer.maxduration = -1;
+	timer.offsetBefore = -1;
+	timer.offsetAfter = -1;
+	timer.idno = -1;
 	return [timer autorelease];
 }
 
