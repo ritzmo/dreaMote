@@ -67,6 +67,7 @@ typedef enum
 	// TODO: add counter
 }
 
++ (AutoTimer *)timer;
 - (void)addInclude:(NSString *)include where:(autoTimerWhereType)where;
 - (void)addExclude:(NSString *)exclude where:(autoTimerWhereType)where;
 

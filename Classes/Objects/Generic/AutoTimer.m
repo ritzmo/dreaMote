@@ -23,6 +23,13 @@
 
 @synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, before, after, avoidDuplicateDescription, afterEventAction;
 
++ (AutoTimer *)timer
+{
+	AutoTimer *timer = [[AutoTimer alloc] init];
+	// TODO: anything to be done?
+	return [timer autorelease];
+}
+
 - (id)init
 {
 	if((self = [super init]))
