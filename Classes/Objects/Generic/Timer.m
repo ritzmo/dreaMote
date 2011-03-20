@@ -69,7 +69,7 @@
 	NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 	timer.begin = [NSDate date];
 	timer.end = [timer.begin addTimeInterval: (NSTimeInterval)3600];
-	timer.eit = @"-1";
+	timer.eit = nil;
 	timer.title = @"";
 	timer.tdescription = @"";
 	timer.disabled = NO;
