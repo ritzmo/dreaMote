@@ -228,7 +228,7 @@
 		else
 		{
 			rootViewController = [[BouquetListController alloc] init];
-			[(BouquetListController *)rootViewController setDelegate: self];
+			[(BouquetListController *)rootViewController setServiceDelegate: self];
 		}
 
 		if(IS_IPAD())

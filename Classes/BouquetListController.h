@@ -14,6 +14,7 @@
 
 // Forward declaration
 @class CXMLDocument;
+@protocol BouquetListDelegate;
 
 /*!
  @brief Bouquet list.
@@ -25,7 +26,8 @@
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
-	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
+	id<ServiceListDelegate, NSCoding> _serviceDelegate; /*!< @brief Service Delegate. */
+	id<BouquetListDelegate, NSCoding> _bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	BOOL _isSplit; /*!< @brief Split mode? */
@@ -43,8 +45,14 @@
  
  @param delegate New delegate object.
  */
-- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
+- (void)setServiceDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
+
+
+/*!
+ @brief Bouquet Delegate.
+ */
+@property (nonatomic, assign) NSObject<BouquetListDelegate, NSCoding> *bouquetDelegate;
 
 /*!
  @brief Currently in radio mode?
@@ -65,5 +73,23 @@
  @brief View will reapper.
  */
 @property (nonatomic) BOOL willReappear;
+
+@end
+
+
+
+/*!
+ @brief Delegate for BouquetListController.
+
+ Objects wanting to be called back by a BouquetListController need to implement this Protocol.
+ */
+@protocol BouquetListDelegate <NSObject>
+
+/*!
+ @brief Bouquet was selected.
+
+ @param newBouquet Bouquet that was selected.
+ */
+- (void)bouquetSelected:(NSObject<ServiceProtocol> *)newBouquet;
 
 @end

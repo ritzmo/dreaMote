@@ -23,6 +23,7 @@
 
 @implementation BouquetListController
 
+@synthesize bouquetDelegate = _bouquetDelegate;
 @synthesize serviceListController = _serviceListController;
 @synthesize isSplit = _isSplit;
 
@@ -37,7 +38,6 @@
 		_isRadio = NO;
 		_isSplit = NO;
 		_serviceListController = nil;
-		_delegate = nil;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
 		{
@@ -181,7 +181,7 @@
 	else
 		self.navigationItem.leftBarButtonItem = nil;
 
-	if(_delegate)
+	if(_serviceDelegate || _bouquetDelegate)
 	{
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																				target:self action:@selector(doneAction:)];
@@ -330,23 +330,35 @@
 	if(!bouquet.valid)
 		return nil;
 
-	// Check for cached ServiceListController instance
-	if(_serviceListController == nil)
-		_serviceListController = [[ServiceListController alloc] init];
+	if(_bouquetDelegate)
+	{
+		[_bouquetDelegate performSelector:@selector(bouquetSelected:) withObject:bouquet];
 
-	// Redirect callback if we have one
-	if(_delegate != nil)
-		[_serviceListController setDelegate: _delegate];
-	_serviceListController.bouquet = bouquet;
-
-	// We do not want to refresh bouquet list when we return
-	_refreshBouquets = NO;
-
-	// when in split view go back to service list, else push it on the stack
-	if(!_isSplit)
-		[self.navigationController pushViewController: _serviceListController animated:YES];
+		if(IS_IPAD())
+			[self.navigationController dismissModalViewControllerAnimated:YES];
+		else
+			[self.navigationController popToViewController:_bouquetDelegate animated: YES];
+	}
 	else
-		[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
+	{
+		// Check for cached ServiceListController instance
+		if(_serviceListController == nil)
+			_serviceListController = [[ServiceListController alloc] init];
+
+		// Redirect callback if we have one
+		if(_serviceDelegate != nil)
+			[_serviceListController setDelegate:_serviceDelegate];
+		_serviceListController.bouquet = bouquet;
+
+		// We do not want to refresh bouquet list when we return
+		_refreshBouquets = NO;
+
+		// when in split view go back to service list, else push it on the stack
+		if(!_isSplit)
+			[self.navigationController pushViewController: _serviceListController animated:YES];
+		else
+			[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
+	}
 	return indexPath;
 }
 
@@ -363,13 +375,13 @@
 }
 
 /* set delegate */
-- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate
+- (void)setServiceDelegate:(id<ServiceListDelegate, NSCoding>)delegate
 {
 	/*!
 	 @note We do not retain the target, this theoretically could be a problem but
 	 is not in this case.
 	 */
-	_delegate = delegate;
+	_serviceDelegate = delegate;
 }
 
 /* support rotation */

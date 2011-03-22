@@ -42,7 +42,6 @@
  */
 - (void)cancelEdit:(id)sender;
 @property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) NSObject<EventProtocol> *event;
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (nonatomic, readonly) UIViewController *bouquetListController;
@@ -63,14 +62,13 @@
 #define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 @synthesize delegate = _delegate;
-@synthesize event = _event;
 @synthesize popoverController;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
-		self.title = NSLocalizedString(@"Timer", @"Default title of AutoTimerViewController");
+		self.title = NSLocalizedString(@"AutoTimer", @"Default title of AutoTimerViewController");
 
 		_creatingNewTimer = NO;
 		_bouquetListController = nil;
@@ -194,7 +192,7 @@
 		else
 		{
 			rootViewController = [[BouquetListController alloc] init];
-			[(BouquetListController *)rootViewController setDelegate: self];
+			[(BouquetListController *)rootViewController setServiceDelegate: self];
 		}
 
 		if(IS_IPAD())
