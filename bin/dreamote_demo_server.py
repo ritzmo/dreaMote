@@ -866,7 +866,7 @@ class Simple(resource.Resource):
 				sRef = get('channelOld')
 				begin = int(get('beginOld'))
 				end = int(get('endOld'))
-				if delete: state.deleteTimer(channelOld, beginOld, endOld)
+				if delete: state.deleteTimer(sRef, begin, end)
 			sRef = get('sRef')
 			eventid = int(get('eventid', 0))
 			if lastComp == "timeraddbyeventid":
