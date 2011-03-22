@@ -10,10 +10,11 @@
 
 #import "TimerViewController.h"
 
-#import "NSDateFormatter+FuzzyFormatting.h"
-#import "UIDevice+SystemVersion.h"
-#import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "NSDateFormatter+FuzzyFormatting.h"
+#import "RemoteConnectorObject.h"
+#import "UIDevice+SystemVersion.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "TimerTableViewCell.h"
 
@@ -319,9 +320,7 @@
 	// First section, "New Timer"
 	if(section == 0)
 	{
-		cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-		if(cell == nil)
-			cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"New Timer", @"");
 		TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize]; // FIXME: Looks a little weird though
@@ -333,9 +332,7 @@
 	--section;
 
 	// Acquire cell
-	cell = [tableView dequeueReusableCellWithIdentifier:kTimerCell_ID];
-	if(cell == nil)
-		cell = [[[TimerTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kTimerCell_ID] autorelease];
+	cell = [TimerTableViewCell reusableTableViewCellInView:tableView withIdentifier:kTimerCell_ID];
 
 	// Assign item
 	NSInteger offset = 0;

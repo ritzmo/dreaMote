@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "RecursiveFileAdder.h"
 #import "RemoteConnectorObject.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "FileListView.h"
 #import "FileProtocol.h"

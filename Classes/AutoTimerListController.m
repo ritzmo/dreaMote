@@ -9,6 +9,7 @@
 #import "AutoTimerListController.h"
 
 #import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 @implementation AutoTimerListController
 
@@ -184,10 +185,7 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
-	if(cell == nil)
-		cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
-
+	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 	TABLEVIEWCELL_TEXT(cell) = ((AutoTimer *)[_autotimers objectAtIndex:indexPath.row]).name;
 
 	return cell;

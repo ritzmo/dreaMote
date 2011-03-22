@@ -10,6 +10,7 @@
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "Signal.h"
 
@@ -130,10 +131,8 @@
 	_agc.enabled = NO;
 
 	// SNRdB
-	UITableViewCell *sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-	if (sourceCell == nil) 
-		sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
-	
+	UITableViewCell *sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+
 	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
 	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -142,10 +141,8 @@
 	_snrdBCell = [sourceCell retain];
 
 	// BER
-	sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-	if (sourceCell == nil) 
-		sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
-	
+	sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+
 	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
 	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -198,9 +195,7 @@
 	// we are creating a new cell, setup its attributes
 	switch (indexPath.section) {
 		case 0:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			if(indexPath.row == 0)

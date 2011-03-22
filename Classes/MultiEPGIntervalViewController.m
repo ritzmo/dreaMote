@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "UITableViewCell+EasyInit.h"
 
 @interface MultiEPGIntervalViewController()
 /*!
@@ -112,12 +113,9 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = nil;
+	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];;
 	const NSInteger row = indexPath.row;
 
-	cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-	if (cell == nil) 
-		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
 	TABLEVIEWCELL_TEXT(cell) = [NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), (row + 1) * 30];
 
 	if((NSUInteger)row == _selectedItem)

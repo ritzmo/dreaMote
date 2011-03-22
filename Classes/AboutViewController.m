@@ -13,6 +13,7 @@
 #import "AboutProtocol.h"
 #import "MainTableViewCell.h" /* hdd */
 #import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 @implementation AboutViewController
 
@@ -182,10 +183,8 @@
 	// special handling if about not yet set, can only be row 0 of section 0
 	if(_about == nil)
 	{
-		sourceCell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
-		if(sourceCell == nil)
-			sourceCell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
-		
+		sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+
 		TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 		TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"No Data…", @"");
 		return sourceCell;
@@ -197,9 +196,7 @@
 		case 0:
 		{
 			NSDictionary *dataDictionary = nil;
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+			sourceCell = [MainTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMainCell_ID];
 
 			switch(indexPath.row)
 			{
@@ -227,9 +224,7 @@
 		}
 		case 1:
 		{
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+			sourceCell = [MainTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMainCell_ID];
 
 			((MainTableViewCell *)sourceCell).dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							_about.hdd.model, @"title",
@@ -239,9 +234,7 @@
 		}
 		case 2:
 		{
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
+			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			TABLEVIEWCELL_TEXT(sourceCell) = [_about.tuners objectAtIndex: indexPath.row];

@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "Objects/LocationProtocol.h"
+#import "UITableViewCell+EasyInit.h"
 
 @implementation LocationListController
 
@@ -200,9 +201,7 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-	if(cell == nil)
-		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	TABLEVIEWCELL_TEXT(cell) = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:indexPath.row]).fullpath;

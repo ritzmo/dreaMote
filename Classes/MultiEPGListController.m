@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "MultiEPGTableViewCell.h"
 
@@ -471,9 +472,7 @@
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	MultiEPGTableViewCell *cell = (MultiEPGTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kMultiEPGCell_ID];
-	if(cell == nil)
-		cell = [[[MultiEPGTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMultiEPGCell_ID] autorelease];
+	MultiEPGTableViewCell *cell = [MultiEPGTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMultiEPGCell_ID];
 
 	NSObject<ServiceProtocol> *service = [_services objectAtIndex:indexPath.row];
 	cell.service = service;

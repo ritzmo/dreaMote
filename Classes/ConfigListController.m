@@ -8,10 +8,11 @@
 
 #import "ConfigListController.h"
 
+#import "Constants.h"
 #import "NSArray+ArrayFromData.h"
 #import "NSData+Base64.h"
 #import "RemoteConnectorObject.h"
-#import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "DisplayCell.h"
 
@@ -357,14 +358,10 @@
 	{
 		case 2:
 		case 0:
-			cell = [(UITableView *)self.view dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (cell == nil) 
-				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			cell = [UITableViewCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kVanilla_ID];
 			break;
 		case 1:
-			cell = [(UITableView *)self.view dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			cell = [DisplayCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kDisplayCell_ID];
 			break;
 		default:
 			break;

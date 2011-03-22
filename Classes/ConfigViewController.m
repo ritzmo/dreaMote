@@ -11,6 +11,7 @@
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "DisplayCell.h"
 
@@ -630,18 +631,14 @@
 		case 0:
 			if(row == 3)
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-				if(sourceCell == nil)
-					sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+				sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Use SSL", @"");
 				((DisplayCell *)sourceCell).view = _sslSwitch;
 				break;
 			}
 
-			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
+			sourceCell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
 
 			switch(row)
@@ -663,9 +660,7 @@
 			}
 			break;
 		case 1:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier: kCellTextField_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[CellTextField alloc] initWithFrame: CGRectZero reuseIdentifier: kCellTextField_ID] autorelease];
+			sourceCell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
 
 			switch(row)
@@ -686,10 +681,8 @@
 			switch(row)
 			{
 				case 0:
-					sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-					if (sourceCell == nil) 
-						sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
-					
+					sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+
 					if(self.editing)
 						sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					
@@ -708,9 +701,7 @@
 					_connectorCell = sourceCell;
 					break;
 				case 1:
-					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-					if(sourceCell == nil)
-						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Now/Next in Servicelist", @"");
 					((DisplayCell *)sourceCell).view = _nowNextSwitch;
@@ -718,9 +709,7 @@
 				case 2:
 					if(!IS_IPAD())
 					{
-						sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-						if(sourceCell == nil)
-							sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+						sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
 						((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
@@ -728,19 +717,15 @@
 					}
 					/* FALL THROUGH */
 				case 3:
-					sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-					if(sourceCell == nil)
-						sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
-					
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Advanced Remote", @"");
 					((DisplayCell *)sourceCell).view = _advancedRemoteSwitch;
 					break;
 			}
 			break;
 		case 3:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier: kDisplayCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 			if(_connectionIndex == [RemoteConnectorObject getConnectedId])
 				row++;

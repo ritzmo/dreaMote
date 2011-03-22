@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "Objects/ServiceProtocol.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "ServiceTableViewCell.h"
 
@@ -313,10 +314,7 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	ServiceTableViewCell *cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
-	if(cell == nil)
-		cell = [[[ServiceTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceCell_ID] autorelease];
-
+	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
 
 	return cell;

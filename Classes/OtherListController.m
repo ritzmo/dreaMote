@@ -8,8 +8,9 @@
 
 #import "OtherListController.h"
 
-#import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "RemoteConnectorObject.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "MainTableViewCell.h"
 
@@ -353,9 +354,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	MainTableViewCell *cell = (MainTableViewCell *)[tableView dequeueReusableCellWithIdentifier:kMainCell_ID];
-	if (cell == nil)
-		cell = [[[MainTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMainCell_ID] autorelease];
+	MainTableViewCell *cell = [MainTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMainCell_ID];
 
 	// set accessory type
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

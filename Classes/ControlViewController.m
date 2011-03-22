@@ -10,6 +10,7 @@
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "DisplayCell.h"
 
@@ -283,9 +284,7 @@
 /* determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	DisplayCell *sourceCell = (DisplayCell *)[tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-	if(sourceCell == nil)
-		sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+	DisplayCell *sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 	// we are creating a new cell, setup its attributes
 	switch (indexPath.section) {

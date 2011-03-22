@@ -41,6 +41,13 @@
  @param sender ui element
  */
 - (void)cancelEdit:(id)sender;
+
+/*!
+ @brief Toggle visibility of maxduration
+ @param sender ui element
+ */
+- (void)showHideMaxduration:(id)sender;
+
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (nonatomic, readonly) UIViewController *afterEventNavigationController;
@@ -364,6 +371,11 @@
 	return field;
 }
 
+- (void)showHideMaxduration:(id)sender
+{
+	// XXX: nothing to be done yet, maxduration currently has its own section
+}
+
 #pragma mark -
 #pragma mark UView
 #pragma mark -
@@ -427,6 +439,7 @@
 
 	// maxduration enable/disable
 	_maxdurationSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_maxdurationSwitch addTarget:self action:@selector(showHideMaxduration:) forControlEvents:UIControlEventValueChanged];
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 	_maxdurationSwitch.backgroundColor = [UIColor clearColor];
 
@@ -575,6 +588,22 @@
 
 	_timer.after = newDate;
 	// TODO: change label text
+}
+
+#pragma mark -
+#pragma mark BouquetListDelegate methods
+#pragma mark -
+
+- (void)bouquetSelected:(NSObject<ServiceProtocol> *)newBouquet
+{
+	if(newBouquet == nil)
+		return;
+
+	// TODO: add bouquet to list
+
+	// copy service for convenience reasons
+	[_timer.bouquets addObject:[[newBouquet copy] autorelease]];
+	//[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -

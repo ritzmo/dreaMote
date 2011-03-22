@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "RemoteConnector.h"
+#import "UITableViewCell+EasyInit.h"
 
 @interface ConnectorViewController()
 /*!
@@ -109,11 +110,7 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = nil;
-
-	cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-	if (cell == nil) 
-		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 	// we are creating a new cell, setup its attributes
 	switch(indexPath.row)

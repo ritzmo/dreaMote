@@ -451,6 +451,8 @@
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD39A1F1332A55400BA4FB8 /* AutoTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
+		DAD51CD0133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51CCF133938EB0008CBC7 /* UITableViewCell+EasyInit.m */; };
+		DAD51CD1133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51CCF133938EB0008CBC7 /* UITableViewCell+EasyInit.m */; };
 		DAD51D730D8303FF00A769F3 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
 		DAD51DE60D8308D100A769F3 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAD52A730D89E1BE000DB1A1 /* DatePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD52A720D89E1BE000DB1A1 /* DatePickerController.m */; };
@@ -864,6 +866,8 @@
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
 		DAD51A460D82E6BE00A769F3 /* Enigma2Connector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Enigma2Connector.h; sourceTree = "<group>"; };
 		DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Enigma2Connector.m; sourceTree = "<group>"; };
+		DAD51CCE133938EB0008CBC7 /* UITableViewCell+EasyInit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+EasyInit.h"; sourceTree = "<group>"; };
+		DAD51CCF133938EB0008CBC7 /* UITableViewCell+EasyInit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+EasyInit.m"; sourceTree = "<group>"; };
 		DAD51D710D8303FF00A769F3 /* ServiceListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceListController.h; sourceTree = "<group>"; };
 		DAD51D720D8303FF00A769F3 /* ServiceListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceListController.m; sourceTree = "<group>"; };
 		DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceTableViewCell.h; sourceTree = "<group>"; };
@@ -1232,6 +1236,8 @@
 				DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */,
 				DA16620812EA075800A6D894 /* UIDevice+SystemVersion.h */,
 				DA16620912EA075800A6D894 /* UIDevice+SystemVersion.m */,
+				DAD51CCE133938EB0008CBC7 /* UITableViewCell+EasyInit.h */,
+				DAD51CCF133938EB0008CBC7 /* UITableViewCell+EasyInit.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2070,6 +2076,7 @@
 				DAFE6BBB13340CEB001F53B3 /* AutoTimer.m in Sources */,
 				DA0119201334D59800F1910F /* AutoTimerListController.m in Sources */,
 				DA0119241335051A00F1910F /* AutoTimerViewController.m in Sources */,
+				DAD51CD0133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2212,6 +2219,7 @@
 				DA1D882E13167AE800A6F3CE /* Appirater.m in Sources */,
 				DAE91279131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */,
 				DA1810A2132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
+				DAD51CD1133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,9 +11,10 @@
 #import "MovieTableViewCell.h"
 #import "MovieViewController.h"
 
+#import "Constants.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "RemoteConnectorObject.h"
-#import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "MovieProtocol.h"
 
@@ -335,9 +336,7 @@
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	MovieTableViewCell *cell = (MovieTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kMovieCell_ID];
-	if(cell == nil)
-		cell = [[[MovieTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMovieCell_ID] autorelease];
+	MovieTableViewCell *cell = [MovieTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMovieCell_ID];
 
 	cell.formatter = _dateFormatter;
 	cell.movie = [_movies objectAtIndex:indexPath.row];

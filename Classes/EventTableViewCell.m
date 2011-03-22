@@ -48,13 +48,9 @@ NSString *kEventCell_ID = @"EventCell_ID";
 }
 
 /* initialize */
-- (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseIdentifier
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-#ifdef __IPHONE_3_0
-	if((self = [super initWithStyle: UITableViewCellStyleDefault reuseIdentifier: reuseIdentifier]))
-#else
-	if((self = [super initWithFrame: frame reuseIdentifier: reuseIdentifier]))
-#endif
+	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		const UIView *myContentView = self.contentView;
 		_showService = NO;

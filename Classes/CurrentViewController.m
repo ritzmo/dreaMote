@@ -8,13 +8,13 @@
 
 #import "CurrentViewController.h"
 
+#import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "EventTableViewCell.h"
 #import "ServiceTableViewCell.h"
 #import "CellTextView.h"
-#import "DisplayCell.h"
-#import "Constants.h"
 
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
@@ -262,9 +262,7 @@
 	{
 		case 0:
 		{
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kServiceCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[ServiceTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kServiceCell_ID] autorelease];
+			sourceCell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 			sourceCell.imageView.layer.masksToBounds = YES;
 			sourceCell.imageView.layer.cornerRadius = 5.0f;
 			((ServiceTableViewCell *)sourceCell).service = _service;
@@ -275,19 +273,14 @@
 		{
 			if(indexPath.row == 0)
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
-				if(sourceCell == nil)
-					sourceCell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
+				sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 				((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
 				((EventTableViewCell *)sourceCell).event = _now;
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			}
 			else
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
-				if(sourceCell == nil)
-					sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
-				
+				sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 				((CellTextView *)sourceCell).view = _nowSummary;
 				_nowSummary.backgroundColor = sourceCell.backgroundColor;
 			}
@@ -297,19 +290,14 @@
 		{
 			if(indexPath.row == 0)
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
-				if(sourceCell == nil)
-					sourceCell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
+				sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 				((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
 				((EventTableViewCell *)sourceCell).event = _next;
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			}
 			else
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
-				if(sourceCell == nil)
-					sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
-				
+				sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 				((CellTextView *)sourceCell).view = _nextSummary;
 				_nextSummary.backgroundColor = sourceCell.backgroundColor;
 			}

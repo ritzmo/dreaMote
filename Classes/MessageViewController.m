@@ -11,6 +11,7 @@
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "DisplayCell.h"
 
@@ -347,15 +348,11 @@
 		case 0:
 		case 1:
 		case 2:
-			cell = [tableView dequeueReusableCellWithIdentifier:kCellTextField_ID];
-			if(cell == nil)
-				cell = [[[CellTextField alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextField_ID] autorelease];
+			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
 			break;
 		case 3:
-			cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (cell == nil) 
-				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 			TABLEVIEWCELL_ALIGN(cell) = UITextAlignmentLeft;
 			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
@@ -363,9 +360,7 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			break;
 		case 4:
-			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		default:
 			break;

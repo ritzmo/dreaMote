@@ -15,6 +15,7 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "NSString+URLEncode.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "CellTextView.h"
 #import "DisplayCell.h"
@@ -443,18 +444,14 @@
 
 	switch (section) {
 		case 0:
-			cell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
-			if(cell == nil)
-				cell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
+			cell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 			break;
 		case 1:
 		case 2:
 		case 3:
 		case 4:
 		case 5:
-			cell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (cell == nil) 
-				cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 			TABLEVIEWCELL_ALIGN(cell) = UITextAlignmentCenter;
 			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
@@ -464,9 +461,8 @@
 			cell.indentationLevel = 0;
 			break;
 		case 6:
-			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+			/* FALL THROUGH */
 		default:
 			break;
 	}

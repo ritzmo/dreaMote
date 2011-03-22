@@ -13,6 +13,7 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "Objects/ServiceProtocol.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "ServiceEventTableViewCell.h"
 #import "ServiceTableViewCell.h"
@@ -612,9 +613,7 @@
 	UITableViewCell *cell = nil;
 	if(_supportsNowNext)
 	{
-		cell = [tableView dequeueReusableCellWithIdentifier: kServiceEventCell_ID];
-		if(cell == nil)
-			cell = [[[ServiceEventTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceEventCell_ID] autorelease];
+		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
 
 		NSObject<EventProtocol> *event = [_mainList objectAtIndex:indexPath.row];
 		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
@@ -629,9 +628,7 @@
 	}
 	else
 	{
-		cell = (ServiceTableViewCell*)[tableView dequeueReusableCellWithIdentifier: kServiceCell_ID];
-		if(cell == nil)
-			cell = [[[ServiceTableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kServiceCell_ID] autorelease];
+		cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 
 		((ServiceTableViewCell *)cell).service = [_mainList objectAtIndex:indexPath.row];
 	}

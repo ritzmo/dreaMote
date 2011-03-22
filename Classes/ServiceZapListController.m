@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "UITableViewCell+EasyInit.h"
 
 @implementation ServiceZapListController
 
@@ -65,9 +66,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger row = indexPath.row;
-	UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-	if(cell == nil)
-		cell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])

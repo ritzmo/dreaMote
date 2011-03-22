@@ -13,6 +13,7 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "NSString+URLEncode.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "EventTableViewCell.h"
 #import "CellTextView.h"
@@ -427,18 +428,14 @@
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kCellTextView_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[CellTextView alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextView_ID] autorelease];
+			sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 
 			((CellTextView *)sourceCell).view = _summaryView;
 			_summaryView.backgroundColor = sourceCell.backgroundColor;
 			break;
 		case 1:
 		case 2:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (sourceCell == nil) 
-				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			
 			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
@@ -453,9 +450,7 @@
 				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.end];
 			break;
 		case 3:
-			sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-			if (sourceCell == nil) 
-				sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
@@ -468,9 +463,7 @@
 		case 4:
 			if(![_similarEvents count])
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier: kVanilla_ID];
-				if (sourceCell == nil) 
-					sourceCell = [[[UITableViewCell alloc] initWithFrame: CGRectZero reuseIdentifier: kVanilla_ID] autorelease];
+				sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 				TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
 				TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
@@ -481,9 +474,7 @@
 			}
 			else
 			{
-				sourceCell = [tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
-				if(sourceCell == nil)
-					sourceCell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
+				sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 				((EventTableViewCell*)sourceCell).formatter = _dateFormatter;
@@ -494,9 +485,7 @@
 		case 5:
 		{
 			NSInteger row = indexPath.row;
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
 				++row;

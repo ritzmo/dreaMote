@@ -12,6 +12,7 @@
 #import "DisplayCell.h"
 #import "MediaPlayerMetadataCell.h"
 #import "RemoteConnectorObject.h"
+#import "UITableViewCell+EasyInit.h"
 
 @interface MediaPlayerDetailsController()
 - (void)emptyData;
@@ -230,9 +231,7 @@
 		case 0:
 		{
 			UIImageView *imageView = nil;
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kMetadataCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[MediaPlayerMetadataCell alloc] initWithFrame:CGRectZero reuseIdentifier:kMetadataCell_ID] autorelease];
+			sourceCell = [MediaPlayerMetadataCell reusableTableViewCellInView:tableView withIdentifier:kMetadataCell_ID];
 
 			((MediaPlayerMetadataCell *)sourceCell).metadata = _currentTrack;
 			if(_currentCover)
@@ -243,9 +242,7 @@
 		}
 		case 1:
 		{
-			sourceCell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(sourceCell == nil)
-				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
 			switch(indexPath.row)
 			{

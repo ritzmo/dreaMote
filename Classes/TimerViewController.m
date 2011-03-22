@@ -19,6 +19,7 @@
 #import "ServiceTableViewCell.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "Objects/Generic/Result.h"
 #import "Objects/Generic/Service.h"
@@ -885,20 +886,14 @@
 	switch (section) {
 		case 0:
 		case 1:
-			cell = [tableView dequeueReusableCellWithIdentifier:kCellTextField_ID];
-			if(cell == nil)
-				cell = [[[CellTextField alloc] initWithFrame:CGRectZero reuseIdentifier:kCellTextField_ID] autorelease];
+			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
 			break;
 		case 2:
-			cell = [tableView dequeueReusableCellWithIdentifier:kDisplayCell_ID];
-			if(cell == nil)
-				cell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
+			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			break;
 		case 3:
-			cell = [tableView dequeueReusableCellWithIdentifier:kServiceCell_ID];
-			if(cell == nil)
-				cell = [[[ServiceTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kServiceCell_ID] autorelease];
+			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 			cell.imageView.layer.masksToBounds = YES;
 			cell.imageView.layer.cornerRadius = 5.0f;
 			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -909,9 +904,7 @@
 		case 6:
 		case 7:
 		case 8:
-			cell = [tableView dequeueReusableCellWithIdentifier:kVanilla_ID];
-			if(cell == nil)
-				cell = [[[UITableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kVanilla_ID] autorelease];
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
 

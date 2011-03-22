@@ -14,6 +14,7 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
@@ -244,9 +245,7 @@
 /* cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
-	if(cell == nil)
-		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
+	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
 	cell.formatter = _dateFormatter;
 	cell.showService = NO;

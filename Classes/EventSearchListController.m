@@ -20,6 +20,7 @@
 #import "Objects/EventProtocol.h"
 
 #import "Insort/NSArray+CWSortedInsert.h"
+#import "UITableViewCell+EasyInit.h"
 
 #define kTransitionDuration	0.6
 
@@ -239,10 +240,8 @@
 /* cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	EventTableViewCell *cell = (EventTableViewCell*)[tableView dequeueReusableCellWithIdentifier:kEventCell_ID];
-	if(cell == nil)
-		cell = [[[EventTableViewCell alloc] initWithFrame:CGRectZero reuseIdentifier:kEventCell_ID] autorelease];
-	
+	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
+
 	cell.formatter = _dateFormatter;
 	cell.showService = YES;
 	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
