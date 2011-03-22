@@ -681,7 +681,7 @@
 
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.
-	_timer.service = [newService copy];
+	_timer.service = [[newService copy] autorelease];
 	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 }
 
