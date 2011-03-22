@@ -425,6 +425,11 @@
 	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
 	_avoidDuplicateDescription.backgroundColor = [UIColor clearColor];
 
+	// maxduration enable/disable
+	_maxdurationSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_maxdurationSwitch.on = (_timer.maxduration > 0);
+	_maxdurationSwitch.backgroundColor = [UIColor clearColor];
+
 	// default editing mode depends on our mode
 	_shouldSave = NO;
 	[self setEditing: _creatingNewTimer];

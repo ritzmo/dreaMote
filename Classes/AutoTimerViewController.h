@@ -53,6 +53,7 @@
 	UISwitch *_overrideAlternatives; /*!< @brief Override Alternatives? */
 	UISwitch *_timerJustplay; /*!< @brief Create zap timers? */
 	UISwitch *_avoidDuplicateDescription; /*!< @brief Avoid duplicate description? */
+	UISwitch *_maxdurationSwitch; /*!< @brief Maxduration Switch. */
 
 	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
