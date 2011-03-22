@@ -73,11 +73,12 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 - (void)setView:(UITextField *)inView
 {
-	view = inView;
-	[self.view retain];
-	
+	if(view == inView) return;
+
+	[view removeFromSuperview];
+	view = [inView retain];
 	view.delegate = self;
-	
+
 	[self.contentView addSubview:inView];
 	[self layoutSubviews];
 }
@@ -85,14 +86,33 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-	
-	CGRect contentRect = [self.contentView bounds];
-	
-	// In this example we will never be editing, but this illustrates the appropriate pattern
-	CGRect frame = CGRectMake(	contentRect.origin.x + kCellLeftOffset,
-								contentRect.origin.y + kCellTopOffset,
-								contentRect.size.width - (kCellLeftOffset*2),
-								kTextFieldHeight);
+	const CGRect contentRect = [self.contentView bounds];
+	const UILabel *label = self.textLabel;
+	const BOOL showLabel = (label.text.length > 0);
+
+	CGRect frame;
+
+	if(showLabel)
+	{
+		label.hidden = NO;
+		frame = CGRectMake(contentRect.origin.x + kCellLeftOffset,
+						   contentRect.origin.y + kCellTopOffset,
+						   [label sizeThatFits:label.bounds.size].width,
+						   kTextFieldHeight);
+		label.frame = frame;
+
+		frame.origin.x += frame.size.width + kTweenMargin;
+		frame.size.width = contentRect.size.width - frame.origin.x - kCellLeftOffset;
+	}
+	else
+	{
+		label.hidden = YES;
+		frame = CGRectMake(contentRect.origin.x + kCellLeftOffset,
+						   contentRect.origin.y + kCellTopOffset,
+						   contentRect.size.width - (kCellLeftOffset*2),
+						   kTextFieldHeight);
+	}
+
 	self.view.frame  = frame;
 }
 
