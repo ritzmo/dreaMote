@@ -15,10 +15,12 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
+#import "CellTextField.h"
 #import "DisplayCell.h"
 #import "ServiceTableViewCell.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "UITableViewCell+EasyInit.h"
 
 #import "Objects/Generic/Result.h"
 #import "Objects/Generic/Service.h"
@@ -695,35 +697,95 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	// TODO: add number of rows in sections
-	return 0;
-}
-
-// utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell to be used on a given section.
-- (UITableViewCell *)obtainTableCellForSection:(UITableView *)tableView: (NSInteger)section
-{
-	BOOL setEditingStyle = YES;
-	UITableViewCell *cell = nil;
-
-	// TODO: determine cells for sections
-
-	// no accessory by default
-	if(setEditingStyle)
-		cell.accessoryType = UITableViewCellAccessoryNone;
-
-	return cell;
+	switch(section)
+	{
+		case 0:
+		case 1:
+			return 1;
+		case 2:
+			return 6;
+		case 3:
+			return 2;
+		case 4:
+			return _timer.services.count + 1;
+		case 5:
+			return _timer.bouquets.count + 1;
+		case 6:
+			return 1;
+		case 7:
+			return 1;
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		default:
+			return 0;
+	}
 }
 
 // to determine which UITableViewCell to be used on a given row.
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection:tableView :section];
+	const NSInteger section = indexPath.section;
+	UITableViewCell *cell = nil;
 
-	// TODO: configure cells
+	switch(section)
+	{
+		case 0:
+			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
+			((CellTextField *)cell).view = _titleField;
+			break;
+		case 1:
+			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
+			((CellTextField *)cell).view = _matchField;
+			break;
+		case 2:
+			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+			break;
+		case 3:
+			if(indexPath.row == 0)
+			{
+				cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+				((DisplayCell *)cell).view = _maxdurationSwitch;
+			}
+			else
+			{
+				cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
+				((CellTextField *)cell).view = _maxdurationField;
+			}
+			break;
+		case 4:
+		{
+			/* vanilla on 0 with "new service" line, rest uses service cell */
+			break;
+		}
+		case 5:
+		{
+			/* vanilla on 0 with "new service" line, rest uses service cell */
+			break;
+		}
+		case 6:
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			break;
+		case 7:
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			break;
+		case 8:
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			break;
+		case 9:
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			break;
+		case 10:
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			break;
+		case 11:
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			break;
+	}
 
-	return sourceCell;
+	return cell;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
