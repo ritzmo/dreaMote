@@ -316,10 +316,9 @@
 	if(section == 6)
 	{
 		NSUInteger rows = 1;
-#if 0
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
-#endif
+
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 		{
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
@@ -514,13 +513,9 @@
 			NSInteger row = indexPath.row;
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
-#if 0
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
 				++row;
-#else
-			if(row > 0)
-				++row;
-#endif
+
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 			{
 				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 1)
@@ -544,11 +539,8 @@
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(playAction:) withImage:@"media-playback-start.png"];
 					break;
 				case 1:
-					// NOTE: should never happen currently… it's really time for a new bug-free imdb release :-)
-#if 0
 					((DisplayCell *)sourceCell).nameLabel.text = @"IMDb";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withImage:nil];
-#endif
 					break;
 				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
@@ -603,7 +595,7 @@
 
 - (void)openIMDb:(id)sender
 {
-	NSString *encoded = [[_movie.title urlencode] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
+	NSString *encoded = [_movie.title urlencode];
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
 
 	[[UIApplication sharedApplication] openURL:url];

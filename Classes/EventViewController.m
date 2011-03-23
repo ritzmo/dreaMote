@@ -363,10 +363,9 @@
 	else if(section == 5)
 	{
 		NSUInteger rows = 1;
-#if 0
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
-#endif
+
 		return rows;
 	}
 
@@ -487,13 +486,8 @@
 			if(sourceCell == nil)
 				sourceCell = [[[DisplayCell alloc] initWithFrame:CGRectZero reuseIdentifier:kDisplayCell_ID] autorelease];
 
-#if 0
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
 				++row;
-#else
-			if(row > 0)
-				++row;
-#endif
 
 			switch(row)
 			{
@@ -503,11 +497,8 @@
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(addTimer:) withType:UIButtonTypeContactAdd];
 					break;
 				case 1:
-					// NOTE: should never happen currently… it's really time for a new bug-free imdb release :-)
-#if 0
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withType:UIButtonTypeCustom];
-#endif
 					break;
 			}
 			break;
@@ -549,7 +540,7 @@
 
 - (void)openIMDb:(id)sender
 {
-	NSString *encoded = [[_event.title urlencode] stringByReplacingOccurrencesOfString:@"%20" withString:@"+"];
+	NSString *encoded = [_event.title urlencode];
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
 
 	[[UIApplication sharedApplication] openURL:url];
