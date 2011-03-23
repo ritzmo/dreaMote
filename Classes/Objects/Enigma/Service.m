@@ -8,6 +8,7 @@
 
 #import "Service.h"
 
+#import "Constants.h"
 #import "../Generic/Service.h"
 #import "CXMLElement.h"
 
@@ -73,8 +74,8 @@
 	UIImage *picon = nil;
 	if(IS_IPAD())
 	{
-		NSString *piconName = [[NSString alloc] initWithFormat:@"Documents/%@.png", self.sname];
-		picon = [UIImage imageNamed:piconName];
+		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, self.sname];
+		picon = [UIImage imageNamed:[piconName stringByExpandingTildeInPath]];
 		[piconName release];
 	}
 	return picon;

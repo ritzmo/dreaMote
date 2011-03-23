@@ -8,6 +8,8 @@
 
 #import "Service.h"
 
+#import "Constants.h"
+
 @implementation GenericService
 
 @synthesize sref = _sref;
@@ -42,8 +44,8 @@
 	UIImage *picon = nil;
 	if(IS_IPAD())
 	{
-		NSString *piconName = [[NSString alloc] initWithFormat:@"Documents/%@.png", _sname];
-		picon = [UIImage imageNamed:piconName];
+		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, _sname];
+		picon = [UIImage imageNamed:[piconName stringByExpandingTildeInPath]];
 		[piconName release];
 	}
 	return picon;
