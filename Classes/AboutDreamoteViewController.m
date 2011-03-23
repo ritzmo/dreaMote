@@ -184,7 +184,7 @@
 	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	[mvc setSubject:[NSString stringWithFormat:@"App Feedback %@", displayName]];
-	[mvc setToRecipients:[NSArray arrayWithObject:@"moritz.venn@freaque.net"]];
+	[mvc setToRecipients:[NSArray arrayWithObject:@"dreamote@ritzmo.de"]];
 	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@", [currentDevice model], [currentDevice systemVersion], displayName, bundleVersion];
 	[mvc setMessageBody:body isHTML:NO];
 	if([mvc respondsToSelector:@selector(modalTransitionStyle)])
