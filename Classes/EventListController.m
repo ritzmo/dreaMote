@@ -483,6 +483,9 @@
 			CGRect contentViewFrame = _tableView.frame;
 			CGFloat newBannerHeight = [self getBannerHeight:toInterfaceOrientation];
 
+#ifndef __BOTTOM_AD__
+			contentViewFrame.origin.y -= _adBannerHeight;
+#endif
 			contentViewFrame.size.height += _adBannerHeight;
 			_adBannerHeight = newBannerHeight;
 
@@ -490,7 +493,7 @@
 #ifdef __BOTTOM_AD__
 			adBannerViewFrame.origin.y = self.view.frame.size.height - newBannerHeight;
 #else
-			adBannerViewFrame.origin.y = 0;
+			adBannerViewFrame.origin.y = contentViewFrame.origin.y;
 #endif
 			[_adBannerView setFrame:adBannerViewFrame];
 			[self.view bringSubviewToFront:_adBannerView];
@@ -498,7 +501,7 @@
 #ifdef __BOTTOM_AD__
 			contentViewFrame.origin.y = 0;
 #else
-			contentViewFrame.origin.y = newBannerHeight;
+			contentViewFrame.origin.y += newBannerHeight;
 #endif
 			contentViewFrame.size.height -= newBannerHeight;
 			_tableView.frame = contentViewFrame;
@@ -515,7 +518,9 @@
 			[_adBannerView setFrame:adBannerViewFrame];
 
 			CGRect contentViewFrame = _tableView.frame;
-			contentViewFrame.origin.y = 0;
+#ifndef __BOTTOM_AD__
+			contentViewFrame.origin.y -= _adBannerHeight;
+#endif
 			contentViewFrame.size.height += _adBannerHeight;
 			_tableView.frame = contentViewFrame;
 			_adBannerHeight = 0;
