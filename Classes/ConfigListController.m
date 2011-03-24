@@ -447,10 +447,12 @@
 				case 2:
 				{
 					NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+					timeLabel.backgroundColor = [UIColor clearColor];
 					timeLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					timeLabel.textAlignment = UITextAlignmentRight;
 					timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), [timeInterval integerValue] / 60];
+					timeLabel.frame = CGRectMake(0, 0, [timeLabel sizeThatFits:timeLabel.bounds.size].width, kSwitchButtonHeight);;
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Multi-EPG Interval", @"Configuration item to choose timespan displayed by MultiEPG");
 					((DisplayCell *)sourceCell).view = timeLabel;
 					sourceCell.tag = kMultiEPGRowTag;
