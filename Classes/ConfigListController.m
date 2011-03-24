@@ -389,6 +389,7 @@
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			sourceCell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentLeft;
 
 			/*!
 			 @brief When editing we add a fake first item to the list so cover this here.
