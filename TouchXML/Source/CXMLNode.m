@@ -179,7 +179,8 @@ else
 		while (theCurrentNode != NULL)
 		{
 			CXMLNode *theNode = [CXMLNode nodeWithLibXMLNode:theCurrentNode freeOnDealloc:NO];
-			[theChildren addObject:theNode];
+			if(theNode) // adding nil to the list is most likely going to crash in some places
+				[theChildren addObject:theNode];
 			theCurrentNode = theCurrentNode->next;
 		}
 	}
@@ -346,7 +347,9 @@ else
 	for (N = 0; N < theXPathObject->nodesetval->nodeNr; N++)
 		{
 		xmlNodePtr theNode = theXPathObject->nodesetval->nodeTab[N];
-		[theArray addObject:[CXMLNode nodeWithLibXMLNode:theNode freeOnDealloc:NO]];
+		CXMLNode *xmlNode = [CXMLNode nodeWithLibXMLNode:theNode freeOnDealloc:NO];
+		if(xmlNode)
+			[theArray addObject:xmlNode];
 		}
 		
 	theResult = theArray;
