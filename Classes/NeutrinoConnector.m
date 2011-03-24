@@ -354,19 +354,25 @@ enum neutrinoMessageTypes {
 			BaseXMLReader *xmlReader = [[BaseXMLReader alloc] init]; // XXX: is it possible to recycle this?
 			CXMLDocument *dom = [xmlReader parseXMLFileAtURL:myURI parseError:&error];
 
-			// check document for name
-			const NSArray *resultNodes = [dom nodesForXPath:@"/epglist/channel_name" error:nil];
-			for(CXMLElement *resultElement in resultNodes)
+			const NSArray *resultNodes = nil;
+			if(error == nil)
+				resultNodes = [dom nodesForXPath:@"/epglist/channel_name" error:&error];
+
+			if(error == nil)
 			{
-				NSString *stringValue = [[resultElement stringValue] copy];
-				service.sname = stringValue;
-				[stringValue release];
-				break;
+				for(CXMLElement *resultElement in resultNodes)
+				{
+					NSString *stringValue = [[resultElement stringValue] copy];
+					service.sname = stringValue;
+					[stringValue release];
+					break;
+				}
 			}
+			error = nil;
 			[xmlReader release];
 
 			// set invalid name if not found
-			if(service.sname == nil)
+			if(service.sname == nil || [service.sname isEqualToString:@""])
 			{
 				service.sname = [NSString stringWithFormat:NSLocalizedString(@"Unknown Service (%@)", @"Unable to find service name for service id"), sref];
 			}
