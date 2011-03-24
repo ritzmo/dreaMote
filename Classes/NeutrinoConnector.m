@@ -333,8 +333,18 @@ enum neutrinoMessageTypes {
 		timer.title = [NSString stringWithFormat: @"Timer %@", timer.eit];
 		timer.repeated = [[timerStringComponents objectAtIndex: 2] integerValue]; // NOTE: as long as we don't offer to edit this via gui we can just keep the value and not change it to some common interpretation
 		timer.repeatcount = [[timerStringComponents objectAtIndex: 3] integerValue];
-		[timer setBeginFromString: [timerStringComponents objectAtIndex: 5]];
-		[timer setEndFromString: [timerStringComponents objectAtIndex: 6]];
+		if(timer.justplay)
+		{
+			// NOTE: internally we require begin & end even for justplay timers
+			// until we change this use announce & alarm for justplay, because stop is 0
+			[timer setBeginFromString: [timerStringComponents objectAtIndex: 4]]; // announce
+			[timer setEndFromString: [timerStringComponents objectAtIndex: 5]]; // alarm
+		}
+		else
+		{
+			[timer setBeginFromString: [timerStringComponents objectAtIndex: 5]]; // alarm
+			[timer setEndFromString: [timerStringComponents objectAtIndex: 6]]; // stop
+		}
 
 		// Eventually fetch Service from our Cache
 		NSRange objRange;
@@ -412,18 +422,21 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	// NOTE: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
-	[add appendFormat: @"/control/timer?action=new&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
-	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	if([newTimer.service.sref isEqualToString:@"dc"])
+	[add appendString: @"/control/timer?action=new"];
+	if(newTimer.justplay)
 	{
-		[add appendString: @"&channel_name="];
-		[add appendString: [newTimer.service.sname urlencode]];
+		const NSInteger end = (NSInteger)[newTimer.end timeIntervalSince1970];
+		[add appendFormat:@"&announce=%d&alarm=%d&stop=%d&type=", (NSInteger)[newTimer.begin timeIntervalSince1970], end, end + 120];
+		[add appendFormat:@"%d", neutrinoTimerTypeZapto];
 	}
 	else
 	{
-		[add appendString: @"&channel_id="];
-		[add appendString: [newTimer.service.sref urlencode]];
+		[add appendFormat:@"&alarm=%d&stop=%d&type=", (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
+		[add appendFormat:@"%d", neutrinoTimerTypeRecord];
 	}
+
+	[add appendString: @"&channel_id="];
+	[add appendString: [newTimer.service.sref urlencode]];
 	NSURL *myURI = [NSURL URLWithString: add relativeToURL: _baseAddress];
 
 	NSHTTPURLResponse *response;
@@ -444,18 +457,22 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	// NOTE: Fails if I try to format the whole URL by one stringWithFormat... type will be wrong and sref can't be read so the program will crash
 	NSMutableString *add = [NSMutableString stringWithCapacity: 100];
-	[add appendFormat: @"/control/timer?action=modify&id=%@&alarm=%d&stop=%d&type=", oldTimer.eit, (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970]];
-	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
-	if([newTimer.service.sref isEqualToString:@"dc"])
+	[add appendFormat: @"/control/timer?action=modify&id=%@", oldTimer.eit];
+	if(newTimer.justplay)
 	{
-		[add appendString: @"&channel_name="];
-		[add appendString: [newTimer.service.sname urlencode]];
+		const NSInteger end = (NSInteger)[newTimer.end timeIntervalSince1970];
+		[add appendFormat:@"&announce=%d&alarm=%d&stop=%d&type=", (NSInteger)[newTimer.begin timeIntervalSince1970], end, end + 120];
+		[add appendFormat:@"%d", neutrinoTimerTypeZapto];
 	}
 	else
 	{
-		[add appendString: @"&channel_id="];
-		[add appendString: [newTimer.service.sref urlencode]];
+		[add appendFormat:@"&alarm=%d&stop=%d&type=", (NSInteger)[newTimer.begin timeIntervalSince1970], (NSInteger)[newTimer.end timeIntervalSince1970]];
+		[add appendFormat:@"%d", neutrinoTimerTypeRecord];
 	}
+	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
+
+	[add appendString: @"&channel_id="];
+	[add appendString: [newTimer.service.sref urlencode]];
 	[add appendString: @"&rep="];
 	[add appendFormat: @"%d", newTimer.repeated];
 	[add appendString: @"&repcount="];
