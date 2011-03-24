@@ -12,6 +12,7 @@
 #import "Objects/ServiceProtocol.h"
 #import "EventSourceDelegate.h"
 #import "SwipeTableView.h" /* SwipeTableViewDelegate */
+#import "ServiceZapListController.h" /* ServiceZapListDelegate */
 
 // Forward declarations...
 @class CXMLDocument;
@@ -25,7 +26,8 @@
 #if IS_FULL()
 													SwipeTableViewDelegate,
 #endif
-													EventSourceDelegate>
+													EventSourceDelegate,
+													ServiceZapListDelegate>
 {
 @private
 	NSMutableArray *_similarEvents; /*!< @brief List of similar Events. */
@@ -34,6 +36,7 @@
 	UITextView *_summaryView; /*!< @brief Summary of current event. */
 	BOOL _similarFetched; /*!< @brief List of similar Events was already fetched. */
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
+	UIPopoverController *popoverController; /*!< @brief Popover controller */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	CXMLDocument *_eventXMLDoc; /*!< @brief Current Event XML Document. */

@@ -143,60 +143,6 @@
 #endif
 }
 
-/* zap */
-- (void)zapAction:(id)sender
-{
-	// if streaming supported, show popover on ipad and action sheet on iphone
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
-	{
-		if(IS_IPAD())
-		{
-			// hide popover if already visible
-			if([popoverController isPopoverVisible])
-			{
-				[popoverController dismissPopoverAnimated:YES];
-				self.popoverController = nil;
-				return;
-			}
-
-			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
-			zlc.zapDelegate = self;
-			[popoverController release];
-			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
-			[zlc release];
-
-			[popoverController presentPopoverFromBarButtonItem:sender
-									  permittedArrowDirections:UIPopoverArrowDirectionUp
-													  animated:YES];
-		}
-		else
-		{
-			const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
-																		   delegate:self
-																  cancelButtonTitle:nil
-															 destructiveButtonTitle:nil
-																  otherButtonTitles:nil];
-			[actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
-				[actionSheet addButtonWithTitle:@"OPlayer"];
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
-				[actionSheet addButtonWithTitle:@"OPlayer Lite"];
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
-				[actionSheet addButtonWithTitle:@"BUZZ Player"];
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
-				[actionSheet addButtonWithTitle:@"yxplayer"];
-
-			actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
-			[actionSheet showFromTabBar:self.tabBarController.tabBar];
-			[actionSheet release];
-		}
-	}
-	// else just zap on remote host
-	else
-	{
-		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
-	}
-}
 
 /* start download of event list */
 - (void)fetchData
@@ -276,70 +222,6 @@
 }
 
 #pragma mark -
-#pragma mark ServiceZapListDelegate methods
-#pragma mark -
-
-- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
-{
-	NSURL *streamingURL = nil;
-	NSURL *url = nil;
-
-	if(selectedAction == zapActionRemote)
-	{
-		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
-		return;
-	}
-	streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
-
-	switch(selectedAction)
-	{
-		default: break;
-		case zapActionOPlayer:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
-			break;
-		case zapActionOPlayerLite:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
-			break;
-		case zapActionBuzzPlayer:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
-			break;
-		case zapActionYxplayer:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
-			break;
-	}
-	if(url)
-		[[UIApplication sharedApplication] openURL:url];
-}
-
-#pragma mark -
-#pragma mark UIActionSheetDelegate methods
-#pragma mark -
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-	if(buttonIndex == actionSheet.cancelButtonIndex)
-	{
-		// do nothing
-	}
-	else
-	{
-		buttonIndex = 1;
-		//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
-		{
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
-				++buttonIndex;
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
-				++buttonIndex;
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
-				++buttonIndex;
-			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > 3)
-			//	++buttonIndex;
-		}
-		[self serviceZapListController:nil selectedAction:(zapAction)buttonIndex];
-	}
-}
-
-#pragma mark -
 #pragma mark EventSourceDelegate methods
 #pragma mark -
 
@@ -400,17 +282,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	return [_events count];
-}
-
-#pragma mark -
-#pragma mark UIPopoverControllerDelegate methods
-#pragma mark -
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)pc
-{
-	// cleanup memory
-	if([pc isEqual:self.popoverController])
-		self.popoverController = nil;
 }
 
 #pragma mark ADBannerViewDelegate
@@ -547,5 +418,137 @@
 	}
 }
 #endif
+
+#pragma mark Zapping
+
+/* zap */
+- (void)zapAction:(id)sender
+{
+	// if streaming supported, show popover on ipad and action sheet on iphone
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+	{
+		if(IS_IPAD())
+		{
+			// hide popover if already visible
+			if([popoverController isPopoverVisible])
+			{
+				[popoverController dismissPopoverAnimated:YES];
+				self.popoverController = nil;
+				return;
+			}
+
+			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+			zlc.zapDelegate = self;
+			[popoverController release];
+			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
+			[zlc release];
+
+			[popoverController presentPopoverFromBarButtonItem:sender
+									  permittedArrowDirections:UIPopoverArrowDirectionUp
+													  animated:YES];
+		}
+		else
+		{
+			const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
+																		   delegate:self
+																  cancelButtonTitle:nil
+															 destructiveButtonTitle:nil
+																  otherButtonTitles:nil];
+			[actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+				[actionSheet addButtonWithTitle:@"OPlayer"];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+				[actionSheet addButtonWithTitle:@"OPlayer Lite"];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+				[actionSheet addButtonWithTitle:@"BUZZ Player"];
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+				[actionSheet addButtonWithTitle:@"yxplayer"];
+
+			actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+			[actionSheet showFromTabBar:self.tabBarController.tabBar];
+			[actionSheet release];
+		}
+	}
+	// else just zap on remote host
+	else
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
+	}
+}
+
+#pragma mark -
+#pragma mark ServiceZapListDelegate methods
+#pragma mark -
+
+- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
+{
+	NSURL *streamingURL = nil;
+	NSURL *url = nil;
+
+	if(selectedAction == zapActionRemote)
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
+		return;
+	}
+	streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+
+	switch(selectedAction)
+	{
+		default: break;
+		case zapActionOPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionOPlayerLite:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionBuzzPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionYxplayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
+			break;
+	}
+	if(url)
+		[[UIApplication sharedApplication] openURL:url];
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else
+	{
+		buttonIndex = 1;
+		//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+		{
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
+				++buttonIndex;
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
+				++buttonIndex;
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
+				++buttonIndex;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > 3)
+			//	++buttonIndex;
+		}
+		[self serviceZapListController:nil selectedAction:(zapAction)buttonIndex];
+	}
+}
+
+#pragma mark -
+#pragma mark UIPopoverControllerDelegate methods
+#pragma mark -
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)pc
+{
+	// cleanup memory
+	if([pc isEqual:self.popoverController])
+		self.popoverController = nil;
+}
 
 @end
