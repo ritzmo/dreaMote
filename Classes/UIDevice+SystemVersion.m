@@ -14,13 +14,13 @@
 + (BOOL)runsIos4OrBetter
 {
 	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	return (currentVersion >= 4.0);
+	return (currentVersion >= 4.0f);
 }
 
 + (BOOL)runsIos42OrBetter
 {
 	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	return (currentVersion >= 4.2);
+	return (currentVersion >= 4.2f);
 }
 
 @end
