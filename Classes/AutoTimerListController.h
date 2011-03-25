@@ -10,8 +10,7 @@
 
 #import "ReloadableListController.h"
 #import "AutoTimerSourceDelegate.h"
-
-@class AutoTimerViewController;
+#import "AutoTimerViewController.h"
 
 /*!
  @brief AutoTimer List.

@@ -69,7 +69,7 @@
 	@synchronized(self)
 	{
 		if(_autotimerView == nil)
-			_autotimerView = nil;//[[AutoTimerViewController alloc] init];
+			_autotimerView = [[AutoTimerViewController alloc] init];
 	}
 	return _autotimerView;
 }
@@ -198,14 +198,14 @@
 	AutoTimer *autotimer = [_autotimers objectAtIndex:indexPath.row];
 	if(!autotimer.valid)
 		return nil;
-	//self.autotimerView.autotimer = autotimer;
+	self.autotimerView.timer = autotimer;
 
 	// We do not want to refresh bouquet list when we return
 	_refreshAutotimers = NO;
 
 	// when in split view go back to service list, else push it on the stack
 	if(!_isSplit)
-		return nil;//[self.navigationController pushViewController:_autotimerView animated:YES];
+		[self.navigationController pushViewController:_autotimerView animated:YES];
 	return indexPath;
 }
 
