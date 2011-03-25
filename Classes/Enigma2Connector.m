@@ -15,6 +15,7 @@
 
 #import "SynchronousRequestReader.h"
 #import "XMLReader/Enigma2/AboutXMLReader.h"
+#import "XMLReader/Enigma2/AutoTimerXMLReader.h"
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/FileXMLReader.h"
@@ -511,6 +512,46 @@ enum enigma2MessageTypes {
 															  error:nil];
 	
 	return data;
+}
+
+#pragma mark -
+#pragma mark AutoTimer
+#pragma mark -
+
+- (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/autotimer" relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2AutoTimerXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (Result *)addAutoTimer:(AutoTimer *)newTimer
+{
+	newTimer.idno = -1;
+	return [self editAutoTimer:newTimer];
+}
+
+- (Result *)delAutoTimer:(AutoTimer *)oldTimer
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/autotimer/remove?id=%d", oldTimer.idno];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)editAutoTimer:(AutoTimer *)changeTimer
+{
+	NSMutableString *timerString = [NSMutableString stringWithCapacity:100];
+	[timerString appendString:@"/autotimer/edit?"];
+	[timerString appendFormat:@"match=%@&name=%@&enabled=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0];
+	[timerString appendFormat:@"&encoding=%@&searchType=%@&searchCase=%@&overrideAlternatives=%d", [changeTimer.encoding urlencode], (changeTimer.searchType == SEARCH_TYPE_EXACT) ? @"exact" : @"partial", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
+	// TODO: before, after, timespanFrom, timespanTo, services, bouquets, offset, afterevent, maxduration, filters, tag, avoidDuplicateDescription, location
+
+	if(changeTimer.idno != -1)
+		[timerString appendFormat:@"&id=%d", changeTimer.idno];
+
+	return [self getResultFromSimpleXmlWithRelativeString:timerString];
 }
 
 #pragma mark Control

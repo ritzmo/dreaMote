@@ -943,4 +943,36 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
+- (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (Result *)addAutoTimer:(AutoTimer *)newTimer
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (Result *)delAutoTimer:(AutoTimer *)oldTimer
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (Result *)editAutoTimer:(AutoTimer *)changeTimer
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
 @end

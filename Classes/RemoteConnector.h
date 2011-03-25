@@ -183,6 +183,7 @@ enum buttonCodes {
 
 
 // Forward declarations...
+@class AutoTimer;
 @class CXMLDocument;
 @class Result;
 @protocol EventProtocol;
@@ -553,6 +554,42 @@ enum buttonCodes {
  @return YES if track was removed successfully.
  */
 - (Result *)removeTrack:(NSObject<FileProtocol> *) track;
+
+#pragma mark -
+#pragma mark AutoTimer
+#pragma mark -
+
+/*!
+ @brief Retrieve List of AutoTimers.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate;
+
+/*!
+ @brief Add new AutoTimer.
+
+ @param newTimer AutoTimer to add.
+ @return Valid Result if AutoTimer was added successfully.
+ */
+- (Result *)addAutoTimer:(AutoTimer *)newTimer;
+
+/*!
+ @brief Remove an AutoTimer from Receiver.
+
+ @param oldTimer AutoTimer to remove.
+ @return Valid Result if Timer was removed.
+ */
+- (Result *)delAutoTimer:(AutoTimer *)oldTimer;
+
+/*!
+ @brief Change existing AutoTimer.
+
+ @param changeTimer AutoTimer to change.
+ @return Valid Result if Timer was changed successfully.
+ */
+- (Result *)editAutoTimer:(AutoTimer *)changeTimer;
 
 #pragma mark -
 #pragma mark Control
