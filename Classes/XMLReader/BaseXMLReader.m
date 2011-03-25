@@ -28,6 +28,8 @@
 
 @implementation BaseXMLReader
 
+@synthesize encoding = _encoding;
+
 /* initialize */
 - (id)init
 {
@@ -35,6 +37,7 @@
 	{
 		_done = NO;
 		_timeout = kDefaultTimeout;
+		_encoding = NSUTF8StringEncoding;
 	}
 	return self;
 }
@@ -51,6 +54,8 @@
 /* download and parse xml document */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
+	[_parser release];
+	_parser = nil;
 	_done = NO;
 	NSError *localError = nil;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
@@ -85,7 +90,7 @@
 															 error:&localError
 													   withTimeout:_timeout];
 	if(localError == nil)
-		_parser = [[CXMLDocument alloc] initWithData: data options: 0 error: &localError];
+		_parser = [[CXMLDocument alloc] initWithData:data encoding:_encoding options:0 error:&localError];
 #endif
 	_done = YES;
 	// set error to eventual local error

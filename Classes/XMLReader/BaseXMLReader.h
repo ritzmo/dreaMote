@@ -41,9 +41,10 @@ typedef CXMLDocument OurXMLDocument;
 	NSObject<DataSourceDelegate> *_delegate; /*!< @brief Delegate. */
 	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
 	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
+	NSStringEncoding _encoding; /*!< @brief Expected encoding of document. */
 }
 
-/*
+/*!
  @brief Download and parse XML document.
  
  @param URL URL to download.
@@ -51,5 +52,10 @@ typedef CXMLDocument OurXMLDocument;
  @return Parsed XML Document.
  */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+
+/*!
+ @brief Expected encoding of document.
+ */
+@property (nonatomic) NSStringEncoding encoding;
 
 @end
