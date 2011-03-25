@@ -578,7 +578,12 @@ enum enigma2MessageTypes {
 
 	if(changeTimer.from && changeTimer.to)
 	{
-		[timerString appendFormat:@"&timespanFrom=%d&timespanTo=%d", [changeTimer.from timeIntervalSince1970], [changeTimer.to timeIntervalSince1970]];
+		const NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSDateComponents *comps = [gregorian components:NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:changeTimer.from];
+		[timerString appendFormat:@"&timespanFrom=%d:%d", [comps hour], [comps minute]];
+		comps = [gregorian components:NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:changeTimer.to];
+		[timerString appendFormat:@"&timespanTo=%d:%d", [comps hour], [comps minute]];
+		[gregorian release];
 	}
 	else
 	{
