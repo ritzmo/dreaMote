@@ -87,6 +87,14 @@ typedef enum
 @property (nonatomic, retain) NSMutableArray *services;
 @property (nonatomic, retain) NSMutableArray *bouquets;
 @property (nonatomic, retain) NSArray *tags;
+@property (nonatomic, readonly) NSMutableArray *includeTitle;
+@property (nonatomic, readonly) NSMutableArray *includeShortdescription;
+@property (nonatomic, readonly) NSMutableArray *includeDescription;
+@property (nonatomic, readonly) NSMutableArray *includeDayOfWeek;
+@property (nonatomic, readonly) NSMutableArray *excludeTitle;
+@property (nonatomic, readonly) NSMutableArray *excludeShortdescription;
+@property (nonatomic, readonly) NSMutableArray *excludeDescription;
+@property (nonatomic, readonly) NSMutableArray *excludeDayOfWeek;
 @property (nonatomic) NSInteger maxduration;
 @property (nonatomic, retain) NSString *location;
 @property (nonatomic) BOOL justplay;

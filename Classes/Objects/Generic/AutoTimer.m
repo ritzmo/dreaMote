@@ -8,17 +8,6 @@
 
 #import "AutoTimer.h"
 
-@interface AutoTimer()
-@property (nonatomic, readonly) NSMutableArray *includeTitle;
-@property (nonatomic, readonly) NSMutableArray *includeShortdescription;
-@property (nonatomic, readonly) NSMutableArray *includeDescription;
-@property (nonatomic, readonly) NSMutableArray *includeDayOfWeek;
-@property (nonatomic, readonly) NSMutableArray *excludeTitle;
-@property (nonatomic, readonly) NSMutableArray *excludeShortdescription;
-@property (nonatomic, readonly) NSMutableArray *excludeDescription;
-@property (nonatomic, readonly) NSMutableArray *excludeDayOfWeek;
-@end
-
 @implementation AutoTimer
 
 @synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, before, after, avoidDuplicateDescription, afterEventAction;
