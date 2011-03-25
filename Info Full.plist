@@ -2,23 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIPrerenderedIcon</key>
-	<true/>
-	<key>UIInterfaceOrientation~ipad</key>
-	<string>UIInterfaceOrientationLandscapeRight</string>
-	<key>UIFileSharingEnabled~ipad</key>
-	<true/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>${PRODUCT_NAME:identifier}</string>
-			</array>
-			<key>CFBundleURLName</key>
-			<string>com.ritzMo.${PRODUCT_NAME:identifier}</string>
-		</dict>
-	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -43,11 +26,28 @@
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.ritzMo.${PRODUCT_NAME:identifier}</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>${PRODUCT_NAME:identifier}</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0.2</string>
+	<string>1.0.3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
+	<key>UIFileSharingEnabled~ipad</key>
+	<true/>
+	<key>UIInterfaceOrientation~ipad</key>
+	<string>UIInterfaceOrientationLandscapeRight</string>
+	<key>UIPrerenderedIcon</key>
+	<true/>
 </dict>
 </plist>
