@@ -510,7 +510,7 @@ enum enigma2MessageTypes {
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
 												  returningResponse:nil
 															  error:nil];
-	
+
 	return data;
 }
 
@@ -611,7 +611,113 @@ enum enigma2MessageTypes {
 		[timerString appendString:@"&tag="];
 	}
 
-	// TODO: services, bouquets, filters
+	[timerString appendString:@"&services="];
+	if(changeTimer.services.count)
+	{
+		[timerString appendString:[[changeTimer.services componentsJoinedByString:@","] urlencode]];
+	}
+
+	[timerString appendString:@"&bouquets="];
+	if(changeTimer.services.count)
+	{
+		[timerString appendString:[[changeTimer.services componentsJoinedByString:@","] urlencode]];
+	}
+
+	if(changeTimer.includeTitle.count)
+	{
+		for(NSString *filter in changeTimer.includeTitle)
+		{
+			[timerString appendFormat:@"&title=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&title="];
+	}
+
+	if(changeTimer.includeShortdescription.count)
+	{
+		for(NSString *filter in changeTimer.includeShortdescription)
+		{
+			[timerString appendFormat:@"&shortdescription=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&shortdescription="];
+	}
+
+	if(changeTimer.includeDescription.count)
+	{
+		for(NSString *filter in changeTimer.includeDescription)
+		{
+			[timerString appendFormat:@"&description=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&description="];
+	}
+
+	if(changeTimer.includeDayOfWeek.count)
+	{
+		for(NSString *filter in changeTimer.includeDayOfWeek)
+		{
+			[timerString appendFormat:@"&dayofweek=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&dayofweek="];
+	}
+
+	if(changeTimer.excludeTitle.count)
+	{
+		for(NSString *filter in changeTimer.excludeTitle)
+		{
+			[timerString appendFormat:@"&!title=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&!title="];
+	}
+
+	if(changeTimer.excludeShortdescription.count)
+	{
+		for(NSString *filter in changeTimer.excludeShortdescription)
+		{
+			[timerString appendFormat:@"&!shortdescription=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&!shortdescription="];
+	}
+
+	if(changeTimer.excludeDescription.count)
+	{
+		for(NSString *filter in changeTimer.excludeDescription)
+		{
+			[timerString appendFormat:@"&!description=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&!description="];
+	}
+
+	if(changeTimer.excludeDayOfWeek.count)
+	{
+		for(NSString *filter in changeTimer.excludeDayOfWeek)
+		{
+			[timerString appendFormat:@"&!dayofweek=%@", [filter urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&!dayofweek="];
+	}
 
 	if(changeTimer.idno != -1)
 		[timerString appendFormat:@"&id=%d", changeTimer.idno];
