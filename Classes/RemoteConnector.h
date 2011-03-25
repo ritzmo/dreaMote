@@ -34,7 +34,7 @@ enum screenshotType {
  @brief Implemented connector features.
  @note To describe the available features of a connector this enum is used,
  you can check any of the feature against the hasFeature function.
- */ 
+ */
 enum connectorFeatures {
 	/*! @brief Timers can be disabled without removing them. */
 	kFeaturesDisabledTimers,
@@ -173,7 +173,6 @@ enum buttonCodes {
 	kButtonCodeFFwd = 163,
 	kButtonCodeFRwd = 165,
 	kButtonCodeStop = 128,
-	
 };
 
 
@@ -208,10 +207,13 @@ enum buttonCodes {
  */
 @protocol RemoteConnector
 
-// General functions
+#pragma mark -
+#pragma mark General functions
+#pragma mark -
+
 /*!
  @brief Initialize Connector with host, username, password and port.
- 
+
  @param address Name or IP of Remote Host.
  @param username Username on Remote Host.
  @param password Password on Remote Host.
@@ -223,7 +225,7 @@ enum buttonCodes {
 
 /*!
  @brief Standard constructor for RemoteConnectors.
- 
+
  @param address Name or IP of Remote Host.
  @param username Username on Remote Host.
  @param password Password on Remote Host.
@@ -234,19 +236,41 @@ enum buttonCodes {
 + (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)username andPassword: (NSString *)password andPort: (NSInteger)port useSSL: (BOOL)ssl;
 
 /*!
+ @brief Free Caches used by Backend.
+ @note This function is used by some Backends to free Ressources that are
+ cached during Runtime and freed when running low on memory.
+ */
+- (void)freeCaches;
+
+/*!
+ @brief Returns upper bound for message types supported by Connector.
+
+ @return Upper bound of message types.
+ */
+- (const NSUInteger const)getMaxMessageType;
+
+/*!
+ @brief Returns upper bound of Volume setting.
+
+ @return Upper bound of Volume.
+ */
+- (const NSUInteger const)getMaxVolume;
+
+/*!
+ @brief Textual representation of given message type.
+
+ @param type Message type.
+ @return Textual Representation.
+ */
+- (NSString *)getMessageTitle: (NSUInteger)type;
+
+/*!
  @brief Check if a Connector supports a given Feature.
- 
+
  @param feature Feature to check for.
  @return YES if this Feature is supported.
  */
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature;
-
-/*!
- @brief Returns upper bound of Volume setting.
- 
- @return Upper bound of Volume.
- */
-- (const NSUInteger const)getMaxVolume;
 
 /*!
  @brief Returns whether to Receiver is currently reachable or not.
@@ -257,12 +281,20 @@ enum buttonCodes {
  */
 - (BOOL)isReachable:(NSError **)error;
 
+/*!
+ @brief Create instance of RC Emulator.
 
+ @return instance of rc emulator.
+ */
+- (UIViewController *)newRCEmulator;
 
-// Data sources
+#pragma mark -
+#pragma mark Services / EPG
+#pragma mark -
+
 /*!
  @brief Fetch list of available Bouquets.
- 
+
  @param delegate Delegate to be called back.
  @param isRadio Fetch radio bouquets?
  @return Pointer to parsed CXMLDocument.
@@ -270,9 +302,18 @@ enum buttonCodes {
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
 
 /*!
+ @brief Request EPG of given Service from Receiver.
+
+ @param delegate Delegate to be called back.
+ @param service Service to fetch EPG of.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service;
+
+/*!
  @brief Fetch Services of a given Bouquet.
  @note If no bouquet is given the Connector can choose to return the default bouquet.
- 
+
  @param delegate Delegate to be called back.
  @param bouquet Bouquet to request Services of.
  @param isRadio Fetch radio services?
@@ -281,77 +322,8 @@ enum buttonCodes {
 - (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
- @brief Request EPG of given Service from Receiver.
- 
- @param delegate Delegate to be called back.
- @param service Service to fetch EPG of.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service;
-
-/*!
- @brief Request Timerlist from the Receiver.
- 
- @param delegate Delegate to be called back.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
-
-/*!
- @brief Request Recording Locations from the Receiver.
- 
- @param delegate Delegate to be called back.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
-
-/*!
- @brief Request Movielist from the Receiver.
- 
- @param delegate Delegate to be called back.
- @param location Directory to search for movies
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
-
-/*!
- @brief Request filelist from the receiver.
- 
- @param delegate Delegate to be called back.
- @param path Directory to be searched for files.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path;
-
-/*!
- @brief Request playlist from the receiver.
- 
- @param delegate Delegate to be called back.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
-
-/*!
- @brief Request metadata of currently played track from the receiver.
- 
- @param delegate Delegate to be called back.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
-
-/*!
- @brief Request bouquet list by currently playing event from the receiver.
- 
- @param delegate Delegate to be called back.
- @param bouquet Bouquet to request currently playing events from.
- @param isRadio Fetch radio services?
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
-
-/*!
  @brief Request bouquet list by upcoming event from the receiver.
- 
+
  @param delegate Delegate to be called back.
  @param bouquet Bouquet to request upcoming events of.
  @param isRadio Fetch radio services?
@@ -360,42 +332,14 @@ enum buttonCodes {
 - (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
- @brief Request a file from the Receiver.
- 
- @param type Full path to file.
- @return Pointer to file or nil on failure.
- */
-- (NSData *)getFile: (NSString *)fullpath;
+ @brief Request bouquet list by currently playing event from the receiver.
 
-/*!
- @brief Get current Volume settings.
- 
  @param delegate Delegate to be called back.
+ @param bouquet Bouquet to request currently playing events from.
+ @param isRadio Fetch radio services?
+ @return Pointer to parsed CXMLDocument.
  */
-- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate;
-
-/*!
- @brief Get current Signal Strength.
- 
- @param delegate Delegate to be called back.
- */
-- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate;
-
-/*!
- @brief Request a Screnshot from the Receiver.
-
- @param type Requested Screenshot type.
- @return Pointer to Screenshot or nil on failure.
- */
-- (NSData *)getScreenshot: (enum screenshotType)type;
-
-/*!
- @brief Request stream URL for given movie.
-
- @param movie Movie to stream.
- @return Stream URL.
- */
-- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie;
+- (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request stream URL for given service.
@@ -419,30 +363,13 @@ enum buttonCodes {
  @brief Search EPG for Similar Events.
  @note Currently this needs support on the Receiver and therefore is only supported
  on Enigma2.
- 
+
  @param delegate Delegate to be called back.
  @param event Event to search similar events of.
  @return Pointer to parsed CXMLDocument.
  */
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
 
-/*!
- @brief Get information on receiver.
- 
- @param delegate Delegate to be called back.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate;
-
-/*!
- @brief Get information on currently playing service and now/new event.
- 
- @param delegate Delegate to be called back.
- @return Pointer to parsed CXMLDocument.
- */
-- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
-
-// Functions
 /*!
  @brief Zap to given service.
 
@@ -451,114 +378,17 @@ enum buttonCodes {
  */
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service;
 
-/*!
- @brief Start playback of given movie.
- 
- @param movie Movie to start playback of.
- @return YES if starting playback succeeded.
- */
-- (Result *)playMovie:(NSObject<MovieProtocol> *) movie;
-
-/*!
- @brief Delete a given Movie from Receiver HDD.
- 
- @param movie Movie to delete.
- @return YES if deletion succeeded.
- */
-- (Result *)delMovie:(NSObject<MovieProtocol> *) movie;
-
-/*!
- @brief Add a given track to playlist.
- 
- @param fullpath Path to the track.
- @param play Start playing the track?
- @return YES if track was added successfully and (eventually) playback was started.
- */
-- (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play;
-
-/*!
- @brief Remove a given track from playlist.
- 
- @param fullpath Path to the track.
- @return YES if track was removed successfully.
- */
-- (Result *)removeTrack:(NSObject<FileProtocol> *) track;
-
-/*!
- @brief Play a given track.
- 
- @param fullpath Path to the track.
- @return YES if starting playback succeeded.
- */
-- (Result *)playTrack:(NSObject<FileProtocol> *) track;
-
-/*!
- @brief Send command to MediaPlayer.
- 
- @param command Textual representation of command.
- @return YES if command was sent successfully.
- */
-- (Result *)mediaplayerCommand:(NSString *)command;
-
-/*!
- @brief Invoke Shutdown procedure of Receiver.
- */
-- (void)shutdown;
-
-/*!
- @brief Invoke Standby of Receiver.
- */
-- (void)standby;
-
-/*!
- @brief Invoke Reboot of Receiver.
- */
-- (void)reboot;
-
-/*!
- @brief Invoke GUI Restart of Receiver.
- */
-- (void)restart;
-
-/*!
- @brief Toggle Muted status on Receiver.
-
- @return YES if audio is muted at the end of this function.
- */
-- (BOOL)toggleMuted;
-
-/*!
- @brief Set Volume to new level.
- 
- @param newVolume Volume level to set.
- @return YES if change succeeded.
- */
-- (Result *)setVolume:(NSInteger) newVolume;
+#pragma mark -
+#pragma mark Timers
+#pragma mark -
 
 /*!
  @brief Schedule a Timer for recording on Receiver.
- 
+
  @param newTimer Timer to add.
  @return YES if Timer was added successfully.
  */
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer;
-
-/*!
- @brief Change existing Timer.
- 
- @param oldTimer Existing Timer to change.
- @param newTimer New values for Timer.
- @return YES if Timer was changed successfully.
- */
-- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer;
-
-/*!
- @brief Remove a Timer on Receiver.
- 
- @param oldTimer Timer to remove.
- @return YES if Timer was removed.
- */
-- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer;
 
 /*!
  @brief Cleanup timer list.
@@ -571,8 +401,197 @@ enum buttonCodes {
 - (Result *)cleanupTimers:(const NSArray *)timers;
 
 /*!
+ @brief Remove a Timer on Receiver.
+
+ @param oldTimer Timer to remove.
+ @return YES if Timer was removed.
+ */
+- (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer;
+
+/*!
+ @brief Change existing Timer.
+
+ @param oldTimer Existing Timer to change.
+ @param newTimer New values for Timer.
+ @return YES if Timer was changed successfully.
+ */
+- (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer;
+
+/*!
+ @brief Request Timerlist from the Receiver.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
+
+#pragma mark -
+#pragma mark Recordings
+#pragma mark -
+
+/*!
+ @brief Delete a given Movie from Receiver HDD.
+
+ @param movie Movie to delete.
+ @return YES if deletion succeeded.
+ */
+- (Result *)delMovie:(NSObject<MovieProtocol> *) movie;
+
+/*!
+ @brief Request Recording Locations from the Receiver.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+
+/*!
+ @brief Request Movielist from the Receiver.
+
+ @param delegate Delegate to be called back.
+ @param location Directory to search for movies
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
+
+/*!
+ @brief Request stream URL for given movie.
+
+ @param movie Movie to stream.
+ @return Stream URL.
+ */
+- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie;
+
+/*!
+ @brief Start instant Record on Receiver.
+
+ @return YES if record was started.
+ */
+- (Result *)instantRecord;
+
+/*!
+ @brief Start playback of given movie.
+
+ @param movie Movie to start playback of.
+ @return YES if starting playback succeeded.
+ */
+- (Result *)playMovie:(NSObject<MovieProtocol> *) movie;
+
+#pragma mark -
+#pragma mark MediaPlayer
+#pragma mark -
+
+/*!
+ @brief Add a given track to playlist.
+
+ @param fullpath Path to the track.
+ @param play Start playing the track?
+ @return YES if track was added successfully and (eventually) playback was started.
+ */
+- (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play;
+
+/*!
+ @brief Request filelist from the receiver.
+
+ @param delegate Delegate to be called back.
+ @param path Directory to be searched for files.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path;
+
+/*!
+ @brief Request playlist from the receiver.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
+
+/*!
+ @brief Request a file from the Receiver.
+
+ @param type Full path to file.
+ @return Pointer to file or nil on failure.
+ */
+- (NSData *)getFile: (NSString *)fullpath;
+
+/*!
+ @brief Request metadata of currently played track from the receiver.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
+
+/*!
+ @brief Send command to MediaPlayer.
+
+ @param command Textual representation of command.
+ @return YES if command was sent successfully.
+ */
+- (Result *)mediaplayerCommand:(NSString *)command;
+
+/*!
+ @brief Play a given track.
+
+ @param fullpath Path to the track.
+ @return YES if starting playback succeeded.
+ */
+- (Result *)playTrack:(NSObject<FileProtocol> *) track;
+
+/*!
+ @brief Remove a given track from playlist.
+
+ @param fullpath Path to the track.
+ @return YES if track was removed successfully.
+ */
+- (Result *)removeTrack:(NSObject<FileProtocol> *) track;
+
+#pragma mark -
+#pragma mark Control
+#pragma mark -
+
+/*!
+ @brief Get information on receiver.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate;
+
+/*!
+ @brief Get information on currently playing service and now/new event.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
+
+/*!
+ @brief Request a Screnshot from the Receiver.
+
+ @param type Requested Screenshot type.
+ @return Pointer to Screenshot or nil on failure.
+ */
+- (NSData *)getScreenshot: (enum screenshotType)type;
+
+/*!
+ @brief Get current Signal Strength.
+
+ @param delegate Delegate to be called back.
+ */
+- (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate;
+
+/*!
+ @brief Get current Volume settings.
+
+ @param delegate Delegate to be called back.
+ */
+- (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate;
+
+/*!
  @brief Send Remote Control Code to Receiver.
- 
+
  @param type Button Code.
  @return YES if code was sent successfully.
  */
@@ -580,7 +599,7 @@ enum buttonCodes {
 
 /*!
  @brief Send GUI Message to Receiver.
- 
+
  @param message Message text.
  @param caption Message caption (not supported by all Connectors).
  @param type Message type (not supported by all Connectors).
@@ -590,45 +609,40 @@ enum buttonCodes {
 - (Result *)sendMessage:(NSString *)message: (NSString *)caption: (NSInteger)type: (NSInteger)timeout;
 
 /*!
- @brief Start instant Record on Receiver.
- 
- @return YES if record was started.
+ @brief Set Volume to new level.
+
+ @param newVolume Volume level to set.
+ @return YES if change succeeded.
  */
-- (Result *)instantRecord;
-
-
-
-// Helper GUI
-/*!
- @brief Returns upper bound for message types supported by Connector.
- 
- @return Upper bound of message types.
- */
-- (const NSUInteger const)getMaxMessageType;
+- (Result *)setVolume:(NSInteger) newVolume;
 
 /*!
- @brief Textual representation of given message type.
- 
- @param type Message type.
- @return Textual Representation.
+ @brief Toggle Muted status on Receiver.
+
+ @return YES if audio is muted at the end of this function.
  */
-- (NSString *)getMessageTitle: (NSUInteger)type;
+- (BOOL)toggleMuted;
+
+#pragma mark Powerstate
 
 /*!
- @brief Create instance of RC Emulator.
- 
- @return instance of rc emulator.
+ @brief Invoke Reboot of Receiver.
  */
-- (UIViewController *)newRCEmulator;
+- (void)reboot;
 
-
-
-// Misc
 /*!
- @brief Free Caches used by Backend.
- @note This function is used by some Backends to free Ressources that are
- cached during Runtime and freed when running low on memory.
+ @brief Invoke GUI Restart of Receiver.
  */
-- (void)freeCaches;
+- (void)restart;
+
+/*!
+ @brief Invoke Shutdown procedure of Receiver.
+ */
+- (void)shutdown;
+
+/*!
+ @brief Invoke Standby of Receiver.
+ */
+- (void)standby;
 
 @end
