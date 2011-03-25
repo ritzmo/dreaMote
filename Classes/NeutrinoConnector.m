@@ -306,6 +306,7 @@ enum neutrinoMessageTypes {
 	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
 	[baseString release];
 	const NSMutableDictionary *serviceMap = [NSMutableDictionary dictionary];
+	const BaseXMLReader *xmlReader = nil;
 	for(NSString *timerString in timerStringList)
 	{
 		// eventID eventType eventRepeat repcount announceTime alarmTime stopTime data
@@ -361,7 +362,9 @@ enum neutrinoMessageTypes {
 
 			// request epg for channel id with no events (to retrieve name)
 			myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&max=0", [sref urlencode]] relativeToURL:_baseAddress];
-			BaseXMLReader *xmlReader = [[BaseXMLReader alloc] init]; // XXX: is it possible to recycle this?
+			if(xmlReader == nil)
+				xmlReader = [[BaseXMLReader alloc] init];
+			xmlReader.encoding = NSISOLatin1StringEncoding;
 			CXMLDocument *dom = [xmlReader parseXMLFileAtURL:myURI parseError:&error];
 
 			const NSArray *resultNodes = nil;
@@ -379,7 +382,6 @@ enum neutrinoMessageTypes {
 				}
 			}
 			error = nil;
-			[xmlReader release];
 
 			// set invalid name if not found
 			if(service.sname == nil || [service.sname isEqualToString:@""])
@@ -410,6 +412,7 @@ enum neutrinoMessageTypes {
 								waitUntilDone: NO];
 		[timer release];
 	}
+	[xmlReader release];
 
 	[self indicateSuccess:delegate];
 	return nil;
