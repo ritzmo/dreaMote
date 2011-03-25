@@ -543,10 +543,70 @@ enum enigma2MessageTypes {
 - (Result *)editAutoTimer:(AutoTimer *)changeTimer
 {
 	NSMutableString *timerString = [NSMutableString stringWithCapacity:100];
+
 	[timerString appendString:@"/autotimer/edit?"];
 	[timerString appendFormat:@"match=%@&name=%@&enabled=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0];
 	[timerString appendFormat:@"&encoding=%@&searchType=%@&searchCase=%@&overrideAlternatives=%d", [changeTimer.encoding urlencode], (changeTimer.searchType == SEARCH_TYPE_EXACT) ? @"exact" : @"partial", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
-	// TODO: before, after, timespanFrom, timespanTo, services, bouquets, offset, afterevent, maxduration, filters, tag, avoidDuplicateDescription, location
+	[timerString appendFormat:@"&avoidDuplicateDescription=%d&location=%@", changeTimer.avoidDuplicateDescription ? 1 : 0, changeTimer.location ? [changeTimer.location urlencode] : @""];
+
+	if(changeTimer.offsetAfter > -1 && changeTimer.offsetBefore > -1)
+	{
+		[timerString appendFormat:@"&offset=%d,%d", changeTimer.offsetBefore, changeTimer.offsetAfter];
+	}
+	else
+	{
+		[timerString appendFormat:@"&offset="];
+	}
+
+	if(changeTimer.maxduration > -1)
+	{
+		[timerString appendFormat:@"&maxduration=%d", changeTimer.maxduration];
+	}
+	else
+	{
+		[timerString appendString:@"&maxduration="];
+	}
+
+	if(changeTimer.afterEventAction != kAfterEventMax)
+	{
+		[timerString appendFormat:@"&afterevent=%d", changeTimer.afterEventAction];
+	}
+	else
+	{
+		[timerString appendString:@"&afterevent=default"];
+	}
+
+	if(changeTimer.from && changeTimer.to)
+	{
+		[timerString appendFormat:@"&timespanFrom=%d&timespanTo=%d", [changeTimer.from timeIntervalSince1970], [changeTimer.to timeIntervalSince1970]];
+	}
+	else
+	{
+		[timerString appendString:@"&timespanFrom=&timespanTo="];
+	}
+
+	if(changeTimer.before && changeTimer.after)
+	{
+		[timerString appendFormat:@"&before=%d&after=%d", [changeTimer.before timeIntervalSince1970], [changeTimer.after timeIntervalSince1970]];
+	}
+	else
+	{
+		[timerString appendString:@"&before=&after="];
+	}
+
+	if(changeTimer.tags.count)
+	{
+		for(NSString *tag in changeTimer.tags)
+		{
+			[timerString appendFormat:@"&tag=%@", [tag urlencode]];
+		}
+	}
+	else
+	{
+		[timerString appendString:@"&tag="];
+	}
+
+	// TODO: services, bouquets, filters
 
 	if(changeTimer.idno != -1)
 		[timerString appendFormat:@"&id=%d", changeTimer.idno];
