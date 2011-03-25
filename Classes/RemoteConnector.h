@@ -123,6 +123,12 @@ enum connectorFeatures {
 	kFeaturesTimerDescription,
 	/*! @brief Native timerlist cleanup functionality. */
 	kFeaturesTimerCleanup,
+	/*!
+	 @brief Supports AutoTimer interface.
+	 @note Probably will stay Enigma2 exclusive forever, but for the sake of having at least
+	 kind of clean code, implement this properly.
+	 */
+	kFeaturesAutoTimer,
 };
 
 /*!
@@ -185,6 +191,7 @@ enum buttonCodes {
 @protocol TimerProtocol;
 @protocol FileProtocol;
 @protocol AboutSourceDelegate;
+@protocol AutoTimerSourceDelegate;
 @protocol EventSourceDelegate;
 @protocol LocationSourceDelegate;
 @protocol MetadataSourceDelegate;
