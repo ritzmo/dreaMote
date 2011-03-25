@@ -33,7 +33,7 @@
 /*!
  @brief Animate View up or down.
  Animate the entire view up or down, to prevent the keyboard from covering the text field.
- 
+
  @param movedUp YES if moving down again.
  */
 - (void)setViewMovedUp:(BOOL)movedUp;
@@ -144,14 +144,14 @@
 	[_datePickerController release];
 	[_datePickerNavigationController release];
 	[_locationListController release];
-	
+
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
 	_locationListController = nil;
-	
+
 	[super didReceiveMemoryWarning];
 }
 
@@ -270,7 +270,7 @@
 	{
 		[_timer release];
 		_timer = [newTimer retain];
-		
+
 		// stop editing
 		_shouldSave = NO;
 		[self cellShouldBeginEditing: nil];
@@ -284,7 +284,7 @@
 						scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
 						atScrollPosition:UITableViewScrollPositionTop
 						animated:NO];
-	
+
 	// Eventually remove popover
 	if(self.popoverController != nil) {
         [self.popoverController dismissPopoverAnimated:YES];
@@ -635,7 +635,18 @@
 
 	_timer.afterEventAction = [newAfterEvent integerValue];
 
-	// TODO: change label
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
+	if(cell == nil)
+		return;
+
+	if(_timer.afterEventAction == kAfterEventNothing)
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Nothing", @"After Event");
+	else if(_timer.afterEventAction == kAfterEventStandby)
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"");
+	else if(_timer.afterEventAction == kAfterEventDeepstandby)
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
+	else //if(_timer.afterEventAction == kAfterEventAuto)
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
 }
 
 #pragma mark -
@@ -649,7 +660,11 @@
 
 	_timer.location = newLocation.fullpath;
 
-	// TODO: change label
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:7]];
+	if(cell == nil)
+		return;
+
+	cell.textLabel.text = newLocation.fullpath;
 }
 
 #pragma mark -
@@ -658,8 +673,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	// TODO: add number of sections
-	return 0;
+	return 12;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -690,9 +704,9 @@
 			return NSLocalizedString(@"Filter: Title", @"");
 		case 11:
 			return NSLocalizedString(@"Filter: Weekday", @"");
+		default:
+			return nil;
 	}
-	// TODO: add section headers
-	return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -757,19 +771,41 @@
 			break;
 		case 4:
 		{
-			/* vanilla on 0 with "new service" line, rest uses service cell */
+			NSInteger row = indexPath.row;
+			if(row == 0)
+			{
+				cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+				cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
+				break;
+			}
+			--row;
+
+			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+			((ServiceTableViewCell *)cell).service = [_timer.services objectAtIndex:row];
 			break;
 		}
 		case 5:
 		{
-			/* vanilla on 0 with "new service" line, rest uses service cell */
+			NSInteger row = indexPath.row;
+			if(row == 0)
+			{
+				cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+				cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
+				break;
+			}
+			--row;
+
+			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+			((ServiceTableViewCell *)cell).service = [_timer.bouquets objectAtIndex:row];
 			break;
 		}
 		case 6:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			[self afterEventSelected:[NSNumber numberWithInteger:_timer.afterEventAction]];
 			break;
 		case 7:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			TABLEVIEWCELL_TEXT(cell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
 		case 8:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
@@ -786,6 +822,17 @@
 	}
 
 	return cell;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// services, bouquets, filters can be removed
+	if(indexPath.section > 3)
+	{
+		if(indexPath.row != 0)
+			return UITableViewCellEditingStyleDelete;
+	}
+	return UITableViewCellEditingStyleNone;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -819,7 +866,7 @@
 	CGRect rect = self.view.frame;
 	if (movedUp)
 	{
-		// If moving up, not only decrease the origin but increase the height so the view 
+		// If moving up, not only decrease the origin but increase the height so the view
 		// covers the entire screen behind the keyboard.
 		rect.origin.y -= kOFFSET_FOR_KEYBOARD;
 		rect.size.height += kOFFSET_FOR_KEYBOARD;
@@ -848,9 +895,9 @@
 {
 	// watch the keyboard so we can adjust the user interface if necessary.
 	[[NSNotificationCenter defaultCenter] addObserver:self
-												selector:@selector(keyboardWillShow:) 
+												selector:@selector(keyboardWillShow:)
 												name:UIKeyboardWillShowNotification
-												object:self.view.window]; 
+												object:self.view.window];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
