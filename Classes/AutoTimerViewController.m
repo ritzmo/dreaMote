@@ -808,17 +808,97 @@
 			TABLEVIEWCELL_TEXT(cell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
 		case 8:
+		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			NSUInteger row = indexPath.row;
+			if(row == 0)
+			{
+				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				break;
+			}
+
+			--row;
+			if(row < _timer.includeShortdescription.count)
+			{
+				cell.textLabel.text = [_timer.includeShortdescription objectAtIndex:row];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				break;
+			}
+
+			row -= (_timer.includeShortdescription.count - 1);
+			cell.textLabel.text = [_timer.excludeShortdescription objectAtIndex:row];
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			break;
+		}
 		case 9:
+		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			NSUInteger row = indexPath.row;
+			if(row == 0)
+			{
+				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				break;
+			}
+
+			--row;
+			if(row < _timer.includeDescription.count)
+			{
+				cell.textLabel.text = [_timer.includeDescription objectAtIndex:row];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				break;
+			}
+
+			row -= (_timer.includeDescription.count - 1);
+			cell.textLabel.text = [_timer.excludeDescription objectAtIndex:row];
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			break;
+		}
 		case 10:
+		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			NSUInteger row = indexPath.row;
+			if(row == 0)
+			{
+				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				break;
+			}
+
+			--row;
+			if(row < _timer.includeTitle.count)
+			{
+				cell.textLabel.text = [_timer.includeTitle objectAtIndex:row];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				break;
+			}
+
+			row -= (_timer.includeTitle.count - 1);
+			cell.textLabel.text = [_timer.excludeTitle objectAtIndex:row];
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			break;
+		}
 		case 11:
+		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			NSUInteger row = indexPath.row;
+			if(row == 0)
+			{
+				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				break;
+			}
+
+			--row;
+			if(row < _timer.includeDayOfWeek.count)
+			{
+				cell.textLabel.text = [_timer.includeDayOfWeek objectAtIndex:row];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				break;
+			}
+
+			row -= (_timer.includeTitle.count - 1);
+			cell.textLabel.text = [_timer.excludeDayOfWeek objectAtIndex:row];
+			cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			break;
+		}
 	}
 
 	return cell;
