@@ -213,11 +213,11 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchCase, kEnigma2ATSearchCaseLength))
 			{
-				currentAT.searchCase = [value isEqualToString:@"exact"] ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
+				currentAT.searchCase = [value isEqualToString:@"sensitive"] ? CASE_SENSITIVE : CASE_INSENSITIVE;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchType, kEnigma2ATSearchTypeLength))
 			{
-				currentAT.searchType = [value isEqualToString:@"sensitive"] ? CASE_SENSITIVE : CASE_INSENSITIVE;
+				currentAT.searchType = [value isEqualToString:@"exact"] ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOverrideAlternatives, kEnigma2ATOverrideAlternativesLength))
 			{
