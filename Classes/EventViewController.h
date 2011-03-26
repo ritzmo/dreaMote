@@ -26,6 +26,8 @@
 #if IS_FULL()
 													SwipeTableViewDelegate,
 #endif
+													UIPopoverControllerDelegate,
+													UIActionSheetDelegate,
 													EventSourceDelegate,
 													ServiceZapListDelegate>
 {
