@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
+#import "RemoteConnectorObject.h"
 
 @implementation AutoTimerListController
 
@@ -92,7 +93,7 @@
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	[_curDocument release];
 	_reloading = YES;
-	_curDocument = nil;//[[[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self] retain];
+	_curDocument = [[[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self] retain];
 	[pool release];
 }
 
