@@ -692,9 +692,9 @@
 		case 3:
 			return NSLocalizedString(@"Max. Duration", @"");
 		case 4:
-			return NSLocalizedString(@"Services", @"");
+			return NSLocalizedStringFromTable(@"Services", @"AutoTimer", @"section header for service restriction");
 		case 5:
-			return NSLocalizedString(@"Bouquets", @"");
+			return NSLocalizedStringFromTable(@"Bouquets", @"AutoTimer", @"section header for bouquet restriction");
 		case 6:
 			return NSLocalizedString(@"After Event", @"");
 		case 7:
@@ -724,21 +724,21 @@
 		case 3:
 			return 2;
 		case 4:
-			return _timer.services.count + 1;
+			return _timer.services.count + (self.editing ? 1 : 0);
 		case 5:
-			return _timer.bouquets.count + 1;
+			return _timer.bouquets.count + (self.editing ? 1 : 0);
 		case 6:
 			return 1;
 		case 7:
 			return 1;
 		case 8:
-			return _timer.includeShortdescription.count + _timer.excludeShortdescription.count + 1;
+			return _timer.includeShortdescription.count + _timer.excludeShortdescription.count + (self.editing ? 1 : 0);
 		case 9:
-			return _timer.includeDescription.count + _timer.excludeDescription.count + 1;
+			return _timer.includeDescription.count + _timer.excludeDescription.count + (self.editing ? 1 : 0);
 		case 10:
-			return _timer.includeTitle.count + _timer.excludeTitle.count + 1;
+			return _timer.includeTitle.count + _timer.excludeTitle.count + (self.editing ? 1 : 0);
 		case 11:
-			return _timer.includeDayOfWeek.count + _timer.excludeDayOfWeek.count + 1;
+			return _timer.includeDayOfWeek.count + _timer.excludeDayOfWeek.count + (self.editing ? 1 : 0);
 		default:
 			return 0;
 	}
@@ -749,6 +749,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	const NSInteger section = indexPath.section;
+	NSUInteger row = indexPath.row;
 	UITableViewCell *cell = nil;
 
 	switch(section)
@@ -774,6 +775,7 @@
 				cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 				((DisplayCell *)cell).view = _maxdurationSwitch;
 				cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
+				cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			}
 			else
 			{
@@ -785,142 +787,183 @@
 			break;
 		case 4:
 		{
-			NSInteger row = indexPath.row;
-			if(row == 0)
+			if(self.editing)
 			{
-				cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-				cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				break;
+				if(row == 0)
+				{
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				}
+				else
+					--row;
 			}
-			--row;
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [_timer.services objectAtIndex:row];
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			break;
 		}
 		case 5:
 		{
-			NSInteger row = indexPath.row;
-			if(row == 0)
+			if(self.editing)
 			{
-				cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-				cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				break;
+				if(row == 0)
+				{
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				}
+				else
+					--row;
 			}
-			--row;
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [_timer.bouquets objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			break;
 		}
 		case 6:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			[self setAfterEventText:cell];
 			break;
 		case 7:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			TABLEVIEWCELL_TEXT(cell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			break;
 		case 8:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			NSUInteger row = indexPath.row;
-			if(row == 0)
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			if(self.editing)
 			{
-				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				break;
+				if(row == 0)
+				{
+					cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					break;
+				}
+				else
+					--row;
 			}
 
-			--row;
 			if(row < _timer.includeShortdescription.count)
 			{
 				cell.textLabel.text = [_timer.includeShortdescription objectAtIndex:row];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
 			row -= _timer.includeShortdescription.count;
 			cell.textLabel.text = [_timer.excludeShortdescription objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 9:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			NSUInteger row = indexPath.row;
-			if(row == 0)
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			if(self.editing)
 			{
-				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				break;
+				if(row == 0)
+				{
+					cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					break;
+				}
+				else
+					--row;
 			}
 
-			--row;
 			if(row < _timer.includeDescription.count)
 			{
 				cell.textLabel.text = [_timer.includeDescription objectAtIndex:row];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
 			row -= _timer.includeDescription.count;
 			cell.textLabel.text = [_timer.excludeDescription objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 10:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			NSUInteger row = indexPath.row;
-			if(row == 0)
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			if(self.editing)
 			{
-				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				break;
+				if(row == 0)
+				{
+					cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					break;
+				}
+				else
+					--row;
 			}
 
-			--row;
 			if(row < _timer.includeTitle.count)
 			{
 				cell.textLabel.text = [_timer.includeTitle objectAtIndex:row];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
 			row -= _timer.includeTitle.count;
 			cell.textLabel.text = [_timer.excludeTitle objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 11:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			NSUInteger row = indexPath.row;
-			if(row == 0)
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			if(self.editing)
 			{
-				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
-				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-				break;
+				if(row == 0)
+				{
+					cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					break;
+				}
+				else
+					--row;
 			}
 			// XXX: we should translate the weekdays
 
-			--row;
 			if(row < _timer.includeDayOfWeek.count)
 			{
 				cell.textLabel.text = [_timer.includeDayOfWeek objectAtIndex:row];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
+				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
 			row -= _timer.includeDayOfWeek.count;
 			cell.textLabel.text = [_timer.excludeDayOfWeek objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 	}
