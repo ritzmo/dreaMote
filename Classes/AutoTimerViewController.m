@@ -55,10 +55,10 @@ enum sectionIds
 - (void)cancelEdit:(id)sender;
 
 /*!
- @brief Toggle visibility of maxduration
+ @brief Toggle visibility of rows
  @param sender ui element
  */
-- (void)showHideMaxduration:(id)sender;
+- (void)showHideDetails:(id)sender;
 
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
@@ -121,6 +121,7 @@ enum sectionIds
 	[_sensitiveSearch release];
 	[_overrideAlternatives release];
 	[_timerJustplay release];
+	[_timespanSwitch release];
 	[_avoidDuplicateDescription release];
 
 	[_cancelButtonItem release];
@@ -289,6 +290,7 @@ enum sectionIds
 	_sensitiveSearch.on = _timer.searchCase == CASE_SENSITIVE;
 	_overrideAlternatives.on = _timer.overrideAlternatives;
 	_timerJustplay.on = _timer.justplay;
+	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
 	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 
@@ -326,10 +328,10 @@ enum sectionIds
 #pragma mark Helper methods
 #pragma mark -
 
-- (NSString *)format_BeginEnd: (NSDate *)dateTime
+- (NSString *)format_Time:(NSDate *)dateTime withDateStyle:(NSDateFormatterStyle)dateStyle
 {
 	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
-	[format setDateStyle:NSDateFormatterFullStyle];
+	[format setDateStyle:dateStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *dateString = [format fuzzyDate: dateTime];
 	[format release];
@@ -386,9 +388,21 @@ enum sectionIds
 	return field;
 }
 
-- (void)showHideMaxduration:(id)sender
+- (void)showHideDetails:(id)sender
 {
-	// XXX: nothing to be done yet, maxduration currently has its own section
+	NSIndexSet *idxSet = nil;
+	if([sender isEqual:_maxdurationSwitch])
+	{
+		_maxdurationCell = nil;
+		idxSet = [NSIndexSet indexSetWithIndex:durationSection];
+	}
+	else if([sender isEqual:_timespanSwitch])
+	{
+		idxSet = [NSIndexSet indexSetWithIndex:timespanSection];
+	}
+
+	if(idxSet)
+		[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewScrollPositionMiddle];
 }
 
 #pragma mark -
@@ -429,12 +443,12 @@ enum sectionIds
 
 	// Exact
 	_exactSearch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_exactSearch.on = _timer.searchType == SEARCH_TYPE_EXACT;
+	_exactSearch.on = (_timer.searchType == SEARCH_TYPE_EXACT);
 	_exactSearch.backgroundColor = [UIColor clearColor];
 
 	// Case-Sensitive
 	_sensitiveSearch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_sensitiveSearch.on = _timer.searchCase == CASE_SENSITIVE;
+	_sensitiveSearch.on = (_timer.searchCase == CASE_SENSITIVE);
 	_sensitiveSearch.backgroundColor = [UIColor clearColor];
 
 	// overrideAlternatives
@@ -447,6 +461,12 @@ enum sectionIds
 	_timerJustplay.on = _timer.justplay;
 	_timerJustplay.backgroundColor = [UIColor clearColor];
 
+	// Timespan
+	_timespanSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_timespanSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
+	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
+	_timespanSwitch.backgroundColor = [UIColor clearColor];
+
 	// avoidDuplicateDescription
 	_avoidDuplicateDescription = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
@@ -454,7 +474,7 @@ enum sectionIds
 
 	// maxduration enable/disable
 	_maxdurationSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_maxdurationSwitch addTarget:self action:@selector(showHideMaxduration:) forControlEvents:UIControlEventValueChanged];
+	[_maxdurationSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 	_maxdurationSwitch.backgroundColor = [UIColor clearColor];
 
@@ -744,9 +764,9 @@ enum sectionIds
 		case generalSection:
 			return 6;
 		case durationSection:
-			return 2;
+			return _maxdurationSwitch.on ? 2 : 1;
 		case timespanSection:
-			return 3;
+			return _timespanSwitch.on ? 3 : 1;
 		case servicesSection:
 			return _timer.services.count + (self.editing ? 1 : 0);
 		case bouquetSection:
@@ -787,8 +807,45 @@ enum sectionIds
 			_matchCell.view = _matchField;
 			break;
 		case generalSection:
+		{
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+			switch(row)
+			{
+				case 0:
+					((DisplayCell *)cell).view = _timerEnabled;
+					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 1:
+					((DisplayCell *)cell).view = _exactSearch;
+					cell.textLabel.text = NSLocalizedString(@"Exact Title", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 2:
+					((DisplayCell *)cell).view = _sensitiveSearch;
+					cell.textLabel.text = NSLocalizedString(@"Case-Sensitive", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 3:
+					((DisplayCell *)cell).view = _overrideAlternatives;
+					cell.textLabel.text = NSLocalizedString(@"Prefer Alternatives", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 4:
+					((DisplayCell *)cell).view = _timerJustplay;
+					cell.textLabel.text = NSLocalizedString(@"Justplay", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 5:
+					((DisplayCell *)cell).view = _avoidDuplicateDescription;
+					cell.textLabel.text = NSLocalizedString(@"Unique Description", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					/* FALL THROUGH */
+				default:
+					break;
+			}
 			break;
+		}
 		case durationSection:
 			if(row == 0)
 			{
@@ -811,19 +868,20 @@ enum sectionIds
 			{
 				case 0:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)cell).view = _timespanSwitch;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 1:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-					cell.textLabel.text = NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from");
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 2:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-					cell.textLabel.text = NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to");
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];

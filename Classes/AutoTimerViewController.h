@@ -55,6 +55,7 @@
 	UISwitch *_sensitiveSearch; /*!< @brief Case-(in)sensitive Search. */
 	UISwitch *_overrideAlternatives; /*!< @brief Override Alternatives? */
 	UISwitch *_timerJustplay; /*!< @brief Create zap timers? */
+	UISwitch *_timespanSwitch; /*!< @brief Enable/Disable Timespan. */
 	UISwitch *_avoidDuplicateDescription; /*!< @brief Avoid duplicate description? */
 	UISwitch *_maxdurationSwitch; /*!< @brief Maxduration Switch. */
 
