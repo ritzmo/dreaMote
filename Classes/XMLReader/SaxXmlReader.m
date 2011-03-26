@@ -43,6 +43,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 	_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, self, NULL, 0, NULL);
+	xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
 	do
 	{
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
