@@ -69,10 +69,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 - (void)setView:(UITextField *)inView
 {
-	if(view == inView) return;
-
-	[view removeFromSuperview];
-	view = [inView retain];
+	view = inView;
 	view.delegate = self;
 
 	[self.contentView addSubview:inView];
