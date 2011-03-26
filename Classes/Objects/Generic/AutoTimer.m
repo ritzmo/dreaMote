@@ -16,15 +16,6 @@
 {
 	AutoTimer *timer = [[AutoTimer alloc] init];
 	timer.encoding = @"ISO8859-15";
-	timer.enabled = YES;
-	timer.searchType = SEARCH_TYPE_PARTIAL;
-	timer.searchCase = CASE_INSENSITIVE;
-	timer.overrideAlternatives = YES;
-	timer.afterEventAction = kAfterEventMax;
-	timer.maxduration = -1;
-	timer.offsetBefore = -1;
-	timer.offsetAfter = -1;
-	timer.idno = -1;
 	return [timer autorelease];
 }
 
@@ -34,6 +25,15 @@
 	{
 		services = [[NSMutableArray alloc] init];
 		bouquets = [[NSMutableArray alloc] init];
+		enabled = YES;
+		searchType = SEARCH_TYPE_PARTIAL;
+		searchCase = CASE_INSENSITIVE;
+		overrideAlternatives = YES;
+		afterEventAction = kAfterEventMax;
+		maxduration = -1;
+		offsetBefore = -1;
+		offsetAfter = -1;
+		idno = -1;
 	}
 	return self;
 }
