@@ -44,8 +44,11 @@
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
 
+	CellTextField *_titleCell; /*!< @brief Cell for Title. */
 	UITextField *_titleField; /*!< @brief Textfield for Title. */
+	CellTextField *_matchCell; /*!< @brief Cell for Match. */
 	UITextField *_matchField; /*!< @brief Textfield for Match. */
+	CellTextField *_maxdurationCell; /*!< @brief Cell for Maxduration. */
 	UITextField *_maxdurationField; /*!< @brief Textfield for Maxduration. */
 	UISwitch *_timerEnabled; /*!< @brief Enable/Disable Switch. */
 	UISwitch *_exactSearch; /*!< @brief Exact/Partial Search. */

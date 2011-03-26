@@ -31,14 +31,6 @@
  */
 @interface AutoTimerViewController()
 /*!
- @brief Animate View up or down.
- Animate the entire view up or down, to prevent the keyboard from covering the text field.
-
- @param movedUp YES if moving down again.
- */
-- (void)setViewMovedUp:(BOOL)movedUp;
-
-/*!
  @brief stop editing
  @param sender ui element
  */
@@ -60,15 +52,6 @@
 @end
 
 @implementation AutoTimerViewController
-
-/*!
- @brief Keyboard offset.
- The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
- */
-#define kOFFSET_FOR_KEYBOARD					100
-
-/*! @brief The duration of the animation for the view shift. */
-#define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 @synthesize delegate = _delegate;
 @synthesize popoverController;
@@ -772,11 +755,15 @@
 	{
 		case 0:
 			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-			((CellTextField *)cell).view = _titleField;
+			_titleCell = (CellTextField *)cell;
+			_titleCell.delegate = self;
+			_titleCell.view = _titleField;
 			break;
 		case 1:
 			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-			((CellTextField *)cell).view = _matchField;
+			_matchCell = (CellTextField *)cell;
+			_matchCell.delegate = self;
+			_matchCell.view = _matchField;
 			break;
 		case 2:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -786,11 +773,14 @@
 			{
 				cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 				((DisplayCell *)cell).view = _maxdurationSwitch;
+				cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 			}
 			else
 			{
 				cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-				((CellTextField *)cell).view = _maxdurationField;
+				_maxdurationCell = (CellTextField *)cell;
+				_maxdurationCell.delegate = self;
+				_maxdurationCell.view = _maxdurationField;
 			}
 			break;
 		case 4:
@@ -941,12 +931,23 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// services, bouquets, filters can be removed
-	if(indexPath.section > 3)
+	if(indexPath.section == 4 || indexPath.section == 5 || indexPath.section > 7)
 	{
-		if(indexPath.row != 0)
-			return UITableViewCellEditingStyleDelete;
+		if(indexPath.row == 0)
+			return UITableViewCellEditingStyleInsert;
+		return UITableViewCellEditingStyleDelete;
 	}
 	return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// services, bouquets, filters can be removed
+	if(indexPath.section == 4 || indexPath.section == 5 || indexPath.section > 7)
+	{
+		return YES;
+	}
+	return NO;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -961,44 +962,36 @@
 
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
-	// TODO: notify other cells
+	if(![cell isEqual:_titleCell])
+		[_titleCell stopEditing];
+	if(![cell isEqual:_matchCell])
+		[_matchCell stopEditing];
+	if(![cell isEqual:_maxdurationCell])
+		[_maxdurationCell stopEditing];
+
 	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	// TODO: implement
-}
-
-// Animate the entire view up or down, to prevent the keyboard from covering the author field.
-- (void)setViewMovedUp:(BOOL)movedUp
-{
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:kVerticalOffsetAnimationDuration];
-	// Make changes to the view's frame inside the animation block. They will be animated instead
-	// of taking place immediately.
-	CGRect rect = self.view.frame;
-	if (movedUp)
-	{
-		// If moving up, not only decrease the origin but increase the height so the view
-		// covers the entire screen behind the keyboard.
-		rect.origin.y -= kOFFSET_FOR_KEYBOARD;
-		rect.size.height += kOFFSET_FOR_KEYBOARD;
-	}
-	else
-	{
-		// If moving down, not only increase the origin but decrease the height.
-		rect.origin.y += kOFFSET_FOR_KEYBOARD;
-		rect.size.height -= kOFFSET_FOR_KEYBOARD;
-	}
-	self.view.frame = rect;
-
-	[UIView commitAnimations];
+	//
 }
 
 - (void)keyboardWillShow:(NSNotification *)notif
 {
-	// TODO: implement
+	NSIndexPath *indexPath;
+	UITableViewScrollPosition scrollPosition = UITableViewScrollPositionMiddle;
+	if(_titleCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	else if(_matchCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	else if(_maxdurationCell.isInlineEditing)
+		indexPath = [NSIndexPath indexPathForRow:1 inSection:3];
+	else return;
+
+	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+		scrollPosition = UITableViewScrollPositionTop;
+	[(UITableView *)self.view scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
 }
 
 #pragma mark -
