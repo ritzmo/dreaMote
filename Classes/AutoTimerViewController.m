@@ -277,7 +277,19 @@
 		[self setEditing: NO animated: YES];
 	}
 
-	// TODO: change local settings
+	_titleField.text = _timer.name;
+	_matchField.text = _timer.match;
+	if(_timer.maxduration == -1)
+		_maxdurationField.text = nil;
+	else
+		_maxdurationField.text = [NSString stringWithFormat:@"%d", _timer.maxduration];
+	_timerEnabled.on = _timer.enabled;
+	_exactSearch.on = _timer.searchType == SEARCH_TYPE_EXACT;
+	_sensitiveSearch.on = _timer.searchCase == CASE_SENSITIVE;
+	_overrideAlternatives.on = _timer.overrideAlternatives;
+	_timerJustplay.on = _timer.justplay;
+	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
+	_maxdurationSwitch.on = (_timer.maxduration > 0);
 
 	[(UITableView *)self.view reloadData];
 	[(UITableView *)self.view
@@ -532,6 +544,7 @@
 
 	_shouldSave = editing;
 	[super setEditing: editing animated: animated];
+	[(UITableView *)self.view setEditing:editing animated:animated];
 
 	// TODO: notifiy cells/other elements of change in editing
 
@@ -628,14 +641,8 @@
 #pragma mark AfterEventDelegate methods
 #pragma mark -
 
-- (void)afterEventSelected: (NSNumber *)newAfterEvent
+- (void)setAfterEventText:(UITableViewCell *)cell
 {
-	if(newAfterEvent == nil)
-		return;
-
-	_timer.afterEventAction = [newAfterEvent integerValue];
-
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
 	if(cell == nil)
 		return;
 
@@ -645,8 +652,21 @@
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"");
 	else if(_timer.afterEventAction == kAfterEventDeepstandby)
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
-	else //if(_timer.afterEventAction == kAfterEventAuto)
+	else if(_timer.afterEventAction == kAfterEventAuto)
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
+	else //if(_timer.afterEventAction == kAfterEventMax)
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"");
+}
+
+- (void)afterEventSelected: (NSNumber *)newAfterEvent
+{
+	if(newAfterEvent == nil)
+		return;
+
+	_timer.afterEventAction = [newAfterEvent integerValue];
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
+	[self setAfterEventText:cell];
 }
 
 #pragma mark -
@@ -729,9 +749,13 @@
 		case 7:
 			return 1;
 		case 8:
+			return _timer.includeShortdescription.count + _timer.excludeShortdescription.count + 1;
 		case 9:
+			return _timer.includeDescription.count + _timer.excludeDescription.count + 1;
 		case 10:
+			return _timer.includeTitle.count + _timer.excludeTitle.count + 1;
 		case 11:
+			return _timer.includeDayOfWeek.count + _timer.excludeDayOfWeek.count + 1;
 		default:
 			return 0;
 	}
@@ -776,6 +800,7 @@
 			{
 				cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 				cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				break;
 			}
 			--row;
@@ -791,20 +816,24 @@
 			{
 				cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 				cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				break;
 			}
 			--row;
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 			((ServiceTableViewCell *)cell).service = [_timer.bouquets objectAtIndex:row];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			break;
 		}
 		case 6:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			[self afterEventSelected:[NSNumber numberWithInteger:_timer.afterEventAction]];
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			[self setAfterEventText:cell];
 			break;
 		case 7:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			TABLEVIEWCELL_TEXT(cell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
 		case 8:
@@ -814,6 +843,7 @@
 			if(row == 0)
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				break;
 			}
 
@@ -821,13 +851,13 @@
 			if(row < _timer.includeShortdescription.count)
 			{
 				cell.textLabel.text = [_timer.includeShortdescription objectAtIndex:row];
-				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
-			row -= (_timer.includeShortdescription.count - 1);
+			row -= _timer.includeShortdescription.count;
 			cell.textLabel.text = [_timer.excludeShortdescription objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 9:
@@ -837,6 +867,7 @@
 			if(row == 0)
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				break;
 			}
 
@@ -844,13 +875,13 @@
 			if(row < _timer.includeDescription.count)
 			{
 				cell.textLabel.text = [_timer.includeDescription objectAtIndex:row];
-				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
-			row -= (_timer.includeDescription.count - 1);
+			row -= _timer.includeDescription.count;
 			cell.textLabel.text = [_timer.excludeDescription objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 10:
@@ -860,6 +891,7 @@
 			if(row == 0)
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				break;
 			}
 
@@ -867,13 +899,13 @@
 			if(row < _timer.includeTitle.count)
 			{
 				cell.textLabel.text = [_timer.includeTitle objectAtIndex:row];
-				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
-			row -= (_timer.includeTitle.count - 1);
+			row -= _timer.includeTitle.count;
 			cell.textLabel.text = [_timer.excludeTitle objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case 11:
@@ -883,20 +915,22 @@
 			if(row == 0)
 			{
 				cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
+				cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 				break;
 			}
+			// XXX: we should translate the weekdays
 
 			--row;
 			if(row < _timer.includeDayOfWeek.count)
 			{
 				cell.textLabel.text = [_timer.includeDayOfWeek objectAtIndex:row];
-				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
-			row -= (_timer.includeTitle.count - 1);
+			row -= _timer.includeDayOfWeek.count;
 			cell.textLabel.text = [_timer.excludeDayOfWeek objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryCheckmark;
+			cell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 	}
