@@ -101,7 +101,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 - (void)sendErroneousObject
 {
 	AutoTimer *fakeObject = [[AutoTimer alloc] init];
-	//fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+	fakeObject.name = NSLocalizedString(@"Error retrieving Data", @"");
 
 	[_delegate performSelectorOnMainThread:@selector(addAutoTimer:)
 								withObject:fakeObject
@@ -316,16 +316,15 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
+		currentString = [[NSMutableString alloc] init];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
+	{
 		// create new service
 		if(currentService)
 			self.currentService = nil;
 
 		currentService = [[GenericService alloc] init];
-		currentString = [[NSMutableString alloc] init];
-	}
-	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
-	{
-		// make sure (local) service exists
 		currentString = [[NSMutableString alloc] init];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
@@ -379,12 +378,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
 		currentService.sname = currentString;
-	}
-	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
-	{
-		currentService.sref = currentString;
-
-		const NSArray *comps = [currentString componentsSeparatedByString:@":"];
+		const NSArray *comps = [currentService.sref componentsSeparatedByString:@":"];
 		const NSString *type = [comps objectAtIndex:1];
 		if([type isEqualToString:@"7"]) // check if this is sane…
 			[currentAT.bouquets addObject:currentService];
@@ -392,6 +386,10 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			[currentAT.services addObject:currentService];
 
 		self.currentService = nil;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
+	{
+		currentService.sref = currentString;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
 	{
