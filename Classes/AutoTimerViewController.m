@@ -26,6 +26,24 @@
 #import "Objects/Generic/Service.h"
 #import "Objects/Generic/AutoTimer.h"
 
+enum sectionIds
+{
+	titleSection = 0,
+	matchSection = 1,
+	generalSection = 2,
+	timespanSection = 3,
+	durationSection = 4,
+	servicesSection = 5,
+	bouquetSection = 6,
+	aftereventSection = 7,
+	locationSection = 8,
+	filterTitleSection = 9,
+	filterSdescSection = 10,
+	filterDescSection = 11,
+	filterWeekdaySection = 12,
+	maxSection = 13,
+};
+
 /*!
  @brief Private functions of AutoTimerViewController.
  */
@@ -648,7 +666,7 @@
 
 	_timer.afterEventAction = [newAfterEvent integerValue];
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:6]];
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aftereventSection]];
 	[self setAfterEventText:cell];
 }
 
@@ -663,7 +681,7 @@
 
 	_timer.location = newLocation.fullpath;
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:7]];
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:locationSection]];
 	if(cell == nil)
 		return;
 
@@ -676,36 +694,38 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 12;
+	return maxSection;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	switch(section)
 	{
-		case 0:
+		case titleSection:
 			return NSLocalizedString(@"Title", @"");
-		case 1:
+		case matchSection:
 			return NSLocalizedString(@"Match", @"");
-		case 2:
+		case generalSection:
 			return NSLocalizedString(@"General", @"in timer settings dialog");
-		case 3:
+		case durationSection:
 			return NSLocalizedString(@"Max. Duration", @"");
-		case 4:
+		case timespanSection:
+			return NSLocalizedStringFromTable(@"Timespan", @"AutoTimer", @"section header for timespan");
+		case servicesSection:
 			return NSLocalizedStringFromTable(@"Services", @"AutoTimer", @"section header for service restriction");
-		case 5:
+		case bouquetSection:
 			return NSLocalizedStringFromTable(@"Bouquets", @"AutoTimer", @"section header for bouquet restriction");
-		case 6:
+		case aftereventSection:
 			return NSLocalizedString(@"After Event", @"");
-		case 7:
+		case locationSection:
 			return NSLocalizedString(@"Location", @"");
-		case 8:
+		case filterSdescSection:
 			return NSLocalizedString(@"Filter: Shortdescription", @"");
-		case 9:
+		case filterDescSection:
 			return NSLocalizedString(@"Filter: Description", @"");
-		case 10:
+		case filterTitleSection:
 			return NSLocalizedString(@"Filter: Title", @"");
-		case 11:
+		case filterWeekdaySection:
 			return NSLocalizedString(@"Filter: Weekday", @"");
 		default:
 			return nil;
@@ -716,28 +736,28 @@
 {
 	switch(section)
 	{
-		case 0:
-		case 1:
+		case titleSection:
+		case matchSection:
+		case aftereventSection:
+		case locationSection:
 			return 1;
-		case 2:
+		case generalSection:
 			return 6;
-		case 3:
+		case durationSection:
 			return 2;
-		case 4:
+		case timespanSection:
+			return 3;
+		case servicesSection:
 			return _timer.services.count + (self.editing ? 1 : 0);
-		case 5:
+		case bouquetSection:
 			return _timer.bouquets.count + (self.editing ? 1 : 0);
-		case 6:
-			return 1;
-		case 7:
-			return 1;
-		case 8:
+		case filterSdescSection:
 			return _timer.includeShortdescription.count + _timer.excludeShortdescription.count + (self.editing ? 1 : 0);
-		case 9:
+		case filterDescSection:
 			return _timer.includeDescription.count + _timer.excludeDescription.count + (self.editing ? 1 : 0);
-		case 10:
+		case filterTitleSection:
 			return _timer.includeTitle.count + _timer.excludeTitle.count + (self.editing ? 1 : 0);
-		case 11:
+		case filterWeekdaySection:
 			return _timer.includeDayOfWeek.count + _timer.excludeDayOfWeek.count + (self.editing ? 1 : 0);
 		default:
 			return 0;
@@ -754,23 +774,23 @@
 
 	switch(section)
 	{
-		case 0:
+		case titleSection:
 			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			_titleCell = (CellTextField *)cell;
 			_titleCell.delegate = self;
 			_titleCell.view = _titleField;
 			break;
-		case 1:
+		case matchSection:
 			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			_matchCell = (CellTextField *)cell;
 			_matchCell.delegate = self;
 			_matchCell.view = _matchField;
 			break;
-		case 2:
+		case generalSection:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			break;
-		case 3:
-			if(indexPath.row == 0)
+		case durationSection:
+			if(row == 0)
 			{
 				cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 				((DisplayCell *)cell).view = _maxdurationSwitch;
@@ -785,7 +805,33 @@
 				_maxdurationCell.view = _maxdurationField;
 			}
 			break;
-		case 4:
+		case timespanSection:
+		{
+			switch(row)
+			{
+				case 0:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 1:
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.text = NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from");
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 2:
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.text = NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to");
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+			}
+			break;
+		}
+		case servicesSection:
 		{
 			if(self.editing)
 			{
@@ -808,7 +854,7 @@
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			break;
 		}
-		case 5:
+		case bouquetSection:
 		{
 			if(self.editing)
 			{
@@ -831,21 +877,21 @@
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			break;
 		}
-		case 6:
+		case aftereventSection:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			[self setAfterEventText:cell];
 			break;
-		case 7:
+		case locationSection:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			break;
-		case 8:
+		case filterSdescSection:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -875,7 +921,7 @@
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
-		case 9:
+		case filterDescSection:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -905,7 +951,7 @@
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
-		case 10:
+		case filterTitleSection:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -935,7 +981,7 @@
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
-		case 11:
+		case filterWeekdaySection:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -974,23 +1020,37 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// services, bouquets, filters can be removed
-	if(indexPath.section == 4 || indexPath.section == 5 || indexPath.section > 7)
+	switch(indexPath.section)
 	{
-		if(indexPath.row == 0)
-			return UITableViewCellEditingStyleInsert;
-		return UITableViewCellEditingStyleDelete;
+		case servicesSection:
+		case bouquetSection:
+		case filterTitleSection:
+		case filterSdescSection:
+		case filterDescSection:
+		case filterWeekdaySection:
+			if(indexPath.row == 0)
+				return UITableViewCellEditingStyleInsert;
+			return UITableViewCellEditingStyleDelete;
+		default:
+			return UITableViewCellEditingStyleNone;
 	}
-	return UITableViewCellEditingStyleNone;
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// services, bouquets, filters can be removed
-	if(indexPath.section == 4 || indexPath.section == 5 || indexPath.section > 7)
+	switch(indexPath.section)
 	{
-		return YES;
+		case servicesSection:
+		case bouquetSection:
+		case filterTitleSection:
+		case filterSdescSection:
+		case filterDescSection:
+		case filterWeekdaySection:
+			return YES;
+		default:
+			return NO;
 	}
-	return NO;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
