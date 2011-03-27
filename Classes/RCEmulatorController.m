@@ -13,6 +13,8 @@
 #import "RCButton.h"
 #import "Constants.h"
 
+#import "UIDevice+SystemVersion.h"
+
 #define kTransitionDuration	(CGFloat)0.6
 #define kImageScale			((IS_IPAD()) ? (CGFloat)1.1 : (CGFloat)0.45)
 
@@ -51,6 +53,11 @@
  @brief Change frames/views according to orientation
  */
 - (void)manageViews:(UIInterfaceOrientation)interfaceOrientation;
+
+/*!
+ @brief Ask user if he wants to save current screenshot?
+ */
+- (void)maybeSavePicture:(UILongPressGestureRecognizer *)gesture;
 @end
 
 @implementation RCEmulatorController
@@ -206,6 +213,14 @@
 	_scrollView.maximumZoomScale = (CGFloat)2.6;
 	_scrollView.minimumZoomScale = (CGFloat)1.0;
 	_scrollView.exclusiveTouch = NO;
+	// XXX: for simplicity only support this on iOS 3.2+
+	if([UIDevice newerThanIos:3.2f])
+	{
+		UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(maybeSavePicture:)];
+		longPressGesture.minimumPressDuration = 1;
+		[_scrollView addGestureRecognizer:longPressGesture];
+		[longPressGesture release];
+	}
 	[_screenView addSubview: _scrollView];
 	_imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
 	_imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -341,6 +356,25 @@
 	[self sendButtonInternal: [rcCode integerValue]];
 }
 
+- (void)maybeSavePicture:(UILongPressGestureRecognizer *)gesture
+{
+	if(gesture.state == UIGestureRecognizerStateBegan)
+	{
+		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:
+											NSLocalizedString(@"Do you want to save this picture?", @"Shown when touching screenshots for 1s, asks to save to libary")
+																	   delegate: self
+															  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+														 destructiveButtonTitle:nil
+															  otherButtonTitles:NSLocalizedString(@"Save", @""), nil];
+		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+		if(self.tabBarController == nil)
+			[actionSheet showInView:self.view];
+		else
+			[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		[actionSheet release];
+	}
+}
+
 /* alter views */
 - (void)manageViews:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -402,6 +436,22 @@
 	return _navigationPad != nil
 		|| (interfaceOrientation == UIInterfaceOrientationPortrait)
 		|| (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown);
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else // other
+	{
+		UIImageWriteToSavedPhotosAlbum(_imageView.image, nil, nil, nil);
+	}
 }
 
 #pragma mark UIScrollView delegates

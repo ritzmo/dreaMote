@@ -16,7 +16,7 @@
  Generic remote control screen which only needs the rcView to be set up by extending
  classes. Screenshot functionality is already included.
  */
-@interface RCEmulatorController : UIViewController <UIScrollViewDelegate>
+@interface RCEmulatorController : UIViewController <UIScrollViewDelegate, UIActionSheetDelegate>
 {
 @private
 	BOOL _shouldVibrate; /*!< @brief Vibrate as response to successfully sent RC code? */
