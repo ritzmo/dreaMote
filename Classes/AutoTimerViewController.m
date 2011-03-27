@@ -507,16 +507,48 @@ enum sectionIds
 	{
 		NSString *message = nil;
 
-		// TODO: apply changes
+		// Sanity Check Title
+		if(_matchField.text && [_matchField.text length])
+			_timer.match = _matchField.text;
+		else
+			message = NSLocalizedString(@"The match attribute is mandatory.", @"");
+
+		// Get Description
+		if(_titleField.text && [_titleField.text length])
+			_timer.name = _titleField.text;
+		else
+			_timer.name = @"";
+
+		// maxduration
+		if(_maxdurationSwitch.on)
+			_timer.maxduration = [_maxdurationField.text integerValue];
+		else
+			_timer.maxduration = -1;
+
+		// timespan
+		if(!_timespanSwitch.on)
+		{
+			_timer.from = nil;
+			_timer.to = nil;
+		}
+
+		// check timeframe sanity
+		if(_timer.after && _timer.before && [_timer.after compare:_timer.before] != NSOrderedAscending)
+			message = NSLocalizedString(@"Timeframe has to be ascending.", @"");
+
+		_timer.enabled = _timerEnabled.on;
+		_timer.justplay = _timerJustplay.on;
+		_timer.searchType = _exactSearch.on ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
+		_timer.searchCase = _sensitiveSearch.on ? CASE_SENSITIVE : CASE_INSENSITIVE;
+		_timer.overrideAlternatives = _overrideAlternatives.on;
+		_timer.avoidDuplicateDescription = _avoidDuplicateDescription.on;
 
 		// Try to commit changes if no error occured
 		if(!message)
 		{
 			if(_creatingNewTimer)
 			{
-				// TODO: add new autotimer
-
-				Result *result = nil;//[[RemoteConnectorObject sharedRemoteConnector] addTimer: _timer];
+				Result *result = [[RemoteConnectorObject sharedRemoteConnector] addAutoTimer:_timer];
 				if(!result.result)
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding AutoTimer: %@", @""), result.resulttext];
 				else
@@ -527,9 +559,7 @@ enum sectionIds
 			}
 			else
 			{
-				// TODO: edit autotimer
-
-				Result *result = nil;//[[RemoteConnectorObject sharedRemoteConnector] editTimer: _oldTimer: _timer];
+				Result *result = [[RemoteConnectorObject sharedRemoteConnector] editAutoTimer:_timer];
 				if(!result.result)
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing AutoTimer: %@", @""), result.resulttext];
 				else
@@ -567,7 +597,19 @@ enum sectionIds
 	[super setEditing: editing animated: animated];
 	[(UITableView *)self.view setEditing:editing animated:animated];
 
-	// TODO: notifiy cells/other elements of change in editing
+	[_titleCell setEditing:editing animated:animated];
+	[_matchCell setEditing:editing animated:animated];
+	[_maxdurationCell setEditing:editing animated:animated];
+
+	_timerEnabled.enabled = editing;
+	_exactSearch.enabled = editing;
+	_sensitiveSearch.enabled = editing;
+	_overrideAlternatives.enabled = editing;
+	_timerJustplay.enabled = editing;
+	_timerJustplay.enabled = editing;
+	_timespanSwitch.enabled = editing;
+	_avoidDuplicateDescription.enabled = editing;
+	_maxdurationSwitch.enabled = editing;
 
 	[(UITableView *)self.view reloadData];
 }
@@ -596,7 +638,9 @@ enum sectionIds
 		return;
 
 	_timer.from = newDate;
-	// TODO: change label text
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timespanSection]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle]];
 }
 
 - (void)toSelected: (NSDate *)newDate
@@ -605,7 +649,9 @@ enum sectionIds
 		return;
 
 	_timer.to = newDate;
-	// TODO: change label text
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timespanSection]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle]];
 }
 
 - (void)beforeSelected: (NSDate *)newDate
@@ -635,11 +681,14 @@ enum sectionIds
 	if(newBouquet == nil)
 		return;
 
-	// TODO: add bouquet to list
+	for(NSObject<ServiceProtocol> *bouquet in _timer.bouquets)
+	{
+		if([bouquet isEqualToService:newBouquet]) return;
+	}
 
 	// copy service for convenience reasons
 	[_timer.bouquets addObject:[[newBouquet copy] autorelease]];
-	//[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:4] withRowAnimation:UITableViewRowAnimationFade];
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:bouquetSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -651,11 +700,14 @@ enum sectionIds
 	if(newService == nil)
 		return;
 
-	// TODO: add service to list
+	for(NSObject<ServiceProtocol> *service in _timer.services)
+	{
+		if([service isEqualToService:newService]) return;
+	}
 
 	// copy service for convenience reasons
 	[_timer.services addObject:[[newService copy] autorelease]];
-	//[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:servicesSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
