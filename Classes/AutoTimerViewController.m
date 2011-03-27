@@ -65,6 +65,7 @@ enum sectionIds
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (nonatomic, readonly) UIViewController *bouquetListController;
+@property (nonatomic, readonly) UIViewController *serviceListController;
 @property (nonatomic, readonly) DatePickerController *datePickerController;
 @property (nonatomic, readonly) UIViewController *datePickerNavigationController;
 @property (nonatomic, readonly) UIViewController *locationListController;
@@ -133,6 +134,7 @@ enum sectionIds
 	[_afterEventNavigationController release];
 	[_afterEventViewController release];
 	[_bouquetListController release];
+	[_serviceListController release];
 	[_datePickerController release];
 	[_datePickerNavigationController release];
 	[_locationListController release];
@@ -145,6 +147,7 @@ enum sectionIds
 	[_afterEventNavigationController release];
 	[_afterEventViewController release];
 	[_bouquetListController release];
+	[_serviceListController release];
 	[_datePickerController release];
 	[_datePickerNavigationController release];
 	[_locationListController release];
@@ -152,6 +155,7 @@ enum sectionIds
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
+	_serviceListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
 	_locationListController = nil;
@@ -192,6 +196,27 @@ enum sectionIds
 {
 	if(_bouquetListController == nil)
 	{
+		BouquetListController *rootViewController = [[BouquetListController alloc] init];
+		[rootViewController setBouquetDelegate:self];
+
+		if(IS_IPAD())
+		{
+			_bouquetListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+
+			[rootViewController release];
+		}
+		else
+			_bouquetListController = rootViewController;
+	}
+	return _bouquetListController;
+}
+
+- (UIViewController *)serviceListController
+{
+	if(_serviceListController == nil)
+	{
 		UIViewController *rootViewController = nil;
 		const BOOL forceSingleBouquet =
 			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
@@ -210,16 +235,16 @@ enum sectionIds
 
 		if(IS_IPAD())
 		{
-			_bouquetListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+			_serviceListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+			_serviceListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+			_serviceListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 
 			[rootViewController release];
 		}
 		else
-			_bouquetListController = rootViewController;
+			_serviceListController = rootViewController;
 	}
-	return _bouquetListController;
+	return _serviceListController;
 }
 
 - (UIViewController *)datePickerNavigationController

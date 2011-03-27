@@ -14,6 +14,7 @@
 
 #import "AfterEventViewController.h" /* AfterEventDelegate */
 #import "LocationListController.h" /* LocationListDelegate */
+#import "BouquetListController.h" /* BouquetListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
@@ -28,8 +29,8 @@
  */
 @interface AutoTimerViewController : UIViewController <UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
-													ServiceListDelegate, AfterEventDelegate,
-													LocationListDelegate,
+													ServiceListDelegate, BouquetListDelegate,
+													AfterEventDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
@@ -63,6 +64,7 @@
 	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
+	UIViewController *_serviceListController; /*!< @brief Cached Service List. */
 	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
 	UIViewController *_locationListController; /*!< @brief Cached Location List. */
