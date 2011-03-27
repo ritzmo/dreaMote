@@ -11,16 +11,20 @@
 
 @implementation UIDevice(SystemVersion)
 
-+ (BOOL)runsIos4OrBetter
++ (BOOL)newerThanIos:(float)version
 {
 	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	return (currentVersion >= 4.0f);
+	return (currentVersion >= version);
+}
+
++ (BOOL)runsIos4OrBetter
+{
+	return [self newerThanIos:4.0f];
 }
 
 + (BOOL)runsIos42OrBetter
 {
-	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	return (currentVersion >= 4.2f);
+	return [self newerThanIos:4.2f];
 }
 
 @end

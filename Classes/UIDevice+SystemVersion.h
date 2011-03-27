@@ -12,6 +12,14 @@
 @interface UIDevice(SystemVersion)
 
 /*!
+ @brief Check current iOS version against given one.
+
+ @param version float value of lowest version to check for
+ @return YES if iOS version >= input value, else NO.
+ */
++ (BOOL)newerThanIos:(float)version;
+
+/*!
  @brief Does the current device run on iOS 4.0 or better?
 
  @return YES if systemVersion >= 4.0, else NO.
