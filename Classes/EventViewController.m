@@ -232,11 +232,6 @@
 	[pool release];
 }
 
-- (void)doZap:(id)sender
-{
-	[[RemoteConnectorObject sharedRemoteConnector] zapTo:_service];
-}
-
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
@@ -379,7 +374,7 @@
 	}
 	else if(section == 5)
 	{
-		NSUInteger rows = 2;
+		NSUInteger rows = 1;
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
 
@@ -514,10 +509,6 @@
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(addTimer:) withType:UIButtonTypeContactAdd];
 					break;
 				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Zap on receiver", @"");
-					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(doZap:) withType:UIButtonTypeCustom];
-					break;
-				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withType:UIButtonTypeCustom];
 					break;
