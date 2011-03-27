@@ -32,16 +32,17 @@ enum sectionIds
 	matchSection = 1,
 	generalSection = 2,
 	timespanSection = 3,
-	durationSection = 4,
-	servicesSection = 5,
-	bouquetSection = 6,
-	aftereventSection = 7,
-	locationSection = 8,
-	filterTitleSection = 9,
-	filterSdescSection = 10,
-	filterDescSection = 11,
-	filterWeekdaySection = 12,
-	maxSection = 13,
+	timeframeSection = 4,
+	durationSection = 5,
+	servicesSection = 6,
+	bouquetSection = 7,
+	aftereventSection = 8,
+	locationSection = 9,
+	filterTitleSection = 10,
+	filterSdescSection = 11,
+	filterDescSection = 12,
+	filterWeekdaySection = 13,
+	maxSection = 14,
 };
 
 /*!
@@ -120,6 +121,7 @@ enum sectionIds
 	[_exactSearch release];
 	[_sensitiveSearch release];
 	[_overrideAlternatives release];
+	[_timeframeSwitch release];
 	[_timerJustplay release];
 	[_timespanSwitch release];
 	[_avoidDuplicateDescription release];
@@ -289,6 +291,7 @@ enum sectionIds
 	_exactSearch.on = _timer.searchType == SEARCH_TYPE_EXACT;
 	_sensitiveSearch.on = _timer.searchCase == CASE_SENSITIVE;
 	_overrideAlternatives.on = _timer.overrideAlternatives;
+	_timeframeSwitch.on = (_timer.after != nil && _timer.before != nil);
 	_timerJustplay.on = _timer.justplay;
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
 	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
@@ -400,6 +403,10 @@ enum sectionIds
 	{
 		idxSet = [NSIndexSet indexSetWithIndex:timespanSection];
 	}
+	else if([sender isEqual:_timeframeSwitch])
+	{
+		idxSet = [NSIndexSet indexSetWithIndex:timeframeSection];
+	}
 
 	if(idxSet)
 		[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewScrollPositionMiddle];
@@ -455,6 +462,12 @@ enum sectionIds
 	_overrideAlternatives = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	_overrideAlternatives.on = _timer.overrideAlternatives;
 	_overrideAlternatives.backgroundColor = [UIColor clearColor];
+
+	// Timeframe
+	_timeframeSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_timeframeSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
+	_timeframeSwitch.on = (_timer.after != nil && _timer.before != nil);
+	_timeframeSwitch.backgroundColor = [UIColor clearColor];
 
 	// Justplay
 	_timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -532,8 +545,17 @@ enum sectionIds
 			_timer.to = nil;
 		}
 
+		// timeframe
+		if(!_timeframeSwitch.on)
+		{
+			_timer.after = nil;
+			_timer.before = nil;
+		}
+		// no timeframe given
+		else if(_timer.after == nil || _timer.before == nil)
+			message = NSLocalizedString(@"No timeframe given.", @"");
 		// check timeframe sanity
-		if(_timer.after && _timer.before && [_timer.after compare:_timer.before] != NSOrderedAscending)
+		else if([_timer.after compare:_timer.before] != NSOrderedAscending)
 			message = NSLocalizedString(@"Timeframe has to be ascending.", @"");
 
 		_timer.enabled = _timerEnabled.on;
@@ -606,6 +628,7 @@ enum sectionIds
 	_sensitiveSearch.enabled = editing;
 	_overrideAlternatives.enabled = editing;
 	_timerJustplay.enabled = editing;
+	_timeframeSwitch.enabled = editing;
 	_timerJustplay.enabled = editing;
 	_timespanSwitch.enabled = editing;
 	_avoidDuplicateDescription.enabled = editing;
@@ -660,7 +683,9 @@ enum sectionIds
 		return;
 
 	_timer.before = newDate;
-	// TODO: change label text
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timeframeSection]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle]];
 }
 
 - (void)afterSelected: (NSDate *)newDate
@@ -669,7 +694,9 @@ enum sectionIds
 		return;
 
 	_timer.after = newDate;
-	// TODO: change label text
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timeframeSection]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle]];
 }
 
 #pragma mark -
@@ -783,6 +810,8 @@ enum sectionIds
 			return NSLocalizedString(@"Max. Duration", @"");
 		case timespanSection:
 			return NSLocalizedStringFromTable(@"Timespan", @"AutoTimer", @"section header for timespan");
+		case timeframeSection:
+			return NSLocalizedStringFromTable(@"Timeframe", @"AutoTimer", @"section header for timeframe");
 		case servicesSection:
 			return NSLocalizedStringFromTable(@"Services", @"AutoTimer", @"section header for service restriction");
 		case bouquetSection:
@@ -819,6 +848,8 @@ enum sectionIds
 			return _maxdurationSwitch.on ? 2 : 1;
 		case timespanSection:
 			return _timespanSwitch.on ? 3 : 1;
+		case timeframeSection:
+			return _timeframeSwitch.on ? 3 : 1;
 		case servicesSection:
 			return _timer.services.count + (self.editing ? 1 : 0);
 		case bouquetSection:
@@ -934,6 +965,35 @@ enum sectionIds
 				case 2:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle]];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+			}
+			break;
+		}
+		case timeframeSection:
+		{
+			switch(row)
+			{
+				case 0:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)cell).view = _timeframeSwitch;
+					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 1:
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle]];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+				case 2:
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
