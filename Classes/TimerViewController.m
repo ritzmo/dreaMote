@@ -1041,7 +1041,7 @@
 		else if(section == 4)
 		{
 			// property takes care of initialization (including navigation controller)
-			self.datePickerController.date = [_timer.begin copy];
+			self.datePickerController.date = [[_timer.begin copy] autorelease];
 			[self.datePickerController setTarget: self action: @selector(beginSelected:)];
 
 			targetViewController = self.datePickerNavigationController;
@@ -1049,7 +1049,7 @@
 		else if(section == 5)
 		{
 			// property takes care of initialization (including navigation controller)
-			self.datePickerController.date = [_timer.end copy];
+			self.datePickerController.date = [[_timer.end copy] autorelease];
 			[self.datePickerController setTarget: self action: @selector(endSelected:)];
 
 			targetViewController = self.datePickerNavigationController;
