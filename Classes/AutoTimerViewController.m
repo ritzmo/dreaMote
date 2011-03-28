@@ -1249,6 +1249,57 @@ enum sectionIds
 	}
 }
 
+- (void)tableView:(UITableView *)tv commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	UIViewController *targetViewController = nil;
+	NSInteger row = indexPath.row;
+	if(tv.editing) --row;
+
+	switch(indexPath.section)
+	{
+		case servicesSection:
+		{
+			if(editingStyle == UITableViewCellEditingStyleInsert)
+			{
+				targetViewController = self.serviceListController;
+			}
+			else
+			{
+				[_timer.services removeObjectAtIndex:row];
+				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			}
+		}
+		case bouquetSection:
+		{
+			if(editingStyle == UITableViewCellEditingStyleInsert)
+			{
+				targetViewController = self.bouquetListController;
+			}
+			else
+			{
+				[_timer.bouquets removeObjectAtIndex:row];
+				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			}
+		}
+		case filterTitleSection:
+		case filterSdescSection:
+		case filterDescSection:
+		case filterWeekdaySection:
+		default:
+			break;
+	}
+
+	if(targetViewController)
+	{
+		if(IS_IPAD())
+			[self.navigationController presentModalViewController:targetViewController animated:YES];
+		else
+			[self.navigationController pushViewController: targetViewController animated: YES];
+	}
+}
+
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger row = indexPath.row;
