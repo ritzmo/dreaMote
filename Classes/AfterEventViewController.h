@@ -21,6 +21,7 @@
 	NSUInteger _selectedItem; /*!< @brief Selected Item. */
 	id<AfterEventDelegate> _delegate; /*!< @brief Delegate. */
 	BOOL _showAuto; /*!< @brief Show "kAfterEventAuto" Item? */
+	BOOL _showDefault; /*!< @brief Show "Default Action" for kAfterEventMax? */
 }
 
 /*!
@@ -55,6 +56,11 @@
  @brief Show "kAfterEventAuto" Item?
  */
 @property (assign) BOOL showAuto;
+
+/*!
+ @brief show "Default Action"?
+ */
+@property (assign) BOOL showDefault;
 
 @end
 

@@ -59,7 +59,7 @@
 	[(UITableView *)self.view reloadData];
 }
 
--(BOOL)showAuto
+- (BOOL)showAuto
 {
 	return _showAuto;
 }
@@ -67,6 +67,17 @@
 - (void)setShowAuto:(BOOL)newShowAuto
 {
 	_showAuto = newShowAuto;
+	[(UITableView *)self.view reloadData];
+}
+
+- (BOOL)showDefault
+{
+	return _showDefault;
+}
+
+- (void)setShowDefault:(BOOL)newShowDefault
+{
+	_showDefault = newShowDefault;
 	[(UITableView *)self.view reloadData];
 }
 
@@ -123,10 +134,12 @@
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	// TODO: This is a hack - but works for now...
-	if(_showAuto)
-		return kAfterEventMax;
-	return kAfterEventAuto;
+	NSInteger rows = kAfterEventMax;
+	if(!_showAuto)
+		--rows;
+	if(_showDefault)
+		++rows;
+	return rows;
 }
 
 /* to determine which UITableViewCell to be used on a given row. */
@@ -147,7 +160,14 @@
 			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
 			break;
 		case kAfterEventAuto:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
+			if(_showAuto)
+			{
+				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
+				break;
+			}
+			/* FALL THROUGH */
+		case kAfterEventMax:
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"");
 			break;
 		default:
 			break;
