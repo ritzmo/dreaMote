@@ -456,6 +456,7 @@ enum sectionIds
 	tableView.delegate = self;
 	tableView.dataSource = self;
 	tableView.rowHeight = kUIRowHeight;
+	tableView.allowsSelectionDuringEditing = YES;
 
 	// setup our content view so that it auto-rotates along with the UViewController
 	tableView.autoresizesSubviews = YES;
@@ -1223,7 +1224,7 @@ enum sectionIds
 		case filterSdescSection:
 		case filterDescSection:
 		case filterWeekdaySection:
-			if(indexPath.row == 0)
+			if(tableView.editing && indexPath.row == 0)
 				return UITableViewCellEditingStyleInsert;
 			return UITableViewCellEditingStyleDelete;
 		default:
@@ -1248,10 +1249,89 @@ enum sectionIds
 	}
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// TODO: implement
-	return nil;
+	NSInteger row = indexPath.row;
+	UIViewController *targetViewController = nil;
+	switch(indexPath.section)
+	{
+		case timespanSection:
+		{
+			if(row == 0)
+				break;
+
+			else if(row == 1)
+			{
+				self.datePickerController.date = [[_timer.from copy] autorelease];
+				[self.datePickerController setTarget: self action: @selector(fromSelected:)];
+			}
+			else
+			{
+				self.datePickerController.date = [[_timer.to copy] autorelease];
+				[self.datePickerController setTarget: self action: @selector(toSelected:)];
+			}
+
+			targetViewController = self.datePickerNavigationController;
+			break;
+		}
+		case timeframeSection:
+		{
+			if(row == 0)
+				break;
+
+			else if(row == 1)
+			{
+				self.datePickerController.date = [[_timer.after copy] autorelease];
+				[self.datePickerController setTarget: self action: @selector(afterSelected:)];
+			}
+			else
+			{
+				self.datePickerController.date = [[_timer.before copy] autorelease];
+				[self.datePickerController setTarget: self action: @selector(beforeSelected:)];
+			}
+
+			targetViewController = self.datePickerNavigationController;
+			break;
+		}
+		case servicesSection:
+			if(self.editing && row == 0)
+				targetViewController = self.serviceListController;
+			break;
+		case bouquetSection:
+			if(self.editing && row == 0)
+				targetViewController = self.bouquetListController;
+			break;
+		case aftereventSection:
+		{
+			self.afterEventViewController.selectedItem = _timer.afterEventAction;
+			// FIXME: why gives directly assigning this an error?
+			const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
+			self.afterEventViewController.showAuto = showAuto;
+			self.afterEventViewController.showDefault = YES;
+
+			targetViewController = self.afterEventNavigationController;
+			break;
+		}
+		case locationSection:
+			targetViewController = self.locationListController;
+			break;
+		case filterTitleSection:
+		case filterSdescSection:
+		case filterDescSection:
+		case filterWeekdaySection:
+		default:
+			break;
+	}
+
+	if(targetViewController)
+	{
+		if(IS_IPAD())
+			[self.navigationController presentModalViewController:targetViewController animated:YES];
+		else
+			[self.navigationController pushViewController: targetViewController animated: YES];
+	}
+	else
+		[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -
