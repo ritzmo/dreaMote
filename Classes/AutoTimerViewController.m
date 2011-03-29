@@ -1047,7 +1047,7 @@ enum sectionIds
 			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [_timer.services objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case bouquetSection:
@@ -1070,7 +1070,7 @@ enum sectionIds
 			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [_timer.bouquets objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
 		}
 		case aftereventSection:
@@ -1215,6 +1215,9 @@ enum sectionIds
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(!tableView.editing)
+		return UITableViewCellEditingStyleNone;
+
 	// services, bouquets, filters can be removed
 	switch(indexPath.section)
 	{
