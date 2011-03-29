@@ -82,6 +82,7 @@ enum sectionIds
 	{
 		self.title = NSLocalizedString(@"AutoTimer", @"Default title of AutoTimerViewController");
 
+		_dateFormatter = [[NSDateFormatter alloc] init];
 		_creatingNewTimer = NO;
 		_bouquetListController = nil;
 		_datePickerController = nil;
@@ -113,6 +114,7 @@ enum sectionIds
 - (void)dealloc
 {
 	[_timer release];
+	[_dateFormatter release];
 	[_delegate release];
 
 	[_titleField release];
@@ -358,11 +360,9 @@ enum sectionIds
 
 - (NSString *)format_Time:(NSDate *)dateTime withDateStyle:(NSDateFormatterStyle)dateStyle
 {
-	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
-	[format setDateStyle:dateStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *dateString = [format fuzzyDate: dateTime];
-	[format release];
+	[_dateFormatter setDateStyle:dateStyle];
+	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+	NSString *dateString = [_dateFormatter fuzzyDate:dateTime];
 	return dateString;
 }
 
@@ -1192,21 +1192,36 @@ enum sectionIds
 				else
 					--row;
 			}
-			// XXX: we should translate the weekdays
 
+			NSString *text = nil;
 			if(row < _timer.includeDayOfWeek.count)
 			{
-				cell.textLabel.text = [_timer.includeDayOfWeek objectAtIndex:row];
+				text = [_timer.includeDayOfWeek objectAtIndex:row];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
-				break;
+			}
+			else
+			{
+				row -= _timer.includeDayOfWeek.count;
+				text = [_timer.excludeDayOfWeek objectAtIndex:row];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			}
 
-			row -= _timer.includeDayOfWeek.count;
-			cell.textLabel.text = [_timer.excludeDayOfWeek objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryNone;
-			break;
+			if([text isEqualToString:@"weekend"])
+			{
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Sat-Sun", @"AutoTimer", @"weekday filter");
+			}
+			else if([text isEqualToString:@"weekday"])
+			{
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Mon-Fri", @"AutoTimer", @"weekday filter");
+			}
+			else
+			{
+				NSInteger day = ([text integerValue] + 1) % 7;
+				NSString *weekday = [[_dateFormatter weekdaySymbols] objectAtIndex:day];
+				cell.textLabel.text = weekday;
+			}
 		}
 	}
 

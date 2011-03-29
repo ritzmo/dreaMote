@@ -44,6 +44,7 @@
 	AutoTimer *_timer; /*!< @brief Associated AutoTimer. */
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
+	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter. */
 
 	CellTextField *_titleCell; /*!< @brief Cell for Title. */
 	UITextField *_titleField; /*!< @brief Textfield for Title. */
