@@ -198,12 +198,12 @@
 		remoteName = @"";
 	_remoteNameTextField = [[self create_TextField] retain];
 	_remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
-	_remoteNameTextField.text = [remoteName copy];
+	_remoteNameTextField.text = [[remoteName copy] autorelease];
 
 	// Remote Address
 	_remoteAddressTextField = [[self create_TextField] retain];
 	_remoteAddressTextField.placeholder = NSLocalizedString(@"<remote address>", @"");
-	_remoteAddressTextField.text = [[_connection objectForKey: kRemoteHost] copy];
+	_remoteAddressTextField.text = [[[_connection objectForKey: kRemoteHost] copy] autorelease];
 	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
 	// Remote Port
@@ -220,12 +220,12 @@
 	// Username
 	_usernameTextField = [[self create_TextField] retain];
 	_usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
-	_usernameTextField.text = [[_connection objectForKey: kUsername] copy];
+	_usernameTextField.text = [[[_connection objectForKey: kUsername] copy] autorelease];
 
 	// Password
 	_passwordTextField = [[self create_TextField] retain];
 	_passwordTextField.placeholder = NSLocalizedString(@"<remote password>", @"");
-	_passwordTextField.text = [[_connection objectForKey: kPassword] copy];
+	_passwordTextField.text = [[[_connection objectForKey: kPassword] copy] autorelease];
 	_passwordTextField.secureTextEntry = YES;
 
 	// Connector
