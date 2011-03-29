@@ -119,6 +119,7 @@
 	NSObject<TimerProtocol> *ourCopy = [ourTimer copy];
 	timerViewController.oldTimer = ourCopy;
 	timerViewController.creatingNewTimer = NO;
+	[ourCopy release];
 
 	return timerViewController;
 }
