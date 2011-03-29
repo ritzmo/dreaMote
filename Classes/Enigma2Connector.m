@@ -181,7 +181,7 @@ enum enigma2MessageTypes {
 		const NSArray *resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2state" error:nil];
 		for(CXMLElement *currentChild in resultNodes)
 		{
-			if([[currentChild stringValue] isEqualToString: @"True"])
+			if([[currentChild stringValue] boolValue])
 			{
 				result.result = YES;
 			}
@@ -614,13 +614,19 @@ enum enigma2MessageTypes {
 	[timerString appendString:@"&services="];
 	if(changeTimer.services.count)
 	{
-		[timerString appendString:[[changeTimer.services componentsJoinedByString:@","] urlencode]];
+		for(NSObject<ServiceProtocol> *service in changeTimer.services)
+		{
+			[timerString appendFormat:@"%@,", [service.sref urlencode]];
+		}
 	}
 
 	[timerString appendString:@"&bouquets="];
-	if(changeTimer.services.count)
+	if(changeTimer.bouquets.count)
 	{
-		[timerString appendString:[[changeTimer.services componentsJoinedByString:@","] urlencode]];
+		for(NSObject<ServiceProtocol> *service in changeTimer.bouquets)
+		{
+			[timerString appendFormat:@"%@,", [service.sref urlencode]];
+		}
 	}
 
 	if(changeTimer.includeTitle.count)
