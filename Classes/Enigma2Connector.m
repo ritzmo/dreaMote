@@ -53,8 +53,7 @@ enum enigma2MessageTypes {
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
 	return
-		(feature != kFeaturesMessageCaption) &&
-		(feature != kFeaturesStreaming);
+		(feature != kFeaturesMessageCaption);
 }
 
 - (const NSUInteger const)getMaxVolume
