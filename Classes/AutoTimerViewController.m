@@ -1603,8 +1603,7 @@ enum sectionIds
 		else
 			[self.navigationController pushViewController: targetViewController animated:YES];
 	}
-	else
-		[tv deselectRowAtIndexPath:indexPath animated:YES];
+	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -
