@@ -65,6 +65,8 @@ enum sectionIds
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (nonatomic, readonly) UIViewController *bouquetListController;
+@property (nonatomic, readonly) UINavigationController *filterNavigationController;
+@property (nonatomic, readonly) AutoTimerFilterViewController *filterViewController;
 @property (nonatomic, readonly) UIViewController *serviceListController;
 @property (nonatomic, readonly) DatePickerController *datePickerController;
 @property (nonatomic, readonly) UIViewController *datePickerNavigationController;
@@ -140,6 +142,8 @@ enum sectionIds
 	[_datePickerController release];
 	[_datePickerNavigationController release];
 	[_locationListController release];
+	[_filterViewController release];
+	[_filterNavigationController release];
 
 	[super dealloc];
 }
@@ -153,6 +157,8 @@ enum sectionIds
 	[_datePickerController release];
 	[_datePickerNavigationController release];
 	[_locationListController release];
+	[_filterViewController release];
+	[_filterNavigationController release];
 
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
@@ -161,6 +167,8 @@ enum sectionIds
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
 	_locationListController = nil;
+	_filterViewController = nil;
+	_filterNavigationController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -269,6 +277,31 @@ enum sectionIds
 	if(_datePickerController == nil)
 		_datePickerController = [[DatePickerController alloc] init];
 	return _datePickerController;
+}
+
+- (UIViewController *)filterNavigationController
+{
+	if(IS_IPAD())
+	{
+		if(_filterNavigationController == nil)
+		{
+			_filterNavigationController = [[UINavigationController alloc] initWithRootViewController:self.filterViewController];
+			_filterNavigationController.modalPresentationStyle = _filterViewController.modalPresentationStyle;
+			_filterNavigationController.modalTransitionStyle = _filterViewController.modalTransitionStyle;
+		}
+		return _filterNavigationController;
+	}
+	return _filterViewController;
+}
+
+- (AutoTimerFilterViewController *)filterViewController
+{
+	if(_filterViewController == nil)
+	{
+		_filterViewController = [[AutoTimerFilterViewController alloc] init];
+		[_filterViewController setDelegate:self];
+	}
+	return _filterViewController;
 }
 
 - (UIViewController *)locationListController
@@ -814,6 +847,17 @@ enum sectionIds
 }
 
 #pragma mark -
+#pragma mark AutoTimerFilterDelegate
+#pragma mark -
+
+- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include
+{
+	if(newFilter == nil)
+		return;
+	// TODO: implement
+}
+
+#pragma mark -
 #pragma mark UITableView delegates
 #pragma mark -
 
@@ -1304,9 +1348,73 @@ enum sectionIds
 			break;
 		}
 		case filterTitleSection:
+		{
+			if(editingStyle == UITableViewCellEditingStyleInsert)
+			{
+				targetViewController = self.filterNavigationController;
+				self.filterViewController.filterType = autoTimerWhereTitle;
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				[_timer.includeTitle removeObjectAtIndex:row];
+				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			}
+			break;
+		}
 		case filterSdescSection:
+		{
+			if(editingStyle == UITableViewCellEditingStyleInsert)
+			{
+				targetViewController = self.filterNavigationController;
+				self.filterViewController.filterType = autoTimerWhereShortdescription;
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				[_timer.includeShortdescription removeObjectAtIndex:row];
+				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			}
+			break;
+		}
 		case filterDescSection:
+		{
+			if(editingStyle == UITableViewCellEditingStyleInsert)
+			{
+				targetViewController = self.filterNavigationController;
+				self.filterViewController.filterType = autoTimerWhereDescription;
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				[_timer.includeDescription removeObjectAtIndex:row];
+				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			}
+			break;
+		}
 		case filterWeekdaySection:
+		{
+			if(editingStyle == UITableViewCellEditingStyleInsert)
+			{
+				targetViewController = self.filterNavigationController;
+				self.filterViewController.filterType = autoTimerWhereDescription;
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				[_timer.includeDayOfWeek removeObjectAtIndex:row];
+				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			}
+			break;
+		}
 		default:
 			break;
 	}
@@ -1316,13 +1424,13 @@ enum sectionIds
 		if(IS_IPAD())
 			[self.navigationController presentModalViewController:targetViewController animated:YES];
 		else
-			[self.navigationController pushViewController: targetViewController animated: YES];
+			[self.navigationController pushViewController: targetViewController animated:YES];
 	}
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger row = indexPath.row;
+	NSUInteger row = indexPath.row;
 	UIViewController *targetViewController = nil;
 	switch(indexPath.section)
 	{
@@ -1389,9 +1497,101 @@ enum sectionIds
 			targetViewController = self.locationListController;
 			break;
 		case filterTitleSection:
+		{
+			targetViewController = self.filterNavigationController;
+			self.filterViewController.filterType = autoTimerWhereTitle;
+			if(self.editing && row-- == 0)
+			{
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				if(row < _timer.includeTitle.count)
+				{
+					self.filterViewController.currentText = [_timer.includeTitle objectAtIndex:row];
+					self.filterViewController.include = YES;
+					break;
+				}
+
+				row -= _timer.includeTitle.count;
+				self.filterViewController.currentText = [_timer.excludeTitle objectAtIndex:row];
+				self.filterViewController.include = NO;
+			}
+			break;
+		}
 		case filterSdescSection:
+		{
+			targetViewController = self.filterNavigationController;
+			self.filterViewController.filterType = autoTimerWhereShortdescription;
+			if(self.editing && row-- == 0)
+			{
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				if(row < _timer.includeShortdescription.count)
+				{
+					self.filterViewController.currentText = [_timer.includeShortdescription objectAtIndex:row];
+					self.filterViewController.include = YES;
+					break;
+				}
+
+				row -= _timer.includeShortdescription.count;
+				self.filterViewController.currentText = [_timer.excludeShortdescription objectAtIndex:row];
+				self.filterViewController.include = NO;
+			}
+			break;
+		}
 		case filterDescSection:
+		{
+			targetViewController = self.filterNavigationController;
+			self.filterViewController.filterType = autoTimerWhereDescription;
+			if(self.editing && row-- == 0)
+			{
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				if(row < _timer.includeDescription.count)
+				{
+					self.filterViewController.currentText = [_timer.includeDescription objectAtIndex:row];
+					self.filterViewController.include = YES;
+					break;
+				}
+
+				row -= _timer.includeDescription.count;
+				self.filterViewController.currentText = [_timer.excludeDescription objectAtIndex:row];
+				self.filterViewController.include = NO;
+			}
+			break;
+		}
 		case filterWeekdaySection:
+		{
+			targetViewController = self.filterNavigationController;
+			self.filterViewController.filterType = autoTimerWhereDayOfWeek;
+			if(self.editing && row-- == 0)
+			{
+				self.filterViewController.currentText = nil;
+				self.filterViewController.include = YES;
+			}
+			else
+			{
+				if(row < _timer.includeDayOfWeek.count)
+				{
+					self.filterViewController.currentText = [_timer.includeDayOfWeek objectAtIndex:row];
+					self.filterViewController.include = YES;
+					break;
+				}
+
+				row -= _timer.includeDayOfWeek.count;
+				self.filterViewController.currentText = [_timer.excludeDayOfWeek objectAtIndex:row];
+				self.filterViewController.include = NO;
+			}
+			break;
+		}
 		default:
 			break;
 	}
@@ -1401,7 +1601,7 @@ enum sectionIds
 		if(IS_IPAD())
 			[self.navigationController presentModalViewController:targetViewController animated:YES];
 		else
-			[self.navigationController pushViewController: targetViewController animated: YES];
+			[self.navigationController pushViewController: targetViewController animated:YES];
 	}
 	else
 		[tv deselectRowAtIndexPath:indexPath animated:YES];
@@ -1471,16 +1671,22 @@ enum sectionIds
 	[_afterEventNavigationController release];
 	[_afterEventViewController release];
 	[_bouquetListController release];
+	[_serviceListController release];
 	[_datePickerController release];
 	[_datePickerNavigationController release];
 	[_locationListController release];
+	[_filterViewController release];
+	[_filterNavigationController release];
 
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
+	_serviceListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
 	_locationListController = nil;
+	_filterViewController = nil;
+	_filterNavigationController = nil;
 }
 
 #pragma mark -
