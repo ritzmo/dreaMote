@@ -449,6 +449,7 @@
 		DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
 		DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
+		DAD242BF1344F2DB00954512 /* AutoTimerFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD242BE1344F2DB00954512 /* AutoTimerFilterViewController.m */; };
 		DAD39A1F1332A55400BA4FB8 /* AutoTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */; };
 		DAD51A480D82E6BE00A769F3 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAD51CD0133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51CCF133938EB0008CBC7 /* UITableViewCell+EasyInit.m */; };
@@ -861,6 +862,8 @@
 		DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerMetadataCell.h; sourceTree = "<group>"; };
 		DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerMetadataCell.m; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
+		DAD242BD1344F2DB00954512 /* AutoTimerFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerFilterViewController.h; sourceTree = "<group>"; };
+		DAD242BE1344F2DB00954512 /* AutoTimerFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerFilterViewController.m; sourceTree = "<group>"; };
 		DAD39A1D1332A55400BA4FB8 /* AutoTimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerXMLReader.h; sourceTree = "<group>"; };
 		DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerXMLReader.m; sourceTree = "<group>"; };
 		DAD51A390D82E34C00A769F3 /* RemoteConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteConnector.h; sourceTree = "<group>"; };
@@ -1551,6 +1554,8 @@
 				DAFBA47D12D8F8870059B5C4 /* AboutViewController.m */,
 				DAA2222A0E998CE900DD749C /* AfterEventViewController.h */,
 				DAA2222B0E998CE900DD749C /* AfterEventViewController.m */,
+				DAD242BD1344F2DB00954512 /* AutoTimerFilterViewController.h */,
+				DAD242BE1344F2DB00954512 /* AutoTimerFilterViewController.m */,
 				DA0119221335051A00F1910F /* AutoTimerViewController.h */,
 				DA0119231335051A00F1910F /* AutoTimerViewController.m */,
 				DAFE42A10E94220800896017 /* ConfigViewController.h */,
@@ -2077,6 +2082,7 @@
 				DA0119201334D59800F1910F /* AutoTimerListController.m in Sources */,
 				DA0119241335051A00F1910F /* AutoTimerViewController.m in Sources */,
 				DAD51CD0133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */,
+				DAD242BF1344F2DB00954512 /* AutoTimerFilterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
