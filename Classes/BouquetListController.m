@@ -189,6 +189,8 @@
 		self.navigationItem.rightBarButtonItem = button;
 		[button release];
 	}
+	else
+		self.navigationItem.rightBarButtonItem = nil;
 
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)
