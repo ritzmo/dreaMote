@@ -13,6 +13,13 @@
 #import "Objects/LocationProtocol.h"
 #import "UITableViewCell+EasyInit.h"
 
+@interface LocationListController()
+/*!
+ @brief done editing
+ */
+- (void)doneAction:(id)sender;
+@end
+
 @implementation LocationListController
 
 @synthesize movieListController = _movieListController;
@@ -85,9 +92,28 @@
 	_tableView.sectionHeaderHeight = 0;
 }
 
+/* cancel in delegate mode */
+- (void)doneAction:(id)sender
+{
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
+}
+
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	if(_delegate)
+	{
+		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+																				target:self action:@selector(doneAction:)];
+		self.navigationItem.rightBarButtonItem = button;
+		[button release];
+	}
+	else
+		self.navigationItem.rightBarButtonItem = nil;
+
 	// Refresh cache if we have a cleared one
 	if(_refreshLocations && !_reloading)
 	{
