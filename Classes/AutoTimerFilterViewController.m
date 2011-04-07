@@ -15,6 +15,12 @@
 
 @interface AutoTimerFilterViewController()
 /*!
+ @brief stop editing
+ @param sender ui element
+ */
+- (void)cancelEdit:(id)sender;
+
+/*!
  @brief done editing
  */
 - (void)doneAction:(id)sender;
@@ -81,6 +87,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[_cancelButtonItem release];
 	[currentText release];
 	[filterTextfield release];
 
@@ -103,6 +110,12 @@
 	self.view = tableView;
 	[tableView release];
 
+	_cancelButtonItem = [[UIBarButtonItem alloc]
+						 initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+						 target: self
+						 action: @selector(cancelEdit:)];
+	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
+
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
@@ -123,13 +136,41 @@
 	filterTextfield.placeholder = NSLocalizedStringFromTable(@"<filter text>", @"AutoTimer", @"Placeholder of Textfield in Filter Editor");
 }
 
-/* finish */
-- (void)doneAction:(id)sender
+/* cancel */
+- (void)cancelEdit:(id)sender
 {
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	else
 		[self.navigationController popViewControllerAnimated: YES];
+}
+
+/* finish */
+- (void)doneAction:(id)sender
+{
+	if(_delegate != nil)
+	{
+		SEL mySel = @selector(filterSelected:filterType:include:);
+		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
+		if(sig)
+		{
+			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+			NSString *text = nil;
+			[invocation retainArguments];
+			[invocation setTarget:_delegate];
+			[invocation setSelector:mySel];
+			[invocation setArgument:&text atIndex:2];
+			[invocation setArgument:&filterType atIndex:3];
+			[invocation setArgument:&include atIndex:4];
+			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+									  waitUntilDone:NO];
+		}
+	}
+
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
 }
 
 /* rotate with device */
@@ -285,31 +326,6 @@
 	 is not in this case.
 	 */
 	_delegate = delegate;
-}
-
-#pragma mark - UIViewController delegate methods
-
-/* about to disappear */
-- (void)viewWillDisappear:(BOOL)animated
-{
-	if(_delegate != nil)
-	{
-		SEL mySel = @selector(filterSelected:filterType:include:);
-		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
-		if(sig)
-		{
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			NSString *text = nil;
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:mySel];
-			[invocation setArgument:&text atIndex:2];
-			[invocation setArgument:&filterType atIndex:3];
-			[invocation setArgument:&include atIndex:4];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
-	}
 }
 
 @end

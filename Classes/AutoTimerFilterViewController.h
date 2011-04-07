@@ -23,6 +23,7 @@
 	id<AutoTimerFilterDelegate> _delegate; /*!< @brief Delegate. */
 	autoTimerWhereType filterType; /*!< @brief Current mode. */
 	BOOL include; /*!< @brief Include Filter? */
+	UIBarButtonItem *_cancelButtonItem; /*!< @brief Cancel button. */
 }
 
 /*!
