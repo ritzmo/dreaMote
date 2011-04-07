@@ -8,11 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum
-{
-	AutoTimerFilterTypeText,
-	AutoTimerFilterTypeWeekday,
-} AutoTimerFilterType;
+#import "Objects/Generic/AutoTimer.h"
 
 @protocol AutoTimerFilterDelegate;
 
@@ -25,7 +21,7 @@ typedef enum
 	UITextField *filterTextfield; /*!< @brief Filter Label. */
 	NSString *currentText; /*!< @brief Current Filter string. */
 	id<AutoTimerFilterDelegate> _delegate; /*!< @brief Delegate. */
-	AutoTimerFilterType filterType; /*!< @brief Current mode. */
+	autoTimerWhereType filterType; /*!< @brief Current mode. */
 	BOOL include; /*!< @brief Include Filter? */
 }
 
@@ -46,7 +42,7 @@ typedef enum
 /*!
  @brief Change Type.
  */
-@property (nonatomic, assign) AutoTimerFilterType filterType;
+@property (nonatomic, assign) autoTimerWhereType filterType;
 
 /*!
  @brief Include Filter?
@@ -68,8 +64,9 @@ typedef enum
  @brief Filter was selected.
  
  @param newFilter Filter text
+ @param filterType Type of filter.
  @param include Include Filter?
  */
-- (void)filterSelected:(NSString *)newFilter include:(BOOL)include;
+- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include;
 
 @end

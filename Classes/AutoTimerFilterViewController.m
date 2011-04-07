@@ -66,12 +66,12 @@
 	[(UITableView *)self.view reloadData];
 }
 
-- (AutoTimerFilterType)filterType
+- (autoTimerWhereType)filterType
 {
 	return filterType;
 }
 
-- (void)setFilterType:(AutoTimerFilterType)newFilterType
+- (void)setFilterType:(autoTimerWhereType)newFilterType
 {
 	if(filterType == newFilterType) return;
 	filterType = newFilterType;
@@ -157,9 +157,9 @@
 	if(section == 0)
 		return 2;
 
-	if(filterType == AutoTimerFilterTypeText)
-		return 1;
-	return 9;
+	if(filterType == autoTimerWhereDayOfWeek)
+		return 9;
+	return 1;
 }
 
 /* to determine which UITableViewCell to be used on a given row. */
@@ -181,12 +181,7 @@
 			cell.accessoryType = include ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
 		}
 	}
-	else if(filterType == AutoTimerFilterTypeText)
-	{
-		cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
-		((DisplayCell *)cell).view = filterTextfield;
-	}
-	else
+	else if(filterType == autoTimerWhereDayOfWeek)
 	{
 		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 		switch(indexPath.row)
@@ -231,6 +226,11 @@
 				break;
 		}
 	}
+	else 
+	{
+		cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+		((DisplayCell *)cell).view = filterTextfield;
+	}
 	return cell;
 }
 
@@ -248,7 +248,7 @@
 		cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:include?0:1 inSection:0]];
 		include = !include;
 	}
-	else if(filterType == AutoTimerFilterTypeWeekday)
+	else if(filterType == autoTimerWhereDayOfWeek)
 	{
 		NSInteger selectedItem;
 		if([currentText isEqualToString:@"weekend"])
@@ -294,7 +294,7 @@
 {
 	if(_delegate != nil)
 	{
-		SEL mySel = @selector(filterSelected:include:);
+		SEL mySel = @selector(filterSelected:filterType:include:);
 		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
 		if(sig)
 		{
@@ -304,7 +304,8 @@
 			[invocation setTarget:_delegate];
 			[invocation setSelector:mySel];
 			[invocation setArgument:&text atIndex:2];
-			[invocation setArgument:&include atIndex:3];
+			[invocation setArgument:&filterType atIndex:3];
+			[invocation setArgument:&include atIndex:4];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 									  waitUntilDone:NO];
 		}
