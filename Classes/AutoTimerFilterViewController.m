@@ -156,6 +156,15 @@
 		{
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 			NSString *text = nil;
+
+			if(filterType == autoTimerWhereDayOfWeek)
+				text = currentText;
+			else
+				text = filterTextfield.text;
+
+			if([text isEqualToString:@""])
+				text = nil;
+
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];
 			[invocation setSelector:mySel];
