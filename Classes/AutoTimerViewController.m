@@ -1287,6 +1287,7 @@ enum sectionIds
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						  withRowAnimation:UITableViewRowAnimationFade];
 			}
+			break;
 		}
 		case bouquetSection:
 		{
@@ -1300,6 +1301,7 @@ enum sectionIds
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						  withRowAnimation:UITableViewRowAnimationFade];
 			}
+			break;
 		}
 		case filterTitleSection:
 		case filterSdescSection:
