@@ -1340,6 +1340,7 @@ enum sectionIds
 				[self.datePickerController setTarget: self action: @selector(toSelected:)];
 			}
 
+			[self.datePickerController setDatePickerMode:UIDatePickerModeTime];
 			targetViewController = self.datePickerNavigationController;
 			break;
 		}
@@ -1359,6 +1360,7 @@ enum sectionIds
 				[self.datePickerController setTarget: self action: @selector(beforeSelected:)];
 			}
 
+			[self.datePickerController setDatePickerMode:UIDatePickerModeDateAndTime];
 			targetViewController = self.datePickerNavigationController;
 			break;
 		}
