@@ -31,6 +31,12 @@
 - (void)cleanupTimers:(id)sender;
 @end
 
+/*!
+ @brief Mapping Section<->State
+ We use this array to map incoming timer states to sections and
+ sections back to timer states.
+ */
+static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrepared, kTimerStateWaiting, kTimerStateFinished};
 
 @implementation TimerListController
 
@@ -289,7 +295,7 @@
 /* add timer to list */
 - (void)addTimer: (NSObject<TimerProtocol> *)newTimer
 {
-	NSUInteger state = newTimer.state;
+	NSUInteger state = stateMap[newTimer.state];
 	NSUInteger index = _dist[state];
 
 	[_timers insertObject: newTimer atIndex: index];
@@ -393,16 +399,21 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 	if(section == 0)
 		return nil;
-	--section;
+	NSUInteger state = stateMap[--section];
 
-	if(section == kTimerStateWaiting)
-		return NSLocalizedString(@"Waiting", @"Timer type");
-	else if(section == kTimerStatePrepared)
-		return NSLocalizedString(@"Prepared", @"Timer type");
-	else if (section == kTimerStateRunning)
-		return NSLocalizedString(@"Running", @"Timer type");
-	else
-		return NSLocalizedString(@"Finished", @"Timer type");
+	switch(state)
+	{
+		case kTimerStateWaiting:
+			return NSLocalizedString(@"Waiting", @"Timer type");
+		case kTimerStatePrepared:
+			return NSLocalizedString(@"Prepared", @"Timer type");
+		case kTimerStateRunning:
+			return NSLocalizedString(@"Running", @"Timer type");
+		case kTimerStateFinished:
+			return NSLocalizedString(@"Finished", @"Timer type");
+		default:
+			return nil;
+	}
 }
 
 /* rows in section */
