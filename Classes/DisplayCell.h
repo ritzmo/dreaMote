@@ -52,12 +52,11 @@ extern NSString *kDisplayCell_ID;
 
 @interface DisplayCell : UITableViewCell
 {
-	UILabel	*nameLabel;
 	UIView	*view;
 }
 
 @property (nonatomic, retain) UIView *view;
-@property (nonatomic, retain) UILabel *nameLabel;
+@property (nonatomic, readonly) UILabel *nameLabel;
 
 - (void)setView:(UIView *)inView;
 

@@ -55,7 +55,6 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 
 @implementation DisplayCell
 
-@synthesize nameLabel;
 @synthesize view;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -64,16 +63,19 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	{
 		// turn off selection use
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
-		
-		nameLabel = [[UILabel alloc] initWithFrame: CGRectNull];
-		nameLabel.backgroundColor = [UIColor clearColor];
-		nameLabel.opaque = NO;
-		nameLabel.textColor = [UIColor blackColor];
-		nameLabel.highlightedTextColor = [UIColor blackColor];
-		nameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-		[self.contentView addSubview:nameLabel];
+
+		self.textLabel.backgroundColor = [UIColor clearColor];
+		self.textLabel.opaque = NO;
+		self.textLabel.textColor = [UIColor blackColor];
+		self.textLabel.highlightedTextColor = [UIColor blackColor];
+		self.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 	}
 	return self;
+}
+
+- (UILabel *)nameLabel
+{
+	return self.textLabel;
 }
 
 - (void)setView:(UIView *)inView
@@ -83,8 +85,8 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	view = inView;
 	[self.view retain];
 	[self.contentView addSubview:inView];
-	
-	[self layoutSubviews];
+
+	[self setNeedsDisplay];
 }
 
 - (void)layoutSubviews
@@ -93,9 +95,9 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
     CGRect contentRect = [self.contentView bounds];
 	
 	// In this example we will never be editing, but this illustrates the appropriate pattern
-	CGRect frame = CGRectMake(contentRect.origin.x + kCellLeftOffset, kCellTopOffset, contentRect.size.width, kCellHeight);
-	nameLabel.frame = frame;
-	
+	CGRect frame = CGRectMake(contentRect.origin.x + kCellLeftOffset, kCellTopOffset, contentRect.size.width - (2 * kCellLeftOffset), kCellHeight);
+	self.textLabel.frame = frame;
+
 	if ([view isKindOfClass:[UIPageControl class]])
 	{
 		// special case UIPageControl since its width changes after its creation
@@ -113,18 +115,9 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 
 - (void)dealloc
 {
-	[nameLabel release];
 	[view release];
 	
     [super dealloc];
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-	[super setSelected:selected animated:animated];
-
-	// when the selected state changes, set the highlighted state of the lables accordingly
-	nameLabel.highlighted = selected;
 }
 
 @end
