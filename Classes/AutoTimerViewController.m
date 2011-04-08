@@ -973,32 +973,26 @@ enum sectionIds
 				case 0:
 					((DisplayCell *)cell).view = _timerEnabled;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 1:
 					((DisplayCell *)cell).view = _exactSearch;
 					cell.textLabel.text = NSLocalizedString(@"Exact Title", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 2:
 					((DisplayCell *)cell).view = _sensitiveSearch;
 					cell.textLabel.text = NSLocalizedString(@"Case-Sensitive", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 3:
 					((DisplayCell *)cell).view = _overrideAlternatives;
 					cell.textLabel.text = NSLocalizedString(@"Prefer Alternatives", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 4:
 					((DisplayCell *)cell).view = _timerJustplay;
 					cell.textLabel.text = NSLocalizedString(@"Justplay", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 5:
 					((DisplayCell *)cell).view = _avoidDuplicateDescription;
 					cell.textLabel.text = NSLocalizedString(@"Unique Description", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					/* FALL THROUGH */
 				default:
 					break;
@@ -1011,7 +1005,6 @@ enum sectionIds
 				cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 				((DisplayCell *)cell).view = _maxdurationSwitch;
 				cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
-				cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			}
 			else
 			{
@@ -1029,7 +1022,6 @@ enum sectionIds
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timespanSwitch;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 1:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
@@ -1056,7 +1048,6 @@ enum sectionIds
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timeframeSwitch;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
-					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 1:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
