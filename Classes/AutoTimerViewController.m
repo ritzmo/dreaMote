@@ -393,9 +393,15 @@ enum sectionIds
 
 - (NSString *)format_Time:(NSDate *)dateTime withDateStyle:(NSDateFormatterStyle)dateStyle
 {
-	[_dateFormatter setDateStyle:dateStyle];
-	[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-	NSString *dateString = [_dateFormatter fuzzyDate:dateTime];
+	NSString *dateString = nil;
+	if(dateTime)
+	{
+		[_dateFormatter setDateStyle:dateStyle];
+		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		dateString = [_dateFormatter fuzzyDate:dateTime];
+	}
+	else
+		dateString = NSLocalizedStringFromTable(@"unset", @"AutoTimer", @"option (e.g. timespan or timeframe) unset");
 	return dateString;
 }
 
