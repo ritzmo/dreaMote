@@ -66,6 +66,10 @@
 {
 	if([_date isEqual:new]) return;
 
+	// ensure there is a date
+	if(!new)
+		new = [NSDate date];
+
 	[_date release];
 	_date = [new retain];
 
