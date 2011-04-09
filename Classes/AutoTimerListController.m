@@ -301,6 +301,7 @@
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delAutoTimer:timer];
 		if(result.result)
 		{
+			[_autotimers removeObjectAtIndex: index];
 			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 								 withRowAnimation:UITableViewRowAnimationFade];
 		}
