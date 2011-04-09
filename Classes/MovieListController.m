@@ -25,6 +25,7 @@
  @brief Popover Controller.
  */
 @property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, assign) BOOL sortTitle;
 @end
 
 @implementation MovieListController
@@ -39,6 +40,7 @@
 	{
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray array] retain];
+		_characters = [[NSMutableDictionary alloc] init];
 		_refreshMovies = YES;
 		_isSplit = NO;
 
@@ -63,9 +65,12 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_movies release];
+	[_characters release];
+	[_currentKeys release];
 	[_dateFormatter release];
 	[_movieViewController release];
 	[_movieXMLDoc release];
+	[_sortButton release];
 
 	[super dealloc];
 }
@@ -81,25 +86,25 @@
 {
 	if(_currentLocation == newLocation ||
 	   [_currentLocation isEqualToString: newLocation]) return;
-	
+
 	// Free old bouquet, retain new one
 	[_currentLocation release];
 	_currentLocation = [newLocation retain];
-	
+
 	// Set Title
 	if(newLocation)
 		self.title = newLocation;
 	else
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
-	
+
 	// Free Caches and reload data
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
-	
+
 	// Eventually remove popover
 	if(self.popoverController != nil) {
-        [self.popoverController dismissPopoverAnimated:YES];
-    }
+		[self.popoverController dismissPopoverAnimated:YES];
+	}
 
 	_refreshMovies = NO;
 	// Spawn a thread to fetch the movie data so that the UI is not blocked while the
@@ -157,7 +162,7 @@
 	if(IS_IPHONE())
 		self.movieViewController = nil;
 
-    [super didReceiveMemoryWarning];
+	[super didReceiveMemoryWarning];
 }
 
 /* (un)set editing */
@@ -238,6 +243,48 @@
 		_movieViewController.movie = nil;
 }
 
+- (BOOL)sortTitle
+{
+	return _sortTitle;
+}
+
+- (void)setSortTitle:(BOOL)newSortTitle
+{
+	if(!_movies.count) return;
+
+	_sortTitle = newSortTitle;
+	if(newSortTitle)
+	{
+		NSArray *arr = nil;
+		[_characters removeAllObjects];
+
+		for(NSString *index in [NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil ])
+		{
+			NSPredicate *pred = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"title beginswith[c] '%@'", index]];
+			arr = [_movies filteredArrayUsingPredicate:pred];
+			if(arr.count)
+				[_characters setValue:[_movies filteredArrayUsingPredicate:pred] forKey:index];
+		}
+		NSPredicate *pred = [NSPredicate predicateWithFormat:@"title matches '(\\\\d|\\\\s).*'"];
+		arr = [_movies filteredArrayUsingPredicate:pred];
+		if(arr.count)
+			[_characters setValue:arr forKey:@"#"];
+
+		[_currentKeys release];
+		_currentKeys = [[[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] retain];
+	}
+}
+
+- (void)switchSort:(id)sender
+{
+	self.sortTitle = !_sortTitle;
+	if(_sortTitle)
+		_sortButton.title = NSLocalizedString(@"Sort by time", @"Sort (movies) by time");
+	else
+		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
+	[_tableView reloadData];
+}
+
 /* layout */
 - (void)loadView
 {
@@ -245,7 +292,12 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kUIRowHeight;
-	_tableView.sectionHeaderHeight = 0;
+
+	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(switchSort:)];
+	if(_sortTitle)
+		_sortButton.title = NSLocalizedString(@"Sort by time", @"Sort (movies) by time");
+	else
+		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
@@ -264,10 +316,20 @@
 /* remove content data */
 - (void)emptyData
 {
-	// Clean event list
+	// Clean movie list(s)
+	[_characters removeAllObjects];
 	[_movies removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_currentKeys release];
+	_currentKeys = nil;
+	if(_sortTitle)
+	{
+		[_tableView reloadData];
+	}
+	else
+	{
+		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	}
 	[_movieXMLDoc release];
 	_movieXMLDoc = nil;
 }
@@ -316,6 +378,21 @@
 	}
 }
 
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	if(_sortTitle)
+	{
+		self.sortTitle = _sortTitle;
+		_reloading = NO;
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+		[_tableView reloadData];
+	}
+	else
+	{
+		[super dataSourceDelegate:dataSource finishedParsingDocument:document];
+	}
+}
+
 #pragma mark -
 #pragma mark MovieSourceDelegate methods
 #pragma mark -
@@ -325,8 +402,9 @@
 {
 	const NSUInteger idx = _movies.count;
 	[_movies addObject: movie];
-	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-					  withRowAnimation: UITableViewRowAnimationLeft];
+	if(!_sortTitle)
+		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
+						  withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark	-
@@ -339,8 +417,14 @@
 	MovieTableViewCell *cell = [MovieTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMovieCell_ID];
 
 	cell.formatter = _dateFormatter;
-	cell.movie = [_movies objectAtIndex:indexPath.row];
-	
+	if(_sortTitle)
+	{
+		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
+		cell.movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+	}
+	else
+		cell.movie = [_movies objectAtIndex:indexPath.row];
+
 	return cell;
 }
 
@@ -363,9 +447,55 @@
 	return indexPath;
 }
 
-/* row count */
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+/* number of sections */
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	if(_sortTitle)
+	{
+		return [_currentKeys count];
+	}
+	return 1;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	if(_sortTitle)
+		return [_currentKeys objectAtIndex:section];
+	return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+#ifndef defaultSectionHeaderHeight
+#define defaultSectionHeaderHeight 34
+#endif
+	if(_sortTitle)
+		return defaultSectionHeaderHeight;
+	return 0;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+	if(_sortTitle)
+	{
+		return _currentKeys;
+	}
+	return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+	return index; // XXX: wtf?
+}
+
+/* row count */
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	if(_sortTitle)
+	{
+		NSString *key = [_currentKeys objectAtIndex:section];
+		return ((NSArray *)[_characters valueForKey:key]).count;
+	}
 	return [_movies count];
 }
 
@@ -377,7 +507,7 @@
 
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{	
+{
 	const NSInteger index = indexPath.row;
 	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: index];
 
@@ -389,7 +519,7 @@
 	{
 
 		[_movies removeObjectAtIndex: index];
-			
+
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 								withRowAnimation: UITableViewRowAnimationFade];
 	}

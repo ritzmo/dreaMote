@@ -31,11 +31,15 @@
 	UIPopoverController *popoverController;
 	NSMutableArray *_movies; /*!< @brief Movie List. */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
+	UIBarButtonItem *_sortButton; /*!< @brief Sort Button. */
+	NSArray *_currentKeys; /*!< @brief Cached keys. */
+	NSMutableDictionary *_characters; /*!< @brief First characters -> movies for current list. */
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
 	CXMLDocument *_movieXMLDoc; /*!< Current Movie XML Document. */
 	BOOL _refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
 	BOOL _isSplit; /*!< @brief Split mode? */	
+	BOOL _sortTitle; /*!< @brief Sort by title? */
 
 	NSString *_currentLocation; /*!< @brief Current Location. */
 }
