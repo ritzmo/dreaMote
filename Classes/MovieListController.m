@@ -263,12 +263,12 @@
 			NSPredicate *pred = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"title beginswith[c] '%@'", index]];
 			arr = [_movies filteredArrayUsingPredicate:pred];
 			if(arr.count)
-				[_characters setValue:[_movies filteredArrayUsingPredicate:pred] forKey:index];
+				[_characters setValue:[arr sortedArrayUsingSelector:@selector(titleCompare:)] forKey:index];
 		}
 		NSPredicate *pred = [NSPredicate predicateWithFormat:@"title matches '(\\\\d|\\\\s).*'"];
 		arr = [_movies filteredArrayUsingPredicate:pred];
 		if(arr.count)
-			[_characters setValue:arr forKey:@"#"];
+			[_characters setValue:[arr sortedArrayUsingSelector:@selector(titleCompare:)] forKey:@"#"];
 
 		[_currentKeys release];
 		_currentKeys = [[[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] retain];
