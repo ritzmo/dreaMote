@@ -12,6 +12,8 @@
 #import "UITableViewCell+EasyInit.h"
 #import "RemoteConnectorObject.h"
 
+#import "Objects/Generic/Result.h"
+
 @implementation AutoTimerListController
 
 @synthesize isSplit = _isSplit;
@@ -102,10 +104,21 @@
 {
 	// Clean event list
 	[_autotimers removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:1];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[_curDocument release];
 	_curDocument = nil;
+}
+
+#pragma mark -
+#pragma mark DataSourceDelegate
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -116,7 +129,7 @@
 {
 	const NSUInteger idx = _autotimers.count;
 	[_autotimers addObject:at];
-	[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
+	[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:1]]
 					  withRowAnimation:UITableViewRowAnimationLeft];
 }
 
@@ -130,6 +143,31 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kServiceCellHeight;
 	_tableView.sectionHeaderHeight = 0;
+
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+/* (un)set editing */
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing: editing animated: animated];
+	[_tableView setEditing: editing animated: animated];
+
+	if(animated)
+	{
+		if(editing)
+		{
+			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationTop];
+		}
+		else
+		{
+			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationTop];
+		}
+	}
+	else
+		[_tableView reloadData];
 }
 
 /* about to display */
@@ -186,7 +224,16 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = nil;
+	// First section, "New Timer"
+	if(indexPath.section == 0)
+	{
+		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"New AutoTimer", @"");
+		return cell;
+	}
+
+	cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 	TABLEVIEWCELL_TEXT(cell) = ((AutoTimer *)[_autotimers objectAtIndex:indexPath.row]).name;
 
 	return cell;
@@ -201,25 +248,93 @@
 		return nil;
 	self.autotimerView.timer = autotimer;
 
-	// We do not want to refresh bouquet list when we return
+	// We do not want to refresh autotimer list when we return
 	_refreshAutotimers = NO;
 
-	// when in split view go back to service list, else push it on the stack
 	if(!_isSplit)
 		[self.navigationController pushViewController:_autotimerView animated:YES];
+	else
+		[_autotimerView.navigationController popToRootViewControllerAnimated:YES];
+
+	// NOTE: set this here so the edit button won't get screwed
+	_autotimerView.creatingNewTimer = NO;
 	return indexPath;
 }
 
 /* number of sections */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	return 1;
+	return 2;
 }
 
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+	// First section only has an item when editing
+	if(section == 0)
+	{
+		return (self.editing) ? 1 : 0;
+	}
 	return [_autotimers count];
+}
+
+/* editing style */
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(indexPath.section == 0)
+		return UITableViewCellEditingStyleInsert;
+	return UITableViewCellEditingStyleDelete;
+}
+
+/* edit action */
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// If row is deleted, remove it from the list.
+	if (editingStyle == UITableViewCellEditingStyleDelete)
+	{
+		NSUInteger index = indexPath.row;
+		AutoTimer *timer = [_autotimers objectAtIndex:index];
+		if(!timer.valid)
+			return;
+
+		// Try to delete timer
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delAutoTimer:timer];
+		if(result.result)
+		{
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+								 withRowAnimation:UITableViewRowAnimationFade];
+		}
+		// Timer could not be deleted
+		else
+		{
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	}
+	// Add new Timer
+	else if(editingStyle == UITableViewCellEditingStyleInsert)
+	{
+		// We do not want to refresh autotimers when we return
+		_refreshAutotimers = NO;
+
+		AutoTimer *newTimer = [AutoTimer timer];
+		self.autotimerView.timer = newTimer;
+
+		// when in split view go back to autotimer view, else push it on the stack
+		if(!_isSplit)
+			[self.navigationController pushViewController:_autotimerView animated:YES];
+		else
+		{
+			[_autotimerView.navigationController popToRootViewControllerAnimated:YES];
+			[self setEditing:NO animated:YES];
+		}
+
+		// NOTE: set this here so the edit button won't get screwed
+		_autotimerView.creatingNewTimer = YES;
+	}
 }
 
 @end
