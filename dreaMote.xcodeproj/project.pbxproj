@@ -439,6 +439,8 @@
 		DAB660EB12E4C1C000699EC8 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB660E612E4C1C000699EC8 /* MGSplitCornersView.m */; };
 		DAB660EC12E4C1C000699EC8 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB660E812E4C1C000699EC8 /* MGSplitDividerView.m */; };
 		DAB660ED12E4C1C000699EC8 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB660EA12E4C1C000699EC8 /* MGSplitViewController.m */; };
+		DAB787231350C86B00668D0F /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAB787221350C86B00668D0F /* welcome_fr.html */; };
+		DAB787241350C86B00668D0F /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAB787221350C86B00668D0F /* welcome_fr.html */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
@@ -844,6 +846,7 @@
 		DAB660E812E4C1C000699EC8 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
 		DAB660E912E4C1C000699EC8 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
 		DAB660EA12E4C1C000699EC8 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
+		DAB787221350C86B00668D0F /* welcome_fr.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_fr.html; path = Other/welcome_fr.html; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1043,6 +1046,7 @@
 				DA42BE1112DA434100F14E3C /* OtherList.xib */,
 				DA181087132D0A5700314C3D /* welcome_de.html */,
 				DA78576E132C1478003BE2FE /* welcome_en.html */,
+				DAB787221350C86B00668D0F /* welcome_fr.html */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1840,6 +1844,7 @@
 				DA9BF4C1132FD213008193C6 /* Refresh.png in Resources */,
 				DA9BF4CA13311E63008193C6 /* twitter-b.png in Resources */,
 				DA0FCD9E133D44F500CE2A04 /* changes_de.html in Resources */,
+				DAB787231350C86B00668D0F /* welcome_fr.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1928,6 +1933,7 @@
 				DA9BF4C2132FD213008193C6 /* Refresh.png in Resources */,
 				DA9BF4CB13311E63008193C6 /* twitter-b.png in Resources */,
 				DA0FCD9F133D44F500CE2A04 /* changes_de.html in Resources */,
+				DAB787241350C86B00668D0F /* welcome_fr.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
