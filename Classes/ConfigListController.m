@@ -21,6 +21,14 @@
 
 #define kMultiEPGRowTag 99
 
+enum sectionIds
+{
+	connectionSection = 0,
+	settingsSection = 1,
+	buttonSection = 2,
+	maxSection = 3,
+};
+
 /*!
  @brief Private functions of ConfigListController.
  */
@@ -28,7 +36,7 @@
 /*!
  @brief Utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell
  to be used on a given section.
- 
+
  @param section Section
  @return UITableViewCell instance
  */
@@ -82,7 +90,7 @@
 
 	self.view = tableView;
 	[tableView release];
-	
+
 	// RC Vibration
 	_vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
@@ -95,7 +103,7 @@
 	_simpleRemote = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
 	[_simpleRemote addTarget:self action:@selector(simpleRemoteChanged:) forControlEvents:UIControlEventValueChanged];
-	
+
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_simpleRemote.backgroundColor = [UIColor clearColor];
 
@@ -181,7 +189,7 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.section == 1)
+	if(indexPath.section == settingsSection)
 	{
 #if IS_FULL()
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
@@ -196,7 +204,7 @@
 /* row was selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.section == 2)
+	if(indexPath.section == buttonSection)
 	{
 		if(indexPath.row == 0)
 		{
@@ -222,7 +230,7 @@
 		}
 #endif
 	}
-	else if(indexPath.section == 0)
+	else if(indexPath.section == connectionSection)
 	{
 		NSUInteger upperBound = [_connections count];
 		if(self.editing) ++upperBound;
@@ -312,7 +320,7 @@
 		}
 	}
 #if IS_FULL()
-	else if(indexPath.section == 1)
+	else if(indexPath.section == settingsSection)
 	{
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 		if(cell.tag == kMultiEPGRowTag)
@@ -346,7 +354,7 @@
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// Only indent section 0
-	return (indexPath.section == 0);
+	return (indexPath.section == connectionSection);
 }
 
 /* cell for section */
@@ -356,11 +364,11 @@
 
 	switch(section)
 	{
-		case 2:
-		case 0:
+		case buttonSection:
+		case connectionSection:
 			cell = [UITableViewCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kVanilla_ID];
 			break;
-		case 1:
+		case settingsSection:
 			cell = [DisplayCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kDisplayCell_ID];
 			break;
 		default:
@@ -377,12 +385,12 @@
 	NSInteger row = indexPath.row;
 	NSString *hostTitle = nil;
 	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
-	
+
 	// we are creating a new cell, setup its attributes
 	switch(section)
 	{
 		/* Connections */
-		case 0:
+		case connectionSection:
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			sourceCell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
@@ -422,7 +430,7 @@
 			break;
 
 		/* Misc configuration items */
-		case 1:
+		case settingsSection:
 			sourceCell.tag = 0;
 			switch(row)
 			{
@@ -462,7 +470,7 @@
 					break;
 			}
 			break;
-		case 2:
+		case buttonSection:
 #if IS_LITE()
 			if(row == 1)
 			{
@@ -483,26 +491,25 @@
 		default:
 			break;
 	}
-
 	return sourceCell;
 }
 
 /* number of section */
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 3;
+	return maxSection;
 }
 
 /* number of rows in given section */
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	switch(section)
 	{
-		case 0:
+		case connectionSection:
 			if(self.editing)
 				return [_connections count] + 1;
 			return [_connections count];
-		case 1:
+		case settingsSection:
 		{
 			NSInteger baseCount = (IS_IPAD()) ? 1 : 2;
 #if IS_FULL()
@@ -510,7 +517,7 @@
 #endif
 			return baseCount;
 		}
-		case 2:
+		case buttonSection:
 #if IS_FULL()
 			return 1;
 #else
@@ -524,7 +531,7 @@
 /* section header */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section == 0)
+	if(section == connectionSection)
 		return NSLocalizedString(@"Configured Connections", @"");
 	return nil;
 }
@@ -539,7 +546,7 @@
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// Only custom style in section 0
-	if(indexPath.section != 0)
+	if(indexPath.section != connectionSection)
 		return UITableViewCellEditingStyleNone;
 
 	// First row is fake "new connection" item
@@ -581,7 +588,7 @@
 		[_connections removeObjectAtIndex: index];
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 						 withRowAnimation: UITableViewRowAnimationFade];
-		
+
 		// post notification
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	}
