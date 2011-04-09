@@ -5,6 +5,7 @@ DEBUG = False
 import re
 import os
 pattern = re.compile('^"(.*?)" = "(.*?)";.*?')
+tables = "Localizable", "AutoTimer"
 
 def find(dirname, recursive, *args):
 	files = []
@@ -23,61 +24,68 @@ def generateUpdateTemplate():
 	try: removeUpdateTemplate()
 	except Exception: pass
 	os.system("genstrings -bigEndian -o . %s" % ' '.join(sourcefiles))
-	os.system("iconv -t UTF-8 -f UTF-16BE < Localizable.strings > Localizable.strings.utf8")
-	os.rename("Localizable.strings.utf8" , "Localizable.strings")
+	for table in tables:
+		os.system("iconv -t UTF-8 -f UTF-16BE < %s.strings > %s.strings.utf8" % (table, table))
+		os.rename("%s.strings.utf8" % (table,) , "%s.strings" % (table,))
 
 def removeUpdateTemplate():
-	os.unlink("Localizable.strings")
+	for table in tables:
+		os.unlink("%s.strings" % (table,))
 
 def updateLanguage(lang):
 	print "Updating", lang
 
-	# Read current strings
-	orig = open('%s.lproj/Localizable.strings' % lang, 'r')
-	translated = {}
-	for line in orig.readlines():
-		match = pattern.match(line)
-		if match and match.group(2): # ignore empty translations
-			translated[match.group(1)] = match.group(2)
-	if DEBUG:
-		print "Found the following translated strings:"
-		for key, value in translated.iteritems():
-			print key, "=", value
-	orig.close()
+	for table in tables:
+		# Read current strings
+		translated = {}
+		try:
+			orig = open('%s.lproj/%s.strings' % (lang, table), 'r')
+		except IOError, ioe:
+			print '%s.lproj/%s.strings does not exist, starting from scratch.' % (lang, table)
+		else:
+			for line in orig.readlines():
+				match = pattern.match(line)
+				if match and match.group(2): # ignore empty translations
+					translated[match.group(1)] = match.group(2)
+			if DEBUG:
+				print "Found the following translated strings:"
+				for key, value in translated.iteritems():
+					print key, "=", value
+			orig.close()
 
-	# Read "new" strings and format
-	update = open('Localizable.strings', 'r')
-	newtext = update.readlines()
-	update.close()
-	idx = 0
-	for line in newtext[:]:
-		match = pattern.match(line)
-		if match:
-			key = match.group(1)
-			if translated.has_key(key):
-				if DEBUG:
-					print "Found match:", key
-				value = translated[key]
-				del translated[key]
-				newtext[idx] = '"%s" = "%s";\n' % (key, value)
-			else:
-				value = match.group(2)
-				print "Found untranslated string:", key
-				# TODO: add interactive translation mechanism
-				newtext[idx] = '/*"%s" = "%s";*/\n' % (key, value)
+		# Read "new" strings and format
+		update = open('%s.strings' % (table,), 'r')
+		newtext = update.readlines()
+		update.close()
+		idx = 0
+		for line in newtext[:]:
+			match = pattern.match(line)
+			if match:
+				key = match.group(1)
+				if translated.has_key(key):
+					if DEBUG:
+						print "Found match:", key
+					value = translated[key]
+					del translated[key]
+					newtext[idx] = '"%s" = "%s";\n' % (key, value)
+				else:
+					value = match.group(2)
+					print "Found untranslated string:", key
+					# TODO: add interactive translation mechanism
+					newtext[idx] = '/*"%s" = "%s";*/\n' % (key, value)
 
-		idx += 1
-	if translated:
-		print "There are remaining strings:"
-		newtext.append("\n\n/* old strings */\n")
-		for key, value in translated.iteritems():
-			newtext.append('"%s" = "%s";\n' % (key, value))
-			print key, "=", value
+			idx += 1
+		if translated:
+			print "There are remaining strings:"
+			newtext.append("\n\n/* old strings */\n")
+			for key, value in translated.iteritems():
+				newtext.append('"%s" = "%s";\n' % (key, value))
+				print key, "=", value
 
-	# Save merged file
-	new = open('%s.lproj/Localizable.strings' % lang, 'w')
-	new.writelines(newtext)
-	new.close()
+		# Save merged file
+		new = open('%s.lproj/%s.strings' % (lang, table), 'w')
+		new.writelines(newtext)
+		new.close()
 
 def main():
 	import sys
