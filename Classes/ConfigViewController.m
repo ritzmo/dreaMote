@@ -136,6 +136,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[_connection release];
 	[_remoteNameTextField release];
 	[_remoteAddressTextField release];
 	[_remotePortTextField release];
