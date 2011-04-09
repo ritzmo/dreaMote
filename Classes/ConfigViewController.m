@@ -62,6 +62,18 @@
  @param sender ui element
  */
 - (void)cancelEdit: (id)sender;
+
+
+
+/*!
+ @brief "Make Default" Button.
+ */
+@property (nonatomic,retain) UIButton *makeDefaultButton;
+
+/*!
+ @brief "Connect" Button.
+ */
+@property (nonatomic,retain) UIButton *connectButton;
 @end
 
 /*!
@@ -216,6 +228,7 @@
 	// SSL
 	_sslSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
 	_sslSwitch.on = [[_connection objectForKey: kSSL] boolValue];
+	_sslSwitch.backgroundColor = [UIColor clearColor];
 
 	// Username
 	_usernameTextField = [[self create_TextField] retain];

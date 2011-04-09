@@ -79,16 +79,6 @@
 @property (nonatomic,retain) NSMutableDictionary *connection;
 
 /*!
- @brief "Make Default" Button.
- */
-@property (nonatomic,retain) UIButton *makeDefaultButton;
-
-/*!
- @brief "Connect" Button.
- */
-@property (nonatomic,retain) UIButton *connectButton;
-
-/*!
  @brief Index in List of known Connections.
  */
 @property (nonatomic) NSInteger connectionIndex;
