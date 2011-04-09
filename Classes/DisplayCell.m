@@ -80,10 +80,15 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 
 - (void)setView:(UIView *)inView
 {
-	if (view)
+	if(view == inView) return;
+
+	if([view superview] == self.contentView)
 		[view removeFromSuperview];
-	view = inView;
-	[self.view retain];
+	[view release];
+	view = [inView retain];
+
+	if([inView superview])
+		[inView removeFromSuperview];
 	[self.contentView addSubview:inView];
 
 	[self setNeedsDisplay];
