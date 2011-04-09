@@ -179,9 +179,37 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordDelete])
-		self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	{
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+		NSArray *items = nil;
+
+		if(IS_IPAD())
+		{
+			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+			items = [[NSArray alloc] initWithObjects:flexItem, _sortButton, self.editButtonItem, nil];
+			[toolbar setItems:items animated:NO];
+			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+			self.navigationItem.rightBarButtonItem = buttonItem;
+
+			[buttonItem release];
+			[toolbar release];
+		}
+		else
+		{
+			items = [[NSArray alloc] initWithObjects:_sortButton, flexItem, self.editButtonItem, nil];
+			[self setToolbarItems:items animated:NO];
+			[self.navigationController setToolbarHidden:NO animated:YES];
+
+			self.navigationItem.rightBarButtonItem = nil;
+		}
+		[items release];
+		[flexItem release];
+	}
 	else
-		self.navigationItem.rightBarButtonItem = nil;
+		self.navigationItem.rightBarButtonItem = _sortButton;
 
 	if(_refreshMovies && !_reloading)
 	{
@@ -207,6 +235,9 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
+	if(IS_IPHONE())
+		[self.navigationController setToolbarHidden:YES animated:YES];
+
 	// XXX: I'd actually do this in background (e.g. viewDidDisappear) but this wouldn't reset the editButtonItem
 	if(self.editing)
 		[self setEditing:NO animated: YES];
@@ -302,7 +333,7 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kUIRowHeight;
 
-	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(switchSort:)];
+	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:self action:@selector(switchSort:)];
 	if(_sortTitle)
 		_sortButton.title = NSLocalizedString(@"Sort by time", @"Sort (movies) by time");
 	else
