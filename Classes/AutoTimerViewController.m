@@ -131,6 +131,10 @@ enum sectionIds
 	[_timespanSwitch release];
 	[_avoidDuplicateDescription release];
 
+	[_titleCell release];
+	[_matchCell release];
+	[_maxdurationCell release];
+
 	[_cancelButtonItem release];
 	[_popoverButtonItem release];
 	[popoverController release];
@@ -460,7 +464,6 @@ enum sectionIds
 	NSIndexSet *idxSet = nil;
 	if([sender isEqual:_maxdurationSwitch])
 	{
-		_maxdurationCell = nil;
 		idxSet = [NSIndexSet indexSetWithIndex:durationSection];
 	}
 	else if([sender isEqual:_timespanSwitch])
@@ -954,16 +957,18 @@ enum sectionIds
 	switch(section)
 	{
 		case titleSection:
-			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-			_titleCell = (CellTextField *)cell;
+			if(!_titleCell)
+				_titleCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 			_titleCell.delegate = self;
 			_titleCell.view = _titleField;
+			cell = _titleCell;
 			break;
 		case matchSection:
-			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-			_matchCell = (CellTextField *)cell;
+			if(!_matchCell)
+				_matchCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 			_matchCell.delegate = self;
 			_matchCell.view = _matchField;
+			cell = _matchCell;
 			break;
 		case generalSection:
 		{
@@ -1008,10 +1013,11 @@ enum sectionIds
 			}
 			else
 			{
-				cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-				_maxdurationCell = (CellTextField *)cell;
+				if(!_maxdurationCell)
+					_maxdurationCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 				_maxdurationCell.delegate = self;
 				_maxdurationCell.view = _maxdurationField;
+				cell = _maxdurationCell;
 			}
 			break;
 		case timespanSection:
@@ -1629,11 +1635,11 @@ enum sectionIds
 	NSIndexPath *indexPath;
 	UITableViewScrollPosition scrollPosition = UITableViewScrollPositionMiddle;
 	if(_titleCell.isInlineEditing)
-		indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:titleSection];
 	else if(_matchCell.isInlineEditing)
-		indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+		indexPath = [NSIndexPath indexPathForRow:0 inSection:matchSection];
 	else if(_maxdurationCell.isInlineEditing)
-		indexPath = [NSIndexPath indexPathForRow:1 inSection:3];
+		indexPath = [NSIndexPath indexPathForRow:1 inSection:durationSection];
 	else return;
 
 	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
