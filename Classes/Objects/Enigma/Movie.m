@@ -12,6 +12,8 @@
 
 @implementation EnigmaMovie
 
+@synthesize idx = _idx;
+
 - (NSArray *)tags
 {
 	return _tags;
@@ -168,6 +170,20 @@
 - (BOOL)isValid
 {
 	return _node && self.sref != nil;
+}
+
+- (NSComparisonResult)timeCompare:(NSObject<MovieProtocol> *)otherMovie
+{
+	if(_idx < ((EnigmaMovie *)otherMovie).idx)
+		return NSOrderedAscending;
+	else if(_idx == ((EnigmaMovie *)otherMovie).idx)
+		return NSOrderedSame;
+	return NSOrderedDescending;
+}
+
+- (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie
+{
+	return [self.title caseInsensitiveCompare:otherMovie];
 }
 
 - (void)setTimeFromString: (NSString *)newTime

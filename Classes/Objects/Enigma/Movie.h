@@ -21,6 +21,7 @@
 	NSNumber *_length; /*!< @brief Length. */
 	NSNumber *_size; /*!< @brief Size. */
 	NSArray *_tags; /*!< @brief Tags. */
+	NSUInteger _idx; /*!< @brief Index in result. Used for sorting. */
 
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Movie. */
 }
@@ -32,5 +33,7 @@
  @return EnigmaMovie instance.
  */
 - (id)initWithNode: (CXMLNode *)node;
+
+@property (nonatomic, assign) NSUInteger idx;
 
 @end

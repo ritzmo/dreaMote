@@ -47,11 +47,13 @@
 - (void)parseFull
 {
 	const NSArray *resultNodes = [_parser nodesForXPath:@"/movies/service" error:nil];
+	NSUInteger idx = 0;
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
 		// A service in the xml represents a movie, so create an instance of it.
 		EnigmaMovie *newMovie = [[EnigmaMovie alloc] initWithNode: (CXMLNode *)resultElement];
+		newMovie.idx = ++idx;
 
 		[_delegate performSelectorOnMainThread: @selector(addMovie:)
 									withObject: newMovie

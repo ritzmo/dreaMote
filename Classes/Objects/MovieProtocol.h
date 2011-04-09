@@ -84,4 +84,20 @@
  */
 - (void)setTagsFromString: (NSString *)newTags;
 
+/*!
+ @brief Compare to another movie by time.
+
+ @param otherMovie Movie to compare to.
+ @return NSComparisonResult
+ */
+- (NSComparisonResult)timeCompare:(NSObject<MovieProtocol> *)otherMovie;
+
+/*!
+ @brief Compare to another movie by title.
+
+ @param otherMovie Movie to compare to.
+ @return NSComparisonResult
+ */
+- (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie;
+
 @end

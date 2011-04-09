@@ -57,6 +57,16 @@
 	return _sref != nil;
 }
 
+- (NSComparisonResult)timeCompare:(NSObject<MovieProtocol> *)otherMovie
+{
+	return [otherMovie.time compare:_time];
+}
+
+- (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie
+{
+	return [_title caseInsensitiveCompare:otherMovie.title];
+}
+
 - (void)setTimeFromString: (NSString *)newTime
 {
 	[_time release];
