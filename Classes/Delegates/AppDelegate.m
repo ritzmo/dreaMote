@@ -76,6 +76,7 @@
 								 @"10", kMessageTimeout,
 								 @"YES", kPrefersSimpleRemote,
 								 multiEPGdefaultInterval, kMultiEPGInterval,
+								 @"NO", kSortMoviesByTitle,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 

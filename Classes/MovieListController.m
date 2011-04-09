@@ -50,6 +50,9 @@
 
 		_movieViewController = nil;
 
+		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+		_sortTitle = [stdDefaults boolForKey:kSortMoviesByTitle];
+
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
 		{
 			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 600.0f);
@@ -282,7 +285,13 @@
 		_sortButton.title = NSLocalizedString(@"Sort by time", @"Sort (movies) by time");
 	else
 		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
+
 	[_tableView reloadData];
+
+	// save sorting preferences
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+	[stdDefaults setBool:_sortTitle forKey:kSortMoviesByTitle];
+	[stdDefaults synchronize];
 }
 
 /* layout */

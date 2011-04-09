@@ -105,6 +105,7 @@
 #define kSimpleRcWasShown		@"simpleRcWasShown"
 #define kLastLaunchedVersion	@"lastLaunchedVersion"
 #define kMultiEPGInterval		@"multiEpgInterval"
+#define kSortMoviesByTitle		@"sortingMoviesByTitle"
 
 #define kCurrentDatabaseVersion 2
 
