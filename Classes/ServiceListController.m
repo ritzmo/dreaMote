@@ -293,6 +293,11 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+#if IS_FULL()
+	if([_multiEPG.view superview])
+		[self.navigationController setToolbarHidden:NO animated:YES];
+#endif
+
 	if(!IS_IPAD())
 	{
 		const BOOL isSingleBouquet =
@@ -358,7 +363,10 @@
 {
 #if IS_FULL()
 	if([_multiEPG.view superview])
+	{
+		[self.navigationController setToolbarHidden:YES animated:YES];
 		[_multiEPG viewWillDisappear:animated];
+	}
 #endif
 	if(_refreshServices && _bouquet == nil)
 	{

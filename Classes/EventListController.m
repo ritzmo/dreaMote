@@ -56,7 +56,6 @@
 		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
-		self.hidesBottomBarWhenPushed = YES;
 	}
 	return self;
 }
