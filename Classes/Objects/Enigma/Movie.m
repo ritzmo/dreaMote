@@ -183,7 +183,7 @@
 
 - (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie
 {
-	return [self.title caseInsensitiveCompare:otherMovie];
+	return [self.title caseInsensitiveCompare:otherMovie.title];
 }
 
 - (void)setTimeFromString: (NSString *)newTime
