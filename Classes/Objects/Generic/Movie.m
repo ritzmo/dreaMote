@@ -59,12 +59,22 @@
 
 - (NSComparisonResult)timeCompare:(NSObject<MovieProtocol> *)otherMovie
 {
-	return [otherMovie.time compare:_time];
+	NSComparisonResult res = [otherMovie.time compare:_time];
+	if(res == NSOrderedSame)
+	{
+		res = [_title caseInsensitiveCompare:otherMovie.title];
+	}
+	return res;
 }
 
 - (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie
 {
-	return [_title caseInsensitiveCompare:otherMovie.title];
+	NSComparisonResult res = [_title caseInsensitiveCompare:otherMovie.title];
+	if(res == NSOrderedSame)
+	{
+		res = [_time compare:otherMovie.time];
+	}
+	return res;
 }
 
 - (void)setTimeFromString: (NSString *)newTime

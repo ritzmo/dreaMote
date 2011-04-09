@@ -177,13 +177,23 @@
 	if(_idx < ((EnigmaMovie *)otherMovie).idx)
 		return NSOrderedAscending;
 	else if(_idx == ((EnigmaMovie *)otherMovie).idx)
-		return NSOrderedSame;
+		return [self.title caseInsensitiveCompare:otherMovie.title];
 	return NSOrderedDescending;
 }
 
 - (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie
 {
-	return [self.title caseInsensitiveCompare:otherMovie.title];
+	NSComparisonResult res = [self.title caseInsensitiveCompare:otherMovie.title];
+	if(res == NSOrderedSame)
+	{
+		if(_idx < ((EnigmaMovie *)otherMovie).idx)
+			res = NSOrderedDescending;
+		else if(_idx == ((EnigmaMovie *)otherMovie).idx)
+			res = NSOrderedSame;
+		else
+			res = NSOrderedAscending;
+	}
+	return res;
 }
 
 - (void)setTimeFromString: (NSString *)newTime
