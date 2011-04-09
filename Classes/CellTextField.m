@@ -71,10 +71,13 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 {
 	if(view == inView) return;
 
-	[view removeFromSuperview];
+	if([view superview] == self.contentView)
+		[view removeFromSuperview];
 	view = [inView retain];
 	view.delegate = self;
 
+	if([inView superview])
+		[inView removeFromSuperview];
 	[self.contentView addSubview:inView];
 	[self layoutSubviews];
 }
