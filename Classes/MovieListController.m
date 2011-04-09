@@ -471,7 +471,15 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: indexPath.row];
+	NSObject<MovieProtocol> *movie = nil;
+	if(_sortTitle)
+	{
+		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
+		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+	}
+	else
+		movie = [_movies objectAtIndex:indexPath.row];
+
 	if(!movie.valid)
 		return nil;
 
@@ -548,8 +556,14 @@
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	const NSInteger index = indexPath.row;
-	NSObject<MovieProtocol> *movie = [_movies objectAtIndex: index];
+	NSObject<MovieProtocol> *movie = nil;
+	if(_sortTitle)
+	{
+		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
+		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+	}
+	else
+		movie = [_movies objectAtIndex:indexPath.row];
 
 	if(!movie.valid)
 		return;
@@ -557,8 +571,12 @@
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] delMovie: movie];
 	if(result.result)
 	{
-
-		[_movies removeObjectAtIndex: index];
+		if(_sortTitle)
+		{
+			NSString *key = [_currentKeys objectAtIndex:indexPath.section];
+			[(NSMutableArray *)[_characters valueForKey:key] removeObjectAtIndex:indexPath.row];
+		}
+		[_movies removeObject:movie];
 
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 								withRowAnimation: UITableViewRowAnimationFade];
