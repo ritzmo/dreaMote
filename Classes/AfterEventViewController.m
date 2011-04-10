@@ -167,7 +167,7 @@
 			}
 			/* FALL THROUGH */
 		case kAfterEventMax:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"Default After Event action (usually auto on enigma2 receivers)");
 			break;
 		default:
 			break;

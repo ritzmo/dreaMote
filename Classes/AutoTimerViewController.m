@@ -621,10 +621,10 @@ enum sectionIds
 		}
 		// no timeframe given
 		else if(_timer.after == nil || _timer.before == nil)
-			message = NSLocalizedString(@"No timeframe given.", @"");
+			message = NSLocalizedString(@"No timeframe given.", @"User requested AutoTimer timeframe but none was setup.");
 		// check timeframe sanity
 		else if([_timer.after compare:_timer.before] != NSOrderedAscending)
-			message = NSLocalizedString(@"Timeframe has to be ascending.", @"");
+			message = NSLocalizedString(@"Timeframe has to be ascending.", @"User requested AutoTimer timeframe but before if equal to or earlier than end.");
 
 		_timer.enabled = _timerEnabled.on;
 		_timer.justplay = _timerJustplay.on;
@@ -823,7 +823,7 @@ enum sectionIds
 	else if(_timer.afterEventAction == kAfterEventAuto)
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
 	else //if(_timer.afterEventAction == kAfterEventMax)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"");
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"Default After Event action (usually auto on enigma2 receivers)");
 }
 
 - (void)afterEventSelected: (NSNumber *)newAfterEvent
@@ -964,11 +964,11 @@ enum sectionIds
 		case titleSection:
 			return NSLocalizedString(@"Title", @"");
 		case matchSection:
-			return NSLocalizedString(@"Match", @"");
+			return NSLocalizedString(@"Match", @"Title of section with AutoTimer match-Attribute. String to find in EPG-Title.");
 		case generalSection:
 			return NSLocalizedString(@"General", @"in timer settings dialog");
 		case durationSection:
-			return NSLocalizedString(@"Max. Duration", @"");
+			return NSLocalizedString(@"Max. Duration", @"Title of section with AutoTimer max Duration-Attribute. Maximum Duration a event can have to match this AutoTimer.");
 		case timespanSection:
 			return NSLocalizedStringFromTable(@"Timespan", @"AutoTimer", @"section header for timespan");
 		case timeframeSection:
@@ -1067,7 +1067,7 @@ enum sectionIds
 					break;
 				case 2:
 					((DisplayCell *)cell).view = _sensitiveSearch;
-					cell.textLabel.text = NSLocalizedString(@"Case-Sensitive", @"");
+					cell.textLabel.text = NSLocalizedString(@"Case-Sensitive", @"case-sensitive matching (of autotimers)");
 					break;
 				case 3:
 					((DisplayCell *)cell).view = _overrideAlternatives;
@@ -1079,7 +1079,7 @@ enum sectionIds
 					break;
 				case 5:
 					((DisplayCell *)cell).view = _avoidDuplicateDescription;
-					cell.textLabel.text = NSLocalizedString(@"Unique Description", @"");
+					cell.textLabel.text = NSLocalizedString(@"Unique Description", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers.");
 					/* FALL THROUGH */
 				default:
 					break;
