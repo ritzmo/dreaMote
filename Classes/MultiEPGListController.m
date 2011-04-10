@@ -368,7 +368,7 @@
 {
 	if(_reloading) return;
 
-	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"refresh epg", "used in confirmation dialog: really refresh epg?")]
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"refresh EPG", "used in confirmation dialog: really refresh epg?")]
 																   delegate:self
 														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
 													 destructiveButtonTitle:NSLocalizedString(@"Refresh", "")
