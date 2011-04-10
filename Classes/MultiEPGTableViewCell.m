@@ -144,7 +144,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
 {
-	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / 7200.0f;
+	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 	const NSInteger count = [_lines count] - 1;
 	NSInteger idx = 0;
 	for(NSObject<EventProtocol> *event in _events)
@@ -166,7 +166,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 - (void)drawRect:(CGRect)rect
 {
 	const CGRect contentRect = self.contentView.bounds;
-	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / 7200.0f;
+	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
 	CGContextSetLineWidth(ctx, 0.25f);
@@ -198,7 +198,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
-	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / 7200.0f;
+	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 
 	// Place the location label.
 	if(_service.valid)
