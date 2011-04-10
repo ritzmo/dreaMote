@@ -863,7 +863,58 @@ enum sectionIds
 {
 	if(newFilter == nil)
 		return;
-	// TODO: implement
+
+	// TODO: implement edit
+	switch(filterType)
+	{
+		case autoTimerWhereTitle:
+		{
+			const NSMutableArray *list = include ? _timer.includeTitle : _timer.excludeTitle;
+			for(NSString *filter in list)
+			{
+				if([filter isEqualToString:newFilter]) return;
+			}
+			[list addObject:newFilter];
+			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterTitleSection] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		}
+		case autoTimerWhereShortdescription:
+		{
+			const NSMutableArray *list = include ? _timer.includeShortdescription : _timer.excludeShortdescription;
+			for(NSString *filter in list)
+			{
+				if([filter isEqualToString:newFilter]) return;
+			}
+			[list addObject:newFilter];
+			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterSdescSection] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		}
+		case autoTimerWhereDescription:
+		{
+			const NSMutableArray *list = include ? _timer.includeDescription : _timer.excludeDescription;
+			for(NSString *filter in list)
+			{
+				if([filter isEqualToString:newFilter]) return;
+			}
+			[list addObject:newFilter];
+			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterDescSection] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		}
+		case autoTimerWhereDayOfWeek:
+		{
+			const NSMutableArray *list = include ? _timer.includeDayOfWeek : _timer.excludeDayOfWeek;
+			for(NSString *filter in list)
+			{
+				if([filter isEqualToString:newFilter]) return;
+			}
+			[list addObject:newFilter];
+			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterWeekdaySection] withRowAnimation:UITableViewRowAnimationFade];
+			break;
+		}
+		default:
+			NSLog(@"invalid filter type");
+			break;
+	}
 }
 
 #pragma mark -
