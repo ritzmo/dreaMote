@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 #import "RemoteConnectorObject.h"
+#import "AutoTimerTableViewCell.h"
 
 #import "Objects/Generic/Result.h"
 
@@ -141,7 +142,7 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = kServiceCellHeight;
+	_tableView.rowHeight = kAutoTimerCellHeight;
 	_tableView.sectionHeaderHeight = 0;
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -233,8 +234,8 @@
 		return cell;
 	}
 
-	cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-	TABLEVIEWCELL_TEXT(cell) = ((AutoTimer *)[_autotimers objectAtIndex:indexPath.row]).name;
+	cell = [AutoTimerTableViewCell reusableTableViewCellInView:tableView withIdentifier:kAutoTimerCell_ID];
+	((AutoTimerTableViewCell *)cell).timer = [_autotimers objectAtIndex:indexPath.row];
 
 	return cell;
 }

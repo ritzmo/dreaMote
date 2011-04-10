@@ -442,6 +442,7 @@
 		DAB787231350C86B00668D0F /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAB787221350C86B00668D0F /* welcome_fr.html */; };
 		DAB787241350C86B00668D0F /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAB787221350C86B00668D0F /* welcome_fr.html */; };
 		DAB787271351B80600668D0F /* MultiEPGHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB787261351B80600668D0F /* MultiEPGHeaderView.m */; };
+		DAB7872A1352081500668D0F /* AutoTimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB787291352081500668D0F /* AutoTimerTableViewCell.m */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
@@ -850,6 +851,8 @@
 		DAB787221350C86B00668D0F /* welcome_fr.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_fr.html; path = Other/welcome_fr.html; sourceTree = "<group>"; };
 		DAB787251351B80600668D0F /* MultiEPGHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGHeaderView.h; sourceTree = "<group>"; };
 		DAB787261351B80600668D0F /* MultiEPGHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGHeaderView.m; sourceTree = "<group>"; };
+		DAB787281352081500668D0F /* AutoTimerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerTableViewCell.h; sourceTree = "<group>"; };
+		DAB787291352081500668D0F /* AutoTimerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerTableViewCell.m; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1651,6 +1654,8 @@
 		DAF0D5490E38FF70001F7CF1 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				DAB787281352081500668D0F /* AutoTimerTableViewCell.h */,
+				DAB787291352081500668D0F /* AutoTimerTableViewCell.m */,
 				DA5247BE0E3B33FA00B09600 /* CellTextField.h */,
 				DA5247BF0E3B33FA00B09600 /* CellTextField.m */,
 				DA5247C00E3B33FA00B09600 /* CellTextView.h */,
@@ -2095,6 +2100,7 @@
 				DAD51CD0133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */,
 				DAD242BF1344F2DB00954512 /* AutoTimerFilterViewController.m in Sources */,
 				DAB787271351B80600668D0F /* MultiEPGHeaderView.m in Sources */,
+				DAB7872A1352081500668D0F /* AutoTimerTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

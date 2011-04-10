@@ -50,6 +50,7 @@
 #define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
 #define kMultiEPGCellHeight		((IS_IPAD()) ? 60 : 25)
+#define kAutoTimerCellHeight	38
 
 // table view cell content offsets
 #define kCellLeftOffset			8
@@ -67,6 +68,7 @@
 #define kTimerNameTextSize		((IS_IPAD()) ? 15 : 12)
 #define kTimerTimeTextSize		((IS_IPAD()) ? 15 : 12)
 #define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
+#define kAutoTimerNameTextSize	((IS_IPAD()) ? 20 : 16)
 
 // default timeout
 #define kDefaultTimeout			7
