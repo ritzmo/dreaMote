@@ -41,6 +41,8 @@
 {
 	if((self = [super initWithFrame:frame]))
 	{
+		self.opaque = NO;
+
 		firstTime = [self newLabelWithPrimaryColor:[UIColor blackColor]
 									 selectedColor:[UIColor whiteColor]
 										  fontSize:kMultiEPGFontSize
@@ -123,6 +125,18 @@
 	fourthTime.text = [formatter stringFromDate:current];
 
 	[formatter release];
+}
+
+/* draw cell */
+- (void)drawRect:(CGRect)rect
+{
+	const CGRect contentRect = self.bounds;
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
+	CGContextSetLineWidth(ctx, 0.25f);
+	CGContextMoveToPoint(ctx, 0, contentRect.size.height);
+	CGContextAddLineToPoint(ctx, contentRect.size.width, contentRect.size.height);
+	CGContextStrokePath(ctx);
 }
 
 /* Create and configure a label. */
