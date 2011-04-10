@@ -69,6 +69,7 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 		self.textLabel.textColor = [UIColor blackColor];
 		self.textLabel.highlightedTextColor = [UIColor blackColor];
 		self.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+		self.textLabel.adjustsFontSizeToFitWidth = YES;
 	}
 	return self;
 }
@@ -98,10 +99,6 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 {	
 	[super layoutSubviews];
     CGRect contentRect = [self.contentView bounds];
-	
-	// In this example we will never be editing, but this illustrates the appropriate pattern
-	CGRect frame = CGRectMake(contentRect.origin.x + kCellLeftOffset, kCellTopOffset, contentRect.size.width - (2 * kCellLeftOffset), kCellHeight);
-	self.textLabel.frame = frame;
 
 	if ([view isKindOfClass:[UIPageControl class]])
 	{
@@ -116,6 +113,9 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 								self.view.bounds.size.width,
 								self.view.bounds.size.height);
 	view.frame = uiFrame;
+
+	CGRect frame = CGRectMake(contentRect.origin.x + kCellLeftOffset, kCellTopOffset, uiFrame.origin.x - (2 * kCellLeftOffset), kCellHeight);
+	self.textLabel.frame = frame;
 }
 
 - (void)dealloc
