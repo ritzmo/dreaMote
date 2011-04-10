@@ -71,6 +71,9 @@
 	[currentText release];
 	currentText = [newText retain];
 
+	[oldText release];
+	oldText = [newText retain];
+
 	filterTextfield.text = newText;
 	[(UITableView *)self.view reloadData];
 }
@@ -84,6 +87,7 @@
 {
 	if(include == newInclude) return;
 	include = newInclude;
+	oldInclude = newInclude;
 	[(UITableView *)self.view reloadData];
 }
 
@@ -103,6 +107,7 @@
 - (void)dealloc
 {
 	[_cancelButtonItem release];
+	[oldText release];
 	[currentText release];
 	[filterTextfield release];
 
@@ -165,7 +170,7 @@
 {
 	if(_delegate != nil)
 	{
-		SEL mySel = @selector(filterSelected:filterType:include:);
+		SEL mySel = @selector(filterSelected:filterType:include:oldFilter:oldInclude:);
 		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
 		if(sig)
 		{
@@ -186,6 +191,8 @@
 			[invocation setArgument:&text atIndex:2];
 			[invocation setArgument:&filterType atIndex:3];
 			[invocation setArgument:&include atIndex:4];
+			[invocation setArgument:&oldText atIndex:5];
+			[invocation setArgument:&oldInclude atIndex:6];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 									  waitUntilDone:NO];
 		}
@@ -325,11 +332,11 @@
 			selectedItem = [currentText integerValue];
 
 		if(indexPath.row == 7)
-			self.currentText = @"weekend";
+			currentText = [@"weekend" retain];
 		else if(indexPath.row == 8)
-			self.currentText = @"weekday";
+			currentText = [@"weekday" retain];
 		else
-			self.currentText = [NSString stringWithFormat:@"%d", indexPath.row];
+			currentText = [[NSString stringWithFormat:@"%d", indexPath.row] retain];
 
 		cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:1]];
 	}

@@ -859,16 +859,23 @@ enum sectionIds
 #pragma mark AutoTimerFilterDelegate
 #pragma mark -
 
-- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include
+- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include oldFilter:(NSString *)oldFilter oldInclude:(BOOL)oldInclude
 {
 	if(newFilter == nil)
 		return;
 
-	// TODO: implement edit
 	switch(filterType)
 	{
 		case autoTimerWhereTitle:
 		{
+			if(oldFilter)
+			{
+				if(oldInclude)
+					[_timer.includeTitle removeObject:oldFilter];
+				else
+					[_timer.excludeTitle removeObject:oldFilter];
+			}
+
 			const NSMutableArray *list = include ? _timer.includeTitle : _timer.excludeTitle;
 			for(NSString *filter in list)
 			{
@@ -880,6 +887,14 @@ enum sectionIds
 		}
 		case autoTimerWhereShortdescription:
 		{
+			if(oldFilter)
+			{
+				if(oldInclude)
+					[_timer.includeShortdescription removeObject:oldFilter];
+				else
+					[_timer.excludeShortdescription removeObject:oldFilter];
+			}
+
 			const NSMutableArray *list = include ? _timer.includeShortdescription : _timer.excludeShortdescription;
 			for(NSString *filter in list)
 			{
@@ -891,6 +906,14 @@ enum sectionIds
 		}
 		case autoTimerWhereDescription:
 		{
+			if(oldFilter)
+			{
+				if(oldInclude)
+					[_timer.includeDescription removeObject:oldFilter];
+				else
+					[_timer.excludeDescription removeObject:oldFilter];
+			}
+
 			const NSMutableArray *list = include ? _timer.includeDescription : _timer.excludeDescription;
 			for(NSString *filter in list)
 			{
@@ -902,6 +925,14 @@ enum sectionIds
 		}
 		case autoTimerWhereDayOfWeek:
 		{
+			if(oldFilter)
+			{
+				if(oldInclude)
+					[_timer.includeDayOfWeek removeObject:oldFilter];
+				else
+					[_timer.excludeDayOfWeek removeObject:oldFilter];
+			}
+
 			const NSMutableArray *list = include ? _timer.includeDayOfWeek : _timer.excludeDayOfWeek;
 			for(NSString *filter in list)
 			{

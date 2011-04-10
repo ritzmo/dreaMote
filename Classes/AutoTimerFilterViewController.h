@@ -27,6 +27,9 @@
 	autoTimerWhereType filterType; /*!< @brief Current mode. */
 	BOOL include; /*!< @brief Include Filter? */
 	UIBarButtonItem *_cancelButtonItem; /*!< @brief Cancel button. */
+
+	BOOL oldInclude; /*!< @brief Include state when loaded. */
+	NSString *oldText; /*!< @brief Filter string when loaded. */
 }
 
 /*!
@@ -70,7 +73,9 @@
  @param newFilter Filter text
  @param filterType Type of filter.
  @param include Include Filter?
+ @param oldFilter Original text for modified filters
+ @param oldInclude Original include/exclude flag for modified filters
  */
-- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include;
+- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include oldFilter:(NSString *)oldFilter oldInclude:(BOOL)oldInclude;
 
 @end
