@@ -17,6 +17,7 @@
  it) instant record.
  */
 @interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+													UIActionSheetDelegate,
 													VolumeSourceDelegate>
 {
 @private

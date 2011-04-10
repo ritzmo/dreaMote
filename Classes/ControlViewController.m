@@ -177,8 +177,16 @@
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 1 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[[RemoteConnectorObject sharedRemoteConnector] reboot];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"reboot", "used in confirmation dialog: really reboot?")]
+																   delegate:self
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+													 destructiveButtonTitle:NSLocalizedString(@"Reboot", "")
+														  otherButtonTitles:nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	[actionSheet release];
 }
 
 /* restart gui */
@@ -187,8 +195,16 @@
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[[RemoteConnectorObject sharedRemoteConnector] restart];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"restart", "used in confirmation dialog: really restart?")]
+																   delegate:self
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+													 destructiveButtonTitle:NSLocalizedString(@"Restart", "")
+														  otherButtonTitles:nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	[actionSheet release];
 }
 
 /* shutdown */
@@ -198,8 +214,16 @@
 	const NSInteger row = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart] ? 3: 2;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: row inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"shutdown", "used in confirmation dialog: really shutdown?")]
+																   delegate:self
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+													 destructiveButtonTitle:NSLocalizedString(@"Shutdown", "")
+														  otherButtonTitles:nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	[actionSheet release];
 }
 
 /* toggle muted state */
@@ -217,6 +241,26 @@
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.destructiveButtonIndex)
+	{
+		NSString *title = [actionSheet buttonTitleAtIndex:buttonIndex];
+		if([title isEqualToString:NSLocalizedString(@"Reboot", "")])
+			[[RemoteConnectorObject sharedRemoteConnector] reboot];
+		else if([title isEqualToString:NSLocalizedString(@"Restart", @"")])
+			[[RemoteConnectorObject sharedRemoteConnector] restart];
+		else if([title isEqualToString:NSLocalizedString(@"Shutdown", @"")])
+			[[RemoteConnectorObject sharedRemoteConnector] shutdown];
+		else
+			NSLog(@"unknown button selected: %@", title);
+	}
 }
 
 #pragma mark - UITableView delegates
