@@ -107,7 +107,6 @@
 		thirdTime.frame = myFrame;
 		if(factor > 3)
 			myFrame.origin.x += step;
-		}
 		else
 			myFrame = CGRectZero;
 		fourthTime.frame = myFrame;
