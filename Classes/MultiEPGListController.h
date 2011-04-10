@@ -18,6 +18,7 @@
 // forward declare
 @class CXMLDocument;
 @protocol MultiEPGDelegate;
+@class MultiEPGHeaderView;
 
 /*!
  @brief MultiEPG Controller.
@@ -44,6 +45,7 @@
 	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
 	MBProgressHUD *progressHUD; /*!< @brief Progress Hud. */
+	MultiEPGHeaderView *_headerView; /*!< @brief Timeline. */
 	NSInteger pendingRequests; /*!< @brief Pending requests. */
 	NSTimer *_refreshTimer; /*!< @brief Timer used to refresh "_secondsSinceBegin". */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Offset to "_curBegin". */

@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "MultiEPGHeaderView.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 
@@ -72,6 +73,18 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kMultiEPGCellHeight;
+	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
+
+	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	contentView.autoresizesSubviews = YES;
+	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	self.view = contentView;
+	CGRect visibleFrame = CGRectMake(0, headerHeight, contentView.frame.size.width, contentView.frame.size.height-headerHeight);
+	_tableView.frame = visibleFrame;
+	[contentView addSubview:_tableView];
+
+	_headerView = [[MultiEPGHeaderView alloc] initWithFrame:CGRectMake(0, 0, contentView.frame.size.width, headerHeight)];
+	[contentView addSubview:_headerView];
 
 	[self configureToolbar];
 }
@@ -133,6 +146,9 @@
 		newBegin = _curBegin;
 	}
 	self.curBegin = newBegin;
+
+	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
+	_headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, headerHeight);
 
 	_willReapper = NO;
 }
@@ -196,6 +212,7 @@
 	[gregorian release];
 	[_events removeAllObjects];
 	[_tableView reloadData];
+	_headerView.begin = _curBegin;
 
 	[self refreshNow];
 
@@ -326,6 +343,23 @@
 
 	[pool release];
 }
+
+/* did rotate */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	// TODO: rotate with rest of the screen
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.1f];
+	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
+	_headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, headerHeight);
+	[UIView commitAnimations];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate methods
+#pragma mark -
 
 - (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
 {
@@ -525,6 +559,7 @@
 	return [_services count];
 }
 
+#if 0
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
@@ -538,5 +573,6 @@
 	[format release];
 	return [NSString stringWithFormat:@"%@ - %@", firstString, secondString];
 }
+#endif
 
 @end

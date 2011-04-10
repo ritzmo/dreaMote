@@ -375,6 +375,15 @@
 	[super viewWillDisappear:animated];
 }
 
+/* did rotate */
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	if([_multiEPG.view superview])
+		[_multiEPG didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
 /* fetch main list */
 - (void)fetchData
 {
