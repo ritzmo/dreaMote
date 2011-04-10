@@ -121,6 +121,8 @@
 
 	current = [current dateByAddingTimeInterval:quarter];
 	fourthTime.text = [formatter stringFromDate:current];
+
+	[formatter release];
 }
 
 /* Create and configure a label. */
