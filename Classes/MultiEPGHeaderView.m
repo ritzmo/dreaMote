@@ -87,10 +87,36 @@
 	const CGFloat interval = [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 	const CGFloat widthPerSecond = (frame.size.width - kServiceWidth) / interval;
 	const CGFloat leftOffset = kServiceWidth / 2;
-	firstTime.frame = CGRectMake(frame.origin.x + leftOffset, frame.origin.y, kServiceWidth, frame.size.height);
-	secondTime.frame = CGRectMake(firstTime.frame.origin.x + (interval / 4) * widthPerSecond, frame.origin.y, kServiceWidth, frame.size.height);
-	thirdTime.frame = CGRectMake(secondTime.frame.origin.x + (interval / 4) * widthPerSecond, frame.origin.y, kServiceWidth, frame.size.height);
-	fourthTime.frame = CGRectMake(thirdTime.frame.origin.x + (interval / 4) * widthPerSecond, frame.origin.y, kServiceWidth, frame.size.height);
+
+	CGFloat factor = 1;
+	if(interval == 1800)
+		factor = 2;
+	else if(interval == 5400)
+		factor = 3;
+	else
+		factor = 4;
+
+	CGRect myFrame = CGRectMake(frame.origin.x + leftOffset, frame.origin.y, kServiceWidth, frame.size.height);
+	const CGFloat step = (interval / factor) * widthPerSecond;
+	firstTime.frame = myFrame;
+	myFrame.origin.x += step;
+	secondTime.frame = myFrame;
+	if(factor > 2)
+	{
+		myFrame.origin.x += step;
+		thirdTime.frame = myFrame;
+		if(factor > 3)
+			myFrame.origin.x += step;
+		}
+		else
+			myFrame = CGRectZero;
+		fourthTime.frame = myFrame;
+	}
+	else
+	{
+		thirdTime.frame = CGRectZero;
+		fourthTime.frame = CGRectZero;
+	}
 }
 
 - (NSDate *)begin
@@ -105,23 +131,30 @@
 	[begin release];
 	begin = [newBegin retain];
 
-	const NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-	const NSNumber *interval = [stdDefaults objectForKey:kMultiEPGInterval];
-	const NSTimeInterval quarter = [interval floatValue] / 4;
-
 	const NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	const NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+	const CGFloat interval = [[stdDefaults objectForKey:kMultiEPGInterval] floatValue];
+	NSDate *current = begin;
+	NSTimeInterval step = 0;
+	if(interval == 1800)
+		step = interval / 2;
+	else if(interval == 5400)
+		step = interval / 3;
+	else
+		step = interval / 4;
+
 	[formatter setTimeStyle:NSDateFormatterShortStyle];
 	[formatter setDateStyle:NSDateFormatterMediumStyle];
 	firstTime.text = [formatter fuzzyDate:begin];
 
 	[formatter setDateStyle:NSDateFormatterNoStyle];
-	NSDate *current = [begin dateByAddingTimeInterval:quarter];
+	current = [current dateByAddingTimeInterval:step];
 	secondTime.text = [formatter stringFromDate:current];
 
-	current = [current dateByAddingTimeInterval:quarter];
+	current = [current dateByAddingTimeInterval:step];
 	thirdTime.text = [formatter stringFromDate:current];
 
-	current = [current dateByAddingTimeInterval:quarter];
+	current = [current dateByAddingTimeInterval:step];
 	fourthTime.text = [formatter stringFromDate:current];
 
 	[formatter release];
