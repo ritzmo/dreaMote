@@ -147,10 +147,13 @@
 	}
 	self.curBegin = newBegin;
 
+	_willReapper = NO;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
 	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
 	_headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, headerHeight);
-
-	_willReapper = NO;
 }
 
 /* about to disappear */

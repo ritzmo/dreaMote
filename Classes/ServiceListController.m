@@ -221,6 +221,7 @@
 		[self setToolbarItems:_multiEPG.toolbarItems];
 		[self.navigationController setToolbarHidden:NO animated:YES];
 		self.mgSplitViewController.showsMasterInLandscape = NO;
+		[_multiEPG viewDidAppear:YES];
 	}
 }
 #endif
@@ -293,11 +294,6 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-#if IS_FULL()
-	if([_multiEPG.view superview])
-		[self.navigationController setToolbarHidden:NO animated:YES];
-#endif
-
 	if(!IS_IPAD())
 	{
 		const BOOL isSingleBouquet =
@@ -353,8 +349,15 @@
 		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
-	_refreshServices = YES;
+#if IS_FULL()
+	if([_multiEPG.view superview])
+	{
+		[self.navigationController setToolbarHidden:NO animated:YES];
+		[_multiEPG viewDidAppear:YES];
+	}
+#endif
 
+	_refreshServices = YES;
 	[super viewWillAppear: animated];
 }
 
