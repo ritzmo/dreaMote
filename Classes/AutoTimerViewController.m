@@ -295,7 +295,7 @@ enum sectionIds
 		}
 		return _filterNavigationController;
 	}
-	return _filterViewController;
+	return self.filterViewController;
 }
 
 - (AutoTimerFilterViewController *)filterViewController
