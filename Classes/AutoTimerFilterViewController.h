@@ -10,12 +10,15 @@
 
 #import "Objects/Generic/AutoTimer.h"
 
+#import "CellTextField.h"
+
 @protocol AutoTimerFilterDelegate;
 
 /*!
  @brief AutoTimer Filter Selector.
  */
-@interface AutoTimerFilterViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface AutoTimerFilterViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
+															EditableTableViewCellDelegate>
 {
 @private
 	UITextField *filterTextfield; /*!< @brief Filter Label. */

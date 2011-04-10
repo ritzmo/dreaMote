@@ -11,8 +11,6 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "DisplayCell.h"
-
 @interface AutoTimerFilterViewController()
 /*!
  @brief stop editing
@@ -24,9 +22,26 @@
  @brief done editing
  */
 - (void)doneAction:(id)sender;
+
+/*!
+ @brief Animate View up or down.
+ Animate the entire view up or down, to prevent the keyboard from covering the text field.
+
+ @param movedUp YES if moving down again.
+ */
+- (void)setViewMovedUp:(BOOL)movedUp;
 @end
 
 @implementation AutoTimerFilterViewController
+
+/*!
+ @brief Keyboard offset.
+ The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
+ */
+#define kOFFSET_FOR_KEYBOARD					100
+
+/*! @brief The duration of the animation for the view shift. */
+#define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
 /* initialize */
 - (id)init
@@ -278,8 +293,9 @@
 	}
 	else 
 	{
-		cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
-		((DisplayCell *)cell).view = filterTextfield;
+		cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
+		((CellTextField *)cell).delegate = self;
+		((CellTextField *)cell).view = filterTextfield;
 	}
 	return cell;
 }
@@ -335,6 +351,82 @@
 	 is not in this case.
 	 */
 	_delegate = delegate;
+}
+
+#pragma mark -
+#pragma mark <EditableTableViewCellDelegate> Methods and editing management
+#pragma mark -
+
+- (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
+{
+	return YES;
+}
+
+- (void)cellDidEndEditing:(EditableTableViewCell *)cell
+{
+	// Restore the position of the main view if it was animated to make room for the keyboard.
+	if(self.view.frame.origin.y < 0)
+		[self setViewMovedUp:NO];
+}
+
+// Animate the entire view up or down, to prevent the keyboard from covering the author field.
+- (void)setViewMovedUp:(BOOL)movedUp
+{
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:kVerticalOffsetAnimationDuration];
+	// Make changes to the view's frame inside the animation block. They will be animated instead
+	// of taking place immediately.
+	CGRect rect = self.view.frame;
+	if (movedUp)
+	{
+		// If moving up, not only decrease the origin but increase the height so the view 
+		// covers the entire screen behind the keyboard.
+		rect.origin.y -= kOFFSET_FOR_KEYBOARD;
+		rect.size.height += kOFFSET_FOR_KEYBOARD;
+	}
+	else
+	{
+		// If moving down, not only increase the origin but decrease the height.
+		rect.origin.y += kOFFSET_FOR_KEYBOARD;
+		rect.size.height -= kOFFSET_FOR_KEYBOARD;
+	}
+	self.view.frame = rect;
+
+	[UIView commitAnimations];
+}
+
+- (void)keyboardWillShow:(NSNotification *)notif
+{
+	// The keyboard will be shown. If the user is editing the description, adjust the display so
+	// that the description field will not be covered by the keyboard.
+	if(IS_IPHONE())
+	{
+		if(self.view.frame.origin.y >= 0)
+			[self setViewMovedUp:YES];
+		else if(self.view.frame.origin.y < 0)
+			[self setViewMovedUp:NO];
+	}
+}
+
+#pragma mark -
+#pragma mark UIViewController delegate methods
+#pragma mark -
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	// watch the keyboard so we can adjust the user interface if necessary.
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardWillShow:)
+												 name:UIKeyboardWillShowNotification
+											   object:self.view.window];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// unregister for keyboard notifications while not visible.
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:UIKeyboardWillShowNotification
+												  object:nil];
 }
 
 @end
