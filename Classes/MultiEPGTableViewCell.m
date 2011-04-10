@@ -231,7 +231,20 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	const NSInteger count = [_lines count] - 1;
 	for(NSObject<EventProtocol> *event in self.events)
 	{
-		const CGFloat leftLine = [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
+		CGFloat leftLine;
+		@try
+		{
+			leftLine = [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
+		}
+		@catch(NSException *exception)
+		{
+#if IS_DEBUG()
+			NSLog(@"Exception in [MultiEPGTableViewCell layoutSubviews]: idx %d, count %d, count events %d", idx, count, self.events.count);
+			[exception raise];
+#endif
+			break;
+		}
+
 		CGFloat rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
 		rightLine -= leftLine;
 		const CGRect frame = CGRectMake(kServiceWidth + leftLine, 0, rightLine, contentRect.size.height);
