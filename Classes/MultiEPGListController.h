@@ -27,6 +27,7 @@
  */
 @interface MultiEPGListController : ReloadableListController <UITableViewDelegate,
 															UITableViewDataSource,
+															UIActionSheetDelegate,
 															EPGCacheDelegate,
 															EventSourceDelegate,
 															MBProgressHUDDelegate,

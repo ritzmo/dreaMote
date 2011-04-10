@@ -327,6 +327,43 @@
 	[pool release];
 }
 
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
+	if(_reloading) return;
+
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"refresh epg", "used in confirmation dialog: really refresh epg?")]
+																   delegate:self
+														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+													 destructiveButtonTitle:NSLocalizedString(@"Refresh", "")
+														  otherButtonTitles:nil];
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+		[actionSheet showInView:self.view];
+	else
+		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	[actionSheet release];
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.destructiveButtonIndex)
+	{
+		[self emptyData];
+
+		// Spawn a thread to fetch the event data so that the UI is not blocked while the
+		// application parses the XML file.
+		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	}
+	else
+	{
+		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	}
+}
+
 #pragma mark -
 #pragma mark MBProgressHUDDelegate
 #pragma mark -
