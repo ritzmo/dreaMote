@@ -445,6 +445,10 @@
 		DAB7872A1352081500668D0F /* AutoTimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB787291352081500668D0F /* AutoTimerTableViewCell.m */; };
 		DAB7872D13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB7872C13533C3200668D0F /* NSMutableArray+Shuffling.m */; };
 		DAB7872E13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB7872C13533C3200668D0F /* NSMutableArray+Shuffling.m */; };
+		DAB78732135377C300668D0F /* key_d_box.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78730135377C300668D0F /* key_d_box.png */; };
+		DAB78733135377C300668D0F /* key_d_box.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78730135377C300668D0F /* key_d_box.png */; };
+		DAB78734135377C300668D0F /* key_home.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78731135377C300668D0F /* key_home.png */; };
+		DAB78735135377C300668D0F /* key_home.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78731135377C300668D0F /* key_home.png */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
@@ -858,6 +862,8 @@
 		DAB7872B13533C3100668D0F /* NSMutableArray+Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Shuffling.h"; sourceTree = "<group>"; };
 		DAB7872C13533C3200668D0F /* NSMutableArray+Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Shuffling.m"; sourceTree = "<group>"; };
 		DAB7872F1353467700668D0F /* MediaPlayerShuffleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerShuffleDelegate.h; sourceTree = "<group>"; };
+		DAB78730135377C300668D0F /* key_d_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_d_box.png; sourceTree = "<group>"; };
+		DAB78731135377C300668D0F /* key_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_home.png; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1299,6 +1305,7 @@
 				DA6CEFA612D4D38D00F1F52D /* key_9.png */,
 				DA6CEFA712D4D38D00F1F52D /* key_audio.png */,
 				DA6CEFA812D4D38D00F1F52D /* key_blue.png */,
+				DAB78730135377C300668D0F /* key_d_box.png */,
 				DA6CEFA912D4D38D00F1F52D /* key_down.png */,
 				DA6CEFAA12D4D38D00F1F52D /* key_exit.png */,
 				DA6CEFAB12D4D38D00F1F52D /* key_ff.png */,
@@ -1306,6 +1313,7 @@
 				DA6CEFAD12D4D38D00F1F52D /* key_green.png */,
 				DA6CEFAE12D4D38D00F1F52D /* key_help.png */,
 				DA6CEFAF12D4D38D00F1F52D /* key_help_round.png */,
+				DAB78731135377C300668D0F /* key_home.png */,
 				DA6CEFB012D4D38D00F1F52D /* key_info.png */,
 				DA6CEFB112D4D38D00F1F52D /* key_left.png */,
 				DA6CEFB212D4D38D00F1F52D /* key_leftarrow.png */,
@@ -1863,6 +1871,8 @@
 				DA9BF4CA13311E63008193C6 /* twitter-b.png in Resources */,
 				DA0FCD9E133D44F500CE2A04 /* changes_de.html in Resources */,
 				DAB787231350C86B00668D0F /* welcome_fr.html in Resources */,
+				DAB78732135377C300668D0F /* key_d_box.png in Resources */,
+				DAB78734135377C300668D0F /* key_home.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1952,6 +1962,8 @@
 				DA9BF4CB13311E63008193C6 /* twitter-b.png in Resources */,
 				DA0FCD9F133D44F500CE2A04 /* changes_de.html in Resources */,
 				DAB787241350C86B00668D0F /* welcome_fr.html in Resources */,
+				DAB78733135377C300668D0F /* key_d_box.png in Resources */,
+				DAB78735135377C300668D0F /* key_home.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

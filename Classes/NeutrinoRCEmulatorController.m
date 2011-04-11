@@ -185,12 +185,18 @@
 	[roundedButtonType release];
 
 	/* Additional Buttons Navigation pad */
-	// menu
+	// home
 	frame = CGRectMake((localY+100) * factor, (localX-40) * factor, imageWidth * factor, imageHeight * factor);
-	roundedButtonType = [self newButton:frame withImage:@"key_menu.png" andKeyCode: kButtonCodeMenu];
+	roundedButtonType = [self newButton:frame withImage:@"key_home.png" andKeyCode: kButtonCodeLame];
 	[_navigationPad addSubview: roundedButtonType];
 	[roundedButtonType release];
-	
+
+	// mute
+	frame = CGRectMake(localY * factor, (localX-40) * factor, imageWidth * factor, imageHeight * factor);
+	roundedButtonType = [self newButton:frame withImage:@"key_mute.png" andKeyCode: kButtonCodeMute];
+	[_navigationPad addSubview: roundedButtonType];
+	[roundedButtonType release];
+
 	[rcView addSubview: _navigationPad];
 	/* End Navigation pad */
 
@@ -243,6 +249,11 @@
 	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 
+	// dbox
+	frame = CGRectMake(currY * factor, currX * factor, imageWidth * factor, imageHeight * factor);
+	roundedButtonType = [self newButton:frame withImage:@"key_d_box.png" andKeyCode: kButtonCodeMenu];
+	[rcView addSubview: roundedButtonType];
+	[roundedButtonType release];
 	currY += imageWidth + kTweenMargin;
 
 	// help
@@ -271,22 +282,6 @@
 	[roundedButtonType release];
 	
 	/* End Volume pad */
-
-	// mute
-	currX = 140;
-	currY = kLeftMargin + 5 + rightOffset;
-	frame = CGRectMake(currY * factor, currX * factor, imageWidth * factor, imageHeight * factor);
-	roundedButtonType = [self newButton:frame withImage:@"key_mute.png" andKeyCode: kButtonCodeMute];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
-	
-	// lame
-	currX = 140;
-	currY = 255 + rightOffset;
-	frame = CGRectMake(currY * factor, currX * factor, imageWidth * factor, imageHeight * factor);
-	roundedButtonType = [self newButton:frame withImage:@"key_exit.png" andKeyCode: kButtonCodeLame];
-	[rcView addSubview: roundedButtonType];
-	[roundedButtonType release];
 }
 
 @end
