@@ -16,6 +16,9 @@
 
 #import "AboutViewController.h"
 #import "AboutDreamoteViewController.h"
+#if IS_FULL()
+	#import "AutoTimerListController.h"
+#endif
 #import "BouquetListController.h"
 #import "ConfigViewController.h"
 #import "ConfigListController.h"
@@ -58,6 +61,9 @@
 	[myTableView release];
 	[menuList release];
 	[_aboutDreamoteViewController release];
+#if IS_FULL()
+	[_autotimerDictionary release];
+#endif
 	[_configListController release];
 	[_eventSearchDictionary release];
 	[_mediaPlayerDictionary release];
@@ -105,6 +111,16 @@
 						targetViewController, @"viewController",
 						nil] retain];
 	[targetViewController release];
+
+#if IS_FULL()
+	targetViewController = [[AutoTimerListController alloc] init];
+	_autotimerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+						 NSLocalizedString(@"AutoTimer List Title", @""), @"title",
+						 NSLocalizedString(@"AutoTimer List Explain", @""), @"explainText",
+						 targetViewController, @"viewController",
+						 nil] retain];
+	[targetViewController release];
+#endif
 
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Config List Title", @""), @"title",
@@ -220,7 +236,7 @@
 				if(![menuList containsObject: _locationsDictionary])
 				{
 					[menuList removeObject:_recordDictionary];
-					[menuList insertObject:_locationsDictionary atIndex: 3];
+					[menuList insertObject:_locationsDictionary atIndex: 2];
 					reload = YES;
 				}
 			}
@@ -229,7 +245,7 @@
 				if(![menuList containsObject: _recordDictionary])
 				{
 					[menuList removeObject:_locationsDictionary];
-					[menuList insertObject:_recordDictionary atIndex: 3];
+					[menuList insertObject:_recordDictionary atIndex: 2];
 					reload = YES;
 				}
 			}
@@ -325,6 +341,25 @@
 			reload = YES;
 		}
 	}
+
+#if IS_FULL()
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer])
+	{
+		if(![menuList containsObject:_autotimerDictionary])
+		{
+			[menuList addObject:_autotimerDictionary]; // add to EOL
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject:_autotimerDictionary])
+		{
+			[menuList removeObject:_autotimerDictionary];
+			reload = YES;
+		}
+	}
+#endif
 
 	if(reload)
 		[myTableView reloadData];

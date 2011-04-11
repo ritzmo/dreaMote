@@ -23,6 +23,9 @@
 @private
 	UIViewController *_aboutDreamoteViewController; /*!< @brief Cached About View. */
 	NSDictionary *_aboutDictionary; /*!< @brief Dictionary describing About (Receiver) Item. */
+#if IS_FULL()
+	NSDictionary *_autotimerDictionary; /*!< @brief Dictionary describing AutoTimer Item. */
+#endif
 	ConfigListController *_configListController; /*!< @brief Config List. */
 	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */
