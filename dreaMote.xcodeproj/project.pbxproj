@@ -857,6 +857,7 @@
 		DAB787291352081500668D0F /* AutoTimerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerTableViewCell.m; sourceTree = "<group>"; };
 		DAB7872B13533C3100668D0F /* NSMutableArray+Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+Shuffling.h"; sourceTree = "<group>"; };
 		DAB7872C13533C3200668D0F /* NSMutableArray+Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+Shuffling.m"; sourceTree = "<group>"; };
+		DAB7872F1353467700668D0F /* MediaPlayerShuffleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerShuffleDelegate.h; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1493,6 +1494,7 @@
 				DAAC51EF12D48F3500B3B443 /* EventSourceDelegate.h */,
 				DAAC51F012D48F3500B3B443 /* FileSourceDelegate.h */,
 				DAAC51F112D48F3500B3B443 /* LocationSourceDelegate.h */,
+				DAB7872F1353467700668D0F /* MediaPlayerShuffleDelegate.h */,
 				DA12F8B412DBB703009FF8DD /* MetadataSourceDelegate.h */,
 				DAAC51F212D48F3500B3B443 /* MovieSourceDelegate.h */,
 				DA7A19DF12E1C76A004DEEB7 /* NowNextSourceDelegate.h */,

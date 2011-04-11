@@ -61,6 +61,7 @@
 @property (nonatomic) BOOL isPlaylist;
 @property (nonatomic) BOOL reloading;
 @property (nonatomic, retain) NSString *path;
+@property (nonatomic, readonly) NSMutableArray *files;
 
 @end
 

@@ -47,6 +47,7 @@
 @implementation MediaPlayerController
 
 @synthesize popoverController, progressHUD;
+@synthesize shuffleButton = _shuffleButton;
 
 - (id)init
 {
@@ -55,6 +56,11 @@
 		self.title = NSLocalizedString(@"MediaPlayer", @"Title of MediaPlayerController");
 		_adding = YES;
 		_massAdd = NO;
+
+		_shuffleButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Shuffle", @"Shuffle button in MediaPlayer")
+														style:UIBarButtonItemStyleBordered
+													   target:self
+													   action:@selector(shuffle:)];
 	}
 
 	return self;
@@ -67,6 +73,7 @@
 	[_fileList release];
 	[_playlist release];
 	[_controls release];
+	[_shuffleButton release];
 	[_timer release];
 	[_currentXMLDoc release];
 	[progressHUD release];
@@ -205,6 +212,32 @@
 		_fileList.frame = self.view.frame;
 }
 
+- (void)shuffleDefer
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	[[RemoteConnectorObject sharedRemoteConnector] shufflePlaylist:self playlist:_playlist.files];
+	[pool release];
+}
+
+- (IBAction)shuffle:(id)sender
+{
+	[popoverController dismissPopoverAnimated:YES];
+	self.popoverController = nil;
+
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	[self.view addSubview:progressHUD];
+	progressHUD.delegate = self;
+	[progressHUD setLabelText:NSLocalizedString(@"Shuffling Playlist", @"Label of Progress HUD in MediaPlayer when shuffling playlist")];
+	[progressHUD setMode:MBProgressHUDModeDeterminate];
+	progressHUD.progress = 0.0f;
+	[progressHUD show:YES];
+	progressHUD.taskInProgress = YES;
+
+	_shuffleButton.enabled = NO;
+	_shuffleActions = -1;
+	[NSThread detachNewThreadSelector:@selector(shuffleDefer) toTarget:self withObject:nil];
+}
+
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
 	CGRect frame = self.view.frame;
@@ -307,6 +340,28 @@
 
 	[_playlist refreshData];
 	[pool release];
+}
+
+#pragma mark -
+#pragma mark MediaPlayerShuffleDelegate
+#pragma mark -
+
+- (void)finishedShuffling
+{
+	progressHUD.taskInProgress = NO;
+	[progressHUD hide:YES];
+
+	_shuffleButton.enabled = YES;
+	_shuffleActions = -1;
+
+	[_playlist refreshData];
+}
+
+- (void)remainingShuffleActions:(NSNumber *)count
+{
+	if(_shuffleActions == -1)
+		_shuffleActions = [count integerValue];
+	progressHUD.progress = 1 - ([count integerValue] / _shuffleActions);
 }
 
 #pragma mark -
@@ -516,9 +571,27 @@
 
 	if(editing)
 	{
-		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(flipView:)];
-		self.navigationItem.leftBarButtonItem = barButtonItem;
-		[barButtonItem release];
+		const CGFloat toolbarHeight = (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) ? 44.01f : 32.01f;
+		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, toolbarHeight)];
+		toolbar.autoresizesSubviews = YES;
+		toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+		const UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																				  target:self
+																				  action:@selector(flipView:)];
+		NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, flexItem, nil];
+		[toolbar setItems:items animated:NO];
+		UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+		self.navigationItem.leftBarButtonItem = buttonItem;
+
+		[buttonItem release];
+		[items release];
+		[flipItem release];
+		[flexItem release];
+		[toolbar release];
 	}
 	else
 	{
@@ -668,7 +741,6 @@
 	self.navigationItem.leftBarButtonItem = barButtonItem;
 	self.popoverController = pc;
 }
-
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController: (id)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem

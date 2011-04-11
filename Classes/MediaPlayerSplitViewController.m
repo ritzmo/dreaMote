@@ -52,15 +52,25 @@
 	[navController1 release];
 	[navController2 release];
 
-	// add add/flip button
-	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:detailsController action:@selector(flipView:)];
-	playListController.navigationItem.leftBarButtonItem = barButtonItem;
-	[barButtonItem release];
+	// add buttons
+	UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+																			  target:detailsController
+																			  action:@selector(flipView:)];
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+	NSArray *items = [[NSArray alloc] initWithObjects:flexItem, detailsController.shuffleButton, nil];
+	[playListController setToolbarItems:items animated:NO];
+	[playListController.navigationController setToolbarHidden:NO animated:YES];
+	playListController.navigationItem.leftBarButtonItem = flipItem;
 
 	// details is delegate
 	self.delegate = detailsController;
 
 	// release allocated ressources
+	[items release];
+	[flexItem release];
+	[flipItem release];
 	[playListController release];
 	[detailsController release];
 }

@@ -12,6 +12,7 @@
 #import "Objects/MovieProtocol.h"
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
+#import "Delegates/MediaPlayerShuffleDelegate.h"
 
 #import "SynchronousRequestReader.h"
 #import "XMLReader/Enigma2/AboutXMLReader.h"
@@ -30,6 +31,7 @@
 #import "EnigmaRCEmulatorController.h"
 #import "SimpleRCEmulatorController.h"
 
+#import "NSMutableArray+Shuffling.h"
 #import "NSString+URLEncode.h"
 
 #define WEBIF_VERSION_SUGGESTED @"1.6.6"
@@ -511,6 +513,26 @@ enum enigma2MessageTypes {
 															  error:nil];
 
 	return data;
+}
+
+
+- (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist
+{
+	[playlist shuffle];
+
+	NSUInteger count = 2 * playlist.count;
+	Result *result = nil;
+	for(NSObject<FileProtocol> *file in playlist)
+	{
+		result = [self removeTrack:file];
+		if(result.result)
+			result = [self addTrack:file startPlayback:NO];
+
+		count -= 2;
+		NSNumber *number = [NSNumber numberWithUnsignedInteger:count];
+		[delegate performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:number waitUntilDone:NO];
+	}
+	[delegate performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
 }
 
 #pragma mark -

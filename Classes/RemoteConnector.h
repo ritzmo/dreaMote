@@ -195,6 +195,7 @@ enum buttonCodes {
 @protocol AutoTimerSourceDelegate;
 @protocol EventSourceDelegate;
 @protocol LocationSourceDelegate;
+@protocol MediaPlayerShuffleDelegate;
 @protocol MetadataSourceDelegate;
 @protocol MovieSourceDelegate;
 @protocol NowSourceDelegate;
@@ -554,6 +555,15 @@ enum buttonCodes {
  @return YES if track was removed successfully.
  */
 - (Result *)removeTrack:(NSObject<FileProtocol> *) track;
+
+/*!
+ @brief Shuffle playlist.
+ @note The playlist array will be changed.
+
+ @param delegate Delegate to be called back.
+ @param playlist Items currently in playlist.
+ */
+- (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist;
 
 #pragma mark -
 #pragma mark AutoTimer

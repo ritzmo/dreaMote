@@ -975,4 +975,11 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
+- (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+}
+
 @end

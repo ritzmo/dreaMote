@@ -23,6 +23,7 @@
 @synthesize fileDelegate = _fileDelegate;
 @synthesize isPlaylist = _isPlaylist;
 @synthesize reloading = _reloading;
+@synthesize files = _files;
 
 - (id)initWithFrame:(CGRect)frame
 {

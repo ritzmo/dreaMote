@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 #import "RecursiveFileAdder.h" /* RecursiveFileAdderDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
+#import "MediaPlayerShuffleDelegate.h" /* MediaPlayerShuffleDelegate */
 
 
 /*!
@@ -39,6 +40,7 @@ enum retrieveCurrentUsing {
  */
 @interface MediaPlayerController : UIViewController <FileListDelegate, EventSourceDelegate,
 													RecursiveFileAdderDelegate,
+													MediaPlayerShuffleDelegate,
 													AboutSourceDelegate, MBProgressHUDDelegate,
 													ServiceSourceDelegate, UIActionSheetDelegate>
 {
@@ -49,12 +51,15 @@ enum retrieveCurrentUsing {
 	BOOL _massAdd; /*!< @brief Performing a mass-add operation. */
 	NSTimer *_timer; /*!< @brief Refresh timer. */
 	UIView *_controls; /*!< @brief Media Player controls. */
-	
+
 	CGRect _landscapeControlsFrame; /*!< @brief Landscape frame of controls. */
 	CGRect _portraitControlsFrame; /*!< @brief Portrait frame of controls. */
 
 	CXMLDocument *_currentXMLDoc; /*!< @brief Currently played. */
 	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
+
+	UIBarButtonItem *_shuffleButton;  /*!< @brief "Shuffle" Button. */
+	float _shuffleActions; /*!< @brief Shuffle actions left or -1 on unknown. */
 @protected
 	UIBarButtonItem *_addFolderItem; /*!< @brief "Add Folder" Button. */
 	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
@@ -97,6 +102,13 @@ enum retrieveCurrentUsing {
 - (void)showToolbar;
 
 /*!
+ @brief Shuffle Playlist.
+
+ @param sender Unused parameter required by Buttons.
+ */
+- (IBAction)shuffle:(id)sender;
+
+/*!
  @brief Default implementation of xml parser error callback.
  */
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
@@ -105,5 +117,7 @@ enum retrieveCurrentUsing {
  @brief Default implementation of xml parser success callback.
  */
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
+
+@property (nonatomic, readonly) UIBarButtonItem *shuffleButton;
 
 @end
