@@ -91,16 +91,23 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 {
 	if(!strncmp((const char *)localname, kEnigma2FileElement, kEnigma2FileElementLength))
 	{
-		[_delegate performSelectorOnMainThread: @selector(addFile:)
-									withObject: currentFile
-								 waitUntilDone: NO];
+		if(currentFile)
+		{
+			[_delegate performSelectorOnMainThread:@selector(addFile:)
+										withObject:currentFile
+									 waitUntilDone:NO];
+		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
-		if([currentString isEqualToString: @"None"])
+		if([currentString isEqualToString:@"None"])
 		{
 			currentFile.title = NSLocalizedString(@"Filesystems", @"Label for Filesystems Item in MediaPlayer Filelist");
 			currentFile.sref = @"Filesystems";
+		}
+		else if([currentString isEqualToString:@"empty"])
+		{
+			self.currentFile = nil;
 		}
 		else
 		{
@@ -109,7 +116,7 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2FileRoot, kEnigma2FileRootLength))
 	{
-		if([currentString isEqualToString: @"playlist"])
+		if([currentString isEqualToString:@"playlist"])
 		{
 			NSArray *comps = [currentFile.sref componentsSeparatedByString:@"/"];
 			currentFile.title = [comps lastObject];
