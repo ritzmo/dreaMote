@@ -321,6 +321,7 @@
 	_tableView.frame = CGRectMake(0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
 
 	//[UIView commitAnimations];
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }
 
 /* about to display */

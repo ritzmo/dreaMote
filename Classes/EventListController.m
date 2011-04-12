@@ -183,6 +183,21 @@
 #endif
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+#if IS_LITE()
+	CGRect frame = _tableView.frame;
+#ifndef __BOTTOM_AD__
+	frame.origin.y += _adBannerHeight;
+#endif
+	frame.size.height -= _adBannerHeight;
+	_tableView.frame = frame;
+
+	[self fixupAdView:self.interfaceOrientation];
+#endif
+}
+
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
