@@ -381,8 +381,10 @@
 /* did rotate */
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+#if IS_FULL()
 	if([_multiEPG.view superview])
 		[_multiEPG didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+#endif
 
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 }

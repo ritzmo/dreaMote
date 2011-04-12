@@ -568,6 +568,7 @@ enum buttonCodes {
 #pragma mark -
 #pragma mark AutoTimer
 #pragma mark -
+#if IS_FULL()
 
 /*!
  @brief Retrieve List of AutoTimers.
@@ -600,6 +601,7 @@ enum buttonCodes {
  @return Valid Result if Timer was changed successfully.
  */
 - (Result *)editAutoTimer:(AutoTimer *)changeTimer;
+#endif
 
 #pragma mark -
 #pragma mark Control

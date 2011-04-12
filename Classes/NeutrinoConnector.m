@@ -1045,6 +1045,7 @@ enum neutrinoMessageTypes {
 	return nil;
 }
 
+#if IS_FULL()
 - (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
 {
 #if IS_DEBUG()
@@ -1076,6 +1077,7 @@ enum neutrinoMessageTypes {
 #endif
 	return nil;
 }
+#endif
 
 - (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist
 {

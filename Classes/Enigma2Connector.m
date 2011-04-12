@@ -16,7 +16,9 @@
 
 #import "SynchronousRequestReader.h"
 #import "XMLReader/Enigma2/AboutXMLReader.h"
-#import "XMLReader/Enigma2/AutoTimerXMLReader.h"
+#if IS_FULL()
+	#import "XMLReader/Enigma2/AutoTimerXMLReader.h"
+#endif
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/FileXMLReader.h"
@@ -539,8 +541,10 @@ enum enigma2MessageTypes {
 #pragma mark AutoTimer
 #pragma mark -
 
+#if IS_FULL()
 - (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
 {
+
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer" relativeToURL:_baseAddress];
 
 	const BaseXMLReader *streamReader = [[Enigma2AutoTimerXMLReader alloc] initWithDelegate:delegate];
@@ -751,6 +755,7 @@ enum enigma2MessageTypes {
 
 	return [self getResultFromSimpleXmlWithRelativeString:timerString];
 }
+#endif
 
 #pragma mark Control
 
