@@ -118,7 +118,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	resultString = CFStringCreateWithFormatAndArguments(NULL, NULL, (CFStringRef)format, argList);
 	va_end(argList);
 
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(NSString*)resultString forKey:@"error_message"];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(NSString*)resultString forKey:NSLocalizedDescriptionKey];
 	NSError *error = [NSError errorWithDomain:@"ParsingDomain" code:101 userInfo:userInfo];
 
 	failureReason = [error retain];
