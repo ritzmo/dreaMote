@@ -200,6 +200,8 @@ static EPGCache *_sharedInstance = nil;
 	[alert release];
 #endif
 
+	// rollback just to be safe
+	sqlite3_exec(database, "ROLLBACK", 0, 0, 0);
 	[self dataSourceDelegate:dataSource finishedParsingDocument:document];
 }
 
@@ -208,6 +210,10 @@ static EPGCache *_sharedInstance = nil;
 	NSUInteger count = [_serviceList count];
 	if(count)
 	{
+		// commit last bunch of updates and start a new transaction
+		sqlite3_exec(database, "COMMIT", 0, 0, 0);
+		sqlite3_exec(database, "BEGIN", 0, 0, 0);
+
 		[_delegate performSelectorOnMainThread:@selector(remainingServicesToRefresh:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
 		// continue fetching events
 		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
@@ -319,6 +325,9 @@ static EPGCache *_sharedInstance = nil;
 			}
 			sqlite3_finalize(compiledStatement);
 		}
+
+		// start transcation
+		sqlite3_exec(database, "BEGIN", 0, 0, 0);
 	}
 	return retVal;
 }
@@ -332,6 +341,9 @@ static EPGCache *_sharedInstance = nil;
 	{
 		[_service release];
 		_service = nil;
+
+		// stop transcation
+		sqlite3_exec(database, "COMMIT", 0, 0, 0);
 
 		sqlite3_finalize(insert_stmt);
 		insert_stmt = NULL;
