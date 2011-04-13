@@ -28,6 +28,7 @@
 	NSMutableArray *_locations; /*!< @brief Location List. */
 	BOOL _refreshLocations; /*!< @brief Refresh Location List on next open? */
 	BOOL _isSplit; /*!< @brief Split mode? */
+	BOOL _showDefault; /*!< @brief Show "Default Location"-Folder? */
 	MovieListController *_movieListController; /*!< @brief Caches Movie List instance. */
 	NSObject<LocationListDelegate> *_delegate; /*!< @brief Delegate. */
 
@@ -60,6 +61,11 @@
  @brief Movie List
  */
 @property (nonatomic, retain) IBOutlet MovieListController *movieListController;
+
+/*!
+ @brief Show "Default Location"
+ */
+@property (nonatomic, assign) BOOL showDefault;
 
 /*!
  @breif View will reapper.

@@ -22,8 +22,9 @@
 
 @implementation LocationListController
 
-@synthesize movieListController = _movieListController;
 @synthesize isSplit = _isSplit;
+@synthesize movieListController = _movieListController;
+@synthesize showDefault = _showDefault;
 
 /* initialize */
 - (id)init
@@ -206,6 +207,11 @@
 	}
 }
 
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	[super dataSourceDelegate:dataSource finishedParsingDocument:document];
+}
+
 #pragma mark -
 #pragma mark LocationSourceDelegate
 #pragma mark -
@@ -228,9 +234,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	NSInteger row = indexPath.row;
+
+	if(_showDefault && row-- == 0)
+	{
+		TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Location", @"");;
+		return cell;
+	}
 
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	TABLEVIEWCELL_TEXT(cell) = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:indexPath.row]).fullpath;
+	TABLEVIEWCELL_TEXT(cell) = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:row]).fullpath;
 
 	return cell;
 }
@@ -238,12 +252,17 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// See if we have a valid location
-	NSObject<LocationProtocol> *location = [_locations objectAtIndex: indexPath.row];
-	if(!location.valid)
-		return nil;
+	NSInteger row = indexPath.row;
+	NSObject<LocationProtocol> *location = nil;
+	if(_showDefault && row-- > 0)
+	{
+		location = [_locations objectAtIndex:row];
+		if(!location.valid)
+			return nil;
+	}
+
 	// Callback mode
-	else if(_delegate != nil)
+	if(_delegate != nil)
 	{
 		[_delegate performSelector:@selector(locationSelected:) withObject: location];
 
@@ -281,7 +300,10 @@
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [_locations count];
+	NSUInteger count = _locations.count;
+	if(_showDefault)
+		++count;
+	return count;
 }
 
 /* set delegate */

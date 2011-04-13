@@ -314,6 +314,7 @@ enum sectionIds
 	{
 		LocationListController *rootViewController = [[LocationListController alloc] init];
 		[rootViewController setDelegate: self];
+		rootViewController.showDefault = YES;
 
 		if(IS_IPAD())
 		{
@@ -843,16 +844,18 @@ enum sectionIds
 
 - (void)locationSelected:(NSObject <LocationProtocol>*)newLocation
 {
-	if(newLocation == nil)
-		return;
-
-	_timer.location = newLocation.fullpath;
-
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:locationSection]];
-	if(cell == nil)
-		return;
 
-	cell.textLabel.text = newLocation.fullpath;
+	if(newLocation)
+	{
+		_timer.location = newLocation.fullpath;
+		cell.textLabel.text = newLocation.fullpath;
+	}
+	else
+	{
+		_timer.location = nil;
+		cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
+	}
 }
 
 #pragma mark -
