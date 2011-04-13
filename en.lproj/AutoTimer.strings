@@ -1,0 +1,60 @@
+﻿/* Placeholder of AutoTimer Title field */
+/*"<enter title>" = "<enter title>";*/
+
+/* Placeholder of Textfield in Filter Editor */
+/*"<filter text>" = "<filter text>";*/
+
+/* Placeholder of AutoTimer Maxduration field */
+/*"<maximum duration>" = "<maximum duration>";*/
+
+/* Placeholder of AutoTimer Match field */
+/*"<text to find in title>" = "<text to find in title>";*/
+
+/* timeframe after */
+/*"After: %@" = "After: %@";*/
+
+/* timeframe before */
+/*"Before: %@" = "Before: %@";*/
+
+/* section header for bouquet restriction */
+/*"Bouquets" = "Bouquets";*/
+
+/* Exclude Filter */
+/*"Exclude" = "Exclude";*/
+
+/* timespan from */
+/*"From: %@" = "From: %@";*/
+
+/* Include Filter */
+/*"Include" = "Include";*/
+
+/* weekday filter */
+/*"Mon-Fri" = "Mon-Fri";*/
+
+/* add new bouquet filter */
+/*"New Bouquet" = "New Bouquet";*/
+
+/* add new filter */
+/*"New Filter" = "New Filter";*/
+
+/* add new service filter */
+/*"New Service" = "New Service";*/
+
+/* weekday filter */
+/*"Sat-Sun" = "Sat-Sun";*/
+
+/* section header for service restriction */
+/*"Services" = "Services";*/
+
+/* section header for timeframe */
+/*"Timeframe" = "Timeframe";*/
+
+/* section header for timespan */
+/*"Timespan" = "Timespan";*/
+
+/* timespan to */
+/*"To: %@" = "To: %@";*/
+
+/* option (e.g. timespan or timeframe) unset */
+/*"unset" = "unset";*/
+

@@ -1,0 +1,60 @@
+﻿/* Placeholder of AutoTimer Title field */
+"<enter title>" = "<titel eingeben>";
+
+/* Placeholder of Textfield in Filter Editor */
+"<filter text>" = "<zu suchender text>";
+
+/* Placeholder of AutoTimer Maxduration field */
+"<maximum duration>" = "<maximale dauer>";
+
+/* Placeholder of AutoTimer Match field */
+"<text to find in title>" = "<zu suchender text>";
+
+/* timeframe after */
+"After: %@" = "Nach: %@";
+
+/* timeframe before */
+"Before: %@" = "Bevor: %@";
+
+/* section header for bouquet restriction */
+"Bouquets" = "Bouquets";
+
+/* Exclude Filter */
+"Exclude" = "Ausschließen";
+
+/* timespan from */
+"From: %@" = "Von: %@";
+
+/* Include Filter */
+"Include" = "Einschließen";
+
+/* weekday filter */
+"Mon-Fri" = "Mon-Fre";
+
+/* add new bouquet filter */
+"New Bouquet" = "Neues Bouquet";
+
+/* add new filter */
+"New Filter" = "Neuer Filter";
+
+/* add new service filter */
+"New Service" = "Neuer Sender";
+
+/* weekday filter */
+"Sat-Sun" = "Sam-Son";
+
+/* section header for service restriction */
+"Services" = "Nur auf Sender";
+
+/* section header for timeframe */
+"Timeframe" = "Zeitraum";
+
+/* section header for timespan */
+"Timespan" = "Uhrzeit";
+
+/* timespan to */
+"To: %@" = "Bis: %@";
+
+/* option (e.g. timespan or timeframe) unset */
+"unset" = "ungesetzt";
+

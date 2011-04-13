@@ -449,6 +449,14 @@
 		DAB78733135377C300668D0F /* key_d_box.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78730135377C300668D0F /* key_d_box.png */; };
 		DAB78734135377C300668D0F /* key_home.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78731135377C300668D0F /* key_home.png */; };
 		DAB78735135377C300668D0F /* key_home.png in Resources */ = {isa = PBXBuildFile; fileRef = DAB78731135377C300668D0F /* key_home.png */; };
+		DAB787381356048800668D0F /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB787361356048800668D0F /* AutoTimer.strings */; };
+		DAB787391356048800668D0F /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB787361356048800668D0F /* AutoTimer.strings */; };
+		DAB7873B1356049500668D0F /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB787361356048800668D0F /* AutoTimer.strings */; };
+		DAB7873C1356049500668D0F /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB787361356048800668D0F /* AutoTimer.strings */; };
+		DAB7873E135604A600668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
+		DAB7873F135604A600668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
+		DAB78741135604B700668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
+		DAB78742135604B700668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
@@ -864,6 +872,8 @@
 		DAB7872F1353467700668D0F /* MediaPlayerShuffleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerShuffleDelegate.h; sourceTree = "<group>"; };
 		DAB78730135377C300668D0F /* key_d_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_d_box.png; sourceTree = "<group>"; };
 		DAB78731135377C300668D0F /* key_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_home.png; sourceTree = "<group>"; };
+		DAB7873D135604A600668D0F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AutoTimer.strings; sourceTree = "<group>"; };
+		DAB78740135604B700668D0F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AutoTimer.strings; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1058,6 +1068,7 @@
 				8D1107310486CEB800E47090 /* Info Full.plist */,
 				DA165F4112E9CA2700A6D894 /* Info Lite.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
+				DAB787361356048800668D0F /* AutoTimer.strings */,
 				DACFCCEE0E33CAD100348996 /* MainWindow.xib */,
 				DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */,
 				DA42BE1112DA434100F14E3C /* OtherList.xib */,
@@ -1873,6 +1884,10 @@
 				DAB787231350C86B00668D0F /* welcome_fr.html in Resources */,
 				DAB78732135377C300668D0F /* key_d_box.png in Resources */,
 				DAB78734135377C300668D0F /* key_home.png in Resources */,
+				DAB787381356048800668D0F /* AutoTimer.strings in Resources */,
+				DAB7873B1356049500668D0F /* AutoTimer.strings in Resources */,
+				DAB7873E135604A600668D0F /* MainWindow.xib in Resources */,
+				DAB78741135604B700668D0F /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1964,6 +1979,10 @@
 				DAB787241350C86B00668D0F /* welcome_fr.html in Resources */,
 				DAB78733135377C300668D0F /* key_d_box.png in Resources */,
 				DAB78735135377C300668D0F /* key_home.png in Resources */,
+				DAB787391356048800668D0F /* AutoTimer.strings in Resources */,
+				DAB7873C1356049500668D0F /* AutoTimer.strings in Resources */,
+				DAB7873F135604A600668D0F /* MainWindow.xib in Resources */,
+				DAB78742135604B700668D0F /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2288,6 +2307,15 @@
 				DA5B70CA12D383D200840890 /* fr */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		DAB787361356048800668D0F /* AutoTimer.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DAB7873D135604A600668D0F /* en */,
+				DAB78740135604B700668D0F /* de */,
+			);
+			name = AutoTimer.strings;
 			sourceTree = "<group>";
 		};
 		DACFCCEE0E33CAD100348996 /* MainWindow.xib */ = {

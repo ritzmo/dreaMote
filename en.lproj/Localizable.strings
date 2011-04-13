@@ -100,6 +100,18 @@
 /* No comment provided by engineer. */
 /*"Autodetect" = "Autodetect";*/
 
+/* Default title of AutoTimerViewController */
+/*"AutoTimer" = "AutoTimer";*/
+
+/* No comment provided by engineer. */
+"AutoTimer List Explain" = "Add and edit AutoTimers";
+
+/* No comment provided by engineer. */
+"AutoTimer List Title" = "AutoTimer-Plugin";
+
+/* Title of AutoTimerListController */
+/*"AutoTimers" = "AutoTimers";*/
+
 /* No comment provided by engineer. */
 /*"Begin" = "Begin";*/
 
@@ -126,6 +138,9 @@
 
 /* No comment provided by engineer. */
 /*"Caption cannot be empty." = "Caption cannot be empty.";*/
+
+/* case-sensitive matching (of autotimers) */
+/*"Case-Sensitive" = "Case-Sensitive";*/
 
 /* Timer cleanup button */
 /*"Cleanup" = "Cleanup";*/
@@ -203,6 +218,9 @@
 /* No comment provided by engineer. */
 /*"Deep Standby" = "Deep Standby";*/
 
+/* Default After Event action (usually auto on enigma2 receivers) */
+/*"Default Action" = "Default Action";*/
+
 /* No comment provided by engineer. */
 /*"Default Location" = "Default Location";*/
 
@@ -211,6 +229,9 @@
 
 /* No comment provided by engineer. */
 /*"Description" = "Description";*/
+
+/* Shown when touching screenshots for 1s, asks to save to libary */
+/*"Do you want to save this picture?" = "Do you want to save this picture?";*/
 
 /* No comment provided by engineer. */
 /*"Done" = "Done";*/
@@ -237,10 +258,16 @@
 "Error" = "Error";
 
 /* No comment provided by engineer. */
+/*"Error adding AutoTimer: %@" = "Error adding AutoTimer: %@";*/
+
+/* No comment provided by engineer. */
 /*"Error adding new timer: %@" = "Error adding new timer: %@";*/
 
 /* Title of alert when timer cleanup failed */
 /*"Error cleaning up" = "Error cleaning up";*/
+
+/* No comment provided by engineer. */
+/*"Error editing AutoTimer: %@" = "Error editing AutoTimer: %@";*/
 
 /* No comment provided by engineer. */
 /*"Error editing timer: %@" = "Error editing timer: %@";*/
@@ -266,6 +293,9 @@
 /* No comment provided by engineer. */
 "Exact" = "Exact";
 
+/* No comment provided by engineer. */
+/*"Exact Title" = "Exact Title";*/
+
 /* export data from lite to full version */
 /*"Export to dreaMote" = "Export to dreaMote";*/
 
@@ -277,6 +307,21 @@
 
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "Filesystems" = "<Filesystems>";
+
+/* Default title of AutoTimerFilterViewController */
+/*"Filter" = "Filter";*/
+
+/* No comment provided by engineer. */
+/*"Filter: Description" = "Filter: Description";*/
+
+/* No comment provided by engineer. */
+/*"Filter: Shortdescription" = "Filter: Shortdescription";*/
+
+/* No comment provided by engineer. */
+/*"Filter: Title" = "Filter: Title";*/
+
+/* No comment provided by engineer. */
+/*"Filter: Weekday" = "Filter: Weekday";*/
 
 /* Timer type */
 "Finished" = "Finished";
@@ -353,6 +398,12 @@
 /* No comment provided by engineer. */
 /*"Master" = "Master";*/
 
+/* Title of section with AutoTimer match-Attribute. String to find in EPG-Title. */
+/*"Match" = "Match";*/
+
+/* Title of section with AutoTimer max Duration-Attribute. Maximum Duration a event can have to match this AutoTimer. */
+/*"Max. Duration" = "Max. Duration";*/
+
 /* No comment provided by engineer. */
 "Media Player Explain" = "Control the remote media player";
 
@@ -420,6 +471,9 @@
 "Never" = "Never";
 
 /* No comment provided by engineer. */
+/*"New AutoTimer" = "New AutoTimer";*/
+
+/* No comment provided by engineer. */
 /*"New Connection" = "New Connection";*/
 
 /* No comment provided by engineer. */
@@ -439,6 +493,9 @@
 
 /* No comment provided by engineer. */
 "No similar Events" = "No similar Events";
+
+/* User requested AutoTimer timeframe but none was setup. */
+/*"No timeframe given." = "No timeframe given.";*/
 
 /* No comment provided by engineer. */
 /*"No, Thanks" = "No, Thanks";*/
@@ -491,6 +548,9 @@
 /* No comment provided by engineer. */
 /*"Power" = "Power";*/
 
+/* No comment provided by engineer. */
+/*"Prefer Alternatives" = "Prefer Alternatives";*/
+
 /* Timer type */
 "Prepared" = "Prepared";
 
@@ -518,8 +578,14 @@
 /* No comment provided by engineer. */
 /*"Rate %@" = "Rate %@";*/
 
+/* Confirmation dialog title */
+/*"Really %@?" = "Really %@?";*/
+
 /* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
 /*"Really add all items in this folder?" = "Really add all items in this folder?";*/
+
+/* used in confirmation dialog: really reboot? */
+/*"reboot" = "reboot";*/
 
 /* No comment provided by engineer. */
 "Reboot" = "Reboot";
@@ -532,6 +598,12 @@
 
 /* Title of MovieSplitViewController */
 /*"Recordings" = "Recordings";*/
+
+/* No comment provided by engineer. */
+/*"Refresh" = "Refresh";*/
+
+/* used in confirmation dialog: really refresh epg? */
+/*"refresh EPG" = "refresh EPG";*/
 
 /* Release to refresh status */
 /*"Release to refresh..." = "Release to refresh...";*/
@@ -560,6 +632,9 @@
 /* No comment provided by engineer. */
 "Restart" = "Restart";
 
+/* used in confirmation dialog: really restart? */
+/*"restart" = "restart";*/
+
 /* Timer type */
 "Running" = "Running";
 
@@ -568,6 +643,9 @@
 
 /* No comment provided by engineer. */
 "Saturday" = "Saturday";
+
+/* No comment provided by engineer. */
+/*"Save" = "Save";*/
 
 /* No comment provided by engineer. */
 /*"Screenshot" = "Screenshot";*/
@@ -602,6 +680,9 @@
 /* No comment provided by engineer. */
 "Shutdown" = "Shutdown";
 
+/* used in confirmation dialog: really shutdown? */
+/*"shutdown" = "shutdown";*/
+
 /* Title of SignalViewController */
 "Signal" = "Signal";
 
@@ -626,6 +707,12 @@
 /* No comment provided by engineer. */
 /*"SNR" = "SNR";*/
 
+/* Sort (movies) alphabetically */
+/*"Sort A-Z" = "Sort A-Z";*/
+
+/* Sort (movies) by time */
+/*"Sort by time" = "Sort by time";*/
+
 /* No comment provided by engineer. */
 "Standby" = "Standby";
 
@@ -647,6 +734,9 @@
 /* No comment provided by engineer. */
 /*"Text" = "Text";*/
 
+/* No comment provided by engineer. */
+/*"The match attribute is mandatory." = "The match attribute is mandatory.";*/
+
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 /*"This can take a while." = "This can take a while.";*/
 
@@ -655,6 +745,9 @@
 
 /* No comment provided by engineer. */
 "Thursday" = "Thursday";
+
+/* User requested AutoTimer timeframe but before if equal to or earlier than end. */
+/*"Timeframe has to be ascending." = "Timeframe has to be ascending.";*/
 
 /* No comment provided by engineer. */
 /*"Timeout" = "Timeout";*/
@@ -706,6 +799,9 @@
 
 /* No comment provided by engineer. */
 /*"Unable to start playback" = "Unable to start playback";*/
+
+/* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers. */
+/*"Unique Description" = "Unique Description";*/
 
 /* Unable to find service name for service id */
 /*"Unknown Service (%@)" = "Unknown Service (%@)";*/
