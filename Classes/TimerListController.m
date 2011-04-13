@@ -124,6 +124,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = 62;
+	_tableView.allowsSelectionDuringEditing = YES;
 
 	_cleanupButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cleanup", @"Timer cleanup button") style:UIBarButtonItemStylePlain target:self action:@selector(cleanupTimers:)];
 
@@ -353,6 +354,13 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 /* row selected */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(self.editing)
+	{
+		if(indexPath.section == 0)
+			[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
+		return nil;
+	}
+
 	NSInteger index = indexPath.row;
 	const NSInteger section = indexPath.section - 1;
 	if(section > 0)
