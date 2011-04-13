@@ -9,11 +9,13 @@
 #import "AutoTimerListController.h"
 
 #import "Constants.h"
-#import "UITableViewCell+EasyInit.h"
 #import "RemoteConnectorObject.h"
-#import "AutoTimerTableViewCell.h"
 
+#import "AutoTimerTableViewCell.h"
 #import "Objects/Generic/Result.h"
+
+#import "Insort/NSArray+CWSortedInsert.h"
+#import "UITableViewCell+EasyInit.h"
 
 @implementation AutoTimerListController
 
@@ -120,7 +122,7 @@
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
+	[_tableView reloadData];
 }
 
 #pragma mark -
@@ -129,10 +131,9 @@
 
 - (void)addAutoTimer:(AutoTimer *)at
 {
-	const NSUInteger idx = _autotimers.count;
-	[_autotimers addObject:at];
-	[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:1]]
-					  withRowAnimation:UITableViewRowAnimationLeft];
+	const NSUInteger index = [_autotimers indexForInsertingObject:at sortedUsingSelector:@selector(compare:)];
+	[_autotimers insertObject:at atIndex:index];
+	[_tableView reloadData];
 }
 
 #pragma mark - View lifecycle

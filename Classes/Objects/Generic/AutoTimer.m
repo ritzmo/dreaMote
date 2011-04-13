@@ -63,6 +63,11 @@
 	[super dealloc];
 }
 
+- (NSComparisonResult)compare: (AutoTimer *)otherAT
+{
+	return [otherAT.name compare:name];
+}
+
 - (void)addInclude:(NSString *)include where:(autoTimerWhereType)where
 {
 	switch(where)
