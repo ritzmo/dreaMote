@@ -298,7 +298,6 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#if 0
 	NSInteger section = indexPath.section;
 	if(section > 2 && !_isSearch)
 		section++;
@@ -318,7 +317,6 @@
 		}
 	}
 	else
-#endif
 	{
 		const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
 		if([cell respondsToSelector: @selector(view)]
