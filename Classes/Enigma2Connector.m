@@ -617,7 +617,7 @@ enum enigma2MessageTypes {
 
 	if(changeTimer.before && changeTimer.after)
 	{
-		[timerString appendFormat:@"&before=%d&after=%d", [changeTimer.before timeIntervalSince1970], [changeTimer.after timeIntervalSince1970]];
+		[timerString appendFormat:@"&before=%d&after=%d", (int)[changeTimer.before timeIntervalSince1970], (int)[changeTimer.after timeIntervalSince1970]];
 	}
 	else
 	{
