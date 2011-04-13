@@ -570,7 +570,7 @@ enum enigma2MessageTypes {
 	NSMutableString *timerString = [NSMutableString stringWithCapacity:100];
 
 	[timerString appendString:@"/autotimer/edit?"];
-	[timerString appendFormat:@"match=%@&name=%@&enabled=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0];
+	[timerString appendFormat:@"match=%@&name=%@&enabled=%d&justplay=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0, changeTimer.justplay ? 1 : 0];
 	[timerString appendFormat:@"&encoding=%@&searchType=%@&searchCase=%@&overrideAlternatives=%d", [changeTimer.encoding urlencode], (changeTimer.searchType == SEARCH_TYPE_EXACT) ? @"exact" : @"partial", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
 	[timerString appendFormat:@"&avoidDuplicateDescription=%d&location=%@", changeTimer.avoidDuplicateDescription ? 1 : 0, changeTimer.location ? [changeTimer.location urlencode] : @""];
 
