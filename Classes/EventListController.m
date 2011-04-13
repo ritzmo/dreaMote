@@ -213,19 +213,6 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	// eventually remove popover
-	if(popoverController)
-	{
-		[popoverController dismissPopoverAnimated:animated];
-		self.popoverController = nil;
-	}
-	[super viewWillDisappear:animated];
-}
-
-/* disappeared */
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[_dateFormatter resetReferenceDate];
 #if IS_FULL()
 	// end transaction here because there can only be a single active transaction at a time
 	// if we didn't stop now the possibility of a corrupted cache is higher, though this way
@@ -234,6 +221,16 @@
 	// instead from the view.
 	[[EPGCache sharedInstance] stopTransaction];
 #endif
+
+	[_dateFormatter resetReferenceDate];
+
+	// eventually remove popover
+	if(popoverController)
+	{
+		[popoverController dismissPopoverAnimated:animated];
+		self.popoverController = nil;
+	}
+	[super viewWillDisappear:animated];
 }
 
 #pragma mark -
