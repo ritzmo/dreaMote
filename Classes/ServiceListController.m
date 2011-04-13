@@ -434,6 +434,9 @@
 	[_subList removeAllObjects];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#if IS_FULL()
+	[_multiEPG emptyData];
+#endif
 	[_mainXMLDoc release];
 	_mainXMLDoc = nil;
 	[_subXMLDoc release];
