@@ -65,7 +65,7 @@
 
 - (NSComparisonResult)compare: (AutoTimer *)otherAT
 {
-	return [otherAT.name compare:name];
+	return [otherAT.name caseInsensitiveCompare:name];
 }
 
 - (void)addInclude:(NSString *)include where:(autoTimerWhereType)where
