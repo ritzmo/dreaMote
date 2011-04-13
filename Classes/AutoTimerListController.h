@@ -9,15 +9,16 @@
 #import <UIKit/UIKit.h>
 
 #import "ReloadableListController.h"
-#import "AutoTimerSourceDelegate.h"
-#import "AutoTimerViewController.h"
+#import "AutoTimerSourceDelegate.h" /* AutoTimerSourceDelegate */
+#import "AutoTimerViewController.h" /* AutoTimerViewDelegate */
 
 /*!
  @brief AutoTimer List.
  */
 @interface AutoTimerListController : ReloadableListController <UITableViewDelegate,
 															UITableViewDataSource,
-															AutoTimerSourceDelegate>
+															AutoTimerSourceDelegate,
+															AutoTimerViewDelegate>
 {
 @private
 	NSMutableArray *_autotimers; /*!< @brief AutoTimer List. */

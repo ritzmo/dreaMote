@@ -87,6 +87,7 @@
 
 		[_autotimerView release];
 		_autotimerView = [newAutotimerView retain]; 
+		_autotimerView.delegate = self;
 	}
 }
 
@@ -144,6 +145,7 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kAutoTimerCellHeight;
 	_tableView.sectionHeaderHeight = 0;
+	_tableView.allowsSelectionDuringEditing = YES;
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -195,6 +197,14 @@
 	[super viewWillAppear:animated];
 }
 
+/* about to disappear */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	if(self.editing)
+		[self setEditing:NO animated:animated];
+	[super viewWillDisappear:animated];
+}
+
 /* did hide */
 - (void)viewDidDisappear:(BOOL)animated
 {
@@ -243,6 +253,13 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(self.editing)
+	{
+		if(indexPath.section == 0)
+			[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
+		return nil;
+	}
+
 	// See if we have a valid autotimer
 	AutoTimer *autotimer = [_autotimers objectAtIndex:indexPath.row];
 	if(!autotimer.valid)
@@ -337,6 +354,29 @@
 		// NOTE: set this here so the edit button won't get screwed
 		_autotimerView.creatingNewTimer = YES;
 	}
+}
+
+#pragma mark -
+#pragma mark AutoTimerViewDelegate
+#pragma mark -
+
+- (void)AutoTimerViewController:(AutoTimerViewController *)tvc timerWasAdded:(AutoTimer *)at
+{
+	[self emptyData];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
+- (void)AutoTimerViewController:(AutoTimerViewController *)tvc timerWasEdited:(AutoTimer *)at
+{
+	[self emptyData];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+}
+
+- (void)AutoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;
+{
+	// XXX: we use the actual autotimer and not a copy for editing, so reload the list just to be sure
+	[self emptyData];
+	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
 @end
