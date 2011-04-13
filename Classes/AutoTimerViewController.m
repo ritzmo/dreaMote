@@ -1399,7 +1399,7 @@ enum sectionIds
 - (void)tableView:(UITableView *)tv commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UIViewController *targetViewController = nil;
-	NSInteger row = indexPath.row;
+	NSUInteger row = indexPath.row;
 	if(tv.editing) --row;
 
 	switch(indexPath.section)
@@ -1443,7 +1443,14 @@ enum sectionIds
 			}
 			else
 			{
-				[_timer.includeTitle removeObjectAtIndex:row];
+				if(row < _timer.includeTitle.count)
+					[_timer.includeTitle removeObjectAtIndex:row];
+				else
+				{
+					row -= _timer.includeTitle.count;
+					[_timer.excludeTitle removeObjectAtIndex:row];
+				}
+
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						  withRowAnimation:UITableViewRowAnimationFade];
 			}
@@ -1460,7 +1467,14 @@ enum sectionIds
 			}
 			else
 			{
-				[_timer.includeShortdescription removeObjectAtIndex:row];
+				if(row < _timer.includeShortdescription.count)
+					[_timer.includeShortdescription removeObjectAtIndex:row];
+				else
+				{
+					row -= _timer.includeShortdescription.count;
+					[_timer.excludeShortdescription removeObjectAtIndex:row];
+				}
+
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						  withRowAnimation:UITableViewRowAnimationFade];
 			}
@@ -1477,7 +1491,14 @@ enum sectionIds
 			}
 			else
 			{
-				[_timer.includeDescription removeObjectAtIndex:row];
+				if(row < _timer.includeDescription.count)
+					[_timer.includeDescription removeObjectAtIndex:row];
+				else
+				{
+					row -= _timer.includeDescription.count;
+					[_timer.excludeDescription removeObjectAtIndex:row];
+				}
+
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						  withRowAnimation:UITableViewRowAnimationFade];
 			}
@@ -1488,13 +1509,20 @@ enum sectionIds
 			if(editingStyle == UITableViewCellEditingStyleInsert)
 			{
 				targetViewController = self.filterNavigationController;
-				self.filterViewController.filterType = autoTimerWhereDescription;
+				self.filterViewController.filterType = autoTimerWhereDayOfWeek;
 				self.filterViewController.currentText = nil;
 				self.filterViewController.include = YES;
 			}
 			else
 			{
-				[_timer.includeDayOfWeek removeObjectAtIndex:row];
+				if(row < _timer.includeDayOfWeek.count)
+					[_timer.includeDayOfWeek removeObjectAtIndex:row];
+				else
+				{
+					row -= _timer.includeDayOfWeek.count;
+					[_timer.excludeDayOfWeek removeObjectAtIndex:row];
+				}
+
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 						  withRowAnimation:UITableViewRowAnimationFade];
 			}
