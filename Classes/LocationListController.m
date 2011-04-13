@@ -207,11 +207,6 @@
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
-{
-	[super dataSourceDelegate:dataSource finishedParsingDocument:document];
-}
-
 #pragma mark -
 #pragma mark LocationSourceDelegate
 #pragma mark -
