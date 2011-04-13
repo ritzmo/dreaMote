@@ -106,6 +106,7 @@
 			[_format setTimeStyle:NSDateFormatterNoStyle];
 			break;
 	}
+	_label.text = [_format stringFromDate:_date];
 }
 
 /* layout */
