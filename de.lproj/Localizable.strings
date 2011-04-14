@@ -2,7 +2,10 @@
 "%@ of %@ free" = "%@ von %@ frei";
 
 /* Minutes */
-"%d min" = "%d min.";
+"%d min" = "%d Min.";
+
+/* Seconds */
+"%d sec" = "%d Sek.";
 
 /* Placeholder of _timerDescription */
 "<enter description>" = "<beschreibung>";
@@ -166,6 +169,10 @@
 
 /* No comment provided by engineer. */
 "Connection could not be established." = "Verbindung konnte nicht hergestellt werden.";
+
+/* Configuration item to choose connection timeout
+   Default title of TimeoutSelectionViewController */
+"Connection Timeout" = "Verbindungs-Timeout";
 
 /* No comment provided by engineer. */
 "Connection to remote host failed with status code %d." = "Verbindungsfehler mit Statuscode %d.";

@@ -77,6 +77,7 @@
 								 @"YES", kPrefersSimpleRemote,
 								 multiEPGdefaultInterval, kMultiEPGInterval,
 								 @"NO", kSortMoviesByTitle,
+								 kDefaultTimeout, kTimeoutKey,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 
@@ -299,6 +300,10 @@
 			else if([key isEqualToString:kPrefersSimpleRemote])
 			{
 				[stdDefaults setBool:[value boolValue] forKey:kPrefersSimpleRemote];
+			}
+			else if([key isEqualToString:kTimeoutKey])
+			{
+				[stdDefaults setInteger:[value integerValue] forKey:kTimeoutKey];
 			}
 			else
 			{

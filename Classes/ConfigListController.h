@@ -11,6 +11,7 @@
 #if IS_FULL()
 	#import "MultiEPGIntervalViewController.h"
 #endif
+#import "TimeoutSelectionViewController.h" /* TimeoutSelectionDelegate */
 
 /*!
  @brief General settings and connection list.
@@ -21,6 +22,7 @@
 #if IS_FULL()
 													MultiEPGIntervalDelegate,
 #endif
+													TimeoutSelectionDelegate,
 													UITableViewDataSource>
 {
 @private

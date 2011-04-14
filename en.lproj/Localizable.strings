@@ -4,6 +4,9 @@
 /* Minutes */
 /*"%d min" = "%d min";*/
 
+/* Seconds */
+/*"%d sec" = "%d sec";*/
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<enter description>";
 
@@ -166,6 +169,10 @@
 
 /* No comment provided by engineer. */
 /*"Connection could not be established." = "Connection could not be established.";*/
+
+/* Configuration item to choose connection timeout
+   Default title of TimeoutSelectionViewController */
+/*"Connection Timeout" = "Connection Timeout";*/
 
 /* No comment provided by engineer. */
 /*"Connection to remote host failed with status code %d." = "Connection to remote host failed with status code %d.";*/
@@ -676,6 +683,12 @@
 
 /* show welcome screen (help) */
 /*"Show Help" = "Show Help";*/
+
+/* Shuffle button in MediaPlayer */
+/*"Shuffle" = "Shuffle";*/
+
+/* Label of Progress HUD in MediaPlayer when shuffling playlist */
+/*"Shuffling Playlist" = "Shuffling Playlist";*/
 
 /* No comment provided by engineer. */
 "Shutdown" = "Shutdown";

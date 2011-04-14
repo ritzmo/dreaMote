@@ -20,6 +20,7 @@
 #import "ConfigViewController.h"
 
 #define kMultiEPGRowTag 99
+#define kTimeoutRowTag 100
 
 enum sectionIds
 {
@@ -175,6 +176,21 @@ enum sectionIds
 {
 	NSIndexPath *idx = nil;
 	if(IS_IPAD())
+		idx = [NSIndexPath indexPathForRow:2 inSection:1];
+	else
+		idx = [NSIndexPath indexPathForRow:3 inSection:1];
+
+	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark -
+#pragma mark TimeoutSelection
+#pragma mark -
+
+- (void)didSetTimeout
+{
+	NSIndexPath *idx = nil;
+	if(IS_IPAD())
 		idx = [NSIndexPath indexPathForRow:1 inSection:1];
 	else
 		idx = [NSIndexPath indexPathForRow:2 inSection:1];
@@ -191,8 +207,10 @@ enum sectionIds
 {
 	if(indexPath.section == settingsSection)
 	{
-#if IS_FULL()
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+		if(cell.tag == kTimeoutRowTag)
+			return indexPath;
+#if IS_FULL()
 		if(cell.tag == kMultiEPGRowTag)
 			return indexPath;
 #endif
@@ -220,12 +238,13 @@ enum sectionIds
 			NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
 			NSString *importString = [data base64EncodedString];
 			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
-						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i",
+						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i",
 										   importString,
 										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
 										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],
 										   kMessageTimeout, [stdDefaults integerForKey:kMessageTimeout],
-										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote]]];
+										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote],
+										   kTimeoutKey, kTimeout]];
 			[[UIApplication sharedApplication] openURL:url];
 		}
 #endif
@@ -319,11 +338,30 @@ enum sectionIds
 			NSLog(@"ERROR: about to select out of bounds, aborting...");
 		}
 	}
-#if IS_FULL()
 	else if(indexPath.section == settingsSection)
 	{
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-		if(cell.tag == kMultiEPGRowTag)
+
+		if(cell.tag == kTimeoutRowTag)
+		{
+			TimeoutSelectionViewController *vc = [TimeoutSelectionViewController withTimeout:kTimeout];
+			[vc setDelegate:self];
+			if(IS_IPAD())
+			{
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+
+				[self.navigationController presentModalViewController:navController animated:YES];
+				[navController release];
+			}
+			else
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
+		}
+#if IS_FULL()
+		else if(cell.tag == kMultiEPGRowTag)
 		{
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 			MultiEPGIntervalViewController *vc = [MultiEPGIntervalViewController withInterval:[timeInterval integerValue] / 60];
@@ -342,10 +380,9 @@ enum sectionIds
 				[self.navigationController pushViewController:vc animated:YES];
 			}
 		}
-
+#endif
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
-#endif
 	else
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -432,6 +469,9 @@ enum sectionIds
 		/* Misc configuration items */
 		case settingsSection:
 			sourceCell.tag = 0;
+			if(row > 0 && IS_IPAD())
+				++row;
+
 			switch(row)
 			{
 				/* Simple remote */
@@ -445,12 +485,26 @@ enum sectionIds
 					{
 						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
 						((DisplayCell *)sourceCell).view = _vibrateInRC;
-						break;
 					}
-					/* FALL THROUGH */
+					break;
+				/* Timeout */
+				case 2:
+				{
+					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+					timeLabel.backgroundColor = [UIColor clearColor];
+					timeLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					timeLabel.textAlignment = UITextAlignmentRight;
+					timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @"Seconds"), kTimeout];
+					timeLabel.frame = CGRectMake(0, 0, [timeLabel sizeThatFits:timeLabel.bounds.size].width, kSwitchButtonHeight);;
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connection Timeout", @"Configuration item to choose connection timeout");
+					((DisplayCell *)sourceCell).view = timeLabel;
+					sourceCell.tag = kTimeoutRowTag;
+					[timeLabel release];
+					break;
+				}
 #if IS_FULL()
 				/* Multi-EPG interval */
-				case 2:
+				case 3:
 				{
 					NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -511,7 +565,7 @@ enum sectionIds
 			return [_connections count];
 		case settingsSection:
 		{
-			NSInteger baseCount = (IS_IPAD()) ? 1 : 2;
+			NSInteger baseCount = (IS_IPAD()) ? 2 : 3;
 #if IS_FULL()
 			++baseCount;
 #endif

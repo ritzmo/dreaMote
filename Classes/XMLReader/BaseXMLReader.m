@@ -36,7 +36,7 @@
 	if((self = [super init]))
 	{
 		_done = NO;
-		_timeout = kDefaultTimeout;
+		_timeout = kTimeout;
 		_encoding = NSUTF8StringEncoding;
 	}
 	return self;

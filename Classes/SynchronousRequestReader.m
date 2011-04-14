@@ -82,7 +82,7 @@
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error
 {
-	return [SynchronousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kDefaultTimeout];
+	return [SynchronousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kTimeout];
 	
 }
 

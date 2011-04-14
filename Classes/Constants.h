@@ -70,8 +70,9 @@
 #define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
 #define kAutoTimerNameTextSize	((IS_IPAD()) ? 20 : 16)
 
-// default timeout
-#define kDefaultTimeout			7
+// timeout
+#define kDefaultTimeout			@"15"
+#define kTimeout				[[NSUserDefaults standardUserDefaults] integerForKey:kTimeoutKey]
 
 //
 #define kVanilla_ID				@"Vanilla_ID"
@@ -108,6 +109,7 @@
 #define kLastLaunchedVersion	@"lastLaunchedVersion"
 #define kMultiEPGInterval		@"multiEpgInterval"
 #define kSortMoviesByTitle		@"sortingMoviesByTitle"
+#define kTimeoutKey				@"timeout"
 
 #define kCurrentDatabaseVersion 2
 

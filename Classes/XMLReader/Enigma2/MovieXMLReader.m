@@ -38,7 +38,7 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
-		_timeout = kDefaultTimeout * 4; // a lot higher timeout to allow to spin up hdd
+		_timeout = kTimeout * 3; // a lot higher timeout to allow to spin up hdd
 	}
 	return self;
 }

@@ -457,6 +457,8 @@
 		DAB7873F135604A600668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAB78741135604B700668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAB78742135604B700668D0F /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
+		DAB78745135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB78744135715CB00668D0F /* TimeoutSelectionViewController.m */; };
+		DAB78746135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB78744135715CB00668D0F /* TimeoutSelectionViewController.m */; };
 		DABF646310F8C765002658DD /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DABF7D7212E2599600866CC2 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF7D7112E2599600866CC2 /* SaxXmlReader.m */; };
 		DAC3B7EB0D85A55A00696B06 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */; };
@@ -874,6 +876,8 @@
 		DAB78731135377C300668D0F /* key_home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_home.png; sourceTree = "<group>"; };
 		DAB7873D135604A600668D0F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AutoTimer.strings; sourceTree = "<group>"; };
 		DAB78740135604B700668D0F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AutoTimer.strings; sourceTree = "<group>"; };
+		DAB78743135715C700668D0F /* TimeoutSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeoutSelectionViewController.h; sourceTree = "<group>"; };
+		DAB78744135715CB00668D0F /* TimeoutSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeoutSelectionViewController.m; sourceTree = "<group>"; };
 		DABF646110F8C765002658DD /* NSArray+CWSortedInsert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+CWSortedInsert.h"; path = "Insort/NSArray+CWSortedInsert.h"; sourceTree = "<group>"; };
 		DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+CWSortedInsert.m"; path = "Insort/NSArray+CWSortedInsert.m"; sourceTree = "<group>"; };
 		DABF7D7012E2599600866CC2 /* SaxXmlReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaxXmlReader.h; sourceTree = "<group>"; };
@@ -1635,6 +1639,8 @@
 				DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */,
 				DA661FAA0F1635A50030A40B /* SVDRPRCEmulatorController.h */,
 				DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */,
+				DAB78743135715C700668D0F /* TimeoutSelectionViewController.h */,
+				DAB78744135715CB00668D0F /* TimeoutSelectionViewController.m */,
 				DAC3B7E90D85A55A00696B06 /* TimerViewController.h */,
 				DAC3B7EA0D85A55A00696B06 /* TimerViewController.m */,
 			);
@@ -2141,6 +2147,7 @@
 				DAB787271351B80600668D0F /* MultiEPGHeaderView.m in Sources */,
 				DAB7872A1352081500668D0F /* AutoTimerTableViewCell.m in Sources */,
 				DAB7872D13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */,
+				DAB78745135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2285,6 +2292,7 @@
 				DA1810A2132D6CD200314C3D /* ServiceXMLReader.m in Sources */,
 				DAD51CD1133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */,
 				DAB7872E13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */,
+				DAB78746135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

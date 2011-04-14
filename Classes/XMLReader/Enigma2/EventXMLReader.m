@@ -55,7 +55,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addEvent:);
 		_getServices = getServices;
-		_timeout = kDefaultTimeout * 2; // encountered some services with a crazy long epg
+		_timeout = kTimeout * 2; // encountered some services with a crazy long epg
 	}
 	return self;
 }
@@ -68,7 +68,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addNowEvent:);
 		_getServices = YES;
-		_timeout = kDefaultTimeout * 3;
+		_timeout = kTimeout * 2;
 	}
 	return self;
 }
@@ -81,7 +81,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 		_delegate = [delegate retain];
 		_delegateSelector = @selector(addNextEvent:);
 		_getServices = NO;
-		_timeout = kDefaultTimeout * 3;
+		_timeout = kTimeout * 2;
 	}
 	return self;
 }
