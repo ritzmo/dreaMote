@@ -2,8 +2,8 @@
 //  AutoTimerViewController.m
 //  dreaMote
 //
-//  Created by Moritz Venn on 10.03.08.
-//  Copyright 2008-2011 Moritz Venn. All rights reserved.
+//  Created by Moritz Venn on 15.04.11.
+//  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
 #import "AutoTimerViewController.h"
