@@ -54,9 +54,11 @@ extern NSString *kCellTextField_ID;
 
 @interface CellTextField : EditableTableViewCell <UITextFieldDelegate>
 {
+	CGFloat fixedWidth; /*!< @brief Fixed width of view. */
     UITextField *view;
 }
 
+@property (nonatomic, assign) CGFloat fixedWidth;
 @property (nonatomic, retain) UITextField *view;
 
 @end

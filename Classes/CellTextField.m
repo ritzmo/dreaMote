@@ -55,7 +55,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 @implementation CellTextField
 
-@synthesize view;
+@synthesize fixedWidth, view;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -63,22 +63,34 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 	{
 		// turn off selection use
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
+		fixedWidth = -1;
 	}
 	return self;
+}
+
+- (void)prepareForReuse
+{
+	if([view superview] == self.contentView)
+		[view removeFromSuperview];
+	self.view = nil;
+	self.textLabel.text = nil;
+	fixedWidth = -1;
+
+	[super prepareForReuse];
 }
 
 - (void)setView:(UITextField *)inView
 {
 	if(view == inView) return;
 
-	if([view superview] == self.contentView)
-		[view removeFromSuperview];
 	[view release];
 	view = [inView retain];
 	view.delegate = self;
 
-	if([inView superview])
-		[inView removeFromSuperview];
+	/*!
+	 @note addSubview: takes care of removing the superview
+	 if it is not the current view.
+	 */
 	[self.contentView addSubview:inView];
 	[self layoutSubviews];
 }
@@ -101,15 +113,28 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 						   kTextFieldHeight);
 		label.frame = frame;
 
-		frame.origin.x += frame.size.width + kTweenMargin;
-		frame.size.width = contentRect.size.width - frame.origin.x - kCellLeftOffset;
+		if(fixedWidth != -1)
+		{
+			const CGFloat maxWidth = contentRect.size.width - (frame.origin.x + frame.size.width) - kCellLeftOffset;
+			const CGFloat width = (fixedWidth > -1 && fixedWidth < maxWidth) ? fixedWidth : maxWidth;
+
+			frame.size.width = width;
+			frame.origin.x = contentRect.size.width - width;
+		}
+		else
+		{
+			frame.origin.x += frame.size.width + kTweenMargin;
+			frame.size.width = contentRect.size.width - frame.origin.x - kCellLeftOffset;
+		}
 	}
 	else
 	{
+		const CGFloat maxWidth = contentRect.size.width - (kCellLeftOffset*2);
+		const CGFloat width = (fixedWidth > -1 && fixedWidth < maxWidth) ? fixedWidth : maxWidth;
 		label.hidden = YES;
 		frame = CGRectMake(contentRect.origin.x + kCellLeftOffset,
 						   contentRect.origin.y + kCellTopOffset,
-						   contentRect.size.width - (kCellLeftOffset*2),
+						   width,
 						   kTextFieldHeight);
 	}
 
