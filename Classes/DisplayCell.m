@@ -74,6 +74,15 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	return self;
 }
 
+- (void)prepareForReuse
+{
+	if([view superview] == self.contentView)
+		[view removeFromSuperview];
+	self.view = nil;
+
+	[super prepareForReuse];
+}
+
 - (UILabel *)nameLabel
 {
 	return self.textLabel;
@@ -83,15 +92,14 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 {
 	if(view == inView) return;
 
-	if([view superview] == self.contentView)
-		[view removeFromSuperview];
 	[view release];
 	view = [inView retain];
 
-	if([inView superview])
-		[inView removeFromSuperview];
+	/*!
+	 @note addSubview: takes care of removing the superview
+	 if it is not the current view.
+	 */
 	[self.contentView addSubview:inView];
-
 	[self setNeedsDisplay];
 }
 
