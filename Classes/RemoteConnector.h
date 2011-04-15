@@ -129,6 +129,12 @@ enum connectorFeatures {
 	 kind of clean code, implement this properly.
 	 */
 	kFeaturesAutoTimer,
+	/*!
+	 @brief Supports EPGRefresh interface.
+	 @note Probably will stay Enigma2 exclusive forever, but for the sake of having at least
+	 kind of clean code, implement this properly.
+	 */
+	kFeaturesEPGRefresh,
 };
 
 /*!
@@ -185,6 +191,7 @@ enum buttonCodes {
 // Forward declarations...
 @class AutoTimer;
 @class CXMLDocument;
+@class EPGRefreshSettings;
 @class Result;
 @protocol EventProtocol;
 @protocol MovieProtocol;
@@ -193,6 +200,7 @@ enum buttonCodes {
 @protocol FileProtocol;
 @protocol AboutSourceDelegate;
 @protocol AutoTimerSourceDelegate;
+@protocol EPGRefreshSettingsSourceDelegate;
 @protocol EventSourceDelegate;
 @protocol LocationSourceDelegate;
 @protocol MediaPlayerShuffleDelegate;
@@ -602,6 +610,36 @@ enum buttonCodes {
  */
 - (Result *)editAutoTimer:(AutoTimer *)changeTimer;
 #endif
+
+#pragma mark -
+#pragma mark EPGRefresh
+#pragma mark -
+
+/*!
+ @brief Retrieve EPGRefresh settings.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate;
+
+/*!
+ @brief Retrieve EPGRefresh services.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate;
+
+/*!
+ @brief Commit changes in EPGRefresh settings to receiver.
+
+ @param settings Settings.
+ @param services Services.
+ @param bouquets Bouquets.
+ @return Valid Result if settings were changed.
+ */
+- (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets;
 
 #pragma mark -
 #pragma mark Control

@@ -24,6 +24,7 @@
 #import "ConfigListController.h"
 #import "ControlViewController.h"
 #import "CurrentViewController.h"
+#import "EPGRefreshViewController.h"
 #import "EventSearchListController.h"
 #import "MessageViewController.h"
 #import "MovieListController.h"
@@ -65,6 +66,7 @@
 	[_autotimerDictionary release];
 #endif
 	[_configListController release];
+	[_epgrefreshDictionary release];
 	[_eventSearchDictionary release];
 	[_mediaPlayerDictionary release];
 	[_locationsDictionary release];
@@ -127,6 +129,14 @@
 						 NSLocalizedString(@"Config List Explain", @""), @"explainText",
 						 self.configListController, @"viewController",
 						 nil]];
+
+	targetViewController = [[EPGRefreshViewController alloc] init];
+	_epgrefreshDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							  NSLocalizedString(@"EPGRefresh Title", @""), @"title",
+							  NSLocalizedString(@"EPGRefresh Explain", @""), @"explainText",
+							  targetViewController, @"viewController",
+							  nil] retain];
+	[targetViewController release];
 
 	targetViewController = [[EventSearchListController alloc] init];
 	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
@@ -360,6 +370,23 @@
 		}
 	}
 #endif
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesEPGRefresh])
+	{
+		if(![menuList containsObject:_epgrefreshDictionary])
+		{
+			[menuList addObject:_epgrefreshDictionary]; // add to EOL
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject:_epgrefreshDictionary])
+		{
+			[menuList removeObject:_epgrefreshDictionary];
+			reload = YES;
+		}
+	}
 
 	if(reload)
 		[myTableView reloadData];

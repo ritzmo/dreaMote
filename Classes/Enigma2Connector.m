@@ -20,6 +20,7 @@
 	#import "XMLReader/Enigma2/AutoTimerXMLReader.h"
 #endif
 #import "XMLReader/Enigma2/CurrentXMLReader.h"
+#import "XMLReader/Enigma2/EPGRefreshSettingsXMLReader.h"
 #import "XMLReader/Enigma2/EventXMLReader.h"
 #import "XMLReader/Enigma2/FileXMLReader.h"
 #import "XMLReader/Enigma2/MetadataXMLReader.h"
@@ -537,9 +538,7 @@ enum enigma2MessageTypes {
 	[delegate performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
 }
 
-#pragma mark -
 #pragma mark AutoTimer
-#pragma mark -
 
 #if IS_FULL()
 - (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
@@ -756,6 +755,68 @@ enum enigma2MessageTypes {
 	return [self getResultFromSimpleXmlWithRelativeString:timerString];
 }
 #endif
+
+#pragma mark EPGRefresh
+
+- (CXMLDocument *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/epgrefresh/get" relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2EPGRefreshSettingsXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/epgrefresh" relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets
+{
+	NSString *settingsString = [NSString stringWithFormat:@"/epgrefresh/set?enabled=%@&begin=%d&end=%d&interval=%d&delay_standby=%d&inherit_autotimer=%@&afterevent=%@&force=%@&wakeup=%@&background=%@&pase_autotimer=%@&parse_autotimer=%@",
+								settings.enabled ? @"true" : @"",
+								settings.begin ? (int)[settings.begin timeIntervalSince1970] : 0,
+								settings.end ? (int)[settings.end timeIntervalSince1970] : 0,
+								settings.interval, settings.delay_standby,
+								settings.inherit_autotimer ? @"true" : @"",
+								settings.afterevent ? @"true" : @"",
+								settings.force ? @"true" : @"",
+								settings.wakeup ? @"true" : @"",
+								settings.background ? @"true" : @"",
+								settings.parse_autotimer ? @"true" : @"",
+								settings.parse_autotimer ? @"true" : @""];
+
+	Result *result = [self getResultFromSimpleXmlWithRelativeString:settingsString];
+	if(result.result)
+	{
+		NSMutableString *servicesString = [NSMutableString stringWithCapacity:100];
+		[servicesString appendString:@"/epgrefesh/add?multi=1&sref="];
+		if(services.count)
+		{
+			for(NSObject<ServiceProtocol> *service in services)
+			{
+				[servicesString appendFormat:@"%@,", [service.sref urlencode]];
+			}
+		}
+		if(bouquets.count)
+		{
+			for(NSObject<ServiceProtocol> *service in bouquets)
+			{
+				[servicesString appendFormat:@"%@,", [service.sref urlencode]];
+			}
+		}
+
+		result = [self getResultFromSimpleXmlWithRelativeString:servicesString];
+	}
+	return result;
+}
 
 #pragma mark Control
 

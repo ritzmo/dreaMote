@@ -67,7 +67,11 @@
 
 - (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
 {
-	if(!strncmp((const char *)localname, kEnigma2SettingName, kEnigma2SettingNameLength))
+	if(!strncmp((const char *)localname, kEnigma2Settings, kEnigma2SettingsLength))
+	{
+		[_delegate performSelectorOnMainThread:@selector(epgrefreshSettingsRead:) withObject:settings waitUntilDone:NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2SettingName, kEnigma2SettingNameLength))
 	{
 		self.lastSettingName = currentString;
 	}

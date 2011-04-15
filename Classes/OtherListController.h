@@ -27,6 +27,7 @@
 	NSDictionary *_autotimerDictionary; /*!< @brief Dictionary describing AutoTimer Item. */
 #endif
 	ConfigListController *_configListController; /*!< @brief Config List. */
+	NSDictionary *_epgrefreshDictionary; /*!< @brief Dictionary describing EPGRefresh Item. */
 	NSDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */
 	NSDictionary *_locationsDictionary; /*!< @brief Dictionary describing Locations List Item. */

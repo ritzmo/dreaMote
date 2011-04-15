@@ -1302,4 +1302,28 @@ typedef enum
 #endif
 }
 
+- (CXMLDocument *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (CXMLDocument *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
 @end

@@ -473,6 +473,8 @@
 		DACE3FE113580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FDF13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m */; };
 		DACE3FE4135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */; };
 		DACE3FE5135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */; };
+		DACE3FE9135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE8135828DA00EC11E7 /* EPGRefreshViewController.m */; };
+		DACE3FEA135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE8135828DA00EC11E7 /* EPGRefreshViewController.m */; };
 		DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD242BF1344F2DB00954512 /* AutoTimerFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD242BE1344F2DB00954512 /* AutoTimerFilterViewController.m */; };
@@ -906,6 +908,8 @@
 		DACE3FE2135811EE00EC11E7 /* EPGRefreshSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshSettings.h; sourceTree = "<group>"; };
 		DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGRefreshSettings.m; sourceTree = "<group>"; };
 		DACE3FE61358160400EC11E7 /* EPGRefreshSettingsSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshSettingsSourceDelegate.h; sourceTree = "<group>"; };
+		DACE3FE7135828DA00EC11E7 /* EPGRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshViewController.h; sourceTree = "<group>"; };
+		DACE3FE8135828DA00EC11E7 /* EPGRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGRefreshViewController.m; sourceTree = "<group>"; };
 		DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerMetadataCell.h; sourceTree = "<group>"; };
 		DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerMetadataCell.m; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
@@ -1631,6 +1635,8 @@
 				DACA8B231096498300B03BE8 /* CurrentViewController.m */,
 				DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */,
 				DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */,
+				DACE3FE7135828DA00EC11E7 /* EPGRefreshViewController.h */,
+				DACE3FE8135828DA00EC11E7 /* EPGRefreshViewController.m */,
 				DAB5FA010D845F7A0074D998 /* EventViewController.h */,
 				DAB5FA020D845F7A0074D998 /* EventViewController.m */,
 				DA7FD6730D8423E300974B1A /* MainViewController.h */,
@@ -2171,6 +2177,7 @@
 				DA0F047313685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */,
 				DACE3FE013580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */,
 				DACE3FE4135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
+				DACE3FE9135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2319,6 +2326,7 @@
 				DA0F047413685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */,
 				DACE3FE113580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */,
 				DACE3FE5135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
+				DACE3FEA135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
