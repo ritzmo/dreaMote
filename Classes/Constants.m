@@ -12,3 +12,5 @@ const char *kEnigma2Servicename = "e2servicename";
 const char *kEnigma2Description = "e2description";
 const char *kEnigma2DescriptionExtended = "e2descriptionextended";
 const char *kEnigma2Tags = "e2tags";
+const char *kEnigma2SettingName = "e2settingname";
+const char *kEnigma2SettingValue = "e2settingvalue";

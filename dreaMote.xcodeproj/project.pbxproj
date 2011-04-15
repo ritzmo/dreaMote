@@ -469,6 +469,10 @@
 		DACA8AF91096467100B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */; };
 		DACA8AFE109647B200B03BE8 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */; };
 		DACA8B241096498300B03BE8 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
+		DACE3FE013580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FDF13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m */; };
+		DACE3FE113580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FDF13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m */; };
+		DACE3FE4135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */; };
+		DACE3FE5135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */; };
 		DACED5B512DC649600B3C9C3 /* MediaPlayerMetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */; };
 		DACFCCF00E33CAD100348996 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAD242BF1344F2DB00954512 /* AutoTimerFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD242BE1344F2DB00954512 /* AutoTimerFilterViewController.m */; };
@@ -897,6 +901,11 @@
 		DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
 		DACA8B221096498300B03BE8 /* CurrentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentViewController.h; sourceTree = "<group>"; };
 		DACA8B231096498300B03BE8 /* CurrentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentViewController.m; sourceTree = "<group>"; };
+		DACE3FDE13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshSettingsXMLReader.h; sourceTree = "<group>"; };
+		DACE3FDF13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGRefreshSettingsXMLReader.m; sourceTree = "<group>"; };
+		DACE3FE2135811EE00EC11E7 /* EPGRefreshSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshSettings.h; sourceTree = "<group>"; };
+		DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGRefreshSettings.m; sourceTree = "<group>"; };
+		DACE3FE61358160400EC11E7 /* EPGRefreshSettingsSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshSettingsSourceDelegate.h; sourceTree = "<group>"; };
 		DACED5B312DC649600B3C9C3 /* MediaPlayerMetadataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerMetadataCell.h; sourceTree = "<group>"; };
 		DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerMetadataCell.m; sourceTree = "<group>"; };
 		DACFCCEF0E33CAD100348996 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources-iPhone/en.lproj/MainWindow.xib"; sourceTree = "<group>"; };
@@ -1188,6 +1197,8 @@
 			children = (
 				DAFE6BB913340CEB001F53B3 /* AutoTimer.h */,
 				DAFE6BBA13340CEB001F53B3 /* AutoTimer.m */,
+				DACE3FE2135811EE00EC11E7 /* EPGRefreshSettings.h */,
+				DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */,
 				DA0BF44E0F0C1066004B488C /* Event.h */,
 				DA0BF44F0F0C1066004B488C /* Event.m */,
 				DAAC517712D47F0E00B3B443 /* File.h */,
@@ -1449,6 +1460,8 @@
 				DAD39A1E1332A55400BA4FB8 /* AutoTimerXMLReader.m */,
 				DACA8AFC109647B200B03BE8 /* CurrentXMLReader.h */,
 				DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */,
+				DACE3FDE13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.h */,
+				DACE3FDF13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m */,
 				DA7D23700F101F1500BB8BE7 /* EventXMLReader.h */,
 				DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */,
 				DA6CE9C612D498F100F1F52D /* FileXMLReader.h */,
@@ -1520,6 +1533,7 @@
 				DAAC51EE12D48F3500B3B443 /* AppDelegate.m */,
 				DA0119211334D5E300F1910F /* AutoTimerSourceDelegate.h */,
 				DAB0676C12E315D8008D39F5 /* DataSourceDelegate.h */,
+				DACE3FE61358160400EC11E7 /* EPGRefreshSettingsSourceDelegate.h */,
 				DAAC51EF12D48F3500B3B443 /* EventSourceDelegate.h */,
 				DAAC51F012D48F3500B3B443 /* FileSourceDelegate.h */,
 				DAAC51F112D48F3500B3B443 /* LocationSourceDelegate.h */,
@@ -2155,6 +2169,8 @@
 				DAB7872D13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */,
 				DAB78745135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */,
 				DA0F047313685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */,
+				DACE3FE013580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */,
+				DACE3FE4135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2301,6 +2317,8 @@
 				DAB7872E13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */,
 				DAB78746135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */,
 				DA0F047413685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */,
+				DACE3FE113580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */,
+				DACE3FE5135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
