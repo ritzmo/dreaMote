@@ -206,9 +206,9 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		{
 			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), statusCode]
 																 forKey:NSLocalizedDescriptionKey];
-			NSError *error = error = [NSError errorWithDomain:NSURLErrorDomain
-														 code:statusCode
-													 userInfo:userInfo];
+			NSError *error = [NSError errorWithDomain:NSURLErrorDomain
+												 code:statusCode
+											 userInfo:userInfo];
 			[self connection:connection didFailWithError:error];
 		}
 	}
