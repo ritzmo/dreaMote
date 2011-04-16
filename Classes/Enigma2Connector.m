@@ -528,7 +528,7 @@ enum enigma2MessageTypes {
 	{
 		result = [self removeTrack:file];
 		if(result.result)
-			result = [self addTrack:file startPlayback:NO];
+			/*result = */[self addTrack:file startPlayback:NO];
 
 		count -= 2;
 		NSNumber *number = [NSNumber numberWithUnsignedInteger:count];
