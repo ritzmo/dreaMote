@@ -197,6 +197,23 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	xmlParseChunk(_xmlParserContext, (const char *)[data bytes], [data length], 0);
 }
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+	if([response respondsToSelector:@selector(statusCode)])
+	{
+		NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
+		if (statusCode > 399)
+		{
+			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), statusCode]
+																 forKey:NSLocalizedDescriptionKey];
+			NSError *error = error = [NSError errorWithDomain:NSURLErrorDomain
+														 code:statusCode
+													 userInfo:userInfo];
+			[self connection:connection didFailWithError:error];
+		}
+	}
+}
+
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	xmlParseChunk(_xmlParserContext, NULL, 0, 1);
