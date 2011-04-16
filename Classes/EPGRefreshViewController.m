@@ -422,8 +422,7 @@ enum generalSectionItems
 {
 	[services removeAllObjects];
 	[bouquets removeAllObjects];
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, maxSection)];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	[_tableView reloadData];
 }
 
 - (void)fetchData
