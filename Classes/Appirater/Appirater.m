@@ -345,7 +345,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 #if TARGET_IPHONE_SIMULATOR
 			NSLog(@"APPIRATER NOTE: iTunes App Store is not supported on the iOS simulator. Unable to open App Store page.");
 #else
-			NSString *reviewURL = [@"http://itunes.apple.com/de/app/idAPP_ID?mt=8" stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", 420498819]];
+			NSString *reviewURL = [@"http://itunes.apple.com/de/app/idAPP_ID?mt=8" stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", 420494500]];
 			[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion]; // not actually true, but hides alert which is what we want here
 			[userDefaults synchronize];
 			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
