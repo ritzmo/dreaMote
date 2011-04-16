@@ -118,6 +118,25 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	if([error domain] == NSURLErrorDomain)
+	{
+		if([error code] == 404)
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+																  message:NSLocalizedString(@"Page not found.\nPlugin not installed?", @"Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed.")
+																 delegate:nil
+														cancelButtonTitle:@"OK"
+														otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+			error = nil;
+		}
+	}
+	[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+}
+
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
 	_reloading = NO;

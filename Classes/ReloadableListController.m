@@ -123,6 +123,10 @@
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	[_tableView reloadData];
 
+	// no error -> probably handled by child class
+	if(!error)
+		return;
+
 	NSString *message = nil;
 	// no localized description for them?!
 	if([error domain] == NSURLErrorDomain)
