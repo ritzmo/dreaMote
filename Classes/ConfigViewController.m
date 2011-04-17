@@ -16,6 +16,16 @@
 #import "DisplayCell.h"
 
 /*!
+ @brief Mapping connector -> default port
+ */
+static const NSInteger connectorPortMap[kMaxConnector][2] = {
+	{80, 443}, // kEnigma2Connector
+	{80, 443}, // kEnigma1Connector
+	{80, 443}, // kNeutrinoConnector
+	{2001, 2001}, // kSVDRPConnector
+};
+
+/*!
  @brief Private functions of ConfigViewController.
  */
 @interface ConfigViewController()
@@ -62,6 +72,12 @@
  @param sender ui element
  */
 - (void)cancelEdit: (id)sender;
+
+/*!
+ @brief ssl value was changed.
+ @param sender ui element
+ */
+- (void)sslChanged:(id)sender;
 
 
 
@@ -205,6 +221,9 @@
 	self.view = tableView;
 	[tableView release];
 
+	// Connector
+	_connector = [[_connection objectForKey: kConnector] integerValue];
+
 	// Remote Name
 	NSString *remoteName = [_connection objectForKey: kRemoteName];
 	if(remoteName == nil) // Work around unset property
@@ -219,17 +238,18 @@
 	_remoteAddressTextField.text = [[[_connection objectForKey: kRemoteHost] copy] autorelease];
 	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
-	// Remote Port
-	const NSNumber *port = [_connection objectForKey: kPort];
-	_remotePortTextField = [[self create_TextField] retain];
-	_remotePortTextField.placeholder = NSLocalizedString(@"<remote port>", @"");
-	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
-	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
-
 	// SSL
 	_sslSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
 	_sslSwitch.on = [[_connection objectForKey: kSSL] boolValue];
 	_sslSwitch.backgroundColor = [UIColor clearColor];
+	[_sslSwitch addTarget:self action:@selector(sslChanged:) forControlEvents:UIControlEventValueChanged];
+
+	// Remote Port
+	const NSNumber *port = [_connection objectForKey: kPort];
+	_remotePortTextField = [[self create_TextField] retain];
+	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
+	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
+	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
 	// Username
 	_usernameTextField = [[self create_TextField] retain];
@@ -241,9 +261,6 @@
 	_passwordTextField.placeholder = NSLocalizedString(@"<remote password>", @"");
 	_passwordTextField.text = [[[_connection objectForKey: kPassword] copy] autorelease];
 	_passwordTextField.secureTextEntry = YES;
-
-	// Connector
-	_connector = [[_connection objectForKey: kConnector] integerValue];
 
 	// Connect Button
 	self.connectButton = [self create_Button: @"network-wired.png": @selector(doConnect:)];
@@ -493,6 +510,12 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 }
 
+- (void)sslChanged:(id)sender
+{
+	// update port placeholder
+	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
+}
+
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
@@ -548,6 +571,8 @@
 	else
 		TABLEVIEWCELL_TEXT(_connectorCell) = @"???";
 
+	// update port placeholder
+	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
 	[(UITableView *)self.view reloadData];
 }
 

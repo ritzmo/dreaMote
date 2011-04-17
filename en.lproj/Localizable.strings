@@ -32,7 +32,7 @@
 "<remote password>" = "<password: usually dreambox>";
 
 /* No comment provided by engineer. */
-"<remote port>" = "<port: usually 80>";
+"<port: usually %d>" = "<port: usually %d>";
 
 /* No comment provided by engineer. */
 "<remote username>" = "<username: usually root>";
