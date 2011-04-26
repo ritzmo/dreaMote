@@ -162,7 +162,13 @@
 
 - (void)addTimer: (id)sender
 {
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:3];
+	NSUInteger section = 3;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+		++section;
+	if(_isSearch)
+		++section;
+	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath
 								animated: YES
 								scrollPosition: UITableViewScrollPositionNone];
