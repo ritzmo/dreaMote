@@ -41,6 +41,9 @@
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray array] retain];
 		_characters = [[NSMutableDictionary alloc] init];
+#if IS_FULL()
+		_filteredMovies = [[NSMutableArray array] retain];
+#endif
 		_refreshMovies = YES;
 		_isSplit = NO;
 
@@ -74,6 +77,11 @@
 	[_movieViewController release];
 	[_movieXMLDoc release];
 	[_sortButton release];
+#if IS_FULL()
+	[_filteredMovies release];
+	[_searchBar release];
+	[_searchDisplay release];
+#endif
 
 	[super dealloc];
 }
@@ -215,6 +223,9 @@
 	{
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#if IS_FULL()
+		[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top)];
+#endif
 
 		// Spawn a thread to fetch the movie data so that the UI is not blocked while the
 		// application parses the XML file.
@@ -284,9 +295,20 @@
 
 - (void)setSortTitle:(BOOL)newSortTitle
 {
-	if(!_movies.count) return;
-
 	_sortTitle = newSortTitle;
+
+	NSArray *movies = _movies;
+#if IS_FULL()
+	if(_searchDisplay.active) movies = _filteredMovies;
+#endif
+	if(!movies.count)
+	{
+		[_characters removeAllObjects];
+		[_currentKeys release];
+		_currentKeys = nil;
+		return;
+	}
+
 	if(newSortTitle)
 	{
 		NSArray *arr = nil;
@@ -295,17 +317,23 @@
 		for(NSString *index in [NSArray arrayWithObjects:@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", nil ])
 		{
 			NSPredicate *pred = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"title beginswith[c] '%@'", index]];
-			arr = [_movies filteredArrayUsingPredicate:pred];
+			arr = [movies filteredArrayUsingPredicate:pred];
 			if(arr.count)
 				[_characters setValue:[arr sortedArrayUsingSelector:@selector(titleCompare:)] forKey:index];
 		}
 		NSPredicate *pred = [NSPredicate predicateWithFormat:@"title matches '(\\\\d|\\\\s).*'"];
-		arr = [_movies filteredArrayUsingPredicate:pred];
+		arr = [movies filteredArrayUsingPredicate:pred];
 		if(arr.count)
 			[_characters setValue:[arr sortedArrayUsingSelector:@selector(titleCompare:)] forKey:@"#"];
 
 		[_currentKeys release];
 		_currentKeys = [[[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] retain];
+	}
+	else
+	{
+		[_characters removeAllObjects];
+		[_currentKeys release];
+		_currentKeys = nil;
 	}
 }
 
@@ -331,13 +359,28 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = kUIRowHeight;
 
 	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:self action:@selector(switchSort:)];
 	if(_sortTitle)
 		_sortButton.title = NSLocalizedString(@"Sort by time", @"Sort (movies) by time");
 	else
 		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
+
+#if IS_FULL()
+	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	_searchBar.keyboardType = UIKeyboardTypeDefault;
+	_tableView.tableHeaderView = _searchBar;
+
+	// hide the searchbar
+	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+
+	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+	_searchDisplay.delegate = self;
+	_searchDisplay.searchResultsDataSource = self;
+	_searchDisplay.searchResultsDelegate = self;
+#endif
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
@@ -416,6 +459,9 @@
 	{
 		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
 	}
+#if IS_FULL()
+	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+#endif
 }
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
@@ -431,6 +477,9 @@
 	{
 		[super dataSourceDelegate:dataSource finishedParsingDocument:document];
 	}
+#if IS_FULL()
+	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+#endif
 }
 
 #pragma mark -
@@ -451,6 +500,12 @@
 #pragma mark		Table View
 #pragma mark	-
 
+/* height for row */
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return kUIRowHeight;
+}
+
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -463,7 +518,13 @@
 		cell.movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
 	}
 	else
-		cell.movie = [_movies objectAtIndex:indexPath.row];
+	{
+		NSArray *movies = _movies;
+#if IS_FULL()
+		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
+#endif
+		cell.movie = [movies objectAtIndex:indexPath.row];
+	}
 
 	return cell;
 }
@@ -478,7 +539,13 @@
 		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
 	}
 	else
-		movie = [_movies objectAtIndex:indexPath.row];
+	{
+		NSArray *movies = _movies;
+#if IS_FULL()
+		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
+#endif
+		movie = [movies objectAtIndex:indexPath.row];
+	}
 
 	if(!movie.valid)
 		return nil;
@@ -544,6 +611,9 @@
 		NSString *key = [_currentKeys objectAtIndex:section];
 		return ((NSArray *)[_characters valueForKey:key]).count;
 	}
+#if IS_FULL()
+	if(tableView == _searchDisplay.searchResultsTableView) return _filteredMovies.count;
+#endif
 	return [_movies count];
 }
 
@@ -556,6 +626,7 @@
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// NOTE: search able will never be editing, so no special handling
 	NSObject<MovieProtocol> *movie = nil;
 	if(_sortTitle)
 	{
@@ -597,6 +668,28 @@
 	return YES;
 }
 
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+#pragma mark -
+#if IS_FULL()
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+	[_filteredMovies removeAllObjects];
+	const BOOL caseInsensitive = [searchString isEqualToString:[searchString lowercaseString]];
+	NSStringCompareOptions options = caseInsensitive ? (NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) : 0;
+	for(NSObject<MovieProtocol> *movie in _movies)
+	{
+		NSRange range = [movie.title rangeOfString:searchString options:options];
+		if(range.length)
+			[_filteredMovies addObject:movie];
+	}
+	self.sortTitle = _sortTitle; // in case of alphabetized list
+
+    return YES;
+}
+
+#endif
 #pragma mark -
 #pragma mark Split view support
 #pragma mark -

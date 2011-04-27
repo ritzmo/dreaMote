@@ -25,6 +25,9 @@
 @interface MovieListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource,
 													MovieSourceDelegate,
+#if IS_FULL()
+													UISearchDisplayDelegate,
+#endif
 													MGSplitViewControllerDelegate>
 {
 @private
@@ -34,6 +37,12 @@
 	UIBarButtonItem *_sortButton; /*!< @brief Sort Button. */
 	NSArray *_currentKeys; /*!< @brief Cached keys. */
 	NSMutableDictionary *_characters; /*!< @brief First characters -> movies for current list. */
+
+#if IS_FULL()
+	NSMutableArray *_filteredMovies; /*!< @brief Filtered list of movies when searching. */
+	UISearchBar *_searchBar; /*!< @brief Search bar. */
+	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
+#endif
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
 	CXMLDocument *_movieXMLDoc; /*!< Current Movie XML Document. */
