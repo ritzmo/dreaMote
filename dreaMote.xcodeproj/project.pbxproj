@@ -32,6 +32,8 @@
 		DA0BF45E0F0C1066004B488C /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4570F0C1066004B488C /* Volume.m */; };
 		DA0BF8AF0F0CBEDB004B488C /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AB0F0CBEDB004B488C /* Movie.m */; };
 		DA0BF8B00F0CBEDB004B488C /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AD0F0CBEDB004B488C /* Timer.m */; };
+		DA0F047313685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0F047213685D2F0047D7CC /* NSError+AutoLocalizedError.m */; };
+		DA0F047413685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0F047213685D2F0047D7CC /* NSError+AutoLocalizedError.m */; };
 		DA0FA5760EB1D189009A1898 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FA5750EB1D189009A1898 /* about.html */; };
 		DA0FCD9E133D44F500CE2A04 /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FCD9D133D44F500CE2A04 /* changes_de.html */; };
 		DA0FCD9F133D44F500CE2A04 /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DA0FCD9D133D44F500CE2A04 /* changes_de.html */; };
@@ -548,6 +550,8 @@
 		DA0BF8AB0F0CBEDB004B488C /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		DA0BF8AC0F0CBEDB004B488C /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DA0BF8AD0F0CBEDB004B488C /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
+		DA0F047113685D2F0047D7CC /* NSError+AutoLocalizedError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+AutoLocalizedError.h"; sourceTree = "<group>"; };
+		DA0F047213685D2F0047D7CC /* NSError+AutoLocalizedError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+AutoLocalizedError.m"; sourceTree = "<group>"; };
 		DA0FA5750EB1D189009A1898 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = about.html; path = Other/about.html; sourceTree = "<group>"; };
 		DA0FCD9D133D44F500CE2A04 /* changes_de.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = changes_de.html; path = Other/changes_de.html; sourceTree = "<group>"; };
 		DA114AD50F0EA77100CB94AE /* Bouquet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bouquet.h; sourceTree = "<group>"; };
@@ -1271,6 +1275,8 @@
 				DA165E1B12E9C5BA00A6D894 /* NSData+Base64.m */,
 				DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */,
 				DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */,
+				DA0F047113685D2F0047D7CC /* NSError+AutoLocalizedError.h */,
+				DA0F047213685D2F0047D7CC /* NSError+AutoLocalizedError.m */,
 				DAB7872B13533C3100668D0F /* NSMutableArray+Shuffling.h */,
 				DAB7872C13533C3200668D0F /* NSMutableArray+Shuffling.m */,
 				DA54E1D412D501CC00C90863 /* NSString+URLEncode.h */,
@@ -2148,6 +2154,7 @@
 				DAB7872A1352081500668D0F /* AutoTimerTableViewCell.m in Sources */,
 				DAB7872D13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */,
 				DAB78745135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */,
+				DA0F047313685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2293,6 +2300,7 @@
 				DAD51CD1133938EB0008CBC7 /* UITableViewCell+EasyInit.m in Sources */,
 				DAB7872E13533C3200668D0F /* NSMutableArray+Shuffling.m in Sources */,
 				DAB78746135715CF00668D0F /* TimeoutSelectionViewController.m in Sources */,
+				DA0F047413685D2F0047D7CC /* NSError+AutoLocalizedError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

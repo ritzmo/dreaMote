@@ -127,23 +127,9 @@
 	if(!error)
 		return;
 
-	NSString *message = nil;
-	// no localized description for them?!
-	if([error domain] == NSURLErrorDomain)
-	{
-		if([error code] == NSURLErrorUserCancelledAuthentication)
-		{
-			message = NSLocalizedString(@"Unable to authenticate. Wrong password?", @"Connection failed due to improper authentication");
-		}
-		else
-			message = [error localizedDescription];
-	}
-	else
-		message = [error localizedDescription];
-
 	// Alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
-														  message:message
+														  message:[error localizedDescription]
 														 delegate:nil
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
