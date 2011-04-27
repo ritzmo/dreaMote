@@ -21,6 +21,8 @@
 #import "Objects/Generic/Result.h"
 
 @interface MovieListController()
+- (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch;
+
 /*!
  @brief Popover Controller.
  */
@@ -293,13 +295,13 @@
 	return _sortTitle;
 }
 
-- (void)setSortTitle:(BOOL)newSortTitle
+- (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch
 {
 	_sortTitle = newSortTitle;
 
 	NSArray *movies = _movies;
 #if IS_FULL()
-	if(_searchDisplay.active) movies = _filteredMovies;
+	if(allowSearch && _searchDisplay.active) movies = _filteredMovies;
 #endif
 	if(!movies.count)
 	{
@@ -335,6 +337,11 @@
 		[_currentKeys release];
 		_currentKeys = nil;
 	}
+}
+
+- (void)setSortTitle:(BOOL)newSortTitle
+{
+	[self setSortTitle:newSortTitle allowSearch:YES];
 }
 
 - (void)switchSort:(id)sender
@@ -669,6 +676,24 @@
 }
 
 #pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark -
+#if IS_FULL()
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if(scrollView != _searchDisplay.searchResultsTableView)
+		[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	if(scrollView != _searchDisplay.searchResultsTableView)
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#endif
+#pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
 #pragma mark -
 #if IS_FULL()
@@ -687,6 +712,11 @@
 	self.sortTitle = _sortTitle; // in case of alphabetized list
 
     return YES;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView
+{
+	 [self setSortTitle:_sortTitle allowSearch:NO]; // in case of alphabetized list
 }
 
 #endif
