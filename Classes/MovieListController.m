@@ -427,12 +427,40 @@
 /* select and return next movie */
 - (NSObject<MovieProtocol> *)nextMovie
 {
-	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
-	if(indexPath.row < ([_movies count] - 1))
+	UITableView *tableView = _tableView;
+#if IS_FULL()
+	if(_searchDisplay.active) tableView = _searchDisplay.searchResultsTableView;
+#endif
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
+
+	if(_sortTitle)
 	{
-		indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
-		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
-		return [_movies objectAtIndex:indexPath.row];
+		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
+		NSArray *movies = (NSArray *)[_characters valueForKey:key];
+		if(indexPath.row < movies.count - 1)
+			indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+		else if(indexPath.section < _currentKeys.count - 1)
+			indexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section + 1];
+		else
+			indexPath = nil;
+	}
+	else
+	{
+		NSArray *movies = _movies;
+#if IS_FULL()
+		if(_searchDisplay.active) movies = _filteredMovies;
+#endif
+		if(indexPath.row < ([movies count] - 1))
+			indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+		else
+			indexPath = nil;
+	}
+
+	if(indexPath)
+	{
+		[tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+		MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+		return cell.movie;
 	}
 	return nil;
 }
@@ -440,12 +468,34 @@
 /* select and return previous movie */
 - (NSObject<MovieProtocol> *)previousMovie
 {
-	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
-	if(indexPath.row > 0)
+	UITableView *tableView = _tableView;
+#if IS_FULL()
+	if(_searchDisplay.active) tableView = _searchDisplay.searchResultsTableView;
+#endif
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
+
+	if(_sortTitle)
 	{
-		indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
-		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
-		return [_movies objectAtIndex:indexPath.row];
+		if(indexPath.row > 0)
+			indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+		else if(indexPath.section > 0)
+			indexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section - 1];
+		else
+			indexPath = nil;
+	}
+	else
+	{
+		if(indexPath.row > 0)
+			indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+		else
+			indexPath = nil;
+	}
+
+	if(indexPath)
+	{
+		[tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+		MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+		return cell.movie;
 	}
 	return nil;
 }
