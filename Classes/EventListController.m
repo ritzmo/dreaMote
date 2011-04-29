@@ -534,8 +534,7 @@
 	}
 	else
 	{
-		buttonIndex = 1;
-		//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 		{
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
 				++buttonIndex;
