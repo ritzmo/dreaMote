@@ -110,6 +110,10 @@
 	else
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 
+#if IS_FULL()
+	// to fix pull up animation
+	[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height/3) animated:YES];
+#endif
 	// Free Caches and reload data
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
