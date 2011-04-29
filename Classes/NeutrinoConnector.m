@@ -8,6 +8,8 @@
 
 #import "NeutrinoConnector.h"
 
+#import "Constants.h"
+
 #import "Objects/Neutrino/Bouquet.h"
 #import "Objects/Neutrino/Service.h"
 #import "Objects/Generic/Service.h"
@@ -86,9 +88,15 @@ enum neutrinoMessageTypes {
 	// NOTE: We don't use any caches
 }
 
-+ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
 {
-	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
+	NSString *address = [connection objectForKey: kRemoteHost];
+	NSString *username = [[connection objectForKey: kUsername] urlencode];
+	NSString *password = [[connection objectForKey: kPassword] urlencode];
+	const NSInteger port = [[connection objectForKey: kPort] integerValue];
+	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
+
+	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
 - (UIViewController *)newRCEmulator

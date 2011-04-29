@@ -9,6 +9,7 @@
 #import "SVDRPConnector.h"
 
 #import "BufferedSocket.h"
+#import "Constants.h"
 
 #import "Objects/Generic/Event.h"
 #import "Objects/Generic/Movie.h"
@@ -49,7 +50,7 @@ typedef enum
 	return 255;
 }
 
-- (id)initWithAddress: (NSString *)inAddress andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
+- (id)initWithAddress:(NSString *)inAddress andPort:(NSInteger)inPort
 {
 	if((self = [super init]))
 	{
@@ -75,9 +76,12 @@ typedef enum
 	_serviceCache = nil;
 }
 
-+ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
 {
-	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
+	NSString *address = [connection objectForKey: kRemoteHost];
+	const NSInteger port = [[connection objectForKey: kPort] integerValue];
+
+	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress:address andPort:port];
 }
 
 - (UIViewController *)newRCEmulator

@@ -8,11 +8,15 @@
 
 #import "Enigma2Connector.h"
 
+#import "Constants.h"
+
 #import "Objects/EventProtocol.h"
 #import "Objects/MovieProtocol.h"
 #import "Objects/ServiceProtocol.h"
 #import "Objects/TimerProtocol.h"
 #import "Delegates/MediaPlayerShuffleDelegate.h"
+
+#import "RemoteConnectorObject.h" /* usesAdvancedRemote */
 
 #import "SynchronousRequestReader.h"
 #import "XMLReader/Enigma2/AboutXMLReader.h"
@@ -66,7 +70,7 @@ enum enigma2MessageTypes {
 	return 100;
 }
 
-- (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
+- (id)initWithAddress:(NSString *)address andUsername:(NSString *)inUsername andPassword:(NSString *)inPassword andPort:(NSInteger)inPort useSSL:(BOOL)ssl andAdvancedRc:(BOOL)advancedRc
 {
 	if((self = [super init]))
 	{
@@ -87,6 +91,7 @@ enum enigma2MessageTypes {
 			_username = [inUsername retain];
 			_password = [inPassword retain];
 		}
+		_advancedRc = advancedRc;
 	}
 	return self;
 }
@@ -105,9 +110,16 @@ enum enigma2MessageTypes {
 	// NOTE: We don't use any caches
 }
 
-+ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
 {
-	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
+	NSString *address = [connection objectForKey: kRemoteHost];
+	NSString *username = [[connection objectForKey: kUsername] urlencode];
+	NSString *password = [[connection objectForKey: kPassword] urlencode];
+	const NSInteger port = [[connection objectForKey: kPort] integerValue];
+	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
+	const BOOL advancedRc = [[connection objectForKey: kAdvancedRemote] boolValue];
+
+	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl andAdvancedRc:advancedRc];
 }
 
 - (UIViewController *)newRCEmulator
@@ -902,20 +914,7 @@ enum enigma2MessageTypes {
 
 - (Result *)sendButton:(NSInteger) type
 {
-	NSString *rcu = @"standard";
-	switch(type)
-	{
-		case kButtonCodeRecord:
-		case kButtonCodePVR:
-		case kButtonCodePlayPause:
-		case kButtonCodeFFwd:
-		case kButtonCodeFRwd:
-		case kButtonCodeStop:
-			rcu = @"advanced";
-			/* FALL THROUGH */
-		default:
-			break;
-	}
+	const NSString *rcu = _advancedRc ? @"advanced" : @"standard";
 	NSString *relativeURL = [NSString stringWithFormat: @"/web/remotecontrol?command=%d&rcu=%@", type, rcu];
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }

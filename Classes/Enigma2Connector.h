@@ -19,6 +19,7 @@
 	NSString *_password; /*!< @brief Connection password */
 	NSString *_username; /*!< @brief Connection username */
 	BOOL _wasWarned; /*!< @brief User was warned about old software this session */
+	BOOL _advancedRc; /*!< @brief Uses advanced remote control. */
 }
 
 @end

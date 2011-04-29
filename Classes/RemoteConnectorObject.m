@@ -30,13 +30,7 @@ static NSDictionary *_connection;
 		return NO;
 
 	const NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
-
-	NSString *remoteHost = [connection objectForKey: kRemoteHost];
-	NSString *username = [[connection objectForKey: kUsername] urlencode];
-	NSString *password = [[connection objectForKey: kPassword] urlencode];
 	const NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
-	const NSInteger port = [[connection objectForKey: kPort] integerValue];
-	const BOOL useSSL = [[connection objectForKey: kSSL] boolValue];
 
 	if(_sharedRemoteConnector)
 	{
@@ -53,16 +47,16 @@ static NSDictionary *_connection;
 	switch(connectorId)
 	{
 		case kEnigma2Connector:
-			_sharedRemoteConnector = [Enigma2Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port useSSL: useSSL];
+			_sharedRemoteConnector = [Enigma2Connector newWithConnection:connection];
 			break;
 		case kEnigma1Connector:
-			_sharedRemoteConnector = [Enigma1Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port useSSL: useSSL];
+			_sharedRemoteConnector = [Enigma1Connector newWithConnection:connection];
 			break;
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [NeutrinoConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port useSSL: useSSL];
+			_sharedRemoteConnector = [NeutrinoConnector newWithConnection:connection];
 			break;
 		case kSVDRPConnector:
-			_sharedRemoteConnector = [SVDRPConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: port useSSL: useSSL];
+			_sharedRemoteConnector = [SVDRPConnector newWithConnection:connection];
 			break;
 		default:
 			return NO;
@@ -125,12 +119,7 @@ static NSDictionary *_connection;
 {
 	NSObject <RemoteConnector>* connector = nil;
 
-	NSString *remoteHost = [connection objectForKey: kRemoteHost];
-	NSString *username = [connection objectForKey: kUsername];
-	NSString *password = [connection objectForKey: kPassword];
-	const BOOL useSSL = [[connection objectForKey: kSSL] boolValue];
-
-	connector = [Enigma2Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0 useSSL: useSSL];
+	connector = [Enigma2Connector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
@@ -138,7 +127,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = [Enigma1Connector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0 useSSL: useSSL];
+	connector = [Enigma1Connector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
@@ -146,7 +135,7 @@ static NSDictionary *_connection;
 	}
 
 	[connector release];
-	connector = [NeutrinoConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 0 useSSL: useSSL];
+	connector = [NeutrinoConnector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
@@ -154,7 +143,7 @@ static NSDictionary *_connection;
 	}
 	
 	[connector release];
-	connector = [SVDRPConnector newWithAddress: remoteHost andUsername: username andPassword: password andPort: 2001 useSSL: useSSL];
+	connector = [SVDRPConnector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];

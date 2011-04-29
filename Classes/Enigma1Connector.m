@@ -8,6 +8,8 @@
 
 #import "Enigma1Connector.h"
 
+#import "Constants.h"
+
 #import "Objects/Enigma/Service.h"
 #import "Objects/Enigma/Timer.h"
 #import "Objects/Generic/Service.h"
@@ -69,11 +71,6 @@ enum enigma1MessageTypes {
 	return 63;
 }
 
-+ (NSObject <RemoteConnector>*)newWithAddress:(NSString *) address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
-{
-	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress: address andUsername: inUsername andPassword: inPassword andPort: inPort useSSL: (BOOL)ssl];
-}
-
 - (id)initWithAddress: (NSString *)address andUsername: (NSString *)inUsername andPassword: (NSString *)inPassword andPort: (NSInteger)inPort useSSL: (BOOL)ssl
 {
 	if((self = [super init]))
@@ -95,6 +92,17 @@ enum enigma1MessageTypes {
 		}
 	}
 	return self;
+}
+
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
+{
+	NSString *address = [connection objectForKey: kRemoteHost];
+	NSString *username = [[connection objectForKey: kUsername] urlencode];
+	NSString *password = [[connection objectForKey: kPassword] urlencode];
+	const NSInteger port = [[connection objectForKey: kPort] integerValue];
+	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
+
+	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
 - (void)dealloc
