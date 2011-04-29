@@ -275,6 +275,7 @@
 	{
 		LocationListController *rootViewController = [[LocationListController alloc] init];
 		[rootViewController setDelegate: self];
+		rootViewController.showDefault = YES;
 
 		if(IS_IPAD())
 		{
@@ -772,15 +773,16 @@
 
 - (void)locationSelected:(NSObject <LocationProtocol>*)newLocation
 {
-	if(newLocation == nil)
-		return;
-
-	_timer.location = newLocation.fullpath;
-
-	if(_locationCell == nil)
-		return;
-
-	TABLEVIEWCELL_TEXT(_locationCell) = newLocation.fullpath;
+	if(newLocation)
+	{
+		_timer.location = newLocation.fullpath;
+		_locationCell.textLabel.text = newLocation.fullpath;
+	}
+	else
+	{
+		_timer.location = nil;
+		_locationCell.textLabel.text = NSLocalizedString(@"Default Location", @"");
+	}
 }
 
 #pragma mark -
