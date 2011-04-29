@@ -63,6 +63,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 	{
 		// turn off selection use
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
+		self.textLabel.adjustsFontSizeToFitWidth = YES;
 		fixedWidth = -1;
 	}
 	return self;
@@ -111,21 +112,17 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 						   contentRect.origin.y + kCellTopOffset,
 						   [label sizeThatFits:label.bounds.size].width,
 						   kTextFieldHeight);
-		label.frame = frame;
-
+		CGFloat maxWidth = contentRect.size.width - (frame.origin.x + frame.size.width) - kCellLeftOffset;
 		if(fixedWidth != -1)
 		{
-			const CGFloat maxWidth = contentRect.size.width - (frame.origin.x + frame.size.width) - kCellLeftOffset;
-			const CGFloat width = (fixedWidth > -1 && fixedWidth < maxWidth) ? fixedWidth : maxWidth;
+			if(maxWidth < fixedWidth)
+				frame.size.width -= (fixedWidth - maxWidth);
+			maxWidth = fixedWidth;
+		}
+		label.frame = frame;
 
-			frame.size.width = width;
-			frame.origin.x = contentRect.size.width - width;
-		}
-		else
-		{
-			frame.origin.x += frame.size.width + kTweenMargin;
-			frame.size.width = contentRect.size.width - frame.origin.x - kCellLeftOffset;
-		}
+		frame.size.width = maxWidth;
+		frame.origin.x = contentRect.size.width - maxWidth;
 	}
 	else
 	{
