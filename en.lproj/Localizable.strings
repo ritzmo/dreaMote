@@ -25,14 +25,14 @@
 /* No comment provided by engineer. */
 "<name>" = "<name: e.g. living room>";
 
+/* Placeholder text for remote port field. */
+"<port: usually %d>" = "<port: usually %d>";
+
 /* No comment provided by engineer. */
 "<remote address>" = "<address: e.g. 192.168.1.10>";
 
 /* No comment provided by engineer. */
 "<remote password>" = "<password: usually dreambox>";
-
-/* No comment provided by engineer. */
-"<port: usually %d>" = "<port: usually %d>";
 
 /* No comment provided by engineer. */
 "<remote username>" = "<username: usually root>";
@@ -256,10 +256,19 @@
 /*"End of list reached" = "End of list reached";*/
 
 /* No comment provided by engineer. */
-/*"Enigma" = "Enigma";*/
+"Enigma" = "Enigma";
 
 /* No comment provided by engineer. */
-/*"Enigma 2" = "Enigma 2";*/
+"Enigma 2" = "Enigma 2";
+
+/* Default title of EPGRefreshViewController */
+"EPGRefresh" = "EPGRefresh";
+
+/* No comment provided by engineer. */
+"EPGRefresh Explain" = "Settings of EPGRefresh-Plugin";
+
+/* No comment provided by engineer. */
+"EPGRefresh Title" = "EPGRefresh-Plugin";
 
 /* Message type */
 "Error" = "Error";
@@ -472,7 +481,7 @@
 "N/A" = "N/A";
 
 /* No comment provided by engineer. */
-/*"Neutrino" = "Neutrino";*/
+"Neutrino" = "Neutrino";
 
 /* Repeated */
 "Never" = "Never";
@@ -530,6 +539,9 @@
 
 /* No comment provided by engineer. */
 /*"OSD" = "OSD";*/
+
+/* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
+/*"Page not found.\nPlugin not installed?" = "Page not found.\nPlugin not installed?";*/
 
 /* No comment provided by engineer. */
 "Percentage" = "Percentage";
@@ -739,7 +751,7 @@
 "Sunday" = "Sunday";
 
 /* No comment provided by engineer. */
-/*"SVDRP" = "SVDRP";*/
+"SVDRP" = "SVDRP";
 
 /* No comment provided by engineer. */
 /*"Tags" = "Tags";*/
@@ -869,6 +881,9 @@
 
 /* No comment provided by engineer. */
 /*"You have to enter connection details to use this application." = "You have to enter connection details to use this application.";*/
+
+/* User requested automated EPG refresh but no timespan given. */
+/*"You have to provide a timespan to refresh automatically." = "You have to provide a timespan to refresh automatically.";*/
 
 /* No comment provided by engineer. */
 /*"You need to configure this application before you can use it." = "You need to configure this application before you can use it.";*/

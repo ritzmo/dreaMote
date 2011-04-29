@@ -429,6 +429,10 @@
 		DAA029A212D77A21000564F0 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */; };
 		DAA21E800E99288600DD749C /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
+		DAA30CE4136B615700632E14 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAA30CE2136B615700632E14 /* EPGRefresh.strings */; };
+		DAA30CE5136B615700632E14 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAA30CE2136B615700632E14 /* EPGRefresh.strings */; };
+		DAA30CE7136B616600632E14 /* Info Full.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info Full.plist */; };
+		DAA30CE8136B616600632E14 /* Info Full.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info Full.plist */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
 		DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */; };
 		DAAC517912D47F0E00B3B443 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC517812D47F0E00B3B443 /* File.m */; };
@@ -838,6 +842,8 @@
 		DAA21E7F0E99288600DD749C /* ConfigListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigListController.m; sourceTree = "<group>"; };
 		DAA2222A0E998CE900DD749C /* AfterEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AfterEventViewController.h; sourceTree = "<group>"; };
 		DAA2222B0E998CE900DD749C /* AfterEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AfterEventViewController.m; sourceTree = "<group>"; };
+		DAA30CE3136B615700632E14 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/EPGRefresh.strings; sourceTree = "<group>"; };
+		DAA30CE6136B616600632E14 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EPGRefresh.strings; sourceTree = "<group>"; };
 		DAA9247B0EA68C4D00FC0E70 /* NeutrinoConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoConnector.h; sourceTree = "<group>"; };
 		DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NeutrinoConnector.m; sourceTree = "<group>"; };
 		DAAC444E0FE6CECE00F3169F /* SignalXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignalXMLReader.h; sourceTree = "<group>"; };
@@ -1087,6 +1093,7 @@
 				DA78576D132C1478003BE2FE /* changes_en.html */,
 				DA785782132C2A05003BE2FE /* Entitlements.plist */,
 				DA4E0C5E12F1A21900022A1B /* epgcache.sqlite */,
+				DAA30CE2136B615700632E14 /* EPGRefresh.strings */,
 				8D1107310486CEB800E47090 /* Info Full.plist */,
 				DA165F4112E9CA2700A6D894 /* Info Lite.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
@@ -1920,6 +1927,8 @@
 				DAB7873B1356049500668D0F /* AutoTimer.strings in Resources */,
 				DAB7873E135604A600668D0F /* MainWindow.xib in Resources */,
 				DAB78741135604B700668D0F /* MainWindow.xib in Resources */,
+				DAA30CE4136B615700632E14 /* EPGRefresh.strings in Resources */,
+				DAA30CE7136B616600632E14 /* Info Full.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2015,6 +2024,8 @@
 				DAB7873C1356049500668D0F /* AutoTimer.strings in Resources */,
 				DAB7873F135604A600668D0F /* MainWindow.xib in Resources */,
 				DAB78742135604B700668D0F /* MainWindow.xib in Resources */,
+				DAA30CE5136B615700632E14 /* EPGRefresh.strings in Resources */,
+				DAA30CE8136B616600632E14 /* Info Full.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2349,6 +2360,15 @@
 				DA5B70CA12D383D200840890 /* fr */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		DAA30CE2136B615700632E14 /* EPGRefresh.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DAA30CE3136B615700632E14 /* en */,
+				DAA30CE6136B616600632E14 /* de */,
+			);
+			name = EPGRefresh.strings;
 			sourceTree = "<group>";
 		};
 		DAB787361356048800668D0F /* AutoTimer.strings */ = {

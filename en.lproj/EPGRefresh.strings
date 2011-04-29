@@ -1,0 +1,39 @@
+﻿/* Delay if not in standby/in use */
+/*"<delay if not in standby/in use>" = "<delay if not in standby/in use>";*/
+
+/* Time to stay on service */
+/*"<time to stay on service>" = "<time to stay on service>";*/
+
+/* Inherit services from AutoTimer */
+/*"Add AutoTimer services" = "Add AutoTimer services";*/
+
+/* section header for bouquet to refresh */
+/*"Bouquets" = "Bouquets";*/
+
+/* Label for cell 'delay refresh if not in standby (minutes)' */
+/*"Delay if busy (min.)" = "Delay if busy (min.)";*/
+
+/* Force EPG refresh even if receiver is not in standby or timers are active */
+/*"Force refresh if in use" = "Force refresh if in use";*/
+
+/* Search EPG for AutoTimers after refresh */
+/*"Parse AutoTimer" = "Parse AutoTimer";*/
+
+/* Toggle 'Refresh EPG automatically' */
+/*"Refresh automatically" = "Refresh automatically";*/
+
+/* Do refresh in Picture in Picture */
+/*"Refresh in PiP" = "Refresh in PiP";*/
+
+/* section header for service to refresh */
+/*"Services" = "Services";*/
+
+/* Shutdown after refreshing EPG */
+/*"Shutdown after refresh" = "Shutdown after refresh";*/
+
+/* Label for cell 'Time to stay on service (minutes)' */
+/*"Time on service (min.)" = "Time on service (min.)";*/
+
+/* Wakeup from Deep Standby for EPG refresh */
+/*"Wakeup for refresh" = "Wakeup for refresh";*/
+

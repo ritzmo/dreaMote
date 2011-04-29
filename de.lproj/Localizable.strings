@@ -25,14 +25,14 @@
 /* No comment provided by engineer. */
 "<name>" = "<Name: z.B. Wohnzimmer>";
 
+/* Placeholder text for remote port field. */
+"<port: usually %d>" = "<Port: z.B. %d>";
+
 /* No comment provided by engineer. */
 "<remote address>" = "<Adresse: z.B. 192.168.1.10>";
 
 /* No comment provided by engineer. */
 "<remote password>" = "<Passwort: z.B. dreambox>";
-
-/* No comment provided by engineer. */
-"<port: usually %d>" = "<Port: z.B. %d>";
 
 /* No comment provided by engineer. */
 "<remote username>" = "<Benutzername: z.B. root>";
@@ -260,6 +260,15 @@
 
 /* No comment provided by engineer. */
 "Enigma 2" = "Enigma 2";
+
+/* Default title of EPGRefreshViewController */
+"EPGRefresh" = "EPGRefresh";
+
+/* No comment provided by engineer. */
+"EPGRefresh Explain" = "Einstellungen des EPGRefresh-Plugin";
+
+/* No comment provided by engineer. */
+"EPGRefresh Title" = "EPGRefresh-Plugin";
 
 /* Message type */
 "Error" = "Fehler";
@@ -530,6 +539,9 @@
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";
+
+/* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
+"Page not found.\nPlugin not installed?" = "Seite nicht gefunden.\nPlugin nicht installiert?";
 
 /* No comment provided by engineer. */
 "Percentage" = "Prozentual";
@@ -869,6 +881,9 @@
 
 /* No comment provided by engineer. */
 "You have to enter connection details to use this application." = "Sie müssen Verbindungsdaten eingeben um dreaMote zu Nutzen.";
+
+/* User requested automated EPG refresh but no timespan given. */
+"You have to provide a timespan to refresh automatically." = "Zum automatischen Aktualisieren muss eine Zeitspanne angegeben werden.";
 
 /* No comment provided by engineer. */
 "You need to configure this application before you can use it." = "Sie müssen diese Anwendung konfigurieren bevor Sie diese nutzen können!";
