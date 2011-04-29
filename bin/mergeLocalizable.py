@@ -46,7 +46,7 @@ def updateLanguage(lang):
 			for line in orig.readlines():
 				match = pattern.match(line)
 				if match and match.group(2): # ignore empty translations
-					translated[match.group(1)] = match.group(2)
+					translated.setdefault(match.group(1), {})[table] = match.group(2)
 			if DEBUG:
 				print "Found the following translated strings:"
 				for key, value in translated.iteritems():
@@ -63,11 +63,20 @@ def updateLanguage(lang):
 			match = pattern.match(line)
 			if match:
 				key = match.group(1)
-				if translated.has_key(key):
+				if key in translated:
 					if DEBUG:
-						print "Found match:", key
-					value = translated[key]
-					del translated[key]
+						print "Found match:", key, "("+repr(translated[key])+")"
+					if table in translated[key]:
+						value = translated[key][table]
+						del translated[key][table]
+					else:
+						tempTable = translated[key].keys()[1]
+						value = translated[key][tempTable]
+						print "Accepting %s from table %s for %s in table %s" % (value, tempTable, key, table)
+						del translated[key][tempTable]
+						del tempTable
+					if not translated[key]:
+						del translated[key]
 					newtext[idx] = '"%s" = "%s";\n' % (key, value)
 				else:
 					value = match.group(2)
