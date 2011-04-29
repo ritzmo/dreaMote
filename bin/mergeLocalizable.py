@@ -5,7 +5,7 @@ DEBUG = False
 import re
 import os
 pattern = re.compile('^"(.*?)" = "(.*?)";.*?')
-tables = "Localizable", "AutoTimer"
+tables = "Localizable", "AutoTimer", "EPGRefresh"
 
 def find(dirname, recursive, *args):
 	files = []
@@ -35,9 +35,9 @@ def removeUpdateTemplate():
 def updateLanguage(lang):
 	print "Updating", lang
 
+	# Read current strings
+	translated = {}
 	for table in tables:
-		# Read current strings
-		translated = {}
 		try:
 			orig = open('%s.lproj/%s.strings' % (lang, table), 'r')
 		except IOError, ioe:
@@ -53,6 +53,7 @@ def updateLanguage(lang):
 					print key, "=", value
 			orig.close()
 
+	for table in tables:
 		# Read "new" strings and format
 		update = open('%s.strings' % (table,), 'r')
 		newtext = update.readlines()
@@ -75,17 +76,16 @@ def updateLanguage(lang):
 					newtext[idx] = '/*"%s" = "%s";*/\n' % (key, value)
 
 			idx += 1
-		if translated:
-			print "There are remaining strings:"
-			newtext.append("\n\n/* old strings */\n")
-			for key, value in translated.iteritems():
-				newtext.append('"%s" = "%s";\n' % (key, value))
-				print key, "=", value
 
 		# Save merged file
 		new = open('%s.lproj/%s.strings' % (lang, table), 'w')
 		new.writelines(newtext)
 		new.close()
+
+	if translated:
+		print "There are remaining strings:"
+		for key, value in translated.iteritems():
+			print key, "=", value
 
 def main():
 	import sys
