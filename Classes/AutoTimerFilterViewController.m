@@ -85,9 +85,10 @@
 
 - (void)setInclude:(BOOL)newInclude
 {
+	oldInclude = newInclude;
+
 	if(include == newInclude) return;
 	include = newInclude;
-	oldInclude = newInclude;
 	[(UITableView *)self.view reloadData];
 }
 
