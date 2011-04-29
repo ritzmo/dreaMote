@@ -244,7 +244,9 @@ enum generalSectionItems
 	// no auto correction support
 	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
 
-	returnTextField.keyboardType = UIKeyboardTypeNumberPad;
+	// NOTE: number pad does not have dismiss button on the iphone...
+	if(IS_IPAD())
+		returnTextField.keyboardType = UIKeyboardTypeNumberPad;
 	returnTextField.returnKeyType = UIReturnKeyDone;
 
 	// has a clear 'x' button to the right
