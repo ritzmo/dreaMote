@@ -12,9 +12,53 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
+@interface ServiceZapListController()
+/*!
+ @brief Hide action sheet if visible.
+ */
+- (void)dismissActionSheet:(NSNotification *)notif;
+@property (nonatomic, retain) UIActionSheet *actionSheet;
+@end
+
 @implementation ServiceZapListController
 
 @synthesize zapDelegate = _zapDelegate;
+@synthesize actionSheet = _actionSheet;
+
++ (BOOL)canStream
+{
+	return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]]
+	|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
+	|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
+	|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
+}
+
++ (ServiceZapListController *)showAlert:(NSObject<ServiceZapListDelegate> *)delegate fromTabBar:(UITabBar *)tabBar
+{
+	ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+	zlc.zapDelegate = delegate;
+	zlc.actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
+																   delegate:zlc
+														  cancelButtonTitle:nil
+													 destructiveButtonTitle:nil
+														  otherButtonTitles:nil];
+	[zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+		[zlc.actionSheet addButtonWithTitle:@"OPlayer"];
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+		[zlc.actionSheet addButtonWithTitle:@"OPlayer Lite"];
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+		[zlc.actionSheet addButtonWithTitle:@"BUZZ Player"];
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+		[zlc.actionSheet addButtonWithTitle:@"yxplayer"];
+
+	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+	[zlc.actionSheet showFromTabBar:tabBar];
+
+	[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+
+	return [zlc autorelease];
+}
 
 - (id)init
 {
@@ -30,6 +74,8 @@
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_actionSheet release];
 	[_zapDelegate release];
 
 	[super dealloc];
@@ -56,6 +102,11 @@
 	hasAction[zapActionOPlayerLite] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]];
 	hasAction[zapActionBuzzPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]];
 	hasAction[zapActionYxplayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
+}
+
+- (void)dismissActionSheet:(NSNotification *)notif
+{
+	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
 }
 
 #pragma mark	-
@@ -144,6 +195,32 @@
 			++row;
 	}
 	return row;
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else
+	{
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
+			++buttonIndex;
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
+			++buttonIndex;
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
+			++buttonIndex;
+		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > 3)
+		//	++buttonIndex;
+
+		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
+	}
+	self.actionSheet = nil;
 }
 
 @end

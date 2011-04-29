@@ -39,6 +39,7 @@
 	BOOL _similarFetched; /*!< @brief List of similar Events was already fetched. */
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
 	UIPopoverController *popoverController; /*!< @brief Popover controller */
+	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	CXMLDocument *_eventXMLDoc; /*!< @brief Current Event XML Document. */

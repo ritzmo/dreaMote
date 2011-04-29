@@ -45,6 +45,7 @@
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
+	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 #if IS_LITE()
 @private
 	id _adBannerView;

@@ -30,15 +30,36 @@ typedef enum
 
  @note This table is used only on the iPad to make the UI more appealing, as a
  UIActionSheet (which is used on the iPhone) disturbs the ui flow too much while a popover
- appears more like a "side-action". To keep code duplication to a minimum, the resulting
- actions are not handled in this class but in the event list where the iPhone-equivalent resides.
+ appears more like a "side-action".
+ @note For convenience reasons the iPhone uses this class to manage the action sheet too.
  */
-@interface ServiceZapListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface ServiceZapListController : UIViewController <UITableViewDelegate,
+														UIActionSheetDelegate,
+														UITableViewDataSource>
 {
 @private
 	NSObject<ServiceZapListDelegate> *_zapDelegate; /*!< @brief Zap delegate. */
 	BOOL hasAction[zapActionMax]; /*!< @brief Cache of supported zap actions */
+	UIActionSheet *_actionSheet; /*!< @brief Action sheet if ran on iPhone/iPod Touch. */
 }
+
+/*!
+ @brief Is the device able to play back a stream?
+ Will return YES if a supported streaming-capable media player is installed.
+
+ @return YES if streaming is possible, else NO.
+ */
++ (BOOL)canStream;
+
+/*!
+ @brief Show Alert.
+ Instead of a Table the iPhone uses an Alert Sheet to display the possible "zapping" methods.
+ To reduce the possibility of errors by code duplication the sheet is managed in this class.
+
+ @param delegate Delegate to be called back.
+ @param tabBar Tab bar to show action sheet from.
+ */
++ (ServiceZapListController *)showAlert:(NSObject<ServiceZapListDelegate> *)delegate fromTabBar:(UITabBar *)tabBar;
 
 @property (nonatomic, retain) NSObject<ServiceZapListDelegate> *zapDelegate;
 
