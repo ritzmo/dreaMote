@@ -249,7 +249,8 @@
 {
 	NSInteger row = indexPath.row;
 	NSObject<LocationProtocol> *location = nil;
-	if(_showDefault && row-- > 0)
+	if(_showDefault) --row;
+	if(row > -1)
 	{
 		location = [_locations objectAtIndex:row];
 		if(!location.valid)
