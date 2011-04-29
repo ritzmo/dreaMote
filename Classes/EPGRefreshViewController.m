@@ -357,7 +357,7 @@ enum generalSectionItems
 		settings.enabled = _enabled.on;
 		if(settings.enabled && !settings.begin && !settings.end)
 		{
-			message = NSLocalizedString(@"You have to provice a timespan to refresh automatically.", @"User requested automated EPG refresh but no timespan given.");
+			message = NSLocalizedString(@"You have to provide a timespan to refresh automatically.", @"User requested automated EPG refresh but no timespan given.");
 		}
 
 		settings.background = _background.on;
