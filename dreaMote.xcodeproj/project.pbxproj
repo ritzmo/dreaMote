@@ -1082,6 +1082,7 @@
 			isa = PBXGroup;
 			children = (
 				DA0FA5750EB1D189009A1898 /* about.html */,
+				DAB787361356048800668D0F /* AutoTimer.strings */,
 				DA0FCD9D133D44F500CE2A04 /* changes_de.html */,
 				DA78576D132C1478003BE2FE /* changes_en.html */,
 				DA785782132C2A05003BE2FE /* Entitlements.plist */,
@@ -1089,7 +1090,6 @@
 				8D1107310486CEB800E47090 /* Info Full.plist */,
 				DA165F4112E9CA2700A6D894 /* Info Lite.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
-				DAB787361356048800668D0F /* AutoTimer.strings */,
 				DACFCCEE0E33CAD100348996 /* MainWindow.xib */,
 				DAFBB54E12BD2BE1004DAE5E /* MainWindow-iPad.xib */,
 				DA42BE1112DA434100F14E3C /* OtherList.xib */,
