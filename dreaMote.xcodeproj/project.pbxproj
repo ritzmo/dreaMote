@@ -431,8 +431,6 @@
 		DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAA30CE4136B615700632E14 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAA30CE2136B615700632E14 /* EPGRefresh.strings */; };
 		DAA30CE5136B615700632E14 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAA30CE2136B615700632E14 /* EPGRefresh.strings */; };
-		DAA30CE7136B616600632E14 /* Info Full.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info Full.plist */; };
-		DAA30CE8136B616600632E14 /* Info Full.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info Full.plist */; };
 		DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
 		DAAC44500FE6CECE00F3169F /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */; };
 		DAAC517912D47F0E00B3B443 /* File.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC517812D47F0E00B3B443 /* File.m */; };
@@ -1928,7 +1926,6 @@
 				DAB7873E135604A600668D0F /* MainWindow.xib in Resources */,
 				DAB78741135604B700668D0F /* MainWindow.xib in Resources */,
 				DAA30CE4136B615700632E14 /* EPGRefresh.strings in Resources */,
-				DAA30CE7136B616600632E14 /* Info Full.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2025,7 +2022,6 @@
 				DAB7873F135604A600668D0F /* MainWindow.xib in Resources */,
 				DAB78742135604B700668D0F /* MainWindow.xib in Resources */,
 				DAA30CE5136B615700632E14 /* EPGRefresh.strings in Resources */,
-				DAA30CE8136B616600632E14 /* Info Full.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
