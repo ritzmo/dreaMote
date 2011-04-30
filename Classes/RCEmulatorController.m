@@ -50,6 +50,12 @@
 - (void)buttonPressed:(RCButton *)sender;
 
 /*!
+ @brief toggle standby
+ @param sender ui element
+ */
+- (void)toggleStandby:(id)sender;
+
+/*!
  @brief Change frames/views according to orientation
  */
 - (void)manageViews:(UIInterfaceOrientation)interfaceOrientation;
@@ -69,7 +75,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Remote Control", @"Title of RCEmulatorController");
-		_screenshotType = kScreenshotTypeOSD;
+		_screenshotType = kScreenshotTypeBoth;
 	}
 
 	return self;
@@ -91,54 +97,90 @@
 	[super dealloc];
 }
 
+- (void)configureToolbar:(BOOL)animated
+{
+	// flex item used to separate the left groups items and centered items
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+
+	// create a bordered style button with custom title
+	const UIBarButtonItem *standbyItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Standby", @"")
+																		  style:UIBarButtonItemStyleBordered
+																		 target:self
+																		 action:@selector(toggleStandby:)];
+
+	NSArray *items = [NSArray alloc];
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
+	{
+		// create a bordered style button with custom title
+		const UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"OSD", @"")
+																		  style:UIBarButtonItemStyleBordered
+																		 target:self
+																		 action:@selector(setOSDType:)];
+
+		// create a bordered style button with custom title
+		const UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Video", @"")
+																			style:UIBarButtonItemStyleBordered
+																		   target:self
+																		   action:@selector(setVideoType:)];
+
+		// create a bordered style button with custom title
+		const UIBarButtonItem *bothItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"All", @"")
+																		   style:UIBarButtonItemStyleBordered
+																		  target:self
+																		  action:@selector(setBothType:)];
+
+		if(IS_IPHONE())
+		{
+			if([_screenView superview])
+			{
+				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
+					items = [items initWithObjects:_screenshotButton, flexItem, osdItem, videoItem, bothItem, nil];
+				else
+					items = [items initWithObjects:_screenshotButton, flexItem, osdItem, bothItem, nil];
+			}
+			else
+			{
+				items = [items initWithObjects:_screenshotButton, flexItem, standbyItem, nil];
+			}
+		}
+		else
+		{
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
+				items = [items initWithObjects:_screenshotButton, flexItem, standbyItem, flexItem, osdItem, videoItem, bothItem, nil];
+			else
+				items = [items initWithObjects:_screenshotButton, flexItem, standbyItem, flexItem, osdItem, bothItem, nil];
+		}
+		[_toolbar setItems:items animated:animated];
+
+		[osdItem release];
+		[videoItem release];
+		[bothItem release];
+	}
+	else
+	{
+		items = [items initWithObjects:flexItem, standbyItem, flexItem, nil];
+		[_toolbar setItems:items animated:animated];
+	}
+
+	[items release];
+	[flexItem release];
+	[standbyItem release];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	_shouldVibrate = [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC];
 
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
+	[self configureToolbar:NO];
+
+	if([_screenView superview])
 	{
-		// flex item used to separate the left groups items and right grouped items
-		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																	target:nil
-																	action:nil];
-
-		// create a bordered style button with custom title
-		const UIBarButtonItem *osdItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"OSD", @"")
-																	style:UIBarButtonItemStyleBordered
-																	target:self
-																	action:@selector(setOSDType:)];
-
-		// create a bordered style button with custom title
-		const UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Video", @"")
-																	style:UIBarButtonItemStyleBordered
-																	target:self
-																	action:@selector(setVideoType:)];
-
-		// create a bordered style button with custom title
-		const UIBarButtonItem *bothItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"All", @"")
-																	style:UIBarButtonItemStyleBordered
-																	target:self
-																	action:@selector(setBothType:)];
-		
-		NSArray *items = [NSArray alloc];
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
-			items = [items initWithObjects: _screenshotButton, flexItem, osdItem, videoItem, bothItem, nil];
-		else
-			items = [items initWithObjects: _screenshotButton, flexItem, osdItem, bothItem, nil];
-		[_toolbar setItems:items animated:NO];
-
-		[items release];
-		[flexItem release];
-		[osdItem release];
-		[videoItem release];
-		[bothItem release];
-
-		if([_screenView superview])
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
 			[self loadImage: nil];
-	}
-	else
-	{
-		if([_screenView superview])
+		else
 			[self flipView: nil];
 	}
 
@@ -269,6 +311,7 @@
 	}
 
 	[UIView commitAnimations];
+	[self configureToolbar:NO];
 }
 
 - (void)loadImage:(id)dummy
@@ -338,6 +381,11 @@
 	[NSThread detachNewThreadSelector:@selector(sendButton:)
 							toTarget:self
 							withObject: [NSNumber numberWithInteger: sender.tag]];
+}
+
+- (void)toggleStandby:(id)sender
+{
+	[[RemoteConnectorObject sharedRemoteConnector] standby];
 }
 
 - (void)sendButtonInternal: (NSInteger)rcCode
