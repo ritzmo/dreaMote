@@ -145,6 +145,12 @@
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
+/* getter of reloading property */
+- (BOOL)reloading
+{
+	return _reloading;
+}
+
 /* getter for isRadio property */
 - (BOOL)isRadio
 {

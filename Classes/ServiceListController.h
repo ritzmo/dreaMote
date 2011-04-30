@@ -90,6 +90,11 @@
  */
 @property (nonatomic, retain) MGSplitViewController *mgSplitViewController;
 
+/*!
+ @brief Currently reloading.
+ */
+@property (nonatomic, readonly) BOOL reloading;
+
 @end
 
 

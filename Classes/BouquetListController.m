@@ -339,7 +339,7 @@
 		else
 			[self.navigationController popToViewController:_bouquetDelegate animated: YES];
 	}
-	else
+	else if(!_serviceListController.reloading)
 	{
 		// Check for cached ServiceListController instance
 		if(_serviceListController == nil)
@@ -359,6 +359,8 @@
 		else
 			[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
 	}
+	else
+		return nil;
 	return indexPath;
 }
 
