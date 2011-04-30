@@ -268,7 +268,7 @@
 			[self.navigationController popToViewController: (UIViewController *)_delegate animated: YES];
 	}
 	// Open movie list
-	else
+	else if(!_movieListController.reloading)
 	{
 		// Check for cached MovieListController instance
 		if(_movieListController == nil)
@@ -284,6 +284,8 @@
 		else
 			[_movieListController.navigationController popToRootViewControllerAnimated: YES];
 	}
+	else
+		return nil;
 	return indexPath;
 }
 

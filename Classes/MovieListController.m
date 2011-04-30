@@ -129,6 +129,12 @@
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
+/* getter of reloading */
+- (BOOL)reloading
+{
+	return _reloading;
+}
+
 /* getter of willReapper */
 - (BOOL)willReappear
 {

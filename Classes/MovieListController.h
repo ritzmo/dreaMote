@@ -85,6 +85,11 @@
 @property (retain) MovieViewController *movieViewController;
 
 /*!
+ @brief Currently reloading.
+ */
+@property (nonatomic, readonly) BOOL reloading;
+
+/*!
  @breif View will reapper.
  */
 @property (nonatomic) BOOL willReappear;
