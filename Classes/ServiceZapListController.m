@@ -27,10 +27,13 @@
 
 + (BOOL)canStream
 {
-	return [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]]
-	|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
-	|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
-	|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
+	return [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming]
+		&& (
+			[[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]]
+		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
+		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
+		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]]
+		);
 }
 
 + (ServiceZapListController *)showAlert:(NSObject<ServiceZapListDelegate> *)delegate fromTabBar:(UITabBar *)tabBar
@@ -120,13 +123,15 @@
 	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 	{
 		if(!hasAction[zapActionOPlayer] && row > 0)
 			++row;
 		if(!hasAction[zapActionOPlayerLite] && row > 1)
 			++row;
-		//if(!hasAction[zapActionBuzzPlayer] && row > 2)
+		if(!hasAction[zapActionBuzzPlayer] && row > 2)
+			++row;
+		//if(!hasAction[zapActionYxplayer] && row > 3)
 		//	++row;
 	}
 	switch((zapAction)row)
