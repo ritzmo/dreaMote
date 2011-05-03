@@ -436,7 +436,7 @@
 - (void)zapAction:(id)sender
 {
 	// if streaming supported, show popover on ipad and action sheet on iphone
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming] && [ServiceZapListController canStream])
+	if([ServiceZapListController canStream])
 	{
 		if(IS_IPAD())
 		{
