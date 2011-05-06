@@ -225,7 +225,6 @@
 
 		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
-	self.actionSheet = nil;
 }
 
 @end
