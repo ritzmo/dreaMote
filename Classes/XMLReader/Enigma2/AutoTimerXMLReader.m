@@ -225,7 +225,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAvoidDuplicateDescription, kEnigma2ATAvoidDuplicateDescriptionLength))
 			{
-				currentAT.avoidDuplicateDescription = [value isEqualToString:@"1"];
+				currentAT.avoidDuplicateDescription = [value integerValue];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAfter, kEnigma2ATAfterLength))
 			{

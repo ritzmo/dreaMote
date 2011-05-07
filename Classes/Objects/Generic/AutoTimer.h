@@ -31,6 +31,14 @@ typedef enum
 	autoTimerWhereDayOfWeek = 3,
 } autoTimerWhereType;
 
+typedef enum
+{
+	autoTimerAddNone = 0,
+	autoTimerAddSameService = 1,
+	autoTimerAddAnyService = 2,
+	autoTimerAddRecording = 3,
+} autoTimerAvoidDuplicateDescription;
+
 @interface AutoTimer : NSObject
 {
 @private
@@ -62,7 +70,7 @@ typedef enum
 	BOOL justplay;
 	NSDate *before;
 	NSDate *after;
-	BOOL avoidDuplicateDescription;
+	autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 	enum afterEvent afterEventAction; // TODO: support extended syntax
 	// TODO: add counter
 }
@@ -100,7 +108,7 @@ typedef enum
 @property (nonatomic) BOOL justplay;
 @property (nonatomic, retain) NSDate *before;
 @property (nonatomic, retain) NSDate *after;
-@property (nonatomic) BOOL avoidDuplicateDescription;
+@property (nonatomic) autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 @property (nonatomic) enum afterEvent afterEventAction;
 
 @end

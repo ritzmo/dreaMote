@@ -359,7 +359,7 @@ enum sectionIds
 	_timeframeSwitch.on = (_timer.after != nil && _timer.before != nil);
 	_timerJustplay.on = _timer.justplay;
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
-	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
+	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription > 0;
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 
 	[(UITableView *)self.view reloadData];
@@ -551,7 +551,7 @@ enum sectionIds
 
 	// avoidDuplicateDescription
 	_avoidDuplicateDescription = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription;
+	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription > 0;
 	_avoidDuplicateDescription.backgroundColor = [UIColor clearColor];
 
 	// maxduration enable/disable
@@ -632,7 +632,7 @@ enum sectionIds
 		_timer.searchType = _exactSearch.on ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
 		_timer.searchCase = _sensitiveSearch.on ? CASE_SENSITIVE : CASE_INSENSITIVE;
 		_timer.overrideAlternatives = _overrideAlternatives.on;
-		_timer.avoidDuplicateDescription = _avoidDuplicateDescription.on;
+		_timer.avoidDuplicateDescription = _avoidDuplicateDescription.on > 0;
 
 		// Try to commit changes if no error occured
 		if(!message)
