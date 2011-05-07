@@ -589,6 +589,10 @@ enum enigma2MessageTypes {
 	{
 		[timerString appendFormat:@"&encoding=%@", [changeTimer.encoding urlencode]];
 	}
+	else
+	{
+		[timerString appendString:@"&encoding=UTF-8"];
+	}
 
 	if(changeTimer.offsetAfter > -1 && changeTimer.offsetBefore > -1)
 	{
