@@ -582,8 +582,13 @@ enum enigma2MessageTypes {
 
 	[timerString appendString:@"/autotimer/edit?"];
 	[timerString appendFormat:@"match=%@&name=%@&enabled=%d&justplay=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0, changeTimer.justplay ? 1 : 0];
-	[timerString appendFormat:@"&encoding=%@&searchType=%@&searchCase=%@&overrideAlternatives=%d", [changeTimer.encoding urlencode], (changeTimer.searchType == SEARCH_TYPE_EXACT) ? @"exact" : @"partial", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
+	[timerString appendFormat:@"&searchType=%@&searchCase=%@&overrideAlternatives=%d", (changeTimer.searchType == SEARCH_TYPE_EXACT) ? @"exact" : @"partial", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
 	[timerString appendFormat:@"&avoidDuplicateDescription=%d&location=%@", changeTimer.avoidDuplicateDescription ? 1 : 0, changeTimer.location ? [changeTimer.location urlencode] : @""];
+
+	if(changeTimer.encoding)
+	{
+		[timerString appendFormat:@"&encoding=%@", [changeTimer.encoding urlencode]];
+	}
 
 	if(changeTimer.offsetAfter > -1 && changeTimer.offsetBefore > -1)
 	{
