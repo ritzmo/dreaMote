@@ -396,13 +396,13 @@ enum sectionIds
 #pragma mark Helper methods
 #pragma mark -
 
-- (NSString *)format_Time:(NSDate *)dateTime withDateStyle:(NSDateFormatterStyle)dateStyle
+- (NSString *)format_Time:(NSDate *)dateTime withDateStyle:(NSDateFormatterStyle)dateStyle andTimeStyle:(NSDateFormatterStyle)timeStyle
 {
 	NSString *dateString = nil;
 	if(dateTime)
 	{
 		[_dateFormatter setDateStyle:dateStyle];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		[_dateFormatter setTimeStyle:timeStyle];
 		dateString = [_dateFormatter fuzzyDate:dateTime];
 	}
 	else
@@ -732,7 +732,7 @@ enum sectionIds
 	_timer.from = newDate;
 
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timespanSection]];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 }
 
 - (void)toSelected: (NSDate *)newDate
@@ -743,7 +743,7 @@ enum sectionIds
 	_timer.to = newDate;
 
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timespanSection]];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 }
 
 - (void)beforeSelected: (NSDate *)newDate
@@ -754,7 +754,7 @@ enum sectionIds
 	_timer.before = newDate;
 
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timeframeSection]];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 }
 
 - (void)afterSelected: (NSDate *)newDate
@@ -765,7 +765,7 @@ enum sectionIds
 	_timer.after = newDate;
 
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timeframeSection]];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 }
 
 #pragma mark -
@@ -1116,14 +1116,14 @@ enum sectionIds
 					break;
 				case 1:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle]];
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 2:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle]];
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -1143,7 +1143,7 @@ enum sectionIds
 				case 1:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 					cell.textLabel.adjustsFontSizeToFitWidth = YES;
-					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle]];
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -1151,7 +1151,7 @@ enum sectionIds
 				case 2:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 					cell.textLabel.adjustsFontSizeToFitWidth = YES;
-					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle]];
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
