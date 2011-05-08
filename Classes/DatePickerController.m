@@ -164,7 +164,15 @@
 {
 	if(_selectTarget != nil && _selectCallback != nil)
 	{
-		[_selectTarget performSelector:(SEL)_selectCallback withObject: [_datePickerView date]];
+		NSDate *date = [_datePickerView date];
+		if(datePickerMode == UIDatePickerModeDate)
+		{
+			NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+			NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
+			date = [gregorian dateFromComponents:components];
+			[gregorian release];
+		}
+		[_selectTarget performSelector:(SEL)_selectCallback withObject:date];
 	}
 
 	if(IS_IPAD())
