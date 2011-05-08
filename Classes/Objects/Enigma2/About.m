@@ -86,8 +86,9 @@
 		childNodes = [resultElement nodesForXPath:@"free" error:nil];
 		if(![childNodes count]) break;
 		free = [[childNodes objectAtIndex:0] stringValue];
-		
+
 		_hdd = [[Harddisk alloc] initWithModel:model andCapacity:capacity andFree:free];
+		break; // only support first hdd for now
 	}
 	return _hdd;
 }
