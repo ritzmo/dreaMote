@@ -1586,7 +1586,10 @@ enum sectionIds
 				[self.datePickerController setTarget: self action: @selector(beforeSelected:)];
 			}
 
-			[self.datePickerController setDatePickerMode:UIDatePickerModeDateAndTime];
+			// XXX: I would prefer UIDatePickerModeDateAndTime here but this does not provide us
+			// with a year selection, so restrict this to UIDatePickerModeDate for now (which is
+			// similar to the way it's handled on the receiver itself)
+			[self.datePickerController setDatePickerMode:UIDatePickerModeDate];
 			targetViewController = self.datePickerNavigationController;
 			break;
 		}
