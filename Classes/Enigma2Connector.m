@@ -44,6 +44,7 @@
 #define WEBIF_VERSION_SUGGESTED @"1.6.6"
 
 enum powerStates {
+	kStandbyState = 0,
 	kShutdownState = 1,
 	kRebootState = 2,
 	kRestartGUIState = 3,
@@ -877,8 +878,7 @@ enum enigma2MessageTypes {
 
 - (void)standby
 {
-	// NOTE: we send remote control command button power here as we want to toggle standby
-	[self sendButton: kButtonCodePower];
+	[self sendButton: kStandbyState];
 }
 
 - (void)reboot
