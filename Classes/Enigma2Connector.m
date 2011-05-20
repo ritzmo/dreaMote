@@ -819,19 +819,19 @@ enum enigma2MessageTypes {
 	if(result.result)
 	{
 		NSMutableString *servicesString = [NSMutableString stringWithCapacity:100];
-		[servicesString appendString:@"/epgrefesh/add?multi=1&sref="];
+		[servicesString appendString:@"/epgrefesh/add?multi=1"];
 		if(services.count)
 		{
 			for(NSObject<ServiceProtocol> *service in services)
 			{
-				[servicesString appendFormat:@"%@,", [service.sref urlencode]];
+				[servicesString appendFormat:@"&sref=%@", [service.sref urlencode]];
 			}
 		}
 		if(bouquets.count)
 		{
 			for(NSObject<ServiceProtocol> *service in bouquets)
 			{
-				[servicesString appendFormat:@"%@,", [service.sref urlencode]];
+				[servicesString appendFormat:@"&sref=%@", [service.sref urlencode]];
 			}
 		}
 
