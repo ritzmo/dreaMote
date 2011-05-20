@@ -16,7 +16,7 @@
 #import "AfterEventViewController.h" /* AfterEventDelegate */
 #import "LocationListController.h" /* LocationListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
-#import "SimpleRepeatedViewController.h" /* SimpleRepeatedDelegate */
+#import "SimpleRepeatedViewController.h" /* RepeatedDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 // Forward declarations...
@@ -31,7 +31,7 @@
 @interface TimerViewController : UIViewController <UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, AfterEventDelegate,
-													SimpleRepeatedDelegate, LocationListDelegate,
+													RepeatedDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>

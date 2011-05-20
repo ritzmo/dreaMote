@@ -60,6 +60,7 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesRecordDelete) ||
 		(feature == kFeaturesInstantRecord) ||
 		(feature == kFeaturesSatFinder) ||
+		(feature == kFeaturesTimerRepeated) ||
 		(feature == kFeaturesSimpleRepeated) ||
 		(feature == kFeaturesCurrent) ||
 		(feature == kFeaturesTimerTitle) ||

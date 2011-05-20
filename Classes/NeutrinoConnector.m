@@ -45,7 +45,9 @@ enum neutrinoMessageTypes {
 	return
 		(feature == kFeaturesBouquets) ||
 		(feature == kFeaturesConstantTimerId) ||
-		(feature == kFeaturesMessageType);
+		(feature == kFeaturesMessageType) ||
+		(feature == kFeaturesTimerRepeated) ||
+		(feature == kFeaturesComplicatedRepeated);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -480,7 +482,6 @@ enum neutrinoMessageTypes {
 		[add appendFormat:@"&alarm=%d&stop=%d&type=", (NSInteger)[newTimer.begin timeIntervalSince1970], (NSInteger)[newTimer.end timeIntervalSince1970]];
 		[add appendFormat:@"%d", neutrinoTimerTypeRecord];
 	}
-	[add appendFormat: @"%d", (newTimer.justplay) ? neutrinoTimerTypeZapto : neutrinoTimerTypeRecord];
 
 	[add appendString: @"&channel_id="];
 	[add appendString: [newTimer.service.sref urlencode]];

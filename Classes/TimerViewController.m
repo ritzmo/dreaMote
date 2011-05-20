@@ -689,55 +689,104 @@
 }
 
 #pragma mark -
-#pragma mark SimpleRepeatedDelegate methods
+#pragma mark RepeatedDelegate methods
 #pragma mark -
 
-- (void)simpleRepeatedSelected: (NSNumber *)newRepeated
+- (void)repeatedSelected:(NSNumber *)newRepeated withCount:(NSNumber *)newCount;
 {
-	NSInteger repeated = -1;
+	NSInteger repeated = -1, repeatcount;
 	if(newRepeated == nil)
 		return;
 
 	repeated = [newRepeated integerValue];
 	_timer.repeated = repeated;
-	
+	repeatcount = [newCount integerValue];
+	if(repeatcount < 0) repeatcount = 0;
+	_timer.repeatcount = repeatcount;
+
 	if(_repeatedCell == nil)
 		return;
-	
-	if(repeated == 0)
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
 	{
-		TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Never", @"Repeated");
+		if(repeated == 0)
+		{
+			TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Never", @"Repeated");
+		}
+		else
+		{
+			NSMutableString *text = nil;
+
+			if(repeated == 31)
+			{
+				TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Weekdays", @"Repeated");
+				return;
+			}
+			else if (repeated == 127)
+			{
+				TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Daily", @"Repeated");
+				return;
+			}
+
+			text = [NSMutableString stringWithCapacity: 10];
+			if(repeated & weekdayMon)
+				[text appendString: NSLocalizedString(@"Mon", "Weekday")];
+			if(repeated & weekdayTue)
+				[text appendString: NSLocalizedString(@"Tue", "Weekday")];
+			if(repeated & weekdayWed)
+				[text appendString: NSLocalizedString(@"Wed", "Weekday")];
+			if(repeated & weekdayThu)
+				[text appendString: NSLocalizedString(@"Thu", "Weekday")];
+			if(repeated & weekdayFri)
+				[text appendString: NSLocalizedString(@"Fri", "Weekday")];
+			if(repeated & weekdaySat)
+				[text appendString: NSLocalizedString(@"Sat", "Weekday")];
+			if(repeated & weekdaySun)
+				[text appendString: NSLocalizedString(@"Sun", "Weekday")];
+
+			TABLEVIEWCELL_TEXT(_repeatedCell) = text;
+		}
 	}
 	else
 	{
-		NSMutableString *text = nil;
-
-		if(repeated == 31)
+		NSString *text = nil;
+		if(repeated == neutrinoTimerRepeatNever)
+			text = NSLocalizedString(@"Never", @"Repeated");
+		else if (repeated == neutrinoTimerRepeatDaily)
+			text =  NSLocalizedString(@"Daily", @"Repeated");
+		else if (repeated == neutrinoTimerRepeatWeekly)
+			text = NSLocalizedString(@"Weekly", @"Repeated");
+		else if (repeated == neutrinoTimerRepeatBiweekly)
+			text = NSLocalizedString(@"2-weekly", @"Repeated");
+		else if (repeated == neutrinoTimerRepeatFourweekly)
+			text = NSLocalizedString(@"4-weekly", @"Repeated");
+		else if (repeated == neutrinoTimerRepeatMonthly)
+			text = NSLocalizedString(@"Monthly", @"Repeated");
+		else if (repeated & neutrinoTimerRepeatWeekdays)
 		{
-			TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Weekdays", @"Repeated");
-			return;
-		}
-		else if (repeated == 127)
-		{
-			TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Daily", @"Repeated");
-			return;
-		}
+			NSMutableString *mtext = [NSMutableString stringWithCapacity:10];
+			if(repeated & neutrinoTimerRepeatMonday)
+				[mtext appendString: NSLocalizedString(@"Mon", "Weekday")];
+			if(repeated & neutrinoTimerRepeatTuesday)
+				[mtext appendString: NSLocalizedString(@"Tue", "Weekday")];
+			if(repeated & neutrinoTimerRepeatWednesday)
+				[mtext appendString: NSLocalizedString(@"Wed", "Weekday")];
+			if(repeated & neutrinoTimerRepeatThursday)
+				[mtext appendString: NSLocalizedString(@"Thu", "Weekday")];
+			if(repeated & neutrinoTimerRepeatFriday)
+				[mtext appendString: NSLocalizedString(@"Fri", "Weekday")];
+			if(repeated & neutrinoTimerRepeatSaturday)
+				[mtext appendString: NSLocalizedString(@"Sat", "Weekday")];
+			if(repeated & neutrinoTimerRepeatSunday)
+				[mtext appendString: NSLocalizedString(@"Sun", "Weekday")];
 
-		text = [NSMutableString stringWithCapacity: 10];
-		if(repeated & weekdayMon)
-			[text appendString: NSLocalizedString(@"Mon", "Weekday")];
-		if(repeated & weekdayTue)
-			[text appendString: NSLocalizedString(@"Tue", "Weekday")];
-		if(repeated & weekdayWed)
-			[text appendString: NSLocalizedString(@"Wed", "Weekday")];
-		if(repeated & weekdayThu)
-			[text appendString: NSLocalizedString(@"Thu", "Weekday")];
-		if(repeated & weekdayFri)
-			[text appendString: NSLocalizedString(@"Fri", "Weekday")];
-		if(repeated & weekdaySat)
-			[text appendString: NSLocalizedString(@"Sat", "Weekday")];
-		if(repeated & weekdaySun)
-			[text appendString: NSLocalizedString(@"Sun", "Weekday")];
+			if([mtext length])
+				text = mtext;
+			else
+				text = NSLocalizedString(@"Never", @"Repeated"); // XXX: is this right?
+		}
+		if(repeatcount > 0)
+			text = [text stringByAppendingFormat:@" (%d times)", repeatcount];
 
 		TABLEVIEWCELL_TEXT(_repeatedCell) = text;
 	}
@@ -814,7 +863,7 @@
 	NSInteger sections = 6;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
 		++sections;
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
 		++sections;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 		++sections;
@@ -825,7 +874,7 @@
 {
 	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
 		++section;
-	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
 		++section;
 	if(section > 7 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 		++section;
@@ -937,7 +986,7 @@
 
 	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
 		++section;
-	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
 		++section;
 	if(section > 7 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
 		++section;
@@ -1004,7 +1053,7 @@
 			break;
 		case 7:
 			_repeatedCell = sourceCell;
-			[self simpleRepeatedSelected: [NSNumber numberWithInteger: _timer.repeated]];
+			[self repeatedSelected:[NSNumber numberWithInteger:_timer.repeated] withCount:[NSNumber numberWithInteger:_timer.repeatcount]];
 			break;
 		case 8:
 			_locationCell = sourceCell;
@@ -1026,7 +1075,7 @@
 
 		if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
 			++section;
-		if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+		if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
 			++section;
 
 		if(section == 3)
@@ -1063,6 +1112,11 @@
 		{
 			// property takes care of initialization
 			self.simpleRepeatedViewController.repeated = _timer.repeated;
+			self.simpleRepeatedViewController.repcount = _timer.repeatcount;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+				self.simpleRepeatedViewController.isSimple = YES;
+			else// if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesComplicatedRepeated])
+				self.simpleRepeatedViewController.isSimple = NO;
 			targetViewController = self.simpleRepeatedNavigationController;
 		}
 		else if(section == 8)

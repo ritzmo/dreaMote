@@ -84,6 +84,10 @@ enum connectorFeatures {
 	 */
 	kFeaturesEPGSearchSimilar,
 	/*!
+	 @brief Knows repeated timers.
+	 */
+	kFeaturesTimerRepeated,
+	/*!
 	 @brief "Simple" Repeated timers
 	 "Simple" means not complicated like "biweekly mondays and thursdays".
 
@@ -91,6 +95,11 @@ enum connectorFeatures {
 	 to bother about neutrino/svdrp :-)
 	 */
 	kFeaturesSimpleRepeated,
+	/*!
+	 @brief "Complicated" Repeated timers
+	 Refers to Neutrino Timers.
+	 */
+	kFeaturesComplicatedRepeated,
 	/*! @brief Allows to display currently playing service and event. */
 	kFeaturesCurrent,
 	/*! @brief Supports radio mode. */

@@ -44,6 +44,7 @@ enum neutrinoTimerRepeat {
 	  @note Unimplemented in Neutrino?
 	*/
 	neutrinoTimerRepeatByDescription = 6,
+	neutrinoTimerRepeatWeekdays = 0x100, /*!< @brief Repeat on given weekdays */
 	neutrinoTimerRepeatMonday = 256, /*!< @brief Repeat on Monday. */
 	neutrinoTimerRepeatTuesday = 512, /*!< @brief Repeat on Tuesday. */
 	neutrinoTimerRepeatWednesday = 1024, /*!< @brief Repeat on Wednesday. */

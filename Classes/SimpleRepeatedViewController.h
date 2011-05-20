@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol SimpleRepeatedDelegate;
+#import "CellTextField.h" /* EditableTableViewCellDelegate */
+
+@protocol RepeatedDelegate;
 
 /*!
  @brief Repeated Flag selection.
@@ -17,20 +19,26 @@
  It's adjusted to the Enigma and Enigma2 model of repeating timers thus it only
  offers weakly repetitions based on days.
  */
-@interface SimpleRepeatedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface SimpleRepeatedViewController : UIViewController <EditableTableViewCellDelegate,
+															UITableViewDelegate, UITableViewDataSource>
 {
 @private
+	UITextField *_repcountField; /*!< @brief Repeat count. */
+	CellTextField *_repcountCell; /*!< @brief Repeat count cell. */
 	NSInteger _repeated; /*!< @brief Current Flags. */
-	id<SimpleRepeatedDelegate> _delegate; /*!< @brief Delegate. */
+	NSInteger _repcount; /*!< @brief Repeat count. */
+	id<RepeatedDelegate> _delegate; /*!< @brief Delegate. */
+	BOOL _isSimple; /*!< @brief Simple Editor? */
 }
 
 /*!
  @brief Standard constructor.
  
  @param repeated Flags to start with.
+ @param repcount Repeatecount
  @return SimpleRepeatedViewController instance.
  */
-+ (SimpleRepeatedViewController *)withRepeated: (NSInteger)repeated;
++ (SimpleRepeatedViewController *)withRepeated: (NSInteger)repeated andCount: (NSInteger)repcount;
 
 /*!
  @brief Set Delegate.
@@ -40,7 +48,7 @@
  
  @param delegate New delegate object.
  */
-- (void)setDelegate: (id<SimpleRepeatedDelegate>) delegate;
+- (void)setDelegate: (id<RepeatedDelegate>) delegate;
 
 
 
@@ -49,6 +57,16 @@
  */
 @property (assign) NSInteger repeated;
 
+/*!
+ @brief Number of repititions (in non-simple mode)
+ */
+@property (assign) NSInteger repcount;
+
+/*!
+ @brief "Simple" Editor?
+ */
+@property (assign) BOOL isSimple;
+
 @end
 
 
@@ -56,15 +74,16 @@
 /*!
  @brief SimpleRepeatedViewController Delegate.
  
- Implements callback functionality for SimpleRepeatedViewController.
+ Implements callback functionality for RepeatedViewController.
  */
-@protocol SimpleRepeatedDelegate <NSObject>
+@protocol RepeatedDelegate <NSObject>
 
 /*!
  @brief Repeated flags were selected.
  
  @param newRepeated New repeated flags.
+ @param newCount New repeated count.
  */
-- (void)simpleRepeatedSelected: (NSNumber *)newRepeated;
+- (void)repeatedSelected:(NSNumber *)newRepeated withCount:(NSNumber *)newCount;
 
 @end
