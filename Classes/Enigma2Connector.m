@@ -820,7 +820,7 @@ enum enigma2MessageTypes {
 	if(result.result)
 	{
 		NSMutableString *servicesString = [NSMutableString stringWithCapacity:100];
-		[servicesString appendString:@"/epgrefesh/add?multi=1"];
+		[servicesString appendString:@"/epgrefresh/add?multi=1"];
 		if(services.count)
 		{
 			for(NSObject<ServiceProtocol> *service in services)
