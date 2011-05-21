@@ -122,7 +122,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 		label.frame = frame;
 
 		frame.size.width = maxWidth;
-		frame.origin.x = contentRect.size.width - maxWidth;
+		frame.origin.x = contentRect.size.width - maxWidth - kCellLeftOffset;
 	}
 	else
 	{
