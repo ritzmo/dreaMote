@@ -376,7 +376,12 @@ enum generalSectionItems
 		{
 			Result *result = [[RemoteConnectorObject sharedRemoteConnector] setEPGRefreshSettings:settings andServices:services andBouquets:bouquets];
 			if(!result.result)
-				message = result.resulttext;
+			{
+				if(result.resulttext)
+					message = result.resulttext;
+				else
+					message = NSLocalizedString(@"Unknown Error.", @"Remote host did return error code but no specific message.");
+			}
 		}
 
 		// Show error message if one occured
