@@ -41,13 +41,13 @@ enum neutrinoMessageTypes {
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
-	// Screenshots do not work yet... :-/
 	return
 		(feature == kFeaturesBouquets) ||
 		(feature == kFeaturesConstantTimerId) ||
 		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesTimerRepeated) ||
-		(feature == kFeaturesComplicatedRepeated);
+		(feature == kFeaturesComplicatedRepeated) ||
+		(feature == kFeaturesScreenshot);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -786,37 +786,17 @@ enum neutrinoMessageTypes {
 
 - (NSData *)getScreenshot: (enum screenshotType)type
 {
-	if(type == kScreenshotTypeOSD)
+	//if(type == kScreenshotTypeOSD)
 	{
 		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/GLJ-snapBMP.htm" relativeToURL: _baseAddress];
+		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
 
 		NSHTTPURLResponse *response;
 		[SynchronousRequestReader sendSynchronousRequest:myURI
 									   returningResponse:&response
 												   error:nil];
 
-		if([response statusCode] == 200)
-		{
-			// Generate URI
-			myURI = [NSURL URLWithString: @"/control/exec?gljtool&fbsh_bmp" relativeToURL: _baseAddress];
-
-			NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-														  returningResponse:&response
-																	  error:nil];
-
-			return data;
-		}
-
-		// Generate URI
-		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&-r&-o&/tmp/dreaMote_Screenshot.bmp" relativeToURL: _baseAddress];
-
-		[SynchronousRequestReader sendSynchronousRequest:myURI
-									   returningResponse:&response
-												   error:nil];
-
-		// do we actually get a status != 200 back?
-		// maybe check if data is not empty...
+		// something went wrong, try another way
 		if([response statusCode] != 200)
 		{
 			// Generate URI
@@ -843,37 +823,6 @@ enum neutrinoMessageTypes {
 
 		return data;
 	}
-	else// We actually generate a combined picture here
-	{
-		// We need to trigger a capture and individually fetch the picture
-		// Generate URI
-		NSURL *myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot&fb&-q&/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
-
-		// Create URL Object and download it
-		NSURLResponse *response;
-		[SynchronousRequestReader sendSynchronousRequest:myURI
-									   returningResponse:&response
-												   error:nil];
-
-		// XXX: check status?
-
-		// Generate URI
-		myURI = [NSURL URLWithString: @"/tmp/dreaMote_Screenshot.png" relativeToURL: _baseAddress];
-
-		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
-													  returningResponse:&response
-																  error:nil];
-
-		// Generate URI
-		myURI = [NSURL URLWithString: @"/control/exec?Y_Tools&fbshot_clear" relativeToURL: _baseAddress];
-
-		[SynchronousRequestReader sendSynchronousRequest:myURI
-									   returningResponse:&response
-												   error:nil];
-
-		return data;
-	}
-
 	return nil;
 }
 

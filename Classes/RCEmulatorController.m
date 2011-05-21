@@ -16,6 +16,7 @@
 #import "UIDevice+SystemVersion.h"
 
 #define kTransitionDuration	(CGFloat)0.6
+#define kImageScaleHuge		((IS_IPAD()) ? (CGFloat)0.8 : (CGFloat)0.25)
 #define kImageScale			((IS_IPAD()) ? (CGFloat)1.1 : (CGFloat)0.45)
 
 @interface RCEmulatorController()
@@ -110,7 +111,7 @@
 																		 target:self
 																		 action:@selector(toggleStandby:)];
 
-	NSArray *items = [NSArray alloc];
+	NSMutableArray *items = [NSMutableArray array];
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesScreenshot])
 	{
@@ -136,24 +137,33 @@
 		{
 			if([_screenView superview])
 			{
+				[items addObject:_screenshotButton];
+				[items addObject:flexItem];
+				[items addObject:osdItem];
 				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
-					items = [items initWithObjects:_screenshotButton, flexItem, osdItem, videoItem, bothItem, nil];
-				else
-					items = [items initWithObjects:_screenshotButton, flexItem, osdItem, bothItem, nil];
+					[items addObject:videoItem];
+				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCombinedScreenshot])
+					[items addObject:bothItem];
 			}
 			else
 			{
-				items = [items initWithObjects:_screenshotButton, flexItem, standbyItem, nil];
+				[items addObject:_screenshotButton];
+				[items addObject:flexItem];
+				[items addObject:standbyItem];
 			}
 		}
 		else
 		{
+			[items addObject:_screenshotButton];
+			[items addObject:flexItem];
+			[items addObject:standbyItem];
+			[items addObject:flexItem];
+			[items addObject:osdItem];
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesVideoScreenshot])
-				items = [items initWithObjects:_screenshotButton, flexItem, standbyItem, flexItem, osdItem, videoItem, bothItem, nil];
-			else
-				items = [items initWithObjects:_screenshotButton, flexItem, standbyItem, flexItem, osdItem, bothItem, nil];
+				[items addObject:videoItem];
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCombinedScreenshot])
+				[items addObject:bothItem];
 		}
-		[_toolbar setItems:items animated:animated];
 
 		[osdItem release];
 		[videoItem release];
@@ -161,11 +171,12 @@
 	}
 	else
 	{
-		items = [items initWithObjects:flexItem, standbyItem, flexItem, nil];
-		[_toolbar setItems:items animated:animated];
+		[items addObject:flexItem];
+		[items addObject:standbyItem];
+		[items addObject:flexItem];
 	}
 
-	[items release];
+	[_toolbar setItems:items animated:animated];
 	[flexItem release];
 	[standbyItem release];
 }
@@ -327,12 +338,13 @@
 	UIImage * image = [UIImage imageWithData: data];
 	if(image != nil)
 	{
-		CGSize size = CGSizeMake(image.size.width*kImageScale, image.size.height*kImageScale);
-
+		CGFloat scale = image.size.width > 720 ? kImageScaleHuge : kImageScale;
+		const CGFloat scaledWidth = image.size.width*scale;
+		const CGFloat scaledHeight = image.size.height*scale;
 		_imageView.image = image;
-		_scrollView.contentSize = size;
+		_scrollView.contentSize = CGSizeMake(scaledWidth, scaledHeight);
 		_scrollView.zoomScale = 1.0f;
-		_imageView.frame = CGRectMake(0, 0, size.width, size.height);
+		_imageView.frame = CGRectMake(0, 0, scaledWidth, scaledHeight);
 	}
 
 	[pool release];

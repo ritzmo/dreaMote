@@ -55,6 +55,7 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesMessageTimeout) ||
 		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesScreenshot) ||
+		(feature == kFeaturesCombinedScreenshot) ||
 		(feature == kFeaturesTimerAfterEvent) ||
 		(feature == kFeaturesConstantTimerId) ||
 		(feature == kFeaturesRecordDelete) ||
