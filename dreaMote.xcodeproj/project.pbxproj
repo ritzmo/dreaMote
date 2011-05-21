@@ -418,6 +418,8 @@
 		DA8753B212E1178100CE841E /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8753B012E1178100CE841E /* folder.png */; };
 		DA88832912E48B3800D4B710 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DA88832812E48B3800D4B710 /* libxml2.dylib */; };
 		DA8B835012D0031700981350 /* MovieSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B834F12D0031700981350 /* MovieSplitViewController.m */; };
+		DA9161011387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9161001387FCDE00309CC2 /* EPGRefreshAdapterViewController.m */; };
+		DA9161021387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9161001387FCDE00309CC2 /* EPGRefreshAdapterViewController.m */; };
 		DA97898E0F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DA97898F0F9DBB90005C7390 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
 		DA9AD37D0FEBE29C00A59612 /* SimpleRepeatedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */; };
@@ -824,6 +826,8 @@
 		DA88832812E48B3800D4B710 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		DA8B834E12D0031700981350 /* MovieSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieSplitViewController.h; sourceTree = "<group>"; };
 		DA8B834F12D0031700981350 /* MovieSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieSplitViewController.m; sourceTree = "<group>"; };
+		DA9160FF1387FCDD00309CC2 /* EPGRefreshAdapterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshAdapterViewController.h; sourceTree = "<group>"; };
+		DA9161001387FCDE00309CC2 /* EPGRefreshAdapterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGRefreshAdapterViewController.m; sourceTree = "<group>"; };
 		DA9789870F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
 		DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DA9789890F9DBB8F005C7390 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
@@ -1640,6 +1644,8 @@
 				DACA8B231096498300B03BE8 /* CurrentViewController.m */,
 				DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */,
 				DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */,
+				DA9160FF1387FCDD00309CC2 /* EPGRefreshAdapterViewController.h */,
+				DA9161001387FCDE00309CC2 /* EPGRefreshAdapterViewController.m */,
 				DACE3FE7135828DA00EC11E7 /* EPGRefreshViewController.h */,
 				DACE3FE8135828DA00EC11E7 /* EPGRefreshViewController.m */,
 				DAB5FA010D845F7A0074D998 /* EventViewController.h */,
@@ -2185,6 +2191,7 @@
 				DACE3FE013580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */,
 				DACE3FE4135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
 				DACE3FE9135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
+				DA9161011387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2334,6 +2341,7 @@
 				DACE3FE113580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m in Sources */,
 				DACE3FE5135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
 				DACE3FEA135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
+				DA9161021387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

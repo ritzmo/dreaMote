@@ -12,6 +12,7 @@
 
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "CellTextField.h" /* EditableTableViewCellDelegate */
+#import "EPGRefreshAdapterViewController.h" /* EPGRefreshAdapterDelegate */
 #import "EPGRefreshSettingsSourceDelegate.h" /* EPGRefreshSettingsSourceDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
@@ -29,6 +30,7 @@
 													ServiceListDelegate, BouquetListDelegate,
 													ServiceSourceDelegate,
 													EditableTableViewCellDelegate,
+													EPGRefreshAdapterDelegate,
 													EPGRefreshSettingsSourceDelegate>
 {
 @private
@@ -49,7 +51,6 @@
 	UITextField *_delay; /*!< @brief Delay if not in standby/in use. */
 	CellTextField *_delayCell; /*!< @brief Cell of delay field. */
 	UISwitch *_enabled; /*!< @brief Enabled Switch. */
-	UISwitch *_background; /*!< @brief Refresh in Background. */
 	UISwitch *_force; /*!< @brief Force refresh. */
 	UISwitch *_wakeup; /*!< @brief Wakeup for refresh. */
 	UISwitch *_shutdown; /*!< @brief Shutdown after refresh. */

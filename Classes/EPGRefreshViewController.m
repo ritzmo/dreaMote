@@ -37,7 +37,7 @@ enum generalSectionItems
 	enabledRow = 0,
 	beginRow = 1,
 	endRow = 2,
-	backgroundRow = 3,
+	adapterRow = 3,
 	forceRow = 4,
 	delay_standbyRow = 5,
 	intervalRow = 6,
@@ -99,7 +99,6 @@ enum generalSectionItems
 	[_delay release];
 	[_delayCell release];
 	[_enabled release];
-	[_background release];
 	[_force release];
 	[_wakeup release];
 	[_shutdown release];
@@ -271,6 +270,18 @@ enum generalSectionItems
 	return field;
 }
 
+- (NSString *)logicalToHumanReadableAdapterName:(NSString *)adapter
+{
+	if([adapter isEqualToString:@"pip"])
+		return NSLocalizedStringFromTable(@"Picture in Picture", @"EPGRefresh", @"Adapter name");
+	else if([adapter isEqualToString:@"pip_hidden"])
+		return NSLocalizedStringFromTable(@"Picture in Picture (hidden)", @"EPGRefresh", @"Adapter name");
+	else if([adapter isEqualToString:@"record"])
+		return NSLocalizedStringFromTable(@"Fake Recording", @"EPGRefresh", @"Adapter name");
+
+	return NSLocalizedStringFromTable(@"Main Picture", @"EPGRefresh", @"Adapter name");
+}
+
 #pragma mark -
 #pragma mark UView
 #pragma mark -
@@ -298,11 +309,6 @@ enum generalSectionItems
 	_enabled = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	_enabled.on = settings.enabled;
 	_enabled.backgroundColor = [UIColor clearColor];
-
-	// refresh in background
-	_background = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_background.on = settings.background;
-	_background.backgroundColor = [UIColor clearColor];
 
 	// force refresh
 	_force = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -362,7 +368,6 @@ enum generalSectionItems
 			message = NSLocalizedString(@"You have to provide a timespan to refresh automatically.", @"User requested automated EPG refresh but no timespan given.");
 		}
 
-		settings.background = _background.on;
 		settings.force = _force.on;
 		settings.wakeup = _wakeup.on;
 		settings.afterevent = _shutdown.on;
@@ -502,7 +507,6 @@ enum generalSectionItems
 {
 	self.settings = anItem;
 	_enabled.on = settings.enabled;
-	_background.on = settings.background;
 	_force.on = settings.force;
 	_wakeup.on = settings.wakeup;
 	_shutdown.on = settings.afterevent;
@@ -581,6 +585,20 @@ enum generalSectionItems
 }
 
 #pragma mark -
+#pragma mark EPGRefreshAdapterDelegate methods
+#pragma mark -
+
+- (void)adapterSelected:(NSString *)newAdapter
+{
+	if(newAdapter == nil)
+		return;
+
+	settings.adapter = newAdapter;
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:adapterRow inSection:generalSection]];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Refresh using: %@", @"EPGRefresh", @"Refresh using different Adapter"), [self logicalToHumanReadableAdapterName:settings.adapter]];
+}
+
+#pragma mark -
 #pragma mark UITableView delegates
 #pragma mark -
 
@@ -609,7 +627,12 @@ enum generalSectionItems
 	switch(section)
 	{
 		case generalSection:
-			return maxGeneralRow;
+		{
+			NSInteger rowCount = maxGeneralRow;
+			if(!settings.canDoBackgroundRefresh) --rowCount;
+			if(!settings.hasAutoTimer) rowCount -= 2;
+			return rowCount;
+		}
 		case serviceSection:
 			return services.count + (self.editing ? 1 : 0);
 		case bouquetSection:
@@ -631,6 +654,9 @@ enum generalSectionItems
 	{
 		case generalSection:
 		{
+			// adjust row
+			if(!settings.canDoBackgroundRefresh && row >= adapterRow) ++row;
+
 			switch(row)
 			{
 				case enabledRow:
@@ -650,10 +676,11 @@ enum generalSectionItems
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:settings.end withDateStyle:NSDateFormatterNoStyle]];
 					break;
-				case backgroundRow:
-					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
-					((DisplayCell *)cell).view = _background;
-					cell.textLabel.text = NSLocalizedStringFromTable(@"Refresh in PiP", @"EPGRefresh", @"Do refresh in Picture in Picture");
+				case adapterRow:
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Refresh using: %@", @"EPGRefresh", @"Refresh using different Adapter"), [self logicalToHumanReadableAdapterName:settings.adapter]];
 					break;
 				case forceRow:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -849,6 +876,9 @@ enum generalSectionItems
 	{
 		case generalSection:
 		{
+			// adjust row
+			if(!settings.canDoBackgroundRefresh && row >= adapterRow) ++row;
+
 			if(row == beginRow)
 			{
 				targetViewController = self.datePickerNavigationController;
@@ -860,6 +890,19 @@ enum generalSectionItems
 				targetViewController = self.datePickerNavigationController;
 				self.datePickerController.date = [[settings.end copy] autorelease];
 				[self.datePickerController setTarget: self action: @selector(toSelected:)];
+			}
+			else if(row == adapterRow)
+			{
+				targetViewController = [EPGRefreshAdapterViewController withAdapter:settings.adapter];
+				[(EPGRefreshAdapterViewController *)targetViewController setDelegate:self];
+				if(IS_IPAD())
+				{
+					UIViewController *rootViewController = targetViewController;
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+					targetViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+					targetViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
+					[targetViewController autorelease];
+				}
 			}
 			break;
 		}

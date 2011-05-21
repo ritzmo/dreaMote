@@ -117,9 +117,17 @@
 		{
 			settings.parse_autotimer = [currentString boolValue];
 		}
-		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.background"])
+		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.adapter"])
 		{
-			settings.background = [currentString boolValue];
+			settings.adapter = currentString;
+		}
+		else if([lastSettingName isEqualToString:@"canDoBackgroundRefresh"])
+		{
+			settings.canDoBackgroundRefresh = [currentString boolValue];
+		}
+		else if([lastSettingName isEqualToString:@"hasAutoTimer"])
+		{
+			settings.hasAutoTimer = [currentString boolValue];
 		}
 		self.lastSettingName = nil;
 	}

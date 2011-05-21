@@ -21,7 +21,9 @@
 	BOOL force;
 	BOOL wakeup;
 	BOOL parse_autotimer;
-	BOOL background;
+	NSString *adapter;
+	BOOL canDoBackgroundRefresh;
+	BOOL hasAutoTimer;
 }
 
 @property (nonatomic, assign) BOOL enabled;
@@ -34,6 +36,8 @@
 @property (nonatomic, assign) BOOL force;
 @property (nonatomic, assign) BOOL wakeup;
 @property (nonatomic, assign) BOOL parse_autotimer;
-@property (nonatomic, assign) BOOL background;
+@property (nonatomic, retain) NSString *adapter;
+@property (nonatomic, assign) BOOL canDoBackgroundRefresh;
+@property (nonatomic, assign) BOOL hasAutoTimer;
 
 @end

@@ -803,7 +803,7 @@ enum enigma2MessageTypes {
 
 - (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets
 {
-	NSString *settingsString = [NSString stringWithFormat:@"/epgrefresh/set?enabled=%@&begin=%d&end=%d&interval=%d&delay_standby=%d&inherit_autotimer=%@&afterevent=%@&force=%@&wakeup=%@&background=%@&pase_autotimer=%@&parse_autotimer=%@",
+	NSString *settingsString = [NSString stringWithFormat:@"/epgrefresh/set?enabled=%@&begin=%d&end=%d&interval=%d&delay_standby=%d&inherit_autotimer=%@&afterevent=%@&force=%@&wakeup=%@&adapter=%@&parse_autotimer=%@",
 								settings.enabled ? @"true" : @"",
 								settings.begin ? (int)[settings.begin timeIntervalSince1970] : 0,
 								settings.end ? (int)[settings.end timeIntervalSince1970] : 0,
@@ -812,8 +812,7 @@ enum enigma2MessageTypes {
 								settings.afterevent ? @"true" : @"",
 								settings.force ? @"true" : @"",
 								settings.wakeup ? @"true" : @"",
-								settings.background ? @"true" : @"",
-								settings.parse_autotimer ? @"true" : @"",
+								settings.adapter,
 								settings.parse_autotimer ? @"true" : @""];
 
 	Result *result = [self getResultFromSimpleXmlWithRelativeString:settingsString];
