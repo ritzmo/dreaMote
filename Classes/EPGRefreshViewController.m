@@ -662,7 +662,7 @@ enum generalSectionItems
 						_delayCell.view = _delay;
 						_delayCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 						_delayCell.textLabel.text = NSLocalizedStringFromTable(@"Delay if busy (min.)", @"EPGRefresh", @"Label for cell 'delay refresh if not in standby (minutes)'");
-						_delayCell.fixedWidth = 100.0f;
+						_delayCell.fixedWidth = 94.0f;
 					}
 					cell = _delayCell;
 					break;
@@ -673,7 +673,7 @@ enum generalSectionItems
 						_intervalCell.view = _interval;
 						_intervalCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 						_intervalCell.textLabel.text = NSLocalizedStringFromTable(@"Time on service (min.)", @"EPGRefresh", @"Label for cell 'Time to stay on service (minutes)'");
-						_intervalCell.fixedWidth = 100.0f;
+						_intervalCell.fixedWidth = 94.0f;
 					}
 					cell = _intervalCell;
 					break;
