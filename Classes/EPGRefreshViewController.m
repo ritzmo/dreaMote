@@ -680,6 +680,7 @@ enum generalSectionItems
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Refresh using: %@", @"EPGRefresh", @"Refresh using different Adapter"), [self logicalToHumanReadableAdapterName:settings.adapter]];
 					break;
 				case forceRow:
