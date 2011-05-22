@@ -7,6 +7,15 @@
 /* Seconds */
 /*"%d sec" = "%d sec";*/
 
+/* Comment for repeat count in neutrino */
+/*"0 = unlimited" = "0 = unlimited";*/
+
+/* Repeated */
+/*"2-weekly" = "2-weekly";*/
+
+/* Repeated */
+/*"4-weekly" = "4-weekly";*/
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<enter description>";
 
@@ -264,6 +273,9 @@
 /* Default title of EPGRefreshViewController */
 "EPGRefresh" = "EPGRefresh";
 
+/* Default title of EPGRefreshAdapterViewController */
+/*"EPGRefresh Adapter" = "EPGRefresh Adapter";*/
+
 /* No comment provided by engineer. */
 "EPGRefresh Explain" = "Settings of EPGRefresh-Plugin";
 
@@ -452,6 +464,9 @@
 /* No comment provided by engineer. */
 "Monday" = "Monday";
 
+/* Repeated */
+/*"Monthly" = "Monthly";*/
+
 /* Tab Title of OtherListController */
 /*"More" = "More";*/
 
@@ -539,6 +554,9 @@
 
 /* No comment provided by engineer. */
 /*"OSD" = "OSD";*/
+
+/* Repeated */
+/*"Other" = "Other";*/
 
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 /*"Page not found.\nPlugin not installed?" = "Page not found.\nPlugin not installed?";*/
@@ -647,6 +665,9 @@
 
 /* Default title of SimpleRepeatedViewController */
 "Repeated" = "Repeated";
+
+/* Cell Label of repeat count in Neutrino */
+/*"Repetitions" = "Repetitions";*/
 
 /* No comment provided by engineer. */
 "Restart" = "Restart";
@@ -828,6 +849,9 @@
 /* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers. */
 /*"Unique Description" = "Unique Description";*/
 
+/* Remote host did return error code but no specific message. */
+/*"Unknown Error." = "Unknown Error.";*/
+
 /* Unable to find service name for service id */
 /*"Unknown Service (%@)" = "Unknown Service (%@)";*/
 
@@ -860,6 +884,9 @@
 
 /* Repeated */
 "Weekdays" = "Weekdays";
+
+/* Repeated */
+/*"Weekly" = "Weekly";*/
 
 /* No comment provided by engineer. */
 /*"Year" = "Year";*/

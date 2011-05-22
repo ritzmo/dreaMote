@@ -13,17 +13,29 @@
 /* Label for cell 'delay refresh if not in standby (minutes)' */
 /*"Delay if busy (min.)" = "Delay if busy (min.)";*/
 
+/* Adapter name */
+/*"Fake Recording" = "Fake Recording";*/
+
 /* Force EPG refresh even if receiver is not in standby or timers are active */
 /*"Force refresh if in use" = "Force refresh if in use";*/
+
+/* Adapter name */
+/*"Main Picture" = "Main Picture";*/
 
 /* Search EPG for AutoTimers after refresh */
 /*"Parse AutoTimer" = "Parse AutoTimer";*/
 
+/* Adapter name */
+/*"Picture in Picture" = "Picture in Picture";*/
+
+/* Adapter name */
+/*"Picture in Picture (hidden)" = "Picture in Picture (hidden)";*/
+
 /* Toggle 'Refresh EPG automatically' */
 /*"Refresh automatically" = "Refresh automatically";*/
 
-/* Do refresh in Picture in Picture */
-/*"Refresh in PiP" = "Refresh in PiP";*/
+/* Refresh using different Adapter */
+/*"Refresh using: %@" = "Refresh using: %@";*/
 
 /* section header for service to refresh */
 /*"Services" = "Services";*/

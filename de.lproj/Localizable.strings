@@ -7,6 +7,15 @@
 /* Seconds */
 "%d sec" = "%d Sek.";
 
+/* Comment for repeat count in neutrino */
+"0 = unlimited" = "0 = unbegrenzt";
+
+/* Repeated */
+"2-weekly" = "2-wöchentlich";
+
+/* Repeated */
+"4-weekly" = "4-wöchentlich";
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<beschreibung>";
 
@@ -264,6 +273,9 @@
 /* Default title of EPGRefreshViewController */
 "EPGRefresh" = "EPGRefresh";
 
+/* Default title of EPGRefreshAdapterViewController */
+"EPGRefresh Adapter" = "Aktualisiere EPG mit";
+
 /* No comment provided by engineer. */
 "EPGRefresh Explain" = "Einstellungen des EPGRefresh-Plugin";
 
@@ -452,6 +464,9 @@
 /* No comment provided by engineer. */
 "Monday" = "Montag";
 
+/* Repeated */
+"Monthly" = "Monatlich";
+
 /* Tab Title of OtherListController */
 "More" = "Mehr";
 
@@ -539,6 +554,9 @@
 
 /* No comment provided by engineer. */
 "OSD" = "OSD";
+
+/* Repeated */
+"Other" = "Wochentage";
 
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 "Page not found.\nPlugin not installed?" = "Seite nicht gefunden.\nPlugin nicht installiert?";
@@ -647,6 +665,9 @@
 
 /* Default title of SimpleRepeatedViewController */
 "Repeated" = "Wiederholung";
+
+/* Cell Label of repeat count in Neutrino */
+"Repetitions" = "Wiederholungen";
 
 /* No comment provided by engineer. */
 "Restart" = "GUI neu starten";
@@ -828,6 +849,9 @@
 /* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers. */
 "Unique Description" = "Eindeutige Beschreibung";
 
+/* Remote host did return error code but no specific message. */
+"Unknown Error." = "Ein unbekannter Fehler ist aufgetreten.";
+
 /* Unable to find service name for service id */
 "Unknown Service (%@)" = "Unbekannter Sender (%@)";
 
@@ -860,6 +884,9 @@
 
 /* Repeated */
 "Weekdays" = "Wochentags";
+
+/* Repeated */
+"Weekly" = "Wöchentlich";
 
 /* No comment provided by engineer. */
 "Year" = "Jahr";

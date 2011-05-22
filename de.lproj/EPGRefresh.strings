@@ -13,17 +13,29 @@
 /* Label for cell 'delay refresh if not in standby (minutes)' */
 "Delay if busy (min.)" = "Wartezeit wenn Box aktiv (min.)";
 
+/* Adapter name */
+"Fake Recording" = "\"Falscher\" Aufnahme";
+
 /* Force EPG refresh even if receiver is not in standby or timers are active */
 "Force refresh if in use" = "Auch Aktualisieren wenn aktiv";
+
+/* Adapter name */
+"Main Picture" = "Hauptbild";
 
 /* Search EPG for AutoTimers after refresh */
 "Parse AutoTimer" = "AutoTimer aktualisieren";
 
+/* Adapter name */
+"Picture in Picture" = "Bild in Bild";
+
+/* Adapter name */
+"Picture in Picture (hidden)" = "Bild in Bild (versteckt)";
+
 /* Toggle 'Refresh EPG automatically' */
 "Refresh automatically" = "Automatisch Aktualisieren";
 
-/* Do refresh in Picture in Picture */
-"Refresh in PiP" = "Aktualisiere in PiP";
+/* Refresh using different Adapter */
+"Refresh using: %@" = "Aktualisiere mit: %@";
 
 /* section header for service to refresh */
 "Services" = "Sender";
