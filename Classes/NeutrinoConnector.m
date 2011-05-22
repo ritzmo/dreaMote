@@ -559,7 +559,7 @@ enum neutrinoMessageTypes {
 															  error:nil];
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
-	const BOOL equalsOn = [myString isEqualToString: @"on"];
+	const BOOL equalsOn = [myString isEqualToString: @"on"]; // NOTE: on non-dbox2 hw this always returns "off"
 	[myString release];
 	if(equalsOn)
 		myString = @"standby?off";
