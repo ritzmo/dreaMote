@@ -63,7 +63,7 @@ enum connectorFeatures {
 	kFeaturesScreenshot,
 	/*! @brief Can fetch a Screenshot of just the video buffer. */
 	kFeaturesVideoScreenshot,
-	/*! @brief Can featch a Screenshot of both (combined) GUI and video buffer. */
+	/*! @brief Can fetch a Screenshot of both (combined) GUI and video buffer. */
 	kFeaturesCombinedScreenshot,
 	/*! @brief Remote Control of DM8000 *grml*. */
 	kFeaturesAdvancedRemote,
