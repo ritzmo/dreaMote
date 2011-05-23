@@ -21,6 +21,16 @@
 
 #define kTransitionDuration	(CGFloat)0.6
 
+/*!
+ @brief Tags used to identify action sheets.
+ */
+enum mediaPlayerTags
+{
+	TAG_NONE = 0,
+	TAG_ADD = 1,
+	TAG_EXIT = 2,
+};
+
 @interface MediaPlayerController()
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 - (void)fetchAbout;
@@ -313,6 +323,7 @@
 							cancelButtonTitle:NSLocalizedString(@"Cancel", "")
 							destructiveButtonTitle:NSLocalizedString(@"Add recursively", @"Used in MediaPlayer, add shown folders recursively")
 							otherButtonTitles: NSLocalizedString(@"Add", @"Used in MediaPlayer, add only the current folder"), nil];
+	actionSheet.tag = TAG_ADD;
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
 		[actionSheet showInView:self.view];
@@ -380,33 +391,47 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-	if(buttonIndex == actionSheet.cancelButtonIndex)
+	if(actionSheet.tag == TAG_ADD)
 	{
-		// do nothing
-	}
-	else // destructive or other
-	{
-		const BOOL recursive = (buttonIndex == actionSheet.destructiveButtonIndex);
-		UIView *baseView = nil;
-		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
-			baseView = self.view;
-		else
-			baseView = self.tabBarController.view;
-		progressHUD = [[MBProgressHUD alloc] initWithView:baseView];
-		[baseView addSubview: progressHUD];
-		progressHUD.delegate = self;
-
-		if(recursive)
+		if(buttonIndex == actionSheet.cancelButtonIndex)
 		{
-			RecursiveFileAdder *rfa = [[RecursiveFileAdder alloc] initWithPath:_fileList.path];
-			[rfa addFilesToDelegate:self];
-			[progressHUD show:YES];
-			progressHUD.taskInProgress = YES;
-			[rfa release];
+			// do nothing
 		}
-		else
+		else // destructive or other
 		{
-			[progressHUD showWhileExecuting:@selector(addCurrentFolder) onTarget:self withObject:nil animated:YES];
+			const BOOL recursive = (buttonIndex == actionSheet.destructiveButtonIndex);
+			UIView *baseView = nil;
+			if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+				baseView = self.view;
+			else
+				baseView = self.tabBarController.view;
+			progressHUD = [[MBProgressHUD alloc] initWithView:baseView];
+			[baseView addSubview: progressHUD];
+			progressHUD.delegate = self;
+
+			if(recursive)
+			{
+				RecursiveFileAdder *rfa = [[RecursiveFileAdder alloc] initWithPath:_fileList.path];
+				[rfa addFilesToDelegate:self];
+				[progressHUD show:YES];
+				progressHUD.taskInProgress = YES;
+				[rfa release];
+			}
+			else
+			{
+				[progressHUD showWhileExecuting:@selector(addCurrentFolder) onTarget:self withObject:nil animated:YES];
+			}
+		}
+	}
+	else if(actionSheet.tag == TAG_EXIT)
+	{
+		if(buttonIndex == actionSheet.firstOtherButtonIndex)
+		{
+			// Spawn a thread to send the request so that the UI is not blocked while
+			// waiting for the response.
+			[NSThread detachNewThreadSelector:@selector(sendCommand:)
+									 toTarget:self
+								   withObject:@"exit"];
 		}
 	}
 }
@@ -467,6 +492,21 @@
 	_timer = nil;
 	// NOTE: animating this does only hide the items, not the bar…
 	[self.navigationController setToolbarHidden:YES animated:NO];
+
+	// prompt: exit media player?
+	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:
+										NSLocalizedString(@"Close MediaPlayer?", @"Title of action sheet when leaving MediaPlayer view.")
+																   delegate:self
+														  cancelButtonTitle:NSLocalizedString(@"No", "")
+													 destructiveButtonTitle:nil
+														  otherButtonTitles:NSLocalizedString(@"Yes", ""), nil];
+	actionSheet.tag = TAG_EXIT;
+	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+	if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+		[actionSheet showInView:self.view];
+	else
+		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	[actionSheet release];
 
 	[super viewWillDisappear:animated];
 }
