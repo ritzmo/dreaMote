@@ -127,6 +127,13 @@
 		}
 		++idx;
 	}
+	if(_playing != NSNotFound)
+	{
+		idx = _playing;
+		_playing = NSNotFound;
+		[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+		return YES;
+	}
 	return NO;
 }
 
