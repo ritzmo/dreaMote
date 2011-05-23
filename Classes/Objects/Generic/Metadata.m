@@ -41,8 +41,8 @@
 
 - (BOOL)isValid
 {
-	// require title and artist for a valid service
-	return title && artist;
+	// require title and artist for a valid service, one of them has to be non-empty
+	return title && artist && !([title isEqualToString:@""] && [artist isEqualToString:@""]);
 }
 
 #pragma mark -

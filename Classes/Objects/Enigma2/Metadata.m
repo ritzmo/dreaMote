@@ -31,7 +31,8 @@
 
 - (BOOL)isValid
 {
-	return _node != nil;
+	// require at least artist or title
+	return !([self.title isEqualToString:@""] && [self.artist isEqualToString:@""]);
 }
 
 - (NSString *)artist
