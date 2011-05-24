@@ -13,6 +13,8 @@
 #import "Objects/LocationProtocol.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "Objects/Generic/Location.h"
+
 @interface LocationListController()
 /*!
  @brief done editing
@@ -194,6 +196,23 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
 {
+	if([error domain] == NSURLErrorDomain)
+	{
+		if([error code] == 404)
+		{
+			// received 404, assume very old enigma2 without location support: insert default location (if not showing anyway)
+			if(!_showDefault)
+			{
+				GenericLocation *location = [[GenericLocation alloc] init];
+				location.fullpath = @"/hdd/movie/";
+				location.valid = YES;
+				[self addLocation:location];
+				[location release];
+			}
+			error = nil;
+		}
+	}
+
 	// assume details will fail too if in split
 	if(_isSplit)
 	{
