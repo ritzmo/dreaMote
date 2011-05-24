@@ -878,7 +878,7 @@ enum enigma2MessageTypes {
 
 - (void)standby
 {
-	[self sendButton: kStandbyState];
+	[self sendPowerstate: kStandbyState];
 }
 
 - (void)reboot
