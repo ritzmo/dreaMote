@@ -9,6 +9,8 @@
 #import "EventXMLReader.h"
 
 #import "../../Objects/Generic/Event.h"
+#import "../../Objects/Generic/Service.h"
+#import "ServiceSourceDelegate.h"
 
 static const char *kNeutrinoEventElement = "prog";
 static const NSUInteger kNeutrinoEventElementLength = 5;
@@ -24,14 +26,20 @@ static const char *kNeutrinoEventBegin = "start_sec";
 static const NSUInteger kNeutrinoEventBeginLength = 10;
 static const char *kNeutrinoEventId = "eventid";
 static const NSUInteger kNeutrinoEventIdLength = 8;
+// service
+static const char *kNeutrinoChannelId = "channel_id";
+static const NSUInteger kNeutrinoChannelIdLength = 11;
+static const char *kNeutrinoChannelName = "channel_name";
+static const NSUInteger kNeutrinoChannelNameLength = 13;
 
 @interface NeutrinoEventXMLReader()
 @property (nonatomic, retain) NSObject<EventProtocol> *currentEvent;
+@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
 @end
 
 @implementation NeutrinoEventXMLReader
 
-@synthesize currentEvent;
+@synthesize currentEvent, currentService;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
@@ -43,10 +51,22 @@ static const NSUInteger kNeutrinoEventIdLength = 8;
 	return self;
 }
 
+/* initialize */
+- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate andGetServices:(BOOL)getServices
+{
+	if((self = [super init]))
+	{
+		_delegate = [delegate retain];
+		_getServices = getServices && [delegate respondsToSelector:@selector(addService:)];
+	}
+	return self;
+}
+
 /* dealloc */
 - (void)dealloc
 {
 	[currentEvent release];
+	[currentService release];
 
 	[super dealloc];
 }
@@ -54,12 +74,24 @@ static const NSUInteger kNeutrinoEventIdLength = 8;
 /* send fake object */
 - (void)sendErroneousObject
 {
-	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
-	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
-	[fakeObject release];
+	if(_getServices)
+	{
+		NSObject<ServiceProtocol> *fakeObject = [[GenericService alloc] init];
+		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[_delegate performSelectorOnMainThread:@selector(addService:)
+									withObject:fakeObject
+								 waitUntilDone:NO];
+		[fakeObject release];
+	}
+	else
+	{
+		NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
+		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
+		[_delegate performSelectorOnMainThread:@selector(addEvent:)
+									withObject:fakeObject
+								 waitUntilDone:NO];
+		[fakeObject release];
+	}
 }
 
 /*
@@ -99,6 +131,18 @@ static const NSUInteger kNeutrinoEventIdLength = 8;
 	{
 		currentString = [[NSMutableString alloc] init];
 	}
+	else if(_getServices)
+	{
+		if(!strncmp((const char *)localname, kNeutrinoChannelId, kNeutrinoChannelIdLength))
+		{
+			self.currentService = [[[GenericService alloc] init] autorelease];
+			currentString = [[NSMutableString alloc] init];
+		}
+		else if(!strncmp((const char *)localname, kNeutrinoChannelName, kNeutrinoChannelNameLength))
+		{
+			currentString = [[NSMutableString alloc] init];
+		}
+	}
 }
 
 - (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
@@ -133,7 +177,22 @@ static const NSUInteger kNeutrinoEventIdLength = 8;
 	{
 		currentEvent.eit = currentString;
 	}
-	
+	else if(_getServices)
+	{
+		if(!strncmp((const char *)localname, kNeutrinoChannelId, kNeutrinoChannelIdLength))
+		{
+			currentService.sref = currentString;
+		}
+		else if(!strncmp((const char *)localname, kNeutrinoChannelName, kNeutrinoChannelNameLength))
+		{
+			currentService.sname = currentString;
+			[_delegate performSelectorOnMainThread:@selector(addService:)
+										withObject:currentService
+									 waitUntilDone:NO];
+			self.currentService = nil;
+		}
+	}
+
 	// this either does nothing or releases the string that was in use
 	self.currentString = nil;
 }

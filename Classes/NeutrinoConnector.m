@@ -530,6 +530,34 @@ enum neutrinoMessageTypes {
 
 #pragma mark Control
 
+// XXX: not working correctly (does not skip old events if they are returned), hence the feature is still disabled
+- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/control/zapto" relativeToURL: _baseAddress];
+
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:&error];
+
+	// invalid status, abort
+	if([response statusCode] != 200 || error)
+	{
+		[self indicateError:delegate error:error];
+		return nil;
+	}
+
+	NSString *serviceId = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+	myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&max=2&details=true", [serviceId urlencode]] relativeToURL:_baseAddress];
+	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetServices:YES];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+
+	[streamReader autorelease];
+	[serviceId release];
+	return doc;
+}
+
 - (void)sendPowerstate: (NSString *) newState
 {
 	// Generate URI
@@ -845,14 +873,6 @@ enum neutrinoMessageTypes {
 }
 
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
-{
-#if IS_DEBUG()
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
-	return nil;
-}
-
-- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
