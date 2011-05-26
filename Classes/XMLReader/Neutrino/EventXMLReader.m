@@ -59,7 +59,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 		_delegate = [delegate retain];
 		if(getCurrent && [delegate respondsToSelector:@selector(addService:)])
 		{
-			_getCurrent = [[NSDate date] retain];;
+			_getCurrent = [[NSDate date] retain];
 		}
 	}
 	return self;
@@ -68,6 +68,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 /* dealloc */
 - (void)dealloc
 {
+	[_getCurrent release];
 	[currentEvent release];
 	[currentService release];
 
