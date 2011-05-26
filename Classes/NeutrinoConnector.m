@@ -43,6 +43,7 @@ enum neutrinoMessageTypes {
 {
 	return
 		(feature == kFeaturesBouquets) ||
+		(feature == kFeaturesCurrent) ||
 		(feature == kFeaturesConstantTimerId) ||
 		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesTimerRepeated) ||
@@ -273,7 +274,7 @@ enum neutrinoMessageTypes {
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	// TODO: Maybe we should not hardcode "max"
-	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=100", service.sref] relativeToURL: _baseAddress];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true", service.sref] relativeToURL: _baseAddress];
 
 	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate: delegate];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
@@ -549,8 +550,8 @@ enum neutrinoMessageTypes {
 	}
 
 	NSString *serviceId = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
-	myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&max=2&details=true", [serviceId urlencode]] relativeToURL:_baseAddress];
-	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetServices:YES];
+	myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=50", [serviceId urlencode]] relativeToURL:_baseAddress];
+	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetCurrent:YES];
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
 
 	[streamReader autorelease];

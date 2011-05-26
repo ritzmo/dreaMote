@@ -52,12 +52,15 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 }
 
 /* initialize */
-- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate andGetServices:(BOOL)getServices
+- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate andGetCurrent:(BOOL)getCurrent
 {
 	if((self = [super init]))
 	{
 		_delegate = [delegate retain];
-		_getServices = getServices && [delegate respondsToSelector:@selector(addService:)];
+		if(getCurrent && [delegate respondsToSelector:@selector(addService:)])
+		{
+			_getCurrent = [[NSDate date] retain];;
+		}
 	}
 	return self;
 }
@@ -71,10 +74,16 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 	[super dealloc];
 }
 
+- (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
+{
+	_currentCounter = 2;
+	return [super parseXMLFileAtURL:URL parseError:error];
+}
+
 /* send fake object */
 - (void)sendErroneousObject
 {
-	if(_getServices)
+	if(_getCurrent)
 	{
 		NSObject<ServiceProtocol> *fakeObject = [[GenericService alloc] init];
 		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
@@ -131,7 +140,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 	{
 		currentString = [[NSMutableString alloc] init];
 	}
-	else if(_getServices)
+	else if(_getCurrent)
 	{
 		if(!strncmp((const char *)localname, kNeutrinoChannelId, kNeutrinoChannelIdLength))
 		{
@@ -149,6 +158,23 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 {
 	if(!strncmp((const char *)localname, kNeutrinoEventElement, kNeutrinoEventElementLength))
 	{
+		if(_getCurrent)
+		{
+			// already have the two events we were looking for
+			if(!_currentCounter)
+				return;
+
+			// event ends in the future, decrement counter
+			if([_getCurrent timeIntervalSinceDate:currentEvent.end] < 0)
+			{
+				--_currentCounter;
+			}
+			// evend ended in the past, ignore
+			else
+			{
+				return;
+			}
+		}
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: currentEvent
 								 waitUntilDone: NO];
@@ -177,7 +203,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 	{
 		currentEvent.eit = currentString;
 	}
-	else if(_getServices)
+	else if(_getCurrent)
 	{
 		if(!strncmp((const char *)localname, kNeutrinoChannelId, kNeutrinoChannelIdLength))
 		{

@@ -17,7 +17,8 @@
 @interface NeutrinoEventXMLReader : SaxXmlReader
 {
 @private
-	BOOL _getServices; /*!< @brief Get Services? */
+	NSDate *_getCurrent; /*!< @brief Cached NSDate of "now" if getting current, else -1. */
+	NSInteger _currentCounter; /*!< @brief How many events are still to be retrieved if getting current? */
 	NSObject<EventProtocol> *currentEvent; /*!< @brief Current Event. */
 	NSObject<ServiceProtocol> *currentService; /*!< @brief Current Service. */
 }
@@ -35,8 +36,8 @@
  Allows to toggle retrieval of service(s).
 
  @param target Delegate.
- @param getServices Are we supposed to retrieve the service?
+ @param getCurrent We are actually supposed to fill the "current" view with data.
  @return NeutrinoEventXMLReader instance.
  */
-- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate andGetServices:(BOOL)getServices;
+- (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate andGetCurrent:(BOOL)getCurrent;
 @end
