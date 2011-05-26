@@ -157,6 +157,9 @@
 /* Timer cleanup button */
 "Cleanup" = "Aufräumen";
 
+/* Title of action sheet when leaving MediaPlayer view. */
+"Close MediaPlayer?" = "MediaPlayer schließen?";
+
 /* No comment provided by engineer. */
 "Config List Explain" = "Konfiguration ändern";
 
@@ -512,6 +515,9 @@
 
 /* No comment provided by engineer. */
 "Next" = "Danach";
+
+/* No comment provided by engineer. */
+"No" = "Nein";
 
 /* No comment provided by engineer. */
 "No Data…" = "Keine Daten…";
@@ -890,6 +896,9 @@
 
 /* No comment provided by engineer. */
 "Year" = "Jahr";
+
+/* No comment provided by engineer. */
+"Yes" = "Ja";
 
 /* Message type */
 "Yes/No" = "Ja/Nein";
