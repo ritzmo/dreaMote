@@ -3159,10 +3159,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				INFOPLIST_FILE = "Info Lite.plist";
-				OTHER_CFLAGS = (
-					"-DBUILD_DREAMOTE_LITE",
-					"-DBUILD_WITHOUT_ADS",
-				);
+				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
 				PRODUCT_NAME = "dreaMote Lite copy";
 				PROVISIONING_PROFILE = "";
@@ -3180,10 +3177,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				INFOPLIST_FILE = "Info Lite.plist";
-				OTHER_CFLAGS = (
-					"-DBUILD_DREAMOTE_LITE",
-					"-DBUILD_WITHOUT_ADS",
-				);
+				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
 				PRODUCT_NAME = "dreaMote Lite copy";
 				PROVISIONING_PROFILE = "";
@@ -3202,10 +3196,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				INFOPLIST_FILE = "Info Lite.plist";
-				OTHER_CFLAGS = (
-					"-DBUILD_DREAMOTE_LITE",
-					"-DBUILD_WITHOUT_ADS",
-				);
+				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
 				PRODUCT_NAME = "dreaMote Lite copy";
 				PROVISIONING_PROFILE = "";
@@ -3225,10 +3216,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				INFOPLIST_FILE = "Info Lite.plist";
-				OTHER_CFLAGS = (
-					"-DBUILD_DREAMOTE_LITE",
-					"-DBUILD_WITHOUT_ADS",
-				);
+				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
 				PRODUCT_NAME = "dreaMote Lite copy";
 				PROVISIONING_PROFILE = "";

@@ -24,7 +24,7 @@
 #define IS_IPHONE() (!IS_IPAD())
 
 // lite/full
-#ifdef BUILD_DREAMOTE_LITE
+#if defined(BUILD_DREAMOTE_LITE) || defined(BUILD_COOLMOTE)
 	#define IS_LITE() (1)
 #else
 	#define IS_LITE() (0)
@@ -32,12 +32,8 @@
 #define IS_FULL() (!IS_LITE())
 
 // branded apps don't get ads (at least for now)
-#if IS_LITE()
-	#ifdef BUILD_WITHOUT_ADS
-		#define SHOW_ADS() (0)
-	#else
-		#define SHOW_ADS() (1)
-	#endif
+#ifdef BUILD_DREAMOTE_LITE
+	#define SHOW_ADS() (1)
 #else
 	#define SHOW_ADS() (0)
 #endif
