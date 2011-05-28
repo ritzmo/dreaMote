@@ -200,6 +200,10 @@
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
 	[self reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+	if(_isPlaylist && _playing != NSNotFound && _playing < _files.count)
+	{
+		[self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_playing inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+	}
 }
 
 #pragma mark -
