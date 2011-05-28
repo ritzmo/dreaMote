@@ -11,10 +11,18 @@
 #import "RemoteConnectorObject.h"
 #import "RemoteConnector.h"
 
-#import "Enigma2Connector.h"
-#import "Enigma1Connector.h"
-#import "NeutrinoConnector.h"
-#import "SVDRPConnector.h"
+#if INCLUDE_FEATURE(Enigma2)
+	#import "Enigma2Connector.h"
+#endif
+#if INCLUDE_FEATURE(Enigma)
+	#import "Enigma1Connector.h"
+#endif
+#if INCLUDE_FEATURE(Neutrino)
+	#import "NeutrinoConnector.h"
+#endif
+#if INCLUDE_FEATURE(SVDRP)
+	#import "SVDRPConnector.h"
+#endif
 
 #import "NSString+URLEncode.h"
 
@@ -46,18 +54,26 @@ static NSDictionary *_connection;
 
 	switch(connectorId)
 	{
+#if INCLUDE_FEATURE(Enigma2)
 		case kEnigma2Connector:
 			_sharedRemoteConnector = [Enigma2Connector newWithConnection:connection];
 			break;
+#endif
+#if INCLUDE_FEATURE(Enigma)
 		case kEnigma1Connector:
 			_sharedRemoteConnector = [Enigma1Connector newWithConnection:connection];
 			break;
+#endif
+#if INCLUDE_FEATURE(Neutrino)
 		case kNeutrinoConnector:
 			_sharedRemoteConnector = [NeutrinoConnector newWithConnection:connection];
 			break;
+#endif
+#if INCLUDE_FEATURE(SVDRP)
 		case kSVDRPConnector:
 			_sharedRemoteConnector = [SVDRPConnector newWithConnection:connection];
 			break;
+#endif
 		default:
 			return NO;
 	}
@@ -119,38 +135,45 @@ static NSDictionary *_connection;
 {
 	NSObject <RemoteConnector>* connector = nil;
 
+#if INCLUDE_FEATURE(Enigma2)
 	connector = [Enigma2Connector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kEnigma2Connector;
 	}
-
 	[connector release];
+#endif
+
+#if INCLUDE_FEATURE(Enigma)
 	connector = [Enigma1Connector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kEnigma1Connector;
 	}
-
 	[connector release];
+#endif
+
+	#if INCLUDE_FEATURE(Neutrino)
 	connector = [NeutrinoConnector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kNeutrinoConnector;
 	}
-	
 	[connector release];
+#endif
+
+#if INCLUDE_FEATURE(SVDRP)
 	connector = [SVDRPConnector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
 		[connector release];
 		return kSVDRPConnector;
 	}
-
 	[connector release];
+#endif
 
 	return kInvalidConnector;
 }

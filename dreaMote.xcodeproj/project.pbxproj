@@ -583,7 +583,6 @@
 		DAE17DB41390EFAD00B00FC4 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = DACFCCEE0E33CAD100348996 /* MainWindow.xib */; };
 		DAE17DB51390EFAD00B00FC4 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAA30CE2136B615700632E14 /* EPGRefresh.strings */; };
 		DAE17DB71390EFAD00B00FC4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
-		DAE17DB81390EFAD00B00FC4 /* Enigma2Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51A470D82E6BE00A769F3 /* Enigma2Connector.m */; };
 		DAE17DB91390EFAD00B00FC4 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51D720D8303FF00A769F3 /* ServiceListController.m */; };
 		DAE17DBA1390EFAD00B00FC4 /* ServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD51DE50D8308D100A769F3 /* ServiceTableViewCell.m */; };
 		DAE17DBB1390EFAD00B00FC4 /* EventListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2713260D84056800C25B85 /* EventListController.m */; };
@@ -607,7 +606,6 @@
 		DAE17DCD1390EFAD00B00FC4 /* EditableTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247E50E3B3A3500B09600 /* EditableTableViewCell.m */; };
 		DAE17DCE1390EFAD00B00FC4 /* DisplayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5247EB0E3B3A7500B09600 /* DisplayCell.m */; };
 		DAE17DCF1390EFAD00B00FC4 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */; };
-		DAE17DD01390EFAD00B00FC4 /* Enigma1Connector.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7DEB040E8310AA00B15F7C /* Enigma1Connector.m */; };
 		DAE17DD11390EFAD00B00FC4 /* ConfigViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFE42A20E94220800896017 /* ConfigViewController.m */; };
 		DAE17DD21390EFAD00B00FC4 /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAE17DD31390EFAD00B00FC4 /* ConfigListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA21E7F0E99288600DD749C /* ConfigListController.m */; };
@@ -624,48 +622,23 @@
 		DAE17DDE1390EFAD00B00FC4 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0550F0BC011004B488C /* CXMLNode.m */; };
 		DAE17DDF1390EFAD00B00FC4 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0590F0BC011004B488C /* CXMLNode_PrivateExtensions.m */; };
 		DAE17DE01390EFAD00B00FC4 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF05B0F0BC011004B488C /* CXMLNode_XPathExtensions.m */; };
-		DAE17DE11390EFAD00B00FC4 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44B0F0C1066004B488C /* Event.m */; };
 		DAE17DE21390EFAD00B00FC4 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF44F0F0C1066004B488C /* Event.m */; };
 		DAE17DE31390EFAD00B00FC4 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4510F0C1066004B488C /* Movie.m */; };
 		DAE17DE41390EFAD00B00FC4 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4530F0C1066004B488C /* Service.m */; };
 		DAE17DE51390EFAD00B00FC4 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4550F0C1066004B488C /* Timer.m */; };
 		DAE17DE61390EFAD00B00FC4 /* Volume.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF4570F0C1066004B488C /* Volume.m */; };
-		DAE17DE71390EFAD00B00FC4 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AB0F0CBEDB004B488C /* Movie.m */; };
-		DAE17DE81390EFAD00B00FC4 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF8AD0F0CBEDB004B488C /* Timer.m */; };
-		DAE17DE91390EFAD00B00FC4 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F6BA0F0D2D9A005608CC /* Service.m */; };
-		DAE17DEA1390EFAD00B00FC4 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DA36F7060F0D2F0A005608CC /* Service.m */; };
 		DAE17DEB1390EFAD00B00FC4 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3AA1D70F0D828D001B2057 /* BouquetListController.m */; };
-		DAE17DEC1390EFAD00B00FC4 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23580F101F0500BB8BE7 /* AbstractSocket.m */; };
-		DAE17DED1390EFAD00B00FC4 /* BufferedSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235A0F101F0500BB8BE7 /* BufferedSocket.m */; };
-		DAE17DEE1390EFAD00B00FC4 /* MutableDataBufferExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235C0F101F0500BB8BE7 /* MutableDataBufferExtension.m */; };
-		DAE17DEF1390EFAD00B00FC4 /* Socket.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D235E0F101F0500BB8BE7 /* Socket.m */; };
 		DAE17DF01390EFAD00B00FC4 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23650F101F1500BB8BE7 /* BaseXMLReader.m */; };
 		DAE17DF11390EFAD00B00FC4 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23670F101F1500BB8BE7 /* CXMLPushDocument.m */; };
-		DAE17DF21390EFAD00B00FC4 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D236A0F101F1500BB8BE7 /* EventXMLReader.m */; };
-		DAE17DF31390EFAD00B00FC4 /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D236C0F101F1500BB8BE7 /* MovieXMLReader.m */; };
-		DAE17DF41390EFAD00B00FC4 /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D236E0F101F1500BB8BE7 /* TimerXMLReader.m */; };
-		DAE17DF51390EFAD00B00FC4 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23710F101F1500BB8BE7 /* EventXMLReader.m */; };
-		DAE17DF61390EFAD00B00FC4 /* MovieXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23730F101F1500BB8BE7 /* MovieXMLReader.m */; };
-		DAE17DF71390EFAD00B00FC4 /* ServiceXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23750F101F1500BB8BE7 /* ServiceXMLReader.m */; };
-		DAE17DF81390EFAD00B00FC4 /* TimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23770F101F1500BB8BE7 /* TimerXMLReader.m */; };
-		DAE17DF91390EFAD00B00FC4 /* VolumeXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23790F101F1500BB8BE7 /* VolumeXMLReader.m */; };
 		DAE17DFA1390EFAD00B00FC4 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D237C0F101F1500BB8BE7 /* EventXMLReader.m */; };
-		DAE17DFB1390EFAD00B00FC4 /* SVDRPConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7D23DC0F10249300BB8BE7 /* SVDRPConnector.m */; };
-		DAE17DFC1390EFAD00B00FC4 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DADE1AE80F115A2500807A25 /* Timer.m */; };
-		DAE17DFD1390EFAD00B00FC4 /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
 		DAE17DFE1390EFAD00B00FC4 /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
-		DAE17DFF1390EFAD00B00FC4 /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
 		DAE17E001390EFAD00B00FC4 /* EventSearchListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA784CF40F7D147F00A8050F /* EventSearchListController.m */; };
 		DAE17E011390EFAD00B00FC4 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9789880F9DBB8F005C7390 /* CXMLDocument_CreationExtensions.m */; };
 		DAE17E021390EFAD00B00FC4 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA97898A0F9DBB8F005C7390 /* CXMLNode_CreationExtensions.m */; };
-		DAE17E031390EFAD00B00FC4 /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */; };
 		DAE17E041390EFAD00B00FC4 /* Signal.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0B0EED0FE6537D00684EDC /* Signal.m */; };
 		DAE17E051390EFAD00B00FC4 /* SignalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5536BD0FE6A38C00FBAF18 /* SignalViewController.m */; };
-		DAE17E061390EFAD00B00FC4 /* SignalXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC444F0FE6CECE00F3169F /* SignalXMLReader.m */; };
 		DAE17E071390EFAD00B00FC4 /* SimpleRepeatedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */; };
 		DAE17E081390EFAD00B00FC4 /* SimpleRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */; };
-		DAE17E091390EFAD00B00FC4 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AF81096467100B03BE8 /* CurrentXMLReader.m */; };
-		DAE17E0A1390EFAD00B00FC4 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8AFD109647B200B03BE8 /* CurrentXMLReader.m */; };
 		DAE17E0B1390EFAD00B00FC4 /* CurrentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACA8B231096498300B03BE8 /* CurrentViewController.m */; };
 		DAE17E0C1390EFAD00B00FC4 /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DABF646210F8C765002658DD /* NSArray+CWSortedInsert.m */; };
 		DAE17E0D1390EFAD00B00FC4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
@@ -673,9 +646,7 @@
 		DAE17E0F1390EFAD00B00FC4 /* BouquetSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */; };
 		DAE17E101390EFAD00B00FC4 /* TimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6C530612CE40CC00968EBE /* TimerSplitViewController.m */; };
 		DAE17E111390EFAD00B00FC4 /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27463112CF71DA000B490B /* IntelligentSplitViewController.m */; };
-		DAE17E121390EFAD00B00FC4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27485212CFC830000B490B /* Location.m */; };
 		DAE17E131390EFAD00B00FC4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27485512CFC83D000B490B /* Location.m */; };
-		DAE17E141390EFAD00B00FC4 /* LocationXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27485912CFC86D000B490B /* LocationXMLReader.m */; };
 		DAE17E151390EFAD00B00FC4 /* LocationListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA27487312CFCC20000B490B /* LocationListController.m */; };
 		DAE17E161390EFAD00B00FC4 /* MovieSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B834F12D0031700981350 /* MovieSplitViewController.m */; };
 		DAE17E171390EFAD00B00FC4 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC701FA12D2F73300C53E37 /* EGORefreshTableHeaderView.m */; };
@@ -683,20 +654,15 @@
 		DAE17E191390EFAD00B00FC4 /* FileListView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC518E12D481A100B3B443 /* FileListView.m */; };
 		DAE17E1A1390EFAD00B00FC4 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC51EE12D48F3500B3B443 /* AppDelegate.m */; };
 		DAE17E1B1390EFAD00B00FC4 /* MediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC520312D492CE00B3B443 /* MediaPlayerController.m */; };
-		DAE17E1C1390EFAD00B00FC4 /* FileXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA6CE9C712D498F100F1F52D /* FileXMLReader.m */; };
 		DAE17E1D1390EFAD00B00FC4 /* NSString+URLEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = DA54E1D512D501CC00C90863 /* NSString+URLEncode.m */; };
 		DAE17E1E1390EFAD00B00FC4 /* ReloadableListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA497EAC12D67E6000B26B83 /* ReloadableListController.m */; };
 		DAE17E1F1390EFAD00B00FC4 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA029A112D77A21000564F0 /* CXMLNamespaceNode.m */; };
-		DAE17E201390EFAD00B00FC4 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA40712D8EFF60059B5C4 /* About.m */; };
 		DAE17E211390EFAD00B00FC4 /* Harddisk.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA43012D8F3150059B5C4 /* Harddisk.m */; };
 		DAE17E221390EFAD00B00FC4 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA47D12D8F8870059B5C4 /* AboutViewController.m */; };
-		DAE17E231390EFAD00B00FC4 /* AboutXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFBA4CE12D8FF960059B5C4 /* AboutXMLReader.m */; };
 		DAE17E241390EFAD00B00FC4 /* MediaPlayerDetailsController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */; };
 		DAE17E251390EFAD00B00FC4 /* MediaPlayerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F68212DBA0B1009FF8DD /* MediaPlayerSplitViewController.m */; };
 		DAE17E261390EFAD00B00FC4 /* PlayListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F6AC12DBA43F009FF8DD /* PlayListController.m */; };
 		DAE17E271390EFAD00B00FC4 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F88712DBB48E009FF8DD /* Metadata.m */; };
-		DAE17E281390EFAD00B00FC4 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F89812DBB52B009FF8DD /* Metadata.m */; };
-		DAE17E291390EFAD00B00FC4 /* MetadataXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA12F8C412DBB7C5009FF8DD /* MetadataXMLReader.m */; };
 		DAE17E2A1390EFAD00B00FC4 /* MediaPlayerMetadataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DACED5B412DC649600B3C9C3 /* MediaPlayerMetadataCell.m */; };
 		DAE17E2B1390EFAD00B00FC4 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA117E3612DF4C2B00796389 /* SearchHistoryListController.m */; };
 		DAE17E2C1390EFAD00B00FC4 /* RecursiveFileAdder.m in Sources */ = {isa = PBXBuildFile; fileRef = DA11820012DFAEEC00796389 /* RecursiveFileAdder.m */; };
@@ -721,7 +687,6 @@
 		DAE17E3F1390EFAD00B00FC4 /* NSMutableArray+Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB7872C13533C3200668D0F /* NSMutableArray+Shuffling.m */; };
 		DAE17E401390EFAD00B00FC4 /* TimeoutSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB78744135715CB00668D0F /* TimeoutSelectionViewController.m */; };
 		DAE17E411390EFAD00B00FC4 /* NSError+AutoLocalizedError.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0F047213685D2F0047D7CC /* NSError+AutoLocalizedError.m */; };
-		DAE17E421390EFAD00B00FC4 /* EPGRefreshSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FDF13580EC400EC11E7 /* EPGRefreshSettingsXMLReader.m */; };
 		DAE17E431390EFAD00B00FC4 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE3135811EE00EC11E7 /* EPGRefreshSettings.m */; };
 		DAE17E441390EFAD00B00FC4 /* EPGRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DACE3FE8135828DA00EC11E7 /* EPGRefreshViewController.m */; };
 		DAE17E451390EFAD00B00FC4 /* EPGRefreshAdapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA9161001387FCDE00309CC2 /* EPGRefreshAdapterViewController.m */; };
@@ -1185,6 +1150,7 @@
 		DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetSplitViewController.h; sourceTree = "<group>"; };
 		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
 		DAE17E561390EFAD00B00FC4 /* dreaMote Lite copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dreaMote Lite copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAE17E58139149D700B00FC4 /* Info Coolmote.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info Coolmote.plist"; sourceTree = "<group>"; };
 		DAE91277131E8A9C00C613CB /* AdSupportedSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdSupportedSplitViewController.h; sourceTree = "<group>"; };
 		DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdSupportedSplitViewController.m; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+FuzzyFormatting.h"; sourceTree = "<group>"; };
@@ -1357,6 +1323,7 @@
 				DA785782132C2A05003BE2FE /* Entitlements.plist */,
 				DA4E0C5E12F1A21900022A1B /* epgcache.sqlite */,
 				DAA30CE2136B615700632E14 /* EPGRefresh.strings */,
+				DAE17E58139149D700B00FC4 /* Info Coolmote.plist */,
 				8D1107310486CEB800E47090 /* Info Full.plist */,
 				DA165F4112E9CA2700A6D894 /* Info Lite.plist */,
 				DA7FD6C80D8428F900974B1A /* Localizable.strings */,
@@ -2725,7 +2692,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DAE17DB71390EFAD00B00FC4 /* main.m in Sources */,
-				DAE17DB81390EFAD00B00FC4 /* Enigma2Connector.m in Sources */,
 				DAE17DB91390EFAD00B00FC4 /* ServiceListController.m in Sources */,
 				DAE17DBA1390EFAD00B00FC4 /* ServiceTableViewCell.m in Sources */,
 				DAE17DBB1390EFAD00B00FC4 /* EventListController.m in Sources */,
@@ -2749,7 +2715,6 @@
 				DAE17DCD1390EFAD00B00FC4 /* EditableTableViewCell.m in Sources */,
 				DAE17DCE1390EFAD00B00FC4 /* DisplayCell.m in Sources */,
 				DAE17DCF1390EFAD00B00FC4 /* NSDateFormatter+FuzzyFormatting.m in Sources */,
-				DAE17DD01390EFAD00B00FC4 /* Enigma1Connector.m in Sources */,
 				DAE17DD11390EFAD00B00FC4 /* ConfigViewController.m in Sources */,
 				DAE17DD21390EFAD00B00FC4 /* ConnectorViewController.m in Sources */,
 				DAE17DD31390EFAD00B00FC4 /* ConfigListController.m in Sources */,
@@ -2766,48 +2731,23 @@
 				DAE17DDE1390EFAD00B00FC4 /* CXMLNode.m in Sources */,
 				DAE17DDF1390EFAD00B00FC4 /* CXMLNode_PrivateExtensions.m in Sources */,
 				DAE17DE01390EFAD00B00FC4 /* CXMLNode_XPathExtensions.m in Sources */,
-				DAE17DE11390EFAD00B00FC4 /* Event.m in Sources */,
 				DAE17DE21390EFAD00B00FC4 /* Event.m in Sources */,
 				DAE17DE31390EFAD00B00FC4 /* Movie.m in Sources */,
 				DAE17DE41390EFAD00B00FC4 /* Service.m in Sources */,
 				DAE17DE51390EFAD00B00FC4 /* Timer.m in Sources */,
 				DAE17DE61390EFAD00B00FC4 /* Volume.m in Sources */,
-				DAE17DE71390EFAD00B00FC4 /* Movie.m in Sources */,
-				DAE17DE81390EFAD00B00FC4 /* Timer.m in Sources */,
-				DAE17DE91390EFAD00B00FC4 /* Service.m in Sources */,
-				DAE17DEA1390EFAD00B00FC4 /* Service.m in Sources */,
 				DAE17DEB1390EFAD00B00FC4 /* BouquetListController.m in Sources */,
-				DAE17DEC1390EFAD00B00FC4 /* AbstractSocket.m in Sources */,
-				DAE17DED1390EFAD00B00FC4 /* BufferedSocket.m in Sources */,
-				DAE17DEE1390EFAD00B00FC4 /* MutableDataBufferExtension.m in Sources */,
-				DAE17DEF1390EFAD00B00FC4 /* Socket.m in Sources */,
 				DAE17DF01390EFAD00B00FC4 /* BaseXMLReader.m in Sources */,
 				DAE17DF11390EFAD00B00FC4 /* CXMLPushDocument.m in Sources */,
-				DAE17DF21390EFAD00B00FC4 /* EventXMLReader.m in Sources */,
-				DAE17DF31390EFAD00B00FC4 /* MovieXMLReader.m in Sources */,
-				DAE17DF41390EFAD00B00FC4 /* TimerXMLReader.m in Sources */,
-				DAE17DF51390EFAD00B00FC4 /* EventXMLReader.m in Sources */,
-				DAE17DF61390EFAD00B00FC4 /* MovieXMLReader.m in Sources */,
-				DAE17DF71390EFAD00B00FC4 /* ServiceXMLReader.m in Sources */,
-				DAE17DF81390EFAD00B00FC4 /* TimerXMLReader.m in Sources */,
-				DAE17DF91390EFAD00B00FC4 /* VolumeXMLReader.m in Sources */,
 				DAE17DFA1390EFAD00B00FC4 /* EventXMLReader.m in Sources */,
-				DAE17DFB1390EFAD00B00FC4 /* SVDRPConnector.m in Sources */,
-				DAE17DFC1390EFAD00B00FC4 /* Timer.m in Sources */,
-				DAE17DFD1390EFAD00B00FC4 /* EnigmaRCEmulatorController.m in Sources */,
 				DAE17DFE1390EFAD00B00FC4 /* NeutrinoRCEmulatorController.m in Sources */,
-				DAE17DFF1390EFAD00B00FC4 /* SVDRPRCEmulatorController.m in Sources */,
 				DAE17E001390EFAD00B00FC4 /* EventSearchListController.m in Sources */,
 				DAE17E011390EFAD00B00FC4 /* CXMLDocument_CreationExtensions.m in Sources */,
 				DAE17E021390EFAD00B00FC4 /* CXMLNode_CreationExtensions.m in Sources */,
-				DAE17E031390EFAD00B00FC4 /* SignalXMLReader.m in Sources */,
 				DAE17E041390EFAD00B00FC4 /* Signal.m in Sources */,
 				DAE17E051390EFAD00B00FC4 /* SignalViewController.m in Sources */,
-				DAE17E061390EFAD00B00FC4 /* SignalXMLReader.m in Sources */,
 				DAE17E071390EFAD00B00FC4 /* SimpleRepeatedViewController.m in Sources */,
 				DAE17E081390EFAD00B00FC4 /* SimpleRCEmulatorController.m in Sources */,
-				DAE17E091390EFAD00B00FC4 /* CurrentXMLReader.m in Sources */,
-				DAE17E0A1390EFAD00B00FC4 /* CurrentXMLReader.m in Sources */,
 				DAE17E0B1390EFAD00B00FC4 /* CurrentViewController.m in Sources */,
 				DAE17E0C1390EFAD00B00FC4 /* NSArray+CWSortedInsert.m in Sources */,
 				DAE17E0D1390EFAD00B00FC4 /* Result.m in Sources */,
@@ -2815,9 +2755,7 @@
 				DAE17E0F1390EFAD00B00FC4 /* BouquetSplitViewController.m in Sources */,
 				DAE17E101390EFAD00B00FC4 /* TimerSplitViewController.m in Sources */,
 				DAE17E111390EFAD00B00FC4 /* IntelligentSplitViewController.m in Sources */,
-				DAE17E121390EFAD00B00FC4 /* Location.m in Sources */,
 				DAE17E131390EFAD00B00FC4 /* Location.m in Sources */,
-				DAE17E141390EFAD00B00FC4 /* LocationXMLReader.m in Sources */,
 				DAE17E151390EFAD00B00FC4 /* LocationListController.m in Sources */,
 				DAE17E161390EFAD00B00FC4 /* MovieSplitViewController.m in Sources */,
 				DAE17E171390EFAD00B00FC4 /* EGORefreshTableHeaderView.m in Sources */,
@@ -2825,20 +2763,15 @@
 				DAE17E191390EFAD00B00FC4 /* FileListView.m in Sources */,
 				DAE17E1A1390EFAD00B00FC4 /* AppDelegate.m in Sources */,
 				DAE17E1B1390EFAD00B00FC4 /* MediaPlayerController.m in Sources */,
-				DAE17E1C1390EFAD00B00FC4 /* FileXMLReader.m in Sources */,
 				DAE17E1D1390EFAD00B00FC4 /* NSString+URLEncode.m in Sources */,
 				DAE17E1E1390EFAD00B00FC4 /* ReloadableListController.m in Sources */,
 				DAE17E1F1390EFAD00B00FC4 /* CXMLNamespaceNode.m in Sources */,
-				DAE17E201390EFAD00B00FC4 /* About.m in Sources */,
 				DAE17E211390EFAD00B00FC4 /* Harddisk.m in Sources */,
 				DAE17E221390EFAD00B00FC4 /* AboutViewController.m in Sources */,
-				DAE17E231390EFAD00B00FC4 /* AboutXMLReader.m in Sources */,
 				DAE17E241390EFAD00B00FC4 /* MediaPlayerDetailsController.m in Sources */,
 				DAE17E251390EFAD00B00FC4 /* MediaPlayerSplitViewController.m in Sources */,
 				DAE17E261390EFAD00B00FC4 /* PlayListController.m in Sources */,
 				DAE17E271390EFAD00B00FC4 /* Metadata.m in Sources */,
-				DAE17E281390EFAD00B00FC4 /* Metadata.m in Sources */,
-				DAE17E291390EFAD00B00FC4 /* MetadataXMLReader.m in Sources */,
 				DAE17E2A1390EFAD00B00FC4 /* MediaPlayerMetadataCell.m in Sources */,
 				DAE17E2B1390EFAD00B00FC4 /* SearchHistoryListController.m in Sources */,
 				DAE17E2C1390EFAD00B00FC4 /* RecursiveFileAdder.m in Sources */,
@@ -2863,7 +2796,6 @@
 				DAE17E3F1390EFAD00B00FC4 /* NSMutableArray+Shuffling.m in Sources */,
 				DAE17E401390EFAD00B00FC4 /* TimeoutSelectionViewController.m in Sources */,
 				DAE17E411390EFAD00B00FC4 /* NSError+AutoLocalizedError.m in Sources */,
-				DAE17E421390EFAD00B00FC4 /* EPGRefreshSettingsXMLReader.m in Sources */,
 				DAE17E431390EFAD00B00FC4 /* EPGRefreshSettings.m in Sources */,
 				DAE17E441390EFAD00B00FC4 /* EPGRefreshViewController.m in Sources */,
 				DAE17E451390EFAD00B00FC4 /* EPGRefreshAdapterViewController.m in Sources */,
@@ -3158,10 +3090,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
-				INFOPLIST_FILE = "Info Lite.plist";
+				INFOPLIST_FILE = "Info Coolmote.plist";
 				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
-				PRODUCT_NAME = "dreaMote Lite copy";
+				PRODUCT_NAME = Coolmote;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3176,10 +3108,10 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
-				INFOPLIST_FILE = "Info Lite.plist";
+				INFOPLIST_FILE = "Info Coolmote.plist";
 				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
-				PRODUCT_NAME = "dreaMote Lite copy";
+				PRODUCT_NAME = Coolmote;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -3195,10 +3127,10 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
-				INFOPLIST_FILE = "Info Lite.plist";
+				INFOPLIST_FILE = "Info Coolmote.plist";
 				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
-				PRODUCT_NAME = "dreaMote Lite copy";
+				PRODUCT_NAME = Coolmote;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -3215,10 +3147,10 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
-				INFOPLIST_FILE = "Info Lite.plist";
+				INFOPLIST_FILE = "Info Coolmote.plist";
 				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
 				PREBINDING = NO;
-				PRODUCT_NAME = "dreaMote Lite copy";
+				PRODUCT_NAME = Coolmote;
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

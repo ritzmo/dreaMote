@@ -38,6 +38,37 @@
 	#define SHOW_ADS() (0)
 #endif
 
+// macro to query included features
+#define INCLUDE_FEATURE(NAME) (ENABLE_FEATURE_##NAME)
+
+// disable foreign backends for coolmote
+#if defined(BUILD_COOLMOTE)
+	#define ENABLE_FEATURE_Enigma 0
+	#define ENABLE_FEATURE_Enigma2 0
+	#define ENABLE_FEATURE_SVDRP 0
+#endif
+
+// enable all non-disabled backends
+#ifndef ENABLE_FEATURE_Enigma
+	#define ENABLE_FEATURE_Enigma 1
+#endif
+#ifndef ENABLE_FEATURE_Enigma2
+	#define ENABLE_FEATURE_Enigma2 1
+#endif
+#ifndef ENABLE_FEATURE_Neutrino
+	#define ENABLE_FEATURE_Neutrino 1
+#endif
+#ifndef ENABLE_FEATURE_SVDRP
+	#define ENABLE_FEATURE_SVDRP 1
+#endif
+
+// two or more connectors
+#define ENABLE_FEATURE_Multiple_Connectors ( \
+	(ENABLE_FEATURE_Enigma2 && (ENABLE_FEATURE_Enigma || ENABLE_FEATURE_Neutrino || ENABLE_FEATURE_SVDRP)) || \
+	(ENABLE_FEATURE_Enigma && (ENABLE_FEATURE_Neutrino || ENABLE_FEATURE_SVDRP)) || \
+	(ENABLE_FEATURE_Neutrino && (ENABLE_FEATURE_SVDRP)) \
+)
+
 // fix for banners in iOS 4.0 and 4.1
 #import "UIDevice+SystemVersion.h"
 #define bannerContentSizeIdentifierPortrait ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50)

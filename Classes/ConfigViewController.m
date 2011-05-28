@@ -141,8 +141,21 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 																@"", kRemoteName,
 																@"", kUsername,
 																@"", kPassword,
+#if INCLUDE_FEATURE(Enigma2)
 																[NSNumber numberWithInteger:
 																	kEnigma2Connector], kConnector,
+#elif INCLUDE_FEATURE(Enigma)
+																[NSNumber numberWithInteger:
+																	kEnigma1Connector], kConnector,
+#elif INCLUDE_FEATURE(Neutrino)
+																[NSNumber numberWithInteger:
+																	kNeutrinoConnector], kConnector,
+#elif INCLUDE_FEATURE(SVDRP)
+																[NSNumber numberWithInteger:
+																	kSVDRPConnector], kConnector,
+#else
+	#warning No connector included, shame on you.
+#endif
 																nil];
 	configViewController.connectionIndex = -1;
 
@@ -722,8 +735,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				case 0:
 					sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
+#if INCLUDE_FEATURE(Multiple_Connectors)
 					if(self.editing)
 						sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+#endif
 					
 					if(_connector == kEnigma1Connector)
 						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Enigma", @"");
@@ -795,6 +810,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	NSInteger row = indexPath.row;
 	if(self.editing && indexPath.section == 2 && row == 0)
 	{
+#if INCLUDE_FEATURE(Multiple_Connectors)
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
 		[targetViewController setDelegate: self];
 		if(IS_IPAD())
@@ -809,6 +825,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		{
 			[self.navigationController pushViewController: targetViewController animated: YES];
 		}
+#endif
 	}
 	else if(indexPath.section == 3)
 	{
