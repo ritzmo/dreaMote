@@ -31,6 +31,17 @@
 #endif
 #define IS_FULL() (!IS_LITE())
 
+// branded apps don't get ads (at least for now)
+#if IS_LITE()
+	#ifdef BUILD_WITHOUT_ADS
+		#define SHOW_ADS() (0)
+	#else
+		#define SHOW_ADS() (1)
+	#endif
+#else
+	#define SHOW_ADS() (0)
+#endif
+
 // fix for banners in iOS 4.0 and 4.1
 #import "UIDevice+SystemVersion.h"
 #define bannerContentSizeIdentifierPortrait ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50)

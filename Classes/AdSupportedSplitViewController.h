@@ -8,18 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
-#if IS_LITE()
+#if SHOW_ADS()
 #import "iAd/ADBannerView.h"
 #endif
 
 #import "MGSplitViewController/MGSplitViewController.h"
 
 @interface AdSupportedSplitViewController : MGSplitViewController
-#if IS_LITE()
+#if SHOW_ADS()
 											<ADBannerViewDelegate>
 #endif
 {
-#if IS_LITE()
+#if SHOW_ADS()
 @private
 	id _adBannerView;
 	BOOL _adBannerViewIsVisible;

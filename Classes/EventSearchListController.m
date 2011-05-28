@@ -115,7 +115,7 @@
 	self.navigationItem.rightBarButtonItem = barButtonItem;
 	[barButtonItem release];
 
-#if IS_LITE()
+#if SHOW_ADS()
 	[self createAdBannerView];
 #endif
 }

@@ -18,7 +18,7 @@
 
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
-#if IS_LITE()
+#if SHOW_ADS()
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
@@ -28,7 +28,7 @@
 
 @implementation CurrentViewController
 
-#if IS_LITE()
+#if SHOW_ADS()
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
@@ -60,7 +60,7 @@
 	[_currentXMLDoc release];
 	[_nowSummary release];
 	[_nextSummary release];
-#if IS_LITE()
+#if SHOW_ADS()
 	[_adBannerView release];
 #endif
 
@@ -74,7 +74,7 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 
-#if IS_LITE()
+#if SHOW_ADS()
 	[self createAdBannerView];
 #endif
 	
@@ -325,7 +325,7 @@
 			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 
-#if IS_LITE()
+#if SHOW_ADS()
 	[self fixupAdView:self.interfaceOrientation];
 #endif
 }
@@ -346,13 +346,13 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-#if IS_LITE()
+#if SHOW_ADS()
 	[self fixupAdView:toInterfaceOrientation];
 #endif
 }
 
 #pragma mark ADBannerViewDelegate
-#if IS_LITE()
+#if SHOW_ADS()
 
 //#define __BOTTOM_AD__
 

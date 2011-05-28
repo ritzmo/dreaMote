@@ -22,7 +22,7 @@
 #import "Objects/Generic/Result.h"
 
 @interface TimerListController()
-#if IS_LITE()
+#if SHOW_ADS()
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
@@ -45,7 +45,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 @synthesize isSplit = _isSplit;
 @synthesize timerViewController = _timerViewController;
 @synthesize willReappear = _willReappear;
-#if IS_LITE()
+#if SHOW_ADS()
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
@@ -73,7 +73,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_dateFormatter release];
 	[_timers release];
 	[_timerViewController release];
-#if IS_LITE()
+#if SHOW_ADS()
 	[_adBannerView release];
 #endif
 
@@ -129,7 +129,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_cleanupButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cleanup", @"Timer cleanup button") style:UIBarButtonItemStylePlain target:self action:@selector(cleanupTimers:)];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-#if IS_LITE()
+#if SHOW_ADS()
 	if(IS_IPHONE())
 		[self createAdBannerView];
 #endif
@@ -193,7 +193,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_willReappear = NO;
 
 	[super viewWillAppear: animated];
-#if IS_LITE()
+#if SHOW_ADS()
 	[self fixupAdView:self.interfaceOrientation];
 #endif
 }
@@ -273,7 +273,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-#if IS_LITE()
+#if SHOW_ADS()
 	[self fixupAdView:toInterfaceOrientation];
 #endif
 }
@@ -551,7 +551,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 }
 
 #pragma mark ADBannerViewDelegate
-#if IS_LITE()
+#if SHOW_ADS()
 
 //#define __BOTTOM_AD__
 

@@ -9,7 +9,7 @@
 #import "AdSupportedSplitViewController.h"
 
 @interface AdSupportedSplitViewController()
-#if IS_LITE()
+#if SHOW_ADS()
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
@@ -20,14 +20,14 @@
 
 @implementation AdSupportedSplitViewController
 
-#if IS_LITE()
+#if SHOW_ADS()
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
 
 - (void)dealloc
 {
-#if IS_LITE()
+#if SHOW_ADS()
 	[_adBannerView release];
 #endif
 	[super dealloc];
@@ -37,7 +37,7 @@
 {
 	[super loadView];
 
-#if IS_LITE()
+#if SHOW_ADS()
 	[self createAdBannerView];
 #endif
 }
@@ -45,7 +45,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-#if IS_LITE()
+#if SHOW_ADS()
 	[self fixupAdView:self.interfaceOrientation];
 #endif
 }
@@ -55,13 +55,13 @@
 {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation 
 											duration:duration];
-#if IS_LITE()
+#if SHOW_ADS()
 	[self fixupAdView:toInterfaceOrientation];
 #endif
 }
 
 #pragma mark ADBannerViewDelegate
-#if IS_LITE()
+#if SHOW_ADS()
 
 //#define __BOTTOM_AD__
 

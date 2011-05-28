@@ -13,7 +13,7 @@
 #import "TimerSourceDelegate.h"
 #import "TimerViewController.h" /* TimerViewDelegate */
 
-#if IS_LITE()
+#if SHOW_ADS()
 #import "iAd/ADBannerView.h"
 #endif
 
@@ -30,7 +30,7 @@
  timer ids.
  */
 @interface TimerListController : ReloadableListController <UITableViewDelegate,
-#if IS_LITE()
+#if SHOW_ADS()
 													ADBannerViewDelegate,
 #endif
 													UITableViewDataSource,
@@ -47,7 +47,7 @@
 	UIBarButtonItem *_cleanupButton; /*!< @brief Cleanup button. */
 
 	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
-#if IS_LITE()
+#if SHOW_ADS()
 @private
 	id _adBannerView;
 	BOOL _adBannerViewIsVisible;
