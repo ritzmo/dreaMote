@@ -11,6 +11,7 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
+#import "PlayListCell.h"
 
 #import "Objects/FileProtocol.h"
 
@@ -21,7 +22,6 @@
 @implementation FileListView
 
 @synthesize fileDelegate = _fileDelegate;
-@synthesize isPlaylist = _isPlaylist;
 @synthesize reloading = _reloading;
 @synthesize files = _files;
 
@@ -55,6 +55,7 @@
 	[_fileDelegate release];
 	[_fileXMLDoc release];
 	[_refreshHeaderView release];
+	[_selected release];
 
     [super dealloc];
 }
@@ -62,6 +63,42 @@
 - (NSString *)path
 {
 	return _path;
+}
+
+- (BOOL)isPlaylist
+{
+	return _isPlaylist;
+}
+
+- (void)setIsPlaylist:(BOOL)isPlaylist
+{
+	_isPlaylist = isPlaylist;
+	self.allowsSelectionDuringEditing = isPlaylist;
+}
+
+- (NSMutableArray *)selectedFiles
+{
+	if(_selected) return _selected;
+
+	_selected = [[NSMutableArray alloc] init];
+	return _selected;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing:editing animated:animated];
+
+	// no longer editing in playlist, clean multi-selection
+	if(!editing && _isPlaylist)
+	{
+		if(_selected.count)
+		{
+			[_selected removeAllObjects]; // not using property here to prevent possibly useless creation of this array
+
+			if(_fileDelegate != nil)
+				[_fileDelegate fileListView:self fileMultiSelected:nil];
+		}
+	}
 }
 
 - (void)emptyData
@@ -227,7 +264,11 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = nil;
+	if(_isPlaylist)
+		cell = [PlayListCell reusableTableViewCellInView:tableView withIdentifier:kPlayListCell_ID];
+	else
+		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
@@ -241,6 +282,9 @@
 				TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-volume-high.png"];
 			else
 				TABLEVIEWCELL_IMAGE(cell) = nil;
+
+			if([_selected containsObject:file])
+				[(PlayListCell *)cell setMultiSelected:YES animated:NO];
 		}
 		else
 		{
@@ -266,7 +310,20 @@
 	// if we're in playlist mode and we have a delegate call it back
 	else if(_isPlaylist)
 	{
-		if(_fileDelegate != nil)
+		if(self.editing)
+		{
+			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			BOOL selected = [(PlayListCell *)cell toggleMultiSelected];
+
+			if(selected)
+				[self.selectedFiles addObject:file];
+			else
+				[self.selectedFiles removeObject:file];
+
+			if(_fileDelegate != nil)
+				[_fileDelegate fileListView:self fileMultiSelected:file];
+		}
+		else if(_fileDelegate != nil)
 			[_fileDelegate fileListView:self fileSelected:file];
 		return nil;
 	}
@@ -300,7 +357,7 @@
 /* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return UITableViewCellEditingStyleDelete;
+	return (self.editing) ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
 }
 
 /* number of sections */

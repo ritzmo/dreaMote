@@ -59,13 +59,21 @@ enum retrieveCurrentUsing {
 	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
 
 	UIBarButtonItem *_shuffleButton;  /*!< @brief "Shuffle" Button. */
-	float _shuffleActions; /*!< @brief Shuffle actions left or -1 on unknown. */
+	UIBarButtonItem *_deleteButton;
+	float _progressActions; /*!< @brief Shuffle/Delete actions left or -1 on unknown. */
 @protected
 	UIBarButtonItem *_addFolderItem; /*!< @brief "Add Folder" Button. */
 	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
 	FileListView *_fileList; /*!< @brief File browser. */
 	FileListView *_playlist; /*!< @brief Playlist. */
 }
+
+/*!
+ @brief Multi-Delete from Playlist.
+
+ @param sender Unused parameter required by Buttons.
+ */
+- (IBAction)multiDelete:(id)sender;
 
 /*!
  @brief Flip Views.
@@ -118,6 +126,7 @@ enum retrieveCurrentUsing {
  */
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
 
+@property (nonatomic, readonly) UIBarButtonItem *deleteButton;
 @property (nonatomic, readonly) UIBarButtonItem *shuffleButton;
 
 @end

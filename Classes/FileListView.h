@@ -28,6 +28,7 @@
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 	UIViewController<FileListDelegate> *_fileDelegate; /*!< @brief Delegate. */
 	NSMutableArray *_files; /*!< @brief Current List of Files. */
+	NSMutableArray *_selected; /*!< @brief List of selected Files. */
 }
 
 /*!
@@ -62,6 +63,7 @@
 @property (nonatomic) BOOL reloading;
 @property (nonatomic, retain) NSString *path;
 @property (nonatomic, readonly) NSMutableArray *files;
+@property (nonatomic, readonly) NSMutableArray *selectedFiles;
 
 @end
 
@@ -73,6 +75,16 @@
  @param file File in question
  */
 - (void)fileListView:(FileListView *)fileListView fileSelected:(NSObject<FileProtocol> *)file;
+
+/*!
+ @brief File was "multiselected".
+ This does not take into account the files current selection status.
+ So for selection & subsequent deselection two events are emitted.
+
+ @param fileListView View the file was (de)selected in
+ @param file File in question
+ */
+- (void)fileListView:(FileListView *)fileListView fileMultiSelected:(NSObject<FileProtocol> *)file;
 
 /*!@brief File was removed.
 

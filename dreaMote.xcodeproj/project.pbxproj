@@ -700,6 +700,15 @@
 		DAE17E4E1390EFAD00B00FC4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D88401316800B00A6F3CE /* SystemConfiguration.framework */; };
 		DAE17E4F1390EFAD00B00FC4 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA1D883C1316800300A6F3CE /* CFNetwork.framework */; };
 		DAE17E501390EFAD00B00FC4 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA19C6E91319B400006E4A0D /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAE17E631392626800B00FC4 /* PlayListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17E621392626800B00FC4 /* PlayListCell.m */; };
+		DAE17E641392626800B00FC4 /* PlayListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17E621392626800B00FC4 /* PlayListCell.m */; };
+		DAE17E651392626800B00FC4 /* PlayListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE17E621392626800B00FC4 /* PlayListCell.m */; };
+		DAE17E681392687200B00FC4 /* IsSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE17E661392687200B00FC4 /* IsSelected.png */; };
+		DAE17E691392687200B00FC4 /* IsSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE17E661392687200B00FC4 /* IsSelected.png */; };
+		DAE17E6A1392687200B00FC4 /* IsSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE17E661392687200B00FC4 /* IsSelected.png */; };
+		DAE17E6B1392687200B00FC4 /* NotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE17E671392687200B00FC4 /* NotSelected.png */; };
+		DAE17E6C1392687200B00FC4 /* NotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE17E671392687200B00FC4 /* NotSelected.png */; };
+		DAE17E6D1392687200B00FC4 /* NotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAE17E671392687200B00FC4 /* NotSelected.png */; };
 		DAE91279131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */; };
 		DAE9127A131E8A9C00C613CB /* AdSupportedSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */; };
 		DAF42A9E0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF42A9D0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.m */; };
@@ -1149,8 +1158,12 @@
 		DADE1AE80F115A2500807A25 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DADEF27912CE128B0047E45E /* BouquetSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BouquetSplitViewController.h; sourceTree = "<group>"; };
 		DADEF27A12CE128B0047E45E /* BouquetSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BouquetSplitViewController.m; sourceTree = "<group>"; };
-		DAE17E561390EFAD00B00FC4 /* dreaMote Lite copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dreaMote Lite copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAE17E561390EFAD00B00FC4 /* Coolmote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coolmote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE17E58139149D700B00FC4 /* Info Coolmote.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info Coolmote.plist"; sourceTree = "<group>"; };
+		DAE17E611392626800B00FC4 /* PlayListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayListCell.h; sourceTree = "<group>"; };
+		DAE17E621392626800B00FC4 /* PlayListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayListCell.m; sourceTree = "<group>"; };
+		DAE17E661392687200B00FC4 /* IsSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = IsSelected.png; sourceTree = "<group>"; };
+		DAE17E671392687200B00FC4 /* NotSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NotSelected.png; sourceTree = "<group>"; };
 		DAE91277131E8A9C00C613CB /* AdSupportedSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdSupportedSplitViewController.h; sourceTree = "<group>"; };
 		DAE91278131E8A9C00C613CB /* AdSupportedSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdSupportedSplitViewController.m; sourceTree = "<group>"; };
 		DAF42A9C0E446BAB00954079 /* NSDateFormatter+FuzzyFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+FuzzyFormatting.h"; sourceTree = "<group>"; };
@@ -1286,7 +1299,7 @@
 			children = (
 				1D6058910D05DD3D006BFB54 /* dreaMote.app */,
 				DA165F3F12E9CA2700A6D894 /* dreaMoteLite.app */,
-				DAE17E561390EFAD00B00FC4 /* dreaMote Lite copy.app */,
+				DAE17E561390EFAD00B00FC4 /* Coolmote.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1566,6 +1579,7 @@
 				DA6CEF9812D4D38D00F1F52D /* exit.png */,
 				DA8753B012E1178100CE841E /* folder.png */,
 				DA67D70C130D4B9900953B16 /* internet-mail.png */,
+				DAE17E661392687200B00FC4 /* IsSelected.png */,
 				DA6CEF9D12D4D38D00F1F52D /* key_0.png */,
 				DA6CEF9E12D4D38D00F1F52D /* key_1.png */,
 				DA6CEF9F12D4D38D00F1F52D /* key_2.png */,
@@ -1614,6 +1628,7 @@
 				DA6CEFC812D4D38D00F1F52D /* menu.png */,
 				DA6CEFC912D4D38D00F1F52D /* movie.png */,
 				DA6CEFCA12D4D38D00F1F52D /* network-wired.png */,
+				DAE17E671392687200B00FC4 /* NotSelected.png */,
 				DA6CEFCB12D4D38D00F1F52D /* others.png */,
 				DA6CEFCC12D4D38D00F1F52D /* preferences-desktop-screensaver.png */,
 				DA9BF4C0132FD213008193C6 /* Refresh.png */,
@@ -1972,6 +1987,8 @@
 				DA5A04D00E379C500062F924 /* MovieTableViewCell.m */,
 				DA4E0C2112F1907A00022A1B /* MultiEPGTableViewCell.h */,
 				DA4E0C2212F1907A00022A1B /* MultiEPGTableViewCell.m */,
+				DAE17E611392626800B00FC4 /* PlayListCell.h */,
+				DAE17E621392626800B00FC4 /* PlayListCell.m */,
 				DA7A1A2C12E1CC56004DEEB7 /* ServiceEventTableViewCell.h */,
 				DA7A1A2D12E1CC56004DEEB7 /* ServiceEventTableViewCell.m */,
 				DAD51DE40D8308D100A769F3 /* ServiceTableViewCell.h */,
@@ -2051,7 +2068,7 @@
 			);
 			name = Coolmote;
 			productName = dreaMote;
-			productReference = DAE17E561390EFAD00B00FC4 /* dreaMote Lite copy.app */;
+			productReference = DAE17E561390EFAD00B00FC4 /* Coolmote.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -2178,6 +2195,8 @@
 				DAB7873E135604A600668D0F /* MainWindow.xib in Resources */,
 				DAB78741135604B700668D0F /* MainWindow.xib in Resources */,
 				DAA30CE4136B615700632E14 /* EPGRefresh.strings in Resources */,
+				DAE17E681392687200B00FC4 /* IsSelected.png in Resources */,
+				DAE17E6B1392687200B00FC4 /* NotSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2274,6 +2293,8 @@
 				DAB7873F135604A600668D0F /* MainWindow.xib in Resources */,
 				DAB78742135604B700668D0F /* MainWindow.xib in Resources */,
 				DAA30CE5136B615700632E14 /* EPGRefresh.strings in Resources */,
+				DAE17E691392687200B00FC4 /* IsSelected.png in Resources */,
+				DAE17E6C1392687200B00FC4 /* NotSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2370,6 +2391,8 @@
 				DAE17DB31390EFAD00B00FC4 /* MainWindow.xib in Resources */,
 				DAE17DB41390EFAD00B00FC4 /* MainWindow.xib in Resources */,
 				DAE17DB51390EFAD00B00FC4 /* EPGRefresh.strings in Resources */,
+				DAE17E6A1392687200B00FC4 /* IsSelected.png in Resources */,
+				DAE17E6D1392687200B00FC4 /* NotSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2534,6 +2557,7 @@
 				DACE3FE4135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
 				DACE3FE9135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
 				DA9161011387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
+				DAE17E631392626800B00FC4 /* PlayListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2684,6 +2708,7 @@
 				DACE3FE5135811EE00EC11E7 /* EPGRefreshSettings.m in Sources */,
 				DACE3FEA135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
 				DA9161021387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
+				DAE17E641392626800B00FC4 /* PlayListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2799,6 +2824,7 @@
 				DAE17E431390EFAD00B00FC4 /* EPGRefreshSettings.m in Sources */,
 				DAE17E441390EFAD00B00FC4 /* EPGRefreshViewController.m in Sources */,
 				DAE17E451390EFAD00B00FC4 /* EPGRefreshAdapterViewController.m in Sources */,
+				DAE17E651392626800B00FC4 /* PlayListCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

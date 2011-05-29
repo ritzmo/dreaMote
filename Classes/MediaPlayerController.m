@@ -57,6 +57,7 @@ enum mediaPlayerTags
 @implementation MediaPlayerController
 
 @synthesize popoverController, progressHUD;
+@synthesize deleteButton = _deleteButton;
 @synthesize shuffleButton = _shuffleButton;
 
 - (id)init
@@ -71,6 +72,11 @@ enum mediaPlayerTags
 														style:UIBarButtonItemStyleBordered
 													   target:self
 													   action:@selector(shuffle:)];
+		_deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", @"Delete button in MediaPlayer")
+														 style:UIBarButtonItemStyleBordered
+														target:self
+														action:@selector(multiDelete:)];
+		_deleteButton.enabled = NO;
 	}
 
 	return self;
@@ -222,6 +228,47 @@ enum mediaPlayerTags
 		_fileList.frame = self.view.frame;
 }
 
+- (void)multiDeleteDefer
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	// XXX: we abuse the shuffle callbacks here...
+	NSUInteger count = _playlist.selectedFiles.count;
+	[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
+	for(NSObject<FileProtocol> *file in _playlist.selectedFiles)
+	{
+		/*Result *result = */[[RemoteConnectorObject sharedRemoteConnector] removeTrack:file];
+		// XXX: we silently ignore errors
+		--count;
+		[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
+	}
+	[_playlist.selectedFiles removeAllObjects]; // XXX: assume we successfully removed all tracks
+	[self performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
+
+	[pool release];
+}
+
+- (IBAction)multiDelete:(id)sender
+{
+	[popoverController dismissPopoverAnimated:YES];
+	self.popoverController = nil;
+
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	[self.view addSubview:progressHUD];
+	progressHUD.delegate = self;
+	[progressHUD setLabelText:NSLocalizedString(@"Deleting", @"Label of Progress HUD in MediaPlayer when deleting multiple items from playlist")];
+	[progressHUD setMode:MBProgressHUDModeDeterminate];
+	progressHUD.progress = 0.0f;
+	[progressHUD show:YES];
+	progressHUD.taskInProgress = YES;
+
+	_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+	_deleteButton.enabled = NO;
+	_shuffleButton.enabled = NO;
+	_progressActions = -1;
+	[NSThread detachNewThreadSelector:@selector(multiDeleteDefer) toTarget:self withObject:nil];
+}
+
 - (void)shuffleDefer
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -243,8 +290,9 @@ enum mediaPlayerTags
 	[progressHUD show:YES];
 	progressHUD.taskInProgress = YES;
 
+	_deleteButton.enabled = NO;
 	_shuffleButton.enabled = NO;
-	_shuffleActions = -1;
+	_progressActions = -1;
 	[NSThread detachNewThreadSelector:@selector(shuffleDefer) toTarget:self withObject:nil];
 }
 
@@ -362,17 +410,18 @@ enum mediaPlayerTags
 	progressHUD.taskInProgress = NO;
 	[progressHUD hide:YES];
 
+	_deleteButton.enabled = (_playlist.selectedFiles.count > 0); // XXX: might needlessly create a new array
 	_shuffleButton.enabled = YES;
-	_shuffleActions = -1;
+	_progressActions = -1;
 
 	[_playlist refreshData];
 }
 
 - (void)remainingShuffleActions:(NSNumber *)count
 {
-	if(_shuffleActions == -1)
-		_shuffleActions = [count integerValue];
-	progressHUD.progress = 1 - ([count integerValue] / _shuffleActions);
+	if(_progressActions == -1)
+		_progressActions = [count integerValue];
+	progressHUD.progress = 1 - ([count integerValue] / _progressActions);
 }
 
 #pragma mark -
@@ -611,6 +660,8 @@ enum mediaPlayerTags
 
 	if(editing)
 	{
+		self.title = nil; // XXX: too little space on iPhone/iPod Touch
+
 		const CGFloat toolbarHeight = (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) ? 44.01f : 32.01f;
 		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, toolbarHeight)];
 		toolbar.autoresizesSubviews = YES;
@@ -621,7 +672,7 @@ enum mediaPlayerTags
 		const UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																				  target:self
 																				  action:@selector(flipView:)];
-		NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, flexItem, nil];
+		NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, _deleteButton, flexItem, nil];
 		[toolbar setItems:items animated:NO];
 		UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 
@@ -635,6 +686,8 @@ enum mediaPlayerTags
 	}
 	else
 	{
+		self.title = NSLocalizedString(@"MediaPlayer", @"Title of MediaPlayerController");
+
 		if([_fileList superview])
 			[self flipView: nil];
 		self.navigationItem.leftBarButtonItem = nil;
@@ -696,6 +749,25 @@ enum mediaPlayerTags
 			[alert show];
 			[alert release];
 		}
+	}
+}
+
+- (void)fileListView:(FileListView *)fileListView fileMultiSelected:(NSObject<FileProtocol> *)file
+{
+#if IS_DEBUG()
+	NSParameterAssert([fileListView isEqual:_playlist]);
+#endif
+
+	NSUInteger count = fileListView.selectedFiles.count;
+	if(count)
+	{
+		_deleteButton.title = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
+		_deleteButton.enabled = YES;
+	}
+	else
+	{
+		_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+		_deleteButton.enabled = NO;
 	}
 }
 

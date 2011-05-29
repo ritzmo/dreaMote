@@ -98,6 +98,13 @@ preferences-desktop-screensaver.png
 system-shutdown.png
 view-refresh.png
 
+The following Icons were part of Matt Gallagher's MultiRowSelect sample project
+(http://cocoawithlove.com/2009/01/multiple-row-selection-and-editing-in.html).
+
+Filenames (relative to Images):
+IsSelected.png
+NotSelected.png
+
 The Twitter name, logo, Twitter T, Tweet, and Twitter bird are trademarks of
 Twitter, Inc. in the United States and other countries.
 This affects the image Images/twitter-b.png.
