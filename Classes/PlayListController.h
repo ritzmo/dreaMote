@@ -13,12 +13,17 @@
 @interface PlayListController : UIViewController {
 @protected
 	FileListView *_playlist; /*!< @brief Playlist. */
+	UIBarButtonItem *_clearButton; /*!< @brief Clear Playlist. */
 }
+
+/*!
+ @brief Get "Clear" Button.
+ */
+@property (nonatomic, retain) UIBarButtonItem *clearButton;
 
 /*!
  @brief Get/Set Playlist.
  */
 @property (nonatomic, retain) FileListView *playlist;
-
 
 @end

@@ -11,6 +11,7 @@
 
 @implementation PlayListController
 
+@synthesize clearButton = _clearButton;
 @synthesize playlist = _playlist;
 
 - (id)init
@@ -29,6 +30,7 @@
 
 - (void)dealloc
 {
+	[_clearButton release];
 	[_playlist release];
 
 	[super dealloc];
@@ -45,6 +47,8 @@
 {
 	[super setEditing: editing animated: animated];
 	[_playlist setEditing: editing animated: animated];
+
+	_clearButton.enabled = !editing;
 }
 
 @end

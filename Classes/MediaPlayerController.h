@@ -69,6 +69,13 @@ enum retrieveCurrentUsing {
 }
 
 /*!
+ @brief Clear Playlist.
+
+ @param sender Unused parameter required by Buttons.
+ */
+- (IBAction)clearPlaylist:(id)sender;
+
+/*!
  @brief Multi-Delete from Playlist.
 
  @param sender Unused parameter required by Buttons.

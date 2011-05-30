@@ -52,6 +52,14 @@
 	[navController1 release];
 	[navController2 release];
 
+	// Create "Clear" Button
+	UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear button/action in MediaPlayer")
+																	style:UIBarButtonItemStyleBordered
+																   target:detailsController
+																   action:@selector(clearPlaylist:)];
+	playListController.clearButton = clearButton;
+	[clearButton release];
+
 	// add buttons
 	UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																			  target:detailsController
@@ -59,7 +67,7 @@
 	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																					target:nil
 																					action:nil];
-	NSArray *items = [[NSArray alloc] initWithObjects:detailsController.deleteButton, flexItem, detailsController.shuffleButton, nil];
+	NSArray *items = [[NSArray alloc] initWithObjects:detailsController.deleteButton, clearButton, flexItem, detailsController.shuffleButton, nil];
 	[playListController setToolbarItems:items animated:NO];
 	[playListController.navigationController setToolbarHidden:NO animated:YES];
 	playListController.navigationItem.leftBarButtonItem = flipItem;

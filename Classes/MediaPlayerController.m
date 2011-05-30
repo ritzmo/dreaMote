@@ -228,6 +228,12 @@ enum mediaPlayerTags
 		_fileList.frame = self.view.frame;
 }
 
+- (IBAction)clearPlaylist:(id)sender
+{
+	[_playlist.selectedFiles addObjectsFromArray:_playlist.files];
+	[self multiDelete:nil];
+}
+
 - (void)multiDeleteDefer
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
