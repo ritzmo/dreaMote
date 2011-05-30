@@ -82,7 +82,11 @@
 	[_sortButton release];
 #if IS_FULL()
 	[_filteredMovies release];
+	_tableView.tableHeaderView = nil; // references _searchBar
 	[_searchBar release];
+	_searchDisplay.delegate = nil;
+	_searchDisplay.searchResultsDataSource = nil;
+	_searchDisplay.searchResultsDelegate = nil;
 	[_searchDisplay release];
 #endif
 
@@ -787,7 +791,7 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView
 {
-	 [self setSortTitle:_sortTitle allowSearch:NO]; // in case of alphabetized list
+	[self setSortTitle:_sortTitle allowSearch:NO]; // in case of alphabetized list
 }
 
 #endif
