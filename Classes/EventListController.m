@@ -163,8 +163,12 @@
 {
 	// Clean event list
 	[_events removeAllObjects];
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
+#endif
 	[_eventXMLDoc release];
 	_eventXMLDoc = nil;
 }
@@ -241,10 +245,14 @@
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
-	const NSInteger idx = [_events count];
 	[_events addObject: event];
+#if INCLUDE_FEATURE(Extra_Animation)
+	const NSInteger idx = _events.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
+#else
+	[_tableView reloadData];
+#endif
 #if IS_FULL()
 	[NSThread detachNewThreadSelector:@selector(addEventThreaded:) toTarget:[EPGCache sharedInstance] withObject:event];
 #endif

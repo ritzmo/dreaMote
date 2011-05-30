@@ -422,6 +422,7 @@
 	[_movies removeAllObjects];
 	[_currentKeys release];
 	_currentKeys = nil;
+#if INCLUDE_FEATURE(Extra_Animation)
 	if(_sortTitle)
 	{
 		[_tableView reloadData];
@@ -431,6 +432,9 @@
 		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	}
+#else
+	[_tableView reloadData];
+#endif
 	[_movieXMLDoc release];
 	_movieXMLDoc = nil;
 }
@@ -557,11 +561,17 @@
 /* add movie to list */
 - (void)addMovie: (NSObject<MovieProtocol> *)movie
 {
-	const NSUInteger idx = _movies.count;
 	[_movies addObject: movie];
 	if(!_sortTitle)
+	{
+#if INCLUDE_FEATURE(Extra_Animation)
+		const NSUInteger idx = _movies.count-1;
 		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
 						  withRowAnimation:UITableViewRowAnimationLeft];
+#else
+		[_tableView reloadData];
+#endif
+	}
 }
 
 #pragma mark	-

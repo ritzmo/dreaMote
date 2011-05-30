@@ -450,10 +450,14 @@
 
 - (void)addService:(NSObject <ServiceProtocol>*)service
 {
-	const NSUInteger idx = _services.count;
 	[_services addObject:service];
+#if INCLUDE_FEATURE(Extra_Animation)
+	const NSUInteger idx = _services.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
+#else
+	[_tableView reloadData];
+#endif
 }
 
 #pragma mark -

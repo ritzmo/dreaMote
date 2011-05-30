@@ -69,6 +69,13 @@
 	(ENABLE_FEATURE_Neutrino && (ENABLE_FEATURE_SVDRP)) \
 )
 
+// disable extra-animation on armv6
+#if defined(_ARM_ARCH_6)
+	#define ENABLE_FEATURE_Extra_Animation 0
+#else
+	#define ENABLE_FEATURE_Extra_Animation 1
+#endif
+
 // fix for banners in iOS 4.0 and 4.1
 #import "UIDevice+SystemVersion.h"
 #define bannerContentSizeIdentifierPortrait ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50)

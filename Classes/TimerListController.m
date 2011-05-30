@@ -249,12 +249,14 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	 @note at least 3.2 has problems with repositioning the section titles, so only do a
 	 "pretty" reload on 4.0+
 	 */
+#if INCLUDE_FEATURE(Extra_Animation)
 	if([UIDevice runsIos4OrBetter])
 	{
 		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	}
 	else
+#endif
 	{
 		[_tableView reloadData];
 	}
@@ -304,7 +306,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	for(; state < kTimerStateMax; state++){
 		_dist[state]++;
 	}
-#ifdef ENABLE_LAGGY_ANIMATIONS
+#if INCLUDE_FEATURE(Extra_Animation) && defined(ENABLE_LAGGY_ANIMATIONS)
 	state = newTimer.state;
 	if(state > 0)
 		index -= _dist[state - 1];

@@ -108,8 +108,12 @@
 {
 	// Clean event list
 	[_autotimers removeAllObjects];
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:1];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
+#endif
 	[_curDocument release];
 	_curDocument = nil;
 }

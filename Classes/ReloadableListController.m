@@ -141,7 +141,11 @@
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+#if INCLUDE_FEATURE(Extra_Animation)
 	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[_tableView reloadData];
+#endif
 }
 
 #pragma mark -

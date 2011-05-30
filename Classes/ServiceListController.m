@@ -438,8 +438,12 @@
 	// Clean event list
 	[_mainList removeAllObjects];
 	[_subList removeAllObjects];
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
+#endif
 #if IS_FULL()
 	[_multiEPG emptyData];
 #endif
@@ -533,7 +537,11 @@
 		_radioButton.enabled = YES;
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+#if INCLUDE_FEATURE(Extra_Animation)
 		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+#else
+		[_tableView reloadData];
+#endif
 #if IS_FULL()
 		[_multiEPG dataSourceDelegate:dataSource finishedParsingDocument:document];
 #endif
@@ -547,11 +555,14 @@
 /* add event to list */
 - (void)addNowEvent:(NSObject <EventProtocol>*)event
 {
-	const NSInteger idx = _mainList.count;
 	[_mainList addObject: event];
+#if INCLUDE_FEATURE(Extra_Animation)
+	const NSInteger idx = _mainList.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
-
+#else
+	[_tableView reloadData];
+#endif
 #if IS_FULL()
 	[_multiEPG addService:event.service];
 #endif

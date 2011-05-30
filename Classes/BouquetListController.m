@@ -258,8 +258,12 @@
 {
 	// Clean event list
 	[_bouquets removeAllObjects];
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
+#endif
 	[_bouquetXMLDoc release];
 	_bouquetXMLDoc = nil;
 }
@@ -303,7 +307,7 @@
 - (void)addService: (NSObject<ServiceProtocol> *)bouquet
 {
 	[_bouquets addObject: bouquet];
-#ifdef ENABLE_LAGGY_ANIMATIONS
+#if INCLUDE_FEATURE(Extra_Animation)
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_bouquets count]-1 inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationTop];
 #endif

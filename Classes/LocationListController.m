@@ -172,8 +172,12 @@
 {
 	// Clean location list
 	[_locations removeAllObjects];
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
+#endif
 	[_locationXMLDoc release];
 	_locationXMLDoc = nil;
 }
@@ -234,7 +238,7 @@
 - (void)addLocation: (NSObject<LocationProtocol> *)location
 {
 	[_locations addObject: location];
-#ifdef ENABLE_LAGGY_ANIMATIONS
+#if INCLUDE_FEATURE(Extra_Animation)
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_locations count]-1 inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationTop];
 #endif

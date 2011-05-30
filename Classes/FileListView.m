@@ -236,7 +236,11 @@
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
+#if INCLUDE_FEATURE(Extra_Animation)
 	[self reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[self reloadData];
+#endif
 	if(_isPlaylist && _playing != NSNotFound && _playing < _files.count)
 	{
 		[self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_playing inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
@@ -251,7 +255,7 @@
 - (void)addFile: (NSObject<FileProtocol> *)file
 {
 	[_files addObject: file];
-#ifdef ENABLE_LAGGY_ANIMATIONS
+#if INCLUDE_FEATURE(Extra_Animation) && defined(ENABLE_LAGGY_ANIMATIONS)
 	[self insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:[_files count]-1 inSection:0]]
 				withRowAnimation: UITableViewRowAnimationTop];
 #endif
