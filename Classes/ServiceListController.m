@@ -27,9 +27,15 @@
 - (void)doneAction:(id)sender;
 
 /*!
+ @brief Should zap?
+ */
+- (void)zapAction:(UILongPressGestureRecognizer *)gesture;
+
+/*!
  @brief Popover Controller.
  */
 @property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, retain) UIPopoverController *popoverZapController;
 
 /*!
  @brief Event View.
@@ -40,7 +46,7 @@
 @implementation ServiceListController
 
 @synthesize mgSplitViewController = _mgSplitViewController;
-@synthesize popoverController;
+@synthesize popoverController, popoverZapController;
 
 /* initialize */
 - (id)init
@@ -85,7 +91,9 @@
 	[_radioButton release];
 	[_dateFormatter release];
 	[popoverController release];
+	[popoverZapController release];
 	[_mgSplitViewController release];
+	[_zapListController release];
 #if IS_FULL()
 	[_multiEPG release];
 #endif
@@ -134,6 +142,11 @@
 	if(self.popoverController != nil) {
         [self.popoverController dismissPopoverAnimated:YES];
     }
+	if(self.popoverZapController)
+	{
+		[self.popoverZapController dismissPopoverAnimated:YES];
+		self.popoverZapController = nil;
+	}
 
 #if IS_FULL()
 	// make multi epg aware of current bouquet
@@ -282,6 +295,15 @@
 	_tableView.dataSource = self;
 	_tableView.sectionHeaderHeight = 0;
 
+	// XXX: for simplicity only support this on iOS 3.2+
+	if([UIDevice newerThanIos:3.2f])
+	{
+		UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(zapAction:)];
+		longPressGesture.minimumPressDuration = 1;
+		[_tableView addGestureRecognizer:longPressGesture];
+		[longPressGesture release];
+	}
+
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 }
@@ -300,7 +322,7 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	if(!IS_IPAD())
+	if(IS_IPHONE())
 	{
 		const BOOL isSingleBouquet =
 			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
@@ -316,6 +338,14 @@
 		}
 		else
 			self.navigationItem.leftBarButtonItem = nil;
+	}
+	else
+	{
+		if(self.popoverZapController != nil)
+		{
+			[self.popoverZapController dismissPopoverAnimated:YES];
+			self.popoverZapController = nil;
+		}
 	}
 
 	/*!
@@ -763,6 +793,124 @@
 {
 	self.navigationItem.leftBarButtonItem = nil;
 	self.popoverController = nil;
+}
+
+#pragma mark Zapping
+
+/* zap */
+- (void)zapAction:(UILongPressGestureRecognizer *)gesture
+{
+	// only do something on gesture start
+	if(gesture.state != UIGestureRecognizerStateBegan)
+		return;
+
+	// get service
+	const CGPoint p = [gesture locationInView:_tableView];
+	NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:p];
+	if(_supportsNowNext)
+		_service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex:indexPath.row]).service;
+	else
+		_service = [_mainList objectAtIndex:indexPath.row];
+
+	// Check for invalid service
+	if(!_service || !_service.valid)
+		return;
+
+	// if streaming supported, show popover on ipad and action sheet on iphone
+	if([ServiceZapListController canStream])
+	{
+		if(IS_IPAD())
+		{
+			// hide popover if already visible
+			if([popoverController isPopoverVisible])
+			{
+				[popoverController dismissPopoverAnimated:YES];
+			}
+			if([self.popoverZapController isPopoverVisible])
+			{
+				[popoverZapController dismissPopoverAnimated:YES];
+				self.popoverController = nil;
+				return;
+			}
+
+			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+			zlc.zapDelegate = self;
+			[popoverZapController release];
+			popoverZapController = [[UIPopoverController alloc] initWithContentViewController:zlc];
+			[zlc release];
+
+			CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+			cellRect.origin.x = p.x - 25.0f;
+			cellRect.size.width = cellRect.size.width - cellRect.origin.x;
+			[popoverZapController presentPopoverFromRect:cellRect
+												  inView:_tableView
+								permittedArrowDirections:UIPopoverArrowDirectionLeft | UIPopoverArrowDirectionRight
+												animated:YES];
+		}
+		else
+		{
+			[_zapListController release];
+			_zapListController = nil;
+			_zapListController = [[ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar] retain];
+		}
+	}
+	// else just zap on remote host
+	else
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo:_service];
+	}
+}
+
+#pragma mark -
+#pragma mark ServiceZapListDelegate methods
+#pragma mark -
+
+- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
+{
+	NSURL *streamingURL = nil;
+	NSURL *url = nil;
+
+	[_zapListController release];
+	_zapListController = nil;
+
+	if(selectedAction == zapActionRemote)
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo:_service];
+		return;
+	}
+
+	streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+	if(!streamingURL)
+	{
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		return;
+	}
+
+	switch(selectedAction)
+	{
+		default: break;
+		case zapActionOPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionOPlayerLite:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionBuzzPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionYxplayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
+			break;
+	}
+	if(url)
+		[[UIApplication sharedApplication] openURL:url];
 }
 
 @end

@@ -13,6 +13,7 @@
 #import "ServiceSourceDelegate.h"
 #import "EventViewController.h"
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
+#import "ServiceZapListController.h" /* ServiceZapListDelegate */
 #if IS_FULL()
 	#import "MultiEPGListController.h" /* MultiEPGDelegate */
 #endif
@@ -36,6 +37,7 @@
 													NowSourceDelegate,
 													NextSourceDelegate,
 													SwipeTableViewDelegate,
+													ServiceZapListDelegate,
 #if IS_FULL()
 													MultiEPGDelegate,
 #endif
@@ -44,7 +46,9 @@
 @private
 	NSInteger pendingRequests; /*!< @brief Number of currently pending requests. */
 	UIPopoverController *popoverController; /*!< @brief Popover Controller. */
+	UIPopoverController *popoverZapController; /*!< @brief Popover Zap Controller. */
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
+	NSObject<ServiceProtocol> *_service; /*!< @brief Selected Service (if executing a gesture, borrowed reference). */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
 	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
@@ -56,6 +60,7 @@
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
 	MGSplitViewController *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
+	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 #if IS_FULL()
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif
