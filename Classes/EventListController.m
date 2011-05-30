@@ -497,7 +497,20 @@
 		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
 		return;
 	}
+
 	streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+	if(!streamingURL)
+	{
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+		return;
+	}
 
 	switch(selectedAction)
 	{

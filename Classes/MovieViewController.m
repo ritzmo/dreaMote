@@ -599,36 +599,45 @@
 
 #pragma mark Streaming
 
-- (void)openOPlayer:(id)sender
+- (void)openStreamWithBase:(NSString *)baseString
 {
 	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
+	if(!streamingURL)
+	{
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+	else
+	{
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseString, [streamingURL absoluteURL]]];
+		[[UIApplication sharedApplication] openURL:url];
+	}
+}
 
-	[[UIApplication sharedApplication] openURL:url];
+- (void)openOPlayer:(id)sender
+{
+	[self openStreamWithBase:@"oplayer://"];
 }
 
 - (void)openOPlayerLite:(id)sender
 {
-	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
-
-	[[UIApplication sharedApplication] openURL:url];
+	[self openStreamWithBase:@"oplayerlite://"];
 }
 
 - (void)openBuzzPlayer:(id)sender
 {
-	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
-
-	[[UIApplication sharedApplication] openURL:url];
+	[self openStreamWithBase:@"buzzplayer://"];
 }
 
 - (void)openYxplayer:(id)sender
 {
-	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForMovie:_movie];
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
-
-	[[UIApplication sharedApplication] openURL:url];
+	[self openStreamWithBase:@"yxp://"];
 }
 
 @end
