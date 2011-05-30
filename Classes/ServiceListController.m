@@ -585,11 +585,14 @@
 /* add service to list */
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
-	const NSInteger idx = [_mainList count];
 	[_mainList addObject: service];
+#if INCLUDE_FEATURE(Extra_Animation)
+	const NSInteger idx = _mainList.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
-
+#else
+	[_tableView reloadData];
+#endif
 #if IS_FULL()
 	[_multiEPG addService:service];
 #endif

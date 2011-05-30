@@ -137,8 +137,12 @@
 {
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[_tableView reloadData];
+#endif
 }
 
 #pragma mark -
