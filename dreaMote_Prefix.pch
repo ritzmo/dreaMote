@@ -70,10 +70,10 @@
 )
 
 // disable extra-animation on armv6
-#if defined(_ARM_ARCH_6)
-	#define ENABLE_FEATURE_Extra_Animation 0
-#else
+#if defined(_ARM_ARCH_7) || defined(___i386__)
 	#define ENABLE_FEATURE_Extra_Animation 1
+#else
+	#define ENABLE_FEATURE_Extra_Animation 0
 #endif
 
 // fix for banners in iOS 4.0 and 4.1
