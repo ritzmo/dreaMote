@@ -48,6 +48,7 @@ enum neutrinoMessageTypes {
 		(feature == kFeaturesMessageType) ||
 		(feature == kFeaturesTimerRepeated) ||
 		(feature == kFeaturesComplicatedRepeated) ||
+		(feature == kFeaturesStreaming) ||
 		(feature == kFeaturesScreenshot);
 }
 
@@ -280,6 +281,28 @@ enum neutrinoMessageTypes {
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
 	[streamReader autorelease];
 	return doc;
+}
+
+- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
+{
+	// XXX: we first zap on the receiver and subsequently retrieve the new streaming url, any way to optimize this?
+	Result *result = [self zapTo:service];
+	if(result.result)
+	{
+		NSURL *myURI = [NSURL URLWithString:@"/control/build_live_url" relativeToURL:_baseAddress];
+
+		NSHTTPURLResponse *response;
+		NSError *error = nil;
+		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+													  returningResponse:&response
+																  error:&error];
+
+		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		myURI = [NSURL URLWithString:myString];
+		[myString release];
+		return myURI;
+	}
+	return nil;
 }
 
 #pragma mark Timer
@@ -1001,14 +1024,6 @@ enum neutrinoMessageTypes {
 }
 
 - (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
-{
-#if IS_DEBUG()
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
-	return nil;
-}
-
-- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
