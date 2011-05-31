@@ -20,6 +20,10 @@
 	#import "EPGCache.h"
 #endif
 
+@interface AppDelegate()
+- (void)checkReachable;
+@end
+
 @implementation AppDelegate
 
 @synthesize window;
@@ -56,6 +60,19 @@
 	welcomeTypes returnValue = welcomeType;
 	welcomeType = welcomeTypeNone;
 	return returnValue;
+}
+
+- (void)checkReachable
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	NSError *error = nil;
+	[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+
+	// this might have changed the features, so handle this like a reconnect
+	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+
+	[pool release];
 }
 
 #pragma mark -
@@ -158,7 +175,11 @@
 
 	if([RemoteConnectorObject loadConnections])
 	{
-		[RemoteConnectorObject connectTo: [activeConnectionId integerValue]];
+		if([RemoteConnectorObject connectTo:[activeConnectionId integerValue]])
+		{
+			[NSThread detachNewThreadSelector:@selector(checkReachable) toTarget:self withObject:nil];
+		}
+
 		// by using mg split view loadView is called to early which might lead to the
 		// wrong mode being shown (e.g. only movie list & movie view for enigma2 instead
 		// of location list & movie list). posting this notification will trigger the necessary
