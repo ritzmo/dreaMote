@@ -41,8 +41,6 @@
 #import "NSMutableArray+Shuffling.h"
 #import "NSString+URLEncode.h"
 
-#define WEBIF_VERSION_SUGGESTED @"1.6.6"
-
 enum powerStates {
 	kStandbyState = 0,
 	kShutdownState = 1,
@@ -58,10 +56,20 @@ enum enigma2MessageTypes {
 	kEnigma2MessageTypeMax = 4
 };
 
+static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
+	nil, nil, @"1.6.5", @"1.6.8"
+};
+
 @implementation Enigma2Connector
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
+	if(_webifVersion < WEBIF_VERSION_1_6_5)
+	{
+		if(feature == kFeaturesSleepTimer)
+			return NO;
+	}
+
 	return
 		(feature != kFeaturesMessageCaption) &&
 		(feature != kFeaturesComplicatedRepeated);
@@ -148,11 +156,25 @@ enum enigma2MessageTypes {
 			for(CXMLElement *currentChild in resultNodes)
 			{
 				const NSString *stringValue = [currentChild stringValue];
-				if([stringValue compare:WEBIF_VERSION_SUGGESTED] == NSOrderedAscending)
+				NSInteger i = WEBIF_VERSION_1_6_5;
+
+				_webifVersion = WEBIF_VERSION_OLD;
+				for(; i < WEBIF_VERSION_MAX; ++i)
+				{
+					// version is older than identifier, abort
+					if([stringValue compare:webifIdentifier[i]] == NSOrderedAscending)
+						break;
+					// newer or equal to this version, abort
+					else
+						_webifVersion = i;
+				}
+
+				// only warn on old version, but suggest updating to the newest one
+				if(_webifVersion < WEBIF_VERSION_1_6_5)
 				{
 					*error = [NSError errorWithDomain:@"myDomain"
 												code:98
-											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, WEBIF_VERSION_SUGGESTED], [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
 				}
 			}
 
