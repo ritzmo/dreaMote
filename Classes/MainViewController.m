@@ -137,9 +137,9 @@
 
 - (void)handleReconnect: (NSNotification *)note
 {
-	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
 	{
+		const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 		if(![RemoteConnectorObject connectTo:[connId integerValue]])
 		{
 			return;
@@ -159,7 +159,6 @@
 				[notification release];
 			}
 		}
-
 	}
 	const BOOL isSingleBouquet =
 		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
