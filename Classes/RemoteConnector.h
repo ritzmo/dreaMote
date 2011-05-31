@@ -18,7 +18,7 @@ enum availableConnectors {
 	kEnigma1Connector = 1, /*!< @brief Enigma. */
 	kNeutrinoConnector = 2, /*!< @brief Neutrino. */
 	kSVDRPConnector = 3, /*!< @brief SVDRP. */
-	kMaxConnector = 4, /*!< @brief Upper boudn of connectors. */
+	kMaxConnector = 4, /*!< @brief Upper bound of connectors. */
 };
 
 /*!
@@ -146,6 +146,8 @@ enum connectorFeatures {
 	 kind of clean code, implement this properly.
 	 */
 	kFeaturesEPGRefresh,
+	/*! @brief Sleep-Timer interface. */
+	kFeaturesSleepTimer,
 };
 
 /*!
