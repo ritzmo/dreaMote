@@ -262,6 +262,7 @@ enum enigma1MessageTypes {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
+	[_cachedBouquetsXML retain]; // make sure that this is not deallocated while we run
 	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
@@ -279,7 +280,7 @@ enum enigma1MessageTypes {
 	}
 
 	[self indicateSuccess:delegate];
-	return _cachedBouquetsXML;
+	return [_cachedBouquetsXML autorelease];
 }
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -296,7 +297,10 @@ enum enigma1MessageTypes {
 
 	// if cache is valid for this request, read services
 	if(_cacheIsRadio == isRadio)
+	{
+		[[_cachedBouquetsXML retain] autorelease]; // make sure that this is not deallocated while we run
 		resultNodes = [bouquet nodesForXPath:@"service" error:nil];
+	}
 
 	if(!resultNodes || ![resultNodes count])
 	{
@@ -314,6 +318,7 @@ enum enigma1MessageTypes {
 			return nil;
 		}
 
+		[[_cachedBouquetsXML retain] autorelease]; // make sure that this is not deallocated while we run (might be another cache than before)
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
 						[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
 						error:nil];
