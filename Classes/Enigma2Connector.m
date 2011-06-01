@@ -57,7 +57,7 @@ enum enigma2MessageTypes {
 };
 
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
-	nil, nil, @"1.6.0", @"1.6.5", @"1.6.8"
+	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.6.5", @"1.6.8"
 };
 
 @implementation Enigma2Connector
@@ -69,9 +69,12 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		default:
 		case WEBIF_VERSION_UNKNOWN:
 		case WEBIF_VERSION_OLD:
-			if(feature == kFeaturesRecordingLocations || feature == kFeaturesSatFinder)
+			if(feature == kFeaturesSatFinder)
 				return NO;
-		case WEBIF_VERSION_1_6_0:
+		case WEBIF_VERSION_1_5b:
+			if(feature == kFeaturesRecordingLocations)
+			   return NO;
+		case WEBIF_VERSION_1_5b3:
 			if(feature == kFeaturesSleepTimer)
 				return NO;
 		case WEBIF_VERSION_1_6_5:
@@ -164,8 +167,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			const NSArray *resultNodes = [dom nodesForXPath:@"/e2abouts/e2about/e2webifversion" error:nil];
 			for(CXMLElement *currentChild in resultNodes)
 			{
-				const NSString *stringValue = [currentChild stringValue];
-				NSInteger i = WEBIF_VERSION_1_6_5;
+				NSMutableString *stringValue = [[currentChild stringValue] mutableCopy];
+				// XXX: reading out versions like these is quite difficult, so we artificial relabel them so 1.6.0 > 1.6rc > 1.6beta
+				[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:NSMakeRange(0, [stringValue length])];
+				[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:NSMakeRange(0, [stringValue length])];
+				NSInteger i = WEBIF_VERSION_1_5b;
 
 				_webifVersion = WEBIF_VERSION_OLD;
 				for(; i < WEBIF_VERSION_MAX; ++i)
@@ -177,13 +183,14 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					else
 						_webifVersion = i;
 				}
+				[stringValue release];
 
 				// only warn on old version, but suggest updating to the newest one
 				if(_webifVersion < WEBIF_VERSION_1_6_5)
 				{
 					*error = [NSError errorWithDomain:@"myDomain"
 												code:98
-											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
+											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), [currentChild stringValue], webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
 				}
 			}
 

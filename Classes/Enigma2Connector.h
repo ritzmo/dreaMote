@@ -15,13 +15,15 @@ typedef enum
 	/*! @brief Not yet processed. */
 	WEBIF_VERSION_UNKNOWN = 0,
 	/*! @brief Old and unhandled version. */
-	WEBIF_VERSION_OLD = 1,
-	/*! @brief 1.6.0, released February 2010 */
-	WEBIF_VERSION_1_6_0 = 2,
+	WEBIF_VERSION_OLD,
+	/*! @brief 1.5b added signal reader */
+	WEBIF_VERSION_1_5b,
+	/*! @brief 1.5b3 added location support */
+	WEBIF_VERSION_1_5b3,
 	/*! @brief Sleeptimer added. */
-	WEBIF_VERSION_1_6_5 = 3,
+	WEBIF_VERSION_1_6_5,
 	/*! @brief Save/Load/Clear MP playlist. */
-	WEBIF_VERSION_1_6_8 = 4,
+	WEBIF_VERSION_1_6_8,
 	/*! @brief Upper bound. */
 	WEBIF_VERSION_MAX,
 } webifVersion;
