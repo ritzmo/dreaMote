@@ -16,10 +16,12 @@ typedef enum
 	WEBIF_VERSION_UNKNOWN = 0,
 	/*! @brief Old and unhandled version. */
 	WEBIF_VERSION_OLD = 1,
+	/*! @brief 1.6.0, released February 2010 */
+	WEBIF_VERSION_1_6_0 = 2,
 	/*! @brief Sleeptimer added. */
-	WEBIF_VERSION_1_6_5 = 2,
+	WEBIF_VERSION_1_6_5 = 3,
 	/*! @brief Save/Load/Clear MP playlist. */
-	WEBIF_VERSION_1_6_8 = 3,
+	WEBIF_VERSION_1_6_8 = 4,
 	/*! @brief Upper bound. */
 	WEBIF_VERSION_MAX,
 } webifVersion;

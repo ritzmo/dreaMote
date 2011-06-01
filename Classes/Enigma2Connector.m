@@ -57,17 +57,26 @@ enum enigma2MessageTypes {
 };
 
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
-	nil, nil, @"1.6.5", @"1.6.8"
+	nil, nil, @"1.6.0", @"1.6.5", @"1.6.8"
 };
 
 @implementation Enigma2Connector
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
-	if(_webifVersion < WEBIF_VERSION_1_6_5)
+	switch(_webifVersion)
 	{
-		if(feature == kFeaturesSleepTimer)
-			return NO;
+		default:
+		case WEBIF_VERSION_UNKNOWN:
+		case WEBIF_VERSION_OLD:
+			if(feature == kFeaturesRecordingLocations || feature == kFeaturesSatFinder)
+				return NO;
+		case WEBIF_VERSION_1_6_0:
+			if(feature == kFeaturesSleepTimer)
+				return NO;
+		case WEBIF_VERSION_1_6_5:
+		case WEBIF_VERSION_1_6_8:
+			break;
 	}
 
 	return
