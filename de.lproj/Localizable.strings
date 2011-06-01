@@ -157,6 +157,9 @@
 /* Timer cleanup button */
 "Cleanup" = "Aufräumen";
 
+/* Clear button/action in MediaPlayer */
+"Clear" = "Leeren";
+
 /* Title of action sheet when leaving MediaPlayer view. */
 "Close MediaPlayer?" = "MediaPlayer schließen?";
 
@@ -243,8 +246,14 @@
 /* No comment provided by engineer. */
 "Default Location" = "Standardverzeichnis";
 
+/* Delete button in MediaPlayer */
+"Delete" = "Löschen";
+
 /* No comment provided by engineer. */
 "Delete failed" = "Entfernen fehlgeschlagen";
+
+/* Label of Progress HUD in MediaPlayer when deleting multiple items from playlist */
+"Deleting" = "Lösche…";
 
 /* No comment provided by engineer. */
 "Description" = "Beschreibung";
@@ -845,6 +854,9 @@
 
 /* No comment provided by engineer. */
 "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Konnte nicht erkennen ob die Aktion erfolgreich war. Für volle Funktionalität bitte das WebInterface aktualisieren.";
+
+/* Failed to retrieve or generate URL of remote stream */
+"Unable to generate stream URL." = "Stream-URL konnte nicht generiert werden.";
 
 /* No comment provided by engineer. */
 "Unable to map button to keycode!" = "Konnte Taste keine Funktion zuweisen!";
