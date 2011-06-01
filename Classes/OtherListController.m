@@ -35,6 +35,7 @@
 #import "MediaPlayerController.h"
 
 @interface OtherListController()
+- (void)handleReconnect: (NSNotification *)note;
 /*!
  @brief display about dialog
  @param sender ui element
@@ -211,6 +212,9 @@
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
 	myTableView.autoresizesSubviews = YES;
 	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 }
 
 - (void)aboutDreamoteAction: (id)sender
@@ -218,6 +222,11 @@
 	if(_aboutDreamoteViewController == nil)
 		_aboutDreamoteViewController = [[AboutDreamoteViewController alloc] init];
 	[self.navigationController presentModalViewController: _aboutDreamoteViewController animated:YES];
+}
+
+- (void)handleReconnect: (NSNotification *)note
+{
+	[self viewWillAppear:YES];
 }
 
 #pragma mark UIViewController delegates
