@@ -40,7 +40,7 @@
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -68,7 +68,7 @@
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);

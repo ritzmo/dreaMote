@@ -31,13 +31,6 @@
 #endif
 #define IS_FULL() (!IS_LITE())
 
-// branded apps don't get ads (at least for now)
-#ifdef BUILD_DREAMOTE_LITE
-	#define SHOW_ADS() (1)
-#else
-	#define SHOW_ADS() (0)
-#endif
-
 // macro to query included features
 #define INCLUDE_FEATURE(NAME) (ENABLE_FEATURE_##NAME)
 
@@ -74,6 +67,13 @@
 	#define ENABLE_FEATURE_Extra_Animation 1
 #else
 	#define ENABLE_FEATURE_Extra_Animation 0
+#endif
+
+// branded apps don't get ads (at least for now)
+#ifdef BUILD_DREAMOTE_LITE
+	#define ENABLE_FEATURE_Ads 1
+#else
+	#define ENABLE_FEATURE_Ads 0
 #endif
 
 // fix for banners in iOS 4.0 and 4.1

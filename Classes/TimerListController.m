@@ -22,7 +22,7 @@
 #import "Objects/Generic/Result.h"
 
 @interface TimerListController()
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
@@ -45,7 +45,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 @synthesize isSplit = _isSplit;
 @synthesize timerViewController = _timerViewController;
 @synthesize willReappear = _willReappear;
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
@@ -73,7 +73,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_dateFormatter release];
 	[_timers release];
 	[_timerViewController release];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[_adBannerView release];
 #endif
 
@@ -129,7 +129,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_cleanupButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cleanup", @"Timer cleanup button") style:UIBarButtonItemStylePlain target:self action:@selector(cleanupTimers:)];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE())
 		[self createAdBannerView];
 #endif
@@ -193,7 +193,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_willReappear = NO;
 
 	[super viewWillAppear: animated];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:self.interfaceOrientation];
 #endif
 }
@@ -275,7 +275,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:toInterfaceOrientation];
 #endif
 }
@@ -553,7 +553,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 }
 
 #pragma mark ADBannerViewDelegate
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 
 //#define __BOTTOM_AD__
 

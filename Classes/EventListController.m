@@ -29,7 +29,7 @@
  @param sender ui element
  */
 - (void)zapAction:(id)sender;
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
@@ -40,7 +40,7 @@
 
 @synthesize dateFormatter = _dateFormatter;
 @synthesize popoverController;
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
@@ -107,7 +107,7 @@
 	[_eventXMLDoc release];
 	[popoverController release];
 	[_zapListController release];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[_adBannerView release];
 #endif
 
@@ -138,7 +138,7 @@
 	self.navigationItem.rightBarButtonItem = zapButton;
 	[zapButton release];
 	
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE())
 		[self createAdBannerView];
 #endif
@@ -183,7 +183,7 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:toInterfaceOrientation];
 #endif
 }
@@ -191,7 +191,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	CGRect frame = _tableView.frame;
 #ifndef __BOTTOM_AD__
 	frame.origin.y += _adBannerHeight;
@@ -210,7 +210,7 @@
 	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
 	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:self.interfaceOrientation];
 #endif
 }
@@ -304,7 +304,7 @@
 }
 
 #pragma mark ADBannerViewDelegate
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 
 //#define __BOTTOM_AD__
 

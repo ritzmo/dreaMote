@@ -18,7 +18,7 @@
 
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
@@ -28,7 +28,7 @@
 
 @implementation CurrentViewController
 
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
@@ -60,7 +60,7 @@
 	[_currentXMLDoc release];
 	[_nowSummary release];
 	[_nextSummary release];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[_adBannerView release];
 #endif
 
@@ -74,7 +74,7 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self createAdBannerView];
 #endif
 	
@@ -329,7 +329,7 @@
 			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:self.interfaceOrientation];
 #endif
 }
@@ -350,13 +350,13 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:toInterfaceOrientation];
 #endif
 }
 
 #pragma mark ADBannerViewDelegate
-#if SHOW_ADS()
+#if INCLUDE_FEATURE(Ads)
 
 //#define __BOTTOM_AD__
 
