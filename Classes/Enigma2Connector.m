@@ -78,6 +78,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			if(feature == kFeaturesSleepTimer)
 				return NO;
 		case WEBIF_VERSION_1_6_5:
+			if(feature == kFeaturesMediaPlayerPlaylistHandling)
+				return NO;
 		case WEBIF_VERSION_1_6_8:
 			break;
 	}
@@ -570,9 +572,20 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return data;
 }
 
-
 - (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist
 {
+	if([self hasFeature:kFeaturesMediaPlayerPlaylistHandling])
+	{
+		Result *result = [self getResultFromSimpleXmlWithRelativeString:@"/web/mediaplayercmd?command=shuffle"];
+		// native shuffle succeeded, abort
+		if(result.result)
+		{
+			[delegate performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
+			return;
+		}
+		// native shuffle failed, continue with non-native one
+	}
+
 	[playlist shuffle];
 
 	NSUInteger count = 2 * playlist.count;

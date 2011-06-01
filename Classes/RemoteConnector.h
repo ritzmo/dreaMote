@@ -148,6 +148,11 @@ enum connectorFeatures {
 	kFeaturesEPGRefresh,
 	/*! @brief Sleep-Timer interface. */
 	kFeaturesSleepTimer,
+	/*!
+	 @brief Extended Playlist Handling in MediaPlayer.
+	 @note This refers to load/save/clear/shuffle.
+	 */
+	kFeaturesMediaPlayerPlaylistHandling,
 };
 
 /*!
