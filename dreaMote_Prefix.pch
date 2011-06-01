@@ -70,7 +70,7 @@
 )
 
 // disable extra-animation on armv6
-#if defined(_ARM_ARCH_7) || defined(___i386__)
+#if defined(_ARM_ARCH_7) || defined(TARGET_IPHONE_SIMULATOR)
 	#define ENABLE_FEATURE_Extra_Animation 1
 #else
 	#define ENABLE_FEATURE_Extra_Animation 0
