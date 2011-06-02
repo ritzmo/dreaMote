@@ -492,10 +492,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	// TODO: we only allow infinite instant records for now
 	Result *result = [self getResultFromSimpleXmlWithRelativeString: @"/web/recordnow?recordnow=infinite"];
 
-	// work around buggy webif
-	if(!result.result && [result.resulttext hasPrefix:@"Entity 'nbsp' not defined"])
+	// work around buggy webif (was fixed in 1.6.6)
+	if(_webifVersion <= WEBIF_VERSION_1_6_5)
 	{
-		result.resulttext = NSLocalizedString(@"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality", @"");
+		if(!result.result && [result.resulttext hasPrefix:@"Entity 'nbsp' not defined"])
+			result.resulttext = NSLocalizedString(@"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality", @"");
 	}
 	return result;
 }
