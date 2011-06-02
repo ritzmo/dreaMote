@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 "<message timeout>" = "<nachrichten dauer>";
 
+/* Placeholder for SleepTimer duration field */
+"<min.>" = "<Min.>";
+
 /* No comment provided by engineer. */
 "<name>" = "<Name: z.B. Wohnzimmer>";
 
@@ -263,6 +266,9 @@
 
 /* No comment provided by engineer. */
 "Done" = "Fertig";
+
+/* SleepTimer Duration Cell Label */
+"Duration" = "Dauer";
 
 /* No comment provided by engineer. */
 "Enabled" = "Aktiv";
@@ -738,7 +744,7 @@
 /* Label of Progress HUD in MediaPlayer when shuffling playlist */
 "Shuffling Playlist" = "Wird gemischt";
 
-/* No comment provided by engineer. */
+/* Toggle Shutdown/Standby of SleepTimer */
 "Shutdown" = "Herunterfahren";
 
 /* used in confirmation dialog: really shutdown? */
@@ -764,6 +770,15 @@
 
 /* No comment provided by engineer. */
 "Size" = "Größe";
+
+/* Default title of SleepTimerViewController */
+"Sleep Timer" = "Ausschalt-Timer";
+
+/* No comment provided by engineer. */
+"Sleep Timer Explain" = "Ausschalt-Timer (de)aktivieren";
+
+/* No comment provided by engineer. */
+"Sleep Timer Title" = "Ausschalt-Timer";
 
 /* No comment provided by engineer. */
 "SNR" = "SNR";
@@ -863,9 +878,6 @@
 
 /* No comment provided by engineer. */
 "Unable to start playback" = "Wiedergabe konnte nicht gestartet werden";
-
-/* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers. */
-"Unique Description" = "Eindeutige Beschreibung";
 
 /* Remote host did return error code but no specific message. */
 "Unknown Error." = "Ein unbekannter Fehler ist aufgetreten.";

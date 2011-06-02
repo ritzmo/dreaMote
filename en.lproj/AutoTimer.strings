@@ -13,6 +13,9 @@
 /* timeframe after */
 /*"After: %@" = "After: %@";*/
 
+/* Avoid Duplicate Description 2 (timer on all services) */
+/*"All Services" = "All Services";*/
+
 /* timeframe before */
 /*"Before: %@" = "Before: %@";*/
 
@@ -40,6 +43,12 @@
 /* add new service filter */
 /*"New Service" = "New Service";*/
 
+/* Avoid Duplicate Description disabled */
+/*"No" = "No";*/
+
+/* Avoid Duplicate Description 1 (timers on same service) */
+/*"Same Service" = "Same Service";*/
+
 /* weekday filter */
 /*"Sat-Sun" = "Sat-Sun";*/
 
@@ -49,11 +58,20 @@
 /* section header for timeframe */
 /*"Timeframe" = "Timeframe";*/
 
+/* Avoid Duplicate Description 3 (timers on all services and recordings) */
+/*"Timers/Recordings" = "Timers/Recordings";*/
+
 /* section header for timespan */
 /*"Timespan" = "Timespan";*/
 
 /* timespan to */
 /*"To: %@" = "To: %@";*/
+
+/* Title of avoid duplicate description selector. */
+/*"Unique Description" = "Unique Description";*/
+
+/* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings. */
+/*"Unique Description: %@" = "Unique Description: %@";*/
 
 /* option (e.g. timespan or timeframe) unset */
 /*"unset" = "unset";*/

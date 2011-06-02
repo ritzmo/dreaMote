@@ -31,6 +31,9 @@
 /* No comment provided by engineer. */
 /*"<message timeout>" = "<message timeout>";*/
 
+/* Placeholder for SleepTimer duration field */
+/*"<min.>" = "<min.>";*/
+
 /* No comment provided by engineer. */
 "<name>" = "<name: e.g. living room>";
 
@@ -157,6 +160,12 @@
 /* Timer cleanup button */
 /*"Cleanup" = "Cleanup";*/
 
+/* Clear button/action in MediaPlayer */
+/*"Clear" = "Clear";*/
+
+/* Title of action sheet when leaving MediaPlayer view. */
+/*"Close MediaPlayer?" = "Close MediaPlayer?";*/
+
 /* No comment provided by engineer. */
 "Config List Explain" = "Change configuration and edit known hosts";
 
@@ -240,8 +249,14 @@
 /* No comment provided by engineer. */
 /*"Default Location" = "Default Location";*/
 
+/* Delete button in MediaPlayer */
+/*"Delete" = "Delete";*/
+
 /* No comment provided by engineer. */
 "Delete failed" = "Delete failed";
+
+/* Label of Progress HUD in MediaPlayer when deleting multiple items from playlist */
+/*"Deleting" = "Deleting";*/
 
 /* No comment provided by engineer. */
 /*"Description" = "Description";*/
@@ -251,6 +266,9 @@
 
 /* No comment provided by engineer. */
 /*"Done" = "Done";*/
+
+/* SleepTimer Duration Cell Label */
+/*"Duration" = "Duration";*/
 
 /* No comment provided by engineer. */
 /*"Enabled" = "Enabled";*/
@@ -514,6 +532,9 @@
 "Next" = "Next";
 
 /* No comment provided by engineer. */
+/*"No" = "No";*/
+
+/* No comment provided by engineer. */
 /*"No Data…" = "No Data…";*/
 
 /* Placeholder text in Now/Next-ServiceList if no EPG data present */
@@ -723,7 +744,7 @@
 /* Label of Progress HUD in MediaPlayer when shuffling playlist */
 /*"Shuffling Playlist" = "Shuffling Playlist";*/
 
-/* No comment provided by engineer. */
+/* Toggle Shutdown/Standby of SleepTimer */
 "Shutdown" = "Shutdown";
 
 /* used in confirmation dialog: really shutdown? */
@@ -749,6 +770,15 @@
 
 /* No comment provided by engineer. */
 /*"Size" = "Size";*/
+
+/* Default title of SleepTimerViewController */
+/*"Sleep Timer" = "Sleep Timer";*/
+
+/* No comment provided by engineer. */
+"Sleep Timer Explain" = "Edit and (de)active Sleep Timer";
+
+/* No comment provided by engineer. */
+"Sleep Timer Title" = "Sleep Timer";
 
 /* No comment provided by engineer. */
 /*"SNR" = "SNR";*/
@@ -840,14 +870,14 @@
 /* No comment provided by engineer. */
 /*"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality";*/
 
+/* Failed to retrieve or generate URL of remote stream */
+/*"Unable to generate stream URL." = "Unable to generate stream URL.";*/
+
 /* No comment provided by engineer. */
 /*"Unable to map button to keycode!" = "Unable to map button to keycode!";*/
 
 /* No comment provided by engineer. */
 /*"Unable to start playback" = "Unable to start playback";*/
-
-/* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers. */
-/*"Unique Description" = "Unique Description";*/
 
 /* Remote host did return error code but no specific message. */
 /*"Unknown Error." = "Unknown Error.";*/
@@ -890,6 +920,9 @@
 
 /* No comment provided by engineer. */
 /*"Year" = "Year";*/
+
+/* No comment provided by engineer. */
+/*"Yes" = "Yes";*/
 
 /* Message type */
 /*"Yes/No" = "Yes/No";*/
