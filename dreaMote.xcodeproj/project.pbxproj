@@ -146,7 +146,6 @@
 		DA165ED112E9CA2700A6D894 /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DA165ED212E9CA2700A6D894 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
 		DA165ED312E9CA2700A6D894 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
-		DA165ED412E9CA2700A6D894 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
 		DA165ED512E9CA2700A6D894 /* AboutDreamoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */; };
 		DA165ED612E9CA2700A6D894 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0490F0BC011004B488C /* CXMLDocument.m */; };
 		DA165ED712E9CA2700A6D894 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04D0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m */; };
@@ -303,12 +302,14 @@
 		DA5A04900E3798BC0062F924 /* MovieListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A048F0E3798BC0062F924 /* MovieListController.m */; };
 		DA5A04D20E379C500062F924 /* MovieTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5A04D00E379C500062F924 /* MovieTableViewCell.m */; };
 		DA5C3FFC0E3874A800CE4B68 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */; };
+		DA5DB8F31397B27900400157 /* SimpleSingleSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */; };
+		DA5DB8F41397B27900400157 /* SimpleSingleSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */; };
+		DA5DB8F51397B27900400157 /* SimpleSingleSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */; };
 		DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
 		DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
 		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
 		DA66430510FA0CFF000C96F4 /* Result.m in Sources */ = {isa = PBXBuildFile; fileRef = DA66430410FA0CFF000C96F4 /* Result.m */; };
 		DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
-		DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
 		DA67D68D130D4A1F00953B16 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA67D68C130D4A1E00953B16 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA67D705130D4A4200953B16 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA67D68C130D4A1E00953B16 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA67D70D130D4B9900953B16 /* internet-mail.png in Resources */ = {isa = PBXBuildFile; fileRef = DA67D70C130D4B9900953B16 /* internet-mail.png */; };
@@ -612,7 +613,6 @@
 		DAE17DD41390EFAD00B00FC4 /* AfterEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA2222B0E998CE900DD749C /* AfterEventViewController.m */; };
 		DAE17DD51390EFAD00B00FC4 /* NeutrinoConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = DAA9247C0EA68C4D00FC0E70 /* NeutrinoConnector.m */; };
 		DAE17DD61390EFAD00B00FC4 /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664CD80EA8E2C100A37F55 /* MessageViewController.m */; };
-		DAE17DD71390EFAD00B00FC4 /* MessageTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */; };
 		DAE17DD81390EFAD00B00FC4 /* AboutDreamoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51BB000EAA344200AF9146 /* AboutDreamoteViewController.m */; };
 		DAE17DD91390EFAD00B00FC4 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF0490F0BC011004B488C /* CXMLDocument.m */; };
 		DAE17DDA1390EFAD00B00FC4 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA0BF04D0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m */; };
@@ -888,6 +888,8 @@
 		DA5A04D00E379C500062F924 /* MovieTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieTableViewCell.m; sourceTree = "<group>"; };
 		DA5B70CA12D383D200840890 /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		DA5DB8F11397B27900400157 /* SimpleSingleSelectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSingleSelectionListController.h; sourceTree = "<group>"; };
+		DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSingleSelectionListController.m; sourceTree = "<group>"; };
 		DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
 		DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
 		DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoRCEmulatorController.h; sourceTree = "<group>"; };
@@ -899,8 +901,6 @@
 		DA664CC10EA8C80100A37F55 /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DA664CD70EA8E2C100A37F55 /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		DA664CD80EA8E2C100A37F55 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
-		DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTypeViewController.h; sourceTree = "<group>"; };
-		DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTypeViewController.m; sourceTree = "<group>"; };
 		DA67D68C130D4A1E00953B16 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DA67D70C130D4B9900953B16 /* internet-mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "internet-mail.png"; sourceTree = "<group>"; };
 		DA6C530512CE40CC00968EBE /* TimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerSplitViewController.h; sourceTree = "<group>"; };
@@ -1901,8 +1901,6 @@
 				DA12F67412DB970A009FF8DD /* MediaPlayerDetailsController.m */,
 				DA664CD70EA8E2C100A37F55 /* MessageViewController.h */,
 				DA664CD80EA8E2C100A37F55 /* MessageViewController.m */,
-				DA664D850EA8F17700A37F55 /* MessageTypeViewController.h */,
-				DA664D860EA8F17700A37F55 /* MessageTypeViewController.m */,
 				DA80C4920E37A254008A42AE /* MovieViewController.h */,
 				DA80C4930E37A254008A42AE /* MovieViewController.m */,
 				DA9BF4C31330DC2A008193C6 /* MultiEPGIntervalViewController.h */,
@@ -1958,6 +1956,8 @@
 				DAD51D720D8303FF00A769F3 /* ServiceListController.m */,
 				DA323A5613075B2B00F7FF54 /* ServiceZapListController.h */,
 				DA323A5713075B2B00F7FF54 /* ServiceZapListController.m */,
+				DA5DB8F11397B27900400157 /* SimpleSingleSelectionListController.h */,
+				DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */,
 				DA7FD7540D84307700974B1A /* TimerListController.h */,
 				DA7FD7550D84307700974B1A /* TimerListController.m */,
 			);
@@ -2435,7 +2435,6 @@
 				DAA2222C0E998CE900DD749C /* AfterEventViewController.m in Sources */,
 				DAA9247D0EA68C4D00FC0E70 /* NeutrinoConnector.m in Sources */,
 				DA664CD90EA8E2C200A37F55 /* MessageViewController.m in Sources */,
-				DA664D870EA8F17700A37F55 /* MessageTypeViewController.m in Sources */,
 				DA51BB010EAA344200AF9146 /* AboutDreamoteViewController.m in Sources */,
 				DA0BF05D0F0BC011004B488C /* CXMLDocument.m in Sources */,
 				DA0BF05F0F0BC011004B488C /* CXMLDocument_PrivateExtensions.m in Sources */,
@@ -2558,6 +2557,7 @@
 				DACE3FE9135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
 				DA9161011387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAE17E631392626800B00FC4 /* PlayListCell.m in Sources */,
+				DA5DB8F31397B27900400157 /* SimpleSingleSelectionListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2597,7 +2597,6 @@
 				DA165ED112E9CA2700A6D894 /* AfterEventViewController.m in Sources */,
 				DA165ED212E9CA2700A6D894 /* NeutrinoConnector.m in Sources */,
 				DA165ED312E9CA2700A6D894 /* MessageViewController.m in Sources */,
-				DA165ED412E9CA2700A6D894 /* MessageTypeViewController.m in Sources */,
 				DA165ED512E9CA2700A6D894 /* AboutDreamoteViewController.m in Sources */,
 				DA165ED612E9CA2700A6D894 /* CXMLDocument.m in Sources */,
 				DA165ED712E9CA2700A6D894 /* CXMLDocument_PrivateExtensions.m in Sources */,
@@ -2709,6 +2708,7 @@
 				DACE3FEA135828DA00EC11E7 /* EPGRefreshViewController.m in Sources */,
 				DA9161021387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAE17E641392626800B00FC4 /* PlayListCell.m in Sources */,
+				DA5DB8F41397B27900400157 /* SimpleSingleSelectionListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2746,7 +2746,6 @@
 				DAE17DD41390EFAD00B00FC4 /* AfterEventViewController.m in Sources */,
 				DAE17DD51390EFAD00B00FC4 /* NeutrinoConnector.m in Sources */,
 				DAE17DD61390EFAD00B00FC4 /* MessageViewController.m in Sources */,
-				DAE17DD71390EFAD00B00FC4 /* MessageTypeViewController.m in Sources */,
 				DAE17DD81390EFAD00B00FC4 /* AboutDreamoteViewController.m in Sources */,
 				DAE17DD91390EFAD00B00FC4 /* CXMLDocument.m in Sources */,
 				DAE17DDA1390EFAD00B00FC4 /* CXMLDocument_PrivateExtensions.m in Sources */,
@@ -2825,6 +2824,7 @@
 				DAE17E441390EFAD00B00FC4 /* EPGRefreshViewController.m in Sources */,
 				DAE17E451390EFAD00B00FC4 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAE17E651392626800B00FC4 /* PlayListCell.m in Sources */,
+				DA5DB8F51397B27900400157 /* SimpleSingleSelectionListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
