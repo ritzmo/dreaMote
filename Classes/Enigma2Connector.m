@@ -66,20 +66,27 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 {
 	switch(_webifVersion)
 	{
-		default:
+		// version not yet determined, assume up2date
 		case WEBIF_VERSION_UNKNOWN:
+			break;
+		// should never occur: unhandled internal version; assume it's old though to not cause any trouble.
+		default:
 		case WEBIF_VERSION_OLD:
 			if(feature == kFeaturesSatFinder)
 				return NO;
+			/* FALL THROUGH */
 		case WEBIF_VERSION_1_5b:
 			if(feature == kFeaturesRecordingLocations)
 			   return NO;
+			/* FALL THROUGH */
 		case WEBIF_VERSION_1_5b3:
 			if(feature == kFeaturesSleepTimer)
 				return NO;
+			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_5:
 			if(feature == kFeaturesMediaPlayerPlaylistHandling)
 				return NO;
+			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_8:
 			break;
 	}
