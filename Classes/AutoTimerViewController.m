@@ -64,6 +64,8 @@ enum sectionIds
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (nonatomic, readonly) UIViewController *afterEventNavigationController;
+@property (nonatomic, readonly) SimpleSingleSelectionListController *avoidDuplicateDescriptionController;
+@property (nonatomic, readonly) UIViewController *avoidDuplicateDescriptionNavigationController;
 @property (nonatomic, readonly) UIViewController *bouquetListController;
 @property (nonatomic, readonly) UINavigationController *filterNavigationController;
 @property (nonatomic, readonly) AutoTimerFilterViewController *filterViewController;
@@ -72,6 +74,8 @@ enum sectionIds
 @property (nonatomic, readonly) UIViewController *datePickerNavigationController;
 @property (nonatomic, readonly) UIViewController *locationListController;
 @end
+
+static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 @implementation AutoTimerViewController
 
@@ -90,6 +94,17 @@ enum sectionIds
 		_datePickerController = nil;
 		_afterEventViewController = nil;
 		_popoverButtonItem = nil;
+
+		if(avoidDuplicateDescriptionTexts == nil)
+		{
+			avoidDuplicateDescriptionTexts = [[NSArray alloc] initWithObjects:
+						NSLocalizedStringFromTable(@"No", @"AutoTimer", @"Avoid Duplicate Description disabled"),
+						NSLocalizedStringFromTable(@"Same Service", @"AutoTimer", @"Avoid Duplicate Description 1 (timers on same service)"),
+						NSLocalizedStringFromTable(@"All Services", @"AutoTimer", @"Avoid Duplicate Description 2 (timer on all services)"),
+						NSLocalizedStringFromTable(@"Timers/Recordings", @"AutoTimer", @"Avoid Duplicate Description 3 (timers on all services and recordings)"),
+						nil
+			];
+		}
 	}
 	return self;
 }
@@ -129,7 +144,6 @@ enum sectionIds
 	[_timeframeSwitch release];
 	[_timerJustplay release];
 	[_timespanSwitch release];
-	[_avoidDuplicateDescription release];
 
 	[_titleCell release];
 	[_matchCell release];
@@ -141,6 +155,8 @@ enum sectionIds
 
 	[_afterEventNavigationController release];
 	[_afterEventViewController release];
+	[_avoidDuplicateDescriptionController release];
+	[_avoidDuplicateDescriptionNavigationController release];
 	[_bouquetListController release];
 	[_serviceListController release];
 	[_datePickerController release];
@@ -156,6 +172,8 @@ enum sectionIds
 {
 	[_afterEventNavigationController release];
 	[_afterEventViewController release];
+	[_avoidDuplicateDescriptionController release];
+	[_avoidDuplicateDescriptionNavigationController release];
 	[_bouquetListController release];
 	[_serviceListController release];
 	[_datePickerController release];
@@ -166,6 +184,8 @@ enum sectionIds
 
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
+	_avoidDuplicateDescriptionController = nil;
+	_avoidDuplicateDescriptionNavigationController = nil;
 	_bouquetListController = nil;
 	_serviceListController = nil;
 	_datePickerController = nil;
@@ -204,6 +224,31 @@ enum sectionIds
 		[_afterEventViewController setDelegate: self];
 	}
 	return _afterEventViewController;
+}
+
+- (UIViewController *)avoidDuplicateDescriptionNavigationController
+{
+	if(IS_IPAD())
+	{
+		if(_avoidDuplicateDescriptionNavigationController == nil)
+		{
+			_avoidDuplicateDescriptionNavigationController = [[UINavigationController alloc] initWithRootViewController:self.avoidDuplicateDescriptionController];
+			_avoidDuplicateDescriptionNavigationController.modalPresentationStyle = _avoidDuplicateDescriptionController.modalPresentationStyle;
+			_avoidDuplicateDescriptionNavigationController.modalTransitionStyle = _avoidDuplicateDescriptionController.modalTransitionStyle;
+		}
+		return _avoidDuplicateDescriptionNavigationController;
+	}
+	return _avoidDuplicateDescriptionController;
+}
+
+- (SimpleSingleSelectionListController *)avoidDuplicateDescriptionController
+{
+	if(_avoidDuplicateDescriptionController == nil)
+	{
+		_avoidDuplicateDescriptionController = [[SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")] retain];
+		[_avoidDuplicateDescriptionController setDelegate:self];
+	}
+	return _avoidDuplicateDescriptionController;
 }
 
 - (UIViewController *)bouquetListController
@@ -359,7 +404,6 @@ enum sectionIds
 	_timeframeSwitch.on = (_timer.after != nil && _timer.before != nil);
 	_timerJustplay.on = _timer.justplay;
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
-	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription > 0;
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 
 	[(UITableView *)self.view reloadData];
@@ -549,11 +593,6 @@ enum sectionIds
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
 	_timespanSwitch.backgroundColor = [UIColor clearColor];
 
-	// avoidDuplicateDescription
-	_avoidDuplicateDescription = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_avoidDuplicateDescription.on = _timer.avoidDuplicateDescription > 0;
-	_avoidDuplicateDescription.backgroundColor = [UIColor clearColor];
-
 	// maxduration enable/disable
 	_maxdurationSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_maxdurationSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
@@ -632,7 +671,6 @@ enum sectionIds
 		_timer.searchType = _exactSearch.on ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
 		_timer.searchCase = _sensitiveSearch.on ? CASE_SENSITIVE : CASE_INSENSITIVE;
 		_timer.overrideAlternatives = _overrideAlternatives.on;
-		_timer.avoidDuplicateDescription = _avoidDuplicateDescription.on > 0;
 
 		// Try to commit changes if no error occured
 		if(!message)
@@ -700,7 +738,6 @@ enum sectionIds
 	_timeframeSwitch.enabled = editing;
 	_timerJustplay.enabled = editing;
 	_timespanSwitch.enabled = editing;
-	_avoidDuplicateDescription.enabled = editing;
 	_maxdurationSwitch.enabled = editing;
 
 	[(UITableView *)self.view reloadData];
@@ -718,6 +755,21 @@ enum sectionIds
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+#pragma mark -
+#pragma mark SimpleSingleSelectionListDelegate methods
+#pragma mark -
+
+- (void)itemSelected:(NSNumber *)newSelection
+{
+	if(newSelection == nil)
+		return;
+
+	_timer.avoidDuplicateDescription = [newSelection integerValue];
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:generalSection]];
+	cell.textLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Unique Description: %@", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
 }
 
 #pragma mark -
@@ -1057,32 +1109,39 @@ enum sectionIds
 			break;
 		case generalSection:
 		{
-			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			switch(row)
 			{
 				case 0:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timerEnabled;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 					break;
 				case 1:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _exactSearch;
 					cell.textLabel.text = NSLocalizedString(@"Exact Title", @"");
 					break;
 				case 2:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _sensitiveSearch;
 					cell.textLabel.text = NSLocalizedString(@"Case-Sensitive", @"case-sensitive matching (of autotimers)");
 					break;
 				case 3:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _overrideAlternatives;
 					cell.textLabel.text = NSLocalizedString(@"Prefer Alternatives", @"");
 					break;
 				case 4:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timerJustplay;
 					cell.textLabel.text = NSLocalizedString(@"Justplay", @"");
 					break;
 				case 5:
-					((DisplayCell *)cell).view = _avoidDuplicateDescription;
-					cell.textLabel.text = NSLocalizedString(@"Unique Description", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers.");
+					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Unique Description: %@", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					/* FALL THROUGH */
 				default:
 					break;
@@ -1550,6 +1609,13 @@ enum sectionIds
 	UIViewController *targetViewController = nil;
 	switch(indexPath.section)
 	{
+		case generalSection:
+			if(row == 5)
+			{
+				self.avoidDuplicateDescriptionController.selectedItem = _timer.avoidDuplicateDescription;
+				targetViewController = self.avoidDuplicateDescriptionNavigationController;
+			}
+			break;
 		case timespanSection:
 		{
 			if(row == 0)
@@ -1788,6 +1854,8 @@ enum sectionIds
 {
 	[_afterEventNavigationController release];
 	[_afterEventViewController release];
+	[_avoidDuplicateDescriptionController release];
+	[_avoidDuplicateDescriptionNavigationController release];
 	[_bouquetListController release];
 	[_serviceListController release];
 	[_datePickerController release];
@@ -1798,6 +1866,8 @@ enum sectionIds
 
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
+	_avoidDuplicateDescriptionController = nil;
+	_avoidDuplicateDescriptionNavigationController = nil;
 	_bouquetListController = nil;
 	_serviceListController = nil;
 	_datePickerController = nil;

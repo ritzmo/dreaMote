@@ -18,6 +18,7 @@
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
+#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 // Forward declarations...
 @class DatePickerController;
@@ -34,6 +35,7 @@
 													AfterEventDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
 													AutoTimerFilterDelegate,
+													SimpleSingleSelectionListDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
 {
@@ -61,7 +63,6 @@
 	UISwitch *_timeframeSwitch; /*!< @brief Enable/Disable Timeframe. */
 	UISwitch *_timerJustplay; /*!< @brief Create zap timers? */
 	UISwitch *_timespanSwitch; /*!< @brief Enable/Disable Timespan. */
-	UISwitch *_avoidDuplicateDescription; /*!< @brief Avoid duplicate description? */
 	UISwitch *_maxdurationSwitch; /*!< @brief Maxduration Switch. */
 
 	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
@@ -73,6 +74,8 @@
 	UIViewController *_locationListController; /*!< @brief Cached Location List. */
 	UIViewController *_filterNavigationController; /*!< @brief Navigation Controller of Filter View. */
 	AutoTimerFilterViewController *_filterViewController; /*!< @brief Cached Filter View. */
+	SimpleSingleSelectionListController *_avoidDuplicateDescriptionController; /*!< @brief Cached ADD Selector. */
+	UIViewController *_avoidDuplicateDescriptionNavigationController; /*!< @brief Cached ADD Navigation Controller. */
 }
 
 /*!
