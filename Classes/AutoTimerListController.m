@@ -288,7 +288,11 @@
 	AutoTimer *autotimer = [_autotimers objectAtIndex:indexPath.row];
 	if(!autotimer.valid)
 		return nil;
-	self.autotimerView.timer = autotimer;
+
+	// create a copy and work on it
+	AutoTimer *copy = [autotimer copy];
+	self.autotimerView.timer = copy;
+	[copy release];
 
 	// We do not want to refresh autotimer list when we return
 	_refreshAutotimers = NO;
@@ -398,9 +402,7 @@
 
 - (void)AutoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;
 {
-	// XXX: we use the actual autotimer and not a copy for editing, so reload the list just to be sure
-	[self emptyData];
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	// do we need this for anything?
 }
 
 @end
