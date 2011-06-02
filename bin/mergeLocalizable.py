@@ -70,7 +70,7 @@ def updateLanguage(lang):
 						value = translated[key][table]
 						del translated[key][table]
 					else:
-						tempTable = translated[key].keys()[1]
+						tempTable = translated[key].keys()[0]
 						value = translated[key][tempTable]
 						print "Accepting %s from table %s for %s in table %s" % (value, tempTable, key, table)
 						del translated[key][tempTable]
