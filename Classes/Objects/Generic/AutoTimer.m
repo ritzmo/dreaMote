@@ -8,6 +8,10 @@
 
 #import "AutoTimer.h"
 
+@interface AutoTimer()
+- (id)initWithAutoTimer:(AutoTimer *)autotimer;
+@end
+
 @implementation AutoTimer
 
 @synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, before, after, avoidDuplicateDescription, afterEventAction;
@@ -34,6 +38,36 @@
 		offsetBefore = -1;
 		offsetAfter = -1;
 		idno = -1;
+	}
+	return self;
+}
+
+- (id)initWithAutoTimer:(AutoTimer *)autotimer
+{
+	if((self = [super init]))
+	{
+		name = [autotimer.name copy];
+		match = [autotimer.match copy];
+		enabled = autotimer.enabled;
+		idno = autotimer.idno;
+		from = [autotimer.from copy];
+		to = [autotimer.to copy];
+		offsetBefore = autotimer.offsetBefore;
+		offsetAfter = autotimer.offsetAfter;
+		encoding = [autotimer.encoding copy];
+		searchType = autotimer.searchType;
+		searchCase = autotimer.searchCase;
+		overrideAlternatives = autotimer.overrideAlternatives;
+		services = [autotimer.services copy];
+		bouquets = [autotimer.bouquets copy];
+		tags = [autotimer.tags copy];
+		maxduration = autotimer.maxduration;
+		location = [autotimer.location copy];
+		justplay = autotimer.justplay;
+		before = [autotimer.before copy];
+		after = [autotimer.after copy];
+		avoidDuplicateDescription = autotimer.avoidDuplicateDescription;
+		afterEventAction = autotimer.afterEventAction;
 	}
 	return self;
 }
@@ -203,6 +237,16 @@
 			excludeDayOfWeek = [[NSMutableArray alloc] init];
 	}
 	return excludeDayOfWeek;
+}
+
+#pragma mark -
+#pragma mark	Copy
+#pragma mark -
+
+- (id)copyWithZone:(NSZone *)zone
+{
+	id newElement = [[[self class] alloc] initWithAutoTimer: self];
+	return newElement;
 }
 
 @end
