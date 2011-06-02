@@ -769,7 +769,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_timer.avoidDuplicateDescription = [newSelection integerValue];
 
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:generalSection]];
-	cell.textLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Unique Description: %@", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
+	cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
 }
 
 #pragma mark -
@@ -1138,7 +1138,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					break;
 				case 5:
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedString(@"Unique Description: %@", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
+					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
