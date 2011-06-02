@@ -305,6 +305,15 @@
 		DA5DB8F31397B27900400157 /* SimpleSingleSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */; };
 		DA5DB8F41397B27900400157 /* SimpleSingleSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */; };
 		DA5DB8F51397B27900400157 /* SimpleSingleSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */; };
+		DA5DB8F81397CC6F00400157 /* SleepTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F71397CC6E00400157 /* SleepTimer.m */; };
+		DA5DB8F91397CC6F00400157 /* SleepTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F71397CC6E00400157 /* SleepTimer.m */; };
+		DA5DB8FA1397CC6F00400157 /* SleepTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8F71397CC6E00400157 /* SleepTimer.m */; };
+		DA5DB8FE1397D06900400157 /* SleepTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8FD1397D06900400157 /* SleepTimerXMLReader.m */; };
+		DA5DB8FF1397D06900400157 /* SleepTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8FD1397D06900400157 /* SleepTimerXMLReader.m */; };
+		DA5DB9001397D06900400157 /* SleepTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB8FD1397D06900400157 /* SleepTimerXMLReader.m */; };
+		DA5DB9031397D4D700400157 /* SleepTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB9021397D4D600400157 /* SleepTimerViewController.m */; };
+		DA5DB9041397D4D700400157 /* SleepTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB9021397D4D600400157 /* SleepTimerViewController.m */; };
+		DA5DB9051397D4D700400157 /* SleepTimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5DB9021397D4D600400157 /* SleepTimerViewController.m */; };
 		DA661F250F162FC60030A40B /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */; };
 		DA661F4A0F1631700030A40B /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661F490F1631700030A40B /* NeutrinoRCEmulatorController.m */; };
 		DA661FAC0F1635A50030A40B /* SVDRPRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */; };
@@ -890,6 +899,13 @@
 		DA5C3FFB0E3874A800CE4B68 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DA5DB8F11397B27900400157 /* SimpleSingleSelectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSingleSelectionListController.h; sourceTree = "<group>"; };
 		DA5DB8F21397B27900400157 /* SimpleSingleSelectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSingleSelectionListController.m; sourceTree = "<group>"; };
+		DA5DB8F61397CC6E00400157 /* SleepTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepTimer.h; sourceTree = "<group>"; };
+		DA5DB8F71397CC6E00400157 /* SleepTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepTimer.m; sourceTree = "<group>"; };
+		DA5DB8FB1397CDBE00400157 /* SleepTimerSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepTimerSourceDelegate.h; sourceTree = "<group>"; };
+		DA5DB8FC1397D06900400157 /* SleepTimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepTimerXMLReader.h; sourceTree = "<group>"; };
+		DA5DB8FD1397D06900400157 /* SleepTimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepTimerXMLReader.m; sourceTree = "<group>"; };
+		DA5DB9011397D4D600400157 /* SleepTimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SleepTimerViewController.h; sourceTree = "<group>"; };
+		DA5DB9021397D4D600400157 /* SleepTimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SleepTimerViewController.m; sourceTree = "<group>"; };
 		DA661F230F162FC60030A40B /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
 		DA661F240F162FC60030A40B /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
 		DA661F480F1631700030A40B /* NeutrinoRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoRCEmulatorController.h; sourceTree = "<group>"; };
@@ -1471,6 +1487,8 @@
 				DA0BF4530F0C1066004B488C /* Service.m */,
 				DA0B0EEC0FE6537D00684EDC /* Signal.h */,
 				DA0B0EED0FE6537D00684EDC /* Signal.m */,
+				DA5DB8F61397CC6E00400157 /* SleepTimer.h */,
+				DA5DB8F71397CC6E00400157 /* SleepTimer.m */,
 				DA0BF4540F0C1066004B488C /* Timer.h */,
 				DA0BF4550F0C1066004B488C /* Timer.m */,
 				DA0BF4560F0C1066004B488C /* Volume.h */,
@@ -1732,6 +1750,8 @@
 				DA7D23750F101F1500BB8BE7 /* ServiceXMLReader.m */,
 				DA0B0EE60FE6522E00684EDC /* SignalXMLReader.h */,
 				DA0B0EE70FE6522E00684EDC /* SignalXMLReader.m */,
+				DA5DB8FC1397D06900400157 /* SleepTimerXMLReader.h */,
+				DA5DB8FD1397D06900400157 /* SleepTimerXMLReader.m */,
 				DA7D23760F101F1500BB8BE7 /* TimerXMLReader.h */,
 				DA7D23770F101F1500BB8BE7 /* TimerXMLReader.m */,
 				DA7D23780F101F1500BB8BE7 /* VolumeXMLReader.h */,
@@ -1799,6 +1819,7 @@
 				DA7A19DF12E1C76A004DEEB7 /* NowNextSourceDelegate.h */,
 				DAAC51F312D48F3500B3B443 /* ServiceSourceDelegate.h */,
 				DAAC51F412D48F3500B3B443 /* SignalSourceDelegate.h */,
+				DA5DB8FB1397CDBE00400157 /* SleepTimerSourceDelegate.h */,
 				DAAC51F512D48F3500B3B443 /* TimerSourceDelegate.h */,
 				DAAC51F612D48F3500B3B443 /* VolumeSourceDelegate.h */,
 			);
@@ -1915,6 +1936,8 @@
 				DA27E29510924F010008A82E /* SimpleRCEmulatorController.m */,
 				DA9AD37B0FEBE29C00A59612 /* SimpleRepeatedViewController.h */,
 				DA9AD37C0FEBE29C00A59612 /* SimpleRepeatedViewController.m */,
+				DA5DB9011397D4D600400157 /* SleepTimerViewController.h */,
+				DA5DB9021397D4D600400157 /* SleepTimerViewController.m */,
 				DA661FAA0F1635A50030A40B /* SVDRPRCEmulatorController.h */,
 				DA661FAB0F1635A50030A40B /* SVDRPRCEmulatorController.m */,
 				DAB78743135715C700668D0F /* TimeoutSelectionViewController.h */,
@@ -2558,6 +2581,9 @@
 				DA9161011387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAE17E631392626800B00FC4 /* PlayListCell.m in Sources */,
 				DA5DB8F31397B27900400157 /* SimpleSingleSelectionListController.m in Sources */,
+				DA5DB8F81397CC6F00400157 /* SleepTimer.m in Sources */,
+				DA5DB8FE1397D06900400157 /* SleepTimerXMLReader.m in Sources */,
+				DA5DB9031397D4D700400157 /* SleepTimerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2709,6 +2735,9 @@
 				DA9161021387FCDE00309CC2 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAE17E641392626800B00FC4 /* PlayListCell.m in Sources */,
 				DA5DB8F41397B27900400157 /* SimpleSingleSelectionListController.m in Sources */,
+				DA5DB8F91397CC6F00400157 /* SleepTimer.m in Sources */,
+				DA5DB8FF1397D06900400157 /* SleepTimerXMLReader.m in Sources */,
+				DA5DB9041397D4D700400157 /* SleepTimerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2825,6 +2854,9 @@
 				DAE17E451390EFAD00B00FC4 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAE17E651392626800B00FC4 /* PlayListCell.m in Sources */,
 				DA5DB8F51397B27900400157 /* SimpleSingleSelectionListController.m in Sources */,
+				DA5DB8FA1397CC6F00400157 /* SleepTimer.m in Sources */,
+				DA5DB9001397D06900400157 /* SleepTimerXMLReader.m in Sources */,
+				DA5DB9051397D4D700400157 /* SleepTimerViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

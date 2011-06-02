@@ -33,6 +33,7 @@
 	NSDictionary *_locationsDictionary; /*!< @brief Dictionary describing Locations List Item. */
 	NSDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
 	NSDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */
+	NSDictionary *_sleeptimerDictionary; /*!< @brief Dictionary describing SleepTimer Item. */
 }
 
 /*!

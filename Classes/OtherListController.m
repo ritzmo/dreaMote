@@ -31,6 +31,7 @@
 #import "LocationListController.h"
 #import "ServiceListController.h"
 #import "SignalViewController.h"
+#import "SleepTimerViewController.h"
 #import "TimerListController.h"
 #import "MediaPlayerController.h"
 
@@ -73,6 +74,7 @@
 	[_locationsDictionary release];
 	[_recordDictionary release];
 	[_signalDictionary release];
+	[_sleeptimerDictionary release];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super dealloc];
@@ -198,6 +200,14 @@
 						 nil]];
 	[targetViewController release];
 
+	targetViewController = [[SleepTimerViewController alloc] init];
+	_sleeptimerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							  NSLocalizedString(@"Sleep Timer Title", @""), @"title",
+							  NSLocalizedString(@"Sleep Timer Explain", @""), @"explainText",
+							  targetViewController, @"viewController",
+							  nil] retain];
+	[targetViewController release];
+
 	// Add the "About" button to the navigation bar
 	UIButton *button = [UIButton buttonWithType: UIButtonTypeInfoLight];
 	[button addTarget:self action:@selector(aboutDreamoteAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -313,6 +323,24 @@
 		if([menuList containsObject: _signalDictionary])
 		{
 			[menuList removeObject: _signalDictionary];
+			reload = YES;
+		}
+	}
+
+	// Add/Remove Sleep Timer
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSleepTimer])
+	{
+		if(![menuList containsObject: _sleeptimerDictionary])
+		{
+			[menuList insertObject: _sleeptimerDictionary atIndex: (IS_IPAD()) ? 4 : 5];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _sleeptimerDictionary])
+		{
+			[menuList removeObject: _sleeptimerDictionary];
 			reload = YES;
 		}
 	}

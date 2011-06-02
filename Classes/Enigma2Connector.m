@@ -32,6 +32,7 @@
 #import "XMLReader/Enigma2/LocationXMLReader.h"
 #import "XMLReader/Enigma2/ServiceXMLReader.h"
 #import "XMLReader/Enigma2/SignalXMLReader.h"
+#import "XMLReader/Enigma2/SleepTimerXMLReader.h"
 #import "XMLReader/Enigma2/TimerXMLReader.h"
 #import "XMLReader/Enigma2/VolumeXMLReader.h"
 
@@ -897,6 +898,29 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		result = [self getResultFromSimpleXmlWithRelativeString:servicesString];
 	}
 	return result;
+}
+
+#pragma mark SleepTimer
+
+- (CXMLDocument *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/web/sleeptimer?cmd=get" relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2SleepTimerXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
+}
+
+- (CXMLDocument *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/sleeptimer?cmd=set&enabled=%@&time=%d&action=%@",
+										 settings.enabled ? @"True" : @"False", settings.time, (settings.action == sleeptimerShutdown) ? @"shutdown" : @"standby"] relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2SleepTimerXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
 }
 
 #pragma mark Control

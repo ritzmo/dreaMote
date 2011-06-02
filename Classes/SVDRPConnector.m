@@ -1330,4 +1330,20 @@ typedef enum
 	return nil;
 }
 
+- (CXMLDocument *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (CXMLDocument *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
 @end

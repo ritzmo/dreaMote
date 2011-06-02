@@ -211,6 +211,7 @@ enum buttonCodes {
 @class CXMLDocument;
 @class EPGRefreshSettings;
 @class Result;
+@class SleepTimer;
 @protocol EventProtocol;
 @protocol MovieProtocol;
 @protocol ServiceProtocol;
@@ -228,6 +229,7 @@ enum buttonCodes {
 @protocol NextSourceDelegate;
 @protocol ServiceSourceDelegate;
 @protocol SignalSourceDelegate;
+@protocol SleepTimerSourceDelegate;
 @protocol TimerSourceDelegate;
 @protocol VolumeSourceDelegate;
 @protocol FileSourceDelegate;
@@ -642,6 +644,28 @@ enum buttonCodes {
  @return Valid Result if settings were changed.
  */
 - (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets;
+
+#pragma mark -
+#pragma mark Sleeptimer
+#pragma mark -
+
+/*!
+ @brief Retrieve SleepTimer settings.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate;
+
+/*!
+ @brief Set SleepTimer settings.
+ @note Will call back delegate with new settings.
+
+ @param settings New settings.
+ @param delegate Delegate to be called back.
+ @return Pointer to parsed CXMLDocument.
+ */
+- (CXMLDocument *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate;
 
 #pragma mark -
 #pragma mark Control
