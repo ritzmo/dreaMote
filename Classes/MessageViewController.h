@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "CellTextField.h" /* CellTextField, EditableTableViewCellDelegate */
-#import "MessageTypeViewController.h" /* MessageTypeDelegate */
+#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 /*!
  @brief Message View.
@@ -17,7 +17,8 @@
  View to be used to send messages to the STB.
  */
 @interface MessageViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
-													UITableViewDataSource, MessageTypeDelegate,
+													UITableViewDataSource,
+													SimpleSingleSelectionListDelegate,
 													EditableTableViewCellDelegate>
 {
 @private

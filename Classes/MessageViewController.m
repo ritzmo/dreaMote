@@ -216,7 +216,11 @@
 	return YES;
 }
 
-- (void)typeSelected: (NSNumber *) newType
+#pragma mark -
+#pragma mark SimpleSingleSelectionListDelegate methods
+#pragma mark -
+
+- (void)itemSelected:(NSNumber *)newType
 {
 	if(newType == nil)
 		return;
@@ -415,7 +419,15 @@
 	const NSInteger section = indexPath.section;
 	if(self.editing && section == 3)
 	{
-		MessageTypeViewController *targetViewController = [MessageTypeViewController withType: _type];
+		NSMutableArray *messages = [NSMutableArray array];
+		NSUInteger i = 0;
+		const NSUInteger maxMessageType = [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType];
+		for(; i < maxMessageType; ++i)
+		{
+			[messages addObject:[[RemoteConnectorObject sharedRemoteConnector] getMessageTitle:i]];
+		}
+
+		SimpleSingleSelectionListController *targetViewController = [SimpleSingleSelectionListController withItems:messages andSelection:_type andTitle:NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController")];
 		[targetViewController setDelegate: self];
 		if(IS_IPAD())
 		{
