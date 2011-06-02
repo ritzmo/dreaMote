@@ -724,12 +724,32 @@
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] delMovie: movie];
 	if(result.result)
 	{
+		[_movies removeObject:movie];
 		if(_sortTitle)
 		{
 			NSString *key = [_currentKeys objectAtIndex:indexPath.section];
-			[(NSMutableArray *)[_characters valueForKey:key] removeObjectAtIndex:indexPath.row];
+			NSArray *object = (NSArray *)[_characters valueForKey:key];
+			// act like this is an mutable array and if not, create one
+			// NOTE: this might be ugly, but the alternative is to recreate a possibly very long list or to preemptively create
+			// mutable copys and keep them instead of the immutable ones which would be a lot overhead in most cases, so instead
+			// we use this little bug ugly piece of code as a compromise
+			@try
+			{
+				[(NSMutableArray *)object removeObjectAtIndex:indexPath.row];
+			}
+			@catch(NSException *exception)
+			{
+				if([[exception name] isEqualToString:NSInternalInconsistencyException])
+				{
+					NSMutableArray *newObject = [object mutableCopy];
+					[_characters setValue:newObject forKey:key];
+					[newObject removeObjectAtIndex:indexPath.row];
+					[newObject release];
+				}
+				else
+					@throw exception;
+			}
 		}
-		[_movies removeObject:movie];
 
 		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
 								withRowAnimation: UITableViewRowAnimationFade];
@@ -791,7 +811,12 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView
 {
-	[self setSortTitle:_sortTitle allowSearch:NO]; // in case of alphabetized list
+	// refresh the list
+	if(_sortTitle)
+	{
+		[self setSortTitle:YES allowSearch:NO];
+		[_tableView reloadData];
+	}
 }
 
 #endif
