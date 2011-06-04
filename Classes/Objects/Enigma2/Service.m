@@ -124,7 +124,7 @@
 		}
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-		_picon = [[UIImage imageNamed:[piconName stringByExpandingTildeInPath]] retain];
+		_picon = [UIImage imageNamed:[piconName stringByExpandingTildeInPath]];
 		[basename release]; // also frees sref
 		[piconName release];
 	}
