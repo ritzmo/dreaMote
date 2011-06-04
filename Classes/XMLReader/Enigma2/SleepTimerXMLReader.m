@@ -31,7 +31,7 @@ static const NSUInteger kEnigma2TextElementLength = 7;
 @synthesize sleepTimer;
 
 /* initialize */
-- (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate
+- (id)initWithDelegate:(NSObject<SleepTimerSourceDelegate> *)delegate
 {
 	if((self = [super init]))
 	{
