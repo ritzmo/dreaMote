@@ -71,16 +71,40 @@
 
 - (UIImage *)picon
 {
-	UIImage *picon = nil;
+	// XXX: naming convention is off in this method (local variables starting with _), but easier to copy code this way
+	UIImage *_picon = nil;
 	if(IS_IPAD())
 	{
-		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, self.sname];
-		picon = [UIImage imageNamed:[piconName stringByExpandingTildeInPath]];
+		const NSString *_sref = self.sref;
+		const NSInteger length = [_sref length]+1;
+		char *sref = malloc(length);
+		if(!sref)
+			return nil;
+		if(![_sref getCString:sref maxLength:length encoding:NSASCIIStringEncoding])
+			return nil;
+		NSInteger i = length-1;
+		BOOL first = YES;
+		for(; i > 0; --i)
+		{
+			if(sref[i] == ':')
+			{
+				if(first)
+				{
+					sref[i] = '\0';
+					first = NO;
+				}
+				else
+					sref[i] = '_';
+			}
+		}
+		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
+		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
+		_picon = [[UIImage imageNamed:[piconName stringByExpandingTildeInPath]] retain];
+		[basename release]; // also frees sref
 		[piconName release];
 	}
-	return picon;
+	return _picon;
 }
-
 - (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
 {
 	if(!_node)
