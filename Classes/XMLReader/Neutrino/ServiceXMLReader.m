@@ -17,6 +17,8 @@ static const char *kNeutrinoServicereference = "id";
 static const NSUInteger kNeutrinoServicereferenceLength = 3;
 static const char *kNeutrinoServicename = "name";
 static const NSUInteger kNeutrinoServicenameLength = 5;
+static const char *kNeutrinoServicelogo = "logo";
+static const NSUInteger kNeutrinoServicelogoLength = 5;
 
 @interface NeutrinoServiceXMLReader()
 @property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
@@ -88,6 +90,7 @@ static const NSUInteger kNeutrinoServicenameLength = 5;
 	}
 	else if(	!strncmp((const char *)localname, kNeutrinoServicereference, kNeutrinoServicereferenceLength)
 			||	!strncmp((const char *)localname, kNeutrinoServicename, kNeutrinoServicenameLength)
+			||	!strncmp((const char *)localname, kNeutrinoServicelogo, kNeutrinoServicelogoLength)
 		)
 	{
 		currentString = [[NSMutableString alloc] init];
@@ -109,6 +112,10 @@ static const NSUInteger kNeutrinoServicenameLength = 5;
 	else if(!strncmp((const char *)localname, kNeutrinoServicename, kNeutrinoServicenameLength))
 	{
 			currentService.sname = currentString;
+	}
+	else if(!strncmp((const char *)localname, kNeutrinoServicelogo, kNeutrinoServicelogoLength))
+	{
+		currentService.piconName = currentString;
 	}
 
 	// this either does nothing or releases the string that was in use

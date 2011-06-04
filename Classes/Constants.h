@@ -85,7 +85,8 @@
 #define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
 #define kHistoryPath @"~/Library/Preferences/com.ritzMo.dreaMote.SearchHistory.plist"
 #define kEPGCachePath @"~/Library/Preferences/com.ritzMo.dreaMote.EPGCache.sqlite"
-#define kPiconPath @"../Documents/%@.png"
+#define kPiconPath @"../Documents/%@"
+#define kPiconPathPng @"../Documents/%@.png"
 
 // keys in connection dict
 #define kRemoteName				@"remoteNameKey"

@@ -58,6 +58,21 @@
 #endif
 }
 
+- (NSString *)piconName
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
+- (void)setPiconName:(NSString *)piconName
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+}
+
 - (id)initWithNode: (CXMLNode *)node
 {
 	if((self = [super init]))

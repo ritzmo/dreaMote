@@ -24,6 +24,12 @@
 @property (nonatomic, retain) NSString *sname;
 
 /*!
+ @brief Picon Path.
+ @note Only used if there is a specific baseName for this picon to use.
+ */
+@property (nonatomic, retain) NSString *piconName;
+
+/*!
  @brief Valid or Fake Service.
  */
 @property (nonatomic, readonly, getter = isValid) BOOL valid;
