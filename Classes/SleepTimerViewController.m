@@ -149,6 +149,7 @@ enum generalSectionItems
 	{
 		settings.enabled = _enabled.on;
 		settings.action = _shutdown.on ? sleeptimerShutdown : sleeptimerStandby;
+		settings.time = [_time.text integerValue];
 
 		_expectReturn = YES;
 		[[RemoteConnectorObject sharedRemoteConnector] setSleepTimerSettings:settings delegate:self];
