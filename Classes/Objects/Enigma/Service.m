@@ -51,9 +51,6 @@
 
 - (NSString *)piconName
 {
-#if IS_DEBUG()
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
 	return nil;
 }
 
@@ -76,6 +73,8 @@
 - (void)dealloc
 {
 	[_node release];
+	[_picon release];
+
 	[super dealloc];
 }
 
@@ -86,10 +85,9 @@
 
 - (UIImage *)picon
 {
-	// XXX: naming convention is off in this method (local variables starting with _), but easier to copy code this way
-	UIImage *_picon = nil;
-	if(IS_IPAD())
+	if(!_calculatedPicon)
 	{
+		// XXX: naming convention is off in this method (local variable starting with _), but easier to copy code this way
 		const NSString *_sref = self.sref;
 		const NSInteger length = [_sref length]+1;
 		char *sref = malloc(length);
@@ -114,9 +112,11 @@
 		}
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-		_picon = [UIImage imageNamed:[piconName stringByExpandingTildeInPath]];
+		_picon = [[UIImage imageNamed:[piconName stringByExpandingTildeInPath]] retain];
 		[basename release]; // also frees sref
 		[piconName release];
+
+		_calculatedPicon = YES;
 	}
 	return _picon;
 }

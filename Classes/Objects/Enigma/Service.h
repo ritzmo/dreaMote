@@ -19,6 +19,9 @@
 {
 @private
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Service. */
+	/* Picons */
+	BOOL _calculatedPicon; /*!< @brief Did we try to load the picon before? */
+	UIImage *_picon; /*!< @brief Picon. */
 }
 
 /*!
