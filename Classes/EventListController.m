@@ -250,8 +250,6 @@
 	const NSInteger idx = _events.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
-#else
-	[_tableView reloadData];
 #endif
 #if IS_FULL()
 	[NSThread detachNewThreadSelector:@selector(addEventThreaded:) toTarget:[EPGCache sharedInstance] withObject:event];

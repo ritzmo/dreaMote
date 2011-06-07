@@ -229,7 +229,9 @@
 {
 	const NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
 	[_events insertObject: event atIndex: index];
+#if INCLUDE_FEATURE(Extra_Animation)
 	[_tableView reloadData];
+#endif
 }
 
 

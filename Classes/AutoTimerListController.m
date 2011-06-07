@@ -156,7 +156,9 @@
 {
 	const NSUInteger index = [_autotimers indexForInsertingObject:at sortedUsingSelector:@selector(compare:)];
 	[_autotimers insertObject:at atIndex:index];
+#if INCLUDE_FEATURE(Extra_Animation)
 	[_tableView reloadData];
+#endif
 }
 
 #pragma mark - View lifecycle

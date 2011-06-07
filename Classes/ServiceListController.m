@@ -590,8 +590,6 @@
 	const NSInteger idx = _mainList.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
-#else
-	[_tableView reloadData];
 #endif
 #if IS_FULL()
 	[_multiEPG addService:event.service];
@@ -620,8 +618,6 @@
 	const NSInteger idx = _mainList.count-1;
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
-#else
-	[_tableView reloadData];
 #endif
 #if IS_FULL()
 	[_multiEPG addService:service];

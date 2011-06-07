@@ -572,8 +572,6 @@
 		const NSUInteger idx = _movies.count-1;
 		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
 						  withRowAnimation:UITableViewRowAnimationLeft];
-#else
-		[_tableView reloadData];
 #endif
 	}
 }
