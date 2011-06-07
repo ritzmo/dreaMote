@@ -8,6 +8,7 @@
 
 #import "MultiEPGListController.h"
 
+#import "AppDelegate.h"
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "MultiEPGHeaderView.h"
@@ -374,8 +375,8 @@
 													 destructiveButtonTitle:NSLocalizedString(@"Refresh", "")
 														  otherButtonTitles:nil];
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
-		[actionSheet showInView:self.view];
+	if(self.tabBarController == nil)
+		[actionSheet showFromTabBar:APP_DELEGATE.tabBarController.tabBar];
 	else
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
