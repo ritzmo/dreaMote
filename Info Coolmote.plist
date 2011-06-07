@@ -43,7 +43,7 @@
 	<true/>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
-	<key>UIFileSharingEnabled~ipad</key>
+	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
