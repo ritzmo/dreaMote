@@ -45,8 +45,13 @@
 	<string>MainWindow</string>
 	<key>UIFileSharingEnabled~ipad</key>
 	<true/>
-	<key>UIInterfaceOrientation~ipad</key>
-	<string>UIInterfaceOrientationLandscapeRight</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
 	<key>UIPrerenderedIcon</key>
 	<true/>
 </dict>
