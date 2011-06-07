@@ -99,13 +99,13 @@
 	{
 		// XXX: naming convention is off in this method (local variable starting with _), but easier to copy code this way
 		const NSString *_sref = self.sref;
-		const NSInteger length = [_sref length]+1;
+		NSInteger length = [_sref length]+1;
 		char *sref = malloc(length);
 		if(!sref)
 			return nil;
 		if(![_sref getCString:sref maxLength:length encoding:NSASCIIStringEncoding])
 			return nil;
-		NSInteger i = length-1;
+		NSInteger i = length-2;
 		BOOL first = YES;
 		for(; i > 0; --i)
 		{
@@ -113,6 +113,7 @@
 			{
 				if(first)
 				{
+					length = i;
 					sref[i] = '\0';
 					first = NO;
 				}
@@ -122,7 +123,7 @@
 		}
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-		_picon = [[UIImage imageNamed:[piconName stringByExpandingTildeInPath]] retain];
+		_picon = [[UIImage imageNamed:piconName] retain];
 		[basename release]; // also frees sref
 		[piconName release];
 

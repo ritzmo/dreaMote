@@ -59,13 +59,13 @@
 		}
 		else
 		{
-			const NSInteger length = [_sref length]+1;
+			NSInteger length = [_sref length]+1;
 			char *sref = malloc(length);
 			if(!sref)
 				return nil;
 			if(![_sref getCString:sref maxLength:length encoding:NSASCIIStringEncoding])
 				return nil;
-			NSInteger i = length-1;
+			NSInteger i = length-2;
 			BOOL first = YES;
 			for(; i > 0; --i)
 			{
@@ -73,6 +73,7 @@
 				{
 					if(first)
 					{
+						length = i;
 						sref[i] = '\0';
 						first = NO;
 					}
@@ -82,7 +83,7 @@
 			}
 			NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 			NSString *piconName = [[NSString alloc] initWithFormat:kPiconPathPng, basename];
-			_picon = [[UIImage imageNamed:[piconName stringByExpandingTildeInPath]] retain];
+			_picon = [[UIImage imageNamed:piconName] retain];
 			[basename release]; // also frees sref
 			[piconName release];
 		}
