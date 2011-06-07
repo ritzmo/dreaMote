@@ -21,6 +21,13 @@ typedef enum
 
 
 /*!
+ @brief Simple define to improve code readability a bit
+ */
+#define APP_DELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
+
+
+
+/*!
  @brief Application Delegate.
  */
 @interface AppDelegate : NSObject  <UIApplicationDelegate, UITabBarControllerDelegate,

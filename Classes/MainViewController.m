@@ -27,8 +27,6 @@
 #import "SimpleRCEmulatorController.h"
 #import "TimerListController.h"
 
-#define APP_DELEGATE ((AppDelegate *)[UIApplication sharedApplication].delegate)
-
 @interface MainViewController()
 - (void)handleReconnect: (NSNotification *)note;
 - (BOOL)checkConnection;
