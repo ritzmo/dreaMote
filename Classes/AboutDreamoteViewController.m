@@ -179,7 +179,7 @@
 - (void)showMailComposer:(id)sender
 {
 	MFMailComposeViewController *mvc = [[MFMailComposeViewController alloc] init];
-	mvc.mailComposeDelegate = self;
+	mvc.mailComposeDelegate = [self retain];
 	NSString *displayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 	UIDevice *currentDevice = [UIDevice currentDevice];
@@ -318,8 +318,13 @@
 	{
 		return ![[UIApplication sharedApplication] openURL: [requestURL autorelease]];
 	}
-
-	// Auto release
+	else if( [requestURL.scheme isEqualToString:@"mailto"]
+		&& (navigationType == UIWebViewNavigationTypeLinkClicked) )
+	{
+		[self showMailComposer:nil];
+		[requestURL release];
+		return NO;
+	}
 	[requestURL release];
 
 	// If request url is something other than http or https it will open in UIWebView
@@ -342,6 +347,8 @@
 		[alert release];
 	}
 	[controller.parentViewController dismissModalViewControllerAnimated:YES];
+	[controller.mailComposeDelegate release];
+	controller.mailComposeDelegate = nil;
 }
 
 @end
