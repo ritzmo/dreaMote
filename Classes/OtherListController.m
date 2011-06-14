@@ -209,9 +209,7 @@
 	[targetViewController release];
 
 	// Add the "About" button to the navigation bar
-	UIButton *button = [UIButton buttonWithType: UIButtonTypeInfoLight];
-	[button addTarget:self action:@selector(aboutDreamoteAction:) forControlEvents:UIControlEventTouchUpInside];
-	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView: button];
+	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStylePlain target:self action:@selector(aboutDreamoteAction:)];
 	self.navigationItem.leftBarButtonItem = buttonItem;
 	[buttonItem release];
 
