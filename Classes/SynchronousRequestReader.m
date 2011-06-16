@@ -59,13 +59,22 @@
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:timeout];
-	NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request delegate:srr];
+	NSURLConnection *con = nil;
+	if(request)
+		con = [[NSURLConnection alloc] initWithRequest:request delegate:srr];
+#if IS_DEBUG()
+	else
+		[NSException raise:@"ExcSRRNoRequest" format:@""];
+
+	if(!con)
+		[NSException raise:@"ExcSRRNoConnection" format:@""];
+#endif
 
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	do
+	while(con && srr.running)
 	{
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-	} while(srr.running);
+	}
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 
 	// hand over response & error if requested

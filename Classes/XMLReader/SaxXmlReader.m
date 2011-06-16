@@ -38,17 +38,38 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:_timeout];
-	NSURLConnection *con = [[NSURLConnection alloc] initWithRequest:request
-														   delegate:self];
+	NSURLConnection *con = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-	_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, self, NULL, 0, NULL);
-	xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
-	do
+	if(request)
+		con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+#if IS_DEBUG()
+	else
+		[NSException raise:@"ExcSaxXmlReaderNoRequest" format:@""];
+#endif
+
+	if(con)
 	{
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-	} while (!_done);
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, self, NULL, 0, NULL);
+		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
+		while(!_done)
+		{
+			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+		}
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	}
+	else
+	{
+#if IS_DEBUG()
+		[NSException raise:@"ExcSaxXmlReaderNoConnection" format:@""];
+#else
+		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown connection error occured.", @"Data connection failed for unknown reason.")
+															 forKey:NSLocalizedDescriptionKey];
+		failureReason = [[NSError errorWithDomain:@"myDomain"
+											code:900
+											userInfo:userInfo] retain];
+#endif
+	}
 
 	if(failureReason)
 	{
