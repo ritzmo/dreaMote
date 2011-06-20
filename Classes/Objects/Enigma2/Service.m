@@ -104,7 +104,10 @@
 		if(!sref)
 			return nil;
 		if(![_sref getCString:sref maxLength:length encoding:NSASCIIStringEncoding])
+		{
+			free(sref);
 			return nil;
+		}
 		NSInteger i = length-2;
 		BOOL first = YES;
 		for(; i > 0; --i)
