@@ -50,12 +50,15 @@
 		if(_piconName)
 		{
 			NSRange piconRange = [_piconName rangeOfString:@"/" options:NSBackwardsSearch];
-			piconRange.length = [_piconName length] - piconRange.location - 1;
-			piconRange.location += 1;
-			NSString *basename = [_piconName substringWithRange:piconRange];
-			NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-			_picon = [[UIImage imageNamed:[piconName stringByExpandingTildeInPath]] retain];
-			[piconName release];
+			if(piconRange.location != NSNotFound)
+			{
+				piconRange.length = [_piconName length] - piconRange.location - 1;
+				piconRange.location += 1;
+				NSString *basename = [_piconName substringWithRange:piconRange];
+				NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
+				_picon = [[UIImage imageNamed:piconName] retain];
+				[piconName release];
+			}
 		}
 		else
 		{
