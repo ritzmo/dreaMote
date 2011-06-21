@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "Constants.h"
 
+#import <glob.h>
+
 #import "NSData+Base64.h"
 #import "NSArray+ArrayFromData.h"
 #import "UIDevice+SystemVersion.h"
@@ -20,6 +22,13 @@
 #if IS_FULL()
 	#import "EPGCache.h"
 #endif
+
+enum appDelegateAlertTags
+{
+	TAG_NONE = 0,
+	TAG_URL = 1,
+	TAG_ZIP = 2,
+};
 
 @interface AppDelegate()
 - (void)checkReachable;
@@ -207,6 +216,34 @@
 		[self application:application handleOpenURL:url];
 		promptForRating = NO;
 	}
+#if 0
+	// check for .zip files possibly containing picons
+	else
+	{
+		glob_t gt;
+		if (glob(kPiconGlob, 0, NULL, &gt) == 0)
+		{
+			NSInteger i = 0;
+			for (; i < gt.gl_matchc; ++i)
+			{
+				int len = strlen(gt.gl_pathv[i]);
+				cachedFilename = [[[NSFileManager defaultManager] stringWithFileSystemRepresentation:gt.gl_pathv[i] length:len] retain];
+				promptForRating = NO;
+
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Picons?", @"Title of Alert when a zip file was found in the documents folder possibly containing picons.")
+																	  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%@) was found in your Documents folder?\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), cachedFilename]
+																	 delegate:self
+															cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+															otherButtonTitles:NSLocalizedString(@"Extract", @"Button executing zip extraction/deletion"), nil];
+				alert.tag = TAG_ZIP;
+				[alert show];
+				[alert release];
+				break;
+			}
+		}
+		globfree(&gt);
+	}
+#endif
 	[Appirater appLaunched:promptForRating];
 
 	return YES;
@@ -230,6 +267,7 @@
 															 delegate:self
 													cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 													otherButtonTitles:NSLocalizedString(@"Import", @"Button executing import"), nil];
+		alert.tag = TAG_URL;
 		[alert show];
 		[alert release];
 	}
@@ -280,7 +318,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 	// import
-	if(buttonIndex == alertView.firstOtherButtonIndex)
+	if(buttonIndex == alertView.firstOtherButtonIndex && alertView.tag == TAG_URL)
 	{
 		NSString *queryString = [cachedURL query];
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -342,6 +380,34 @@
 		// let main view reload its data
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	}
+#if 0
+	else if(buttonIndex == alertView.firstOtherButtonIndex && alertView.tag == TAG_ZIP)
+	{
+		ZipArchive *za = [[ZipArchive alloc] init];
+		if([za UnzipOpenFile:cachedFilename])
+		{
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+			NSString *documents = [paths objectAtIndex:0];
+			NSError *error = nil;
+
+			const BOOL ret = [za UnzipFileTo:documents overWrite:YES];
+			if(!ret)
+			{
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	  message:NSLocalizedString(@"Unable to extract zip-file!", @"Zip-Extraction failed")
+																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+				[alert show];
+				[alert release];
+			}
+			[za UnzipCloseFile];
+			if([[NSFileManager defaultManager] removeItemAtPath:cachedFilename error:&error] != YES)
+				NSLog(@"failed to delete %@", cachedFilename);
+		}
+		[za release];
+	}
+#endif
+	[cachedFilename release];
+	cachedFilename = nil;
 	[cachedURL release];
 	cachedURL = nil;
 }

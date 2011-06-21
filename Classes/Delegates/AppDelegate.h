@@ -38,6 +38,7 @@ typedef enum
 	UIWindow *window; /*!< @brief Application window. */
 	UITabBarController *tabBarController; /*!< @brief Tab Bar Controller. */
 	NSURL *cachedURL; /*!< @brief Cached URL request. */
+	NSString *cachedFilename; /*!< @brief Cached zip name for import. */
 	welcomeTypes welcomeType; /*!< @brief Type of welcome we're showing. */
 }
 
