@@ -14,6 +14,7 @@
 #import "UIDevice+SystemVersion.h"
 
 #import "Appirater.h"
+#import "BWQuincyManager.h"
 #import "RemoteConnectorObject.h"
 
 #if IS_FULL()
@@ -82,6 +83,8 @@
 /* finished launching */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
+
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
 	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
@@ -186,7 +189,7 @@
 		// reload.
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	}
-	
+
 	// Show the window and view
 	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];

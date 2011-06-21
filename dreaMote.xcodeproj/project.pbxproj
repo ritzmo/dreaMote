@@ -449,6 +449,15 @@
 		DAAC518F12D481A100B3B443 /* FileListView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC518E12D481A100B3B443 /* FileListView.m */; };
 		DAAC51F712D48F3500B3B443 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC51EE12D48F3500B3B443 /* AppDelegate.m */; };
 		DAAC520412D492CE00B3B443 /* MediaPlayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAC520312D492CE00B3B443 /* MediaPlayerController.m */; };
+		DAAE238713B078330004228C /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAE238613B078330004228C /* CrashReporter.framework */; };
+		DAAE238813B078330004228C /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAE238613B078330004228C /* CrashReporter.framework */; };
+		DAAE238913B078330004228C /* CrashReporter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAAE238613B078330004228C /* CrashReporter.framework */; };
+		DAAE238B13B078680004228C /* Quincy.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAAE238A13B078680004228C /* Quincy.bundle */; };
+		DAAE238C13B078680004228C /* Quincy.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAAE238A13B078680004228C /* Quincy.bundle */; };
+		DAAE238D13B078680004228C /* Quincy.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DAAE238A13B078680004228C /* Quincy.bundle */; };
+		DAAE239213B078C60004228C /* BWQuincyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAE239113B078C60004228C /* BWQuincyManager.m */; };
+		DAAE239313B078C60004228C /* BWQuincyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAE239113B078C60004228C /* BWQuincyManager.m */; };
+		DAAE239413B078CA0004228C /* BWQuincyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAE239113B078C60004228C /* BWQuincyManager.m */; };
 		DAB579EF0E94CA580093721B /* ConnectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB579EE0E94CA580093721B /* ConnectorViewController.m */; };
 		DAB5FA030D845F7A0074D998 /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB5FA020D845F7A0074D998 /* EventViewController.m */; };
 		DAB65EAE12E495A200699EC8 /* SynchronousRequestReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAB65EAD12E495A200699EC8 /* SynchronousRequestReader.m */; };
@@ -1095,6 +1104,10 @@
 		DAAC51F612D48F3500B3B443 /* VolumeSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VolumeSourceDelegate.h; sourceTree = "<group>"; };
 		DAAC520212D492CE00B3B443 /* MediaPlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaPlayerController.h; sourceTree = "<group>"; };
 		DAAC520312D492CE00B3B443 /* MediaPlayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaPlayerController.m; sourceTree = "<group>"; };
+		DAAE238613B078330004228C /* CrashReporter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CrashReporter.framework; path = QuincyKit/client/iOS/CrashReporter.framework; sourceTree = "<group>"; };
+		DAAE238A13B078680004228C /* Quincy.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Quincy.bundle; path = QuincyKit/client/iOS/Quincy.bundle; sourceTree = "<group>"; };
+		DAAE239013B078C60004228C /* BWQuincyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BWQuincyManager.h; path = QuincyKit/client/iOS/BWQuincyManager.h; sourceTree = "<group>"; };
+		DAAE239113B078C60004228C /* BWQuincyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BWQuincyManager.m; path = QuincyKit/client/iOS/BWQuincyManager.m; sourceTree = "<group>"; };
 		DAB0676C12E315D8008D39F5 /* DataSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSourceDelegate.h; sourceTree = "<group>"; };
 		DAB469CC130E8DE200B95BC3 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		DAB469CE130E8DED00B95BC3 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
@@ -1212,6 +1225,7 @@
 				DA67D705130D4A4200953B16 /* MessageUI.framework in Frameworks */,
 				DA1D883D1316800300A6F3CE /* CFNetwork.framework in Frameworks */,
 				DA1D88411316800B00A6F3CE /* SystemConfiguration.framework in Frameworks */,
+				DAAE238713B078330004228C /* CrashReporter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1229,6 +1243,7 @@
 				DA1D88CA1316863E00A6F3CE /* SystemConfiguration.framework in Frameworks */,
 				DA1D88CB1316864300A6F3CE /* CFNetwork.framework in Frameworks */,
 				DA19C6EA1319B400006E4A0D /* iAd.framework in Frameworks */,
+				DAAE238813B078330004228C /* CrashReporter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1246,6 +1261,7 @@
 				DAE17E4E1390EFAD00B00FC4 /* SystemConfiguration.framework in Frameworks */,
 				DAE17E4F1390EFAD00B00FC4 /* CFNetwork.framework in Frameworks */,
 				DAE17E501390EFAD00B00FC4 /* iAd.framework in Frameworks */,
+				DAAE238913B078330004228C /* CrashReporter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1325,6 +1341,7 @@
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				DAAE238E13B078980004228C /* QuincyKit */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -1818,6 +1835,17 @@
 			path = Delegates;
 			sourceTree = "<group>";
 		};
+		DAAE238E13B078980004228C /* QuincyKit */ = {
+			isa = PBXGroup;
+			children = (
+				DAAE239013B078C60004228C /* BWQuincyManager.h */,
+				DAAE239113B078C60004228C /* BWQuincyManager.m */,
+				DAAE238613B078330004228C /* CrashReporter.framework */,
+				DAAE238A13B078680004228C /* Quincy.bundle */,
+			);
+			name = QuincyKit;
+			sourceTree = "<group>";
+		};
 		DAB660E412E4C1C000699EC8 /* MGSplitViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -2212,6 +2240,7 @@
 				DAA30CE4136B615700632E14 /* EPGRefresh.strings in Resources */,
 				DAE17E681392687200B00FC4 /* IsSelected.png in Resources */,
 				DAE17E6B1392687200B00FC4 /* NotSelected.png in Resources */,
+				DAAE238B13B078680004228C /* Quincy.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2310,6 +2339,7 @@
 				DAA30CE5136B615700632E14 /* EPGRefresh.strings in Resources */,
 				DAE17E691392687200B00FC4 /* IsSelected.png in Resources */,
 				DAE17E6C1392687200B00FC4 /* NotSelected.png in Resources */,
+				DAAE238C13B078680004228C /* Quincy.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2408,6 +2438,7 @@
 				DAE17DB51390EFAD00B00FC4 /* EPGRefresh.strings in Resources */,
 				DAE17E6A1392687200B00FC4 /* IsSelected.png in Resources */,
 				DAE17E6D1392687200B00FC4 /* NotSelected.png in Resources */,
+				DAAE238D13B078680004228C /* Quincy.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2576,6 +2607,7 @@
 				DA5DB8F81397CC6F00400157 /* SleepTimer.m in Sources */,
 				DA5DB8FE1397D06900400157 /* SleepTimerXMLReader.m in Sources */,
 				DA5DB9031397D4D700400157 /* SleepTimerViewController.m in Sources */,
+				DAAE239213B078C60004228C /* BWQuincyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2730,6 +2762,7 @@
 				DA5DB8F91397CC6F00400157 /* SleepTimer.m in Sources */,
 				DA5DB8FF1397D06900400157 /* SleepTimerXMLReader.m in Sources */,
 				DA5DB9041397D4D700400157 /* SleepTimerViewController.m in Sources */,
+				DAAE239313B078C60004228C /* BWQuincyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2849,6 +2882,7 @@
 				DA5DB8FA1397CC6F00400157 /* SleepTimer.m in Sources */,
 				DA5DB9001397D06900400157 /* SleepTimerXMLReader.m in Sources */,
 				DA5DB9051397D4D700400157 /* SleepTimerViewController.m in Sources */,
+				DAAE239413B078CA0004228C /* BWQuincyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2916,6 +2950,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2936,6 +2974,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -2976,6 +3018,7 @@
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "-all_load";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -3009,6 +3052,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				OTHER_LDFLAGS = "-all_load";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -3022,6 +3066,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3042,6 +3090,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3082,6 +3134,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				OTHER_LDFLAGS = "-all_load";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "F786DC6C-73B7-404C-907D-B5589637F45F";
 				SDKROOT = iphoneos;
@@ -3096,6 +3149,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3115,6 +3172,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3135,6 +3196,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -3155,6 +3220,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3174,6 +3243,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3194,6 +3267,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3234,6 +3311,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				OTHER_LDFLAGS = "-all_load";
 				PREBINDING = NO;
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
@@ -3248,6 +3326,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
@@ -3267,6 +3349,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/QuincyKit/client/iOS\"",
+				);
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;

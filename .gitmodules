@@ -1,3 +1,6 @@
 [submodule "MBProgressHUD"]
 	path = MBProgressHUD
 	url = git://github.com/jdg/MBProgressHUD.git
+[submodule "QuincyKit"]
+	path = QuincyKit
+	url = git://github.com/TheRealKerni/QuincyKit.git

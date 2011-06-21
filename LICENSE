@@ -138,3 +138,6 @@ copies of Matt Gallagher's Base64 implementation for iOS.
 
 Any file below the Classes/Appirater folder is part of Appirater by Arash Payan
 and licensed unter the MIT license.
+
+Any file below the QuincyKit folder is subject to the license given in the 
+LICENSE.txt files.
