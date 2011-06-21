@@ -22,9 +22,11 @@
 	NSTimer *_timer; /*!< @brief NSTimer to refresh data. */
 	UISlider *_snr; /*!< @brief SNR % Slider. */
 	UISlider *_agc; /*!< @brief AGC % Slider. */
+	UISlider *_interval; /*!< @brief Refresh interval Slider. */
 	UITableViewCell *_snrdBCell; /*!< @brief Cell containing SNR dB. */
 	UITableViewCell *_berCell; /*!< @brief Cell containing BER. */
 	BOOL _hasSnrdB; /*!< @brief SNR dB value is valid. */
+	NSTimeInterval _refreshInterval; /*!< @brief Current refresh Interval. */
 }
 
 @end

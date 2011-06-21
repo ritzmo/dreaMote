@@ -98,6 +98,7 @@
 								 multiEPGdefaultInterval, kMultiEPGInterval,
 								 @"NO", kSortMoviesByTitle,
 								 kDefaultTimeout, kTimeoutKey,
+								 kSatFinderDefaultInterval, kSatFinderInterval,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 

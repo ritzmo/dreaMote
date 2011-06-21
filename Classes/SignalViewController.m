@@ -30,6 +30,23 @@
  @brief entry point of thread which fetches signal data
  */
 - (void)fetchSignal;
+
+/*!
+ @brief Start new refresh timer.
+ */
+- (void)startTimer;
+
+/*!
+ @brief Refresh interval was changed.
+ @param sender ui element
+ */
+- (void)intervalChanged:(id)sender;
+
+/*!
+ @brief Refresh interval accepted.
+ @param sender ui element
+ */
+- (void)intervalSet:(id)sender;
 @end
 
 @implementation SignalViewController
@@ -58,11 +75,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	// FIXME: interval should be configurable
-	_timer = [NSTimer scheduledTimerWithTimeInterval: 5.0
-					target: self selector:@selector(fetchSignalDefer)
-					userInfo: nil repeats: YES];
-	[_timer fire];
+	_refreshInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:kSatFinderInterval];
+	[self startTimer];
 
 	[super viewWillAppear: animated];
 }
@@ -130,6 +144,18 @@
 	_agc.continuous = NO;
 	_agc.enabled = NO;
 
+	// Interval Slider
+	_interval = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, (IS_IPAD()) ? 300 : 200, kSliderHeight)];
+	_interval.backgroundColor = [UIColor clearColor];
+	_interval.autoresizingMask = UIViewAutoresizingNone;
+	_interval.minimumValue = 0;
+	_interval.maximumValue = 32; // we never reach the maximum, so we use 32 instead of 31 as max value
+	_interval.continuous = YES;
+	_interval.enabled = YES;
+	_interval.value = [[NSUserDefaults standardUserDefaults] floatForKey:kSatFinderInterval];
+	[_interval addTarget:self action:@selector(intervalChanged:) forControlEvents:UIControlEventValueChanged];
+	[_interval addTarget:self action:@selector(intervalSet:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
+
 	// SNRdB
 	UITableViewCell *sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
@@ -156,6 +182,52 @@
 	return YES;
 }
 
+- (NSString *)getIntervalTitle:(double)interval
+{
+	if(interval <= 0)
+	{
+		return NSLocalizedString(@"instant", @"instant sat finder refresh");
+	}
+	else if(interval >= 31)
+	{
+		return NSLocalizedString(@"never", @"don't refresh sat finder");
+	}
+	return [NSString stringWithFormat:NSLocalizedString(@"%.0f sec", @"sat finder refresh interval"), interval];
+}
+
+- (void)startTimer
+{
+	[_timer invalidate];
+	_timer = nil;
+	if(_refreshInterval <= 0) // handle instant refresh differently
+	{
+		[self fetchSignalDefer];
+	}
+	else if(_refreshInterval < 31) // 31 == "never"
+	{
+		_timer = [NSTimer scheduledTimerWithTimeInterval:_refreshInterval
+												  target:self selector:@selector(fetchSignalDefer)
+												userInfo:nil   repeats:YES];
+		[_timer fire];
+	}
+}
+
+- (void)intervalSet:(id)sender
+{
+	_refreshInterval = (double)(int)_interval.value;
+	[[NSUserDefaults standardUserDefaults] setDouble:_refreshInterval forKey:kSatFinderInterval];
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+
+	// start new timer
+	[self startTimer];
+}
+
+- (void)intervalChanged:(id)sender
+{
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	cell.textLabel.text = [self getIntervalTitle:(double)(int)_interval.value];
+}
+
 #pragma mark - UITableView delegates
 
 // if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
@@ -167,23 +239,37 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 2;
+	return 3;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section == 0)
-		return NSLocalizedString(@"Percentage", @"");
-	return NSLocalizedString(@"Exact", @"");	
+	switch(section)
+	{
+		case 0:	
+			return NSLocalizedString(@"Percentage", @"Title of percentage section of SatFinder");
+		case 1:
+			return NSLocalizedString(@"Exact", @"Title of exact section of SatFinder");
+		case 2:
+			return NSLocalizedString(@"Interval", @"Title of refresh Interval section of SatFinder");
+		default:
+			return nil;
+	}
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	if(section == 0)
-		return 2;
-	if(_hasSnrdB)
-		return 2;
-	return 1;
+	switch(section)
+	{
+		case 0:
+			return 2;
+		case 1:
+			return (_hasSnrdB) ? 2 : 1;
+		case 2:
+			return 1;
+		default:
+			return 0;
+	}
 }
 
 // to determine which UITableViewCell to be used on a given row.
@@ -215,6 +301,13 @@
 			else
 				sourceCell = _berCell;
 			break;
+		case 2:
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			((DisplayCell *)sourceCell).nameLabel.text = [self getIntervalTitle:[[NSUserDefaults standardUserDefaults] doubleForKey:kSatFinderInterval]];
+			((DisplayCell *)sourceCell).view = _interval;
+			break;
 		default:
 			break;
 	}
@@ -244,7 +337,10 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
-	[(UITableView *)self.view reloadData];
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+
+	if(_refreshInterval <= 0)
+		[self fetchSignalDefer];
 }
 
 #pragma mark -
@@ -258,10 +354,16 @@
 	
 	_snr.value = (float)(signal.snr);
 	_agc.value = (float)(signal.agc);
-	
+
+	const BOOL oldSnrdB =_hasSnrdB;
 	_hasSnrdB = signal.snrdb > -1;
 	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
 	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
+
+	// there is a weird glitch that prevents the second row from being shown unless we do a full reload, so do it here
+	// while we still know that we need to do one.
+	if(oldSnrdB != _hasSnrdB)
+		[(UITableView *)self.view reloadData];
 }
 
 @end

@@ -70,9 +70,10 @@
 #define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
 #define kAutoTimerNameTextSize	((IS_IPAD()) ? 20 : 16)
 
-// timeout
+// defaults
 #define kDefaultTimeout			@"15"
 #define kTimeout				[[NSUserDefaults standardUserDefaults] integerForKey:kTimeoutKey]
+#define kSatFinderDefaultInterval @"5.0"
 
 //
 #define kVanilla_ID				@"Vanilla_ID"
@@ -111,6 +112,7 @@
 #define kMultiEPGInterval		@"multiEpgInterval"
 #define kSortMoviesByTitle		@"sortingMoviesByTitle"
 #define kTimeoutKey				@"timeout"
+#define kSatFinderInterval		@"satFinderRefreshInterval"
 
 #define kCurrentDatabaseVersion 2
 
