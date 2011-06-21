@@ -737,7 +737,8 @@
 			}
 			@catch(NSException *exception)
 			{
-				if([[exception name] isEqualToString:NSInternalInconsistencyException])
+				NSString *exceptionName = [exception name];
+				if([exceptionName isEqualToString:NSInternalInconsistencyException] || [exceptionName isEqualToString:NSInvalidArgumentException])
 				{
 					NSMutableArray *newObject = [object mutableCopy];
 					[_characters setValue:newObject forKey:key];
@@ -745,7 +746,20 @@
 					[newObject release];
 				}
 				else
+				{
+#if IS_DEBUG()
+					NSLog(@"%@", exceptionName);
 					@throw exception;
+#else
+					// alert user if movie could not be deleted
+					const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																		  message:[NSString stringWithFormat:NSLocalizedString(@"An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!", @""), exceptionName]
+																		 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+					[alert show];
+					[alert release];
+					return; // do NOT call deleteRowsAtIndexPaths
+#endif
+				}
 			}
 		}
 
