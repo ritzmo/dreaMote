@@ -1,4 +1,7 @@
-﻿/* No comment provided by engineer. */
+﻿/* sat finder refresh interval */
+"%.0f sec" = "%.0f Sek.";
+
+/* No comment provided by engineer. */
 "%@ of %@ free" = "%@ von %@ frei";
 
 /* Minutes */
@@ -55,7 +58,11 @@
 /* No comment provided by engineer. */
 "A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "Es konnte keine Sendung gefunden werden.\nEventuell hilft es den Cache durch neu laden der Sendungsliste zu Aktualisieren.";
 
-/* Title of AboutDreamoteViewController */
+/* Message explaining what what happens on zip-file import. */
+"A zip-file (%@) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!" = "Eine Zip-Datei (%@) wurde im Dokumente-Ordner gefunden.\nJetzt entpacken und löschen?\n\nDiese Nachricht erscheint bei jedem Programmstart mit einer Zip-Datei im Dokumente-Ordner!";
+
+/* About Button Text
+   Title of AboutDreamoteViewController */
 "About" = "Über dreaMote";
 
 /* No comment provided by engineer. */
@@ -102,6 +109,9 @@
 
 /* No comment provided by engineer. */
 "All Services" = "Alle Sender";
+
+/* No comment provided by engineer. */
+"An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Ein unerwarteter Fehler (%@) trat nach dem Entfernen der Aufnahme auf.\nBitte die Liste manuell aktualisieren, um die Änderung anzuzeigen!";
 
 /* No comment provided by engineer. */
 "Artist" = "Interpret";
@@ -336,7 +346,7 @@
 /* Default Title of EventListController */
 "Events" = "EPG";
 
-/* No comment provided by engineer. */
+/* Title of exact section of SatFinder */
 "Exact" = "Exakt";
 
 /* No comment provided by engineer. */
@@ -344,6 +354,9 @@
 
 /* export data from lite to full version */
 "Export to dreaMote" = "Export zur Vollversion";
+
+/* Button executing zip extraction/deletion */
+"Extract" = "Entpacken";
 
 /* No comment provided by engineer. */
 "Failed to retrieve data" = "Datenübertragung fehlgeschlagen";
@@ -408,11 +421,20 @@
 /* Button executing import */
 "Import" = "Daten importieren";
 
+/* Title of Alert when a zip file was found in the documents folder possibly containing picons. */
+"Import Picons?" = "Picons importieren?";
+
 /* Message type */
 "Info" = "Info";
 
+/* instant sat finder refresh */
+"instant" = "durchgehend";
+
 /* No comment provided by engineer. */
 "Instant Record" = "Sofortaufnahme";
+
+/* Title of refresh Interval section of SatFinder */
+"Interval" = "Intervall";
 
 /* No comment provided by engineer. */
 "Invalid message type." = "Ungültiger Typ.";
@@ -519,6 +541,9 @@
 /* Repeated */
 "Never" = "Nie";
 
+/* don't refresh sat finder */
+"never" = "nie";
+
 /* No comment provided by engineer. */
 "New AutoTimer" = "Neuer AutoTimer";
 
@@ -582,7 +607,7 @@
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 "Page not found.\nPlugin not installed?" = "Seite nicht gefunden.\nPlugin nicht installiert?";
 
-/* No comment provided by engineer. */
+/* Title of percentage section of SatFinder */
 "Percentage" = "Prozentual";
 
 /* No comment provided by engineer. */
@@ -870,6 +895,9 @@
 /* No comment provided by engineer. */
 "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Konnte nicht erkennen ob die Aktion erfolgreich war. Für volle Funktionalität bitte das WebInterface aktualisieren.";
 
+/* Zip-Extraction failed */
+"Unable to extract zip-file!" = "Zip-Datei konnte nicht entpackt werden!";
+
 /* Failed to retrieve or generate URL of remote stream */
 "Unable to generate stream URL." = "Stream-URL konnte nicht generiert werden.";
 
@@ -878,6 +906,9 @@
 
 /* No comment provided by engineer. */
 "Unable to start playback" = "Wiedergabe konnte nicht gestartet werden";
+
+/* Data connection failed for unknown reason. */
+"Unknown connection error occured." = "Ein unbekannter Verbindungsfehler ist aufgetreten.";
 
 /* Remote host did return error code but no specific message. */
 "Unknown Error." = "Ein unbekannter Fehler ist aufgetreten.";
