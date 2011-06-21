@@ -10,20 +10,37 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "NSString+URLEncode.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "ServiceZapListController.h"
+
+#import "DisplayCell.h"
 #import "EventTableViewCell.h"
 #import "ServiceTableViewCell.h"
 #import "CellTextView.h"
 
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
+- (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, retain) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
+@end
+
+@interface CurrentViewController(IMDb)
+- (void)openIMDbNow:(id)sender;
+- (void)openIMDbNext:(id)sender;
+@end
+
+@interface CurrentViewController(Streaming)
+- (void)openOPlayer:(id)sender;
+- (void)openOPlayerLite:(id)sender;
+- (void)openBuzzPlayer:(id)sender;
+- (void)openYxplayer:(id)sender;
 @end
 
 @implementation CurrentViewController
@@ -84,6 +101,7 @@
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	myTextView.backgroundColor = [UIColor clearColor];
 	myTextView.textColor = [UIColor blackColor];
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
@@ -95,6 +113,20 @@
 		myTextView.text = @"";
 
 	return myTextView;
+}
+
+- (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName
+{
+	const CGRect frame = CGRectMake(0, 0, kUIRowHeight, kUIRowHeight);
+	UIButton *button = [[UIButton alloc] initWithFrame: frame];
+	if(imageName)
+	{
+		UIImage *image = [UIImage imageNamed:imageName];
+		[button setImage:image forState:UIControlStateNormal];
+	}
+	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+
+	return [button autorelease];
 }
 
 - (void)fetchData
@@ -119,7 +151,7 @@
 	_now = nil;
 	[_next release];
 	_next = nil;
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 	[_nowSummary release];
 	_nowSummary = nil;
@@ -138,7 +170,7 @@
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;
 #if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
@@ -182,11 +214,20 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	const UITableViewCell *cell = [tableView cellForRowAtIndexPath: indexPath];
+	if([cell respondsToSelector:@selector(view)]
+	   && [((DisplayCell *)cell).view respondsToSelector:@selector(sendActionsForControlEvents:)])
+	{
+		[(UIButton *)((DisplayCell *)cell).view sendActionsForControlEvents: UIControlEventTouchUpInside];
+	}
 	return nil;
 }
 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	if([ServiceZapListController canStream])
+		return 4;
 	return 3;
 }
 
@@ -214,11 +255,31 @@
 		case 1:
 			if(_now == nil)
 				return 0;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
+				return 3;
 			return 2;
 		case 2:
 			if(_next == nil)
 				return 0;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
+				return 3;
 			return 2;
+		case 3:
+		{
+			if(!_service && !_service.valid)
+				return 0;
+
+			NSInteger rows = 0;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+				++rows;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+				++rows;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+				++rows;
+			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+				++rows;
+			return rows;
+		}
 		default:
 			return 0;
 	}
@@ -275,37 +336,88 @@
 		}
 		case 1:
 		{
-			if(indexPath.row == 0)
+			switch(indexPath.row)
 			{
-				sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
-				((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
-				((EventTableViewCell *)sourceCell).event = _now;
-				sourceCell.accessoryType = UITableViewCellAccessoryNone;
-			}
-			else
-			{
-				sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
-				((CellTextView *)sourceCell).view = _nowSummary;
-				_nowSummary.backgroundColor = sourceCell.backgroundColor;
+				default:
+				case 0:
+					sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
+					((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
+					((EventTableViewCell *)sourceCell).event = _now;
+					sourceCell.accessoryType = UITableViewCellAccessoryNone;
+					break;
+				case 1:
+					sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
+					((CellTextView *)sourceCell).view = _nowSummary;
+					_nowSummary.backgroundColor = sourceCell.backgroundColor;
+					break;
+				case 2:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+					((DisplayCell *)sourceCell).nameLabel.text = @"IMDb";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDbNow:) withImage:nil];
+					break;
 			}
 			break;
 		}
 		case 2:
 		{
-			if(indexPath.row == 0)
+			switch(indexPath.row)
 			{
-				sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
-				((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
-				((EventTableViewCell *)sourceCell).event = _next;
-				sourceCell.accessoryType = UITableViewCellAccessoryNone;
-			}
-			else
-			{
-				sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
-				((CellTextView *)sourceCell).view = _nextSummary;
-				_nextSummary.backgroundColor = sourceCell.backgroundColor;
+				default:
+				case 0:
+					sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
+					((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
+					((EventTableViewCell *)sourceCell).event = _next;
+					sourceCell.accessoryType = UITableViewCellAccessoryNone;
+					break;
+				case 1:
+					sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
+					((CellTextView *)sourceCell).view = _nextSummary;
+					_nowSummary.backgroundColor = sourceCell.backgroundColor;
+					break;
+				case 2:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+					((DisplayCell *)sourceCell).nameLabel.text = @"IMDb";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDbNext:) withImage:nil];
+					break;
 			}
 			break;
+		}
+		case 3:
+		{
+			NSInteger row = indexPath.row;
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > -1)
+				++row;
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 0)
+				++row;
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 1)
+				++row;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 2)
+			//	++row;
+
+			switch(row)
+			{
+				case 0:
+					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
+					break;
+				case 1:
+					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer Lite";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
+					break;
+				case 2:
+					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
+					break;
+				case 3:
+					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
+					break;
+			}
 		}
 		default:
 			break;
@@ -480,5 +592,66 @@
 	}
 }
 #endif
+
+#pragma mark IMDb
+
+- (void)openIMDbNow:(id)sender
+{
+	NSString *encoded = [_now.title urlencode];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)openIMDbNext:(id)sender
+{
+	NSString *encoded = [_next.title urlencode];
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
+
+	[[UIApplication sharedApplication] openURL:url];
+}
+
+#pragma mark Streaming
+
+- (void)openStreamWithBase:(NSString *)baseString
+{
+	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+	if(!streamingURL)
+	{
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+	else
+	{
+		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseString, [streamingURL absoluteURL]]];
+		[[UIApplication sharedApplication] openURL:url];
+	}
+}
+
+- (void)openOPlayer:(id)sender
+{
+	[self openStreamWithBase:@"oplayer://"];
+}
+
+- (void)openOPlayerLite:(id)sender
+{
+	[self openStreamWithBase:@"oplayerlite://"];
+}
+
+- (void)openBuzzPlayer:(id)sender
+{
+	[self openStreamWithBase:@"buzzplayer://"];
+}
+
+- (void)openYxplayer:(id)sender
+{
+	[self openStreamWithBase:@"yxp://"];
+}
 
 @end
