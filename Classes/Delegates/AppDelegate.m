@@ -231,7 +231,7 @@ enum appDelegateAlertTags
 				promptForRating = NO;
 
 				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Picons?", @"Title of Alert when a zip file was found in the documents folder possibly containing picons.")
-																	  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%@) was found in your Documents folder?\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), cachedFilename]
+																	  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%@) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), cachedFilename]
 																	 delegate:self
 															cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 															otherButtonTitles:NSLocalizedString(@"Extract", @"Button executing zip extraction/deletion"), nil];
