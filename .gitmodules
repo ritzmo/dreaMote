@@ -4,6 +4,3 @@
 [submodule "QuincyKit"]
 	path = QuincyKit
 	url = git://github.com/TheRealKerni/QuincyKit.git
-[submodule "SSZipArchive"]
-	path = SSZipArchive
-	url = git://github.com/samsoffes/ssziparchive.git
