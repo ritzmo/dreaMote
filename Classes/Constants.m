@@ -6,7 +6,7 @@
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-const char *kPiconGlob = "../Documents/*.zip";
+const char *kPiconGlob = "~/Documents/*.zip";
 
 // shared e2 xml element names
 const char *kEnigma2Servicereference = "e2servicereference";

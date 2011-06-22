@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; };
@@ -750,6 +751,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
+		DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiteUnzip.m; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1280,6 +1283,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */ = {
+			isa = PBXGroup;
+			children = (
+				DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */,
+				DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */,
+			);
+			path = LiteUnzip;
+			sourceTree = SOURCE_ROOT;
+		};
 		DAC8BE4013B1FF9200CA00D9 = {
 			isa = PBXGroup;
 			children = (
@@ -1442,6 +1454,7 @@
 		DAC8C05D13B2014C00CA00D9 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */,
 				DAC8C05E13B2014C00CA00D9 /* Appirater */,
 				DAC8C06113B2014C00CA00D9 /* Categories */,
 				DAC8C07213B2014C00CA00D9 /* Connector */,
@@ -2594,6 +2607,7 @@
 				DAC8C48A13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */,
 				DAC8C49313B2023200CA00D9 /* main.m in Sources */,
 				DAC8C4C113B202F600CA00D9 /* BWQuincyManager.m in Sources */,
+				DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2967,6 +2981,7 @@
 					Classes,
 					MBProgressHUD,
 					TouchXML/Source,
+					LiteUnzip,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_LDFLAGS = "-all_load";
@@ -3000,6 +3015,7 @@
 					Classes,
 					MBProgressHUD,
 					TouchXML/Source,
+					LiteUnzip,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
@@ -3159,6 +3175,7 @@
 				DAC8BED013B2009F00CA00D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DAC8BEF413B200C500CA00D9 /* Build configuration list for PBXNativeTarget "Coolmote" */ = {
 			isa = XCConfigurationList;
@@ -3167,6 +3184,7 @@
 				DAC8BEF613B200C500CA00D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

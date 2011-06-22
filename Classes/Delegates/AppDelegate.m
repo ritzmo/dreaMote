@@ -10,6 +10,8 @@
 #import "Constants.h"
 
 #import <glob.h>
+#include <fcntl.h>
+#import "LiteUnzip.h"
 
 #import "NSData+Base64.h"
 #import "NSArray+ArrayFromData.h"
@@ -29,6 +31,18 @@ enum appDelegateAlertTags
 	TAG_URL = 1,
 	TAG_ZIP = 2,
 };
+
+static const char *basename(const char *path)
+{
+	const char *base = path;
+	const char *name = NULL;
+	for(name = base; *name; ++name)
+	{
+		if(*name == '/')
+			base = name + 1;
+	}
+	return base;
+}
 
 @interface AppDelegate()
 - (void)checkReachable;
@@ -216,12 +230,11 @@ enum appDelegateAlertTags
 		[self application:application handleOpenURL:url];
 		promptForRating = NO;
 	}
-#if 0
 	// check for .zip files possibly containing picons
 	else
 	{
 		glob_t gt;
-		if (glob(kPiconGlob, 0, NULL, &gt) == 0)
+		if(glob(kPiconGlob, GLOB_TILDE, NULL, &gt) == 0)
 		{
 			NSInteger i = 0;
 			for (; i < gt.gl_matchc; ++i)
@@ -231,7 +244,7 @@ enum appDelegateAlertTags
 				promptForRating = NO;
 
 				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Picons?", @"Title of Alert when a zip file was found in the documents folder possibly containing picons.")
-																	  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%@) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), cachedFilename]
+																	  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), basename(gt.gl_pathv[i])]
 																	 delegate:self
 															cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 															otherButtonTitles:NSLocalizedString(@"Extract", @"Button executing zip extraction/deletion"), nil];
@@ -243,7 +256,6 @@ enum appDelegateAlertTags
 		}
 		globfree(&gt);
 	}
-#endif
 	[Appirater appLaunched:promptForRating];
 
 	return YES;
@@ -309,6 +321,85 @@ enum appDelegateAlertTags
 	[tabBarController viewWillDisappear:NO];
 	[tabBarController viewDidDisappear:NO];
 	wasSleeping = YES;
+}
+
+#pragma mark Unzip
+
+- (void)unpackPicons
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	HUNZIP huz = {0};
+	ZIPENTRY ze = {0,0,0,0,0,0,0,{0}};
+	DWORD numitems = 0;
+	DWORD numdirs = 0;
+	NSString *message = nil;
+	DWORD archive = UnzipOpenFileA(&huz, [cachedFilename cStringUsingEncoding:NSASCIIStringEncoding], NULL);
+
+	ze.Index = (DWORD)-1;
+	if(archive != ZR_OK || UnzipGetItem(huz, &ze))
+	{
+		NSLog(@"archive == %lu, %@", archive, cachedFilename);
+		message = NSLocalizedString(@"Unable to extract zip-file!", @"Zip-Extraction failed");
+		goto zipAlert;
+	}
+	numitems = ze.Index;
+
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documents = [paths objectAtIndex:0];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	for(ze.Index = 0; ze.Index < numitems; ++(ze.Index))
+	{
+		if (UnzipGetItem(huz, &ze))
+			break;
+
+		// skip directory elements
+		if(ze.Attributes & S_IFDIR)
+		{
+			++numdirs;
+			continue;
+		}
+
+		NSAutoreleasePool *subpool = [[NSAutoreleasePool alloc] init];
+
+		const char *base = basename(ze.Name); // picons might be in a subfolder, we don't want that
+		NSString *name = [[NSString alloc] initWithBytesNoCopy:(void *)base length:strlen(base) encoding:NSASCIIStringEncoding freeWhenDone:NO];
+		NSString *fullname = [documents stringByAppendingPathComponent:name];
+		UnzipItemToFile(huz, [fileManager fileSystemRepresentationWithPath:fullname], &ze);
+
+		[name release];
+		[subpool release];
+	}
+
+	NSError *error = nil;
+	if([[NSFileManager defaultManager] removeItemAtPath:cachedFilename error:&error] != YES)
+	{
+		message = NSLocalizedString(@"Failed to remove zip-file!\nPlease remove it manually using iTunes.", @"Removal of zip-file failed after extraction.");
+		NSLog(@"failed to delete %@", cachedFilename);
+	}
+
+zipAlert:
+	UnzipClose(huz);
+	UIAlertView *alert = nil;
+	if(message)
+	{
+		alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+										   message:message
+										  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	}
+	else
+	{
+		alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+										   message:[NSString stringWithFormat:NSLocalizedString(@"%d files extracted successfully.", @"zip-file was extracted without any errors."), numitems-numdirs]
+										  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+	}
+	[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
+	[alert release];
+
+	[cachedFilename release];
+	cachedFilename = nil;
+
+	[pool release];
 }
 
 #pragma mark -
@@ -380,34 +471,10 @@ enum appDelegateAlertTags
 		// let main view reload its data
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	}
-#if 0
 	else if(buttonIndex == alertView.firstOtherButtonIndex && alertView.tag == TAG_ZIP)
 	{
-		ZipArchive *za = [[ZipArchive alloc] init];
-		if([za UnzipOpenFile:cachedFilename])
-		{
-			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-			NSString *documents = [paths objectAtIndex:0];
-			NSError *error = nil;
-
-			const BOOL ret = [za UnzipFileTo:documents overWrite:YES];
-			if(!ret)
-			{
-				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-																	  message:NSLocalizedString(@"Unable to extract zip-file!", @"Zip-Extraction failed")
-																	 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-				[alert show];
-				[alert release];
-			}
-			[za UnzipCloseFile];
-			if([[NSFileManager defaultManager] removeItemAtPath:cachedFilename error:&error] != YES)
-				NSLog(@"failed to delete %@", cachedFilename);
-		}
-		[za release];
+		[NSThread detachNewThreadSelector:@selector(unpackPicons) toTarget:self withObject:nil];
 	}
-#endif
-	[cachedFilename release];
-	cachedFilename = nil;
 	[cachedURL release];
 	cachedURL = nil;
 }
