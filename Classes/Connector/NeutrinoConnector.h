@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RemoteConnector.h"
+#import <Connector/RemoteConnector.h>
 
 /*!
  @brief Connector for Neutrino based STBs.

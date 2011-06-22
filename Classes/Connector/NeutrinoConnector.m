@@ -8,26 +8,25 @@
 
 #import "NeutrinoConnector.h"
 
-#import "Constants.h"
+#import <Constants.h>
 
-#import "Objects/Generic/Service.h"
-#import "Objects/Generic/Volume.h"
-#import "Objects/Generic/Timer.h"
+#import <Objects/Generic/Service.h>
+#import <Objects/Generic/Volume.h>
+#import <Objects/Generic/Timer.h>
 
-#import "SynchronousRequestReader.h"
-#import "MovieSourceDelegate.h"
-#import "ServiceSourceDelegate.h"
-#import "SignalSourceDelegate.h"
-#import "TimerSourceDelegate.h"
-#import "VolumeSourceDelegate.h"
-#import "XMLReader/BaseXMLReader.h"
-#import "XMLReader/Neutrino/EventXMLReader.h"
-#import "XMLReader/Neutrino/ServiceXMLReader.h"
+#import <SynchronousRequestReader.h>
+#import <Delegates/MovieSourceDelegate.h>
+#import <Delegates/ServiceSourceDelegate.h>
+#import <Delegates/SignalSourceDelegate.h>
+#import <Delegates/TimerSourceDelegate.h>
+#import <Delegates/VolumeSourceDelegate.h>
+#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/Neutrino/EventXMLReader.h>
+#import <XMLReader/Neutrino/ServiceXMLReader.h>
 
-#import "NeutrinoRCEmulatorController.h"
-#import "SimpleRCEmulatorController.h"
+#import <ViewController/NeutrinoRCEmulatorController.h>
 
-#import "NSString+URLEncode.h"
+#import <Categories/NSString+URLEncode.h>
 
 enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeNormal = 0,

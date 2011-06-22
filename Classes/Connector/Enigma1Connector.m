@@ -8,28 +8,27 @@
 
 #import "Enigma1Connector.h"
 
-#import "Constants.h"
+#import <Constants.h>
 
-#import "Objects/Enigma/Service.h"
-#import "Objects/Enigma/Timer.h"
-#import "Objects/Generic/Service.h"
-#import "Objects/Generic/Volume.h"
-#import "Objects/TimerProtocol.h"
-#import "Objects/MovieProtocol.h"
+#import <Objects/Enigma/Service.h>
+#import <Objects/Enigma/Timer.h>
+#import <Objects/Generic/Service.h>
+#import <Objects/Generic/Volume.h>
+#import <Objects/TimerProtocol.h>
+#import <Objects/MovieProtocol.h>
 
-#import "SynchronousRequestReader.h"
-#import "ServiceSourceDelegate.h"
-#import "VolumeSourceDelegate.h"
-#import "XMLReader/Enigma/EventXMLReader.h"
-#import "XMLReader/Enigma/CurrentXMLReader.h"
-#import "XMLReader/Enigma/MovieXMLReader.h"
-#import "XMLReader/Enigma/SignalXMLReader.h"
-#import "XMLReader/Enigma/TimerXMLReader.h"
+#import <SynchronousRequestReader.h>
+#import <Delegates/ServiceSourceDelegate.h>
+#import <Delegates/VolumeSourceDelegate.h>
+#import <XMLReader/Enigma/EventXMLReader.h>
+#import <XMLReader/Enigma/CurrentXMLReader.h>
+#import <XMLReader/Enigma/MovieXMLReader.h>
+#import <XMLReader/Enigma/SignalXMLReader.h>
+#import <XMLReader/Enigma/TimerXMLReader.h>
 
-#import "EnigmaRCEmulatorController.h"
-#import "SimpleRCEmulatorController.h"
+#import <ViewController/EnigmaRCEmulatorController.h>
 
-#import "NSString+URLEncode.h"
+#import <Categories/NSString+URLEncode.h>
 
 // Services are 'lightweight'
 #define MAX_SERVICES 2048

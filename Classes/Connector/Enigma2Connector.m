@@ -8,40 +8,39 @@
 
 #import "Enigma2Connector.h"
 
-#import "Constants.h"
+#import <Constants.h>
 
-#import "Objects/EventProtocol.h"
-#import "Objects/MovieProtocol.h"
-#import "Objects/ServiceProtocol.h"
-#import "Objects/TimerProtocol.h"
-#import "Objects/Generic/Movie.h"
-#import "Delegates/MediaPlayerShuffleDelegate.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/MovieProtocol.h>
+#import <Objects/ServiceProtocol.h>
+#import <Objects/TimerProtocol.h>
+#import <Objects/Generic/Movie.h>
+#import <Delegates/MediaPlayerShuffleDelegate.h>
 
-#import "RemoteConnectorObject.h" /* usesAdvancedRemote */
+#import <Connector/RemoteConnectorObject.h> /* usesAdvancedRemote */
 
-#import "SynchronousRequestReader.h"
-#import "XMLReader/Enigma2/AboutXMLReader.h"
+#import <SynchronousRequestReader.h>
+#import <XMLReader/Enigma2/AboutXMLReader.h>
 #if IS_FULL()
-	#import "XMLReader/Enigma2/AutoTimerXMLReader.h"
+	#import <XMLReader/Enigma2/AutoTimerXMLReader.h>
 #endif
-#import "XMLReader/Enigma2/CurrentXMLReader.h"
-#import "XMLReader/Enigma2/EPGRefreshSettingsXMLReader.h"
-#import "XMLReader/Enigma2/EventXMLReader.h"
-#import "XMLReader/Enigma2/FileXMLReader.h"
-#import "XMLReader/Enigma2/MetadataXMLReader.h"
-#import "XMLReader/Enigma2/MovieXMLReader.h"
-#import "XMLReader/Enigma2/LocationXMLReader.h"
-#import "XMLReader/Enigma2/ServiceXMLReader.h"
-#import "XMLReader/Enigma2/SignalXMLReader.h"
-#import "XMLReader/Enigma2/SleepTimerXMLReader.h"
-#import "XMLReader/Enigma2/TimerXMLReader.h"
-#import "XMLReader/Enigma2/VolumeXMLReader.h"
+#import <XMLReader/Enigma2/CurrentXMLReader.h>
+#import <XMLReader/Enigma2/EPGRefreshSettingsXMLReader.h>
+#import <XMLReader/Enigma2/EventXMLReader.h>
+#import <XMLReader/Enigma2/FileXMLReader.h>
+#import <XMLReader/Enigma2/MetadataXMLReader.h>
+#import <XMLReader/Enigma2/MovieXMLReader.h>
+#import <XMLReader/Enigma2/LocationXMLReader.h>
+#import <XMLReader/Enigma2/ServiceXMLReader.h>
+#import <XMLReader/Enigma2/SignalXMLReader.h>
+#import <XMLReader/Enigma2/SleepTimerXMLReader.h>
+#import <XMLReader/Enigma2/TimerXMLReader.h>
+#import <XMLReader/Enigma2/VolumeXMLReader.h>
 
-#import "EnigmaRCEmulatorController.h"
-#import "SimpleRCEmulatorController.h"
+#import <ViewController/EnigmaRCEmulatorController.h>
 
-#import "NSMutableArray+Shuffling.h"
-#import "NSString+URLEncode.h"
+#import <Categories/NSMutableArray+Shuffling.h>
+#import <Categories/NSString+URLEncode.h>
 
 enum powerStates {
 	kStandbyState = 0,

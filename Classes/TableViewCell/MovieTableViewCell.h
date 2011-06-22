@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Objects/MovieProtocol.h"
+#import <Objects/MovieProtocol.h>
 
 
 /*!

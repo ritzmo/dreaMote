@@ -8,24 +8,23 @@
 
 #import "SVDRPConnector.h"
 
-#import "BufferedSocket.h"
-#import "Constants.h"
+#import <SmallSockets/BufferedSocket.h>
+#import <Constants.h>
 
-#import "Objects/Generic/Event.h"
-#import "Objects/Generic/Movie.h"
-#import "Objects/Generic/Service.h"
-#import "Objects/Generic/Volume.h"
-#import "Objects/SVDRP/Timer.h"
+#import <Objects/Generic/Event.h>
+#import <Objects/Generic/Movie.h>
+#import <Objects/Generic/Service.h>
+#import <Objects/Generic/Volume.h>
+#import <Objects/SVDRP/Timer.h>
 
-#import "EventSourceDelegate.h"
-#import "MovieSourceDelegate.h"
-#import "ServiceSourceDelegate.h"
-#import "SignalSourceDelegate.h"
-#import "TimerSourceDelegate.h"
-#import "VolumeSourceDelegate.h"
+#import <Delegates/EventSourceDelegate.h>
+#import <Delegates/MovieSourceDelegate.h>
+#import <Delegates/ServiceSourceDelegate.h>
+#import <Delegates/SignalSourceDelegate.h>
+#import <Delegates/TimerSourceDelegate.h>
+#import <Delegates/VolumeSourceDelegate.h>
 
-#import "SVDRPRCEmulatorController.h"
-#import "SimpleRCEmulatorController.h"
+#import <ViewController/SVDRPRCEmulatorController.h>
 
 typedef enum
 {

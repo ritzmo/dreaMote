@@ -17,9 +17,9 @@
 #import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
 
-#import "MovieProtocol.h"
+#import <Objects/MovieProtocol.h>
 
-#import "Objects/Generic/Result.h"
+#import <Objects/Generic/Result.h>
 
 @interface MovieListController()
 - (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch;

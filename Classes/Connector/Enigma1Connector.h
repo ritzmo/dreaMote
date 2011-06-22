@@ -11,7 +11,7 @@
 
 #import "RemoteConnector.h"
 
-#import "CXMLDocument.h"
+#import <CXMLDocument.h>
 
 /*!
  @brief Connector for Enigma based STBs.

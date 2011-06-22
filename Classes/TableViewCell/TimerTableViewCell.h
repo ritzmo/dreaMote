@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/TimerProtocol.h"
+#import <Objects/TimerProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
