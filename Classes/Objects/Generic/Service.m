@@ -72,19 +72,23 @@
 				return nil;
 			}
 			NSInteger i = length-2;
-			BOOL first = YES;
 			for(; i > 0; --i)
 			{
 				if(sref[i] == ':')
 				{
-					if(first)
+					length = i;
+					sref[i] = '\0';
+
+					// start two character from ':'
+					for(i -= 2; i > 0; --i)
 					{
-						length = i;
-						sref[i] = '\0';
-						first = NO;
+						if(sref[i] == ':')
+						{
+							sref[i] = '_';
+							--i; // there has to be at least one character != ':' before this one
+						}
 					}
-					else
-						sref[i] = '_';
+					break;
 				}
 			}
 			NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
