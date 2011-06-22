@@ -4,6 +4,9 @@
 /* No comment provided by engineer. */
 "%@ of %@ free" = "%@ von %@ frei";
 
+/* zip-file was extracted without any errors. */
+"%d files extracted successfully." = "%d Dateien erfolgreich entpackt.";
+
 /* Minutes */
 "%d min" = "%d Min.";
 
@@ -59,7 +62,7 @@
 "A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "Es konnte keine Sendung gefunden werden.\nEventuell hilft es den Cache durch neu laden der Sendungsliste zu Aktualisieren.";
 
 /* Message explaining what what happens on zip-file import. */
-"A zip-file (%@) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!" = "Eine Zip-Datei (%@) wurde im Dokumente-Ordner gefunden.\nJetzt entpacken und löschen?\n\nDiese Nachricht erscheint bei jedem Programmstart mit einer Zip-Datei im Dokumente-Ordner!";
+"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!" = "Eine Zip-Datei (%s) wurde im Dokumente-Ordner gefunden.\nJetzt entpacken und löschen?\n\nDiese Nachricht erscheint bei jedem Programmstart mit einer Zip-Datei im Dokumente-Ordner!";
 
 /* About Button Text
    Title of AboutDreamoteViewController */
@@ -357,6 +360,9 @@
 
 /* Button executing zip extraction/deletion */
 "Extract" = "Entpacken";
+
+/* Removal of zip-file failed after extraction. */
+"Failed to remove zip-file!\nPlease remove it manually using iTunes." = "Zip-Datei konnte nicht entfernt werden!\nBitte löschen Sie die Datei manuell mit iTunes.";
 
 /* No comment provided by engineer. */
 "Failed to retrieve data" = "Datenübertragung fehlgeschlagen";
