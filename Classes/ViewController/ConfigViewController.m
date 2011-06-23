@@ -8,8 +8,6 @@
 
 #import "ConfigViewController.h"
 
-#import "ConnectionListController.h"
-
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -198,10 +196,11 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	if(_remoteAddressTextField) // check if initialized
 	{
 		_remoteAddressTextField.text = [con objectForKey:kRemoteHost];
-		_remotePortTextField.text = [con objectForKey:kPort];
+		_remotePortTextField.text = [[con objectForKey:kPort] integerValue] ? [[con objectForKey:kPort] stringValue] : nil;
 		_usernameTextField.text = [con objectForKey:kUsername];
 		_passwordTextField.text = [con objectForKey:kPassword];
 		_sslSwitch.on = [[con objectForKey:kSSL] boolValue];
+		_advancedRemoteSwitch.on = [[con objectForKey:kAdvancedRemote] boolValue];
 
 		NSNumber *connector = [NSNumber numberWithInteger:[[con objectForKey:kConnector] integerValue]];
 		[self connectorSelected:connector];
@@ -1038,6 +1037,13 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	[super viewWillDisappear: animated];
 }
 
+#pragma mark ConfigListDelegate
+
+- (void)connectionSelected:(NSMutableDictionary *)dictionary
+{
+	self.connection = dictionary;
+}
+
 #pragma mark AutoConfiguration
 
 - (void)doAutoConfiguration
@@ -1075,7 +1081,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	}
 	else
 	{
-		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andConfigView:self];
+		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
 		if(IS_IPAD())
 		{
 			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];

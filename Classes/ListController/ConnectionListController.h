@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ConfigViewController.h"
+@protocol ConnectionListDelegate;
 
 /*!
  @brief Connection List used in AutoConfiguration.
@@ -20,7 +20,7 @@
 {
 @private
 	NSArray *_connections; /*!< @brief List of found connections. */
-	ConfigViewController *_configView; /*!< @brief Our parent ConfigView. */
+	NSObject<ConnectionListDelegate> *_delegate; /*!< @brief Delegate. */
 }
 
 /*!
@@ -30,6 +30,18 @@
  @param configView
  @return ConnectionListController instance.
  */
-+ (ConnectionListController *)newWithConnections:(NSArray *)connections andConfigView:(ConfigViewController *)configView;
++ (ConnectionListController *)newWithConnections:(NSArray *)connections andDelegate:(NSObject<ConnectionListDelegate> *)delegate;
 
+@end
+
+/*!
+ @brief Callbacks of ConnectionListController.
+ */
+@protocol ConnectionListDelegate
+/*!
+ @brief A connection was selected.
+
+ @param dictionary Connection dictionary.
+ */
+- (void)connectionSelected:(NSMutableDictionary *)dictionary;
 @end

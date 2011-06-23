@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 #if IS_FULL()
-	#import "MultiEPGIntervalViewController.h"
+	#import "MultiEPGIntervalViewController.h" /* MultiEPGIntervalDelegate */
 #endif
+#import "ConnectionListController.h" /* ConnectionListDelegate */
 #import "TimeoutSelectionViewController.h" /* TimeoutSelectionDelegate */
 
 /*!
@@ -22,6 +23,7 @@
 #if IS_FULL()
 													MultiEPGIntervalDelegate,
 #endif
+													ConnectionListDelegate,
 													TimeoutSelectionDelegate,
 													UITableViewDataSource>
 {

@@ -20,19 +20,19 @@
 - (void)abortAction:(id)sender;
 
 @property (nonatomic, retain) NSArray *connections;
-@property (nonatomic, retain) ConfigViewController *configView;
+@property (nonatomic, retain) NSObject<ConnectionListDelegate> *connectionDelegate;
 @end
 
 @implementation ConnectionListController
 
 @synthesize connections = _connections;
-@synthesize configView = _configView;
+@synthesize connectionDelegate = _delegate;
 
-+ (ConnectionListController *)newWithConnections:(NSArray *)connections andConfigView:(ConfigViewController *)configView
++ (ConnectionListController *)newWithConnections:(NSArray *)connections andDelegate:(NSObject<ConnectionListDelegate> *)delegate
 {
 	ConnectionListController *tv = [[ConnectionListController alloc] init];
 	tv.connections = connections;
-	tv.configView = configView;
+	tv.connectionDelegate = delegate;
 
 	return [tv autorelease];
 }
@@ -54,7 +54,7 @@
 - (void)dealloc
 {
 	[_connections release];
-	[_configView release];
+	[_delegate release];
 
 	[super dealloc];
 }
@@ -104,8 +104,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSMutableDictionary *con = [[_connections objectAtIndex:indexPath.row] mutableCopy];
-	_configView.connection = con;
-	[con release];
+	[_delegate connectionSelected:con];
+	[con autorelease];
 
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];

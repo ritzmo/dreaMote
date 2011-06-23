@@ -18,6 +18,7 @@
 
 #import "AboutDreamoteViewController.h"
 #import "ConfigViewController.h"
+#import "ConnectionListController.h"
 
 #define kMultiEPGRowTag 99
 #define kTimeoutRowTag 100
@@ -45,6 +46,16 @@ enum sectionIds
 - (void)simpleRemoteChanged:(id)sender;
 - (void)vibrationChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
+@end
+
+/*!
+ @brief AutoConfiguration related methods of ConfigListController.
+ */
+@interface ConfigListController(AutoConfiguration)
+/*!
+ @brief Start AutoConfiguration process.
+ */
+- (void)doAutoConfiguration;
 @end
 
 @implementation ConfigListController
@@ -229,10 +240,13 @@ enum sectionIds
 			UIViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
 			[self presentModalViewController:welcomeController animated:YES];
 			[welcomeController release];
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		}
+		else if(indexPath.row == 1)
+		{
+			[NSThread detachNewThreadSelector:@selector(doAutoConfiguration) toTarget:self withObject:nil];
 		}
 #if IS_LITE()
-		else if(indexPath.row == 1)
+		else if(indexPath.row == 2)
 		{
 			NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 			NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
@@ -248,6 +262,7 @@ enum sectionIds
 			[[UIApplication sharedApplication] openURL:url];
 		}
 #endif
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else if(indexPath.section == connectionSection)
 	{
@@ -525,23 +540,36 @@ enum sectionIds
 			}
 			break;
 		case buttonSection:
-#if IS_LITE()
-			if(row == 1)
+		{
+			switch(row)
 			{
-				sourceCell.accessoryType = UITableViewCellAccessoryNone;
-				TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-				TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-				TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
-				break;
-			}
+				case 0:
+					sourceCell.accessoryType = UITableViewCellAccessoryNone;
+					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
+					break;
+				case 1:
+					sourceCell.accessoryType = UITableViewCellAccessoryNone;
+					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Search Connections", @"Start AutoConfiguration from ConfigListController");
+					break;
+#if IS_LITE()
+				case 2:
+					sourceCell.accessoryType = UITableViewCellAccessoryNone;
+					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
+					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
+					break;
 #endif
-			sourceCell.accessoryType = UITableViewCellAccessoryNone;
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-			TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-			TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
+				default: break;
+			}
 			break;
+		}
 		default:
 			break;
 	}
@@ -573,9 +601,9 @@ enum sectionIds
 		}
 		case buttonSection:
 #if IS_FULL()
-			return 1;
+			return 2;
 #else
-			return ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]]) ? 2 : 1;
+			return ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]]) ? 3 : 2;
 #endif
 		default:
 			return 0;
@@ -677,6 +705,63 @@ enum sectionIds
 	// unset editing if not going into a subview
 	if(self.editing && [(UITableView *)self.view indexPathForSelectedRow] == nil)
 		[self setEditing:NO animated:animated];
+}
+
+#pragma mark - ConnectionListDelegate methods
+
+- (void)connectionSelected:(NSMutableDictionary *)dictionary
+{
+	UIViewController *tvc = [ConfigViewController withConnection:dictionary :-1];
+	[self.navigationController pushViewController:tvc animated:YES];
+}
+
+#pragma mark AutoConfiguration
+
+- (void)doAutoConfiguration
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+	MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview: progressHUD];
+    [progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
+    [progressHUD setMode:MBProgressHUDModeIndeterminate];
+    [progressHUD show:YES];
+    progressHUD.taskInProgress = YES;
+
+	NSArray *connections = [RemoteConnectorObject autodetectConnections];
+
+	progressHUD.taskInProgress = NO;
+	[progressHUD hide:YES];
+	[progressHUD removeFromSuperview];
+
+	NSUInteger len = connections.count;
+	if(len == 0)
+	{
+		const UIAlertView *notification = [[UIAlertView alloc]
+										   initWithTitle:NSLocalizedString(@"Error", @"")
+										   message:NSLocalizedString(@"Unable to find valid connection data.", @"")
+										   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+	}
+	else
+	{
+		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
+		if(IS_IPAD())
+		{
+			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
+			nc.modalPresentationStyle = tv.modalPresentationStyle;
+			nc.modalTransitionStyle = tv.modalTransitionStyle;
+			[self.navigationController presentModalViewController:nc animated:YES];
+		}
+		else
+		{
+			[self.navigationController pushViewController:tv animated:YES];
+		}
+	}
+
+	[progressHUD release];
+	[pool release];
 }
 
 @end

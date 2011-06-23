@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "CellTextField.h" /* EditableTableViewCellDelegate */
+#import "ConnectionListController.h" /* ConnectionListDelegate */
 #import "ConnectorViewController.h" /* ConnectorDelegate */
 #import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 
@@ -22,6 +23,7 @@
 													UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, ConnectorDelegate,
 													EditableTableViewCellDelegate,
+													ConnectionListDelegate,
 													MBProgressHUDDelegate>
 {
 @private

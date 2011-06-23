@@ -109,12 +109,13 @@ enum enigma1MessageTypes {
 + (NSArray *)knownDefaultConnections
 {
 	NSNumber *connector = [NSNumber numberWithInteger:kEnigma1Connector];
+	NSNumber *eighty = [NSNumber numberWithInteger:80];
 	return [NSArray arrayWithObjects:
 				[NSDictionary dictionaryWithObjectsAndKeys:
 					@"dreambox", kRemoteHost,
 					@"root", kUsername,
 					@"dreambox", kPassword,
-					@"80", kPort,
+					eighty, kPort,
 					@"NO", kSSL,
 					connector, kConnector,
 					nil],
@@ -122,7 +123,7 @@ enum enigma1MessageTypes {
 					@"dm7020", kRemoteHost,
 					@"root", kUsername,
 					@"dreambox", kPassword,
-					@"80", kPort,
+					eighty, kPort,
 					@"NO", kSSL,
 					connector, kConnector,
 					nil],
@@ -130,7 +131,7 @@ enum enigma1MessageTypes {
 					@"dm600", kRemoteHost,
 					@"root", kUsername,
 					@"dreambox", kPassword,
-					@"80", kPort,
+					eighty, kPort,
 					@"NO", kSSL,
 					connector, kConnector,
 					nil],
@@ -138,7 +139,7 @@ enum enigma1MessageTypes {
 					@"dm500", kRemoteHost,
 					@"root", kUsername,
 					@"dreambox", kPassword,
-					@"80", kPort,
+					eighty, kPort,
 					@"NO", kSSL,
 					connector, kConnector,
 					nil],
