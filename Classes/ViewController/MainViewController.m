@@ -248,17 +248,11 @@
 	// handleReconnect makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
-		UIAlertView *notification = [[UIAlertView alloc]
-									 initWithTitle:NSLocalizedString(@"Error", @"")
-									 message:NSLocalizedString(@"You need to configure this application before you can use it.", @"")
-									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-
 		// dialog (probably) already visible
 		if([self.selectedViewController isEqual:[menuList lastObject]]
 		   && [_otherController.navigationController.visibleViewController isKindOfClass:[ConfigViewController class]])
 		{
+			((ConfigViewController *)_otherController.navigationController.visibleViewController).mustSave = YES;
 			return NO;
 		}
 
