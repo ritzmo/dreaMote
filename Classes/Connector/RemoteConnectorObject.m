@@ -150,7 +150,7 @@ static NSDictionary *_connection;
 				currentConnector = [Enigma2Connector class];
 				break;
 #endif
-#if INCLUDE_FEATURE(Enigma1)
+#if INCLUDE_FEATURE(Enigma)
 			case kEnigma1Connector:
 				currentConnector = [Enigma1Connector class];
 				break;
