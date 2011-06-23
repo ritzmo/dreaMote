@@ -66,16 +66,16 @@ NSString *kConnectionCell_ID = @"ConnectionCell_ID";
 
 	CGSize labelSize = [_statusLabel sizeThatFits:_statusLabel.bounds.size];
 
-	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - labelSize.width - kRightMargin, 26);
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - labelSize.width - kLeftMargin, 26);
 	self.textLabel.frame = frame;
 
 	offset = (IS_IPAD()) ? 28 : 21;
 	frame.origin.y = offset;
 	frame.size.height = 22;
-	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - labelSize.width - kRightMargin, 22);
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - labelSize.width - kLeftMargin, 22);
 	_descriptionLabel.frame = frame;
 
-	frame.origin.x = frame.origin.x + frame.size.width;
+	frame.origin.x = frame.origin.x + frame.size.width - kRightMargin;
 	frame.origin.y = (contentRect.size.height - kMainDetailsSize) / 2.0f;
 	frame.size.width = labelSize.width;
 	_statusLabel.frame = frame;
