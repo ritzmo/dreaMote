@@ -46,6 +46,8 @@ enum sectionIds
 - (void)simpleRemoteChanged:(id)sender;
 - (void)vibrationChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
+
+@property (nonatomic,retain) MBProgressHUD *progressHUD;
 @end
 
 /*!
@@ -59,6 +61,8 @@ enum sectionIds
 @end
 
 @implementation ConfigListController
+
+@synthesize progressHUD;
 
 /* initialize */
 - (id)init
@@ -82,6 +86,7 @@ enum sectionIds
 	[_connections release];
 	[_vibrateInRC release];
 	[_simpleRemote release];
+	[progressHUD release];
 
 	[super dealloc];
 }
@@ -243,6 +248,13 @@ enum sectionIds
 		}
 		else if(indexPath.row == 1)
 		{
+			progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+			[self.view addSubview: progressHUD];
+			[progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
+			[progressHUD setMode:MBProgressHUDModeIndeterminate];
+			[progressHUD show:YES];
+			progressHUD.taskInProgress = YES;
+
 			[NSThread detachNewThreadSelector:@selector(doAutoConfiguration) toTarget:self withObject:nil];
 		}
 #if IS_LITE()
@@ -715,24 +727,26 @@ enum sectionIds
 	[self.navigationController pushViewController:tvc animated:YES];
 }
 
+#pragma mark -
+#pragma mark MBProgressHUDDelegate
+#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [progressHUD removeFromSuperview];
+    self.progressHUD = nil;
+}
+
 #pragma mark AutoConfiguration
 
 - (void)doAutoConfiguration
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	
-	MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview: progressHUD];
-    [progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
-    [progressHUD setMode:MBProgressHUDModeIndeterminate];
-    [progressHUD show:YES];
-    progressHUD.taskInProgress = YES;
 
 	NSArray *connections = [RemoteConnectorObject autodetectConnections];
 
 	progressHUD.taskInProgress = NO;
 	[progressHUD hide:YES];
-	[progressHUD removeFromSuperview];
 
 	NSUInteger len = connections.count;
 	if(len == 0)
@@ -762,7 +776,6 @@ enum sectionIds
 		[tv release];
 	}
 
-	[progressHUD release];
 	[pool release];
 }
 

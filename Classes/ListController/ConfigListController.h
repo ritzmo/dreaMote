@@ -13,6 +13,7 @@
 #endif
 #import "ConnectionListController.h" /* ConnectionListDelegate */
 #import "TimeoutSelectionViewController.h" /* TimeoutSelectionDelegate */
+#import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 
 /*!
  @brief General settings and connection list.
@@ -25,12 +26,14 @@
 #endif
 													ConnectionListDelegate,
 													TimeoutSelectionDelegate,
-													UITableViewDataSource>
+													UITableViewDataSource,
+													MBProgressHUDDelegate>
 {
 @private
 	NSMutableArray *_connections; /*!< @brief List of Connections. */
 	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
 	UISwitch *_simpleRemote; /*!< @brief "Use simple remote" UISwitch. */
+	MBProgressHUD *progressHUD; /*!< @brief ProgressHUD if being shown. */
 }
 
 @end
