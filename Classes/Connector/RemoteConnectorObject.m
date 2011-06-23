@@ -192,6 +192,7 @@ static NSDictionary *_connection;
 						[array addObject:mutableConnection];
 						[mutableConnection release];
 					}
+					[connector release];
 				}
 			}
 			CFRelease(reachability);

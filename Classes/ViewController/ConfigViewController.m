@@ -1088,11 +1088,13 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			nc.modalPresentationStyle = tv.modalPresentationStyle;
 			nc.modalTransitionStyle = tv.modalTransitionStyle;
 			[self.navigationController presentModalViewController:nc animated:YES];
+			[nc release];
 		}
 		else
 		{
 			[self.navigationController pushViewController:tv animated:YES];
 		}
+		[tv release];
 	}
 
 	[pool release];

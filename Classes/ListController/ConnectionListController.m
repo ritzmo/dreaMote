@@ -34,7 +34,7 @@
 	tv.connections = connections;
 	tv.connectionDelegate = delegate;
 
-	return [tv autorelease];
+	return tv;
 }
 
 - (id)init
