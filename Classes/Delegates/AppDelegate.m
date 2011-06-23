@@ -48,6 +48,19 @@ static const char *basename(const char *path)
 - (void)checkReachable;
 @end
 
+@interface AppDelegate(Picons)
+/*!
+ @brief Check if Picons zip exists and ask to unpack if true.
+ @return YES if picons were found, otherwise NO.
+ */
+- (BOOL)checkForPicons;
+
+/*!
+ @brief Unpacks the zip file kept as cachedFilename.
+ */
+- (void)unpackPicons;
+@end
+
 @implementation AppDelegate
 
 @synthesize window;
@@ -70,6 +83,7 @@ static const char *basename(const char *path)
 	[window release];
 	[tabBarController release];
 	[cachedURL release];
+	[cachedFilename release];
 
 	[super dealloc];
 }
@@ -231,30 +245,9 @@ static const char *basename(const char *path)
 		promptForRating = NO;
 	}
 	// check for .zip files possibly containing picons
-	else
+	else if([self checkForPicons])
 	{
-		glob_t gt;
-		if(glob(kPiconGlob, GLOB_TILDE, NULL, &gt) == 0)
-		{
-			NSInteger i = 0;
-			for (; i < gt.gl_matchc; ++i)
-			{
-				int len = strlen(gt.gl_pathv[i]);
-				cachedFilename = [[[NSFileManager defaultManager] stringWithFileSystemRepresentation:gt.gl_pathv[i] length:len] retain];
-				promptForRating = NO;
-
-				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Picons?", @"Title of Alert when a zip file was found in the documents folder possibly containing picons.")
-																	  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), basename(gt.gl_pathv[i])]
-																	 delegate:self
-															cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-															otherButtonTitles:NSLocalizedString(@"Extract", @"Button executing zip extraction/deletion"), nil];
-				alert.tag = TAG_ZIP;
-				[alert show];
-				[alert release];
-				break;
-			}
-		}
-		globfree(&gt);
+		promptForRating = NO;
 	}
 	[Appirater appLaunched:promptForRating];
 
@@ -301,7 +294,13 @@ static const char *basename(const char *path)
 /* back to foreground */
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-	[Appirater appEnteredForeground:YES];
+	BOOL promptForRating = YES;
+	if([self checkForPicons])
+	{
+		promptForRating = NO;
+	}
+
+	[Appirater appEnteredForeground:promptForRating];
 	if(wasSleeping)
 	{
 		[tabBarController viewWillAppear:YES];
@@ -323,7 +322,34 @@ static const char *basename(const char *path)
 	wasSleeping = YES;
 }
 
-#pragma mark Unzip
+#pragma mark Picons
+
+- (BOOL)checkForPicons
+{
+	glob_t gt;
+	if(glob(kPiconGlob, GLOB_TILDE, NULL, &gt) == 0)
+	{
+		NSInteger i = 0;
+		for (; i < gt.gl_matchc; ++i)
+		{
+			int len = strlen(gt.gl_pathv[i]);
+			[cachedFilename release];
+			cachedFilename = [[[NSFileManager defaultManager] stringWithFileSystemRepresentation:gt.gl_pathv[i] length:len] retain];
+
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Picons?", @"Title of Alert when a zip file was found in the documents folder possibly containing picons.")
+																  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), basename(gt.gl_pathv[i])]
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+														otherButtonTitles:NSLocalizedString(@"Extract", @"Button executing zip extraction/deletion"), nil];
+			alert.tag = TAG_ZIP;
+			[alert show];
+			[alert release];
+			return YES;
+		}
+	}
+	globfree(&gt);
+	return NO;
+}
 
 - (void)unpackPicons
 {
