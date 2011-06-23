@@ -202,8 +202,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		_sslSwitch.on = [[con objectForKey:kSSL] boolValue];
 		_advancedRemoteSwitch.on = [[con objectForKey:kAdvancedRemote] boolValue];
 
-		NSNumber *connector = [NSNumber numberWithInteger:[[con objectForKey:kConnector] integerValue]];
-		[self connectorSelected:connector];
+		[self connectorSelected:[con objectForKey:kConnector]];
 		[(UITableView *)self.view reloadData];
 	}
 }
