@@ -14,11 +14,11 @@
 		DA681B1513B35BEC00232190 /* ConnectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1413B35BEC00232190 /* ConnectionListController.m */; };
 		DA681B1613B35BEC00232190 /* ConnectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1413B35BEC00232190 /* ConnectionListController.m */; };
 		DA681B1713B35BEC00232190 /* ConnectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1413B35BEC00232190 /* ConnectionListController.m */; };
-		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; };
+		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
-		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; };
+		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BEB213B2009F00CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
-		DAC8BED713B200C500CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; };
+		DAC8BED713B200C500CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BED813B200C500CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BF5213B200F100CA00D9 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEF813B200F100CA00D9 /* 4-sided-arrow.png */; };
 		DAC8BF5313B200F100CA00D9 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEF813B200F100CA00D9 /* 4-sided-arrow.png */; };
@@ -680,12 +680,10 @@
 		DAC8C4A313B2026800CA00D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */; };
 		DAC8C4A413B2026800CA00D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */; };
 		DAC8C4A513B2026800CA00D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */; };
-		DAC8C4A613B2026800CA00D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49C13B2026800CA00D9 /* iAd.framework */; };
-		DAC8C4A713B2026800CA00D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49C13B2026800CA00D9 /* iAd.framework */; };
-		DAC8C4A813B2026800CA00D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49C13B2026800CA00D9 /* iAd.framework */; };
-		DAC8C4A913B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; };
-		DAC8C4AA13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; };
-		DAC8C4AB13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; };
+		DAC8C4A713B2026800CA00D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49C13B2026800CA00D9 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8C4A913B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8C4AA13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8C4AB13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8C4AC13B2026800CA00D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */; };
 		DAC8C4AD13B2026800CA00D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */; };
 		DAC8C4AE13B2026800CA00D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */; };
@@ -1242,7 +1240,6 @@
 				DAC8C49713B2024B00CA00D9 /* AudioToolbox.framework in Frameworks */,
 				DAC8C4A013B2026800CA00D9 /* CFNetwork.framework in Frameworks */,
 				DAC8C4A313B2026800CA00D9 /* CoreGraphics.framework in Frameworks */,
-				DAC8C4A613B2026800CA00D9 /* iAd.framework in Frameworks */,
 				DAC8C4A913B2026800CA00D9 /* MessageUI.framework in Frameworks */,
 				DAC8C4AC13B2026800CA00D9 /* QuartzCore.framework in Frameworks */,
 				DAC8C4AF13B2026800CA00D9 /* SystemConfiguration.framework in Frameworks */,
@@ -1280,7 +1277,6 @@
 				DAC8C49913B2024B00CA00D9 /* AudioToolbox.framework in Frameworks */,
 				DAC8C4A213B2026800CA00D9 /* CFNetwork.framework in Frameworks */,
 				DAC8C4A513B2026800CA00D9 /* CoreGraphics.framework in Frameworks */,
-				DAC8C4A813B2026800CA00D9 /* iAd.framework in Frameworks */,
 				DAC8C4AB13B2026800CA00D9 /* MessageUI.framework in Frameworks */,
 				DAC8C4AE13B2026800CA00D9 /* QuartzCore.framework in Frameworks */,
 				DAC8C4B113B2026800CA00D9 /* SystemConfiguration.framework in Frameworks */,
