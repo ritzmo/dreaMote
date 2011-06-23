@@ -103,13 +103,12 @@ enum neutrinoMessageTypes {
 + (NSArray *)knownDefaultConnections
 {
 	NSNumber *connector = [NSNumber numberWithInteger:kNeutrinoConnector];
-	NSNumber *eighty = [NSNumber numberWithInteger:80];
 	return [NSArray arrayWithObjects:
 				[NSDictionary dictionaryWithObjectsAndKeys:
 					@"dbox", kRemoteHost,
 					@"root", kUsername,
 					@"dbox2", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					connector, kConnector,
 					nil],
@@ -117,7 +116,7 @@ enum neutrinoMessageTypes {
 					@"coolstream", kRemoteHost,
 					@"root", kUsername,
 					@"coolstream", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					connector, kConnector,
 					nil],

@@ -157,13 +157,12 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 + (NSArray *)knownDefaultConnections
 {
 	NSNumber *connector = [NSNumber numberWithInteger:kEnigma2Connector];
-	NSNumber *eighty = [NSNumber numberWithInteger:80];
 	return [NSArray arrayWithObjects:
 				[NSDictionary dictionaryWithObjectsAndKeys:
 					@"dm7025", kRemoteHost,
 					@"root", kUsername,
 					@"", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					@"NO", kAdvancedRemote,
 					connector, kConnector,
@@ -172,7 +171,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					@"dm800", kRemoteHost,
 					@"root", kUsername,
 					@"", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					@"NO", kAdvancedRemote,
 					connector, kConnector,
@@ -181,7 +180,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					@"dm800se", kRemoteHost,
 					@"root", kUsername,
 					@"", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					@"NO", kAdvancedRemote,
 					connector, kConnector,
@@ -190,7 +189,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					@"dm8000", kRemoteHost,
 					@"root", kUsername,
 					@"", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					@"YES", kAdvancedRemote,
 					connector, kConnector,
@@ -199,7 +198,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					@"dm500hd", kRemoteHost,
 					@"root", kUsername,
 					@"", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					@"NO", kAdvancedRemote,
 					connector, kConnector,
@@ -208,7 +207,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					@"vuplus", kRemoteHost,
 					@"root", kUsername,
 					@"vuplus", kPassword,
-					eighty, kPort,
+					nil, kPort,
 					@"NO", kSSL,
 					@"NO", kAdvancedRemote,
 					connector, kConnector,
