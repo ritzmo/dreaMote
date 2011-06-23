@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "AboutDreamoteViewController.h" /* AboutDreamoteDelegate */
+
 @class OtherListController;
 
 /*!
@@ -18,7 +20,8 @@
  If no connection is configured yet the user is immediately redirected to the
  configuration screen.
  */
-@interface MainViewController : UITabBarController <UITabBarControllerDelegate>
+@interface MainViewController : UITabBarController <UITabBarControllerDelegate,
+													AboutDreamoteDelegate>
 {
 	IBOutlet UITabBar *myTabBar; /*!< @brief Tab bar. */
 	NSMutableArray *menuList; /*!< @brief Item List. */

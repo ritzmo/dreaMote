@@ -8,6 +8,8 @@
 
 #import "ConfigViewController.h"
 
+#import "ConnectionListController.h"
+
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -90,6 +92,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
  @brief "Connect" Button.
  */
 @property (nonatomic,retain) UIButton *connectButton;
+
+@property (nonatomic,retain) MBProgressHUD *progressHUD;
 @end
 
 /*!
@@ -104,11 +108,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 @implementation ConfigViewController
 
-@synthesize connection = _connection;
 @synthesize connectionIndex = _connectionIndex;
 @synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
-@synthesize mustSave = _mustSave;
+@synthesize progressHUD = progressHUD;
 
 /* initialize */
 - (id)init
@@ -179,6 +182,50 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	[_sslSwitch release];
 
 	[super dealloc];
+}
+
+- (NSDictionary *)connection
+{
+	return _connection;
+}
+
+- (void)setConnection:(NSMutableDictionary *)con
+{
+	if(_connection == con) return;
+	[_connection release];
+	_connection = [con retain];
+
+	if(_remoteAddressTextField) // check if initialized
+	{
+		_remoteAddressTextField.text = [con objectForKey:kRemoteHost];
+		_remotePortTextField.text = [con objectForKey:kPort];
+		_usernameTextField.text = [con objectForKey:kUsername];
+		_passwordTextField.text = [con objectForKey:kPassword];
+		_sslSwitch.on = [[con objectForKey:kSSL] boolValue];
+
+		NSNumber *connector = [NSNumber numberWithInteger:[[con objectForKey:kConnector] integerValue]];
+		[self connectorSelected:connector];
+		[(UITableView *)self.view reloadData];
+	}
+}
+
+- (BOOL)mustSave
+{
+	return _mustSave;
+}
+
+- (void)setMustSave:(BOOL)mustSave
+{
+	_mustSave = mustSave;
+
+	UIAlertView *notification = [[UIAlertView alloc]
+								 initWithTitle:NSLocalizedString(@"Need Help?", @"Title of Alert suggesting autoconfiguration.")
+									   message:NSLocalizedString(@"To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?", @"Message of Alert suggesting autoconfiguration.")
+									  delegate:self
+							 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+							 otherButtonTitles:NSLocalizedString(@"Search", @"Button initiating autoconfiguration."), nil];
+	[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES]; // no idea what thread we are on, so force doing it NOW on the main thread
+	[notification release];
 }
 
 /* create a textfield */
@@ -402,7 +449,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		UIAlertView *notification = [[UIAlertView alloc]
 									initWithTitle:NSLocalizedString(@"Error", @"")
-									message:NSLocalizedString(@"You have to enter connection details to use this application.", @"")
+									message:NSLocalizedString(@"You need to configure this application before you can use it.", @"")
 									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
@@ -989,6 +1036,80 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 												object:nil]; 
 
 	[super viewWillDisappear: animated];
+}
+
+#pragma mark AutoConfiguration
+
+- (void)doAutoConfiguration
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview: progressHUD];
+    progressHUD.delegate = self;
+    [progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
+    [progressHUD setMode:MBProgressHUDModeIndeterminate];
+    [progressHUD show:YES];
+    progressHUD.taskInProgress = YES;
+
+	NSArray *connections = [RemoteConnectorObject autodetectConnections];
+
+	progressHUD.taskInProgress = NO;
+	[progressHUD hide:YES];
+
+	NSUInteger len = connections.count;
+	if(len == 0)
+	{
+		const UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"Unable to find valid connection data.", @"")
+									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[notification show];
+		[notification release];
+	}
+	else if(len == 1)
+	{
+		NSMutableDictionary *con = [[connections objectAtIndex:0] mutableCopy];
+		self.connection = con;
+		[con release];
+	}
+	else
+	{
+		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andConfigView:self];
+		if(IS_IPAD())
+		{
+			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
+			nc.modalPresentationStyle = tv.modalPresentationStyle;
+			nc.modalTransitionStyle = tv.modalTransitionStyle;
+			[self.navigationController presentModalViewController:nc animated:YES];
+		}
+		else
+		{
+			[self.navigationController pushViewController:tv animated:YES];
+		}
+	}
+
+	[pool release];
+}
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate
+#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [progressHUD removeFromSuperview];
+    self.progressHUD = nil;
+}
+
+#pragma mark - UIAlertView delegate methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if(buttonIndex == alertView.firstOtherButtonIndex)
+	{
+		[NSThread detachNewThreadSelector:@selector(doAutoConfiguration) toTarget:self withObject:nil];
+	}
 }
 
 @end

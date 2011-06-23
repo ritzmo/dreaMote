@@ -1,0 +1,123 @@
+//
+//  ConnectionTableViewCell.m
+//  dreaMote
+//
+//  Created by Moritz Venn on 23.06.11.
+//  Copyright 2011 Moritz Venn. All rights reserved.
+//
+
+#import "ConnectionTableViewCell.h"
+#import "Constants.h"
+
+/*!
+ @brief Cell identifier for this cell.
+ */
+NSString *kConnectionCell_ID = @"ConnectionCell_ID";
+
+@implementation ConnectionTableViewCell
+
+@synthesize dataDictionary = _dataDictionary;
+
+/* initialize */
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
+	{
+		// you can do this here specifically or at the table level for all cells
+		self.accessoryType = UITableViewCellAccessoryNone;
+
+		// Create label views to contain the various pieces of text that make up the cell.
+		// Add these as subviews.
+		self.textLabel.backgroundColor = [UIColor clearColor];
+		self.textLabel.opaque = NO;
+		self.textLabel.textColor = [UIColor blackColor];
+		self.textLabel.highlightedTextColor = [UIColor whiteColor];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kMainTextSize];
+
+		_descriptionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_descriptionLabel.backgroundColor = [UIColor clearColor];
+		_descriptionLabel.opaque = NO;
+		_descriptionLabel.textColor = [UIColor blackColor];
+		_descriptionLabel.highlightedTextColor = [UIColor whiteColor];
+		_descriptionLabel.font = [UIFont boldSystemFontOfSize:kMainDetailsSize];
+		_descriptionLabel.adjustsFontSizeToFitWidth = YES;
+		[self.contentView addSubview:_descriptionLabel];
+
+		_statusLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_statusLabel.backgroundColor = [UIColor clearColor];
+		_statusLabel.opaque = NO;
+		_statusLabel.textColor = [UIColor grayColor];
+		_statusLabel.highlightedTextColor = [UIColor whiteColor];
+		_statusLabel.font = [UIFont systemFontOfSize:kMainDetailsSize];
+		[self.contentView addSubview:_statusLabel];
+	}
+	
+	return self;
+}
+
+/* layout */
+- (void)layoutSubviews
+{
+	CGRect frame;
+
+	[super layoutSubviews];
+	const CGRect contentRect = [self.contentView bounds];
+	CGFloat offset = (IS_IPAD()) ? 3 : 0;
+
+	CGSize labelSize = [_statusLabel sizeThatFits:_statusLabel.bounds.size];
+
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - labelSize.width - kRightMargin, 26);
+	self.textLabel.frame = frame;
+
+	offset = (IS_IPAD()) ? 28 : 21;
+	frame.origin.y = offset;
+	frame.size.height = 22;
+	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - labelSize.width - kRightMargin, 22);
+	_descriptionLabel.frame = frame;
+
+	frame.origin.x = frame.origin.x + frame.size.width;
+	frame.origin.y = (contentRect.size.height - kMainDetailsSize) / 2.0f;
+	frame.size.width = labelSize.width;
+	_statusLabel.frame = frame;
+}
+
+/* dealloc */
+- (void)dealloc
+{
+	[_descriptionLabel release];
+	[_statusLabel release];
+	[_dataDictionary release];
+
+	[super dealloc];
+}
+
+/* (de)select */
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+	[super setSelected:selected animated:animated];
+	
+	// when the selected state changes, set the highlighted state of the lables accordingly
+	_statusLabel.highlighted = selected;
+	_descriptionLabel.highlighted = selected;
+}
+
+/* assign item */
+- (void)setDataDictionary:(NSDictionary *)newDictionary
+{
+	// Abort if same item assigned
+	if (_dataDictionary == newDictionary) return;
+
+	// Free old item, assign new
+	[_dataDictionary release];
+	_dataDictionary = [newDictionary retain];
+	
+	// update value in subviews
+	self.textLabel.text = [newDictionary objectForKey:kRemoteHost];
+	_statusLabel.text = [[newDictionary objectForKey:kLoginFailed] boolValue] ? NSLocalizedString(@"unreachable", @"Label text in AutoConfiguration if host is unreachable") : nil;
+	_descriptionLabel.text = [NSString stringWithFormat:@"%@:%@ (%@)", [newDictionary objectForKey:kUsername], [newDictionary objectForKey:kPassword], [[newDictionary objectForKey:kSSL] boolValue] ? NSLocalizedString(@"encrypted", @"") : NSLocalizedString(@"not encrypted", @"")];
+
+	// Redraw
+	[self setNeedsDisplay];
+}
+
+@end

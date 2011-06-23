@@ -30,6 +30,8 @@
 
 @implementation AboutDreamoteViewController
 
+@synthesize aboutDelegate;
+
 /* initialize */
 - (id)init
 {
@@ -62,6 +64,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[aboutDelegate release];
 	[_aboutText release];
 	[_doneButton release];
 	[_mailButton release];
@@ -172,6 +175,7 @@
 /* "done" button pressed */
 - (void)buttonPressed: (id)sender
 {
+	[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
 	[self.parentViewController dismissModalViewControllerAnimated: YES];
 }
 
@@ -349,6 +353,8 @@
 	[controller.parentViewController dismissModalViewControllerAnimated:YES];
 	[controller.mailComposeDelegate release];
 	controller.mailComposeDelegate = nil;
+
+	[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
 }
 
 @end

@@ -10,6 +10,7 @@
 
 #import "CellTextField.h" /* EditableTableViewCellDelegate */
 #import "ConnectorViewController.h" /* ConnectorDelegate */
+#import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 
 /*!
  @brief Connection Settings.
@@ -17,9 +18,11 @@
  Allows to change settings of a known or new connection, make it default or just connect and
  finally save / dismiss changes.
  */
-@interface ConfigViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
+@interface ConfigViewController : UIViewController <UIAlertViewDelegate,
+													UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource, ConnectorDelegate,
-													EditableTableViewCellDelegate>
+													EditableTableViewCellDelegate,
+													MBProgressHUDDelegate>
 {
 @private
 	UITextField *_remoteNameTextField; /*!< @brief Name Text Field. */
@@ -50,6 +53,8 @@
 	BOOL _mustSave;
 	BOOL _shouldSave; /*!< @brief Settings should be Saved. */
 	NSInteger _connector; /*!< @brief Selected Connector. */
+
+	MBProgressHUD *progressHUD; /*!< @brief ProgressHUD if being shown. */
 }
 
 /*!

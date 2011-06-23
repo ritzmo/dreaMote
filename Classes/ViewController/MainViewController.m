@@ -17,7 +17,6 @@
 #import "MovieSplitViewController.h"
 #import "TimerSplitViewController.h"
 
-#import "AboutDreamoteViewController.h"
 #import "BouquetListController.h"
 #import "ConfigListController.h"
 #import "ConfigViewController.h"
@@ -281,7 +280,8 @@
 	welcomeTypes welcomeType = APP_DELEGATE.welcomeType;
 	if(welcomeType != welcomeTypeNone)
 	{
-		UIViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeType];
+		AboutDreamoteViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeType];
+		welcomeController.aboutDelegate = self;
 		[self presentModalViewController:welcomeController animated:YES];
 		[welcomeController release];
 	}
@@ -296,6 +296,14 @@
 		return YES;
 	else
 		return [cur shouldAutorotateToInterfaceOrientation:interfaceOrientation];
+}
+
+#pragma mark AboutDreamoteDelegate delegates
+
+- (void)dismissedAboutDialog
+{
+	// check if we are connected, but the primary use is to show the ConfigView if unable to connect
+	[self checkConnection];
 }
 
 #pragma mark UITabBarController delegates

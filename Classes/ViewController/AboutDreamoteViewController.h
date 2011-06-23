@@ -11,6 +11,8 @@
 
 #import "AppDelegate.h"
 
+@protocol AboutDreamoteDelegate;
+
 /*!
  @brief About/Welcome view.
  
@@ -25,6 +27,7 @@
 	UIButton *_mailButton; /*!< @brief Mail button. */
 	UIButton *_twitterButton; /*!< @brief "Follow us" button. */
 	welcomeTypes welcomeType; /*!< @brief Welcome type. */
+	NSObject<AboutDreamoteDelegate> *aboutDelegate;
 }
 
 /*!
@@ -36,4 +39,19 @@
  */
 - (id)initWithWelcomeType:(welcomeTypes)welcomeType;
 
+/*!
+ @brief Delegate.
+ */
+@property (nonatomic, retain) NSObject<AboutDreamoteDelegate> *aboutDelegate;
+
+@end
+
+/*!
+ @brief Callbacks for About/Welcome view.
+ */
+@protocol AboutDreamoteDelegate
+/*!
+ @brief View was dismissed.
+ */
+- (void)dismissedAboutDialog;
 @end
