@@ -250,6 +250,7 @@ enum sectionIds
 		{
 			progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
 			[self.view addSubview: progressHUD];
+			self.navigationItem.rightBarButtonItem.enabled = NO;
 			[progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
 			[progressHUD setMode:MBProgressHUDModeIndeterminate];
 			[progressHUD show:YES];
@@ -733,8 +734,9 @@ enum sectionIds
 
 - (void)hudWasHidden:(MBProgressHUD *)hud
 {
-    [progressHUD removeFromSuperview];
-    self.progressHUD = nil;
+	self.navigationItem.rightBarButtonItem.enabled = YES;
+	[progressHUD removeFromSuperview];
+	self.progressHUD = nil;
 }
 
 #pragma mark AutoConfiguration
