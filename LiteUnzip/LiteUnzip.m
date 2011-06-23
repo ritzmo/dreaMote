@@ -2362,7 +2362,7 @@ static unsigned char * reformat_short(unsigned char *ptr)
 // Reads a short in LSB order from the given file.
 static unsigned short getArchiveShort(TUNZIP *tunzip)
 {
-	unsigned short		x;
+	unsigned short		x = 0;
 	
 	if (!tunzip->LastErr && readFromZip(tunzip, &x, sizeof(unsigned short)))
 		reformat_short((unsigned char *)&x);
@@ -3182,7 +3182,7 @@ static DWORD setCurrentEntry(register TUNZIP *tunzip, ZIPENTRY *ze, DWORD flags)
 			goto good;
 		}
 		
-		int currentEntry = tunzip->CurrentEntryNum;
+		//int currentEntry = tunzip->CurrentEntryNum;
 		// If there is currently a selected entry, free its resources
 		cleanupEntry(tunzip);
 		//if (flags & ZIP_SEEK_NEXT)
