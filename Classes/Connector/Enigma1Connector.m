@@ -106,6 +106,45 @@ enum enigma1MessageTypes {
 	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
++ (NSArray *)knownDefaultConnections
+{
+	NSNumber *connector = [NSNumber numberWithInteger:kEnigma1Connector];
+	return [NSArray arrayWithObjects:
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dreambox", kRemoteHost,
+					@"root", kUsername,
+					@"dreambox", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm7020", kRemoteHost,
+					@"root", kUsername,
+					@"dreambox", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm600", kRemoteHost,
+					@"root", kUsername,
+					@"dreambox", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm500", kRemoteHost,
+					@"root", kUsername,
+					@"dreambox", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					connector, kConnector,
+					nil],
+			nil];
+}
+
 - (void)dealloc
 {
 	[_baseAddress release];

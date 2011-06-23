@@ -83,6 +83,12 @@ typedef enum
 	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress:address andPort:port];
 }
 
++ (NSArray *)knownDefaultConnections
+{
+	// TODO: find out if there are any default connection data for svdrp
+	return nil;
+}
+
 - (UIViewController *)newRCEmulator
 {
 	return [[SVDRPRCEmulatorController alloc] init];

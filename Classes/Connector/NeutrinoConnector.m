@@ -100,6 +100,29 @@ enum neutrinoMessageTypes {
 	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
++ (NSArray *)knownDefaultConnections
+{
+	NSNumber *connector = [NSNumber numberWithInteger:kNeutrinoConnector];
+	return [NSArray arrayWithObjects:
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dbox", kRemoteHost,
+					@"root", kUsername,
+					@"dbox2", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"coolstream", kRemoteHost,
+					@"root", kUsername,
+					@"coolstream", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					connector, kConnector,
+					nil],
+			nil];
+}
+
 - (UIViewController *)newRCEmulator
 {
 	return [[NeutrinoRCEmulatorController alloc] init];

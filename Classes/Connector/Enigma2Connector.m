@@ -154,6 +154,67 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl andAdvancedRc:advancedRc];
 }
 
++ (NSArray *)knownDefaultConnections
+{
+	NSNumber *connector = [NSNumber numberWithInteger:kEnigma2Connector];
+	return [NSArray arrayWithObjects:
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm7025", kRemoteHost,
+					@"root", kUsername,
+					@"", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					@"NO", kAdvancedRemote,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm800", kRemoteHost,
+					@"root", kUsername,
+					@"", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					@"NO", kAdvancedRemote,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm800se", kRemoteHost,
+					@"root", kUsername,
+					@"", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					@"NO", kAdvancedRemote,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm8000", kRemoteHost,
+					@"root", kUsername,
+					@"", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					@"YES", kAdvancedRemote,
+					connector, kConnector,
+					nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm500hd", kRemoteHost,
+					@"root", kUsername,
+					@"", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					@"NO", kAdvancedRemote,
+					connector, kConnector,
+				 nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"vuplus", kRemoteHost,
+					@"root", kUsername,
+					@"vuplus", kPassword,
+					@"80", kPort,
+					@"NO", kSSL,
+					@"NO", kAdvancedRemote,
+					connector, kConnector,
+				 nil],
+			nil];
+}
+
 - (UIViewController *)newRCEmulator
 {
 	return [[EnigmaRCEmulatorController alloc] init];

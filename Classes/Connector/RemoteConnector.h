@@ -257,6 +257,13 @@ enum buttonCodes {
 + (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection;
 
 /*!
+ @brief Return default connection data known for this connector.
+
+ @return NSArray containint dictonaries describing connection data.
+ */
++ (NSArray *)knownDefaultConnections;
+
+/*!
  @brief Free Caches used by Backend.
  @note This function is used by some Backends to free Ressources that are
  cached during Runtime and freed when running low on memory.

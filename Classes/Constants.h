@@ -101,6 +101,7 @@ extern const char *kPiconGlob;
 #define kAdvancedRemote			@"advancedRemote"
 #define kSSL					@"ssl"
 #define kShowNowNext			@"showNowNext"
+#define kLoginFailed			@"loginFailed" // optional entry on autodetection
 
 // keys in nsuserdefaults
 #define kActiveConnection		@"activeConnector"

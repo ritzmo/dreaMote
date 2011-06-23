@@ -11,6 +11,8 @@
 #import "RemoteConnectorObject.h"
 #import "RemoteConnector.h"
 
+#import <SystemConfiguration/SystemConfiguration.h>
+
 #if INCLUDE_FEATURE(Enigma2)
 	#import "Enigma2Connector.h"
 #endif
@@ -129,6 +131,74 @@ static NSDictionary *_connection;
 {
 	NSString *finalPath = [kConfigPath stringByExpandingTildeInPath];
 	[_connections writeToFile: finalPath atomically: YES];
+}
+
++ (NSArray *)autodetectConnections
+{
+	NSObject <RemoteConnector>* connector = nil;
+	NSMutableArray *array = [NSMutableArray array]; // will keep track of found connections
+	NSArray *addresses = nil; // possible connections
+	Class<RemoteConnector> currentConnector = NULL;
+
+	NSInteger i = 0;
+	for(; i < kMaxConnector; ++i)
+	{
+		switch(i)
+		{
+#if INCLUDE_FEATURE(Enigma2)
+			case kEnigma2Connector:
+				currentConnector = [Enigma2Connector class];
+				break;
+#endif
+#if INCLUDE_FEATURE(Enigma1)
+			case kEnigma1Connector:
+				currentConnector = [Enigma1Connector class];
+				break;
+#endif
+#if INCLUDE_FEATURE(Neutrino)
+			case kNeutrinoConnector:
+				currentConnector = [NeutrinoConnector class];
+				break;
+#endif
+#if INCLUDE_FEATURE(SVDRP)
+			case kSVDRPConnector:
+				currentConnector = [SVDRPConnector class];
+				break;
+#endif
+			default:
+				continue;
+		}
+
+		addresses = [currentConnector knownDefaultConnections];
+		for(NSDictionary *connection in addresses)
+		{
+			SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, [[connection objectForKey:kRemoteHost] UTF8String]);
+			SCNetworkReachabilityFlags flags;
+			if(SCNetworkReachabilityGetFlags(reachability, &flags))
+			{
+				if(flags & kSCNetworkReachabilityFlagsReachable)
+				{
+					// host is currently reachable, add to list of possible connections but first try to login
+					connector = [currentConnector newWithConnection:connection];
+					if([connector isReachable:nil])
+					{
+						[array addObject:connection];
+					}
+					// username/password/port did not match, but as the host was found add it to the "somewhere on this network"-list
+					else
+					{
+						NSMutableDictionary *mutableConnection = [connection mutableCopy];
+						[mutableConnection setValue:@"YES" forKey:kLoginFailed];
+						[array addObject:mutableConnection];
+						[mutableConnection release];
+					}
+				}
+			}
+			CFRelease(reachability);
+		}
+	}
+
+	return array;
 }
 
 + (enum availableConnectors)autodetectConnector: (NSDictionary *)connection

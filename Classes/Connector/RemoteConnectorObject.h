@@ -53,6 +53,13 @@
 
 
 /*!
+ @brief Advanced autodetection mechanism to find STBs in default configuration.
+
+ return Array with connection dictionaries.
+ */
++ (NSArray *)autodetectConnections;
+
+/*!
  @brief Try to automatically detect correct Connector for given Connection.
  
  @param connection Dictionary containing Connection data.
