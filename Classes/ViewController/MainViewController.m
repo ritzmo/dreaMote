@@ -302,8 +302,12 @@
 
 - (void)dismissedAboutDialog
 {
-	// check if we are connected, but the primary use is to show the ConfigView if unable to connect
-	[self checkConnection];
+	// we need to call this manually on the ipad when the dialog was dismissed
+	if(IS_IPAD())
+	{
+		// check if we are connected, but the primary use is to show the ConfigView if unable to connect
+		[self checkConnection];
+	}
 }
 
 #pragma mark UITabBarController delegates
