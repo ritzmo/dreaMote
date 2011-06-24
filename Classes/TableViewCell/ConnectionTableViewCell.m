@@ -49,6 +49,7 @@ NSString *kConnectionCell_ID = @"ConnectionCell_ID";
 		_statusLabel.textColor = [UIColor grayColor];
 		_statusLabel.highlightedTextColor = [UIColor whiteColor];
 		_statusLabel.font = [UIFont systemFontOfSize:kMainDetailsSize];
+		_statusLabel.adjustsFontSizeToFitWidth = YES;
 		[self.contentView addSubview:_statusLabel];
 	}
 	
@@ -114,7 +115,23 @@ NSString *kConnectionCell_ID = @"ConnectionCell_ID";
 	// update value in subviews
 	self.textLabel.text = [newDictionary objectForKey:kRemoteHost];
 	_statusLabel.text = [[newDictionary objectForKey:kLoginFailed] boolValue] ? NSLocalizedString(@"unreachable", @"Label text in AutoConfiguration if host is unreachable") : nil;
-	_descriptionLabel.text = [NSString stringWithFormat:@"%@:%@ (%@)", [newDictionary objectForKey:kUsername], [newDictionary objectForKey:kPassword], [[newDictionary objectForKey:kSSL] boolValue] ? NSLocalizedString(@"encrypted", @"") : NSLocalizedString(@"not encrypted", @"")];
+
+	NSString *username = [newDictionary objectForKey:kUsername];
+	NSString *password = [newDictionary objectForKey:kPassword];
+	NSString *authenticationString = nil;
+	if(!username || !password || ![username length])
+	{
+		authenticationString = NSLocalizedString(@"no authentication", @"");
+	}
+	else if(![password length])
+	{
+		authenticationString = username;
+	}
+	else
+	{
+		authenticationString = [NSString stringWithFormat:@"%@:%@", username, password];
+	}
+	_descriptionLabel.text = [NSString stringWithFormat:@"%@ (%@)", authenticationString, [[newDictionary objectForKey:kSSL] boolValue] ? NSLocalizedString(@"encrypted", @"") : NSLocalizedString(@"not encrypted", @"")];
 
 	// Redraw
 	[self setNeedsDisplay];
