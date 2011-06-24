@@ -19,6 +19,12 @@
 		DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
 		DA681B1D13B4909900232190 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
 		DA681B1E13B4909A00232190 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
+		DA681B2113B4976700232190 /* Screenshot_Save.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B1F13B4976700232190 /* Screenshot_Save.png */; };
+		DA681B2213B4976700232190 /* Screenshot_Save.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B1F13B4976700232190 /* Screenshot_Save.png */; };
+		DA681B2313B4976700232190 /* Screenshot_Save.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B1F13B4976700232190 /* Screenshot_Save.png */; };
+		DA681B2413B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
+		DA681B2513B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
+		DA681B2613B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -768,6 +774,8 @@
 		DA681B1413B35BEC00232190 /* ConnectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionListController.m; sourceTree = "<group>"; };
 		DA681B1813B483FB00232190 /* NSNetService+IpString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNetService+IpString.h"; sourceTree = "<group>"; };
 		DA681B1913B483FB00232190 /* NSNetService+IpString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNetService+IpString.m"; sourceTree = "<group>"; };
+		DA681B1F13B4976700232190 /* Screenshot_Save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot_Save.png; sourceTree = "<group>"; };
+		DA681B2013B4976700232190 /* Setup_Auto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Setup_Auto.png; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1416,8 +1424,10 @@
 				DAC8BF4813B200F100CA00D9 /* preferences-desktop-screensaver.png */,
 				DAC8BF4913B200F100CA00D9 /* Refresh.png */,
 				DAC8BF4A13B200F100CA00D9 /* remote.png */,
+				DA681B1F13B4976700232190 /* Screenshot_Save.png */,
 				DAC8BF4B13B200F100CA00D9 /* Setup_1.png */,
 				DAC8BF4C13B200F100CA00D9 /* Setup_2.png */,
+				DA681B2013B4976700232190 /* Setup_Auto.png */,
 				DAC8BF4D13B200F100CA00D9 /* Simplerc.png */,
 				DAC8BF4E13B200F100CA00D9 /* system-shutdown.png */,
 				DAC8BF4F13B200F100CA00D9 /* timer.png */,
@@ -2262,6 +2272,8 @@
 				DAC8C50E13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51113B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51413B2038300CA00D9 /* OtherList.xib in Resources */,
+				DA681B2113B4976700232190 /* Screenshot_Save.png in Resources */,
+				DA681B2413B4976700232190 /* Setup_Auto.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2361,6 +2373,8 @@
 				DAC8C50F13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51213B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */,
+				DA681B2213B4976700232190 /* Screenshot_Save.png in Resources */,
+				DA681B2513B4976700232190 /* Setup_Auto.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2457,6 +2471,8 @@
 				DAC8C51013B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51313B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */,
+				DA681B2313B4976700232190 /* Screenshot_Save.png in Resources */,
+				DA681B2613B4976700232190 /* Setup_Auto.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
