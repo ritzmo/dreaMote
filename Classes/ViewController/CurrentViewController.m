@@ -151,8 +151,12 @@
 	_now = nil;
 	[_next release];
 	_next = nil;
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)];
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[_tableView reloadData];
+#endif
 	[_nowSummary release];
 	_nowSummary = nil;
 	[_nextSummary release];
@@ -170,7 +174,7 @@
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;
 #if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 4)];
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
@@ -226,8 +230,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if([ServiceZapListController canStream])
-		return 4;
 	return 3;
 }
 
@@ -251,7 +253,22 @@
 	switch(section)
 	{
 		case 0:
-			return 1;
+		{
+			NSInteger rows = 1;
+
+			if(_service && _service.valid && [ServiceZapListController canStream])
+			{
+				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+					++rows;
+				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+					++rows;
+				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+					++rows;
+				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+					++rows;
+			}
+			return rows;
+		}
 		case 1:
 			if(_now == nil)
 				return 0;
@@ -264,22 +281,6 @@
 			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 				return 3;
 			return 2;
-		case 3:
-		{
-			if(!_service && !_service.valid)
-				return 0;
-
-			NSInteger rows = 0;
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
-				++rows;
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
-				++rows;
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
-				++rows;
-			if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
-				++rows;
-			return rows;
-		}
 		default:
 			return 0;
 	}
@@ -327,11 +328,48 @@
 	{
 		case 0:
 		{
-			sourceCell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-			sourceCell.imageView.layer.masksToBounds = YES;
-			sourceCell.imageView.layer.cornerRadius = 5.0f;
-			((ServiceTableViewCell *)sourceCell).service = _service;
-			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			NSInteger row = indexPath.row;
+
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 0)
+				++row;
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 1)
+				++row;
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 2)
+				++row;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 3)
+			//	++row;
+
+			switch(row)
+			{
+				case 0:
+					sourceCell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+					sourceCell.imageView.layer.masksToBounds = YES;
+					sourceCell.imageView.layer.cornerRadius = 5.0f;
+					((ServiceTableViewCell *)sourceCell).service = _service;
+					sourceCell.accessoryType = UITableViewCellAccessoryNone;
+					break;
+				case 1:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
+					break;
+				case 2:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer Lite";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
+					break;
+				case 3:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
+					break;
+				case 4:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
+					break;
+			}
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			break;
 		}
 		case 1:
@@ -383,41 +421,6 @@
 					break;
 			}
 			break;
-		}
-		case 3:
-		{
-			NSInteger row = indexPath.row;
-			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
-			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > -1)
-				++row;
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 0)
-				++row;
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 1)
-				++row;
-			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 2)
-			//	++row;
-
-			switch(row)
-			{
-				case 0:
-					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
-					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
-					break;
-				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer Lite";
-					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
-					break;
-				case 2:
-					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
-					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
-					break;
-				case 3:
-					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
-					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
-					break;
-			}
 		}
 		default:
 			break;
