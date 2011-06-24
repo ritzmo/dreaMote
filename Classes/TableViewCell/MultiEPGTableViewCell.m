@@ -14,7 +14,7 @@
  */
 NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
-#define kServiceWidth ((IS_IPAD()) ? 100 : 75)
+#define kServiceWidth ((IS_IPAD()) ? 100 : 70)
 
 /*!
  @brief Private functions of ServiceTableViewCell.
