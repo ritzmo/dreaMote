@@ -29,6 +29,7 @@
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
 - (void)cleanupTimers:(id)sender;
+- (void)cancelConnection:(NSNotification *)notif;
 @end
 
 /*!
@@ -69,6 +70,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 /* dealloc */
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_cleanupButton release];
 	[_dateFormatter release];
 	[_timers release];
@@ -133,6 +135,9 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	if(IS_IPHONE())
 		[self createAdBannerView];
 #endif
+
+	// listen to connection changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelConnection:) name:kReconnectNotification object:nil];
 }
 
 - (void)setWillReappear:(BOOL)new
@@ -263,6 +268,12 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	[_timerXMLDoc release];
 	_timerXMLDoc = nil;
+}
+
+- (void)cancelConnection:(NSNotification *)notif
+{
+	[self emptyData];
+	_reloading = NO;
 }
 
 /* rotate with device */
