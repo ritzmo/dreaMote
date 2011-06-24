@@ -249,6 +249,7 @@ enum sectionIds
 		else if(indexPath.row == 1)
 		{
 			progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+			progressHUD.delegate = self;
 			[self.view addSubview: progressHUD];
 			self.navigationItem.rightBarButtonItem.enabled = NO;
 			[progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
