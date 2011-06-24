@@ -287,6 +287,9 @@
 "Enabled" = "Aktiv";
 
 /* No comment provided by engineer. */
+"encrypted" = "verschlüsselt";
+
+/* No comment provided by engineer. */
 "End" = "Ende";
 
 /* No comment provided by engineer. */
@@ -541,6 +544,9 @@
 /* No comment provided by engineer. */
 "N/A" = "n/v";
 
+/* Title of Alert suggesting autoconfiguration. */
+"Need Help?" = "Hilfe gefällig?";
+
 /* No comment provided by engineer. */
 "Neutrino" = "Neutrino";
 
@@ -566,6 +572,9 @@
 "No" = "Nein";
 
 /* No comment provided by engineer. */
+"no authentication" = "Keine Authentifizierung";
+
+/* No comment provided by engineer. */
 "No Data…" = "Keine Daten…";
 
 /* Placeholder text in Now/Next-ServiceList if no EPG data present */
@@ -588,6 +597,9 @@
 
 /* Message type */
 "Normal" = "Normal";
+
+/* No comment provided by engineer. */
+"not encrypted" = "nicht verschlüsselt";
 
 /* After Event */
 "Nothing" = "Nichts tun";
@@ -742,8 +754,20 @@
 /* No comment provided by engineer. */
 "Screenshot" = "Screenshot";
 
+/* Button initiating autoconfiguration. */
+"Search" = "Suchen";
+
+/* Start AutoConfiguration from ConfigListController */
+"Search Connections" = "Verbindungen suchen";
+
 /* Default Title of EventSearchListController */
 "Search Events" = "Suchen";
+
+/* Label of Progress HUD during AutoConfiguration */
+"Searching…" = "Suche…";
+
+/* Default title of ConnectionListController */
+"Select Connection" = "Verbindung auswählen";
 
 /* No comment provided by engineer. */
 "Select Service" = "Sender auswählen";
@@ -868,6 +892,9 @@
 /* No comment provided by engineer. */
 "Title" = "Titel";
 
+/* Message of Alert suggesting autoconfiguration. */
+"To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?" = "Um die Konfiguration zu vereinfachen, können Receiver über bekannte Standardkonfigurationen gesucht werden.\nJetzt suchen?";
+
 /* No comment provided by engineer. */
 "Today" = "Heute";
 
@@ -904,6 +931,9 @@
 /* Zip-Extraction failed */
 "Unable to extract zip-file!" = "Zip-Datei konnte nicht entpackt werden!";
 
+/* No comment provided by engineer. */
+"Unable to find valid connection data." = "Konnte keine gültige Verbindung finden.";
+
 /* Failed to retrieve or generate URL of remote stream */
 "Unable to generate stream URL." = "Stream-URL konnte nicht generiert werden.";
 
@@ -921,6 +951,9 @@
 
 /* Unable to find service name for service id */
 "Unknown Service (%@)" = "Unbekannter Sender (%@)";
+
+/* Label text in AutoConfiguration if host is unreachable */
+"unreachable" = "nicht erreichbar";
 
 /* No comment provided by engineer. */
 "Use SSL" = "SSL benutzen";
@@ -975,9 +1008,6 @@
 
 /* No comment provided by engineer. */
 "You have reached either the end or the beginning of your movie list." = "Sie haben den Anfang oder das Ende der Filmliste erreicht.";
-
-/* No comment provided by engineer. */
-"You have to enter connection details to use this application." = "Sie müssen Verbindungsdaten eingeben um dreaMote zu Nutzen.";
 
 /* User requested automated EPG refresh but no timespan given. */
 "You have to provide a timespan to refresh automatically." = "Zum automatischen Aktualisieren muss eine Zeitspanne angegeben werden.";
