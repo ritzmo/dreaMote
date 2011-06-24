@@ -206,7 +206,17 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		const CGRect frame = CGRectMake(contentRect.origin.x, 0, kServiceWidth, contentRect.size.height);
 		if(self.imageView.image)
 		{
-			self.imageView.frame = frame;
+			CGRect realFrame = frame;
+			CGSize imageSize = self.imageView.image.size;
+			realFrame.size.width = frame.size.height * (imageSize.width / imageSize.height);
+			if(realFrame.size.width > frame.size.width)
+				realFrame.size.width = frame.size.width;
+			else if(realFrame.size.width != frame.size.width)
+			{
+				// center picon
+				realFrame.origin.x = realFrame.origin.x + (frame.size.width - realFrame.size.width) / 2.0f;
+			}
+			self.imageView.frame = realFrame;
 			_serviceNameLabel.frame = CGRectZero;
 		}
 		else
