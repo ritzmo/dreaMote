@@ -779,7 +779,7 @@
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		DAC8BEAF13B2009F00CA00D9 /* dreaMote Lite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "dreaMote Lite.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DAC8BEAF13B2009F00CA00D9 /* dreaMoteLite.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMoteLite.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BED513B200C500CA00D9 /* Coolmote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Coolmote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BEF813B200F100CA00D9 /* 4-sided-arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "4-sided-arrow.png"; sourceTree = "<group>"; };
 		DAC8BEF913B200F100CA00D9 /* audio-volume-high.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "audio-volume-high.png"; sourceTree = "<group>"; };
@@ -1330,7 +1330,7 @@
 			isa = PBXGroup;
 			children = (
 				DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */,
-				DAC8BEAF13B2009F00CA00D9 /* dreaMote Lite.app */,
+				DAC8BEAF13B2009F00CA00D9 /* dreaMoteLite.app */,
 				DAC8BED513B200C500CA00D9 /* Coolmote.app */,
 			);
 			name = Products;
@@ -2129,7 +2129,7 @@
 			);
 			name = "dreaMote Lite";
 			productName = "dreaMote Lite";
-			productReference = DAC8BEAF13B2009F00CA00D9 /* dreaMote Lite.app */;
+			productReference = DAC8BEAF13B2009F00CA00D9 /* dreaMoteLite.app */;
 			productType = "com.apple.product-type.application";
 		};
 		DAC8BED413B200C500CA00D9 /* Coolmote */ = {
@@ -3122,7 +3122,7 @@
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				INFOPLIST_FILE = "Info Lite.plist";
 				OTHER_CFLAGS = "-DBUILD_DREAMOTE_LITE";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = dreaMoteLite;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3144,7 +3144,7 @@
 					"-DBUILD_DREAMOTE_LITE",
 					"-DNS_BLOCK_ASSERTIONS=1",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = dreaMoteLite;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
