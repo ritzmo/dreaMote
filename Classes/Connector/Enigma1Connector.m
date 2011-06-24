@@ -141,6 +141,12 @@ enum enigma1MessageTypes {
 			nil];
 }
 
++ (NSArray *)matchNetServices:(NSArray *)netServices
+{
+	// XXX: implement this?
+	return nil;
+}
+
 - (void)dealloc
 {
 	[_baseAddress release];

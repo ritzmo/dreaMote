@@ -14,7 +14,14 @@
  By using this static Class we can easily share some ressources
  between the active UIViews and this eased development a lot.
  */
-@interface RemoteConnectorObject : NSObject {
+@interface RemoteConnectorObject : NSObject<NSNetServiceBrowserDelegate,
+											NSNetServiceDelegate>
+{
+@private
+	NSNetServiceBrowser *netServiceBrowser; /*!< @brief Bonjour service scanner. */
+	NSMutableArray *netServices; /*!< @brief List of net services. */
+	NSMutableArray *connections; /*!< @brief List of connections. */
+	NSDictionary *connection; /*!< @brief Active connection. */
 }
 
 /*!
@@ -51,6 +58,17 @@
 + (void)saveConnections;
 
 
+
+
+/*!
+ @brief Start Bonjour network search.
+ */
++ (void)start;
+
+/*!
+ @brief Stop Bonjour network search.
+ */
++ (void)stop;
 
 /*!
  @brief Advanced autodetection mechanism to find STBs in default configuration.

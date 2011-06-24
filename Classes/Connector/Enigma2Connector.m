@@ -209,6 +209,36 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			nil];
 }
 
++ (NSArray *)matchNetServices:(NSArray *)netServices
+{
+	if(!netServices)
+		return nil;
+
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name MATCHES[c] %@", @".*?((dm\\d)|(dreambox)).*?"];
+	NSArray *matchArray = [netServices filteredArrayUsingPredicate:predicate];
+
+	NSMutableArray *returnArray = [NSMutableArray array];
+	NSNumber *connector = [NSNumber numberWithInteger:kEnigma2Connector];
+	for(NSNetService *s in matchArray)
+	{
+		NSInteger port = [s port];
+		if(port == 80)
+			port = 0; // set to a value we internally detect as "invalid"
+
+		[returnArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+				[s hostName], kRemoteHost,
+				@"", kUsername,
+				@"", kPassword,
+				[NSNumber numberWithInteger:port], kPort,
+				@"NO", kSSL,
+				@"NO", kAdvancedRemote,
+				connector, kConnector,
+				nil]
+		];
+	}
+	return returnArray;
+}
+
 - (UIViewController *)newRCEmulator
 {
 	return [[EnigmaRCEmulatorController alloc] init];

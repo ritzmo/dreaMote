@@ -89,6 +89,12 @@ typedef enum
 	return nil;
 }
 
++ (NSArray *)matchNetServices:(NSArray *)netServices
+{
+	// XXX: implement this?
+	return nil;
+}
+
 - (UIViewController *)newRCEmulator
 {
 	return [[SVDRPRCEmulatorController alloc] init];

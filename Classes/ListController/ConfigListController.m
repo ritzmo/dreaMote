@@ -707,6 +707,9 @@ enum sectionIds
 	[(UITableView *)self.view reloadData];
 	[(UITableView *)self.view selectRowAtIndexPath:tableSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
 	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+
+	// start bonjour search
+	[RemoteConnectorObject start];
 }
 
 /* did hide */
@@ -718,6 +721,9 @@ enum sectionIds
 	// unset editing if not going into a subview
 	if(self.editing && [(UITableView *)self.view indexPathForSelectedRow] == nil)
 		[self setEditing:NO animated:animated];
+
+	// end bonjour search
+	[RemoteConnectorObject stop];
 }
 
 #pragma mark - ConnectionListDelegate methods

@@ -264,6 +264,15 @@ enum buttonCodes {
 + (NSArray *)knownDefaultConnections;
 
 /*!
+ @brief Checks which given NSNetServices could be connected.
+ @note No need to filter out default connections.
+
+ @param netServices
+ return Connection Dictionaries.
+ */
++ (NSArray *)matchNetServices:(NSArray *)netServices;
+
+/*!
  @brief Free Caches used by Backend.
  @note This function is used by some Backends to free Ressources that are
  cached during Runtime and freed when running low on memory.

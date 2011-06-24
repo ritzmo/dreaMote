@@ -220,6 +220,12 @@ static const char *basename(const char *path)
 		{
 			[NSThread detachNewThreadSelector:@selector(checkReachable) toTarget:self withObject:nil];
 		}
+		// unable to find connection, start bonjour discovery
+		else
+		{
+			// NOTE: this will run until the app quits or the user enters and leaves the configuration, but let's ignore this for now.
+			[RemoteConnectorObject start];
+		}
 
 		// by using mg split view loadView is called to early which might lead to the
 		// wrong mode being shown (e.g. only movie list & movie view for enigma2 instead
@@ -315,6 +321,11 @@ static const char *basename(const char *path)
 	// remove past event
 	[[EPGCache sharedInstance] cleanCache];
 #endif
+
+	// stop bonjour discovery which might have been running since the app started
+	// otherwise this is a noop
+	[RemoteConnectorObject stop];
+
 	// Save our connection array
 	[RemoteConnectorObject saveConnections];
 	[tabBarController viewWillDisappear:NO];

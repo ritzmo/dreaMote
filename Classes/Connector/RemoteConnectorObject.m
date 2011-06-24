@@ -28,18 +28,57 @@
 
 #import "NSString+URLEncode.h"
 
+@interface RemoteConnectorObject()
++ (RemoteConnectorObject *)singleton;
+@property (nonatomic, retain) NSMutableArray *connections;
+@property (nonatomic, retain) NSDictionary *connection;
+@property (nonatomic, retain) NSMutableArray *netServices;
+@end
+
+@interface RemoteConnectorObject(AutoDiscovery)
+- (BOOL)startDiscovery;
+- (void)stopDiscovery;
+@end
+
 @implementation RemoteConnectorObject
 
+@synthesize connections, connection, netServices;
+
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
-static NSMutableArray *_connections = nil;
-static NSDictionary *_connection;
+static RemoteConnectorObject *singleton;
+
+- (void)dealloc
+{
+	singleton = nil;
+	[netServiceBrowser release];
+	[netServices release];
+	[connections release];
+	[connection release];
+
+	[super dealloc];
+}
+
++ (RemoteConnectorObject *)singleton
+{
+	if(!singleton)
+	{
+		@synchronized(self)
+		{
+			if(!singleton)
+				singleton = [[RemoteConnectorObject alloc] init];
+		}
+	}
+	return singleton;
+}
 
 + (BOOL)connectTo: (NSUInteger)connectionIndex
 {
-	if(!_connections || connectionIndex >= [_connections count])
+	RemoteConnectorObject *singleton = [RemoteConnectorObject singleton];
+	NSArray *connections = singleton.connections;
+	if(!connections || connectionIndex >= [connections count])
 		return NO;
 
-	const NSDictionary *connection = [_connections objectAtIndex: connectionIndex];
+	NSDictionary *connection = [connections objectAtIndex: connectionIndex];
 	const NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
 
 	if(_sharedRemoteConnector)
@@ -47,12 +86,8 @@ static NSDictionary *_connection;
 		[_sharedRemoteConnector release];
 		_sharedRemoteConnector = nil;
 	}
-	
-	if(_connection)
-	{
-		[_connection release];
-		_connection = nil;
-	}
+
+	singleton.connection = nil;
 
 	switch(connectorId)
 	{
@@ -80,7 +115,7 @@ static NSDictionary *_connection;
 			return NO;
 	}
 
-	_connection = [connection retain];
+	singleton.connection = connection;
 	return YES;
 }
 
@@ -92,11 +127,7 @@ static NSDictionary *_connection;
 		_sharedRemoteConnector = nil;
 	}
 
-	if(_connection)
-	{
-		[_connection release];
-		_connection = nil;
-	}
+	[RemoteConnectorObject singleton].connection = nil;
 }
 
 + (BOOL)loadConnections
@@ -104,17 +135,13 @@ static NSDictionary *_connection;
 	NSString *finalPath = [kConfigPath stringByExpandingTildeInPath];
 	BOOL retVal = YES;
 
-	if(_connections)
+	NSMutableArray *connections = [NSMutableArray arrayWithContentsOfFile:finalPath];
+	if(connections == nil)
 	{
-		[_connections release];
-	}
-	_connections = [[NSMutableArray arrayWithContentsOfFile: finalPath] retain];
-
-	if(_connections == nil)
-	{
-		_connections = [[NSMutableArray array] retain];
+		connections = [NSMutableArray array];
 		retVal = NO;
 	}
+	[RemoteConnectorObject singleton].connections = connections;
 
 	// post notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReadConnectionsNotification object:self userInfo:nil];
@@ -123,14 +150,92 @@ static NSDictionary *_connection;
 
 + (NSMutableArray *)getConnections
 {
-	NSParameterAssert(_connections != nil);
-	return _connections;
+	NSMutableArray *connections = [RemoteConnectorObject singleton].connections;
+#if IS_DEBUG()
+	NSParameterAssert(connections != nil);
+#endif
+	return connections;
 }
 
 + (void)saveConnections
 {
 	NSString *finalPath = [kConfigPath stringByExpandingTildeInPath];
-	[_connections writeToFile: finalPath atomically: YES];
+	[[RemoteConnectorObject singleton].connections writeToFile: finalPath atomically: YES];
+}
+
+#pragma mark - NSNetServiceDelegate
+
+- (void)netServiceDidResolveAddress:(NSNetService *)netService
+{
+	netService.delegate = nil;
+	[netServices addObject:netService];
+	[netService release];
+}
+
+- (void)netService:(NSNetService *)netService didNotResolve:(NSDictionary *)errorDict
+{
+	// ignore
+	netService.delegate = nil;
+	[netService release];
+}
+
+#pragma mark - NSNetServiceBrowserDelegate
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didFindService:(NSNetService *)netService moreComing:(BOOL)moreServicesComing
+{
+	if(![netServices containsObject:netService])
+	{
+		netService.delegate = self;
+		[netService retain]; // we have to retain the service or it will be released before the resolve can finish, so release it in resolve callbacks
+		[netService resolveWithTimeout:3]; // arbitrary value
+	}
+}
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)netServiceBrowser didRemoveService:(NSNetService *)netService moreComing:(BOOL)moreServicesComing
+{
+	[netServices removeObject:netService];
+}
+
+#pragma mark - Autodetection
+
+- (BOOL)startDiscovery
+{
+	if(netServiceBrowser)
+		[self stopDiscovery];
+
+	netServiceBrowser = [[NSNetServiceBrowser alloc] init];
+	if(!netServiceBrowser)
+		return NO;
+
+	if(!netServices)
+		netServices = [[NSMutableArray alloc] init];
+
+	netServiceBrowser.delegate = self;
+	[netServiceBrowser searchForServicesOfType:@"_http._tcp." inDomain:@""];
+
+	return YES;
+}
+
+- (void)stopDiscovery
+{
+	if(!netServiceBrowser)
+		return;
+
+	[netServiceBrowser stop];
+	[netServiceBrowser release];
+	netServiceBrowser = nil;
+
+	[netServices removeAllObjects];
+}
+
++ (void)start
+{
+	[[RemoteConnectorObject singleton] startDiscovery];
+}
+
++ (void)stop
+{
+	[[RemoteConnectorObject singleton] stopDiscovery];
 }
 
 + (NSArray *)autodetectConnections
@@ -138,7 +243,9 @@ static NSDictionary *_connection;
 	NSObject <RemoteConnector>* connector = nil;
 	NSMutableArray *array = [NSMutableArray array]; // will keep track of found connections
 	NSArray *addresses = nil; // possible connections
+	NSArray *bonjour = nil;
 	Class<RemoteConnector> currentConnector = NULL;
+	RemoteConnectorObject *singleton = [RemoteConnectorObject singleton];
 
 	NSInteger i = 0;
 	for(; i < kMaxConnector; ++i)
@@ -170,6 +277,15 @@ static NSDictionary *_connection;
 		}
 
 		addresses = [currentConnector knownDefaultConnections];
+		bonjour = [currentConnector matchNetServices:singleton.netServices];
+		if(bonjour)
+		{
+			addresses = [addresses mutableCopy];
+			// TODO: filter for duplicates (are we able to detect them realiably?)
+			[(NSMutableArray *)addresses addObjectsFromArray:bonjour];
+			[addresses autorelease];
+		}
+
 		for(NSDictionary *connection in addresses)
 		{
 			SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, [[connection objectForKey:kRemoteHost] UTF8String]);
@@ -249,6 +365,8 @@ static NSDictionary *_connection;
 	return kInvalidConnector;
 }
 
+#pragma mark -
+
 + (BOOL)isConnected
 {
 	return (_sharedRemoteConnector != nil);
@@ -256,7 +374,7 @@ static NSDictionary *_connection;
 
 + (BOOL)isSingleBouquet
 {
-	const id value = [_connection objectForKey: kSingleBouquet];
+	const id value = [[RemoteConnectorObject singleton].connection objectForKey: kSingleBouquet];
 	if(value == nil)
 		return NO;
 	return [value boolValue];
@@ -264,7 +382,7 @@ static NSDictionary *_connection;
 
 + (BOOL)usesAdvancedRemote
 {
-	const id value = [_connection objectForKey: kAdvancedRemote];
+	const id value = [[RemoteConnectorObject singleton].connection objectForKey: kAdvancedRemote];
 	if(value == nil)
 		return NO;
 	return [value boolValue];
@@ -274,7 +392,7 @@ static NSDictionary *_connection;
 {
 	if([_sharedRemoteConnector hasFeature:kFeaturesNowNext])
 	{
-		const id value = [_connection objectForKey: kShowNowNext];
+		const id value = [[RemoteConnectorObject singleton].connection objectForKey: kShowNowNext];
 		if(value)
 			return [value boolValue];
 	}
@@ -283,7 +401,8 @@ static NSDictionary *_connection;
 
 + (NSInteger)getConnectedId
 {
-	const NSUInteger index = [_connections indexOfObject: _connection];
+	RemoteConnectorObject *singleton = [RemoteConnectorObject singleton];
+	const NSUInteger index = [singleton.connections indexOfObject:singleton.connection];
 	if(index == NSNotFound)
 		return [[NSUserDefaults standardUserDefaults]
 					integerForKey: kActiveConnection];
@@ -297,8 +416,9 @@ static NSDictionary *_connection;
 
 + (NSURLCredential *)getCredential
 {
-	return [NSURLCredential credentialWithUser:[_connection objectForKey:kUsername]
-									  password:[_connection objectForKey:kPassword]
+	NSDictionary *connection = [RemoteConnectorObject singleton].connection;
+	return [NSURLCredential credentialWithUser:[connection objectForKey:kUsername]
+									  password:[connection objectForKey:kPassword]
 								   persistence:NSURLCredentialPersistenceNone];
 }
 

@@ -121,6 +121,12 @@ enum neutrinoMessageTypes {
 			nil];
 }
 
++ (NSArray *)matchNetServices:(NSArray *)netServices
+{
+	// XXX: implement this?
+	return nil;
+}
+
 - (UIViewController *)newRCEmulator
 {
 	return [[NeutrinoRCEmulatorController alloc] init];
