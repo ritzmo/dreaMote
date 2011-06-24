@@ -17,6 +17,8 @@
 		DA681B1A13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
 		DA681B1B13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
 		DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
+		DA681B1D13B4909900232190 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
+		DA681B1E13B4909A00232190 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -2790,6 +2792,7 @@
 				DA681B1013B356C200232190 /* ConnectionTableViewCell.m in Sources */,
 				DA681B1613B35BEC00232190 /* ConnectionListController.m in Sources */,
 				DA681B1B13B483FB00232190 /* NSNetService+IpString.m in Sources */,
+				DA681B1D13B4909900232190 /* LiteUnzip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2919,6 +2922,7 @@
 				DA681B1113B356C200232190 /* ConnectionTableViewCell.m in Sources */,
 				DA681B1713B35BEC00232190 /* ConnectionListController.m in Sources */,
 				DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */,
+				DA681B1E13B4909A00232190 /* LiteUnzip.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
