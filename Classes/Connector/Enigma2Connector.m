@@ -40,6 +40,7 @@
 #import <ViewController/EnigmaRCEmulatorController.h>
 
 #import <Categories/NSMutableArray+Shuffling.h>
+#import <Categories/NSNetService+IpString.h>
 #import <Categories/NSString+URLEncode.h>
 
 enum powerStates {
@@ -226,7 +227,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			port = 0; // set to a value we internally detect as "invalid"
 
 		[returnArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:
-				[s hostName], kRemoteHost,
+				[s ipAddress], kRemoteHost,
 				@"", kUsername,
 				@"", kPassword,
 				[NSNumber numberWithInteger:port], kPort,

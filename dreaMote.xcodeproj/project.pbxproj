@@ -14,6 +14,9 @@
 		DA681B1513B35BEC00232190 /* ConnectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1413B35BEC00232190 /* ConnectionListController.m */; };
 		DA681B1613B35BEC00232190 /* ConnectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1413B35BEC00232190 /* ConnectionListController.m */; };
 		DA681B1713B35BEC00232190 /* ConnectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1413B35BEC00232190 /* ConnectionListController.m */; };
+		DA681B1A13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
+		DA681B1B13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
+		DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B1913B483FB00232190 /* NSNetService+IpString.m */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -761,6 +764,8 @@
 		DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionTableViewCell.m; sourceTree = "<group>"; };
 		DA681B1313B35BEC00232190 /* ConnectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionListController.h; sourceTree = "<group>"; };
 		DA681B1413B35BEC00232190 /* ConnectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionListController.m; sourceTree = "<group>"; };
+		DA681B1813B483FB00232190 /* NSNetService+IpString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNetService+IpString.h"; sourceTree = "<group>"; };
+		DA681B1913B483FB00232190 /* NSNetService+IpString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNetService+IpString.m"; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -1513,6 +1518,8 @@
 				DAC8C06F13B2014C00CA00D9 /* UIDevice+SystemVersion.m */,
 				DAC8C07013B2014C00CA00D9 /* UITableViewCell+EasyInit.h */,
 				DAC8C07113B2014C00CA00D9 /* UITableViewCell+EasyInit.m */,
+				DA681B1813B483FB00232190 /* NSNetService+IpString.h */,
+				DA681B1913B483FB00232190 /* NSNetService+IpString.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -2620,6 +2627,7 @@
 				DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */,
 				DA681B0F13B356C200232190 /* ConnectionTableViewCell.m in Sources */,
 				DA681B1513B35BEC00232190 /* ConnectionListController.m in Sources */,
+				DA681B1A13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2781,6 +2789,7 @@
 				DAC8C4C213B202F600CA00D9 /* BWQuincyManager.m in Sources */,
 				DA681B1013B356C200232190 /* ConnectionTableViewCell.m in Sources */,
 				DA681B1613B35BEC00232190 /* ConnectionListController.m in Sources */,
+				DA681B1B13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2909,6 +2918,7 @@
 				DAC8C51713B2042700CA00D9 /* AbstractSocket.m in Sources */,
 				DA681B1113B356C200232190 /* ConnectionTableViewCell.m in Sources */,
 				DA681B1713B35BEC00232190 /* ConnectionListController.m in Sources */,
+				DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
