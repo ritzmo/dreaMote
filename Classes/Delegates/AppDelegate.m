@@ -214,17 +214,13 @@ static const char *basename(const char *path)
 		}
 	}
 
+	BOOL treatAsFirst = YES;
 	if([RemoteConnectorObject loadConnections])
 	{
 		if([RemoteConnectorObject connectTo:[activeConnectionId integerValue]])
 		{
 			[NSThread detachNewThreadSelector:@selector(checkReachable) toTarget:self withObject:nil];
-		}
-		// unable to find connection, start bonjour discovery
-		else
-		{
-			// NOTE: this will run until the app quits or the user enters and leaves the configuration, but let's ignore this for now.
-			[RemoteConnectorObject start];
+			treatAsFirst = NO;
 		}
 
 		// by using mg split view loadView is called to early which might lead to the
@@ -232,6 +228,13 @@ static const char *basename(const char *path)
 		// of location list & movie list). posting this notification will trigger the necessary
 		// reload.
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+	}
+	// no configured connections or no host to connect to, show help and start bonjour search
+	if(treatAsFirst)
+	{
+		welcomeType = welcomeTypeFull;
+		// NOTE: this will run until the app quits or the user enters and leaves the configuration, but let's ignore this for now.
+		[RemoteConnectorObject start];
 	}
 
 	// Show the window and view
