@@ -12,6 +12,7 @@
 
 #import <Objects/Enigma/Service.h>
 #import <Objects/Enigma/Timer.h>
+#import <Objects/Generic/Movie.h>
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/Volume.h>
 #import <Objects/TimerProtocol.h>
@@ -48,6 +49,7 @@ enum enigma1MessageTypes {
 	return
 		(feature == kFeaturesRadioMode) ||
 		(feature == kFeaturesBouquets) ||
+		(feature == kFeaturesStreaming) ||
 		(feature == kFeaturesGUIRestart) ||
 		(feature == kFeaturesRecordInfo) ||
 		(feature == kFeaturesMessageCaption) ||
@@ -394,6 +396,38 @@ enum enigma1MessageTypes {
 	return doc;
 }
 
+- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
+{
+	// handle services which are actually recordings
+	if([service.sref rangeOfString:@"/hdd/movie/"].location != NSNotFound)
+	{
+		NSObject<MovieProtocol> *movie = [[GenericMovie alloc] init];
+		movie.sref = service.sref;
+		NSURL *myURI = [self getStreamURLForMovie:movie];
+		[movie release];
+		return myURI;
+	}
+
+	// XXX: we first zap on the receiver and subsequently retrieve the new streaming url, any way to optimize this?
+	Result *result = [self zapTo:service];
+	if(result.result)
+	{
+		NSURL *myURI = [NSURL URLWithString:@"/video.m3u" relativeToURL:_baseAddress];
+
+		NSHTTPURLResponse *response;
+		NSError *error = nil;
+		NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+													  returningResponse:&response
+																  error:&error];
+
+		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		myURI = [NSURL URLWithString:myString];
+		[myString release];
+		return myURI;
+	}
+	return nil;
+}
+
 #pragma mark Timer
 
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
@@ -589,6 +623,22 @@ enum enigma1MessageTypes {
 	result.result = ([response statusCode] == 204);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
+}
+
+- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
+{
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/movie.m3u?ref=%@", [movie.sref urlencode]] relativeToURL:_baseAddress];
+
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:&error];
+
+	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	myURI = [NSURL URLWithString:myString];
+	[myString release];
+	return myURI;
 }
 
 #pragma mark Control
@@ -975,22 +1025,6 @@ enum enigma1MessageTypes {
 }
 
 - (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
-{
-#if IS_DEBUG()
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
-	return nil;
-}
-
-- (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie
-{
-#if IS_DEBUG()
-	[NSException raise:@"ExcUnsupportedFunction" format:@""];
-#endif
-	return nil;
-}
-
-- (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
