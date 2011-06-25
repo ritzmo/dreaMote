@@ -113,11 +113,16 @@
 		{
 			if(sref[i] == ':')
 			{
-				length = i;
-				sref[i] = '\0';
+				// rstrip(':')
+				do
+				{
+					length = i;
+					sref[i] = '\0';
+					--i;
+				} while(sref[i] == ':');
 
-				// start two character from ':'
-				for(i -= 2; i > 0; --i)
+				// skip one character from last ':'
+				for(--i; i > 0; --i)
 				{
 					if(sref[i] == ':')
 					{
