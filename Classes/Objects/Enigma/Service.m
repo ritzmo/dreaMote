@@ -99,7 +99,11 @@
 			return nil;
 		}
 		NSInteger i = length-2;
-		for(; i > 0; --i)
+		/*!
+		 @note Enigma sref needs at least 20 characters, so if we did not find the first ':'
+		 at the 19th position, abort early.
+		 */
+		for(; i > 18; --i)
 		{
 			if(sref[i] == ':')
 			{
