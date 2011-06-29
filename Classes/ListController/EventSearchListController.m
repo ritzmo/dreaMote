@@ -50,7 +50,6 @@
 - (void)dealloc
 {
 	[_searchBar release];
-	[_tableView release];
 
 	[super dealloc];
 }
