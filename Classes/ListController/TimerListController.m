@@ -76,6 +76,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_timers release];
 	[_timerViewController release];
 #if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
 #endif
 

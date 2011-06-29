@@ -28,6 +28,7 @@
 - (void)dealloc
 {
 #if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
 #endif
 	[super dealloc];

@@ -108,6 +108,7 @@
 	[popoverController release];
 	[_zapListController release];
 #if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
 #endif
 
