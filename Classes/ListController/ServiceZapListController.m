@@ -41,10 +41,11 @@
 	ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 	zlc.zapDelegate = delegate;
 	zlc.actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
-																   delegate:[zlc retain] // XXX: HACK!
+																   delegate:zlc
 														  cancelButtonTitle:nil
 													 destructiveButtonTitle:nil
 														  otherButtonTitles:nil];
+	[zlc.actionSheet.delegate retain];
 	[zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"OPlayer"];
