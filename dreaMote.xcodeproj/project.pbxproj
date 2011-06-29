@@ -1322,6 +1322,7 @@
 				DAC8C4BA13B202D600CA00D9 /* Resources */,
 				DAC8BE4E13B1FF9200CA00D9 /* Frameworks */,
 				DAC8BE4C13B1FF9200CA00D9 /* Products */,
+				DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */,
 				DAC8C4BB13B202F600CA00D9 /* QuincyKit */,
 			);
 			sourceTree = "<group>";
@@ -1477,7 +1478,6 @@
 		DAC8C05D13B2014C00CA00D9 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */,
 				DAC8C05E13B2014C00CA00D9 /* Appirater */,
 				DAC8C06113B2014C00CA00D9 /* Categories */,
 				DAC8C07213B2014C00CA00D9 /* Connector */,
