@@ -134,6 +134,7 @@
 
 - (void)handleReconnect: (NSNotification *)note
 {
+	@synchronized(self) { // begin synchronized
 	if(![RemoteConnectorObject isConnected])
 	{
 		const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
@@ -237,6 +238,7 @@
 	// initial load
 	if(self.selectedIndex == NSNotFound)
 		self.selectedViewController = [menuList lastObject];
+	} // end synchronized
 }
 
 - (BOOL)checkConnection
