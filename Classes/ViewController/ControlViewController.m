@@ -78,6 +78,9 @@
 /* dealloc */
 - (void)dealloc
 {
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
+
 	[_switchControl release];
 	[_slider release];
 

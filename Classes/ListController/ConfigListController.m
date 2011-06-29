@@ -83,6 +83,8 @@ enum sectionIds
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
 	[_connections release];
 	[_vibrateInRC release];
 	[_simpleRemote release];

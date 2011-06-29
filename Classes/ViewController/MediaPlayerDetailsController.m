@@ -25,6 +25,9 @@
 /* dealloc */
 - (void)dealloc
 {
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
+
 	[_currentTrack release];
 	[_currentCover release];
 	[_metadataXMLDoc release];

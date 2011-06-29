@@ -54,6 +54,9 @@
 /* dealloc */
 - (void)dealloc
 {
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
+
 	[super dealloc];
 }
 

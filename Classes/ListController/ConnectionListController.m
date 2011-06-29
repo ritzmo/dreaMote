@@ -53,6 +53,8 @@
 
 - (void)dealloc
 {
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
 	[_connections release];
 	[_delegate release];
 

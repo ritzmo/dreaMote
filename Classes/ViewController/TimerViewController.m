@@ -136,6 +136,9 @@
 
 - (void)dealloc
 {
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
+
 	[_timer release];
 	[_oldTimer release];
 	[_delegate release];

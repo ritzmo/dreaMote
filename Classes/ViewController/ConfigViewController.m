@@ -166,6 +166,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 /* dealloc */
 - (void)dealloc
 {
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
+
 	[_connection release];
 	[_remoteNameTextField release];
 	[_remoteAddressTextField release];
