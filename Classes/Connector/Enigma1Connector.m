@@ -93,6 +93,7 @@ enum enigma1MessageTypes {
 
 			_baseAddress = [[NSURL alloc] initWithString:remoteAddress];
 		}
+		_bouquetsCacheLock = [[NSLock alloc] init];
 	}
 	return self;
 }
@@ -152,15 +153,23 @@ enum enigma1MessageTypes {
 - (void)dealloc
 {
 	[_baseAddress release];
+	_baseAddress = nil;
 	[_cachedBouquetsXML release];
+	_cachedBouquetsXML = nil;
+	[_bouquetsCacheLock release];
+	_bouquetsCacheLock = nil;
 
 	[super dealloc];
 }
 
 - (void)freeCaches
 {
+	[_bouquetsCacheLock lock];
+
 	[_cachedBouquetsXML release];
 	_cachedBouquetsXML = nil;
+
+	[_bouquetsCacheLock unlock];
 }
 
 - (BOOL)isReachable:(NSError **)error
@@ -287,6 +296,7 @@ enum enigma1MessageTypes {
 
 - (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
+	[_bouquetsCacheLock lock];
 	NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
 	if(error)
 	{
@@ -298,6 +308,7 @@ enum enigma1MessageTypes {
 		[fakeService release];
 
 		[self indicateError:delegate error:error];
+		[_bouquetsCacheLock unlock];
 		return nil;
 	}
 
@@ -322,16 +333,19 @@ enum enigma1MessageTypes {
 	}
 
 	[self indicateSuccess:delegate];
+	[_bouquetsCacheLock unlock];
 	return [_cachedBouquetsXML autorelease];
 }
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
+	[_bouquetsCacheLock lock];
+
 	// split view on ipad
 	if(!bouquet)
 	{
 		[self indicateSuccess:delegate];
-		return nil;
+		goto fetchServices_out;
 	}
 
 	NSArray *resultNodes = nil;
@@ -357,7 +371,7 @@ enum enigma1MessageTypes {
 			[fakeService release];
 
 			[self indicateError:delegate error:error];
-			return nil;
+			goto fetchServices_out;
 		}
 
 		[[_cachedBouquetsXML retain] autorelease]; // make sure that this is not deallocated while we run (might be another cache than before)
@@ -381,6 +395,8 @@ enum enigma1MessageTypes {
 	}
 
 	[self indicateSuccess:delegate];
+fetchServices_out:
+	[_bouquetsCacheLock unlock];
 	return nil;
 }
 

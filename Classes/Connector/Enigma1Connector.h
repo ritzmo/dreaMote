@@ -19,6 +19,7 @@
 @interface Enigma1Connector : NSObject <RemoteConnector> {
 @private
 	NSURL *_baseAddress; /*!< @brief Base URL of STB */
+	NSLock *_bouquetsCacheLock; /*!< @brief Lock for _cachedBouquetsXML. */
 
 	/*!
 	 @brief Cached Bouquet XML.
