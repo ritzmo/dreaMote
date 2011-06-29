@@ -62,8 +62,12 @@
 
 - (void)dealloc
 {
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
+
 	[_snr release];
 	[_agc release];
+	[_interval release];
 	[_snrdBCell release];
 	[_berCell release];
 
