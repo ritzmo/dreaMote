@@ -331,8 +331,13 @@
 		
 		// stop editing
 		_shouldSave = NO;
-		[self cellShouldBeginEditing: nil];
-		[self setEditing: NO animated: YES];
+		[self cellShouldBeginEditing:nil];
+		BOOL animated = NO; // XXX: disabled because of possible crash?!
+#if IS_DEBUG()
+		animated = YES;
+		NSLog(@"[TimerViewController setTimer:] about to set editing");
+#endif
+		[self setEditing:NO animated:animated];
 	}
 	
 	_timerTitle.text = newTimer.title;
@@ -374,7 +379,14 @@
 
 	// start editing here for new, waiting or disabled timers
 	if(newValue || _oldTimer.state == kTimerStateWaiting || _oldTimer.disabled)
-		[self setEditing:YES animated:YES];
+	{
+		BOOL animated = NO; // XXX: disabled because of possible crash?!
+#if IS_DEBUG()
+		animated = YES;
+		NSLog(@"[TimerViewController setCreatingNewTimer:] about to set editing");
+#endif
+		[self setEditing:YES animated:animated];
+	}
 }
 
 #pragma mark -
