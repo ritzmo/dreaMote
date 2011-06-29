@@ -23,8 +23,12 @@
 /* dealloc */
 - (void)dealloc
 {
+	_refreshHeaderView.delegate = nil;
 	[_refreshHeaderView release];
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 	[_tableView release];
+	_tableView = nil;
 
 	[super dealloc];
 }
