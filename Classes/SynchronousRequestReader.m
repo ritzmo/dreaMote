@@ -76,6 +76,7 @@
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	}
 	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[con cancel]; // just in case, cancel the connection
 
 	// hand over response & error if requested
 	if(response)

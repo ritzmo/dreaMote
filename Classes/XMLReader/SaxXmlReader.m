@@ -56,6 +56,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		{
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		}
+		[con cancel]; // just in case, cancel the connection
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 	}
 	else
