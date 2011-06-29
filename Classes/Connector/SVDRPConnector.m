@@ -113,7 +113,12 @@ typedef enum
 		[_socket readDataUpToString: @"\n"]; // NOTE: we need to skip the welcome line
 	}
 	@catch (NSException * e) {
-		return;
+#if IS_DEBUG()
+		NSLog(@"SVDRPConnector failed in getSocket");
+		[e raise];
+#endif
+		[_socket release];
+		_socket = nil;
 	}
 }
 
