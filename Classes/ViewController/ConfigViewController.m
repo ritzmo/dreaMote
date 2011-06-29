@@ -502,12 +502,27 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			}
 		}
 	}
+	NSInteger numberOfSections = [(UITableView *)self.view numberOfSections];
+#if IS_DEBUG()
+	NSInteger curDefault = [[stdDefaults objectForKey:kActiveConnection] integerValue];
+#endif
 	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
 
-	[(UITableView *)self.view beginUpdates];
-	[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
-								withRowAnimation: UITableViewRowAnimationFade];
-	[(UITableView *)self.view endUpdates];
+	if(numberOfSections == 4)
+	{
+		[(UITableView *)self.view beginUpdates];
+		[(UITableView *)self.view deleteSections:[NSIndexSet indexSetWithIndex:3]
+								withRowAnimation:UITableViewRowAnimationFade];
+		[(UITableView *)self.view endUpdates];
+	}
+	else
+	{
+#if IS_DEBUG()
+		[NSException raise:@"InvalidSectionCountOnMakeDefault" format:@"numberOfSections was %d, expected 4. kActiveConnection was %d, _connectionIndex is %d, connected was %d", numberOfSections, curDefault, _connectionIndex, connectedId];
+#else
+		[(UITableView *)self.view reloadData];
+#endif
+	}
 	
 	// post notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
@@ -551,18 +566,33 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			}
 		}
 	}
+	const NSInteger numberOfRowsInSection = [(UITableView *)self.view numberOfRowsInSection:3];
+	const BOOL isDefault = (_connectionIndex == [stdDefaults integerForKey: kActiveConnection]);
 
-
-	[(UITableView *)self.view beginUpdates];
-	if(_connectionIndex == [stdDefaults integerForKey: kActiveConnection])
+	if(isDefault && numberOfRowsInSection == 1)
+	{
+		[(UITableView *)self.view beginUpdates];
 		[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
 									withRowAnimation: UITableViewRowAnimationFade];
-	else
+		[(UITableView *)self.view endUpdates];
+	}
+	else if(!isDefault && numberOfRowsInSection == 2)
+	{
+		[(UITableView *)self.view beginUpdates];
 		[(UITableView *)self.view
 				deleteRowsAtIndexPaths: [NSArray arrayWithObject:
 											[NSIndexPath indexPathForRow:0 inSection:3]]
 				withRowAnimation: UITableViewRowAnimationFade];
-	[(UITableView *)self.view endUpdates];
+		[(UITableView *)self.view endUpdates];
+	}
+	else
+	{
+#if IS_DEBUG()
+		[NSException raise:@"InvalidRowCountOnDoConnect" format:@"%@, numberOfRowsInSection %d", isDefault ? @"is default" : @"not default", numberOfRowsInSection];
+#else
+		[(UITableView *)self.view reloadData];
+#endif
+	}
 
 	// post notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
