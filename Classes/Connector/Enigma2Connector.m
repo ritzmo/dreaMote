@@ -259,7 +259,16 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	{
 		if(error != nil && !_wasWarned)
 		{
-			CXMLDocument *dom = [[CXMLDocument alloc] initWithData:data options:0 error:nil];
+			NSError *parsingError = nil;
+			CXMLDocument *dom = [[CXMLDocument alloc] initWithData:data options:0 error:&parsingError];
+			if(parsingError)
+			{
+				// XXX: for now just hand this error up
+				*error = parsingError;
+				[dom release];
+				return NO;
+			}
+
 			const NSArray *resultNodes = [dom nodesForXPath:@"/e2abouts/e2about/e2webifversion" error:nil];
 			for(CXMLElement *currentChild in resultNodes)
 			{
