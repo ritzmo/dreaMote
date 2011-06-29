@@ -42,6 +42,16 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	((UITableView *)self.view).delegate = nil;
+	((UITableView *)self.view).dataSource = nil;
+
+	[_items release];
+
+	[super dealloc];
+}
+
 /* create SimpleSingleSelectionListController with given type preselected */
 + (SimpleSingleSelectionListController *)withItems:(NSArray *)items andSelection:(NSUInteger)selectedItem andTitle:(NSString *)title
 {
