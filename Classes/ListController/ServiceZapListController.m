@@ -41,7 +41,7 @@
 	ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 	zlc.zapDelegate = delegate;
 	zlc.actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
-																   delegate:zlc
+																   delegate:[zlc retain] // XXX: HACK!
 														  cancelButtonTitle:nil
 													 destructiveButtonTitle:nil
 														  otherButtonTitles:nil];
@@ -225,6 +225,8 @@
 
 		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
+	[actionSheet.delegate release];
+	actionSheet.delegate = nil;
 }
 
 @end
