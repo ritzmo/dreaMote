@@ -383,14 +383,28 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
 			if(_connectionIndex == -1)
 			{
-				[(UITableView *)self.view beginUpdates];
 				_connectionIndex = [connections count];
 				[connections addObject: _connection];
 				// FIXME: ugly!
 				if(_connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || _connectionIndex != [RemoteConnectorObject getConnectedId])
-					[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
-											withRowAnimation: UITableViewRowAnimationFade];
-				[(UITableView *)self.view endUpdates];
+				{
+					const NSInteger numberOfRowsInSection = [(UITableView *)self.view numberOfRowsInSection:2];
+					const NSInteger newNumberOfRowsInSection = [self tableView:(UITableView *)self.view numberOfRowsInSection:2];
+					if(numberOfRowsInSection != newNumberOfRowsInSection) // XXX: seen a weird crash because of this, handle it
+					{
+#if IS_DEBUG()
+						[NSException raise:@"numberOfRowsDidNotMatch" format:@"was %d, is now %d. _connector %d, kConnector %@", numberOfRowsInSection, newNumberOfRowsInSection, _connector, [[_connection objectForKey:kConnector] stringValue]];
+#endif
+						[(UITableView *)self.view reloadData];
+					}
+					else
+					{
+						[(UITableView *)self.view beginUpdates];
+						[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
+												withRowAnimation: UITableViewRowAnimationFade];
+						[(UITableView *)self.view endUpdates];
+					}
+				}
 			}
 			else
 			{
