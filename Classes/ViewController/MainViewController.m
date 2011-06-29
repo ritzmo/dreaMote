@@ -46,6 +46,9 @@
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.delegate = nil;
+
 	[myTabBar release];
 	[menuList release];
 	[_bouquetController release];
@@ -56,8 +59,6 @@
 	[_rcController release];
 	[_serviceController release];
 	[_timerController release];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super dealloc];
 }
