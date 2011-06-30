@@ -763,8 +763,7 @@
 			}
 		}
 
-		[tableView deleteRowsAtIndexPaths: [NSArray arrayWithObject: indexPath]
-								withRowAnimation: UITableViewRowAnimationFade];
+		[tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
 	}
 	else
 	{
