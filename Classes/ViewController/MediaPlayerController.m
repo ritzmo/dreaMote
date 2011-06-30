@@ -241,9 +241,10 @@ enum mediaPlayerTags
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
 	// XXX: we abuse the shuffle callbacks here...
-	NSUInteger count = _playlist.selectedFiles.count;
+	const NSArray *selectedFiles = [_playlist.selectedFiles copy];
+	NSUInteger count = selectedFiles.count;
 	[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
-	for(NSObject<FileProtocol> *file in _playlist.selectedFiles)
+	for(NSObject<FileProtocol> *file in selectedFiles)
 	{
 		/*Result *result = */[[RemoteConnectorObject sharedRemoteConnector] removeTrack:file];
 		// XXX: we silently ignore errors
@@ -251,6 +252,7 @@ enum mediaPlayerTags
 		[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
 	}
 	[_playlist.selectedFiles removeAllObjects]; // XXX: assume we successfully removed all tracks
+	[selectedFiles release];
 	[self performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
 
 	[pool release];
