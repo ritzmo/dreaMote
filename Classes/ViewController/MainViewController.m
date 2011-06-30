@@ -129,6 +129,17 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 }
 
+- (void)setSelectedIndex:(NSUInteger)selectedIndex
+{
+	[self.selectedViewController viewWillDisappear:YES];
+	[self.selectedViewController viewDidDisappear:YES];
+
+	[super setSelectedIndex:selectedIndex];
+
+	[self.selectedViewController viewWillAppear:YES];
+	[self.selectedViewController viewDidAppear:YES];
+}
+
 #pragma mark -
 #pragma mark MainViewController private methods
 #pragma mark -

@@ -285,6 +285,11 @@ static const char *basename(const char *path)
 		[alert show];
 		[alert release];
 	}
+	// open bouquets list, bouquets are always on index 0 of the viewControllers
+	else if([url.path isEqualToString:@"/bouquets"])
+	{
+		tabBarController.selectedIndex = 0;
+	}
 	return YES;
 }
 
