@@ -83,7 +83,7 @@ static RemoteConnectorObject *singleton;
 
 	if(_sharedRemoteConnector)
 	{
-		[_sharedRemoteConnector release];
+		[_sharedRemoteConnector autorelease]; // delay release
 		_sharedRemoteConnector = nil;
 	}
 
@@ -411,7 +411,7 @@ static RemoteConnectorObject *singleton;
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
 {
-	return _sharedRemoteConnector;
+	return [[_sharedRemoteConnector retain] autorelease];
 }
 
 + (NSURLCredential *)getCredential
