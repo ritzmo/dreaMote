@@ -452,6 +452,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 
+#if IS_DEBUG()
+	NSLog(@"[ConfigViewController setEditing::] about to call [super setEditing::]");
+	// NOTE: I assume the problem is that we are already (or currently being) deallocated, what to do?
+#endif
 	[super setEditing: editing animated: animated];
 
 	/*_makeDefaultButton.enabled = editing;
