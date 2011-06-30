@@ -359,7 +359,21 @@
 
 		// when in split view go back to service list, else push it on the stack
 		if(!_isSplit)
+		{
+			// XXX: wtf?
+			if([self.navigationController.viewControllers containsObject:_serviceListController])
+			{
+#if IS_DEBUG()
+				NSMutableString* result = [[NSMutableString alloc] init];
+				for(NSObject* obj in self.navigationController.viewControllers)
+					[result appendString:[obj description]];
+				[NSException raise:@"ServiceListTwiceInNavigationStack" format:@"_serviceListController was twice in navigation stack: %@", result]
+				[result release]; // never reached, but to keep me from going crazy :)
+#endif
+				[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
+			}
 			[self.navigationController pushViewController: _serviceListController animated:YES];
+		}
 		else
 			[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
 	}
