@@ -240,9 +240,9 @@ enum mediaPlayerTags
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 
-	// XXX: we abuse the shuffle callbacks here...
-	const NSArray *selectedFiles = [_playlist.selectedFiles copy];
+	const NSArray *selectedFiles = [_playlist.selectedFiles copy]; // NOTE: create a copy to prevent mutation during enumeration
 	NSUInteger count = selectedFiles.count;
+	// XXX: we abuse the shuffle callbacks here...
 	[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
 	for(NSObject<FileProtocol> *file in selectedFiles)
 	{
