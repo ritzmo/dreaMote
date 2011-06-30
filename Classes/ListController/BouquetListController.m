@@ -367,7 +367,7 @@
 				NSMutableString* result = [[NSMutableString alloc] init];
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
-				[NSException raise:@"ServiceListTwiceInNavigationStack" format:@"_serviceListController was twice in navigation stack: %@", result]
+				[NSException raise:@"ServiceListTwiceInNavigationStack" format:@"_serviceListController was twice in navigation stack: %@", result];
 				[result release]; // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
