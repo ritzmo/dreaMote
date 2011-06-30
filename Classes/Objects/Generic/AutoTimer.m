@@ -58,16 +58,24 @@
 		searchType = autotimer.searchType;
 		searchCase = autotimer.searchCase;
 		overrideAlternatives = autotimer.overrideAlternatives;
-		services = [autotimer.services copy];
-		bouquets = [autotimer.bouquets copy];
+		services = [autotimer.services mutableCopy];
+		bouquets = [autotimer.bouquets mutableCopy];
 		tags = [autotimer.tags copy];
 		maxduration = autotimer.maxduration;
 		location = [autotimer.location copy];
 		justplay = autotimer.justplay;
 		before = [autotimer.before copy];
 		after = [autotimer.after copy];
-		avoidDuplicateDescription = autotimer.avoidDuplicateDescription;
-		afterEventAction = autotimer.afterEventAction;
+		avoidDuplicateDescription = [autotimer.avoidDuplicateDescription mutableCopy];
+		afterEventAction = [autotimer.afterEventAction mutableCopy];
+		includeTitle = [autotimer.includeTitle mutableCopy];
+		includeShortdescription = [autotimer.includeShortdescription mutableCopy];
+		includeDescription = [autotimer.includeDescription mutableCopy];
+		includeDayOfWeek = [autotimer.includeDayOfWeek mutableCopy];
+		excludeTitle = [autotimer.excludeTitle mutableCopy];
+		excludeShortdescription = [autotimer.excludeShortdescription mutableCopy];
+		excludeDescription = [autotimer.excludeDescription mutableCopy];
+		excludeDayOfWeek = [autotimer.excludeDayOfWeek mutableCopy];
 	}
 	return self;
 }
