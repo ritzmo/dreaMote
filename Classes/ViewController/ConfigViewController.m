@@ -117,7 +117,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default title of ConfigViewController");
-		_connectorCell = nil;
 		_mustSave = NO;
 	}
 	return self;
@@ -433,8 +432,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		_nowNextSwitch.enabled = NO;
 		_sslSwitch.enabled = NO;
 
-		if(_connectorCell)
-			_connectorCell.accessoryType = UITableViewCellAccessoryNone;
+		UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+		if(connectorCell)
+			connectorCell.accessoryType = UITableViewCellAccessoryNone;
 	}
 	else
 	{
@@ -447,8 +447,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 		[cancelButtonItem release];
 
-		if(_connectorCell)
-			_connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+		if(connectorCell)
+			connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 
 	[super setEditing: editing animated: animated];
@@ -665,16 +666,17 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		((UITableView *)self.view).userInteractionEnabled = YES;
 	}
 
+	UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 	if(_connector == kEnigma1Connector)
-		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"Enigma", @"");
+		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Enigma", @"");
 	else if(_connector == kEnigma2Connector)
-		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"Enigma 2", @"");
+		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Enigma 2", @"");
 	else if(_connector == kNeutrinoConnector)
-		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"Neutrino", @"");
+		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Neutrino", @"");
 	else if(_connector == kSVDRPConnector)
-		TABLEVIEWCELL_TEXT(_connectorCell) = NSLocalizedString(@"SVDRP", @"");
+		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"SVDRP", @"");
 	else
-		TABLEVIEWCELL_TEXT(_connectorCell) = @"???";
+		TABLEVIEWCELL_TEXT(connectorCell) = @"???";
 
 	// update port placeholder
 	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
@@ -843,8 +845,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 					else
 						TABLEVIEWCELL_TEXT(sourceCell) = @"???";
 					TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
-					
-					_connectorCell = sourceCell;
 					break;
 				case 1:
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];

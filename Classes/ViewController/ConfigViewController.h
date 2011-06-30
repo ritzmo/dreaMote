@@ -37,7 +37,6 @@
 	CellTextField *_usernameCell; /*!< @brief Username Cell. */
 	UITextField *_passwordTextField; /*!< @brief Password Text Field. */
 	CellTextField *_passwordCell; /*!< @brief Password Cell. */
-	UITableViewCell *_connectorCell; /*!< @brief Connector Cell. */
 	NSMutableDictionary *_connection; /*!< @brief Connection Dictionary. */
 	NSInteger _connectionIndex; /*!< @brief Index in List of known Connections. */
 	UIButton *_makeDefaultButton; /*!< @brief "Make Default" Button. */
