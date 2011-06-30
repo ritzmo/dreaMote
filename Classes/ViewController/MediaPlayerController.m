@@ -8,6 +8,8 @@
 
 #import "MediaPlayerController.h"
 
+#import "AppDelegate.h"
+
 #import "Constants.h"
 #import "RecursiveFileAdder.h"
 #import "RemoteConnectorObject.h"
@@ -557,10 +559,35 @@ enum mediaPlayerTags
 														  otherButtonTitles:NSLocalizedString(@"Yes", ""), nil];
 	actionSheet.tag = TAG_EXIT;
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
-		[actionSheet showInView:self.view];
+	UITabBarController *tabBarController = self.tabBarController;
+	UIView *view = nil;
+	if(tabBarController == nil) // XXX: bug in MGSplitViewController?
+	{
+		if(self.view)
+		{
+#if IS_DEBUG()
+			NSLog(@"no tabBarController but self.view");
+#endif
+			view = self.view;
+		}
+		else
+		{
+			tabBarController = APP_DELEGATE.tabBarController;
+		}
+	}
+
+	if(view)
+		[actionSheet showInView:view];
+	else if(tabBarController)
+		[actionSheet showFromTabBar:tabBarController.tabBar];
 	else
-		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+	{
+#if IS_DEBUG()
+		[NSException raise:@"NeitherTabBarControllerNorView" format:@"unable to determine view to show actionSheet from."];
+#else
+		// ignore
+#endif
+	}
 	[actionSheet release];
 
 	[super viewWillDisappear:animated];
