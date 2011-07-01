@@ -12,6 +12,8 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "UIDevice+SystemVersion.h"
+
 @interface ServiceZapListController()
 /*!
  @brief Hide action sheet if visible.
@@ -59,7 +61,10 @@
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 	[zlc.actionSheet showFromTabBar:tabBar];
 
-	[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	if([UIDevice runsIos4OrBetter])
+	{
+		[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	}
 
 	return [zlc autorelease];
 }
