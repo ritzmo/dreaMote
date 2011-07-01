@@ -67,7 +67,7 @@
 		before = [autotimer.before copy];
 		after = [autotimer.after copy];
 		avoidDuplicateDescription = autotimer.avoidDuplicateDescription;
-		afterEventAction = afterEventAction;
+		afterEventAction = autotimer.afterEventAction;
 		includeTitle = [autotimer.includeTitle mutableCopy];
 		includeShortdescription = [autotimer.includeShortdescription mutableCopy];
 		includeDescription = [autotimer.includeDescription mutableCopy];
