@@ -416,10 +416,19 @@ static RemoteConnectorObject *singleton;
 
 + (NSURLCredential *)getCredential
 {
-	NSDictionary *connection = [RemoteConnectorObject singleton].connection;
-	return [NSURLCredential credentialWithUser:[connection objectForKey:kUsername]
-									  password:[connection objectForKey:kPassword]
-								   persistence:NSURLCredentialPersistenceNone];
+	NSDictionary *connection = [[RemoteConnectorObject singleton].connection retain]; // retain to prevent dictionary from being freed by another thread
+	NSString *username = [connection objectForKey:kUsername];
+	NSString *password = [connection objectForKey:kPassword];
+	NSURLCredential *retVal = nil;
+	if([username length])
+	{
+		// make sure username & password exist for a little while
+		retVal = [NSURLCredential credentialWithUser:[[username retain] autorelease]
+											password:[[password retain] autorelease]
+										 persistence:NSURLCredentialPersistenceForSession];
+	}
+	[connection release]; // decrease refcount again
+	return retVal;
 }
 
 @end

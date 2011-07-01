@@ -188,18 +188,22 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		// TODO: ask user to accept certificate
 		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
 			 forAuthenticationChallenge:challenge];
+		return;
 	}
 	else if([challenge previousFailureCount] < 2) // ssl might have failed already
 	{
-		[[challenge sender] useCredential:[RemoteConnectorObject getCredential] forAuthenticationChallenge:challenge];
+		NSURLCredential *creds = [RemoteConnectorObject getCredential];
+		if(creds)
+		{
+			[challenge.sender useCredential:creds forAuthenticationChallenge:challenge];
+			return;
+		}
 	}
-	else
-	{
-		// NOTE: continue just swallows all errors while cancel gives a weird message,
-		// but a weird message is better than no response
-		//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-		[challenge.sender cancelAuthenticationChallenge:challenge];
-	}
+
+	// NOTE: continue just swallows all errors while cancel gives a weird message,
+	// but a weird message is better than no response
+	//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+	[challenge.sender cancelAuthenticationChallenge:challenge];
 }
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
