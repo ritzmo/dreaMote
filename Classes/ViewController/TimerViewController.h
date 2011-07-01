@@ -42,9 +42,7 @@
 	UIBarButtonItem *_popoverButtonItem;
 
 	UITextField *_timerTitle; /*!< @brief Title Field. */
-	CellTextField *_timerTitleCell; /*!< @brief Title Cell. */
 	UITextField *_timerDescription; /*!< @brief Description Field. */
-	CellTextField *_timerDescriptionCell; /*!< @brief Description Cell. */
 	UITableViewCell *_timerBeginCell; /*!< @brief Begin Cell. */
 	UITableViewCell *_timerEndCell; /*!< @brief End Cell. */
 	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */

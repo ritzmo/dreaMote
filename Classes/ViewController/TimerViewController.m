@@ -53,6 +53,8 @@
 @property (nonatomic, readonly) SimpleRepeatedViewController *simpleRepeatedViewController;
 @property (nonatomic, readonly) UIViewController *simpleRepeatedNavigationController;
 
+@property (nonatomic, readonly) CellTextField *timerTitleCell;
+@property (nonatomic, readonly) CellTextField *timerDescriptionCell;
 @end
 
 @implementation TimerViewController
@@ -389,6 +391,18 @@
 	}
 }
 
+- (CellTextField *)timerTitleCell
+{
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	return (CellTextField *)cell;
+}
+
+- (CellTextField *)timerDescriptionCell
+{
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+	return (CellTextField *)cell;
+}
+
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -
@@ -517,8 +531,8 @@
 
 			[super setEditing: NO animated: animated];
 			[self cellShouldBeginEditing: nil];
-			[_timerTitleCell setEditing: NO animated: animated];
-			[_timerDescriptionCell setEditing: NO animated: animated];
+			[self.timerTitleCell setEditing: NO animated: animated];
+			[self.timerDescriptionCell setEditing: NO animated: animated];
 			_timerEnabled.enabled = NO;
 			_timerJustplay.enabled = NO;
 		}
@@ -630,8 +644,8 @@
 	_shouldSave = editing;
 	[super setEditing: editing animated: animated];
 
-	[_timerTitleCell setEditing:editing animated:animated];
-	[_timerDescriptionCell setEditing:editing animated:animated];
+	[self.timerTitleCell setEditing:editing animated:animated];
+	[self.timerDescriptionCell setEditing:editing animated:animated];
 	_timerEnabled.enabled = editing;
 	_timerJustplay.enabled = editing;
 
@@ -1012,11 +1026,9 @@
 	switch (section) {
 		case 0:
 			((CellTextField *)sourceCell).view = _timerTitle;
-			_timerTitleCell = (CellTextField *)sourceCell;
 			break;
 		case 1:
 			((CellTextField *)sourceCell).view = _timerDescription;
-			_timerDescriptionCell = (CellTextField *)sourceCell;
 			break;
 		case 2:
 			switch (indexPath.row) {
@@ -1159,17 +1171,20 @@
 - (BOOL)cellShouldBeginEditing:(EditableTableViewCell *)cell
 {
 	// notify other cells to end editing
-	if (![cell isEqual:_timerTitleCell])
-		[_timerTitleCell stopEditing];
-	if (![cell isEqual:_timerDescriptionCell])
-		[_timerDescriptionCell stopEditing];
+	CellTextField *anotherCell = self.timerTitleCell;
+	if (![cell isEqual:anotherCell])
+		[anotherCell stopEditing];
+
+	cell = self.timerDescriptionCell;
+	if (![cell isEqual:anotherCell])
+		[anotherCell stopEditing];
 
 	return self.editing;
 }
 
 - (void)cellDidEndEditing:(EditableTableViewCell *)cell
 {
-	if ([cell isEqual:_timerTitleCell] || [cell isEqual:_timerDescriptionCell])
+	if ([cell isEqual:self.timerTitleCell] || [cell isEqual:self.timerDescriptionCell])
 	{
 		// Restore the position of the main view if it was animated to make room for the keyboard.
 		if  (self.view.frame.origin.y < 0)
@@ -1207,9 +1222,10 @@
 {
 	// The keyboard will be shown. If the user is editing the description, adjust the display so
 	// that the description field will not be covered by the keyboard.
-	if ((_timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
+	CellTextField *timerDescriptionCell = self.timerDescriptionCell;
+	if ((timerDescriptionCell.isInlineEditing) && self.view.frame.origin.y >= 0)
 		[self setViewMovedUp:YES];
-	else if (!_timerDescriptionCell.isInlineEditing && self.view.frame.origin.y < 0)
+	else if (!timerDescriptionCell.isInlineEditing && self.view.frame.origin.y < 0)
 		[self setViewMovedUp:NO];
 }
 
