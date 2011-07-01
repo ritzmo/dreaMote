@@ -348,15 +348,7 @@
 	[_timerJustplay setOn: newTimer.justplay];
 
 	[(UITableView *)self.view reloadData];
-	NSIndexPath *scrollPath = nil;
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerTitle])
-		scrollPath = [NSIndexPath indexPathForRow:0 inSection:0];
-	else
-		scrollPath = [NSIndexPath indexPathForRow:0 inSection:2];
-	[(UITableView *)self.view
-						scrollToRowAtIndexPath:scrollPath
-						atScrollPosition:UITableViewScrollPositionTop
-						animated:NO];
+	[(UITableView *)self.view scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	
 	// Eventually remove popover
 	if(self.popoverController != nil) {
