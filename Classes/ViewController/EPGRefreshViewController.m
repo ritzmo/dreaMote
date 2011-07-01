@@ -963,7 +963,7 @@ enum generalSectionItems
 
 	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		scrollPosition = UITableViewScrollPositionTop;
-	[(UITableView *)self.view scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
+	[_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
 }
 
 #pragma mark -
