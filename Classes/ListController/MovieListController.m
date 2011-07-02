@@ -77,7 +77,7 @@
 	[_characters release];
 	[_currentKeys release];
 	[_dateFormatter release];
-	[_movieViewController release];
+	self.movieViewController = nil;
 	[_movieXMLDoc release];
 	[_sortButton release];
 #if IS_FULL()
