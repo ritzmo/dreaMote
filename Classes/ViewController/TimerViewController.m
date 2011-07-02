@@ -146,7 +146,11 @@
 	[_delegate release];
 	[_event release];
 
+	_titleCell.delegate = nil;
+	[_titleCell release];
 	[_timerTitle release];
+	_descriptionCell.delegate = nil;
+	[_descriptionCell release];
 	[_timerDescription release];
 	[_timerEnabled release];
 	[_timerJustplay release];
@@ -385,14 +389,12 @@
 
 - (CellTextField *)timerTitleCell
 {
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-	return (CellTextField *)cell;
+	return _titleCell;
 }
 
 - (CellTextField *)timerDescriptionCell
 {
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-	return (CellTextField *)cell;
+	return _descriptionCell;
 }
 
 #pragma mark -
@@ -477,7 +479,14 @@
 	[tableView release];
 
 	_timerTitle = [self newTitleField];
+	_titleCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+	_titleCell.delegate = self;
+	_titleCell.view = _timerTitle;
+
 	_timerDescription = [self newDescriptionField];
+	_descriptionCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+	_descriptionCell.delegate = self;
+	_descriptionCell.view = _timerDescription;
 
 	// Enabled
 	_timerEnabled = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -958,9 +967,10 @@
 
 	switch (section) {
 		case 0:
+			cell = _titleCell;
+			break;
 		case 1:
-			cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
-			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
+			cell = _descriptionCell;
 			break;
 		case 2:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -1017,10 +1027,7 @@
 	// we are creating a new cell, setup its attributes
 	switch (section) {
 		case 0:
-			((CellTextField *)sourceCell).view = _timerTitle;
-			break;
 		case 1:
-			((CellTextField *)sourceCell).view = _timerDescription;
 			break;
 		case 2:
 			switch (indexPath.row) {
@@ -1167,7 +1174,7 @@
 	if (![cell isEqual:anotherCell])
 		[anotherCell stopEditing];
 
-	cell = self.timerDescriptionCell;
+	anotherCell = self.timerDescriptionCell;
 	if (![cell isEqual:anotherCell])
 		[anotherCell stopEditing];
 
