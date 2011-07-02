@@ -231,8 +231,9 @@
 
 		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
-	[actionSheet.delegate release];
+	NSObject *delegate = actionSheet.delegate;
 	actionSheet.delegate = nil;
+	[delegate release];
 }
 
 @end
