@@ -706,6 +706,13 @@
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+#if IS_DEBUG()
+	if(indexPath == nil)
+	{
+		[NSException raise:@"MovieListControllerIndexPathIsNil" format:@"indexPath was nil inside tableView:commitEditingStyle:forRowAtIndexPath:"];
+	}
+#endif
+
 	// NOTE: search able will never be editing, so no special handling
 	NSObject<MovieProtocol> *movie = nil;
 	if(_sortTitle)
