@@ -49,8 +49,13 @@
 #define kServiceCellHeight		38
 #define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
-#define kMultiEPGCellHeight		((IS_IPAD()) ? 60 : 42)
 #define kAutoTimerCellHeight	38
+
+// MultiEPG heights
+#define kMultiEPGHeaderHeightIpad	(40) // Size of Header of iPad (else cell height)
+#define kMultiEPGCellHeight			(25) // iPhone/iPod Touch without Picon
+#define kMultiEPGCellHeightIpad		(60) // iPad
+#define kMultiEPGCellHeightPicon	(42) // iPhone/iPod Touch with Picon
 
 // table view cell content offsets
 #define kCellLeftOffset			8

@@ -73,8 +73,7 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = kMultiEPGCellHeight;
-	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
+	const CGFloat headerHeight = (IS_IPAD()) ? kMultiEPGHeaderHeightIpad : kMultiEPGCellHeight;
 
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.autoresizesSubviews = YES;
@@ -531,6 +530,21 @@
 #pragma mark -
 #pragma mark UITableView
 #pragma mark -
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(IS_IPAD())
+	{
+		return kMultiEPGCellHeightIpad;
+	}
+	else
+	{
+		NSObject<ServiceProtocol> *service = [_services objectAtIndex:indexPath.row];
+		if(service.picon)
+			return kMultiEPGCellHeightPicon;
+	}
+	return kMultiEPGCellHeight;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
