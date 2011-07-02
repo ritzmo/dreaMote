@@ -50,6 +50,11 @@
 
 - (void)dealloc
 {
+	// remove known references to us
+	self.delegate = nil;
+	self.dataSource = nil;
+	_refreshHeaderView.delegate = nil;
+
 	[_path release];
 	[_files release];
 	[_fileDelegate release];
