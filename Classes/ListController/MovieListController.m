@@ -175,12 +175,14 @@
 	@synchronized(self)
 	{
 		if(new == _movieViewController) return;
+		[new retain];
 
-		if(_movieViewController.movieList == self)
+		if(_movieViewController && _movieViewController.movieList == self)
 			_movieViewController.movieList = nil;
 		[_movieViewController release];
-		_movieViewController = [new retain];
-		_movieViewController.movieList = self;
+		_movieViewController = new;
+		if(_movieViewController)
+			_movieViewController.movieList = self;
 	}
 }
 
