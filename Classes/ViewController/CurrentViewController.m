@@ -139,6 +139,9 @@
 		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
 	}
 	@catch (NSException * e) {
+#if IS_DEBUG()
+		[e raise];
+#endif
 		_currentXMLDoc = nil;
 	}
 	[pool release];
