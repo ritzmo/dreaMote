@@ -151,15 +151,16 @@
 - (BOOL)selectPlayingByTitle:(NSString *)filename
 {
 	NSUInteger idx = 0;
+	NSUInteger playing = _playing;
 	for(NSObject<FileProtocol> *file in _files)
 	{
 		if([file.title isEqualToString: filename])
 		{
-			if(_playing != idx)
+			if(playing != idx)
 			{
 				NSMutableArray *idxPaths = [NSMutableArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]];
-				if(_playing != NSNotFound)
-					[idxPaths addObject:[NSIndexPath indexPathForRow:_playing inSection: 0]];
+				if(playing != NSNotFound)
+					[idxPaths addObject:[NSIndexPath indexPathForRow:playing inSection: 0]];
 
 				_playing = idx;
 				[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
@@ -169,11 +170,10 @@
 		}
 		++idx;
 	}
-	if(_playing != NSNotFound)
+	if(playing != NSNotFound)
 	{
-		idx = _playing;
 		_playing = NSNotFound;
-		[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+		[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:playing inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		return YES;
 	}
 	return NO;
