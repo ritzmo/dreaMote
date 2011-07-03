@@ -146,6 +146,7 @@
 /* start recording */
 - (void)record:(id)sender
 {
+	((UIButton *)sender).enabled = NO;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated: YES scrollPosition: UITableViewScrollPositionNone];
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] instantRecord];
@@ -161,22 +162,26 @@
 		[alert show];
 		[alert release];
 	}
+	((UIButton *)sender).enabled = YES;
 }
 
 // TODO: we might want to merge these by using a custom button... targeting the remote connector directly does not work!
 /* go to standby */
 - (void)standby:(id)sender
 {
+	((UIButton *)sender).enabled = NO;
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 	[[RemoteConnectorObject sharedRemoteConnector] standby];
 	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	((UIButton *)sender).enabled = YES;
 }
 
 /* reboot */
 - (void)reboot:(id)sender
 {
+	((UIButton *)sender).enabled = NO;
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 1 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -190,11 +195,13 @@
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
+	((UIButton *)sender).enabled = YES;
 }
 
 /* restart gui */
 - (void)restart:(id)sender
 {
+	((UIButton *)sender).enabled = NO;
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
@@ -208,11 +215,13 @@
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
+	((UIButton *)sender).enabled = YES;
 }
 
 /* shutdown */
 -(void)shutdown:(id)sender
 {
+	((UIButton *)sender).enabled = NO;
 	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
 	const NSInteger row = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart] ? 3: 2;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: row inSection: section];
@@ -227,6 +236,7 @@
 	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 	[actionSheet showFromTabBar:self.tabBarController.tabBar];
 	[actionSheet release];
+	((UIButton *)sender).enabled = YES;
 }
 
 /* toggle muted state */
@@ -275,7 +285,9 @@
 	if([cell respondsToSelector: @selector(view)]
 	   && [((DisplayCell *)cell).view respondsToSelector:@selector(sendActionsForControlEvents:)])
 	{
-		[(UIButton *)((DisplayCell *)cell).view sendActionsForControlEvents: UIControlEventTouchUpInside];
+		UIButton *button = (UIButton *)((DisplayCell *)cell).view;
+		if(button.enabled)
+			[button sendActionsForControlEvents: UIControlEventTouchUpInside];
 	}
 	return nil;
 }
