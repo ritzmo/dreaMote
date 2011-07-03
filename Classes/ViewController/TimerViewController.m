@@ -385,6 +385,13 @@
 #endif
 		[self setEditing:YES animated:animated];
 	}
+	else
+	{
+#if IS_DEBUG()
+		NSLog(@"[TimerViewController setCreatingNewTimer:] no new timer, disabled timer or anything but waiting. doing another table reload.");
+#endif
+		[(UITableView *)self.view reloadData];
+	}
 }
 
 - (CellTextField *)timerTitleCell
