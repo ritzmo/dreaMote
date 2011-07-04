@@ -140,6 +140,20 @@
 	[self setEditing: YES animated: NO];
 }
 
+- (void)viewDidUnload
+{
+	_messageCell = nil;
+	_captionCell = nil;
+	_timeoutCell = nil;
+	_typeCell = nil;
+	[_messageTextField release];
+	_messageTextField = nil;
+	[_captionTextField release];
+	_captionTextField = nil;
+	[_timeoutTextField release];
+	_timeoutTextField = nil;
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
