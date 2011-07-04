@@ -640,6 +640,12 @@
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(!_supportsNowNext) return;
+#if IS_DEBUG()
+	NSParameterAssert([_mainList count] > indexPath.row);
+#else
+	if(indexPath.row > [_mainList count])
+		return;
+#endif
 	NSObject<ServiceProtocol> *service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;;
 
 	// Check for invalid service
@@ -661,7 +667,7 @@
 		NSObject<EventProtocol> *evt = nil;
 		if(tableView.lastSwipe & swipeTypeLeft)
 			evt = (NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row];
-		else
+		else if([_subList count] > indexPath.row) // check if we have "next" event, if not the validity check will fail (so ignore the else case)
 			evt = (NSObject<EventProtocol > *)[_subList objectAtIndex: indexPath.row];
 
 		// FIXME: for convenience reasons a valid service marks an event valid, also if it may
