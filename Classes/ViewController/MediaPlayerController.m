@@ -94,6 +94,8 @@ enum mediaPlayerTags
 	[_shuffleButton release];
 	[_timer release];
 	[_currentXMLDoc release];
+
+	progressHUD.delegate = nil;
 	[progressHUD release];
 
 	[super dealloc];

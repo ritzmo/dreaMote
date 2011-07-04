@@ -88,6 +88,8 @@ enum sectionIds
 	[_connections release];
 	[_vibrateInRC release];
 	[_simpleRemote release];
+
+	progressHUD.delegate = nil;
 	[progressHUD release];
 
 	[super dealloc];

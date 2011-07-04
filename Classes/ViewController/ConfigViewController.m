@@ -181,6 +181,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	[_nowNextSwitch release];
 	[_sslSwitch release];
 
+	progressHUD.delegate = nil;
+	[progressHUD release];
+
 	[super dealloc];
 }
 

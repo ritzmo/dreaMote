@@ -63,6 +63,8 @@
 	[_events release];
 	[_services release];
 	[_serviceXMLDocument release];
+	progressHUD.delegate = nil;
+	[progressHUD release];
 
 	[super dealloc];
 }
