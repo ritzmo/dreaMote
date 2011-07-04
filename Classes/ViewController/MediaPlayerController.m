@@ -688,6 +688,18 @@ enum mediaPlayerTags
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidUnload
+{
+	[_fileList release];
+	_fileList = nil;
+	[_playlist release];
+	_playlist = nil;
+	[_controls release];
+	_controls = nil;
+
+	[super viewDidUnload];
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing:editing animated:animated];

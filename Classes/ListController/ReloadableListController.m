@@ -62,6 +62,18 @@
 	[_tableView addSubview:_refreshHeaderView];
 }
 
+- (void)viewDidUnload
+{
+	_refreshHeaderView.delegate = nil;
+	[_refreshHeaderView release];
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
+	[_tableView release];
+	_tableView = nil;
+
+	[super viewDidUnload];
+}
+
 - (void)loadGroupedTableView
 {
 	// create table view

@@ -514,6 +514,34 @@
 	[self setEditing: _creatingNewTimer];
 }
 
+- (void)viewDidUnload
+{
+	_titleCell.delegate = nil;
+	[_titleCell release];
+	_titleCell = nil;
+	[_timerTitle release];
+	_timerTitle = nil;
+	_descriptionCell.delegate = nil;
+	[_descriptionCell release];
+	_descriptionCell = nil;
+	[_timerDescription release];
+	_timerDescription = nil;
+	[_timerEnabled release];
+	_timerEnabled = nil;
+	[_timerJustplay release];
+	_timerJustplay = nil;
+	[_cancelButtonItem release];
+	_cancelButtonItem = nil;
+
+	_timerBeginCell = nil;
+	_timerEndCell = nil;
+	_afterEventCell = nil;
+	_repeatedCell = nil;
+	_locationCell = nil;
+
+	[super viewDidUnload];
+}
+
 #pragma mark -
 #pragma mark UIViewController
 #pragma mark -

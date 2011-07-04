@@ -172,6 +172,18 @@
 	}
 }
 
+- (void)viewDidUnload
+{
+	[_aboutText release];
+	_aboutText = nil;
+	[_doneButton release];
+	_doneButton = nil;
+	[_mailButton release];
+	_mailButton = nil;
+
+	[super viewDidUnload];
+}
+
 /* "done" button pressed */
 - (void)buttonPressed: (id)sender
 {

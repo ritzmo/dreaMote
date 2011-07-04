@@ -338,6 +338,34 @@ enum generalSectionItems
 	[self setEditing:YES animated:YES];
 }
 
+- (void)viewDidUnload
+{
+	[_cancelButtonItem release];
+	_cancelButtonItem = nil;
+	[_interval release];
+	_interval = nil;
+	[_intervalCell release]; // depends on _interval
+	_intervalCell = nil;
+	[_delay release];
+	_delay = nil;
+	[_delayCell release]; // depends on _delay
+	_delayCell = nil;
+	[_enabled release];
+	_enabled = nil;
+	[_force release];
+	_force = nil;
+	[_wakeup release];
+	_wakeup = nil;
+	[_shutdown release];
+	_shutdown = nil;
+	[_inherit release];
+	_inherit = nil;
+	[_parse release];
+	_parse = nil;
+
+	[super viewDidUnload];
+}
+
 #pragma mark -
 #pragma mark UIViewController
 #pragma mark -

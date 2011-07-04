@@ -132,6 +132,16 @@
 	}
 }
 
+- (void)viewDidUnload
+{
+	[_repcountField release];
+	_repcountField = nil;
+	[_repcountCell release]; // references _repcountField
+	_repcountCell = nil;
+
+	[super viewDidUnload];
+}
+
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;

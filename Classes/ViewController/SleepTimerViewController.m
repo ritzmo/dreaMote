@@ -135,6 +135,22 @@ enum generalSectionItems
 	[self setEditing:YES animated:YES];
 }
 
+- (void)viewDidUnload
+{
+	[_cancelButtonItem release];
+	_cancelButtonItem = nil;
+	[_time release];
+	_time = nil;
+	[_timeCell release]; // references _time
+	_timeCell = nil;
+	[_enabled release];
+	_enabled = nil;
+	[_shutdown release];
+	_shutdown = nil;
+
+	[super viewDidUnload];
+}
+
 #pragma mark -
 #pragma mark UIViewController
 #pragma mark -

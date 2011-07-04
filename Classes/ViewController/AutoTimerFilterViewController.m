@@ -157,6 +157,16 @@
 	filterTextfield.placeholder = NSLocalizedStringFromTable(@"<filter text>", @"AutoTimer", @"Placeholder of Textfield in Filter Editor");
 }
 
+- (void)viewDidUnload
+{
+	[_cancelButtonItem release];
+	_cancelButtonItem = nil;
+	[filterTextfield release];
+	filterTextfield = nil;
+
+	[super viewDidUnload];
+}
+
 /* cancel */
 - (void)cancelEdit:(id)sender
 {

@@ -282,6 +282,20 @@
 	[_scrollView addSubview: _imageView];
 }
 
+- (void)viewDidUnload
+{
+	[_screenView release];
+	_screenView = nil;
+	[_scrollView release];
+	_scrollView = nil;
+	[_toolbar release];
+	_toolbar = nil;
+	[_screenshotButton release];
+	_screenshotButton = nil;
+
+	[super viewDidUnload];
+}
+
 - (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
 {
 	RCButton *uiButton = [[RCButton alloc] initWithFrame: frame];

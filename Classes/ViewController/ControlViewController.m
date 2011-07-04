@@ -133,6 +133,16 @@
 	_switchControl.backgroundColor = [UIColor clearColor];
 }
 
+- (void)viewDidUnload
+{
+	[_slider release];
+	_slider = nil;
+	[_switchControl release];
+	_switchControl = nil;
+
+	[super viewDidUnload];
+}
+
 - (UIButton *)createButton:(SEL)selector withImage:(NSString *)imageName
 {
 	UIButton *button = [[UIButton alloc] initWithFrame: CGRectMake(0, 0, kUIRowHeight, kUIRowHeight)];

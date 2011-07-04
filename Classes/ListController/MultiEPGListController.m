@@ -89,6 +89,14 @@
 	[self configureToolbar];
 }
 
+- (void)viewDidUnload
+{
+	_tableView.tableHeaderView = nil;
+	[_headerView release];
+	_headerView = nil;
+
+	[super viewDidUnload];
+}
 
 - (void)emptyData
 {

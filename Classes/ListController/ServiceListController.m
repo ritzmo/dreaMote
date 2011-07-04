@@ -308,6 +308,15 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 }
 
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_radioButton release];
+	_radioButton = nil;
+
+	[super viewDidUnload];
+}
+
 /* cancel in delegate mode */
 - (void)doneAction:(id)sender
 {

@@ -92,6 +92,16 @@
 	_fileList.fileDelegate = self;
 }
 
+- (void)viewDidUnload
+{
+	[_tableView release];
+	_tableView = nil;
+	//[_fileList release]; // done in super
+	//_fileList = nil;
+
+	[super viewDidUnload];
+}
+
 /* new track started playing */
 - (void)newTrackPlaying
 {

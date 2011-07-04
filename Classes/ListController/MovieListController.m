@@ -410,6 +410,29 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 }
 
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_characters removeAllObjects];
+	[_movies removeAllObjects];
+	[_currentKeys release];
+	_currentKeys = nil;
+	[_sortButton release];
+	_sortButton = nil;
+#if IS_FULL()
+	[_filteredMovies removeAllObjects];
+	_tableView.tableHeaderView = nil; // references _searchBar
+	[_searchBar release];
+	_searchBar = nil;
+	_searchDisplay.delegate = nil;
+	_searchDisplay.searchResultsDataSource = nil;
+	_searchDisplay.searchResultsDelegate = nil;
+	[_searchDisplay release];
+#endif
+
+	[super viewDidUnload];
+}
+
 /* fetch movie list */
 - (void)fetchData
 {

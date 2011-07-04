@@ -604,6 +604,34 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	[self setEditing: _creatingNewTimer];
 }
 
+- (void)viewDidUnload
+{
+	[_titleField release];
+	_titleField = nil;
+	[_matchField release];
+	_matchField = nil;
+	[_maxdurationField release];
+	_maxdurationField = nil;
+	[_timerEnabled release];
+	_timerEnabled = nil;
+	[_exactSearch release];
+	_exactSearch = nil;
+	[_sensitiveSearch release];
+	_sensitiveSearch = nil;
+	[_overrideAlternatives release];
+	_overrideAlternatives = nil;
+	[_timeframeSwitch release];
+	_timeframeSwitch = nil;
+	[_timerJustplay release];
+	_timerJustplay = nil;
+	[_timespanSwitch release];
+	_timespanSwitch = nil;
+	[_maxdurationSwitch release];
+	_maxdurationSwitch = nil;
+
+	[super viewDidUnload];
+}
+
 #pragma mark -
 #pragma mark UIViewController
 #pragma mark -

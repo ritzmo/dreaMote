@@ -86,6 +86,18 @@
 	[rcView addSubview: _swipeArea];
 }
 
+- (void)viewDidUnload
+{
+	[_lameButton release];
+	_lameButton = nil;
+	[_menuButton release];
+	_menuButton = nil;
+	[_swipeArea release];
+	_swipeArea = nil;
+
+	[super viewDidUnload];
+}
+
 #pragma mark -
 #pragma mark	Touch handling
 #pragma mark -

@@ -181,6 +181,22 @@
 	_berCell = [sourceCell retain];
 }
 
+- (void)viewDidUnload
+{
+	[_snr release];
+	_snr = nil;
+	[_agc release];
+	_agc = nil;
+	[_interval release];
+	_interval = nil;
+	[_snrdBCell release];
+	_snrdBCell = nil;
+	[_berCell release];
+	_berCell = nil;
+
+	[super viewDidUnload];
+}
+
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;

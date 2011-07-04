@@ -119,6 +119,16 @@
 #endif
 }
 
+- (void)viewDidUnload
+{
+	[_searchBar release];
+	_searchBar = nil;
+	[_tableView release];
+	_tableView = nil;
+
+	[super viewDidUnload];
+}
+
 - (IBAction)showHistory:(id)sender
 {
 	if(IS_IPAD())

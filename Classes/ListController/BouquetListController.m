@@ -173,6 +173,15 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRadio:) name:kReconnectNotification object:nil];
 }
 
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_radioButton release];
+	_radioButton = nil;
+
+	[super viewDidUnload];
+}
+
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {

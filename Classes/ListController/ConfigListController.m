@@ -130,6 +130,16 @@ enum sectionIds
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidUnload
+{
+	[_vibrateInRC release];
+	_vibrateInRC = nil;
+	[_simpleRemote release];
+	_simpleRemote = nil;
+
+	[super viewDidUnload];
+}
+
 /* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {

@@ -151,6 +151,16 @@
 	[self.view addSubview: _label];
 }
 
+- (void)viewDidUnload
+{
+	[_datePickerView release];
+	_datePickerView = nil;
+	[_label release];
+	_label = nil;
+
+	[super viewDidUnload];
+}
+
 /* rotate with device on ipad, otherwise to portrait */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

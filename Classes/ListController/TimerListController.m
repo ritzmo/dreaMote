@@ -141,6 +141,15 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelConnection:) name:kReconnectNotification object:nil];
 }
 
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_cleanupButton release];
+	_cleanupButton = nil;
+
+	[super viewDidUnload];
+}
+
 - (void)setWillReappear:(BOOL)new
 {
 	// allow to skip refresh only if there is any data

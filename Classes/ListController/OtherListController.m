@@ -61,6 +61,7 @@
 
 - (void)dealloc
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[myTableView release];
 	[menuList release];
 	[_aboutDreamoteViewController release];
@@ -75,7 +76,6 @@
 	[_recordDictionary release];
 	[_signalDictionary release];
 	[_sleeptimerDictionary release];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	[super dealloc];
 }
@@ -223,6 +223,37 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
+}
+
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.myTableView = nil;
+	[_aboutDreamoteViewController release];
+	_aboutDreamoteViewController = nil;
+#if IS_FULL()
+	[_autotimerDictionary release];
+	_autotimerDictionary = nil;
+#endif
+	[_configListController release];
+	_configListController = nil;
+	[_epgrefreshDictionary release];
+	_epgrefreshDictionary = nil;
+	[_eventSearchDictionary release];
+	_eventSearchDictionary = nil;
+	[_mediaPlayerDictionary release];
+	_mediaPlayerDictionary = nil;
+	[_locationsDictionary release];
+	_locationsDictionary = nil,
+	[_recordDictionary release];
+	_recordDictionary = nil;
+	[_signalDictionary release];
+	_signalDictionary = nil;
+	[_sleeptimerDictionary release];
+	_sleeptimerDictionary = nil;
+	[menuList removeAllObjects];
+
+	[super viewDidUnload];
 }
 
 - (void)aboutDreamoteAction: (id)sender
