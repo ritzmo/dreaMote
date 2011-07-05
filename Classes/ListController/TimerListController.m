@@ -411,7 +411,21 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	// when in split view go back to timer view, else push it on the stack
 	if(!_isSplit)
-		[self.navigationController pushViewController: _timerViewController animated:YES];
+	{
+		// XXX: wtf?
+		if([self.navigationController.viewControllers containsObject:_timerViewController])
+		{
+#if IS_DEBUG()
+			NSMutableString* result = [[NSMutableString alloc] init];
+			for(NSObject* obj in self.navigationController.viewControllers)
+				[result appendString:[obj description]];
+			[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
+			[result release]; // never reached, but to keep me from going crazy :)
+#endif
+			[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
+		}
+		[self.navigationController pushViewController:_timerViewController animated:YES];
+	}
 	else
 		[_timerViewController.navigationController popToRootViewControllerAnimated: YES];
 
@@ -538,7 +552,21 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 		// when in split view go back to timer view, else push it on the stack
 		if(!_isSplit)
-			[self.navigationController pushViewController: _timerViewController animated:YES];
+		{
+			// XXX: wtf?
+			if([self.navigationController.viewControllers containsObject:_timerViewController])
+			{
+#if IS_DEBUG()
+				NSMutableString* result = [[NSMutableString alloc] init];
+				for(NSObject* obj in self.navigationController.viewControllers)
+					[result appendString:[obj description]];
+				[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
+				[result release]; // never reached, but to keep me from going crazy :)
+#endif
+				[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
+			}
+			[self.navigationController pushViewController:_timerViewController animated:YES];
+		}
 		else
 		{
 			[_timerViewController.navigationController popToRootViewControllerAnimated: YES];
