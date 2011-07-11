@@ -120,7 +120,9 @@ static const char *basename(const char *path)
 /* finished launching */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if !IS_DEBUG()
 	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
+#endif
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
