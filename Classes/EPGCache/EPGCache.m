@@ -244,9 +244,17 @@ static EPGCache *_sharedInstance = nil;
 		if(sqlite3_step(compiledStatement) != SQLITE_OK)
 		{
 #if IS_DEBUG()
-			sqlite3_finalize(compiledStatement);
-			compiledStatement = NULL;
-			[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", service.sname, service.sref, sqlite3_errmsg(database), sqlite3_errcode(database), sqlite3_extended_errcode(database)];
+			const int errcode = sqlite3_errcode(database);
+			if(errcode == SQLITE_NOMEM)
+			{
+				NSLog(@"sqlite3 ran out of memory while deleting past events, ignoring");
+			}
+			else
+			{
+				sqlite3_finalize(compiledStatement);
+				compiledStatement = NULL;
+				[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", service.sname, service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
+			}
 #else
 			// ignore
 #endif
@@ -331,11 +339,19 @@ static EPGCache *_sharedInstance = nil;
 				if(sqlite3_step(compiledStatement) != SQLITE_OK)
 				{
 #if IS_DEBUG()
-					sqlite3_finalize(insert_stmt);
-					sqlite3_close(database);
-					insert_stmt = NULL;
-					database = NULL;
-					[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", _service.sname, _service.sref, sqlite3_errmsg(database), sqlite3_errcode(database), sqlite3_extended_errcode(database)];
+					const int errcode = sqlite3_errcode(database);
+					if(errcode == SQLITE_NOMEM)
+					{
+						NSLog(@"sqlite3 ran out of memory while deleting past events, ignoring");
+					}
+					else
+					{
+						sqlite3_finalize(insert_stmt);
+						sqlite3_close(database);
+						insert_stmt = NULL;
+						database = NULL;
+						[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", _service.sname, _service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
+					}
 #else
 					// ignore
 #endif
