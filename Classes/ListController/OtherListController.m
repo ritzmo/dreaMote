@@ -467,6 +467,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+#if 0
 	SEL callfunc = nil;
 	[[[menuList objectAtIndex: indexPath.row] objectForKey:@"function"] getValue: &callfunc];
 	if(callfunc != nil)
@@ -474,8 +475,20 @@
 		[[RemoteConnectorObject sharedRemoteConnector] performSelector: callfunc withObject: self.navigationController];
 	}
 	else
+#endif
 	{
 		UIViewController *targetViewController = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
+		if([self.navigationController.viewControllers containsObject:targetViewController])
+		{
+#if IS_DEBUG()
+			NSMutableString* result = [[NSMutableString alloc] init];
+			for(NSObject* obj in self.navigationController.viewControllers)
+				[result appendString:[obj description]];
+			[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [targetViewController description], result];
+			[result release]; // never reached, but to keep me from going crazy :)
+#endif
+			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+		}
 		[self.navigationController pushViewController:targetViewController animated:YES];
 	}
 }
