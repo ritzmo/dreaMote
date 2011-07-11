@@ -8,17 +8,64 @@
 
 #import "SwipeTableView.h"
 
+#import "UIDevice+SystemVersion.h"
+#import <objc/runtime.h>
+#import <objc/message.h>
+
 #define SWIPE_MIN_DISPLACEMENT 10.0
 
 @interface SwipeTableView()
 @property (nonatomic, retain) UIEvent *lastEvent;
+- (void)swipeLeftAction:(UISwipeGestureRecognizer *)gesture;
+- (void)swipeRightAction:(UISwipeGestureRecognizer *)gesture;
 @end
+
+static void touchesBegan(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event);
+static void touchesCancelled(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event);
+static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event);
 
 @implementation SwipeTableView
 
 @synthesize lastEvent = _lastEvent;
 @synthesize lastSwipe = _lastSwipe;
 @synthesize lastTouch = _lastTouch;
+
+- (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
+{
+	if((self = [super initWithFrame:frame style:style]))
+	{
+		const BOOL newerThan32 = [UIDevice newerThanIos:3.2f];
+		if(newerThan32)
+		{
+			UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeftAction:)];
+			swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+			[self addGestureRecognizer:swipeGesture];
+			[swipeGesture release];
+
+			swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRightAction:)];
+			swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+			[self addGestureRecognizer:swipeGesture];
+			[swipeGesture release];
+		}
+		else
+		{
+			static BOOL initialized = NO;
+
+			// use old manual detection on iOS older than 3.2 (without gesture recognizer)
+			if(!initialized)
+			{
+				// using the meta class does not work, even though it gets resolved to SwipeTableView?!
+				id selfMetaClass = /*objc_getMetaClass(class_getName*/(([self class]));
+				class_addMethod(selfMetaClass, @selector(touchesBegan:withEvent:), (IMP)touchesBegan, "v@:@@");
+				class_addMethod(selfMetaClass, @selector(touchesCancelled:withEvent:), (IMP)touchesCancelled, "v@:@@");
+				class_addMethod(selfMetaClass, @selector(touchesEnded:withEvent:), (IMP)touchesEnded, "v@:@@");
+			}
+			initialized = YES;
+		}
+	}
+
+	return self;
+}
 
 - (void)dealloc
 {
@@ -27,27 +74,71 @@
 	[super dealloc];
 }
 
+#pragma mark - iOS 3.2+
+
+- (void)swipeAction:(UISwipeGestureRecognizer *)gesture
+{
+	const CGPoint location = [gesture locationOfTouch:0 inView:self];
+	self.lastTouch = location;
+
+	if([self.delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
+	{
+		NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
+		if(indexPath)
+		{
+			[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
+		}
+	}
+}
+
+- (void)swipeLeftAction:(UISwipeGestureRecognizer *)gesture
+{
+	_lastSwipe = oneFinger;
+	_lastSwipe |= swipeTypeLeft;
+	[self swipeAction:gesture];
+}
+
+- (void)swipeRightAction:(UISwipeGestureRecognizer *)gesture
+{
+	_lastSwipe = oneFinger;
+	_lastSwipe |= swipeTypeRight;
+	[self swipeAction:gesture];
+}
+
+#pragma mark - iOS 3.1 or older
+
 /* started touch */
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+static void touchesBegan(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event)
 {
 	const UITouch *touch = [[event allTouches] anyObject];
-	_lastTouch = [touch locationInView: self];
-	_lastSwipe = swipeTypeNone;
+	self.lastTouch = [touch locationInView: self];
+	self.lastSwipe = swipeTypeNone;
 	self.lastEvent = nil;
-	[super touchesBegan:touches withEvent:event];
+
+	struct objc_super super;
+	super.super_class = [self superclass];
+	super.receiver = self;
+	objc_msgSendSuper(&super, _cmd, touches, event);
 }
 
 /* cancel touch */
-- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event
+static void touchesCancelled(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event)
 {
-	_lastTouch = CGPointZero;
-	_lastSwipe = swipeTypeNone;
-	[super touchesCancelled:touches withEvent:event];
+	self.lastTouch = CGPointZero;
+	self.lastSwipe = swipeTypeNone;
+
+	struct objc_super super;
+	super.super_class = [self superclass];
+	super.receiver = self;
+	objc_msgSendSuper(&super, _cmd, touches, event);
 }
 
 /* finished touch */
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event)
 {
+	SwipeType _lastSwipe = swipeTypeNone;
+	CGPoint _lastTouch = self.lastTouch;
+
 	const UITouch *touch = [touches anyObject];
 	const CGPoint location = [touch locationInView: self];
 	const CGFloat xDisplacement = location.x - _lastTouch.x;
@@ -56,10 +147,9 @@
 	const CGFloat yDisplacementAbs = (CGFloat)fabs(yDisplacement);
 
 	// we already handled this event
-	if(_lastEvent == event)
+	if(self.lastEvent == event)
 	{
-		[super touchesEnded:touches withEvent:event];
-		return;
+		goto touchesEnded_out;
 	}
 	else self.lastEvent = event;
 
@@ -88,6 +178,7 @@
 				_lastSwipe |= swipeTypeRight;
 			else
 				_lastSwipe |= swipeTypeLeft;
+			self.lastSwipe = _lastSwipe;
 
 			if([self.delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
 			{
@@ -95,8 +186,9 @@
 				if(indexPath)
 				{
 					[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
-					[super touchesEnded:nil withEvent:nil]; // prevent delegate calls
-					return;
+					touches = nil; // prevent delegate calls
+					event = nil;
+					goto touchesEnded_out;
 				}
 			}
 		}
@@ -111,10 +203,29 @@
 				_lastSwipe |= swipeTypeDown;
 			else
 				_lastSwipe |= swipeTypeUp;
+			self.lastSwipe = _lastSwipe;
+
+			if([self.delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
+			{
+				NSIndexPath *indexPath = [self indexPathForRowAtPoint:location];
+				if(indexPath)
+				{
+					[(NSObject<SwipeTableViewDelegate> *)self.delegate tableView:self didSwipeRowAtIndexPath:indexPath];
+					touches = nil; // prevent delegate calls
+					event = nil;
+					goto touchesEnded_out;
+				}
+			}
 		}
 	}
 #endif
-	[super touchesEnded:touches withEvent:event];
+
+touchesEnded_out:
+	self.lastSwipe = _lastSwipe;
+	struct objc_super super;
+	super.super_class = [self superclass];
+	super.receiver = self;
+	objc_msgSendSuper(&super, _cmd, touches, event);
 }
 
 @end
