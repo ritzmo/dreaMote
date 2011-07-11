@@ -110,6 +110,7 @@
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
+	_adBannerView = nil;
 #endif
 
 	[super dealloc];
@@ -145,6 +146,15 @@
 #endif
 }
 
+- (void)viewDidUnload
+{
+#if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
+	[_adBannerView release];
+	_adBannerView = nil;
+#endif
+	[super viewDidUnload];
+}
 
 /* start download of event list */
 - (void)fetchData

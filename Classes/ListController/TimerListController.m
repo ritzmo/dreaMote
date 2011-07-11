@@ -144,6 +144,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+#if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
+	[_adBannerView release];
+	_adBannerView = nil;
+#endif
 	[_cleanupButton release];
 	_cleanupButton = nil;
 

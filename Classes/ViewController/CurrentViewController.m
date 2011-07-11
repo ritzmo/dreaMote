@@ -80,6 +80,7 @@
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
+	_adBannerView = nil;
 #endif
 
 	[super dealloc];
@@ -95,7 +96,16 @@
 #if INCLUDE_FEATURE(Ads)
 	[self createAdBannerView];
 #endif
-	
+}
+
+- (void)viewDidUnload
+{
+#if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
+	[_adBannerView release];
+	_adBannerView = nil;
+#endif
+	[super viewDidUnload];
 }
 
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event
