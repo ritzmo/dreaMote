@@ -55,14 +55,18 @@
 	self.dataSource = nil;
 	_refreshHeaderView.delegate = nil;
 
-	[_path release];
+	self.path = nil;
 	[_files release];
-	[_fileDelegate release];
+	_files = nil;
+	self.fileDelegate = nil;
 	[_fileXMLDoc release];
+	_fileXMLDoc = nil;
 	[_refreshHeaderView release];
+	_refreshHeaderView = nil;
 	[_selected release];
+	_selected = nil;
 
-    [super dealloc];
+	[super dealloc];
 }
 
 - (NSString *)path
