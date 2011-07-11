@@ -30,6 +30,7 @@
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
+	_adBannerView = nil;
 #endif
 	[super dealloc];
 }
@@ -41,6 +42,17 @@
 #if INCLUDE_FEATURE(Ads)
 	[self createAdBannerView];
 #endif
+}
+
+
+- (void)viewDidUnload
+{
+#if INCLUDE_FEATURE(Ads)
+	[_adBannerView setDelegate:nil];
+	[_adBannerView release];
+	_adBannerView = nil;
+#endif
+	[super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated
