@@ -66,6 +66,7 @@
 {
 	_refreshHeaderView.delegate = nil;
 	[_refreshHeaderView release];
+	_refreshHeaderView = nil;
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
 	[_tableView release];
