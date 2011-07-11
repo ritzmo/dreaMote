@@ -241,7 +241,7 @@ static EPGCache *_sharedInstance = nil;
 	if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 	{
 		sqlite3_bind_text(compiledStatement, 1, [copy.sref UTF8String], -1, SQLITE_TRANSIENT);
-		if(sqlite3_step(compiledStatement) != SQLITE_OK)
+		if(sqlite3_step(compiledStatement) != SQLITE_DONE)
 		{
 #if IS_DEBUG()
 			const int errcode = sqlite3_errcode(database);
@@ -336,7 +336,7 @@ static EPGCache *_sharedInstance = nil;
 			if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 			{
 				sqlite3_bind_text(compiledStatement, 1, [service.sref UTF8String], -1, SQLITE_TRANSIENT);
-				if(sqlite3_step(compiledStatement) != SQLITE_OK)
+				if(sqlite3_step(compiledStatement) != SQLITE_DONE)
 				{
 #if IS_DEBUG()
 					const int errcode = sqlite3_errcode(database);
