@@ -217,6 +217,13 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+	id<UIActionSheetDelegate> delegate = nil;
+	@synchronized(self)
+	{
+		delegate = actionSheet.delegate;
+		actionSheet.delegate = nil;
+	}
+
 	if(buttonIndex == actionSheet.cancelButtonIndex)
 	{
 		// do nothing
@@ -234,9 +241,7 @@
 
 		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
-	NSObject *delegate = actionSheet.delegate;
-	actionSheet.delegate = nil;
-	[delegate release];
+	[delegate autorelease];
 }
 
 @end
