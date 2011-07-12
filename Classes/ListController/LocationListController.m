@@ -303,7 +303,21 @@
 
 		// when in split view go back to movie list, else push it on the stack
 		if(!_isSplit)
+		{
+			// XXX: wtf?
+			if([self.navigationController.viewControllers containsObject:_movieListController])
+			{
+#if IS_DEBUG()
+				NSMutableString* result = [[NSMutableString alloc] init];
+				for(NSObject* obj in self.navigationController.viewControllers)
+					[result appendString:[obj description]];
+				[NSException raise:@"MovieListTwiceInNavigationStack" format:@"_movieListController was twice in navigation stack: %@", result];
+				[result release]; // never reached, but to keep me from going crazy :)
+#endif
+				[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+			}
 			[self.navigationController pushViewController: _movieListController animated:YES];
+		}
 		else
 			[_movieListController.navigationController popToRootViewControllerAnimated: YES];
 	}
