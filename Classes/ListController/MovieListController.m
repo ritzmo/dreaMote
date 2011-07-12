@@ -428,6 +428,7 @@
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
 	[_searchDisplay release];
+	_searchDisplay = nil;
 #endif
 
 	[super viewDidUnload];
