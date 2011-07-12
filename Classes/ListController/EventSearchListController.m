@@ -263,6 +263,15 @@
 /* about to select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"EventSearchListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return nil;
+	}
+
 	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 	NSObject<ServiceProtocol> *service = nil;
 

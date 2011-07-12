@@ -270,6 +270,15 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"LocationListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return nil;
+	}
+
 	NSInteger row = indexPath.row;
 	NSObject<LocationProtocol> *location = nil;
 	if(_showDefault) --row;

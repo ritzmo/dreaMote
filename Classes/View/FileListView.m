@@ -316,6 +316,15 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"FileListViewUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return nil;
+	}
+
 	// See if we have a valid file
 	NSObject<FileProtocol> *file = [_files objectAtIndex: indexPath.row];
 	if(!file.valid)

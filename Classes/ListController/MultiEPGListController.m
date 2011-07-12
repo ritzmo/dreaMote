@@ -558,6 +558,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"MultiEPGListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return;
+	}
+
 	const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 	const CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
 	const CGPoint lastTouch = _tableView.lastTouch;

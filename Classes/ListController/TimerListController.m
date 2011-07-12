@@ -389,6 +389,15 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		return nil;
 	}
 
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"TimerListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return nil;
+	}
+
 	NSInteger index = indexPath.row;
 	const NSInteger section = indexPath.section - 1;
 	if(section > 0)

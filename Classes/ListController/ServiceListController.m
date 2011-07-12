@@ -725,6 +725,15 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"ServiceListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return nil;
+	}
+
 	NSObject<ServiceProtocol> *service = nil;
 	if(_supportsNowNext)
 		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
