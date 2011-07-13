@@ -170,11 +170,12 @@
 			}
 		}
 	}
+	const NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	const BOOL isSingleBouquet =
-		[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+		[sharedRemoteConnector hasFeature: kFeaturesSingleBouquet]
 		&& (
 			[RemoteConnectorObject isSingleBouquet] ||
-			![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+			![sharedRemoteConnector hasFeature: kFeaturesBouquets]);
 	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
 
 	// Toggle single bouquet mode
@@ -196,7 +197,7 @@
 	}
 
 	// Add/Remove currently playing
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
+	if([sharedRemoteConnector hasFeature: kFeaturesCurrent])
 	{
 		if(![menuList containsObject: _currentController])
 		{
@@ -210,7 +211,7 @@
 
 	if(IS_IPAD())
 	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
+		if([sharedRemoteConnector hasFeature: kFeaturesMediaPlayer])
 		{
 			if(![menuList containsObject: _mediaplayerController])
 			{
@@ -222,7 +223,7 @@
 			[menuList removeObject: _mediaplayerController];
 		}
 
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+		if([sharedRemoteConnector hasFeature: kFeaturesRecordInfo])
 		{
 			if(![menuList containsObject: _movieController])
 			{
@@ -238,10 +239,10 @@
 	// RC second to last
 	[menuList removeObject: _rcController];
 	[_rcController release];
-	if(useSimpleRemote)
+	if(useSimpleRemote || sharedRemoteConnector == nil)
 		_rcController = [[SimpleRCEmulatorController alloc] init];
 	else
-		_rcController = [[RemoteConnectorObject sharedRemoteConnector] newRCEmulator];
+		_rcController = [sharedRemoteConnector newRCEmulator];
 	[menuList insertObject: _rcController atIndex: [menuList count] - 2];
 	UIImage *image = [UIImage imageNamed: @"remote.png"];
 	_rcController.tabBarItem.image = image;
