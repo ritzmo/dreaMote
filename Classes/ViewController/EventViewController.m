@@ -536,6 +536,18 @@
 	}
 }
 
+/* about to disappear */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	// eventually remove popover
+	if(popoverController)
+	{
+		[popoverController dismissPopoverAnimated:animated];
+		self.popoverController = nil;
+	}
+	[super viewWillDisappear:animated];
+}
+
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
