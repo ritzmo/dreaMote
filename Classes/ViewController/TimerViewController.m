@@ -925,12 +925,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+	const NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	NSInteger sections = 6;
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+	if([sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
 		++sections;
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
+	if([sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
 		++sections;
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
+	if([sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
 		++sections;
 	return sections;
 }
