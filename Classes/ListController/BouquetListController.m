@@ -56,6 +56,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_bouquets release];
 	[_serviceListController release];
+	_serviceListController = nil;
 	[_bouquetXMLDoc release];
 	[_radioButton release];
 
