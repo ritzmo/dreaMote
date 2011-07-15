@@ -35,6 +35,7 @@
 		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
 		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
 		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]]
+		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]]
 		);
 }
 
@@ -57,6 +58,8 @@
 		[zlc.actionSheet addButtonWithTitle:@"BUZZ Player"];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"yxplayer"];
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
+		[zlc.actionSheet addButtonWithTitle:@"GoodPlayer"];
 
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 	[zlc.actionSheet showFromTabBar:tabBar];
@@ -67,6 +70,32 @@
 	}
 
 	return [zlc autorelease];
+}
+
++ (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
+{
+	NSURL *url = nil;
+	switch(action)
+	{
+		default: break;
+		case zapActionOPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionOPlayerLite:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionBuzzPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionYxplayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionGoodPlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"goodplayer://%@", [streamingURL absoluteURL]]];
+			break;
+	}
+	if(url)
+		[[UIApplication sharedApplication] openURL:url];
 }
 
 - (id)init
@@ -114,6 +143,7 @@
 	hasAction[zapActionOPlayerLite] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]];
 	hasAction[zapActionBuzzPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]];
 	hasAction[zapActionYxplayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
+	hasAction[zapActionGoodPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]];
 }
 
 - (void)dismissActionSheet:(NSNotification *)notif
@@ -134,14 +164,16 @@
 	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 	{
-		if(!hasAction[zapActionOPlayer] && row > 0)
+		if(!hasAction[zapActionOPlayer] && row > zapActionRemote)
 			++row;
-		if(!hasAction[zapActionOPlayerLite] && row > 1)
+		if(!hasAction[zapActionOPlayerLite] && row > zapActionOPlayer)
 			++row;
-		if(!hasAction[zapActionBuzzPlayer] && row > 2)
+		if(!hasAction[zapActionBuzzPlayer] && row > zapActionOPlayerLite)
 			++row;
-		//if(!hasAction[zapActionYxplayer] && row > 3)
-		//	++row;
+		if(!hasAction[zapActionYxplayer] && row > zapActionBuzzPlayer)
+			++row;
+		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
+			++row;
 	}
 	switch((zapAction)row)
 	{
@@ -161,6 +193,9 @@
 		case zapActionYxplayer:
 			TABLEVIEWCELL_TEXT(cell) = @"yxplayer";
 			break;
+		case zapActionGoodPlayer:
+			TABLEVIEWCELL_TEXT(cell) = @"GoodPlayer";
+			break;
 	}
 	return cell;
 }
@@ -173,16 +208,18 @@
 
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 	{
-		if(!hasAction[zapActionOPlayer] && row > 0)
+		if(!hasAction[zapActionOPlayer] && row > zapActionRemote)
 			++row;
-		if(!hasAction[zapActionOPlayerLite] && row > 1)
+		if(!hasAction[zapActionOPlayerLite] && row > zapActionOPlayer)
 			++row;
-		if(!hasAction[zapActionBuzzPlayer] && row > 2)
+		if(!hasAction[zapActionBuzzPlayer] && row > zapActionOPlayerLite)
 			++row;
-		//if(!hasAction[zapActionYxplayer] && row > 3)
-		//	++row;
+		if(!hasAction[zapActionYxplayer] && row > zapActionBuzzPlayer)
+			++row;
+		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
+			++row;
 	}
-	[_zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
+	[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)row];
 	return indexPath;
 }
 
@@ -230,16 +267,18 @@
 	}
 	else
 	{
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > 0)
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > zapActionRemote)
 			++buttonIndex;
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > 1)
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > zapActionOPlayer)
 			++buttonIndex;
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > 2)
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > zapActionOPlayerLite)
 			++buttonIndex;
-		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > 3)
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > zapActionBuzzPlayer)
+			++buttonIndex;
+		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
 		//	++buttonIndex;
 
-		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
+		[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)buttonIndex];
 	}
 	[delegate autorelease];
 }

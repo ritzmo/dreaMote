@@ -41,6 +41,7 @@
 - (void)openOPlayerLite:(id)sender;
 - (void)openBuzzPlayer:(id)sender;
 - (void)openYxplayer:(id)sender;
+- (void)openGoodplayer:(id)sender;
 @end
 
 @implementation CurrentViewController
@@ -273,6 +274,8 @@
 					++rows;
 				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]])
 					++rows;
+				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
+					++rows;
 			}
 			return rows;
 		}
@@ -343,7 +346,9 @@
 				++row;
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 2)
 				++row;
-			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 3)
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 3)
+				++row;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 4)
 			//	++row;
 
 			switch(row)
@@ -374,6 +379,11 @@
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
+					break;
+				case 5:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)sourceCell).nameLabel.text = @"GoodPlayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openGoodplayer:) withImage:nil];
 					break;
 			}
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -623,7 +633,7 @@
 
 #pragma mark Streaming
 
-- (void)openStreamWithBase:(NSString *)baseString
+- (void)openStreamWithAction:(zapAction)action
 {
 	NSURL *streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
 	if(!streamingURL)
@@ -638,30 +648,32 @@
 		[alert release];
 	}
 	else
-	{
-		NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseString, [streamingURL absoluteURL]]];
-		[[UIApplication sharedApplication] openURL:url];
-	}
+		[ServiceZapListController openStream:streamingURL withAction:action];
 }
 
 - (void)openOPlayer:(id)sender
 {
-	[self openStreamWithBase:@"oplayer://"];
+	[self openStreamWithAction:zapActionOPlayer];
 }
 
 - (void)openOPlayerLite:(id)sender
 {
-	[self openStreamWithBase:@"oplayerlite://"];
+	[self openStreamWithAction:zapActionOPlayerLite];
 }
 
 - (void)openBuzzPlayer:(id)sender
 {
-	[self openStreamWithBase:@"buzzplayer://"];
+	[self openStreamWithAction:zapActionBuzzPlayer];
 }
 
 - (void)openYxplayer:(id)sender
 {
-	[self openStreamWithBase:@"yxp://"];
+	[self openStreamWithAction:zapActionYxplayer];
+}
+
+- (void)openGoodplayer:(id)sender
+{
+	[self openStreamWithAction:zapActionGoodPlayer];
 }
 
 @end

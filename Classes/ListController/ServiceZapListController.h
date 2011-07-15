@@ -20,7 +20,8 @@ typedef enum
 	zapActionOPlayerLite = 2,
 	zapActionBuzzPlayer = 3,
 	zapActionYxplayer = 4,
-	zapActionMax = 5,
+	zapActionGoodPlayer = 5,
+	zapActionMax = 6,
 } zapAction;
 
 @protocol ServiceZapListDelegate;
@@ -60,6 +61,14 @@ typedef enum
  @param tabBar Tab bar to show action sheet from.
  */
 + (ServiceZapListController *)showAlert:(NSObject<ServiceZapListDelegate> *)delegate fromTabBar:(UITabBar *)tabBar;
+
+/*!
+ @brief Open external streaming application
+
+ @param streamingUrl URL of the stream.
+ @param action zapAction matching the application to open.
+ */
++ (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
 
 @property (nonatomic, retain) NSObject<ServiceZapListDelegate> *zapDelegate;
 

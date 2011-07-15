@@ -879,9 +879,7 @@
 		}
 		else
 		{
-			[_zapListController release];
-			_zapListController = nil;
-			_zapListController = [[ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar] retain];
+			SafeRetainAssign(_zapListController, [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar]);
 		}
 	}
 	// else just zap on remote host
@@ -898,18 +896,16 @@
 - (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
 {
 	NSURL *streamingURL = nil;
-	NSURL *url = nil;
-
-	[_zapListController release];
-	_zapListController = nil;
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	SafeRetainAssign(_zapListController, nil);
 
 	if(selectedAction == zapActionRemote)
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] zapTo:_service];
+		[sharedRemoteConnector zapTo:_service];
 		return;
 	}
 
-	streamingURL = [[RemoteConnectorObject sharedRemoteConnector] getStreamURLForService:_service];
+	streamingURL = [sharedRemoteConnector getStreamURLForService:_service];
 	if(!streamingURL)
 	{
 		// Alert user
@@ -920,27 +916,9 @@
 													otherButtonTitles:nil];
 		[alert show];
 		[alert release];
-		return;
 	}
-
-	switch(selectedAction)
-	{
-		default: break;
-		case zapActionOPlayer:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayer://%@", [streamingURL absoluteURL]]];
-			break;
-		case zapActionOPlayerLite:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"oplayerlite://%@", [streamingURL absoluteURL]]];
-			break;
-		case zapActionBuzzPlayer:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"buzzplayer://%@", [streamingURL absoluteURL]]];
-			break;
-		case zapActionYxplayer:
-			url = [NSURL URLWithString:[NSString stringWithFormat:@"yxp://%@", [streamingURL absoluteURL]]];
-			break;
-	}
-	if(url)
-		[[UIApplication sharedApplication] openURL:url];
+	else
+		[ServiceZapListController openStream:streamingURL withAction:selectedAction];
 }
 
 @end
