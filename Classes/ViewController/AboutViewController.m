@@ -48,29 +48,30 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_aboutXMLDoc release];
+	CXMLDocument *newXMLDoc = nil;
 	@try {
 		_reloading = YES;
-		_aboutXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getAbout: self] retain];
+		newXMLDoc = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
 	}
 	@catch (NSException * e) {
-		_aboutXMLDoc = nil;
+#if IS_DEBUG()
+		[e raise];
+#endif
 	}
+	SafeRetainAssign(_aboutXMLDoc, newXMLDoc);
 	[pool release];
 }
 
 - (void)emptyData
 {
-	[_about release];
-	_about = nil;
+	SafeRetainAssign(_about, nil);
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
 #endif
-	[_aboutXMLDoc release];
-	_aboutXMLDoc = nil;
+	SafeRetainAssign(_aboutXMLDoc, nil);
 }
 
 #pragma mark -
@@ -95,9 +96,7 @@
 
 - (void)addAbout: (NSObject<AboutProtocol> *)about
 {
-	if(_about != nil)
-		[_about release];
-	_about = [about retain];
+	SafeRetainAssign(_about, about);
 }
 
 #pragma mark - UITableView delegates

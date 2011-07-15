@@ -84,10 +84,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 {
 	// Abort if same movie assigned
 	if(_movie == newMovie) return;
-
-	// Free old movie, assign new one
-	[_movie release];
-	_movie = [newMovie retain];
+	SafeRetainAssign(_movie, newMovie);
 
 	if(!newMovie.valid)
 		self.accessoryType = UITableViewCellAccessoryNone;

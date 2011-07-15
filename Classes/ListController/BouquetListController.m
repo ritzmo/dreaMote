@@ -257,9 +257,8 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_bouquetXMLDoc release];
 	_reloading = YES;
-	_bouquetXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchBouquets: self isRadio:_isRadio] retain];
+	SafeRetainAssign(_bouquetXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchBouquets:self isRadio:_isRadio]);
 	[pool release];
 }
 
@@ -274,8 +273,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	[_bouquetXMLDoc release];
-	_bouquetXMLDoc = nil;
+	SafeRetainAssign(_bouquetXMLDoc, nil);
 }
 
 #pragma mark -

@@ -155,7 +155,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		// if x withing bounds of event, return it… ignore y for now, should not matter anyway.
 		if(point.x >= leftLine && point.x < rightLine)
 		{
-			return [[event retain] autorelease];
+			return SafeReturn(event);
 		}
 		idx += 1;
 	}

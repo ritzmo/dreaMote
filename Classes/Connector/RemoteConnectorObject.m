@@ -78,14 +78,9 @@ static RemoteConnectorObject *singleton;
 	if(!connections || connectionIndex >= [connections count])
 		return NO;
 
+	NSObject<RemoteConnector> *sharedRemoteConnector = nil;
 	NSDictionary *connection = [connections objectAtIndex: connectionIndex];
 	const NSInteger connectorId = [[connection objectForKey: kConnector] integerValue];
-
-	if(_sharedRemoteConnector)
-	{
-		[_sharedRemoteConnector autorelease]; // delay release
-		_sharedRemoteConnector = nil;
-	}
 
 	singleton.connection = nil;
 
@@ -93,27 +88,28 @@ static RemoteConnectorObject *singleton;
 	{
 #if INCLUDE_FEATURE(Enigma2)
 		case kEnigma2Connector:
-			_sharedRemoteConnector = [Enigma2Connector newWithConnection:connection];
+			sharedRemoteConnector = [Enigma2Connector newWithConnection:connection];
 			break;
 #endif
 #if INCLUDE_FEATURE(Enigma)
 		case kEnigma1Connector:
-			_sharedRemoteConnector = [Enigma1Connector newWithConnection:connection];
+			sharedRemoteConnector = [Enigma1Connector newWithConnection:connection];
 			break;
 #endif
 #if INCLUDE_FEATURE(Neutrino)
 		case kNeutrinoConnector:
-			_sharedRemoteConnector = [NeutrinoConnector newWithConnection:connection];
+			sharedRemoteConnector = [NeutrinoConnector newWithConnection:connection];
 			break;
 #endif
 #if INCLUDE_FEATURE(SVDRP)
 		case kSVDRPConnector:
-			_sharedRemoteConnector = [SVDRPConnector newWithConnection:connection];
+			sharedRemoteConnector = [SVDRPConnector newWithConnection:connection];
 			break;
 #endif
 		default:
 			return NO;
 	}
+	SafeRetainAssign(_sharedRemoteConnector, sharedRemoteConnector);
 
 	singleton.connection = connection;
 	return YES;
@@ -411,7 +407,7 @@ static RemoteConnectorObject *singleton;
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
 {
-	return [[_sharedRemoteConnector retain] autorelease];
+	return SafeReturn(_sharedRemoteConnector);
 }
 
 + (NSURLCredential *)getCredential
@@ -423,8 +419,8 @@ static RemoteConnectorObject *singleton;
 	if([username length])
 	{
 		// make sure username & password exist for a little while
-		retVal = [NSURLCredential credentialWithUser:[[username retain] autorelease]
-											password:[[password retain] autorelease]
+		retVal = [NSURLCredential credentialWithUser:SafeReturn(username)
+											password:SafeReturn(password)
 										 persistence:NSURLCredentialPersistenceForSession];
 	}
 	[connection release]; // decrease refcount again

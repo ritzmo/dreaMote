@@ -97,9 +97,8 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_curDocument release];
 	_reloading = YES;
-	_curDocument = [[[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self] retain];
+	SafeRetainAssign(_curDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self]);
 	[pool release];
 }
 
@@ -114,8 +113,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	[_curDocument release];
-	_curDocument = nil;
+	SafeRetainAssign(_curDocument, nil);
 }
 
 #pragma mark -

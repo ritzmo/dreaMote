@@ -133,22 +133,18 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_metadataXMLDoc release];
-	_metadataXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getMetadata:self] retain];
+	SafeRetainAssign(_metadataXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getMetadata:self]);
 	[pool release];
 }
 
 /* remove content data */
 - (void)emptyData
 {
-	[_currentTrack release];
-	_currentTrack = nil;
-	[_currentCover release];
-	_currentCover = nil;
+	SafeRetainAssign(_currentTrack, nil);
+	SafeRetainAssign(_currentCover, nil);
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[_metadataXMLDoc release];
-	_metadataXMLDoc = nil;
+	SafeRetainAssign(_metadataXMLDoc, nil);
 }
 
 /* fetch coverart */
@@ -156,8 +152,9 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSData *imageData = [[RemoteConnectorObject sharedRemoteConnector] getFile:_currentTrack.coverpath];
-	[_currentCover release];
+	id old = _currentCover;
 	_currentCover = [[UIImage alloc] initWithData:imageData];
+	[old release];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	[pool release];
@@ -291,8 +288,7 @@
 - (void)addMetadata:(NSObject <MetadataProtocol>*)anItem
 {
 	if(anItem == nil) return;
-	[_currentTrack release];
-	_currentTrack = [anItem retain];
+	SafeRetainAssign(_currentTrack, anItem);
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 
 	if(!(_currentTrack.coverpath == nil || [_currentTrack.coverpath isEqualToString: @""])

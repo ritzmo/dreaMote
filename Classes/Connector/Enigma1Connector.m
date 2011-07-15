@@ -354,7 +354,7 @@ enum enigma1MessageTypes {
 	// if cache is valid for this request, read services
 	if(_cacheIsRadio == isRadio)
 	{
-		[[_cachedBouquetsXML retain] autorelease]; // make sure that this is not deallocated while we run
+		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run
 		resultNodes = [bouquet nodesForXPath:@"service" error:nil];
 	}
 
@@ -374,7 +374,7 @@ enum enigma1MessageTypes {
 			goto fetchServices_out;
 		}
 
-		[[_cachedBouquetsXML retain] autorelease]; // make sure that this is not deallocated while we run (might be another cache than before)
+		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run (might be another cache than before)
 		resultNodes = [_cachedBouquetsXML nodesForXPath:
 						[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
 						error:nil];

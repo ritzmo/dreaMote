@@ -249,9 +249,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_timerXMLDoc release];
 	_reloading = YES;
-	_timerXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchTimers: self] retain];
+	SafeRetainAssign(_timerXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
 	[pool release];
 }
 
@@ -281,8 +280,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		[_tableView reloadData];
 	}
 
-	[_timerXMLDoc release];
-	_timerXMLDoc = nil;
+	SafeRetainAssign(_timerXMLDoc, nil);
 }
 
 - (void)cancelConnection:(NSNotification *)notif

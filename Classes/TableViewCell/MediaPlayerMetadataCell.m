@@ -158,9 +158,7 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 - (void)setMetadata:(NSObject <MetadataProtocol>*)new
 {
 	if([_metadata isEqual:new]) return;
-
-	[_metadata release];
-	_metadata = [new retain];
+	SafeRetainAssign(_metadata, new);
 
 	// update text in subviews
 	_album.text = _metadata.album;
@@ -183,12 +181,10 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 - (void)setCoverart:(UIImageView *)new
 {
 	if([_coverart isEqual:new]) return;
+
 	if(_coverart)
 		[_coverart removeFromSuperview];
-
-	[_coverart release];
-	_coverart = [new retain];
-
+	SafeRetainAssign(_coverart, new);
 	if(new)
 		[self.contentView addSubview:new];
 

@@ -105,14 +105,12 @@
 {
 	if(_event != newEvent)
 	{
-		[_event release];
-		_event = [newEvent retain];
+		SafeRetainAssign(_event, newEvent);
 	}
 
 	_similarFetched = NO;
 	[_similarEvents removeAllObjects];
-	[_summaryView release];
-	_summaryView = [[self create_Summary] retain];
+	SafeRetainAssign(_summaryView, [self create_Summary]);
 
 	if(newEvent != nil)
 		self.title = newEvent.title;
@@ -230,13 +228,16 @@
 - (void)fetchEvents
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_eventXMLDoc release];
+	CXMLDocument *newDocument = nil;
 	@try {
-		_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar: self event: _event] retain];
+		newDocument = [[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar:self event:_event];
 	}
 	@catch (NSException * e) {
-		_eventXMLDoc = nil;
+#if IS_DEBUG()
+		[e raise];
+#endif
 	}
+	SafeRetainAssign(_eventXMLDoc, newDocument);
 	[pool release];
 }
 

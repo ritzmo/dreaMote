@@ -95,10 +95,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 {
 	// Abort if same timer assigned
 	if(_timer == newTimer) return;
-
-	// Free old timer, assign new one
-	[_timer release];
-	_timer = [newTimer retain];
+	SafeRetainAssign(_timer, newTimer);
 
 	// Check if time cache is present
 	if(newTimer.timeString == nil)

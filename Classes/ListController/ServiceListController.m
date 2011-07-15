@@ -123,10 +123,7 @@
 {
 	// Same bouquet assigned, abort
 	if(_bouquet == new) return;
-
-	// Free old bouquet, retain new one
-	[_bouquet release];
-	_bouquet = [new copy];
+	SafeCopyAssign(_bouquet, new);
 
 	// Set Title
 	if(new)
@@ -458,7 +455,7 @@
 - (void)fetchNowData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getNow: self bouquet: _bouquet isRadio:_isRadio] retain];
+	SafeRetainAssign(_mainXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio]);
 	[pool release];
 }
 
@@ -466,8 +463,7 @@
 - (void)fetchNextData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_subXMLDoc release];
-	_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getNext: self bouquet: _bouquet isRadio:_isRadio] retain];
+	SafeRetainAssign(_subXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio]);
 	[pool release];
 }
 
@@ -486,17 +482,21 @@
 #if IS_FULL()
 	[_multiEPG emptyData];
 #endif
-	[_mainXMLDoc release];
-	_mainXMLDoc = nil;
-	[_subXMLDoc release];
-	_subXMLDoc = nil;
+	SafeRetainAssign(_mainXMLDoc, nil);
+	SafeRetainAssign(_subXMLDoc, nil);
 }
 
 /* getter of eventViewController property */
 - (EventViewController *)eventViewController
 {
 	if(_eventViewController == nil)
-		_eventViewController = [[EventViewController alloc] init];
+	{
+		@synchronized(self)
+		{
+			if(_eventViewController == nil)
+				_eventViewController = [[EventViewController alloc] init];
+		}
+	}
 	return _eventViewController;
 }
 
@@ -504,9 +504,7 @@
 - (void)setEventViewController:(EventViewController *)new
 {
 	if(_eventViewController == new) return;
-
-	[_eventViewController release];
-	_eventViewController = [new retain];
+	SafeRetainAssign(_eventViewController, new);
 }
 
 #pragma mark -

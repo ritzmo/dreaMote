@@ -195,8 +195,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 - (void)setConnection:(NSMutableDictionary *)con
 {
 	if(_connection == con) return;
-	[_connection release];
-	_connection = [con retain];
+	SafeRetainAssign(_connection, con);
 
 	if(_remoteAddressTextField) // check if initialized
 	{

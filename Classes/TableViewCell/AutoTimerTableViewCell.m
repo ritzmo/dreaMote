@@ -73,10 +73,7 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 {
 	// Abort if same timer assigned
 	if(_timer == newTimer) return;
-
-	// Free old timer, assign new one
-	[_timer release];
-	_timer = [newTimer retain];
+	SafeRetainAssign(_timer, newTimer);
 
 	_timerNameLabel.text = newTimer.name;
 	if(newTimer.enabled)

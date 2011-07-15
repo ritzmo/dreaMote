@@ -15,6 +15,22 @@
 #define TABLEVIEWCELL_COLOR(a) (a).textLabel.textColor
 #define TABLEVIEWCELL_IMAGE(a) (a).imageView.image
 
+#define SafeRetainAssign(var, newExpr) { \
+	id OLD = (var); \
+	id NEW = (newExpr); \
+	(var) = [NEW retain]; \
+	if(OLD) \
+		[OLD release]; \
+}
+#define SafeCopyAssign(var, newExpr) { \
+	id OLD = (var); \
+	id NEW = (newExpr); \
+	(var) = [NEW copy]; \
+	if(OLD) \
+		[OLD release]; \
+}
+#define SafeReturn(var) [[var retain] autorelease]
+
 // SDK 3.2+
 #ifdef UI_USER_INTERFACE_IDIOM
 	#define IS_IPAD() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)

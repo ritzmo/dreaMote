@@ -108,10 +108,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 {
 	// Abort if same event assigned
 	if([_now isEqual:new]) return;
-
-	// Free old event, assign new one
-	[_now release];
-	_now = [new retain];
+	SafeRetainAssign(_now, new);
 
 	if(new.valid)
 	{
@@ -181,10 +178,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 {
 	// Abort if same event assigned
 	if([_next isEqual:new]) return;
-
-	// Free old event, assign new one
-	[_next release];
-	_next = [new retain];
+	SafeRetainAssign(_next, new);
 
 	NSDate *beginDate = new.begin;
 

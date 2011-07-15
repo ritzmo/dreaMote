@@ -80,9 +80,9 @@
 
 	// hand over response & error if requested
 	if(response)
-		*response = [[srr.response retain] autorelease];
+		*response = SafeReturn(srr.response);
 	if(error)
-		*error = [[srr.error retain] autorelease];
+		*error = SafeReturn(srr.error);
 
 	[con release];
 	[srr release];

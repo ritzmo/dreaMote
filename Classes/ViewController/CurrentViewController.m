@@ -143,40 +143,34 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_currentXMLDoc release];
+	CXMLDocument *newDocument = nil;
 	@try {
 		_reloading = YES;
-		_currentXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] getCurrent: self] retain];
+		newDocument = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
 	}
 	@catch (NSException * e) {
 #if IS_DEBUG()
 		[e raise];
 #endif
-		_currentXMLDoc = nil;
 	}
+	SafeRetainAssign(_currentXMLDoc, newDocument);
 	[pool release];
 }
 
 - (void)emptyData
 {
-	[_service release];
-	_service = nil;
-	[_now release];
-	_now = nil;
-	[_next release];
-	_next = nil;
+	SafeRetainAssign(_service, nil);
+	SafeRetainAssign(_now, nil);
+	SafeRetainAssign(_next, nil);
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
 #endif
-	[_nowSummary release];
-	_nowSummary = nil;
-	[_nextSummary release];
-	_nextSummary = nil;
-	[_currentXMLDoc release];
-	_currentXMLDoc = nil;
+	SafeRetainAssign(_nowSummary, nil);
+	SafeRetainAssign(_nextSummary, nil);
+	SafeRetainAssign(_currentXMLDoc, nil);
 }
 
 #pragma mark -
@@ -201,9 +195,7 @@
 
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
-	if(_service != nil)
-		[_service release];
-	_service = [service copy];
+	SafeCopyAssign(_service, service);
 }
 
 #pragma mark -
@@ -214,17 +206,18 @@
 {
 	if(_now == nil)
 	{
-		_now = [event copy];
+		SafeCopyAssign(_now, event);
 		[_nowSummary release];
+		id old = _nowSummary;
 		_nowSummary = [self newSummary: event];
+		[old release];
 	}
 	else
 	{
-		if(_next != nil)
-			[_next release];
-		_next = [event copy];
-		[_nextSummary release];
+		SafeCopyAssign(_next, event);
+		id old = _nextSummary;
 		_nextSummary = [self newSummary: event];
+		[old release];
 	}
 }
 

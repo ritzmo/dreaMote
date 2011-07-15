@@ -83,9 +83,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 - (void)setView:(UITextField *)inView
 {
 	if(view == inView) return;
-
-	[view release];
-	view = [inView retain];
+	SafeRetainAssign(view, inView);
 	view.delegate = self;
 
 	/*!

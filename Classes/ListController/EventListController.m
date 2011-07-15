@@ -80,10 +80,7 @@
 {
 	// No change, return immediately
 	if(_service == newService) return;
-
-	// Free old service, assign new
-	[_service release];
-	_service = [newService retain];
+	SafeRetainAssign(_service, newService);
 
 	// Set title
 	self.title = newService.sname;
@@ -160,12 +157,11 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_eventXMLDoc release];
 #if IS_FULL()
 	[[EPGCache sharedInstance] startTransaction:_service];
 #endif
 	_reloading = YES;
-	_eventXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchEPG: self service: _service] retain];
+	SafeRetainAssign(_eventXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
 	[pool release];
 }
 
@@ -180,8 +176,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	[_eventXMLDoc release];
-	_eventXMLDoc = nil;
+	SafeRetainAssign(_eventXMLDoc, nil);
 }
 
 /* rotate with device */

@@ -97,10 +97,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 {
 	// Same event, no need to change anything
 	if(_event == newEvent) return;
-
-	// Free old event, keep new one
-	[_event release];
-	_event = [newEvent retain];
+	SafeRetainAssign(_event, newEvent);
 
 	// Check if cache already generated
 	if(newEvent.timeString == nil)

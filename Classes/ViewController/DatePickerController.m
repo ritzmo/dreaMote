@@ -70,8 +70,7 @@
 	if(!new)
 		new = [NSDate date];
 
-	[_date release];
-	_date = [new retain];
+	SafeRetainAssign(_date, new);
 
 	_datePickerView.date = _date;
 	_label.text = [_format stringFromDate: _date];

@@ -104,10 +104,7 @@
 {
 	if(_currentLocation == newLocation ||
 	   [_currentLocation isEqualToString: newLocation]) return;
-
-	// Free old bouquet, retain new one
-	[_currentLocation release];
-	_currentLocation = [newLocation retain];
+	SafeRetainAssign(_currentLocation, newLocation);
 
 	// Set Title
 	if(newLocation)
@@ -175,12 +172,10 @@
 	@synchronized(self)
 	{
 		if(new == _movieViewController) return;
-		[new retain];
 
 		if(_movieViewController && _movieViewController.movieList == self)
 			_movieViewController.movieList = nil;
-		[_movieViewController release];
-		_movieViewController = new;
+		SafeRetainAssign(_movieViewController, new);
 		if(_movieViewController)
 			_movieViewController.movieList = self;
 	}
@@ -438,9 +433,8 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_movieXMLDoc release];
 	_reloading = YES;
-	_movieXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchMovielist: self withLocation: _currentLocation] retain];
+	SafeRetainAssign(_movieXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation]);
 	[pool release];
 }
 
@@ -450,8 +444,7 @@
 	// Clean movie list(s)
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
-	[_currentKeys release];
-	_currentKeys = nil;
+	SafeRetainAssign(_currentKeys, nil);
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(_sortTitle)
 	{
@@ -465,8 +458,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	[_movieXMLDoc release];
-	_movieXMLDoc = nil;
+	SafeRetainAssign(_movieXMLDoc, nil);
 }
 
 /* select and return next movie */

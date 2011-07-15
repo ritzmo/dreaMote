@@ -91,9 +91,7 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 - (void)setView:(UIView *)inView
 {
 	if(view == inView) return;
-
-	[view release];
-	view = [inView retain];
+	SafeRetainAssign(view, inView);
 
 	/*!
 	 @note addSubview: takes care of removing the superview

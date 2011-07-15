@@ -67,10 +67,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 {
 	// Abort if same service assigned
 	if(_service == newService) return;
-
-	// Free old service, assign new one
-	[_service release];
-	_service = [newService retain];
+	SafeRetainAssign(_service, newService);
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;

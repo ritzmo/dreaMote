@@ -193,10 +193,7 @@
 	++pendingRequests;
 	// Same bouquet assigned, abort
 	if(_bouquet == new) return;
-
-	// Free old bouquet, retain new one
-	[_bouquet release];
-	_bouquet = [new copy];
+	SafeCopyAssign(_bouquet, new);
 
 	// Free Caches and reload data
 	[self emptyData];

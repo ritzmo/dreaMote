@@ -92,10 +92,7 @@ NSString *kMainCell_ID = @"MainCell_ID";
 {
 	// Abort if same item assigned
 	if (_dataDictionary == newDictionary) return;
-
-	// Free old item, assign new
-	[_dataDictionary release];
-	_dataDictionary = [newDictionary retain];
+	SafeRetainAssign(_dataDictionary, newDictionary);
 	
 	// update value in subviews
 	_nameLabel.text = [_dataDictionary objectForKey:@"title"];

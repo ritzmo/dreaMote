@@ -382,8 +382,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 {
 	if(_timer != newTimer)
 	{
-		[_timer release];
-		_timer = [newTimer retain];
+		SafeRetainAssign(_timer, newTimer);
 
 		// stop editing
 		_shouldSave = NO;

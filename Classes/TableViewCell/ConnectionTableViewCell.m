@@ -107,10 +107,7 @@ NSString *kConnectionCell_ID = @"ConnectionCell_ID";
 {
 	// Abort if same item assigned
 	if (_dataDictionary == newDictionary) return;
-
-	// Free old item, assign new
-	[_dataDictionary release];
-	_dataDictionary = [newDictionary retain];
+	SafeRetainAssign(_dataDictionary, newDictionary);
 	
 	// update value in subviews
 	self.textLabel.text = [newDictionary objectForKey:kRemoteHost];
