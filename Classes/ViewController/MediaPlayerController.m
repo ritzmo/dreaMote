@@ -699,13 +699,10 @@ enum mediaPlayerTags
 - (void)viewDidUnload
 {
 	_fileList.fileDelegate = nil;
-	[_fileList release];
-	_fileList = nil;
+	SafeRetainAssign(_fileList, nil);
 	_playlist.fileDelegate = nil;
-	[_playlist release];
-	_playlist = nil;
-	[_controls release];
-	_controls = nil;
+	SafeRetainAssign(_playlist, nil);
+	SafeRetainAssign(_controls, nil);
 
 	[super viewDidUnload];
 }
