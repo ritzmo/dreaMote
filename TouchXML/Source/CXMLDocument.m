@@ -121,8 +121,16 @@ if ((self = [super init]) != NULL)
 			{
 			CFStringEncoding cfenc = CFStringConvertNSStringEncodingToEncoding(encoding);
 			CFStringRef cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc);
-			const char *enc = CFStringGetCStringPtr(cfencstr, 0);
+			CFIndex length = CFStringGetLength(cfencstr);
+			char *enc = (char *)malloc( length + 1 );
+			const BOOL conversionResult = enc == NULL ? NO : CFStringGetCString(cfencstr, enc, length, kCFStringEncodingUTF8);
+			if(!conversionResult)
+			{
+				free(enc);
+				enc = NULL; // try no encoding
+			}
 			theDoc = xmlReadMemory([inData bytes], [inData length], NULL, enc, XML_PARSE_RECOVER | XML_PARSE_NOWARNING);
+			free(enc); // free memory, if conversion failed this is a noop
 			}
 		
 		if (theDoc != NULL && xmlDocGetRootElement(theDoc) != NULL)
