@@ -82,8 +82,7 @@
 
 - (void)didReceiveMemoryWarning
 {
-	[_aboutDreamoteViewController release];
-	_aboutDreamoteViewController = nil;
+	SafeRetainAssign(_aboutDreamoteViewController, nil);
 
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
@@ -229,28 +228,18 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.myTableView = nil;
-	[_aboutDreamoteViewController release];
-	_aboutDreamoteViewController = nil;
+	SafeRetainAssign(_aboutDreamoteViewController, nil);
 #if IS_FULL()
-	[_autotimerDictionary release];
-	_autotimerDictionary = nil;
+	SafeRetainAssign(_autotimerDictionary, nil);
 #endif
-	[_configListController release];
-	_configListController = nil;
-	[_epgrefreshDictionary release];
-	_epgrefreshDictionary = nil;
-	[_eventSearchDictionary release];
-	_eventSearchDictionary = nil;
-	[_mediaPlayerDictionary release];
-	_mediaPlayerDictionary = nil;
-	[_locationsDictionary release];
-	_locationsDictionary = nil,
-	[_recordDictionary release];
-	_recordDictionary = nil;
-	[_signalDictionary release];
-	_signalDictionary = nil;
-	[_sleeptimerDictionary release];
-	_sleeptimerDictionary = nil;
+	SafeRetainAssign(_configListController, nil);
+	SafeRetainAssign(_epgrefreshDictionary, nil);
+	SafeRetainAssign(_eventSearchDictionary, nil);
+	SafeRetainAssign(_mediaPlayerDictionary, nil);
+	SafeRetainAssign(_locationsDictionary, nil);
+	SafeRetainAssign(_recordDictionary, nil);
+	SafeRetainAssign(_signalDictionary, nil);
+	SafeRetainAssign(_sleeptimerDictionary, nil);
 	[menuList removeAllObjects];
 
 	[super viewDidUnload];
@@ -501,7 +490,7 @@
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	// get the view controller's info dictionary based on the indexPath's row
-	[cell setDataDictionary: [menuList objectAtIndex:indexPath.row]];
+	cell.dataDictionary = [menuList objectAtIndex:indexPath.row];
 
 	return cell;
 }
