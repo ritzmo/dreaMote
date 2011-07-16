@@ -28,10 +28,10 @@
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
 
-	[_currentTrack release];
-	[_currentCover release];
-	[_metadataXMLDoc release];
-	[_tableView release];
+	SafeRetainAssign(_currentTrack, nil);
+	SafeRetainAssign(_currentCover, nil);
+	SafeRetainAssign(_metadataXMLDoc, nil);
+	SafeRetainAssign(_tableView, nil);
 
 	[super dealloc];
 }
@@ -39,16 +39,16 @@
 /* getter of playlist */
 - (FileListView *)playlist
 {
-	return _playlist;
+	return SafeReturn(_playlist);
 }
 
 /* setter of playlist */
 - (void)setPlaylist:(FileListView *)new
 {
 	if([new isEqual: _playlist]) return;
-
-	[_playlist release];
-	_playlist = [new retain];
+	if(_playlist && _playlist.fileDelegate == self)
+		_playlist.fileDelegate = nil;
+	SafeRetainAssign(_playlist, new);
 	_playlist.fileDelegate = self;
 }
 
@@ -94,10 +94,12 @@
 
 - (void)viewDidUnload
 {
-	[_tableView release];
-	_tableView = nil;
-	//[_fileList release]; // done in super
-	//_fileList = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
+	SafeRetainAssign(_tableView, nil);
+	// _fileList is also unset in super, but do it here to keep things more logical, as we also set it in this class
+	_fileList.fileDelegate = nil;
+	SafeRetainAssign(_fileList, nil);
 
 	[super viewDidUnload];
 }
@@ -296,8 +298,7 @@
 		[NSThread detachNewThreadSelector:@selector(fetchCoverart) toTarget:self withObject:nil];
 	else
 	{
-		[_currentCover release];
-		_currentCover = nil;
+		SafeRetainAssign(_currentCover, nil);
 	}
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }
