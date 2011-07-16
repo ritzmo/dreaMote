@@ -354,34 +354,27 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 - (void)viewDidUnload
 {
-	_remoteNameCell = nil;
-	_remoteAddressCell = nil;
-	_remotePortCell = nil;
-	_usernameCell = nil;
-	_passwordCell = nil;
+#define unsetCellAndDelegate(cell) { \
+	(cell).delegate = nil; \
+	(cell) = nil; \
+}
+	unsetCellAndDelegate(_remoteNameCell);
+	unsetCellAndDelegate(_remoteAddressCell);
+	unsetCellAndDelegate(_remotePortCell);
+	unsetCellAndDelegate(_usernameCell);
+	unsetCellAndDelegate(_passwordCell);
 
-	[_remoteNameTextField release];
-	_remoteNameTextField = nil;
-	[_remoteAddressTextField release];
-	_remoteAddressTextField = nil;
-	[_remotePortTextField release];
-	_remotePortTextField = nil;
-	[_usernameTextField release];
-	_usernameTextField = nil;
-	[_passwordTextField release];
-	_passwordTextField = nil;
-	[_makeDefaultButton release];
-	_makeDefaultButton = nil;
-	[_connectButton release];
-	_connectButton = nil;
-	[_singleBouquetSwitch release];
-	_singleBouquetSwitch = nil;
-	[_advancedRemoteSwitch release];
-	_advancedRemoteSwitch = nil;
-	[_nowNextSwitch release];
-	_nowNextSwitch = nil;
-	[_sslSwitch release];
-	_sslSwitch = nil;
+	SafeRetainAssign(_remoteNameTextField, nil);
+	SafeRetainAssign(_remoteAddressTextField, nil);
+	SafeRetainAssign(_remotePortTextField, nil);
+	SafeRetainAssign(_usernameTextField, nil);
+	SafeRetainAssign(_passwordTextField, nil);
+	SafeRetainAssign(_makeDefaultButton, nil);
+	SafeRetainAssign(_connectButton, nil);
+	SafeRetainAssign(_singleBouquetSwitch, nil);
+	SafeRetainAssign(_advancedRemoteSwitch, nil);
+	SafeRetainAssign(_nowNextSwitch, nil);
+	SafeRetainAssign(_sslSwitch, nil);
 
 	[super viewDidUnload];
 }
