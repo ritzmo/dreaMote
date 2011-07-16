@@ -56,22 +56,18 @@
 	_refreshHeaderView.delegate = nil;
 
 	self.path = nil;
-	[_files release];
-	_files = nil;
+	SafeRetainAssign(_files, nil);
 	self.fileDelegate = nil;
-	[_fileXMLDoc release];
-	_fileXMLDoc = nil;
-	[_refreshHeaderView release];
-	_refreshHeaderView = nil;
-	[_selected release];
-	_selected = nil;
+	SafeRetainAssign(_fileXMLDoc, nil);
+	SafeRetainAssign(_refreshHeaderView, nil);
+	SafeRetainAssign(_selected, nil);
 
 	[super dealloc];
 }
 
 - (NSString *)path
 {
-	return _path;
+	return SafeReturn(_path);
 }
 
 - (BOOL)isPlaylist
@@ -87,10 +83,10 @@
 
 - (NSMutableArray *)selectedFiles
 {
-	if(_selected) return _selected;
+	if(_selected) return SafeReturn(_selected);
 
 	_selected = [[NSMutableArray alloc] init];
-	return _selected;
+	return SafeReturn(_selected);
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -116,18 +112,14 @@
 	[_files removeAllObjects];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[_fileXMLDoc release];
-	_fileXMLDoc = nil;
+	SafeRetainAssign(_fileXMLDoc, nil);
 }
 
 - (void)setPath:(NSString *)new
 {
 	// Same bouquet assigned, abort
 	if([_path isEqualToString: new]) return;
-
-	// Free old bouquet, retain new one
-	[_path release];
-	_path = [new retain];
+	SafeRetainAssign(_path, new);
 
 	// Free Caches and reload data
 	[self emptyData];
@@ -142,12 +134,13 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_fileXMLDoc release];
+	CXMLDocument *newDocument = nil;
 	_reloading = YES;
 	if(self.isPlaylist)
-		_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist: self] retain];
+		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist:self];
 	else
-		_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchFiles: self path: _path] retain];
+		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:_path];
+	SafeRetainAssign(_fileXMLDoc, newDocument);
 	[pool release];
 }
 
@@ -366,6 +359,7 @@
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(!_isPlaylist) return;
 	NSObject<FileProtocol> *file = [_files objectAtIndex: indexPath.row];
 	[_fileDelegate fileListView:self fileRemoved:file];
 }
@@ -379,7 +373,7 @@
 /* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return (self.editing) ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
+	return (self.editing || !_isPlaylist) ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
 }
 
 /* number of sections */
