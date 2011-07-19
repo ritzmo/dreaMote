@@ -696,7 +696,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding AutoTimer: %@", @""), result.resulttext];
 				else
 				{
-					[_delegate AutoTimerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
+					[_delegate autoTimerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -707,7 +707,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing AutoTimer: %@", @""), result.resulttext];
 				else
 				{
-					[_delegate AutoTimerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer)];
+					[_delegate autoTimerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer)];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -725,15 +725,16 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			[notification show];
 			[notification release];
 
-			[_delegate AutoTimerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_timer)];
+			[_delegate autoTimerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_timer)];
 			return;
 		}
 
 		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
-	}
+	} // !shouldSave
 	else
 	{
 		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
+		[_delegate autoTimerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_timer)];
 	}
 
 	_shouldSave = editing;

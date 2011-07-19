@@ -121,7 +121,7 @@
  @param tvc AutoTimerViewController instance
  @param at AutoTimer that was added
  */
-- (void)AutoTimerViewController:(AutoTimerViewController *)tvc timerWasAdded:(AutoTimer *)at;
+- (void)autoTimerViewController:(AutoTimerViewController *)tvc timerWasAdded:(AutoTimer *)at;
 
 /*!
  @brief Timer was changed successfully.
@@ -129,7 +129,7 @@
  @param tvc AutoTimerViewController instance
  @param at Modified AutoTimer
  */
-- (void)AutoTimerViewController:(AutoTimerViewController *)tvc timerWasEdited:(AutoTimer *)at;
+- (void)autoTimerViewController:(AutoTimerViewController *)tvc timerWasEdited:(AutoTimer *)at;
 
 /*
  @brief Editing was canceled.
@@ -137,5 +137,5 @@
  @param tvc AutoTimerViewController instance
  @param at AutoTimer that was supposed to be changed
  */
-- (void)AutoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;
+- (void)autoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;
 @end

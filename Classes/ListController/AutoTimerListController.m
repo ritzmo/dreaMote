@@ -388,19 +388,19 @@
 #pragma mark AutoTimerViewDelegate
 #pragma mark -
 
-- (void)AutoTimerViewController:(AutoTimerViewController *)tvc timerWasAdded:(AutoTimer *)at
+- (void)autoTimerViewController:(AutoTimerViewController *)tvc timerWasAdded:(AutoTimer *)at
 {
 	[self emptyData];
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
-- (void)AutoTimerViewController:(AutoTimerViewController *)tvc timerWasEdited:(AutoTimer *)at
+- (void)autoTimerViewController:(AutoTimerViewController *)tvc timerWasEdited:(AutoTimer *)at
 {
 	[self emptyData];
 	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 }
 
-- (void)AutoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;
+- (void)autoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;
 {
 	// do we need this for anything?
 }
