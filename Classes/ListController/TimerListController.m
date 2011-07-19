@@ -499,6 +499,15 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 /* edit action */
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	// do nothing if reloading
+	if(_reloading)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"TimerListUserInteractionWhileReloading" format:@"commitEditingStyle was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+#endif
+		return;
+	}
+
 	// If row is deleted, remove it from the list.
 	if (editingStyle == UITableViewCellEditingStyleDelete)
 	{
