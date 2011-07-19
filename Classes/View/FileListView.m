@@ -55,9 +55,9 @@
 	self.dataSource = nil;
 	_refreshHeaderView.delegate = nil;
 
-	self.path = nil;
+	SafeRetainAssign(_path, nil);
 	SafeRetainAssign(_files, nil);
-	self.fileDelegate = nil;
+	SafeRetainAssign(_fileDelegate, nil);
 	SafeRetainAssign(_fileXMLDoc, nil);
 	SafeRetainAssign(_refreshHeaderView, nil);
 	SafeRetainAssign(_selected, nil);
