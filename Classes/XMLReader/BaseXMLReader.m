@@ -45,8 +45,8 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_delegate release];
-	[_parser release];
+	SafeRetainAssign(_delegate, nil)
+	SafeRetainAssign(_parser, nil);
 
 	[super dealloc];
 }
@@ -54,8 +54,7 @@
 /* download and parse xml document */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	[_parser release];
-	_parser = nil;
+	SafeRetainAssign(_parser, nil);
 	_done = NO;
 	NSError *localError = nil;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD

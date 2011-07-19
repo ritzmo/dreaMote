@@ -66,9 +66,9 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 #else
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown connection error occured.", @"Data connection failed for unknown reason.")
 															 forKey:NSLocalizedDescriptionKey];
-		failureReason = [[NSError errorWithDomain:@"myDomain"
-											code:900
-											userInfo:userInfo] retain];
+		SafeRetainAssign(failureReason, [NSError errorWithDomain:@"myDomain"
+															code:900
+														userInfo:userInfo]);
 #endif
 	}
 
@@ -146,7 +146,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	failureReason = [error retain];
 	_done = YES;
 
-	[(NSString*)resultString release];
+	CFRelease(resultString);
 	[format release];
 }
 
@@ -213,7 +213,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	failureReason = [error retain];
+	SafeRetainAssign(failureReason, error); // though accordings to the docs the connection can only fail once, lets make sure we don't leak anyway
 
 	_done = YES;
 }
