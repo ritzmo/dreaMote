@@ -55,7 +55,7 @@
 	// file
 	else if(file != nil)
 	{
-		[_delegate recursiveFileAdder:self addFile:file];
+		[_delegate recursiveFileAdder:self addFile:SafeReturn(file)];
 	}
 }
 
@@ -63,10 +63,9 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_fileXMLDoc release];
 	NSString *path = [[_remainingPaths lastObject] retain];
 	[_remainingPaths removeLastObject];
-	_fileXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path] retain];
+	SafeRetainAssign(_fileXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path]);
 	[path release];
 	[pool release];
 }
@@ -99,7 +98,7 @@
 	}
 	else
 	{
-		[_delegate recursiveFileAdderDoneAddingFiles:self];
+		[_delegate recursiveFileAdderDoneAddingFiles:SafeReturn(self)];
 	}
 }
 
@@ -111,7 +110,7 @@
 	}
 	else
 	{
-		[_delegate recursiveFileAdderDoneAddingFiles:self];
+		[_delegate recursiveFileAdderDoneAddingFiles:SafeReturn(self)];
 	}
 }
 
