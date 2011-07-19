@@ -147,12 +147,12 @@ static EPGCache *_sharedInstance = nil;
 				newEvent.service = service;
 
 				// read event data
-				newEvent.eit = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 0)];
+				AssignStringIfSet(0, eit, newEvent)
 				newEvent.begin = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 1)];
 				newEvent.end = [NSDate dateWithTimeIntervalSince1970:sqlite3_column_int(compiledStatement, 2)];
-				newEvent.title = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 3)];
-				newEvent.sdescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 4)];
-				newEvent.edescription = [NSString stringWithUTF8String:(char *)sqlite3_column_text(compiledStatement, 5)];
+				AssignStringIfSet(3, title, newEvent)
+				AssignStringIfSet(4, sdescription, newEvent)
+				AssignStringIfSet(5, edescription, newEvent)
 			}
 		}
 		sqlite3_finalize(compiledStatement);
