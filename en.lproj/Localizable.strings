@@ -1,5 +1,11 @@
-﻿/* No comment provided by engineer. */
+﻿/* sat finder refresh interval */
+/*"%.0f sec" = "%.0f sec";*/
+
+/* No comment provided by engineer. */
 /*"%@ of %@ free" = "%1$@ of %2$@ free";*/
+
+/* zip-file was extracted without any errors. */
+/*"%d files extracted successfully." = "%d files extracted successfully.";*/
 
 /* Minutes */
 /*"%d min" = "%d min";*/
@@ -55,7 +61,11 @@
 /* No comment provided by engineer. */
 /*"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "A search did not return any event.\nTry refreshing the cache by reloading the event list for this service.";*/
 
-/* Title of AboutDreamoteViewController */
+/* Message explaining what what happens on zip-file import. */
+/*"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!" = "A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!";*/
+
+/* About Button Text
+   Title of AboutDreamoteViewController */
 /*"About" = "About";*/
 
 /* No comment provided by engineer. */
@@ -102,6 +112,9 @@
 
 /* No comment provided by engineer. */
 /*"All Services" = "All Services";*/
+
+/* No comment provided by engineer. */
+/*"An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!";*/
 
 /* No comment provided by engineer. */
 /*"Artist" = "Artist";*/
@@ -274,6 +287,9 @@
 /*"Enabled" = "Enabled";*/
 
 /* No comment provided by engineer. */
+/*"encrypted" = "encrypted";*/
+
+/* No comment provided by engineer. */
 /*"End" = "End";*/
 
 /* No comment provided by engineer. */
@@ -336,7 +352,7 @@
 /* Default Title of EventListController */
 "Events" = "Events";
 
-/* No comment provided by engineer. */
+/* Title of exact section of SatFinder */
 "Exact" = "Exact";
 
 /* No comment provided by engineer. */
@@ -344,6 +360,12 @@
 
 /* export data from lite to full version */
 /*"Export to dreaMote" = "Export to dreaMote";*/
+
+/* Button executing zip extraction/deletion */
+/*"Extract" = "Extract";*/
+
+/* Removal of zip-file failed after extraction. */
+/*"Failed to remove zip-file!\nPlease remove it manually using iTunes." = "Failed to remove zip-file!\nPlease remove it manually using iTunes.";*/
 
 /* No comment provided by engineer. */
 /*"Failed to retrieve data" = "Failed to retrieve data";*/
@@ -408,11 +430,20 @@
 /* Button executing import */
 /*"Import" = "Import";*/
 
+/* Title of Alert when a zip file was found in the documents folder possibly containing picons. */
+/*"Import Picons?" = "Import Picons?";*/
+
 /* Message type */
 /*"Info" = "Info";*/
 
+/* instant sat finder refresh */
+/*"instant" = "instant";*/
+
 /* No comment provided by engineer. */
 "Instant Record" = "Instant Record";
+
+/* Title of refresh Interval section of SatFinder */
+/*"Interval" = "Interval";*/
 
 /* No comment provided by engineer. */
 /*"Invalid message type." = "Invalid message type.";*/
@@ -513,11 +544,17 @@
 /* No comment provided by engineer. */
 "N/A" = "N/A";
 
+/* Title of Alert suggesting autoconfiguration. */
+/*"Need Help?" = "Need Help?";*/
+
 /* No comment provided by engineer. */
 "Neutrino" = "Neutrino";
 
 /* Repeated */
 "Never" = "Never";
+
+/* don't refresh sat finder */
+/*"never" = "never";*/
 
 /* No comment provided by engineer. */
 /*"New AutoTimer" = "New AutoTimer";*/
@@ -533,6 +570,9 @@
 
 /* No comment provided by engineer. */
 /*"No" = "No";*/
+
+/* No comment provided by engineer. */
+/*"no authentication" = "no authentication";*/
 
 /* No comment provided by engineer. */
 /*"No Data…" = "No Data…";*/
@@ -558,6 +598,9 @@
 /* Message type */
 /*"Normal" = "Normal";*/
 
+/* No comment provided by engineer. */
+/*"not encrypted" = "not encrypted";*/
+
 /* After Event */
 /*"Nothing" = "Nothing";*/
 
@@ -582,7 +625,7 @@
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 /*"Page not found.\nPlugin not installed?" = "Page not found.\nPlugin not installed?";*/
 
-/* No comment provided by engineer. */
+/* Title of percentage section of SatFinder */
 "Percentage" = "Percentage";
 
 /* No comment provided by engineer. */
@@ -711,8 +754,20 @@
 /* No comment provided by engineer. */
 /*"Screenshot" = "Screenshot";*/
 
+/* Button initiating autoconfiguration. */
+/*"Search" = "Search";*/
+
+/* Start AutoConfiguration from ConfigListController */
+/*"Search Connections" = "Search Connections";*/
+
 /* Default Title of EventSearchListController */
 "Search Events" = "Search Events";
+
+/* Label of Progress HUD during AutoConfiguration */
+/*"Searching…" = "Searching…";*/
+
+/* Default title of ConnectionListController */
+/*"Select Connection" = "Select Connection";*/
 
 /* No comment provided by engineer. */
 "Select Service" = "Select Service";
@@ -837,6 +892,9 @@
 /* No comment provided by engineer. */
 /*"Title" = "Title";*/
 
+/* Message of Alert suggesting autoconfiguration. */
+/*"To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?" = "To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?";*/
+
 /* No comment provided by engineer. */
 /*"Today" = "Today";*/
 
@@ -870,6 +928,12 @@
 /* No comment provided by engineer. */
 /*"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality";*/
 
+/* Zip-Extraction failed */
+/*"Unable to extract zip-file!" = "Unable to extract zip-file!";*/
+
+/* No comment provided by engineer. */
+/*"Unable to find valid connection data." = "Unable to find valid connection data.";*/
+
 /* Failed to retrieve or generate URL of remote stream */
 /*"Unable to generate stream URL." = "Unable to generate stream URL.";*/
 
@@ -879,11 +943,17 @@
 /* No comment provided by engineer. */
 /*"Unable to start playback" = "Unable to start playback";*/
 
+/* Data connection failed for unknown reason. */
+/*"Unknown connection error occured." = "Unknown connection error occured.";*/
+
 /* Remote host did return error code but no specific message. */
 /*"Unknown Error." = "Unknown Error.";*/
 
 /* Unable to find service name for service id */
 /*"Unknown Service (%@)" = "Unknown Service (%@)";*/
+
+/* Label text in AutoConfiguration if host is unreachable */
+/*"unreachable" = "unreachable";*/
 
 /* No comment provided by engineer. */
 "Use SSL" = "Use SSL";
@@ -938,9 +1008,6 @@
 
 /* No comment provided by engineer. */
 /*"You have reached either the end or the beginning of your movie list." = "You have reached either the end or the beginning of your movie list.";*/
-
-/* No comment provided by engineer. */
-/*"You have to enter connection details to use this application." = "You have to enter connection details to use this application.";*/
 
 /* User requested automated EPG refresh but no timespan given. */
 /*"You have to provide a timespan to refresh automatically." = "You have to provide a timespan to refresh automatically.";*/
