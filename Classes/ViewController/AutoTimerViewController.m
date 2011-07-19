@@ -1867,29 +1867,19 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[_afterEventNavigationController release];
-	[_afterEventViewController release];
-	[_avoidDuplicateDescriptionController release];
-	[_avoidDuplicateDescriptionNavigationController release];
-	[_bouquetListController release];
-	[_serviceListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-	[_locationListController release];
-	[_filterViewController release];
-	[_filterNavigationController release];
+	SafeRetainAssign(_afterEventNavigationController, nil);
+	SafeRetainAssign(_afterEventViewController, nil);
+	SafeRetainAssign(_avoidDuplicateDescriptionController, nil);
+	SafeRetainAssign(_avoidDuplicateDescriptionNavigationController, nil);
+	SafeRetainAssign(_bouquetListController, nil);
+	SafeRetainAssign(_serviceListController, nil);
+	SafeRetainAssign(_datePickerController, nil);
+	SafeRetainAssign(_datePickerNavigationController, nil);
+	SafeRetainAssign(_locationListController, nil);
+	SafeRetainAssign(_filterViewController, nil);
+	SafeRetainAssign(_filterNavigationController, nil);
 
-	_afterEventNavigationController = nil;
-	_afterEventViewController = nil;
-	_avoidDuplicateDescriptionController = nil;
-	_avoidDuplicateDescriptionNavigationController = nil;
-	_bouquetListController = nil;
-	_serviceListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
-	_locationListController = nil;
-	_filterViewController = nil;
-	_filterNavigationController = nil;
+	[super viewDidDisappear:animated];
 }
 
 #pragma mark -
@@ -1899,8 +1889,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
-	[_popoverButtonItem release];
-	_popoverButtonItem = [barButtonItem retain];
+	SafeRetainAssign(_popoverButtonItem, barButtonItem);
 
 	// assign popover button if there is no left button assigned.
 	if(!self.navigationItem.leftBarButtonItem)
@@ -1914,9 +1903,8 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-	[_popoverButtonItem release];
-	_popoverButtonItem = nil;
-	if([self.navigationItem.leftBarButtonItem isEqual: barButtonItem])
+	SafeRetainAssign(_popoverButtonItem, nil);
+	if([self.navigationItem.leftBarButtonItem isEqual:barButtonItem])
 	{
 		[self.navigationItem setLeftBarButtonItem:nil animated:YES];
 	}
