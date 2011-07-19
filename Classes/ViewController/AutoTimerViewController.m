@@ -145,6 +145,9 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	[_timerJustplay release];
 	[_timespanSwitch release];
 
+	_titleCell.delegate = nil;
+	_matchCell.delegate = nil;
+	_maxdurationCell.delegate = nil;
 	[_titleCell release];
 	[_matchCell release];
 	[_maxdurationCell release];
@@ -170,29 +173,17 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)didReceiveMemoryWarning
 {
-	[_afterEventNavigationController release];
-	[_afterEventViewController release];
-	[_avoidDuplicateDescriptionController release];
-	[_avoidDuplicateDescriptionNavigationController release];
-	[_bouquetListController release];
-	[_serviceListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-	[_locationListController release];
-	[_filterViewController release];
-	[_filterNavigationController release];
-
-	_afterEventNavigationController = nil;
-	_afterEventViewController = nil;
-	_avoidDuplicateDescriptionController = nil;
-	_avoidDuplicateDescriptionNavigationController = nil;
-	_bouquetListController = nil;
-	_serviceListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
-	_locationListController = nil;
-	_filterViewController = nil;
-	_filterNavigationController = nil;
+	SafeRetainAssign(_afterEventNavigationController, nil);
+	SafeRetainAssign(_afterEventViewController, nil);
+	SafeRetainAssign(_avoidDuplicateDescriptionController, nil);
+	SafeRetainAssign(_avoidDuplicateDescriptionNavigationController, nil);
+	SafeRetainAssign(_bouquetListController, nil);
+	SafeRetainAssign(_serviceListController, nil);
+	SafeRetainAssign(_datePickerController, nil);
+	SafeRetainAssign(_datePickerNavigationController, nil);
+	SafeRetainAssign(_locationListController, nil);
+	SafeRetainAssign(_filterViewController, nil);
+	SafeRetainAssign(_filterNavigationController, nil);
 
 	[super didReceiveMemoryWarning];
 }
@@ -605,28 +596,24 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)viewDidUnload
 {
-	[_titleField release];
-	_titleField = nil;
-	[_matchField release];
-	_matchField = nil;
-	[_maxdurationField release];
-	_maxdurationField = nil;
-	[_timerEnabled release];
-	_timerEnabled = nil;
-	[_exactSearch release];
-	_exactSearch = nil;
-	[_sensitiveSearch release];
-	_sensitiveSearch = nil;
-	[_overrideAlternatives release];
-	_overrideAlternatives = nil;
-	[_timeframeSwitch release];
-	_timeframeSwitch = nil;
-	[_timerJustplay release];
-	_timerJustplay = nil;
-	[_timespanSwitch release];
-	_timespanSwitch = nil;
-	[_maxdurationSwitch release];
-	_maxdurationSwitch = nil;
+	SafeRetainAssign(_titleField, nil);
+	SafeRetainAssign(_matchField, nil);
+	SafeRetainAssign(_maxdurationField, nil);
+	SafeRetainAssign(_timerEnabled, nil);
+	SafeRetainAssign(_exactSearch, nil);
+	SafeRetainAssign(_sensitiveSearch, nil);
+	SafeRetainAssign(_overrideAlternatives, nil);
+	SafeRetainAssign(_timeframeSwitch, nil);
+	SafeRetainAssign(_timerJustplay, nil);
+	SafeRetainAssign(_timespanSwitch, nil);
+	SafeRetainAssign(_maxdurationSwitch, nil);
+
+	_titleCell.delegate = nil;
+	_matchCell.delegate = nil;
+	_maxdurationCell.delegate = nil;
+	SafeRetainAssign(_titleCell, nil);
+	SafeRetainAssign(_matchCell, nil);
+	SafeRetainAssign(_maxdurationCell, nil);
 
 	[super viewDidUnload];
 }
@@ -709,7 +696,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding AutoTimer: %@", @""), result.resulttext];
 				else
 				{
-					[_delegate AutoTimerViewController:self timerWasAdded:_timer];
+					[_delegate AutoTimerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -720,7 +707,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing AutoTimer: %@", @""), result.resulttext];
 				else
 				{
-					[_delegate AutoTimerViewController:self timerWasEdited:_timer];
+					[_delegate AutoTimerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer)];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -738,7 +725,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			[notification show];
 			[notification release];
 
-			[_delegate AutoTimerViewController:self editingWasCanceled:_timer];
+			[_delegate AutoTimerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_timer)];
 			return;
 		}
 
