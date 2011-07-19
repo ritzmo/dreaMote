@@ -366,6 +366,7 @@ enum buttonCodes {
  @param isRadio Fetch radio services?
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesNowNext
 - (CXMLDocument *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
@@ -376,6 +377,7 @@ enum buttonCodes {
  @param isRadio Fetch radio services?
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesNowNext
 - (CXMLDocument *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
@@ -384,6 +386,7 @@ enum buttonCodes {
  @param service Service to stream.
  @return Stream URL.
  */
+@optional // kFeaturesStreaming
 - (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service;
 
 /*!
@@ -394,6 +397,7 @@ enum buttonCodes {
  @param title Text to Search in Event Titles.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesEPGSearch
 - (CXMLDocument *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title;
 
 /*!
@@ -405,6 +409,7 @@ enum buttonCodes {
  @param event Event to search similar events of.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesEPGSearchSimilar
 - (CXMLDocument *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
 
 /*!
@@ -413,6 +418,7 @@ enum buttonCodes {
  @param service Service to zap to.
  @return YES if zapping succeeded.
  */
+@required
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service;
 
 #pragma mark -
@@ -472,6 +478,7 @@ enum buttonCodes {
  @param movie Movie to delete.
  @return YES if deletion succeeded.
  */
+@optional // kFeaturesRecordDelete
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie;
 
 /*!
@@ -480,6 +487,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesRecordingLocations
 - (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 
 /*!
@@ -489,6 +497,7 @@ enum buttonCodes {
  @param location Directory to search for movies
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesRecordInfo
 - (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
 
 /*!
@@ -497,6 +506,7 @@ enum buttonCodes {
  @param movie Movie to stream.
  @return Stream URL.
  */
+@optional // kFeaturesStreaming
 - (NSURL *)getStreamURLForMovie:(NSObject<MovieProtocol> *)movie;
 
 /*!
@@ -504,6 +514,7 @@ enum buttonCodes {
 
  @return YES if record was started.
  */
+@optional // kFeaturesInstantRecord
 - (Result *)instantRecord;
 
 /*!
@@ -512,6 +523,7 @@ enum buttonCodes {
  @param movie Movie to start playback of.
  @return YES if starting playback succeeded.
  */
+@optional // kFeaturesRecordInfo
 - (Result *)playMovie:(NSObject<MovieProtocol> *) movie;
 
 #pragma mark -
@@ -525,6 +537,7 @@ enum buttonCodes {
  @param play Start playing the track?
  @return YES if track was added successfully and (eventually) playback was started.
  */
+@optional // kFeaturesMediaPlayer
 - (Result *)addTrack:(NSObject<FileProtocol> *) track startPlayback:(BOOL)play;
 
 /*!
@@ -534,6 +547,7 @@ enum buttonCodes {
  @param path Directory to be searched for files.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesMediaPlayer
 - (CXMLDocument *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path;
 
 /*!
@@ -542,6 +556,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesMediaPlayer
 - (CXMLDocument *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
 
 /*!
@@ -550,6 +565,7 @@ enum buttonCodes {
  @param type Full path to file.
  @return Pointer to file or nil on failure.
  */
+@optional // kFeaturesFileDownload
 - (NSData *)getFile: (NSString *)fullpath;
 
 /*!
@@ -558,6 +574,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesMediaPlayerMetadata
 - (CXMLDocument *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
 
 /*!
@@ -566,6 +583,7 @@ enum buttonCodes {
  @param command Textual representation of command.
  @return YES if command was sent successfully.
  */
+@optional // kFeaturesMediaPlayer
 - (Result *)mediaplayerCommand:(NSString *)command;
 
 /*!
@@ -574,6 +592,7 @@ enum buttonCodes {
  @param fullpath Path to the track.
  @return YES if starting playback succeeded.
  */
+@optional // kFeaturesMediaPlayer
 - (Result *)playTrack:(NSObject<FileProtocol> *) track;
 
 /*!
@@ -582,6 +601,7 @@ enum buttonCodes {
  @param fullpath Path to the track.
  @return YES if track was removed successfully.
  */
+@optional // kFeaturesMediaPlayer
 - (Result *)removeTrack:(NSObject<FileProtocol> *) track;
 
 /*!
@@ -591,6 +611,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @param playlist Items currently in playlist.
  */
+@optional // kFeaturesMediaPlayer
 - (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist;
 
 #pragma mark -
@@ -604,6 +625,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesAutoTimer
 - (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate;
 
 /*!
@@ -612,6 +634,7 @@ enum buttonCodes {
  @param newTimer AutoTimer to add.
  @return Valid Result if AutoTimer was added successfully.
  */
+@optional // kFeaturesAutoTimer
 - (Result *)addAutoTimer:(AutoTimer *)newTimer;
 
 /*!
@@ -620,6 +643,7 @@ enum buttonCodes {
  @param oldTimer AutoTimer to remove.
  @return Valid Result if Timer was removed.
  */
+@optional // kFeaturesAutoTimer
 - (Result *)delAutoTimer:(AutoTimer *)oldTimer;
 
 /*!
@@ -628,6 +652,7 @@ enum buttonCodes {
  @param changeTimer AutoTimer to change.
  @return Valid Result if Timer was changed successfully.
  */
+@optional // kFeaturesAutoTimer
 - (Result *)editAutoTimer:(AutoTimer *)changeTimer;
 #endif
 
@@ -641,6 +666,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesEPGRefresh
 - (CXMLDocument *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate;
 
 /*!
@@ -649,6 +675,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesEPGRefresh
 - (CXMLDocument *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate;
 
 /*!
@@ -659,6 +686,7 @@ enum buttonCodes {
  @param bouquets Bouquets.
  @return Valid Result if settings were changed.
  */
+@optional // kFeaturesEPGRefresh
 - (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets;
 
 #pragma mark -
@@ -671,6 +699,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesSleepTimer
 - (CXMLDocument *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate;
 
 /*!
@@ -681,6 +710,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesSleepTimer
 - (CXMLDocument *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate;
 
 #pragma mark -
@@ -693,6 +723,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesAbout
 - (CXMLDocument *)getAbout: (NSObject<AboutSourceDelegate> *)delegate;
 
 /*!
@@ -701,6 +732,7 @@ enum buttonCodes {
  @param delegate Delegate to be called back.
  @return Pointer to parsed CXMLDocument.
  */
+@optional // kFeaturesCurrent
 - (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
 
 /*!
@@ -709,6 +741,7 @@ enum buttonCodes {
  @param type Requested Screenshot type.
  @return Pointer to Screenshot or nil on failure.
  */
+@optional // kFeaturesScreenshot
 - (NSData *)getScreenshot: (enum screenshotType)type;
 
 /*!
@@ -716,6 +749,7 @@ enum buttonCodes {
 
  @param delegate Delegate to be called back.
  */
+@optional // kFeaturesSatFinder
 - (void)getSignal: (NSObject<SignalSourceDelegate> *)delegate;
 
 /*!
@@ -723,6 +757,7 @@ enum buttonCodes {
 
  @param delegate Delegate to be called back.
  */
+@required
 - (void)getVolume: (NSObject<VolumeSourceDelegate> *)delegate;
 
 /*!
@@ -769,11 +804,13 @@ enum buttonCodes {
 /*!
  @brief Invoke GUI Restart of Receiver.
  */
+@optional // kFeaturesGUIRestart
 - (void)restart;
 
 /*!
  @brief Invoke Shutdown procedure of Receiver.
  */
+@required
 - (void)shutdown;
 
 /*!
