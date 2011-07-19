@@ -42,10 +42,10 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
-		_movies = [[NSMutableArray array] retain];
+		_movies = [[NSMutableArray alloc] init];
 		_characters = [[NSMutableDictionary alloc] init];
 #if IS_FULL()
-		_filteredMovies = [[NSMutableArray array] retain];
+		_filteredMovies = [[NSMutableArray alloc] init];
 #endif
 		_refreshMovies = YES;
 		_isSplit = NO;
@@ -277,8 +277,7 @@
 		[_movies removeAllObjects];
 		if(IS_IPHONE())
 			self.movieViewController = nil;
-		[_movieXMLDoc release];
-		_movieXMLDoc = nil;
+		SafeRetainAssign(_movieXMLDoc, nil);
 	}
 
 	[_dateFormatter resetReferenceDate];
@@ -292,8 +291,7 @@
 	 */
 	if(_currentLocation)
 	{
-		[_currentLocation release];
-		_currentLocation = nil;
+		SafeRetainAssign(_currentLocation, nil);
 		_refreshMovies = YES;
 	}
 
@@ -318,8 +316,7 @@
 	if(!movies.count)
 	{
 		[_characters removeAllObjects];
-		[_currentKeys release];
-		_currentKeys = nil;
+		SafeRetainAssign(_currentKeys, nil);
 		return;
 	}
 
@@ -340,14 +337,12 @@
 		if(arr.count)
 			[_characters setValue:[arr sortedArrayUsingSelector:@selector(titleCompare:)] forKey:@"#"];
 
-		[_currentKeys release];
-		_currentKeys = [[[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)] retain];
+		SafeRetainAssign(_currentKeys, [[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]);
 	}
 	else
 	{
 		[_characters removeAllObjects];
-		[_currentKeys release];
-		_currentKeys = nil;
+		SafeRetainAssign(_currentKeys, nil);
 	}
 }
 
@@ -410,20 +405,16 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
-	[_currentKeys release];
-	_currentKeys = nil;
-	[_sortButton release];
-	_sortButton = nil;
+	SafeRetainAssign(_currentKeys, nil);
+	SafeRetainAssign(_sortButton, nil);
 #if IS_FULL()
 	[_filteredMovies removeAllObjects];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	[_searchBar release];
-	_searchBar = nil;
+	SafeRetainAssign(_searchBar, nil);
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	[_searchDisplay release];
-	_searchDisplay = nil;
+	SafeRetainAssign(_searchDisplay, nil);
 #endif
 
 	[super viewDidUnload];
