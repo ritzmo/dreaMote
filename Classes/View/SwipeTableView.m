@@ -20,7 +20,6 @@
 - (void)swipeRightAction:(UISwipeGestureRecognizer *)gesture;
 @end
 
-static void touchesBegan(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event);
 static void touchesCancelled(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event);
 static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event);
 
@@ -56,7 +55,6 @@ static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent
 			{
 				// using the meta class does not work, even though it gets resolved to SwipeTableView?!
 				id selfMetaClass = /*objc_getMetaClass(class_getName*/(([self class]));
-				class_addMethod(selfMetaClass, @selector(touchesBegan:withEvent:), (IMP)touchesBegan, "v@:@@");
 				class_addMethod(selfMetaClass, @selector(touchesCancelled:withEvent:), (IMP)touchesCancelled, "v@:@@");
 				class_addMethod(selfMetaClass, @selector(touchesEnded:withEvent:), (IMP)touchesEnded, "v@:@@");
 			}
@@ -107,18 +105,15 @@ static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent
 
 #pragma mark - iOS 3.1 or older
 
-/* started touch */
-static void touchesBegan(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent *event)
+/* began touch */
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	const UITouch *touch = [[event allTouches] anyObject];
-	self.lastTouch = [touch locationInView: self];
-	self.lastSwipe = swipeTypeNone;
+	_lastTouch = [touch locationInView: self];
+	_lastSwipe = swipeTypeNone;
 	self.lastEvent = nil;
 
-	struct objc_super super;
-	super.super_class = [self superclass];
-	super.receiver = self;
-	objc_msgSendSuper(&super, _cmd, touches, event);
+	[super touchesBegan:touches withEvent:event];
 }
 
 /* cancel touch */
@@ -126,6 +121,7 @@ static void touchesCancelled(SwipeTableView* self, SEL _cmd, NSSet* touches, UIE
 {
 	self.lastTouch = CGPointZero;
 	self.lastSwipe = swipeTypeNone;
+	self.lastEvent = nil;
 
 	struct objc_super super;
 	super.super_class = [self superclass];
