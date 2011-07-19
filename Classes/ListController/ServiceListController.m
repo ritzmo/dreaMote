@@ -104,10 +104,8 @@
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[_eventListController release];
-	_eventListController = nil;
-	[_eventViewController release];
-	_eventViewController = nil;
+	SafeRetainAssign(_eventListController, nil);
+	SafeRetainAssign(_eventViewController, nil);
 
 	[super didReceiveMemoryWarning];
 }
@@ -308,8 +306,7 @@
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_radioButton release];
-	_radioButton = nil;
+	SafeRetainAssign(_radioButton, nil);
 
 	[super viewDidUnload];
 }
@@ -435,7 +432,7 @@
 - (void)fetchData
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_mainXMLDoc release];
+	SafeRetainAssign(_mainXMLDoc, nil); // though unlikely to cause any trouble, make sure _mainXMLDoc is nil before releasing it...
 	_reloading = YES;
 	if(_supportsNowNext)
 	{
@@ -526,8 +523,11 @@
 	}
 	else
 	{
-		if(_eventListController == nil)
-			_eventListController = [[EventListController alloc] init];
+		@synchronized(self)
+		{
+			if(_eventListController == nil)
+				_eventListController = [[EventListController alloc] init];
+		}
 		_eventListController.service = service;
 
 		targetViewController = _eventListController;
@@ -754,8 +754,11 @@
 	// Load events
 	else
 	{
-		if(_eventListController == nil)
-			_eventListController = [[EventListController alloc] init];
+		@synchronized(self)
+		{
+			if(_eventListController == nil)
+				_eventListController = [[EventListController alloc] init];
+		}
 
 		_eventListController.service = service;
 
