@@ -118,10 +118,7 @@ static RemoteConnectorObject *singleton;
 + (void)disconnect
 {
 	if(_sharedRemoteConnector)
-	{
-		[_sharedRemoteConnector release];
-		_sharedRemoteConnector = nil;
-	}
+		SafeRetainAssign(_sharedRemoteConnector, nil);
 
 	[RemoteConnectorObject singleton].connection = nil;
 }
