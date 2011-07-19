@@ -573,7 +573,8 @@
 			_timerJustplay.enabled = NO;
 		}
 
-		[_delegate timerViewController:self editingWasCanceled:_oldTimer];
+		if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
+			[_delegate timerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_oldTimer)];
 		return;
 	}
 
@@ -637,7 +638,8 @@
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext];
 				else
 				{
-					[_delegate timerViewController:self timerWasAdded:_timer];
+					if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:timerWasAdded:)])
+						[_delegate timerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -648,7 +650,8 @@
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing timer: %@", @""), result.resulttext];
 				else
 				{
-					[_delegate timerViewController:self timerWasEdited:_timer :_oldTimer];
+					if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:timerWasEdited::)])
+						[_delegate timerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer) :SafeReturn(_oldTimer)];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -666,7 +669,8 @@
 			[notification show];
 			[notification release];
 
-			[_delegate timerViewController:self editingWasCanceled:_oldTimer];
+			if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
+				[_delegate timerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_oldTimer)];
 			return;
 		}
 
