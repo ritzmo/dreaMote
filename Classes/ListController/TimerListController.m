@@ -74,6 +74,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_cleanupButton release];
 	[_dateFormatter release];
 	[_timers release];
+	if(_timerViewController.delegate == self)
+		_timerViewController.delegate = nil;
 	[_timerViewController release];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
@@ -88,8 +90,9 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	if(!IS_IPAD())
 	{
-		[_timerViewController release];
-		_timerViewController = nil;
+		if(_timerViewController.delegate == self)
+			_timerViewController.delegate = nil;
+		SafeRetainAssign(_timerViewController, nil);
 	}
 	
     [super didReceiveMemoryWarning];
@@ -146,11 +149,9 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
-	_adBannerView = nil;
+	SafeRetainAssign(_adBannerView, nil);
 #endif
-	[_cleanupButton release];
-	_cleanupButton = nil;
+	SafeRetainAssign(_cleanupButton, nil);
 
 	[super viewDidUnload];
 }
@@ -234,8 +235,9 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	{
 		if(!IS_IPAD())
 		{
-			[_timerViewController release];
-			_timerViewController = nil;
+			if(_timerViewController.delegate == self)
+				_timerViewController.delegate = nil;
+			SafeRetainAssign(_timerViewController, nil);
 
 			[self emptyData];
 		}
@@ -410,8 +412,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	NSObject<TimerProtocol> *ourCopy = [timer copy];
 
-	if(_timerViewController == nil)
-		_timerViewController = [[TimerViewController alloc] init];
+	@synchronized(self)
+	{
+		if(_timerViewController == nil)
+			_timerViewController = [[TimerViewController alloc] init];
+	}
 
 	if(!IS_IPAD())
 		_willReappear = YES;
@@ -560,8 +565,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	// Add new Timer
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		if(_timerViewController == nil)
-			_timerViewController = [[TimerViewController alloc] init];
+		@synchronized(self)
+		{
+			if(_timerViewController == nil)
+				_timerViewController = [[TimerViewController alloc] init];
+		}
 
 		if(!IS_IPAD())
 			_willReappear = YES;
