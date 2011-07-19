@@ -319,7 +319,7 @@
 	}
 
 	// See if we have a valid file
-	NSObject<FileProtocol> *file = [_files objectAtIndex: indexPath.row];
+	NSObject<FileProtocol> *file = SafeReturn([_files objectAtIndex:indexPath.row]);
 	if(!file.valid)
 		return nil;
 	// if we're in playlist mode and we have a delegate call it back
