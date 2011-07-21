@@ -94,6 +94,8 @@ enum mediaPlayerTags
 	[_shuffleButton release];
 	[_timer release];
 	[_currentXMLDoc release];
+	[_closeSheet dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
+	[_closeSheet release]; // should not be needed after dismissing the sheet, but play it safe
 
 	progressHUD.delegate = nil;
 	[progressHUD release];
@@ -500,6 +502,9 @@ enum mediaPlayerTags
 									 toTarget:self
 								   withObject:@"exit"];
 		}
+		id old = _closeSheet;
+		_closeSheet = nil;
+		[old autorelease]; // delay release
 	}
 }
 
@@ -560,45 +565,52 @@ enum mediaPlayerTags
 	// NOTE: animating this does only hide the items, not the bar…
 	[self.navigationController setToolbarHidden:YES animated:NO];
 
-	// prompt: exit media player?
-	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:
-										NSLocalizedString(@"Close MediaPlayer?", @"Title of action sheet when leaving MediaPlayer view.")
-																   delegate:self
-														  cancelButtonTitle:NSLocalizedString(@"No", "")
-													 destructiveButtonTitle:nil
-														  otherButtonTitles:NSLocalizedString(@"Yes", ""), nil];
-	actionSheet.tag = TAG_EXIT;
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	UITabBarController *tabBarController = self.tabBarController;
-	UIView *view = nil;
-	if(tabBarController == nil) // XXX: bug in MGSplitViewController?
+	// NOTE: I had some problems locally with the action sheet being shown twice, so avoid it :D
+	@synchronized(self)
 	{
-		if(self.view)
+		if(_closeSheet == nil)
 		{
+			// prompt: exit media player?
+			_closeSheet = [[UIActionSheet alloc] initWithTitle:
+								NSLocalizedString(@"Close MediaPlayer?", @"Title of action sheet when leaving MediaPlayer view.")
+													  delegate:self
+											 cancelButtonTitle:NSLocalizedString(@"No", "")
+										destructiveButtonTitle:nil
+											 otherButtonTitles:NSLocalizedString(@"Yes", ""), nil];
+			_closeSheet.tag = TAG_EXIT;
+			_closeSheet.actionSheetStyle = UIActionSheetStyleDefault;
+			UITabBarController *tabBarController = self.tabBarController;
+			UIView *view = nil;
+			if(tabBarController == nil) // XXX: bug in MGSplitViewController?
+			{
+				if(self.view)
+				{
 #if IS_DEBUG()
-			NSLog(@"no tabBarController but self.view");
+					NSLog(@"no tabBarController but self.view");
 #endif
-			view = self.view;
-		}
-		else
-		{
-			tabBarController = APP_DELEGATE.tabBarController;
-		}
-	}
+					view = self.view;
+				}
+				else
+				{
+					tabBarController = APP_DELEGATE.tabBarController;
+				}
+			}
 
-	if(view)
-		[actionSheet showInView:view];
-	else if(tabBarController)
-		[actionSheet showFromTabBar:tabBarController.tabBar];
-	else
-	{
+			if(view)
+				[_closeSheet showInView:view];
+			else if(tabBarController)
+				[_closeSheet showFromTabBar:tabBarController.tabBar];
+			else
+			{
 #if IS_DEBUG()
-		[NSException raise:@"NeitherTabBarControllerNorView" format:@"unable to determine view to show actionSheet from."];
+				[NSException raise:@"NeitherTabBarControllerNorView" format:@"unable to determine view to show actionSheet from."];
 #else
-		// ignore
+				// ignore
 #endif
+			}
+		}
+		// ignore if another sheet is already shown
 	}
-	[actionSheet release];
 
 	[super viewWillDisappear:animated];
 }
@@ -703,6 +715,7 @@ enum mediaPlayerTags
 	_playlist.fileDelegate = nil;
 	SafeRetainAssign(_playlist, nil);
 	SafeRetainAssign(_controls, nil);
+	// NOTE: we deliberately don't release _closeSheet here, but it's pretty safe to assume that it's nil at this point
 
 	[super viewDidUnload];
 }

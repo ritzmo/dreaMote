@@ -61,6 +61,8 @@ enum retrieveCurrentUsing {
 	UIBarButtonItem *_shuffleButton;  /*!< @brief "Shuffle" Button. */
 	UIBarButtonItem *_deleteButton;
 	float _progressActions; /*!< @brief Shuffle/Delete actions left or -1 on unknown. */
+
+	UIActionSheet *_closeSheet; /*!< @brief "Close MediaPlayer" sheet shown when disappearing. */
 @protected
 	UIBarButtonItem *_addFolderItem; /*!< @brief "Add Folder" Button. */
 	UIBarButtonItem *_addPlayToggle; /*!< @brief Add/Play Toggle. */
