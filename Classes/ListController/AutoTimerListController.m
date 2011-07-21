@@ -17,6 +17,10 @@
 #import "Insort/NSArray+CWSortedInsert.h"
 #import "UITableViewCell+EasyInit.h"
 
+@interface AutoTimerListController()
+- (void)parseEPG:(id)sender;
+@end
+
 @implementation AutoTimerListController
 
 @synthesize isSplit = _isSplit;
@@ -87,8 +91,9 @@
 	{
 		if(_autotimerView == newAutotimerView) return;
 
-		[_autotimerView release];
-		_autotimerView = [newAutotimerView retain]; 
+		if(_autotimerView.delegate == self)
+			_autotimerView.delegate = nil;
+		SafeRetainAssign(_autotimerView, newAutotimerView);
 		_autotimerView.delegate = self;
 	}
 }
@@ -114,6 +119,36 @@
 	[_tableView reloadData];
 #endif
 	SafeRetainAssign(_curDocument, nil);
+}
+
+/* run epg parsing on remote receiver */
+- (void)parseEPGDefer
+{
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] parseAutoTimer];
+
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Finished parsing EPG", @"AutoTimer", @"Force parsing is finished, this could have been either an error or a success")
+														  message:result.resulttext // currently just dump the text there
+														 delegate:nil
+												cancelButtonTitle:@"OK"
+												otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+
+	[pool release];
+	_parsing = NO;
+}
+
+/* initiate epg parsing on remote receiver */
+- (void)parseEPG:(id)sender
+{
+	if(_parsing) return;
+	@synchronized(self)
+	{
+		if(!_parsing)
+			[NSThread detachNewThreadSelector:@selector(parseEPGDefer) toTarget:self withObject:nil];
+		_parsing = YES;
+	}
 }
 
 #pragma mark -
@@ -171,6 +206,17 @@
 	_tableView.sectionHeaderHeight = 0;
 	_tableView.allowsSelectionDuringEditing = YES;
 
+	// NOTE: always using toolbar now, as eventually we have to use one anyway (when adding settings), even though it looks kinda stupid on (at least) the iPad
+	const UIBarButtonItem *parseButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Parse EPG", @"AutoTimer", @"Start forced parsing of EPG") style:UIBarButtonItemStyleBordered target:self action:@selector(parseEPG:)];
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+	NSArray *items = [[NSArray alloc] initWithObjects:flexItem, parseButton, nil];
+	[self setToolbarItems:items animated:NO];
+	[items release];
+	[flexItem release];
+	[parseButton release];
+
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
@@ -200,6 +246,8 @@
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	[self.navigationController setToolbarHidden:NO animated:YES];
+
 	// Refresh cache
 	if(_refreshAutotimers && !_reloading)
 	{
@@ -224,6 +272,8 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
+	[self.navigationController setToolbarHidden:YES animated:YES];
+
 	if(self.editing)
 		[self setEditing:NO animated:animated];
 	[super viewWillDisappear:animated];

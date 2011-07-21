@@ -727,6 +727,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 #pragma mark AutoTimer
 
 #if IS_FULL()
+
+- (Result *)parseAutoTimer
+{
+	// TODO: we might change the API in a future version, this will have to be modified then
+	return [self getResultFromSimpleXmlWithRelativeString:@"/autotimer/parse"];
+}
+
 - (CXMLDocument *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
 {
 

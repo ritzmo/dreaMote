@@ -620,6 +620,14 @@ enum buttonCodes {
 #if IS_FULL()
 
 /*!
+ @brief Run forced parsing of EPG.
+
+ @return Result text returned by remote host.
+ */
+@optional // kFeaturesAutoTimer
+- (Result *)parseAutoTimer;
+
+/*!
  @brief Retrieve List of AutoTimers.
 
  @param delegate Delegate to be called back.

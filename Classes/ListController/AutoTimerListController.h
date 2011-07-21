@@ -25,6 +25,7 @@
 	CXMLDocument *_curDocument; /*!< @brief Current XML Document. */
 	BOOL _refreshAutotimers; /*!< @brief Refresh on next viewWillAppear? */
 	BOOL _isSplit; /*!< @brief Split mode? */
+	BOOL _parsing; /*!< @brief Currently parsing EPG? */
 	AutoTimerViewController *_autotimerView; /*!< @brief AutoTimer View. */
 }
 
