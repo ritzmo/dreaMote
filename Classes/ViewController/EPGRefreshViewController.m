@@ -686,6 +686,7 @@ enum generalSectionItems
 		case startSection:
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
 			cell.textLabel.text = NSLocalizedStringFromTable(@"Start refresh", @"EPGRefresh", @"start manual refresh of epg");
