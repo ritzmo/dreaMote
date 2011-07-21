@@ -1012,6 +1012,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return result;
 }
 
+- (Result *)startEPGRefresh
+{
+	return [self getResultFromSimpleXmlWithRelativeString:@"/epgrefresh/refresh"];
+}
+
 #pragma mark SleepTimer
 
 - (CXMLDocument *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate

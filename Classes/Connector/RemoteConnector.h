@@ -689,6 +689,14 @@ enum buttonCodes {
 @optional // kFeaturesEPGRefresh
 - (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets;
 
+/*!
+ @brief Initiate manual EPG refresh.
+
+ @return Valid Result on success, else invalid one with error message.
+ */
+@optional // kFeaturesEPGRefresh
+- (Result *)startEPGRefresh;
+
 #pragma mark -
 #pragma mark Sleeptimer
 #pragma mark -

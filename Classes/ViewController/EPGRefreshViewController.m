@@ -26,10 +26,11 @@
 
 enum sectionIds
 {
-	generalSection = 0,
-	serviceSection = 1,
-	bouquetSection = 2,
-	maxSection = 3,
+	startSection = 0,
+	generalSection = 1,
+	serviceSection = 2,
+	bouquetSection = 3,
+	maxSection = 4,
 };
 
 enum generalSectionItems
@@ -654,6 +655,8 @@ enum generalSectionItems
 {
 	switch(section)
 	{
+		case startSection:
+			return 1;
 		case generalSection:
 		{
 			NSInteger rowCount = maxGeneralRow;
@@ -680,6 +683,14 @@ enum generalSectionItems
 
 	switch(section)
 	{
+		case startSection:
+		{
+			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Start refresh", @"EPGRefresh", @"start manual refresh of epg");
+			break;
+		}
 		case generalSection:
 		{
 			// adjust row
@@ -903,6 +914,21 @@ enum generalSectionItems
 	UIViewController *targetViewController = nil;
 	switch(indexPath.section)
 	{
+		case startSection:
+		{
+			Result *result = [[RemoteConnectorObject sharedRemoteConnector] startEPGRefresh];
+			if(!result.result)
+			{
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	  message:[NSString stringWithFormat:NSLocalizedString(@"Received response: %@.", @"Generic Placeholder for system-supplied error messages"), result.resulttext]
+																	 delegate:nil
+															cancelButtonTitle:@"OK"
+															otherButtonTitles:nil];
+				[alert show];
+				[alert release];
+			}
+			break;
+		}
 		case generalSection:
 		{
 			// adjust row
