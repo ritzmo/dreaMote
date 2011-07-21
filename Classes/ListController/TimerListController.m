@@ -521,6 +521,21 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		if(section > 0)
 			index += _dist[section - 1];
 
+		if(index > _timers.count)
+		{
+#if IS_DEBUG()
+			[NSException raise:@"TimerListInvalidIndex" format:@"commitEditingStyle was triggered for invalid index %d (dists %d,%d,%d,%d, section %d / row %d, real count %d)", index, _dist[0], _dist[1], _dist[2], _dist[3], indexPath.section, indexPath.row, _timers.count];
+#else
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																  message:[NSString stringWithFormat:NSLocalizedString(@"Received invalid row (%d, %d) which was mapped to index %d of %d. Please reload this table and try again.", @"User interaction with TimerList failed because index could not be retrieved."), indexPath.section, indexPath.row, index, _timers.count]
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+#endif
+			return;
+		}
+
 		NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
 		if(!timer.valid)
 			return;
