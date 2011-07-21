@@ -193,8 +193,7 @@ return(self);
 
 NSAutoreleasePool *thePool = [[NSAutoreleasePool alloc] init];
 
-[nodePool release];
-nodePool = NULL;
+SafeRetainAssign(nodePool, NULL);
 
 [thePool release];
 //

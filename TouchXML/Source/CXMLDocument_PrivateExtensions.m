@@ -42,10 +42,16 @@ xmlParseDocument(inContext);
 
 - (NSMutableSet *)nodePool
 {
-if (nodePool == NULL)
+if(nodePool == NULL)
+{
+	@synchronized(self)
 	{
-	nodePool = [[NSMutableSet alloc] init];
+		if (nodePool == NULL)
+		{
+			nodePool = [[NSMutableSet alloc] init];
+		}
 	}
+}
 return(nodePool);
 }
 
