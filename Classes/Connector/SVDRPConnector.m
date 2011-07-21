@@ -430,6 +430,7 @@ typedef enum
 			// replace | by \n
 			[desc replaceOccurrencesOfString:@"|" withString:@"\n" options:NSLiteralSearch range:NSMakeRange(0, [desc length])];
 			newEvent.edescription = desc;
+			[desc release];
 		}
 		else if([firstFive isEqualToString:@"215-e"])
 		{
