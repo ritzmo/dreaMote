@@ -95,7 +95,7 @@ enum mediaPlayerTags
 	[_timer release];
 	[_currentXMLDoc release];
 	[_closeSheet dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
-	[_closeSheet release]; // should not be needed after dismissing the sheet, but play it safe
+	SafeRetainAssign(_closeSheet, nil); // should not be needed after dismissing the sheet, but play it safe
 
 	progressHUD.delegate = nil;
 	[progressHUD release];
@@ -531,6 +531,16 @@ enum mediaPlayerTags
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	@synchronized(self)
+	{
+		UIActionSheet *sheet = SafeReturn(_closeSheet); // make sure object persists
+		if(sheet)
+		{
+			[sheet dismissWithClickedButtonIndex:sheet.cancelButtonIndex animated:NO];
+			SafeRetainAssign(_closeSheet, nil); // remove reference
+		}
+	}
+
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAbout])
 		_retrieveCurrentUsing = kRetrieveCurrentUsingAbout;
 	else if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesCurrent])
