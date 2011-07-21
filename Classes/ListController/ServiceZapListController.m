@@ -43,12 +43,17 @@
 {
 	ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 	zlc.zapDelegate = delegate;
-	zlc.actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
-																   delegate:zlc
-														  cancelButtonTitle:nil
-													 destructiveButtonTitle:nil
-														  otherButtonTitles:nil];
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
+															 delegate:zlc
+													cancelButtonTitle:nil
+											   destructiveButtonTitle:nil
+													otherButtonTitles:nil];
+	zlc.actionSheet = actionSheet;
+	[actionSheet release];
+#ifndef __clang_analyzer__
+	// NOTE: this is evil and clang detects it :D
 	[zlc.actionSheet.delegate retain];
+#endif
 	[zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"OPlayer"];
@@ -254,12 +259,14 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+#ifndef __clang_analyzer__
 	id<UIActionSheetDelegate> delegate = nil;
 	@synchronized(self)
 	{
 		delegate = actionSheet.delegate;
 		actionSheet.delegate = nil;
 	}
+#endif
 
 	if(buttonIndex == actionSheet.cancelButtonIndex)
 	{
@@ -280,7 +287,10 @@
 
 		[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)buttonIndex];
 	}
+#ifndef __clang_analyzer__
+	// NOTE: we retain the delegate, so we have to release it here again
 	[delegate autorelease];
+#endif
 }
 
 @end

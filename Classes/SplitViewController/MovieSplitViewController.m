@@ -100,6 +100,7 @@
 		self.delegate = viewController;
 		newViewControllers = [NSArray arrayWithObjects: _movieListNavigationController, navController, nil];
 		[navController release];
+		[viewController release];
 	}
 	self.viewControllers = newViewControllers;
 

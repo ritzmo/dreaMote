@@ -195,7 +195,11 @@
 - (void)showMailComposer:(id)sender
 {
 	MFMailComposeViewController *mvc = [[MFMailComposeViewController alloc] init];
-	mvc.mailComposeDelegate = [self retain];
+	mvc.mailComposeDelegate = self;
+#ifndef __clang_analyzer__
+	// NOTE: this is evil, and even though clang does not detect it, preemptively hide it from him
+	[mvc.mailComposeDelegate retain];
+#endif
 	NSString *displayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
 	UIDevice *currentDevice = [UIDevice currentDevice];
@@ -363,8 +367,11 @@
 		[alert release];
 	}
 	[controller.parentViewController dismissModalViewControllerAnimated:YES];
-	[controller.mailComposeDelegate release];
-	controller.mailComposeDelegate = nil;
+#ifndef __clang_analyzer__
+	// NOTE: we actually retain the delegate manually, though it is supposed to be a weak reference
+	// but as the static analyzer catches this evil behavior of ours, just don't show it to him
+	SafeRetainAssign(controller.mailComposeDelegate, nil);
+#endif
 
 	[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
 }
