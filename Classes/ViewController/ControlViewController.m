@@ -135,10 +135,8 @@
 
 - (void)viewDidUnload
 {
-	[_slider release];
-	_slider = nil;
-	[_switchControl release];
-	_switchControl = nil;
+	SafeRetainAssign(_slider, nil);
+	SafeRetainAssign(_switchControl, nil);
 
 	[super viewDidUnload];
 }
@@ -179,74 +177,86 @@
 /* go to standby */
 - (void)standby:(id)sender
 {
-	((UIButton *)sender).enabled = NO;
-	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: section];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[[RemoteConnectorObject sharedRemoteConnector] standby];
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
-	((UIButton *)sender).enabled = YES;
+	@synchronized(self)
+	{
+		((UIButton *)sender).enabled = NO;
+		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
+		[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[[RemoteConnectorObject sharedRemoteConnector] standby];
+		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+		((UIButton *)sender).enabled = YES;
+	}
 }
 
 /* reboot */
 - (void)reboot:(id)sender
 {
-	((UIButton *)sender).enabled = NO;
-	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 1 inSection: section];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	@synchronized(self)
+	{
+		((UIButton *)sender).enabled = NO;
+		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:section];
+		[(UITableView *)self.view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 
-	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"reboot", "used in confirmation dialog: really reboot?")]
-																   delegate:self
-														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
-													 destructiveButtonTitle:NSLocalizedString(@"Reboot", "")
-														  otherButtonTitles:nil];
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showFromTabBar:self.tabBarController.tabBar];
-	[actionSheet release];
-	((UIButton *)sender).enabled = YES;
+		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"reboot", "used in confirmation dialog: really reboot?")]
+																	   delegate:self
+															  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+														 destructiveButtonTitle:NSLocalizedString(@"Reboot", "")
+															  otherButtonTitles:nil];
+		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		[actionSheet release];
+		((UIButton *)sender).enabled = YES;
+	}
 }
 
 /* restart gui */
 - (void)restart:(id)sender
 {
-	((UIButton *)sender).enabled = NO;
-	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 2 inSection: section];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	@synchronized(self)
+	{
+		((UIButton *)sender).enabled = NO;
+		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:section];
+		[(UITableView *)self.view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 
-	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"restart", "used in confirmation dialog: really restart?")]
-																   delegate:self
-														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
-													 destructiveButtonTitle:NSLocalizedString(@"Restart", "")
-														  otherButtonTitles:nil];
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showFromTabBar:self.tabBarController.tabBar];
-	[actionSheet release];
-	((UIButton *)sender).enabled = YES;
+		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"restart", "used in confirmation dialog: really restart?")]
+																	   delegate:self
+															  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+														 destructiveButtonTitle:NSLocalizedString(@"Restart", "")
+															  otherButtonTitles:nil];
+		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		[actionSheet release];
+		((UIButton *)sender).enabled = YES;
+	}
 }
 
 /* shutdown */
 -(void)shutdown:(id)sender
 {
-	((UIButton *)sender).enabled = NO;
-	const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord] ? 2 : 1;
-	const NSInteger row = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesGUIRestart] ? 3: 2;
-	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: row inSection: section];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-	[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+	@synchronized(self)
+	{
+		((UIButton *)sender).enabled = NO;
+		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
+		const NSInteger row = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesGUIRestart] ? 3: 2;
+		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+		[(UITableView *)self.view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
 
-	const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"shutdown", "used in confirmation dialog: really shutdown?")]
-																   delegate:self
-														  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
-													 destructiveButtonTitle:NSLocalizedString(@"Shutdown", "")
-														  otherButtonTitles:nil];
-	actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-	[actionSheet showFromTabBar:self.tabBarController.tabBar];
-	[actionSheet release];
-	((UIButton *)sender).enabled = YES;
+		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"shutdown", "used in confirmation dialog: really shutdown?")]
+																	   delegate:self
+															  cancelButtonTitle:NSLocalizedString(@"Cancel", "")
+														 destructiveButtonTitle:NSLocalizedString(@"Shutdown", "")
+															  otherButtonTitles:nil];
+		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		[actionSheet release];
+		((UIButton *)sender).enabled = YES;
+	}
 }
 
 /* toggle muted state */
