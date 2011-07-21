@@ -71,6 +71,11 @@ enum retrieveCurrentUsing {
 }
 
 /*!
+ @brief Hide action sheet if visible.
+ */
+- (void)dismissActionSheet:(NSNotification *)notif;
+
+/*!
  @brief Clear Playlist.
 
  @param sender Unused parameter required by Buttons.

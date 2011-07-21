@@ -421,6 +421,12 @@ enum mediaPlayerTags
 	[pool release];
 }
 
+- (void)dismissActionSheet:(NSNotification *)notif
+{
+	[SafeReturn(_closeSheet) dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
+	SafeRetainAssign(_closeSheet, nil);
+}
+
 #pragma mark -
 #pragma mark MediaPlayerShuffleDelegate
 #pragma mark -
@@ -720,6 +726,7 @@ enum mediaPlayerTags
 
 - (void)viewDidUnload
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	_fileList.fileDelegate = nil;
 	SafeRetainAssign(_fileList, nil);
 	_playlist.fileDelegate = nil;

@@ -90,10 +90,18 @@
 	_fileList = [[FileListView alloc] initWithFrame: self.view.frame];
 	_fileList.path = @"/";
 	_fileList.fileDelegate = self;
+
+	// start listening to background notification
+	// NOTE: needed by parent to hide action sheet when backgrounded
+	if([UIDevice runsIos4OrBetter])
+	{
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	}
 }
 
 - (void)viewDidUnload
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self]; // NOTE: parent should do this, but since we set it, we should unset it
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
 	SafeRetainAssign(_tableView, nil);
