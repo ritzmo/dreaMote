@@ -281,9 +281,9 @@
 	//if(tableView.lastSwipe & twoFingers)
 	{
 		NSObject<EventProtocol> *newEvent = nil;
-		if(tableView.lastSwipe & swipeTypeLeft)
+		if(tableView.lastSwipe & swipeTypeRight)
 			newEvent = [[EPGCache sharedInstance] getPreviousEvent:_event onService:_service];
-		else // if(tableView.lastSwipe & swipeTypeRight)
+		else // if(tableView.lastSwipe & swipeTypeLeft)
 			newEvent = [[EPGCache sharedInstance] getNextEvent:_event onService:_service];
 
 		if(newEvent)

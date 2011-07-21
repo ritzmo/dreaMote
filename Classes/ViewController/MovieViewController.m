@@ -238,9 +238,9 @@
 	//if(tableView.lastSwipe & twoFingers)
 	{
 		NSObject<MovieProtocol> *newMovie = nil;
-		if(tableView.lastSwipe & swipeTypeLeft)
+		if(tableView.lastSwipe & swipeTypeRight)
 			newMovie = [movieList previousMovie];
-		else // if(tableView.lastSwipe & swipeTypeRight)
+		else // if(tableView.lastSwipe & swipeTypeLeft)
 			newMovie = [movieList nextMovie];
 
 		if(newMovie)

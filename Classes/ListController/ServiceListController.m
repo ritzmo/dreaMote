@@ -663,7 +663,7 @@
 	else if(tableView.lastSwipe & oneFinger)
 	{
 		NSObject<EventProtocol> *evt = nil;
-		if(tableView.lastSwipe & swipeTypeLeft)
+		if(tableView.lastSwipe & swipeTypeRight)
 			evt = (NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row];
 		else if([_subList count] > indexPath.row) // check if we have "next" event, if not the validity check will fail (so ignore the else case)
 			evt = (NSObject<EventProtocol > *)[_subList objectAtIndex: indexPath.row];
