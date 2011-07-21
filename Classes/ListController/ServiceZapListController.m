@@ -121,9 +121,9 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
+	SafeRetainAssign(_zapDelegate, nil);
 	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
 	SafeRetainAssign(_actionSheet, nil);
-	[_zapDelegate release];
 
 	[super dealloc];
 }
