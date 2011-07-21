@@ -746,13 +746,6 @@
 		DAC8C4F913B2034100CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
 		DAC8C4FA13B2034100CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
 		DAC8C4FB13B2034100CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
-		DAC8C4FF13B2034C00CA00D9 /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */; };
-		DAC8C50213B2034C00CA00D9 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4EF13B2034100CA00D9 /* EPGRefresh.strings */; };
-		DAC8C50313B2034C00CA00D9 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4EF13B2034100CA00D9 /* EPGRefresh.strings */; };
-		DAC8C50413B2034C00CA00D9 /* EPGRefresh.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4EF13B2034100CA00D9 /* EPGRefresh.strings */; };
-		DAC8C50513B2034C00CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
-		DAC8C50613B2034C00CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
-		DAC8C50713B2034C00CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
 		DAC8C50E13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50813B2038300CA00D9 /* MainWindow-iPad.xib */; };
 		DAC8C50F13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50813B2038300CA00D9 /* MainWindow-iPad.xib */; };
 		DAC8C51013B2038300CA00D9 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50813B2038300CA00D9 /* MainWindow-iPad.xib */; };
@@ -2154,6 +2147,9 @@
 /* Begin PBXProject section */
 		DAC8BE4213B1FF9200CA00D9 /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0410;
+			};
 			buildConfigurationList = DAC8BE4513B1FF9200CA00D9 /* Build configuration list for PBXProject "dreaMote" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
@@ -2266,9 +2262,6 @@
 				DAC8C4F313B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F613B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4F913B2034100CA00D9 /* Localizable.strings in Resources */,
-				DAC8C4FF13B2034C00CA00D9 /* AutoTimer.strings in Resources */,
-				DAC8C50213B2034C00CA00D9 /* EPGRefresh.strings in Resources */,
-				DAC8C50513B2034C00CA00D9 /* Localizable.strings in Resources */,
 				DAC8C50E13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51113B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51413B2038300CA00D9 /* OtherList.xib in Resources */,
@@ -2368,8 +2361,6 @@
 				DAC8C4F413B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F713B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4FA13B2034100CA00D9 /* Localizable.strings in Resources */,
-				DAC8C50313B2034C00CA00D9 /* EPGRefresh.strings in Resources */,
-				DAC8C50613B2034C00CA00D9 /* Localizable.strings in Resources */,
 				DAC8C50F13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51213B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */,
@@ -2466,8 +2457,6 @@
 				DAC8C4F513B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F813B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4FB13B2034100CA00D9 /* Localizable.strings in Resources */,
-				DAC8C50413B2034C00CA00D9 /* EPGRefresh.strings in Resources */,
-				DAC8C50713B2034C00CA00D9 /* Localizable.strings in Resources */,
 				DAC8C51013B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51313B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */,
