@@ -81,6 +81,7 @@
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	self.view = contentView;
+	[contentView release];
 	CGRect visibleFrame = CGRectMake(0, headerHeight, contentView.frame.size.width, contentView.frame.size.height-headerHeight);
 	_tableView.frame = visibleFrame;
 	[contentView addSubview:_tableView];
