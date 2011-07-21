@@ -691,6 +691,12 @@
 /* No comment provided by engineer. */
 "Reboot" = "Neu starten";
 
+/* User interaction with TimerList failed because index could not be retrieved. */
+"Received invalid row (%d, %d) which was mapped to index %d of %d. Please reload this table and try again." = "Ungültige Reihe ausgewählt (%1$d, %2$d), die als Zeile %3$d von %4$d errechnet wurde. Bitte die Tabelle neu laden und erneut probieren.";
+
+/* Generic Placeholder for system-supplied error (and possibly success) messages */
+"Received response: %@." = "Erhielt Antwort: %@.";
+
 /* No comment provided by engineer. */
 "Receiver model" = "Gerätetyp";
 

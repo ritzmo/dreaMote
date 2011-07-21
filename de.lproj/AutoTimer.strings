@@ -25,6 +25,9 @@
 /* Exclude Filter */
 "Exclude" = "Ausschließen";
 
+/* Force parsing is finished, this could have been either an error or a success */
+"Finished parsing EPG" = "Sendungssuche abgeschlossen";
+
 /* timespan from */
 "From: %@" = "Von: %@";
 
@@ -45,6 +48,9 @@
 
 /* Avoid Duplicate Description disabled */
 "No" = "Nein";
+
+/* Start forced parsing of EPG */
+"Parse EPG" = "EPG Durchsuchen";
 
 /* Avoid Duplicate Description 1 (timers on same service) */
 "Same Service" = "Auf dem gleichen Sender";
