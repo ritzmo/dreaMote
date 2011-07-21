@@ -411,7 +411,7 @@ enum neutrinoMessageTypes {
 		objRange.length = [timerStringComponents count] - 7;
 		NSString *sref = [[timerStringComponents subarrayWithRange:objRange] componentsJoinedByString:@" "];
 
-		NSObject<ServiceProtocol> *service = [serviceMap valueForKey:sref];
+		NSObject<ServiceProtocol> *service = [[serviceMap valueForKey:sref] retain];
 		if(service == nil)
 		{
 			// create new service
