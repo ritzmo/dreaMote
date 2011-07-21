@@ -121,7 +121,8 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	[_actionSheet release];
+	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+	SafeRetainAssign(_actionSheet, nil);
 	[_zapDelegate release];
 
 	[super dealloc];
@@ -153,7 +154,8 @@
 
 - (void)dismissActionSheet:(NSNotification *)notif
 {
-	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+	[SafeReturn(_actionSheet) dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+	SafeRetainAssign(_actionSheet, nil);
 }
 
 #pragma mark	-
