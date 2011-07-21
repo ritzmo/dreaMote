@@ -920,7 +920,7 @@ enum generalSectionItems
 			if(!result.result)
 			{
 				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-																	  message:[NSString stringWithFormat:NSLocalizedString(@"Received response: %@.", @"Generic Placeholder for system-supplied error messages"), result.resulttext]
+																	  message:[NSString stringWithFormat:NSLocalizedString(@"Received response: %@.", @"Generic Placeholder for system-supplied error (and possibly success) messages"), result.resulttext]
 																	 delegate:nil
 															cancelButtonTitle:@"OK"
 															otherButtonTitles:nil];
