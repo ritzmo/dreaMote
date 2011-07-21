@@ -346,9 +346,10 @@
 
 	@synchronized(self)
 	{
+		NSDate *begin = SafeReturn(_curBegin);
 		NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-		NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
-		[_epgCache readEPGForTimeIntervalFrom:_curBegin until:until to:self];
+		NSDate *until = [begin dateByAddingTimeInterval:[timeInterval floatValue]];
+		[_epgCache readEPGForTimeIntervalFrom:begin until:SafeReturn(until) to:SafeReturn(self)];
 	}
 
 	[pool release];
