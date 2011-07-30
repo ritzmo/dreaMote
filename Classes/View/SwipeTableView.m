@@ -36,15 +36,7 @@ static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent
 		const BOOL newerThan32 = [UIDevice newerThanIos:3.2f];
 		if(newerThan32)
 		{
-			UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeftAction:)];
-			swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
-			[self addGestureRecognizer:swipeGesture];
-			[swipeGesture release];
-
-			swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRightAction:)];
-			swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
-			[self addGestureRecognizer:swipeGesture];
-			[swipeGesture release];
+			needsInit = YES;
 		}
 		else
 		{
@@ -73,6 +65,30 @@ static void touchesEnded(SwipeTableView* self, SEL _cmd, NSSet* touches, UIEvent
 }
 
 #pragma mark - iOS 3.2+
+
+- (void)setDelegate:(id<UITableViewDelegate>)delegate
+{
+	// only add gesture recognizers of delegate conforms to our protocol
+	// prevents side-effects like not working "swipe to delete" since cancelsTouchesInView = NO does not
+	// appear to take care of that
+	if(needsInit && [delegate conformsToProtocol:@protocol(SwipeTableViewDelegate)])
+	{
+		needsInit = NO;
+
+		UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeftAction:)];
+		swipeGesture.cancelsTouchesInView = NO;
+		swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+		[self addGestureRecognizer:swipeGesture];
+		[swipeGesture release];
+
+		swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRightAction:)];
+		swipeGesture.cancelsTouchesInView = NO;
+		swipeGesture.direction = UISwipeGestureRecognizerDirectionRight;
+		[self addGestureRecognizer:swipeGesture];
+		[swipeGesture release];
+	}
+	[super setDelegate:delegate];
+}
 
 - (void)swipeAction:(UISwipeGestureRecognizer *)gesture
 {
