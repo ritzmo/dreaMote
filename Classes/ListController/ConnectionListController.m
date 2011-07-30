@@ -106,13 +106,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSMutableDictionary *con = [[_connections objectAtIndex:indexPath.row] mutableCopy];
-	[_delegate connectionSelected:con];
-	[con autorelease];
-
+	NSObject<ConnectionListDelegate> *delegate = [_delegate retain];
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	else
-		[self.navigationController popViewControllerAnimated:YES];
+		// do NOT animate this, as our parent will animate another transition
+		[self.navigationController popViewControllerAnimated:NO];
+
+	[delegate connectionSelected:con];
+	[con autorelease];
+	[delegate release];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
