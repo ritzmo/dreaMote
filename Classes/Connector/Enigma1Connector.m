@@ -428,6 +428,7 @@ fetchServices_out:
 	Result *result = [self zapTo:service];
 	if(result.result)
 	{
+		[NSThread sleepForTimeInterval:1]; // sleep for one second to have a little time for tuning
 		NSURL *myURI = [NSURL URLWithString:@"/video.m3u" relativeToURL:_baseAddress];
 
 		NSHTTPURLResponse *response;
