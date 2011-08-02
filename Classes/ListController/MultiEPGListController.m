@@ -401,7 +401,8 @@
 		[self emptyData];
 
 		// Spawn a thread to fetch the event data so that the UI is not blocked while the
-		// application parses the XML file.
+		// application parses the XML file(s).
+		// NOTE: not running from our queue as we don't want this to be canceled
 		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
 	}
 	else

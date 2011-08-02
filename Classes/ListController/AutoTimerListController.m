@@ -254,9 +254,8 @@
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 		[self emptyData];
 
-		// Spawn a thread to fetch the service data so that the UI is not blocked while the
-		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		// Run this in our "temporary" queue
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 	else
 	{
@@ -441,13 +440,13 @@
 - (void)autoTimerViewController:(AutoTimerViewController *)tvc timerWasAdded:(AutoTimer *)at
 {
 	[self emptyData];
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 - (void)autoTimerViewController:(AutoTimerViewController *)tvc timerWasEdited:(AutoTimer *)at
 {
 	[self emptyData];
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 - (void)autoTimerViewController:(AutoTimerViewController *)tvc editingWasCanceled:(AutoTimer *)at;

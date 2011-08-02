@@ -455,10 +455,9 @@
 		// empty again, sometimes now/next gets stuck
 		[self emptyData];
 
-		// Spawn a thread to fetch the event data so that the UI is not blocked while the
-		// application parses the XML file.
+		// Run this in our "temporary" queue
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesCurrent])
-			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 
 #if INCLUDE_FEATURE(Ads)

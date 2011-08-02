@@ -148,9 +148,8 @@
 	_multiEPG.bouquet = new;
 #endif
 
-	// Spawn a thread to fetch the event data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	// Run this in our "temporary" queue
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 /* getter of reloading property */
@@ -366,9 +365,8 @@
 
 		[self emptyData];
 
-		// Spawn a thread to fetch the service data so that the UI is not blocked while the
-		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		// Run this in our "temporary" queue
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 	else
 	{

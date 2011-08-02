@@ -260,10 +260,9 @@
 {
 	if(!_reloading)
 	{
-		// Spawn a thread to fetch the event data so that the UI is not blocked while the
-		// application parses the XML file.
+		// Run this in our "temporary" queue
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
-			[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 }
 

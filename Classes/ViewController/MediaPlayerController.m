@@ -115,10 +115,10 @@ enum mediaPlayerTags
 	switch(_retrieveCurrentUsing)
 	{
 		case kRetrieveCurrentUsingAbout:
-			[NSThread detachNewThreadSelector:@selector(fetchAbout) toTarget:self withObject:nil];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchAbout)];
 			break;
 		case kRetrieveCurrentUsingCurrent:
-			[NSThread detachNewThreadSelector:@selector(fetchCurrent) toTarget:self withObject:nil];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchCurrent)];
 			break;
 		default:
 			[_timer invalidate];

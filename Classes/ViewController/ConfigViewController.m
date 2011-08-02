@@ -566,7 +566,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 								withRowAnimation:UITableViewRowAnimationFade];
 		[(UITableView *)self.view endUpdates];
 	}
-	else
+	else if(numberOfSections != 3) // NOTE: we also expect "3" if this was fired multiple times
 	{
 #if IS_DEBUG()
 		[NSException raise:@"InvalidSectionCountOnMakeDefault" format:@"numberOfSections was %d, expected 4. kActiveConnection was %d, _connectionIndex is %d, connected was %d", numberOfSections, curDefault, _connectionIndex, connectedId];

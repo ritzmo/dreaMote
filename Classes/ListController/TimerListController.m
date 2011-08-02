@@ -118,9 +118,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
-	// Spawn a thread to fetch the timer data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	// Run this in our "temporary" queue
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 /* layout */
@@ -202,9 +201,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
-		// Spawn a thread to fetch the timer data so that the UI is not blocked while the
-		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		// Run this in our "temporary" queue
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 	else
 	{
@@ -562,9 +560,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 				// NOTE: this WILL reset our scroll position..
 				[self emptyData];
 
-				// Spawn a thread to fetch the timer data so that the UI is not blocked while the
-				// application parses the XML file.
-				[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+				// Run this in our "temporary" queue
+				[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 			}
 		}
 		// Timer could not be deleted
@@ -630,14 +627,14 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	// TODO: check if we can implement optimized reload
 	[self emptyData];
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 - (void)timerViewController:(TimerViewController *)tvc timerWasEdited:(NSObject<TimerProtocol> *)timer :(NSObject<TimerProtocol> *)oldTimer;
 {
 	// TODO: check if we can implement optimized reload
 	[self emptyData];
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 - (void)timerViewController:(TimerViewController *)tvc editingWasCanceled:(NSObject<TimerProtocol> *)timer;

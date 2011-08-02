@@ -125,9 +125,8 @@
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:self];
 
-	// Spawn a thread to fetch the files so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	// Run this in our "temporary" queue
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 /* start download of file list */
@@ -182,9 +181,8 @@
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:self];
 
-	// Spawn a thread to fetch the files so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	// Run this in our "temporary" queue
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 /* remove file from list */

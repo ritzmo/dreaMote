@@ -123,9 +123,8 @@
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 
-		// Spawn a thread to fetch the service data so that the UI is not blocked while the
-		// application parses the XML file.
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		// Run this in our "temporary" queue
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 	else
 	{
@@ -187,9 +186,8 @@
 	[_locations removeAllObjects];
 	[_tableView reloadData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
-	// Spawn a thread to fetch the service data so that the UI is not blocked while the
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	// Run this in our "temporary" queue
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	_refreshLocations = NO;
 }
 

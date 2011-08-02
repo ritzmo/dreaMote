@@ -95,9 +95,8 @@
 
 - (void)fetchSignalDefer
 {
-	// Spawn a thread to fetch the signal data so that the UI is not blocked while the 
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchSignal) toTarget:self withObject:nil];
+	// Run this in our "temporary" queue
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchSignal)];
 }
 
 - (void)fetchSignal

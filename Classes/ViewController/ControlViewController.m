@@ -428,9 +428,7 @@
 {
 	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
 
-	// Spawn a thread to fetch the volume data so that the UI is not blocked while the 
-	// application parses the XML file.
-	[NSThread detachNewThreadSelector:@selector(fetchVolume) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchVolume)];
 
 	[super viewWillAppear: animated];
 }

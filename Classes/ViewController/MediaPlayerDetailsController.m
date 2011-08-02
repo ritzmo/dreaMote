@@ -118,7 +118,7 @@
 	[self emptyData];
 
 	// playing track changed, update local metadata
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 /*!
@@ -303,7 +303,7 @@
 
 	if(!(_currentTrack.coverpath == nil || [_currentTrack.coverpath isEqualToString: @""])
 	   && [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesFileDownload])
-		[NSThread detachNewThreadSelector:@selector(fetchCoverart) toTarget:self withObject:nil];
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchCoverart)];
 	else
 	{
 		SafeRetainAssign(_currentCover, nil);

@@ -22,6 +22,7 @@
 	NSMutableArray *netServices; /*!< @brief List of net services. */
 	NSMutableArray *connections; /*!< @brief List of connections. */
 	NSDictionary *connection; /*!< @brief Active connection. */
+	NSOperationQueue *queue; /*!< @brief "Temporary" operations for current view. */
 }
 
 /*!
@@ -140,5 +141,19 @@
  @return Credentials for current connection.
  */
 + (NSURLCredential *)getCredential;
- 	
+
+/*!
+ @brief Returns queue for view related operations.
+
+ @return NSOperationQueue for view related operations.
+ */
++ (const NSOperationQueue *)queue;
+
+/*!
+ @brief Queue a new invocation.
+
+ Creates a new NSInvocationOperation object and adds it to our "temporary" queue.
+ */
++ (void)queueInvocationWithTarget:(id)target selector:(SEL)sel;
+
 @end

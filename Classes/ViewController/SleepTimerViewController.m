@@ -338,7 +338,7 @@ enum generalSectionItems
 
 	[self setEditing:YES animated:YES];
 	[self emptyData];
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

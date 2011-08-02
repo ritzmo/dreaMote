@@ -33,6 +33,7 @@
 @property (nonatomic, retain) NSMutableArray *connections;
 @property (nonatomic, retain) NSDictionary *connection;
 @property (nonatomic, retain) NSMutableArray *netServices;
+@property (nonatomic, readonly) NSOperationQueue *queue;
 @end
 
 @interface RemoteConnectorObject(AutoDiscovery)
@@ -42,14 +43,24 @@
 
 @implementation RemoteConnectorObject
 
-@synthesize connections, connection, netServices;
+@synthesize connections, connection, netServices, queue;
 
 static NSObject<RemoteConnector> *_sharedRemoteConnector = nil;
 static RemoteConnectorObject *singleton;
 
+- (id)init
+{
+	if((self = [super init]))
+	{
+		queue = [[NSOperationQueue alloc] init];
+	}
+	return self;
+}
+
 - (void)dealloc
 {
 	singleton = nil;
+	[queue release];
 	[netServiceBrowser release];
 	[netServices release];
 	[connections release];
@@ -422,6 +433,20 @@ static RemoteConnectorObject *singleton;
 	}
 	[connection release]; // decrease refcount again
 	return retVal;
+}
+
++ (const NSOperationQueue *)queue
+{
+	// NOTE: not using SafeReturn here, because the singleton is never released thus this object should always be valid
+	return [RemoteConnectorObject singleton].queue;
+}
+
++ (void)queueInvocationWithTarget:(id)target selector:(SEL)sel
+{
+	NSOperationQueue *queue = singleton ? singleton.queue : [RemoteConnectorObject singleton].queue; // odd, but slightly faster
+	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:target selector:sel object:nil];
+	[queue addOperation:operation];
+	[operation release];
 }
 
 @end
