@@ -447,6 +447,12 @@
 		[myTableView reloadData];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+	[RemoteConnectorObject cancelPendingOperations];
+	[super viewDidAppear:animated];
+}
+
 #pragma mark UITableView delegates
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

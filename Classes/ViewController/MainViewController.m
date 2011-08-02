@@ -331,6 +331,7 @@
 {
 	[self.selectedViewController viewWillDisappear:YES];
 	[self.selectedViewController viewDidDisappear:YES];
+	[RemoteConnectorObject cancelPendingOperations];
 
 	if(![self checkConnection])
 	{

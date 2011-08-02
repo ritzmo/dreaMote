@@ -143,11 +143,9 @@
 + (NSURLCredential *)getCredential;
 
 /*!
- @brief Returns queue for view related operations.
-
- @return NSOperationQueue for view related operations.
+ @brief Cancel pending view related operations.
  */
-+ (const NSOperationQueue *)queue;
++ (void)cancelPendingOperations;
 
 /*!
  @brief Queue a new invocation.

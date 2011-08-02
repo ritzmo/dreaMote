@@ -435,10 +435,10 @@ static RemoteConnectorObject *singleton;
 	return retVal;
 }
 
-+ (const NSOperationQueue *)queue
++ (void)cancelPendingOperations
 {
-	// NOTE: not using SafeReturn here, because the singleton is never released thus this object should always be valid
-	return [RemoteConnectorObject singleton].queue;
+	NSOperationQueue *queue = singleton.queue; // either null (and thus no operations to cancel) or valid
+	[queue cancelAllOperations];
 }
 
 + (void)queueInvocationWithTarget:(id)target selector:(SEL)sel
