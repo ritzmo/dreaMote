@@ -1036,7 +1036,7 @@ enum generalSectionItems
 	if(!_willReappear)
 	{
 		[self emptyData];
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 	_willReappear = NO;
 }

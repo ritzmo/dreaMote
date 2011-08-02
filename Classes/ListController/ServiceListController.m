@@ -429,21 +429,21 @@
 /* fetch main list */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	SafeRetainAssign(_mainXMLDoc, nil); // though unlikely to cause any trouble, make sure _mainXMLDoc is nil before releasing it...
 	_reloading = YES;
 	if(_supportsNowNext)
 	{
 		pendingRequests = 2;
-		[NSThread detachNewThreadSelector:@selector(fetchNextData) toTarget:self withObject:nil];
-		[NSThread detachNewThreadSelector:@selector(fetchNowData) toTarget:self withObject:nil];
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNowData)];
 	}
 	else
 	{
 		pendingRequests = 1;
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
+		[pool release];
 	}
-	[pool release];
 }
 
 /* fetch now list */

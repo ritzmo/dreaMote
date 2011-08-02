@@ -318,7 +318,7 @@
 			// override local service if event has one
 			if(_event.service != nil)
 				self.service = _event.service;
-			[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchEvents)];
 
 			// XXX: animated reload looks weird
 			[(UITableView *)self.view reloadData];
@@ -530,7 +530,7 @@
 			// if there is no service yet, try to assign local one
 			if(_event.service == nil)
 				_event.service = _service;
-			[NSThread detachNewThreadSelector:@selector(fetchEvents) toTarget:self withObject:nil];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchEvents)];
 		}
 
 		_similarFetched = YES;
