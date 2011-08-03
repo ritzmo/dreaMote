@@ -302,6 +302,8 @@ enum sectionIds
 		// FIXME: seen some crashlogs which supposedly ran into this case...
 		if(indexPath.row < upperBound)
 		{
+			[RemoteConnectorObject cancelPendingOperations];
+
 			// open ConfigViewController if editing
 			if(self.editing)
 			{
