@@ -95,6 +95,9 @@
 	[_keyPad release];
 	[_navigationPad release];
 
+	[_queue cancelAllOperations];
+	SafeRetainAssign(_queue, nil);
+
 	[super dealloc];
 }
 
@@ -280,6 +283,9 @@
 	_imageView.autoresizesSubviews = YES;
 	_imageView.contentMode = UIViewContentModeScaleAspectFit;
 	[_scrollView addSubview: _imageView];
+
+	// not really view-related, but as we only need this when visible...
+	_queue = [[NSOperationQueue alloc] init];
 }
 
 - (void)viewDidUnload
@@ -294,6 +300,9 @@
 
 	SafeRetainAssign(_keyPad, nil);
 	SafeRetainAssign(_navigationPad, nil);
+
+	[_queue cancelAllOperations];
+	SafeRetainAssign(_queue, nil);
 
 	[super viewDidUnload];
 }
@@ -395,20 +404,20 @@
 
 - (void)buttonPressed:(RCButton *)sender
 {
-	// Spawn a thread to send the request so that the UI is not blocked while
-	// waiting for the response.
-	[NSThread detachNewThreadSelector:@selector(sendButton:)
-							toTarget:self
-							withObject: [NSNumber numberWithInteger: sender.rcCode]];
+	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self
+																			selector:@selector(sendButton:)
+																			  object:[NSNumber numberWithInteger: sender.rcCode]];
+	[_queue addOperation:operation];
+	[operation release];
 }
 
 - (IBAction)buttonPressedIB:(UIButton *)sender
 {
-	// Spawn a thread to send the request so that the UI is not blocked while
-	// waiting for the response.
-	[NSThread detachNewThreadSelector:@selector(sendButton:)
-							toTarget:self
-							withObject: [NSNumber numberWithInteger: sender.tag]];
+	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self
+																			selector:@selector(sendButton:)
+																			  object:[NSNumber numberWithInteger: sender.tag]];
+	[_queue addOperation:operation];
+	[operation release];
 }
 
 - (void)toggleStandby:(id)sender
@@ -418,13 +427,9 @@
 
 - (void)sendButtonInternal: (NSInteger)rcCode
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	if([[RemoteConnectorObject sharedRemoteConnector] sendButton: rcCode]
 	   && _shouldVibrate)
 		AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
-
-	[pool release];
 }
 
 - (void)sendButton: (NSNumber *)rcCode

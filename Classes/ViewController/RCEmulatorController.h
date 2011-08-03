@@ -25,6 +25,7 @@
 	ZoomingScrollView *_scrollView; /*!< @brief Container of Screenshot View. */
 	UIImageView *_imageView; /*!< @brief Actual Screenshot UI Item. */
 	UIBarButtonItem *_screenshotButton; /*!< @brief Button to quickly change to Screenshot View. */
+	NSOperationQueue *_queue; /*!< @brief NSOperationQueue for button presses. */
 
 	NSInteger _screenshotType; /*!< @brief Selected Screenshot type. */
 @protected
