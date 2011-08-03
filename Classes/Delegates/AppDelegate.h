@@ -40,7 +40,17 @@ typedef enum
 	NSURL *cachedURL; /*!< @brief Cached URL request. */
 	NSString *cachedFilename; /*!< @brief Cached zip name for import. */
 	welcomeTypes welcomeType; /*!< @brief Type of welcome we're showing. */
+	NSInteger networkIndicatorCount; /*!< @brief Currently pending network operations. */
 }
+
+/*!
+ @brief Increase networkIndicatorCount
+ */
+- (void)addNetworkOperation;
+/*!
+ @brief Decrease networkIndicatorCount
+ */
+- (void)removeNetworkOperation;
 
 /*!
  @brief Application window.

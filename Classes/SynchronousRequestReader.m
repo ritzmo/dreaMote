@@ -8,6 +8,7 @@
 
 #import "SynchronousRequestReader.h"
 
+#import "AppDelegate.h"
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
@@ -70,12 +71,12 @@
 		[NSException raise:@"ExcSRRNoConnection" format:@""];
 #endif
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	while(con && srr.running)
 	{
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	}
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 	[con cancel]; // just in case, cancel the connection
 
 	// hand over response & error if requested

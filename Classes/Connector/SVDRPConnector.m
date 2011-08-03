@@ -11,6 +11,8 @@
 #import <SmallSockets/BufferedSocket.h>
 #import <Constants.h>
 
+#import <Delegates/AppDelegate.h>
+
 #import <Objects/Generic/Event.h>
 #import <Objects/Generic/Movie.h>
 #import <Objects/Generic/Service.h>
@@ -207,7 +209,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -215,7 +217,7 @@ typedef enum
 
 	[_socket writeString: [NSString stringWithFormat: @"CHAN %@\r\n", service.sref]];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
@@ -301,7 +303,7 @@ typedef enum
 		return nil;
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -339,7 +341,7 @@ typedef enum
 			NSError *error = [NSError errorWithDomain:@"myDomain"
 												 code:110
 											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			[APP_DELEGATE removeNetworkOperation];
 			[self indicateError:delegate error:error];
 			return nil;
 		}
@@ -355,7 +357,7 @@ typedef enum
 		[newService release];
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	[self indicateSuccess:delegate];
 	return nil;
@@ -363,7 +365,7 @@ typedef enum
 
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -406,7 +408,7 @@ typedef enum
 				NSError *error = [NSError errorWithDomain:@"myDomain"
 													 code:111
 												 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Illegal response returned by VDR-server! Aborting.", @"") forKey:NSLocalizedDescriptionKey]];
-				[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+				[APP_DELEGATE removeNetworkOperation];
 				[self indicateError:delegate error:error];
 				break;
 			}
@@ -447,7 +449,7 @@ typedef enum
 		[newEvent release];
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	[self indicateSuccess:delegate];
 	return nil;
@@ -574,7 +576,7 @@ typedef enum
 
 - (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -616,7 +618,7 @@ typedef enum
 			NSError *error = [NSError errorWithDomain:@"myDomain"
 												 code:110
 											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			[APP_DELEGATE removeNetworkOperation];
 			[self indicateError:delegate error:error];
 			return nil;
 		}
@@ -632,7 +634,7 @@ typedef enum
 	[comps release];
 	[gregorian release];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 	[self indicateSuccess:delegate];
 	return nil;
 }
@@ -641,7 +643,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -665,7 +667,7 @@ typedef enum
 				   newTimer.title, @""];
 
 	[_socket writeString: [NSString stringWithFormat: @"NEWT %@\r\n", timerString]];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	NSString *ret = [self readSocketLine];
 	if([ret length] < 4 || ![[ret substringFromIndex: 4] isEqualToString: timerString])
@@ -685,7 +687,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -698,7 +700,7 @@ typedef enum
 	const NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
 
 	[_socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	NSString *ret = [self readSocketLine];
 	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 %@", timerString]];
@@ -710,7 +712,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -722,7 +724,7 @@ typedef enum
 		return NO;
 
 	[_socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	NSString *ret = [self readSocketLine];
 	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Timer \"%@\" deleted", ((SVDRPTimer *)oldTimer).tid]];
@@ -742,7 +744,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -750,7 +752,7 @@ typedef enum
 
 	[_socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
@@ -811,7 +813,7 @@ typedef enum
 		return nil;
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -850,7 +852,7 @@ typedef enum
 			NSError *error = [NSError errorWithDomain:@"myDomain"
 												 code:110
 											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
-			[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+			[APP_DELEGATE removeNetworkOperation];
 			[self indicateError:delegate error:error];
 			return nil;
 		}
@@ -867,7 +869,7 @@ typedef enum
 	[comps release];
 	[gregorian release];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 	[self indicateSuccess:delegate];
 	return nil;
 }
@@ -876,7 +878,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -884,7 +886,7 @@ typedef enum
 
 	[_socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	// XXX: we should really parse the return message
 	NSString *ret = [self readSocketLine];
@@ -900,7 +902,7 @@ typedef enum
 {
 	GenericVolume *volumeObject = nil;
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -926,7 +928,7 @@ typedef enum
 		volumeObject.ismuted = NO;
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	[delegate performSelectorOnMainThread: @selector(addVolume:)
 							   withObject: volumeObject
@@ -943,7 +945,7 @@ typedef enum
 
 - (BOOL)toggleMuted
 {
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -959,7 +961,7 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
@@ -967,7 +969,7 @@ typedef enum
 
 	[_socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	NSString *ret = [self readSocketLine];
 	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Audio volume is %d", newVolume]];
@@ -1047,14 +1049,14 @@ typedef enum
 		return result;
 	}
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
 		return NO;
 
 	[_socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	NSString *ret = [self readSocketLine];
 	result.result = [ret isEqualToString: [NSString stringWithFormat: @"250 Key \"%@\" accepted", buttonCode]];
@@ -1068,14 +1070,14 @@ typedef enum
 {
 	Result *result = [Result createResult];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
 		return NO;
 
 	[_socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 
 	NSString *ret = [self readSocketLine];
 	result.result = [ret isEqualToString: @"250 Message queued"];

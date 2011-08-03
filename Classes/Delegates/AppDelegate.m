@@ -343,6 +343,18 @@ static const char *basename(const char *path)
 	wasSleeping = YES;
 }
 
+- (void)addNetworkOperation
+{
+	++networkIndicatorCount;
+	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)removeNetworkOperation
+{
+	if(--networkIndicatorCount == 0)
+		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
 #pragma mark Picons
 
 - (BOOL)checkForPicons

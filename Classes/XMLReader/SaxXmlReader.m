@@ -8,6 +8,7 @@
 
 #import "SaxXmlReader.h"
 
+#import "AppDelegate.h"
 #import "RemoteConnectorObject.h"
 
 @interface SaxXmlReader()
@@ -49,7 +50,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 	if(con)
 	{
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		[APP_DELEGATE addNetworkOperation];
 		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, self, NULL, 0, NULL);
 		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
 		while(!_done)
@@ -57,7 +58,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		}
 		[con cancel]; // just in case, cancel the connection
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[APP_DELEGATE removeNetworkOperation];
 	}
 	else
 	{

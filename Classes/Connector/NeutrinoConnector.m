@@ -10,6 +10,8 @@
 
 #import <Constants.h>
 
+#import <Delegates/AppDelegate.h>
+
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/Volume.h>
 #import <Objects/Generic/Timer.h>
@@ -633,7 +635,7 @@ enum neutrinoMessageTypes {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString: @"/control/standby" relativeToURL: _baseAddress];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+	[APP_DELEGATE addNetworkOperation];
 
 	NSHTTPURLResponse *response;
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
@@ -650,7 +652,7 @@ enum neutrinoMessageTypes {
 
 	[self sendPowerstate: myString];
 
-	[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+	[APP_DELEGATE removeNetworkOperation];
 }
 
 - (void)reboot

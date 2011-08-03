@@ -8,6 +8,10 @@
 
 #import "BaseXMLReader.h"
 
+#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
+	#import "AppDelegate.h"
+#endif
+
 #import "SynchronousRequestReader.h"
 #import "Constants.h"
 
@@ -69,12 +73,12 @@
 	[request release];
 	if(connection)
 	{
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+		[APP_DELEGATE addNetworkOperation];
 		do
 		{
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		} while (!_parser.done);
-		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+		[APP_DELEGATE removeNetworkOperation];
 		[connection cancel]; // just in case, cancel the connection
 		[connection release];
 	}
