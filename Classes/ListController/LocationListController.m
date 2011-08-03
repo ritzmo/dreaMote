@@ -159,10 +159,8 @@
 /* fetch contents */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	_reloading = YES;
 	SafeRetainAssign(_locationXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self]);
-	[pool release];
 }
 
 /* remove content data */

@@ -248,10 +248,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 /* fetch timer list */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	_reloading = YES;
 	SafeRetainAssign(_timerXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
-	[pool release];
 }
 
 /* remove content data */

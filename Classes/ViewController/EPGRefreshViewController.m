@@ -468,12 +468,10 @@ enum generalSectionItems
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	pendingRequests = 2;
 	_reloading = YES;
 	[[RemoteConnectorObject sharedRemoteConnector] getEPGRefreshSettings:self];
 	[[RemoteConnectorObject sharedRemoteConnector] getEPGRefreshServices:self];
-	[pool release];
 }
 
 #pragma mark -

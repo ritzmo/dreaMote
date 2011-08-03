@@ -172,7 +172,6 @@
 /* fetch event list */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
@@ -189,7 +188,6 @@
 		[[EPGCache sharedInstance] searchEPGForTitle:title delegate:self];
 	}
 #endif
-	[pool release];
 }
 
 #pragma mark -

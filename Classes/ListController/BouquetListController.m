@@ -255,10 +255,8 @@
 /* fetch contents */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	_reloading = YES;
 	SafeRetainAssign(_bouquetXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchBouquets:self isRadio:_isRadio]);
-	[pool release];
 }
 
 /* remove content data */

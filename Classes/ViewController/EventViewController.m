@@ -227,7 +227,6 @@
 
 - (void)fetchEvents
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CXMLDocument *newDocument = nil;
 	@try {
 		newDocument = [[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar:self event:_event];
@@ -238,7 +237,6 @@
 #endif
 	}
 	SafeRetainAssign(_eventXMLDoc, newDocument);
-	[pool release];
 }
 
 #pragma mark -

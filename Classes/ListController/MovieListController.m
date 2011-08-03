@@ -421,10 +421,8 @@
 /* fetch movie list */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	_reloading = YES;
 	SafeRetainAssign(_movieXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation]);
-	[pool release];
 }
 
 /* remove content data */

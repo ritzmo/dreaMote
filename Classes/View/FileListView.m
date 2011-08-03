@@ -132,7 +132,6 @@
 /* start download of file list */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CXMLDocument *newDocument = nil;
 	_reloading = YES;
 	if(self.isPlaylist)
@@ -140,7 +139,6 @@
 	else
 		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:_path];
 	SafeRetainAssign(_fileXMLDoc, newDocument);
-	[pool release];
 }
 
 /* select file by name */

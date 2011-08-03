@@ -90,11 +90,7 @@
 /* initiate download of volume state */
 - (void)fetchVolume
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	[[RemoteConnectorObject sharedRemoteConnector] getVolume: self];
-
-	[pool release];
 }
 
 /* layout */

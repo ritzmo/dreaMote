@@ -143,7 +143,6 @@
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CXMLDocument *newDocument = nil;
 	@try {
 		_reloading = YES;
@@ -155,7 +154,6 @@
 #endif
 	}
 	SafeRetainAssign(_currentXMLDoc, newDocument);
-	[pool release];
 }
 
 - (void)emptyData

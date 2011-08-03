@@ -101,11 +101,7 @@
 
 - (void)fetchSignal
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-
 	[[RemoteConnectorObject sharedRemoteConnector] getSignal: self];
-
-	[pool release];
 }
 
 - (void)loadView

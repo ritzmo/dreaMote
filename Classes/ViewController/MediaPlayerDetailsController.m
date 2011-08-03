@@ -142,9 +142,7 @@
 /* fetch contents */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	SafeRetainAssign(_metadataXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getMetadata:self]);
-	[pool release];
 }
 
 /* remove content data */
@@ -160,14 +158,12 @@
 /* fetch coverart */
 - (void)fetchCoverart
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	NSData *imageData = [[RemoteConnectorObject sharedRemoteConnector] getFile:_currentTrack.coverpath];
 	id old = _currentCover;
 	_currentCover = [[UIImage alloc] initWithData:imageData];
 	[old release];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	[pool release];
 }
 
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration

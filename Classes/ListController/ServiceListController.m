@@ -440,26 +440,20 @@
 	else
 	{
 		pendingRequests = 1;
-		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
-		[pool release];
 	}
 }
 
 /* fetch now list */
 - (void)fetchNowData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	SafeRetainAssign(_mainXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio]);
-	[pool release];
 }
 
 /* fetch next list */
 - (void)fetchNextData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	SafeRetainAssign(_subXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio]);
-	[pool release];
 }
 
 /* remove content data */

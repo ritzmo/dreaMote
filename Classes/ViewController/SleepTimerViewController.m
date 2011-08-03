@@ -205,10 +205,8 @@ enum generalSectionItems
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	_reloading = YES;
 	[[RemoteConnectorObject sharedRemoteConnector] getSleepTimerSettings:self];
-	[pool release];
 }
 
 #pragma mark -

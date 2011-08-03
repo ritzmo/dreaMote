@@ -129,7 +129,6 @@ enum mediaPlayerTags
 
 - (void)fetchAbout
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CXMLDocument *newDocument = nil;
 	@try {
 		newDocument = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
@@ -140,12 +139,10 @@ enum mediaPlayerTags
 #endif
 	}
 	SafeRetainAssign(_currentXMLDoc, newDocument);
-	[pool release];
 }
 
 - (void)fetchCurrent
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	CXMLDocument *newDocument = nil;
 	@try {
 		newDocument = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
@@ -156,7 +153,6 @@ enum mediaPlayerTags
 #endif
 	}
 	SafeRetainAssign(_currentXMLDoc, newDocument);
-	[pool release];
 }
 
 - (void)sendCommand:(NSString *)command

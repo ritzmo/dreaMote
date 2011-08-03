@@ -101,10 +101,8 @@
 /* fetch contents */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	_reloading = YES;
 	SafeRetainAssign(_curDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self]);
-	[pool release];
 }
 
 /* remove content data */
