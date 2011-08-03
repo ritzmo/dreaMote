@@ -88,12 +88,9 @@
 
 - (void)viewDidUnload
 {
-	[_lameButton release];
-	_lameButton = nil;
-	[_menuButton release];
-	_menuButton = nil;
-	[_swipeArea release];
-	_swipeArea = nil;
+	SafeRetainAssign(_lameButton, nil);
+	SafeRetainAssign(_menuButton, nil);
+	SafeRetainAssign(_swipeArea, nil);
 
 	[super viewDidUnload];
 }

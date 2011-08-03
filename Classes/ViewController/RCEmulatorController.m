@@ -284,14 +284,16 @@
 
 - (void)viewDidUnload
 {
-	[_screenView release];
-	_screenView = nil;
-	[_scrollView release];
-	_scrollView = nil;
-	[_toolbar release];
-	_toolbar = nil;
-	[_screenshotButton release];
-	_screenshotButton = nil;
+	SafeRetainAssign(_toolbar, nil);
+	SafeRetainAssign(rcView, nil);
+
+	SafeRetainAssign(_screenView, nil);
+	SafeRetainAssign(_scrollView, nil);
+	SafeRetainAssign(_imageView, nil);
+	SafeRetainAssign(_screenshotButton, nil);
+
+	SafeRetainAssign(_keyPad, nil);
+	SafeRetainAssign(_navigationPad, nil);
 
 	[super viewDidUnload];
 }
