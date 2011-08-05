@@ -13,6 +13,8 @@
 
 @synthesize clearButton = _clearButton;
 @synthesize playlist = _playlist;
+@synthesize saveButton = _saveButton;
+@synthesize loadButton = _loadButton;
 
 - (id)init
 {
@@ -31,6 +33,8 @@
 - (void)dealloc
 {
 	[_clearButton release];
+	[_saveButton release];
+	[_loadButton release];
 	[_playlist release];
 
 	[super dealloc];
@@ -49,6 +53,8 @@
 	[_playlist setEditing: editing animated: animated];
 
 	_clearButton.enabled = !editing;
+	_saveButton.enabled = !editing;
+	_loadButton.enabled = !editing;
 }
 
 @end

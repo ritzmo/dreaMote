@@ -614,6 +614,25 @@ enum buttonCodes {
 @optional // kFeaturesMediaPlayer
 - (void)shufflePlaylist:(NSObject<MediaPlayerShuffleDelegate> *)delegate playlist:(NSMutableArray *)playlist;
 
+/*!
+ @brief Save playlist to remote file.
+
+ @param filename Filename without extension of the playlist.
+ @return YES if playlist was saved successfully.
+ */
+@optional // kFeaturesMediaPlayer
+- (Result *)savePlaylist:(NSString *)filename;
+
+/*!
+ @brief Load playlist from remote file.
+ @note Playlist has to be in /etc/enigma2/playlist
+
+ @param filename Filename without extension of the playlist.
+ @return YES if playlist was loaded successfully.
+ */
+@optional // kFeaturesMediaPlayer
+- (Result *)loadPlaylist:(NSObject<FileProtocol> *)file;
+
 #pragma mark -
 #pragma mark AutoTimer
 #pragma mark -

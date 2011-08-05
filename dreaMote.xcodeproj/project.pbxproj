@@ -756,6 +756,9 @@
 		DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAC8C51713B2042700CA00D9 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C10713B2014C00CA00D9 /* AbstractSocket.m */; };
+		DAFAAE8913EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
+		DAFAAE8A13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
+		DAFAAE8B13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1236,6 +1239,8 @@
 		DAC8C50913B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources/en.lproj/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAC8C50B13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		DAC8C50D13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/OtherList.xib; sourceTree = "<group>"; };
+		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
+		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1843,6 +1848,8 @@
 				DAC8C14013B2014D00CA00D9 /* RCButton.m */,
 				DAC8C14113B2014D00CA00D9 /* SwipeTableView.h */,
 				DAC8C14213B2014D00CA00D9 /* SwipeTableView.m */,
+				DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */,
+				DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */,
 				DAC8C14313B2014D00CA00D9 /* ZoomingScrollView.h */,
 				DAC8C14413B2014D00CA00D9 /* ZoomingScrollView.m */,
 			);
@@ -2635,6 +2642,7 @@
 				DA681B0F13B356C200232190 /* ConnectionTableViewCell.m in Sources */,
 				DA681B1513B35BEC00232190 /* ConnectionListController.m in Sources */,
 				DA681B1A13B483FB00232190 /* NSNetService+IpString.m in Sources */,
+				DAFAAE8913EBEBCE002A2E6A /* UIPromptView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2798,6 +2806,7 @@
 				DA681B1613B35BEC00232190 /* ConnectionListController.m in Sources */,
 				DA681B1B13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 				DA681B1D13B4909900232190 /* LiteUnzip.m in Sources */,
+				DAFAAE8A13EBEBCE002A2E6A /* UIPromptView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2928,6 +2937,7 @@
 				DA681B1713B35BEC00232190 /* ConnectionListController.m in Sources */,
 				DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 				DA681B1E13B4909A00232190 /* LiteUnzip.m in Sources */,
+				DAFAAE8B13EBEBCE002A2E6A /* UIPromptView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

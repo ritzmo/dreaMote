@@ -60,6 +60,22 @@
 	playListController.clearButton = clearButton;
 	[clearButton release];
 
+	// Create "Save" Button
+	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button/action in MediaPlayer")
+																	style:UIBarButtonItemStyleBordered
+																   target:detailsController
+																   action:@selector(savePlaylist:)];
+	playListController.saveButton = saveButton;
+	[saveButton release];
+
+	// Create "Save" Button
+	UIBarButtonItem *loadButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Load", @"Load button/action in MediaPlayer")
+																   style:UIBarButtonItemStyleBordered
+																  target:detailsController
+																  action:@selector(showPlaylists:)];
+	playListController.loadButton = loadButton;
+	[loadButton release];
+
 	// add buttons
 	UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																			  target:detailsController
@@ -67,7 +83,7 @@
 	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																					target:nil
 																					action:nil];
-	NSArray *items = [[NSArray alloc] initWithObjects:detailsController.deleteButton, clearButton, flexItem, detailsController.shuffleButton, nil];
+	NSArray *items = [[NSArray alloc] initWithObjects:detailsController.deleteButton, clearButton, flexItem, saveButton, loadButton, detailsController.shuffleButton, nil];
 	[playListController setToolbarItems:items animated:NO];
 	[playListController.navigationController setToolbarHidden:NO animated:YES];
 	playListController.navigationItem.leftBarButtonItem = flipItem;

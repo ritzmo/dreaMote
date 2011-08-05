@@ -20,6 +20,7 @@
 #import "MBProgressHUD.h"
 #import "Result.h"
 #import "RCButton.h"
+#import "UIPromptView.h"
 
 #define kTransitionDuration	(CGFloat)0.6
 
@@ -236,10 +237,32 @@ enum mediaPlayerTags
 		_fileList.frame = self.view.frame;
 }
 
+- (IBAction)showPlaylists:(id)sender
+{
+	[_fileList setPath:@"/etc/enigma2/playlist/"];
+
+	// show filelist if not visible
+	if(![_fileList superview])
+		[self flipView:nil];
+}
+
 - (IBAction)clearPlaylist:(id)sender
 {
 	[_playlist.selectedFiles addObjectsFromArray:_playlist.files];
 	[self multiDelete:nil];
+}
+
+- (IBAction)savePlaylist:(id)sender
+{
+	UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedString(@"Enter name of Playlist", @"Title of prompt requesting name for playlist to be saved in MediaPlayer")
+														   message:nil
+														  delegate:self
+												 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+													 okButtonTitle:NSLocalizedString(@"Save", @"")
+	];
+	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+	[alertView show];
+	[alertView release];
 }
 
 - (void)multiDeleteDefer
@@ -508,6 +531,47 @@ enum mediaPlayerTags
 		_closeSheet = nil;
 		[old autorelease]; // delay release
 	}
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate methods
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+#define promptView (UIPromptView *)alertView
+	if(buttonIndex != alertView.cancelButtonIndex)
+	{
+		NSString *filename = [promptView textFieldAtIndex:0].text;
+		NSString *title = nil;
+		NSString *message = nil;
+		if(filename.length)
+		{
+			Result *result = [[RemoteConnectorObject sharedRemoteConnector] savePlaylist:filename];
+			if(!result.result)
+				message = result.resulttext;
+		}
+		else
+			message = NSLocalizedString(@"You have to enter a filename to save the playlist", @"No filename entered when trying to save MediaPlayer playlist");
+
+		if(message)
+		{
+			title = NSLocalizedString(@"Error", @"");
+		}
+		else
+		{
+			title = NSLocalizedString(@"Success", @"");
+			message = NSLocalizedString(@"Playlist saved successfully", @"Playlist was saved in MediaPlayer");
+		}
+
+		// Alert user
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+															  message:message
+															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+		[alert release];
+	}
+#undef promptView
 }
 
 #pragma mark -
@@ -814,7 +878,39 @@ enum mediaPlayerTags
 	// filelist
 	else
 	{
+		const BOOL isPlaylist = (_massAdd) ? NO : [file.root isEqualToString:@"/etc/enigma2/playlist/"] && ([file.sref hasSuffix:@".e2pls"] || [file.sref hasSuffix:@".pls"] || [file.sref hasSuffix:@".m3u"]);
 		const BOOL startPlayback = (_massAdd) ? NO : !_adding;
+
+		// playlist handling
+		if(isPlaylist)
+		{
+			NSLog(@"%@ %@", file.root, file.sref);
+			Result *result = [[RemoteConnectorObject sharedRemoteConnector] loadPlaylist:file];
+			NSString *title = nil;
+			NSString *message = nil;
+			if(result.result)
+			{
+				title = NSLocalizedString(@"Success", @"");
+				message = NSLocalizedString(@"Playlist was loaded successfully.", @"New MediaPlayer playlist was loaded");
+			}
+			else
+			{
+				title = NSLocalizedString(@"Error", @"");
+				message = result.resulttext;
+			}
+
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+																  message:message
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+
+			// flip view (presumably) back
+			[self flipView:nil];
+			return;
+		}
+
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:startPlayback];
 		if(result.result)
 		{

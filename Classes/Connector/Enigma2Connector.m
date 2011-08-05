@@ -724,6 +724,19 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	[delegate performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
 }
 
+- (Result *)savePlaylist:(NSString *)filename
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayerwrite?filename=%@", [filename urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)loadPlaylist:(NSObject<FileProtocol> *)file
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayerload?filename=%@", [[file.sref stringByReplacingOccurrencesOfString:file.root withString:@""] urlencode]];
+	NSLog(@"%@", relativeURL);
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
 #pragma mark AutoTimer
 
 #if IS_FULL()

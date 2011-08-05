@@ -14,12 +14,24 @@
 @protected
 	FileListView *_playlist; /*!< @brief Playlist. */
 	UIBarButtonItem *_clearButton; /*!< @brief Clear Playlist. */
+	UIBarButtonItem *_saveButton; /*!< @brief Save Playlist. */
+	UIBarButtonItem *_loadButton; /*!< @brief Load Playlist. */
 }
 
 /*!
  @brief Get "Clear" Button.
  */
 @property (nonatomic, retain) UIBarButtonItem *clearButton;
+
+/*!
+ @brief Get "Save" Button.
+ */
+@property (nonatomic, retain) UIBarButtonItem *saveButton;
+
+/*!
+ @brief Get "Load" Button.
+ */
+@property (nonatomic, retain) UIBarButtonItem *loadButton;
 
 /*!
  @brief Get/Set Playlist.
