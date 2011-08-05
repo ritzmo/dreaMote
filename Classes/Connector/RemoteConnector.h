@@ -150,9 +150,14 @@ enum connectorFeatures {
 	kFeaturesSleepTimer,
 	/*!
 	 @brief Extended Playlist Handling in MediaPlayer.
-	 @note This refers to load/save/clear/shuffle.
+	 @note This refers to save (partially broken)/clear/shuffle.
 	 */
 	kFeaturesMediaPlayerPlaylistHandling,
+	/*!
+	 @brief Improved Playlist Handling in MediaPlayer.
+	 @note Proper load and save support.
+	 */
+	kFeaturesMediaPlayerPlaylistLoad,
 };
 
 /*!
@@ -620,7 +625,7 @@ enum buttonCodes {
  @param filename Filename without extension of the playlist.
  @return YES if playlist was saved successfully.
  */
-@optional // kFeaturesMediaPlayer
+@optional // kFeaturesMediaPlayerPlaylistHandling
 - (Result *)savePlaylist:(NSString *)filename;
 
 /*!
@@ -630,7 +635,7 @@ enum buttonCodes {
  @param filename Filename without extension of the playlist.
  @return YES if playlist was loaded successfully.
  */
-@optional // kFeaturesMediaPlayer
+@optional // kFeaturesMediaPlayerPlaylistHandling
 - (Result *)loadPlaylist:(NSObject<FileProtocol> *)file;
 
 #pragma mark -
