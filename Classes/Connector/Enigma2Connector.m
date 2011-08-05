@@ -15,6 +15,7 @@
 #import <Objects/ServiceProtocol.h>
 #import <Objects/TimerProtocol.h>
 #import <Objects/Generic/Movie.h>
+#import <Objects/Generic/File.h>
 #import <Delegates/MediaPlayerShuffleDelegate.h>
 
 #import <Connector/RemoteConnectorObject.h> /* usesAdvancedRemote */
@@ -90,6 +91,9 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				return NO;
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_8:
+			// NOTE: no known version has this yet, but it will be in "the one after 1.6.8"
+			if(feature == kFeaturesMediaPlayerPlaylistLoad)
+				return NO;
 			break;
 	}
 
@@ -732,9 +736,36 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)loadPlaylist:(NSObject<FileProtocol> *)file
 {
-	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayerload?filename=%@", [[file.sref stringByReplacingOccurrencesOfString:file.root withString:@""] urlencode]];
-	NSLog(@"%@", relativeURL);
-	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+	if([self hasFeature:kFeaturesMediaPlayerPlaylistLoad])
+	{
+		NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayerload?filename=%@", [[file.sref stringByReplacingOccurrencesOfString:file.root withString:@""] urlencode]];
+		return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+	}
+	else
+	{
+		// NOTE: trick a little by emulating the load process
+		NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init]; // keep runtime memory a little lower
+		[self mediaplayerCommand:@"clear"];
+		NSData *data = [self getFile:file.sref];
+		NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		[pool release];
+
+		NSArray *references = [stringData componentsSeparatedByString:@"\n"];
+		[stringData release];
+
+		NSObject<FileProtocol> *file = [[GenericFile alloc] init];
+		file.root = @"/";
+		for(NSString *sref in references)
+		{
+			file.sref = sref;
+			[self addTrack:file startPlayback:NO];
+		}
+		[file release];
+
+		Result *result = [[Result alloc] init];
+		result.result = YES;
+		return [result autorelease];
+	}
 }
 
 #pragma mark AutoTimer
