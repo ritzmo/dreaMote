@@ -68,7 +68,7 @@
 	playListController.saveButton = saveButton;
 	[saveButton release];
 
-	// Create "Save" Button
+	// Create "Load" Button
 	UIBarButtonItem *loadButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Load", @"Load button/action in MediaPlayer")
 																   style:UIBarButtonItemStyleBordered
 																  target:detailsController
