@@ -8,6 +8,7 @@
 
 #import "PlayListController.h"
 
+#import "RemoteConnectorObject.h"
 
 @implementation PlayListController
 
@@ -53,8 +54,21 @@
 	[_playlist setEditing: editing animated: animated];
 
 	_clearButton.enabled = !editing;
-	_saveButton.enabled = !editing;
-	_loadButton.enabled = !editing;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerPlaylistHandling])
+	{
+		_saveButton.enabled = !editing;
+		_loadButton.enabled = !editing;
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerPlaylistHandling])
+	{
+		_saveButton.enabled = NO;
+		_loadButton.enabled = NO;
+	}
+	[super viewWillAppear:animated];
 }
 
 @end
