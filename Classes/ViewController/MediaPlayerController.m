@@ -884,7 +884,6 @@ enum mediaPlayerTags
 		// playlist handling
 		if(isPlaylist)
 		{
-			NSLog(@"%@ %@", file.root, file.sref);
 			Result *result = [[RemoteConnectorObject sharedRemoteConnector] loadPlaylist:file];
 			NSString *title = nil;
 			NSString *message = nil;
