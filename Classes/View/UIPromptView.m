@@ -41,7 +41,7 @@ enum textfieldTags
 
 	if(newPromptViewStyle == UIPromptViewStyleDefault) return;
 
-	UITextField *theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 45.0, 260.0, 31.0)];
+	UITextField *theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 45.0f, 260.0f, 31.0f)];
 	theTextField.tag = TEXT_FIELD_0;
 	[theTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
 	[theTextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -54,7 +54,7 @@ enum textfieldTags
 	CGFloat offset;
 	if(newPromptViewStyle == UIPromptViewStyleLoginAndPasswordInput)
 	{
-		theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0, 85.0, 260.0, 25.0)];
+		theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 85.0f, 260.0f, 25.0f)];
 		theTextField.tag = TEXT_FIELD_1;
 		[theTextField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
 		[theTextField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
@@ -66,17 +66,17 @@ enum textfieldTags
 		[theTextField release];
 
 		self.message = @"\n\n\n";
-		offset = 110.0;
+		offset = 110.0f;
 	}
 	else
 	{
 		self.message = @"\n";
-		offset = 130.0;
+		offset = 130.0f;
 	}
 	
 	if(![UIDevice runsIos4OrBetter])
 	{
-		CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0, offset); 
+		CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0f, offset); 
 		[self setTransform:translate];
 	}
 }
