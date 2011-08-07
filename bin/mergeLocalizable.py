@@ -100,6 +100,7 @@ def main():
 	import sys
 	langs = sys.argv[1:]
 	if not langs: langs = ('de', 'en', 'fr')
+	else: langs = [lang[:-6] if lang.endswith('.lproj') else lang for lang in langs]
 
 	generateUpdateTemplate()
 	for lang in langs:
