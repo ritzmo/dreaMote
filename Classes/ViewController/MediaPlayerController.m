@@ -561,7 +561,7 @@ enum mediaPlayerTags
 		else
 		{
 			title = NSLocalizedString(@"Success", @"");
-			message = NSLocalizedString(@"Playlist saved successfully", @"Playlist was saved in MediaPlayer");
+			message = NSLocalizedString(@"Playlist saved successfully.", @"Playlist was saved in MediaPlayer");
 		}
 
 		// Alert user
