@@ -304,6 +304,9 @@
 /* No comment provided by engineer. */
 "Enigma 2" = "Enigma 2";
 
+/* Title of prompt requesting name for playlist to be saved in MediaPlayer */
+"Enter name of Playlist" = "Titel der Wiedergabeliste eingeben";
+
 /* Default title of EPGRefreshViewController */
 "EPGRefresh" = "EPGRefresh";
 
@@ -450,6 +453,9 @@
 
 /* No comment provided by engineer. */
 "Justplay" = "Nur wiedergeben";
+
+/* Load button/action in MediaPlayer */
+"Load" = "Laden";
 
 /* Label of Progress HUD in MultiEPG */
 "Loading EPG…" = "Lade EPG…";
@@ -643,6 +649,12 @@
 /* Title of PlayListController */
 "Playlist" = "Wiedergabeliste";
 
+/* Playlist was saved in MediaPlayer */
+"Playlist saved successfully." = "Wiedergabeliste wurde gespeichert.";
+
+/* New MediaPlayer playlist was loaded */
+"Playlist was loaded successfully." = "Wiedergabeliste erfolgreich geladen.";
+
 /* No comment provided by engineer. */
 "Please provide a valid timeout interval." = "Bitte gib eine gültige Dauer an.";
 
@@ -754,7 +766,7 @@
 /* No comment provided by engineer. */
 "Saturday" = "Samstag";
 
-/* No comment provided by engineer. */
+/* Save button/action in MediaPlayer */
 "Save" = "Speichern";
 
 /* No comment provided by engineer. */
@@ -855,6 +867,9 @@
 
 /* No comment provided by engineer. */
 "Stop" = "Stop";
+
+/* No comment provided by engineer. */
+"Success" = "Aktion abgeschlossen";
 
 /* Weekday */
 "Sun" = "Son";
@@ -1014,6 +1029,9 @@
 
 /* No comment provided by engineer. */
 "You have reached either the end or the beginning of your movie list." = "Sie haben den Anfang oder das Ende der Filmliste erreicht.";
+
+/* No filename entered when trying to save MediaPlayer playlist */
+"You have to enter a filename to save the playlist" = "Sie müssen einen Namen für die Wiedergabeliste eingeben";
 
 /* User requested automated EPG refresh but no timespan given. */
 "You have to provide a timespan to refresh automatically." = "Zum automatischen Aktualisieren muss eine Zeitspanne angegeben werden.";
