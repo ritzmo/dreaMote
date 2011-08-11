@@ -438,7 +438,7 @@ fetchServices_out:
 																  error:&error];
 
 		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-		myURI = [NSURL URLWithString:[myString urlencode]];
+		myURI = [NSURL URLWithString:myString];
 		[myString release];
 		return myURI;
 	}
