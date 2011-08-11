@@ -754,7 +754,17 @@
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.
 	_timer.service = [[newService copy] autorelease];
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+	// XXX: how do people keep running into this?
+	if([(UITableView *)self.view numberOfSections] == 6)
+	{
+#if IS_DEBUG()
+		[NSException raise:@"TimerViewInvalidSectionCount" format:@"invalid number of sections (6) in table view"];
+#else
+		[(UITableView *)self.view reloadData];
+#endif
+	}
+	else
+		[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
