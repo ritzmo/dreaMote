@@ -295,6 +295,18 @@
 	_eventViewController.event = event;
 	_eventViewController.service = _service;
 
+	// XXX: wtf?
+	if([self.navigationController.viewControllers containsObject:_eventViewController])
+	{
+#if IS_DEBUG()
+		NSMutableString* result = [[NSMutableString alloc] init];
+		for(NSObject* obj in self.navigationController.viewControllers)
+			[result appendString:[obj description]];
+		[NSException raise:@"EventViewTwiceInNavigationStack" format:@"_eventViewController was twice in navigation stack: %@", result];
+		[result release]; // never reached, but to keep me from going crazy :)
+#endif
+		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+	}
 	[self.navigationController pushViewController: _eventViewController animated: YES];
 
 	return indexPath;
