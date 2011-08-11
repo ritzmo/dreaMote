@@ -935,4 +935,14 @@ fetchServices_out:
 	return nil;
 }
 
+#pragma mark Unsupported
+
+- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcUnsupportedFunction" format:@""];
+#endif
+	return nil;
+}
+
 @end
