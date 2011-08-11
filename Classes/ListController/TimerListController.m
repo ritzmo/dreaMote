@@ -171,7 +171,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[super setEditing: editing animated: animated];
 	[_tableView setEditing: editing animated: animated];
 
-	if(animated)
+	if(animated && !_reloading)
 	{
 		if(editing)
 		{
