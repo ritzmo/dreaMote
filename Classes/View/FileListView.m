@@ -188,8 +188,18 @@
 {
 	NSInteger idx = [_files indexOfObject:file];
 	NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
-	[_files removeObjectAtIndex:idx];
-	[self deleteRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
+	if(idx != NSNotFound)
+	{
+		[_files removeObjectAtIndex:idx];
+		[self deleteRowsAtIndexPaths:[NSArray arrayWithObject:path] withRowAnimation:UITableViewRowAnimationFade];
+	}
+	else
+	{
+#if IS_DEBUG()
+		[NSException raise:@"FileListViewInconsistent" format:@"tried to remove file (%@, %@) which was not found in our list, %@", file.root, file.sref, _reloading ? @"was reloading" : @"not reloading"];
+#endif
+		NSLog(@"ignoring attempted removal of file which (no longer) exists in our list");
+	}
 }
 
 /* get list of files */
