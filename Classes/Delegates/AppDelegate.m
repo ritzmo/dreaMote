@@ -351,7 +351,7 @@ static const char *basename(const char *path)
 
 - (void)removeNetworkOperation
 {
-	if(--networkIndicatorCount < 0)
+	if(--networkIndicatorCount <= 0)
 	{
 		[UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 		networkIndicatorCount = 0;
