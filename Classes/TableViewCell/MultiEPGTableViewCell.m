@@ -81,8 +81,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	if(_service == newService) return;
 
 	// Free old service, assign new one
-	[_service release];
-	_service = [newService retain];
+	SafeRetainAssign(_service, newService);
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
@@ -107,9 +106,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	@synchronized(self)
 	{
 		if(_events == new) return;
-
-		[_events release];
-		_events = [new retain];
+		SafeRetainAssign(_events, new);
 
 		[_lines removeAllObjects];
 		for(NSObject<EventProtocol> *event in _events)
@@ -144,8 +141,16 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
 {
-	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 	const NSInteger count = [_lines count] - 1;
+	if(count == -1)
+	{
+		NSLog(@"invalid number of lines (0) in multi epg cell, returning first event if possible or nil");
+		if([_events count])
+			SafeReturn([_events objectAtIndex:0]);
+		return nil;
+	}
+
+	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 	NSInteger idx = 0;
 	for(NSObject<EventProtocol> *event in _events)
 	{
