@@ -42,6 +42,8 @@ def updateLanguage(lang):
 			orig = open('%s.lproj/%s.strings' % (lang, table), 'r')
 		except IOError, ioe:
 			print '%s.lproj/%s.strings does not exist, starting from scratch.' % (lang, table)
+			try: os.mkdir('%s.lproj' % (lang,))
+			except OSError, ose: pass
 		else:
 			for line in orig.readlines():
 				match = pattern.match(line)
