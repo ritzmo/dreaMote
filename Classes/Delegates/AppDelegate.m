@@ -20,6 +20,7 @@
 #import "Appirater.h"
 #import "BWQuincyManager.h"
 #import "RemoteConnectorObject.h"
+#import "SHKConfiguration.h"
 
 #if IS_FULL()
 	#import "EPGCache.h"
@@ -261,6 +262,14 @@ static const char *basename(const char *path)
 		promptForRating = NO;
 	}
 	[Appirater appLaunched:promptForRating];
+
+	// NOTE: try to look up class as it is not present in public git since it contains some secret information
+	Class classConfigurationDelegate = NSClassFromString(@"DreamoteSHKConfigurationDelegate");
+	if(classConfigurationDelegate != nil)
+	{
+		// NOTE: class has to have retain count 1 as SHKConfiguration does not retain it
+		[SHKConfiguration sharedInstanceWithDelegate:[[classConfigurationDelegate alloc] init]];
+	}
 
 	return YES;
 }
