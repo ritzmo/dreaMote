@@ -20,6 +20,8 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
+#import "SHK.h"
+
 @interface EventViewController()
 - (UITextView *)create_Summary;
 - (UIButton *)createButtonForSelector:(SEL)selector withType:(UIButtonType)type;
@@ -33,6 +35,10 @@
 
 @interface EventViewController(IMDb)
 - (void)openIMDb:(id)sender;
+@end
+
+@interface EventViewController(Sharing)
+- (void)share:(id)sender;
 @end
 
 @implementation EventViewController
@@ -379,7 +385,7 @@
 	}
 	else if(section == 5)
 	{
-		NSUInteger rows = 1;
+		NSUInteger rows = 2;
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
 
@@ -505,6 +511,10 @@
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withType:UIButtonTypeCustom];
 					break;
+				case 2:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Share", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(share:) withType:UIButtonTypeCustom];
+					break;
 			}
 			break;
 		}
@@ -561,6 +571,16 @@
 	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"imdb:///find?q=%@", encoded]];
 
 	[[UIApplication sharedApplication] openURL:url];
+}
+
+#pragma mark Sharing
+
+- (void)share:(id)sender
+{
+	SHKItem *item = [SHKItem text:[NSString stringWithFormat:NSLocalizedString(@"Hey, check out %@ on %@. %@", @"Default sharing string for events"), _event.title, _event.service.sname, [self format_BeginEnd:_event.begin]]];
+	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+
+	[actionSheet showFromTabBar:self.navigationController.tabBarController.tabBar];
 }
 
 # pragma mark Zapping

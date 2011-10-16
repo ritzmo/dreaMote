@@ -20,6 +20,8 @@
 #import "CellTextView.h"
 #import "DisplayCell.h"
 
+#import "SHK.h"
+
 @interface MovieViewController()
 - (UITextView *)create_Summary;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
@@ -36,6 +38,10 @@
 - (void)openBuzzPlayer:(id)sender;
 - (void)openYxplayer:(id)sender;
 - (void)openGoodplayer:(id)sender;
+@end
+
+@interface EventViewController(Sharing)
+- (void)share:(id)sender;
 @end
 
 @implementation MovieViewController
@@ -317,7 +323,7 @@
 
 	if(section == 6)
 	{
-		NSUInteger rows = 1;
+		NSUInteger rows = 2;
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
 
@@ -517,20 +523,16 @@
 
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 			{
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 1)
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 2)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 2)
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 3)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 3)
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 4)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 4)
+				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 5)
 					++row;
-				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 5)
+				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 6)
 				//	++row;
-			}
-			else if(row > 1)
-			{
-				row += 2;
 			}
 			switch(row)
 			{
@@ -544,22 +546,26 @@
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withImage:nil];
 					break;
 				case 2:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Share", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(share:) withImage:nil];
+					break;
+				case 3:
 					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
 					break;
-				case 3:
+				case 4:
 					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer Lite";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
 					break;
-				case 4:
+				case 5:
 					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
 					break;
-				case 5:
+				case 6:
 					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
 					break;
-				case 6:
+				case 7:
 					((DisplayCell *)sourceCell).nameLabel.text = @"GoodPlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openGoodplayer:) withImage:nil];
 					break;
@@ -649,6 +655,16 @@
 - (void)openGoodplayer:(id)sender
 {
 	[self openStreamWithAction:zapActionGoodPlayer];
+}
+
+#pragma mark Sharing
+
+- (void)share:(id)sender
+{
+	SHKItem *item = [SHKItem text:[NSString stringWithFormat:NSLocalizedString(@"What's your oppinion about \"%@\"?", @"Default sharing string for movies"), _movie.title]];
+	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
+
+	[actionSheet showFromTabBar:self.navigationController.tabBarController.tabBar];
 }
 
 @end

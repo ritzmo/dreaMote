@@ -3140,7 +3140,7 @@
 		DAC8BE4213B1FF9200CA00D9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0410;
+				LastUpgradeCheck = 0420;
 			};
 			buildConfigurationList = DAC8BE4513B1FF9200CA00D9 /* Build configuration list for PBXProject "dreaMote" */;
 			compatibilityVersion = "Xcode 3.2";
