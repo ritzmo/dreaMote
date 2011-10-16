@@ -613,6 +613,8 @@
 	controller.modalPresentationStyle = UIModalPresentationFormSheet;
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:controller animated:YES];
+
+	[eventDB release];
 	[controller release];
 }
 
