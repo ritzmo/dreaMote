@@ -580,7 +580,7 @@
 	SHKItem *item = [SHKItem text:[NSString stringWithFormat:NSLocalizedString(@"Hey, check out %@ on %@. %@", @"Default sharing string for events"), _event.title, _event.service.sname, [self format_BeginEnd:_event.begin]]];
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
-	[actionSheet showFromTabBar:self.navigationController.tabBarController.tabBar];
+	[actionSheet showInView:self.view];
 }
 
 # pragma mark Zapping

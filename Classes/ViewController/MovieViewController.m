@@ -664,7 +664,7 @@
 	SHKItem *item = [SHKItem text:[NSString stringWithFormat:NSLocalizedString(@"What's your oppinion about \"%@\"?", @"Default sharing string for movies"), _movie.title]];
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
-	[actionSheet showFromTabBar:self.navigationController.tabBarController.tabBar];
+	[actionSheet showInView:self.view];
 }
 
 @end
