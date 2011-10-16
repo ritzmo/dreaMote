@@ -123,6 +123,7 @@
 	[navController release];
 
 	[self setViewControllers: menuList];
+	self.selectedViewController = navController; // we don't own it any more, but it is retained by the array
 	self.delegate = self;
 
 	// listen to connection changes
