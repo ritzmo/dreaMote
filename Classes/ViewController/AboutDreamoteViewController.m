@@ -188,7 +188,7 @@
 - (void)buttonPressed: (id)sender
 {
 	[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
-	[self.parentViewController dismissModalViewControllerAnimated: YES];
+	[self dismissModalViewControllerAnimated: YES];
 }
 
 /* _mailButton was pressed */
@@ -212,7 +212,7 @@
 		mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	UIViewController *parentViewController = self.parentViewController;
-	[parentViewController dismissModalViewControllerAnimated:NO];
+	[self dismissModalViewControllerAnimated:NO];
 	[parentViewController presentModalViewController:mvc animated:YES];
 	[mvc release];
 }
@@ -329,7 +329,7 @@
 /* load url? */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-	const NSURL *requestURL = [[request URL] retain];
+	NSURL *requestURL = [[request URL] retain];
 
 	// Check to see what protocol/scheme the requested URL is.
 	if ( ([requestURL.scheme isEqualToString: @"http"]
@@ -366,7 +366,7 @@
 		[alert show];
 		[alert release];
 	}
-	[controller.parentViewController dismissModalViewControllerAnimated:YES];
+	[self dismissModalViewControllerAnimated:YES];
 #ifndef __clang_analyzer__
 	// NOTE: we actually retain the delegate manually, though it is supposed to be a weak reference
 	// but as the static analyzer catches this evil behavior of ours, just don't show it to him
