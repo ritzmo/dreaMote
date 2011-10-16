@@ -142,6 +142,7 @@ static const char *basename(const char *path)
 								 @"NO", kSortMoviesByTitle,
 								 kDefaultTimeout, kTimeoutKey,
 								 kSatFinderDefaultInterval, kSatFinderInterval,
+								 kSearchHistoryDefaultLength, kSearchHistoryLength,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 
@@ -539,6 +540,10 @@ zipAlert:
 			else if([key isEqualToString:kTimeoutKey])
 			{
 				[stdDefaults setInteger:[value integerValue] forKey:kTimeoutKey];
+			}
+			else if([key isEqualToString:kSearchHistoryLength])
+			{
+				[stdDefaults setInteger:[value integerValue] forKey:kSearchHistoryLength];
 			}
 			else
 			{

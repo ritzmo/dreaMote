@@ -11,9 +11,6 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#define MAX_HISTORY_LENGTH ((IS_IPAD()) ? 12 : 9)
-
-
 @implementation SearchHistoryListController
 
 @synthesize historyDelegate = _historyDelegate;
@@ -74,7 +71,8 @@
 	[_history removeObject:new];
 
 	// make one item shorter then max
-	while([_history count] > MAX_HISTORY_LENGTH - 1)
+	NSUInteger historyLength = [[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength] - 1;
+	while([_history count] > historyLength)
 	{
 		[_history removeLastObject];
 	}
