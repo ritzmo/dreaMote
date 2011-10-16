@@ -1026,6 +1026,9 @@
 		DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAC8C51713B2042700CA00D9 /* AbstractSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C10713B2014C00CA00D9 /* AbstractSocket.m */; };
+		DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
+		DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
+		DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFAAE8913EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 		DAFAAE8A13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 		DAFAAE8B13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
@@ -1706,6 +1709,7 @@
 		DAC8C50913B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources/en.lproj/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAC8C50B13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		DAC8C50D13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/OtherList.xib; sourceTree = "<group>"; };
+		DAFA4BFF144ACF6B005DE541 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1726,6 +1730,7 @@
 				DAC8C4B413B202C500CA00D9 /* libsqlite3.dylib in Frameworks */,
 				DAC8C4B713B202C500CA00D9 /* libxml2.dylib in Frameworks */,
 				DAC8C4C413B202F600CA00D9 /* CrashReporter.framework in Frameworks */,
+				DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1745,6 +1750,7 @@
 				DAC8C4B513B202C500CA00D9 /* libsqlite3.dylib in Frameworks */,
 				DAC8C4B813B202C500CA00D9 /* libxml2.dylib in Frameworks */,
 				DAC8C4C513B202F600CA00D9 /* CrashReporter.framework in Frameworks */,
+				DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1763,6 +1769,7 @@
 				DAC8C4B613B202C500CA00D9 /* libsqlite3.dylib in Frameworks */,
 				DAC8C4B913B202C500CA00D9 /* libxml2.dylib in Frameworks */,
 				DAC8C4C613B202F700CA00D9 /* CrashReporter.framework in Frameworks */,
+				DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2319,11 +2326,12 @@
 				DAC8C49A13B2026800CA00D9 /* CFNetwork.framework */,
 				DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */,
 				DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */,
+				DAC8C49C13B2026800CA00D9 /* iAd.framework */,
 				DAC8C4B213B202C400CA00D9 /* libsqlite3.dylib */,
 				DAC8C4B313B202C400CA00D9 /* libxml2.dylib */,
-				DAC8C49C13B2026800CA00D9 /* iAd.framework */,
 				DAC8C49D13B2026800CA00D9 /* MessageUI.framework */,
 				DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */,
+				DAFA4BFF144ACF6B005DE541 /* Security.framework */,
 				DAC8C49F13B2026800CA00D9 /* SystemConfiguration.framework */,
 				DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */,
 			);
