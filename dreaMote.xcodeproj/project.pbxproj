@@ -278,6 +278,12 @@
 		DA51CFA3144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */; };
 		DA51CFA4144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */; };
 		DA51CFA5144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */; };
+		DA529958144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA529959144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA52995A144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA681B0F13B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
 		DA681B1013B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
 		DA681B1113B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
@@ -1234,6 +1240,8 @@
 		DA51CE95144ACBEE00C714ED /* SHKShareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKShareMenu.m; sourceTree = "<group>"; };
 		DA51CE96144ACBEE00C714ED /* SHKViewControllerWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKViewControllerWrapper.h; sourceTree = "<group>"; };
 		DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKViewControllerWrapper.m; sourceTree = "<group>"; };
+		DA529957144AF6B00010429A /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		DA52995C144AF88D0010429A /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
 		DA681B0D13B356C200232190 /* ConnectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionTableViewCell.h; sourceTree = "<group>"; };
 		DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionTableViewCell.m; sourceTree = "<group>"; };
 		DA681B1313B35BEC00232190 /* ConnectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionListController.h; sourceTree = "<group>"; };
@@ -1731,6 +1739,8 @@
 				DAC8C4B713B202C500CA00D9 /* libxml2.dylib in Frameworks */,
 				DAC8C4C413B202F600CA00D9 /* CrashReporter.framework in Frameworks */,
 				DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */,
+				DA529958144AF6B00010429A /* EventKit.framework in Frameworks */,
+				DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1751,6 +1761,8 @@
 				DAC8C4B813B202C500CA00D9 /* libxml2.dylib in Frameworks */,
 				DAC8C4C513B202F600CA00D9 /* CrashReporter.framework in Frameworks */,
 				DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */,
+				DA529959144AF6B00010429A /* EventKit.framework in Frameworks */,
+				DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1770,6 +1782,8 @@
 				DAC8C4B913B202C500CA00D9 /* libxml2.dylib in Frameworks */,
 				DAC8C4C613B202F700CA00D9 /* CrashReporter.framework in Frameworks */,
 				DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */,
+				DA52995A144AF6B00010429A /* EventKit.framework in Frameworks */,
+				DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2325,6 +2339,8 @@
 				DAC8C49613B2024B00CA00D9 /* AudioToolbox.framework */,
 				DAC8C49A13B2026800CA00D9 /* CFNetwork.framework */,
 				DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */,
+				DA529957144AF6B00010429A /* EventKit.framework */,
+				DA52995C144AF88D0010429A /* EventKitUI.framework */,
 				DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */,
 				DAC8C49C13B2026800CA00D9 /* iAd.framework */,
 				DAC8C4B213B202C400CA00D9 /* libsqlite3.dylib */,

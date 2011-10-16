@@ -14,6 +14,8 @@
 #import "SwipeTableView.h" /* SwipeTableViewDelegate */
 #import "ServiceZapListController.h" /* ServiceZapListDelegate */
 
+#import <EventKitUI/EventKitUI.h>
+
 // Forward declarations...
 @class CXMLDocument;
 
@@ -29,7 +31,8 @@
 													UIPopoverControllerDelegate,
 													UIActionSheetDelegate,
 													EventSourceDelegate,
-													ServiceZapListDelegate>
+													ServiceZapListDelegate,
+													EKEventEditViewDelegate>
 {
 @private
 	NSMutableArray *_similarEvents; /*!< @brief List of similar Events. */

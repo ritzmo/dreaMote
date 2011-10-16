@@ -41,6 +41,10 @@
 - (void)share:(id)sender;
 @end
 
+@interface EventViewController(Calendar)
+- (void)openCalendarEditor:(id)sender;
+@end
+
 @implementation EventViewController
 
 @synthesize popoverController;
@@ -388,6 +392,8 @@
 		NSUInteger rows = 2;
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
+		if([UIDevice runsIos4OrBetter])
+			++rows;
 
 		return rows;
 	}
@@ -499,6 +505,8 @@
 
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
 				++row;
+			if(![UIDevice runsIos4OrBetter] && row > 2)
+				++row;
 
 			switch(row)
 			{
@@ -515,6 +523,9 @@
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Share", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(share:) withType:UIButtonTypeCustom];
 					break;
+				case 3:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add to calendar", @"Create calendar entry for this event");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openCalendarEditor:) withType:UIButtonTypeCustom];
 			}
 			break;
 		}
@@ -581,6 +592,36 @@
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
 	[actionSheet showInView:self.view];
+}
+
+#pragma mark Calendar
+
+- (void)openCalendarEditor:(id)sender
+{
+	EKEventStore *eventDB = [[EKEventStore alloc] init];
+	EKEvent *myEvent  = [EKEvent eventWithEventStore:eventDB];
+	myEvent.title = _event.title;
+	myEvent.startDate = _event.begin;
+	myEvent.endDate = _event.end;
+	myEvent.allDay = NO;
+	[myEvent setCalendar:[eventDB defaultCalendarForNewEvents]];
+
+	EKEventEditViewController* controller = [[EKEventEditViewController alloc] init];
+	controller.eventStore = eventDB;
+	controller.event = myEvent;
+	controller.editViewDelegate = self;
+	controller.modalPresentationStyle = UIModalPresentationFormSheet;
+	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:controller animated:YES];
+	[controller release];
+}
+
+- (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
+{
+#if IS_DEBUG()
+	NSLog(@"editing completed with action: %d", action);
+#endif
+	[self dismissModalViewControllerAnimated:YES];
 }
 
 # pragma mark Zapping
