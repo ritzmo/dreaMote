@@ -79,7 +79,11 @@
 	@synchronized(self)
 	{
 		if(_autotimerView == nil)
-			_autotimerView = [[AutoTimerViewController alloc] init];
+		{
+			AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+			self.autotimerView = avc;
+			[avc release];
+		}
 	}
 	return _autotimerView;
 }
