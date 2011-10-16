@@ -97,6 +97,10 @@
 		{
 			settings.delay_standby = [currentString integerValue];
 		}
+		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.lastscan"])
+		{
+			settings.lastscan = [currentString integerValue];
+		}
 		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.inherit_autotimer"])
 		{
 			settings.inherit_autotimer = [currentString boolValue];

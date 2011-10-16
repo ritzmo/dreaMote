@@ -33,6 +33,12 @@ enum sectionIds
 	maxSection = 4,
 };
 
+enum startSectionItems
+{
+	startRow = 0,
+	lastscanRow = 1,
+};
+
 enum generalSectionItems
 {
 	enabledRow = 0,
@@ -654,7 +660,7 @@ enum generalSectionItems
 	switch(section)
 	{
 		case startSection:
-			return 1;
+			return (settings.lastscan > 0) ? 2 : 1;
 		case generalSection:
 		{
 			NSInteger rowCount = maxGeneralRow;
@@ -685,9 +691,18 @@ enum generalSectionItems
 		{
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
-			cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"Start refresh", @"EPGRefresh", @"start manual refresh of epg");
+			switch(row)
+			{
+				case startRow:
+					cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+					cell.textLabel.text = NSLocalizedStringFromTable(@"Start refresh", @"EPGRefresh", @"start manual refresh of epg");
+					break;
+				case lastscanRow:
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize-1];
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Last refresh: %@", @"EPGRefresh", @"Time of last refresh if given by remote end"), [self format_Time:[NSDate dateWithTimeIntervalSince1970:settings.lastscan] withDateStyle:NSDateFormatterShortStyle]];
+					break;
+			}
 			break;
 		}
 		case generalSection:
@@ -915,6 +930,8 @@ enum generalSectionItems
 	{
 		case startSection:
 		{
+			if(indexPath.row != startRow) break;
+
 			Result *result = [[RemoteConnectorObject sharedRemoteConnector] startEPGRefresh];
 			if(!result.result)
 			{

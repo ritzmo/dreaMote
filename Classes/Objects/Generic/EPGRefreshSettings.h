@@ -16,6 +16,7 @@
 	NSDate *end;
 	NSInteger interval;
 	NSInteger delay_standby;
+	NSInteger lastscan;
 	BOOL inherit_autotimer;
 	BOOL afterevent;
 	BOOL force;
@@ -31,6 +32,7 @@
 @property (nonatomic, retain) NSDate *end;
 @property (nonatomic, assign) NSInteger interval;
 @property (nonatomic, assign) NSInteger delay_standby;
+@property (nonatomic, assign) NSInteger lastscan;
 @property (nonatomic, assign) BOOL inherit_autotimer;
 @property (nonatomic, assign) BOOL afterevent;
 @property (nonatomic, assign) BOOL force;

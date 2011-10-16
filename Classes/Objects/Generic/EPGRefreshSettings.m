@@ -10,7 +10,7 @@
 
 @implementation EPGRefreshSettings
 
-@synthesize enabled, begin, end, interval, delay_standby, inherit_autotimer, afterevent, force, wakeup, parse_autotimer, adapter, canDoBackgroundRefresh, hasAutoTimer;
+@synthesize enabled, begin, end, interval, delay_standby, lastscan, inherit_autotimer, afterevent, force, wakeup, parse_autotimer, adapter, canDoBackgroundRefresh, hasAutoTimer;
 
 - (void)dealloc
 {
@@ -19,6 +19,15 @@
 	[adapter release];
 
 	[super dealloc];
+}
+
+- (id)init
+{
+	if((self = [super init]))
+	{
+		lastscan = -1;
+	}
+	return self;
 }
 
 @end
