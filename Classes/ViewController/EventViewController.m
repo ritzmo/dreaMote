@@ -20,6 +20,10 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
+#if IS_FULL()
+	#import "AutoTimerViewController.h"
+#endif
+
 #import "SHK.h"
 
 @interface EventViewController()
@@ -44,6 +48,12 @@
 @interface EventViewController(Calendar)
 - (void)openCalendarEditor:(id)sender;
 @end
+
+#if IS_FULL()
+@interface EventViewController(AutoTimer)
+- (void)addAutoTimer:(id)sender;
+@end
+#endif
 
 @implementation EventViewController
 
@@ -394,6 +404,10 @@
 			++rows;
 		if([UIDevice runsIos4OrBetter])
 			++rows;
+#if IS_FULL()
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAutoTimer])
+			++rows;
+#endif
 
 		return rows;
 	}
@@ -503,9 +517,16 @@
 			NSInteger row = indexPath.row;
 			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
+#if IS_FULL()
+			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAutoTimer] && row > 0)
 				++row;
-			if(![UIDevice runsIos4OrBetter] && row > 2)
+#else
+			if(row > 0)
+				++row;
+#endif
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 1)
+				++row;
+			if(![UIDevice runsIos4OrBetter] && row > 3)
 				++row;
 
 			switch(row)
@@ -515,15 +536,21 @@
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add Timer", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(addTimer:) withType:UIButtonTypeContactAdd];
 					break;
+#if IS_FULL()
 				case 1:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add AutoTimer", @"Add new AutoTimer based on this event");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(addAutoTimer:) withType:UIButtonTypeCustom];
+					break;
+#endif
+				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"IMDb", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withType:UIButtonTypeCustom];
 					break;
-				case 2:
+				case 3:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Share", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(share:) withType:UIButtonTypeCustom];
 					break;
-				case 3:
+				case 4:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Add to calendar", @"Create calendar entry for this event");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openCalendarEditor:) withType:UIButtonTypeCustom];
 			}
@@ -626,6 +653,23 @@
 	[self dismissModalViewControllerAnimated:YES];
 }
 
+#pragma mark AutoTimer
+#if IS_FULL()
+
+- (void)addAutoTimer:(id)sender
+{
+	AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+	avc.timer = [AutoTimer timerFromEvent:_event];
+	// NOTE: no need to set the delegate
+
+	[self.navigationController pushViewController:avc animated:YES];
+	// NOTE: set this here so the edit button won't get screwed
+	avc.creatingNewTimer = YES;
+
+	[avc release];
+}
+
+#endif
 # pragma mark Zapping
 
 /* zap */
