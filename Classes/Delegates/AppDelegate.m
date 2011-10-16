@@ -143,6 +143,7 @@ static const char *basename(const char *path)
 								 kDefaultTimeout, kTimeoutKey,
 								 kSatFinderDefaultInterval, kSatFinderInterval,
 								 kSearchHistoryDefaultLength, kSearchHistoryLength,
+								 @"NO", kSeparateEpgByDay,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 
@@ -544,6 +545,10 @@ zipAlert:
 			else if([key isEqualToString:kSearchHistoryLength])
 			{
 				[stdDefaults setInteger:[value integerValue] forKey:kSearchHistoryLength];
+			}
+			else if([key isEqualToString:kSeparateEpgByDay])
+			{
+				[stdDefaults setBool:[value boolValue] forKey:kSeparateEpgByDay];
 			}
 			else
 			{

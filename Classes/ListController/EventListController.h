@@ -43,6 +43,10 @@
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	UIPopoverController *popoverController; /*!< @brief Popover controller */
 
+	BOOL _useSections; /*!< @brief Use sections? */
+	NSTimeInterval _firstDay; /*!< @brief First day with events (00:00) if using sections / day. */
+	NSMutableArray *_sectionOffsets; /*!< @brief Array of first indices. */
+
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */

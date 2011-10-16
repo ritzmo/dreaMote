@@ -282,14 +282,15 @@ enum sectionIds
 			NSData *data = [NSData dataWithContentsOfFile:[kConfigPath stringByExpandingTildeInPath]];
 			NSString *importString = [data base64EncodedString];
 			NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:
-						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i&%@:%d",
+						@"dreaMote:///settings?import:%@&%@:%i&%@:%i&%@:%i&%@:%i&%@:%i&%@:%d&%@:%i",
 										   importString,
 										   kActiveConnection, [stdDefaults integerForKey:kActiveConnection],
 										   kVibratingRC, [stdDefaults boolForKey: kVibratingRC],
 										   kMessageTimeout, [stdDefaults integerForKey:kMessageTimeout],
 										   kPrefersSimpleRemote, [stdDefaults boolForKey:kPrefersSimpleRemote],
 										   kTimeoutKey, kTimeout,
-										   kSearchHistoryLength, [stdDefaults integerForKey:kSearchHistoryLength]]];
+										   kSearchHistoryLength, [stdDefaults integerForKey:kSearchHistoryLength],
+										   kSeparateEpgByDay, [stdDefaults boolForKey:kSeparateEpgByDay]]];
 			[[UIApplication sharedApplication] openURL:url];
 		}
 #endif

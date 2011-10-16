@@ -79,7 +79,7 @@
 #define kDefaultTimeout			@"15"
 #define kTimeout				[[NSUserDefaults standardUserDefaults] integerForKey:kTimeoutKey]
 #define kSatFinderDefaultInterval @"5.0"
-#define kSearchHistoryDefaultLength ((IS_IPAD()) ? 12 : 9)
+#define kSearchHistoryDefaultLength ((IS_IPAD()) ? @"12" : @"9")
 
 //
 #define kVanilla_ID				@"Vanilla_ID"
@@ -122,6 +122,7 @@ extern const char *kPiconGlob;
 #define kTimeoutKey				@"timeout"
 #define kSatFinderInterval		@"satFinderRefreshInterval"
 #define kSearchHistoryLength	@"searchHistoryLength"
+#define kSeparateEpgByDay		@"separateEpgByDay"
 
 #define kCurrentDatabaseVersion 2
 

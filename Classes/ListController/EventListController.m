@@ -23,6 +23,8 @@
 	#import "EPGCache.h"
 #endif
 
+#define ONEDAY 86400
+
 @interface EventListController()
 /*!
  @brief initiate zap 
@@ -56,6 +58,7 @@
 		_eventViewController = nil;
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
+		_sectionOffsets = [[NSMutableArray array] retain];
 	}
 	return self;
 }
@@ -129,7 +132,6 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kEventCellHeight;
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	_tableView.sectionHeaderHeight = 0;
 
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
@@ -165,11 +167,21 @@
 /* remove content data */
 - (void)emptyData
 {
+	_useSections = [[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay];
+	NSInteger sectionCount = _sectionOffsets.count;
+	[_sectionOffsets removeAllObjects];
+	_firstDay = 0;
+
 	// Clean event list
 	[_events removeAllObjects];
 #if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	if(_useSections)
+	{
+		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sectionCount)];
+		[_tableView deleteSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	}
+	else
+		[_tableView reloadSections:[NSIndexSet indexSetWithIndex: 0] withRowAnimation:UITableViewRowAnimationRight];
 #else
 	[_tableView reloadData];
 #endif
@@ -242,18 +254,75 @@
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate methods
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSIndexSet *idxSet = (_useSections) ? [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, _sectionOffsets.count)] : [NSIndexSet indexSetWithIndex: 0];;
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[_tableView reloadData];
+#endif
+}
+
+#pragma mark -
 #pragma mark EventSourceDelegate methods
 #pragma mark -
 
 /* add event to list */
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
-	[_events addObject: event];
 #if INCLUDE_FEATURE(Extra_Animation)
-	const NSInteger idx = _events.count-1;
-	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-					  withRowAnimation: UITableViewRowAnimationLeft];
+	BOOL skipAnimation = NO;
 #endif
+	[_events addObject: event];
+	NSInteger idx = _events.count-1;
+	if(_useSections)
+	{
+		if(idx == 0)
+		{
+			NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+			NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:event.begin];
+			[components setHour:0];
+			NSDate *date = [gregorian dateFromComponents:components];
+			_firstDay = [date timeIntervalSince1970];
+			[_sectionOffsets addObject:[NSNumber numberWithInteger:0]];
+
+			[gregorian release];
+#if INCLUDE_FEATURE(Extra_Animation)
+			[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
+			skipAnimation = YES;
+#endif
+		}
+		else
+		{
+			NSTimeInterval secSinceFirst = [event.begin timeIntervalSince1970] - _firstDay;
+			NSInteger numSections = _sectionOffsets.count;
+			while(secSinceFirst > numSections * ONEDAY) // NOTE: a while is probably not necessary, but we better make sure
+			{
+				[_sectionOffsets addObject:[NSNumber numberWithInteger:idx]];
+#if INCLUDE_FEATURE(Extra_Animation)
+				[_tableView insertSections:[NSIndexSet indexSetWithIndex:numSections] withRowAnimation:UITableViewRowAnimationLeft];
+				skipAnimation = YES;
+#endif
+				++numSections;
+			}
+		}
+#if INCLUDE_FEATURE(Extra_Animation)
+		idx -= [[_sectionOffsets lastObject] integerValue];
+#endif
+	}
+
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(!skipAnimation)
+		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:(_useSections) ? _sectionOffsets.count - 1 : 0]]
+						  withRowAnimation:UITableViewRowAnimationLeft];
+#endif
+
 #if IS_FULL()
 	[NSThread detachNewThreadSelector:@selector(addEventThreaded:) toTarget:[EPGCache sharedInstance] withObject:event];
 #endif
@@ -270,7 +339,13 @@
 
 	cell.formatter = _dateFormatter;
 	cell.showService = NO;
-	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+	if(_useSections)
+	{
+		NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
+		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex:offset + indexPath.row];
+	}
+	else
+		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 
 	return cell;
 }
@@ -287,7 +362,7 @@
 		return nil;
 	}
 
-	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
 
 	if(_eventViewController == nil)
 		_eventViewController = [[EventViewController alloc] init];
@@ -315,13 +390,48 @@
 /* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
-	// TODO: seperate by day??
-	return 1;
+	return _useSections ? _sectionOffsets.count : 1;
+}
+
+/* section header height */
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+#ifndef defaultSectionHeaderHeight
+	#define defaultSectionHeaderHeight 34
+#endif
+	return _useSections ? defaultSectionHeaderHeight: 0;
+}
+
+/* section titles */
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	if(_useSections)
+	{
+		NSDateFormatter *format = [[NSDateFormatter alloc] init];
+		format.dateStyle = NSDateFormatterShortStyle;
+		format.timeStyle = NSDateFormatterNoStyle;
+		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
+		NSString *title = [format fuzzyDate:event.begin];
+		[format release];
+		return title;
+	}
+	return nil;
 }
 
 /* number of items */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+	if(_useSections)
+	{
+		if((NSUInteger)section == _sectionOffsets.count - 1)
+			return _events.count - [[_sectionOffsets lastObject] integerValue];
+		else if(_sectionOffsets.count != 0)
+			return [[_sectionOffsets objectAtIndex:section + 1] integerValue] - [[_sectionOffsets objectAtIndex:section] integerValue];
+#if IS_DEBUG()
+		[NSException raise:@"ExcInvalidSectionOffset" format:@"Invalid section or no offset set (section %d of %d", section, _sectionOffsets.count - 1];
+#endif
+		return 0;
+	}
 	return [_events count];
 }
 
