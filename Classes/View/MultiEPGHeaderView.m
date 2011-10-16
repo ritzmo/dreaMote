@@ -147,13 +147,13 @@
 	firstTime.text = [formatter fuzzyDate:begin];
 
 	[formatter setDateStyle:NSDateFormatterNoStyle];
-	current = [current dateByAddingTimeInterval:step];
+	current = ([UIDevice runsIos4OrBetter]) ? [current dateByAddingTimeInterval:step] : [current addTimeInterval:step];
 	secondTime.text = [formatter stringFromDate:current];
 
-	current = [current dateByAddingTimeInterval:step];
+	current = ([UIDevice runsIos4OrBetter]) ? [current dateByAddingTimeInterval:step] : [current addTimeInterval:step];
 	thirdTime.text = [formatter stringFromDate:current];
 
-	current = [current dateByAddingTimeInterval:step];
+	current = ([UIDevice runsIos4OrBetter]) ? [current dateByAddingTimeInterval:step] : [current addTimeInterval:step];
 	fourthTime.text = [formatter stringFromDate:current];
 
 	[formatter release];

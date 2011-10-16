@@ -12,7 +12,9 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "MultiEPGHeaderView.h"
+
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "UIDevice+SystemVersion.h"
 #import "UITableViewCell+EasyInit.h"
 
 #import "MultiEPGTableViewCell.h"
@@ -247,7 +249,7 @@
 - (void)backButtonPressed:(id)sender
 {
 	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]];
+	NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]] : [_curBegin addTimeInterval:-[timeInterval floatValue]];
 	self.curBegin = until;
 }
 
@@ -255,7 +257,7 @@
 - (void)forwardButtonPressed:(id)sender
 {
 	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
+	NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]] : [_curBegin addTimeInterval:[timeInterval floatValue]];
 	self.curBegin = until;
 }
 
@@ -349,7 +351,7 @@
 	{
 		NSDate *begin = SafeReturn(_curBegin);
 		NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-		NSDate *until = [begin dateByAddingTimeInterval:[timeInterval floatValue]];
+		NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]] : [_curBegin addTimeInterval:[timeInterval floatValue]];
 		[_epgCache readEPGForTimeIntervalFrom:begin until:SafeReturn(until) to:SafeReturn(self)];
 	}
 
@@ -517,23 +519,28 @@
 {
 	// only detect left&right swipes
 	const SwipeType lastSwipe = _tableView.lastSwipe & (swipeTypeLeft | swipeTypeRight);
+	NSTimeInterval interval = 0;
 	switch(lastSwipe)
 	{
 		case swipeTypeRight:
 		{
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-			NSDate *until = [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]];
-			self.curBegin = until;
+			interval = -[timeInterval floatValue];
 			break;
 		}
 		case swipeTypeLeft:
 		{
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-			NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
-			self.curBegin = until;
+			interval = [timeInterval floatValue];
 			break;
 		}
 		default: break;
+	}
+
+	if(interval)
+	{
+		NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:interval] : [_curBegin addTimeInterval:interval];
+		self.curBegin = until;
 	}
 }
 
@@ -597,21 +604,5 @@
 {
 	return [_services count];
 }
-
-#if 0
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-	const NSDateFormatter *format = [[NSDateFormatter alloc] init];
-	[format setDateStyle:NSDateFormatterMediumStyle];
-	[format setTimeStyle:NSDateFormatterShortStyle];
-	NSString *firstString = [format fuzzyDate:_curBegin];
-	[format setDateStyle:NSDateFormatterNoStyle];
-	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
-	NSString *secondString = [format fuzzyDate:until];
-	[format release];
-	return [NSString stringWithFormat:@"%@ - %@", firstString, secondString];
-}
-#endif
 
 @end

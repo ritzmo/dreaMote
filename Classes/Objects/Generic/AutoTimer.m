@@ -7,6 +7,7 @@
 //
 
 #import "AutoTimer.h"
+#import "UIDevice+SystemVersion.h"
 
 @interface AutoTimer()
 - (id)initWithAutoTimer:(AutoTimer *)autotimer;
@@ -21,6 +22,23 @@
 	AutoTimer *timer = [[AutoTimer alloc] init];
 	timer.encoding = @"ISO8859-15";
 	return [timer autorelease];
+}
+
++ (AutoTimer *)timerFromEvent:(NSObject<EventProtocol> *)event
+{
+	AutoTimer *timer = [AutoTimer timer];
+	timer.name = event.title;
+	timer.match = event.title;
+	timer.enabled = YES;
+	timer.idno = -1;
+	timer.from = ([UIDevice runsIos4OrBetter]) ? [event.begin dateByAddingTimeInterval:-60*60] : [event.begin addTimeInterval:-60*60];
+	timer.to = ([UIDevice runsIos4OrBetter]) ? [event.end dateByAddingTimeInterval:60*60] : [event.end addTimeInterval:60*60];
+	timer.searchCase = CASE_SENSITIVE;
+	timer.searchType = SEARCH_TYPE_EXACT;
+	timer.overrideAlternatives = YES;
+	timer.services = [NSMutableArray arrayWithObject:event.service];
+	timer.afterEventAction = kAfterEventMax;
+	return timer;
 }
 
 - (id)init

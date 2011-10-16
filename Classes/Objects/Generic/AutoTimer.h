@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import "../EventProtocol.h"
 #import "../TimerProtocol.h"
 
 typedef enum
@@ -76,6 +77,7 @@ typedef enum
 }
 
 + (AutoTimer *)timer;
++ (AutoTimer *)timerFromEvent:(NSObject<EventProtocol> *)event;
 - (void)addInclude:(NSString *)include where:(autoTimerWhereType)where;
 - (void)addExclude:(NSString *)exclude where:(autoTimerWhereType)where;
 
