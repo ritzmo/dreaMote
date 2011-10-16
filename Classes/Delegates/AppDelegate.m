@@ -20,7 +20,10 @@
 #import "Appirater.h"
 #import "BWQuincyManager.h"
 #import "RemoteConnectorObject.h"
+
+// ShareKit
 #import "SHKConfiguration.h"
+#import "SHKFacebook.h"
 
 #if IS_FULL()
 	#import "EPGCache.h"
@@ -283,6 +286,9 @@ static const char *basename(const char *path)
 /* open url prior to ios 4.2 */
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
+	if([url.scheme hasPrefix:[NSString stringWithFormat:@"fb%@", SHKCONFIG(facebookAppId)]])
+		return [SHKFacebook handleOpenURL:url];
+
 	if([url.path isEqualToString:@"/settings"])
 	{
 		[cachedURL release];
