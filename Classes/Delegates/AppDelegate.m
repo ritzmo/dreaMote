@@ -271,7 +271,11 @@ static const char *basename(const char *path)
 	if(classConfigurationDelegate != nil)
 	{
 		// NOTE: class has to have retain count 1 as SHKConfiguration does not retain it
-		[SHKConfiguration sharedInstanceWithDelegate:[[classConfigurationDelegate alloc] init]];
+		id configurationDelegate = [[classConfigurationDelegate alloc] init];
+		[SHKConfiguration sharedInstanceWithDelegate:configurationDelegate];
+#ifdef __clang_analyzer__
+		[configurationDelegate release];
+#endif
 	}
 
 	return YES;

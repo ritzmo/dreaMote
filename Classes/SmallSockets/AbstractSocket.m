@@ -83,7 +83,7 @@ int connectWithTimeout (int sfd,
 // Designated initializer
 //
 {    
-    if ( ![super init] )
+    if ( !(self = [super init]) )
 		return nil;
 
     connected = NO;
@@ -311,7 +311,7 @@ int connectWithTimeout (int sfd,
 // only intended for internal use (see -acceptConnectionAndKeepListening) 
 //
 {
-    if ( ![super init] )
+    if ( !(self = [super init]) )
 	return nil;
 
     connected = YES;

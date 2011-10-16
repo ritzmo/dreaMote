@@ -93,7 +93,9 @@
 #endif
 
 // fix for banners in iOS 4.0 and 4.1
-#import "UIDevice+SystemVersion.h"
+#ifdef __OBJC__
+	#import "UIDevice+SystemVersion.h"
+#endif
 #define bannerContentSizeIdentifierPortrait ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50)
 #define bannerContentSizeIdentifierLandscape ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32)
 

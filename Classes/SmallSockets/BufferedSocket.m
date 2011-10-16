@@ -52,7 +52,7 @@
 // Designated initializer
 //
 {
-    if ( ![super init] )
+    if ( !(self = [super init]) )
 		return nil;
 		
     buffer = [[NSMutableData alloc] init];
@@ -65,7 +65,7 @@
 // Private initializer, do not use
 //
 {
-	if ( ![super initWithFD:fd remoteAddress:remoteAddress] )
+	if ( !(self = [super initWithFD:fd remoteAddress:remoteAddress]) )
 		return nil;
 
     buffer = [[NSMutableData alloc] init];
