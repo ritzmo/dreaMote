@@ -21,7 +21,6 @@
 														SearchHistoryListDelegate>
 {
 @private
-	UISearchBar	*_searchBar; /*!< @brief Search Bar. */
 	SearchHistoryListController *_searchHistory; /*!< @brief Search History */
 }
 

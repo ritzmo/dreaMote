@@ -33,6 +33,9 @@
 													UITableViewDataSource,
 													EventSourceDelegate,
 													UIScrollViewDelegate,
+#if IS_FULL()
+													UISearchDisplayDelegate,
+#endif
 													UIPopoverControllerDelegate,
 													UIActionSheetDelegate,
 													ServiceZapListDelegate>
@@ -50,6 +53,14 @@
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
+
+	UISearchBar *_searchBar; /*!< @brief Search bar, either for event search or in full version. */
+
+#if IS_FULL()
+	NSMutableArray *_filteredEvents; /*!< @brief Filtered list of events when searching. */
+	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
+#endif
+
 #if INCLUDE_FEATURE(Ads)
 @private
 	id _adBannerView;
@@ -73,6 +84,16 @@
 - (void)createAdBannerView;
 #endif
 
+/*!
+ @brief Calculate indices of new sections.
+ @param allowSearch Are we working on search results?
+ */
+- (void)sortEventsInSections:(BOOL)allowSearch;
+
+/*!
+ @brief Calculate indices of new sections.
+ @note Allows search.
+ */
 - (void)sortEventsInSections;
 
 

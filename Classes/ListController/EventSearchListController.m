@@ -49,7 +49,7 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_searchBar release];
+	SafeRetainAssign(_searchBar, nil);
 
 	[super dealloc];
 }
@@ -120,10 +120,8 @@
 
 - (void)viewDidUnload
 {
-	[_searchBar release];
-	_searchBar = nil;
-	[_tableView release];
-	_tableView = nil;
+	SafeRetainAssign(_searchBar, nil);
+	SafeRetainAssign(_tableView, nil);
 
 	[super viewDidUnload];
 }
@@ -219,6 +217,26 @@
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
+
+// NOTE: can't use super because it has modifications for the search bar
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	_reloading = NO;
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
+	[_tableView reloadData];
+
+	if(!error)
+		return;
+
+	// Alert user
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+														  message:[error localizedDescription]
+														 delegate:nil
+												cancelButtonTitle:@"OK"
+												otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+}
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {

@@ -59,6 +59,9 @@
 		_service = nil;
 		_events = [[NSMutableArray array] retain];
 		_sectionOffsets = [[NSMutableArray array] retain];
+#if IS_FULL()
+		_filteredEvents = [[NSMutableArray alloc] init];
+#endif
 	}
 	return self;
 }
@@ -91,6 +94,10 @@
 	// Clean event list
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#if IS_FULL()
+	// NOTE: offset is a little off on iPad iOS 4.2, but this is the best looking version on everything else
+	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+#endif
 
 	// Run this in our "temporary" queue
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
@@ -107,6 +114,15 @@
 	[popoverController release];
 	[_zapListController release];
 	[_sectionOffsets release];
+#if IS_FULL()
+	[_filteredEvents release];
+	_tableView.tableHeaderView = nil; // references _searchBar
+	SafeRetainAssign(_searchBar, nil);
+	_searchDisplay.delegate = nil;
+	_searchDisplay.searchResultsDataSource = nil;
+	_searchDisplay.searchResultsDelegate = nil;
+	[_searchDisplay release];
+#endif
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
@@ -138,7 +154,23 @@
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
 	[zapButton release];
-	
+
+#if IS_FULL()
+	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	_searchBar.keyboardType = UIKeyboardTypeDefault;
+	_tableView.tableHeaderView = _searchBar;
+
+	// hide the searchbar
+	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+
+	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+	_searchDisplay.delegate = self;
+	_searchDisplay.searchResultsDataSource = self;
+	_searchDisplay.searchResultsDelegate = self;
+#endif
+
 #if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE())
 		[self createAdBannerView];
@@ -267,13 +299,17 @@
 	[super viewWillDisappear:animated];
 }
 
-- (void)sortEventsInSections
+- (void)sortEventsInSections:(BOOL)allowSearch
 {
 	[_sectionOffsets removeAllObjects];
+	NSArray *events = _events;
+#if IS_FULL()
+	if(allowSearch && _searchDisplay.active) events = _filteredEvents;
+#endif
 
-	if(_events.count)
+	if(events.count && _useSections)
 	{
-		NSObject<EventProtocol> *firstEvent = [_events objectAtIndex:0];
+		NSObject<EventProtocol> *firstEvent = [events objectAtIndex:0];
 		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:firstEvent.begin];
 		[components setHour:0];
@@ -285,7 +321,7 @@
 
 		NSInteger numSections = 1; // we start with one section
 		NSInteger idx = 1; // and after the first element
-		for(NSObject<EventProtocol> *event in _events)
+		for(NSObject<EventProtocol> *event in events)
 		{
 			if(event == firstEvent) continue;
 
@@ -302,9 +338,22 @@
 	[_tableView reloadData];
 }
 
+- (void)sortEventsInSections
+{
+	[self sortEventsInSections:YES];
+}
+
 #pragma mark -
 #pragma mark DataSourceDelegate methods
 #pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+{
+	[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+#if IS_FULL()
+	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+#endif
+}
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
@@ -315,6 +364,9 @@
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
+#endif
+#if IS_FULL()
+	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 #endif
 }
 
@@ -384,6 +436,10 @@
 /* cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSArray *events = _events;
+#if IS_FULL()
+	if(tableView == _searchDisplay.searchResultsTableView) events = _filteredEvents;
+#endif
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
 	cell.formatter = _dateFormatter;
@@ -391,10 +447,10 @@
 	if(_useSections)
 	{
 		const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
-		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex:offset + indexPath.row];
+		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex:offset + indexPath.row];
 	}
 	else
-		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex: indexPath.row];
 
 	return cell;
 }
@@ -456,10 +512,14 @@
 {
 	if(_useSections)
 	{
+		NSArray *events = _events;
+#if IS_FULL()
+		if(tableView == _searchDisplay.searchResultsTableView) events = _filteredEvents;
+#endif
 		NSDateFormatter *format = [[NSDateFormatter alloc] init];
 		format.dateStyle = NSDateFormatterShortStyle;
 		format.timeStyle = NSDateFormatterNoStyle;
-		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
+		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
 		NSString *title = [format fuzzyDate:event.begin];
 		[format release];
 		return title;
@@ -470,10 +530,14 @@
 /* number of items */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
+	NSArray *events = _events;
+#if IS_FULL()
+	if(tableView == _searchDisplay.searchResultsTableView) events = _filteredEvents;
+#endif
 	if(_useSections)
 	{
 		if((NSUInteger)section == _sectionOffsets.count - 1)
-			return _events.count - [[_sectionOffsets lastObject] integerValue];
+			return events.count - [[_sectionOffsets lastObject] integerValue];
 		else if(_sectionOffsets.count != 0)
 			return [[_sectionOffsets objectAtIndex:section + 1] integerValue] - [[_sectionOffsets objectAtIndex:section] integerValue];
 #if IS_DEBUG()
@@ -481,7 +545,7 @@
 #endif
 		return 0;
 	}
-	return [_events count];
+	return [events count];
 }
 
 #pragma mark ADBannerViewDelegate
@@ -690,6 +754,54 @@
 	else
 		[ServiceZapListController openStream:streamingURL withAction:selectedAction];
 }
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark -
+#if IS_FULL()
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if(scrollView != _searchDisplay.searchResultsTableView)
+		[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	if(scrollView != _searchDisplay.searchResultsTableView)
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#endif
+
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+#pragma mark -
+#if IS_FULL()
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+	[_filteredEvents removeAllObjects];
+	const BOOL caseInsensitive = [searchString isEqualToString:[searchString lowercaseString]];
+	NSStringCompareOptions options = caseInsensitive ? (NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) : 0;
+	for(NSObject<EventProtocol> *event in _events)
+	{
+		NSRange range = [event.title rangeOfString:searchString options:options];
+		if(range.length)
+			[_filteredEvents addObject:event];
+	}
+	[self sortEventsInSections];
+
+	return YES;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView
+{
+	// refresh the list
+	[self sortEventsInSections:NO];
+}
+
+#endif
 
 #pragma mark -
 #pragma mark UIPopoverControllerDelegate methods
