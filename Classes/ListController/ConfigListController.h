@@ -12,6 +12,7 @@
 	#import "MultiEPGIntervalViewController.h" /* MultiEPGIntervalDelegate */
 #endif
 #import "ConnectionListController.h" /* ConnectionListDelegate */
+#import "SearchHistoryLengthEditorController.h" /* SearchHistoryLengthEditorDelegate */
 #import "TimeoutSelectionViewController.h" /* TimeoutSelectionDelegate */
 #import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 
@@ -27,6 +28,7 @@
 													ConnectionListDelegate,
 													TimeoutSelectionDelegate,
 													UITableViewDataSource,
+													SearchHistoryLengthEditorDelegate,
 													MBProgressHUDDelegate>
 {
 @private

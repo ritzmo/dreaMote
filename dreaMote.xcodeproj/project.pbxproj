@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
+		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
+		DA51C45C144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
+		DA51C45D144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
 		DA51CE98144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */; };
 		DA51CE99144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */; };
 		DA51CE9A144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */; };
@@ -1043,6 +1046,8 @@
 /* Begin PBXFileReference section */
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
 		DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiteUnzip.m; sourceTree = "<group>"; };
+		DA51C459144C343F00EA63C5 /* SearchHistoryLengthEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchHistoryLengthEditorController.h; sourceTree = "<group>"; };
+		DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchHistoryLengthEditorController.m; sourceTree = "<group>"; };
 		DA51CDAC144ACBED00C714ED /* DefaultSHKConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultSHKConfigurationDelegate.h; sourceTree = "<group>"; };
 		DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultSHKConfigurationDelegate.m; sourceTree = "<group>"; };
 		DA51CDAE144ACBED00C714ED /* LegacySHKConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacySHKConfigurationDelegate.h; sourceTree = "<group>"; };
@@ -2904,6 +2909,8 @@
 				DAC8C16F13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m */,
 				DAC8C17013B2014D00CA00D9 /* RCEmulatorController.h */,
 				DAC8C17113B2014D00CA00D9 /* RCEmulatorController.m */,
+				DA51C459144C343F00EA63C5 /* SearchHistoryLengthEditorController.h */,
+				DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */,
 				DAC8C17213B2014D00CA00D9 /* SignalViewController.h */,
 				DAC8C17313B2014D00CA00D9 /* SignalViewController.m */,
 				DAC8C17413B2014D00CA00D9 /* SimpleRCEmulatorController.h */,
@@ -3749,6 +3756,7 @@
 				DA51CF9D144ACBEE00C714ED /* SHKOAuthView.m in Sources */,
 				DA51CFA0144ACBEE00C714ED /* SHKShareMenu.m in Sources */,
 				DA51CFA3144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */,
+				DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3999,6 +4007,7 @@
 				DA51CF9E144ACBEE00C714ED /* SHKOAuthView.m in Sources */,
 				DA51CFA1144ACBEE00C714ED /* SHKShareMenu.m in Sources */,
 				DA51CFA4144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */,
+				DA51C45C144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4216,6 +4225,7 @@
 				DA51CF9F144ACBEE00C714ED /* SHKOAuthView.m in Sources */,
 				DA51CFA2144ACBEE00C714ED /* SHKShareMenu.m in Sources */,
 				DA51CFA5144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */,
+				DA51C45D144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

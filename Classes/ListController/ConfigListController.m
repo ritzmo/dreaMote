@@ -22,6 +22,7 @@
 
 #define kMultiEPGRowTag 99
 #define kTimeoutRowTag 100
+#define kHistoryLengthRowTag 101
 
 enum sectionIds
 {
@@ -29,6 +30,18 @@ enum sectionIds
 	settingsSection = 1,
 	buttonSection = 2,
 	maxSection = 3,
+};
+
+enum settingsRows
+{
+	simpleRemoteRow = 0,
+	separateEventsRow = 1,
+	vibrationRow = 2,
+	timeoutRow = 3,
+	historyLengthRow = 4,
+#if IS_FULL()
+	multiEpgRow = 5,
+#endif
 };
 
 /*!
@@ -216,30 +229,43 @@ enum sectionIds
 #pragma mark -
 #pragma mark MultiEPGIntervalDelegate
 #pragma mark -
+#if IS_FULL()
 
 - (void)didSetInterval
 {
-	NSIndexPath *idx = nil;
-	if(IS_IPAD())
-		idx = [NSIndexPath indexPathForRow:2 inSection:1];
-	else
-		idx = [NSIndexPath indexPathForRow:3 inSection:1];
+	NSInteger row = multiEpgRow;
+	if(IS_IPAD() && vibrationRow < multiEpgRow)
+		--row;
+	NSIndexPath *idx = [NSIndexPath indexPathForRow:row inSection:settingsSection];
 
 	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
 }
 
+#endif
 #pragma mark -
 #pragma mark TimeoutSelection
 #pragma mark -
 
 - (void)didSetTimeout
 {
-	NSIndexPath *idx = nil;
-	if(IS_IPAD())
-		idx = [NSIndexPath indexPathForRow:1 inSection:1];
-	else
-		idx = [NSIndexPath indexPathForRow:2 inSection:1];
+	NSInteger row = timeoutRow;
+	if(IS_IPAD() && vibrationRow < timeoutRow)
+		--row;
+	NSIndexPath *idx = [NSIndexPath indexPathForRow:row inSection:settingsSection];
 
+	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+#pragma mark -
+#pragma mark SearchHistoryLengthEditorDelegate
+#pragma mark -
+
+- (void)didSetLength
+{
+	NSInteger row = historyLengthRow;
+	if(IS_IPAD() && vibrationRow < historyLengthRow)
+		--row;
+	NSIndexPath *idx = [NSIndexPath indexPathForRow:row inSection:settingsSection];
 	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -253,12 +279,14 @@ enum sectionIds
 	if(indexPath.section == settingsSection)
 	{
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-		if(cell.tag == kTimeoutRowTag)
-			return indexPath;
+		if(cell.tag == kTimeoutRowTag
+		   || cell.tag == kHistoryLengthRowTag
 #if IS_FULL()
-		if(cell.tag == kMultiEPGRowTag)
-			return indexPath;
+		   || cell.tag == kMultiEPGRowTag
 #endif
+		   )
+			return indexPath;
+
 		return nil;
 	}
 	return indexPath;
@@ -424,6 +452,24 @@ enum sectionIds
 				[self.navigationController pushViewController:vc animated:YES];
 			}
 		}
+		else if(cell.tag == kHistoryLengthRowTag)
+		{
+			SearchHistoryLengthEditorController *vc = [SearchHistoryLengthEditorController withLength:[[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength]];
+			[vc setDelegate:self];
+			if(IS_IPAD())
+			{
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+
+				[self.navigationController presentModalViewController:navController animated:YES];
+				[navController release];
+			}
+			else
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
+		}
 #if IS_FULL()
 		else if(cell.tag == kMultiEPGRowTag)
 		{
@@ -459,11 +505,11 @@ enum sectionIds
 }
 
 /* cell for section */
-- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section
+- (UITableViewCell *)obtainTableCellForIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = nil;
 
-	switch(section)
+	switch(indexPath.section)
 	{
 		case buttonSection:
 		case connectionSection:
@@ -486,7 +532,7 @@ enum sectionIds
 	const NSInteger section = indexPath.section;
 	NSInteger row = indexPath.row;
 	NSString *hostTitle = nil;
-	UITableViewCell *sourceCell = [self obtainTableCellForSection: section];
+	UITableViewCell *sourceCell = [self obtainTableCellForIndexPath:indexPath];
 
 	// we are creating a new cell, setup its attributes
 	switch(section)
@@ -534,24 +580,24 @@ enum sectionIds
 		/* Misc configuration items */
 		case settingsSection:
 			sourceCell.tag = 0;
-			if(row > 1 && IS_IPAD())
+			if(row >= vibrationRow && IS_IPAD())
 				++row;
 
 			switch(row)
 			{
 				/* Simple remote */
-				case 0:
+				case simpleRemoteRow:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Simple Remote", @"");
 					((DisplayCell *)sourceCell).view = _simpleRemote;
 					break;
 				/* Separate events by day */
-				case 1:
+				case separateEventsRow:
 					((DisplayCell *)sourceCell).nameLabel.adjustsFontSizeToFitWidth = YES;
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Separate events by day", @"Toggle to enable sections in event lists");
 					((DisplayCell *)sourceCell).view = _sepEventsByDay;
 					break;
 				/* Vibration */
-				case 2:
+				case vibrationRow:
 					if(!IS_IPAD())
 					{
 						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
@@ -559,7 +605,7 @@ enum sectionIds
 					}
 					break;
 				/* Timeout */
-				case 3:
+				case timeoutRow:
 				{
 					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 					timeLabel.backgroundColor = [UIColor clearColor];
@@ -573,9 +619,24 @@ enum sectionIds
 					[timeLabel release];
 					break;
 				}
+				/* Search History Length */
+				case historyLengthRow:
+				{
+					UILabel *lengthLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+					lengthLabel.backgroundColor = [UIColor clearColor];
+					lengthLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					lengthLabel.textAlignment = UITextAlignmentRight;
+					lengthLabel.text = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength]];
+					lengthLabel.frame = CGRectMake(0, 0, [lengthLabel sizeThatFits:lengthLabel.bounds.size].width, kSwitchButtonHeight);;
+					sourceCell.textLabel.text = NSLocalizedString(@"Search History Length", @"Label of cell in config which gives search history length");
+					((DisplayCell *)sourceCell).view = lengthLabel;
+					sourceCell.tag = kHistoryLengthRowTag;
+					[lengthLabel release];
+					break;
+				}
 #if IS_FULL()
 				/* Multi-EPG interval */
-				case 4:
+				case multiEpgRow:
 				{
 					NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -649,7 +710,7 @@ enum sectionIds
 			return [_connections count];
 		case settingsSection:
 		{
-			NSInteger baseCount = (IS_IPAD()) ? 3 : 4;
+			NSInteger baseCount = (IS_IPAD()) ? 4 : 5;
 #if IS_FULL()
 			++baseCount;
 #endif
