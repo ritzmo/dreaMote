@@ -34,6 +34,7 @@
 #import "SleepTimerViewController.h"
 #import "TimerListController.h"
 #import "MediaPlayerController.h"
+#import "PackageManagerListController.h"
 
 @interface OtherListController()
 - (void)handleReconnect: (NSNotification *)note;
@@ -76,6 +77,7 @@
 	[_recordDictionary release];
 	[_signalDictionary release];
 	[_sleeptimerDictionary release];
+	[_packageManagerDictionary release];
 
 	[super dealloc];
 }
@@ -207,6 +209,14 @@
 							  nil] retain];
 	[targetViewController release];
 
+	targetViewController = [[PackageManagerListController alloc] init];
+	_packageManagerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+							  NSLocalizedString(@"Package Manager Title", @""), @"title",
+							  NSLocalizedString(@"Package Manager Explain", @""), @"explainText",
+							  targetViewController, @"viewController",
+							  nil] retain];
+	[targetViewController release];
+
 	// Add the "About" button to the navigation bar
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStylePlain target:self action:@selector(aboutDreamoteAction:)];
 	self.navigationItem.leftBarButtonItem = buttonItem;
@@ -240,6 +250,7 @@
 	SafeRetainAssign(_recordDictionary, nil);
 	SafeRetainAssign(_signalDictionary, nil);
 	SafeRetainAssign(_sleeptimerDictionary, nil);
+	SafeRetainAssign(_packageManagerDictionary, nil);
 	[menuList removeAllObjects];
 
 	[super viewDidUnload];
@@ -341,6 +352,24 @@
 		if([menuList containsObject: _signalDictionary])
 		{
 			[menuList removeObject: _signalDictionary];
+			reload = YES;
+		}
+	}
+
+	// Add/Remove Package Manager
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesPackageManagement])
+	{
+		if(![menuList containsObject: _packageManagerDictionary])
+		{
+			[menuList insertObject: _packageManagerDictionary atIndex: (IS_IPAD()) ? 4 : 5];
+			reload = YES;
+		}
+	}
+	else
+	{
+		if([menuList containsObject: _packageManagerDictionary])
+		{
+			[menuList removeObject: _packageManagerDictionary];
 			reload = YES;
 		}
 	}

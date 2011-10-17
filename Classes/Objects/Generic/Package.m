@@ -13,8 +13,16 @@
 
 + (Package *)packageFromString:(NSString *)packageString withInstalledState:(installedState)state
 {
-	Package *pkg = [[Package alloc] init];
 	NSArray *components = [packageString componentsSeparatedByString:@" - "];
+	if(components.count < 2)
+	{
+#if IS_DEBUG()
+		NSLog(@"tried to generate package from invalid string: %@", packageString);
+#endif
+		return nil;
+	}
+
+	Package *pkg = [[Package alloc] init];
 	pkg.name = [components objectAtIndex:0];
 	pkg.version = [components objectAtIndex:1];
 	if(components.count > 2)

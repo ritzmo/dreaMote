@@ -1134,7 +1134,9 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSMutableArray *returnArray = [NSMutableArray array];
 	for(NSString *packageString in packageStringList)
 	{
-		[returnArray addObject:[Package packageFromString:packageString withInstalledState:state]];
+		Package *package = [Package packageFromString:packageString withInstalledState:state];
+		if(package)
+			[returnArray addObject:package];
 	}
 	return returnArray;
 }

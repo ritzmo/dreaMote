@@ -50,6 +50,7 @@
 #define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
 #define kAutoTimerCellHeight	38
+#define kPackageCellHeight		((IS_IPAD()) ? 42 : 35)
 
 // MultiEPG heights
 #define kMultiEPGHeaderHeightIpad	(40) // Size of Header of iPad (else cell height)
@@ -74,6 +75,8 @@
 #define kTimerTimeTextSize		((IS_IPAD()) ? 15 : 12)
 #define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
 #define kAutoTimerNameTextSize	((IS_IPAD()) ? 20 : 16)
+#define kPackageNameTextSize	((IS_IPAD()) ? 21 : 17)
+#define kPackageVersionTextSize	((IS_IPAD()) ? 18 : 14)
 
 // defaults
 #define kDefaultTimeout			@"15"
