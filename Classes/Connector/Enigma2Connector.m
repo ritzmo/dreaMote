@@ -14,8 +14,9 @@
 #import <Objects/MovieProtocol.h>
 #import <Objects/ServiceProtocol.h>
 #import <Objects/TimerProtocol.h>
-#import <Objects/Generic/Movie.h>
 #import <Objects/Generic/File.h>
+#import <Objects/Generic/Movie.h>
+#import <Objects/Generic/Package.h>
 #import <Delegates/MediaPlayerShuffleDelegate.h>
 
 #import <Connector/RemoteConnectorObject.h> /* usesAdvancedRemote */
@@ -1089,6 +1090,77 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
 	[streamReader autorelease];
 	return doc;
+}
+
+#pragma mark Package Management
+
+- (void)packageManagementUpdate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/ipkg?command=update" relativeToURL:_baseAddress];
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:&error];
+}
+
+- (NSArray *)packageManagementList:(enum packageManagementList)listType
+{
+	NSString *command = nil;
+	installedState state = STATE_UNKNOWN;
+	switch(listType)
+	{
+		default:
+		case kPackageListRegular:
+			command = @"list";
+			break;
+		case kPackageListInstalled:
+			command = @"list_installed";
+			state = INSTALLED;
+			break;
+		case kPackageListUpgradable:
+			command = @"list_upgradable";
+			state = INSTALLED;
+			break;
+	}
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/ipkg?command=%@", command] relativeToURL:_baseAddress];
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:&error];
+	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
+	const NSArray *packageStringList = [baseString componentsSeparatedByString: @"\n"];
+	NSMutableArray *returnArray = [NSMutableArray array];
+	for(NSString *packageString in packageStringList)
+	{
+		[returnArray addObject:[Package packageFromString:packageString withInstalledState:state]];
+	}
+	return returnArray;
+}
+
+- (void)packageManagementUpgrade
+{
+	NSURL *myURI = [NSURL URLWithString:@"/ipkg?command=upgrade" relativeToURL:_baseAddress];
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	[SynchronousRequestReader sendSynchronousRequest:myURI
+								   returningResponse:&response
+											   error:&error];
+}
+
+- (void)packageManagementCommit:(NSArray *)packages
+{
+	NSHTTPURLResponse *response;
+	NSError *error = nil;
+	for(Package *package in packages)
+	{
+		NSString *command = (package.installed == INSTALLED) ? @"remove" : @"install";
+		NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/ipkg?command=%@&package=%@", command, package.name] relativeToURL:_baseAddress];
+		[SynchronousRequestReader sendSynchronousRequest:myURI
+									   returningResponse:&response
+												   error:&error];
+	}
 }
 
 #pragma mark Control

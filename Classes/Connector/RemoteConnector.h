@@ -158,6 +158,10 @@ enum connectorFeatures {
 	 @note Proper load and save support.
 	 */
 	kFeaturesMediaPlayerPlaylistLoad,
+	/*!
+	 @brief Package management present.
+	 */
+	kFeaturesPackageManagement,
 };
 
 /*!
@@ -210,6 +214,15 @@ enum buttonCodes {
 	kButtonCodeStop = 128,
 };
 
+/*!
+ @brief List types for package management
+ */
+enum packageManagementList
+{
+	kPackageListRegular,
+	kPackageListInstalled,
+	kPackageListUpgradable,
+};
 
 // Forward declarations...
 @class AutoTimer;
@@ -752,6 +765,40 @@ enum buttonCodes {
  */
 @optional // kFeaturesSleepTimer
 - (CXMLDocument *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate;
+
+#pragma mark -
+#pragma mark Package Management
+#pragma mark -
+
+/*!
+ @brief Update package list on remote host.
+ */
+@optional // kFeaturesPackageManagement
+- (void)packageManagementUpdate;
+
+/*!
+ @brief Retrieve list of packages from remote host.
+
+ @param listType Type of list to retrieve
+ @return Array of packages in requested list.
+ */
+@optional // kFeaturesPackageManagement
+- (NSArray *)packageManagementList:(enum packageManagementList)listType;
+
+/*!
+ @brief Do upgrades.
+ */
+@optional // kFeaturesPackageManagement
+- (void)packageManagementUpgrade;
+
+/*!
+ @brief Commit changes to package management.
+
+ @note This will automatically install not-installed packages and remove installed ones.
+ @param packages List of packages that are supposed to be changes.
+ */
+@optional // kFeaturesPackageManagement
+- (void)packageManagementCommit:(NSArray *)packages;
 
 #pragma mark -
 #pragma mark Control
