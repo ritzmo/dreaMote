@@ -801,8 +801,13 @@
 	[self sortEventsInSections:NO];
 }
 
-#endif
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)searchTableView
+{
+	searchTableView.rowHeight = _tableView.rowHeight;
+	[searchTableView reloadData];
+}
 
+#endif
 #pragma mark -
 #pragma mark UIPopoverControllerDelegate methods
 #pragma mark -

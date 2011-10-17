@@ -371,6 +371,7 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
 
 	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:self action:@selector(switchSort:)];
 	if(_sortTitle)
@@ -584,12 +585,6 @@
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
-
-/* height for row */
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	return kUIRowHeight;
-}
 
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -870,6 +865,12 @@
 		[self setSortTitle:YES allowSearch:NO];
 		[_tableView reloadData];
 	}
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)searchTableView
+{
+	searchTableView.rowHeight = _tableView.rowHeight;
+	[searchTableView reloadData];
 }
 
 #endif
