@@ -45,7 +45,7 @@
 #define kUISmallRowHeight		((IS_IPAD()) ? 43 : 38)
 #define kUIRowHeight			((IS_IPAD()) ? 55 : 50)
 #define kUIRowLabelHeight		22
-#define kEventCellHeight		((IS_IPAD()) ? 50 : 48)
+#define kEventCellHeight		((IS_IPAD()) ? 53 : 48)
 #define kServiceCellHeight		38
 #define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
 #define kMetadataCellHeight		275
