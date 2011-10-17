@@ -106,6 +106,7 @@
 	[_eventXMLDoc release];
 	[popoverController release];
 	[_zapListController release];
+	[_sectionOffsets release];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
@@ -253,6 +254,41 @@
 	[super viewWillDisappear:animated];
 }
 
+- (void)sortEventsInSections
+{
+	[_sectionOffsets removeAllObjects];
+
+	if(_events.count)
+	{
+		NSObject<EventProtocol> *firstEvent = [_events objectAtIndex:0];
+		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:firstEvent.begin];
+		[components setHour:0];
+		NSDate *date = [gregorian dateFromComponents:components];
+		_firstDay = [date timeIntervalSince1970];
+		[_sectionOffsets addObject:[NSNumber numberWithInteger:0]];
+
+		[gregorian release];
+
+		NSInteger numSections = 1; // we start with one section
+		NSInteger idx = 1; // and after the first element
+		for(NSObject<EventProtocol> *event in _events)
+		{
+			if(event == firstEvent) continue;
+
+			NSTimeInterval secSinceFirst = [event.begin timeIntervalSince1970] - _firstDay;
+			while(secSinceFirst > numSections * ONEDAY) // NOTE: a while is probably not necessary, but we better make sure
+			{
+				[_sectionOffsets addObject:[NSNumber numberWithInteger:idx]];
+				++numSections;
+			}
+			++idx;
+		}
+	}
+
+	[_tableView reloadData];
+}
+
 #pragma mark -
 #pragma mark DataSourceDelegate methods
 #pragma mark -
@@ -341,7 +377,7 @@
 	cell.showService = NO;
 	if(_useSections)
 	{
-		NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
+		const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
 		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex:offset + indexPath.row];
 	}
 	else

@@ -99,12 +99,11 @@
 	[contentView addSubview: _searchBar];
 
 	frame = CGRectMake(0, kSearchBarHeight, size.width, size.height - kSearchBarHeight);
-	_tableView = [[UITableView alloc] initWithFrame: frame style:UITableViewStylePlain];
+	_tableView = [[SwipeTableView alloc] initWithFrame: frame style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = 48;
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	_tableView.sectionHeaderHeight = 0;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	[contentView addSubview: _tableView];
 
@@ -223,7 +222,10 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
 {
-	[_tableView reloadData];
+	if(_useSections)
+		[self sortEventsInSections]; // calls reloadData by itself
+	else
+		[_tableView reloadData];
 }
 
 #pragma mark -
@@ -236,7 +238,8 @@
 	const NSUInteger index = [_events indexForInsertingObject: event sortedUsingSelector: @selector(compare:)];
 	[_events insertObject: event atIndex: index];
 #if INCLUDE_FEATURE(Extra_Animation)
-	[_tableView reloadData];
+	if(!_useSections)
+		[_tableView reloadData];
 #endif
 }
 
@@ -252,8 +255,14 @@
 
 	cell.formatter = _dateFormatter;
 	cell.showService = YES;
-	cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
-	
+	if(_useSections)
+	{
+		const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
+		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex:offset + indexPath.row];
+	}
+	else
+		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+
 	return cell;
 }
 
@@ -269,7 +278,7 @@
 		return nil;
 	}
 
-	NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
 	NSObject<ServiceProtocol> *service = nil;
 
 	// NOTE: if we encounter an exception we assume an invalid service
@@ -277,6 +286,10 @@
 		service = event.service;
 	}
 	@catch (NSException * e) {
+#if IS_DEBUG()
+		NSLog(@"exception while trying to retrieve service from event %@ at index %d/%d", [event description], indexPath.section, indexPath.row);
+		[e raise];
+#endif
 		return nil;
 	}
 
@@ -309,6 +322,10 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
 	[searchBar resignFirstResponder];
+
+	_useSections = [[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay];
+	[_sectionOffsets removeAllObjects];
+	_firstDay = 0;
 
 	[_events removeAllObjects];
 	[_tableView reloadData];

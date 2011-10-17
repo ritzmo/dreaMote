@@ -73,6 +73,8 @@
 - (void)createAdBannerView;
 #endif
 
+- (void)sortEventsInSections;
+
 
 
 /*!
