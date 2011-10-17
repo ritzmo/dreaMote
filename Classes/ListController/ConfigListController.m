@@ -45,6 +45,7 @@ enum sectionIds
 - (UITableViewCell *)obtainTableCellForSection:(NSInteger)section;
 - (void)simpleRemoteChanged:(id)sender;
 - (void)vibrationChanged:(id)sender;
+- (void)separateEventsChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
 
 @property (nonatomic,retain) MBProgressHUD *progressHUD;
@@ -88,6 +89,7 @@ enum sectionIds
 	[_connections release];
 	[_vibrateInRC release];
 	[_simpleRemote release];
+	[_sepEventsByDay release];
 
 	progressHUD.delegate = nil;
 	[progressHUD release];
@@ -128,16 +130,21 @@ enum sectionIds
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_simpleRemote.backgroundColor = [UIColor clearColor];
 
+	// Simple remote
+	_sepEventsByDay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_sepEventsByDay setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kSeparateEpgByDay]];
+	[_sepEventsByDay addTarget:self action:@selector(separateEventsChanged:) forControlEvents:UIControlEventValueChanged];
+	_sepEventsByDay.backgroundColor = [UIColor clearColor];
+
 	// add edit button
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
 {
-	[_vibrateInRC release];
-	_vibrateInRC = nil;
-	[_simpleRemote release];
-	_simpleRemote = nil;
+	SafeRetainAssign(_vibrateInRC, nil);
+	SafeRetainAssign(_simpleRemote, nil);
+	SafeRetainAssign(_sepEventsByDay, nil);
 
 	[super viewDidUnload];
 }
@@ -188,14 +195,20 @@ enum sectionIds
 	[[NSUserDefaults standardUserDefaults] setBool: _vibrateInRC.on forKey: kVibratingRC];
 }
 
+- (void)separateEventsChanged:(id)sender
+{
+	[[NSUserDefaults standardUserDefaults] setBool:_sepEventsByDay.on forKey:kSeparateEpgByDay];
+}
+
 - (void)rereadData:(NSNotification *)note
 {
 	[_connections release];
 	_connections = [[RemoteConnectorObject getConnections] retain];
 
 	// just in case, read them too
-	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
-	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
+	[_vibrateInRC setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kVibratingRC]];
+	[_simpleRemote setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kPrefersSimpleRemote]];
+	[_sepEventsByDay setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay]];
 
 	[(UITableView *)self.view reloadData];
 }
@@ -298,7 +311,7 @@ enum sectionIds
 	}
 	else if(indexPath.section == connectionSection)
 	{
-		NSUInteger upperBound = [_connections count];
+		NSInteger upperBound = [_connections count];
 		if(self.editing) ++upperBound;
 
 		// FIXME: seen some crashlogs which supposedly ran into this case...
@@ -326,7 +339,7 @@ enum sectionIds
 			// else connect to this host
 			else
 			{
-				const NSUInteger connectedIdx = [RemoteConnectorObject getConnectedId];
+				const NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
 
 				if(![RemoteConnectorObject connectTo:indexPath.row])
 				{
@@ -458,6 +471,7 @@ enum sectionIds
 			break;
 		case settingsSection:
 			cell = [DisplayCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kDisplayCell_ID];
+			((DisplayCell *)cell).nameLabel.adjustsFontSizeToFitWidth = NO;
 			break;
 		default:
 			break;
@@ -520,7 +534,7 @@ enum sectionIds
 		/* Misc configuration items */
 		case settingsSection:
 			sourceCell.tag = 0;
-			if(row > 0 && IS_IPAD())
+			if(row > 1 && IS_IPAD())
 				++row;
 
 			switch(row)
@@ -530,8 +544,14 @@ enum sectionIds
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Simple Remote", @"");
 					((DisplayCell *)sourceCell).view = _simpleRemote;
 					break;
-				/* Vibration */
+				/* Separate events by day */
 				case 1:
+					((DisplayCell *)sourceCell).nameLabel.adjustsFontSizeToFitWidth = YES;
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Separate events by day", @"Toggle to enable sections in event lists");
+					((DisplayCell *)sourceCell).view = _sepEventsByDay;
+					break;
+				/* Vibration */
+				case 2:
 					if(!IS_IPAD())
 					{
 						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Vibrate in RC", @"");
@@ -539,7 +559,7 @@ enum sectionIds
 					}
 					break;
 				/* Timeout */
-				case 2:
+				case 3:
 				{
 					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 					timeLabel.backgroundColor = [UIColor clearColor];
@@ -555,7 +575,7 @@ enum sectionIds
 				}
 #if IS_FULL()
 				/* Multi-EPG interval */
-				case 3:
+				case 4:
 				{
 					NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 					UILabel *timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -629,7 +649,7 @@ enum sectionIds
 			return [_connections count];
 		case settingsSection:
 		{
-			NSInteger baseCount = (IS_IPAD()) ? 2 : 3;
+			NSInteger baseCount = (IS_IPAD()) ? 3 : 4;
 #if IS_FULL()
 			++baseCount;
 #endif

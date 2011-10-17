@@ -168,7 +168,7 @@
 /* remove content data */
 - (void)emptyData
 {
-	_useSections = [[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay];
+	const BOOL usedSections = _useSections;
 	NSInteger sectionCount = _sectionOffsets.count;
 	[_sectionOffsets removeAllObjects];
 	_firstDay = 0;
@@ -176,7 +176,7 @@
 	// Clean event list
 	[_events removeAllObjects];
 #if INCLUDE_FEATURE(Extra_Animation)
-	if(_useSections)
+	if(usedSections)
 	{
 		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, sectionCount)];
 		[_tableView deleteSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
@@ -186,6 +186,19 @@
 #else
 	[_tableView reloadData];
 #endif
+
+	// NOTE: change this here as previously we expect it to have the old value
+	_useSections = [[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay];
+	// fixup sections again
+	if(!usedSections && _useSections)
+	{
+		[_tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationRight];
+	}
+	else if(!_useSections && usedSections)
+	{
+		[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
+	}
+
 	SafeRetainAssign(_eventXMLDoc, nil);
 }
 
