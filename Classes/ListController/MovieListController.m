@@ -461,9 +461,9 @@
 	{
 		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
 		NSArray *movies = (NSArray *)[_characters valueForKey:key];
-		if(indexPath.row < movies.count - 1)
+		if(indexPath.row < (NSInteger)movies.count - 1)
 			indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
-		else if(indexPath.section < _currentKeys.count - 1)
+		else if(indexPath.section < (NSInteger)_currentKeys.count - 1)
 			indexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section + 1];
 		else
 			indexPath = nil;
@@ -474,7 +474,7 @@
 #if IS_FULL()
 		if(_searchDisplay.active) movies = _filteredMovies;
 #endif
-		if(indexPath.row < ([movies count] - 1))
+		if(indexPath.row < (NSInteger)[movies count] - 1)
 			indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
 		else
 			indexPath = nil;

@@ -249,7 +249,7 @@
 #else
 	[self reloadData];
 #endif
-	if(_isPlaylist && _playing != NSNotFound && _playing < _files.count)
+	if(_isPlaylist && _playing != NSNotFound && _playing < (NSInteger)_files.count)
 	{
 		[self scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_playing inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 	}

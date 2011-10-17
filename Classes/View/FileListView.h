@@ -21,7 +21,7 @@
 @private
 	NSString *_path; /*!< @brief Current path. */
 	BOOL _isPlaylist; /*!< @brief Is playlist? */
-	NSUInteger _playing; /*!< @brief Item marked as currently playing. */
+	NSInteger _playing; /*!< @brief Item marked as currently playing. */
 
 	BOOL _reloading; /*!< @brief Currently reloading. */
 	CXMLDocument *_fileXMLDoc; /*!< @brief XML Document. */

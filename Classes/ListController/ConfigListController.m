@@ -50,12 +50,12 @@ enum settingsRows
 @interface ConfigListController()
 /*!
  @brief Utility routine leveraged by 'cellForRowAtIndexPath' to determine which UITableViewCell
- to be used on a given section.
+ to be used for a given index path.
 
- @param section Section
+ @param indexPath IndexPath
  @return UITableViewCell instance
  */
-- (UITableViewCell *)obtainTableCellForSection:(NSInteger)section;
+- (UITableViewCell *)obtainTableCellForIndexPath:(NSIndexPath *)indexPath;
 - (void)simpleRemoteChanged:(id)sender;
 - (void)vibrationChanged:(id)sender;
 - (void)separateEventsChanged:(id)sender;
