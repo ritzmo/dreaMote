@@ -184,6 +184,15 @@
 	[_adBannerView release];
 	_adBannerView = nil;
 #endif
+#if IS_FULL()
+	[_filteredEvents removeAllObjects];
+	_tableView.tableHeaderView = nil; // references _searchBar
+	SafeRetainAssign(_searchBar, nil);
+	_searchDisplay.delegate = nil;
+	_searchDisplay.searchResultsDataSource = nil;
+	_searchDisplay.searchResultsDelegate = nil;
+	SafeRetainAssign(_searchDisplay, nil);
+#endif
 	[super viewDidUnload];
 }
 
