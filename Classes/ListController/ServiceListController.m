@@ -223,6 +223,9 @@
 		_multiEPG.willReappear = NO;
 		[_multiEPG viewWillDisappear:YES];
 		[self.navigationController setToolbarHidden:YES animated:YES];
+		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
+		if(idxPath)
+			[_tableView deselectRowAtIndexPath:idxPath animated:NO];
 		self.view = _tableView;
 		self.mgSplitViewController.showsMasterInLandscape = YES;
 	}
@@ -496,6 +499,46 @@
 	SafeRetainAssign(_eventViewController, new);
 }
 
+- (NSObject<ServiceProtocol> *)nextService
+{
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	if(indexPath.row < (NSInteger)[_mainList count] - 1)
+		indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
+	else
+		indexPath = nil;
+
+	if(indexPath)
+	{
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+
+		if(_supportsNowNext)
+			return ((NSObject<EventProtocol> *)[_mainList objectAtIndex:indexPath.row]).service;
+		else
+			return [_mainList objectAtIndex:indexPath.row];
+	}
+	return nil;
+}
+
+- (NSObject<ServiceProtocol> *)previousService
+{
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	if(indexPath.row > 0)
+		indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
+	else
+		indexPath = nil;
+
+	if(indexPath)
+	{
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+
+		if(_supportsNowNext)
+			return ((NSObject<EventProtocol> *)[_mainList objectAtIndex:indexPath.row]).service;
+		else
+			return [_mainList objectAtIndex:indexPath.row];
+	}
+	return nil;
+}
+
 #pragma mark -
 #pragma mark MultiEPGDelegate
 #pragma mark -
@@ -521,6 +564,30 @@
 				_eventListController = [[EventListController alloc] init];
 		}
 		_eventListController.service = service;
+		_eventListController.serviceListController = self;
+
+		NSInteger idx = NSNotFound;
+		if(_supportsNowNext)
+		{
+			NSInteger i = 0;
+			for(NSObject<EventProtocol> *event in _mainList)
+			{
+				if(event.service == service)
+				{
+					idx = i;
+					break;
+				}
+			}
+		}
+		else
+		{
+			idx = [_mainList indexOfObject:service];
+		}
+		if(idx != NSNotFound)
+		{
+			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:idx inSection:0];
+			[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
+		}
 
 		targetViewController = _eventListController;
 	}
@@ -753,6 +820,7 @@
 		}
 
 		_eventListController.service = service;
+		_eventListController.serviceListController = self;
 
 		_refreshServices = NO;
 		// XXX: wtf?

@@ -10,6 +10,7 @@
 
 #import "EventSourceDelegate.h"
 #import "ReloadableListController.h"
+#import "ServiceListController.h"
 #import "ServiceZapListController.h" /* ServiceZapListDelegate */
 
 #if INCLUDE_FEATURE(Ads)
@@ -35,6 +36,7 @@
 													UIScrollViewDelegate,
 #if IS_FULL()
 													UISearchDisplayDelegate,
+													SwipeTableViewDelegate,
 #endif
 													UIPopoverControllerDelegate,
 													UIActionSheetDelegate,
@@ -51,11 +53,11 @@
 	NSMutableArray *_sectionOffsets; /*!< @brief Array of first indices. */
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
+	ServiceListController *_serviceListController; /*!< @brief Parent/Service List controller. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 
 	UISearchBar *_searchBar; /*!< @brief Search bar, either for event search or in full version. */
-
 #if IS_FULL()
 	NSMutableArray *_filteredEvents; /*!< @brief Filtered list of events when searching. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
@@ -112,5 +114,10 @@
  @brief Popover Controller.
  */
 @property (nonatomic, retain) UIPopoverController *popoverController;
+
+/*!
+ @brief Serivce List.
+ */
+@property (nonatomic, assign) ServiceListController *serviceListController;
 
 @end

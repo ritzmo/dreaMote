@@ -79,6 +79,21 @@
  */
 - (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
+/*!
+ @brief Move service selection to next item and return movie.
+ @note If current service is last in list, don't move selection and return nil.
+
+ @return Newly selected service.
+ */
+- (NSObject<ServiceProtocol> *)nextService;
+
+/*!
+ @brief Move service selection to previous item and return movie.
+ @note If current service is first in list, don't move selection and return nil.
+
+ @return Newly selected service.
+ */
+- (NSObject<ServiceProtocol> *)previousService;
 
 /*!
  @brief Bouquet.

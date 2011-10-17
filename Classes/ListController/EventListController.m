@@ -46,6 +46,7 @@
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
+@synthesize serviceListController = _serviceListController;
 
 /* initialize */
 - (id)init
@@ -57,6 +58,7 @@
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_eventViewController = nil;
 		_service = nil;
+		_serviceListController = nil;
 		_events = [[NSMutableArray array] retain];
 		_sectionOffsets = [[NSMutableArray array] retain];
 #if IS_FULL()
@@ -351,6 +353,53 @@
 {
 	[self sortEventsInSections:YES];
 }
+
+#pragma mark -
+#pragma mark SwipeTableViewDelegate
+#pragma mark -
+#if IS_FULL()
+
+- (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(_serviceListController == nil)
+		return;
+	if(![_serviceListController respondsToSelector:@selector(nextService)] || ![_serviceListController respondsToSelector:@selector(previousService)])
+	{
+#if IS_DEBUG()
+		[NSException raise:@"ExcInvalidServiceList" format:@"_serviceListController assigned but not responding to next-/previousService selectors"];
+#endif
+		return;
+	}
+
+	//if(tableView.lastSwipe & twoFingers)
+	{
+		// fixup selection
+		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
+		if(idxPath)
+			[_tableView deselectRowAtIndexPath:idxPath animated:YES];
+
+		NSObject<ServiceProtocol> *newService = nil;
+		if(tableView.lastSwipe & swipeTypeRight)
+			newService = [_serviceListController previousService];
+		else // if(tableView.lastSwipe & swipeTypeLeft)
+			newService = [_serviceListController nextService];
+
+		if(newService)
+			self.service = newService;
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"End of service list reached", @"Title of message when trying to select next/previous service by swiping but end was reached.")
+																  message:NSLocalizedString(@"You have reached either the end or the beginning of the selected service list.", @"")
+																 delegate:nil
+														cancelButtonTitle:@"OK"
+														otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	}
+}
+
+#endif
 
 #pragma mark -
 #pragma mark DataSourceDelegate methods
