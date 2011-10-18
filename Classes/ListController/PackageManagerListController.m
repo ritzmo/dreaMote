@@ -216,7 +216,7 @@
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = kAutoTimerCellHeight;
+	_tableView.rowHeight = kPackageCellHeight;
 	_tableView.sectionHeaderHeight = 0;
 	_tableView.allowsSelectionDuringEditing = YES;
 

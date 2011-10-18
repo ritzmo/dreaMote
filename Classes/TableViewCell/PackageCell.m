@@ -30,16 +30,22 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])){
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kPackageNameTextSize];
 		self.textLabel.backgroundColor = [UIColor clearColor];
+		if(IS_IPHONE())
+			self.textLabel.adjustsFontSizeToFitWidth = YES;
 
 		versionLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
 										selectedColor:[UIColor whiteColor]
 											 fontSize:kPackageVersionTextSize
 												 bold:YES];
+		versionLabel.adjustsFontSizeToFitWidth = YES;
+		[self.contentView addSubview:versionLabel];
 
 		availableLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
 										  selectedColor:[UIColor whiteColor]
 											   fontSize:kPackageVersionTextSize
 												   bold:YES];
+		availableLabel.adjustsFontSizeToFitWidth = YES;
+		[self.contentView addSubview:availableLabel];
 
 		indicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotSelected.png"]];
 		indicator.frame = CGRectZero;
@@ -53,9 +59,6 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 - (void)prepareForReuse
 {
 	[self setMultiSelected:NO animated:NO];
-	self.textLabel.text = nil;
-	versionLabel.text = nil;
-	availableLabel.text = nil;
 	self.package = nil;
 }
 
@@ -142,6 +145,52 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 										   IMAGE_SIZE,
 										   IMAGE_SIZE);
 		indicator.frame = indicatorFrame;
+	}
+
+	if(package.upgradeVersion && IS_IPAD())
+	{
+		CGRect frame = CGRectMake(
+								  contentRect.origin.x + kLeftMargin,
+								  (contentRect.size.height - kPackageNameTextSize) / 2.0f,
+								  [self.textLabel sizeThatFits:self.textLabel.bounds.size].width,
+								  kPackageNameTextSize
+		);
+		self.textLabel.frame = frame;
+
+		const CGFloat availableWidth = [availableLabel sizeThatFits:availableLabel.bounds.size].width;
+		const CGFloat versionWidth = [versionLabel sizeThatFits:versionLabel.bounds.size].width;
+		const CGFloat xOffset = fminf(fminf(availableWidth, versionWidth), contentRect.size.width - frame.size.width);
+		frame = CGRectMake(
+						   contentRect.size.width - xOffset - kRightMargin,
+						   kTopMargin,
+						   xOffset,
+						   kPackageVersionTextSize
+						   );
+		versionLabel.frame = frame;
+
+		frame.origin.y = contentRect.size.height - kPackageVersionTextSize - kBottomMargin;
+		availableLabel.frame = frame;
+	}
+	else
+	{
+		CGRect frame = CGRectMake(
+								  contentRect.origin.x + kRightMargin,
+								  kTopMargin,
+								  contentRect.size.width,
+								  kPackageNameTextSize
+		);
+		self.textLabel.frame = frame;
+
+		frame.origin.y = contentRect.size.height - kPackageNameTextSize - kBottomMargin;
+		if(package.upgradeVersion)
+		{
+			frame.size.width = contentRect.size.width / 2.0f - kRightMargin - kLeftMargin - kTweenMargin;
+			frame.origin.x = contentRect.size.width - frame.size.width;
+			availableLabel.frame = frame;
+
+			frame.origin.x = contentRect.origin.x + kRightMargin;
+		}
+		versionLabel.frame = frame;
 	}
 }
 
