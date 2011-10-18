@@ -26,7 +26,9 @@
 	pkg.name = [components objectAtIndex:0];
 	pkg.version = [components objectAtIndex:1];
 	if(components.count > 2)
-		pkg.upgradeVersion = [components objectAtIndex:2];
+		pkg.upgradeVersion = [[components objectAtIndex:2] stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
+	else
+		pkg.version = [pkg.version stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
 	pkg.installed = state;
 
 	return [pkg autorelease];
