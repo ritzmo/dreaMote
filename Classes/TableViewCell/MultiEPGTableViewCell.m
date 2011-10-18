@@ -9,6 +9,10 @@
 #import "Constants.h"
 #import "MultiEPGTableViewCell.h"
 
+#if IS_DEBUG()
+#import "NSDateFormatter+FuzzyFormatting.h"
+#endif
+
 /*!
  @brief Cell identifier for this cell.
  */
@@ -66,6 +70,11 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	}
 
 	return self;
+}
+
+- (void)prepareForReuse
+{
+	self.events = nil;
 }
 
 /* getter for service property */
@@ -177,18 +186,29 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	CGContextSetRGBFillColor(ctx, 0.0f, 1.0f, 0.0f, 0.5f);
 	CGContextSetLineWidth(ctx, 0.25f);
 	const CGFloat xPosNow = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
+	CGFloat rectX = -1, rectW = -1;
 
 	CGFloat lastX = -1;
 	for(NSNumber *number in _lines)
 	{
 		const CGFloat xPos = kServiceWidth + [number floatValue] * widthPerSecond;
-		if(_secondsSinceBegin > -1 && lastX < xPosNow && xPosNow < xPos)
-			CGContextFillRect(ctx, CGRectMake(lastX, 0, xPos - lastX, contentRect.size.height));
+		if(_secondsSinceBegin > -1 && lastX > -1 && lastX <= xPosNow && xPosNow < xPos)
+		{
+			rectX = lastX;
+			rectW = xPos - lastX;
+		}
 		CGContextMoveToPoint(ctx, xPos, 0);
 		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
 		lastX = xPos;
 	}
 	CGContextStrokePath(ctx);
+	if(lastX > -1 && lastX <= xPosNow) // partial event in timespan
+	{
+		rectX = lastX;
+		rectW = contentRect.size.width - lastX;
+	}
+	if(rectX != -1 && rectW != -1)
+		CGContextFillRect(ctx, CGRectMake(rectX, 0, rectW, contentRect.size.height));
 
 	// now
 	if(_secondsSinceBegin > -1)
@@ -252,20 +272,34 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	for(NSObject<EventProtocol> *event in self.events)
 	{
 		CGFloat leftLine;
+		CGFloat rightLine;
 		@try
 		{
 			leftLine = [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
+			rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
 		}
 		@catch(NSException *exception)
 		{
 #if IS_DEBUG()
 			NSLog(@"Exception in [MultiEPGTableViewCell layoutSubviews]: idx %d, count %d, count events %d", idx, count, self.events.count);
+			NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+			[formatter setDateStyle:NSDateFormatterNoStyle];
+			[formatter setTimeStyle:NSDateFormatterShortStyle];
+			NSLog(@"Service: %@", _service.sname);
+			for(NSObject<EventProtocol> *event in _events)
+			{
+				NSLog(@"Event: %@, %@ - %@", event.title, [formatter fuzzyDate:event.begin], [formatter fuzzyDate:event.end]);
+			}
+			for(NSNumber *number in _lines)
+			{
+				NSLog(@"Line: %.2f", kServiceWidth + [number floatValue] * widthPerSecond);
+			}
+			[formatter release];
 			[exception raise];
 #endif
 			break;
 		}
 
-		CGFloat rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
 		rightLine -= leftLine;
 		const CGRect frame = CGRectMake(kServiceWidth + leftLine, 0, rightLine, contentRect.size.height);
 		idx += 1;
