@@ -2762,6 +2762,8 @@
 				DAC8C0EC13B2014C00CA00D9 /* Metadata.m */,
 				DAC8C0ED13B2014C00CA00D9 /* Movie.h */,
 				DAC8C0EE13B2014C00CA00D9 /* Movie.m */,
+				DA51C471144C96C000EA63C5 /* Package.h */,
+				DA51C472144C96C000EA63C5 /* Package.m */,
 				DAC8C0EF13B2014C00CA00D9 /* Result.h */,
 				DAC8C0F013B2014C00CA00D9 /* Result.m */,
 				DAC8C0F113B2014C00CA00D9 /* Service.h */,
@@ -2774,8 +2776,6 @@
 				DAC8C0F813B2014C00CA00D9 /* Timer.m */,
 				DAC8C0F913B2014C00CA00D9 /* Volume.h */,
 				DAC8C0FA13B2014C00CA00D9 /* Volume.m */,
-				DA51C471144C96C000EA63C5 /* Package.h */,
-				DA51C472144C96C000EA63C5 /* Package.m */,
 			);
 			path = Generic;
 			sourceTree = "<group>";
