@@ -36,7 +36,15 @@
  */
 - (void)startTimer;
 
+/*!
+ @brief Start tone generation.
+ @note Does not start tone generation if already running or not enabled.
+ */
 - (void)startAudio;
+
+/*!
+ @brief Stop tone generation.
+ */
 - (void)stopAudio;
 
 /*!
@@ -50,6 +58,12 @@
  @param sender ui element
  */
 - (void)intervalSet:(id)sender;
+
+/*!
+ @brief Tone generation started/stopped.
+ @param sender ui element
+ */
+- (void)audioToggleSwitched:(id)sender;
 @end
 
 OSStatus RenderTone(
@@ -114,6 +128,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 	[_snr release];
 	[_agc release];
+	[_audioToggle release];
 	[_interval release];
 	[_snrdBCell release];
 	[_berCell release];
@@ -258,6 +273,12 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	[_interval addTarget:self action:@selector(intervalChanged:) forControlEvents:UIControlEventValueChanged];
 	[_interval addTarget:self action:@selector(intervalSet:) forControlEvents:UIControlEventTouchUpInside | UIControlEventTouchUpOutside];
 
+	// Audio switch
+	_audioToggle = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_audioToggle setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kSatFinderAudio]];
+	[_audioToggle addTarget:self action:@selector(audioToggleSwitched:) forControlEvents:UIControlEventValueChanged];
+	_audioToggle.backgroundColor = [UIColor clearColor];
+
 	// SNRdB
 	UITableViewCell *sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
@@ -296,16 +317,12 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)viewDidUnload
 {
-	[_snr release];
-	_snr = nil;
-	[_agc release];
-	_agc = nil;
-	[_interval release];
-	_interval = nil;
-	[_snrdBCell release];
-	_snrdBCell = nil;
-	[_berCell release];
-	_berCell = nil;
+	SafeRetainAssign(_snr, nil);
+	SafeRetainAssign(_agc, nil);
+	SafeRetainAssign(_audioToggle, nil);
+	SafeRetainAssign(_interval, nil);
+	SafeRetainAssign(_snrdBCell, nil);
+	SafeRetainAssign(_berCell, nil);
 
 	AudioSessionSetActive(false);
 
@@ -388,6 +405,22 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	cell.textLabel.text = [self getIntervalTitle:(double)(int)_interval.value];
 }
 
+- (void)audioToggleSwitched:(id)sender
+{
+	const BOOL shouldRun = _audioToggle.on;
+	[[NSUserDefaults standardUserDefaults] setBool:shouldRun forKey:kSatFinderAudio];
+#if IS_DEBUG()
+	const BOOL wasRunning = (toneUnit != nil);
+	if(wasRunning == shouldRun)
+		[NSException raise:@"ExcAudioToggleDidNotChange" format:@"AudioUnit was already created as the toggle changed to 'on' or off"];
+#endif
+
+	if(shouldRun)
+		[self startAudio];
+	else
+		[self stopAudio];
+}
+
 #pragma mark - UITableView delegates
 
 // if you want the entire table to just be re-orderable then just return UITableViewCellEditingStyleNone
@@ -399,7 +432,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 3;
+	return 4;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -412,6 +445,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 			return NSLocalizedString(@"Exact", @"Title of exact section of SatFinder");
 		case 2:
 			return NSLocalizedString(@"Interval", @"Title of refresh Interval section of SatFinder");
+		case 3:
 		default:
 			return nil;
 	}
@@ -426,6 +460,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 		case 1:
 			return (_hasSnrdB) ? 2 : 1;
 		case 2:
+		case 3:
 			return 1;
 		default:
 			return 0;
@@ -467,6 +502,13 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			((DisplayCell *)sourceCell).nameLabel.text = [self getIntervalTitle:[[NSUserDefaults standardUserDefaults] doubleForKey:kSatFinderInterval]];
 			((DisplayCell *)sourceCell).view = _interval;
+			break;
+		case 3:
+			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			sourceCell.textLabel.text = NSLocalizedString(@"Enable audio", @"Toggle in Signal Finder which is responsible for starting/stopping the tone generator");
+			((DisplayCell *)sourceCell).view = _audioToggle;
 			break;
 		default:
 			break;
