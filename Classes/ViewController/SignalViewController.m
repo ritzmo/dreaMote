@@ -36,6 +36,9 @@
  */
 - (void)startTimer;
 
+- (void)startAudio;
+- (void)stopAudio;
+
 /*!
  @brief Refresh interval was changed.
  @param sender ui element
@@ -48,6 +51,50 @@
  */
 - (void)intervalSet:(id)sender;
 @end
+
+OSStatus RenderTone(
+					void *inRefCon,
+					AudioUnitRenderActionFlags 	*ioActionFlags,
+					const AudioTimeStamp 		*inTimeStamp,
+					UInt32 						inBusNumber,
+					UInt32 						inNumberFrames,
+					AudioBufferList 			*ioData)
+{
+	// Fixed amplitude is good enough for our purposes
+	const double amplitude = 0.25;
+
+	// Get the tone parameters out of the view controller
+	SignalViewController *viewController = (SignalViewController *)inRefCon;
+	double theta = viewController->theta;
+	double theta_increment = 2.0 * M_PI * viewController->frequency / viewController->sampleRate;
+
+	// This is a mono tone generator so we only need the first buffer
+	const int channel = 0;
+	Float32 *buffer = (Float32 *)ioData->mBuffers[channel].mData;
+
+	// Generate the samples
+	for(UInt32 frame = 0; frame < inNumberFrames; ++frame)
+	{
+		buffer[frame] = (Float32)(sin(theta) * amplitude);
+
+		theta += theta_increment;
+		if (theta > 2.0 * M_PI)
+		{
+			theta -= 2.0 * M_PI;
+		}
+	}
+
+	// Store the theta back in the view controller
+	viewController->theta = theta;
+
+	return noErr;
+}
+
+void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
+{
+	SignalViewController *viewController = (SignalViewController *)inClientData;
+	[viewController stopAudio];
+}
 
 @implementation SignalViewController
 
@@ -77,10 +124,64 @@
 	[super dealloc];
 }
 
+- (void)createToneUnit
+{
+	// Configure the search parameters to find the default playback output unit
+	// (called the kAudioUnitSubType_RemoteIO on iOS but
+	// kAudioUnitSubType_DefaultOutput on Mac OS X)
+	AudioComponentDescription defaultOutputDescription;
+	defaultOutputDescription.componentType = kAudioUnitType_Output;
+	defaultOutputDescription.componentSubType = kAudioUnitSubType_RemoteIO;
+	defaultOutputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+	defaultOutputDescription.componentFlags = 0;
+	defaultOutputDescription.componentFlagsMask = 0;
+
+	// Get the default playback output unit
+	AudioComponent defaultOutput = AudioComponentFindNext(NULL, &defaultOutputDescription);
+	NSAssert(defaultOutput, @"Can't find default output");
+
+	// Create a new unit based on this that we'll use for output
+	OSErr err = AudioComponentInstanceNew(defaultOutput, &toneUnit);
+	NSAssert1(toneUnit, @"Error creating unit: %ld", err);
+
+	// Set our tone rendering function on the unit
+	AURenderCallbackStruct input;
+	input.inputProc = RenderTone;
+	input.inputProcRefCon = self;
+	err = AudioUnitSetProperty(toneUnit,
+							   kAudioUnitProperty_SetRenderCallback,
+							   kAudioUnitScope_Input,
+							   0,
+							   &input,
+							   sizeof(input));
+	NSAssert1(err == noErr, @"Error setting callback: %ld", err);
+
+	// Set the format to 32 bit, single channel, floating point, linear PCM
+	const int four_bytes_per_float = 4;
+	const int eight_bits_per_byte = 8;
+	AudioStreamBasicDescription streamFormat;
+	streamFormat.mSampleRate = sampleRate;
+	streamFormat.mFormatID = kAudioFormatLinearPCM;
+	streamFormat.mFormatFlags = kAudioFormatFlagsNativeFloatPacked | kAudioFormatFlagIsNonInterleaved;
+	streamFormat.mBytesPerPacket = four_bytes_per_float;
+	streamFormat.mFramesPerPacket = 1;
+	streamFormat.mBytesPerFrame = four_bytes_per_float;
+	streamFormat.mChannelsPerFrame = 1;
+	streamFormat.mBitsPerChannel = four_bytes_per_float * eight_bits_per_byte;
+	err = AudioUnitSetProperty (toneUnit,
+								kAudioUnitProperty_StreamFormat,
+								kAudioUnitScope_Input,
+								0,
+								&streamFormat,
+								sizeof(AudioStreamBasicDescription));
+	NSAssert1(err == noErr, @"Error setting stream format: %ld", err);
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
 	_refreshInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:kSatFinderInterval];
 	[self startTimer];
+	[self startAudio];
 
 	[super viewWillAppear: animated];
 }
@@ -89,6 +190,8 @@
 {
 	[_timer invalidate];
 	_timer = nil;
+
+	[self stopAudio];
 
 	[super viewWillDisappear: animated];
 }
@@ -176,6 +279,21 @@
 	_berCell = [sourceCell retain];
 }
 
+- (void)viewDidLoad
+{
+	sampleRate = 44100;
+
+	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, self);
+	if (result == kAudioSessionNoError)
+	{
+		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
+	}
+	AudioSessionSetActive(true);
+
+	[super viewDidLoad];
+}
+
 - (void)viewDidUnload
 {
 	[_snr release];
@@ -188,6 +306,8 @@
 	_snrdBCell = nil;
 	[_berCell release];
 	_berCell = nil;
+
+	AudioSessionSetActive(false);
 
 	[super viewDidUnload];
 }
@@ -224,6 +344,31 @@
 												  target:self selector:@selector(fetchSignalDefer)
 												userInfo:nil   repeats:YES];
 		[_timer fire];
+	}
+}
+
+- (void)startAudio
+{
+	if(toneUnit == nil && [[NSUserDefaults standardUserDefaults] boolForKey:kSatFinderAudio])
+	{
+		// start playback
+		[self createToneUnit];
+		OSErr err = AudioUnitInitialize(toneUnit);
+		NSAssert1(err == noErr, @"Error initializing unit: %ld", err);
+		err = AudioOutputUnitStart(toneUnit);
+		NSAssert1(err == noErr, @"Error starting unit: %ld", err);
+	}
+}
+
+- (void)stopAudio
+{
+	if(toneUnit)
+	{
+		// stop audio playback
+		AudioOutputUnitStop(toneUnit);
+		AudioUnitUninitialize(toneUnit);
+		AudioComponentInstanceDispose(toneUnit);
+		toneUnit = nil;
 	}
 }
 
@@ -374,6 +519,11 @@
 	_hasSnrdB = signal.snrdb > -1;
 	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
 	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
+
+	// calculate frequency for audio signal
+	const NSInteger fMin = 200;
+	const NSInteger fMax = 3000;
+	frequency = fMin + (signal.snr * fMax / 100);
 
 	// there is a weird glitch that prevents the second row from being shown unless we do a full reload, so do it here
 	// while we still know that we need to do one.

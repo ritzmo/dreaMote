@@ -126,6 +126,7 @@ extern const char *kPiconGlob;
 #define kSatFinderInterval		@"satFinderRefreshInterval"
 #define kSearchHistoryLength	@"searchHistoryLength"
 #define kSeparateEpgByDay		@"separateEpgByDay"
+#define kSatFinderAudio			@"satFinderWithAudio"
 
 #define kCurrentDatabaseVersion 2
 

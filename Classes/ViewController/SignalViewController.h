@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 #import "SignalSourceDelegate.h"
 
@@ -27,6 +28,11 @@
 	UITableViewCell *_berCell; /*!< @brief Cell containing BER. */
 	BOOL _hasSnrdB; /*!< @brief SNR dB value is valid. */
 	NSTimeInterval _refreshInterval; /*!< @brief Current refresh Interval. */
+	AudioComponentInstance toneUnit;
+@public
+	double frequency;
+	double sampleRate;
+	double theta;
 }
 
 @end
