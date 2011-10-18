@@ -174,13 +174,19 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
+	CGContextSetRGBFillColor(ctx, 0.0f, 1.0f, 0.0f, 0.5f);
 	CGContextSetLineWidth(ctx, 0.25f);
+	const CGFloat xPosNow = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
 
+	CGFloat lastX = -1;
 	for(NSNumber *number in _lines)
 	{
 		const CGFloat xPos = kServiceWidth + [number floatValue] * widthPerSecond;
+		if(_secondsSinceBegin > -1 && lastX < xPosNow && xPosNow < xPos)
+			CGContextFillRect(ctx, CGRectMake(lastX, 0, xPos - lastX, contentRect.size.height));
 		CGContextMoveToPoint(ctx, xPos, 0);
 		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
+		lastX = xPos;
 	}
 	CGContextStrokePath(ctx);
 
@@ -189,9 +195,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	{
 		CGContextSetRGBStrokeColor(ctx, 1.0f, 0.0f, 0.0f, 0.8f);
 		CGContextSetLineWidth(ctx, 0.4f);
-		const CGFloat xPos = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
-		CGContextMoveToPoint(ctx, xPos, 0);
-		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
+		CGContextMoveToPoint(ctx, xPosNow, 0);
+		CGContextAddLineToPoint(ctx, xPosNow, contentRect.size.height);
 		CGContextStrokePath(ctx);
 	}
 
