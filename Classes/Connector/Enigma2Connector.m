@@ -1131,6 +1131,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 															  error:&error];
 	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const NSArray *packageStringList = [baseString componentsSeparatedByString: @"\n"];
+	[baseString release];
 	NSMutableArray *returnArray = [NSMutableArray array];
 	for(NSString *packageString in packageStringList)
 	{
