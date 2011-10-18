@@ -535,6 +535,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// stop timer
 	[_timer invalidate];
 	_timer = nil;
+	[self stopAudio];
 }
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
