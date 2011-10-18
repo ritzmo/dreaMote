@@ -174,8 +174,9 @@
 {
 	if(!_willReapper)
 	{
-		[_refreshTimer invalidate];
+		NSTimer *timer = _refreshTimer;
 		_refreshTimer = nil;
+		[timer invalidate];
 	}
 }
 
