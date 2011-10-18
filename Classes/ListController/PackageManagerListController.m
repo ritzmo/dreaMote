@@ -317,12 +317,9 @@
 	PackageCell *cell = [PackageCell reusableTableViewCellInView:tableView withIdentifier:kPackageCell_ID];
 	cell.package = [packages objectAtIndex:indexPath.row];
 
-	// fix selection from before this search
-	if(isSearch)
-	{
-		if([_selectedPackages containsObject:cell.package])
-			[cell setMultiSelected:YES animated:NO];
-	}
+	// fix selection
+	if([_selectedPackages containsObject:cell.package])
+		[cell setMultiSelected:YES animated:NO];
 
 	return cell;
 }
