@@ -121,8 +121,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		for(NSObject<EventProtocol> *event in _events)
 		{
 			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
-			if(left < 0)
-				left = 0;
 			[_lines addObject:[NSNumber numberWithFloat:left]];
 		}
 
@@ -163,7 +161,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	NSInteger idx = 0;
 	for(NSObject<EventProtocol> *event in _events)
 	{
-		const CGFloat leftLine = kServiceWidth + [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
+		const CGFloat eventBegin = [[_lines objectAtIndex:idx] floatValue];
+		const CGFloat leftLine = (eventBegin < 0) ? kServiceWidth : kServiceWidth + eventBegin * widthPerSecond;
 		const CGFloat rightLine = (idx < count) ? kServiceWidth + [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: self.bounds.size.width;
 
 		// if x withing bounds of event, return it… ignore y for now, should not matter anyway.
@@ -180,38 +179,52 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 - (void)drawRect:(CGRect)rect
 {
 	const CGRect contentRect = self.contentView.bounds;
-	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
+	const CGFloat multiEpgInterval = [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
+	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / multiEpgInterval;
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
 	CGContextSetRGBFillColor(ctx, 0.0f, 1.0f, 0.0f, 0.5f);
 	CGContextSetLineWidth(ctx, 0.25f);
 	const CGFloat xPosNow = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
-	CGFloat rectX = -1, rectW = -1;
+	CGFloat rectX = NSNotFound, rectW = NSNotFound;
 
-	CGFloat lastX = -1;
+	CGFloat lastBegin = NSNotFound;
 	for(NSNumber *number in _lines)
 	{
-		const CGFloat xPos = kServiceWidth + [number floatValue] * widthPerSecond;
-		if(_secondsSinceBegin > -1 && lastX > -1 && lastX <= xPosNow && xPosNow < xPos)
+		const CGFloat eventBegin = [number floatValue];
+		const CGFloat xPos = (eventBegin < 0) ? kServiceWidth : kServiceWidth + eventBegin * widthPerSecond;
+		if(eventBegin <= _secondsSinceBegin)
 		{
-			rectX = lastX;
-			rectW = xPos - lastX;
+			rectX = xPos;
+			lastBegin = eventBegin;
+		}
+		else if(rectX != NSNotFound && lastBegin != NSNotFound && lastBegin <= _secondsSinceBegin)
+		{
+			rectW = xPos - rectX;
+			lastBegin = NSNotFound;
 		}
 		CGContextMoveToPoint(ctx, xPos, 0);
 		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
-		lastX = xPos;
 	}
 	CGContextStrokePath(ctx);
-	if(lastX > -1 && lastX <= xPosNow) // partial event in timespan
+	if(lastBegin != NSNotFound) // we found a potential match
 	{
-		rectX = lastX;
-		rectW = contentRect.size.width - lastX;
+		// check if this is just the last event so we had nothing to compare it to
+		NSObject<EventProtocol> *lastEvent = ((NSObject<EventProtocol> *)[_events lastObject]);
+		if([lastEvent.begin timeIntervalSinceDate:_begin] == lastBegin)
+		{
+			const NSTimeInterval lastEnd = [lastEvent.end timeIntervalSinceDate:_begin];
+			if(lastEnd < _secondsSinceBegin)
+				rectX = NSNotFound;
+			else
+				rectW = contentRect.size.width - rectX;
+		}
 	}
-	if(rectX != -1 && rectW != -1)
+	if(rectX != NSNotFound && rectW != NSNotFound)
 		CGContextFillRect(ctx, CGRectMake(rectX, 0, rectW, contentRect.size.height));
 
 	// now
-	if(_secondsSinceBegin > -1)
+	if(_secondsSinceBegin > -1 && _secondsSinceBegin <= multiEpgInterval)
 	{
 		CGContextSetRGBStrokeColor(ctx, 1.0f, 0.0f, 0.0f, 0.8f);
 		CGContextSetLineWidth(ctx, 0.4f);
@@ -275,7 +288,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		CGFloat rightLine;
 		@try
 		{
-			leftLine = [[_lines objectAtIndex:idx] floatValue] * widthPerSecond;
+			const CGFloat eventBegin = [[_lines objectAtIndex:idx] floatValue];
+			leftLine = (eventBegin < 0) ? 0 : eventBegin * widthPerSecond;
 			rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
 		}
 		@catch(NSException *exception)
