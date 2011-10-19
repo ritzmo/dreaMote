@@ -168,9 +168,18 @@
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(doUpgradeDefer)];
 }
 
+- (void)doUpdateDefer
+{
+	[[RemoteConnectorObject sharedRemoteConnector] packageManagementUpdate];
+
+	// refresh data
+	[self performSelectorOnMainThread:@selector(emptyData) withObject:nil waitUntilDone:YES];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+}
+
 - (void)doUpdate:(id)sender
 {
-	[RemoteConnectorObject queueInvocationWithTarget:[RemoteConnectorObject sharedRemoteConnector] selector:@selector(packageManagementUpdate)];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(doUpdateDefer)];
 }
 
 - (void)doCommitChanges
@@ -200,8 +209,8 @@
 {
 	if(_selectedPackages.count == 0)
 	{
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"No packages selected", @"PackageManagement", @"")
-															  message:nil//NSLocalizedStringFromTable(@"", @"PackageManagement", @"")
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"No packages selected", @"PackageManager", @"")
+															  message:nil//NSLocalizedStringFromTable(@"", @"PackageManager", @"")
 															 delegate:nil
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
@@ -233,8 +242,8 @@
 	BOOL animated = NO;
 	if(_reviewingChanges)
 	{
-		const UIBarButtonItem *abortButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Abort", @"PackageManagement", @"Abort pending commit") style:UIBarButtonItemStyleBordered target:self action:@selector(abortCommit:)];
-		const UIBarButtonItem *commitButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManagement", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
+		const UIBarButtonItem *abortButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Abort", @"PackageManager", @"Abort pending commit") style:UIBarButtonItemStyleBordered target:self action:@selector(abortCommit:)];
+		const UIBarButtonItem *commitButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManager", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
 		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																						target:nil
 																						action:nil];
@@ -246,22 +255,22 @@
 	}
 	else
 	{
-		const UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"All", @"PackageManagement", @"All available Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setRegularType:)];
-		const UIBarButtonItem *installedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Installed", @"PackageManagement", @"Installed Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setInstalledType:)];
-		const UIBarButtonItem *upgradableButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgradable", @"PackageManagement", @"Upgradable Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setUpgradableType:)];
+		const UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"All", @"PackageManager", @"All available Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setRegularType:)];
+		const UIBarButtonItem *installedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Installed", @"PackageManager", @"Installed Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setInstalledType:)];
+		const UIBarButtonItem *upgradableButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgradable", @"PackageManager", @"Upgradable Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setUpgradableType:)];
 		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																						target:nil
 																						action:nil];
 
 		if(_listType == kPackageListUpgradable)
 		{
-			const UIBarButtonItem *upgradeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgrade", @"PackageManagement", @"Upgrade all available packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpgrade:)];
+			const UIBarButtonItem *upgradeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgrade", @"PackageManager", @"Upgrade all available packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpgrade:)];
 			items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, upgradeButton, nil];
 			[upgradeButton release];
 		}
 		else
 		{
-			const UIBarButtonItem *changesButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManagement", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
+			const UIBarButtonItem *changesButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManager", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
 			items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, changesButton, nil];
 			[changesButton release];
 		}
@@ -300,7 +309,7 @@
 
 	[self configureToolbar];
 
-	UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Update", @"PackageManagement", @"Update remote list of packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpdate:)];
+	UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Update", @"PackageManager", @"Update remote list of packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpdate:)];
 	self.navigationItem.rightBarButtonItem = regularButton;
 	[regularButton release];
 }
