@@ -5,7 +5,7 @@ DEBUG = False
 import re
 import os
 pattern = re.compile('^"(.*?)" = "(.*?)";.*?')
-tables = "Localizable", "AutoTimer", "EPGRefresh"
+tables = "Localizable", "AutoTimer", "EPGRefresh", "PackageManager"
 
 def find(dirname, recursive, *args):
 	files = []
