@@ -25,7 +25,7 @@
 	Package *pkg = [[Package alloc] init];
 	pkg.name = [components objectAtIndex:0];
 	pkg.version = [components objectAtIndex:1];
-	if(components.count > 2)
+	if(components.count > 2 && state == INSTALLED)
 		pkg.upgradeVersion = [[components objectAtIndex:2] stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
 	else
 		pkg.version = [pkg.version stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
