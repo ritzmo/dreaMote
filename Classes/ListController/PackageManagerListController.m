@@ -124,6 +124,7 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	[self setEditing:YES animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
@@ -136,6 +137,7 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	[self setEditing:YES animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
@@ -148,6 +150,7 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	[self setEditing:NO animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
@@ -336,7 +339,8 @@
 		// Run this in our "temporary" queue
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
-	[self setEditing:YES animated:animated];
+	if(_listType != kPackageListUpgradable)
+		[self setEditing:YES animated:animated];
 
 	_refreshPackages = YES;
 	[super viewWillAppear:animated];
@@ -359,6 +363,7 @@
 	if(_refreshPackages)
 	{
 		[self emptyData];
+		[self abortCommit:nil];
 	}
 	[super viewDidDisappear:animated];
 }
@@ -376,12 +381,34 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSArray *packages = (_reviewingChanges) ? _selectedPackages : _packages;
+	NSArray *packages = _packages;
+	NSInteger row = indexPath.row;
+	if(_reviewingChanges)
+	{
+		if(row == 0)
+		{
+			UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			switch(_listType)
+			{
+				case kPackageListInstalled:
+					cell.textLabel.text = NSLocalizedStringFromTable(@"Removed Packages:", @"PackageManager", @"");
+					break;
+				case kPackageListRegular:
+					cell.textLabel.text = NSLocalizedStringFromTable(@"Installed Packages:", @"PackageManager", @"");
+				default:
+					break;
+			}
+			return cell;
+		}
+
+		packages = _selectedPackages;
+		--row;
+	}
 	const BOOL isSearch = (tableView == _searchDisplay.searchResultsTableView);
 	if(isSearch) packages = _filteredPackages;
 
 	PackageCell *cell = [PackageCell reusableTableViewCellInView:tableView withIdentifier:kPackageCell_ID];
-	cell.package = [packages objectAtIndex:indexPath.row];
+	cell.package = [packages objectAtIndex:row];
 
 	// fix selection
 	if([_selectedPackages containsObject:cell.package])
@@ -393,6 +420,7 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(_listType == kPackageListUpgradable || (_reviewingChanges && indexPath.row == 0)) return indexPath;
 	Package *package = nil;
 	BOOL selected = YES;
 	if(tableView == _searchDisplay.searchResultsTableView)
@@ -450,7 +478,7 @@
 	if(tableView == _searchDisplay.searchResultsTableView)
 		return _filteredPackages.count;
 	if(_reviewingChanges)
-		return _selectedPackages.count;
+		return _selectedPackages.count + 1;
 	return _packages.count;
 }
 
