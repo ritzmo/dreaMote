@@ -12,6 +12,7 @@ typedef enum
 {
 	STATE_UNKNOWN,
 	INSTALLED,
+	UPGRADABLE,
 	NOT_INSTALLED,
 } installedState;
 

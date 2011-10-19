@@ -34,4 +34,13 @@
 	return [pkg autorelease];
 }
 
+- (id)init
+{
+	if((self = [super init]))
+	{
+		installed = STATE_UNKNOWN;
+	}
+	return self;
+}
+
 @end
