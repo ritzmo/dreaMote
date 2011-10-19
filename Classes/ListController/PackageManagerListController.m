@@ -22,6 +22,7 @@
 - (void)doUpgrade:(id)sender;
 - (void)doUpdate:(id)sender;
 - (void)commitChanges:(id)sender;
+- (void)abortCommit:(id)sender;
 - (void)configureToolbar;
 @end
 
@@ -92,6 +93,7 @@
 {
 	// Clean event list
 	SafeRetainAssign(_packages, nil);
+	[_selectedPackages removeAllObjects]; // no use in keeping them around with new packages
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
@@ -149,9 +151,18 @@
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
+- (void)doUpgradeDefer
+{
+	[[RemoteConnectorObject sharedRemoteConnector] packageManagementUpgrade];
+
+	// refresh data
+	[self performSelectorOnMainThread:@selector(emptyData) withObject:nil waitUntilDone:YES];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+}
+
 - (void)doUpgrade:(id)sender
 {
-	[RemoteConnectorObject queueInvocationWithTarget:[RemoteConnectorObject sharedRemoteConnector] selector:@selector(packageManagementUpgrade)];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(doUpgradeDefer)];
 }
 
 - (void)doUpdate:(id)sender
@@ -164,50 +175,100 @@
 	NSArray *selectedPackages = [_selectedPackages copy];
 	[[RemoteConnectorObject sharedRemoteConnector] packageManagementCommit:selectedPackages];
 	[selectedPackages release];
+
+	// refresh data
+	[self performSelectorOnMainThread:@selector(emptyData) withObject:nil waitUntilDone:YES];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+}
+
+- (void)abortCommit:(id)sender
+{
+	_reviewingChanges = NO;
+	[self configureToolbar];
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[_tableView reloadData];
+#endif
 }
 
 - (void)commitChanges:(id)sender
 {
 	if(_selectedPackages.count == 0)
 	{
-		// TODO: show alert
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"No packages selected", @"PackageManagement", @"")
+															  message:nil//NSLocalizedStringFromTable(@"", @"PackageManagement", @"")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
 		return;
 	}
 
-	// NOTE: we might want to make sure the user actually wants to commit the changesgi
-	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(doCommitChanges)];
+	if(_reviewingChanges)
+	{
+		// NOTE: we might want to make sure the user actually wants to commit the changes
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(doCommitChanges)];
+	}
+	_reviewingChanges = !_reviewingChanges;
+	[self configureToolbar];
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+#else
+	[_tableView reloadData];
+#endif
 }
 
 #pragma mark - View lifecycle
 
 - (void)configureToolbar
 {
-	const UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"All", @"PackageManagement", @"All available Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setRegularType:)];
-	const UIBarButtonItem *installedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Installed", @"PackageManagement", @"Installed Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setInstalledType:)];
-	const UIBarButtonItem *upgradableButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgradable", @"PackageManagement", @"Upgradable Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setUpgradableType:)];
-	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																					target:nil
-																					action:nil];
-
 	NSArray *items = nil;
-	if(_listType == kPackageListUpgradable)
+	BOOL animated = NO;
+	if(_reviewingChanges)
 	{
-		const UIBarButtonItem *upgradeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgrade", @"PackageManagement", @"Upgrade all available packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpgrade:)];
-		items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, upgradeButton, nil];
-		[upgradeButton release];
+		const UIBarButtonItem *abortButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Abort", @"PackageManagement", @"Abort pending commit") style:UIBarButtonItemStyleBordered target:self action:@selector(abortCommit:)];
+		const UIBarButtonItem *commitButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManagement", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+		items = [[NSArray alloc] initWithObjects:abortButton, flexItem, commitButton, nil];
+		[flexItem release];
+		[commitButton release];
+		[abortButton release];
+		animated = YES;
 	}
 	else
 	{
-		const UIBarButtonItem *changesButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManagement", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
-		items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, changesButton, nil];
-		[changesButton release];
+		const UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"All", @"PackageManagement", @"All available Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setRegularType:)];
+		const UIBarButtonItem *installedButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Installed", @"PackageManagement", @"Installed Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setInstalledType:)];
+		const UIBarButtonItem *upgradableButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgradable", @"PackageManagement", @"Upgradable Packages") style:UIBarButtonItemStyleBordered target:self action:@selector(setUpgradableType:)];
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+
+		if(_listType == kPackageListUpgradable)
+		{
+			const UIBarButtonItem *upgradeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgrade", @"PackageManagement", @"Upgrade all available packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpgrade:)];
+			items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, upgradeButton, nil];
+			[upgradeButton release];
+		}
+		else
+		{
+			const UIBarButtonItem *changesButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManagement", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
+			items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, changesButton, nil];
+			[changesButton release];
+		}
+		[flexItem release];
+		[upgradableButton release];
+		[installedButton release];
+		[regularButton release];
 	}
-	[self setToolbarItems:items animated:NO];
+	[self setToolbarItems:items animated:animated];
 	[items release];
-	[flexItem release];
-	[upgradableButton release];
-	[installedButton release];
-	[regularButton release];
 }
 
 /* load view */
@@ -257,6 +318,11 @@
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	if(_reviewingChanges)
+	{
+		_reviewingChanges = NO;
+		[self configureToolbar];
+	}
 	[self.navigationController setToolbarHidden:NO animated:YES];
 
 	// Refresh cache
@@ -310,7 +376,7 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSArray *packages = _packages;
+	NSArray *packages = (_reviewingChanges) ? _selectedPackages : _packages;
 	const BOOL isSearch = (tableView == _searchDisplay.searchResultsTableView);
 	if(isSearch) packages = _filteredPackages;
 
@@ -351,7 +417,18 @@
 	if(selected)
 		[_selectedPackages addObject:package];
 	else
+	{
 		[_selectedPackages removeObject:package];
+		if(_reviewingChanges)
+		{
+#if INCLUDE_FEATURE(Extra_Animation)
+			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+#else
+			[_tableView reloadData];
+#endif
+			return nil;
+		}
+	}
 	return indexPath;
 }
 
@@ -372,6 +449,8 @@
 {
 	if(tableView == _searchDisplay.searchResultsTableView)
 		return _filteredPackages.count;
+	if(_reviewingChanges)
+		return _selectedPackages.count;
 	return _packages.count;
 }
 
@@ -387,13 +466,13 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-	if(scrollView != _searchDisplay.searchResultsTableView)
+	if(scrollView != _searchDisplay.searchResultsTableView && !_reviewingChanges)
 		[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-	if(scrollView != _searchDisplay.searchResultsTableView)
+	if(scrollView != _searchDisplay.searchResultsTableView && !_reviewingChanges)
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
@@ -406,7 +485,8 @@
 	[_filteredPackages removeAllObjects];
 	const BOOL caseInsensitive = [searchString isEqualToString:[searchString lowercaseString]];
 	NSStringCompareOptions options = caseInsensitive ? (NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) : 0;
-	for(Package *package in _packages)
+	NSArray *packages = (_reviewingChanges) ? _selectedPackages : _packages;
+	for(Package *package in packages)
 	{
 		NSRange range = [package.name rangeOfString:searchString options:options];
 		if(range.length)
