@@ -333,14 +333,7 @@
 	NSDate *now = [[NSDate alloc] init];
 	_secondsSinceBegin = [now timeIntervalSinceDate:_curBegin];
 	[now release];
-	if(_secondsSinceBegin > 0 && _secondsSinceBegin < 60*60*2)
-	{
-		[_tableView reloadData];
-	}
-	else
-	{
-		_secondsSinceBegin = -1;
-	}
+	[_tableView reloadData];
 }
 
 /* entry point for thread fetching epg entries */
