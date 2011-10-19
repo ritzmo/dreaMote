@@ -19,6 +19,9 @@
 /* Force EPG refresh even if receiver is not in standby or timers are active */
 /*"Force refresh if in use" = "Force refresh if in use";*/
 
+/* Time of last refresh if given by remote end */
+/*"Last refresh: %@" = "Last refresh: %@";*/
+
 /* Adapter name */
 /*"Main Picture" = "Main Picture";*/
 
@@ -42,6 +45,9 @@
 
 /* Shutdown after refreshing EPG */
 /*"Shutdown after refresh" = "Shutdown after refresh";*/
+
+/* start manual refresh of epg */
+/*"Start refresh" = "Start refresh";*/
 
 /* Label for cell 'Time to stay on service (minutes)' */
 /*"Time on service (min.)" = "Time on service (min.)";*/

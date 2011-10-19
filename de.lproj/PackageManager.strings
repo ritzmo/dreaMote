@@ -1,0 +1,30 @@
+﻿/* Abort pending commit */
+"Abort" = "Abbrechen";
+
+/* All available Packages */
+"All" = "Alle";
+
+/* Commit changes made in list */
+"Commit" = "Ausführen";
+
+/* Installed Packages */
+"Installed" = "Installiert";
+
+/* No comment provided by engineer. */
+"Installed Packages:" = "Installierte Pakete:";
+
+/* No comment provided by engineer. */
+"No packages selected" = "Keine Pakete ausgewählt";
+
+/* No comment provided by engineer. */
+"Removed Packages:" = "Gelöschte Pakete:";
+
+/* Update remote list of packages */
+"Update" = "Aktualisieren";
+
+/* Upgradable Packages */
+"Upgradable" = "Veraltet";
+
+/* Upgrade all available packages */
+"Upgrade" = "Installieren";
+

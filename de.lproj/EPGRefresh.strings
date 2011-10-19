@@ -19,6 +19,9 @@
 /* Force EPG refresh even if receiver is not in standby or timers are active */
 "Force refresh if in use" = "Auch Aktualisieren wenn aktiv";
 
+/* Time of last refresh if given by remote end */
+"Last refresh: %@" = "Letzte Aktualisierung: %@";
+
 /* Adapter name */
 "Main Picture" = "Hauptbild";
 

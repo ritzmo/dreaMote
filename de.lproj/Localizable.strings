@@ -29,6 +29,9 @@
 "<enter title>" = "<titel>";
 
 /* No comment provided by engineer. */
+"<history length>" = "<verlaufslänge>";
+
+/* No comment provided by engineer. */
 "<message caption>" = "<nachrichtentitel>";
 
 /* No comment provided by engineer. */
@@ -83,6 +86,9 @@
 /* Used in MediaPlayer, add only the current folder */
 "Add" = "Ja, OHNE Unterordner";
 
+/* Add new AutoTimer based on this event */
+"Add AutoTimer" = "Neuer AutoTimer";
+
 /* No comment provided by engineer. */
 "Add Folder" = "Ordner hinzufügen";
 
@@ -91,6 +97,9 @@
 
 /* No comment provided by engineer. */
 "Add Timer" = "Neuer Timer";
+
+/* Create calendar entry for this event */
+"Add to calendar" = "Zu Kalender hinzufügen";
 
 /* Used in MediaPlayer, append tracks to playlist */
 "Adding to Playlist" = "Füge Playlist an";
@@ -283,6 +292,9 @@
 /* SleepTimer Duration Cell Label */
 "Duration" = "Dauer";
 
+/* Toggle in Signal Finder which is responsible for starting/stopping the tone generator */
+"Enable audio" = "Suchton";
+
 /* No comment provided by engineer. */
 "Enabled" = "Aktiv";
 
@@ -297,6 +309,9 @@
 
 /* Title of message when trying to select next/previous movie by swiping but end was reached. */
 "End of list reached" = "Ende der Liste erreicht.";
+
+/* Title of message when trying to select next/previous service by swiping but end was reached. */
+"End of service list reached" = "Ende der Kanalliste erreicht.";
 
 /* No comment provided by engineer. */
 "Enigma" = "Enigma";
@@ -414,6 +429,9 @@
 
 /* No comment provided by engineer. */
 "Harddisk" = "Festplatte";
+
+/* Default sharing string for events */
+"Hey, check out %@ on %@. %@" = "%3$@ auf %2$@: %1$@";
 
 /* Title of SearchHistoryListController */
 "History" = "Verlauf";
@@ -628,6 +646,15 @@
 /* Repeated */
 "Other" = "Wochentage";
 
+/* Title of PackageManagerListController */
+"Package Manager" = "Paketverwaltung";
+
+/* No comment provided by engineer. */
+"Package Manager Explain" = "Pakete installieren/löschen oder Upgrades einspielen";
+
+/* No comment provided by engineer. */
+"Package Manager Title" = "Paketverwaltung";
+
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 "Page not found.\nPlugin not installed?" = "Seite nicht gefunden.\nPlugin nicht installiert?";
 
@@ -781,6 +808,10 @@
 /* Default Title of EventSearchListController */
 "Search Events" = "Suchen";
 
+/* Default title of SearchHistoryLengthEditorController
+   Label of cell in config which gives search history length */
+"Search History Length" = "Länge Suchverlauf";
+
 /* Label of Progress HUD during AutoConfiguration */
 "Searching…" = "Suche…";
 
@@ -799,6 +830,9 @@
 /* No comment provided by engineer. */
 "Sending command failed" = "Befehl konnte nicht gesendet werden";
 
+/* Toggle to enable sections in event lists */
+"Separate events by day" = "Sendungen nach Tagen auftrennen";
+
 /* No comment provided by engineer. */
 "Service" = "Sender";
 
@@ -807,6 +841,9 @@
 
 /* Title of ServiceListController */
 "Services" = "Favoriten";
+
+/* No comment provided by engineer. */
+"Share" = "Veröffentlichen";
 
 /* show welcome screen (help) */
 "Show Help" = "Hilfe anzeigen";
@@ -1009,6 +1046,9 @@
 /* Repeated */
 "Weekly" = "Wöchentlich";
 
+/* Default sharing string for movies */
+"What's your opinion on \"%@\"?" = "Was haltet ihr von \"%@\"?";
+
 /* No comment provided by engineer. */
 "Year" = "Jahr";
 
@@ -1026,6 +1066,9 @@
 
 /* No comment provided by engineer. */
 "You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "Sie nutzen version %1$@ des WebInterface.\nFür volle Funktionalität wird ein Upgrade auf %2$@ empfohlen.";
+
+/* No comment provided by engineer. */
+"You have reached either the end or the beginning of the selected service list." = "Sie haben den Anfang oder das Ende der Senderliste erreicht.";
 
 /* No comment provided by engineer. */
 "You have reached either the end or the beginning of your movie list." = "Sie haben den Anfang oder das Ende der Filmliste erreicht.";

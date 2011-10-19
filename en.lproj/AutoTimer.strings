@@ -25,6 +25,9 @@
 /* Exclude Filter */
 /*"Exclude" = "Exclude";*/
 
+/* Force parsing is finished, this could have been either an error or a success */
+/*"Finished parsing EPG" = "Finished parsing EPG";*/
+
 /* timespan from */
 /*"From: %@" = "From: %@";*/
 
@@ -45,6 +48,9 @@
 
 /* Avoid Duplicate Description disabled */
 /*"No" = "No";*/
+
+/* Start forced parsing of EPG */
+/*"Parse EPG" = "Parse EPG";*/
 
 /* Avoid Duplicate Description 1 (timers on same service) */
 /*"Same Service" = "Same Service";*/

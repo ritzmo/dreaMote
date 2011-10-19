@@ -29,6 +29,9 @@
 "<enter title>" = "<enter title>";
 
 /* No comment provided by engineer. */
+/*"<history length>" = "<history length>";*/
+
+/* No comment provided by engineer. */
 /*"<message caption>" = "<message caption>";*/
 
 /* No comment provided by engineer. */
@@ -83,6 +86,9 @@
 /* Used in MediaPlayer, add only the current folder */
 /*"Add" = "Add";*/
 
+/* Add new AutoTimer based on this event */
+/*"Add AutoTimer" = "Add AutoTimer";*/
+
 /* No comment provided by engineer. */
 /*"Add Folder" = "Add Folder";*/
 
@@ -91,6 +97,9 @@
 
 /* No comment provided by engineer. */
 "Add Timer" = "Add Timer";
+
+/* Create calendar entry for this event */
+/*"Add to calendar" = "Add to calendar";*/
 
 /* Used in MediaPlayer, append tracks to playlist */
 /*"Adding to Playlist" = "Adding to Playlist";*/
@@ -283,6 +292,9 @@
 /* SleepTimer Duration Cell Label */
 /*"Duration" = "Duration";*/
 
+/* Toggle in Signal Finder which is responsible for starting/stopping the tone generator */
+/*"Enable audio" = "Enable audio";*/
+
 /* No comment provided by engineer. */
 /*"Enabled" = "Enabled";*/
 
@@ -298,11 +310,17 @@
 /* Title of message when trying to select next/previous movie by swiping but end was reached. */
 /*"End of list reached" = "End of list reached";*/
 
+/* Title of message when trying to select next/previous service by swiping but end was reached. */
+/*"End of service list reached" = "End of service list reached";*/
+
 /* No comment provided by engineer. */
 "Enigma" = "Enigma";
 
 /* No comment provided by engineer. */
 "Enigma 2" = "Enigma 2";
+
+/* Title of prompt requesting name for playlist to be saved in MediaPlayer */
+/*"Enter name of Playlist" = "Enter name of Playlist";*/
 
 /* Default title of EPGRefreshViewController */
 "EPGRefresh" = "EPGRefresh";
@@ -412,6 +430,9 @@
 /* No comment provided by engineer. */
 /*"Harddisk" = "Harddisk";*/
 
+/* Default sharing string for events */
+/*"Hey, check out %@ on %@. %@" = "Hey, check out %1$@ on %2$@. %3$@";*/
+
 /* Title of SearchHistoryListController */
 /*"History" = "History";*/
 
@@ -450,6 +471,9 @@
 
 /* No comment provided by engineer. */
 /*"Justplay" = "Justplay";*/
+
+/* Load button/action in MediaPlayer */
+/*"Load" = "Load";*/
 
 /* Label of Progress HUD in MultiEPG */
 /*"Loading EPG…" = "Loading EPG…";*/
@@ -622,6 +646,15 @@
 /* Repeated */
 /*"Other" = "Other";*/
 
+/* Title of PackageManagerListController */
+/*"Package Manager" = "Package Manager";*/
+
+/* No comment provided by engineer. */
+"Package Manager Explain" = "Install/Update/Remove packages";
+
+/* No comment provided by engineer. */
+"Package Manager Title" = "Package Manager";
+
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 /*"Page not found.\nPlugin not installed?" = "Page not found.\nPlugin not installed?";*/
 
@@ -642,6 +675,12 @@
 
 /* Title of PlayListController */
 /*"Playlist" = "Playlist";*/
+
+/* Playlist was saved in MediaPlayer */
+/*"Playlist saved successfully." = "Playlist saved successfully.";*/
+
+/* New MediaPlayer playlist was loaded */
+/*"Playlist was loaded successfully." = "Playlist was loaded successfully.";*/
 
 /* No comment provided by engineer. */
 /*"Please provide a valid timeout interval." = "Please provide a valid timeout interval.";*/
@@ -690,6 +729,12 @@
 
 /* No comment provided by engineer. */
 "Reboot" = "Reboot";
+
+/* User interaction with TimerList failed because index could not be retrieved. */
+/*"Received invalid row (%d, %d) which was mapped to index %d of %d. Please reload this table and try again." = "Received invalid row (%1$d, %2$d) which was mapped to index %3$d of %4$d. Please reload this table and try again.";*/
+
+/* Generic Placeholder for system-supplied error (and possibly success) messages */
+/*"Received response: %@." = "Received response: %@.";*/
 
 /* No comment provided by engineer. */
 /*"Receiver model" = "Receiver model";*/
@@ -748,7 +793,7 @@
 /* No comment provided by engineer. */
 "Saturday" = "Saturday";
 
-/* No comment provided by engineer. */
+/* Save button/action in MediaPlayer */
 /*"Save" = "Save";*/
 
 /* No comment provided by engineer. */
@@ -762,6 +807,10 @@
 
 /* Default Title of EventSearchListController */
 "Search Events" = "Search Events";
+
+/* Default title of SearchHistoryLengthEditorController
+   Label of cell in config which gives search history length */
+/*"Search History Length" = "Search History Length";*/
 
 /* Label of Progress HUD during AutoConfiguration */
 /*"Searching…" = "Searching…";*/
@@ -781,6 +830,9 @@
 /* No comment provided by engineer. */
 /*"Sending command failed" = "Sending command failed";*/
 
+/* Toggle to enable sections in event lists */
+/*"Separate events by day" = "Separate events by day";*/
+
 /* No comment provided by engineer. */
 /*"Service" = "Service";*/
 
@@ -789,6 +841,9 @@
 
 /* Title of ServiceListController */
 "Services" = "Services";
+
+/* No comment provided by engineer. */
+/*"Share" = "Share";*/
 
 /* show welcome screen (help) */
 /*"Show Help" = "Show Help";*/
@@ -849,6 +904,9 @@
 
 /* No comment provided by engineer. */
 /*"Stop" = "Stop";*/
+
+/* No comment provided by engineer. */
+/*"Success" = "Success";*/
 
 /* Weekday */
 "Sun" = "Sun";
@@ -988,6 +1046,9 @@
 /* Repeated */
 /*"Weekly" = "Weekly";*/
 
+/* Default sharing string for movies */
+/*"What's your opinion on \"%@\"?" = "What's your opinion on \"%@\"?";*/
+
 /* No comment provided by engineer. */
 /*"Year" = "Year";*/
 
@@ -1007,7 +1068,13 @@
 /*"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "You are using version %1$@ of the web interface.\nFor full functionality updating to version %2$@ is suggested.";*/
 
 /* No comment provided by engineer. */
+/*"You have reached either the end or the beginning of the selected service list." = "You have reached either the end or the beginning of the selected service list.";*/
+
+/* No comment provided by engineer. */
 /*"You have reached either the end or the beginning of your movie list." = "You have reached either the end or the beginning of your movie list.";*/
+
+/* No filename entered when trying to save MediaPlayer playlist */
+/*"You have to enter a filename to save the playlist" = "You have to enter a filename to save the playlist";*/
 
 /* User requested automated EPG refresh but no timespan given. */
 /*"You have to provide a timespan to refresh automatically." = "You have to provide a timespan to refresh automatically.";*/
