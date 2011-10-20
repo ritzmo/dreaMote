@@ -205,6 +205,14 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 					connector, kConnector,
 				 nil],
 				[NSDictionary dictionaryWithObjectsAndKeys:
+					@"dm7020hd", kRemoteHost,
+					@"root", kUsername,
+					@"", kPassword,
+					@"NO", kSSL,
+					@"YES", kAdvancedRemote,
+					connector, kConnector,
+				 nil],
+				[NSDictionary dictionaryWithObjectsAndKeys:
 					@"vuplus", kRemoteHost,
 					@"root", kUsername,
 					@"", kPassword,
