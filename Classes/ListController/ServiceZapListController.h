@@ -21,7 +21,8 @@ typedef enum
 	zapActionBuzzPlayer = 3,
 	zapActionYxplayer = 4,
 	zapActionGoodPlayer = 5,
-	zapActionMax = 6,
+	zapActionAcePlayer = 6,
+	zapActionMax = 7,
 } zapAction;
 
 @protocol ServiceZapListDelegate;

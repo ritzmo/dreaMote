@@ -36,6 +36,7 @@
 		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
 		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]]
 		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]]
+		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]]
 		);
 }
 
@@ -60,6 +61,8 @@
 		[zlc.actionSheet addButtonWithTitle:@"yxplayer"];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"GoodPlayer"];
+	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
+		[zlc.actionSheet addButtonWithTitle:@"AcePlayer"];
 
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 	[zlc.actionSheet showFromTabBar:tabBar];
@@ -89,6 +92,9 @@
 			break;
 		case zapActionGoodPlayer:
 			url = [NSURL URLWithString:[NSString stringWithFormat:@"goodplayer://%@", [streamingURL absoluteURL]]];
+			break;
+		case zapActionAcePlayer:
+			url = [NSURL URLWithString:[NSString stringWithFormat:@"aceplayer://%@", [streamingURL absoluteURL]]];
 			break;
 	}
 	if(url)
@@ -137,6 +143,7 @@
 	hasAction[zapActionBuzzPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]];
 	hasAction[zapActionYxplayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
 	hasAction[zapActionGoodPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]];
+	hasAction[zapActionAcePlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]];
 }
 
 - (void)dismissActionSheet:(NSNotification *)notif
@@ -168,6 +175,8 @@
 			++row;
 		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
 			++row;
+		if(!hasAction[zapActionAcePlayer] && row > zapActionGoodPlayer)
+			++row;
 	}
 	switch((zapAction)row)
 	{
@@ -190,6 +199,9 @@
 		case zapActionGoodPlayer:
 			TABLEVIEWCELL_TEXT(cell) = @"GoodPlayer";
 			break;
+		case zapActionAcePlayer:
+			TABLEVIEWCELL_TEXT(cell) = @"AcePlayer";
+			break;
 	}
 	return cell;
 }
@@ -211,6 +223,8 @@
 		if(!hasAction[zapActionYxplayer] && row > zapActionBuzzPlayer)
 			++row;
 		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
+			++row;
+		if(!hasAction[zapActionAcePlayer] && row > zapActionGoodPlayer)
 			++row;
 	}
 	[zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
@@ -270,7 +284,9 @@
 			++buttonIndex;
 		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > zapActionBuzzPlayer)
 			++buttonIndex;
-		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
+		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
+			++buttonIndex;
+		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]] && buttonIndex > zapActionGoodPlayer)
 		//	++buttonIndex;
 
 		[zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];

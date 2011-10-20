@@ -44,6 +44,7 @@
 - (void)openBuzzPlayer:(id)sender;
 - (void)openYxplayer:(id)sender;
 - (void)openGoodplayer:(id)sender;
+- (void)openAcePlayer:(id)sender;
 @end
 
 @implementation CurrentViewController
@@ -253,6 +254,8 @@
 					++rows;
 				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
 					++rows;
+				if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
+					++rows;
 			}
 			return rows;
 		}
@@ -325,7 +328,9 @@
 				++row;
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 3)
 				++row;
-			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 4)
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 4)
+				++row;
+			//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]] && row > 5)
 			//	++row;
 
 			switch(row)
@@ -361,6 +366,11 @@
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)sourceCell).nameLabel.text = @"GoodPlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openGoodplayer:) withImage:nil];
+					break;
+				case 6:
+					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)sourceCell).nameLabel.text = @"AcePlayer";
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openAcePlayer:) withImage:nil];
 					break;
 			}
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -649,6 +659,11 @@
 - (void)openGoodplayer:(id)sender
 {
 	[self openStreamWithAction:zapActionGoodPlayer];
+}
+
+- (void)openAcePlayer:(id)sender
+{
+	[self openStreamWithAction:zapActionAcePlayer];
 }
 
 @end
