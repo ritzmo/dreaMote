@@ -656,7 +656,17 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		action = @"add";
 
 	NSString *relativeURL = [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root urlencode], [track.sref urlencode]];
-	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+	Result *result = [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+	if(!result.result)
+	{
+		relativeURL = [NSString stringWithFormat:@"/web/mediaplayer%@?root=%@&file=%@", action, [track.root urlencodeWithEncoding:NSISOLatin1StringEncoding], [track.sref urlencodeWithEncoding:NSISOLatin1StringEncoding]];
+		Result *result2 = [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+
+		// only accept valid results to not print any unexpected characters
+		if(result2.result)
+			result = result2;
+	}
+	return result;
 }
 
 - (Result *)playTrack:(NSObject<FileProtocol> *) track
