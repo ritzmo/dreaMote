@@ -749,6 +749,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		[self mediaplayerCommand:@"clear"];
 		NSData *data = [self getFile:file.sref];
 		NSString *stringData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		if(!stringData)
+			stringData = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 		[pool release];
 
 		NSArray *references = [stringData componentsSeparatedByString:@"\n"];
