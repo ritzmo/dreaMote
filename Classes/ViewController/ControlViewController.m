@@ -154,7 +154,13 @@
 	((UIButton *)sender).enabled = NO;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated: YES scrollPosition: UITableViewScrollPositionNone];
-	Result *result = (sharedRemoteConnector && [sharedRemoteConnector respondsToSelector:@selector(instantRecord)]) ? [sharedRemoteConnector instantRecord] : nil;
+#if IS_DEBUG()
+	if(![sharedRemoteConnector respondsToSelector:@selector(instantRecord)])
+	{
+		NSLog(@"remote connector (%@) does not respond to instantRecord, yet the action was triggered", [sharedRemoteConnector description]);
+	}
+#endif
+	Result *result = ([sharedRemoteConnector respondsToSelector:@selector(instantRecord)]) ? [sharedRemoteConnector instantRecord] : nil;
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 
 	if(!result.result)
@@ -285,7 +291,17 @@
 		if([title isEqualToString:NSLocalizedString(@"Reboot", "")])
 			[[RemoteConnectorObject sharedRemoteConnector] reboot];
 		else if([title isEqualToString:NSLocalizedString(@"Restart", @"")])
-			[[RemoteConnectorObject sharedRemoteConnector] restart];
+		{
+			NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+			if([sharedRemoteConnector respondsToSelector:@selector(restart)])
+				[sharedRemoteConnector restart];
+#if IS_DEBUG()
+			else
+			{
+				NSLog(@"remote connector (%@) does not respond to restart, yet the action was triggered", [sharedRemoteConnector description]);
+			}
+#endif
+		}
 		else if([title isEqualToString:NSLocalizedString(@"Shutdown", @"")])
 			[[RemoteConnectorObject sharedRemoteConnector] shutdown];
 		else
