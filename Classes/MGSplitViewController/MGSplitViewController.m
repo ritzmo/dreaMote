@@ -10,15 +10,15 @@
 #import "MGSplitDividerView.h"
 #import "MGSplitCornersView.h"
 
-#define MG_DEFAULT_SPLIT_POSITION		320.0	// default width of master view in UISplitViewController.
-#define MG_DEFAULT_SPLIT_WIDTH			1.0		// default width of split-gutter in UISplitViewController.
-#define MG_DEFAULT_CORNER_RADIUS		5.0		// default corner-radius of overlapping split-inner corners on the master and detail views.
+#define MG_DEFAULT_SPLIT_POSITION		320.0f	// default width of master view in UISplitViewController.
+#define MG_DEFAULT_SPLIT_WIDTH			1.0f	// default width of split-gutter in UISplitViewController.
+#define MG_DEFAULT_CORNER_RADIUS		5.0f	// default corner-radius of overlapping split-inner corners on the master and detail views.
 #define MG_DEFAULT_CORNER_COLOR			[UIColor blackColor]	// default color of intruding inner corners (and divider background).
 
-#define MG_PANESPLITTER_CORNER_RADIUS	0.0		// corner-radius of split-inner corners for MGSplitViewDividerStylePaneSplitter style.
-#define MG_PANESPLITTER_SPLIT_WIDTH		25.0	// width of split-gutter for MGSplitViewDividerStylePaneSplitter style.
+#define MG_PANESPLITTER_CORNER_RADIUS	0.0f	// corner-radius of split-inner corners for MGSplitViewDividerStylePaneSplitter style.
+#define MG_PANESPLITTER_SPLIT_WIDTH		25.0f	// width of split-gutter for MGSplitViewDividerStylePaneSplitter style.
 
-#define MG_MIN_VIEW_WIDTH				200.0	// minimum width a view is allowed to become as a result of changing the splitPosition.
+#define MG_MIN_VIEW_WIDTH				200.0f	// minimum width a view is allowed to become as a result of changing the splitPosition.
 
 #define MG_ANIMATION_CHANGE_SPLIT_ORIENTATION	@"ChangeSplitOrientation"	// Animation ID for internal use.
 #define MG_ANIMATION_CHANGE_SUBVIEWS_ORDER		@"ChangeSubviewsOrder"	// Animation ID for internal use.
@@ -450,7 +450,7 @@
 	CGRect leadingRect, trailingRect;
 	float radius = leadingCorners.cornerRadius;
 	if (_vertical) { // left/right split
-		cornersWidth = (radius * 2.0) + _splitWidth;
+		cornersWidth = (radius * 2.0f) + _splitWidth;
 		cornersHeight = radius;
 		x = ((shouldShowMaster) ? ((masterFirst) ? _splitPosition : width - (_splitPosition + _splitWidth)) : (0 - _splitWidth)) - radius;
 		y = 0;
@@ -461,7 +461,7 @@
 		x = 0;
 		y = ((shouldShowMaster) ? ((masterFirst) ? _splitPosition : height - (_splitPosition + _splitWidth)) : (0 - _splitWidth)) - radius;
 		cornersWidth = radius;
-		cornersHeight = (radius * 2.0) + _splitWidth;
+		cornersHeight = (radius * 2.0f) + _splitWidth;
 		leadingRect = CGRectMake(x, y, cornersWidth, cornersHeight); // left corners
 		trailingRect = CGRectMake((width - cornersWidth), y, cornersWidth, cornersHeight); // right corners
 	}
@@ -914,12 +914,13 @@
 - (void)setViewControllers:(NSArray *)controllers
 {
 	if (controllers != _viewControllers) {
+		SafeReturn(_viewControllers);
 		for (UIViewController *controller in _viewControllers) {
 			if ([controller isKindOfClass:[UIViewController class]]) {
 				[controller.view removeFromSuperview];
 			}
 		}
-		[_viewControllers release];
+		SafeRetainAssign(_viewControllers, nil);
 		_viewControllers = [[NSMutableArray alloc] initWithCapacity:2];
 		if (controllers && [controllers count] >= 2) {
 			self.masterViewController = [controllers objectAtIndex:0];
@@ -938,7 +939,7 @@
 	if (_viewControllers && [_viewControllers count] > 0) {
 		NSObject *controller = [_viewControllers objectAtIndex:0];
 		if ([controller isKindOfClass:[UIViewController class]]) {
-			return [[controller retain] autorelease];
+			return (UIViewController *)[[controller retain] autorelease];
 		}
 	}
 	
@@ -980,7 +981,7 @@
 	if (_viewControllers && [_viewControllers count] > 1) {
 		NSObject *controller = [_viewControllers objectAtIndex:1];
 		if ([controller isKindOfClass:[UIViewController class]]) {
-			return [[controller retain] autorelease];
+			return (UIViewController *)[[controller retain] autorelease];
 		}
 	}
 	
@@ -1023,8 +1024,7 @@
 {
 	if (divider != _dividerView) {
 		[_dividerView removeFromSuperview];
-		[_dividerView release];
-		_dividerView = [divider retain];
+		SafeRetainAssign(_dividerView, divider);
 		_dividerView.splitViewController = self;
 		_dividerView.backgroundColor = MG_DEFAULT_CORNER_COLOR;
 		if ([self isShowingMaster]) {
