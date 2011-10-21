@@ -57,16 +57,20 @@ static EPGCache *_sharedInstance = nil;
 	if((self = [super init]))
 	{
 		_databasePath = [[kEPGCachePath stringByExpandingTildeInPath] retain];
+		queue = [[NSOperationQueue alloc] init];
+		[queue setMaxConcurrentOperationCount:1];
 	}
 	return self;
 }
 
 - (void)dealloc
 {
-	[_bouquet release];
-	[_databasePath release];
-	[_service release];
-	[_serviceList release];
+	SafeRetainAssign(_bouquet, nil);
+	SafeRetainAssign(_databasePath, nil);
+	SafeRetainAssign(_service, nil);
+	SafeRetainAssign(_serviceList, nil);
+	[queue cancelAllOperations];
+	SafeRetainAssign(queue, nil);
 
 	[super dealloc];
 }
@@ -295,21 +299,24 @@ static EPGCache *_sharedInstance = nil;
 #pragma mark -
 
 /* threadsafe wrapper of addEvent */
-- (void)addEventThreaded:(NSObject<EventProtocol> *)event
+- (void)addEventOperation:(NSObject<EventProtocol> *)event
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	@synchronized(self)
-	{
-		[self addEvent:event];
-	}
-	[pool release];
+	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(addEvent:) object:event];
+	[queue addOperation:operation];
+	[operation release];
 }
 
 /* start new transaction */
 - (BOOL)startTransaction:(NSObject<ServiceProtocol> *)service
 {
 	// cannot start transaction while one is already running
-	if(database != NULL) return NO;
+	if(database != NULL)
+	{
+#if IS_DEBUG()
+		NSLog(@"[EPGCache] There already is a transcation active for service %@. Can't start transaction for service %@", _service.sname, service.sname);
+#endif
+		return NO;
+	}
 
 	BOOL retVal = YES;
 	[self checkDatabase];
@@ -370,6 +377,7 @@ static EPGCache *_sharedInstance = nil;
 
 	@synchronized(self)
 	{
+		[queue cancelAllOperations];
 		SafeRetainAssign(_service, nil);
 
 		// stop transcation

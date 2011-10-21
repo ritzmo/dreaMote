@@ -202,7 +202,9 @@
 - (void)fetchData
 {
 #if IS_FULL()
-	[[EPGCache sharedInstance] startTransaction:_service];
+	EPGCache *epgCache = [EPGCache sharedInstance];
+	[epgCache stopTransaction];
+	[epgCache startTransaction:_service];
 #endif
 	_reloading = YES;
 	SafeRetainAssign(_eventXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
@@ -483,7 +485,7 @@
 #endif
 
 #if IS_FULL()
-	[NSThread detachNewThreadSelector:@selector(addEventThreaded:) toTarget:[EPGCache sharedInstance] withObject:event];
+	[[EPGCache sharedInstance] addEventOperation:event];
 #endif
 }
 

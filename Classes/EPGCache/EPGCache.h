@@ -32,6 +32,7 @@
 	NSObject<EPGCacheDelegate> *_delegate;
 	NSMutableArray *_serviceList;
 	CXMLDocument *_currDocument;
+	NSOperationQueue *queue; /*!< @brief Queue with pending event additions. */
 
 	sqlite3 *database;
 	sqlite3_stmt *insert_stmt;
@@ -47,7 +48,7 @@
 
  @param event Event to add to cache.
  */
-- (void)addEventThreaded:(NSObject<EventProtocol> *)event;
+- (void)addEventOperation:(NSObject<EventProtocol> *)event;
 
 /*!
  @brief Remove old events.
