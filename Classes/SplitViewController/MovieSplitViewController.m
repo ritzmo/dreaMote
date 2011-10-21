@@ -31,13 +31,13 @@
 
 - (void)dealloc
 {
-	[_locationListController release];
-	[_movieListController release];
-	[_movieListNavigationController release];
-
-	[_viewArrayLocation release];
-
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	SafeRetainAssign(_locationListController, nil);
+	SafeRetainAssign(_movieListController, nil);
+	SafeRetainAssign(_movieListNavigationController, nil);
+
+	SafeRetainAssign(_viewArrayLocation, nil);
 
 	[super dealloc];
 }
@@ -71,6 +71,19 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(linkViewControllers:) name:kReconnectNotification object:nil];
+}
+
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	SafeRetainAssign(_locationListController, nil);
+	SafeRetainAssign(_movieListController, nil);
+	SafeRetainAssign(_movieListNavigationController, nil);
+
+	SafeRetainAssign(_viewArrayLocation, nil);
+
+	[super viewDidUnload];
 }
 
 - (void)linkViewControllers: (NSNotification *)note
