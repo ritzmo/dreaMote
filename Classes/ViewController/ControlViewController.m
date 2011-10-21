@@ -150,10 +150,11 @@
 /* start recording */
 - (void)record:(id)sender
 {
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	((UIButton *)sender).enabled = NO;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
 	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated: YES scrollPosition: UITableViewScrollPositionNone];
-	Result *result = [[RemoteConnectorObject sharedRemoteConnector] instantRecord];
+	Result *result = (sharedRemoteConnector && [sharedRemoteConnector respondsToSelector:@selector(instantRecord)]) ? [sharedRemoteConnector instantRecord] : nil;
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 
 	if(!result.result)
@@ -423,6 +424,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
+	[(UITableView *)self.view reloadData];
 
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchVolume)];
 
