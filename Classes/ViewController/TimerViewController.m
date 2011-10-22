@@ -147,48 +147,39 @@
 	[_event release];
 
 	_titleCell.delegate = nil;
-	[_titleCell release];
-	[_timerTitle release];
+	SafeRetainAssign(_titleCell, nil);
+	SafeRetainAssign(_timerTitle, nil);
 	_descriptionCell.delegate = nil;
-	[_descriptionCell release];
-	[_timerDescription release];
-	[_timerEnabled release];
-	[_timerJustplay release];
-	[_cancelButtonItem release];
+	SafeRetainAssign(_descriptionCell, nil);
+	SafeRetainAssign(_timerDescription, nil);
+	SafeRetainAssign(_timerEnabled, nil);
+	SafeRetainAssign(_timerJustplay, nil);
+	SafeRetainAssign(_cancelButtonItem, nil);
 	[_popoverButtonItem release];
 	[popoverController release];
 
-	[_afterEventNavigationController release];
-	[_afterEventViewController release];
-	[_bouquetListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-	[_locationListController release];
-	[_simpleRepeatedNavigationController release];
-	[_simpleRepeatedViewController release];
+	SafeRetainAssign(_afterEventNavigationController , nil);
+	SafeRetainAssign(_afterEventViewController , nil);
+	SafeRetainAssign(_bouquetListController , nil);
+	SafeRetainAssign(_datePickerController , nil);
+	SafeRetainAssign(_datePickerNavigationController , nil);
+	SafeRetainAssign(_locationListController , nil);
+	SafeRetainAssign(_simpleRepeatedNavigationController , nil);
+	SafeRetainAssign(_simpleRepeatedViewController , nil);
 
 	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
 {
-	[_afterEventNavigationController release];
-	[_afterEventViewController release];
-	[_bouquetListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-	[_locationListController release];
-	[_simpleRepeatedNavigationController release];
-	[_simpleRepeatedViewController release];
-	
-	_afterEventNavigationController = nil;
-	_afterEventViewController = nil;
-	_bouquetListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
-	_locationListController = nil;
-	_simpleRepeatedNavigationController = nil;
-	_simpleRepeatedViewController = nil;
+	SafeRetainAssign(_afterEventNavigationController , nil);
+	SafeRetainAssign(_afterEventViewController , nil);
+	SafeRetainAssign(_bouquetListController , nil);
+	SafeRetainAssign(_datePickerController , nil);
+	SafeRetainAssign(_datePickerNavigationController , nil);
+	SafeRetainAssign(_locationListController , nil);
+	SafeRetainAssign(_simpleRepeatedNavigationController , nil);
+	SafeRetainAssign(_simpleRepeatedViewController , nil);
 	
 	[super didReceiveMemoryWarning];
 }
@@ -517,21 +508,16 @@
 - (void)viewDidUnload
 {
 	_titleCell.delegate = nil;
-	[_titleCell release];
-	_titleCell = nil;
-	[_timerTitle release];
-	_timerTitle = nil;
+	SafeRetainAssign(_titleCell, nil);
+	SafeRetainAssign(_timerTitle, nil);
 	_descriptionCell.delegate = nil;
-	[_descriptionCell release];
-	_descriptionCell = nil;
-	[_timerDescription release];
-	_timerDescription = nil;
-	[_timerEnabled release];
-	_timerEnabled = nil;
-	[_timerJustplay release];
-	_timerJustplay = nil;
-	[_cancelButtonItem release];
-	_cancelButtonItem = nil;
+	SafeRetainAssign(_descriptionCell, nil);
+	SafeRetainAssign(_timerDescription, nil);
+	SafeRetainAssign(_timerEnabled, nil);
+	SafeRetainAssign(_timerJustplay, nil);
+	self.navigationItem.leftBarButtonItem = nil;
+	self.navigationItem.rightBarButtonItem = nil;
+	SafeRetainAssign(_cancelButtonItem, nil);
 
 	_timerBeginCell = nil;
 	_timerEndCell = nil;
