@@ -208,15 +208,24 @@
 
 		if(IS_IPAD())
 		{
-			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
-			items = [[NSArray alloc] initWithObjects:flexItem, _sortButton, self.editButtonItem, nil];
-			[toolbar setItems:items animated:NO];
-			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+			// iOS 5.0+
+			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			{
+				items = [[NSArray alloc] initWithObjects:self.editButtonItem, _sortButton, nil];
+				self.navigationItem.rightBarButtonItems = items;
+			}
+			else
+			{
+				UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+				items = [[NSArray alloc] initWithObjects:flexItem, _sortButton, self.editButtonItem, nil];
+				[toolbar setItems:items animated:NO];
+				UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 
-			self.navigationItem.rightBarButtonItem = buttonItem;
+				self.navigationItem.rightBarButtonItem = buttonItem;
 
-			[buttonItem release];
-			[toolbar release];
+				[buttonItem release];
+				[toolbar release];
+			}
 		}
 		else
 		{
@@ -230,7 +239,13 @@
 		[flexItem release];
 	}
 	else
-		self.navigationItem.rightBarButtonItem = _sortButton;
+	{
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject:_sortButton];
+		else
+			self.navigationItem.rightBarButtonItem = _sortButton;
+	}
 
 	if(_refreshMovies && !_reloading)
 	{
