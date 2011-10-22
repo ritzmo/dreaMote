@@ -211,8 +211,13 @@ enum mediaPlayerTags
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration: kTransitionDuration];
-	if(!IS_IPAD())
-		self.navigationItem.leftBarButtonItem = nil;
+	if(IS_IPHONE())
+	{
+		if([self.navigationItem respondsToSelector:@selector(leftBarButtonItems)])
+			self.navigationItem.leftBarButtonItems = nil;
+		else
+			self.navigationItem.leftBarButtonItem = nil;
+	}
 
 	[UIView setAnimationTransition:
 				([_fileList superview] ? UIViewAnimationTransitionFlipFromRight : UIViewAnimationTransitionFlipFromLeft)
@@ -806,27 +811,35 @@ enum mediaPlayerTags
 	{
 		self.title = nil; // XXX: too little space on iPhone/iPod Touch
 
-		const CGFloat toolbarHeight = (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) ? 44.01f : 32.01f;
-		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, toolbarHeight)];
-		toolbar.autoresizesSubviews = YES;
-		toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																						target:nil
-																						action:nil];
 		const UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-																				  target:self
-																				  action:@selector(flipView:)];
-		NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, _deleteButton, flexItem, nil];
-		[toolbar setItems:items animated:NO];
-		UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+																						target:self
+																						action:@selector(flipView:)];
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(leftBarButtonItems)])
+		{
+			self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:flipItem, _shuffleButton, _deleteButton, nil];
+		}
+		else
+		{
+			const CGFloat toolbarHeight = (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) ? 44.01f : 32.01f;
+			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, toolbarHeight)];
+			toolbar.autoresizesSubviews = YES;
+			toolbar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+			const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																							target:nil
+																							action:nil];
+			NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, _deleteButton, flexItem, nil];
+			[toolbar setItems:items animated:NO];
+			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 
-		self.navigationItem.leftBarButtonItem = buttonItem;
+			self.navigationItem.leftBarButtonItem = buttonItem;
 
-		[buttonItem release];
-		[items release];
+			[buttonItem release];
+			[items release];
+			[flexItem release];
+			[toolbar release];
+		}
 		[flipItem release];
-		[flexItem release];
-		[toolbar release];
 	}
 	else
 	{
@@ -834,7 +847,11 @@ enum mediaPlayerTags
 
 		if([_fileList superview])
 			[self flipView: nil];
-		self.navigationItem.leftBarButtonItem = nil;
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(leftBarButtonItems)])
+			self.navigationItem.leftBarButtonItems = nil;
+		else
+			self.navigationItem.leftBarButtonItem = nil;
 	}
 }
 
