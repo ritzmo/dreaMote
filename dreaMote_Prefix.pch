@@ -15,6 +15,10 @@
 #define TABLEVIEWCELL_COLOR(a) (a).textLabel.textColor
 #define TABLEVIEWCELL_IMAGE(a) (a).imageView.image
 
+#define SafeDestroyButton(button) { \
+	[(button) removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents]; \
+	SafeRetainAssign((button), (nil)); \
+}
 #define SafeRetainAssign(var, newExpr) { \
 	id OLD = (var); \
 	id NEW = (newExpr); \
@@ -30,6 +34,10 @@
 		[OLD release]; \
 }
 #define SafeReturn(var) [[var retain] autorelease]
+#define UnsetCellAndDelegate(cell) { \
+	(cell).delegate = (nil); \
+	(cell) = (nil); \
+}
 
 // SDK 3.2+
 #ifdef UI_USER_INTERFACE_IDIOM
