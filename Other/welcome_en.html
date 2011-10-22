@@ -1,21 +1,25 @@
 <html><head><script type="text/javascript">
 function touchEvents(){document.documentElement.style.webkitTouchCallout="none";document.documentElement.style.webkitUserSelect="none";var b=document.getElementsByTagName('a');for(var i=0;i<b.length;i++){b[i].addEventListener('touchstart',function(a){this.className="hover"},false);b[i].addEventListener('touchstop',function(a){this.className=""},false)}}
-</script></head>
+function toggleElem(name,hide){var elem=document.getElementById(name);if(elem.style.display=="block"&&hide!==false)elem.style.display="none";else elem.style.display="block"}function showElem(name){toggleElem(name,false)}
+</script><style type="text/css">
+.configsection{display:none;padding-top:15px;}
+</style></head>
 <body style="-webkit-user-select: none; background-color: transparent; margin: 2px; padding: 0px; padding-top: 5px; font-family: Helvetica; font-size: 0.9em;" onload="touchEvents()">
 <div><a name="top" />Welcome to dreaMote!<br />
 This introduction is supposed to give you a quick insight into the functionality of this App.
 All Screenshots were taken on an iPhone while connected to a set-top-box running Enigma2.</div>
 <ul style="margin:0px;padding-left:25px; padding-top:10px;">
 <li style="list-style-type:none;">Table of Contents</li>
-<li><a href="#autoconfig">Auto-Configuration</a></li>
-<li><a href="#config">Setup</a></li>
-<li><a href="#simplerc">Simple Remote Control</a></li>
-<li><a href="#refresh">Reloading Data</a></li>
-<li><a href="#screenshots">Screenshots</a></li>
-<li><a href="#mediaplayer">MediaPlayer</a></li>
-<li><a href="#more">Anything else?</a></li>
+<li><a href="#autoconfig" onClick="showElem('autoconfig')">Auto-Configuration</a></li>
+<li><a href="#config" onClick="showElem('config')">Setup</a></li>
+<li><a href="#simplerc" onClick="showElem('simplerc')">Simple Remote Control</a></li>
+<li><a href="#refresh" onClick="showElem('refresh')">Reloading Data</a></li>
+<li><a href="#screenshots" onClick="showElem('screenshots')">Screenshots</a></li>
+<li><a href="#mediaplayer" onClick="showElem('mediaplayer')">MediaPlayer</a></li>
+<li><a href="#packagemanager" onClick="showElem('packagemanager')">Package Manager</a></li>
+<li><a href="#more" onClick="showElem('more')">Anything else?</a></li>
 </ul>
-<div style="padding-top:15px;"><a name="autoconfig" /><h4 style="padding:0px; margin:1px;">Auto-Configuration</h4>
+<a name="autoconfig" href="javascript:toggleElem('autoconfig')"><h4 style="padding:0px; margin:1px;">Auto-Configuration</h4></a><div class="configsection" id="autoconfig">
 <img src="Setup_Auto.png" /><br />
 To make configuring dreaMote easier, it is able to do a semi-automatic configuration by itself.
 If dreaMote is not yet configured, a dialog as seen in the screenshot above appears.<br />
@@ -26,7 +30,7 @@ Please refer to the manual of your receiver on how to do so.<br /><br />
 In case that automatic configuration does not work, or you want to change any settings, you are free to do so using the regular configuration dialog as explained in the following section.<br />
 <a href="#top">Back to top.</a>
 </div>
-<div style="padding-top:15px;"><a name="config" /><h4 style="padding:0px; margin:1px;">Setup</h4>
+<a name="config" href="javascript:toggleElem('config')"><h4 style="padding:0px; margin:1px;">Setup</h4></a><div class="configsection" id="config">
 <img src="Setup_1.png" />
 <ul style="margin:0px;padding-left:25px; padding-top:5px;">
 <li>Section Remote Host:<ul style="margin:0px;padding-left:25px; padding-top:5px;">
@@ -50,14 +54,14 @@ In case that automatic configuration does not work, or you want to change any se
 Each option also contains an example (and often default) value that you can use if in doubt.<br />
 <a href="#top">Back to top.</a>
 </div>
-<div style="padding-top:15px;"><a name="simplerc" /><h4 style="padding:0px; margin:1px;">Simple Remote Control</h4>
+<a name="simplerc" href="javascript:toggleElem('simplerc')"><h4 style="padding:0px; margin:1px;">Simple Remote Control</h4></a><div class="configsection" id="simplerc">
 <img src="Simplerc.png" /><br />
 The simple remote is an easier to use alternative to the &quot;Full&quot; remote control emulator which displays all available buttons.
 Swipe the cross to emulate an arrow key press and double tap it to emulate the OK button.<br />
 You can change to the &quot;Full&quot; remote control emulator at all times by going to the settings.<br />
 <a href="#top">Back to top.</a>
 </div>
-<div style="padding-top:15px;"><a name="refresh" /><h4 style="padding:0px; margin:1px;">Reloading Data</h4>
+<a name="refresh" href="javascript:toggleElem('refresh')"><h4 style="padding:0px; margin:1px;">Reloading Data</h4></a><div class="configsection" id="refresh">
 <img src="Refresh.png" /><br />
 Most views will automatically reload data as soon as they are reshown.
 Nevertheless there is a way to force re-requesting data from the connected receiver using the so-called &quot;Pull to Refresh&quot; functionality.<br />
@@ -66,18 +70,25 @@ Once you pulled far enough the arrow will rotate and the text will change to &qu
 As soon as you let go the data will be reloaded.<br />
 <a href="#top">Back to top.</a>
 </div>
-<div style="padding-top:15px;"><a name="screenshots" /><h4 style="padding:0px; margin:1px;">Screenshots</h4>
+<a name="screenshots" href="javascript:toggleElem('screenshots')"><h4 style="padding:0px; margin:1px;">Screenshots</h4></a><div class="configsection" id="screenshots">
 To save a screenshot taken with the application–to do so just open the emulated remote control and select the &quot;Screenshot&quot;-Button–you have have iOS 3.2 or newer installed on your device.<br />
 Holding your finger for one second on the picture should bring up a dialog asking you if you want to save the picture.<br />
 You find saved screenshots in the Camera Roll.<br />
 <a href="#top">Back to top.</a>
 </div>
-<div style="padding-top:15px;"><a name="mediaplayer" /><h4 style="padding:0px; margin:1px;">MediaPlayer</h4>
+<a name="mediaplayer" href="javascript:toggleElem('mediaplayer')"><h4 style="padding:0px; margin:1px;">MediaPlayer</h4></a><div class="configsection" id="mediaplayer">
 The MediaPlayer-Interface is currently only compatible with the default MediaPlayer on Enigma2-based STBs.<br />
 You can return to the controls from the file list using the &quot;+&quot;-Button you used to switch the view in the first place.<br />
 <a href="#top">Back to top.</a>
 </div>
-<div style="padding-top:15px;"><a name="more" /><h4 style="padding:0px; margin:1px;">Anything else?</h4>
+<a name="packagemanager" href="javascript:toggleElem('packagemanager')"><h4 style="padding:0px; margin:1px;">Package Manager</h4></a><div class="configsection" id="packagemanager">
+Using the Package Manager you can install, remove and upgrade software packages on your STB (if the backend supports it).<br />
+To update the list of available packages, you need to press the button on the top right. This will initiate the update on you STB. Upon completion the currently displayed list will automatically be reloaded.<br />
+In the toolbar on the bottom you can select the different list types (all available packages, installed packages, upgradable packages) and, if you selected items in the list, commit your changes. Instead of immediately sending the requested changes to your STB you are presented with the pending changes and have to select commit again, if you want to make the changes, or abort to get back to the previous list.<br />
+If you are currently viewing upgradable packages, there is no commit button but an &quot;Upgrade&quot;-Button instead. The pending changes are immediately sent to the remote host without requiring your confirmation.<br />
+<a href="#top">Back to top.</a>
+</div>
+<a name="more"><h4 style="padding:0px; margin:1px;">Anything else?</h4></a><div class="configsection" style="display:block" id="more">
 Did any questions remain unanswered for you or did you run into an error?<br />
 Don't panic, just <a href="mailto:support">send an email to the support</a> and let us try to help you with your problem.<br />
 <a href="#top">Back to top.</a>
