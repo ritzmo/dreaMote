@@ -42,7 +42,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, retain) NSObject<AboutDreamoteDelegate> *aboutDelegate;
+@property (nonatomic, assign) NSObject<AboutDreamoteDelegate> *aboutDelegate;
 
 @end
 

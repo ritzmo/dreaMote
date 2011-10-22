@@ -64,10 +64,11 @@
 /* dealloc */
 - (void)dealloc
 {
-	[aboutDelegate release];
-	[_aboutText release];
-	[_doneButton release];
-	[_mailButton release];
+	aboutDelegate = nil;
+	SafeRetainAssign(_aboutText, nil);
+	SafeRetainAssign(_doneButton, nil);
+	SafeRetainAssign(_mailButton, nil);
+	SafeRetainAssign(_twitterButton, nil);
 
 	[super dealloc];
 }
@@ -174,12 +175,10 @@
 
 - (void)viewDidUnload
 {
-	[_aboutText release];
-	_aboutText = nil;
-	[_doneButton release];
-	_doneButton = nil;
-	[_mailButton release];
-	_mailButton = nil;
+	SafeRetainAssign(_aboutText, nil);
+	SafeRetainAssign(_doneButton, nil);
+	SafeRetainAssign(_mailButton, nil);
+	SafeRetainAssign(_twitterButton, nil);
 
 	[super viewDidUnload];
 }
@@ -187,7 +186,15 @@
 /* "done" button pressed */
 - (void)buttonPressed: (id)sender
 {
-	[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
+	if([aboutDelegate conformsToProtocol:@protocol(AboutDreamoteDelegate)])
+	{
+		[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
+		aboutDelegate = nil;
+	}
+#if IS_DEBUG()
+	else
+		NSLog(@"aboutDelegate (%p, %@) does not conform to our delegate protocol!", aboutDelegate, [aboutDelegate description]);
+#endif
 	[self dismissModalViewControllerAnimated: YES];
 }
 
@@ -373,7 +380,15 @@
 	SafeRetainAssign(controller.mailComposeDelegate, nil);
 #endif
 
-	[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
+	if([aboutDelegate conformsToProtocol:@protocol(AboutDreamoteDelegate)])
+	{
+		[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
+		aboutDelegate = nil;
+	}
+#if IS_DEBUG()
+	else
+		NSLog(@"aboutDelegate (%p, %@) does not conform to our delegate protocol!", aboutDelegate, [aboutDelegate description]);
+#endif
 }
 
 @end
