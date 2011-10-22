@@ -14,6 +14,22 @@
 
 #import "UITableViewCell+EasyInit.h"
 
+#if INCLUDE_FEATURE(Extra_Animation)
+	#define reloadTable() { \
+		if(IS_IPHONE()) \
+		[_tableView reloadData]; \
+		else \
+		{ \
+			NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0]; \
+			[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight]; \
+		} \
+	}
+#else
+	#define reloadTable() { \
+		[_tableView reloadData]; \
+	}
+#endif
+
 @interface PackageManagerListController()
 - (void)dataFetched;
 - (void)setRegularType:(id)sender;
@@ -94,31 +110,14 @@
 	// Clean event list
 	SafeRetainAssign(_packages, nil);
 	[_selectedPackages removeAllObjects]; // no use in keeping them around with new packages
-#if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-#else
-	[_tableView reloadData];
-#endif
+	reloadTable();
 }
 
 - (void)dataFetched
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-#if INCLUDE_FEATURE(Extra_Animation)
-	if(IS_IPHONE())
-	{
-		[_tableView reloadData];
-	}
-	else
-	{
-		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
-		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	}
-#else
-	[_tableView reloadData];
-#endif
+	reloadTable();
 	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 }
 
@@ -196,6 +195,8 @@
 	[selectedPackages release];
 
 	// refresh data
+	_reviewingChanges = !_reviewingChanges;
+	[self configureToolbar];
 	[self performSelectorOnMainThread:@selector(emptyData) withObject:nil waitUntilDone:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
@@ -204,12 +205,7 @@
 {
 	_reviewingChanges = NO;
 	[self configureToolbar];
-#if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
-#else
-	[_tableView reloadData];
-#endif
+	reloadTable();
 }
 
 - (void)commitChanges:(id)sender
@@ -231,14 +227,12 @@
 		// NOTE: we might want to make sure the user actually wants to commit the changes
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(doCommitChanges)];
 	}
-	_reviewingChanges = !_reviewingChanges;
-	[self configureToolbar];
-#if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
-#else
-	[_tableView reloadData];
-#endif
+	else
+	{
+		_reviewingChanges = !_reviewingChanges;
+		[self configureToolbar];
+		reloadTable();
+	}
 }
 
 #pragma mark - View lifecycle
