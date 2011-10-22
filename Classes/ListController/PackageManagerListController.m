@@ -107,8 +107,15 @@
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 #if INCLUDE_FEATURE(Extra_Animation)
-	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
-	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	if(IS_IPHONE())
+	{
+		[_tableView reloadData];
+	}
+	else
+	{
+		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
+		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+	}
 #else
 	[_tableView reloadData];
 #endif
