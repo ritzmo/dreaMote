@@ -72,7 +72,11 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 - (void)prepareForReuse
 {
 	if([view superview] == self.contentView)
+	{
+		[view endEditing:YES];
+		[view resignFirstResponder];
 		[view removeFromSuperview];
+	}
 	self.view = nil;
 	self.textLabel.text = nil;
 	fixedWidth = -1;
@@ -83,6 +87,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 - (void)setView:(UITextField *)inView
 {
 	if(view == inView) return;
+	if(view.delegate == self) view.delegate = nil;
 	SafeRetainAssign(view, inView);
 	view.delegate = self;
 
@@ -138,6 +143,8 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 - (void)dealloc
 {
+    if(view.delegate == self) view.delegate = nil;
+    [view resignFirstResponder];
     [view release];
     [super dealloc];
 }
