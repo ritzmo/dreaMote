@@ -137,16 +137,11 @@ enum generalSectionItems
 
 - (void)viewDidUnload
 {
-	[_cancelButtonItem release];
-	_cancelButtonItem = nil;
-	[_time release];
-	_time = nil;
-	[_timeCell release]; // references _time
-	_timeCell = nil;
-	[_enabled release];
-	_enabled = nil;
-	[_shutdown release];
-	_shutdown = nil;
+	SafeRetainAssign(_cancelButtonItem, nil);
+	SafeRetainAssign(_time, nil);
+	SafeRetainAssign(_timeCell, nil); // references _time
+	SafeRetainAssign(_enabled, nil);
+	SafeRetainAssign(_shutdown, nil);
 
 	[super viewDidUnload];
 }
@@ -272,7 +267,7 @@ enum generalSectionItems
 			break;
 		case timeRow:
 			// TODO: wtf is going wrong here? can't reuse the same cell (disappears), so for now just work around this
-			if(_timeCell == nil)
+			if(_timeCell != nil)
 				[_timeCell release];
 			{
 				_timeCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
