@@ -152,10 +152,8 @@
 
 - (void)viewDidUnload
 {
-	[_datePickerView release];
-	_datePickerView = nil;
-	[_label release];
-	_label = nil;
+	SafeRetainAssign(_datePickerView, nil);
+	SafeRetainAssign(_label, nil);
 
 	[super viewDidUnload];
 }

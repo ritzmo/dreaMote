@@ -168,21 +168,28 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	[_connection release];
-	[_remoteNameTextField release];
-	[_remoteAddressTextField release];
-	[_remotePortTextField release];
-	[_usernameTextField release];
-	[_passwordTextField release];
-	[_makeDefaultButton release];
-	[_connectButton release];
-	[_singleBouquetSwitch release];
-	[_advancedRemoteSwitch release];
-	[_nowNextSwitch release];
-	[_sslSwitch release];
+	SafeRetainAssign(_connection, nil);
+	UnsetCellAndDelegate(_remoteNameCell);
+	UnsetCellAndDelegate(_remoteAddressCell);
+	UnsetCellAndDelegate(_remotePortCell);
+	UnsetCellAndDelegate(_usernameCell);
+	UnsetCellAndDelegate(_passwordCell);
+
+	SafeRetainAssign(_remoteNameTextField, nil);
+	SafeRetainAssign(_remoteAddressTextField, nil);
+	SafeRetainAssign(_remotePortTextField, nil);
+	SafeRetainAssign(_usernameTextField, nil);
+	SafeRetainAssign(_passwordTextField, nil);
+	SafeRetainAssign(_singleBouquetSwitch, nil);
+	SafeRetainAssign(_advancedRemoteSwitch, nil);
+	SafeRetainAssign(_nowNextSwitch, nil);
+	SafeRetainAssign(_sslSwitch, nil);
+
+	SafeDestroyButton(_makeDefaultButton);
+	SafeDestroyButton(_connectButton);
 
 	progressHUD.delegate = nil;
-	[progressHUD release];
+	SafeRetainAssign(progressHUD, nil);
 
 	[super dealloc];
 }
@@ -354,27 +361,24 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 - (void)viewDidUnload
 {
-#define unsetCellAndDelegate(cell) { \
-	(cell).delegate = nil; \
-	(cell) = nil; \
-}
-	unsetCellAndDelegate(_remoteNameCell);
-	unsetCellAndDelegate(_remoteAddressCell);
-	unsetCellAndDelegate(_remotePortCell);
-	unsetCellAndDelegate(_usernameCell);
-	unsetCellAndDelegate(_passwordCell);
+	UnsetCellAndDelegate(_remoteNameCell);
+	UnsetCellAndDelegate(_remoteAddressCell);
+	UnsetCellAndDelegate(_remotePortCell);
+	UnsetCellAndDelegate(_usernameCell);
+	UnsetCellAndDelegate(_passwordCell);
 
 	SafeRetainAssign(_remoteNameTextField, nil);
 	SafeRetainAssign(_remoteAddressTextField, nil);
 	SafeRetainAssign(_remotePortTextField, nil);
 	SafeRetainAssign(_usernameTextField, nil);
 	SafeRetainAssign(_passwordTextField, nil);
-	SafeRetainAssign(_makeDefaultButton, nil);
-	SafeRetainAssign(_connectButton, nil);
 	SafeRetainAssign(_singleBouquetSwitch, nil);
 	SafeRetainAssign(_advancedRemoteSwitch, nil);
 	SafeRetainAssign(_nowNextSwitch, nil);
 	SafeRetainAssign(_sslSwitch, nil);
+
+	SafeDestroyButton(_makeDefaultButton);
+	SafeDestroyButton(_connectButton);
 
 	[super viewDidUnload];
 }

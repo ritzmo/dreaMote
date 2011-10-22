@@ -36,9 +36,9 @@
 
 - (void)dealloc
 {
-	[_lameButton release];
-	[_menuButton release];
-	[_swipeArea release];
+	SafeDestroyButton(_lameButton);
+	SafeDestroyButton(_menuButton);
+	SafeRetainAssign(_swipeArea, nil);
 
 	[super dealloc];
 }
@@ -88,8 +88,8 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_lameButton, nil);
-	SafeRetainAssign(_menuButton, nil);
+	SafeDestroyButton(_lameButton);
+	SafeDestroyButton(_menuButton);
 	SafeRetainAssign(_swipeArea, nil);
 
 	[super viewDidUnload];

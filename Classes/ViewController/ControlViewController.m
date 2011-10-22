@@ -81,8 +81,8 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	[_switchControl release];
-	[_slider release];
+	SafeDestroyButton(_slider);
+	SafeDestroyButton(_switchControl);
 
 	[super dealloc];
 }
@@ -131,8 +131,8 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_slider, nil);
-	SafeRetainAssign(_switchControl, nil);
+	SafeDestroyButton(_slider);
+	SafeDestroyButton(_switchControl);
 
 	[super viewDidUnload];
 }
