@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+/*!
+ @brief Does the current device run on iOS 4.0 or better?
+
+ @return YES if systemVersion >= 4.0, else NO.
+ */
+#define runsIos4OrBetter	newerThanIos:4.0f
+
+/*!
+ @brief Does the current device run on iOS 4.2 or better?
+
+ @return YES if systemVersion >= 4.2, else NO.
+ */
+#define runsIos42OrBetter	newerThanIos:4.2f
 
 @interface UIDevice(SystemVersion)
 
@@ -20,17 +33,11 @@
 + (BOOL)newerThanIos:(float)version;
 
 /*!
- @brief Does the current device run on iOS 4.0 or better?
+ @brief Check current iOS version against given one.
 
- @return YES if systemVersion >= 4.0, else NO.
+ @param version float value of highest version to check for
+ @return YES if iOS version < input value, else NO.
  */
-+ (BOOL)runsIos4OrBetter;
-
-/*!
- @brief Does the current device run on iOS 4.2 or better?
-
- @return YES if systemVersion >= 4.2, else NO.
- */
-+ (BOOL)runsIos42OrBetter;
++ (BOOL)olderThanIos:(float)version;
 
 @end

@@ -17,14 +17,10 @@
 	return (currentVersion >= version);
 }
 
-+ (BOOL)runsIos4OrBetter
++ (BOOL)olderThanIos:(float)version
 {
-	return [self newerThanIos:4.0f];
-}
-
-+ (BOOL)runsIos42OrBetter
-{
-	return [self newerThanIos:4.2f];
+	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+	return (currentVersion < version);
 }
 
 @end
