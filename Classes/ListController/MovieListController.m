@@ -116,8 +116,10 @@
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
-	// NOTE: offset is a little off on iPad iOS 4.2, but this is the best looking version on everything else
-	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	CGFloat topOffset = -_tableView.contentInset.top;
+	if(IS_IPHONE() && [UIDevice olderThanIos:5.0f] && [UIDevice newerThanIos:4.0f])
+		topOffset += _searchBar.frame.size.height;
+	[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 #endif
 
 	// Eventually remove popover
@@ -252,7 +254,7 @@
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
-		[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top)];
+		[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
 #endif
 
 		// Run this in our "temporary" queue
@@ -401,13 +403,26 @@
 	_searchBar.keyboardType = UIKeyboardTypeDefault;
 	_tableView.tableHeaderView = _searchBar;
 
-	// hide the searchbar
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+	if(_reloading)
+	{
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+		CGFloat topOffset = -_tableView.contentInset.top;
+		// NOTE: offset is a little off on iPad iOS 4.2, but this is the best looking version on everything else
+		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
+	}
+	else
+	{
+		// hide the searchbar
+		[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+	}
 
 	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
 	_searchDisplay.delegate = self;
 	_searchDisplay.searchResultsDataSource = self;
 	_searchDisplay.searchResultsDelegate = self;
+#else
+	if(_reloading)
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #endif
 
 	// listen to connection changes
