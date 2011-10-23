@@ -30,6 +30,12 @@
 	}
 #endif
 
+#define setLoading() { \
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView]; \
+	CGFloat topOffset = -_tableView.contentInset.top; \
+	[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES]; \
+}
+
 @interface PackageManagerListController()
 - (void)dataFetched;
 - (void)setRegularType:(id)sender;
@@ -127,9 +133,8 @@
 	_listType = kPackageListRegular;
 
 	[self configureToolbar];
-	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
-	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	setLoading();
 	[self setEditing:YES animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
@@ -140,9 +145,8 @@
 	_listType = kPackageListInstalled;
 
 	[self configureToolbar];
-	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
-	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	setLoading();
 	[self setEditing:YES animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
@@ -153,9 +157,8 @@
 	_listType = kPackageListUpgradable;
 
 	[self configureToolbar];
-	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
-	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+	setLoading();
 	[self setEditing:NO animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
@@ -341,10 +344,9 @@
 	// Refresh cache
 	if(_refreshPackages && !_reloading)
 	{
-		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 		[self emptyData];
-		// NOTE: offset is a little off on iPad iOS 4.2, but this is the best looking version on everything else
-		[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+		[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height-_tableView.contentInset.top) animated:NO];
 
 		// Run this in our "temporary" queue
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
