@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
+		DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
+		DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; };
 		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
 		DA51C45C144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
@@ -1053,6 +1056,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA21B20914561FB7002903A4 /* PackageManager.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PackageManager.png; sourceTree = "<group>"; };
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
 		DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiteUnzip.m; sourceTree = "<group>"; };
 		DA51C459144C343F00EA63C5 /* SearchHistoryLengthEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchHistoryLengthEditorController.h; sourceTree = "<group>"; };
@@ -2441,6 +2445,7 @@
 				DAC8BF4513B200F100CA00D9 /* network-wired.png */,
 				DAC8BF4613B200F100CA00D9 /* NotSelected.png */,
 				DAC8BF4713B200F100CA00D9 /* others.png */,
+				DA21B20914561FB7002903A4 /* PackageManager.png */,
 				DAC8BF4813B200F100CA00D9 /* preferences-desktop-screensaver.png */,
 				DAC8BF4913B200F100CA00D9 /* Refresh.png */,
 				DAC8BF4A13B200F100CA00D9 /* remote.png */,
@@ -3314,6 +3319,7 @@
 				DA51CEF8144ACBEE00C714ED /* Localizable.strings in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA51CF46144ACBEE00C714ED /* FBDialog.bundle in Resources */,
+				DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3417,6 +3423,7 @@
 				DA51CEF9144ACBEE00C714ED /* Localizable.strings in Resources */,
 				DA51CF41144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA51CF47144ACBEE00C714ED /* FBDialog.bundle in Resources */,
+				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3517,6 +3524,7 @@
 				DA51CEFA144ACBEE00C714ED /* Localizable.strings in Resources */,
 				DA51CF42144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA51CF48144ACBEE00C714ED /* FBDialog.bundle in Resources */,
+				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
