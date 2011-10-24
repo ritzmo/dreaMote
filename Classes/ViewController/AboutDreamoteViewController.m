@@ -219,6 +219,8 @@
 		mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	UIViewController *parentViewController = self.parentViewController;
+	if(!parentViewController && [self respondsToSelector:@selector(presentingViewController)])
+		parentViewController = self.presentingViewController;
 	[self dismissModalViewControllerAnimated:NO];
 	[parentViewController presentModalViewController:mvc animated:YES];
 	[mvc release];
@@ -373,21 +375,22 @@
 		[alert show];
 		[alert release];
 	}
-	[self dismissModalViewControllerAnimated:YES];
+	NSObject<AboutDreamoteDelegate> *delegate = aboutDelegate; // make sure the pointer stays valid
+	aboutDelegate = nil;
+	[controller dismissModalViewControllerAnimated:YES];
 #ifndef __clang_analyzer__
 	// NOTE: we actually retain the delegate manually, though it is supposed to be a weak reference
 	// but as the static analyzer catches this evil behavior of ours, just don't show it to him
 	SafeRetainAssign(controller.mailComposeDelegate, nil);
 #endif
 
-	if([aboutDelegate conformsToProtocol:@protocol(AboutDreamoteDelegate)])
+	if([delegate conformsToProtocol:@protocol(AboutDreamoteDelegate)])
 	{
-		[aboutDelegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
-		aboutDelegate = nil;
+		[delegate performSelectorOnMainThread:@selector(dismissedAboutDialog) withObject:nil waitUntilDone:NO];
 	}
 #if IS_DEBUG()
 	else
-		NSLog(@"aboutDelegate (%p, %@) does not conform to our delegate protocol!", aboutDelegate, [aboutDelegate description]);
+		NSLog(@"aboutDelegate (%p, %@) does not conform to our delegate protocol!", delegate, [delegate description]);
 #endif
 }
 
