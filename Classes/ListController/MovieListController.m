@@ -81,13 +81,14 @@
 	[_movieXMLDoc release];
 	[_sortButton release];
 #if IS_FULL()
-	[_filteredMovies release];
+	SafeRetainAssign(_filteredMovies, nil);
 	_tableView.tableHeaderView = nil; // references _searchBar
+	SafeRetainAssign(_searchBar, nil);
 	[_searchBar release];
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	[_searchDisplay release];
+	SafeRetainAssign(_searchDisplay, nil);
 #endif
 
 	[super dealloc];
