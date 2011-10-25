@@ -214,7 +214,9 @@
 - (void)emptyData
 {
 	const BOOL usedSections = _useSections;
+#if INCLUDE_FEATURE(Extra_Animation)
 	NSInteger sectionCount = _sectionOffsets.count;
+#endif
 	[_sectionOffsets removeAllObjects];
 	_firstDay = 0;
 
