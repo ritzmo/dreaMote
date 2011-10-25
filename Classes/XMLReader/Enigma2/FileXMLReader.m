@@ -102,7 +102,7 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	{
 		if([currentString isEqualToString:@"None"])
 		{
-			currentFile.title = NSLocalizedString(@"Filesystems", @"Label for Filesystems Item in MediaPlayer Filelist");
+			currentFile.title = NSLocalizedString(@"<Filesystems>", @"Label for Filesystems Item in MediaPlayer Filelist");
 			currentFile.sref = @"Filesystems";
 		}
 		else if([currentString isEqualToString:@"empty"])

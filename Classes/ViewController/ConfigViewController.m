@@ -298,12 +298,12 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	if(remoteName == nil) // Work around unset property
 		remoteName = @"";
 	_remoteNameTextField = [[self create_TextField] retain];
-	_remoteNameTextField.placeholder = NSLocalizedString(@"<name>", @"");
+	_remoteNameTextField.placeholder = NSLocalizedString(@"<address: e.g. 192.168.1.10>", @"");
 	_remoteNameTextField.text = [[remoteName copy] autorelease];
 
 	// Remote Address
 	_remoteAddressTextField = [[self create_TextField] retain];
-	_remoteAddressTextField.placeholder = NSLocalizedString(@"<remote address>", @"");
+	_remoteAddressTextField.placeholder = NSLocalizedString(@"<address: e.g. 192.168.1.10>", @"");
 	_remoteAddressTextField.text = [[[_connection objectForKey: kRemoteHost] copy] autorelease];
 	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
@@ -322,12 +322,12 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	// Username
 	_usernameTextField = [[self create_TextField] retain];
-	_usernameTextField.placeholder = NSLocalizedString(@"<remote username>", @"");
+	_usernameTextField.placeholder = NSLocalizedString(@"<username: usually root>", @"");
 	_usernameTextField.text = [[[_connection objectForKey: kUsername] copy] autorelease];
 
 	// Password
 	_passwordTextField = [[self create_TextField] retain];
-	_passwordTextField.placeholder = NSLocalizedString(@"<remote password>", @"");
+	_passwordTextField.placeholder = NSLocalizedString(@"<password: usually dreambox>", @"");
 	_passwordTextField.text = [[[_connection objectForKey: kPassword] copy] autorelease];
 	_passwordTextField.secureTextEntry = YES;
 

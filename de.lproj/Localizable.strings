@@ -1,4 +1,4 @@
-﻿/* sat finder refresh interval */
+/* sat finder refresh interval */
 "%.0f sec" = "%.0f Sek.";
 
 /* No comment provided by engineer. */
@@ -44,19 +44,19 @@
 "<min.>" = "<Min.>";
 
 /* No comment provided by engineer. */
-"<name>" = "<Name: z.B. Wohnzimmer>";
+"<address: e.g. 192.168.1.10>" = "<Name: z.B. Wohnzimmer>";
 
 /* Placeholder text for remote port field. */
 "<port: usually %d>" = "<Port: z.B. %d>";
 
 /* No comment provided by engineer. */
-"<remote address>" = "<Adresse: z.B. 192.168.1.10>";
+"<address: e.g. 192.168.1.10>" = "<Adresse: z.B. 192.168.1.10>";
 
 /* No comment provided by engineer. */
-"<remote password>" = "<Passwort: z.B. dreambox>";
+"<password: usually dreambox>" = "<Passwort: z.B. dreambox>";
 
 /* No comment provided by engineer. */
-"<remote username>" = "<Benutzername: z.B. root>";
+"<username: usually root>" = "<Benutzername: z.B. root>";
 
 /* No hostname entered in ConfigView. */
 "A connection needs at least a hostname." = "Eine Verbindung muss wenigstens eine Adresse besitzen.";
@@ -71,20 +71,17 @@
    Title of AboutDreamoteViewController */
 "About" = "Über dreaMote";
 
-/* No comment provided by engineer. */
-"About Receiver" = "Receiverinfo";
-
-/* No comment provided by engineer. */
-"About Receiver Explain" = "Informationen zu Software & Tunern";
-
-/* No comment provided by engineer. */
-"About Receiver Title" = "Über den Receiver";
+/* Title of About Receiver in Other List */
+"About Receiver" = "Über den Receiver";
 
 /* Title of Alert when import triggered */
 "About to import data" = "Datentransfer erbeten";
 
 /* Used in MediaPlayer, add only the current folder */
 "Add" = "Ja, OHNE Unterordner";
+
+/* Explaination of AutoTimer in Other List */
+"Add and edit AutoTimers" = "AutoTimer erstellen und bearbeiten";
 
 /* Add new AutoTimer based on this event */
 "Add AutoTimer" = "Neuer AutoTimer";
@@ -140,11 +137,8 @@
 /* Default title of AutoTimerViewController */
 "AutoTimer" = "AutoTimer";
 
-/* No comment provided by engineer. */
-"AutoTimer List Explain" = "AutoTimer erstellen und bearbeiten";
-
-/* No comment provided by engineer. */
-"AutoTimer List Title" = "AutoTimer-Plugin";
+/* Title of AutoTimer in Other List */
+"AutoTimer-Plugin" = "AutoTimer-Plugin";
 
 /* Title of AutoTimerListController */
 "AutoTimers" = "AutoTimer";
@@ -179,6 +173,9 @@
 /* case-sensitive matching (of autotimers) */
 "Case-Sensitive" = "Groß-/Kleinschr. beachten";
 
+/* Explaination of Settings in Other List */
+"Change configuration and edit known hosts" = "Konfiguration ändern";
+
 /* Timer cleanup button */
 "Cleanup" = "Aufräumen";
 
@@ -187,12 +184,6 @@
 
 /* Title of action sheet when leaving MediaPlayer view. */
 "Close MediaPlayer?" = "MediaPlayer schließen?";
-
-/* No comment provided by engineer. */
-"Config List Explain" = "Konfiguration ändern";
-
-/* No comment provided by engineer. */
-"Config List Title" = "Einstellungen";
 
 /* Default Title of ConfigListController
    Default title of ConfigViewController */
@@ -220,11 +211,14 @@
 /* Default title of ConnectorViewController */
 "Connector" = "Connector";
 
-/* No comment provided by engineer. */
-"Control View Explain" = "Lautstärkesteuerung, Herunterfahren, ...";
+/* Title of Control View in Other List */
+"Control" = "Steuerung";
 
-/* No comment provided by engineer. */
-"Control View Title" = "Steuerung";
+/* Explaination of Control View in Other List */
+"Control Powerstate and Volume" = "Lautstärkesteuerung, Herunterfahren, ...";
+
+/* Explaination of Media Player in Other List */
+"Control the remote media player" = "Medienwiedergabe auf der Dreambox";
 
 /* Title of ControlViewController */
 "Controls" = "Steuerung";
@@ -283,6 +277,9 @@
 /* No comment provided by engineer. */
 "Description" = "Beschreibung";
 
+/* Explaination of Signal Finder in Other List */
+"Displays current SNR/AGC" = "Aktuelle SNR/AGC anzeigen";
+
 /* Shown when touching screenshots for 1s, asks to save to libary */
 "Do you want to save this picture?" = "Diesen Screenshot speichern?";
 
@@ -291,6 +288,9 @@
 
 /* SleepTimer Duration Cell Label */
 "Duration" = "Dauer";
+
+/* Explaination of Sleep Timer in Other List */
+"Edit and (de)activate Sleep Timer" = "Ausschalt-Timer (de)aktivieren";
 
 /* Toggle in Signal Finder which is responsible for starting/stopping the tone generator */
 "Enable audio" = "Suchton";
@@ -328,11 +328,8 @@
 /* Default title of EPGRefreshAdapterViewController */
 "EPGRefresh Adapter" = "Aktualisiere EPG mit";
 
-/* No comment provided by engineer. */
-"EPGRefresh Explain" = "Einstellungen des EPGRefresh-Plugin";
-
-/* No comment provided by engineer. */
-"EPGRefresh Title" = "EPGRefresh-Plugin";
+/* Title of EPGRefresh in Other List */
+"EPGRefresh-Plugin" = "EPGRefresh-Plugin";
 
 /* Message type */
 "Error" = "Fehler";
@@ -361,12 +358,6 @@
 /* No comment provided by engineer. */
 "Event" = "Sendung";
 
-/* No comment provided by engineer. */
-"Event Search Explain" = "Suche im EPG nach Sendungstiteln";
-
-/* No comment provided by engineer. */
-"Event Search Title" = "EPG Durchsuchen";
-
 /* Default Title of EventListController */
 "Events" = "EPG";
 
@@ -392,7 +383,7 @@
 "Failed to start instant record" = "Sofortaufnahme konnte nicht gestartet werden";
 
 /* Label for Filesystems Item in MediaPlayer Filelist */
-"Filesystems" = "<Medien>";
+"<Filesystems>" = "<Medien>";
 
 /* Default title of AutoTimerFilterViewController */
 "Filter" = "Filter";
@@ -457,6 +448,12 @@
 /* Message type */
 "Info" = "Info";
 
+/* Explaination of About Receiver in Other List */
+"Information on software and tuners" = "Informationen zu Software & Tunern";
+
+/* Explaination of Package Manager in Other List */
+"Install/Update/Remove packages" = "Pakete installieren/löschen oder Upgrades einspielen";
+
 /* instant sat finder refresh */
 "instant" = "durchgehend";
 
@@ -484,12 +481,6 @@
 /* No comment provided by engineer. */
 "Location" = "Verzeichnis";
 
-/* No comment provided by engineer. */
-"Location List Explain" = "Aufnahmeordner anzeigen";
-
-/* No comment provided by engineer. */
-"Location List Title" = "Filmverzeichnisse";
-
 /* Title of LocationListController */
 "Locations" = "Verzeichnisse";
 
@@ -505,11 +496,8 @@
 /* Title of section with AutoTimer max Duration-Attribute. Maximum Duration a event can have to match this AutoTimer. */
 "Max. Duration" = "Max. Dauer";
 
-/* No comment provided by engineer. */
-"Media Player Explain" = "Medienwiedergabe auf der Dreambox";
-
-/* No comment provided by engineer. */
-"Media Player Title" = "Media Player";
+/* Title of Media Player in Other List */
+"Media Player" = "Media Player";
 
 /* Title of MediaPlayerController
    Title of MediaPlayerSplitViewController */
@@ -525,11 +513,8 @@
 /* Default title of MessageTypeViewController */
 "Message Type" = "Nachrichtentyp";
 
-/* No comment provided by engineer. */
-"Message View Explain" = "Kurznachrichten verschicken";
-
-/* No comment provided by engineer. */
-"Message View Title" = "Nachrichten";
+/* Title of Message View in Other List */
+"Messages" = "Nachrichten";
 
 /* Weekday */
 "Mon" = "Mon";
@@ -546,13 +531,8 @@
 /* Default title of MovieViewController */
 "Movie" = "Aufnahme";
 
-/* No comment provided by engineer. */
-"Movie List Explain" = "Aufnahmen anzeigen";
-
-/* No comment provided by engineer. */
-"Movie List Title" = "Aufgenommene Filme";
-
-/* Title of MovieListController */
+/* Title of Movie List in Other List
+   Title of MovieListController */
 "Movies" = "Aufnahmen";
 
 /* Multi EPG Button title */
@@ -646,14 +626,9 @@
 /* Repeated */
 "Other" = "Wochentage";
 
-/* Title of PackageManagerListController */
+/* Title of Package Manager in Other List
+   Title of PackageManagerListController */
 "Package Manager" = "Paketverwaltung";
-
-/* No comment provided by engineer. */
-"Package Manager Explain" = "Pakete installieren/löschen oder Upgrades einspielen";
-
-/* No comment provided by engineer. */
-"Package Manager Title" = "Paketverwaltung";
 
 /* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
 "Page not found.\nPlugin not installed?" = "Seite nicht gefunden.\nPlugin nicht installiert?";
@@ -742,6 +717,12 @@
 /* No comment provided by engineer. */
 "Record" = "Aufnahme";
 
+/* Explaination of Movie List in Other List */
+"Recorded Movies" = "Aufnahmen anzeigen";
+
+/* Title of Location List in Other List */
+"Recording Locations" = "Filmverzeichnisse";
+
 /* Title of MovieSplitViewController */
 "Recordings" = "Aufnahmen";
 
@@ -805,6 +786,12 @@
 /* Start AutoConfiguration from ConfigListController */
 "Search Connections" = "Verbindungen suchen";
 
+/* Title of Event Search in Other List */
+"Search EPG" = "EPG Durchsuchen";
+
+/* Explaination of Event Search in Other List */
+"Search EPG for event titles" = "Suche im EPG nach Sendungstiteln";
+
 /* Default Title of EventSearchListController */
 "Search Events" = "Suchen";
 
@@ -827,6 +814,9 @@
 /* No comment provided by engineer. */
 "Send" = "Senden";
 
+/* Explaination of Message View in Other List */
+"Send short Messages" = "Kurznachrichten verschicken";
+
 /* No comment provided by engineer. */
 "Sending command failed" = "Befehl konnte nicht gesendet werden";
 
@@ -842,11 +832,20 @@
 /* Title of ServiceListController */
 "Services" = "Favoriten";
 
+/* Title of Settings in Other List */
+"Settings" = "Einstellungen";
+
+/* Explaination of EPGRefresh in Other List */
+"Settings of EPGRefresh-Plugin" = "Einstellungen des EPGRefresh-Plugin";
+
 /* No comment provided by engineer. */
 "Share" = "Veröffentlichen";
 
 /* show welcome screen (help) */
 "Show Help" = "Hilfe anzeigen";
+
+/* Explaination of Location List in Other List */
+"Show recording locations" = "Aufnahmeordner anzeigen";
 
 /* Shuffle button in MediaPlayer */
 "Shuffle" = "Mischen";
@@ -863,11 +862,8 @@
 /* Title of SignalViewController */
 "Signal" = "Signal";
 
-/* No comment provided by engineer. */
-"Signal Explain" = "Aktuelle SNR/AGC anzeigen";
-
-/* No comment provided by engineer. */
-"Signal Title" = "Signalsuche";
+/* Title of Signal Finder in Other List */
+"Signal Finder" = "Signalsuche";
 
 /* No comment provided by engineer. */
 "Similar Events" = "Ähnliche Sendungen";
@@ -881,14 +877,9 @@
 /* No comment provided by engineer. */
 "Size" = "Größe";
 
-/* Default title of SleepTimerViewController */
+/* Default title of SleepTimerViewController
+   Title of Sleep Timer in Other List */
 "Sleep Timer" = "Ausschalt-Timer";
-
-/* No comment provided by engineer. */
-"Sleep Timer Explain" = "Ausschalt-Timer (de)aktivieren";
-
-/* No comment provided by engineer. */
-"Sleep Timer Title" = "Ausschalt-Timer";
 
 /* No comment provided by engineer. */
 "SNR" = "SNR";
