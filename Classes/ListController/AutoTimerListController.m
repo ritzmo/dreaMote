@@ -253,6 +253,7 @@
 	// Refresh cache
 	if(_refreshAutotimers && !_reloading)
 	{
+		_reloading = YES;
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 		[self emptyData];
 

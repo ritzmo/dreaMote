@@ -360,6 +360,7 @@
 	 */
 	if(_refreshServices && _bouquet == nil && !_reloading)
 	{
+		_reloading = YES;
 		_supportsNowNext = [RemoteConnectorObject showNowNext];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()

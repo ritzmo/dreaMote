@@ -198,6 +198,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	if(!_willReappear && !_reloading)
 	{
+		_reloading = YES;
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 

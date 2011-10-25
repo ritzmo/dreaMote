@@ -120,6 +120,7 @@
 	// Refresh cache if we have a cleared one
 	if(_refreshLocations && !_reloading)
 	{
+		_reloading = YES;
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 

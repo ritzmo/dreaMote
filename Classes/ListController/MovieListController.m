@@ -252,6 +252,7 @@
 
 	if(_refreshMovies && !_reloading)
 	{
+		_reloading = YES;
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()

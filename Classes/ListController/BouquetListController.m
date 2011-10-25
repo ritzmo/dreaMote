@@ -205,6 +205,7 @@
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)
 	{
+		_reloading = YES;
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 		[self emptyData];
 

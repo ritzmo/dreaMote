@@ -344,6 +344,7 @@
 	// Refresh cache
 	if(_refreshPackages && !_reloading)
 	{
+		_reloading = YES;
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 		[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height-_tableView.contentInset.top) animated:NO];
