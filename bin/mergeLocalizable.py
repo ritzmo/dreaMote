@@ -4,6 +4,7 @@ DEBUG = False
 
 import re
 import os
+import codecs
 pattern = re.compile('^"(.*?)" = "(.*?)";.*?')
 tables = "Localizable", "AutoTimer", "EPGRefresh", "PackageManager"
 
@@ -55,6 +56,13 @@ def updateLanguage(lang):
 					print key, "=", value
 			orig.close()
 
+	# list of file encodings we check for
+	encodings = (
+		(codecs.BOM_UTF32, 'utf-32'),
+		(codecs.BOM_UTF16, 'utf-16'),
+		(codecs.BOM_UTF8, 'utf-8')
+	)
+
 	for table in tables:
 		# Read "new" strings and format
 		update = open('%s.strings' % (table,), 'r')
@@ -87,6 +95,10 @@ def updateLanguage(lang):
 					newtext[idx] = '/*"%s" = "%s";*/\n' % (key, value)
 
 			idx += 1
+
+		for h, e in encodings:
+			if newtext[0].startswith(h):
+				newtext[0] = newtext[0][len(h):]
 
 		# Save merged file
 		new = open('%s.lproj/%s.strings' % (lang, table), 'w')
