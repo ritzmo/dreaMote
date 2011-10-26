@@ -1,4 +1,4 @@
-﻿/* Delay if not in standby/in use */
+/* Delay if not in standby/in use */
 "<delay if not in standby/in use>" = "<Dauer>";
 
 /* Time to stay on service */

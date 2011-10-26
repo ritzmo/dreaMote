@@ -319,9 +319,6 @@
 		DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
-		DAB85AFD145864BD0089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
-		DAB85AFE145864BD0089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
-		DAB85AFF145864BD0089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1138,15 +1135,15 @@
 		DA51CDF3144ACBED00C714ED /* SHKCustomShareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCustomShareMenu.m; sourceTree = "<group>"; };
 		DA51CDF4144ACBED00C714ED /* SHKCustomShareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKCustomShareMenuCell.h; sourceTree = "<group>"; };
 		DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCustomShareMenuCell.m; sourceTree = "<group>"; };
-		DA51CDF8144ACBED00C714ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDF9144ACBED00C714ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDFA144ACBED00C714ED /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = eu.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDFB144ACBED00C714ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDFC144ACBED00C714ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDFD144ACBED00C714ED /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDFE144ACBED00C714ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CDFF144ACBED00C714ED /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DA51CE00144ACBED00C714ED /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DA51CDF8144ACBED00C714ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDF9144ACBED00C714ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDFA144ACBED00C714ED /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = eu.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDFB144ACBED00C714ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDFC144ACBED00C714ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDFD144ACBED00C714ED /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDFE144ACBED00C714ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CDFF144ACBED00C714ED /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/ShareKit.strings; sourceTree = "<group>"; };
+		DA51CE00144ACBED00C714ED /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/ShareKit.strings; sourceTree = "<group>"; };
 		DA51CE02144ACBED00C714ED /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		DA51CE03144ACBED00C714ED /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		DA51CE07144ACBED00C714ED /* SHKCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKCopy.h; sourceTree = "<group>"; };
@@ -1992,7 +1989,7 @@
 		DA51CDF6144ACBED00C714ED /* Localization */ = {
 			isa = PBXGroup;
 			children = (
-				DA51CDF7144ACBED00C714ED /* Localizable.strings */,
+				DA51CDF7144ACBED00C714ED /* ShareKit.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -3232,6 +3229,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAC8C4F313B2034100CA00D9 /* AutoTimer.strings in Resources */,
+				DAC8C4F613B2034100CA00D9 /* EPGRefresh.strings in Resources */,
+				DAC8C4F913B2034100CA00D9 /* Localizable.strings in Resources */,
+				DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */,
 				DAC8BF5213B200F100CA00D9 /* 4-sided-arrow.png in Resources */,
 				DAC8BF5513B200F100CA00D9 /* audio-volume-high.png in Resources */,
 				DAC8BF5813B200F100CA00D9 /* audio-x-generic.png in Resources */,
@@ -3312,25 +3313,20 @@
 				DAC8C4D413B2032300CA00D9 /* about.html in Resources */,
 				DAC8C4D713B2032300CA00D9 /* changes_de.html in Resources */,
 				DAC8C4DA13B2032300CA00D9 /* changes_en.html in Resources */,
-				DAC8C4DD13B2032300CA00D9 /* epgcache.sqlite in Resources */,
 				DAC8C4E013B2032300CA00D9 /* welcome_de.html in Resources */,
 				DAC8C4E313B2032300CA00D9 /* welcome_en.html in Resources */,
 				DAC8C4E613B2032300CA00D9 /* welcome_fr.html in Resources */,
-				DAC8C4F313B2034100CA00D9 /* AutoTimer.strings in Resources */,
-				DAC8C4F613B2034100CA00D9 /* EPGRefresh.strings in Resources */,
-				DAC8C4F913B2034100CA00D9 /* Localizable.strings in Resources */,
+				DAC8C4DD13B2032300CA00D9 /* epgcache.sqlite in Resources */,
 				DAC8C50E13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51113B2038300CA00D9 /* MainWindow.xib in Resources */,
 				DAC8C51413B2038300CA00D9 /* OtherList.xib in Resources */,
 				DA681B2113B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2413B4976700232190 /* Setup_Auto.png in Resources */,
+				DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */,
 				DA51CEE9144ACBEE00C714ED /* SHKSharers.plist in Resources */,
-				DA51CEF8144ACBEE00C714ED /* Localizable.strings in Resources */,
+				DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA51CF46144ACBEE00C714ED /* FBDialog.bundle in Resources */,
-				DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */,
-				DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */,
-				DAB85AFD145864BD0089A382 /* PackageManager.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3431,12 +3427,11 @@
 				DA681B2213B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2513B4976700232190 /* Setup_Auto.png in Resources */,
 				DA51CEEA144ACBEE00C714ED /* SHKSharers.plist in Resources */,
-				DA51CEF9144ACBEE00C714ED /* Localizable.strings in Resources */,
+				DA51CEF9144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF41144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA51CF47144ACBEE00C714ED /* FBDialog.bundle in Resources */,
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
-				DAB85AFE145864BD0089A382 /* PackageManager.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3534,12 +3529,11 @@
 				DA681B2313B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2613B4976700232190 /* Setup_Auto.png in Resources */,
 				DA51CEEB144ACBEE00C714ED /* SHKSharers.plist in Resources */,
-				DA51CEFA144ACBEE00C714ED /* Localizable.strings in Resources */,
+				DA51CEFA144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF42144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA51CF48144ACBEE00C714ED /* FBDialog.bundle in Resources */,
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */,
-				DAB85AFF145864BD0089A382 /* PackageManager.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4285,7 +4279,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DA51CDF7144ACBED00C714ED /* Localizable.strings */ = {
+		DA51CDF7144ACBED00C714ED /* ShareKit.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				DA51CDF8144ACBED00C714ED /* de */,
@@ -4298,7 +4292,7 @@
 				DA51CDFF144ACBED00C714ED /* vi */,
 				DA51CE00144ACBED00C714ED /* zh_CN */,
 			);
-			name = Localizable.strings;
+			name = ShareKit.strings;
 			sourceTree = "<group>";
 		};
 		DAB85AF6145864B40089A382 /* PackageManager.strings */ = {

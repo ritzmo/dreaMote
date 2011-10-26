@@ -1,4 +1,4 @@
-﻿/* sat finder refresh interval */
+/* sat finder refresh interval */
 "%.0f sec" = "%.0f Sek.";
 
 /* Free space on harddisk (available of total free), includes size. */
