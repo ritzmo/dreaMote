@@ -215,7 +215,7 @@
 {
 	if(_selectedPackages.count == 0)
 	{
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"No packages selected", @"PackageManager", @"")
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"No packages selected", @"PackageManager", @"Title of alert when the user taps 'commit' but did not select any packages.")
 															  message:nil//NSLocalizedStringFromTable(@"", @"PackageManager", @"")
 															 delegate:nil
 													cancelButtonTitle:@"OK"
@@ -404,10 +404,10 @@
 			switch(_listType)
 			{
 				case kPackageListInstalled:
-					cell.textLabel.text = NSLocalizedStringFromTable(@"Removed Packages:", @"PackageManager", @"");
+					cell.textLabel.text = NSLocalizedStringFromTable(@"Removed Packages:", @"PackageManager", @"Header of package list when removing packages.");
 					break;
 				case kPackageListRegular:
-					cell.textLabel.text = NSLocalizedStringFromTable(@"Installed Packages:", @"PackageManager", @"");
+					cell.textLabel.text = NSLocalizedStringFromTable(@"Installed Packages:", @"PackageManager", @"Header of package list when installing packages.");
 				default:
 					break;
 			}
