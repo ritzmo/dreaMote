@@ -21,7 +21,7 @@
 {
 	if((self = [super init]))
 	{
-		self.title = NSLocalizedString(@"About Receiver", @"");
+		self.title = NSLocalizedString(@"About Receiver", @"Title of AboutViewController");
 		_about = nil;
 		_aboutXMLDoc = nil;
 	}
@@ -115,11 +115,11 @@
 	switch (section)
 	{
 		case 0:
-			return NSLocalizedString(@"Version Information", @"");
+			return NSLocalizedString(@"Version Information", @"Title of section in About View containing versioning information");
 		case 1:
-			return (_about.hdd != nil) ? NSLocalizedString(@"Harddisk", @"") : nil;
+			return (_about.hdd != nil) ? NSLocalizedString(@"Harddisk", @"Title of section in About View containing harddisk information (if any)") : nil;
 		case 2:
-			return (_about.tuners != nil) ? NSLocalizedString(@"Tuners", @"") : nil;
+			return (_about.tuners != nil) ? NSLocalizedString(@"Tuners", @"Title of section in About View containing tuner information (if any)") : nil;
 		default:
 			return nil;
 	}
@@ -191,7 +191,7 @@
 		sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
 		TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-		TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"No Data…", @"");
+		TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"No Data…", @"Placeholder if no data has been received yet.");
 		return sourceCell;
 	}
 
@@ -207,17 +207,17 @@
 			{
 				case 0:
 					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-											NSLocalizedString(@"GUI Version", @""), @"title",
+											NSLocalizedString(@"GUI Version", @"Cell title with GUI version in About View"), @"title",
 											_about.version, @"explainText", nil];
 					break;
 				case 1:
 					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Image Version", @""), @"title",
+									  NSLocalizedString(@"Image Version", @"Cell title with Image version in About View"), @"title",
 									  _about.imageVersion, @"explainText", nil];
 					break;
 				case 2:
 					dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-									  NSLocalizedString(@"Receiver model", @""), @"title",
+									  NSLocalizedString(@"Receiver model", @"Cell title with Receiver model in About View"), @"title",
 									  _about.model, @"explainText", nil];
 					break;
 				default: break;
@@ -233,7 +233,7 @@
 
 			((MainTableViewCell *)sourceCell).dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							_about.hdd.model, @"title",
-							[NSString stringWithFormat:NSLocalizedString(@"%@ of %@ free", @""), _about.hdd.free, _about.hdd.capacity], @"explainText", nil];
+							[NSString stringWithFormat:NSLocalizedString(@"%@ of %@ free", @"Free space on harddisk (available of total free), includes size."), _about.hdd.free, _about.hdd.capacity], @"explainText", nil];
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}

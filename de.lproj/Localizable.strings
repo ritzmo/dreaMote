@@ -1,7 +1,7 @@
-/* sat finder refresh interval */
+﻿/* sat finder refresh interval */
 "%.0f sec" = "%.0f Sek.";
 
-/* No comment provided by engineer. */
+/* Free space on harddisk (available of total free), includes size. */
 "%@ of %@ free" = "%@ von %@ frei";
 
 /* zip-file was extracted without any errors. */
@@ -22,11 +22,17 @@
 /* Repeated */
 "4-weekly" = "4-wöchentlich";
 
+/* No comment provided by engineer. */
+"<address: e.g. 192.168.1.10>" = "<Adresse: z.B. 192.168.1.10>";
+
 /* Placeholder of _timerDescription */
 "<enter description>" = "<beschreibung>";
 
 /* Placeholder of _timerTitle */
 "<enter title>" = "<titel>";
+
+/* Label for Filesystems Item in MediaPlayer Filelist */
+"<Filesystems>" = "<Medien>";
 
 /* No comment provided by engineer. */
 "<history length>" = "<verlaufslänge>";
@@ -44,16 +50,10 @@
 "<min.>" = "<Min.>";
 
 /* No comment provided by engineer. */
-"<address: e.g. 192.168.1.10>" = "<Name: z.B. Wohnzimmer>";
+"<password: usually dreambox>" = "<Passwort: z.B. dreambox>";
 
 /* Placeholder text for remote port field. */
 "<port: usually %d>" = "<Port: z.B. %d>";
-
-/* No comment provided by engineer. */
-"<address: e.g. 192.168.1.10>" = "<Adresse: z.B. 192.168.1.10>";
-
-/* No comment provided by engineer. */
-"<password: usually dreambox>" = "<Passwort: z.B. dreambox>";
 
 /* No comment provided by engineer. */
 "<username: usually root>" = "<Benutzername: z.B. root>";
@@ -71,7 +71,8 @@
    Title of AboutDreamoteViewController */
 "About" = "Über dreaMote";
 
-/* Title of About Receiver in Other List */
+/* Title of About Receiver in Other List
+   Title of AboutViewController */
 "About Receiver" = "Über den Receiver";
 
 /* Title of Alert when import triggered */
@@ -128,7 +129,7 @@
 /* Message type */
 "Attention" = "Warnung";
 
-/* No comment provided by engineer. */
+/* After Event */
 "Auto" = "Automatisch";
 
 /* No comment provided by engineer. */
@@ -256,7 +257,7 @@
 /* Title of DatePickerController */
 "Date Picker" = "Datumsauswahl";
 
-/* No comment provided by engineer. */
+/* After Event */
 "Deep Standby" = "Herunterfahren";
 
 /* Default After Event action (usually auto on enigma2 receivers) */
@@ -376,14 +377,11 @@
 /* Removal of zip-file failed after extraction. */
 "Failed to remove zip-file!\nPlease remove it manually using iTunes." = "Zip-Datei konnte nicht entfernt werden!\nBitte löschen Sie die Datei manuell mit iTunes.";
 
-/* No comment provided by engineer. */
+/* Title of Alert when retrieving remote data failed. */
 "Failed to retrieve data" = "Datenübertragung fehlgeschlagen";
 
 /* No comment provided by engineer. */
 "Failed to start instant record" = "Sofortaufnahme konnte nicht gestartet werden";
-
-/* Label for Filesystems Item in MediaPlayer Filelist */
-"<Filesystems>" = "<Medien>";
 
 /* Default title of AutoTimerFilterViewController */
 "Filter" = "Filter";
@@ -415,10 +413,10 @@
 /* No comment provided by engineer. */
 "Genre" = "Genre";
 
-/* No comment provided by engineer. */
+/* Cell title with GUI version in About View */
 "GUI Version" = "GUI Version";
 
-/* No comment provided by engineer. */
+/* Title of section in About View containing harddisk information (if any) */
 "Harddisk" = "Festplatte";
 
 /* Default sharing string for events */
@@ -433,7 +431,7 @@
 /* No comment provided by engineer. */
 "Illegal response returned by VDR-server! Aborting." = "Ungültige Antwort vom VDR-server! Breche ab.";
 
-/* No comment provided by engineer. */
+/* Cell title with Image version in About View */
 "Image Version" = "Image Version";
 
 /* No comment provided by engineer. */
@@ -578,7 +576,7 @@
 /* No comment provided by engineer. */
 "no authentication" = "Keine Authentifizierung";
 
-/* No comment provided by engineer. */
+/* Placeholder if no data has been received yet. */
 "No Data…" = "Keine Daten…";
 
 /* Placeholder text in Now/Next-ServiceList if no EPG data present */
@@ -711,7 +709,7 @@
 /* Generic Placeholder for system-supplied error (and possibly success) messages */
 "Received response: %@." = "Erhielt Antwort: %@.";
 
-/* No comment provided by engineer. */
+/* Cell title with Receiver model in About View */
 "Receiver model" = "Gerätetyp";
 
 /* No comment provided by engineer. */
@@ -890,7 +888,7 @@
 /* Sort (movies) by time */
 "Sort by time" = "Sort. Zeit";
 
-/* No comment provided by engineer. */
+/* Standby. Either as AfterEvent action or Button in Controls. */
 "Standby" = "Standby";
 
 /* No comment provided by engineer. */
@@ -956,7 +954,7 @@
 /* No comment provided by engineer. */
 "Tuesday" = "Dienstag";
 
-/* No comment provided by engineer. */
+/* Title of section in About View containing tuner information (if any) */
 "Tuners" = "Tuner";
 
 /* TV switch button */
@@ -1007,7 +1005,7 @@
 /* No comment provided by engineer. */
 "Use SSL" = "SSL benutzen";
 
-/* No comment provided by engineer. */
+/* Title of section in About View containing versioning information */
 "Version Information" = "Versionen";
 
 /* No comment provided by engineer. */

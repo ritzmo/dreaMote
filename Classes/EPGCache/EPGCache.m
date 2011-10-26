@@ -192,7 +192,7 @@ static EPGCache *_sharedInstance = nil;
 #if 0
 	// alert user
 	// NOTE: die quietly for now, since otherwise we might spam
-	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
 														  message:[error localizedDescription]
 														 delegate:nil
 												cancelButtonTitle:@"OK"
@@ -395,7 +395,7 @@ static EPGCache *_sharedInstance = nil;
 {
 	if(![self startTransaction:nil])
 	{
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
 															  message:NSLocalizedString(@"Could not open connection to database.", @"")
 															 delegate:nil
 													cancelButtonTitle:@"OK"

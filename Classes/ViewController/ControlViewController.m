@@ -405,7 +405,7 @@
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			switch (indexPath.row){
 				case 0:
-					sourceCell.nameLabel.text = NSLocalizedString(@"Standby", @"");
+					sourceCell.nameLabel.text = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
 					sourceCell.view = [self createButton:@selector(standby:) withImage:@"preferences-desktop-screensaver.png"];
 					break;
 				case 1:
@@ -460,7 +460,7 @@
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
 {
 	// Alert user
-	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"")
+	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
 														  message:[error localizedDescription]
 														 delegate:nil
 												cancelButtonTitle:@"OK"

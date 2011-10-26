@@ -154,15 +154,15 @@
 			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Nothing", @"After Event");
 			break;
 		case kAfterEventStandby:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
 			break;
 		case kAfterEventDeepstandby:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
+			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"After Event");
 			break;
 		case kAfterEventAuto:
 			if(_showAuto)
 			{
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
+				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"After Event");
 				break;
 			}
 			/* FALL THROUGH */

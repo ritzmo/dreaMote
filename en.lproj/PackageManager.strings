@@ -10,13 +10,13 @@
 /* Installed Packages */
 /*"Installed" = "Installed";*/
 
-/* No comment provided by engineer. */
+/* Header of package list when installing packages. */
 /*"Installed Packages:" = "Installed Packages:";*/
 
-/* No comment provided by engineer. */
+/* Title of alert when the user taps 'commit' but did not select any packages. */
 /*"No packages selected" = "No packages selected";*/
 
-/* No comment provided by engineer. */
+/* Header of package list when removing packages. */
 /*"Removed Packages:" = "Removed Packages:";*/
 
 /* Update remote list of packages */
