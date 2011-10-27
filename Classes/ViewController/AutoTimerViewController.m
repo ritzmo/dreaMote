@@ -693,7 +693,11 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			{
 				Result *result = [[RemoteConnectorObject sharedRemoteConnector] addAutoTimer:_timer];
 				if(!result.result)
+				{
+					if(!result.resulttext)
+						result.resulttext = NSLocalizedStringFromTable(@"Unable to complete request.\nPlugin too old?", @"AutoTimer", @"Remote host did not return a valid result, probably because the version of the installed plugin is too old.");
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding AutoTimer: %@", @""), result.resulttext];
+				}
 				else
 				{
 					[_delegate autoTimerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
@@ -704,7 +708,11 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			{
 				Result *result = [[RemoteConnectorObject sharedRemoteConnector] editAutoTimer:_timer];
 				if(!result.result)
+				{
+					if(!result.resulttext)
+						result.resulttext = NSLocalizedStringFromTable(@"Unable to complete request.\nPlugin too old?", @"AutoTimer", @"Remote host did not return a valid result, probably because the version of the installed plugin is too old.");
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing AutoTimer: %@", @""), result.resulttext];
+				}
 				else
 				{
 					[_delegate autoTimerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer)];
