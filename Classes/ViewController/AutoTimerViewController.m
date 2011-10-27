@@ -416,7 +416,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 - (void)setCreatingNewTimer: (BOOL)newValue
 {
 	if(newValue)
-		self.title = NSLocalizedString(@"New AutoTimer", @"");
+		self.title = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"");
 	else
 		self.title = NSLocalizedString(@"AutoTimer", @"Default title of AutoTimerViewController");
 
@@ -696,7 +696,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				{
 					if(!result.resulttext)
 						result.resulttext = NSLocalizedStringFromTable(@"Unable to complete request.\nPlugin too old?", @"AutoTimer", @"Remote host did not return a valid result, probably because the version of the installed plugin is too old.");
-					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding AutoTimer: %@", @""), result.resulttext];
+					message = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Error adding AutoTimer: %@", @"AutoTimer", @"Error message if AutoTimer could not be added."), result.resulttext];
 				}
 				else
 				{
@@ -711,7 +711,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				{
 					if(!result.resulttext)
 						result.resulttext = NSLocalizedStringFromTable(@"Unable to complete request.\nPlugin too old?", @"AutoTimer", @"Remote host did not return a valid result, probably because the version of the installed plugin is too old.");
-					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing AutoTimer: %@", @""), result.resulttext];
+					message = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Error editing AutoTimer: %@", @"AutoTimer", @"Error message if AutoTimer could not be edited."), result.resulttext];
 				}
 				else
 				{
@@ -893,7 +893,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	if(_timer.afterEventAction == kAfterEventNothing)
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterEventAction == kAfterEventStandby)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"");
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
 	else if(_timer.afterEventAction == kAfterEventDeepstandby)
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
 	else if(_timer.afterEventAction == kAfterEventAuto)

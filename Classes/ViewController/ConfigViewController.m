@@ -298,12 +298,12 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	if(remoteName == nil) // Work around unset property
 		remoteName = @"";
 	_remoteNameTextField = [[self create_TextField] retain];
-	_remoteNameTextField.placeholder = NSLocalizedString(@"<address: e.g. 192.168.1.10>", @"");
+	_remoteNameTextField.placeholder = NSLocalizedString(@"<name: e.g. living room>", @"Placeholder for remote hostname in config.");
 	_remoteNameTextField.text = [[remoteName copy] autorelease];
 
 	// Remote Address
 	_remoteAddressTextField = [[self create_TextField] retain];
-	_remoteAddressTextField.placeholder = NSLocalizedString(@"<address: e.g. 192.168.1.10>", @"");
+	_remoteAddressTextField.placeholder = NSLocalizedString(@"<address: e.g. 192.168.1.10>", @"Placeholder for remote address in config.");
 	_remoteAddressTextField.text = [[[_connection objectForKey: kRemoteHost] copy] autorelease];
 	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
@@ -316,18 +316,18 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	// Remote Port
 	const NSNumber *port = [_connection objectForKey: kPort];
 	_remotePortTextField = [[self create_TextField] retain];
-	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
+	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
 	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
 	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
 	// Username
 	_usernameTextField = [[self create_TextField] retain];
-	_usernameTextField.placeholder = NSLocalizedString(@"<username: usually root>", @"");
+	_usernameTextField.placeholder = NSLocalizedString(@"<username: usually root>", @"Placeholder for remote username in config.");
 	_usernameTextField.text = [[[_connection objectForKey: kUsername] copy] autorelease];
 
 	// Password
 	_passwordTextField = [[self create_TextField] retain];
-	_passwordTextField.placeholder = NSLocalizedString(@"<password: usually dreambox>", @"");
+	_passwordTextField.placeholder = NSLocalizedString(@"<password: usually dreambox>", @"Placeholder for remote password in config.");
 	_passwordTextField.text = [[[_connection objectForKey: kPassword] copy] autorelease];
 	_passwordTextField.secureTextEntry = YES;
 
@@ -502,7 +502,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		UIAlertView *notification = [[UIAlertView alloc]
 									initWithTitle:NSLocalizedString(@"Error", @"")
-									message:NSLocalizedString(@"You need to configure this application before you can use it.", @"")
+									message:NSLocalizedString(@"You need to configure this application before you can use it.", @"User tried to leave config view without any host set up.")
 									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];
@@ -656,7 +656,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 - (void)sslChanged:(id)sender
 {
 	// update port placeholder
-	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
+	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
 }
 
 /* rotate with device */
@@ -692,7 +692,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		{
 			UIAlertView *notification = [[UIAlertView alloc]
 								initWithTitle:NSLocalizedString(@"Error", @"")
-								message:NSLocalizedString(@"Could not determine remote box type.", @"")
+								message:NSLocalizedString(@"Could not determine remote box type.", @"Autodetection of host type failed.")
 								delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
 			[notification release];
@@ -716,7 +716,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		TABLEVIEWCELL_TEXT(connectorCell) = @"???";
 
 	// update port placeholder
-	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder text for remote port field."), connectorPortMap[_connector][_sslSwitch.on]];
+	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
 	[(UITableView *)self.view reloadData];
 }
 
@@ -886,7 +886,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				case 1:
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Now/Next in Servicelist", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Now/Next in Servicelist", @"Toggle to enable showing now/next in servicelist if available.");
 					((DisplayCell *)sourceCell).view = _nowNextSwitch;
 					break;
 				case 2:
@@ -894,7 +894,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 					{
 						sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
-						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"");
+						((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Single Bouquet", @"Toggle to enable \"single bouquet\" mode (available in Enigma2 and only configurable on iPhone/iPod Touch)");
 						((DisplayCell *)sourceCell).view = _singleBouquetSwitch;
 						break;
 					}
@@ -902,7 +902,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				case 3:
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Advanced Remote", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Advanced Remote", @"Enigma2 only. Refers to the remote with four extra buttons (FRwd/PlayPause/Stop/FFwd).");
 					((DisplayCell *)sourceCell).view = _advancedRemoteSwitch;
 					break;
 			}
@@ -916,11 +916,11 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			switch(row)
 			{
 				case 0:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connect", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connect", @"Connect to the remote host for this session.");
 					((DisplayCell *)sourceCell).view = _connectButton;
 					break;
 				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Make Default", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Make Default", @"Make this remote host the default for future sessions.");
 					((DisplayCell *)sourceCell).view = _makeDefaultButton;
 					break;
 				default:
@@ -1151,7 +1151,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		const UIAlertView *notification = [[UIAlertView alloc]
 									 initWithTitle:NSLocalizedString(@"Error", @"")
-									 message:NSLocalizedString(@"Unable to find valid connection data.", @"")
+									 message:NSLocalizedString(@"Unable to find valid connection data.", @"Error message: Autoconfiguration was unable to find a host in this network.")
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
 		[notification release];

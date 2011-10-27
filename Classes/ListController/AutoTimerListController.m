@@ -316,7 +316,7 @@
 	if(indexPath.section == 0)
 	{
 		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"New AutoTimer", @"");
+		TABLEVIEWCELL_TEXT(cell) = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"");
 		return cell;
 	}
 

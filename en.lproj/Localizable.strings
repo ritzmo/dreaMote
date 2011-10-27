@@ -22,7 +22,7 @@
 /* Repeated */
 /*"4-weekly" = "4-weekly";*/
 
-/* No comment provided by engineer. */
+/* Placeholder for remote address in config. */
 "<address: e.g. 192.168.1.10>" = "<address: e.g. 192.168.1.10>";
 
 /* Placeholder of _timerDescription */
@@ -49,13 +49,16 @@
 /* Placeholder for SleepTimer duration field */
 /*"<min.>" = "<min.>";*/
 
-/* No comment provided by engineer. */
+/* Placeholder for remote hostname in config. */
+/*"<name: e.g. living room>" = "<name: e.g. living room>";*/
+
+/* Placeholder for remote password in config. */
 "<password: usually dreambox>" = "<password: usually dreambox>";
 
-/* Placeholder text for remote port field. */
+/* Placeholder for remote port in config. */
 "<port: usually %d>" = "<port: usually %d>";
 
-/* No comment provided by engineer. */
+/* Placeholder for remote username in config. */
 "<username: usually root>" = "<username: usually root>";
 
 /* No hostname entered in ConfigView. */
@@ -102,7 +105,7 @@
 /* Used in MediaPlayer, append tracks to playlist */
 /*"Adding to Playlist" = "Adding to Playlist";*/
 
-/* No comment provided by engineer. */
+/* Enigma2 only. Refers to the remote with four extra buttons (FRwd/PlayPause/Stop/FFwd). */
 "Advanced Remote" = "Advanced Remote";
 
 /* Default title of AfterEventViewController */
@@ -196,7 +199,7 @@
 /* Message type */
 /*"Confirmed" = "Confirmed";*/
 
-/* No comment provided by engineer. */
+/* Connect to the remote host for this session. */
 /*"Connect" = "Connect";*/
 
 /* No comment provided by engineer. */
@@ -233,7 +236,7 @@
 /* No comment provided by engineer. */
 /*"Could not add song to playlist" = "Could not add song to playlist";*/
 
-/* No comment provided by engineer. */
+/* Autodetection of host type failed. */
 /*"Could not determine remote box type." = "Could not determine remote box type.";*/
 
 /* No comment provided by engineer. */
@@ -336,16 +339,10 @@
 "Error" = "Error";
 
 /* No comment provided by engineer. */
-/*"Error adding AutoTimer: %@" = "Error adding AutoTimer: %@";*/
-
-/* No comment provided by engineer. */
 /*"Error adding new timer: %@" = "Error adding new timer: %@";*/
 
 /* Title of alert when timer cleanup failed */
 /*"Error cleaning up" = "Error cleaning up";*/
-
-/* No comment provided by engineer. */
-/*"Error editing AutoTimer: %@" = "Error editing AutoTimer: %@";*/
 
 /* No comment provided by engineer. */
 /*"Error editing timer: %@" = "Error editing timer: %@";*/
@@ -482,7 +479,7 @@
 /* Title of LocationListController */
 /*"Locations" = "Locations";*/
 
-/* No comment provided by engineer. */
+/* Make this remote host the default for future sessions. */
 /*"Make Default" = "Make Default";*/
 
 /* No comment provided by engineer. */
@@ -559,9 +556,6 @@
 /*"never" = "never";*/
 
 /* No comment provided by engineer. */
-/*"New AutoTimer" = "New AutoTimer";*/
-
-/* No comment provided by engineer. */
 /*"New Connection" = "New Connection";*/
 
 /* No comment provided by engineer. */
@@ -615,7 +609,7 @@
 /* No comment provided by engineer. */
 /*"Now Playing" = "Now Playing";*/
 
-/* No comment provided by engineer. */
+/* Toggle to enable showing now/next in servicelist if available. */
 /*"Now/Next in Servicelist" = "Now/Next in Servicelist";*/
 
 /* No comment provided by engineer. */
@@ -869,7 +863,7 @@
 /* No comment provided by engineer. */
 "Simple Remote" = "Simple Remote";
 
-/* No comment provided by engineer. */
+/* Toggle to enable \"single bouquet\" mode (available in Enigma2 and only configurable on iPhone/iPod Touch) */
 "Single Bouquet" = "Single Bouquet";
 
 /* No comment provided by engineer. */
@@ -978,7 +972,7 @@
 /* Zip-Extraction failed */
 /*"Unable to extract zip-file!" = "Unable to extract zip-file!";*/
 
-/* No comment provided by engineer. */
+/* Error message: Autoconfiguration was unable to find a host in this network. */
 /*"Unable to find valid connection data." = "Unable to find valid connection data.";*/
 
 /* Failed to retrieve or generate URL of remote stream */
@@ -1068,7 +1062,7 @@
 /* User requested automated EPG refresh but no timespan given. */
 /*"You have to provide a timespan to refresh automatically." = "You have to provide a timespan to refresh automatically.";*/
 
-/* No comment provided by engineer. */
+/* User tried to leave config view without any host set up. */
 /*"You need to configure this application before you can use it." = "You need to configure this application before you can use it.";*/
 
 /* No comment provided by engineer. */

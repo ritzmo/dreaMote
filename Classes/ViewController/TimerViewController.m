@@ -874,7 +874,7 @@
 	if(_timer.afterevent == kAfterEventNothing)
 		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterevent == kAfterEventStandby)
-		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Standby", @"");
+		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
 	else if(_timer.afterevent == kAfterEventDeepstandby)
 		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Deep Standby", @"");
 	else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)

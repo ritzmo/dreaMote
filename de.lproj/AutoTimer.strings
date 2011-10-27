@@ -22,6 +22,12 @@
 /* section header for bouquet restriction */
 "Bouquets" = "Bouquets";
 
+/* Error message if AutoTimer could not be added. */
+"Error adding AutoTimer: %@" = "Konnte neuen AutoTimer nicht hinzufügen: %@";
+
+/* Error message if AutoTimer could not be edited. */
+"Error editing AutoTimer: %@" = "Konnte AutoTimer nicht bearbeiten: %@";
+
 /* Exclude Filter */
 "Exclude" = "Ausschließen";
 
@@ -36,6 +42,9 @@
 
 /* weekday filter */
 "Mon-Fri" = "Mon-Fre";
+
+/* No comment provided by engineer. */
+"New AutoTimer" = "Neuer AutoTimer";
 
 /* add new bouquet filter */
 "New Bouquet" = "Neues Bouquet";
@@ -72,6 +81,9 @@
 
 /* timespan to */
 "To: %@" = "Bis: %@";
+
+/* Remote host did not return a valid result, probably because the version of the installed plugin is too old. */
+"Unable to complete request.\nPlugin too old?" = "Anfrage konnte nicht abgeschlossen werden.\nPlugin eventuell zu alt?";
 
 /* Title of avoid duplicate description selector. */
 "Unique Description" = "Eindeutige Beschreibung";

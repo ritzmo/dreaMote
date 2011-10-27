@@ -22,7 +22,7 @@
 /* Repeated */
 "4-weekly" = "4-wöchentlich";
 
-/* No comment provided by engineer. */
+/* Placeholder for remote address in config. */
 "<address: e.g. 192.168.1.10>" = "<Adresse: z.B. 192.168.1.10>";
 
 /* Placeholder of _timerDescription */
@@ -49,13 +49,16 @@
 /* Placeholder for SleepTimer duration field */
 "<min.>" = "<Min.>";
 
-/* No comment provided by engineer. */
+/* Placeholder for remote hostname in config. */
+"<name: e.g. living room>" = "<Name: z.B. Wohnzimmer>";
+
+/* Placeholder for remote password in config. */
 "<password: usually dreambox>" = "<Passwort: z.B. dreambox>";
 
-/* Placeholder text for remote port field. */
+/* Placeholder for remote port in config. */
 "<port: usually %d>" = "<Port: z.B. %d>";
 
-/* No comment provided by engineer. */
+/* Placeholder for remote username in config. */
 "<username: usually root>" = "<Benutzername: z.B. root>";
 
 /* No hostname entered in ConfigView. */
@@ -102,7 +105,7 @@
 /* Used in MediaPlayer, append tracks to playlist */
 "Adding to Playlist" = "Füge Playlist an";
 
-/* No comment provided by engineer. */
+/* Enigma2 only. Refers to the remote with four extra buttons (FRwd/PlayPause/Stop/FFwd). */
 "Advanced Remote" = "Erweiterte FB";
 
 /* Default title of AfterEventViewController */
@@ -196,7 +199,7 @@
 /* Message type */
 "Confirmed" = "Bestätigt";
 
-/* No comment provided by engineer. */
+/* Connect to the remote host for this session. */
 "Connect" = "Verbinde";
 
 /* No comment provided by engineer. */
@@ -233,7 +236,7 @@
 /* No comment provided by engineer. */
 "Could not add song to playlist" = "Lied konnte nicht zur Wiedergabeliste hinzugefügt werden";
 
-/* No comment provided by engineer. */
+/* Autodetection of host type failed. */
 "Could not determine remote box type." = "Konnte Receivertyp nicht automatisch erkennen!";
 
 /* No comment provided by engineer. */
@@ -336,16 +339,10 @@
 "Error" = "Fehler";
 
 /* No comment provided by engineer. */
-"Error adding AutoTimer: %@" = "Konnte neuen AutoTimer nicht hinzufügen: %@";
-
-/* No comment provided by engineer. */
 "Error adding new timer: %@" = "Konnte neuen Timer nicht hinzufügen: %@";
 
 /* Title of alert when timer cleanup failed */
 "Error cleaning up" = "Fehler beim Aufräumen";
-
-/* No comment provided by engineer. */
-"Error editing AutoTimer: %@" = "Konnte AutoTimer nicht bearbeiten: %@";
 
 /* No comment provided by engineer. */
 "Error editing timer: %@" = "Konnte Timer nicht bearbeiten: %@";
@@ -482,7 +479,7 @@
 /* Title of LocationListController */
 "Locations" = "Verzeichnisse";
 
-/* No comment provided by engineer. */
+/* Make this remote host the default for future sessions. */
 "Make Default" = "Zu Standard machen";
 
 /* No comment provided by engineer. */
@@ -559,9 +556,6 @@
 "never" = "nie";
 
 /* No comment provided by engineer. */
-"New AutoTimer" = "Neuer AutoTimer";
-
-/* No comment provided by engineer. */
 "New Connection" = "Neue Verbindung";
 
 /* No comment provided by engineer. */
@@ -615,7 +609,7 @@
 /* No comment provided by engineer. */
 "Now Playing" = "Aktuelles Lied";
 
-/* No comment provided by engineer. */
+/* Toggle to enable showing now/next in servicelist if available. */
 "Now/Next in Servicelist" = "Erweiterte Senderliste";
 
 /* No comment provided by engineer. */
@@ -869,7 +863,7 @@
 /* No comment provided by engineer. */
 "Simple Remote" = "Einfache FB";
 
-/* No comment provided by engineer. */
+/* Toggle to enable \"single bouquet\" mode (available in Enigma2 and only configurable on iPhone/iPod Touch) */
 "Single Bouquet" = "Nur ein Bouquet";
 
 /* No comment provided by engineer. */
@@ -978,7 +972,7 @@
 /* Zip-Extraction failed */
 "Unable to extract zip-file!" = "Zip-Datei konnte nicht entpackt werden!";
 
-/* No comment provided by engineer. */
+/* Error message: Autoconfiguration was unable to find a host in this network. */
 "Unable to find valid connection data." = "Konnte keine gültige Verbindung finden.";
 
 /* Failed to retrieve or generate URL of remote stream */
@@ -1068,7 +1062,7 @@
 /* User requested automated EPG refresh but no timespan given. */
 "You have to provide a timespan to refresh automatically." = "Zum automatischen Aktualisieren muss eine Zeitspanne angegeben werden.";
 
-/* No comment provided by engineer. */
+/* User tried to leave config view without any host set up. */
 "You need to configure this application before you can use it." = "Sie müssen diese Anwendung konfigurieren bevor Sie diese nutzen können!";
 
 /* No comment provided by engineer. */
