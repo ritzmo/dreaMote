@@ -1220,7 +1220,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)serviceEditorRenameBouquet:(NSObject<ServiceProtocol> *)bouquet name:(NSString *)name isRadio:(BOOL)isRadio
 {
-	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&sName=%@&mode=%d", [bouquet.sref urlencode], [name urlencode], isRadio ? MODE_RADIO : MODE_TV];
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&newName=%@&mode=%d", [bouquet.sref urlencode], [name urlencode], isRadio ? MODE_RADIO : MODE_TV];
 	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
