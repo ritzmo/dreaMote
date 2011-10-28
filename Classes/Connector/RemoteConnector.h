@@ -162,6 +162,10 @@ enum connectorFeatures {
 	 @brief Package management present.
 	 */
 	kFeaturesPackageManagement,
+	/*!
+	 @brief Viable Service Editor interface.
+	 */
+	kFeaturesServiceEditor,
 };
 
 /*!
@@ -799,6 +803,102 @@ enum packageManagementList
  */
 @optional // kFeaturesPackageManagement
 - (void)packageManagementCommit:(NSArray *)packages;
+
+#pragma mark -
+#pragma mark ServiceEditor
+#pragma mark -
+
+/*!
+ @brief Add a new bouquet with given name.
+ @param name
+ @param isRadio
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorAddBouquet:(NSString *)name isRadio:(BOOL)isRadio;
+
+/*!
+ @brief Remove a given bouquet.
+ @param bouquet
+ @param isRadio
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorRemoveBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+/*!
+ @brief Move bouquet to another position.
+ @param bouquet 
+ @param position
+ @param isRadio
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorMoveBouquet:(NSObject<ServiceProtocol> *)bouquet toPosition:(NSInteger)position isRadio:(BOOL)isRadio;
+
+/*!
+ @brief Move service to another position in given bouquet.
+ @param service 
+ @param position
+ @param bouquet 
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorMoveService:(NSObject<ServiceProtocol> *)service toPosition:(NSInteger)position inBouquet:(NSObject<ServiceProtocol> *)bouquet;
+
+/*!
+ @brief
+ @param bouquet
+ @param name
+ @param isRadio
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorRenameBouquet:(NSObject<ServiceProtocol> *)bouquet name:(NSString *)name isRadio:(BOOL)isRadio;
+
+/*!
+ @brief
+ @param service
+ @param name
+ @param bouquet
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorRenameService:(NSObject<ServiceProtocol> *)service name:(NSString *)name inBouquet:(NSObject<ServiceProtocol> *)bouquet;
+
+/*!
+ @brief Add service to a bouquet.
+ @param service Service to add.
+ @param targetBouquet Bouquet to add this service to (or alternative service, or regular service which then becomes an alternative service).
+ @param parentBouquet If adding alternative parent bouquet, else nil.
+ @param isRadio If adding alternative mode of parent bouquet, else nil.
+ @note Can be used to add services to an alternative, just use the alternative service as bouquet.
+ @note If using with alternative services and the service is not yet an alternative, it will be changed to an alternative service and the
+       service list should be reloaded.
+ @return Results of this operation.
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorAddService:(NSObject<ServiceProtocol> *)service toBouquet:(NSObject<ServiceProtocol> *)targetBouquet inBouquet:(NSObject<ServiceProtocol> *)parentBouquet isRadio:(BOOL)isRadio;
+
+/*!
+ @brief
+ @param service
+ @param bouquet
+ @note Can be used to remove services from an alternative, just use the alternative service as bouquet.
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorRemoveService:(NSObject<ServiceProtocol> *)service fromBouquet:(NSObject<ServiceProtocol> *)bouquet;
+
+/*!
+ @brief
+ @param name
+ @param service
+ @param bouquet
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorAddMarker:(NSString *)name beforeService:(NSObject<ServiceProtocol> *)service inBouquet:(NSObject<ServiceProtocol> *)bouquet;
 
 #pragma mark -
 #pragma mark Control

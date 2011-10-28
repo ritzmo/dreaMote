@@ -60,6 +60,11 @@ enum enigma2MessageTypes {
 	kEnigma2MessageTypeMax = 4
 };
 
+enum bouquetMode {
+	MODE_TV = 0,
+	MODE_RADIO = 1,
+};
+
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.6.5", @"1.6.8"
 };
@@ -1184,6 +1189,80 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 									   returningResponse:&response
 												   error:&error];
 	}
+}
+
+#pragma mark Service Editor
+
+- (Result *)serviceEditorAddBouquet:(NSString *)name isRadio:(BOOL)isRadio
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/addbouquet?name=%@&mode=%d", [name urlencode], isRadio ? MODE_RADIO : MODE_TV];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorRemoveBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/removebouquet?sBouquetRef=%@&mode=%d", [bouquet.sref urlencode], isRadio ? MODE_RADIO : MODE_TV];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorMoveBouquet:(NSObject<ServiceProtocol> *)bouquet toPosition:(NSInteger)position isRadio:(BOOL)isRadio
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/movebouquet?sBouquetRef=%@&position=%d&mode=%d", [bouquet.sref urlencode], position, isRadio ? MODE_RADIO : MODE_TV];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorMoveService:(NSObject<ServiceProtocol> *)service toPosition:(NSInteger)position inBouquet:(NSObject<ServiceProtocol> *)bouquet
+{
+	// NOTE: the API suggests that it requires a mode to be given, yet it is not required and unused in the code so give a dummy value
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/moveservice?sRef=%@&sBouquetRef=%@&position=%d&mode=-1", [service.sref urlencode], [bouquet.sref urlencode], position];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorRenameBouquet:(NSObject<ServiceProtocol> *)bouquet name:(NSString *)name isRadio:(BOOL)isRadio
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&sName=%@&mode=%d", [bouquet.sref urlencode], [name urlencode], isRadio ? MODE_RADIO : MODE_TV];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorRenameService:(NSObject<ServiceProtocol> *)service name:(NSString *)name inBouquet:(NSObject<ServiceProtocol> *)bouquet
+{
+	// TODO: check if we need to move service afterwards, code is unclear
+	// TODO: check if we need sRefBefore
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&sName=%@&sBouquetRef=%@", [service.sref urlencode], [name urlencode], [bouquet.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorAddService:(NSObject<ServiceProtocol> *)service toBouquet:(NSObject<ServiceProtocol> *)targetBouquet inBouquet:(NSObject<ServiceProtocol> *)parentBouquet isRadio:(BOOL)isRadio
+{
+	const BOOL isAlternative = ![service.sref hasPrefix:@"1:7:"];
+	NSString *relativeURL = nil;
+	if(isAlternative)
+	{
+		relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/addservicetoalternative?sRef=%@&sName=%@&sBouquetRef=%@&sCurrentRef=%@&mode=%d", [service.sref urlencode], [parentBouquet.sref urlencode], [targetBouquet.sref urlencode], isRadio ? MODE_RADIO : MODE_TV];
+	}
+	else
+	{
+		relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/addservicetobouquet?sBouquetRef=%@&sRef=%@&Name=%@", [targetBouquet.sref urlencode], [service.sref urlencode], [service.sname urlencode]];
+	}
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorRemoveService:(NSObject<ServiceProtocol> *)service fromBouquet:(NSObject<ServiceProtocol> *)bouquet
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&sBouquetRef=%@", [service.sref urlencode], [bouquet.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorRemoveAlternatives:(NSObject<ServiceProtocol> *)service inBouquet:(NSObject<ServiceProtocol> *)bouquet
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/removealternativeservices?sRef=%@&sBouquetRef=%@", [service.sref urlencode], [bouquet.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)serviceEditorAddMarker:(NSString *)name beforeService:(NSObject<ServiceProtocol> *)service inBouquet:(NSObject<ServiceProtocol> *)bouquet
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/addmarkertobouquet?sBouquetRef=%@&Name=%@&sRefBefore=%@", [bouquet.sref urlencode], [name urlencode], [service.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
 #pragma mark Control

@@ -30,6 +30,11 @@ enum bouquetListTags
  @brief done editing
  */
 - (void)doneAction:(id)sender;
+
+/*!
+ @brief
+ */
+- (void)longPress:(UILongPressGestureRecognizer *)gesture;
 @end
 
 @implementation BouquetListController
@@ -165,6 +170,12 @@ enum bouquetListTags
 		[_tableView deselectRowAtIndexPath:idx animated:NO];
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing:editing animated:animated];
+	[_tableView setEditing:editing animated:animated];
+}
+
 /* layout */
 - (void)loadView
 {
@@ -179,6 +190,11 @@ enum bouquetListTags
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kServiceCellHeight;
 	_tableView.sectionHeaderHeight = 0;
+
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	longPressGesture.minimumPressDuration = 1;
+	[_tableView addGestureRecognizer:longPressGesture];
+	[longPressGesture release];
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRadio:) name:kReconnectNotification object:nil];
@@ -210,7 +226,10 @@ enum bouquetListTags
 		[button release];
 	}
 	else
-		self.navigationItem.rightBarButtonItem = nil;
+	{
+		// TODO: toggle based on purchase
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	}
 
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)
@@ -239,6 +258,12 @@ enum bouquetListTags
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	else
 		[self.navigationController popViewControllerAnimated: YES];
+}
+
+/* long press gesture was executed */
+- (void)longPress:(UILongPressGestureRecognizer *)gesture
+{
+	//
 }
 
 /* did appear */
@@ -419,6 +444,33 @@ enum bouquetListTags
 {
 	return [_bouquets count];
 }
+
+/* movable? */
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return YES;
+}
+
+/* do move */
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+	NSObject<ServiceProtocol> *bouquet = [[_bouquets objectAtIndex:sourceIndexPath.row] retain];
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorMoveBouquet:bouquet toPosition:destinationIndexPath.row isRadio:_isRadio];
+	if(result.result)
+	{
+		[_bouquets removeObjectAtIndex:sourceIndexPath.row];
+		[_bouquets insertObject:bouquet atIndex:destinationIndexPath.row];
+	}
+	else
+	{
+		// NOTE: just reloading the rows is not enough and results in a craash later on, so force-reload the whole table
+		[tableView reloadData];
+	}
+	NSLog(@"Result of move operation: %@", result.resulttext);
+	[bouquet release];
+}
+
+#pragma mark -
 
 /* set delegate */
 - (void)setServiceDelegate:(id<ServiceListDelegate, NSCoding>)delegate
