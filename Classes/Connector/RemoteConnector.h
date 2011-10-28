@@ -811,7 +811,7 @@ enum packageManagementList
 /*!
  @brief Add a new bouquet with given name.
  @param name
- @param isRadio
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
@@ -820,7 +820,7 @@ enum packageManagementList
 /*!
  @brief Remove a given bouquet.
  @param bouquet
- @param isRadio
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
@@ -830,7 +830,7 @@ enum packageManagementList
  @brief Move bouquet to another position.
  @param bouquet 
  @param position
- @param isRadio
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
@@ -841,16 +841,17 @@ enum packageManagementList
  @param service 
  @param position
  @param bouquet 
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
-- (Result *)serviceEditorMoveService:(NSObject<ServiceProtocol> *)service toPosition:(NSInteger)position inBouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (Result *)serviceEditorMoveService:(NSObject<ServiceProtocol> *)service toPosition:(NSInteger)position inBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief
  @param bouquet
  @param name
- @param isRadio
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
@@ -860,11 +861,11 @@ enum packageManagementList
  @brief
  @param service
  @param name
- @param bouquet
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
-- (Result *)serviceEditorRenameService:(NSObject<ServiceProtocol> *)service name:(NSString *)name inBouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (Result *)serviceEditorRenameService:(NSObject<ServiceProtocol> *)service name:(NSString *)name inBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Add service to a bouquet.
@@ -884,21 +885,23 @@ enum packageManagementList
  @brief
  @param service
  @param bouquet
+ @param isRadio Work with radio boquets?
  @note Can be used to remove services from an alternative, just use the alternative service as bouquet.
  @return
  */
 @optional // kFeaturesServiceEditor
-- (Result *)serviceEditorRemoveService:(NSObject<ServiceProtocol> *)service fromBouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (Result *)serviceEditorRemoveService:(NSObject<ServiceProtocol> *)service fromBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief
  @param name
  @param service
  @param bouquet
+ @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
-- (Result *)serviceEditorAddMarker:(NSString *)name beforeService:(NSObject<ServiceProtocol> *)service inBouquet:(NSObject<ServiceProtocol> *)bouquet;
+- (Result *)serviceEditorAddMarker:(NSString *)name beforeService:(NSObject<ServiceProtocol> *)service inBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 #pragma mark -
 #pragma mark Control
