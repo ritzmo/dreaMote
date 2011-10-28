@@ -265,7 +265,7 @@ enum mediaPlayerTags
 												 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 													 okButtonTitle:NSLocalizedString(@"Save", @"")
 	];
-	alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+	alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 	[alertView show];
 	[alertView release];
 }
@@ -547,7 +547,7 @@ enum mediaPlayerTags
 #define promptView (UIPromptView *)alertView
 	if(buttonIndex != alertView.cancelButtonIndex)
 	{
-		NSString *filename = [promptView textFieldAtIndex:0].text;
+		NSString *filename = [promptView promptFieldAtIndex:0].text;
 		NSString *title = nil;
 		NSString *message = nil;
 		if(filename.length)
