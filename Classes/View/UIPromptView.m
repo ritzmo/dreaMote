@@ -30,11 +30,19 @@ enum textfieldTags
 
 - (UIPromptViewStyle)promptViewStyle
 {
+	if([UIDevice newerThanIos:5.0f])
+		return (UIPromptViewStyle)self.alertViewStyle;
 	return promptViewStyle;
 }
 
 - (void)setPromptViewStyle:(UIPromptViewStyle)newPromptViewStyle
 {
+	if([UIDevice newerThanIos:5.0f])
+	{
+		self.alertViewStyle = (UIAlertViewStyle)newPromptViewStyle;
+		return;
+	}
+
 	if(promptViewStyle == newPromptViewStyle) return;
 
 	promptViewStyle = newPromptViewStyle;
@@ -93,6 +101,9 @@ enum textfieldTags
 
 - (UITextField *)promptFieldAtIndex:(NSInteger)promptFieldIndex
 {
+	if([UIDevice newerThanIos:5.0f])
+		return [self textFieldAtIndex:promptFieldIndex];
+
 	if(promptFieldIndex == 0 && promptViewStyle != UIPromptViewStyleDefault)
 	{
 		UITextField *field = (UITextField *)[self viewWithTag:TEXT_FIELD_0];
