@@ -23,6 +23,7 @@
 	NSArray *_items; /*!< @brief Items. */
 	NSUInteger _selectedItem; /*!< @brief Selected Item. */
 	id<SimpleSingleSelectionListDelegate> _delegate; /*!< @brief Delegate. */
+	BOOL autoSubmit; /*!< @brief Submit after first selection. */
 }
 
 /*!
@@ -51,6 +52,11 @@
  @brief Selected Item.
  */
 @property (nonatomic) NSUInteger selectedItem;
+
+/*!
+ @brief Submit automatically after first selection.
+ */
+@property (nonatomic, assign) BOOL autoSubmit;
 
 @end
 

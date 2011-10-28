@@ -24,6 +24,7 @@
 
 @synthesize items = _items;
 @synthesize selectedItem = _selectedItem;
+@synthesize autoSubmit;
 
 /* initialize */
 - (id)init
@@ -142,6 +143,11 @@
 
 	_selectedItem = indexPath.row;
 
+	if(autoSubmit)
+	{
+		[_delegate performSelector:@selector(itemSelected:) withObject:[NSNumber numberWithInteger:_selectedItem]];
+		_delegate = nil; // prevent viewWillDisappear from calling back again
+	}
 	if(IS_IPAD())
 	{
 		[self dismissModalViewControllerAnimated:YES];
