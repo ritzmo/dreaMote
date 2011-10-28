@@ -12,11 +12,13 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "Objects/ServiceProtocol.h"
 #import "UITableViewCell+EasyInit.h"
 
 #import "ServiceEventTableViewCell.h"
 #import "ServiceTableViewCell.h"
+
+#import <Objects/Generic/Result.h>
+#import <Objects/ServiceProtocol.h>
 
 @interface ServiceListController()
 - (void)fetchNowData;
@@ -89,6 +91,7 @@
 	[_mainXMLDoc release];
 	[_subXMLDoc release];
 	[_radioButton release];
+	[_multiEpgButton release];
 	[_dateFormatter release];
 	[popoverController release];
 	[popoverZapController release];
@@ -219,7 +222,7 @@
 {
 	if([_multiEPG.view superview])
 	{
-		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Multi EPG", @"Multi EPG Button title");
+		_multiEpgButton.title = NSLocalizedString(@"Multi EPG", @"Multi EPG Button title");
 		_multiEPG.willReappear = NO;
 		[_multiEPG viewWillDisappear:YES];
 		[self.navigationController setToolbarHidden:YES animated:YES];
@@ -231,7 +234,7 @@
 	}
 	else
 	{
-		self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Service List", @"Service List (former Multi EPG) Button title");
+		_multiEpgButton.title = NSLocalizedString(@"Service List", @"Service List (former Multi EPG) Button title");
 		[_multiEPG viewWillAppear:YES];
 		self.view = _multiEPG.view;
 		[self setToolbarItems:_multiEPG.toolbarItems];
@@ -244,12 +247,33 @@
 
 - (void)didReconnect:(NSNotification *)note
 {
+	_reloading = NO;
 	// disable radio mode in case new connector does not support it
 	if(_isRadio)
 		[self switchRadio:nil];
 
 	// reset bouquet or do nothing if switchRadio did this already
 	self.bouquet = nil;
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	[super setEditing:editing animated:animated];
+	[_tableView setEditing:editing animated:animated];
+
+	if([UIDevice newerThanIos:3.2f])
+	{
+		UIGestureRecognizer *gestureRecognizer = nil;
+		for(UIGestureRecognizer *recognizer in _tableView.gestureRecognizers)
+		{
+			if([recognizer isKindOfClass:[UILongPressGestureRecognizer class]])
+			{
+				gestureRecognizer = recognizer;
+				break;
+			}
+		}
+		gestureRecognizer.enabled = !editing;
+	}
 }
 
 /* layout */
@@ -265,9 +289,8 @@
 	// hide multi epg button if there is a delegate
 	if(_delegate == nil)
 	{
-		UIBarButtonItem *multiEPG = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
-		self.navigationItem.rightBarButtonItem = multiEPG;
-		[multiEPG release];
+		_multiEpgButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
+		self.navigationItem.rightBarButtonItem = _multiEpgButton;
 	}
 	// show "done" button if in delegate and single bouquet mode
 	else
@@ -291,12 +314,15 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.sectionHeaderHeight = 0;
+	if(self.editing)
+		[_tableView setEditing:YES animated:NO];
 
 	// XXX: for simplicity only support this on iOS 3.2+
 	if([UIDevice newerThanIos:3.2f])
 	{
 		UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(zapAction:)];
 		longPressGesture.minimumPressDuration = 1;
+		longPressGesture.enabled = !self.editing;
 		[_tableView addGestureRecognizer:longPressGesture];
 		[longPressGesture release];
 	}
@@ -309,6 +335,7 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	SafeRetainAssign(_radioButton, nil);
+	SafeRetainAssign(_multiEpgButton, nil);
 
 	[super viewDidUnload];
 }
@@ -350,6 +377,45 @@
 		{
 			[self.popoverZapController dismissPopoverAnimated:YES];
 			self.popoverZapController = nil;
+		}
+	}
+	// NOTE: we might want to change behavior here and only show edit if in portrait on ipad because of the missing link with bouquet list
+	if(_delegate == nil && YES) // TODO: check purchase
+	{
+		if(_multiEpgButton)
+		{
+			NSArray *items = nil;
+			// iOS 5.0+
+			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			{
+				items = [[NSArray alloc] initWithObjects:self.editButtonItem, _multiEpgButton, nil];
+				self.navigationItem.rightBarButtonItems = items;
+			}
+			else
+			{
+				const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																								target:nil
+																								action:nil];
+				UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+				items = [[NSArray alloc] initWithObjects:flexItem, _multiEpgButton, self.editButtonItem, nil];
+				[toolbar setItems:items animated:NO];
+				UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+				self.navigationItem.rightBarButtonItem = buttonItem;
+
+				[flexItem release];
+				[buttonItem release];
+				[toolbar release];
+			}
+			[items release];
+		}
+		else
+		{
+			// iOS 5.0+
+			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+				self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject:self.editButtonItem];
+			else
+				self.navigationItem.rightBarButtonItem = self.editButtonItem;
 		}
 	}
 
@@ -853,6 +919,75 @@
 {
 	return [_mainList count];
 }
+
+/* editing style */
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(self.editing)
+		return UITableViewCellEditingStyleDelete;
+	return UITableViewCellEditingStyleNone;
+}
+
+/* commit edit */
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	NSObject<ServiceProtocol> *service = nil;
+	if(_supportsNowNext)
+		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex:indexPath.row]).service;
+	else
+		service = [_mainList objectAtIndex:indexPath.row];
+
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRemoveService:service fromBouquet:_bouquet isRadio:_isRadio];
+	if(result.result)
+	{
+		[_mainList removeObjectAtIndex:indexPath.row];
+		if(_supportsNowNext)
+			[_subList removeObjectAtIndex:indexPath.row];
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+	}
+	else
+	{
+		[tableView reloadData];
+	}
+}
+
+/* movable? */
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	return !_reloading;
+}
+
+/* do move */
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+	NSObject<ServiceProtocol> *service = nil;
+	if(_supportsNowNext)
+		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex:sourceIndexPath.row]).service;
+	else
+		service = [_mainList objectAtIndex:sourceIndexPath.row];
+
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorMoveService:service toPosition:destinationIndexPath.row inBouquet:_bouquet isRadio:_isRadio];
+	if(result.result)
+	{
+		NSObject *elem = SafeReturn(service);
+		if(_supportsNowNext)
+		{
+			elem = SafeReturn((NSObject<EventProtocol > *)[_subList objectAtIndex:sourceIndexPath.row]);
+			[_subList removeObjectAtIndex:sourceIndexPath.row];
+			[_subList insertObject:elem atIndex:destinationIndexPath.row];
+			elem = SafeReturn([_mainList objectAtIndex:sourceIndexPath.row]);
+		}
+		[_mainList removeObjectAtIndex:sourceIndexPath.row];
+		[_mainList insertObject:elem atIndex:destinationIndexPath.row];
+	}
+	else
+	{
+		// NOTE: just reloading the rows is not enough and results in a craash later on, so force-reload the whole table
+		[tableView reloadData];
+	}
+}
+
+#pragma mark -
 
 /* set delegate */
 - (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate

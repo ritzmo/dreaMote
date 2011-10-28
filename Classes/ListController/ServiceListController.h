@@ -56,6 +56,7 @@
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
+	UIBarButtonItem *_multiEpgButton; /*!< @brief Multi-EPG toggle */
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
