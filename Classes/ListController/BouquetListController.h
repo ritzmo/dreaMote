@@ -23,7 +23,8 @@
  Display list of known bouquets and start ServiceListController on selected ones.
  */
 @interface BouquetListController : ReloadableListController <UITableViewDelegate,
-													UITableViewDataSource, ServiceSourceDelegate>
+													UITableViewDataSource, ServiceSourceDelegate,
+													UIAlertViewDelegate>
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */

@@ -12,6 +12,9 @@
 #import "RemoteConnectorObject.h"
 #import "ServiceListController.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
+
+#import "UIPromptView.h"
 
 #import "ServiceTableViewCell.h"
 
@@ -174,6 +177,15 @@ enum bouquetListTags
 {
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
+	if(animated)
+	{
+		if(editing)
+			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+		else
+			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+	}
+	else
+		[_tableView reloadData];
 }
 
 /* layout */
@@ -361,6 +373,12 @@ enum bouquetListTags
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(indexPath.row == (NSInteger)_bouquets.count)
+	{
+		UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		cell.textLabel.text = NSLocalizedString(@"New Bouquet", @"Title of cell to add a bouquet");
+		return cell;
+	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
 
@@ -442,12 +460,60 @@ enum bouquetListTags
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [_bouquets count];
+	NSInteger count = _bouquets.count;
+	if(self.editing)
+		++count;
+	return count;
+}
+
+/* editing style */
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(self.editing)
+	{
+		if(indexPath.row == (NSInteger)_bouquets.count)
+			return UITableViewCellEditingStyleInsert;
+		return UITableViewCellEditingStyleDelete;
+	}
+	return UITableViewCellEditingStyleNone;
+}
+
+/* commit edit */
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(editingStyle == UITableViewCellEditingStyleInsert)
+	{
+		UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedString(@"Enter name of bouquet", @"Title of prompt requesting name for new bouquet")
+															 message:nil
+															delegate:self
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+													   okButtonTitle:@"OK"
+		];
+		alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
+		[alertView show];
+		[alertView release];
+	}
+	else
+	{
+		NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex:indexPath.row];
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRemoveBouquet:bouquet isRadio:_isRadio];
+		if(result.result)
+		{
+			[_bouquets removeObjectAtIndex:indexPath.row];
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+		}
+		else
+		{
+			[tableView reloadData];
+		}
+	}
 }
 
 /* movable? */
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if(indexPath.row == (NSInteger)_bouquets.count)
+		return NO;
 	return YES;
 }
 
@@ -466,8 +532,46 @@ enum bouquetListTags
 		// NOTE: just reloading the rows is not enough and results in a craash later on, so force-reload the whole table
 		[tableView reloadData];
 	}
-	NSLog(@"Result of move operation: %@", result.resulttext);
 	[bouquet release];
+}
+
+/* row bounds */
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+	if(proposedDestinationIndexPath.row >= (NSInteger)_bouquets.count)
+	{
+		proposedDestinationIndexPath = [NSIndexPath indexPathForRow:_bouquets.count-1 inSection:0];
+	}
+	return proposedDestinationIndexPath;
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate methods
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+#define promptView (UIPromptView *)alertView
+	if(buttonIndex == alertView.cancelButtonIndex)
+		return;
+	NSString *bouquetName = [promptView promptFieldAtIndex:0].text;
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddBouquet:bouquetName isRadio:_isRadio];
+	if(result.result)
+	{
+		// NOTE: we need to reload the bouquet list as we can't predict the name reliably
+		[self emptyData];
+
+		// Run this in our "temporary" queue
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+	}
+	else
+	{
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to create bouquet: %@", @"Creating a bouquet has failed"), result.resulttext]
+															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
 }
 
 #pragma mark -
