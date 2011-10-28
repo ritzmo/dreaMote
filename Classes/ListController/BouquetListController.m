@@ -35,9 +35,14 @@ enum bouquetListTags
 - (void)doneAction:(id)sender;
 
 /*!
- @brief
+ @brief Show context menu in editing mode.
  */
-- (void)longPress:(UILongPressGestureRecognizer *)gesture;
+- (void)contextMenu:(NSIndexPath *)indexPath;
+
+/*!
+ @brief Show servicelist
+ */
+- (void)showServicelist:(NSObject<ServiceProtocol> *)bouquet;
 @end
 
 @implementation BouquetListController
@@ -205,11 +210,6 @@ enum bouquetListTags
 	_tableView.sectionHeaderHeight = 0;
 	_tableView.allowsSelectionDuringEditing = YES;
 
-	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
-	longPressGesture.minimumPressDuration = 1;
-	[_tableView addGestureRecognizer:longPressGesture];
-	[longPressGesture release];
-
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRadio:) name:kReconnectNotification object:nil];
 }
@@ -274,12 +274,6 @@ enum bouquetListTags
 		[self.navigationController popViewControllerAnimated: YES];
 }
 
-/* long press gesture was executed */
-- (void)longPress:(UILongPressGestureRecognizer *)gesture
-{
-	//
-}
-
 /* did appear */
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -300,6 +294,85 @@ enum bouquetListTags
 			_serviceListController = nil;
 		}
 	}
+}
+
+- (void)contextMenu:(NSIndexPath *)indexPath
+{
+	if(IS_IPAD())
+	{
+		if(popoverController)
+		{
+			[popoverController dismissPopoverAnimated:YES];
+			SafeRetainAssign(popoverController, nil);
+		}
+		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
+													NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
+													NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
+													nil]
+																					andSelection:NSNotFound
+																						andTitle:nil];
+		[vc setDelegate:self];
+		vc.autoSubmit = YES;
+		vc.contentSizeForViewInPopover = CGSizeMake(160.0f, 130.0f);
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+		CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+		[popoverController presentPopoverFromRect:cellRect
+										   inView:_tableView
+						 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
+										 animated:YES];
+	}
+	else
+	{
+		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+														delegate:self
+											   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+										  destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
+											   otherButtonTitles:
+							 NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
+							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
+							 nil];
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[as showInView:self.view];
+		else
+			[as showFromTabBar:self.tabBarController.tabBar];
+		[as release];
+	}
+}
+
+- (void)showServicelist:(NSObject<ServiceProtocol> *)bouquet
+{
+	// Check for cached ServiceListController instance
+	if(_serviceListController == nil)
+		_serviceListController = [[ServiceListController alloc] init];
+	
+	// Redirect callback if we have one
+	if(_serviceDelegate != nil)
+		[_serviceListController setDelegate:_serviceDelegate];
+	_serviceListController.bouquet = bouquet;
+	
+	// We do not want to refresh bouquet list when we return
+	_refreshBouquets = NO;
+	
+	// when in split view go back to service list, else push it on the stack
+	if(!_isSplit)
+	{
+		// XXX: wtf?
+		if([self.navigationController.viewControllers containsObject:_serviceListController])
+		{
+#if IS_DEBUG()
+			NSMutableString* result = [[NSMutableString alloc] init];
+			for(NSObject* obj in self.navigationController.viewControllers)
+				[result appendString:[obj description]];
+			[NSException raise:@"ServiceListTwiceInNavigationStack" format:@"_serviceListController was twice in navigation stack: %@", result];
+			[result release]; // never reached, but to keep me from going crazy :)
+#endif
+			[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
+		}
+		[_serviceListController setEditing:self.editing animated:YES];
+		[self.navigationController pushViewController: _serviceListController animated:YES];
+	}
+	else
+		[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
 }
 
 /* fetch contents */
@@ -368,6 +441,67 @@ enum bouquetListTags
 #endif
 }
 
+#pragma mark -
+#pragma mark SimpleSingleSelectionListDelegate
+#pragma mark -
+
+- (void)itemSelected:(NSNumber *)newSelection
+{
+	[popoverController dismissPopoverAnimated:YES];
+	SafeRetainAssign(popoverController, nil);
+
+	switch([newSelection integerValue])
+	{
+		default:
+		case 0: /* open */
+		{
+			NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+			NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex:indexPath.row];
+			[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[self showServicelist:bouquet];
+			break;
+		}
+		case 1: /* rename */
+		{
+			UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedString(@"Enter new name of bouquet", @"Title of prompt requesting new name for an existing bouquet")
+																  message:nil
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+															okButtonTitle:@"OK"
+									   ];
+			alertView.tag = TAG_RENAME;
+			alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
+			[alertView show];
+			[alertView release];
+			break;
+		}
+	}
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else if(buttonIndex == actionSheet.destructiveButtonIndex)
+	{
+		// delete
+		NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+		[self tableView:_tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+	else
+	{
+		buttonIndex -= actionSheet.firstOtherButtonIndex;
+		[self itemSelected:[NSNumber numberWithInteger:buttonIndex]];
+	}
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
@@ -379,6 +513,7 @@ enum bouquetListTags
 	{
 		UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 		cell.textLabel.text = NSLocalizedString(@"New Bouquet", @"Title of cell to add a bouquet");
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
 		return cell;
 	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
@@ -411,7 +546,11 @@ enum bouquetListTags
 	if(!bouquet.valid)
 		return nil;
 
-	if(_bouquetDelegate)
+	if(self.editing)
+	{
+		[self contextMenu:indexPath];
+	}
+	else if(_bouquetDelegate)
 	{
 		tableView.allowsSelection = NO;
 		[_bouquetDelegate performSelector:@selector(bouquetSelected:) withObject:bouquet];
@@ -423,38 +562,7 @@ enum bouquetListTags
 	}
 	else if(!_serviceListController.reloading)
 	{
-		// Check for cached ServiceListController instance
-		if(_serviceListController == nil)
-			_serviceListController = [[ServiceListController alloc] init];
-
-		// Redirect callback if we have one
-		if(_serviceDelegate != nil)
-			[_serviceListController setDelegate:_serviceDelegate];
-		_serviceListController.bouquet = bouquet;
-
-		// We do not want to refresh bouquet list when we return
-		_refreshBouquets = NO;
-
-		// when in split view go back to service list, else push it on the stack
-		if(!_isSplit)
-		{
-			// XXX: wtf?
-			if([self.navigationController.viewControllers containsObject:_serviceListController])
-			{
-#if IS_DEBUG()
-				NSMutableString* result = [[NSMutableString alloc] init];
-				for(NSObject* obj in self.navigationController.viewControllers)
-					[result appendString:[obj description]];
-				[NSException raise:@"ServiceListTwiceInNavigationStack" format:@"_serviceListController was twice in navigation stack: %@", result];
-				[result release]; // never reached, but to keep me from going crazy :)
-#endif
-				[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
-			}
-			[_serviceListController setEditing:self.editing animated:YES];
-			[self.navigationController pushViewController: _serviceListController animated:YES];
-		}
-		else
-			[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
+		[self showServicelist:bouquet];
 	}
 	else
 		return nil;
@@ -499,6 +607,7 @@ enum bouquetListTags
 												   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 													   okButtonTitle:@"OK"
 		];
+		alertView.tag = TAG_ADD;
 		alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 		[alertView show];
 		[alertView release];
@@ -561,27 +670,66 @@ enum bouquetListTags
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+	NSIndexPath *indexPath = nil;
 #define promptView (UIPromptView *)alertView
-	if(buttonIndex == alertView.cancelButtonIndex)
-		return;
-	NSString *bouquetName = [promptView promptFieldAtIndex:0].text;
-	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddBouquet:bouquetName isRadio:_isRadio];
-	if(result.result)
+	if(alertView.tag == TAG_ADD)
 	{
-		// NOTE: we need to reload the bouquet list as we can't predict the name reliably
-		[self emptyData];
+		if(buttonIndex == alertView.cancelButtonIndex)
+			return;
+		NSString *bouquetName = [promptView promptFieldAtIndex:0].text;
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddBouquet:bouquetName isRadio:_isRadio];
+		if(result.result)
+		{
+			// NOTE: we need to reload the bouquet list as we can't predict the name reliably
+			[self emptyData];
 
-		// Run this in our "temporary" queue
-		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+			// Run this in our "temporary" queue
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+		}
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to create bouquet: %@", @"Creating a bouquet has failed"), result.resulttext]
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
 	}
-	else
+	else //if(alertView.tag == TAG_RENAME)
 	{
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-															  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to create bouquet: %@", @"Creating a bouquet has failed"), result.resulttext]
-															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alert show];
-		[alert release];
+		indexPath = [_tableView indexPathForSelectedRow];
+		NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex:indexPath.row];
+		NSString *bouquetName = [promptView promptFieldAtIndex:0].text;
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRenameBouquet:bouquet name:bouquetName isRadio:_isRadio];
+		if(result.result)
+		{
+			@try
+			{
+				bouquet.sname = bouquetName;
+				ServiceTableViewCell *cell = (ServiceTableViewCell *)[_tableView cellForRowAtIndexPath:indexPath];
+				// reset cell once
+				cell.service = nil;
+				cell.service = bouquet;
+			}
+			@catch (NSException *exception)
+			{
+#if IS_DEBUG()
+				NSLog(@"Unable to rename service internally (%@)... reloading", [exception description]);
+#endif
+				[self emptyData];
+				[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+			}
+		}
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to rename bouquet: %@", @"Renaming a bouquet has failed"), result.resulttext]
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
 	}
+	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -

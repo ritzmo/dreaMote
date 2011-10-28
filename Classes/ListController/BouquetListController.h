@@ -10,6 +10,7 @@
 
 #import "ReloadableListController.h"
 #import "ServiceSourceDelegate.h"
+#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 // Forward declaration
 @class CXMLDocument;
@@ -23,8 +24,11 @@
  Display list of known bouquets and start ServiceListController on selected ones.
  */
 @interface BouquetListController : ReloadableListController <UITableViewDelegate,
-													UITableViewDataSource, ServiceSourceDelegate,
-													UIAlertViewDelegate>
+															UITableViewDataSource,
+															ServiceSourceDelegate,
+															UIAlertViewDelegate,
+															UIActionSheetDelegate,
+															SimpleSingleSelectionListDelegate>
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
@@ -35,6 +39,7 @@
 	BOOL _isSplit; /*!< @brief Split mode? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
+	UIPopoverController *popoverController; /*!< @brief Popover */
 
 	CXMLDocument *_bouquetXMLDoc; /*!< @brief Bouquet XML. */
 }
