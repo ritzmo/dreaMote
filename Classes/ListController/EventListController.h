@@ -48,8 +48,9 @@
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	UIPopoverController *popoverController; /*!< @brief Popover controller */
 
+	NSCalendar *_gregorian; /*!< @brief Calendar instance. */
 	BOOL _useSections; /*!< @brief Use sections? */
-	NSTimeInterval _firstDay; /*!< @brief First day with events (00:00) if using sections / day. */
+	NSInteger _lastDay; /*!< @brief Last day with events if using sections / day. */
 	NSMutableArray *_sectionOffsets; /*!< @brief Array of first indices. */
 
 	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */

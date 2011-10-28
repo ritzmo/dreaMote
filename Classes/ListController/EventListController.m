@@ -60,6 +60,7 @@
 		_service = nil;
 		_serviceListController = nil;
 		_events = [[NSMutableArray array] retain];
+		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		_sectionOffsets = [[NSMutableArray array] retain];
 #if IS_FULL()
 		_filteredEvents = [[NSMutableArray alloc] init];
@@ -115,6 +116,7 @@
 	[_eventXMLDoc release];
 	[popoverController release];
 	[_zapListController release];
+	[_gregorian release];
 	[_sectionOffsets release];
 #if IS_FULL()
 	[_filteredEvents release];
@@ -218,7 +220,7 @@
 	NSInteger sectionCount = _sectionOffsets.count;
 #endif
 	[_sectionOffsets removeAllObjects];
-	_firstDay = 0;
+	_lastDay = NSNotFound;
 
 	// Clean event list
 	[_events removeAllObjects];
@@ -325,26 +327,20 @@
 	if(events.count && _useSections)
 	{
 		NSObject<EventProtocol> *firstEvent = [events objectAtIndex:0];
-		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:firstEvent.begin];
-		[components setHour:0];
-		NSDate *date = [gregorian dateFromComponents:components];
-		_firstDay = [date timeIntervalSince1970];
+		NSDateComponents *components = [_gregorian components:NSDayCalendarUnit fromDate:firstEvent.begin];
+		NSInteger lastDay = [components day];
 		[_sectionOffsets addObject:[NSNumber numberWithInteger:0]];
 
-		[gregorian release];
-
-		NSInteger numSections = 1; // we start with one section
 		NSInteger idx = 1; // and after the first element
 		for(NSObject<EventProtocol> *event in events)
 		{
 			if(event == firstEvent) continue;
 
-			NSTimeInterval secSinceFirst = [event.begin timeIntervalSince1970] - _firstDay;
-			while(secSinceFirst > numSections * ONEDAY) // NOTE: a while is probably not necessary, but we better make sure
+			NSInteger thisDay = [[_gregorian components:NSDayCalendarUnit fromDate:event.begin] day];
+			if(thisDay != lastDay)
 			{
+				lastDay = thisDay;
 				[_sectionOffsets addObject:[NSNumber numberWithInteger:idx]];
-				++numSections;
 			}
 			++idx;
 		}
@@ -448,14 +444,9 @@
 	{
 		if(idx == 0)
 		{
-			NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-			NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:event.begin];
-			[components setHour:0];
-			NSDate *date = [gregorian dateFromComponents:components];
-			_firstDay = [date timeIntervalSince1970];
+			NSDateComponents *components = [_gregorian components:NSDayCalendarUnit fromDate:event.begin];
+			_lastDay = [components day];
 			[_sectionOffsets addObject:[NSNumber numberWithInteger:0]];
-
-			[gregorian release];
 #if INCLUDE_FEATURE(Extra_Animation)
 			[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
 			skipAnimation = YES;
@@ -463,16 +454,15 @@
 		}
 		else
 		{
-			NSTimeInterval secSinceFirst = [event.begin timeIntervalSince1970] - _firstDay;
-			NSInteger numSections = _sectionOffsets.count;
-			while(secSinceFirst > numSections * ONEDAY) // NOTE: a while is probably not necessary, but we better make sure
+			NSInteger thisDay = [[_gregorian components:NSDayCalendarUnit fromDate:event.begin] day];
+			if(thisDay != _lastDay)
 			{
+				_lastDay = thisDay;
 				[_sectionOffsets addObject:[NSNumber numberWithInteger:idx]];
 #if INCLUDE_FEATURE(Extra_Animation)
-				[_tableView insertSections:[NSIndexSet indexSetWithIndex:numSections] withRowAnimation:UITableViewRowAnimationLeft];
+				[_tableView insertSections:[NSIndexSet indexSetWithIndex:_sectionOffsets.count-1] withRowAnimation:UITableViewRowAnimationLeft];
 				skipAnimation = YES;
 #endif
-				++numSections;
 			}
 		}
 #if INCLUDE_FEATURE(Extra_Animation)
@@ -579,7 +569,7 @@
 		if(tableView == _searchDisplay.searchResultsTableView) events = _filteredEvents;
 #endif
 		NSDateFormatter *format = [[NSDateFormatter alloc] init];
-		format.dateStyle = NSDateFormatterShortStyle;
+		format.dateStyle = NSDateFormatterMediumStyle;
 		format.timeStyle = NSDateFormatterNoStyle;
 		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
 		NSString *title = [format fuzzyDate:event.begin];

@@ -343,7 +343,7 @@
 
 	_useSections = [[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay];
 	[_sectionOffsets removeAllObjects];
-	_firstDay = 0;
+	_lastDay = NSNotFound;
 
 	[_events removeAllObjects];
 	[_tableView reloadData];
