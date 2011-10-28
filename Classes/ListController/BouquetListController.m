@@ -177,6 +177,7 @@ enum bouquetListTags
 {
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
+	[_serviceListController setEditing:editing animated:animated];
 	if(animated)
 	{
 		if(editing)
@@ -202,6 +203,7 @@ enum bouquetListTags
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kServiceCellHeight;
 	_tableView.sectionHeaderHeight = 0;
+	_tableView.allowsSelectionDuringEditing = YES;
 
 	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
 	longPressGesture.minimumPressDuration = 1;
@@ -396,6 +398,13 @@ enum bouquetListTags
 #endif
 		return nil;
 	}
+	if(indexPath.row >= (NSInteger)_bouquets.count)
+	{
+#if IS_DEBUG()
+		NSLog(@"Selection (%d) outside of bounds (%d) in BouquetListController. This does not have to be bad!", indexPath.row, _bouquets.count);
+#endif
+		return nil;
+	}
 
 	// See if we have a valid bouquet
 	NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex: indexPath.row];
@@ -441,6 +450,7 @@ enum bouquetListTags
 #endif
 				[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
 			}
+			[_serviceListController setEditing:self.editing animated:YES];
 			[self.navigationController pushViewController: _serviceListController animated:YES];
 		}
 		else
