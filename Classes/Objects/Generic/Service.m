@@ -12,7 +12,6 @@
 
 @implementation GenericService
 
-@synthesize sref = _sref;
 @synthesize sname = _sname;
 @synthesize piconName = _piconName;
 
@@ -22,6 +21,7 @@
 	{
 		_sref = [service.sref copy];
 		_sname = [service.sname copy];
+		_valid = service.valid;
 		_piconName = [service.piconName copy];
 	}
 
@@ -38,9 +38,26 @@
 	[super dealloc];
 }
 
+- (NSString *)sref
+{
+	return _sref;
+}
+
+- (void)setSref:(NSString *)sref
+{
+	if(sref == _sref) return;
+	SafeRetainAssign(_sref, sref);
+	_valid = YES;
+}
+
 - (BOOL)isValid
 {
-	return _sref != nil;
+	return _valid;
+}
+
+- (void)setValid:(BOOL)newValid
+{
+	_valid = newValid;
 }
 
 - (UIImage *)picon
