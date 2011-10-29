@@ -242,8 +242,12 @@ enum bouquetListTags
 - (void)viewWillAppear:(BOOL)animated
 {
 	// add button to navigation bar if radio mode supported
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode]
+	   && !(   [_bouquetDelegate isKindOfClass:[ServiceListController class]]
+			|| [_serviceDelegate isKindOfClass:[ServiceListController class]]))
+	{
 		self.navigationItem.leftBarButtonItem = _radioButton;
+	}
 	else
 		self.navigationItem.leftBarButtonItem = nil;
 
