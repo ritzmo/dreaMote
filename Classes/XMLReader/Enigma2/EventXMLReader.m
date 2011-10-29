@@ -203,10 +203,10 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 	{
 		if(!strncmp((const char *)localname, kEnigma2EventSref, kEnigma2EventSrefLength))
 		{
+			_currentEvent.service.sref = currentString;
 			// if service begins with 1:64: this is a marker
 			if([[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
 				[(GenericService *)_currentEvent.service setValid:NO];
-			_currentEvent.service.sref = currentString;
 		}
 		else if(!strncmp((const char *)localname, kEnigma2EventSname, kEnigma2EventSnameLength))
 		{

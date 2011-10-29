@@ -85,10 +85,10 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
+		currentService.sref = currentString;
 		// if service begins with 1:64: this is a marker and thus invalid
 		if([[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
 			[currentService setValid:NO];
-		currentService.sref = currentString;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
