@@ -797,10 +797,11 @@ enum serviceListTags
 	{
 		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
 
-		if(self.supportsNowNext)
-			return ((NSObject<EventProtocol> *)[_mainList objectAtIndex:indexPath.row]).service;
+		id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+		if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+			return ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 		else
-			return [_mainList objectAtIndex:indexPath.row];
+			return objectAtIndexPath;
 	}
 	return nil;
 }
@@ -817,10 +818,11 @@ enum serviceListTags
 	{
 		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionMiddle];
 
-		if(self.supportsNowNext)
-			return ((NSObject<EventProtocol> *)[_mainList objectAtIndex:indexPath.row]).service;
+		id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+		if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+			return ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 		else
-			return [_mainList objectAtIndex:indexPath.row];
+			return objectAtIndexPath;
 	}
 	return nil;
 }
@@ -836,10 +838,11 @@ enum serviceListTags
 
 	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex: indexPath.row];
+		service = objectAtIndexPath;
 
 	NSInteger selection = [newSelection integerValue];
 	if(selection != NSNotFound) // NOTE: this checks selection twice, but spares us from having to implement the default behavior twice
@@ -978,10 +981,11 @@ enum serviceListTags
 {
 	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex: indexPath.row];
+		service = objectAtIndexPath;
 
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddService:newService toBouquet:service inBouquet:_bouquet isRadio:_isRadio];
 	if(!result.result)
@@ -1033,10 +1037,11 @@ enum serviceListTags
 {
 	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex: indexPath.row];
+		service = objectAtIndexPath;
 
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddService:service toBouquet:newBouquet inBouquet:_bouquet isRadio:_isRadio];
 	if(!result.result)
@@ -1085,10 +1090,11 @@ enum serviceListTags
 {
 	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex: indexPath.row];
+		service = objectAtIndexPath;
 
 #define promptView (UIPromptView *)alertView
 	if(buttonIndex == alertView.cancelButtonIndex)
@@ -1165,7 +1171,7 @@ enum serviceListTags
 		_eventListController.serviceListController = self;
 
 		NSInteger idx = NSNotFound;
-		if(self.supportsNowNext)
+		if([[_mainList lastObject] conformsToProtocol:@protocol(EventProtocol)])
 		{
 			NSInteger i = 0;
 			for(NSObject<EventProtocol> *event in _mainList)
@@ -1343,7 +1349,7 @@ enum serviceListTags
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(self.supportsNowNext)
+	if([[_mainList objectAtIndex:indexPath.row] conformsToProtocol:@protocol(EventProtocol)])
 		return kServiceEventCellHeight;
 	return kServiceCellHeight;
 }
@@ -1352,16 +1358,15 @@ enum serviceListTags
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	UITableViewCell *cell = nil;
-	if(self.supportsNowNext)
+	NSObject *firstObject = [_mainList objectAtIndex:indexPath.row];
+	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
 
-		NSObject<EventProtocol> *event = [_mainList objectAtIndex:indexPath.row];
 		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
-		((ServiceEventTableViewCell *)cell).now = event;
+		((ServiceEventTableViewCell *)cell).now = (NSObject<EventProtocol> *)firstObject;
 		@try {
-			event = [_subList objectAtIndex:indexPath.row];
-			[(ServiceEventTableViewCell *)cell setNext:event];
+			((ServiceEventTableViewCell *)cell).next = [_subList objectAtIndex:indexPath.row];
 		}
 		@catch (NSException * e) {
 			[(ServiceEventTableViewCell *)cell setNext:nil];
@@ -1390,10 +1395,11 @@ enum serviceListTags
 	}
 
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex: indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex: indexPath.row];
+		service = objectAtIndexPath;
 
 	// Check for invalid service
 	if(!service || (!self.editing && !service.valid))
@@ -1469,16 +1475,18 @@ enum serviceListTags
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex:indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex: indexPath.row];
+	const BOOL isNowNext = [objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)];
+	if(isNowNext)
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex:indexPath.row];
+		service = objectAtIndexPath;
 
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRemoveService:service fromBouquet:_bouquet isRadio:_isRadio];
 	if(result.result)
 	{
 		[_mainList removeObjectAtIndex:indexPath.row];
-		if(self.supportsNowNext)
+		if(isNowNext)
 			[_subList removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
 	}
@@ -1508,24 +1516,25 @@ enum serviceListTags
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
 	NSObject<ServiceProtocol> *service = nil;
-	if(self.supportsNowNext)
-		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex:sourceIndexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex:sourceIndexPath.row];
+	const BOOL isNowNext = [objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)];
+	if(isNowNext)
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		service = [_mainList objectAtIndex:sourceIndexPath.row];
+		service = objectAtIndexPath;
 
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorMoveService:service toPosition:destinationIndexPath.row inBouquet:_bouquet isRadio:_isRadio];
 	if(result.result)
 	{
-		NSObject *elem = SafeReturn(service);
-		if(self.supportsNowNext)
+		SafeReturn(objectAtIndexPath);
+		if(isNowNext)
 		{
-			elem = SafeReturn((NSObject<EventProtocol > *)[_subList objectAtIndex:sourceIndexPath.row]);
+			NSObject *elem = SafeReturn((NSObject<EventProtocol > *)[_subList objectAtIndex:sourceIndexPath.row]);
 			[_subList removeObjectAtIndex:sourceIndexPath.row];
 			[_subList insertObject:elem atIndex:destinationIndexPath.row];
-			elem = SafeReturn([_mainList objectAtIndex:sourceIndexPath.row]);
 		}
 		[_mainList removeObjectAtIndex:sourceIndexPath.row];
-		[_mainList insertObject:elem atIndex:destinationIndexPath.row];
+		[_mainList insertObject:objectAtIndexPath atIndex:destinationIndexPath.row];
 	}
 	else
 	{
@@ -1583,10 +1592,11 @@ enum serviceListTags
 	// get service
 	const CGPoint p = [gesture locationInView:_tableView];
 	NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:p];
-	if(self.supportsNowNext)
-		_service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex:indexPath.row]).service;
+	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		_service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		_service = [_mainList objectAtIndex:indexPath.row];
+		_service = objectAtIndexPath;
 
 	// Check for invalid service
 	if(!_service || !_service.valid)
