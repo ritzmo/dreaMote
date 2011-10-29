@@ -469,7 +469,7 @@ enum bouquetListTags
 		}
 		case 1: /* rename */
 		{
-			UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedString(@"Enter new name of bouquet", @"Title of prompt requesting new name for an existing bouquet")
+			UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedStringFromTable(@"Enter new name of bouquet", @"ServiceEditor", @"Title of prompt requesting new name for an existing bouquet")
 																  message:nil
 																 delegate:self
 														cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
@@ -518,7 +518,7 @@ enum bouquetListTags
 	if(indexPath.row == (NSInteger)_bouquets.count)
 	{
 		UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-		cell.textLabel.text = NSLocalizedString(@"New Bouquet", @"Title of cell to add a bouquet");
+		cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"ServiceEditor", @"Title of cell to add a bouquet");
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
 		return cell;
 	}
@@ -607,7 +607,7 @@ enum bouquetListTags
 {
 	if(editingStyle == UITableViewCellEditingStyleInsert)
 	{
-		UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedString(@"Enter name of bouquet", @"Title of prompt requesting name for new bouquet")
+		UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedStringFromTable(@"Enter name of bouquet", @"ServiceEditor", @"Title of prompt requesting name for new bouquet")
 															 message:nil
 															delegate:self
 												   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
@@ -695,7 +695,7 @@ enum bouquetListTags
 		else
 		{
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-																  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to create bouquet: %@", @"Creating a bouquet has failed"), result.resulttext]
+																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to create bouquet: %@", @"ServiceEditor", @"Creating a bouquet has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
 			[alert release];
@@ -729,7 +729,7 @@ enum bouquetListTags
 		else
 		{
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-																  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to rename bouquet: %@", @"Renaming a bouquet has failed"), result.resulttext]
+																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to rename bouquet: %@", @"ServiceEditor", @"Renaming a bouquet has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
 			[alert release];
