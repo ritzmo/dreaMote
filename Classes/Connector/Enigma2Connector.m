@@ -442,7 +442,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	if(isRadio)
 		sref = @"1:7:2:0:0:0:0:0:0:0:(type%20==%202)%20FROM%20PROVIDERS%20ORDER%20BY%20name";
 	else
-		sref = @"1:7:1:0:0:0:0:0:0:0:(type%20==%201)%20||%20(type%20==%2017)%20||%20(type%20==%20195)%20||%20(type%20==%2025)%20FROM%20PROVIDERS%20ORDER%20BY%20name";
+		sref = @"1:7:1:0:0:0:0:0:0:0:(type%20==%201)%20%7C%7C%20(type%20==%2017)%20%7C%7C%20(type%20==%20195)%20%7C%7C%20(type%20==%2025)%20FROM%20PROVIDERS%20ORDER%20BY%20name";
 
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
