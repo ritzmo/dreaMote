@@ -10,10 +10,20 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "Objects/ServiceProtocol.h"
+#import "ServiceListController.h"
 #import "UITableViewCell+EasyInit.h"
 
 #import "ServiceTableViewCell.h"
+
+#import <Objects/ServiceProtocol.h>
+#import <Objects/Generic/Result.h>
+#import <Objects/Generic/Service.h>
+
+enum bouquetListTags
+{
+	TAG_ADD = 99,
+	TAG_RENAME = 100,
+};
 
 @interface BouquetListController()
 /*!
@@ -351,6 +361,7 @@
 
 	if(_bouquetDelegate)
 	{
+		tableView.allowsSelection = NO;
 		[_bouquetDelegate performSelector:@selector(bouquetSelected:) withObject:bouquet];
 
 		if(IS_IPAD())

@@ -9,12 +9,13 @@
 #import <UIKit/UIKit.h>
 
 #import "ReloadableListController.h"
-#import "ServiceListController.h"
 #import "ServiceSourceDelegate.h"
 
 // Forward declaration
 @class CXMLDocument;
+@class ServiceListController;
 @protocol BouquetListDelegate;
+@protocol ServiceListDelegate;
 
 /*!
  @brief Bouquet list.
