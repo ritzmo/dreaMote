@@ -166,6 +166,10 @@ enum connectorFeatures {
 	 @brief Viable Service Editor interface.
 	 */
 	kFeaturesServiceEditor,
+	/*!
+	 @brief Get dedicated provider list.
+	 */
+	kFeaturesProviderList,
 };
 
 /*!
@@ -361,12 +365,23 @@ enum packageManagementList
 - (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
 
 /*!
+ @brief Fetch list of available Providers.
+
+ @param delegate Delegate to be called back.
+ @param isRadio Fetch radio providers?
+ @return Pointer to parsed CXMLDocument.
+ */
+@optional // kFeaturesProviderList
+- (CXMLDocument *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
+
+/*!
  @brief Request EPG of given Service from Receiver.
 
  @param delegate Delegate to be called back.
  @param service Service to fetch EPG of.
  @return Pointer to parsed CXMLDocument.
  */
+@required
 - (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service;
 
 /*!

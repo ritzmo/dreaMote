@@ -436,6 +436,22 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return doc;
 }
 
+- (CXMLDocument *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+{
+	NSString *sref = nil;
+	if(isRadio)
+		sref = @"1:7:2:0:0:0:0:0:0:0:(type%20==%202)%20FROM%20PROVIDERS%20ORDER%20BY%20name";
+	else
+		sref = @"1:7:1:0:0:0:0:0:0:0:(type%20==%201)%20||%20(type%20==%2017)%20||%20(type%20==%20195)%20||%20(type%20==%2025)%20FROM%20PROVIDERS%20ORDER%20BY%20name";
+
+	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
+
+	const BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
+	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	[streamReader autorelease];
+	return doc;
+}
+
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];

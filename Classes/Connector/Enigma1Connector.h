@@ -13,6 +13,14 @@
 
 #import <CXMLDocument.h>
 
+typedef enum
+{
+	CACHE_TYPE_TV = 0 << 0,
+	CACHE_TYPE_RADIO = 1 << 0,
+	CACHE_MASK_BOUQUET = 0 << 1,
+	CACHE_MASK_PROVIDER = 1 << 1,
+} cacheType;
+
 /*!
  @brief Connector for Enigma based STBs.
  */
@@ -28,7 +36,7 @@
 	 the Bouquet list so we have to cache this (already parsed) XML in memory.
 	*/
 	CXMLDocument *_cachedBouquetsXML;
-	BOOL _cacheIsRadio;
+	cacheType _cacheType;
 }
 
 @end

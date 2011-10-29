@@ -66,7 +66,8 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesSimpleRepeated) ||
 		(feature == kFeaturesCurrent) ||
 		(feature == kFeaturesTimerTitle) ||
-		(feature == kFeaturesTimerCleanup);
+		(feature == kFeaturesTimerCleanup) ||
+		(feature == kFeaturesProviderList);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -270,24 +271,26 @@ enum enigma1MessageTypes {
  </bouquet>
  </bouquets>
  */
-- (NSError *)maybeRefreshBouquetsXMLCache:(BOOL)isRadio
+- (NSError *)maybeRefreshBouquetsXMLCache:(cacheType)requestedCacheType
 {
 	@synchronized(self)
 	{
-		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1 || _cacheIsRadio != isRadio)
+		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1 || _cacheType != requestedCacheType)
 		{
 			NSInteger mode = 0;
-			if(isRadio)
+			if(requestedCacheType & CACHE_TYPE_RADIO)
 				mode = 1;
-			_cacheIsRadio = isRadio;
+			NSInteger submode = 4;
+			if(requestedCacheType & CACHE_MASK_PROVIDER)
+				submode = 3;
+			_cacheType = requestedCacheType;
 
-			[_cachedBouquetsXML release];
-			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=4", mode] relativeToURL:_baseAddress];
+			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=%d", mode, submode] relativeToURL:_baseAddress];
 			NSError *returnValue = nil;
 
 			const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
-			_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
-			[streamReader release];
+			SafeRetainAssign(_cachedBouquetsXML, [streamReader parseXMLFileAtURL:myURI parseError:&returnValue]);
+			[streamReader autorelease]; // delay release
 			return returnValue;
 		}
 	}
@@ -297,7 +300,7 @@ enum enigma1MessageTypes {
 - (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	[_bouquetsCacheLock lock];
-	NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
+	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 	if(error)
 	{
 		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
@@ -315,7 +318,7 @@ enum enigma1MessageTypes {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
-	[_cachedBouquetsXML retain]; // make sure that this is not deallocated while we run
+	SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run
 	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
@@ -334,7 +337,50 @@ enum enigma1MessageTypes {
 
 	[self indicateSuccess:delegate];
 	[_bouquetsCacheLock unlock];
-	return [_cachedBouquetsXML autorelease];
+	return _cachedBouquetsXML;
+}
+
+- (CXMLDocument *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+{
+	[_bouquetsCacheLock lock];
+	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_PROVIDER|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
+	if(error)
+	{
+		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: fakeService
+								waitUntilDone: NO];
+		[fakeService release];
+
+		[self indicateError:delegate error:error];
+		[_bouquetsCacheLock unlock];
+		return nil;
+	}
+
+	NSArray *resultNodes = nil;
+	NSUInteger parsedServicesCounter = 0;
+
+	SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run
+	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
+
+	for(CXMLElement *resultElement in resultNodes)
+	{
+		if(++parsedServicesCounter >= MAX_SERVICES)
+			break;
+
+		// A service in the xml represents a service, so create an instance of it.
+		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
+
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
+		[newService release];
+	}
+
+	[self indicateSuccess:delegate];
+	[_bouquetsCacheLock unlock];
+	return _cachedBouquetsXML;
 }
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -351,8 +397,10 @@ enum enigma1MessageTypes {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
+	// NOTE: we don't know if this is a request originating from the provider list or the bouquet list so just guess
+	cacheType thisType = CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV);
 	// if cache is valid for this request, read services
-	if(_cacheIsRadio == isRadio)
+	if(_cacheType == thisType)
 	{
 		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run
 		resultNodes = [bouquet nodesForXPath:@"service" error:nil];
@@ -360,7 +408,7 @@ enum enigma1MessageTypes {
 
 	if(!resultNodes || ![resultNodes count])
 	{
-		NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
+		NSError *error = [self maybeRefreshBouquetsXMLCache:thisType];
 		if(error)
 		{
 			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
