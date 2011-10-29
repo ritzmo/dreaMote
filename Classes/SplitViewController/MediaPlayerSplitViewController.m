@@ -99,4 +99,10 @@
 	[detailsController release];
 }
 
+- (void)viewDidUnload
+{
+	self.delegate = nil;
+	[super viewDidUnload];
+}
+
 @end
