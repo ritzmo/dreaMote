@@ -42,6 +42,12 @@ enum serviceListTags
 - (void)doneAction:(id)sender;
 
 /*!
+ @brief delete
+ Used if the bouquet is actually an alternative service which is supposed to be removed.
+ */
+- (void)deleteAction:(id)sender;
+
+/*!
  @brief Should zap?
  */
 - (void)zapAction:(UILongPressGestureRecognizer *)gesture;
@@ -164,10 +170,15 @@ enum serviceListTags
 		self.popoverZapController = nil;
 	}
 
+	_tableView.allowsSelection = _tableView.allowsSelectionDuringEditing = YES;
 	if([_bouquet.sref hasPrefix:@"1:7:0:"])
 	{
 		self.editButtonItem.enabled = NO;
 		[self setEditing:NO animated:YES];
+	}
+	else if([_bouquet.sref hasPrefix:@"1:134:"])
+	{
+		_tableView.allowsSelection = _tableView.allowsSelectionDuringEditing = NO;
 	}
 	else
 		self.editButtonItem.enabled = YES;
@@ -380,7 +391,6 @@ enum serviceListTags
 	if(_delegate == nil)
 	{
 		_multiEpgButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
-		self.navigationItem.rightBarButtonItem = _multiEpgButton;
 	}
 	// show "done" button if in delegate and single bouquet mode
 	else
@@ -404,7 +414,12 @@ enum serviceListTags
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.sectionHeaderHeight = 0;
-	_tableView.allowsSelectionDuringEditing = YES;
+	if([_bouquet.sref hasPrefix:@"1:134:"])
+	{
+		_tableView.allowsSelection = _tableView.allowsSelectionDuringEditing = NO;
+	}
+	else
+		_tableView.allowsSelectionDuringEditing = YES;
 	if(self.editing)
 		[_tableView setEditing:YES animated:NO];
 
@@ -434,19 +449,28 @@ enum serviceListTags
 /* cancel in delegate mode */
 - (void)doneAction:(id)sender
 {
-	if(_delegate == nil) return;
-
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
+	else if(_delegate)
 		[self.navigationController popToViewController:_delegate animated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
+}
+
+/* delete alternatives */
+- (void)deleteAction:(id)sender
+{
+	if(_delegate && [_delegate respondsToSelector:@selector(removeAlternatives:)])
+		[_delegate removeAlternatives:_bouquet];
+	[self doneAction:nil];
 }
 
 - (void)configureRightBarButtonItem:(BOOL)animated forOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	UIBarButtonItem *singleButton = nil;
+	UIBarButtonItem *firstButton = nil;
+	UIBarButtonItem *secondButton = nil;
 
-	if(_delegate == nil &&YES) // TODO: check purchase
+	if(_delegate == nil && YES) // TODO: check purchase
 	{
 		BOOL showButton = NO;
 		// show in iPhone in single bouquet mode
@@ -472,43 +496,68 @@ enum serviceListTags
 		{
 			if(_multiEpgButton)
 			{
-				NSArray *items = nil;
-				// iOS 5.0+
-				if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-				{
-					items = [[NSArray alloc] initWithObjects:self.editButtonItem, _multiEpgButton, nil];
-					[self.navigationItem setRightBarButtonItems:items animated:animated];
-				}
-				else
-				{
-					const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																									target:nil
-																									action:nil];
-					UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
-					items = [[NSArray alloc] initWithObjects:flexItem, _multiEpgButton, self.editButtonItem, nil];
-					[toolbar setItems:items animated:NO];
-					UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-
-					[self.navigationItem setRightBarButtonItem:buttonItem animated:animated];
-
-					[flexItem release];
-					[buttonItem release];
-					[toolbar release];
-				}
-				[items release];
-				return;
+				firstButton = self.editButtonItem;
+				secondButton = _multiEpgButton;
 			}
 			else
-				singleButton = self.editButtonItem;
+				firstButton = self.editButtonItem;
 		}
 		else
-			singleButton = _multiEpgButton;
+			firstButton = _multiEpgButton;
+	}
+	else
+	{
+		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
+		if(isAlternative)
+		{
+			firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+																		target:self
+																		action:@selector(doneAction:)];
+			[firstButton autorelease];
+			secondButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
+															style:UIBarButtonItemStyleBordered														
+														   target:self
+														   action:@selector(deleteAction:)];
+			[secondButton autorelease];
+		}
+		else
+			firstButton = self.navigationItem.rightBarButtonItem;
+	}
 
+	if(secondButton)
+	{
+		NSArray *items = nil;
 		// iOS 5.0+
 		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-			[self.navigationItem setRightBarButtonItems:((singleButton) ? [NSArray arrayWithObject:singleButton] : nil) animated:animated];
+		{
+			items = [[NSArray alloc] initWithObjects:firstButton, secondButton, nil];
+			[self.navigationItem setRightBarButtonItems:items animated:animated];
+		}
 		else
-			[self.navigationItem setRightBarButtonItem:singleButton animated:animated];
+		{
+			const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																							target:nil
+																							action:nil];
+			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+			items = [[NSArray alloc] initWithObjects:flexItem, secondButton, firstButton, nil];
+			[toolbar setItems:items animated:NO];
+			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+			[self.navigationItem setRightBarButtonItem:buttonItem animated:animated];
+
+			[flexItem release];
+			[buttonItem release];
+			[toolbar release];
+		}
+		[items release];
+	}
+	else
+	{
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			[self.navigationItem setRightBarButtonItems:((firstButton) ? [NSArray arrayWithObject:firstButton] : nil) animated:animated];
+		else
+			[self.navigationItem setRightBarButtonItem:firstButton animated:animated];
 	}
 }
 
@@ -798,7 +847,9 @@ enum serviceListTags
 		case 1: /* show alternatives */
 		{
 			ServiceListController *sl = [[ServiceListController alloc] init];
+			[sl setDelegate:self];
 			sl.bouquet = service;
+			[sl setEditing:YES animated:NO];
 
 			if(IS_IPAD())
 			{
@@ -810,6 +861,7 @@ enum serviceListTags
 			}
 			else
 				targetViewController = sl;
+			[_tableView deselectRowAtIndexPath:indexPath animated:YES]; // for simplicity, do not keep entry selected
 			break;
 		}
 		case 2: /* add to bouquet */
@@ -894,7 +946,35 @@ enum serviceListTags
 		[alert show];
 		[alert release];
 	}
+	else if(![service.sref hasPrefix:@"1:134:"])
+	{
+		// NOTE: reload service list to get the sref of the alternative service
+		[self emptyData];
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+		return;
+	}
 	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)removeAlternatives:(NSObject<ServiceProtocol> *)service
+{
+	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRemoveAlternatives:service inBouquet:_bouquet isRadio:_isRadio];
+	if(!result.result)
+	{
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to remove alternatives: %@", @"ServiceEditor", @"Removing alternatives failed"), result.resulttext]
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		[alert release];
+	}
+	else
+	{
+		// NOTE: we don't know which service reference the original service is going to have, so just reload everything
+		[self emptyData];
+		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+	}
 }
 
 #pragma mark -
@@ -1283,12 +1363,6 @@ enum serviceListTags
 	// Service Editor
 	else if(self.editing)
 	{
-		// no context menu when showing bouquets
-		if([_bouquet.sref hasPrefix:@"1:134:"])
-		{
-			[tableView deselectRowAtIndexPath:indexPath animated:YES];
-			return nil;
-		}
 		[self contextMenu:indexPath forService:service];
 	}
 	// Load events

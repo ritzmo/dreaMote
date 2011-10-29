@@ -41,6 +41,14 @@
  */
 - (void)serviceSelected: (NSObject<ServiceProtocol> *)newService;
 
+/*!
+ @brief Remove alternatives for current service.
+
+ @param service Service to remove alternatives for.
+ */
+@optional
+- (void)removeAlternatives:(NSObject<ServiceProtocol> *)service;
+
 @end
 
 
