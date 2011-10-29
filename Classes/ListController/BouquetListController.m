@@ -453,6 +453,12 @@ enum bouquetListTags
 	switch([newSelection integerValue])
 	{
 		default:
+		case NSNotFound: /* just deselect */
+		{
+			NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+			[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			break;
+		}
 		case 0: /* open */
 		{
 			NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
