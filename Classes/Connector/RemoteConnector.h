@@ -909,6 +909,16 @@ enum packageManagementList
 
 /*!
  @brief
+ @param service
+ @param bouquet
+ @param isRadio Work with radio boquets?
+ @return
+ */
+@optional // kFeaturesServiceEditor
+- (Result *)serviceEditorRemoveAlternatives:(NSObject<ServiceProtocol> *)service inBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+/*!
+ @brief
  @param name
  @param service
  @param bouquet
