@@ -34,6 +34,11 @@
 - (void)zapAction:(UILongPressGestureRecognizer *)gesture;
 
 /*!
+ @brief Handle right button.
+ */
+- (void)configureRightBarButtonItem:(BOOL)animated forOrientation:(UIInterfaceOrientation)interfaceOrientation;
+
+/*!
  @brief Popover Controller.
  */
 @property (nonatomic, retain) UIPopoverController *popoverController;
@@ -351,6 +356,76 @@
 		[self.navigationController popToViewController:_delegate animated:YES];
 }
 
+- (void)configureRightBarButtonItem:(BOOL)animated forOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	UIBarButtonItem *singleButton = nil;
+
+	if(_delegate == nil &&YES) // TODO: check purchase
+	{
+		BOOL showButton = NO;
+		// show in iPhone in single bouquet mode
+		if(IS_IPHONE())
+		{
+			const BOOL isSingleBouquet =
+			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
+			&& (
+				[RemoteConnectorObject isSingleBouquet] ||
+				![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
+			showButton = isSingleBouquet;
+		}
+		// and on iPad in portrait orientation
+		// NOTE: we do this for easy access, but the edit button here is flawed on in multi bouquet mode (which is forced on the iPad)
+		else
+			showButton = UIInterfaceOrientationIsPortrait(interfaceOrientation);
+
+		// and don't show it at all if unsupported by backend
+		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
+			showButton = NO;
+
+		if(showButton)
+		{
+			if(_multiEpgButton)
+			{
+				NSArray *items = nil;
+				// iOS 5.0+
+				if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+				{
+					items = [[NSArray alloc] initWithObjects:self.editButtonItem, _multiEpgButton, nil];
+					[self.navigationItem setRightBarButtonItems:items animated:animated];
+				}
+				else
+				{
+					const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																									target:nil
+																									action:nil];
+					UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+					items = [[NSArray alloc] initWithObjects:flexItem, _multiEpgButton, self.editButtonItem, nil];
+					[toolbar setItems:items animated:NO];
+					UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+					[self.navigationItem setRightBarButtonItem:buttonItem animated:animated];
+
+					[flexItem release];
+					[buttonItem release];
+					[toolbar release];
+				}
+				[items release];
+				return;
+			}
+			else
+				singleButton = self.editButtonItem;
+		}
+		else
+			singleButton = _multiEpgButton;
+
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			[self.navigationItem setRightBarButtonItems:((singleButton) ? [NSArray arrayWithObject:singleButton] : nil) animated:animated];
+		else
+			[self.navigationItem setRightBarButtonItem:singleButton animated:animated];
+	}
+}
+
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -379,45 +454,7 @@
 			self.popoverZapController = nil;
 		}
 	}
-	// NOTE: we might want to change behavior here and only show edit if in portrait on ipad because of the missing link with bouquet list
-	if(_delegate == nil && YES) // TODO: check purchase
-	{
-		if(_multiEpgButton)
-		{
-			NSArray *items = nil;
-			// iOS 5.0+
-			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-			{
-				items = [[NSArray alloc] initWithObjects:self.editButtonItem, _multiEpgButton, nil];
-				self.navigationItem.rightBarButtonItems = items;
-			}
-			else
-			{
-				const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																								target:nil
-																								action:nil];
-				UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
-				items = [[NSArray alloc] initWithObjects:flexItem, _multiEpgButton, self.editButtonItem, nil];
-				[toolbar setItems:items animated:NO];
-				UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-
-				self.navigationItem.rightBarButtonItem = buttonItem;
-
-				[flexItem release];
-				[buttonItem release];
-				[toolbar release];
-			}
-			[items release];
-		}
-		else
-		{
-			// iOS 5.0+
-			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-				self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject:self.editButtonItem];
-			else
-				self.navigationItem.rightBarButtonItem = self.editButtonItem;
-		}
-	}
+	[self configureRightBarButtonItem:NO forOrientation:self.interfaceOrientation];
 
 	/*!
 	 @brief See if we should refresh services
@@ -483,6 +520,18 @@
 		[self emptyData];
 	}
 	[super viewWillDisappear:animated];
+}
+
+/* will rotate */
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+#if IS_FULL()
+	if([_multiEPG.view superview])
+		[_multiEPG willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+#endif
+
+	[self configureRightBarButtonItem:YES forOrientation:toInterfaceOrientation];
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 /* did rotate */
@@ -990,7 +1039,7 @@
 #pragma mark -
 
 /* set delegate */
-- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate
+- (void)setDelegate: (id<ServiceListDelegate, NSCoding, UIAppearanceContainer>) delegate
 {
 	/*!
 	 @note We do not retain the target, this theoretically could be a problem but

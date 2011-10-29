@@ -51,7 +51,7 @@
 	NSObject<ServiceProtocol> *_service; /*!< @brief Selected Service (if executing a gesture, borrowed reference). */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
-	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
+	id<ServiceListDelegate, NSCoding, UIAppearanceContainer> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
