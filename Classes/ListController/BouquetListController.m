@@ -34,6 +34,10 @@ enum bouquetListTags
  */
 - (void)doneAction:(id)sender;
 
+- (void)showBouquets:(id)sender;
+- (void)showProvider:(id)sender;
+- (void)configureToolbar:(BOOL)animated;
+
 /*!
  @brief Show context menu in editing mode.
  */
@@ -62,6 +66,7 @@ enum bouquetListTags
 		_isRadio = NO;
 		_isSplit = NO;
 		_serviceListController = nil;
+		_listType = LIST_TYPE_BOUQUETS;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
 		{
@@ -166,8 +171,13 @@ enum bouquetListTags
 		[self viewWillAppear:NO];
 }
 
-- (void)resetRadio:(NSNotification *)note
+- (void)didReconnect:(NSNotification *)note
 {
+	_reloading = NO;
+	_listType = LIST_TYPE_BOUQUETS;
+	[self configureToolbar:NO];
+	[self setEditing:NO animated:NO];
+
 	// disable radio mode in case new connector does not support it
 	if(_isRadio)
 		[self switchRadio:nil];
@@ -211,14 +221,13 @@ enum bouquetListTags
 	_tableView.allowsSelectionDuringEditing = YES;
 
 	// listen to connection changes
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetRadio:) name:kReconnectNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 }
 
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_radioButton release];
-	_radioButton = nil;
+	SafeRetainAssign(_radioButton, nil);
 
 	[super viewDidUnload];
 }
@@ -261,6 +270,7 @@ enum bouquetListTags
 		NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
 		[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
+	[self configureToolbar:animated];
 
 	[super viewWillAppear: animated];
 }
@@ -375,11 +385,75 @@ enum bouquetListTags
 		[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
 }
 
+- (void)showBouquets:(id)sender
+{
+	_listType = LIST_TYPE_BOUQUETS;
+	_reloading = YES;
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+	[self emptyData];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+}
+
+- (void)showProvider:(id)sender
+{
+	_listType = LIST_TYPE_PROVIDER;
+	_reloading = YES;
+	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+	[self emptyData];
+	if(self.editing)
+		[self setEditing:NO animated:YES];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+}
+
+- (void)configureToolbar:(BOOL)animated
+{
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesProviderList])
+	{
+		const UIBarButtonItem *bouquetItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Bouquets", @"Bouquets button in bouquet list")
+																			  style:UIBarButtonItemStyleBordered
+																			 target:self
+																			 action:@selector(showBouquets:)];
+		const UIBarButtonItem *providerItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Provider", @"Provider button in bouquet list")
+																			   style:UIBarButtonItemStyleBordered
+																			  target:self
+																			  action:@selector(showProvider:)];
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+		NSArray *items = [[NSArray alloc] initWithObjects:bouquetItem, flexItem, providerItem, nil];
+		[self setToolbarItems:items animated:animated];
+		[self.navigationController setToolbarHidden:NO animated:animated];
+		[items release];
+		[flexItem release];
+		[providerItem release];
+		[bouquetItem release];
+	}
+	else
+	{
+		[self setToolbarItems:nil animated:animated];
+		[self.navigationController setToolbarHidden:YES animated:animated];
+	}
+}
+
 /* fetch contents */
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_bouquetXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchBouquets:self isRadio:_isRadio]);
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	if(_listType == LIST_TYPE_PROVIDER && [sharedRemoteConnector respondsToSelector:@selector(fetchProviders:isRadio:)])
+	{
+		SafeRetainAssign(_bouquetXMLDoc, [sharedRemoteConnector fetchProviders:self isRadio:_isRadio]);
+	}
+	else
+	{
+#if IS_DEBUG()
+		if(_listType == LIST_TYPE_PROVIDER)
+		{
+			NSLog(@"Provider list requested but sharedRemoteConnector (%@) does not respond to the respective selector...", [sharedRemoteConnector description]);
+		}
+#endif
+		SafeRetainAssign(_bouquetXMLDoc, [sharedRemoteConnector fetchBouquets:self isRadio:_isRadio]);
+	}
 }
 
 /* remove content data */

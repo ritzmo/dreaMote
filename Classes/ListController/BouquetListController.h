@@ -12,6 +12,12 @@
 #import "ServiceSourceDelegate.h"
 #import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
+typedef enum
+{
+	LIST_TYPE_BOUQUETS,
+	LIST_TYPE_PROVIDER,
+} bouquetListType;
+
 // Forward declaration
 @class CXMLDocument;
 @class ServiceListController;
@@ -36,6 +42,7 @@
 	id<BouquetListDelegate, NSCoding, UIAppearanceContainer> _bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
+	bouquetListType _listType; /*!< @brief Show bouquet or provider list? */
 	BOOL _isSplit; /*!< @brief Split mode? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
