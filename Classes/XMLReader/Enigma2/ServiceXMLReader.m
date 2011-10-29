@@ -9,7 +9,7 @@
 #import "ServiceXMLReader.h"
 
 #import "Constants.h"
-#import "../../Objects/Generic/Service.h"
+#import <Objects/Generic/Service.h>
 
 static const char *kEnigma2ServiceElement = "e2service";
 static const NSUInteger kEnigma2ServiceElementLength = 10;
@@ -85,9 +85,10 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
-		// if service begins with 1:64: this is a marker
-		if(![[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
-			currentService.sref = currentString;
+		// if service begins with 1:64: this is a marker and thus invalid
+		if([[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
+			[currentService setValid:NO];
+		currentService.sref = currentString;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{
