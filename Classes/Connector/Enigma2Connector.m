@@ -1238,7 +1238,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSString *sBouquetRef = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
 	// TODO: check if we need to move service afterwards, code is unclear
 	// TODO: check if we need sRefBefore
-	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&sName=%@&sBouquetRef=%@", [service.sref urlencode], [name urlencode], sBouquetRef];
+	NSString *relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/renameservice?sRef=%@&newName=%@&sBouquetRef=%@", [service.sref urlencode], [name urlencode], sBouquetRef];
 	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
