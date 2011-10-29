@@ -335,7 +335,9 @@ enum serviceListTags
 		_multiEpgButton.title = NSLocalizedString(@"Multi EPG", @"Multi EPG Button title");
 		_multiEPG.willReappear = NO;
 		[_multiEPG viewWillDisappear:YES];
-		[self.navigationController setToolbarHidden:YES animated:YES];
+		[self configureRightBarButtonItem:NO forOrientation:self.interfaceOrientation];
+		if(IS_IPAD())
+			[self.navigationController setToolbarHidden:YES animated:YES];
 		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
 		if(idxPath)
 			[_tableView deselectRowAtIndexPath:idxPath animated:NO];
@@ -348,6 +350,8 @@ enum serviceListTags
 		[_multiEPG viewWillAppear:YES];
 		self.view = _multiEPG.view;
 		[self setToolbarItems:_multiEPG.toolbarItems];
+		if(IS_IPHONE())
+			self.navigationItem.rightBarButtonItem = _multiEpgButton;
 		[self.navigationController setToolbarHidden:NO animated:YES];
 		self.mgSplitViewController.showsMasterInLandscape = NO;
 		[_multiEPG viewDidAppear:YES];
@@ -503,7 +507,7 @@ enum serviceListTags
 				firstButton = self.editButtonItem;
 				if(isIphone)
 				{
-					firstButton = self.editButtonItem;
+					self.navigationItem.rightBarButtonItem = nil; // this might be set to the _multiEpgButton, so unset first
 					const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																									target:nil
 																									action:nil];
@@ -547,7 +551,11 @@ enum serviceListTags
 			}
 		}
 		else
+		{
+			[self setToolbarItems:nil animated:YES];
+			[self.navigationController setToolbarHidden:YES animated:YES];
 			firstButton = self.navigationItem.rightBarButtonItem;
+		}
 	}
 
 	if(secondButton)
@@ -690,9 +698,9 @@ enum serviceListTags
 #if IS_FULL()
 	if([_multiEPG.view superview])
 		[_multiEPG willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	else
 #endif
-
-	[self configureRightBarButtonItem:YES forOrientation:toInterfaceOrientation];
+		[self configureRightBarButtonItem:YES forOrientation:toInterfaceOrientation];
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
