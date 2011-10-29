@@ -405,7 +405,7 @@ enum serviceListTags
 	// hide multi epg button if there is a delegate
 	if(_delegate == nil)
 	{
-		_multiEpgButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStylePlain target:self action:@selector(openMultiEPG:)];
+		_multiEpgButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStyleBordered target:self action:@selector(openMultiEPG:)];
 	}
 	// show "done" button if in delegate and single bouquet mode
 	else
@@ -487,21 +487,10 @@ enum serviceListTags
 
 	if(_delegate == nil && YES) // TODO: check purchase
 	{
-		BOOL showButton = NO;
-		// show in iPhone in single bouquet mode
-		if(IS_IPHONE())
-		{
-			const BOOL isSingleBouquet =
-			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
-			&& (
-				[RemoteConnectorObject isSingleBouquet] ||
-				![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
-			showButton = isSingleBouquet;
-		}
-		// and on iPad in portrait orientation
+		const BOOL isIphone = IS_IPHONE();
+		// show on iPhone or on iPad in portrait
 		// NOTE: we do this for easy access, but the edit button here is flawed on in multi bouquet mode (which is forced on the iPad)
-		else
-			showButton = UIInterfaceOrientationIsPortrait(interfaceOrientation);
+		BOOL showButton = isIphone || UIInterfaceOrientationIsPortrait(interfaceOrientation);
 
 		// and don't show it at all if unsupported by backend
 		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
@@ -512,13 +501,28 @@ enum serviceListTags
 			if(_multiEpgButton)
 			{
 				firstButton = self.editButtonItem;
-				secondButton = _multiEpgButton;
+				if(isIphone)
+				{
+					firstButton = self.editButtonItem;
+					const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																									target:nil
+																									action:nil];
+					[self setToolbarItems:[NSArray arrayWithObjects:flexItem, _multiEpgButton, nil] animated:YES];
+					[self.navigationController setToolbarHidden:NO animated:YES];
+					[flexItem release];
+				}
+				else
+					secondButton = _multiEpgButton;
 			}
 			else
 				firstButton = self.editButtonItem;
 		}
 		else
+		{
 			firstButton = _multiEpgButton;
+			[self setToolbarItems:nil animated:YES];
+			[self.navigationController setToolbarHidden:YES animated:YES];
+		}
 	}
 	else
 	{
@@ -595,8 +599,9 @@ enum serviceListTags
 				![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
 
 		// show radio button if in single bouquet mode and supported
-		if(isSingleBouquet &&
-			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode])
+		if(isSingleBouquet
+		   && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode]
+		   && ![_delegate isKindOfClass:[ServiceListController class]])
 		{
 			self.navigationItem.leftBarButtonItem = _radioButton;
 		}
@@ -859,6 +864,7 @@ enum serviceListTags
 		case 0: /* add alternative */
 		{
 			BouquetListController *bl = [[BouquetListController alloc] init];
+			bl.isRadio = _isRadio;
 			[bl setServiceDelegate:self];
 
 			if(IS_IPAD())
@@ -876,6 +882,7 @@ enum serviceListTags
 		case 1: /* show alternatives */
 		{
 			ServiceListController *sl = [[ServiceListController alloc] init];
+			sl.isRadio = _isRadio;
 			[sl setDelegate:self];
 			[sl setEditing:YES animated:NO];
 			sl.bouquet = service;
@@ -896,6 +903,7 @@ enum serviceListTags
 		case 2: /* add to bouquet */
 		{
 			BouquetListController *bl = [[BouquetListController alloc] init];
+			bl.isRadio = _isRadio;
 			bl.bouquetDelegate = self;
 
 			if(IS_IPAD())
@@ -946,7 +954,10 @@ enum serviceListTags
 		if(IS_IPAD())
 			[self presentModalViewController:targetViewController animated:YES];
 		else
+		{
+			[self.navigationController setToolbarHidden:YES animated:YES];
 			[self.navigationController pushViewController:targetViewController animated:YES];
+		}
 		[targetViewController release];
 	}
 }
