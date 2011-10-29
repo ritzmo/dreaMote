@@ -17,6 +17,7 @@
 #if IS_FULL()
 	#import "MultiEPGListController.h" /* MultiEPGDelegate */
 #endif
+#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 // Forward declarations
 @class EventListController;
@@ -41,6 +42,9 @@
 #if IS_FULL()
 													MultiEPGDelegate,
 #endif
+													SimpleSingleSelectionListDelegate,
+													UIActionSheetDelegate,
+													UIAlertViewDelegate,
 													MGSplitViewControllerDelegate>
 {
 @private

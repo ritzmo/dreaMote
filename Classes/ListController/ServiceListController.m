@@ -9,6 +9,7 @@
 #import "ServiceListController.h"
 
 #import "EventListController.h"
+#import "UIPromptView.h"
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
@@ -20,9 +21,21 @@
 #import <Objects/Generic/Result.h>
 #import <Objects/ServiceProtocol.h>
 
+enum serviceListTags
+{
+	TAG_MARKER = 99,
+	TAG_RENAME = 100,
+};
+
 @interface ServiceListController()
 - (void)fetchNowData;
 - (void)fetchNextData;
+
+/*!
+ @brief Show context menu in editing mode.
+ */
+- (void)contextMenu:(NSIndexPath *)indexPath forService:(NSObject<ServiceProtocol> *)service;
+
 /*!
  @brief done editing
  */
@@ -221,6 +234,64 @@
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
 }
 
+- (void)contextMenu:(NSIndexPath *)indexPath forService:(NSObject<ServiceProtocol> *)service
+{
+	// NOTE: we need an editable property to mark automated lists as immutable, or simpler: just make bouquets mutable
+	NSMutableArray *items = [NSMutableArray arrayWithObjects:
+							 NSLocalizedStringFromTable(@"Add Marker", @"ServiceEditor", @"Add new marker before this position"),
+							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename currently selected service"),
+							 nil];
+	if(service.valid)
+	{
+		[items insertObject:NSLocalizedStringFromTable(@"Add Alternative", @"ServiceEditor", @"Add new alternative service to currently selected service")
+					atIndex:0];
+		// NOTE: enigma2-specific!
+		if([service.sref hasPrefix:@"1:134:"])
+			[items insertObject:NSLocalizedStringFromTable(@"Show Alternatives", @"ServiceEditor", @"Show alternatives for selected service")
+						atIndex:1];
+	}
+
+	if(IS_IPAD())
+	{
+		if(popoverController)
+		{
+			[popoverController dismissPopoverAnimated:YES];
+			SafeRetainAssign(popoverController, nil);
+		}
+		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:items
+																					andSelection:NSNotFound
+																						andTitle:nil];
+		[vc setDelegate:self];
+		vc.autoSubmit = YES;
+		CGFloat viewHeight = (kUIRowHeight) * items.count + 20;
+		vc.contentSizeForViewInPopover = CGSizeMake(250.0f, viewHeight);
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+		CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+		[popoverController presentPopoverFromRect:cellRect
+										   inView:_tableView
+						 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
+										 animated:YES];
+	}
+	else
+	{
+		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+														delegate:self
+											   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+										  destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
+											   otherButtonTitles:nil];
+		for(NSString *text in items)
+		{
+			[as addButtonWithTitle:text];
+		}
+
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[as showInView:self.view];
+		else
+			[as showFromTabBar:self.tabBarController.tabBar];
+		[as release];
+	}
+}
+
 #if IS_FULL()
 /* show multi epg */
 - (void)openMultiEPG:(id)sender
@@ -319,6 +390,7 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.sectionHeaderHeight = 0;
+	_tableView.allowsSelectionDuringEditing = YES;
 	if(self.editing)
 		[_tableView setEditing:YES animated:NO];
 
@@ -656,6 +728,166 @@
 }
 
 #pragma mark -
+#pragma mark SimpleSingleSelectionListDelegate
+#pragma mark -
+
+- (void)itemSelected:(NSNumber *)newSelection
+{
+	[popoverController dismissPopoverAnimated:YES];
+	SafeRetainAssign(popoverController, nil);
+
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	NSObject<ServiceProtocol> *service = nil;
+	if(_supportsNowNext)
+		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	else
+		service = [_mainList objectAtIndex: indexPath.row];
+
+	NSInteger selection = [newSelection integerValue];
+	if(selection != NSNotFound) // NOTE: this checks selection twice, but spares us from having to implement the default behavior twice
+	{
+		if(service.valid)
+		{
+			if(selection > 0 && ![service.sref hasPrefix:@"1:134:"])
+				++selection;
+		}
+		else
+			selection += 2;
+	}
+
+	switch(selection)
+	{
+		default:
+		case NSNotFound: /* just deselect */
+		{
+			[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			break;
+		}
+		case 0: /* add alternative */
+		{
+			break;
+		}
+		case 1: /* show alternatives */
+		{
+			break;
+		}
+		case 2: /* add marker */
+		{
+			UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedStringFromTable(@"Enter title for marker", @"ServiceEditor", @"Title of prompt requesting name for a marker the user requested")
+																  message:nil
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+															okButtonTitle:@"OK"
+									   ];
+			alertView.tag = TAG_MARKER;
+			alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
+			[alertView show];
+			[alertView release];
+			break;
+		}
+		case 3: /* rename */
+		{
+			UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedStringFromTable(@"Enter new name", @"ServiceEditor",  @"Title of prompt requesting new name for an existing service")
+																  message:nil
+																 delegate:self
+														cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+															okButtonTitle:@"OK"
+									   ];
+			alertView.tag = TAG_RENAME;
+			alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
+			[alertView show];
+			[alertView release];
+
+			break;
+		}
+	}
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else if(buttonIndex == actionSheet.destructiveButtonIndex)
+	{
+		// delete
+		NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+		[self tableView:_tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+	else
+	{
+		buttonIndex -= actionSheet.firstOtherButtonIndex;
+		[self itemSelected:[NSNumber numberWithInteger:buttonIndex]];
+	}
+}
+
+#pragma mark -
+#pragma mark UIAlertViewDelegate methods
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	NSObject<ServiceProtocol> *service = nil;
+	if(_supportsNowNext)
+		service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
+	else
+		service = [_mainList objectAtIndex: indexPath.row];
+
+#define promptView (UIPromptView *)alertView
+	if(buttonIndex == alertView.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else if(alertView.tag == TAG_MARKER)
+	{
+		NSString *markerName = [promptView promptFieldAtIndex:0].text;
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddMarker:markerName beforeService:service inBouquet:_bouquet isRadio:_isRadio];
+		if(result.result)
+		{
+			// TODO: optimize
+			[self emptyData];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+		}
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to add marker: %@", @"ServiceEditor", @"Creating a marker has failed"), result.resulttext]
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	}
+	else //if(alertView.tag == TAG_RENAME)
+	{
+		NSString *serviceName = [promptView promptFieldAtIndex:0].text;
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRenameService:service name:serviceName inBouquet:_bouquet isRadio:_isRadio];
+		if(result.result)
+		{
+			// TODO: optimize
+			[self emptyData];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+		}
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to rename service: %@", @"ServiceEditor", @"Renaming a service has failed"), result.resulttext]
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+			[alert release];
+		}
+	}
+	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+#pragma mark -
 #pragma mark MultiEPGDelegate
 #pragma mark -
 #if IS_FULL()
@@ -812,7 +1044,7 @@
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(!_supportsNowNext) return;
+	if(!_supportsNowNext || self.editing) return;
 #if IS_DEBUG()
 	NSParameterAssert([_mainList count] > (NSUInteger)indexPath.row);
 #else
@@ -914,7 +1146,7 @@
 		service = [_mainList objectAtIndex: indexPath.row];
 
 	// Check for invalid service
-	if(!service || !service.valid)
+	if(!service || (!self.editing && !service.valid))
 		return nil;
 
 	// Callback mode
@@ -925,6 +1157,11 @@
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		else
 			[self.navigationController popToViewController: _delegate animated: YES];
+	}
+	// Service Editor
+	else if(self.editing)
+	{
+		[self contextMenu:indexPath forService:service];
 	}
 	// Load events
 	else
