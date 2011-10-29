@@ -175,6 +175,7 @@ enum bouquetListTags
 {
 	_reloading = NO;
 	_listType = LIST_TYPE_BOUQUETS;
+	self.editButtonItem.enabled = YES;
 	[self configureToolbar:NO];
 	[self setEditing:NO animated:NO];
 
@@ -190,18 +191,23 @@ enum bouquetListTags
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
+	BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
-	[_serviceListController setEditing:editing animated:animated];
-	if(animated)
+	if(editing || _listType == LIST_TYPE_BOUQUETS) // don't disable editing in subview when switching to providers
+		[_serviceListController setEditing:editing animated:animated];
+	if(wasEditing != editing)
 	{
-		if(editing)
-			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+		if(animated)
+		{
+			if(editing)
+				[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+			else
+				[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+		}
 		else
-			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+			[_tableView reloadData];
 	}
-	else
-		[_tableView reloadData];
 }
 
 /* layout */
@@ -388,6 +394,7 @@ enum bouquetListTags
 - (void)showBouquets:(id)sender
 {
 	_listType = LIST_TYPE_BOUQUETS;
+	self.editButtonItem.enabled = YES;
 	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
@@ -397,6 +404,7 @@ enum bouquetListTags
 - (void)showProvider:(id)sender
 {
 	_listType = LIST_TYPE_PROVIDER;
+	self.editButtonItem.enabled = NO;
 	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
