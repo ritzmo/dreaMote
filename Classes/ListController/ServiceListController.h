@@ -11,6 +11,7 @@
 #import "ReloadableListController.h"
 #import "NowNextSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
+#import "BouquetListController.h" /* BouquetListDelegate */
 #import "EventViewController.h"
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 #import "ServiceZapListController.h" /* ServiceZapListDelegate */
@@ -23,7 +24,26 @@
 @class EventListController;
 @class CXMLDocument;
 @protocol ServiceProtocol;
-@protocol ServiceListDelegate;
+
+
+
+/*!
+ @brief Delegate for ServiceListController.
+
+ Objects wanting to be called back by a ServiceListController need to implement this Protocol.
+ */
+@protocol ServiceListDelegate <NSObject>
+
+/*!
+ @brief Service was selected.
+
+ @param newService Service that was selected.
+ */
+- (void)serviceSelected: (NSObject<ServiceProtocol> *)newService;
+
+@end
+
+
 
 /*!
  @brief Service List.
@@ -45,6 +65,8 @@
 													SimpleSingleSelectionListDelegate,
 													UIActionSheetDelegate,
 													UIAlertViewDelegate,
+													ServiceListDelegate,
+													BouquetListDelegate,
 													MGSplitViewControllerDelegate>
 {
 @private
@@ -119,23 +141,5 @@
  @brief Currently reloading.
  */
 @property (nonatomic, readonly) BOOL reloading;
-
-@end
-
-
-
-/*!
- @brief Delegate for ServiceListController.
-
- Objects wanting to be called back by a ServiceListController need to implement this Protocol.
- */
-@protocol ServiceListDelegate <NSObject>
-
-/*!
- @brief Service was selected.
- 
- @param newService Service that was selected.
- */
-- (void)serviceSelected: (NSObject<ServiceProtocol> *)newService;
 
 @end
