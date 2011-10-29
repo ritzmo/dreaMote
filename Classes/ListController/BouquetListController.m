@@ -194,8 +194,8 @@ enum bouquetListTags
 	BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
-	if(editing || _listType == LIST_TYPE_BOUQUETS) // don't disable editing in subview when switching to providers
-		[_serviceListController setEditing:editing animated:animated];
+	[_serviceListController setEditing:editing animated:animated];
+
 	if(wasEditing != editing)
 	{
 		if(animated)
@@ -398,7 +398,6 @@ enum bouquetListTags
 - (void)showBouquets:(id)sender
 {
 	_listType = LIST_TYPE_BOUQUETS;
-	self.editButtonItem.enabled = YES;
 	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
@@ -408,12 +407,9 @@ enum bouquetListTags
 - (void)showProvider:(id)sender
 {
 	_listType = LIST_TYPE_PROVIDER;
-	self.editButtonItem.enabled = NO;
 	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
-	if(self.editing)
-		[self setEditing:NO animated:YES];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
@@ -612,6 +608,8 @@ enum bouquetListTags
 	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
+	if(_listType == LIST_TYPE_PROVIDER)
+		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	return cell;
 }
@@ -640,7 +638,7 @@ enum bouquetListTags
 	if(!bouquet.valid)
 		return nil;
 
-	if(self.editing)
+	if(self.editing && _listType == LIST_TYPE_BOUQUETS)
 	{
 		[self contextMenu:indexPath];
 	}
@@ -676,7 +674,7 @@ enum bouquetListTags
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	NSInteger count = _bouquets.count;
-	if(self.editing)
+	if(self.editing && _listType == LIST_TYPE_BOUQUETS)
 		++count;
 	return count;
 }
@@ -684,7 +682,7 @@ enum bouquetListTags
 /* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(self.editing)
+	if(self.editing && _listType == LIST_TYPE_BOUQUETS)
 	{
 		if(indexPath.row == (NSInteger)_bouquets.count)
 			return UITableViewCellEditingStyleInsert;
@@ -725,10 +723,18 @@ enum bouquetListTags
 	}
 }
 
+/* indentation */
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(_listType == LIST_TYPE_PROVIDER)
+		return NO;
+	return YES;
+}
+
 /* movable? */
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.row == (NSInteger)_bouquets.count)
+	if(indexPath.row == (NSInteger)_bouquets.count || _listType == LIST_TYPE_PROVIDER)
 		return NO;
 	return YES;
 }
