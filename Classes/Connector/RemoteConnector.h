@@ -876,11 +876,13 @@ enum packageManagementList
  @brief
  @param service
  @param name
+ @param bouquet
+ @param before
  @param isRadio Work with radio boquets?
  @return
  */
 @optional // kFeaturesServiceEditor
-- (Result *)serviceEditorRenameService:(NSObject<ServiceProtocol> *)service name:(NSString *)name inBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+- (Result *)serviceEditorRenameService:(NSObject<ServiceProtocol> *)service name:(NSString *)name inBouquet:(NSObject<ServiceProtocol> *)bouquet beforeService:(NSObject<ServiceProtocol> *)before isRadio:(BOOL)isRadio;
 
 /*!
  @brief Add service to a bouquet.
