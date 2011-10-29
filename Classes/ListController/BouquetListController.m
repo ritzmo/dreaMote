@@ -287,7 +287,10 @@ enum bouquetListTags
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	else
-		[self.navigationController popViewControllerAnimated: YES];
+	{
+		[self.navigationController setToolbarHidden:YES animated:YES];
+		[self.navigationController popViewControllerAnimated:YES];
+	}
 }
 
 /* did appear */
@@ -416,7 +419,8 @@ enum bouquetListTags
 
 - (void)configureToolbar:(BOOL)animated
 {
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesProviderList])
+	// NOTE: rather hackish way to hide access to providers, but good enough :)
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesProviderList] && ![_bouquetDelegate isKindOfClass:[ServiceListController class]])
 	{
 		const UIBarButtonItem *bouquetItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Bouquets", @"Bouquets button in bouquet list")
 																			  style:UIBarButtonItemStyleBordered
@@ -648,7 +652,10 @@ enum bouquetListTags
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		else
+		{
+			[self.navigationController setToolbarHidden:YES animated:YES];
 			[self.navigationController popToViewController:_bouquetDelegate animated: YES];
+		}
 	}
 	else if(!_serviceListController.reloading)
 	{
