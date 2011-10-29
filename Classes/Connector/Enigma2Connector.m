@@ -1244,12 +1244,12 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)serviceEditorAddService:(NSObject<ServiceProtocol> *)service toBouquet:(NSObject<ServiceProtocol> *)targetBouquet inBouquet:(NSObject<ServiceProtocol> *)parentBouquet isRadio:(BOOL)isRadio
 {
-	const BOOL isAlternative = ![service.sref hasPrefix:@"1:7:"];
+	const BOOL isAlternative = ![targetBouquet.sref hasPrefix:@"1:7:"];
 	NSString *relativeURL = nil;
 	if(isAlternative)
 	{
-		NSString *sCurrentRef = [self getServiceReferenceForBouquet:targetBouquet isRadio:isRadio];
-		relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/addservicetoalternative?sRef=%@&sName=%@&sBouquetRef=%@&sCurrentRef=%@&mode=%d", [service.sref urlencode], [parentBouquet.sref urlencode], sCurrentRef, isRadio ? MODE_RADIO : MODE_TV];
+		NSString *sBouquetRef = [self getServiceReferenceForBouquet:parentBouquet isRadio:isRadio];
+		relativeURL = [NSString stringWithFormat:@"/bouqueteditor/web/addservicetoalternative?sRef=%@&sName=%@&sCurrentRef=%@&sBouquetRef=%@&mode=%d", [service.sref urlencode], [service.sname urlencode], [targetBouquet.sref urlencode], sBouquetRef, isRadio ? MODE_RADIO : MODE_TV];
 	}
 	else
 	{
