@@ -1091,7 +1091,8 @@ enum serviceListTags
 	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
 	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
-	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+	const BOOL isNowNext = [objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)];
+	if(isNowNext)
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
 		service = objectAtIndexPath;
@@ -1123,7 +1124,16 @@ enum serviceListTags
 	else //if(alertView.tag == TAG_RENAME)
 	{
 		NSString *serviceName = [promptView promptFieldAtIndex:0].text;
-		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRenameService:service name:serviceName inBouquet:_bouquet isRadio:_isRadio];
+		NSObject<ServiceProtocol> *before = nil;
+		if(indexPath.row + 1 < (NSInteger)_mainList.count)
+		{
+			objectAtIndexPath = [_mainList objectAtIndex:indexPath.row + 1];
+			if(isNowNext)
+				before = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
+			else
+				before = objectAtIndexPath;
+		}
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRenameService:service name:serviceName inBouquet:_bouquet beforeService:before isRadio:_isRadio];
 		if(result.result)
 		{
 			// TODO: optimize
