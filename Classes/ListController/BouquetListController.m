@@ -704,6 +704,11 @@ enum bouquetListTags
 	else //if(alertView.tag == TAG_RENAME)
 	{
 		indexPath = [_tableView indexPathForSelectedRow];
+		if(buttonIndex == alertView.cancelButtonIndex)
+		{
+			[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
 		NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex:indexPath.row];
 		NSString *bouquetName = [promptView promptFieldAtIndex:0].text;
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRenameBouquet:bouquet name:bouquetName isRadio:_isRadio];
