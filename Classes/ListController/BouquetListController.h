@@ -32,8 +32,8 @@
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
-	id<ServiceListDelegate, NSCoding> _serviceDelegate; /*!< @brief Service Delegate. */
-	id<BouquetListDelegate, NSCoding> _bouquetDelegate; /*!< @brief Bouquet Delegate. */
+	id<ServiceListDelegate, NSCoding, UIAppearanceContainer> _serviceDelegate; /*!< @brief Service Delegate. */
+	id<BouquetListDelegate, NSCoding, UIAppearanceContainer> _bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	BOOL _isSplit; /*!< @brief Split mode? */
@@ -52,14 +52,14 @@
  
  @param delegate New delegate object.
  */
-- (void)setServiceDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
+- (void)setServiceDelegate: (id<ServiceListDelegate, NSCoding, UIAppearanceContainer>) delegate;
 
 
 
 /*!
  @brief Bouquet Delegate.
  */
-@property (nonatomic, assign) NSObject<BouquetListDelegate, NSCoding> *bouquetDelegate;
+@property (nonatomic, assign) NSObject<BouquetListDelegate, NSCoding, UIAppearanceContainer> *bouquetDelegate;
 
 /*!
  @brief Currently in radio mode?

@@ -735,7 +735,7 @@ enum bouquetListTags
 #pragma mark -
 
 /* set delegate */
-- (void)setServiceDelegate:(id<ServiceListDelegate, NSCoding>)delegate
+- (void)setServiceDelegate:(id<ServiceListDelegate, NSCoding, UIAppearanceContainer>)delegate
 {
 	/*!
 	 @note We do not retain the target, this theoretically could be a problem but
