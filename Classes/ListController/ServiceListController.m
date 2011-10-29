@@ -158,6 +158,7 @@ enum serviceListTags
 
 	// Free Caches and reload data
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
+	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	_refreshServices = NO;
@@ -370,7 +371,7 @@ enum serviceListTags
 	const BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
-	if(_supportsNowNext && wasEditing != editing)
+	if(_supportsNowNext && wasEditing != editing && !_reloading)
 	{
 		[self emptyData];
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
@@ -876,8 +877,8 @@ enum serviceListTags
 		{
 			ServiceListController *sl = [[ServiceListController alloc] init];
 			[sl setDelegate:self];
-			sl.bouquet = service;
 			[sl setEditing:YES animated:NO];
+			sl.bouquet = service;
 
 			if(IS_IPAD())
 			{
