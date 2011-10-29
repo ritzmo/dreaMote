@@ -304,13 +304,14 @@ enum serviceListTags
 	{
 		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
 														delegate:self
-											   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-										  destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
+											   cancelButtonTitle:nil
+										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
 											   otherButtonTitles:nil];
 		for(NSString *text in items)
 		{
 			[as addButtonWithTitle:text];
 		}
+		as.cancelButtonIndex = [as addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 
 		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
 			[as showInView:self.view];
@@ -532,6 +533,13 @@ enum serviceListTags
 														   target:self
 														   action:@selector(deleteAction:)];
 			[secondButton autorelease];
+
+			// on the iPhone we have the navigation item to geturn to the previous view, so no need for the done button in this clobbered view
+			if(IS_IPHONE())
+			{
+				firstButton = secondButton;
+				secondButton = nil;
+			}
 		}
 		else
 			firstButton = self.navigationItem.rightBarButtonItem;
@@ -1025,7 +1033,8 @@ enum serviceListTags
 {
 	if (buttonIndex == actionSheet.cancelButtonIndex)
 	{
-		// do nothing
+		NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else if(buttonIndex == actionSheet.destructiveButtonIndex)
 	{
@@ -1036,7 +1045,7 @@ enum serviceListTags
 	}
 	else
 	{
-		buttonIndex -= actionSheet.firstOtherButtonIndex;
+		//--buttonIndex; // needed if destructive button is present
 		[self itemSelected:[NSNumber numberWithInteger:buttonIndex]];
 	}
 }

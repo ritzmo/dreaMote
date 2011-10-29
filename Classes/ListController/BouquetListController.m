@@ -342,7 +342,7 @@ enum bouquetListTags
 		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
 														delegate:self
 											   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-										  destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
+										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
 											   otherButtonTitles:
 							 NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
 							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
@@ -575,7 +575,8 @@ enum bouquetListTags
 {
 	if (buttonIndex == actionSheet.cancelButtonIndex)
 	{
-		// do nothing
+		NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else if(buttonIndex == actionSheet.destructiveButtonIndex)
 	{
