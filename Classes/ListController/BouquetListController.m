@@ -194,7 +194,8 @@ enum bouquetListTags
 	BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
-	[_serviceListController setEditing:editing animated:animated];
+	if(IS_IPAD())
+		[_serviceListController setEditing:editing animated:animated];
 
 	if(wasEditing != editing)
 	{
