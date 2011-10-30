@@ -22,7 +22,9 @@
  Display list of known locations and start MovieListController on selected ones.
  */
 @interface LocationListController : ReloadableListController <UITableViewDelegate,
-													UITableViewDataSource, LocationSourceDelegate>
+															UITableViewDataSource,
+															UIAlertViewDelegate,
+															LocationSourceDelegate>
 {
 @private
 	NSMutableArray *_locations; /*!< @brief Location List. */
