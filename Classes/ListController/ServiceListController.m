@@ -512,7 +512,7 @@ enum serviceListTags
 																									target:nil
 																									action:nil];
 					[self setToolbarItems:[NSArray arrayWithObjects:flexItem, _multiEpgButton, nil] animated:YES];
-					[self.navigationController setToolbarHidden:NO animated:YES];
+					[self.navigationController setToolbarHidden:NO animated:animated];
 					[flexItem release];
 				}
 				else
@@ -524,8 +524,8 @@ enum serviceListTags
 		else
 		{
 			firstButton = _multiEpgButton;
-			[self setToolbarItems:nil animated:YES];
-			[self.navigationController setToolbarHidden:YES animated:YES];
+			[self setToolbarItems:nil animated:animated];
+			[self.navigationController setToolbarHidden:YES animated:animated];
 		}
 	}
 	else
@@ -552,8 +552,8 @@ enum serviceListTags
 		}
 		else
 		{
-			[self setToolbarItems:nil animated:YES];
-			[self.navigationController setToolbarHidden:YES animated:YES];
+			[self setToolbarItems:nil animated:animated];
+			[self.navigationController setToolbarHidden:YES animated:animated];
 			firstButton = self.navigationItem.rightBarButtonItem;
 		}
 	}
@@ -624,7 +624,6 @@ enum serviceListTags
 			self.popoverZapController = nil;
 		}
 	}
-	[self configureRightBarButtonItem:NO forOrientation:self.interfaceOrientation];
 
 	/*!
 	 @brief See if we should refresh services
@@ -669,7 +668,9 @@ enum serviceListTags
 		[self.navigationController setToolbarHidden:NO animated:YES];
 		[_multiEPG viewDidAppear:YES];
 	}
+	else
 #endif
+		[self configureRightBarButtonItem:NO forOrientation:self.interfaceOrientation];
 
 	_refreshServices = YES;
 	[super viewWillAppear: animated];
@@ -1349,6 +1350,8 @@ enum serviceListTags
 		evc.service = service;
 
 		_refreshServices = NO;
+		if(IS_IPHONE())
+			[self.navigationController setToolbarHidden:YES animated:YES];
 		[self.navigationController pushViewController:evc animated:YES];
 	}
 }
@@ -1455,6 +1458,8 @@ enum serviceListTags
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 		}
+		if(IS_IPHONE())
+			[self.navigationController setToolbarHidden:YES animated:YES];
 		[self.navigationController pushViewController:_eventListController animated:YES];
 	}
 	return indexPath;
