@@ -221,7 +221,10 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	else
 	{
 		const NSInteger offset = 3;
-		const CGRect imageRect = self.imageView.frame;
+		CGRect imageRect = self.imageView.frame;
+		if(self.editing)
+			imageRect.origin.x += kLeftMargin;
+		self.imageView.frame = imageRect;
 		const NSInteger leftMargin = (self.imageView.image) ? (imageRect.size.width + imageRect.origin.x + offset) : contentRect.origin.x + kLeftMargin;
 
 		// Base frame

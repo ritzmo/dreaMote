@@ -101,7 +101,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
 
-	const CGRect imageRect = self.imageView.frame;
+	CGRect imageRect = self.imageView.frame;
+	if(self.editing)
+		imageRect.origin.x += kLeftMargin;
+	self.imageView.frame = imageRect;
 	const NSInteger leftMargin = contentRect.origin.x + ((self.imageView.image) ? (imageRect.size.width + imageRect.origin.x + kTweenMargin) : kLeftMargin);
 	const CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, contentRect.size.height - 2);
 	_serviceNameLabel.frame = frame;
