@@ -119,9 +119,9 @@
 		DA51CEF5144ACBEE00C714ED /* SHKCustomShareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */; };
 		DA51CEF6144ACBEE00C714ED /* SHKCustomShareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */; };
 		DA51CEF7144ACBEE00C714ED /* SHKCustomShareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */; };
-		DA51CEF8144ACBEE00C714ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* Localizable.strings */; };
-		DA51CEF9144ACBEE00C714ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* Localizable.strings */; };
-		DA51CEFA144ACBEE00C714ED /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* Localizable.strings */; };
+		DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* ShareKit.strings */; };
+		DA51CEF9144ACBEE00C714ED /* ShareKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* ShareKit.strings */; };
+		DA51CEFA144ACBEE00C714ED /* ShareKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* ShareKit.strings */; };
 		DA51CEFB144ACBEE00C714ED /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE03144ACBED00C714ED /* Reachability.m */; };
 		DA51CEFC144ACBEE00C714ED /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE03144ACBED00C714ED /* Reachability.m */; };
 		DA51CEFD144ACBEE00C714ED /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE03144ACBED00C714ED /* Reachability.m */; };
@@ -293,12 +293,12 @@
 		DA51CFA3144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */; };
 		DA51CFA4144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */; };
 		DA51CFA5144ACBEE00C714ED /* SHKViewControllerWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */; };
-		DA529958144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DA529959144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DA52995A144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA529958144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA529959144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA52995A144AF6B00010429A /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA529957144AF6B00010429A /* EventKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DA681B0F13B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
 		DA681B1013B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
 		DA681B1113B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
@@ -319,11 +319,11 @@
 		DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
-		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
-		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DAC8BEB213B2009F00CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
-		DAC8BED713B200C500CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8BED713B200C500CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DAC8BED813B200C500CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BF5213B200F100CA00D9 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEF813B200F100CA00D9 /* 4-sided-arrow.png */; };
 		DAC8BF5313B200F100CA00D9 /* 4-sided-arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEF813B200F100CA00D9 /* 4-sided-arrow.png */; };
@@ -985,10 +985,10 @@
 		DAC8C4A313B2026800CA00D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */; };
 		DAC8C4A413B2026800CA00D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */; };
 		DAC8C4A513B2026800CA00D9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49B13B2026800CA00D9 /* CoreGraphics.framework */; };
-		DAC8C4A713B2026800CA00D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49C13B2026800CA00D9 /* iAd.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DAC8C4A913B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DAC8C4AA13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		DAC8C4AB13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DAC8C4A713B2026800CA00D9 /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49C13B2026800CA00D9 /* iAd.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DAC8C4A913B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DAC8C4AA13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DAC8C4AB13B2026800CA00D9 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49D13B2026800CA00D9 /* MessageUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DAC8C4AC13B2026800CA00D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */; };
 		DAC8C4AD13B2026800CA00D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */; };
 		DAC8C4AE13B2026800CA00D9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */; };
@@ -4374,7 +4374,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_STRICT_ALIASING = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4391,7 +4391,7 @@
 					TouchXML/Source,
 					LiteUnzip,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-all_load";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4411,7 +4411,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				GCC_STRICT_ALIASING = YES;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -4428,7 +4428,7 @@
 					TouchXML/Source,
 					LiteUnzip,
 				);
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-all_load";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

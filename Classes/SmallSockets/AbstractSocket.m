@@ -33,7 +33,6 @@
 #import "AbstractSocket.h"
 #import <fcntl.h>
 #import <netdb.h>
-#import <netinet/in.h>
 #import <sys/socket.h>
 #import <sys/time.h>
 #import <sys/types.h>

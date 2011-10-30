@@ -27,6 +27,7 @@
 //        
 
 #import <Foundation/Foundation.h>
+#import <netinet/in.h>
 
 // SMALLSOCKETS_VERSION is the version number of SmallSockets in binary-coded
 // decimal.  (ie; version 1.3.2 == 0x0132)

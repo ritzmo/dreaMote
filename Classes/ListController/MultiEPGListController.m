@@ -250,7 +250,7 @@
 - (void)backButtonPressed:(id)sender
 {
 	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]] : [_curBegin addTimeInterval:-[timeInterval floatValue]];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]];
 	self.curBegin = until;
 }
 
@@ -258,7 +258,7 @@
 - (void)forwardButtonPressed:(id)sender
 {
 	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]] : [_curBegin addTimeInterval:[timeInterval floatValue]];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
 	self.curBegin = until;
 }
 
@@ -345,7 +345,7 @@
 	{
 		NSDate *begin = SafeReturn(_curBegin);
 		NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-		NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]] : [_curBegin addTimeInterval:[timeInterval floatValue]];
+		NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
 		[_epgCache readEPGForTimeIntervalFrom:begin until:SafeReturn(until) to:SafeReturn(self)];
 	}
 
@@ -533,7 +533,7 @@
 
 	if(interval)
 	{
-		NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:interval] : [_curBegin addTimeInterval:interval];
+		NSDate *until = [_curBegin dateByAddingTimeInterval:interval];
 		self.curBegin = until;
 	}
 }

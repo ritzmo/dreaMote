@@ -118,7 +118,7 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
 	CGFloat topOffset = -_tableView.contentInset.top;
-	if(IS_IPHONE() && [UIDevice olderThanIos:5.0f] && [UIDevice newerThanIos:4.0f])
+	if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
 		topOffset += _searchBar.frame.size.height;
 	[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 #endif

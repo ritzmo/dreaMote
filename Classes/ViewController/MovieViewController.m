@@ -511,7 +511,7 @@
 			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
-			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: [_movie.time addTimeInterval: (NSTimeInterval)[_movie.length integerValue]]];
+			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: [_movie.time dateByAddingTimeInterval:[_movie.length doubleValue]]];
 			break;
 		case 6:
 		{

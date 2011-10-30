@@ -113,8 +113,7 @@
 {
 	if(_end == new)
 		return;
-	[_end release];
-	_end = [new retain];
+	SafeRetainAssign(_end, new);
 }
 
 - (NSDate *)begin
@@ -139,8 +138,7 @@
 {
 	if(_begin == new)
 		return;
-	[_begin release];
-	_begin = [new retain];
+	SafeRetainAssign(_begin, new);
 }
 
 - (NSString *)eit
@@ -202,8 +200,7 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[_timeString release];
-	_timeString = nil;
+	SafeRetainAssign(_timeString, nil);
 
 	// no begin, die quietly
 	if(self.begin == nil)
@@ -212,8 +209,7 @@
 		return;
 	}
 
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:[newDuration doubleValue]]);
 }
 
 - (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent

@@ -548,7 +548,7 @@ typedef enum
 	[*comps setMinute: [[line substringFromIndex: 2] integerValue]];
 	NSDate *end = [gregorian dateFromComponents: *comps];
 	if([newTimer.begin compare: end] == NSOrderedDescending)
-		end = [end addTimeInterval: 86400];
+		end = [end dateByAddingTimeInterval:86400];
 	newTimer.end = end;
 
 	// Determine state

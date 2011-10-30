@@ -509,16 +509,16 @@
 	{
 		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
 		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
-														  bannerContentSizeIdentifierPortrait,
-														  bannerContentSizeIdentifierLandscape,
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape,
 														  nil]];
 		if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 #ifdef __BOTTOM_AD__
 		// Banner at Bottom
@@ -541,11 +541,11 @@
 	{
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 		[UIView beginAnimations:@"fixupViews" context:nil];
 		if(_adBannerViewIsVisible)

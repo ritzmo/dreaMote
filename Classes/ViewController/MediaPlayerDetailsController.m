@@ -93,10 +93,7 @@
 
 	// start listening to background notification
 	// NOTE: needed by parent to hide action sheet when backgrounded
-	if([UIDevice runsIos4OrBetter])
-	{
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)viewDidUnload

@@ -56,8 +56,7 @@
 {
 	if(_title == new)
 		return;
-	[_title release];
-	_title = [new retain];
+	SafeRetainAssign(_title, new);
 }
 
 - (NSString *)location
@@ -108,8 +107,7 @@
 {
 	if(_service == new)
 		return;
-	[_service release];
-	_service = [new retain];
+	SafeRetainAssign(_service, new);
 }
 
 - (NSString *)sname
@@ -140,8 +138,7 @@
 {
 	if(_end == new)
 		return;
-	[_end release];
-	_end = [new retain];
+	SafeRetainAssign(_end, new);
 }
 
 - (NSDate *)begin
@@ -162,8 +159,7 @@
 {
 	if(_begin == new)
 		return;
-	[_begin release];
-	_begin = [new retain];
+	SafeRetainAssign(_begin, new);
 }
 
 - (NSString *)eit
@@ -320,38 +316,30 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[_timeString release];
-	_timeString = nil;
+	SafeRetainAssign(_timeString, nil);
 
-	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	SafeRetainAssign(_begin, [NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]]);
 	if(_duration != -1){
-		[_end release];
-		_end = [[_begin addTimeInterval: _duration] retain];
+		SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:_duration]);
 		_duration = -1;
 	}
 }
 
 - (void)setEndFromString: (NSString *)newEnd
 {
-	[_timeString release];
-	_timeString = nil;
-
-	[_end release];
-	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
+	SafeRetainAssign(_timeString, nil);
+	SafeRetainAssign(_end, [NSDate dateWithTimeIntervalSince1970:[newEnd doubleValue]]);
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[_timeString release];
-	_timeString = nil;
+	SafeRetainAssign(_timeString, nil);
 
 	if(_begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;
 	}
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:[newDuration doubleValue]]);
 }
 
 - (void)setSref: (NSString *)newSref

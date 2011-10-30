@@ -70,7 +70,7 @@
 			range.location = 1;
 			range.length = [rawDurationString length] - 2;
 			rawDurationString = [rawDurationString substringWithRange: range];
-			newEvent.end = [newEvent.begin addTimeInterval:[rawDurationString doubleValue] * 60.0];
+			newEvent.end = [newEvent.begin dateByAddingTimeInterval:[rawDurationString doubleValue] * 60.0];
 			break;
 		}
 

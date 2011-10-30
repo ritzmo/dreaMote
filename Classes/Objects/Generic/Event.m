@@ -74,29 +74,24 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[_timeString release];
-	_timeString = nil;
+	SafeRetainAssign(_timeString, nil);
 
-	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	SafeRetainAssign(_begin, [NSDate dateWithTimeIntervalSince1970:[newBegin doubleValue]]);
 	if(_duration != -1){
-		[_end release];
-		_end = [[_begin addTimeInterval: _duration] retain];
+		SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:_duration]);
 		_duration = -1;
 	}
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[_timeString release];
-	_timeString = nil;
+	SafeRetainAssign(_timeString, nil);
 
 	if(_begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;
 	}
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:[newDuration doubleValue]]);
 }
 
 - (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent

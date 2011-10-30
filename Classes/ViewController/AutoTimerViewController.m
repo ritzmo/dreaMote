@@ -511,7 +511,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	}
 
 	if(idxSet)
-		[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewScrollPositionMiddle];
+		[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -

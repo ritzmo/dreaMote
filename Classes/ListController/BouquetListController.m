@@ -450,6 +450,7 @@ enum bouquetListTags
 		[self.navigationController setToolbarHidden:NO animated:animated];
 		[items release];
 		[flexItem release];
+		[allItem release];
 		[providerItem release];
 		[bouquetItem release];
 	}

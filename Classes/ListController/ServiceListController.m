@@ -386,19 +386,16 @@ enum serviceListTags
 		}
 	}
 
-	if([UIDevice newerThanIos:3.2f])
+	UIGestureRecognizer *gestureRecognizer = nil;
+	for(UIGestureRecognizer *recognizer in _tableView.gestureRecognizers)
 	{
-		UIGestureRecognizer *gestureRecognizer = nil;
-		for(UIGestureRecognizer *recognizer in _tableView.gestureRecognizers)
+		if([recognizer isKindOfClass:[UILongPressGestureRecognizer class]])
 		{
-			if([recognizer isKindOfClass:[UILongPressGestureRecognizer class]])
-			{
-				gestureRecognizer = recognizer;
-				break;
-			}
+			gestureRecognizer = recognizer;
+			break;
 		}
-		gestureRecognizer.enabled = !editing;
 	}
+	gestureRecognizer.enabled = !editing;
 }
 
 /* layout */
@@ -447,15 +444,11 @@ enum serviceListTags
 	if(self.editing)
 		[_tableView setEditing:YES animated:NO];
 
-	// XXX: for simplicity only support this on iOS 3.2+
-	if([UIDevice newerThanIos:3.2f])
-	{
-		UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(zapAction:)];
-		longPressGesture.minimumPressDuration = 1;
-		longPressGesture.enabled = !self.editing;
-		[_tableView addGestureRecognizer:longPressGesture];
-		[longPressGesture release];
-	}
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(zapAction:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = !self.editing;
+	[_tableView addGestureRecognizer:longPressGesture];
+	[longPressGesture release];
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];

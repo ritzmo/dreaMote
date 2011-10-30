@@ -399,10 +399,8 @@
 	}
 	else if(section == 5)
 	{
-		NSUInteger rows = 2;
+		NSUInteger rows = 3;
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
-			++rows;
-		if([UIDevice runsIos4OrBetter])
 			++rows;
 #if IS_FULL()
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAutoTimer])
@@ -525,8 +523,6 @@
 				++row;
 #endif
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 1)
-				++row;
-			if(![UIDevice runsIos4OrBetter] && row > 3)
 				++row;
 
 			switch(row)

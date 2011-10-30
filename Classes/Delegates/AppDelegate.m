@@ -249,20 +249,11 @@ static const char *basename(const char *path)
 	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];
 
-	// don't prompt for rating if launched with url to avoid (possibly) showing two alerts
+	// don't prompt for rating if zip file is found to avoid (possibly) showing two alerts
 	BOOL promptForRating = YES;
 
-	// for some reason handleOpenURL did not get called in my tests on iOS prior to 4.0
-	// so we call it here manually… the worst thing that can happen is that the data
-	// gets parsed twice so we have a little more computation to do.
-	NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-	if(url && ![UIDevice runsIos4OrBetter])
-	{
-		[self application:application handleOpenURL:url];
-		promptForRating = NO;
-	}
 	// check for .zip files possibly containing picons
-	else if([self checkForPicons])
+	if([self checkForPicons])
 	{
 		promptForRating = NO;
 	}

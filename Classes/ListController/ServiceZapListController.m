@@ -69,10 +69,7 @@
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 	[zlc.actionSheet showFromTabBar:tabBar];
 
-	if([UIDevice runsIos4OrBetter])
-	{
-		[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
 	return [zlc autorelease];
 }

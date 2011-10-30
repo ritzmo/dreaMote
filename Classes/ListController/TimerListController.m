@@ -263,21 +263,12 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		_dist[i] = 0;
 	[_timers removeAllObjects];
 
-	/*!
-	 @note at least 3.2 has problems with repositioning the section titles, so only do a
-	 "pretty" reload on 4.0+
-	 */
 #if INCLUDE_FEATURE(Extra_Animation)
-	if([UIDevice runsIos4OrBetter])
-	{
-		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
-		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	}
-	else
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
 #endif
-	{
-		[_tableView reloadData];
-	}
 
 	SafeRetainAssign(_timerXMLDoc, nil);
 }
@@ -666,16 +657,16 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	{
 		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
 		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
-														  bannerContentSizeIdentifierPortrait,
-														  bannerContentSizeIdentifierLandscape,
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape,
 														  nil]];
 		if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 #ifdef __BOTTOM_AD__
 		// Banner at Bottom
@@ -698,11 +689,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	{
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 		[UIView beginAnimations:@"fixupViews" context:nil];
 		if(_adBannerViewIsVisible)
