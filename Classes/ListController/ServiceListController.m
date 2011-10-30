@@ -426,7 +426,7 @@ enum serviceListTags
 				![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesBouquets]);
 		if(isSingleBouquet)
 		{
-			UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+			UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																					target:self action:@selector(doneAction:)];
 			self.navigationItem.rightBarButtonItem = button;
 			[button release];
@@ -538,7 +538,7 @@ enum serviceListTags
 		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
 		if(isAlternative)
 		{
-			firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+			firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																		target:self
 																		action:@selector(doneAction:)];
 			[firstButton autorelease];
@@ -548,7 +548,7 @@ enum serviceListTags
 														   action:@selector(deleteAction:)];
 			[secondButton autorelease];
 
-			// on the iPhone we have the navigation item to geturn to the previous view, so no need for the done button in this clobbered view
+			// on the iPhone we have the navigation item to return to the previous view, so no need for the done button in this clobbered view
 			if(IS_IPHONE())
 			{
 				firstButton = secondButton;
@@ -1427,6 +1427,8 @@ enum serviceListTags
 	if(_delegate != nil)
 	{
 		tableView.allowsSelection = NO;
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
 		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];

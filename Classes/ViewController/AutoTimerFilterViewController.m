@@ -137,7 +137,7 @@
 						 action: @selector(cancelEdit:)];
 	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
 	[button release];

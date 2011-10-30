@@ -109,7 +109,7 @@
 {
 	if(_delegate)
 	{
-		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = button;
 		[button release];
@@ -288,6 +288,8 @@
 	// Callback mode
 	if(_delegate != nil)
 	{
+		tableView.allowsSelection = NO;
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		[_delegate performSelector:@selector(locationSelected:) withObject: location];
 
 		if(IS_IPAD())

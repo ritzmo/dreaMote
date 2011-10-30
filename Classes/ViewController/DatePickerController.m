@@ -130,7 +130,7 @@
 	[_datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview: _datePickerView];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 														target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
 	[button release];

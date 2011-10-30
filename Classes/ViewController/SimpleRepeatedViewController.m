@@ -126,7 +126,7 @@
 
 	if(IS_IPAD())
 	{
-		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
+		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = barButtonItem;
 		[barButtonItem release];
 	}

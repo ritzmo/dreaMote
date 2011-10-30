@@ -76,7 +76,7 @@
 	self.view = tableView;
 	[tableView release];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
 	[button release];

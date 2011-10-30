@@ -254,7 +254,7 @@ enum bouquetListTags
 
 	if(_serviceDelegate || _bouquetDelegate)
 	{
-		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = button;
 		[button release];
@@ -650,6 +650,7 @@ enum bouquetListTags
 	else if(_bouquetDelegate)
 	{
 		tableView.allowsSelection = NO;
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		[_bouquetDelegate performSelector:@selector(bouquetSelected:) withObject:bouquet];
 
 		if(IS_IPAD())

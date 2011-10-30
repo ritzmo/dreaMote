@@ -234,6 +234,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	tableView.allowsSelection = NO;
 }
 
 /* number of sections */
