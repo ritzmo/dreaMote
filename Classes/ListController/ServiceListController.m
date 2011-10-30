@@ -377,8 +377,13 @@ enum serviceListTags
 	[_tableView setEditing:editing animated:animated];
 	if(_supportsNowNext && wasEditing != editing && !_reloading)
 	{
-		[self emptyData];
-		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+		id anyObject = [_mainList lastObject];
+		const BOOL isNowNext = [anyObject conformsToProtocol:@protocol(EventProtocol)];
+		if(editing || !isNowNext)
+		{
+			[self emptyData];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+		}
 	}
 
 	if([UIDevice newerThanIos:3.2f])
