@@ -373,6 +373,14 @@ enum packageManagementList
  */
 @optional // kFeaturesProviderList
 - (CXMLDocument *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
+/*!
+ @brief Return service describing the 'All Services'-Bouquet.
+
+ @param isRadio Fetch radio bouquet?
+ @return Service object.
+ */
+@optional // kFeaturesProviderList
+- (NSObject<ServiceProtocol> *)allServicesBouquet:(BOOL)isRadio;
 
 /*!
  @brief Request EPG of given Service from Receiver.

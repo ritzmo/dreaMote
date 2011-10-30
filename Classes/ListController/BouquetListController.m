@@ -36,6 +36,7 @@ enum bouquetListTags
 
 - (void)showBouquets:(id)sender;
 - (void)showProvider:(id)sender;
+- (void)showAllServices:(id)sender;
 - (void)configureToolbar:(BOOL)animated;
 
 /*!
@@ -418,6 +419,12 @@ enum bouquetListTags
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
+- (void)showAllServices:(id)sender
+{
+	NSObject<ServiceProtocol> *bouquet = [[RemoteConnectorObject sharedRemoteConnector] allServicesBouquet:_isRadio];
+	[self showServicelist:bouquet];
+}
+
 - (void)configureToolbar:(BOOL)animated
 {
 	// NOTE: rather hackish way to hide access to providers, but good enough :)
@@ -431,10 +438,14 @@ enum bouquetListTags
 																			   style:UIBarButtonItemStyleBordered
 																			  target:self
 																			  action:@selector(showProvider:)];
+		const UIBarButtonItem *allItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"All", @"'All Services' button in bouquet list")
+																			   style:UIBarButtonItemStyleBordered
+																			  target:self
+																			  action:@selector(showAllServices:)];
 		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																						target:nil
 																						action:nil];
-		NSArray *items = [[NSArray alloc] initWithObjects:bouquetItem, flexItem, providerItem, nil];
+		NSArray *items = [[NSArray alloc] initWithObjects:bouquetItem, flexItem, providerItem, flexItem, allItem, nil];
 		[self setToolbarItems:items animated:animated];
 		[self.navigationController setToolbarHidden:NO animated:animated];
 		[items release];

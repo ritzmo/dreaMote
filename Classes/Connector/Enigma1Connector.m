@@ -34,6 +34,11 @@
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
+/*! @brief Virtual Service Reference for 'All TV Services'. */
+static NSString *enigmaAllServices = @"ALL_SERVICES_ENIGMA";
+/*! @brief Virtual Service Reference for 'All Radio Services'. */
+static NSString *enigmaAllRadioServices = @"ALL_RADIO_SERVICES_ENIGMA";
+
 enum enigma1MessageTypes {
 	kEnigma1MessageTypeInfo = 0,
 	kEnigma1MessageTypeWarning = 1,
@@ -283,6 +288,8 @@ enum enigma1MessageTypes {
 			NSInteger submode = 4;
 			if(requestedCacheType & CACHE_MASK_PROVIDER)
 				submode = 3;
+			else if(requestedCacheType & CACHE_MASK_ALL)
+				submode = 5;
 			_cacheType = requestedCacheType;
 
 			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=%d", mode, submode] relativeToURL:_baseAddress];
@@ -327,7 +334,7 @@ enum enigma1MessageTypes {
 			break;
 
 		// A service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
+		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode:(CXMLNode *)resultElement isBouquet:YES];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: newService
@@ -362,7 +369,7 @@ enum enigma1MessageTypes {
 	NSUInteger parsedServicesCounter = 0;
 
 	SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run
-	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
+	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/providers/provider" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -370,7 +377,7 @@ enum enigma1MessageTypes {
 			break;
 
 		// A service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
+		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode:(CXMLNode *)resultElement isBouquet:NO];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: newService
@@ -381,6 +388,17 @@ enum enigma1MessageTypes {
 	[self indicateSuccess:delegate];
 	[_bouquetsCacheLock unlock];
 	return _cachedBouquetsXML;
+}
+
+- (NSObject<ServiceProtocol> *)allServicesBouquet:(BOOL)isRadio
+{
+	GenericService *service = [[GenericService alloc] init];
+	service.sname = NSLocalizedString(@"All Services", @"Name of 'All Services'-Bouquet");
+	if(isRadio)
+		service.sref = enigmaAllRadioServices;
+	else
+		service.sref = enigmaAllServices;
+	return [service autorelease];
 }
 
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
@@ -397,8 +415,18 @@ enum enigma1MessageTypes {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
-	// NOTE: we don't know if this is a request originating from the provider list or the bouquet list so just guess
-	cacheType thisType = CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV);
+	// Gather information on the needed cache type
+	cacheType thisType = (isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV);
+	NSString *sref = bouquet.sref;
+	if(sref == enigmaAllServices || sref == enigmaAllRadioServices)
+	{
+		thisType |= CACHE_MASK_ALL;
+	}
+	else if([bouquet isKindOfClass:[EnigmaService class]])
+	{
+		thisType |= (((EnigmaService *)bouquet).isBouquet) ? CACHE_MASK_BOUQUET : CACHE_MASK_PROVIDER;
+	}
+
 	// if cache is valid for this request, read services
 	if(_cacheType == thisType)
 	{
@@ -423,9 +451,9 @@ enum enigma1MessageTypes {
 		}
 
 		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run (might be another cache than before)
-		resultNodes = [_cachedBouquetsXML nodesForXPath:
-						[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
-						error:nil];
+		NSString *tag = (thisType & CACHE_MASK_BOUQUET) ? @"bouquet" : ((thisType & CACHE_MASK_PROVIDER) ? @"provider" : @"unknown");
+		NSString *xpath = [NSString stringWithFormat: @"/%@s/%@[reference=\"%@\"]/service", tag, tag, bouquet.sref];
+		resultNodes = [_cachedBouquetsXML nodesForXPath:xpath error:nil];
 	}
 
 	for(CXMLElement *resultElement in resultNodes)

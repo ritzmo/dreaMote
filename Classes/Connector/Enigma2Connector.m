@@ -452,6 +452,17 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return doc;
 }
 
+- (NSObject<ServiceProtocol> *)allServicesBouquet:(BOOL)isRadio
+{
+	GenericService *service = [[GenericService alloc] init];
+	service.sname = NSLocalizedString(@"All Services", @"Name of 'All Services'-Bouquet");
+	if(isRadio)
+		service.sref = @"1:7:2:0:0:0:0:0:0:0:(type == 2) ORDER BY name";
+	else
+		service.sref = @"1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 195) || (type == 25) ORDER BY name";
+	return [service autorelease];
+}
+
 - (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];

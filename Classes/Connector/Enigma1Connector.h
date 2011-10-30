@@ -15,10 +15,11 @@
 
 typedef enum
 {
-	CACHE_TYPE_TV = 0 << 0,
-	CACHE_TYPE_RADIO = 1 << 0,
-	CACHE_MASK_BOUQUET = 0 << 1,
-	CACHE_MASK_PROVIDER = 1 << 1,
+	CACHE_TYPE_TV = 1<< 0,
+	CACHE_TYPE_RADIO = 1 << 1,
+	CACHE_MASK_BOUQUET = 1 << 2,
+	CACHE_MASK_PROVIDER = 1 << 3,
+	CACHE_MASK_ALL = 1 << 4,
 } cacheType;
 
 /*!
