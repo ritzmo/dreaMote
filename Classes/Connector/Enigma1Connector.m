@@ -54,6 +54,7 @@ enum enigma1MessageTypes {
 	return
 		(feature == kFeaturesRadioMode) ||
 		(feature == kFeaturesBouquets) ||
+		//(feature == kFeaturesProviderList) ||
 		(feature == kFeaturesStreaming) ||
 		(feature == kFeaturesGUIRestart) ||
 		(feature == kFeaturesRecordInfo) ||
@@ -71,8 +72,7 @@ enum enigma1MessageTypes {
 		(feature == kFeaturesSimpleRepeated) ||
 		(feature == kFeaturesCurrent) ||
 		(feature == kFeaturesTimerTitle) ||
-		(feature == kFeaturesTimerCleanup) ||
-		(feature == kFeaturesProviderList);
+		(feature == kFeaturesTimerCleanup);
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -451,8 +451,14 @@ enum enigma1MessageTypes {
 		}
 
 		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run (might be another cache than before)
-		NSString *tag = (thisType & CACHE_MASK_BOUQUET) ? @"bouquet" : ((thisType & CACHE_MASK_PROVIDER) ? @"provider" : @"unknown");
-		NSString *xpath = [NSString stringWithFormat: @"/%@s/%@[reference=\"%@\"]/service", tag, tag, bouquet.sref];
+		NSString *tag = (thisType & CACHE_MASK_BOUQUET) ? @"bouquet" : @"provider";
+		NSString *xpath = nil;
+		if(thisType & CACHE_MASK_BOUQUET)
+			xpath = [NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref];
+		else if(thisType & CACHE_MASK_PROVIDER)
+			xpath = [NSString stringWithFormat: @"/providers/provider[reference=\"%@\"]/service", bouquet.sref];
+		else
+			xpath = [NSString stringWithFormat: @"/unknowns/unknown/service", tag, tag, bouquet.sref];
 		resultNodes = [_cachedBouquetsXML nodesForXPath:xpath error:nil];
 	}
 
