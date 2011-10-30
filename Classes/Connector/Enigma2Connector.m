@@ -605,6 +605,18 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return doc;
 }
 
+- (Result *)addLocation:(NSString *)fullpath createFolder:(BOOL)createFolder
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/addlocation?dirname=%@&createFolder=%d", fullpath, createFolder ? 1 : 0];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
+- (Result *)delLocation:(NSString *)fullpath
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/removelocation?dirname=%@", fullpath];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
 - (CXMLDocument *)fetchMovielist:(NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	NSString *dirname = nil;

@@ -528,6 +528,25 @@ enum packageManagementList
 - (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 
 /*!
+ @brief Add a new location.
+
+ @param fullpath Path of the location.
+ @param createFolder Create the folder if it does not exist?
+ @return Valid result if location was added, invalid one and reason otherwise.
+ */
+@optional // kFeaturesRecordingLocations
+- (Result *)addLocation:(NSString *)fullpath createFolder:(BOOL)createFolder;
+
+/*!
+ @brief Remove an existing location (bookmark).
+ 
+ @param fullpath Bookmark to remove.
+ @return Valid result if location was removed, invalid one and reason otherwise.
+ */
+@optional // kFeaturesRecordingLocations
+- (Result *)delLocation:(NSString *)fullpath;
+
+/*!
  @brief Request Movielist from the Receiver.
 
  @param delegate Delegate to be called back.
