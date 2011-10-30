@@ -14,6 +14,8 @@
 
 @implementation EnigmaService
 
+@synthesize isBouquet = _isBouquet;
+
 - (NSString *)sref
 {
 	const NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
@@ -59,6 +61,16 @@
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 #endif
+}
+
+- (id)initWithNode:(CXMLNode *)node isBouquet:(BOOL)isBouquet
+{
+	if((self = [super init]))
+	{
+		_node = [node retain];
+		_isBouquet = isBouquet;
+	}
+	return self;
 }
 
 - (id)initWithNode: (CXMLNode *)node
