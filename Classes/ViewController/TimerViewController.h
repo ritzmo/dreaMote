@@ -107,12 +107,12 @@
 /*!
  @brief Timer.
  */
-@property (nonatomic, retain) NSObject<TimerProtocol> *timer;
+@property (nonatomic, strong) NSObject<TimerProtocol> *timer;
 
 /*!
  @brief Old Timer if editing existing one.
  */
-@property (nonatomic, retain) NSObject<TimerProtocol> *oldTimer;
+@property (nonatomic, strong) NSObject<TimerProtocol> *oldTimer;
 
 /*!
  @brief Are we creating a new Timer?
@@ -122,7 +122,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, retain) NSObject<TimerViewDelegate> *delegate;
+@property (nonatomic, strong) NSObject<TimerViewDelegate> *delegate;
 
 @end
 

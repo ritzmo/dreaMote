@@ -78,26 +78,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_auxiliary release];
-	[_begin release];
-	[_end release];
-	[_eit release];
-	[_file release];
-	[_title release];
-	[_tdescription release];
-	[_repeat release];
-	[_lifetime release];
-	[_priority release];
-	[_service release];
-	[_sname release];
-	[_sref release];
-	[_timeString release];
-	[_tid release];
-
-	[super dealloc];
-}
 
 - (NSString *)toString
 {
@@ -111,7 +91,6 @@
 								initWithCalendarIdentifier:NSGregorianCalendar];
 	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _begin];
 	const NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _end];
-	[gregorian release];
 
 	NSString *dayStr;
 	if(_hasRepeatBegin)

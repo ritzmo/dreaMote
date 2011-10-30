@@ -22,6 +22,8 @@
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
 
+#import <XMLReader/BaseXMLReader.h>
+
 enum bouquetListTags
 {
 	TAG_ADD = 99,
@@ -62,7 +64,7 @@ enum bouquetListTags
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Bouquets", @"Title of BouquetListController");
-		_bouquets = [[NSMutableArray array] retain];
+		_bouquets = [NSMutableArray array];
 		_refreshBouquets = YES;
 		_isRadio = NO;
 		_isSplit = NO;
@@ -83,13 +85,6 @@ enum bouquetListTags
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_bouquets release];
-	[_serviceListController release];
-	_serviceListController = nil;
-	[_bouquetXMLDoc release];
-	[_radioButton release];
-
-	[super dealloc];
 }
 
 /* getter of willReapper */
@@ -109,7 +104,6 @@ enum bouquetListTags
 {
 	if(!IS_IPAD())
 	{
-		[_serviceListController release];
 		_serviceListController = nil;
 	}
 
@@ -258,7 +252,6 @@ enum bouquetListTags
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = button;
-		[button release];
 	}
 	else
 	{
@@ -315,7 +308,6 @@ enum bouquetListTags
 
 		if(!IS_IPAD())
 		{
-			[_serviceListController release];
 			_serviceListController = nil;
 		}
 	}
@@ -360,7 +352,6 @@ enum bouquetListTags
 			[as showInView:self.view];
 		else
 			[as showFromTabBar:self.tabBarController.tabBar];
-		[as release];
 	}
 }
 
@@ -389,7 +380,7 @@ enum bouquetListTags
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"ServiceListTwiceInNavigationStack" format:@"_serviceListController was twice in navigation stack: %@", result];
-			[result release]; // never reached, but to keep me from going crazy :)
+			 // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
 		}
@@ -448,11 +439,6 @@ enum bouquetListTags
 		NSArray *items = [[NSArray alloc] initWithObjects:bouquetItem, flexItem, providerItem, flexItem, allItem, nil];
 		[self setToolbarItems:items animated:animated];
 		[self.navigationController setToolbarHidden:NO animated:animated];
-		[items release];
-		[flexItem release];
-		[allItem release];
-		[providerItem release];
-		[bouquetItem release];
 	}
 	else
 	{
@@ -468,7 +454,7 @@ enum bouquetListTags
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	if(_listType == LIST_TYPE_PROVIDER && [sharedRemoteConnector respondsToSelector:@selector(fetchProviders:isRadio:)])
 	{
-		SafeRetainAssign(_bouquetXMLDoc, [sharedRemoteConnector fetchProviders:self isRadio:_isRadio]);
+		SafeRetainAssign(_xmlReader, [sharedRemoteConnector fetchProviders:self isRadio:_isRadio]);
 	}
 	else
 	{
@@ -478,7 +464,7 @@ enum bouquetListTags
 			NSLog(@"Provider list requested but sharedRemoteConnector (%@) does not respond to the respective selector...", [sharedRemoteConnector description]);
 		}
 #endif
-		SafeRetainAssign(_bouquetXMLDoc, [sharedRemoteConnector fetchBouquets:self isRadio:_isRadio]);
+		SafeRetainAssign(_xmlReader, [sharedRemoteConnector fetchBouquets:self isRadio:_isRadio]);
 	}
 }
 
@@ -493,14 +479,14 @@ enum bouquetListTags
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_bouquetXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	_radioButton.enabled = YES;
 	// assume details will fail too if in split
@@ -512,10 +498,10 @@ enum bouquetListTags
 	}
 	else
 	{
-		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 }
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_radioButton.enabled = YES;
 	if(_isSplit)
@@ -524,7 +510,7 @@ enum bouquetListTags
 		if(idxPath)
 			[self tableView:_tableView willSelectRowAtIndexPath:idxPath];
 	}
-	[super dataSourceDelegate:dataSource finishedParsingDocument:document];
+	[super dataSourceDelegateFinishedParsingDocument:dataSource];
 }
 
 #pragma mark -
@@ -578,7 +564,6 @@ enum bouquetListTags
 			alertView.tag = TAG_RENAME;
 			alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 			[alertView show];
-			[alertView release];
 			break;
 		}
 	}
@@ -723,7 +708,6 @@ enum bouquetListTags
 		alertView.tag = TAG_ADD;
 		alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 		[alertView show];
-		[alertView release];
 	}
 	else
 	{
@@ -760,7 +744,7 @@ enum bouquetListTags
 /* do move */
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
-	NSObject<ServiceProtocol> *bouquet = [[_bouquets objectAtIndex:sourceIndexPath.row] retain];
+	NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex:sourceIndexPath.row];
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorMoveBouquet:bouquet toPosition:destinationIndexPath.row isRadio:_isRadio];
 	if(result.result)
 	{
@@ -772,7 +756,6 @@ enum bouquetListTags
 		// NOTE: just reloading the rows is not enough and results in a craash later on, so force-reload the whole table
 		[tableView reloadData];
 	}
-	[bouquet release];
 }
 
 /* row bounds */
@@ -813,7 +796,6 @@ enum bouquetListTags
 																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to create bouquet: %@", @"ServiceEditor", @"Creating a bouquet has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	else //if(alertView.tag == TAG_RENAME)
@@ -852,7 +834,6 @@ enum bouquetListTags
 																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to rename bouquet: %@", @"ServiceEditor", @"Renaming a bouquet has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	[_tableView deselectRowAtIndexPath:indexPath animated:YES];

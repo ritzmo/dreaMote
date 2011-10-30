@@ -57,17 +57,17 @@
 /*!
  @brief ???
  */
-@property (nonatomic, retain) NSString *auxiliary;
+@property (nonatomic, strong) NSString *auxiliary;
 
 /*!
  @brief ???
  */
-@property (nonatomic, retain) NSString *lifetime;
+@property (nonatomic, strong) NSString *lifetime;
 
 /*!
  @brief ???
  */
-@property (nonatomic, retain) NSString *file;
+@property (nonatomic, strong) NSString *file;
 
 /*!
  @brief ???
@@ -82,16 +82,16 @@
 /*!
  @brief ???
  */
-@property (nonatomic, retain) NSString *repeat;
+@property (nonatomic, strong) NSString *repeat;
 
 /*!
  @brief Priority.
  */
-@property (nonatomic, retain) NSString *priority;
+@property (nonatomic, strong) NSString *priority;
 
 /*!
  @brief Timer Id.
  */
-@property (nonatomic, retain) NSString *tid;
+@property (nonatomic, strong) NSString *tid;
 
 @end

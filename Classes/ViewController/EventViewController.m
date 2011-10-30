@@ -20,6 +20,8 @@
 #import "DisplayCell.h"
 #import "Constants.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 #if IS_FULL()
 	#import "AutoTimerViewController.h"
 #endif
@@ -34,7 +36,7 @@
  @param sender ui element
  */
 - (void)zapAction:(id)sender;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 @end
 
 @interface EventViewController(IMDb)
@@ -68,9 +70,9 @@
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		_event = nil;
 		_similarFetched = NO;
-		_similarEvents = [[NSMutableArray array] retain];
+		_similarEvents = [NSMutableArray array];
 		_isSearch = NO;
-		_eventXMLDoc = nil;
+		_xmlReader = nil;
 		self.hidesBottomBarWhenPushed = YES;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
@@ -90,7 +92,7 @@
 	eventViewController.event = newEvent;
 	eventViewController.service = newService;
 
-	return [eventViewController autorelease];
+	return eventViewController;
 }
 
 + (EventViewController *)withEvent: (NSObject<EventProtocol> *) newEvent
@@ -100,21 +102,9 @@
 	eventViewController.event = newEvent;
 	eventViewController.service = newEvent.service;
 
-	return [eventViewController autorelease];
+	return eventViewController;
 }
 
-- (void)dealloc
-{
-	[_event release];
-	[_service release];
-	[_similarEvents release];
-	[_dateFormatter release];
-	[_eventXMLDoc release];
-	[_summaryView release];
-	[_zapListController release];
-
-	[super dealloc];
-}
 
 - (NSObject<EventProtocol> *)event
 {
@@ -140,8 +130,7 @@
 								atScrollPosition: UITableViewScrollPositionTop
 								animated: NO];
 	
-	[_eventXMLDoc release];
-	_eventXMLDoc = nil;
+	_xmlReader = nil;
 }
 
 - (BOOL)search
@@ -171,12 +160,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
-	[zapButton release];
 }
 
 - (void)addTimer: (id)sender
@@ -194,7 +181,6 @@
 
 	TimerViewController *targetViewController = [TimerViewController newWithEventAndService: _event: _service];
 	[self.navigationController pushViewController: targetViewController animated: YES];
-	[targetViewController release];
 
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
 }
@@ -224,9 +210,8 @@
 
 	myTextView.text = text;
 
-	[text release];
 
-	return [myTextView autorelease];
+	return myTextView;
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
@@ -247,28 +232,28 @@
 
 - (void)fetchEvents
 {
-	CXMLDocument *newDocument = nil;
+	BaseXMLReader *newReader = nil;
 	@try {
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar:self event:_event];
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar:self event:_event];
 	}
 	@catch (NSException * e) {
 #if IS_DEBUG()
 		[e raise];
 #endif
 	}
-	SafeRetainAssign(_eventXMLDoc, newDocument);
+	_xmlReader = newReader;
 }
 
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// ignore error
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	//[(UITableView*)self.view reloadData];
 }
@@ -314,7 +299,6 @@
 														cancelButtonTitle:@"OK"
 														otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 }
@@ -637,8 +621,6 @@
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:controller animated:YES];
 
-	[eventDB release];
-	[controller release];
 }
 
 - (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
@@ -662,7 +644,6 @@
 	// NOTE: set this here so the edit button won't get screwed
 	avc.creatingNewTimer = YES;
 
-	[avc release];
 }
 
 #endif
@@ -686,9 +667,7 @@
 
 			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 			zlc.zapDelegate = self;
-			[popoverController release];
 			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
-			[zlc release];
 
 			[popoverController presentPopoverFromBarButtonItem:sender
 									  permittedArrowDirections:UIPopoverArrowDirectionUp
@@ -732,7 +711,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 		[ServiceZapListController openStream:streamingURL withAction:selectedAction];

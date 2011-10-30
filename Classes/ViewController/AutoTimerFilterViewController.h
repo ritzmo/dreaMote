@@ -29,7 +29,7 @@
 	UIBarButtonItem *_cancelButtonItem; /*!< @brief Cancel button. */
 
 	BOOL oldInclude; /*!< @brief Include state when loaded. */
-	NSString *oldText; /*!< @brief Filter string when loaded. */
+	NSString *__unsafe_unretained oldText; /*!< @brief Filter string when loaded. */
 }
 
 /*!
@@ -44,7 +44,7 @@
 /*!
  @brief Filter text.
  */
-@property (nonatomic, retain) NSString *currentText;
+@property (nonatomic, unsafe_unretained) NSString *currentText;
 
 /*!
  @brief Change Type.

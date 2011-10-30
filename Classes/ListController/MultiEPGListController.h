@@ -16,7 +16,7 @@
 #import "ServiceSourceDelegate.h"
 
 // forward declare
-@class CXMLDocument;
+@class BaseXMLReader;
 @protocol MultiEPGDelegate;
 @class MultiEPGHeaderView;
 
@@ -41,7 +41,7 @@
 	NSObject<MultiEPGDelegate> *_mepgDelegate;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief List of services. */
-	CXMLDocument *_serviceXMLDocument; /*!< @brief Current Service XML-Document. */
+	BaseXMLReader *_xmlReader; /*!< @brief Current Service XML-Document. */
 	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
 	MBProgressHUD *progressHUD; /*!< @brief Progress Hud. */
@@ -55,17 +55,17 @@
 /*!
  @brief Bouquet.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *bouquet;
 
 /*!
  @brief Current Begin.
  */
-@property (nonatomic, retain) NSDate *curBegin;
+@property (nonatomic, strong) NSDate *curBegin;
 
 /*!
  @brief MultiEPG Delegate.
  */
-@property (nonatomic, retain) NSObject<MultiEPGDelegate> *multiEpgDelegate;
+@property (nonatomic, strong) NSObject<MultiEPGDelegate> *multiEpgDelegate;
 
 /*!
  @brief View will reapper.

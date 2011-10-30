@@ -45,7 +45,7 @@
 {
 	SearchHistoryLengthEditorController *vc = [[SearchHistoryLengthEditorController alloc] init];
 	vc.length = length;
-	return [vc autorelease];
+	return vc;
 }
 
 /* layout */
@@ -62,7 +62,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	_lengthTextField = [[UITextField alloc] initWithFrame:CGRectZero];
 	
@@ -86,7 +85,6 @@
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */

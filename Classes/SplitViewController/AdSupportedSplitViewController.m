@@ -25,15 +25,6 @@
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
 
-- (void)dealloc
-{
-#if INCLUDE_FEATURE(Ads)
-	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
-	_adBannerView = nil;
-#endif
-	[super dealloc];
-}
 
 - (void)loadView
 {

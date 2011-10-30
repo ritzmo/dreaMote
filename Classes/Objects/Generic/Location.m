@@ -23,11 +23,5 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_fullpath release];
-
-	[super dealloc];
-}
 
 @end

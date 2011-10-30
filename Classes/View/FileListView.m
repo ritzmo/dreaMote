@@ -13,7 +13,9 @@
 #import "UITableViewCell+EasyInit.h"
 #import "PlayListCell.h"
 
-#import "Objects/FileProtocol.h"
+#import <Objects/FileProtocol.h>
+
+#import <XMLReader/BaseXMLReader.h>
 
 @interface FileListView()
 - (void)fetchData;
@@ -54,20 +56,11 @@
 	self.delegate = nil;
 	self.dataSource = nil;
 	_refreshHeaderView.delegate = nil;
-
-	SafeRetainAssign(_path, nil);
-	SafeRetainAssign(_files, nil);
-	SafeRetainAssign(_fileDelegate, nil);
-	SafeRetainAssign(_fileXMLDoc, nil);
-	SafeRetainAssign(_refreshHeaderView, nil);
-	SafeRetainAssign(_selected, nil);
-
-	[super dealloc];
 }
 
 - (NSString *)path
 {
-	return SafeReturn(_path);
+	return _path;
 }
 
 - (BOOL)isPlaylist
@@ -83,10 +76,10 @@
 
 - (NSMutableArray *)selectedFiles
 {
-	if(_selected) return SafeReturn(_selected);
+	if(_selected) return _selected;
 
 	_selected = [[NSMutableArray alloc] init];
-	return SafeReturn(_selected);
+	return _selected;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -112,7 +105,7 @@
 	[_files removeAllObjects];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	SafeRetainAssign(_fileXMLDoc, nil);
+	_xmlReader = nil;
 }
 
 - (void)setPath:(NSString *)new
@@ -132,13 +125,13 @@
 /* start download of file list */
 - (void)fetchData
 {
-	CXMLDocument *newDocument = nil;
+	BaseXMLReader *newReader = nil;
 	_reloading = YES;
 	if(self.isPlaylist)
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist:self];
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist:self];
 	else
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:_path];
-	SafeRetainAssign(_fileXMLDoc, newDocument);
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:_path];
+	_xmlReader = newReader;
 }
 
 /* select file by name */
@@ -221,7 +214,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
@@ -236,11 +229,10 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
@@ -325,7 +317,7 @@
 	}
 
 	// See if we have a valid file
-	NSObject<FileProtocol> *file = SafeReturn([_files objectAtIndex:indexPath.row]);
+	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
 	if(!file.valid)
 		return nil;
 	// if we're in playlist mode and we have a delegate call it back

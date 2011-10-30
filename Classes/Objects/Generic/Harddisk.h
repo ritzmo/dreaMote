@@ -18,8 +18,8 @@
 
 - (id)initWithModel:(NSString *)model andCapacity:(NSString *)capacity andFree:(NSString *)free;
 
-@property (nonatomic, retain) NSString *capacity;
-@property (nonatomic, retain) NSString *free;
-@property (nonatomic, retain) NSString *model;
+@property (nonatomic, strong) NSString *capacity;
+@property (nonatomic, strong) NSString *free;
+@property (nonatomic, strong) NSString *model;
 
 @end

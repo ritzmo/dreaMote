@@ -145,8 +145,6 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 {
     if(view.delegate == self) view.delegate = nil;
     [view resignFirstResponder];
-    [view release];
-    [super dealloc];
 }
 
 - (void)stopEditing

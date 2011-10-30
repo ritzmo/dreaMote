@@ -98,7 +98,7 @@
 /*!
  @brief AutoTimer.
  */
-@property (nonatomic, retain) AutoTimer *timer;
+@property (nonatomic, strong) AutoTimer *timer;
 
 /*!
  @brief Are we creating a new AutoTimer?
@@ -108,7 +108,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, retain) NSObject<AutoTimerViewDelegate> *delegate;
+@property (nonatomic, strong) NSObject<AutoTimerViewDelegate> *delegate;
 
 @end
 

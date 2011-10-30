@@ -18,7 +18,7 @@
 #endif
 
 // Forward Declarations...
-@class CXMLDocument;
+@class BaseXMLReader;
 
 /*!
  @brief Timer List.
@@ -46,7 +46,7 @@
 	BOOL _isSplit; /*!< @brief Split mode? */
 	UIBarButtonItem *_cleanupButton; /*!< @brief Cleanup button. */
 
-	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
+	BaseXMLReader *_xmlReader; /*!< @brief Current Timer XML Reader. */
 #if INCLUDE_FEATURE(Ads)
 @private
 	id _adBannerView;
@@ -57,12 +57,12 @@
 /*!
  @brief Timer List.
  */
-@property (nonatomic, retain) NSMutableArray *timers;
+@property (nonatomic, strong) NSMutableArray *timers;
 
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 /*!
  @brief Controlled by a split view controller?
@@ -72,7 +72,7 @@
 /*!
  @brief Timer View
  */
-@property (nonatomic, retain) IBOutlet TimerViewController *timerViewController;
+@property (nonatomic, strong) IBOutlet TimerViewController *timerViewController;
 
 /*!
  @breif View will reapper.

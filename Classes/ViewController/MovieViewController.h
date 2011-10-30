@@ -46,10 +46,10 @@
 /*!
  @brief Movie.
  */
-@property (nonatomic, retain) NSObject<MovieProtocol> *movie;
+@property (nonatomic, strong) NSObject<MovieProtocol> *movie;
 
 /*!
  @brief Movie List.
  */
-@property (nonatomic, retain) MovieListController *movieList;
+@property (nonatomic, strong) MovieListController *movieList;
 @end

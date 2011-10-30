@@ -12,8 +12,10 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
-#import "../Objects/Generic/Event.h"
-#import "../Objects/Generic/Service.h"
+#import <Objects/Generic/Event.h>
+#import <Objects/Generic/Service.h>
+
+#import <XMLReader/BaseXMLReader.h>
 
 #define kMaxRetries	10
 
@@ -41,14 +43,10 @@ static EPGCache *_sharedInstance = nil;
 
 + (EPGCache *)sharedInstance
 {
-	if(_sharedInstance == nil)
-	{
-		@synchronized(self)
-		{
-			if(_sharedInstance == nil)
-				_sharedInstance = [[EPGCache alloc] init];
-		}
-	}
+	static dispatch_once_t epgCacheSingletonToken;
+	dispatch_once(&epgCacheSingletonToken, ^{
+		_sharedInstance = [[EPGCache alloc] init];
+	});
 	return _sharedInstance;
 }
 
@@ -56,7 +54,7 @@ static EPGCache *_sharedInstance = nil;
 {
 	if((self = [super init]))
 	{
-		_databasePath = [[kEPGCachePath stringByExpandingTildeInPath] retain];
+		_databasePath = [kEPGCachePath stringByExpandingTildeInPath];
 		queue = [[NSOperationQueue alloc] init];
 		[queue setMaxConcurrentOperationCount:1];
 	}
@@ -65,24 +63,17 @@ static EPGCache *_sharedInstance = nil;
 
 - (void)dealloc
 {
-	SafeRetainAssign(_bouquet, nil);
-	SafeRetainAssign(_databasePath, nil);
-	SafeRetainAssign(_service, nil);
-	SafeRetainAssign(_serviceList, nil);
 	[queue cancelAllOperations];
-	SafeRetainAssign(queue, nil);
-
-	[super dealloc];
 }
 
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
 {
 	// check if delegate wants to be informated about errors
-	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
@@ -90,7 +81,7 @@ static EPGCache *_sharedInstance = nil;
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
-		[invocation setArgument:&error atIndex:4];
+		[invocation setArgument:&error atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
@@ -99,7 +90,7 @@ static EPGCache *_sharedInstance = nil;
 - (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
 {
 	// check if delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
 	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
 	{
@@ -163,31 +154,31 @@ static EPGCache *_sharedInstance = nil;
 	}
 	sqlite3_close(db);
 
-	return [newEvent autorelease];
+	return newEvent;
 }
 
 - (void)fetchServices
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	SafeRetainAssign(_currDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio]);
-	[pool release];
+	@autoreleasepool {
+		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio]);
+	}
 }
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	SafeRetainAssign(_service, [_serviceList lastObject]);
-	[_serviceList removeLastObject];
+	@autoreleasepool {
+		SafeRetainAssign(_service, [_serviceList lastObject]);
+		[_serviceList removeLastObject];
 
-	SafeRetainAssign(_currDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
-	[pool release];
+		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
+	}
 }
 
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 #if 0
 	// alert user
@@ -203,10 +194,10 @@ static EPGCache *_sharedInstance = nil;
 
 	// rollback just to be safe
 	sqlite3_exec(database, "ROLLBACK", 0, 0, 0);
-	[self dataSourceDelegate:dataSource finishedParsingDocument:document];
+	[self dataSourceDelegateFinishedParsingDocument:dataSource];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	NSUInteger count = [_serviceList count];
 	if(count)
@@ -263,7 +254,6 @@ static EPGCache *_sharedInstance = nil;
 	}
 	sqlite3_finalize(compiledStatement);
 
-	[copy release];
 }
 
 #pragma mark -
@@ -303,7 +293,6 @@ static EPGCache *_sharedInstance = nil;
 {
 	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(addEvent:) object:event];
 	[queue addOperation:operation];
-	[operation release];
 }
 
 /* start new transaction */
@@ -401,7 +390,6 @@ static EPGCache *_sharedInstance = nil;
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 
 		[delegate performSelectorOnMainThread:@selector(finishedRefreshingCache) withObject:nil waitUntilDone:NO];
 		return;
@@ -498,8 +486,6 @@ static EPGCache *_sharedInstance = nil;
 
 					// send to delegate
 					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
-					[service release];
-					[event release];
 				}
 				break; // XXX: why do I need to do this?
 			}
@@ -573,7 +559,6 @@ static EPGCache *_sharedInstance = nil;
 			{
 				NSString *searchString = [[NSString alloc ] initWithFormat:@"%%%@%%", name];
 				sqlite3_bind_text(compiledStatement, 1, [searchString UTF8String], -1, SQLITE_TRANSIENT);
-				[searchString release];
 				while(sqlite3_step(compiledStatement) == SQLITE_ROW)
 				{
 					GenericEvent *event = [[GenericEvent alloc] init];
@@ -592,8 +577,6 @@ static EPGCache *_sharedInstance = nil;
 
 					// send to delegate
 					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
-					[service release];
-					[event release];
 				}
 				break; // XXX: why do I need to do this?
 			}

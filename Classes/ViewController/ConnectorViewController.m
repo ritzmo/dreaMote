@@ -48,7 +48,7 @@
 	ConnectorViewController *connectorViewController = [[ConnectorViewController alloc] init];
 	connectorViewController.selectedItem = connectorKey;
 
-	return [connectorViewController autorelease];
+	return connectorViewController;
 }
 
 /* dealloc */
@@ -56,8 +56,6 @@
 {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-
-	[super dealloc];
 }
 
 /* layout */
@@ -65,7 +63,6 @@
 {
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Autodetect", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(doAutodetect:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
@@ -78,7 +75,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 }
 
 /* start autodetection */

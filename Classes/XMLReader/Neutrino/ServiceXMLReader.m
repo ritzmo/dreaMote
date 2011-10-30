@@ -21,7 +21,7 @@ static const char *kNeutrinoServicelogo = "logo";
 static const NSUInteger kNeutrinoServicelogoLength = 5;
 
 @interface NeutrinoServiceXMLReader()
-@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
 @end
 
 @implementation NeutrinoServiceXMLReader
@@ -33,17 +33,9 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentService release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -54,7 +46,6 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 	[_delegate performSelectorOnMainThread: @selector(addService:)
 								withObject: fakeService
 							 waitUntilDone: NO];
-	[fakeService release];
 }
 
 /*
@@ -86,7 +77,7 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 {
 	if(!strncmp((const char *)localname, kNeutrinoServiceElement, kNeutrinoServiceElementLength))
 	{
-		self.currentService = [[[GenericService alloc] init] autorelease];
+		self.currentService = [[GenericService alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kNeutrinoServicereference, kNeutrinoServicereferenceLength)
 			||	!strncmp((const char *)localname, kNeutrinoServicename, kNeutrinoServicenameLength)

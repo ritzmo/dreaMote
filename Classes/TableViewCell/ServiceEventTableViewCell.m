@@ -29,21 +29,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 @synthesize formatter = _formatter;
 @synthesize serviceNameLabel = _serviceNameLabel;
 
-/* dealloc */
-- (void)dealloc
-{
-	[_formatter release];
-	[_next release];
-	[_nextLabel release];
-	[_nextTimeLabel release];
-	[_now release];
-	[_nowLabel release];
-	[_serviceNameLabel release];
-	[_nowTimeLabel release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

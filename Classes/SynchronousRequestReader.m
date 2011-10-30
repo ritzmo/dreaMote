@@ -21,9 +21,9 @@
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 
-@property (nonatomic, retain) NSData *data;
-@property (nonatomic, retain) NSError *error;
-@property (nonatomic, retain) NSURLResponse *response;
+@property (nonatomic, strong) NSData *data;
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic) BOOL running;
 @end
 
@@ -44,19 +44,11 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_data release];
-	[_error release];
-	[_response release];
-
-	[super dealloc];
-}
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
 {
 	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
-	NSData *data = [srr.data retain];
+	NSData *data = srr.data;
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:timeout];
@@ -81,14 +73,11 @@
 
 	// hand over response & error if requested
 	if(response)
-		*response = SafeReturn(srr.response);
+		*response = srr.response;
 	if(error)
-		*error = SafeReturn(srr.error);
+		*error = srr.error;
 
-	[con release];
-	[srr release];
-	[request release];
-	return [data autorelease];
+	return data;
 }
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error

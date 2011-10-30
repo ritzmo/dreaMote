@@ -55,8 +55,6 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 
 @implementation DisplayCell
 
-@synthesize view;
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
@@ -88,10 +86,15 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	return self.textLabel;
 }
 
+- (UIView *)view
+{
+	return view;
+}
+
 - (void)setView:(UIView *)inView
 {
 	if(view == inView) return;
-	SafeRetainAssign(view, inView);
+	view = inView;
 
 	/*!
 	 @note addSubview: takes care of removing the superview
@@ -124,11 +127,5 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	self.textLabel.frame = frame;
 }
 
-- (void)dealloc
-{
-	[view release];
-	
-    [super dealloc];
-}
 
 @end

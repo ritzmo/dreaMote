@@ -20,13 +20,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-	[_bouquetListController release];
-	[_serviceListController release];
-
-	[super dealloc];
-}
 
 #pragma mark -
 #pragma mark UIViewController methods
@@ -51,8 +44,6 @@
 	navController1 = [[UINavigationController alloc] initWithRootViewController: _bouquetListController];
 	navController2 = [[UINavigationController alloc] initWithRootViewController: _serviceListController];
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
-	[navController1 release];
-	[navController2 release];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

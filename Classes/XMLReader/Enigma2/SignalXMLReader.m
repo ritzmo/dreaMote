@@ -19,7 +19,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -71,7 +71,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addSignal:)
 									withObject: newSignal
 								 waitUntilDone: NO];
-		[newSignal release];
 		
 		// Signal is unique
 		break;

@@ -49,18 +49,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.delegate = nil;
 
-	[myTabBar release];
-	[menuList release];
-	[_bouquetController release];
-	[_currentController release];
-	[_mediaplayerController release];
-	[_movieController release];
-	[_otherController release];
-	[_rcController release];
-	[_serviceController release];
-	[_timerController release];
 
-	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,13 +83,10 @@
 	{
 		viewController = [[BouquetListController alloc] init];
 		_bouquetController = [[UINavigationController alloc] initWithRootViewController: viewController];
-		[viewController release];
 		viewController = [[ServiceListController alloc] init];
 		_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
-		[viewController release];
 		viewController = [[TimerListController alloc] init];
 		_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
-		[viewController release];
 	}
 	_rcController = nil;
 	_otherController = [[OtherListController alloc] init];
@@ -120,7 +106,6 @@
 	[menuList addObject: _timerController];
 	[menuList addObject: navController];
 
-	[navController release];
 
 	[self setViewControllers: menuList];
 	self.selectedViewController = navController; // we don't own it any more, but it is retained by the array
@@ -167,7 +152,6 @@
 										 cancelButtonTitle:@"OK"
 										 otherButtonTitles:nil];
 				[notification show];
-				[notification release];
 			}
 		}
 	}
@@ -239,7 +223,6 @@
 
 	// RC second to last
 	[menuList removeObject: _rcController];
-	[_rcController release];
 	if(useSimpleRemote || sharedRemoteConnector == nil)
 		_rcController = [[SimpleRCEmulatorController alloc] init];
 	else
@@ -277,7 +260,6 @@
 		[_otherController.navigationController pushViewController: targetViewController animated: YES];
 		[self.selectedViewController viewWillAppear:YES];
 		[self.selectedViewController viewDidAppear:YES];
-		[targetViewController release];
 		return NO;
 	}
 	return YES;
@@ -299,7 +281,6 @@
 		AboutDreamoteViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeType];
 		welcomeController.aboutDelegate = self;
 		[self presentModalViewController:welcomeController animated:YES];
-		[welcomeController release];
 	}
 	else if([self checkConnection])
 		[self.selectedViewController viewDidAppear:animated];

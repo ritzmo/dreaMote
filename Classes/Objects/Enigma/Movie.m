@@ -149,23 +149,14 @@
 {
 	if((self = [super init]))
 	{
-		_node = [node retain];
-		_size = [[NSNumber numberWithInt: -1] retain];
-		_tags = [[NSArray array] retain];
-		_length = [[NSNumber numberWithInt: -1] retain];
+		_node = node;
+		_size = [NSNumber numberWithInt: -1];
+		_tags = [NSArray array];
+		_length = [NSNumber numberWithInt: -1];
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_length release];
-	[_size release];
-	[_tags release];
-	[_node release];
-
-	[super dealloc];
-}
 
 - (BOOL)isValid
 {

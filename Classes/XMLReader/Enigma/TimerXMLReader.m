@@ -18,7 +18,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -33,7 +33,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addTimer:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -73,7 +72,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addTimer:)
 									withObject: newTimer
 								 waitUntilDone: NO];
-		[newTimer release];
 	}
 }
 

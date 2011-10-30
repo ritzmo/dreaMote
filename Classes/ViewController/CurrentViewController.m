@@ -20,6 +20,8 @@
 #import "ServiceTableViewCell.h"
 #import "CellTextView.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
@@ -63,29 +65,12 @@
 		_now = nil;
 		_next = nil;
 		_service = nil;
-		_currentXMLDoc = nil;
+		_xmlReader = nil;
 	}
 	
 	return self;
 }
 
-- (void)dealloc
-{
-	[_now release];
-	[_next release];
-	[_service release];
-	[_dateFormatter release];
-	[_currentXMLDoc release];
-	[_nowSummary release];
-	[_nextSummary release];
-#if INCLUDE_FEATURE(Ads)
-	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
-	_adBannerView = nil;
-#endif
-
-	[super dealloc];
-}
 
 /* layout */
 - (void)loadView
@@ -138,22 +123,22 @@
 	}
 	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 
-	return [button autorelease];
+	return button;
 }
 
 - (void)fetchData
 {
-	CXMLDocument *newDocument = nil;
+	BaseXMLReader *newReader = nil;
 	@try {
 		_reloading = YES;
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
 	}
 	@catch (NSException * e) {
 #if IS_DEBUG()
 		[e raise];
 #endif
 	}
-	SafeRetainAssign(_currentXMLDoc, newDocument);
+	_xmlReader = newReader;
 }
 
 - (void)emptyData
@@ -169,14 +154,14 @@
 #endif
 	SafeRetainAssign(_nowSummary, nil);
 	SafeRetainAssign(_nextSummary, nil);
-	SafeRetainAssign(_currentXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;
@@ -206,17 +191,12 @@
 	if(_now == nil)
 	{
 		SafeCopyAssign(_now, event);
-		[_nowSummary release];
-		id old = _nowSummary;
 		_nowSummary = [self newSummary: event];
-		[old release];
 	}
 	else
 	{
 		SafeCopyAssign(_next, event);
-		id old = _nextSummary;
 		_nextSummary = [self newSummary: event];
-		[old release];
 	}
 }
 
@@ -642,7 +622,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 		[ServiceZapListController openStream:streamingURL withAction:action];

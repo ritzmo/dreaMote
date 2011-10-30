@@ -17,13 +17,13 @@
 
 - (NSString *)urlencodeWithEncoding:(NSStringEncoding)stringEncoding
 {
-	NSString *escaped = (NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
-																			(CFStringRef)self,
+	NSString *escaped = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
+																			(__bridge CFStringRef)self,
 																			NULL,
 																			(CFStringRef)@"&+,/:;=?@ \t#<>\"\n",
 																			CFStringConvertNSStringEncodingToEncoding(stringEncoding)
 																			);
-	return [escaped autorelease];
+	return escaped;
 }
 
 @end

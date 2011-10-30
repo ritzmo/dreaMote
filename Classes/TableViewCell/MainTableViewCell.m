@@ -68,16 +68,6 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	_explainLabel.frame = frame;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_nameLabel release];
-	[_explainLabel release];
-	[_dataDictionary release];
-
-	[super dealloc];
-}
-
 /* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

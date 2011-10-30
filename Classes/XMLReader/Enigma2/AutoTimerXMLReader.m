@@ -68,8 +68,8 @@ static const char *kEnigma2ATWhere = "where";
 static const NSUInteger kEnigma2ATWhereLength = 6;
 
 @interface Enigma2AutoTimerXMLReader()
-@property (nonatomic, retain) AutoTimer *currentAT;
-@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic, strong) AutoTimer *currentAT;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
 @end
 
 @implementation Enigma2AutoTimerXMLReader
@@ -81,20 +81,10 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentAT release];
-	[currentService release];
-	[gregorian release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -106,7 +96,6 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	[_delegate performSelectorOnMainThread:@selector(addAutoTimer:)
 								withObject:fakeObject
 							 waitUntilDone:NO];
-	[fakeObject release];
 }
 
 /*
@@ -126,7 +115,7 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 {
 	if(!strncmp((const char *)localname, kEnigma2ATElement, kEnigma2ATElementLength))
 	{
-		self.currentAT = [[[AutoTimer alloc] init] autorelease];
+		self.currentAT = [[AutoTimer alloc] init];
 		autoTimerWhere = autoTimerWhereInvalid;
 
 		NSInteger i = 0;
@@ -270,7 +259,6 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 				currentAT.justplay = [value isEqualToString:@"1"];
 			}
 
-			[value release];
 		}
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2ATInclude, kEnigma2ATIncludeLength)
@@ -303,7 +291,6 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 				}
 			}
 
-			[value release];
 		}
 
 		if(autoTimerWhere != autoTimerWhereInvalid)

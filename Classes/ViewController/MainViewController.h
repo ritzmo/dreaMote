@@ -39,6 +39,6 @@
 /*!
  @brief Table View.
  */
-@property (nonatomic, retain) UITabBar *myTabBar;
+@property (nonatomic, strong) UITabBar *myTabBar;
 
 @end

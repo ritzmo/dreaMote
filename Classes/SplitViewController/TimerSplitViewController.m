@@ -31,10 +31,6 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_timerListController release];
-	[_timerViewController release];
-
-	[super dealloc];
 }
 
 #pragma mark -
@@ -59,11 +55,15 @@
 	navController1 = [[UINavigationController alloc] initWithRootViewController: _timerListController];
 	navController2 = [[UINavigationController alloc] initWithRootViewController: _timerViewController];
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
-	[navController1 release];
-	[navController2 release];
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reinitializeTimerView:) name:kReconnectNotification object:nil];
+}
+
+- (void)viewDidUnload
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[super viewDidUnload];
 }
 
 - (void)reinitializeTimerView:(NSNotification *)notif

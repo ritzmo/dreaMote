@@ -45,7 +45,7 @@
 	afterEventViewController.selectedItem = afterEvent;
 	afterEventViewController.showAuto = showAuto;
 
-	return [afterEventViewController autorelease];
+	return afterEventViewController;
 }
 
 - (NSUInteger)selectedItem
@@ -81,12 +81,6 @@
 	[(UITableView *)self.view reloadData];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[super dealloc];
-}
-
 /* layout */
 - (void)loadView
 {
@@ -101,12 +95,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */

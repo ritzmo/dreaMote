@@ -20,19 +20,11 @@
 	{
 		_hdd = nil;
 		_tuners = nil;
-		_node = [node retain];
+		_node = node;
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_hdd release];
-	[_tuners release];
-	[_node release];
-
-	[super dealloc];
-}
 
 - (NSString *)version
 {
@@ -97,7 +89,7 @@
 {
 	if(_tuners != nil) return _tuners;
 
-	_tuners = [[NSMutableArray arrayWithCapacity: 4] retain];
+	_tuners = [NSMutableArray arrayWithCapacity: 4];
 	const NSArray *resultNodes = [_node nodesForXPath:@"e2tunerinfo/e2nim/type" error:nil];
 	for(CXMLElement *resultElement in resultNodes)
 	{

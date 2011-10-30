@@ -52,12 +52,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @interface EditableTableViewCell : UITableViewCell
 {
-    id <EditableTableViewCellDelegate> delegate;
+    id <EditableTableViewCellDelegate> __unsafe_unretained delegate;
     BOOL isInlineEditing;
 }
 
 // Exposes the delegate property to other objects.
-@property (nonatomic, assign) id <EditableTableViewCellDelegate> delegate;
+@property (nonatomic, unsafe_unretained) id <EditableTableViewCellDelegate> delegate;
 @property (nonatomic, assign) BOOL isInlineEditing;
 
 // Informs the cell to stop editing, resulting in keyboard/pickers/etc. being ordered out 

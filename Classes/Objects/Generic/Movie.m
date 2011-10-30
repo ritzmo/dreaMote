@@ -37,20 +37,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_sref release];
-	[_sname release];
-	[_time release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
-	[_length release];
-	[_size release];
-	[_tags release];
-
-	[super dealloc];
-}
 
 - (BOOL)isValid
 {
@@ -79,17 +65,15 @@
 
 - (void)setTimeFromString: (NSString *)newTime
 {
-	[_time release];
-	_time = [[NSDate dateWithTimeIntervalSince1970: [newTime doubleValue]] retain];
+	_time = [NSDate dateWithTimeIntervalSince1970: [newTime doubleValue]];
 }
 
 - (void)setTagsFromString: (NSString *)newTags
 {
-	[_tags release];
 	if([newTags isEqualToString: @""])
-		_tags = [[NSArray array] retain];
+		_tags = [NSArray array];
 	else
-		_tags = [[newTags componentsSeparatedByString:@" "] retain];
+		_tags = [newTags componentsSeparatedByString:@" "];
 }
 
 @end

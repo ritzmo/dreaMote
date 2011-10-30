@@ -38,9 +38,6 @@
 {
 	SafeDestroyButton(_lameButton);
 	SafeDestroyButton(_menuButton);
-	SafeRetainAssign(_swipeArea, nil);
-
-	[super dealloc];
 }
 
 - (void)loadView

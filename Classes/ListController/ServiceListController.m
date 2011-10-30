@@ -21,6 +21,19 @@
 #import <Objects/Generic/Result.h>
 #import <Objects/ServiceProtocol.h>
 
+#import <XMLReader/BaseXMLReader.h>
+
+#ifdef SafeRetainAssign
+#undef SafeRetainAssign
+#endif
+#define SafeRetainAssign(var, newExpr) { \
+	id OLD = (var); \
+	id NEW = (newExpr); \
+	(var) = [NEW retain]; \
+	if(OLD) \
+		[OLD release]; \
+}
+
 enum serviceListTags
 {
 	TAG_MARKER = 99,
@@ -114,8 +127,8 @@ enum serviceListTags
 	[_subList release];
 	[_eventListController release];
 	[_eventViewController release];
-	[_mainXMLDoc release];
-	[_subXMLDoc release];
+	[_xmlReader release];
+	[_xmlReaderSub release];
 	[_radioButton release];
 	[_multiEpgButton release];
 	[_dateFormatter release];
@@ -717,7 +730,7 @@ enum serviceListTags
 /* fetch main list */
 - (void)fetchData
 {
-	SafeRetainAssign(_mainXMLDoc, nil); // though unlikely to cause any trouble, make sure _mainXMLDoc is nil before releasing it...
+	SafeRetainAssign(_xmlReader, nil); // though unlikely to cause any trouble, make sure _xmlReader is nil before releasing it...
 	_reloading = YES;
 	if(self.supportsNowNext)
 	{
@@ -728,20 +741,20 @@ enum serviceListTags
 	else
 	{
 		pendingRequests = 1;
-		_mainXMLDoc = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
+		_xmlReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
 	}
 }
 
 /* fetch now list */
 - (void)fetchNowData
 {
-	SafeRetainAssign(_mainXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio]);
 }
 
 /* fetch next list */
 - (void)fetchNextData
 {
-	SafeRetainAssign(_subXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio]);
+	SafeRetainAssign(_xmlReaderSub, [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio]);
 }
 
 /* remove content data */
@@ -759,8 +772,8 @@ enum serviceListTags
 #if IS_FULL()
 	[_multiEPG emptyData];
 #endif
-	SafeRetainAssign(_mainXMLDoc, nil);
-	SafeRetainAssign(_subXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
+	SafeRetainAssign(_xmlReaderSub, nil);
 }
 
 /* getter of eventViewController property */
@@ -1215,7 +1228,7 @@ enum serviceListTags
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// NOTE: this might hide an error, but we prefer missing one over getting the same one twice
 	if(--pendingRequests == 0)
@@ -1234,12 +1247,12 @@ enum serviceListTags
 		[alert show];
 		[alert release];
 #if IS_FULL()
-		[_multiEPG dataSourceDelegate:dataSource finishedParsingDocument:document];
+		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if(--pendingRequests == 0)
 	{
@@ -1252,7 +1265,7 @@ enum serviceListTags
 		[_tableView reloadData];
 #endif
 #if IS_FULL()
-		[_multiEPG dataSourceDelegate:dataSource finishedParsingDocument:document];
+		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
 	}
 }

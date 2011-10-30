@@ -11,8 +11,8 @@
 #import "Constants.h"
 
 @interface Enigma2EPGRefreshSettingsXMLReader()
-@property (nonatomic, retain) EPGRefreshSettings *settings;
-@property (nonatomic, retain) NSString *lastSettingName;
+@property (nonatomic, strong) EPGRefreshSettings *settings;
+@property (nonatomic, strong) NSString *lastSettingName;
 @end
 
 @implementation Enigma2EPGRefreshSettingsXMLReader
@@ -24,19 +24,10 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		settings = [[EPGRefreshSettings alloc] init];
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[lastSettingName release];
-	[settings release];
-
-	[super dealloc];
 }
 
 /* send fake object */

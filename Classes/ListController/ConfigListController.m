@@ -61,7 +61,7 @@ enum settingsRows
 - (void)separateEventsChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
 
-@property (nonatomic,retain) MBProgressHUD *progressHUD;
+@property (nonatomic,strong) MBProgressHUD *progressHUD;
 @end
 
 /*!
@@ -84,7 +84,7 @@ enum settingsRows
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
-		_connections = [[RemoteConnectorObject getConnections] retain];
+		_connections = [RemoteConnectorObject getConnections];
 
 		// listen to changes in available connections
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
@@ -99,15 +99,8 @@ enum settingsRows
 
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-	[_connections release];
-	[_vibrateInRC release];
-	[_simpleRemote release];
-	[_sepEventsByDay release];
 
 	progressHUD.delegate = nil;
-	[progressHUD release];
-
-	[super dealloc];
 }
 
 /* layout */
@@ -125,7 +118,6 @@ enum settingsRows
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// RC Vibration
 	_vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -215,8 +207,7 @@ enum settingsRows
 
 - (void)rereadData:(NSNotification *)note
 {
-	[_connections release];
-	_connections = [[RemoteConnectorObject getConnections] retain];
+	_connections = [RemoteConnectorObject getConnections];
 
 	// just in case, read them too
 	[_vibrateInRC setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kVibratingRC]];
@@ -301,7 +292,6 @@ enum settingsRows
 		{
 			UIViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
 			[self presentModalViewController:welcomeController animated:YES];
-			[welcomeController release];
 		}
 		else if(indexPath.row == 1)
 		{
@@ -355,7 +345,6 @@ enum settingsRows
 				{
 					UIViewController *targetViewController = [ConfigViewController newConnection];
 					[self.navigationController pushViewController: targetViewController animated: YES];
-					[targetViewController release];
 				}
 				// edit existing one
 				else
@@ -379,7 +368,6 @@ enum settingsRows
 											 cancelButtonTitle:@"OK"
 											 otherButtonTitles:nil];
 					[notification show];
-					[notification release];
 				}
 				// did connect
 				else
@@ -396,7 +384,6 @@ enum settingsRows
 											cancelButtonTitle:@"OK"
 											otherButtonTitles:nil];
 						[notification show];
-						[notification release];
 					}
 
 					// not reachable
@@ -445,7 +432,6 @@ enum settingsRows
 				navController.modalPresentationStyle = vc.modalPresentationStyle;
 
 				[self.navigationController presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 			{
@@ -463,7 +449,6 @@ enum settingsRows
 				navController.modalPresentationStyle = vc.modalPresentationStyle;
 
 				[self.navigationController presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 			{
@@ -483,7 +468,6 @@ enum settingsRows
 				navController.modalPresentationStyle = vc.modalPresentationStyle;
 
 				[self.navigationController presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 			{
@@ -616,7 +600,6 @@ enum settingsRows
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connection Timeout", @"Configuration item to choose connection timeout");
 					((DisplayCell *)sourceCell).view = timeLabel;
 					sourceCell.tag = kTimeoutRowTag;
-					[timeLabel release];
 					break;
 				}
 				/* Search History Length */
@@ -631,7 +614,6 @@ enum settingsRows
 					sourceCell.textLabel.text = NSLocalizedString(@"Search History Length", @"Label of cell in config which gives search history length");
 					((DisplayCell *)sourceCell).view = lengthLabel;
 					sourceCell.tag = kHistoryLengthRowTag;
-					[lengthLabel release];
 					break;
 				}
 #if IS_FULL()
@@ -648,7 +630,6 @@ enum settingsRows
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Multi-EPG Interval", @"Configuration item to choose timespan displayed by MultiEPG");
 					((DisplayCell *)sourceCell).view = timeLabel;
 					sourceCell.tag = kMultiEPGRowTag;
-					[timeLabel release];
 					break;
 				}
 #endif
@@ -799,7 +780,6 @@ enum settingsRows
 		[tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
 	}
 }
 
@@ -855,42 +835,39 @@ enum settingsRows
 
 - (void)doAutoConfiguration
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	NSArray *connections = [RemoteConnectorObject autodetectConnections];
+		NSArray *connections = [RemoteConnectorObject autodetectConnections];
 
-	progressHUD.taskInProgress = NO;
-	[progressHUD hide:YES];
+		progressHUD.taskInProgress = NO;
+		[progressHUD hide:YES];
 
-	NSUInteger len = connections.count;
-	if(len == 0)
-	{
-		const UIAlertView *notification = [[UIAlertView alloc]
-										   initWithTitle:NSLocalizedString(@"Error", @"")
-										   message:NSLocalizedString(@"Unable to find valid connection data.", @"")
-										   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-	}
-	else
-	{
-		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
-		if(IS_IPAD())
+		NSUInteger len = connections.count;
+		if(len == 0)
 		{
-			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
-			nc.modalPresentationStyle = tv.modalPresentationStyle;
-			nc.modalTransitionStyle = tv.modalTransitionStyle;
-			[self.navigationController presentModalViewController:nc animated:YES];
-			[nc release];
+			const UIAlertView *notification = [[UIAlertView alloc]
+											   initWithTitle:NSLocalizedString(@"Error", @"")
+											   message:NSLocalizedString(@"Unable to find valid connection data.", @"")
+											   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
 		}
 		else
 		{
-			[self.navigationController pushViewController:tv animated:YES];
+			ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
+			if(IS_IPAD())
+			{
+				UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
+				nc.modalPresentationStyle = tv.modalPresentationStyle;
+				nc.modalTransitionStyle = tv.modalTransitionStyle;
+				[self.navigationController presentModalViewController:nc animated:YES];
+			}
+			else
+			{
+				[self.navigationController pushViewController:tv animated:YES];
+			}
 		}
-		[tv release];
-	}
 
-	[pool release];
+	}
 }
 
 @end

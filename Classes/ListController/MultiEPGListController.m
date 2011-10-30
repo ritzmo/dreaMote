@@ -19,6 +19,8 @@
 
 #import "MultiEPGTableViewCell.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 @interface MultiEPGListController()
 /*!
  @brief Setup and assign toolbar items.
@@ -38,7 +40,7 @@
 /*!
  @brief Activity Indicator.
  */
-@property (nonatomic, retain) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 @end
 
 @implementation MultiEPGListController
@@ -61,14 +63,7 @@
 
 - (void)dealloc
 {
-	[_curBegin release];
-	[_events release];
-	[_services release];
-	[_serviceXMLDocument release];
 	progressHUD.delegate = nil;
-	[progressHUD release];
-
-	[super dealloc];
 }
 
 /* layout */
@@ -83,7 +78,6 @@
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	self.view = contentView;
-	[contentView release];
 	CGRect visibleFrame = CGRectMake(0, headerHeight, contentView.frame.size.width, contentView.frame.size.height-headerHeight);
 	_tableView.frame = visibleFrame;
 	[contentView addSubview:_tableView];
@@ -97,7 +91,6 @@
 - (void)viewDidUnload
 {
 	_tableView.tableHeaderView = nil;
-	[_headerView release];
 	_headerView = nil;
 
 	[super viewDidUnload];
@@ -108,40 +101,38 @@
 	[_services removeAllObjects];
 	[_events removeAllObjects];
 	[_tableView reloadData];
-	[_serviceXMLDocument release];
-	_serviceXMLDocument = nil;
+	_xmlReader = nil;
 }
 
 - (void)fetchServices
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_serviceXMLDocument release];
-	_reloading = YES;
-	++pendingRequests;
-	_serviceXMLDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:NO];
-	[pool release];
+	@autoreleasepool {
+		_reloading = YES;
+		++pendingRequests;
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:NO];
+	}
 }
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+	@autoreleasepool {
+		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
 
-	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-	[self.view addSubview: progressHUD];
-	progressHUD.delegate = self;
-	[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
-	[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
-	[progressHUD setMode:MBProgressHUDModeDeterminate];
-	progressHUD.progress = 0.0f;
-	[progressHUD show:YES];
-	progressHUD.taskInProgress = YES;
+		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+		[self.view addSubview: progressHUD];
+		progressHUD.delegate = self;
+		[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
+		[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
+		[progressHUD setMode:MBProgressHUDModeDeterminate];
+		progressHUD.progress = 0.0f;
+		[progressHUD show:YES];
+		progressHUD.taskInProgress = YES;
 
-	_servicesToRefresh = -1;
-	_reloading = YES;
-	++pendingRequests;
-	[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
-	[pool release];
+		_servicesToRefresh = -1;
+		_reloading = YES;
+		++pendingRequests;
+		[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
+	}
 }
 
 /* about to appear */
@@ -221,9 +212,7 @@
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:now];
 
-	[_curBegin release];
-	_curBegin = [[gregorian dateFromComponents:components] retain];
-	[gregorian release];
+	_curBegin = [gregorian dateFromComponents:components];
 	[_events removeAllObjects];
 	[_tableView reloadData];
 	_headerView.begin = _curBegin;
@@ -275,7 +264,6 @@
 	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:_curBegin];
 	[components setHour: 20];
 	self.curBegin = [gregorian dateFromComponents:components];
-	[gregorian release];
 }
 
 /* setup toolbar */
@@ -308,12 +296,6 @@
 	NSArray *items = [[NSArray alloc] initWithObjects:backButton, nowButton, flexItem, primetimeButton, fwdButton, nil];
 	[self setToolbarItems:items animated:NO];
 
-	[items release];
-	[fwdButton release];
-	[primetimeButton release];
-	[flexItem release];
-	[nowButton release];
-	[backButton release];
 }
 
 /* refresh "now" timestamp */
@@ -332,24 +314,23 @@
 	// check if we are in visible timespan
 	NSDate *now = [[NSDate alloc] init];
 	_secondsSinceBegin = [now timeIntervalSinceDate:_curBegin];
-	[now release];
 	[_tableView reloadData];
 }
 
 /* entry point for thread fetching epg entries */
 - (void)readEPG
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	@synchronized(self)
-	{
-		NSDate *begin = SafeReturn(_curBegin);
-		NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-		NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
-		[_epgCache readEPGForTimeIntervalFrom:begin until:SafeReturn(until) to:SafeReturn(self)];
+		@synchronized(self)
+		{
+			NSDate *begin = _curBegin;
+			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+			NSDate *until = [begin dateByAddingTimeInterval:[timeInterval floatValue]];
+			[_epgCache readEPGForTimeIntervalFrom:begin until:until to:self];
+		}
+
 	}
-
-	[pool release];
 }
 
 /* did rotate */
@@ -383,7 +364,6 @@
 		[actionSheet showFromTabBar:APP_DELEGATE.tabBarController.tabBar];
 	else
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-	[actionSheet release];
 }
 
 #pragma mark -
@@ -421,7 +401,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	if(--pendingRequests == 0)
 	{
@@ -432,7 +412,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 
 		[_tableView reloadData];
 		_reloading = NO;
@@ -440,7 +419,7 @@
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if(--pendingRequests == 0)
 	{
@@ -479,7 +458,6 @@
 	{
 		arr = [[NSMutableArray alloc] initWithObjects:event, nil];
 		[_events setValue:arr forKey:event.service.sref];
-		[arr release];
 	}
 }
 

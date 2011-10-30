@@ -31,15 +31,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_clearButton release];
-	[_saveButton release];
-	[_loadButton release];
-	[_playlist release];
-
-	[super dealloc];
-}
 
 - (void)loadView
 {

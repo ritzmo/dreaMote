@@ -22,9 +22,12 @@
 #import <Delegates/SignalSourceDelegate.h>
 #import <Delegates/TimerSourceDelegate.h>
 #import <Delegates/VolumeSourceDelegate.h>
+
 #import <XMLReader/BaseXMLReader.h>
 #import <XMLReader/Neutrino/EventXMLReader.h>
 #import <XMLReader/Neutrino/ServiceXMLReader.h>
+
+#import <CXMLElement.h>
 
 #import <ViewController/NeutrinoRCEmulatorController.h>
 
@@ -79,12 +82,6 @@ enum neutrinoMessageTypes {
 	return self;
 }
 
-- (void)dealloc
-{
-	[_baseAddress release];
-
-	[super dealloc];
-}
 
 - (void)freeCaches
 {
@@ -161,10 +158,10 @@ enum neutrinoMessageTypes {
 	}
 }
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
 {
 	// check if delegate wants to be informated about errors
-	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
@@ -172,8 +169,8 @@ enum neutrinoMessageTypes {
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
-		[invocation setArgument:&self atIndex:2];
-		[invocation setArgument:&error atIndex:4];
+		//[invocation setArgument:&self atIndex:2];
+		[invocation setArgument:&error atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
@@ -182,7 +179,7 @@ enum neutrinoMessageTypes {
 - (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
 {
 	// check if delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
 	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
 	{
@@ -190,7 +187,7 @@ enum neutrinoMessageTypes {
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:finishedParsing];
-		[invocation setArgument:&self atIndex:2];
+		//[invocation setArgument:&self atIndex:2];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
@@ -215,7 +212,7 @@ enum neutrinoMessageTypes {
 	return result;
 }
 
-- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (BaseXMLReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -242,7 +239,6 @@ enum neutrinoMessageTypes {
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: fakeService
 								waitUntilDone: NO];
-		[fakeService release];
 
 		[self indicateError:delegate error:error];
 		return nil;
@@ -265,15 +261,13 @@ enum neutrinoMessageTypes {
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: service
 								waitUntilDone: NO];
-		[service release];
 	}
-	[baseString release];
 
 	[self indicateSuccess:delegate];
 	return nil;
 }
 
-- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (BaseXMLReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -292,21 +286,19 @@ enum neutrinoMessageTypes {
 
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/getbouquet?xml=true&bouquet=%@&mode=TV", bouquet.sref] relativeToURL: _baseAddress];
 
-	const BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithDelegate:delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
 }
 
-- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	// TODO: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true", service.sref] relativeToURL: _baseAddress];
 
-	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
 }
 
 - (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
@@ -325,7 +317,6 @@ enum neutrinoMessageTypes {
 
 		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		myURI = [NSURL URLWithString:myString];
-		[myString release];
 		return myURI;
 	}
 	return nil;
@@ -334,7 +325,7 @@ enum neutrinoMessageTypes {
 #pragma mark Timer
 
 // TODO: reimplement this as streaming parser some day :-)
-- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
+- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/control/timer?format=id" relativeToURL:_baseAddress];
@@ -355,7 +346,6 @@ enum neutrinoMessageTypes {
 		[delegate performSelectorOnMainThread: @selector(addTimer:)
 								   withObject: fakeObject
 								waitUntilDone: NO];
-		[fakeObject release];
 
 		[self indicateError:delegate error:error];
 		return nil;
@@ -364,7 +354,6 @@ enum neutrinoMessageTypes {
 	// Parse
 	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
-	[baseString release];
 	const NSMutableDictionary *serviceMap = [NSMutableDictionary dictionary];
 	const BaseXMLReader *xmlReader = nil;
 	for(NSString *timerString in timerStringList)
@@ -385,7 +374,6 @@ enum neutrinoMessageTypes {
 			timer.justplay = YES;
 		else
 		{
-			[timer release];
 			timer = nil;
 			continue;
 		}
@@ -413,7 +401,7 @@ enum neutrinoMessageTypes {
 		objRange.length = [timerStringComponents count] - 7;
 		NSString *sref = [[timerStringComponents subarrayWithRange:objRange] componentsJoinedByString:@" "];
 
-		NSObject<ServiceProtocol> *service = [[serviceMap valueForKey:sref] retain];
+		NSObject<ServiceProtocol> *service = [serviceMap valueForKey:sref];
 		if(service == nil)
 		{
 			// create new service
@@ -437,7 +425,6 @@ enum neutrinoMessageTypes {
 				{
 					NSString *stringValue = [[resultElement stringValue] copy];
 					service.sname = stringValue;
-					[stringValue release];
 					break;
 				}
 			}
@@ -453,7 +440,6 @@ enum neutrinoMessageTypes {
 			[serviceMap setValue:service forKey:sref];
 		}
 		timer.service = service;
-		[service release];
 
 		// Determine state
 		const NSDate *announce = [NSDate dateWithTimeIntervalSince1970:
@@ -470,9 +456,7 @@ enum neutrinoMessageTypes {
 		[delegate performSelectorOnMainThread: @selector(addTimer:)
 								   withObject: timer
 								waitUntilDone: NO];
-		[timer release];
 	}
-	[xmlReader release];
 
 	[self indicateSuccess:delegate];
 	return nil;
@@ -578,7 +562,7 @@ enum neutrinoMessageTypes {
 
 #pragma mark Recordings
 
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	// is this possible?
 	return nil;
@@ -587,7 +571,7 @@ enum neutrinoMessageTypes {
 #pragma mark Control
 
 // XXX: not working correctly (does not skip old events if they are returned), hence the feature is still disabled
-- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+- (BaseXMLReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/control/zapto" relativeToURL: _baseAddress];
 
@@ -606,12 +590,10 @@ enum neutrinoMessageTypes {
 
 	NSString *serviceId = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 	myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=50", [serviceId urlencode]] relativeToURL:_baseAddress];
-	const BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetCurrent:YES];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL:myURI parseError:nil];
+	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetCurrent:YES];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 
-	[streamReader autorelease];
-	[serviceId release];
-	return doc;
+	return streamReader;
 }
 
 - (void)sendPowerstate: (NSString *) newState
@@ -644,7 +626,6 @@ enum neutrinoMessageTypes {
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const BOOL equalsOn = [myString isEqualToString: @"on"]; // NOTE: on non-dbox2 hw this always returns "off"
-	[myString release];
 	if(equalsOn)
 		myString = @"standby?off";
 	else
@@ -683,7 +664,6 @@ enum neutrinoMessageTypes {
 	else
 		volumeObject.ismuted = NO;
 
-	[myString release];
 
 	// Generate URI (volume)
 	myURI = [NSURL URLWithString: @"/control/volume" relativeToURL: _baseAddress];
@@ -695,12 +675,10 @@ enum neutrinoMessageTypes {
 	myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	volumeObject.current = [myString integerValue];
 
-	[myString release];
 
 	[delegate performSelectorOnMainThread: @selector(addVolume:)
 							   withObject: volumeObject
 							waitUntilDone: NO];
-	[volumeObject release];
 }
 
 - (BOOL)toggleMuted
@@ -715,7 +693,6 @@ enum neutrinoMessageTypes {
 	
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSISOLatin1StringEncoding];
 	const BOOL equalsRes = [myString isEqualToString: @"1"];
-	[myString release];
 	if(equalsRes)
 		myString = @"unmute";
 	else
@@ -912,7 +889,7 @@ enum neutrinoMessageTypes {
 
 #pragma mark Unsupported
 
-- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];

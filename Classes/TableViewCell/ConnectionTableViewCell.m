@@ -82,16 +82,6 @@ NSString *kConnectionCell_ID = @"ConnectionCell_ID";
 	_statusLabel.frame = frame;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_descriptionLabel release];
-	[_statusLabel release];
-	[_dataDictionary release];
-
-	[super dealloc];
-}
-
 /* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

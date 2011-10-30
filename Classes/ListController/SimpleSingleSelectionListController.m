@@ -17,7 +17,7 @@
  @brief done editing
  */
 - (void)doneAction:(id)sender;
-@property (nonatomic, retain) NSArray *items;
+@property (nonatomic, strong) NSArray *items;
 @end
 
 @implementation SimpleSingleSelectionListController
@@ -47,10 +47,6 @@
 {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-
-	[_items release];
-
-	[super dealloc];
 }
 
 /* create SimpleSingleSelectionListController with given type preselected */
@@ -61,7 +57,7 @@
 	vc.items = items;
 	vc.title = title;
 
-	return [vc autorelease];
+	return vc;
 }
 
 /* layout */
@@ -78,12 +74,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */

@@ -35,7 +35,7 @@ enum generalSectionItems
  */
 - (void)cancelEdit:(id)sender;
 
-@property (nonatomic, retain) SleepTimer *settings;
+@property (nonatomic, strong) SleepTimer *settings;
 @end
 
 @implementation SleepTimerViewController
@@ -51,18 +51,6 @@ enum generalSectionItems
 	return self;
 }
 
-- (void)dealloc
-{
-	[settings release];
-	[_cancelButtonItem release];
-
-	[_time release];
-	[_timeCell release];
-	[_enabled release];
-	[_shutdown release];
-
-	[super dealloc];
-}
 
 #pragma mark -
 #pragma mark Helper methods
@@ -222,7 +210,6 @@ enum generalSectionItems
 											   cancelButtonTitle:@"OK"
 											   otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 		}
 		else
 		{
@@ -267,8 +254,6 @@ enum generalSectionItems
 			break;
 		case timeRow:
 			// TODO: wtf is going wrong here? can't reuse the same cell (disappears), so for now just work around this
-			if(_timeCell != nil)
-				[_timeCell release];
 			{
 				_timeCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 				_timeCell.view = _time;

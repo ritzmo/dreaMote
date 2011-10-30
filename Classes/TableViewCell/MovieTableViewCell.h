@@ -30,22 +30,22 @@ extern NSString *kMovieCell_ID;
 /*!
  @brief Movie.
  */
-@property (nonatomic, retain) NSObject<MovieProtocol> *movie;
+@property (nonatomic, strong) NSObject<MovieProtocol> *movie;
 
 /*!
  @brief Name Label.
  */
-@property (nonatomic, retain) UILabel *eventNameLabel;
+@property (nonatomic, strong) UILabel *eventNameLabel;
 
 /*!
  @brief Time Label.
  */
-@property (nonatomic, retain) UILabel *eventTimeLabel;
+@property (nonatomic, strong) UILabel *eventTimeLabel;
 
 /*!
  @brief Date Formatter instance.
  */
-@property (nonatomic, retain) NSDateFormatter *formatter;
+@property (nonatomic, strong) NSDateFormatter *formatter;
 
 @end
 

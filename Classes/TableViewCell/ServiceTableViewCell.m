@@ -28,15 +28,6 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 @synthesize serviceNameLabel = _serviceNameLabel;
 
-/* dealloc */
-- (void)dealloc
-{
-	[_serviceNameLabel release];
-	[_service release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -15,7 +15,7 @@
 
 // forward declare
 @protocol EPGCacheDelegate;
-@class CXMLDocument;
+@class BaseXMLReader;
 
 /*!
  @brief Local EPGCache.
@@ -31,7 +31,7 @@
 	NSObject<ServiceProtocol> *_bouquet;
 	NSObject<EPGCacheDelegate> *_delegate;
 	NSMutableArray *_serviceList;
-	CXMLDocument *_currDocument;
+	BaseXMLReader *_xmlReader;
 	NSOperationQueue *queue; /*!< @brief Queue with pending event additions. */
 
 	sqlite3 *database;

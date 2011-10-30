@@ -122,25 +122,6 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_albumLabel release];
-	[_album release];
-	[_artistLabel release];
-	[_artist release];
-	[_genreLabel release];
-	[_genre release];
-	[_titleLabel release];
-	[_title release];
-	[_yearLabel release];
-	[_year release];
-	[_coverart release];
-	[_metadata release];
-
-	[super dealloc];
-}
-
 /* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

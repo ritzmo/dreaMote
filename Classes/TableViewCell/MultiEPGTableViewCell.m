@@ -35,18 +35,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 @synthesize serviceNameLabel = _serviceNameLabel;
 @synthesize begin = _begin;
 
-/* dealloc */
-- (void)dealloc
-{
-	[_serviceNameLabel release];
-	[_service release];
-	[_events release];
-	[_begin release];
-	[_lines release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -153,7 +141,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	{
 		NSLog(@"invalid number of lines (0) in multi epg cell, returning first event if possible or nil");
 		if([_events count])
-			SafeReturn([_events objectAtIndex:0]);
+			[_events objectAtIndex:0];
 		return nil;
 	}
 
@@ -168,7 +156,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		// if x withing bounds of event, return it… ignore y for now, should not matter anyway.
 		if(point.x >= leftLine && point.x < rightLine)
 		{
-			return SafeReturn(event);
+			return event;
 		}
 		idx += 1;
 	}
@@ -308,7 +296,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 			{
 				NSLog(@"Line: %.2f", kServiceWidth + [number floatValue] * widthPerSecond);
 			}
-			[formatter release];
 			[exception raise];
 #endif
 			break;
@@ -327,7 +314,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		label.adjustsFontSizeToFitWidth = YES;
 		label.textAlignment = UITextAlignmentCenter;
 		[self.contentView addSubview:label];
-		[label release];
 	}
 }
 

@@ -17,17 +17,11 @@
 {
 	if((self = [super init]))
 	{
-		_node = [node retain];
+		_node = node;
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_node release];
-
-	[super dealloc];
-}
 
 - (BOOL)isValid
 {

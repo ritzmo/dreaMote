@@ -19,7 +19,7 @@ static const char *kEnigma2FileRoot = "e2root";
 static const NSUInteger kEnigma2FileRootLength = 7;
 
 @interface Enigma2FileXMLReader()
-@property (nonatomic, retain) NSObject<FileProtocol> *currentFile;
+@property (nonatomic, strong) NSObject<FileProtocol> *currentFile;
 @end
 
 @implementation Enigma2FileXMLReader
@@ -31,17 +31,9 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentFile release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -52,7 +44,6 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	[_delegate performSelectorOnMainThread: @selector(addFile:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -75,7 +66,7 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 {
 	if(!strncmp((const char *)localname, kEnigma2FileElement, kEnigma2FileElementLength))
 	{
-		self.currentFile = [[[GenericFile alloc] init] autorelease];
+		self.currentFile = [[GenericFile alloc] init];
 		currentFile.valid = YES;
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)

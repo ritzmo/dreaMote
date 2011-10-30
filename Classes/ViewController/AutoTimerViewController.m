@@ -61,18 +61,18 @@ enum sectionIds
  */
 - (void)showHideDetails:(id)sender;
 
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
-@property (nonatomic, readonly) UIViewController *afterEventNavigationController;
-@property (nonatomic, readonly) SimpleSingleSelectionListController *avoidDuplicateDescriptionController;
-@property (nonatomic, readonly) UIViewController *avoidDuplicateDescriptionNavigationController;
-@property (nonatomic, readonly) UIViewController *bouquetListController;
-@property (nonatomic, readonly) UINavigationController *filterNavigationController;
-@property (nonatomic, readonly) AutoTimerFilterViewController *filterViewController;
-@property (nonatomic, readonly) UIViewController *serviceListController;
-@property (nonatomic, readonly) DatePickerController *datePickerController;
-@property (nonatomic, readonly) UIViewController *datePickerNavigationController;
-@property (nonatomic, readonly) UIViewController *locationListController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (unsafe_unretained, nonatomic, readonly) AfterEventViewController *afterEventViewController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *afterEventNavigationController;
+@property (unsafe_unretained, nonatomic, readonly) SimpleSingleSelectionListController *avoidDuplicateDescriptionController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *avoidDuplicateDescriptionNavigationController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
+@property (unsafe_unretained, nonatomic, readonly) UINavigationController *filterNavigationController;
+@property (unsafe_unretained, nonatomic, readonly) AutoTimerFilterViewController *filterViewController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *serviceListController;
+@property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *locationListController;
 @end
 
 static NSArray *avoidDuplicateDescriptionTexts = nil;
@@ -130,45 +130,9 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)dealloc
 {
-	[_timer release];
-	[_dateFormatter release];
-	[_delegate release];
-
-	[_titleField release];
-	[_matchField release];
-	[_maxdurationField release];
-	[_timerEnabled release];
-	[_exactSearch release];
-	[_sensitiveSearch release];
-	[_overrideAlternatives release];
-	[_timeframeSwitch release];
-	[_timerJustplay release];
-	[_timespanSwitch release];
-
 	_titleCell.delegate = nil;
 	_matchCell.delegate = nil;
 	_maxdurationCell.delegate = nil;
-	[_titleCell release];
-	[_matchCell release];
-	[_maxdurationCell release];
-
-	[_cancelButtonItem release];
-	[_popoverButtonItem release];
-	[popoverController release];
-
-	[_afterEventNavigationController release];
-	[_afterEventViewController release];
-	[_avoidDuplicateDescriptionController release];
-	[_avoidDuplicateDescriptionNavigationController release];
-	[_bouquetListController release];
-	[_serviceListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-	[_locationListController release];
-	[_filterViewController release];
-	[_filterNavigationController release];
-
-	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -236,7 +200,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 {
 	if(_avoidDuplicateDescriptionController == nil)
 	{
-		_avoidDuplicateDescriptionController = [[SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")] retain];
+		_avoidDuplicateDescriptionController = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
 		[_avoidDuplicateDescriptionController setDelegate:self];
 	}
 	return _avoidDuplicateDescriptionController;
@@ -255,7 +219,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 
-			[rootViewController release];
 		}
 		else
 			_bouquetListController = rootViewController;
@@ -289,7 +252,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			_serviceListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 			_serviceListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 
-			[rootViewController release];
 		}
 		else
 			_serviceListController = rootViewController;
@@ -540,7 +502,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	_titleField = [self newTitleField];
 	_matchField = [self newMatchField];
@@ -700,7 +661,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				}
 				else
 				{
-					[_delegate autoTimerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
+					[_delegate autoTimerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -715,7 +676,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				}
 				else
 				{
-					[_delegate autoTimerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer)];
+					[_delegate autoTimerViewController:self timerWasEdited:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -731,9 +692,8 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 										 cancelButtonTitle:@"OK"
 										 otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 
-			[_delegate autoTimerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_timer)];
+			[_delegate autoTimerViewController:self editingWasCanceled:_timer];
 			return;
 		}
 
@@ -742,7 +702,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	else
 	{
 		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
-		[_delegate autoTimerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_timer)];
+		[_delegate autoTimerViewController:self editingWasCanceled:_timer];
 	}
 
 	_shouldSave = editing;
@@ -858,7 +818,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	}
 
 	// copy service for convenience reasons
-	[_timer.bouquets addObject:[[newBouquet copy] autorelease]];
+	[_timer.bouquets addObject:[newBouquet copy]];
 	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:bouquetSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -877,7 +837,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	}
 
 	// copy service for convenience reasons
-	[_timer.services addObject:[[newService copy] autorelease]];
+	[_timer.services addObject:[newService copy]];
 	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:servicesSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -1646,13 +1606,13 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 			else if(row == 1)
 			{
-				self.datePickerController.date = [[_timer.from copy] autorelease];
-				[self.datePickerController setTarget: self action: @selector(fromSelected:)];
+				self.datePickerController.date = [_timer.from copy];
+				self.datePickerController.callback = ^(NSDate *date){[self fromSelected:date];};
 			}
 			else
 			{
-				self.datePickerController.date = [[_timer.to copy] autorelease];
-				[self.datePickerController setTarget: self action: @selector(toSelected:)];
+				self.datePickerController.date = [_timer.to copy];
+				self.datePickerController.callback = ^(NSDate *date){[self toSelected:date];};
 			}
 
 			[self.datePickerController setDatePickerMode:UIDatePickerModeTime];
@@ -1666,13 +1626,13 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 			else if(row == 1)
 			{
-				self.datePickerController.date = [[_timer.after copy] autorelease];
-				[self.datePickerController setTarget: self action: @selector(afterSelected:)];
+				self.datePickerController.date = [_timer.after copy];
+				self.datePickerController.callback = ^(NSDate *date){[self afterSelected:date];};
 			}
 			else
 			{
-				self.datePickerController.date = [[_timer.before copy] autorelease];
-				[self.datePickerController setTarget: self action: @selector(beforeSelected:)];
+				self.datePickerController.date = [_timer.before copy];
+				self.datePickerController.callback = ^(NSDate *date){[self beforeSelected:date];};
 			}
 
 			// XXX: I would prefer UIDatePickerModeDateAndTime here but this does not provide us

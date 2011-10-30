@@ -68,11 +68,9 @@
 {
 	if(currentText == newText) return;
 
-	[currentText release];
-	currentText = [newText retain];
+	currentText = newText;
 
-	[oldText release];
-	oldText = [newText retain];
+	oldText = newText;
 
 	filterTextfield.text = newText;
 	[(UITableView *)self.view reloadData];
@@ -104,17 +102,6 @@
 	[(UITableView *)self.view reloadData];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_cancelButtonItem release];
-	[oldText release];
-	[currentText release];
-	[filterTextfield release];
-
-	[super dealloc];
-}
-
 /* layout */
 - (void)loadView
 {
@@ -129,7 +116,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	_cancelButtonItem = [[UIBarButtonItem alloc]
 						 initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
@@ -137,10 +123,9 @@
 						 action: @selector(cancelEdit:)];
 	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 
 	filterTextfield = [[UITextField alloc] initWithFrame:CGRectZero];
 	filterTextfield.text = currentText;
@@ -159,9 +144,7 @@
 
 - (void)viewDidUnload
 {
-	[_cancelButtonItem release];
 	_cancelButtonItem = nil;
-	[filterTextfield release];
 	filterTextfield = nil;
 
 	[super viewDidUnload];
@@ -186,7 +169,7 @@
 		if(sig)
 		{
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			NSString *text = nil;
+			__unsafe_unretained NSString *text = nil;
 
 			if(filterType == autoTimerWhereDayOfWeek)
 				text = currentText;
@@ -343,11 +326,11 @@
 			selectedItem = [currentText integerValue];
 
 		if(indexPath.row == 7)
-			currentText = [@"weekend" retain];
+			currentText = @"weekend";
 		else if(indexPath.row == 8)
-			currentText = [@"weekday" retain];
+			currentText = @"weekday";
 		else
-			currentText = [[NSString stringWithFormat:@"%d", indexPath.row] retain];
+			currentText = [NSString stringWithFormat:@"%d", indexPath.row];
 
 		cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:1]];
 	}

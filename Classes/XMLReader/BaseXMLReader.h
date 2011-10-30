@@ -7,16 +7,17 @@
 //
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-#import "CXMLPushDocument.h"
+#import <XMLReader/CXMLPushDocument.h>
 typedef CXMLPushDocument OurXMLDocument;
 #else
-#import "CXMLDocument.h"
+#import <CXMLDocument.h>
 typedef CXMLDocument OurXMLDocument;
 #endif
+#import <CXMLElement.h>
 
-#import "RemoteConnector.h"
+#import <Connector/RemoteConnector.h>
 
-#import "DataSourceDelegate.h"
+#import <Delegates/DataSourceDelegate.h>
 
 /*!
  @brief Protocol used to guarantee that XML readers implement common functionality.
@@ -52,6 +53,11 @@ typedef CXMLDocument OurXMLDocument;
  @return Parsed XML Document.
  */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+
+/*!
+ @brief If using TouchXML to parse XML, this is the pointer to the document.
+ */
+@property (nonatomic, readonly) CXMLDocument *document;
 
 /*!
  @brief Expected encoding of document.

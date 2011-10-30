@@ -28,11 +28,11 @@
 /*!
  @brief Mute switch.
  */
-@property (nonatomic, retain) UISwitch *switchControl;
+@property (nonatomic, strong) UISwitch *switchControl;
 
 /*!
  @brief Volume slider.
  */
-@property (nonatomic, retain) UISlider *slider;
+@property (nonatomic, strong) UISlider *slider;
 
 @end

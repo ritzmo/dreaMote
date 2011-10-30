@@ -57,7 +57,7 @@
 	}
 	multiEPGIntervalViewController.selectedItem = selectedItem;
 
-	return [multiEPGIntervalViewController autorelease];
+	return multiEPGIntervalViewController;
 }
 
 /* layout */
@@ -74,12 +74,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */

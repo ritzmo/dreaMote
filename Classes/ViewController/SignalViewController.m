@@ -78,7 +78,7 @@ OSStatus RenderTone(
 	const double amplitude = 0.25;
 
 	// Get the tone parameters out of the view controller
-	SignalViewController *viewController = (SignalViewController *)inRefCon;
+	SignalViewController *viewController = (__bridge SignalViewController *)inRefCon;
 	double theta = viewController->theta;
 	double theta_increment = 2.0 * M_PI * viewController->frequency / viewController->sampleRate;
 
@@ -106,7 +106,7 @@ OSStatus RenderTone(
 
 void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 {
-	SignalViewController *viewController = (SignalViewController *)inClientData;
+	SignalViewController *viewController = (__bridge SignalViewController *)inClientData;
 	[viewController stopAudio];
 }
 
@@ -126,17 +126,8 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	[_snr release];
-	[_agc release];
-	[_audioToggle release];
-	[_interval release];
-	[_snrdBCell release];
-	[_berCell release];
-
 	[_timer invalidate];
 	_timer = nil;
-
-	[super dealloc];
 }
 
 - (void)createToneUnit
@@ -162,7 +153,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// Set our tone rendering function on the unit
 	AURenderCallbackStruct input;
 	input.inputProc = RenderTone;
-	input.inputProcRefCon = self;
+	input.inputProcRefCon = (__bridge void *)(self);
 	err = AudioUnitSetProperty(toneUnit,
 							   kAudioUnitProperty_SetRenderCallback,
 							   kAudioUnitScope_Input,
@@ -235,7 +226,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// SNR
 	_snr = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, 240, kSliderHeight)];
@@ -287,7 +277,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
-	_snrdBCell = [sourceCell retain];
+	_snrdBCell = sourceCell;
 
 	// BER
 	sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
@@ -297,14 +287,14 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
-	_berCell = [sourceCell retain];
+	_berCell = sourceCell;
 }
 
 - (void)viewDidLoad
 {
 	sampleRate = 44100;
 
-	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, self);
+	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, (__bridge void *)(self));
 	if (result == kAudioSessionNoError)
 	{
 		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
@@ -521,7 +511,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// Alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
@@ -530,7 +520,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 
 	// stop timer
 	[_timer invalidate];
@@ -538,7 +527,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	[self stopAudio];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 

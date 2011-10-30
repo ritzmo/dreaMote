@@ -27,17 +27,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[title release];
-	[artist release];
-	[album release];
-	[genre release];
-	[year release];
-	[coverpath release];
-
-	[super dealloc];
-}
 
 - (BOOL)isValid
 {

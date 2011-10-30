@@ -38,6 +38,6 @@ extern NSString *kPackageCell_ID;
  */
 - (BOOL)toggleMultiSelected;
 
-@property (nonatomic, retain) Package *package;
+@property (nonatomic, strong) Package *package;
 
 @end

@@ -18,8 +18,10 @@
 
 #import "TimerTableViewCell.h"
 
-#import "Objects/Generic/Timer.h"
-#import "Objects/Generic/Result.h"
+#import <Objects/Generic/Timer.h>
+#import <Objects/Generic/Result.h>
+
+#import <XMLReader/BaseXMLReader.h>
 
 @interface TimerListController()
 #if INCLUDE_FEATURE(Ads)
@@ -71,18 +73,12 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_cleanupButton release];
-	[_dateFormatter release];
-	[_timers release];
 	if(_timerViewController.delegate == self)
 		_timerViewController.delegate = nil;
-	[_timerViewController release];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	[_adBannerView release];
 #endif
-
-	[super dealloc];
 }
 
 /* memory warning */
@@ -111,7 +107,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 
 	// reload data
@@ -250,7 +245,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_timerXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
 }
 
 /* remove content data */
@@ -270,7 +265,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_tableView reloadData];
 #endif
 
-	SafeRetainAssign(_timerXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 - (void)cancelConnection:(NSNotification *)notif
@@ -298,7 +293,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 #pragma mark -
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -412,7 +407,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_timerViewController.delegate = self;
 	_timerViewController.timer = timer;
 	_timerViewController.oldTimer = ourCopy;
-	[ourCopy release];
 
 	// when in split view go back to timer view, else push it on the stack
 	if(!_isSplit)
@@ -425,7 +419,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
-			[result release]; // never reached, but to keep me from going crazy :)
+			 // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 		}
@@ -561,7 +555,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
 														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	// Add new Timer
@@ -592,7 +585,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
 				[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
-				[result release]; // never reached, but to keep me from going crazy :)
+				 // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 			}

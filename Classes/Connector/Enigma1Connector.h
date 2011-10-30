@@ -11,7 +11,7 @@
 
 #import "RemoteConnector.h"
 
-#import <CXMLDocument.h>
+#import <XMLReader/BaseXMLReader.h>
 
 typedef enum
 {
@@ -31,12 +31,12 @@ typedef enum
 	NSLock *_bouquetsCacheLock; /*!< @brief Lock for _cachedBouquetsXML. */
 
 	/*!
-	 @brief Cached Bouquet XML.
+	 @brief XML Reader responsible for current cached document.
 
 	 For performance Reasons the Service list is only fetched once when entering
 	 the Bouquet list so we have to cache this (already parsed) XML in memory.
 	*/
-	CXMLDocument *_cachedBouquetsXML;
+	BaseXMLReader *_cachedBouquetsReader;
 	cacheType _cacheType;
 }
 

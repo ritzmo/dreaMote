@@ -35,7 +35,6 @@
 {
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	NSObject<TimerProtocol> *timer = [GenericTimer withEventAndService:ourEvent :newService];
-	[newService release];
 
 	return timer;
 }
@@ -61,7 +60,7 @@
 	else
 		timer.afterevent = kAfterEventNothing;
 
-	return [timer autorelease];
+	return timer;
 }
 
 + (NSObject<TimerProtocol> *)timer
@@ -76,7 +75,6 @@
 	timer.justplay = NO;
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	timer.service = newService;
-	[newService release];
 	timer.repeated = 0;
 	timer.repeatcount = 0;
 	timer.state = 0;
@@ -87,7 +85,7 @@
 	else
 		timer.afterevent = kAfterEventNothing;
 
-	return [timer autorelease];
+	return timer;
 }
 
 - (id)init
@@ -126,21 +124,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_begin release];
-	[_eit release];
-	[_end release];
-	[_location release];
-	[_service release];
-	[_sname release];
-	[_sref release];
-	[_title release];
-	[_timeString release];
-	[_tdescription release];
-
-	[super dealloc];
-}
 
 - (NSString *)description
 {
@@ -184,7 +167,6 @@
 {
 	if(_sname)
 	{
-		[_service release];
 		_service = [[GenericService alloc] init];
 		_service.sref = newSref;
 		_service.sname = _sname;
@@ -201,7 +183,6 @@
 {
 	if(_sref)
 	{
-		[_service release];
 		_service = [[GenericService alloc] init];
 		_service.sref = _sref;
 		_service.sname = newSname;

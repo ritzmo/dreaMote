@@ -28,8 +28,8 @@
 }
 
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, retain) NSDate *begin;
-@property (nonatomic, retain) NSDate *end;
+@property (nonatomic, strong) NSDate *begin;
+@property (nonatomic, strong) NSDate *end;
 @property (nonatomic, assign) NSInteger interval;
 @property (nonatomic, assign) NSInteger delay_standby;
 @property (nonatomic, assign) NSInteger lastscan;
@@ -38,7 +38,7 @@
 @property (nonatomic, assign) BOOL force;
 @property (nonatomic, assign) BOOL wakeup;
 @property (nonatomic, assign) BOOL parse_autotimer;
-@property (nonatomic, retain) NSString *adapter;
+@property (nonatomic, strong) NSString *adapter;
 @property (nonatomic, assign) BOOL canDoBackgroundRefresh;
 @property (nonatomic, assign) BOOL hasAutoTimer;
 

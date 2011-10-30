@@ -34,18 +34,6 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 @synthesize timerTimeLabel = _timerTimeLabel;
 @synthesize formatter = _formatter;
 
-/* dealloc */
-- (void)dealloc
-{
-	[_serviceNameLabel release];
-	[_timerNameLabel release];
-	[_timerTimeLabel release];
-	[_formatter release];
-	[_timer release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -18,7 +18,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -32,7 +32,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addLocation:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -59,7 +58,6 @@ Example:
 		[_delegate performSelectorOnMainThread: @selector(addLocation:)
 									withObject: newLocation
 								 waitUntilDone: NO];
-		[newLocation release];
 	}
 }
 

@@ -55,12 +55,12 @@ typedef enum
 /*!
  @brief Application window.
  */
-@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
 
 /*!
  @brief Tab Bar Controller.
  */
-@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+@property (nonatomic, strong) IBOutlet UITabBarController *tabBarController;
 
 /*!
  @brief Currently busy?

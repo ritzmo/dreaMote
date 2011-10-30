@@ -32,17 +32,6 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 @synthesize eventTimeLabel = _eventTimeLabel;
 @synthesize formatter = _formatter;
 
-/* dealloc */
-- (void)dealloc
-{
-	[_eventNameLabel release];
-	[_eventTimeLabel release];
-	[_movie release];
-	[_formatter release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

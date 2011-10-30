@@ -55,7 +55,7 @@ enum retrieveCurrentUsing {
 	CGRect _landscapeControlsFrame; /*!< @brief Landscape frame of controls. */
 	CGRect _portraitControlsFrame; /*!< @brief Portrait frame of controls. */
 
-	CXMLDocument *_currentXMLDoc; /*!< @brief Currently played. */
+	BaseXMLReader *_xmlReader; /*!< @brief Currently played. */
 	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
 
 	UIBarButtonItem *_shuffleButton;  /*!< @brief "Shuffle" Button. */
@@ -147,12 +147,12 @@ enum retrieveCurrentUsing {
 /*!
  @brief Default implementation of xml parser error callback.
  */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error;
 
 /*!
  @brief Default implementation of xml parser success callback.
  */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
 
 @property (nonatomic, readonly) UIBarButtonItem *deleteButton;
 @property (nonatomic, readonly) UIBarButtonItem *shuffleButton;

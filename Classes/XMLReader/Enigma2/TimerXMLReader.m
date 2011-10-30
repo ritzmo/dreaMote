@@ -36,7 +36,7 @@ static const char *kEnigma2TimerLocation = "e2location";
 static const NSUInteger kEnigma2TimerLocationLength = 11;
 
 @interface Enigma2TimerXMLReader()
-@property (nonatomic,retain) NSObject<TimerProtocol> *currentTimer;
+@property (nonatomic,strong) NSObject<TimerProtocol> *currentTimer;
 @end
 
 @implementation Enigma2TimerXMLReader
@@ -48,17 +48,9 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentTimer release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -71,7 +63,6 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 	[_delegate performSelectorOnMainThread: @selector(addTimer:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -112,9 +103,8 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 	if(!strncmp((const char *)localname, kEnigma2TimerElement, kEnigma2TimerElementLength))
 	{
 		GenericService *service = [[GenericService alloc] init];
-		self.currentTimer = [[[GenericTimer alloc] init] autorelease];
+		self.currentTimer = [[GenericTimer alloc] init];
 		currentTimer.service = service;
-		[service release];
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
 			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)

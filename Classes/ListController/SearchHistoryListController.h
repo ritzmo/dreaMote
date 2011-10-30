@@ -30,7 +30,7 @@
  */
 - (void)saveHistory;
 
-@property (nonatomic, retain) NSObject<SearchHistoryListDelegate> *historyDelegate;
+@property (nonatomic, strong) NSObject<SearchHistoryListDelegate> *historyDelegate;
 
 @end
 

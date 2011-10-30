@@ -64,8 +64,6 @@
 	SafeRetainAssign(_captionTextField, nil);
 	SafeRetainAssign(_timeoutTextField, nil);
 	SafeDestroyButton(_sendButton);
-
-	[super dealloc];
 }
 
 - (UITextField *)allocTextField
@@ -116,7 +114,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// Message
 	_messageTextField = [self allocTextField];
@@ -211,7 +208,6 @@
 										 message:result.resulttext
 										 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 		}
 	}
 
@@ -222,7 +218,6 @@
 									 message:failureMessage
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
-		[notification release];
 	}
 
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
@@ -453,7 +448,6 @@
 			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
 			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
 			[self.navigationController presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 			[self.navigationController pushViewController: targetViewController animated: YES];

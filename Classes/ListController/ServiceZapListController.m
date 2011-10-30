@@ -19,7 +19,7 @@
  @brief Hide action sheet if visible.
  */
 - (void)dismissActionSheet:(NSNotification *)notif;
-@property (nonatomic, retain) UIActionSheet *actionSheet;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
 @end
 
 @implementation ServiceZapListController
@@ -49,11 +49,6 @@
 											   destructiveButtonTitle:nil
 													otherButtonTitles:nil];
 	zlc.actionSheet = actionSheet;
-	[actionSheet release];
-#ifndef __clang_analyzer__
-	// NOTE: this is evil and clang detects it :D
-	[zlc.actionSheet.delegate retain];
-#endif
 	[zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"OPlayer"];
@@ -71,7 +66,7 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
-	return [zlc autorelease];
+	return zlc;
 }
 
 + (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
@@ -118,11 +113,7 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	SafeRetainAssign(_zapDelegate, nil);
 	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
-	SafeRetainAssign(_actionSheet, nil);
-
-	[super dealloc];
 }
 
 - (void)loadView
@@ -136,7 +127,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -151,8 +141,8 @@
 
 - (void)dismissActionSheet:(NSNotification *)notif
 {
-	[SafeReturn(_actionSheet) dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
-	SafeRetainAssign(_actionSheet, nil);
+	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+	_actionSheet = nil;
 }
 
 #pragma mark	-
@@ -223,7 +213,7 @@
 		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
 			++row;
 	}
-	[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)row];
+	[_zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
 	return indexPath;
 }
 
@@ -259,14 +249,12 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-#ifndef __clang_analyzer__
 	id<UIActionSheetDelegate> delegate = nil;
 	@synchronized(self)
 	{
 		delegate = actionSheet.delegate;
 		actionSheet.delegate = nil;
 	}
-#endif
 
 	if(buttonIndex == actionSheet.cancelButtonIndex)
 	{
@@ -285,12 +273,8 @@
 		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
 		//	++buttonIndex;
 
-		[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)buttonIndex];
+		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
-#ifndef __clang_analyzer__
-	// NOTE: we retain the delegate, so we have to release it here again
-	[delegate autorelease];
-#endif
 }
 
 @end

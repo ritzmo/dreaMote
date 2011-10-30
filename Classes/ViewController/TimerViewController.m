@@ -42,19 +42,19 @@
  @param sender ui element
  */
 - (void)cancelEdit:(id)sender;
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) NSObject<EventProtocol> *event;
-@property (nonatomic, readonly) AfterEventViewController *afterEventViewController;
-@property (nonatomic, readonly) UIViewController *afterEventNavigationController;
-@property (nonatomic, readonly) UIViewController *bouquetListController;
-@property (nonatomic, readonly) DatePickerController *datePickerController;
-@property (nonatomic, readonly) UIViewController *datePickerNavigationController;
-@property (nonatomic, readonly) UIViewController *locationListController;
-@property (nonatomic, readonly) SimpleRepeatedViewController *simpleRepeatedViewController;
-@property (nonatomic, readonly) UIViewController *simpleRepeatedNavigationController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) NSObject<EventProtocol> *event;
+@property (unsafe_unretained, nonatomic, readonly) AfterEventViewController *afterEventViewController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *afterEventNavigationController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
+@property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *locationListController;
+@property (unsafe_unretained, nonatomic, readonly) SimpleRepeatedViewController *simpleRepeatedViewController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *simpleRepeatedNavigationController;
 
-@property (nonatomic, readonly) CellTextField *timerTitleCell;
-@property (nonatomic, readonly) CellTextField *timerDescriptionCell;
+@property (unsafe_unretained, nonatomic, readonly) CellTextField *timerTitleCell;
+@property (unsafe_unretained, nonatomic, readonly) CellTextField *timerDescriptionCell;
 @end
 
 @implementation TimerViewController
@@ -121,7 +121,6 @@
 	NSObject<TimerProtocol> *ourCopy = [ourTimer copy];
 	timerViewController.oldTimer = ourCopy;
 	timerViewController.creatingNewTimer = NO;
-	[ourCopy release];
 
 	return timerViewController;
 }
@@ -141,33 +140,9 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	[_timer release];
-	[_oldTimer release];
-	[_delegate release];
-	[_event release];
-
 	_titleCell.delegate = nil;
-	SafeRetainAssign(_titleCell, nil);
-	SafeRetainAssign(_timerTitle, nil);
 	_descriptionCell.delegate = nil;
 	SafeRetainAssign(_descriptionCell, nil);
-	SafeRetainAssign(_timerDescription, nil);
-	SafeRetainAssign(_timerEnabled, nil);
-	SafeRetainAssign(_timerJustplay, nil);
-	SafeRetainAssign(_cancelButtonItem, nil);
-	[_popoverButtonItem release];
-	[popoverController release];
-
-	SafeRetainAssign(_afterEventNavigationController , nil);
-	SafeRetainAssign(_afterEventViewController , nil);
-	SafeRetainAssign(_bouquetListController , nil);
-	SafeRetainAssign(_datePickerController , nil);
-	SafeRetainAssign(_datePickerNavigationController , nil);
-	SafeRetainAssign(_locationListController , nil);
-	SafeRetainAssign(_simpleRepeatedNavigationController , nil);
-	SafeRetainAssign(_simpleRepeatedViewController , nil);
-
-	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -239,7 +214,6 @@
 			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 
-			[rootViewController release];
 		}
 		else
 			_bouquetListController = rootViewController;
@@ -323,8 +297,7 @@
 {
 	if(_timer != newTimer)
 	{
-		[_timer release];
-		_timer = [newTimer retain];
+		_timer = newTimer;
 		
 		// stop editing
 		_shouldSave = NO;
@@ -405,7 +378,6 @@
 	[format setDateStyle:NSDateFormatterFullStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *dateString = [format fuzzyDate: dateTime];
-	[format release];
 	return dateString;
 }
 
@@ -474,7 +446,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
 	self.view = tableView;
-	[tableView release];
 
 	_timerTitle = [self newTitleField];
 	_titleCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -545,7 +516,6 @@
 								cancelButtonTitle:@"OK"
 								otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 		}
 		else
 		{
@@ -560,7 +530,7 @@
 		}
 
 		if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
-			[_delegate timerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_oldTimer)];
+			[_delegate timerViewController:self editingWasCanceled:_oldTimer];
 		return;
 	}
 
@@ -625,7 +595,7 @@
 				else
 				{
 					if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:timerWasAdded:)])
-						[_delegate timerViewController:SafeReturn(self) timerWasAdded:SafeReturn(_timer)];
+						[_delegate timerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -637,7 +607,7 @@
 				else
 				{
 					if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:timerWasEdited::)])
-						[_delegate timerViewController:SafeReturn(self) timerWasEdited:SafeReturn(_timer) :SafeReturn(_oldTimer)];
+						[_delegate timerViewController:self timerWasEdited:_timer :_oldTimer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -653,10 +623,9 @@
 										 cancelButtonTitle:@"OK"
 										 otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 
 			if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
-				[_delegate timerViewController:SafeReturn(self) editingWasCanceled:SafeReturn(_oldTimer)];
+				[_delegate timerViewController:self editingWasCanceled:_oldTimer];
 			return;
 		}
 
@@ -739,7 +708,7 @@
 
 	// We copy the the service because it might be bound to an xmlnode we might free
 	// during our runtime.
-	_timer.service = [[newService copy] autorelease];
+	_timer.service = [newService copy];
 	// XXX: how do people keep running into this?
 	if([(UITableView *)self.view numberOfSections] == 6)
 	{
@@ -1092,7 +1061,6 @@
 				GenericService *service = [[GenericService alloc] init];
 				service.sname = NSLocalizedString(@"Select Service", @"");
 				((ServiceTableViewCell *)sourceCell).service = service;
-				[service release];
 			}
 
 			if(self.editing)
@@ -1148,16 +1116,16 @@
 		else if(section == 4)
 		{
 			// property takes care of initialization (including navigation controller)
-			self.datePickerController.date = [[_timer.begin copy] autorelease];
-			[self.datePickerController setTarget: self action: @selector(beginSelected:)];
+			self.datePickerController.date = [_timer.begin copy];
+			self.datePickerController.callback = ^(NSDate *date){[self beginSelected:date];};
 
 			targetViewController = self.datePickerNavigationController;
 		}
 		else if(section == 5)
 		{
 			// property takes care of initialization (including navigation controller)
-			self.datePickerController.date = [[_timer.end copy] autorelease];
-			[self.datePickerController setTarget: self action: @selector(endSelected:)];
+			self.datePickerController.date = [_timer.end copy];
+			self.datePickerController.callback = ^(NSDate *date){[self endSelected:date];};
 
 			targetViewController = self.datePickerNavigationController;
 		}
@@ -1201,7 +1169,7 @@
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
 				[NSException raise:@"TargetViewControllerTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [targetViewController description], result];
-				[result release]; // never reached, but to keep me from going crazy :)
+				 // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 			}
@@ -1301,14 +1269,6 @@
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[_afterEventNavigationController release];
-	[_afterEventViewController release];
-	[_bouquetListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-	[_locationListController release];
-	[_simpleRepeatedNavigationController release];
-	[_simpleRepeatedViewController release];
 
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
@@ -1327,8 +1287,7 @@
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
-	[_popoverButtonItem release];
-	_popoverButtonItem = [barButtonItem retain];
+	_popoverButtonItem = barButtonItem;
 
 	// assign popover button if there is no left button assigned.
 	if(!self.navigationItem.leftBarButtonItem)
@@ -1342,7 +1301,6 @@
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-	[_popoverButtonItem release];
 	_popoverButtonItem = nil;
 	if([self.navigationItem.leftBarButtonItem isEqual: barButtonItem])
 	{

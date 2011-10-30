@@ -22,7 +22,7 @@ static const char *kEnigmaEventBegin = "start";
 static const NSUInteger kEnigmaEventBeginLength = 6;
 
 @interface EnigmaEventXMLReader()
-@property (nonatomic, retain) NSObject<EventProtocol> *currentEvent;
+@property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
 @end
 
 @implementation EnigmaEventXMLReader
@@ -34,17 +34,9 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentEvent release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -55,7 +47,6 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 	[_delegate performSelectorOnMainThread: @selector(addEvent:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -83,7 +74,7 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 {
 	if(!strncmp((const char *)localname, kEnigmaEventElement, kEnigmaEventElementLength))
 	{
-		self.currentEvent = [[[GenericEvent alloc] init] autorelease];
+		self.currentEvent = [[GenericEvent alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kEnigmaEventExtendedDescription, kEnigmaEventExtendedDescriptionLength)
 			||	!strncmp((const char *)localname, kEnigmaEventTitle, kEnigmaEventTitleLength)

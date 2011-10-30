@@ -63,23 +63,6 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[myTableView release];
-	[menuList release];
-	[_aboutDreamoteViewController release];
-#if IS_FULL()
-	[_autotimerDictionary release];
-#endif
-	[_configListController release];
-	[_epgrefreshDictionary release];
-	[_eventSearchDictionary release];
-	[_mediaPlayerDictionary release];
-	[_locationsDictionary release];
-	[_recordDictionary release];
-	[_signalDictionary release];
-	[_sleeptimerDictionary release];
-	[_packageManagerDictionary release];
-
-	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,21 +94,19 @@
 	UIViewController *targetViewController;
 
 	targetViewController = [[AboutViewController alloc] init];
-	_aboutDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_aboutDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"About Receiver", @"Title of About Receiver in Other List"), @"title",
 						NSLocalizedString(@"Information on software and tuners", @"Explaination of About Receiver in Other List"), @"explainText",
 						targetViewController, @"viewController",
-						nil] retain];
-	[targetViewController release];
+						nil];
 
 #if IS_FULL()
 	targetViewController = [[AutoTimerListController alloc] init];
-	_autotimerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_autotimerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"AutoTimer-Plugin", @"Title of AutoTimer in Other List"), @"title",
 						 NSLocalizedString(@"Add and edit AutoTimers", @"Explaination of AutoTimer in Other List"), @"explainText",
 						 targetViewController, @"viewController",
-						 nil] retain];
-	[targetViewController release];
+						 nil];
 #endif
 
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -135,55 +116,49 @@
 						 nil]];
 
 	targetViewController = [[EPGRefreshViewController alloc] init];
-	_epgrefreshDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_epgrefreshDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"EPGRefresh-Plugin", @"Title of EPGRefresh in Other List"), @"title",
 							  NSLocalizedString(@"Settings of EPGRefresh-Plugin", @"Explaination of EPGRefresh in Other List"), @"explainText",
 							  targetViewController, @"viewController",
-							  nil] retain];
-	[targetViewController release];
+							  nil];
 
 	targetViewController = [[EventSearchListController alloc] init];
-	_eventSearchDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_eventSearchDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Search EPG", @"Title of Event Search in Other List"), @"title",
 							NSLocalizedString(@"Search EPG for event titles", @"Explaination of Event Search in Other List"), @"explainText",
 							targetViewController, @"viewController",
-							nil] retain];
-	[targetViewController release];
+							nil];
 
 	targetViewController = [[SignalViewController alloc] init];
-	_signalDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_signalDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							   NSLocalizedString(@"Signal Finder", @"Title of Signal Finder in Other List"), @"title",
 							   NSLocalizedString(@"Displays current SNR/AGC", @"Explaination of Signal Finder in Other List"), @"explainText",
 							   targetViewController, @"viewController",
-							   nil] retain];
-	[targetViewController release];
+							   nil];
 
 	if(!IS_IPAD())
 	{
 		targetViewController = [[LocationListController alloc] init];
-		_locationsDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+		_locationsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Recording Locations", @"Title of Location List in Other List"), @"title",
 							NSLocalizedString(@"Show recording locations", @"Explaination of Location List in Other List"), @"explainText",
 							targetViewController, @"viewController",
-							nil] retain];
-		[targetViewController release];
+							nil];
 
 		targetViewController = [[MovieListController alloc] init];
-		_recordDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+		_recordDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Movies", @"Title of Movie List in Other List"), @"title",
 							NSLocalizedString(@"Recorded Movies", @"Explaination of Movie List in Other List"), @"explainText",
 							targetViewController, @"viewController",
-							nil] retain];
-		[targetViewController release];
+							nil];
 	}
 
 	targetViewController = [[MediaPlayerController alloc] init];
-	_mediaPlayerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_mediaPlayerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 								   NSLocalizedString(@"Media Player", @"Title of Media Player in Other List"), @"title",
 								   NSLocalizedString(@"Control the remote media player", @"Explaination of Media Player in Other List"), @"explainText",
 								   targetViewController, @"viewController",
-								   nil] retain];
-	[targetViewController release];
+								   nil];
 
 	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -191,7 +166,6 @@
 						NSLocalizedString(@"Control Powerstate and Volume", @"Explaination of Control View in Other List"), @"explainText",
 						targetViewController, @"viewController",
 						nil]];
-	[targetViewController release];
 
 	targetViewController = [[MessageViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
@@ -199,28 +173,24 @@
 						 NSLocalizedString(@"Send short Messages", @"Explaination of Message View in Other List"), @"explainText",
 						 targetViewController, @"viewController",
 						 nil]];
-	[targetViewController release];
 
 	targetViewController = [[SleepTimerViewController alloc] init];
-	_sleeptimerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_sleeptimerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Sleep Timer", @"Title of Sleep Timer in Other List"), @"title",
 							  NSLocalizedString(@"Edit and (de)activate Sleep Timer", @"Explaination of Sleep Timer in Other List"), @"explainText",
 							  targetViewController, @"viewController",
-							  nil] retain];
-	[targetViewController release];
+							  nil];
 
 	targetViewController = [[PackageManagerListController alloc] init];
-	_packageManagerDictionary = [[NSDictionary dictionaryWithObjectsAndKeys:
+	_packageManagerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Package Manager", @"Title of Package Manager in Other List"), @"title",
 							  NSLocalizedString(@"Install/Update/Remove packages", @"Explaination of Package Manager in Other List"), @"explainText",
 							  targetViewController, @"viewController",
-							  nil] retain];
-	[targetViewController release];
+							  nil];
 
 	// Add the "About" button to the navigation bar
 	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStylePlain target:self action:@selector(aboutDreamoteAction:)];
 	self.navigationItem.leftBarButtonItem = buttonItem;
-	[buttonItem release];
 
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(IS_IPAD())
@@ -509,7 +479,7 @@
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [targetViewController description], result];
-			[result release]; // never reached, but to keep me from going crazy :)
+			 // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 		}

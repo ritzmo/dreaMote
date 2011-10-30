@@ -46,14 +46,6 @@
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	SafeRetainAssign(_searchBar, nil);
-
-	[super dealloc];
-}
-
 /* getter of searchHistory */
 - (SearchHistoryListController *)searchHistory
 {
@@ -73,7 +65,6 @@
 		&& ![self.navigationController.visibleViewController isEqual:_searchHistory])
 	{
 		[_searchHistory saveHistory];
-		[_searchHistory release];
 		_searchHistory = nil;
 	}
     [super didReceiveMemoryWarning];
@@ -107,11 +98,9 @@
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	[contentView addSubview: _tableView];
 
-	[contentView release];
 
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemBookmarks target:self action:@selector(showHistory:)];
 	self.navigationItem.rightBarButtonItem = barButtonItem;
-	[barButtonItem release];
 
 #if INCLUDE_FEATURE(Ads)
 	[self createAdBannerView];
@@ -138,7 +127,6 @@
 			return;
 		}
 
-		[popoverController release];
 		popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
 		/*!
 		 @note In case I want to bind this to the search bar at some point in the future,
@@ -171,17 +159,17 @@
 {
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
-	NSString *title = [[[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding] autorelease];
+	NSString *title = [[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding];
 	[self.searchHistory prepend:title];
 
 	// perform native search
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesEPGSearch])
-		SafeRetainAssign(_eventXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] searchEPG:self title:title])
+		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] searchEPG:self title:title])
 #if IS_FULL()
 	// serch in epg cache
 	else
 	{
-		SafeRetainAssign(_eventXMLDoc, nil);
+		SafeRetainAssign(_xmlReader, nil);
 		[[EPGCache sharedInstance] searchEPGForTitle:title delegate:self];
 	}
 #endif
@@ -197,7 +185,6 @@
 	// set search text
 	NSString *textCopy = [text copy];
 	_searchBar.text = textCopy;
-	[textCopy release];
 
 	// initiate search
 	[self searchBarSearchButtonClicked:nil];
@@ -219,7 +206,7 @@
 #pragma mark -
 
 // NOTE: can't use super because it has modifications for the search bar
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -235,10 +222,9 @@
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if(_useSections)
 		[self sortEventsInSections]; // calls reloadData by itself
@@ -347,7 +333,7 @@
 
 	[_events removeAllObjects];
 	[_tableView reloadData];
-	SafeRetainAssign(_eventXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 	
 	// Run this in our "temporary" queue
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
@@ -395,7 +381,6 @@
 	[_searchHistory saveHistory];
 	if(!IS_IPAD())
 	{
-		[_searchHistory release];
 		_searchHistory = nil;
 	}
 	[super viewWillDisappear:animated];

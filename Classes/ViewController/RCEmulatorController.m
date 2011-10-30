@@ -84,21 +84,7 @@
 
 - (void)dealloc
 {
-	[_toolbar release];
-	[rcView release];
-
-	[_screenView release];
-	[_scrollView release];
-	[_imageView release];
-	[_screenshotButton release];
-
-	[_keyPad release];
-	[_navigationPad release];
-
 	[_queue cancelAllOperations];
-	SafeRetainAssign(_queue, nil);
-
-	[super dealloc];
 }
 
 - (void)configureToolbar:(BOOL)animated
@@ -168,9 +154,6 @@
 				[items addObject:bothItem];
 		}
 
-		[osdItem release];
-		[videoItem release];
-		[bothItem release];
 	}
 	else
 	{
@@ -180,8 +163,6 @@
 	}
 
 	[_toolbar setItems:items animated:animated];
-	[flexItem release];
-	[standbyItem release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -231,7 +212,6 @@
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = contentView;
-	[contentView release];
 
 	// Flip Button
 	_screenshotButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Screenshot", @"")
@@ -275,7 +255,6 @@
 		UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(maybeSavePicture:)];
 		longPressGesture.minimumPressDuration = 1;
 		[_scrollView addGestureRecognizer:longPressGesture];
-		[longPressGesture release];
 	}
 	[_screenView addSubview: _scrollView];
 	_imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
@@ -357,22 +336,22 @@
 
 - (void)loadImageThread:(id)dummy
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	NSData *data = [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType];
-	UIImage * image = [UIImage imageWithData: data];
-	if(image != nil)
-	{
-		CGFloat scale = image.size.width > 720 ? kImageScaleHuge : kImageScale;
-		const CGFloat scaledWidth = image.size.width*scale;
-		const CGFloat scaledHeight = image.size.height*scale;
-		_imageView.image = image;
-		_scrollView.contentSize = CGSizeMake(scaledWidth, scaledHeight);
-		_scrollView.zoomScale = 1.0f;
-		_imageView.frame = CGRectMake(0, 0, scaledWidth, scaledHeight);
+		NSData *data = [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType];
+		UIImage * image = [UIImage imageWithData: data];
+		if(image != nil)
+		{
+			CGFloat scale = image.size.width > 720 ? kImageScaleHuge : kImageScale;
+			const CGFloat scaledWidth = image.size.width*scale;
+			const CGFloat scaledHeight = image.size.height*scale;
+			_imageView.image = image;
+			_scrollView.contentSize = CGSizeMake(scaledWidth, scaledHeight);
+			_scrollView.zoomScale = 1.0f;
+			_imageView.frame = CGRectMake(0, 0, scaledWidth, scaledHeight);
+		}
+
 	}
-
-	[pool release];
 }
 
 - (void)setOSDType:(id)sender
@@ -408,7 +387,6 @@
 																			selector:@selector(sendButton:)
 																			  object:[NSNumber numberWithInteger: sender.rcCode]];
 	[_queue addOperation:operation];
-	[operation release];
 }
 
 - (IBAction)buttonPressedIB:(UIButton *)sender
@@ -417,7 +395,6 @@
 																			selector:@selector(sendButton:)
 																			  object:[NSNumber numberWithInteger: sender.tag]];
 	[_queue addOperation:operation];
-	[operation release];
 }
 
 - (void)toggleStandby:(id)sender
@@ -452,7 +429,6 @@
 			[actionSheet showInView:self.view];
 		else
 			[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 	}
 }
 

@@ -80,14 +80,14 @@
 		resultNodes = [_node nodesForXPath:@"service/name" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
-			sname = [[resultElement stringValue] retain];
+			sname = [resultElement stringValue];
 			break;
 		}
 
 		resultNodes = [_node nodesForXPath:@"service/reference" error:nil];
 		for(CXMLElement *resultElement in resultNodes)
 		{
-			sref = [[resultElement stringValue] retain];
+			sref = [resultElement stringValue];
 			break;
 		}
 		
@@ -97,8 +97,6 @@
 			_service.sname = sname;
 			_service.sref = sref;
 		}
-		[sname release];
-		[sref release];
 	}
 	return _service;
 }
@@ -258,7 +256,7 @@
 {
 	if((self = [self init]))
 	{
-		_node = [node retain];
+		_node = node;
 	}
 	return self;
 }
@@ -286,18 +284,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_begin release];
-	[_end release];
-	[_title release];
-	[_service release];
-	[_timeString release];
-	
-	[_node release];
-
-	[super dealloc];
-}
 
 - (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
 {

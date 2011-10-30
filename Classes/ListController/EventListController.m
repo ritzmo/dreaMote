@@ -19,6 +19,8 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 #if IS_FULL()
 	#import "EPGCache.h"
 #endif
@@ -59,9 +61,9 @@
 		_eventViewController = nil;
 		_service = nil;
 		_serviceListController = nil;
-		_events = [[NSMutableArray array] retain];
+		_events = [NSMutableArray array];
 		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		_sectionOffsets = [[NSMutableArray array] retain];
+		_sectionOffsets = [NSMutableArray array];
 #if IS_FULL()
 		_filteredEvents = [[NSMutableArray alloc] init];
 #endif
@@ -75,7 +77,7 @@
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.service = ourService;
 
-	return [eventListController autorelease];
+	return eventListController;
 }
 
 /* getter for service property */
@@ -109,23 +111,11 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_events release];
-	[_service release];
-	[_dateFormatter release];
-	[_eventViewController release];
-	[_eventXMLDoc release];
-	[popoverController release];
-	[_zapListController release];
-	[_gregorian release];
-	[_sectionOffsets release];
 #if IS_FULL()
-	[_filteredEvents release];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	[_searchDisplay release];
 #endif
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
@@ -133,13 +123,11 @@
 	_adBannerView = nil;
 #endif
 
-	[super dealloc];
 }
 
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[_eventViewController release];
 	_eventViewController = nil;
 	
     [super didReceiveMemoryWarning];
@@ -157,7 +145,6 @@
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
-	[zapButton release];
 
 #if IS_FULL()
 	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -209,7 +196,7 @@
 	[epgCache startTransaction:_service];
 #endif
 	_reloading = YES;
-	SafeRetainAssign(_eventXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
 }
 
 /* remove content data */
@@ -248,7 +235,7 @@
 		[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
 	}
 
-	SafeRetainAssign(_eventXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 /* rotate with device */
@@ -394,7 +381,6 @@
 														cancelButtonTitle:@"OK"
 														otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 }
@@ -405,15 +391,15 @@
 #pragma mark DataSourceDelegate methods
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+	[super dataSourceDelegate:dataSource errorParsingDocument:error];
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 #endif
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -535,7 +521,7 @@
 		for(NSObject* obj in self.navigationController.viewControllers)
 			[result appendString:[obj description]];
 		[NSException raise:@"EventViewTwiceInNavigationStack" format:@"_eventViewController was twice in navigation stack: %@", result];
-		[result release]; // never reached, but to keep me from going crazy :)
+		 // never reached, but to keep me from going crazy :)
 #endif
 		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 	}
@@ -573,7 +559,6 @@
 		format.timeStyle = NSDateFormatterNoStyle;
 		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
 		NSString *title = [format fuzzyDate:event.begin];
-		[format release];
 		return title;
 	}
 	return nil;
@@ -755,9 +740,7 @@
 
 			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 			zlc.zapDelegate = self;
-			[popoverController release];
 			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
-			[zlc release];
 
 			[popoverController presentPopoverFromBarButtonItem:sender
 									  permittedArrowDirections:UIPopoverArrowDirectionUp
@@ -801,7 +784,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 		[ServiceZapListController openStream:streamingURL withAction:selectedAction];

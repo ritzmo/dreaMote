@@ -55,11 +55,11 @@
 /*!
  @brief Default implementation of xml parser error callback.
  */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error;
 
 /*!
  @brief Default implementation of xml parser success callback.
  */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
 
 @end

@@ -26,14 +26,10 @@
 - (void)dealloc
 {
 	_refreshHeaderView.delegate = nil;
-	[_refreshHeaderView release];
 	_refreshHeaderView = nil;
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-	[_tableView release];
 	_tableView = nil;
-
-	[super dealloc];
 }
 
 /* layout */
@@ -68,11 +64,9 @@
 - (void)viewDidUnload
 {
 	_refreshHeaderView.delegate = nil;
-	[_refreshHeaderView release];
 	_refreshHeaderView = nil;
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-	[_tableView release];
 	_tableView = nil;
 
 	[super viewDidUnload];
@@ -137,7 +131,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -154,10 +148,9 @@
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];

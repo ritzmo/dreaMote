@@ -53,19 +53,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_service release];
-	[_eit release];
-	[_begin release];
-	[_end release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
-	[_timeString release];
-
-	[super dealloc];
-}
 
 - (NSString *)description
 {

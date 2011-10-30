@@ -44,7 +44,7 @@
 /*!
  @brief Actual RC Emulator.
  */
-@property (nonatomic,retain) IBOutlet UIView *rcView;
+@property (nonatomic,strong) IBOutlet UIView *rcView;
 
 /*!
  @brief Create custom Button.

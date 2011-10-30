@@ -18,6 +18,8 @@
 #import <Objects/Generic/Location.h>
 #import <Objects/Generic/Result.h>
 
+#import <XMLReader/BaseXMLReader.h>
+
 @interface LocationListController()
 /*!
  @brief done editing
@@ -37,7 +39,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Locations", @"Title of LocationListController");
-		_locations = [[NSMutableArray array] retain];
+		_locations = [NSMutableArray array];
 		_refreshLocations = YES;
 		_isSplit = NO;
 		_movieListController = nil;
@@ -53,23 +55,11 @@
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_locations release];
-	[_movieListController release];
-	[_locationXMLDoc release];
-	[_delegate release];
-
-	[super dealloc];
-}
-
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
 	if(!IS_IPAD())
 	{
-		[_movieListController release];
 		_movieListController = nil;
 	}
 	
@@ -137,7 +127,6 @@
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.leftBarButtonItem = button;
-		[button release];
 	}
 	else
 		self.navigationItem.leftBarButtonItem = nil;
@@ -175,11 +164,9 @@
 
 		if(!IS_IPAD())
 		{
-			[_movieListController release];
 			_movieListController = nil;
 		}
-		[_locationXMLDoc release];
-		_locationXMLDoc = nil;
+		_xmlReader = nil;
 	}
 }
 
@@ -187,7 +174,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_locationXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self]);
 }
 
 /* remove content data */
@@ -201,8 +188,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	[_locationXMLDoc release];
-	_locationXMLDoc = nil;
+	_xmlReader = nil;
 }
 
 /* force a refresh */
@@ -237,7 +223,6 @@
 			location.fullpath = bookmark;
 			location.valid = YES;
 			[self addLocation:location];
-			[location release];
 		}
 		else
 		{
@@ -245,7 +230,6 @@
 																  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to add bookmark: %@",@"Creating a bookmark has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 }
@@ -254,7 +238,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	if([error domain] == NSURLErrorDomain)
 	{
@@ -267,7 +251,6 @@
 				location.fullpath = @"/hdd/movie/";
 				location.valid = YES;
 				[self addLocation:location];
-				[location release];
 			}
 			error = nil;
 		}
@@ -282,7 +265,7 @@
 	}
 	else
 	{
-		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 }
 
@@ -388,7 +371,7 @@
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
 				[NSException raise:@"MovieListTwiceInNavigationStack" format:@"_movieListController was twice in navigation stack: %@", result];
-				[result release]; // never reached, but to keep me from going crazy :)
+				 // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 			}
@@ -447,7 +430,6 @@
 								   ];
 		alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 		[alertView show];
-		[alertView release];
 	}
 	else
 	{

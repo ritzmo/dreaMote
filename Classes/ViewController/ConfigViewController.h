@@ -82,7 +82,7 @@
 /*!
  @brief Connection Dictionary.
  */
-@property (nonatomic,retain) NSMutableDictionary *connection;
+@property (nonatomic,strong) NSMutableDictionary *connection;
 
 /*!
  @brief Index in List of known Connections.

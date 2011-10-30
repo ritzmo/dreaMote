@@ -33,6 +33,7 @@
 @implementation BaseXMLReader
 
 @synthesize encoding = _encoding;
+@synthesize document = _parser;
 
 /* initialize */
 - (id)init
@@ -44,15 +45,6 @@
 		_encoding = NSUTF8StringEncoding;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	SafeRetainAssign(_delegate, nil)
-	SafeRetainAssign(_parser, nil);
-
-	[super dealloc];
 }
 
 /* download and parse xml document */
@@ -107,17 +99,18 @@
 		[self sendErroneousObject];
 
 		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
 		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
 		{
+			BaseXMLReader *__unsafe_unretained dataSource = self;
+			NSError *__unsafe_unretained callbackError = localError;
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];
 			[invocation setSelector:errorParsing];
-			[invocation setArgument:&self atIndex:2];
-			[invocation setArgument:&_parser atIndex:3];
-			[invocation setArgument:&localError atIndex:4];
+			[invocation setArgument:&dataSource atIndex:2];
+			[invocation setArgument:&callbackError atIndex:3];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 									  waitUntilDone:NO];
 		}
@@ -127,16 +120,16 @@
 	[self parseFull];
 
 	// delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
 	if(_delegate && [_delegate respondsToSelector:finishedParsing] && sig)
 	{
+		BaseXMLReader *__unsafe_unretained dataSource = self;
 		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 		[invocation retainArguments];
 		[invocation setTarget:_delegate];
 		[invocation setSelector:finishedParsing];
-		[invocation setArgument:&self atIndex:2];
-		[invocation setArgument:&_parser atIndex:3];
+		[invocation setArgument:&dataSource atIndex:2];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}

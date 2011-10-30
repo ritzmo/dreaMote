@@ -31,15 +31,6 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 
 @synthesize timerNameLabel = _timerNameLabel;
 
-/* dealloc */
-- (void)dealloc
-{
-	[_timerNameLabel release];
-	[_timer release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

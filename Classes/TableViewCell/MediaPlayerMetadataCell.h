@@ -39,11 +39,11 @@ extern NSString *kMetadataCell_ID;
 /*!
  @brief Metadata.
  */
-@property (nonatomic, retain) NSObject<MetadataProtocol> *metadata;
+@property (nonatomic, strong) NSObject<MetadataProtocol> *metadata;
 
 /*!
  @brief Coverart.
  */
-@property (nonatomic, retain) UIImageView *coverart;
+@property (nonatomic, strong) UIImageView *coverart;
 
 @end

@@ -18,7 +18,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -31,7 +31,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addService:)
 								withObject: fakeObject
 								waitUntilDone: NO];
-	[fakeObject release];
 }
 
 - (NSObject<EventProtocol> *)parseEvent: (NSArray *)resultNodes
@@ -50,7 +49,6 @@
 		// Workaround unknown now/next
 		if(newEvent.title == nil)
 		{
-			[newEvent release];
 			return nil;
 		}
 
@@ -84,7 +82,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: newEvent
 									waitUntilDone: NO];
-		[newEvent autorelease];
 		return newEvent;
 	}
 	return nil;
@@ -135,7 +132,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addService:)
 									withObject: newService
 									waitUntilDone: NO];
-		[newService release];
 		break;
 	}
 

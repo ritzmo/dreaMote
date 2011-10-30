@@ -28,6 +28,6 @@
 /*!
  @brief Textual representation or explanation of result.
  */
-@property (nonatomic, retain) NSString *resulttext;
+@property (nonatomic, strong) NSString *resulttext;
 
 @end

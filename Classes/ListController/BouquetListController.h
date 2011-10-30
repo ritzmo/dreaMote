@@ -19,7 +19,7 @@ typedef enum
 } bouquetListType;
 
 // Forward declaration
-@class CXMLDocument;
+@class BaseXMLReader;
 @class ServiceListController;
 @protocol BouquetListDelegate;
 @protocol ServiceListDelegate;
@@ -39,7 +39,7 @@ typedef enum
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
 	id<ServiceListDelegate, NSCoding, UIAppearanceContainer> _serviceDelegate; /*!< @brief Service Delegate. */
-	id<BouquetListDelegate, NSCoding, UIAppearanceContainer> _bouquetDelegate; /*!< @brief Bouquet Delegate. */
+	id<BouquetListDelegate, NSCoding, UIAppearanceContainer> __unsafe_unretained _bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	bouquetListType _listType; /*!< @brief Show bouquet or provider list? */
@@ -48,7 +48,7 @@ typedef enum
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 	UIPopoverController *popoverController; /*!< @brief Popover */
 
-	CXMLDocument *_bouquetXMLDoc; /*!< @brief Bouquet XML. */
+	BaseXMLReader *_xmlReader; /*!< @brief Bouquet XML. */
 }
 
 /*!
@@ -66,7 +66,7 @@ typedef enum
 /*!
  @brief Bouquet Delegate.
  */
-@property (nonatomic, assign) NSObject<BouquetListDelegate, NSCoding, UIAppearanceContainer> *bouquetDelegate;
+@property (nonatomic, unsafe_unretained) NSObject<BouquetListDelegate, NSCoding, UIAppearanceContainer> *bouquetDelegate;
 
 /*!
  @brief Currently in radio mode?
@@ -81,7 +81,7 @@ typedef enum
 /*!
  @brief Service List
  */
-@property (nonatomic, retain) IBOutlet ServiceListController *serviceListController;
+@property (nonatomic, strong) IBOutlet ServiceListController *serviceListController;
 
 /*!
  @brief View will reapper.

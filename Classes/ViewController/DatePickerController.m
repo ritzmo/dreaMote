@@ -30,6 +30,7 @@
 
 @synthesize date = _date;
 @synthesize format = _format;
+@synthesize callback;
 
 /* initialize */
 - (id)init
@@ -40,12 +41,9 @@
 		self.title = NSLocalizedString(@"Date Picker", @"Title of DatePickerController");
 		_format = [[NSDateFormatter alloc] init];
 		self.datePickerMode = UIDatePickerModeDateAndTime;
-
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+		callback = nil;
 	}
 	
 	return self;
@@ -57,9 +55,8 @@
 	DatePickerController *datePickerController = [[DatePickerController alloc] init];
 	NSDate *newDate = [ourDate copy];
 	datePickerController.date = newDate;
-	[newDate release];
 
-	return [datePickerController autorelease];
+	return datePickerController;
 }
 
 - (void)setDate:(NSDate *)new
@@ -117,7 +114,6 @@
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	self.view = contentView;
-	[contentView release];
 
 	CGRect frame = CGRectMake(	0,
 								0, //kTopMargin + kPickerSegmentControlHeight,
@@ -130,10 +126,9 @@
 	[_datePickerView addTarget:self action:@selector(timeChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview: _datePickerView];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 														target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
@@ -169,17 +164,16 @@
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(_selectTarget != nil && _selectCallback != nil)
+	if(callback != nil)
 	{
-		NSDate *date = [_datePickerView date];
+		__unsafe_unretained NSDate *date = [_datePickerView date];
 		if(datePickerMode == UIDatePickerModeDate)
 		{
 			NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 			NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
 			date = [gregorian dateFromComponents:components];
-			[gregorian release];
 		}
-		[_selectTarget performSelector:(SEL)_selectCallback withObject:date];
+		callback(date);
 	}
 
 	if(IS_IPAD())
@@ -188,28 +182,10 @@
 		[self.navigationController popViewControllerAnimated: YES];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_datePickerView release];
-	[_date release];
-	[_label release];
-	[_format release];
-
-	[super dealloc];
-}
-
 /* selection changed */
 - (void)timeChanged: (id)sender
 {
 	_label.text = [_format stringFromDate: [_datePickerView date]];
-}
-
-/* set callback */
-- (void)setTarget: (id)target action: (SEL)action
-{
-	_selectTarget = target;
-	_selectCallback = action;
 }
 
 @end

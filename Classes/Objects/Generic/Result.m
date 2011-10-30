@@ -16,15 +16,9 @@
 +(Result *)createResult
 {
 	Result *result = [[Result alloc] init];
-	return [result autorelease];
+	return result;
 }
 
-- (void)dealloc
-{
-	[_resulttext release];
-	
-	[super dealloc];
-}
 
 - (NSString *)description
 {

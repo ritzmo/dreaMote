@@ -17,7 +17,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -50,7 +50,6 @@ Example:
 		[_delegate performSelectorOnMainThread: @selector(addAbout:)
 									withObject: newAbout
 								 waitUntilDone: NO];
-		[newAbout release];
 	}
 }
 

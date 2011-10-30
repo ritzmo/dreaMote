@@ -63,7 +63,6 @@ typedef enum
 {
 @private
 	BOOL needsInit; /*!< @brief Used on iOS 3.2+ to delay initialization of gesture recognizers. */
-	UIEvent *_lastEvent; /*!< @brief Last event. */
 	SwipeType _lastSwipe; /*!< @brief Last swipe. */
 	CGPoint _lastTouch; /*!< @brief Last touch location. */
 }

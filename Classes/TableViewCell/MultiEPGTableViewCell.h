@@ -40,22 +40,22 @@ extern NSString *kMultiEPGCell_ID;
 /*!
  @brief Servicename Label.
  */
-@property (nonatomic, retain) UILabel *serviceNameLabel;
+@property (nonatomic, strong) UILabel *serviceNameLabel;
 
 /*!
  @brief Service.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *service;
 
 /*!
  @brief Events.
  */
-@property (retain) NSArray *events;
+@property (strong) NSArray *events;
 
 /*!
  @brief Begin of current timeframe.
  */
-@property (nonatomic, retain) NSDate *begin;
+@property (nonatomic, strong) NSDate *begin;
 
 /*!
  @brief Delayed interval since "begin".

@@ -27,6 +27,6 @@ extern NSString *kConnectionCell_ID;
 /*!
  @brief Item.
  */
-@property (nonatomic, retain) NSDictionary *dataDictionary;
+@property (nonatomic, strong) NSDictionary *dataDictionary;
 
 @end

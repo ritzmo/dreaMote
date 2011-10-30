@@ -21,10 +21,9 @@
 #import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 // Forward declarations
+@class BaseXMLReader;
 @class EventListController;
-@class CXMLDocument;
 @protocol ServiceProtocol;
-
 
 
 /*!
@@ -100,8 +99,8 @@
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif
 
-	CXMLDocument *_mainXMLDoc; /*!< Current Service/Event XML Document. */
-	CXMLDocument *_subXMLDoc; /*!< Next Event XML Document. */
+	BaseXMLReader *_xmlReader; /*!< Current Service/Event XML Document. */
+	BaseXMLReader *_xmlReaderSub; /*!< Next Event XML Document. */
 }
 
 /*!

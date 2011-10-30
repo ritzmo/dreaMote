@@ -25,7 +25,7 @@
 @interface MovieViewController()
 - (UITextView *)create_Summary;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 @end
 
 @interface MovieViewController(IMDb)
@@ -71,18 +71,9 @@
 
 	movieViewController.movie = newMovie;
 
-	return [movieViewController autorelease];
+	return movieViewController;
 }
 
-- (void)dealloc
-{
-	[movieList release];
-	[popoverController release];
-	[_movie release];
-	[_summaryView release];
-
-	[super dealloc];
-}
 
 - (NSObject<MovieProtocol> *)movie
 {
@@ -93,16 +84,14 @@
 {
 	if(_movie != newMovie)
 	{
-		[_movie release];
-		_movie = [newMovie retain];
+		_movie = newMovie;
 	}
 
 	if(newMovie != nil)
 	{
 		self.title = newMovie.title;
 
-		[_summaryView release];
-		_summaryView = [[self create_Summary] retain];
+		_summaryView = [self create_Summary];
 	}
 	else
 	{
@@ -135,7 +124,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 }
 
 //* Start playback of the movie on the remote box
@@ -183,9 +171,8 @@
 	}
 	myTextView.text = text;
 
-	[text release];
 
-	return [myTextView autorelease];
+	return myTextView;
 }
 
 - (NSString *)format_BeginEnd: (NSDate *)dateTime
@@ -194,7 +181,6 @@
 	[format setDateStyle:NSDateFormatterFullStyle];
 	[format setTimeStyle:NSDateFormatterShortStyle];
 	NSString *dateString = [format fuzzyDate: dateTime];
-	[format release];
 	return dateString;
 }
 
@@ -210,7 +196,7 @@
 	[button addTarget:self action:selector
 				forControlEvents:UIControlEventTouchUpInside];
 
-	return [button autorelease];
+	return button;
 }
 
 //* Convert the size in bytes of a movie to a human-readable size
@@ -259,7 +245,6 @@
 														cancelButtonTitle:@"OK"
 														otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 }
@@ -626,7 +611,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 		[ServiceZapListController openStream:streamingURL withAction:action];

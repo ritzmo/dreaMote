@@ -19,7 +19,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -32,7 +32,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addService:)
 								withObject: fakeObject
 								waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -51,7 +50,6 @@
 		// *grml*
 		if(newService.sname == nil || [newService.sname isEqualToString:@""])
 		{
-			[newService release];
 			newService = [[GenericService alloc] init];
 			newService.sname = NSLocalizedString(@"Nothing playing.", @"");
 		}
@@ -59,7 +57,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addService:)
 									withObject: newService
 								 waitUntilDone: NO];
-		[newService release];
 	}
 
 	resultNodes = [_parser nodesForXPath:@"/e2currentserviceinformation/e2eventlist/e2event" error:nil];
@@ -72,14 +69,12 @@
 		NSString *title = newEvent.title;
 		if(title == nil || [title isEqualToString:@""])
 		{
-			[newEvent release];
 			continue;
 		}
 
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: newEvent
 								 waitUntilDone: NO];
-		[newEvent release];
 	}
 }
 

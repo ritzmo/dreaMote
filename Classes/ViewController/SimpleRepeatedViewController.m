@@ -43,7 +43,7 @@
 	simpleRepeatedViewController.repeated = repeated;
 	simpleRepeatedViewController.repcount = repcount;
 
-	return [simpleRepeatedViewController autorelease];
+	return simpleRepeatedViewController;
 }
 
 - (NSInteger)repeated
@@ -80,15 +80,6 @@
 	[(UITableView *)self.view reloadData];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_repcountField release];
-	[_repcountCell release];
-
-	[super dealloc];
-}
-
 /* layout */
 - (void)loadView
 {
@@ -103,7 +94,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// repeat count
 	_repcountField = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -126,17 +116,15 @@
 
 	if(IS_IPAD())
 	{
-		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(doneAction:)];
+		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = barButtonItem;
-		[barButtonItem release];
 	}
 }
 
 - (void)viewDidUnload
 {
-	[_repcountField release];
 	_repcountField = nil;
-	[_repcountCell release]; // references _repcountField
+	 // references _repcountField
 	_repcountCell = nil;
 
 	[super viewDidUnload];
@@ -377,8 +365,8 @@
 		if(sig)
 		{
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			NSNumber *repeated = [NSNumber numberWithInteger:_repeated];
-			NSNumber *repcount = [NSNumber numberWithInteger:[_repcountField.text integerValue]];
+			NSNumber *__unsafe_unretained repeated = [NSNumber numberWithInteger:_repeated];
+			NSNumber *__unsafe_unretained repcount = [NSNumber numberWithInteger:[_repcountField.text integerValue]];
 
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];

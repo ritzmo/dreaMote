@@ -22,7 +22,7 @@
 		self.title = NSLocalizedString(@"History", @"Title of SearchHistoryListController");
 
 		NSString *finalPath = [kHistoryPath stringByExpandingTildeInPath];
-		_history = [[NSMutableArray arrayWithContentsOfFile:finalPath] retain];
+		_history = [NSMutableArray arrayWithContentsOfFile:finalPath];
 		if(_history == nil) // no history yet
 			_history = [[NSMutableArray alloc] init];
 
@@ -32,13 +32,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-	[_history release];
-	[_historyDelegate release];
-
-    [super dealloc];
-}
 
 - (void)loadView
 {
@@ -51,7 +44,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
 	self.view = tableView;
-	[tableView release];
 	
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }

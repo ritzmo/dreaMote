@@ -21,7 +21,7 @@
 {
 	AutoTimer *timer = [[AutoTimer alloc] init];
 	timer.encoding = @"ISO8859-15";
-	return [timer autorelease];
+	return timer;
 }
 
 + (AutoTimer *)timerFromEvent:(NSObject<EventProtocol> *)event
@@ -98,30 +98,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[name release];
-	[match release];
-	[from release];
-	[to release];
-	[encoding release];
-	[services release];
-	[bouquets release];
-	[tags release];
-	[includeTitle release];
-	[includeShortdescription release];
-	[includeDescription release];
-	[includeDayOfWeek release];
-	[excludeTitle release];
-	[excludeShortdescription release];
-	[excludeDescription release];
-	[excludeDayOfWeek release];
-	[location release];
-	[before release];
-	[after release];
-
-	[super dealloc];
-}
 
 - (NSComparisonResult)compare: (AutoTimer *)otherAT
 {

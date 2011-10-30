@@ -28,15 +28,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_sref release];
-	[_sname release];
-	[_picon release];
-	[_piconName release];
-
-	[super dealloc];
-}
 
 - (NSString *)sref
 {
@@ -73,8 +64,7 @@
 				piconRange.location += 1;
 				NSString *basename = [_piconName substringWithRange:piconRange];
 				NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-				_picon = [[UIImage imageNamed:piconName] retain];
-				[piconName release];
+				_picon = [UIImage imageNamed:piconName];
 			}
 		}
 		else
@@ -119,9 +109,8 @@
 			}
 			NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 			NSString *piconName = [[NSString alloc] initWithFormat:kPiconPathPng, basename];
-			_picon = [[UIImage imageNamed:piconName] retain];
-			[basename release]; // also frees sref
-			[piconName release];
+			_picon = [UIImage imageNamed:piconName];
+			 // also frees sref
 		}
 
 		_calculatedPicon = YES;

@@ -19,7 +19,7 @@
 #endif
 
 // Forward declarations...
-@class CXMLDocument;
+@class BaseXMLReader;
 
 /*!
  @brief Current View.
@@ -41,7 +41,7 @@
 	UITextView *_nextSummary; /*!< @brief Summary of next event. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
-	CXMLDocument *_currentXMLDoc; /*!< @brief Current XML Document. */
+	BaseXMLReader *_xmlReader; /*!< @brief Current XML Document. */
 #if INCLUDE_FEATURE(Ads)
 @private
 	id _adBannerView;

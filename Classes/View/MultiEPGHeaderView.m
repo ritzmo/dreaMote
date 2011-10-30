@@ -25,17 +25,6 @@
 
 @implementation MultiEPGHeaderView
 
-/* dealloc */
-- (void)dealloc
-{
-	[begin release];
-	[firstTime release];
-	[secondTime release];
-	[thirdTime release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithFrame:(CGRect)frame
 {
@@ -127,8 +116,7 @@
 {
 	if(begin == newBegin) return;
 
-	[begin release];
-	begin = [newBegin retain];
+	begin = newBegin;
 
 	const NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
 	const NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -156,7 +144,6 @@
 	current = [current dateByAddingTimeInterval:step];
 	fourthTime.text = [formatter stringFromDate:current];
 
-	[formatter release];
 }
 
 /* draw cell */

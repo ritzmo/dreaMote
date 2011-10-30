@@ -25,7 +25,7 @@ static const char *kEnigma2MovieFilesize = "e2filesize";
 static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 
 @interface Enigma2MovieXMLReader()
-@property (nonatomic, retain) NSObject<MovieProtocol> *currentMovie;
+@property (nonatomic, strong) NSObject<MovieProtocol> *currentMovie;
 @end
 
 @implementation Enigma2MovieXMLReader
@@ -37,18 +37,10 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		_timeout = kTimeout * 3; // a lot higher timeout to allow to spin up hdd
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentMovie release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -59,7 +51,6 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 	[_delegate performSelectorOnMainThread: @selector(addMovie:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -84,7 +75,7 @@ Example:
 {
 	if(!strncmp((const char *)localname, kEnigma2MovieElement, kEnigma2MovieElementLength))
 	{
-		self.currentMovie = [[[GenericMovie alloc] init] autorelease];
+		self.currentMovie = [[GenericMovie alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
 			||	!strncmp((const char *)localname, kEnigma2MovieTitle, kEnigma2MovieTitleLength)

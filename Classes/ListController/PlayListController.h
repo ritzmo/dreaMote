@@ -21,21 +21,21 @@
 /*!
  @brief Get "Clear" Button.
  */
-@property (nonatomic, retain) UIBarButtonItem *clearButton;
+@property (nonatomic, strong) UIBarButtonItem *clearButton;
 
 /*!
  @brief Get "Save" Button.
  */
-@property (nonatomic, retain) UIBarButtonItem *saveButton;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
 
 /*!
  @brief Get "Load" Button.
  */
-@property (nonatomic, retain) UIBarButtonItem *loadButton;
+@property (nonatomic, strong) UIBarButtonItem *loadButton;
 
 /*!
  @brief Get/Set Playlist.
  */
-@property (nonatomic, retain) FileListView *playlist;
+@property (nonatomic, strong) FileListView *playlist;
 
 @end

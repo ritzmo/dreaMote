@@ -26,7 +26,7 @@ typedef enum
 
 @property (nonatomic, assign) sleeptimerActions action;
 @property (nonatomic, assign) BOOL enabled;
-@property (nonatomic, retain) NSString *text;
+@property (nonatomic, strong) NSString *text;
 @property (nonatomic, assign) NSUInteger time;
 @property (nonatomic, assign) BOOL valid;
 

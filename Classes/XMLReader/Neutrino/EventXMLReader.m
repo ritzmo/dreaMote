@@ -33,8 +33,8 @@ static const char *kNeutrinoChannelName = "channel_name";
 static const NSUInteger kNeutrinoChannelNameLength = 13;
 
 @interface NeutrinoEventXMLReader()
-@property (nonatomic, retain) NSObject<EventProtocol> *currentEvent;
-@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
 @end
 
 @implementation NeutrinoEventXMLReader
@@ -46,7 +46,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -56,23 +56,13 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		if(getCurrent && [delegate respondsToSelector:@selector(addService:)])
 		{
-			_getCurrent = [[NSDate date] retain];
+			_getCurrent = [NSDate date];
 		}
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[_getCurrent release];
-	[currentEvent release];
-	[currentService release];
-
-	[super dealloc];
 }
 
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
@@ -91,7 +81,6 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 		[_delegate performSelectorOnMainThread:@selector(addService:)
 									withObject:fakeObject
 								 waitUntilDone:NO];
-		[fakeObject release];
 	}
 	else
 	{
@@ -100,7 +89,6 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 		[_delegate performSelectorOnMainThread:@selector(addEvent:)
 									withObject:fakeObject
 								 waitUntilDone:NO];
-		[fakeObject release];
 	}
 }
 
@@ -129,7 +117,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 {
 	if(!strncmp((const char *)localname, kNeutrinoEventElement, kNeutrinoEventElementLength))
 	{
-		self.currentEvent = [[[GenericEvent alloc] init] autorelease];
+		self.currentEvent = [[GenericEvent alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kNeutrinoEventExtendedDescription, kNeutrinoEventExtendedDescriptionLength)
 			||	!strncmp((const char *)localname, kNeutrinoEventTitle, kNeutrinoEventTitleLength)
@@ -145,7 +133,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 	{
 		if(!strncmp((const char *)localname, kNeutrinoChannelId, kNeutrinoChannelIdLength))
 		{
-			self.currentService = [[[GenericService alloc] init] autorelease];
+			self.currentService = [[GenericService alloc] init];
 			currentString = [[NSMutableString alloc] init];
 		}
 		else if(!strncmp((const char *)localname, kNeutrinoChannelName, kNeutrinoChannelNameLength))

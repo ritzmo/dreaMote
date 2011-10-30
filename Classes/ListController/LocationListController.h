@@ -13,7 +13,7 @@
 #import "ReloadableListController.h"
 
 // Forward declaration
-@class CXMLDocument;
+@class BaseXMLReader;
 @protocol LocationListDelegate;
 
 /*!
@@ -34,7 +34,7 @@
 	MovieListController *_movieListController; /*!< @brief Caches Movie List instance. */
 	NSObject<LocationListDelegate> *_delegate; /*!< @brief Delegate. */
 
-	CXMLDocument *_locationXMLDoc; /*!< @brief Location XML. */
+	BaseXMLReader *_xmlReader; /*!< @brief Location XML. */
 }
 
 /*!
@@ -62,7 +62,7 @@
 /*!
  @brief Movie List
  */
-@property (nonatomic, retain) IBOutlet MovieListController *movieListController;
+@property (nonatomic, strong) IBOutlet MovieListController *movieListController;
 
 /*!
  @brief Show "Default Location"

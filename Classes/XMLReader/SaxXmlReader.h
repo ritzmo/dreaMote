@@ -65,6 +65,6 @@ typedef struct
 /*!
  @brief Currently received string.
  */
-@property (nonatomic, retain) NSMutableString *currentString;
+@property (nonatomic, strong) NSMutableString *currentString;
 
 @end

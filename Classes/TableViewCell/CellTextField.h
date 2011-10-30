@@ -59,6 +59,6 @@ extern NSString *kCellTextField_ID;
 }
 
 @property (nonatomic, assign) CGFloat fixedWidth;
-@property (nonatomic, retain) UITextField *view;
+@property (nonatomic, strong) UITextField *view;
 
 @end

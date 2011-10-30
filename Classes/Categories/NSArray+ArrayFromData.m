@@ -12,7 +12,7 @@
 
 + (id)arrayWithData:(NSData *)data
 {
-	return [[[NSArray alloc] initWithData:data] autorelease];
+	return [[NSArray alloc] initWithData:data];
 }
 
 - (id)initWithData:(NSData *)data

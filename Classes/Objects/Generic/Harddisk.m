@@ -18,9 +18,9 @@
 {
 	if((self = [super init]))
 	{
-		_model = [model retain];
-		_capacity = [capacity retain];
-		_free = [free retain];
+		_model = model;
+		_capacity = capacity;
+		_free = free;
 	}
 	return self;
 }

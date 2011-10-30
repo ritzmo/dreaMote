@@ -29,14 +29,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_root release];
-	[_sref release];
-	[_title release];
-
-	[super dealloc];
-}
 
 - (BOOL)isValid
 {

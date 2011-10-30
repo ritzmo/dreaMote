@@ -70,7 +70,7 @@ typedef enum
  */
 + (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
 
-@property (nonatomic, retain) NSObject<ServiceZapListDelegate> *zapDelegate;
+@property (nonatomic, strong) NSObject<ServiceZapListDelegate> *zapDelegate;
 
 @end
 

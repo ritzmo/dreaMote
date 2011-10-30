@@ -31,26 +31,26 @@ extern NSString *kTimerCell_ID;
 /*!
  @brief Timer.
  */
-@property (nonatomic, retain) NSObject<TimerProtocol> *timer;
+@property (nonatomic, strong) NSObject<TimerProtocol> *timer;
 
 /*!
  @brief Service Label.
  */
-@property (nonatomic, retain) UILabel *serviceNameLabel;
+@property (nonatomic, strong) UILabel *serviceNameLabel;
 
 /*!
  @brief Name Label.
  */
-@property (nonatomic, retain) UILabel *timerNameLabel;
+@property (nonatomic, strong) UILabel *timerNameLabel;
 
 /*!
  @brief Time Label.
  */
-@property (nonatomic, retain) UILabel *timerTimeLabel;
+@property (nonatomic, strong) UILabel *timerTimeLabel;
 
 /*!
  @brief Date Formatter instance.
  */
-@property (nonatomic, retain) NSDateFormatter *formatter;
+@property (nonatomic, strong) NSDateFormatter *formatter;
 
 @end

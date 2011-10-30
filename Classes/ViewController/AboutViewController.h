@@ -13,7 +13,7 @@
 #import "ReloadableListController.h"
 
 // Forward declarations...
-@class CXMLDocument;
+@class BaseXMLReader;
 
 /*!
  @brief About Receiver.
@@ -26,7 +26,7 @@
 {
 @private
 	NSObject<AboutProtocol> *_about; /*!< @brief Receiver information. */
-	CXMLDocument *_aboutXMLDoc; /*!< @brief About XML Document. */
+	BaseXMLReader *_xmlReader; /*!< @brief About XML Document. */
 }
 
 @end

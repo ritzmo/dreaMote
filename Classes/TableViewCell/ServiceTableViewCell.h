@@ -27,12 +27,12 @@ extern NSString *kServiceCell_ID;
 /*!
  @brief Name Label.
  */
-@property (nonatomic, retain) UILabel *serviceNameLabel;
+@property (nonatomic, strong) UILabel *serviceNameLabel;
 
 /*!
  @brief Service.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> * service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> * service;
 
 @end
 

@@ -31,27 +31,27 @@ extern NSString *kEventCell_ID;
 /*!
  @brief Event.
  */
-@property (nonatomic, retain) NSObject<EventProtocol> *event;
+@property (nonatomic, strong) NSObject<EventProtocol> *event;
 
 /*!
  @brief Name Label.
  */
-@property (nonatomic, retain) UILabel *eventNameLabel;
+@property (nonatomic, strong) UILabel *eventNameLabel;
 
 /*!
  @brief Time Label.
  */
-@property (nonatomic, retain) UILabel *eventTimeLabel;
+@property (nonatomic, strong) UILabel *eventTimeLabel;
 
 /*!
  @brief Service name label.
  */
-@property (nonatomic, retain) UILabel *eventServiceLabel;
+@property (nonatomic, strong) UILabel *eventServiceLabel;
 
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) NSDateFormatter *formatter;
+@property (nonatomic, strong) NSDateFormatter *formatter;
 
 /*!
  @brief Display service name?

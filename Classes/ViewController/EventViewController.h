@@ -17,7 +17,7 @@
 #import <EventKitUI/EventKitUI.h>
 
 // Forward declarations...
-@class CXMLDocument;
+@class BaseXMLReader;
 
 /*!
  @brief Event View.
@@ -45,7 +45,7 @@
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
-	CXMLDocument *_eventXMLDoc; /*!< @brief Current Event XML Document. */
+	BaseXMLReader *_xmlReader; /*!< @brief Current Event XML Reader. */
 }
 
 /*!
@@ -70,12 +70,12 @@
 /*!
  @brief Event.
  */
-@property (nonatomic, retain) NSObject<EventProtocol> *event;
+@property (nonatomic, strong) NSObject<EventProtocol> *event;
 
 /*!
  @brief Service.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *service;
 
 /*!
  @brief Result of an EPG Search?

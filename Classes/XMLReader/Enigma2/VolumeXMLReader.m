@@ -17,7 +17,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -66,7 +66,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addVolume:)
 									withObject: newVolume
 								 waitUntilDone: NO];
-		[newVolume release];
 
 		// Volume is unique
 		break;

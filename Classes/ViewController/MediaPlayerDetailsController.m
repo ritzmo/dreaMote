@@ -27,19 +27,12 @@
 {
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-
-	SafeRetainAssign(_currentTrack, nil);
-	SafeRetainAssign(_currentCover, nil);
-	SafeRetainAssign(_metadataXMLDoc, nil);
-	SafeRetainAssign(_tableView, nil);
-
-	[super dealloc];
 }
 
 /* getter of playlist */
 - (FileListView *)playlist
 {
-	return SafeReturn(_playlist);
+	return _playlist;
 }
 
 /* setter of playlist */
@@ -70,7 +63,6 @@
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = contentView;
-	[contentView release];
 
 	// setup our table view
 	// FIXME: wtf?!
@@ -139,7 +131,7 @@
 /* fetch contents */
 - (void)fetchData
 {
-	SafeRetainAssign(_metadataXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] getMetadata:self]);
+	_xmlReaderMetadata = [[RemoteConnectorObject sharedRemoteConnector] getMetadata:self];
 }
 
 /* remove content data */
@@ -149,16 +141,14 @@
 	SafeRetainAssign(_currentCover, nil);
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	SafeRetainAssign(_metadataXMLDoc, nil);
+	_xmlReaderMetadata = nil;
 }
 
 /* fetch coverart */
 - (void)fetchCoverart
 {
 	NSData *imageData = [[RemoteConnectorObject sharedRemoteConnector] getFile:_currentTrack.coverpath];
-	id old = _currentCover;
 	_currentCover = [[UIImage alloc] initWithData:imageData];
-	[old release];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }
@@ -250,7 +240,6 @@
 			if(_currentCover)
 				imageView = [[UIImageView alloc] initWithImage:_currentCover];
 			((MediaPlayerMetadataCell *)sourceCell).coverart = imageView;
-			[imageView release];
 			break;
 		}
 		case 1:
@@ -261,19 +250,19 @@
 			{
 				case 0:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Previous", @"");
-					((DisplayCell *)sourceCell).view = [[self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd] autorelease];
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
 					break;
 				case 1:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Stop", @"");
-					((DisplayCell *)sourceCell).view = [[self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_stop.png" andKeyCode: kButtonCodeStop] autorelease];
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_stop.png" andKeyCode: kButtonCodeStop];
 					break;
 				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play/Pause", @"");
-					((DisplayCell *)sourceCell).view = [[self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause] autorelease];
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause];
 					break;
 				case 3:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Next", @"");
-					((DisplayCell *)sourceCell).view = [[self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_ff.png" andKeyCode: kButtonCodeFFwd] autorelease];
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_ff.png" andKeyCode: kButtonCodeFFwd];
 					break;
 				default: break;
 			}

@@ -74,18 +74,11 @@
 {
 	if((self = [super init]))
 	{
-		_node = [node retain];
+		_node = node;
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_node release];
-	[_picon release];
-
-	[super dealloc];
-}
 
 - (BOOL)isValid
 {
@@ -139,9 +132,8 @@
 		}
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-		_picon = [[UIImage imageNamed:piconName] retain];
-		[basename release]; // also frees sref
-		[piconName release];
+		_picon = [UIImage imageNamed:piconName];
+		 // also frees sref
 
 		_calculatedPicon = YES;
 	}

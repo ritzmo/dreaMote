@@ -33,9 +33,9 @@ typedef enum
  */
 + (Package *)packageFromString:(NSString *)packageString withInstalledState:(installedState)state;
 
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *version;
-@property (nonatomic, retain) NSString *upgradeVersion;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *version;
+@property (nonatomic, strong) NSString *upgradeVersion;
 @property (nonatomic, assign) installedState installed;
 
 @end

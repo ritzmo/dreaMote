@@ -40,11 +40,11 @@
 /*!
  @brief Table View.
  */
-@property (nonatomic, retain) UITableView *myTableView;
+@property (nonatomic, strong) UITableView *myTableView;
 
 /*!
  @brief Config List.
  */
-@property (nonatomic, readonly) ConfigListController *configListController;
+@property (unsafe_unretained, nonatomic, readonly) ConfigListController *configListController;
 
 @end

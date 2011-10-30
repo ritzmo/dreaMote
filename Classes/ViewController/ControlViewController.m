@@ -83,8 +83,6 @@
 
 	SafeDestroyButton(_slider);
 	SafeDestroyButton(_switchControl);
-
-	[super dealloc];
 }
 
 /* initiate download of volume state */
@@ -107,7 +105,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// Volume
 	_slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
@@ -144,7 +141,7 @@
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 	
-	return [button autorelease];
+	return button;
 }
 
 /* start recording */
@@ -171,7 +168,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	((UIButton *)sender).enabled = YES;
 }
@@ -210,7 +206,6 @@
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -233,7 +228,6 @@
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -257,7 +251,6 @@
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -457,7 +450,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// Alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
@@ -466,10 +459,9 @@
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	//
 }

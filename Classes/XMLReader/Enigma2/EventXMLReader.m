@@ -35,7 +35,7 @@ static const char *kEnigma2EventSname = "e2eventservicename";
 static const NSUInteger kEnigma2EventSnameLength = 19;
 
 @interface Enigma2EventXMLReader()
-@property (nonatomic, retain) NSObject<EventProtocol> *currentEvent;
+@property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
 @end
 
 @implementation Enigma2EventXMLReader
@@ -52,7 +52,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		_delegateSelector = @selector(addEvent:);
 		_getServices = getServices;
 		_timeout = kTimeout * 2; // encountered some services with a crazy long epg
@@ -65,7 +65,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		_delegateSelector = @selector(addNowEvent:);
 		_getServices = YES;
 		_timeout = kTimeout * 2;
@@ -78,20 +78,12 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		_delegateSelector = @selector(addNextEvent:);
 		_getServices = NO;
 		_timeout = kTimeout * 2;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[_currentEvent release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -105,13 +97,11 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
 		fakeObject.service = fakeService;
-		[fakeService release];
 	}
 
 	[_delegate performSelectorOnMainThread: _delegateSelector
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -134,12 +124,11 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 {
 	if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
-		self.currentEvent = [[[GenericEvent alloc] init] autorelease];
+		self.currentEvent = [[GenericEvent alloc] init];
 		if(_getServices)
 		{
 			GenericService *service = [[GenericService alloc] init];
 			self.currentEvent.service = service;
-			[service release];
 		}
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2EventExtendedDescription, kEnigma2EventExtendedDescriptionLength)
