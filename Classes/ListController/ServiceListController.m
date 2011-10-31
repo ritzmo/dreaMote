@@ -75,6 +75,7 @@ enum serviceListTags
 @implementation ServiceListController
 
 @synthesize delegate = _delegate;
+@synthesize isAll = _isAll;
 @synthesize mgSplitViewController = _mgSplitViewController;
 @synthesize popoverController, popoverZapController;
 @synthesize showNowNext = _supportsNowNext;
@@ -143,6 +144,7 @@ enum serviceListTags
 
 	// Free Caches and reload data
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
+	_isAll = NO;
 	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
@@ -1225,10 +1227,11 @@ enum serviceListTags
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 #if INCLUDE_FEATURE(Extra_Animation)
-		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-#else
-		[_tableView reloadData];
+		if(!_isAll)
+			[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+		else
 #endif
+			[_tableView reloadData];
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
@@ -1283,9 +1286,12 @@ enum serviceListTags
 {
 	[_mainList addObject: service];
 #if INCLUDE_FEATURE(Extra_Animation)
-	const NSInteger idx = _mainList.count-1;
-	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-					  withRowAnimation: UITableViewRowAnimationLeft];
+	if(!_isAll)
+	{
+		const NSInteger idx = _mainList.count-1;
+		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
+						  withRowAnimation:UITableViewRowAnimationLeft];
+	}
 #endif
 #if IS_FULL()
 	[_multiEPG addService:service];

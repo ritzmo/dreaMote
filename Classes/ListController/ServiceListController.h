@@ -91,6 +91,7 @@
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 	UIBarButtonItem *_multiEpgButton; /*!< @brief Multi-EPG toggle */
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
+	BOOL _isAll; /*!< @brief If the current bouquet 'All Services'? */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
 	MGSplitViewController __unsafe_unretained *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
@@ -127,6 +128,12 @@
  @note Might be of use in delegate mode also...
  */
 @property (nonatomic, assign) BOOL showNowNext;
+
+/*!
+ @brief Are we showing 'All Services'?
+ This is used to disable some animations because they take ages in large 'bouquets'.
+ */
+@property (nonatomic, assign) BOOL isAll;
 
 /*!
  @brief Bouquet.

@@ -412,9 +412,17 @@ enum bouquetListTags
 
 - (void)showAllServices:(id)sender
 {
+	if(_serviceListController.reloading)
+		return;
+
+	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	if(indexPath)
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 	NSObject<ServiceProtocol> *bouquet = [[RemoteConnectorObject sharedRemoteConnector] allServicesBouquet:_isRadio];
 	[self showServicelist:bouquet];
-	_serviceListController.showNowNext = NO; // TODO: we might run into a race condition here, check this thoroughly
+	// TODO: we might run into a race condition here, check this thoroughly
+	_serviceListController.showNowNext = NO;
+	_serviceListController.isAll = YES;
 }
 
 - (void)configureToolbar:(BOOL)animated
@@ -507,6 +515,7 @@ enum bouquetListTags
 	_radioButton.enabled = YES;
 	if(_isSplit)
 	{
+		// TODO: what is this here for?
 		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
 		if(idxPath)
 			[self tableView:_tableView willSelectRowAtIndexPath:idxPath];
