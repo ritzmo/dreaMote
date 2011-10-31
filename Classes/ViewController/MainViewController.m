@@ -115,17 +115,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 }
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex
-{
-	[self.selectedViewController viewWillDisappear:YES];
-	[self.selectedViewController viewDidDisappear:YES];
-
-	[super setSelectedIndex:selectedIndex];
-
-	[self.selectedViewController viewWillAppear:YES];
-	[self.selectedViewController viewDidAppear:YES];
-}
-
 #pragma mark -
 #pragma mark MainViewController private methods
 #pragma mark -
@@ -232,9 +221,6 @@
 	_rcController.tabBarItem.image = image;
 
 	[self setViewControllers: menuList];
-	// initial load
-	if(self.selectedIndex == NSNotFound)
-		self.selectedViewController = [menuList lastObject];
 	} // end synchronized
 }
 
@@ -311,25 +297,15 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-	[self.selectedViewController viewWillDisappear:YES];
-	[self.selectedViewController viewDidDisappear:YES];
 	[RemoteConnectorObject cancelPendingOperations];
 
 	if(![self checkConnection])
 	{
 		self.selectedViewController = [menuList lastObject];
-		[self.selectedViewController viewWillAppear:YES];
-		[self.selectedViewController viewDidAppear:YES];
 		return NO;
 	}
 
 	return YES;
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-	[viewController viewWillAppear:YES];
-	[viewController viewDidAppear:YES];
 }
 
 @end
