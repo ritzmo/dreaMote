@@ -48,7 +48,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 												  fontSize: kMultiEPGFontSize
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview: _serviceNameLabel];
 
 		// no accessory
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -62,6 +61,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 - (void)prepareForReuse
 {
+	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+	self.service = nil;
 	self.events = nil;
 }
 
@@ -76,9 +77,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	// Abort if same service assigned
 	if(_service == newService) return;
-
-	// Free old service, assign new one
-	SafeRetainAssign(_service, newService);
+	_service = newService;
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
@@ -103,7 +102,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	@synchronized(self)
 	{
 		if(_events == new) return;
-		SafeRetainAssign(_events, new);
+		_events = new;
 
 		[_lines removeAllObjects];
 		for(NSObject<EventProtocol> *event in _events)
