@@ -602,9 +602,6 @@
 		DAC8C1EA13B2014D00CA00D9 /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C09B13B2014C00CA00D9 /* NSArray+CWSortedInsert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C1EB13B2014D00CA00D9 /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C09B13B2014C00CA00D9 /* NSArray+CWSortedInsert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C1EC13B2014D00CA00D9 /* NSArray+CWSortedInsert.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C09B13B2014C00CA00D9 /* NSArray+CWSortedInsert.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C1ED13B2014D00CA00D9 /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C09E13B2014C00CA00D9 /* IntelligentSplitViewController.m */; };
-		DAC8C1EE13B2014D00CA00D9 /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C09E13B2014C00CA00D9 /* IntelligentSplitViewController.m */; };
-		DAC8C1EF13B2014D00CA00D9 /* IntelligentSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C09E13B2014C00CA00D9 /* IntelligentSplitViewController.m */; };
 		DAC8C1F013B2014D00CA00D9 /* AutoTimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0A113B2014C00CA00D9 /* AutoTimerListController.m */; };
 		DAC8C1F313B2014D00CA00D9 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0A313B2014C00CA00D9 /* BouquetListController.m */; };
 		DAC8C1F413B2014D00CA00D9 /* BouquetListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0A313B2014C00CA00D9 /* BouquetListController.m */; };
@@ -3556,7 +3553,6 @@
 				DAC8C1E413B2014D00CA00D9 /* EGORefreshTableHeaderView.m in Sources */,
 				DAC8C1E713B2014D00CA00D9 /* EPGCache.m in Sources */,
 				DAC8C1EA13B2014D00CA00D9 /* NSArray+CWSortedInsert.m in Sources */,
-				DAC8C1ED13B2014D00CA00D9 /* IntelligentSplitViewController.m in Sources */,
 				DAC8C1F013B2014D00CA00D9 /* AutoTimerListController.m in Sources */,
 				DAC8C1F313B2014D00CA00D9 /* BouquetListController.m in Sources */,
 				DAC8C1F613B2014D00CA00D9 /* ConfigListController.m in Sources */,
@@ -3814,7 +3810,6 @@
 				DAC8C1E213B2014D00CA00D9 /* AppDelegate.m in Sources */,
 				DAC8C1E513B2014D00CA00D9 /* EGORefreshTableHeaderView.m in Sources */,
 				DAC8C1EB13B2014D00CA00D9 /* NSArray+CWSortedInsert.m in Sources */,
-				DAC8C1EE13B2014D00CA00D9 /* IntelligentSplitViewController.m in Sources */,
 				DAC8C1F413B2014D00CA00D9 /* BouquetListController.m in Sources */,
 				DAC8C1F713B2014D00CA00D9 /* ConfigListController.m in Sources */,
 				DAC8C1FA13B2014D00CA00D9 /* EventListController.m in Sources */,
@@ -4063,7 +4058,6 @@
 				DAC8C1E313B2014D00CA00D9 /* AppDelegate.m in Sources */,
 				DAC8C1E613B2014D00CA00D9 /* EGORefreshTableHeaderView.m in Sources */,
 				DAC8C1EC13B2014D00CA00D9 /* NSArray+CWSortedInsert.m in Sources */,
-				DAC8C1EF13B2014D00CA00D9 /* IntelligentSplitViewController.m in Sources */,
 				DAC8C1F513B2014D00CA00D9 /* BouquetListController.m in Sources */,
 				DAC8C1F813B2014D00CA00D9 /* ConfigListController.m in Sources */,
 				DAC8C1FB13B2014D00CA00D9 /* EventListController.m in Sources */,
