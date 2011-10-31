@@ -135,7 +135,6 @@
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
 		_picon = [UIImage imageNamed:piconName];
-		 // also frees sref
 
 		_calculatedPicon = YES;
 	}

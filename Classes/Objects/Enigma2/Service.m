@@ -83,7 +83,7 @@
 - (BOOL)isValid
 {
 	const NSString *sref = self.sref;
-	return sref != nil && ![[sref substringToIndex: 5] isEqualToString: @"1:64:"];
+	return sref && !([sref isEqualToString:@"N/A"] || [sref hasPrefix:@"1:64:"]);
 }
 
 - (UIImage *)picon
@@ -133,7 +133,6 @@
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
 		_picon = [UIImage imageNamed:piconName];
-		 // also frees sref
 
 		_calculatedPicon = YES;
 	}

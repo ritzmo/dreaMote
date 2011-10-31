@@ -515,7 +515,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSString *sref = service.sref;
 	if([sref isEqualToString:@"N/A"])
 		return nil;
-	else if([sref length] > 20 && [[sref substringToIndex:20] isEqualToString:@"1:0:0:0:0:0:0:0:0:0:"])
+	else if([sref hasPrefix:@"1:0:0:0:0:0:0:0:0:0:"])
 	{
 		// create fake movie object and retrieve url using appropriate method
 		NSString *filename = [sref substringFromIndex:20];
