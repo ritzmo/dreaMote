@@ -78,4 +78,13 @@
 	[self swipeAction:gesture];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+	const UITouch *touch = [[event allTouches] anyObject];
+	_lastTouch = [touch locationInView: self];
+	_lastSwipe = swipeTypeNone;
+
+	[super touchesBegan:touches withEvent:event];
+}
+
 @end
