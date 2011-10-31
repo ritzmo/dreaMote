@@ -38,8 +38,8 @@ typedef enum
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
-	id<ServiceListDelegate, NSCoding, UIAppearanceContainer> _serviceDelegate; /*!< @brief Service Delegate. */
-	id<BouquetListDelegate, NSCoding, UIAppearanceContainer> __unsafe_unretained _bouquetDelegate; /*!< @brief Bouquet Delegate. */
+	NSObject<ServiceListDelegate, UIAppearanceContainer> __unsafe_unretained *_serviceDelegate; /*!< @brief Service Delegate. */
+	NSObject<BouquetListDelegate, UIAppearanceContainer> __unsafe_unretained *_bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	bouquetListType _listType; /*!< @brief Show bouquet or provider list? */
@@ -52,21 +52,17 @@ typedef enum
 }
 
 /*!
- @brief Set Service Selection Delegate.
- 
- This Function is required for Timers as they will use the provided Callback when you change the
- Service of a Timer.
- 
- @param delegate New delegate object.
- */
-- (void)setServiceDelegate: (id<ServiceListDelegate, NSCoding, UIAppearanceContainer>) delegate;
-
-
-
-/*!
  @brief Bouquet Delegate.
  */
-@property (nonatomic, unsafe_unretained) NSObject<BouquetListDelegate, NSCoding, UIAppearanceContainer> *bouquetDelegate;
+@property (nonatomic, unsafe_unretained) NSObject<BouquetListDelegate, UIAppearanceContainer> *bouquetDelegate;
+
+/*!
+ @brief Service Selection Delegate.
+
+ This Function is required for Timers as they will use the provided Callback when you change the
+ Service of a Timer.
+ */
+@property (nonatomic, unsafe_unretained) NSObject<ServiceListDelegate, UIAppearanceContainer> *serviceDelegate;
 
 /*!
  @brief Currently in radio mode?

@@ -84,7 +84,7 @@
 	NSObject<ServiceProtocol> *_service; /*!< @brief Selected Service (if executing a gesture, borrowed reference). */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
-	id<ServiceListDelegate, NSCoding, UIAppearanceContainer> _delegate; /*!< @brief Delegate. */
+	NSObject<ServiceListDelegate, UIAppearanceContainer> __unsafe_unretained *_delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
@@ -93,7 +93,7 @@
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
-	MGSplitViewController *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
+	MGSplitViewController __unsafe_unretained *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 #if IS_FULL()
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
@@ -102,16 +102,6 @@
 	BaseXMLReader *_xmlReader; /*!< Current Service/Event XML Document. */
 	BaseXMLReader *_xmlReaderSub; /*!< Next Event XML Document. */
 }
-
-/*!
- @brief Set Service Selection Delegate.
- 
- This Function is required for Timers as they will use the provided Callback when you change the
- Service of a Timer.
- 
- @param delegate New delegate object.
- */
-- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
 
 /*!
  @brief Move service selection to next item and return movie.
@@ -145,6 +135,14 @@
 @property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
 
 /*!
+ @brief Service Selection Delegate.
+
+ This Function is required for Timers as they will use the provided Callback when you change the
+ Service of a Timer.
+ */
+@property (nonatomic, unsafe_unretained) NSObject<ServiceListDelegate, UIAppearanceContainer> *delegate;
+
+/*!
  @brief Currently in radio mode?
  */
 @property (nonatomic) BOOL isRadio;
@@ -152,7 +150,7 @@
 /*!
  @brief Associated MGSplitViewController.
  */
-@property (nonatomic, assign) MGSplitViewController *mgSplitViewController;
+@property (nonatomic, unsafe_unretained) MGSplitViewController *mgSplitViewController;
 
 /*!
  @brief Currently reloading.

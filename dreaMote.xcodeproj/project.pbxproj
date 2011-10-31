@@ -637,7 +637,7 @@
 		DAC8C21113B2014D00CA00D9 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B713B2014C00CA00D9 /* SearchHistoryListController.m */; };
 		DAC8C21213B2014D00CA00D9 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B713B2014C00CA00D9 /* SearchHistoryListController.m */; };
 		DAC8C21313B2014D00CA00D9 /* SearchHistoryListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B713B2014C00CA00D9 /* SearchHistoryListController.m */; };
-		DAC8C21413B2014D00CA00D9 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B913B2014C00CA00D9 /* ServiceListController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAC8C21413B2014D00CA00D9 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B913B2014C00CA00D9 /* ServiceListController.m */; };
 		DAC8C21513B2014D00CA00D9 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B913B2014C00CA00D9 /* ServiceListController.m */; };
 		DAC8C21613B2014D00CA00D9 /* ServiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0B913B2014C00CA00D9 /* ServiceListController.m */; };
 		DAC8C21713B2014D00CA00D9 /* ServiceZapListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0BB13B2014C00CA00D9 /* ServiceZapListController.m */; };

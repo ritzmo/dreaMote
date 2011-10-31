@@ -23,17 +23,6 @@
 
 #import <XMLReader/BaseXMLReader.h>
 
-#ifdef SafeRetainAssign
-#undef SafeRetainAssign
-#endif
-#define SafeRetainAssign(var, newExpr) { \
-	id OLD = (var); \
-	id NEW = (newExpr); \
-	(var) = [NEW retain]; \
-	if(OLD) \
-		[OLD release]; \
-}
-
 enum serviceListTags
 {
 	TAG_MARKER = 99,
@@ -73,17 +62,18 @@ enum serviceListTags
 /*!
  @brief Popover Controller.
  */
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) UIPopoverController *popoverZapController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *popoverZapController;
 
 /*!
  @brief Event View.
  */
-@property (nonatomic, retain) EventViewController *eventViewController;
+@property (nonatomic, strong) EventViewController *eventViewController;
 @end
 
 @implementation ServiceListController
 
+@synthesize delegate = _delegate;
 @synthesize mgSplitViewController = _mgSplitViewController;
 @synthesize popoverController, popoverZapController;
 @synthesize showNowNext = _supportsNowNext;
@@ -94,8 +84,8 @@ enum serviceListTags
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
-		_mainList = [[NSMutableArray array] retain];
-		_subList = [[NSMutableArray array] retain];
+		_mainList = [[NSMutableArray alloc] init];
+		_subList = [[NSMutableArray alloc] init];
 		_refreshServices = YES;
 		_eventListController = nil;
 		_isRadio = NO;
@@ -122,30 +112,13 @@ enum serviceListTags
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_mainList release];
-	[_subList release];
-	[_eventListController release];
-	[_eventViewController release];
-	[_xmlReader release];
-	[_xmlReaderSub release];
-	[_radioButton release];
-	[_multiEpgButton release];
-	[_dateFormatter release];
-	[popoverController release];
-	[popoverZapController release];
-	[_zapListController release];
-#if IS_FULL()
-	[_multiEPG release];
-#endif
-
-	[super dealloc];
 }
 
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	SafeRetainAssign(_eventListController, nil);
-	SafeRetainAssign(_eventViewController, nil);
+	_eventListController = nil;
+	_eventViewController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -161,7 +134,7 @@ enum serviceListTags
 {
 	// Same bouquet assigned, abort
 	if(_bouquet == new) return;
-	SafeCopyAssign(_bouquet, new);
+	_bouquet = [new copy];
 
 	// Set Title
 	if(new)
@@ -305,7 +278,7 @@ enum serviceListTags
 		if(popoverController)
 		{
 			[popoverController dismissPopoverAnimated:YES];
-			SafeRetainAssign(popoverController, nil);
+			popoverController = nil;
 		}
 		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:items
 																					andSelection:NSNotFound
@@ -338,7 +311,6 @@ enum serviceListTags
 			[as showInView:self.view];
 		else
 			[as showFromTabBar:self.tabBarController.tabBar];
-		[as release];
 	}
 }
 
@@ -442,7 +414,6 @@ enum serviceListTags
 			UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																					target:self action:@selector(doneAction:)];
 			self.navigationItem.rightBarButtonItem = button;
-			[button release];
 		}
 	}
 #endif
@@ -464,7 +435,6 @@ enum serviceListTags
 	longPressGesture.minimumPressDuration = 1;
 	longPressGesture.enabled = !self.editing;
 	[_tableView addGestureRecognizer:longPressGesture];
-	[longPressGesture release];
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
@@ -473,8 +443,8 @@ enum serviceListTags
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	SafeRetainAssign(_radioButton, nil);
-	SafeRetainAssign(_multiEpgButton, nil);
+	_radioButton = nil;
+	_multiEpgButton = nil;
 
 	[super viewDidUnload];
 }
@@ -484,8 +454,8 @@ enum serviceListTags
 {
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else if(_delegate)
-		[self.navigationController popToViewController:_delegate animated:YES];
+	else if(_delegate && [_delegate isKindOfClass:[UIViewController class]])
+		[self.navigationController popToViewController:(UIViewController *)_delegate animated:YES];
 	else
 		[self.navigationController popViewControllerAnimated:YES];
 }
@@ -527,7 +497,6 @@ enum serviceListTags
 																									action:nil];
 					[self setToolbarItems:[NSArray arrayWithObjects:flexItem, _multiEpgButton, nil] animated:YES];
 					[self.navigationController setToolbarHidden:NO animated:animated];
-					[flexItem release];
 				}
 				else
 					secondButton = _multiEpgButton;
@@ -547,21 +516,21 @@ enum serviceListTags
 		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
 		if(isAlternative)
 		{
-			firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-																		target:self
-																		action:@selector(doneAction:)];
-			[firstButton autorelease];
-			secondButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
-															style:UIBarButtonItemStyleBordered														
-														   target:self
-														   action:@selector(deleteAction:)];
-			[secondButton autorelease];
-
+			UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
+																			 style:UIBarButtonItemStyleBordered														
+																			target:self
+																			action:@selector(deleteAction:)];
 			// on the iPhone we have the navigation item to return to the previous view, so no need for the done button in this clobbered view
 			if(IS_IPHONE())
 			{
-				firstButton = secondButton;
-				secondButton = nil;
+				firstButton = deleteButton;
+			}
+			else
+			{
+				firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+																			target:self
+																			action:@selector(doneAction:)];
+				secondButton = deleteButton;
 			}
 		}
 		else
@@ -592,12 +561,7 @@ enum serviceListTags
 			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 
 			[self.navigationItem setRightBarButtonItem:buttonItem animated:animated];
-
-			[flexItem release];
-			[buttonItem release];
-			[toolbar release];
 		}
-		[items release];
 	}
 	else
 	{
@@ -733,7 +697,8 @@ enum serviceListTags
 /* fetch main list */
 - (void)fetchData
 {
-	SafeRetainAssign(_xmlReader, nil); // though unlikely to cause any trouble, make sure _xmlReader is nil before releasing it...
+	_xmlReader = nil;
+	_xmlReaderSub = nil;
 	_reloading = YES;
 	if(self.showNowNext)
 	{
@@ -744,20 +709,20 @@ enum serviceListTags
 	else
 	{
 		pendingRequests = 1;
-		_xmlReader = [[[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio] retain];
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio];
 	}
 }
 
 /* fetch now list */
 - (void)fetchNowData
 {
-	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio]);
+	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio];
 }
 
 /* fetch next list */
 - (void)fetchNextData
 {
-	SafeRetainAssign(_xmlReaderSub, [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio]);
+	_xmlReaderSub = [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio];
 }
 
 /* remove content data */
@@ -775,8 +740,8 @@ enum serviceListTags
 #if IS_FULL()
 	[_multiEPG emptyData];
 #endif
-	SafeRetainAssign(_xmlReader, nil);
-	SafeRetainAssign(_xmlReaderSub, nil);
+	_xmlReader = nil;
+	_xmlReaderSub = nil;
 }
 
 /* getter of eventViewController property */
@@ -797,7 +762,7 @@ enum serviceListTags
 - (void)setEventViewController:(EventViewController *)new
 {
 	if(_eventViewController == new) return;
-	SafeRetainAssign(_eventViewController, new);
+	_eventViewController = new;
 }
 
 - (NSObject<ServiceProtocol> *)nextService
@@ -849,7 +814,7 @@ enum serviceListTags
 - (void)itemSelected:(NSNumber *)newSelection
 {
 	[popoverController dismissPopoverAnimated:YES];
-	SafeRetainAssign(popoverController, nil);
+	popoverController = nil;
 
 	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
@@ -898,8 +863,6 @@ enum serviceListTags
 				targetViewController = [[UINavigationController alloc] initWithRootViewController:bl];
 				targetViewController.modalPresentationStyle = bl.modalPresentationStyle;
 				targetViewController.modalPresentationStyle = bl.modalPresentationStyle;
-
-				[bl release];
 			}
 			else
 				targetViewController = bl;
@@ -918,8 +881,6 @@ enum serviceListTags
 				targetViewController = [[UINavigationController alloc] initWithRootViewController:sl];
 				targetViewController.modalPresentationStyle = sl.modalPresentationStyle;
 				targetViewController.modalPresentationStyle = sl.modalPresentationStyle;
-
-				[sl release];
 			}
 			else
 				targetViewController = sl;
@@ -937,8 +898,6 @@ enum serviceListTags
 				targetViewController = [[UINavigationController alloc] initWithRootViewController:bl];
 				targetViewController.modalPresentationStyle = bl.modalPresentationStyle;
 				targetViewController.modalPresentationStyle = bl.modalPresentationStyle;
-
-				[bl release];
 			}
 			else
 				targetViewController = bl;
@@ -955,7 +914,6 @@ enum serviceListTags
 			alertView.tag = TAG_MARKER;
 			alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 			[alertView show];
-			[alertView release];
 			break;
 		}
 		case 4: /* rename */
@@ -969,7 +927,6 @@ enum serviceListTags
 			alertView.tag = TAG_RENAME;
 			alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 			[alertView show];
-			[alertView release];
 
 			break;
 		}
@@ -984,7 +941,6 @@ enum serviceListTags
 			[self.navigationController setToolbarHidden:YES animated:YES];
 			[self.navigationController pushViewController:targetViewController animated:YES];
 		}
-		[targetViewController release];
 	}
 }
 
@@ -1011,7 +967,6 @@ enum serviceListTags
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else if(![service.sref hasPrefix:@"1:134:"])
 	{
@@ -1034,7 +989,6 @@ enum serviceListTags
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 	{
@@ -1067,7 +1021,6 @@ enum serviceListTags
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -1133,7 +1086,6 @@ enum serviceListTags
 																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to add marker: %@", @"ServiceEditor", @"Creating a marker has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	else //if(alertView.tag == TAG_RENAME)
@@ -1161,7 +1113,6 @@ enum serviceListTags
 																  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to rename service: %@", @"ServiceEditor", @"Renaming a service has failed"), result.resulttext]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1248,7 +1199,6 @@ enum serviceListTags
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
@@ -1344,8 +1294,10 @@ enum serviceListTags
 		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
+		else if([_delegate isKindOfClass:[UIViewController class]])
+			[self.navigationController popToViewController:(UIViewController *)_delegate animated:YES];
 		else
-			[self.navigationController popToViewController: _delegate animated: YES];
+			[self.navigationController popViewControllerAnimated:YES];
 	}
 	// Handle swipe
 	else if(tableView.lastSwipe & oneFinger)
@@ -1441,8 +1393,10 @@ enum serviceListTags
 		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
+		else if([_delegate isKindOfClass:[UIViewController class]])
+			[self.navigationController popToViewController:(UIViewController *)_delegate animated:YES];
 		else
-			[self.navigationController popToViewController: _delegate animated: YES];
+			[self.navigationController popViewControllerAnimated:YES];
 	}
 	// Service Editor
 	else if(self.editing)
@@ -1470,7 +1424,6 @@ enum serviceListTags
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"EventListTwiceInNavigationStack" format:@"_eventListController was twice in navigation stack: %@", result];
-			[result release]; // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 		}
@@ -1557,10 +1510,9 @@ enum serviceListTags
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorMoveService:service toPosition:destinationIndexPath.row inBouquet:_bouquet isRadio:_isRadio];
 	if(result.result)
 	{
-		SafeReturn(objectAtIndexPath);
 		if(isNowNext)
 		{
-			NSObject *elem = SafeReturn((NSObject<EventProtocol > *)[_subList objectAtIndex:sourceIndexPath.row]);
+			NSObject *elem = (NSObject<EventProtocol > *)[_subList objectAtIndex:sourceIndexPath.row];
 			[_subList removeObjectAtIndex:sourceIndexPath.row];
 			[_subList insertObject:elem atIndex:destinationIndexPath.row];
 		}
@@ -1575,16 +1527,6 @@ enum serviceListTags
 }
 
 #pragma mark -
-
-/* set delegate */
-- (void)setDelegate: (id<ServiceListDelegate, NSCoding, UIAppearanceContainer>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
-}
 
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
@@ -1652,9 +1594,7 @@ enum serviceListTags
 
 			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 			zlc.zapDelegate = self;
-			[popoverZapController release];
 			popoverZapController = [[UIPopoverController alloc] initWithContentViewController:zlc];
-			[zlc release];
 
 			CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
 			cellRect.origin.x = p.x - 25.0f;
@@ -1666,7 +1606,7 @@ enum serviceListTags
 		}
 		else
 		{
-			SafeRetainAssign(_zapListController, [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar]);
+			_zapListController = [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar];
 		}
 	}
 	// else just zap on remote host
@@ -1684,7 +1624,7 @@ enum serviceListTags
 {
 	NSURL *streamingURL = nil;
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	SafeRetainAssign(_zapListController, nil);
+	_zapListController = nil;
 
 	if(selectedAction == zapActionRemote)
 	{
@@ -1702,7 +1642,6 @@ enum serviceListTags
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 		[ServiceZapListController openStream:streamingURL withAction:selectedAction];

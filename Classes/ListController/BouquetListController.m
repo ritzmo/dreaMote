@@ -55,6 +55,7 @@ enum bouquetListTags
 @implementation BouquetListController
 
 @synthesize bouquetDelegate = _bouquetDelegate;
+@synthesize serviceDelegate = _serviceDelegate;
 @synthesize serviceListController = _serviceListController;
 @synthesize isSplit = _isSplit;
 
@@ -656,7 +657,10 @@ enum bouquetListTags
 		else
 		{
 			[self.navigationController setToolbarHidden:YES animated:YES];
-			[self.navigationController popToViewController:_bouquetDelegate animated: YES];
+			if([_bouquetDelegate isKindOfClass:[UIViewController class]])
+				[self.navigationController popToViewController:(UIViewController *)_bouquetDelegate animated:YES];
+			else
+				[self.navigationController popViewControllerAnimated:YES];
 		}
 	}
 	else if(!_serviceListController.reloading)
@@ -841,16 +845,6 @@ enum bouquetListTags
 }
 
 #pragma mark -
-
-/* set delegate */
-- (void)setServiceDelegate:(id<ServiceListDelegate, NSCoding, UIAppearanceContainer>)delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_serviceDelegate = delegate;
-}
 
 /* support rotation */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
