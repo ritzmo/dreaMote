@@ -54,7 +54,8 @@
 	_done = NO;
 	NSError *localError = nil;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-	_parser = [[CXMLPushDocument alloc] initWithError: &localError];
+	NSError *__unsafe_unretained parserError = localError;
+	_parser = [[CXMLPushDocument alloc] initWithError:&parserError];
 
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
@@ -62,7 +63,6 @@
 	NSURLConnection *connection = [[NSURLConnection alloc]
 									initWithRequest:request
 									delegate:_parser];
-	[request release];
 	if(connection)
 	{
 		[APP_DELEGATE addNetworkOperation];
@@ -72,7 +72,6 @@
 		} while (!_parser.done);
 		[APP_DELEGATE removeNetworkOperation];
 		[connection cancel]; // just in case, cancel the connection
-		[connection release];
 	}
 	else
 	{

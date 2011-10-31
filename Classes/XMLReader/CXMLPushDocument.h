@@ -17,15 +17,13 @@
 #error libxml2 not compiled with push support 
 #endif
 
-@class CXMLElement;
-
 /*!
  @brief Modifies CXMLDocument to support libxml2 push mode.
  */
 @interface CXMLPushDocument : CXMLDocument {
 @private
 	BOOL _done; /*!< @brief Done parsing document. */
-	NSError **_parseError; /*!< @brief Pointer to error. */
+	NSError * __unsafe_unretained *_parseError; /*!< @brief Pointer to error. */
 	xmlParserCtxtPtr _ctxt; /*!< @brief libxml2 parser context */
 }
 
@@ -34,7 +32,7 @@
  
  @param outError Will be pointed to error if one occurs.
  */
-- (id)initWithError: (NSError **)outError;
+- (id)initWithError: (NSError * __unsafe_unretained *)outError;
 
 
 
