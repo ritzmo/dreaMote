@@ -49,12 +49,16 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		[APP_DELEGATE addNetworkOperation];
 		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, (__bridge void *)(self), NULL, 0, NULL);
 		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
+
 		while(!_done)
 		{
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		}
 		[con cancel]; // just in case, cancel the connection
 		[APP_DELEGATE removeNetworkOperation];
+
+		xmlFreeParserCtxt(_xmlParserContext);
+		_xmlParserContext = NULL;
 	}
 	else
 	{
@@ -209,7 +213,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	SafeRetainAssign(failureReason, error); // though accordings to the docs the connection can only fail once, lets make sure we don't leak anyway
+	failureReason = error;
 
 	_done = YES;
 }
@@ -239,7 +243,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	xmlParseChunk(_xmlParserContext, NULL, 0, 1);
-	_done = YES;
+	// NOTE: don't set _done, instead let the parser to it because it will be destroyed afterwards
 }
 
 @end
