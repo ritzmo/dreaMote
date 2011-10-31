@@ -76,8 +76,6 @@ enum serviceListTags
 @property (nonatomic, retain) UIPopoverController *popoverController;
 @property (nonatomic, retain) UIPopoverController *popoverZapController;
 
-@property (nonatomic, readonly) BOOL supportsNowNext;
-
 /*!
  @brief Event View.
  */
@@ -88,6 +86,7 @@ enum serviceListTags
 
 @synthesize mgSplitViewController = _mgSplitViewController;
 @synthesize popoverController, popoverZapController;
+@synthesize showNowNext = _supportsNowNext;
 
 /* initialize */
 - (id)init
@@ -134,7 +133,6 @@ enum serviceListTags
 	[_dateFormatter release];
 	[popoverController release];
 	[popoverZapController release];
-	[_mgSplitViewController release];
 	[_zapListController release];
 #if IS_FULL()
 	[_multiEPG release];
@@ -200,9 +198,14 @@ enum serviceListTags
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 }
 
-- (BOOL)supportsNowNext
+- (BOOL)showNowNext
 {
 	return _supportsNowNext && !self.editing;
+}
+
+- (void)setShowNowNext:(BOOL)showNowNext
+{
+	_supportsNowNext = showNowNext;
 }
 
 /* getter of reloading property */
@@ -732,7 +735,7 @@ enum serviceListTags
 {
 	SafeRetainAssign(_xmlReader, nil); // though unlikely to cause any trouble, make sure _xmlReader is nil before releasing it...
 	_reloading = YES;
-	if(self.supportsNowNext)
+	if(self.showNowNext)
 	{
 		pendingRequests = 2;
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
@@ -1322,7 +1325,7 @@ enum serviceListTags
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(!self.supportsNowNext) return;
+	if(!self.showNowNext) return;
 #if IS_DEBUG()
 	NSParameterAssert([_mainList count] > (NSUInteger)indexPath.row);
 #else

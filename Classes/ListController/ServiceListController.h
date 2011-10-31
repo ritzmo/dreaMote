@@ -129,6 +129,16 @@
  */
 - (NSObject<ServiceProtocol> *)previousService;
 
+
+
+/*!
+ @brief Shows now next?
+ Can be used to force-disable now/next e.g. when showing 'All Services' bouquet.
+
+ @note Might be of use in delegate mode also...
+ */
+@property (nonatomic, assign) BOOL showNowNext;
+
 /*!
  @brief Bouquet.
  */
@@ -142,7 +152,7 @@
 /*!
  @brief Associated MGSplitViewController.
  */
-@property (nonatomic, retain) MGSplitViewController *mgSplitViewController;
+@property (nonatomic, assign) MGSplitViewController *mgSplitViewController;
 
 /*!
  @brief Currently reloading.
