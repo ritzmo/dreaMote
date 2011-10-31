@@ -249,13 +249,11 @@
 	_scrollView.maximumZoomScale = (CGFloat)2.6;
 	_scrollView.minimumZoomScale = (CGFloat)1.0;
 	_scrollView.exclusiveTouch = NO;
-	// XXX: for simplicity only support this on iOS 3.2+
-	if([UIDevice newerThanIos:3.2f])
-	{
-		UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(maybeSavePicture:)];
-		longPressGesture.minimumPressDuration = 1;
-		[_scrollView addGestureRecognizer:longPressGesture];
-	}
+
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(maybeSavePicture:)];
+	longPressGesture.minimumPressDuration = 1;
+	[_scrollView addGestureRecognizer:longPressGesture];
+
 	[_screenView addSubview: _scrollView];
 	_imageView = [[UIImageView alloc] initWithFrame: CGRectZero];
 	_imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
