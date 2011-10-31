@@ -17,9 +17,6 @@
 #import "iAd/ADBannerView.h"
 #endif
 
-// Forward Declarations...
-@class BaseXMLReader;
-
 /*!
  @brief Timer List.
  
@@ -46,7 +43,6 @@
 	BOOL _isSplit; /*!< @brief Split mode? */
 	UIBarButtonItem *_cleanupButton; /*!< @brief Cleanup button. */
 
-	BaseXMLReader *_xmlReader; /*!< @brief Current Timer XML Reader. */
 #if INCLUDE_FEATURE(Ads)
 @private
 	id _adBannerView;

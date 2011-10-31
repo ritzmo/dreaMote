@@ -19,7 +19,6 @@
 
 // Forward declarations...
 @protocol ServiceProtocol;
-@class BaseDocument;
 @class EventViewController;
 
 /*!
@@ -53,7 +52,6 @@
 	NSInteger _lastDay; /*!< @brief Last day with events if using sections / day. */
 	NSMutableArray *_sectionOffsets; /*!< @brief Array of first indices. */
 
-	BaseXMLReader *_xmlReader; /*!< @brief Event XML Document. */
 	ServiceListController *__unsafe_unretained _serviceListController; /*!< @brief Parent/Service List controller. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */

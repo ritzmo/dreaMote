@@ -45,6 +45,7 @@
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 	BOOL _reloading; /*!< @brief Currently reloading. */
 	SwipeTableView *_tableView; /*!< @brief Table view. */
+	BaseXMLReader *_xmlReader; /*!< @brief Current XML Document. */
 }
 
 /*!

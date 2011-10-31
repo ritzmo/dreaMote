@@ -10,6 +10,9 @@
 
 #import "RemoteConnectorObject.h" // [+RemoteConnectorObject queueInvocationWithTarget: selector:]
 
+#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
+
 @implementation ReloadableListController
 
 /* initialize */
@@ -133,6 +136,9 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
+	if(dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	[_tableView reloadData];
@@ -152,6 +158,9 @@
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
+	if(dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 #if INCLUDE_FEATURE(Extra_Animation)

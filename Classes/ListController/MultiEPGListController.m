@@ -19,7 +19,7 @@
 
 #import "MultiEPGTableViewCell.h"
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 @interface MultiEPGListController()
 /*!
@@ -403,6 +403,9 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
+	if(dataSource && dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	if(--pendingRequests == 0)
 	{
 		// alert user
@@ -421,6 +424,9 @@
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
+	if(dataSource && dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	if(--pendingRequests == 0)
 	{
 		[_tableView reloadData];

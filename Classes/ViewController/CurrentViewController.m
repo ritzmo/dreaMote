@@ -20,8 +20,6 @@
 #import "ServiceTableViewCell.h"
 #import "CellTextView.h"
 
-#import <XMLReader/BaseXMLReader.h>
-
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;

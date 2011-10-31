@@ -18,8 +18,6 @@
 #import <Objects/Generic/Location.h>
 #import <Objects/Generic/Result.h>
 
-#import <XMLReader/BaseXMLReader.h>
-
 @interface LocationListController()
 /*!
  @brief done editing

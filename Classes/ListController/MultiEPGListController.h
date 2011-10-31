@@ -16,7 +16,6 @@
 #import "ServiceSourceDelegate.h"
 
 // forward declare
-@class BaseXMLReader;
 @protocol MultiEPGDelegate;
 @class MultiEPGHeaderView;
 
@@ -41,7 +40,6 @@
 	NSObject<MultiEPGDelegate> *__unsafe_unretained _mepgDelegate;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief List of services. */
-	BaseXMLReader *_xmlReader; /*!< @brief Current Service XML-Document. */
 	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
 	MBProgressHUD *progressHUD; /*!< @brief Progress Hud. */

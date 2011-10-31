@@ -17,8 +17,6 @@
 #import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
 
-#import <XMLReader/BaseXMLReader.h>
-
 #import <Objects/MovieProtocol.h>
 #import <Objects/Generic/Result.h>
 

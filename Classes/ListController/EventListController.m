@@ -19,8 +19,6 @@
 #import "Objects/ServiceProtocol.h"
 #import "Objects/EventProtocol.h"
 
-#import <XMLReader/BaseXMLReader.h>
-
 #if IS_FULL()
 	#import "EPGCache.h"
 #endif

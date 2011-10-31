@@ -99,8 +99,7 @@
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif
 
-	BaseXMLReader *_xmlReader; /*!< Current Service/Event XML Document. */
-	BaseXMLReader *_xmlReaderSub; /*!< Next Event XML Document. */
+	BaseXMLReader *_xmlReaderSub; /*!< XMLReader for list of 'Next' events if showing now/next. */
 }
 
 /*!

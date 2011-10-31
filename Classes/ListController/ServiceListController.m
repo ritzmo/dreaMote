@@ -22,6 +22,7 @@
 #import <Objects/ServiceProtocol.h>
 
 #import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXMLReader.h>
 
 enum serviceListTags
 {
@@ -1203,6 +1204,17 @@ enum serviceListTags
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
 	}
+
+	if(dataSource == _xmlReader)
+	{
+		if([dataSource isKindOfClass:[SaxXmlReader class]])
+			_xmlReader = nil;
+	}
+	else if(dataSource == _xmlReaderSub)
+	{
+		if([dataSource isKindOfClass:[SaxXmlReader class]])
+			_xmlReaderSub = nil;
+	}
 }
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
@@ -1220,6 +1232,17 @@ enum serviceListTags
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
+	}
+
+	if(dataSource == _xmlReader)
+	{
+		if([dataSource isKindOfClass:[SaxXmlReader class]])
+			_xmlReader = nil;
+	}
+	else if(dataSource == _xmlReaderSub)
+	{
+		if([dataSource isKindOfClass:[SaxXmlReader class]])
+			_xmlReaderSub = nil;
 	}
 }
 

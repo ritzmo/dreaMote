@@ -15,8 +15,6 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import <XMLReader/BaseXMLReader.h>
-
 @implementation AboutViewController
 
 - (id)init
@@ -30,7 +28,6 @@
 	
 	return self;
 }
-
 
 /* layout */
 - (void)loadView

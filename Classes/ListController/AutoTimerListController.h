@@ -22,7 +22,6 @@
 {
 @private
 	NSMutableArray *_autotimers; /*!< @brief AutoTimer List. */
-	BaseXMLReader *_xmlReader; /*!< @brief Current XML Document. */
 	BOOL _refreshAutotimers; /*!< @brief Refresh on next viewWillAppear? */
 	BOOL _isSplit; /*!< @brief Split mode? */
 	BOOL _parsing; /*!< @brief Currently parsing EPG? */

@@ -21,8 +21,6 @@
 #import <Objects/Generic/Timer.h>
 #import <Objects/Generic/Result.h>
 
-#import <XMLReader/BaseXMLReader.h>
-
 @interface TimerListController()
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;

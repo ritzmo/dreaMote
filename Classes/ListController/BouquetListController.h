@@ -19,7 +19,6 @@ typedef enum
 } bouquetListType;
 
 // Forward declaration
-@class BaseXMLReader;
 @class ServiceListController;
 @protocol BouquetListDelegate;
 @protocol ServiceListDelegate;
@@ -47,8 +46,6 @@ typedef enum
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 	UIPopoverController *popoverController; /*!< @brief Popover */
-
-	BaseXMLReader *_xmlReader; /*!< @brief Bouquet XML. */
 }
 
 /*!

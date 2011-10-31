@@ -14,7 +14,6 @@
 
 // Forward declarations...
 @class MovieViewController;
-@class BaseXMLReader;
 
 /*!
  @brief Movie List.
@@ -45,7 +44,6 @@
 #endif
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
-	BaseXMLReader *_xmlReader; /*!< Current Movie XML Reader. */
 	BOOL _refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
 	BOOL _isSplit; /*!< @brief Split mode? */	
 	BOOL _sortTitle; /*!< @brief Sort by title? */
