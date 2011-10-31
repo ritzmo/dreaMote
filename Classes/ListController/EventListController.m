@@ -95,6 +95,7 @@
 	self.title = newService.sname;
 
 	// Clean event list
+	_reloading = YES;
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
@@ -156,6 +157,15 @@
 	_searchDisplay.searchResultsDataSource = self;
 	_searchDisplay.searchResultsDelegate = self;
 #endif
+
+	if(_reloading)
+	{
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#if IS_FULL()
+		// NOTE: yes, this looks weird - but it works :P
+		[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height/2.0f) animated:YES];
+#endif
+	}
 
 #if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE())
