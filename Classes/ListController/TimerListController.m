@@ -153,10 +153,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)setWillReappear:(BOOL)new
 {
 	// allow to skip refresh only if there is any data
-	/*
-	 @note this prevents problems with iOS3.2 where sections were not properly reloaded
-	 resulting in double section headers with the first set hiding the first timer.
-	 */
 	if(_dist[0] > 0) _willReappear = new;
 }
 
