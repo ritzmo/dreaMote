@@ -40,8 +40,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		const UIView *myContentView = self.contentView;
-
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
