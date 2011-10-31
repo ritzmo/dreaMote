@@ -73,7 +73,7 @@ typedef enum
 	NSString *address = [connection objectForKey: kRemoteHost];
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 
-	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress:address andPort:port];
+	return [[SVDRPConnector alloc] initWithAddress:address andPort:port];
 }
 
 + (NSArray *)knownDefaultConnections

@@ -96,7 +96,7 @@ enum neutrinoMessageTypes {
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
 
-	return (NSObject <RemoteConnector>*)[[NeutrinoConnector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
+	return [[NeutrinoConnector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
 + (NSArray *)knownDefaultConnections

@@ -161,7 +161,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
 	const BOOL advancedRc = [[connection objectForKey: kAdvancedRemote] boolValue];
 
-	return (NSObject <RemoteConnector>*)[[Enigma2Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl andAdvancedRc:advancedRc];
+	return [[Enigma2Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl andAdvancedRc:advancedRc];
 }
 
 + (NSArray *)knownDefaultConnections

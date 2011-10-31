@@ -112,7 +112,7 @@ enum enigma1MessageTypes {
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
 
-	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
+	return [[Enigma1Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
 + (NSArray *)knownDefaultConnections
