@@ -7,3 +7,6 @@
 [submodule "ShareKit"]
 	path = ShareKit
 	url = git://github.com/ritzmo/ShareKit.git
+[submodule "TouchXML"]
+	path = TouchXML
+	url = git://github.com/ritzmo/TouchXML.git

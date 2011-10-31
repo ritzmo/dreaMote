@@ -940,39 +940,33 @@
 		DAC8C44713B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C44813B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C44913B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C46C13B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45313B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C46D13B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45313B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C46E13B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45313B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C46F13B201DE00CA00D9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45513B201DE00CA00D9 /* CXMLNode_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47013B201DE00CA00D9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45513B201DE00CA00D9 /* CXMLNode_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47113B201DE00CA00D9 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45513B201DE00CA00D9 /* CXMLNode_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47213B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47313B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47413B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47513B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47613B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47713B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47813B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47913B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47A13B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47B13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47C13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47E13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48013B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48113B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48213B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48313B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48413B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48513B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48613B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48713B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48813B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48913B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48A13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48B13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C48C13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAC8C47213B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; };
+		DAC8C47313B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; };
+		DAC8C47413B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; };
+		DAC8C47513B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
+		DAC8C47613B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
+		DAC8C47713B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
+		DAC8C47813B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; };
+		DAC8C47913B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; };
+		DAC8C47A13B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; };
+		DAC8C47B13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */; };
+		DAC8C47C13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */; };
+		DAC8C47D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */; };
+		DAC8C47E13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */; };
+		DAC8C47F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */; };
+		DAC8C48013B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */; };
+		DAC8C48113B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; };
+		DAC8C48213B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; };
+		DAC8C48313B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; };
+		DAC8C48413B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; };
+		DAC8C48513B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; };
+		DAC8C48613B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; };
+		DAC8C48713B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; };
+		DAC8C48813B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; };
+		DAC8C48913B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; };
+		DAC8C48A13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; };
+		DAC8C48B13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; };
+		DAC8C48C13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; };
 		DAC8C49313B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
 		DAC8C49413B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
 		DAC8C49513B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
@@ -3689,8 +3683,6 @@
 				DAC8C36713B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36A13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,
 				DAC8C44713B201BA00CA00D9 /* MBProgressHUD.m in Sources */,
-				DAC8C46C13B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m in Sources */,
-				DAC8C46F13B201DE00CA00D9 /* CXMLNode_CreationExtensions.m in Sources */,
 				DAC8C47213B201DE00CA00D9 /* CXMLDocument.m in Sources */,
 				DAC8C47513B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DAC8C47813B201DE00CA00D9 /* CXMLElement.m in Sources */,
@@ -3943,8 +3935,6 @@
 				DAC8C36813B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36B13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,
 				DAC8C44813B201BA00CA00D9 /* MBProgressHUD.m in Sources */,
-				DAC8C46D13B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m in Sources */,
-				DAC8C47013B201DE00CA00D9 /* CXMLNode_CreationExtensions.m in Sources */,
 				DAC8C47313B201DE00CA00D9 /* CXMLDocument.m in Sources */,
 				DAC8C47613B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DAC8C47913B201DE00CA00D9 /* CXMLElement.m in Sources */,
@@ -4163,8 +4153,6 @@
 				DAC8C36913B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36C13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,
 				DAC8C44913B201BA00CA00D9 /* MBProgressHUD.m in Sources */,
-				DAC8C46E13B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m in Sources */,
-				DAC8C47113B201DE00CA00D9 /* CXMLNode_CreationExtensions.m in Sources */,
 				DAC8C47413B201DE00CA00D9 /* CXMLDocument.m in Sources */,
 				DAC8C47713B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DAC8C47A13B201DE00CA00D9 /* CXMLElement.m in Sources */,
