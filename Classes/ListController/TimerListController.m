@@ -415,7 +415,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
-			 // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 		}
@@ -581,7 +580,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
 				[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
-				 // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 			}

@@ -521,7 +521,6 @@
 		for(NSObject* obj in self.navigationController.viewControllers)
 			[result appendString:[obj description]];
 		[NSException raise:@"EventViewTwiceInNavigationStack" format:@"_eventViewController was twice in navigation stack: %@", result];
-		 // never reached, but to keep me from going crazy :)
 #endif
 		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 	}
