@@ -17,6 +17,7 @@
 #import <Objects/Generic/File.h>
 #import <Objects/Generic/Movie.h>
 #import <Objects/Generic/Package.h>
+#import <Objects/Generic/Service.h>
 #import <Delegates/MediaPlayerShuffleDelegate.h>
 
 #import <Connector/RemoteConnectorObject.h> /* usesAdvancedRemote */

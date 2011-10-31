@@ -27,7 +27,7 @@
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
-@property (nonatomic, retain) id adBannerView;
+@property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
 - (void)cleanupTimers:(id)sender;
@@ -77,7 +77,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		_timerViewController.delegate = nil;
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
 #endif
 }
 
@@ -88,7 +87,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	{
 		if(_timerViewController.delegate == self)
 			_timerViewController.delegate = nil;
-		SafeRetainAssign(_timerViewController, nil);
+		_timerViewController = nil;
 	}
 	
     [super didReceiveMemoryWarning];
@@ -143,7 +142,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	SafeRetainAssign(_adBannerView, nil);
+	_adBannerView = nil;
 #endif
 	SafeRetainAssign(_cleanupButton, nil);
 
@@ -624,7 +623,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 //#define __BOTTOM_AD__
 
-- (CGFloat)getBannerHeight:(UIDeviceOrientation)orientation
+- (CGFloat)getBannerHeight:(UIInterfaceOrientation)orientation
 {
 	if(UIInterfaceOrientationIsLandscape(orientation))
 		return IS_IPAD() ? 66 : 32;
@@ -642,7 +641,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	Class classAdBannerView = NSClassFromString(@"ADBannerView");
 	if(classAdBannerView != nil)
 	{
-		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
+		self.adBannerView = [[classAdBannerView alloc] initWithFrame:CGRectZero];
 		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
 														  ADBannerContentSizeIdentifierPortrait,
 														  ADBannerContentSizeIdentifierLandscape,

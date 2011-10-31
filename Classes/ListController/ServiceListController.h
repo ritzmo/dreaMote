@@ -132,7 +132,7 @@
 /*!
  @brief Bouquet.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *bouquet;
 
 /*!
  @brief Service Selection Delegate.

@@ -35,7 +35,7 @@
 - (void)zapAction:(id)sender;
 #if INCLUDE_FEATURE(Ads)
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
-@property (nonatomic, retain) id adBannerView;
+@property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
 @end
@@ -119,10 +119,7 @@
 #endif
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
-	_adBannerView = nil;
 #endif
-
 }
 
 /* memory warning */
@@ -172,7 +169,6 @@
 {
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
 	_adBannerView = nil;
 #endif
 #if IS_FULL()
@@ -589,7 +585,7 @@
 
 //#define __BOTTOM_AD__
 
-- (CGFloat)getBannerHeight:(UIDeviceOrientation)orientation
+- (CGFloat)getBannerHeight:(UIInterfaceOrientation)orientation
 {
 	if(UIInterfaceOrientationIsLandscape(orientation))
 		return IS_IPAD() ? 66 : 32;
@@ -607,7 +603,7 @@
 	Class classAdBannerView = NSClassFromString(@"ADBannerView");
 	if(classAdBannerView != nil)
 	{
-		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
+		self.adBannerView = [[classAdBannerView alloc] initWithFrame:CGRectZero];
 		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
 														  ADBannerContentSizeIdentifierPortrait,
 														  ADBannerContentSizeIdentifierLandscape,
