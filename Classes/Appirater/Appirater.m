@@ -97,9 +97,11 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	if (appirater == nil)
 	{
 		@synchronized(self) {
-			if (appirater == nil)
+			if (appirater == nil) {
 				appirater = [[Appirater alloc] init];
-		}
+				[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive) name:@"UIApplicationWillResignActiveNotification" object:nil];
+            }
+        }
 	}
 	
 	return appirater;
@@ -115,6 +117,7 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 #else
 											   otherButtonTitles:APPIRATER_RATE_BUTTON, NSLocalizedString(@"Buy full version", @"Button in Appirater alert suggesting to buy paid version"), APPIRATER_RATE_LATER, nil] autorelease];
 #endif
+	self.ratingAlert = alertView;
 	[alertView show];
 }
 
@@ -257,7 +260,13 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 @end
 
 
+@interface Appirater ()
+- (void)hideRatingAlert;
+@end
+
 @implementation Appirater
+
+@synthesize ratingAlert;
 
 - (void)incrementAndRate:(NSNumber*)_canPromptForRating {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
@@ -301,6 +310,20 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	[_canPromptForRating release];
 }
 
+- (void)hideRatingAlert {
+	if (self.ratingAlert.visible) {
+		if (APPIRATER_DEBUG)
+			NSLog(@"APPIRATER Hiding Alert");
+		[self.ratingAlert dismissWithClickedButtonIndex:-1 animated:NO];
+	}
+}
+
++ (void)appWillResignActive {
+	if (APPIRATER_DEBUG)
+		NSLog(@"APPIRATER appWillResignActive");
+	[[Appirater sharedInstance] hideRatingAlert];
+}
+
 + (void)appEnteredForeground:(BOOL)canPromptForRating {
 	NSNumber *_canPromptForRating = [[NSNumber alloc] initWithBool:canPromptForRating];
 	[NSThread detachNewThreadSelector:@selector(incrementAndRate:)
@@ -317,6 +340,18 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 	[_canPromptForRating release];
 }
 
++ (void)rateApp {
+#if TARGET_IPHONE_SIMULATOR
+	NSLog(@"APPIRATER NOTE: iTunes App Store is not supported on the iOS simulator. Unable to open App Store page.");
+#else
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	NSString *reviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", APPIRATER_APP_ID]];
+	[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion];
+	[userDefaults synchronize];
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
+#endif
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	
@@ -330,15 +365,8 @@ NSString *templateReviewURL = @"itms-apps://ax.itunes.apple.com/WebObjects/MZSto
 		}
 		case 1:
 		{
-#if TARGET_IPHONE_SIMULATOR
-			NSLog(@"APPIRATER NOTE: iTunes App Store is not supported on the iOS simulator. Unable to open App Store page.");
-#else
 			// they want to rate it
-			NSString *reviewURL = [templateReviewURL stringByReplacingOccurrencesOfString:@"APP_ID" withString:[NSString stringWithFormat:@"%d", APPIRATER_APP_ID]];
-			[userDefaults setBool:YES forKey:kAppiraterRatedCurrentVersion];
-			[userDefaults synchronize];
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:reviewURL]];
-#endif
+			[Appirater rateApp];
 			break;
 		}
 #if IS_LITE()
