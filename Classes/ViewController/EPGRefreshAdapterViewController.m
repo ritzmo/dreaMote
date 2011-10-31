@@ -21,6 +21,7 @@
 
 @implementation EPGRefreshAdapterViewController
 
+@synthesize delegate = _delegate;
 @synthesize selectedItem = _selectedItem;
 
 /* initialize */
@@ -153,16 +154,6 @@
 	{
 		[self dismissModalViewControllerAnimated:YES];
 	}
-}
-
-/* set delegate */
-- (void)setDelegate: (id<EPGRefreshAdapterDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods

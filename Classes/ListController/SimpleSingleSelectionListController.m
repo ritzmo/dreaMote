@@ -25,6 +25,7 @@
 @synthesize items = _items;
 @synthesize selectedItem = _selectedItem;
 @synthesize autoSubmit;
+@synthesize delegate = _delegate;
 
 /* initialize */
 - (id)init
@@ -146,13 +147,6 @@
 	{
 		[self dismissModalViewControllerAnimated:YES];
 	}
-}
-
-/* set delegate */
-- (void)setDelegate: (id<SimpleSingleSelectionListDelegate>) delegate
-{
-	// we only borrow the reference to our delegate, but given our life is shorter than that of our parent there should be no problem
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods

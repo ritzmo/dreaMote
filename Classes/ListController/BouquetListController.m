@@ -328,7 +328,7 @@ enum bouquetListTags
 													nil]
 																					andSelection:NSNotFound
 																						andTitle:nil];
-		[vc setDelegate:self];
+		vc.delegate = self;
 		vc.autoSubmit = YES;
 		vc.contentSizeForViewInPopover = CGSizeMake(160.0f, 130.0f);
 		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];

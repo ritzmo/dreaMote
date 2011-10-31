@@ -34,6 +34,8 @@
 
 @implementation AutoTimerFilterViewController
 
+@synthesize delegate = _delegate;
+
 /*!
  @brief Keyboard offset.
  The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
@@ -342,16 +344,6 @@
 		cell = [tableView cellForRowAtIndexPath:indexPath];
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
-}
-
-/* set delegate */
-- (void)setDelegate: (id<AutoTimerFilterDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
 }
 
 #pragma mark -

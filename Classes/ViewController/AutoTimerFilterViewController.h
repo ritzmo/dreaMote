@@ -23,7 +23,7 @@
 @private
 	UITextField *filterTextfield; /*!< @brief Filter Label. */
 	NSString *currentText; /*!< @brief Current Filter string. */
-	id<AutoTimerFilterDelegate> _delegate; /*!< @brief Delegate. */
+	id<AutoTimerFilterDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
 	autoTimerWhereType filterType; /*!< @brief Current mode. */
 	BOOL include; /*!< @brief Include Filter? */
 	UIBarButtonItem *_cancelButtonItem; /*!< @brief Cancel button. */
@@ -33,13 +33,11 @@
 }
 
 /*!
- @brief Set Delegate.
- 
+ @brief Delegate.
+
  The delegate will be called back when disappearing to inform it about the filter.
- 
- @param delegate New delegate object.
  */
-- (void)setDelegate:(id<AutoTimerFilterDelegate>)delegate;
+@property (nonatomic, unsafe_unretained) id<AutoTimerFilterDelegate> delegate;
 
 /*!
  @brief Filter text.

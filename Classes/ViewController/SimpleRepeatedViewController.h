@@ -27,7 +27,7 @@
 	CellTextField *_repcountCell; /*!< @brief Repeat count cell. */
 	NSInteger _repeated; /*!< @brief Current Flags. */
 	NSInteger _repcount; /*!< @brief Repeat count. */
-	id<RepeatedDelegate> _delegate; /*!< @brief Delegate. */
+	id<RepeatedDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
 	BOOL _isSimple; /*!< @brief Simple Editor? */
 }
 
@@ -40,17 +40,15 @@
  */
 + (SimpleRepeatedViewController *)withRepeated: (NSInteger)repeated andCount: (NSInteger)repcount;
 
+
+
 /*!
- @brief Set Delegate.
- 
+ @brief Delegate.
+
  The delegate will be called back when disappearing to inform it about the newly selected
  repeated flags.
- 
- @param delegate New delegate object.
  */
-- (void)setDelegate: (id<RepeatedDelegate>) delegate;
-
-
+@property (nonatomic, unsafe_unretained) id<RepeatedDelegate> delegate;
 
 /*!
  @brief Repeated Flags.

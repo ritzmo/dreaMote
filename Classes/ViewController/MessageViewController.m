@@ -441,7 +441,7 @@
 		}
 
 		SimpleSingleSelectionListController *targetViewController = [SimpleSingleSelectionListController withItems:messages andSelection:_type andTitle:NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController")];
-		[targetViewController setDelegate: self];
+		targetViewController.delegate = self;
 		if(IS_IPAD())
 		{
 			UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];

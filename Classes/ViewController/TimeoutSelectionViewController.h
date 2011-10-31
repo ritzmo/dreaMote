@@ -20,7 +20,7 @@
 {
 @private
 	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	NSObject<TimeoutSelectionDelegate> *_delegate; /*!< @brief Delegate. */
+	NSObject<TimeoutSelectionDelegate> __unsafe_unretained *_delegate; /*!< @brief Delegate. */
 }
 
 /*!
@@ -31,17 +31,15 @@
  */
 + (TimeoutSelectionViewController *)withTimeout:(NSInteger)timeout;
 
+
+
 /*!
- @brief Set Delegate.
+ @brief Delegate.
 
  The delegate will be called back when disappearing to inform it that the timeout
  was changed.
-
- @param delegate New delegate object.
  */
-- (void)setDelegate:(NSObject<TimeoutSelectionDelegate> *)delegate;
-
-
+@property (nonatomic, unsafe_unretained) NSObject<TimeoutSelectionDelegate> *delegate;
 
 /*!
  @brief Selected Item.

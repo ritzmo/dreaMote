@@ -32,6 +32,7 @@
 @synthesize isSplit = _isSplit;
 @synthesize movieListController = _movieListController;
 @synthesize showDefault = _showDefault;
+@synthesize delegate = _delegate;
 
 /* initialize */
 - (id)init
@@ -450,13 +451,6 @@
 }
 
 #pragma mark -
-
-/* set delegate */
-- (void)setDelegate: (id<LocationListDelegate, NSCoding>) delegate
-{
-	// TODO: don't retain delegate :P
-	SafeRetainAssign(_delegate, delegate);
-}
 
 /* support rotation */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation

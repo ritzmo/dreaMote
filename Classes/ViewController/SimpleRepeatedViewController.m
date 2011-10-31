@@ -20,6 +20,8 @@
 
 @implementation SimpleRepeatedViewController
 
+@synthesize delegate = _delegate;
+
 /* initialize */
 - (id)init
 {
@@ -341,16 +343,6 @@
 			}
 		}
 	}
-}
-
-/* set delegate */
-- (void)setDelegate: (id<RepeatedDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods

@@ -22,7 +22,7 @@
 @private
 	NSArray *_items; /*!< @brief Items. */
 	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	id<SimpleSingleSelectionListDelegate> _delegate; /*!< @brief Delegate. */
+	id<SimpleSingleSelectionListDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
 	BOOL autoSubmit; /*!< @brief Submit after first selection. */
 }
 
@@ -36,17 +36,15 @@
  */
 + (SimpleSingleSelectionListController *)withItems:(NSArray *)items andSelection:(NSUInteger)selectedItem andTitle:(NSString *)title;
 
+
+
 /*!
  @brief Set Delegate.
- 
+
  The delegate will be called back when disappearing to inform it about the newly selected
  item.
- 
- @param delegate New delegate object.
  */
-- (void)setDelegate: (id<SimpleSingleSelectionListDelegate>) delegate;
-
-
+@property (nonatomic, unsafe_unretained) id<SimpleSingleSelectionListDelegate> delegate;
 
 /*!
  @brief Selected Item.

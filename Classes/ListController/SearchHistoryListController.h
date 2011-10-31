@@ -14,7 +14,7 @@
 {
 @private
 	NSMutableArray *_history; /*!< @brief Previously looked for strings. */
-	NSObject<SearchHistoryListDelegate> *_historyDelegate; /*!< @brief Delegate. */
+	NSObject<SearchHistoryListDelegate> *__unsafe_unretained _historyDelegate; /*!< @brief Delegate. */
 }
 
 /*!
@@ -30,7 +30,7 @@
  */
 - (void)saveHistory;
 
-@property (nonatomic, strong) NSObject<SearchHistoryListDelegate> *historyDelegate;
+@property (nonatomic, unsafe_unretained) NSObject<SearchHistoryListDelegate> *historyDelegate;
 
 @end
 

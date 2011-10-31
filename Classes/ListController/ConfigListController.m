@@ -424,7 +424,7 @@ enum settingsRows
 		if(cell.tag == kTimeoutRowTag)
 		{
 			TimeoutSelectionViewController *vc = [TimeoutSelectionViewController withTimeout:kTimeout];
-			[vc setDelegate:self];
+			vc.delegate = self;
 			if(IS_IPAD())
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -441,7 +441,7 @@ enum settingsRows
 		else if(cell.tag == kHistoryLengthRowTag)
 		{
 			SearchHistoryLengthEditorController *vc = [SearchHistoryLengthEditorController withLength:[[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength]];
-			[vc setDelegate:self];
+			vc.delegate = self;
 			if(IS_IPAD())
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -460,7 +460,7 @@ enum settingsRows
 		{
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 			MultiEPGIntervalViewController *vc = [MultiEPGIntervalViewController withInterval:[timeInterval integerValue] / 60];
-			[vc setDelegate:self];
+			vc.delegate = self;
 			if(IS_IPAD())
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];

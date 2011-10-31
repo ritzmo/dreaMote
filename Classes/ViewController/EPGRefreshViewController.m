@@ -918,7 +918,7 @@ enum generalSectionItems
 			else if(row == adapterRow)
 			{
 				targetViewController = [EPGRefreshAdapterViewController withAdapter:settings.adapter];
-				[(EPGRefreshAdapterViewController *)targetViewController setDelegate:self];
+				((EPGRefreshAdapterViewController *)targetViewController).delegate = self;
 				if(IS_IPAD())
 				{
 					UIViewController *rootViewController = targetViewController;

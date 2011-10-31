@@ -307,7 +307,7 @@ enum serviceListTags
 		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:items
 																					andSelection:NSNotFound
 																						andTitle:nil];
-		[vc setDelegate:self];
+		vc.delegate = self;
 		vc.autoSubmit = YES;
 		CGFloat viewHeight = (kUIRowHeight) * items.count + 20;
 		vc.contentSizeForViewInPopover = CGSizeMake(250.0f, viewHeight);

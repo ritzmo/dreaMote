@@ -14,7 +14,7 @@
 
 @interface RecursiveFileAdder()
 - (void)fetchData;
-@property (nonatomic, strong) NSObject<RecursiveFileAdderDelegate> *delegate;
+@property (nonatomic, unsafe_unretained) NSObject<RecursiveFileAdderDelegate> *delegate;
 @end
 
 @implementation RecursiveFileAdder

@@ -183,7 +183,7 @@
 	if(_afterEventViewController == nil)
 	{
 		_afterEventViewController = [[AfterEventViewController alloc] init];
-		[_afterEventViewController setDelegate: self];
+		_afterEventViewController.delegate = self;
 	}
 	return _afterEventViewController;
 }
@@ -248,7 +248,7 @@
 	if(_locationListController == nil)
 	{
 		LocationListController *rootViewController = [[LocationListController alloc] init];
-		[rootViewController setDelegate: self];
+		rootViewController.delegate = self;
 		rootViewController.showDefault = YES;
 
 		if(IS_IPAD())
@@ -283,7 +283,7 @@
 	if(_simpleRepeatedViewController == nil)
 	{
 		_simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
-		[_simpleRepeatedViewController setDelegate: self];
+		_simpleRepeatedViewController.delegate = self;
 	}
 	return _simpleRepeatedViewController;
 }

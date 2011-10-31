@@ -67,7 +67,7 @@
 
 - (void)didReceiveMemoryWarning
 {
-	SafeRetainAssign(_aboutDreamoteViewController, nil);
+	_aboutDreamoteViewController = nil;
 
 	if([RemoteConnectorObject isConnected])
 		[[RemoteConnectorObject sharedRemoteConnector] freeCaches];
@@ -208,19 +208,19 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.myTableView = nil;
-	SafeRetainAssign(_aboutDreamoteViewController, nil);
+	_aboutDreamoteViewController = nil;
 #if IS_FULL()
-	SafeRetainAssign(_autotimerDictionary, nil);
+	_autotimerDictionary = nil;
 #endif
-	SafeRetainAssign(_configListController, nil);
-	SafeRetainAssign(_epgrefreshDictionary, nil);
-	SafeRetainAssign(_eventSearchDictionary, nil);
-	SafeRetainAssign(_mediaPlayerDictionary, nil);
-	SafeRetainAssign(_locationsDictionary, nil);
-	SafeRetainAssign(_recordDictionary, nil);
-	SafeRetainAssign(_signalDictionary, nil);
-	SafeRetainAssign(_sleeptimerDictionary, nil);
-	SafeRetainAssign(_packageManagerDictionary, nil);
+	_configListController = nil;
+	_epgrefreshDictionary = nil;
+	_eventSearchDictionary = nil;
+	_mediaPlayerDictionary = nil;
+	_locationsDictionary = nil;
+	_recordDictionary = nil;
+	_signalDictionary = nil;
+	_sleeptimerDictionary = nil;
+	_packageManagerDictionary = nil;
 	[menuList removeAllObjects];
 
 	[super viewDidUnload];

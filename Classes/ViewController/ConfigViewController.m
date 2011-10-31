@@ -917,7 +917,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 #if INCLUDE_FEATURE(Multiple_Connectors)
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
-		[targetViewController setDelegate: self];
+		targetViewController.delegate = self;
 		if(IS_IPAD())
 		{
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];

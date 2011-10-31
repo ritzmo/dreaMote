@@ -176,7 +176,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	if(_afterEventViewController == nil)
 	{
 		_afterEventViewController = [[AfterEventViewController alloc] init];
-		[_afterEventViewController setDelegate: self];
+		_afterEventViewController.delegate = self;
 	}
 	return _afterEventViewController;
 }
@@ -201,7 +201,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	if(_avoidDuplicateDescriptionController == nil)
 	{
 		_avoidDuplicateDescriptionController = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
-		[_avoidDuplicateDescriptionController setDelegate:self];
+		_avoidDuplicateDescriptionController.delegate = self;
 	}
 	return _avoidDuplicateDescriptionController;
 }
@@ -301,7 +301,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	if(_filterViewController == nil)
 	{
 		_filterViewController = [[AutoTimerFilterViewController alloc] init];
-		[_filterViewController setDelegate:self];
+		_filterViewController.delegate = self;
 	}
 	return _filterViewController;
 }
@@ -311,7 +311,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	if(_locationListController == nil)
 	{
 		LocationListController *rootViewController = [[LocationListController alloc] init];
-		[rootViewController setDelegate: self];
+		rootViewController.delegate = self;
 		rootViewController.showDefault = YES;
 
 		if(IS_IPAD())

@@ -22,6 +22,7 @@
 
 @implementation ConnectorViewController
 
+@synthesize delegate = _delegate;
 @synthesize selectedItem = _selectedItem;
 
 /* initialize */
@@ -154,16 +155,6 @@
 
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
-}
-
-/* set delegate */
-- (void)setDelegate: (id<ConnectorDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods

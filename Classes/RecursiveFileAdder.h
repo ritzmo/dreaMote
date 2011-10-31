@@ -19,11 +19,11 @@
 @private
 	BaseXMLReader *_xmlReader;
 	NSMutableArray *_remainingPaths;
-	NSObject<RecursiveFileAdderDelegate> *_delegate;
+	NSObject<RecursiveFileAdderDelegate> __unsafe_unretained *_delegate;
 }
 
 - (id)initWithPath:(NSString *)path;
-- (void)addFilesToDelegate:(NSObject<RecursiveFileAdderDelegate> *)delegate;
+- (void)addFilesToDelegate:(NSObject<RecursiveFileAdderDelegate> __unsafe_unretained *)delegate;
 
 @end
 

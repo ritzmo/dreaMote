@@ -21,6 +21,7 @@
 
 @implementation TimeoutSelectionViewController
 
+@synthesize delegate = _delegate;
 @synthesize selectedItem = _selectedItem;
 
 /* initialize */
@@ -151,12 +152,6 @@
 	{
 		[self dismissModalViewControllerAnimated:YES];
 	}
-}
-
-/* set delegate */
-- (void)setDelegate:(NSObject<TimeoutSelectionDelegate> *)delegate
-{
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods

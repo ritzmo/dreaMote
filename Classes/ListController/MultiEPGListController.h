@@ -38,7 +38,7 @@
 @private
 	BOOL _willReapper; /*!< @brief Not removed from stack. */
 	EPGCache *_epgCache; /*!< @brief EPGCache Singleton. */
-	NSObject<MultiEPGDelegate> *_mepgDelegate;
+	NSObject<MultiEPGDelegate> *__unsafe_unretained _mepgDelegate;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief List of services. */
 	BaseXMLReader *_xmlReader; /*!< @brief Current Service XML-Document. */
@@ -65,7 +65,7 @@
 /*!
  @brief MultiEPG Delegate.
  */
-@property (nonatomic, strong) NSObject<MultiEPGDelegate> *multiEpgDelegate;
+@property (nonatomic, unsafe_unretained) NSObject<MultiEPGDelegate> *multiEpgDelegate;
 
 /*!
  @brief View will reapper.

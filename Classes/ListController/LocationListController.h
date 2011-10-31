@@ -32,20 +32,10 @@
 	BOOL _isSplit; /*!< @brief Split mode? */
 	BOOL _showDefault; /*!< @brief Show "Default Location"-Folder? */
 	MovieListController *_movieListController; /*!< @brief Caches Movie List instance. */
-	NSObject<LocationListDelegate> *_delegate; /*!< @brief Delegate. */
+	NSObject<LocationListDelegate> *__unsafe_unretained _delegate; /*!< @brief Delegate. */
 
 	BaseXMLReader *_xmlReader; /*!< @brief Location XML. */
 }
-
-/*!
- @brief Set Service Selection Delegate.
- 
- This Function is required for Timers as they will use the provided Callback when you change the
- Service of a Timer.
- 
- @param delegate New delegate object.
- */
-- (void)setDelegate: (NSObject<LocationListDelegate> *) delegate;
 
 /*!
  @brief Prefetch location list
@@ -53,6 +43,13 @@
   might run into a timeout there
  */
 - (void)forceRefresh;
+
+
+
+/*!
+ @brief Location Selection Delegate.
+ */
+@property (nonatomic, unsafe_unretained) NSObject<LocationListDelegate> *delegate;
 
 /*!
  @brief Controlled by a split view controller?

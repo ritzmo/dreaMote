@@ -22,6 +22,8 @@
 @end
 
 @implementation SearchHistoryLengthEditorController
+
+@synthesize delegate = _delegate;
 @synthesize length = _length;
 
 /* initialize */
@@ -122,12 +124,6 @@
 	cell.view = _lengthTextField;
 
 	return cell;
-}
-
-/* set delegate */
-- (void)setDelegate:(NSObject<SearchHistoryLengthEditorDelegate> *)delegate
-{
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods
