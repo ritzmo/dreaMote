@@ -63,6 +63,11 @@
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	_timerListController.timerViewController = nil;
+	_timerListController = nil;
+	_timerViewController = nil;
+
 	[super viewDidUnload];
 }
 

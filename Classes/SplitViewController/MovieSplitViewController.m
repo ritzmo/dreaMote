@@ -68,11 +68,12 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	SafeRetainAssign(_locationListController, nil);
-	SafeRetainAssign(_movieListController, nil);
-	SafeRetainAssign(_movieListNavigationController, nil);
+	_locationListController.movieListController = nil;
+	_locationListController = nil;
+	_movieListController = nil;
+	_movieListNavigationController = nil;
 
-	SafeRetainAssign(_viewArrayLocation, nil);
+	_viewArrayLocation = nil;
 
 	[super viewDidUnload];
 }
