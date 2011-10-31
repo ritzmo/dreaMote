@@ -414,6 +414,7 @@ enum bouquetListTags
 {
 	NSObject<ServiceProtocol> *bouquet = [[RemoteConnectorObject sharedRemoteConnector] allServicesBouquet:_isRadio];
 	[self showServicelist:bouquet];
+	_serviceListController.showNowNext = NO; // TODO: we might run into a race condition here, check this thoroughly
 }
 
 - (void)configureToolbar:(BOOL)animated
