@@ -51,6 +51,11 @@
 	_valid = newValid;
 }
 
+- (BOOL)piconLoaded
+{
+	return _calculatedPicon;
+}
+
 - (UIImage *)picon
 {
 	if(!_calculatedPicon)

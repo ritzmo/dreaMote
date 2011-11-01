@@ -79,11 +79,15 @@
 	return self;
 }
 
-
 - (BOOL)isValid
 {
 	const NSString *sref = self.sref;
 	return sref && !([sref isEqualToString:@"N/A"] || [sref hasPrefix:@"1:64:"]);
+}
+
+- (BOOL)piconLoaded
+{
+	return _calculatedPicon;
 }
 
 - (UIImage *)picon

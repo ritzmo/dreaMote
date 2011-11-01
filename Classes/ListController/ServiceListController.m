@@ -1588,13 +1588,16 @@ enum serviceListTags
 			[(ServiceEventTableViewCell *)cell setNext:nil];
 		}
 
-		[_piconLoader addOperationWithBlock:^{
-			if(((ServiceEventTableViewCell *)cell).now == firstObject)
-			{
-				cell.imageView.image = ((NSObject<EventProtocol> *)firstObject).service.picon;
-				[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
-			}
-		}];
+		if(!((NSObject<EventProtocol> *)firstObject).service.piconLoaded)
+		{
+			[_piconLoader addOperationWithBlock:^{
+				if(((ServiceEventTableViewCell *)cell).now == firstObject)
+				{
+					cell.imageView.image = ((NSObject<EventProtocol> *)firstObject).service.picon;
+					[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
+				}
+			}];
+		}
 	}
 	else
 	{
@@ -1610,13 +1613,16 @@ enum serviceListTags
 		else
 			cell.backgroundView.backgroundColor = [UIColor whiteColor];
 
-		[_piconLoader addOperationWithBlock:^{
-			if(((ServiceTableViewCell *)cell).service == firstObject)
-			{
-				cell.imageView.image = ((NSObject<ServiceProtocol> *)firstObject).picon;
-				[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
-			}
-		}];
+		if(!((NSObject<ServiceProtocol> *)firstObject).piconLoaded)
+		{
+			[_piconLoader addOperationWithBlock:^{
+				if(((ServiceTableViewCell *)cell).service == firstObject)
+				{
+					cell.imageView.image = ((NSObject<ServiceProtocol> *)firstObject).picon;
+					[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
+				}
+			}];
+		}
 	}
 
 	return cell;

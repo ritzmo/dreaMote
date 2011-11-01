@@ -35,6 +35,11 @@
 @property (nonatomic, readonly, getter = isValid) BOOL valid;
 
 /*!
+ @brief Picon already loaded?
+ */
+@property (nonatomic, readonly) BOOL piconLoaded;
+
+/*!
  @brief Picon.
  */
 @property (nonatomic, readonly) UIImage *picon;

@@ -82,10 +82,14 @@
 	return self;
 }
 
-
 - (BOOL)isValid
 {
 	return _node && self.sref != nil;
+}
+
+- (BOOL)piconLoaded
+{
+	return _calculatedPicon;
 }
 
 - (UIImage *)picon

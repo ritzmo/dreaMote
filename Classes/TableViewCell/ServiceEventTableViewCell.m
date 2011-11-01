@@ -150,7 +150,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 		if(serviceValid)
 		{
-			if(_loadPicon)
+			if(service.piconLoaded || _loadPicon)
 				self.imageView.image = service.picon;
 			self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
