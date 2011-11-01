@@ -286,7 +286,8 @@ enum serviceListTags
 	   - Reset selection
 	 */
 	NSMutableArray *items = nil;
-	if([_bouquet.sref hasPrefix:@"1:7:0:"] || _selectedServices.count)
+	NSUInteger selectedServicesCount = _selectedServices.count;
+	if([_bouquet.sref hasPrefix:@"1:7:0:"] || selectedServicesCount > 1 || (selectedServicesCount == 1 && ![_selectedServices containsObject:service]))
 	{
 		items = [NSMutableArray arrayWithObject:NSLocalizedStringFromTable(@"Add to Bouquet", @"ServiceEditor", @"Add this service to another bouquet")];
 		if(_selectedServices.count)
@@ -954,7 +955,8 @@ enum serviceListTags
 	NSInteger selection = [newSelection integerValue];
 	if(selection != NSNotFound) // NOTE: this checks selection twice, but spares us from having to implement the default behavior twice
 	{
-		if(_selectedServices.count)
+		NSUInteger selectedServicesCount = _selectedServices.count;
+		if(selectedServicesCount > 1 || (selectedServicesCount == 1 && ![_selectedServices containsObject:service]))
 		{
 			if(selection == 0)
 				selection = 2;
