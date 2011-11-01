@@ -98,7 +98,7 @@ enum serviceListTags
 		_mainList = [[NSMutableArray alloc] init];
 		_subList = [[NSMutableArray alloc] init];
 		_filteredServices = [[NSMutableArray alloc] init];
-		_selectedServices = [[NSMutableSet alloc] init];
+		_selectedServices = [[NSMutableArray alloc] init];
 		_refreshServices = YES;
 		_eventListController = nil;
 		_isRadio = NO;
@@ -1077,6 +1077,7 @@ enum serviceListTags
 			[self presentModalViewController:targetViewController animated:YES];
 		else
 		{
+			_refreshServices = NO;
 			[self.navigationController setToolbarHidden:YES animated:YES];
 			[self.navigationController pushViewController:targetViewController animated:YES];
 		}
@@ -1174,9 +1175,11 @@ enum serviceListTags
 		service = objectAtIndexPath;
 
 	NSMutableString *errorMessages = [[NSMutableString alloc] init];
-	NSUInteger selectedServicesCount = _selectedServices.count;
+	const NSUInteger selectedServicesCount = _selectedServices.count;
+	const BOOL addedService = ![_selectedServices containsObject:service];
 	Result *result = nil;
-	[_selectedServices addObject:service];
+	if(addedService)
+		[_selectedServices addObject:service];
 	@autoreleasepool
 	{
 		for(NSObject<ServiceProtocol> *servicee in _selectedServices)
@@ -1190,7 +1193,8 @@ enum serviceListTags
 			}
 		}
 	}
-	[_selectedServices removeObject:service];
+	if(addedService)
+		[_selectedServices removeObject:service];
 
 	if(errorMessages.length)
 	{

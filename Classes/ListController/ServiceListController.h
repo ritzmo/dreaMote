@@ -103,12 +103,7 @@
 
 	NSOperationQueue *_piconLoader; /*!< @brief Background operations loading the picons. */
 
-	/*!
-	 @brief Set with selected services in editing mode.
-	 @note Using a set probably disrupts the order, so we might want to consider using a list.
-	 */
-	NSMutableSet *_selectedServices;
-
+	NSMutableArray *_selectedServices; /*!< @brief Currently selected services. */
 	NSMutableArray *_filteredServices; /*!< @brief Filtered list of services when searching. */
 	UISearchBar *_searchBar; /*!< @brief Search bar. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
