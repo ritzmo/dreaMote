@@ -1030,6 +1030,7 @@ enum serviceListTags
 			BouquetListController *bl = [[BouquetListController alloc] init];
 			bl.isRadio = _isRadio;
 			bl.bouquetDelegate = self;
+			[bl setEditing:YES animated:NO];
 
 			if(IS_IPAD())
 			{
