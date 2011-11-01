@@ -18,10 +18,10 @@
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
-#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 // Forward declarations...
 @class DatePickerController;
+@class SimpleSingleSelectionListController;
 @protocol AutoTimerViewDelegate;
 
 /*!
@@ -35,7 +35,6 @@
 													AfterEventDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
 													AutoTimerFilterDelegate,
-													SimpleSingleSelectionListDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
 {
@@ -74,8 +73,6 @@
 	UIViewController *_locationListController; /*!< @brief Cached Location List. */
 	UIViewController *_filterNavigationController; /*!< @brief Navigation Controller of Filter View. */
 	AutoTimerFilterViewController *_filterViewController; /*!< @brief Cached Filter View. */
-	SimpleSingleSelectionListController *_avoidDuplicateDescriptionController; /*!< @brief Cached ADD Selector. */
-	UIViewController *_avoidDuplicateDescriptionNavigationController; /*!< @brief Cached ADD Navigation Controller. */
 }
 
 /*!

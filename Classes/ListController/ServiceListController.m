@@ -9,6 +9,7 @@
 #import "ServiceListController.h"
 
 #import "EventListController.h"
+#import "SimpleSingleSelectionListController.h"
 #import "UIPromptView.h"
 
 #import "Constants.h"
@@ -34,6 +35,8 @@ enum serviceListTags
 @interface ServiceListController()
 - (void)fetchNowData;
 - (void)fetchNextData;
+
+- (void)itemSelected:(NSNumber *)newSelection;
 
 /*!
  @brief Show context menu in editing mode.
@@ -269,89 +272,6 @@ enum serviceListTags
 		_radioButton.title = NSLocalizedString(@"TV", @"TV switch button");
 	else
 		_radioButton.title = NSLocalizedString(@"Radio", @"Radio switch button");
-}
-
-- (void)contextMenu:(NSIndexPath *)indexPath forService:(NSObject<ServiceProtocol> *)service
-{
-	/*
-	 The fully propagates list (and the one we work with internally) is:
-	   - Add Alternative
-	   - Show Alternatives
-	   - Add to Bouquet
-	   - Add Marker
-	   - Rename
-	 ---------------------
-	 Multi-Select is recuded to this choices:
-	   - Add to bouquet
-	   - Reset selection
-	 */
-	NSMutableArray *items = nil;
-	NSUInteger selectedServicesCount = _selectedServices.count;
-	if([_bouquet.sref hasPrefix:@"1:7:0:"] || selectedServicesCount > 1 || (selectedServicesCount == 1 && ![_selectedServices containsObject:service]))
-	{
-		items = [NSMutableArray arrayWithObject:NSLocalizedStringFromTable(@"Add to Bouquet", @"ServiceEditor", @"Add this service to another bouquet")];
-		if(_selectedServices.count)
-		{
-			[items addObject:NSLocalizedStringFromTable(@"Remove selection", @"ServiceEditor", @"Undo selection made by the user.")];
-		}
-	}
-	else
-	{
-		items = [NSMutableArray arrayWithObjects:
-				 NSLocalizedStringFromTable(@"Add Marker", @"ServiceEditor", @"Add new marker before this position"),
-				 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename currently selected service"),
-				 nil];
-		if(service.valid)
-		{
-			[items insertObject:NSLocalizedStringFromTable(@"Add Alternative", @"ServiceEditor", @"Add new alternative service to currently selected service")
-					atIndex:0];
-			[items insertObject:NSLocalizedStringFromTable(@"Add to Bouquet", @"ServiceEditor", @"Add this service to another bouquet")
-					atIndex:1];
-			if([service.sref hasPrefix:@"1:134:"])
-				[items insertObject:NSLocalizedStringFromTable(@"Show Alternatives", @"ServiceEditor", @"Show alternatives for selected service")
-							atIndex:1];
-		}
-	}
-
-	if(IS_IPAD())
-	{
-		if(popoverController)
-		{
-			[popoverController dismissPopoverAnimated:YES];
-			popoverController = nil;
-		}
-		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:items
-																					andSelection:NSNotFound
-																						andTitle:nil];
-		vc.delegate = self;
-		vc.autoSubmit = YES;
-		CGFloat viewHeight = (kUIRowHeight) * items.count + 20;
-		vc.contentSizeForViewInPopover = CGSizeMake(250.0f, viewHeight);
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
-		CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
-		[popoverController presentPopoverFromRect:cellRect
-										   inView:_tableView
-						 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
-										 animated:YES];
-	}
-	else
-	{
-		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
-														delegate:self
-											   cancelButtonTitle:nil
-										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
-											   otherButtonTitles:nil];
-		for(NSString *text in items)
-		{
-			[as addButtonWithTitle:text];
-		}
-		as.cancelButtonIndex = [as addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
-
-		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
-			[as showInView:self.view];
-		else
-			[as showFromTabBar:self.tabBarController.tabBar];
-	}
 }
 
 #if IS_FULL()
@@ -880,6 +800,8 @@ enum serviceListTags
 	return nil;
 }
 
+#pragma mark Gestures
+
 - (void)longPress:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView
 {
 	if(!self.editing)
@@ -924,15 +846,99 @@ enum serviceListTags
 	[self longPress:gesture inView:_searchDisplay.searchResultsTableView];
 }
 
-#pragma mark -
-#pragma mark SimpleSingleSelectionListDelegate
-#pragma mark -
+#pragma mark Context Menu
+
+- (void)contextMenu:(NSIndexPath *)indexPath forService:(NSObject<ServiceProtocol> *)service
+{
+	/*
+	 The fully propagates list (and the one we work with internally) is:
+	 - Add Alternative
+	 - Show Alternatives
+	 - Add to Bouquet
+	 - Add Marker
+	 - Rename
+	 ---------------------
+	 Multi-Select is recuded to this choices:
+	 - Add to bouquet
+	 - Reset selection
+	 */
+	NSMutableArray *items = nil;
+	NSUInteger selectedServicesCount = _selectedServices.count;
+	if([_bouquet.sref hasPrefix:@"1:7:0:"] || selectedServicesCount > 1 || (selectedServicesCount == 1 && ![_selectedServices containsObject:service]))
+	{
+		items = [NSMutableArray arrayWithObject:NSLocalizedStringFromTable(@"Add to Bouquet", @"ServiceEditor", @"Add this service to another bouquet")];
+		if(_selectedServices.count)
+		{
+			[items addObject:NSLocalizedStringFromTable(@"Remove selection", @"ServiceEditor", @"Undo selection made by the user.")];
+		}
+	}
+	else
+	{
+		items = [NSMutableArray arrayWithObjects:
+				 NSLocalizedStringFromTable(@"Add Marker", @"ServiceEditor", @"Add new marker before this position"),
+				 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename currently selected service"),
+				 nil];
+		if(service.valid)
+		{
+			[items insertObject:NSLocalizedStringFromTable(@"Add Alternative", @"ServiceEditor", @"Add new alternative service to currently selected service")
+						atIndex:0];
+			[items insertObject:NSLocalizedStringFromTable(@"Add to Bouquet", @"ServiceEditor", @"Add this service to another bouquet")
+						atIndex:1];
+			if([service.sref hasPrefix:@"1:134:"])
+				[items insertObject:NSLocalizedStringFromTable(@"Show Alternatives", @"ServiceEditor", @"Show alternatives for selected service")
+							atIndex:1];
+		}
+	}
+
+	if(IS_IPAD())
+	{
+		if(popoverController)
+		{
+			[popoverController dismissPopoverAnimated:YES];
+			popoverController = nil;
+		}
+		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:items
+																					andSelection:NSNotFound
+																						andTitle:nil];
+		vc.callback = ^(NSUInteger selectedItem, BOOL isClosing){
+			[popoverController dismissPopoverAnimated:YES];
+			popoverController = nil;
+
+			[self performSelectorOnMainThread:@selector(itemSelected:) withObject:[NSNumber numberWithUnsignedInteger:selectedItem] waitUntilDone:NO];
+
+			return YES;
+		};
+		CGFloat viewHeight = (kUIRowHeight) * items.count + 20;
+		vc.contentSizeForViewInPopover = CGSizeMake(250.0f, viewHeight);
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+		CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+		[popoverController presentPopoverFromRect:cellRect
+										   inView:_tableView
+						 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
+										 animated:YES];
+	}
+	else
+	{
+		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+														delegate:self
+											   cancelButtonTitle:nil
+										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
+											   otherButtonTitles:nil];
+		for(NSString *text in items)
+		{
+			[as addButtonWithTitle:text];
+		}
+		as.cancelButtonIndex = [as addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[as showInView:self.view];
+		else
+			[as showFromTabBar:self.tabBarController.tabBar];
+	}
+}
 
 - (void)itemSelected:(NSNumber *)newSelection
 {
-	[popoverController dismissPopoverAnimated:YES];
-	popoverController = nil;
-
 	UITableView *tableView = nil;
 	NSArray *array = nil;
 	if(_searchDisplay.active){

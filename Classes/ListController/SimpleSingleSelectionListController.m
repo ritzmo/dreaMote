@@ -24,8 +24,7 @@
 
 @synthesize items = _items;
 @synthesize selectedItem = _selectedItem;
-@synthesize autoSubmit;
-@synthesize delegate = _delegate;
+@synthesize callback;
 
 /* initialize */
 - (id)init
@@ -33,7 +32,7 @@
 	if((self = [super init]))
 	{
 		self.title = nil;
-		_delegate = nil;
+		callback = nil;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -128,25 +127,22 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
-
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
-	cell.accessoryType = UITableViewCellAccessoryNone;
-
-	cell = [tableView cellForRowAtIndexPath: indexPath];
-	cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
+	const NSUInteger previousSelection = _selectedItem;
 	_selectedItem = indexPath.row;
+	const BOOL willDispose = callback ? callback(_selectedItem, NO) : NO;
 
-	if(autoSubmit)
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+	if(!willDispose)
 	{
-		[_delegate performSelector:@selector(itemSelected:) withObject:[NSNumber numberWithInteger:_selectedItem]];
-		_delegate = nil; // prevent viewWillDisappear from calling back again
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:previousSelection inSection:0]];
+		cell.accessoryType = UITableViewCellAccessoryNone;
+
+		cell = [tableView cellForRowAtIndexPath:indexPath];
+		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
-	if(IS_IPAD())
-	{
-		[self dismissModalViewControllerAnimated:YES];
-	}
+	else
+		callback = nil;
 }
 
 #pragma mark - UIViewController delegate methods
@@ -154,10 +150,9 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
-	{
-		[_delegate performSelector:@selector(itemSelected:) withObject:[NSNumber numberWithInteger:_selectedItem]];
-	}
+	if(callback)
+		callback(_selectedItem, YES);
+	callback = nil;
 }
 
 @end

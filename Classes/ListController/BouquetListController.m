@@ -10,10 +10,11 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "ServiceListController.h"
 #import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
 
+#import "ServiceListController.h"
+#import "SimpleSingleSelectionListController.h"
 #import "UIPromptView.h"
 
 #import "ServiceTableViewCell.h"
@@ -35,6 +36,8 @@ enum bouquetListTags
  @brief done editing
  */
 - (void)doneAction:(id)sender;
+
+- (void)itemSelected:(NSNumber *)newSelection;
 
 - (void)showBouquets:(id)sender;
 - (void)showProvider:(id)sender;
@@ -324,48 +327,6 @@ enum bouquetListTags
 	}
 }
 
-- (void)contextMenu:(NSIndexPath *)indexPath
-{
-	if(IS_IPAD())
-	{
-		if(popoverController)
-		{
-			[popoverController dismissPopoverAnimated:YES];
-			popoverController = nil;
-		}
-		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
-													NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
-													NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
-													nil]
-																					andSelection:NSNotFound
-																						andTitle:nil];
-		vc.delegate = self;
-		vc.autoSubmit = YES;
-		vc.contentSizeForViewInPopover = CGSizeMake(160.0f, 130.0f);
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
-		CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
-		[popoverController presentPopoverFromRect:cellRect
-										   inView:_tableView
-						 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
-										 animated:YES];
-	}
-	else
-	{
-		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
-														delegate:self
-											   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
-											   otherButtonTitles:
-							 NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
-							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
-							 nil];
-		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
-			[as showInView:self.view];
-		else
-			[as showFromTabBar:self.tabBarController.tabBar];
-	}
-}
-
 - (void)showServicelist:(NSObject<ServiceProtocol> *)bouquet
 {
 	// Check for cached ServiceListController instance
@@ -547,9 +508,55 @@ enum bouquetListTags
 #endif
 }
 
-#pragma mark -
-#pragma mark SimpleSingleSelectionListDelegate
-#pragma mark -
+#pragma mark Context menu
+
+- (void)contextMenu:(NSIndexPath *)indexPath
+{
+	if(IS_IPAD())
+	{
+		if(popoverController)
+		{
+			[popoverController dismissPopoverAnimated:YES];
+			popoverController = nil;
+		}
+		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
+																								  NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
+																								  NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
+																								  nil]
+																					andSelection:NSNotFound
+																						andTitle:nil];
+		vc.callback = ^(NSUInteger selectedItem, BOOL isClosing){
+			[popoverController dismissPopoverAnimated:YES];
+			popoverController = nil;
+
+			[self performSelectorOnMainThread:@selector(itemSelected:) withObject:[NSNumber numberWithUnsignedInteger:selectedItem] waitUntilDone:NO];
+
+			return YES;
+		};
+		vc.contentSizeForViewInPopover = CGSizeMake(160.0f, 130.0f);
+		popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+		CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+		[popoverController presentPopoverFromRect:cellRect
+										   inView:_tableView
+						 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
+										 animated:YES];
+	}
+	else
+	{
+		UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+														delegate:self
+											   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
+											   otherButtonTitles:
+							 NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
+							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
+							 nil];
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[as showInView:self.view];
+		else
+			[as showFromTabBar:self.tabBarController.tabBar];
+	}
+}
 
 - (void)itemSelected:(NSNumber *)newSelection
 {

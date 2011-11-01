@@ -8,14 +8,16 @@
 
 #import "MessageViewController.h"
 
+#import "Constants.h"
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
-#import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
+
+#import "SimpleSingleSelectionListController.h"
 
 #import "DisplayCell.h"
 
-#import "Objects/Generic/Result.h"
+#import <Objects/Generic/Result.h>
 
 /*!
  @brief Private functions of MessageViewController.
@@ -229,20 +231,6 @@
 	return YES;
 }
 
-#pragma mark -
-#pragma mark SimpleSingleSelectionListDelegate methods
-#pragma mark -
-
-- (void)itemSelected:(NSNumber *)newType
-{
-	if(newType == nil)
-		return;
-
-	_type = [newType unsignedIntegerValue];
-
-	TABLEVIEWCELL_TEXT(_typeCell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
-}
-
 #pragma mark - UITableView delegates
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -432,6 +420,7 @@
 	const NSInteger section = indexPath.section;
 	if(self.editing && section == 3)
 	{
+		const BOOL isIpad = IS_IPAD();
 		NSMutableArray *messages = [NSMutableArray array];
 		NSUInteger i = 0;
 		const NSUInteger maxMessageType = [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType];
@@ -441,8 +430,18 @@
 		}
 
 		SimpleSingleSelectionListController *targetViewController = [SimpleSingleSelectionListController withItems:messages andSelection:_type andTitle:NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController")];
-		targetViewController.delegate = self;
-		if(IS_IPAD())
+		targetViewController.callback = ^(NSUInteger selection, BOOL isFinal)
+		{
+			if(!isIpad && !isFinal)
+				return NO; // iPhone only handles final calls
+			_type = selection;
+
+			_typeCell.textLabel.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+			if(isIpad)
+				[self dismissModalViewControllerAnimated:YES];
+			return YES;
+		};
+		if(isIpad)
 		{
 			UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
 			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;

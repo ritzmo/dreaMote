@@ -10,6 +10,7 @@
 
 #import "BouquetListController.h"
 #import "ServiceListController.h"
+#import "SimpleSingleSelectionListController.h"
 #import "DatePickerController.h"
 
 #import "RemoteConnectorObject.h"
@@ -22,9 +23,9 @@
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "Objects/Generic/Result.h"
-#import "Objects/Generic/Service.h"
-#import "Objects/Generic/AutoTimer.h"
+#import <Objects/Generic/Result.h>
+#import <Objects/Generic/Service.h>
+#import <Objects/Generic/AutoTimer.h>
 
 enum sectionIds
 {
@@ -64,8 +65,6 @@ enum sectionIds
 @property (nonatomic, strong) UIPopoverController *popoverController;
 @property (unsafe_unretained, nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *afterEventNavigationController;
-@property (unsafe_unretained, nonatomic, readonly) SimpleSingleSelectionListController *avoidDuplicateDescriptionController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *avoidDuplicateDescriptionNavigationController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
 @property (unsafe_unretained, nonatomic, readonly) UINavigationController *filterNavigationController;
 @property (unsafe_unretained, nonatomic, readonly) AutoTimerFilterViewController *filterViewController;
@@ -139,8 +138,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 {
 	SafeRetainAssign(_afterEventNavigationController, nil);
 	SafeRetainAssign(_afterEventViewController, nil);
-	SafeRetainAssign(_avoidDuplicateDescriptionController, nil);
-	SafeRetainAssign(_avoidDuplicateDescriptionNavigationController, nil);
 	SafeRetainAssign(_bouquetListController, nil);
 	SafeRetainAssign(_serviceListController, nil);
 	SafeRetainAssign(_datePickerController, nil);
@@ -179,31 +176,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		_afterEventViewController.delegate = self;
 	}
 	return _afterEventViewController;
-}
-
-- (UIViewController *)avoidDuplicateDescriptionNavigationController
-{
-	if(IS_IPAD())
-	{
-		if(_avoidDuplicateDescriptionNavigationController == nil)
-		{
-			_avoidDuplicateDescriptionNavigationController = [[UINavigationController alloc] initWithRootViewController:self.avoidDuplicateDescriptionController];
-			_avoidDuplicateDescriptionNavigationController.modalPresentationStyle = _avoidDuplicateDescriptionController.modalPresentationStyle;
-			_avoidDuplicateDescriptionNavigationController.modalTransitionStyle = _avoidDuplicateDescriptionController.modalTransitionStyle;
-		}
-		return _avoidDuplicateDescriptionNavigationController;
-	}
-	return _avoidDuplicateDescriptionController;
-}
-
-- (SimpleSingleSelectionListController *)avoidDuplicateDescriptionController
-{
-	if(_avoidDuplicateDescriptionController == nil)
-	{
-		_avoidDuplicateDescriptionController = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
-		_avoidDuplicateDescriptionController.delegate = self;
-	}
-	return _avoidDuplicateDescriptionController;
 }
 
 - (UIViewController *)bouquetListController
@@ -738,21 +710,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
-}
-
-#pragma mark -
-#pragma mark SimpleSingleSelectionListDelegate methods
-#pragma mark -
-
-- (void)itemSelected:(NSNumber *)newSelection
-{
-	if(newSelection == nil)
-		return;
-
-	_timer.avoidDuplicateDescription = [newSelection integerValue];
-
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:generalSection]];
-	cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
 }
 
 #pragma mark -
@@ -1595,8 +1552,30 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		case generalSection:
 			if(row == 5)
 			{
-				self.avoidDuplicateDescriptionController.selectedItem = _timer.avoidDuplicateDescription;
-				targetViewController = self.avoidDuplicateDescriptionNavigationController;
+				const BOOL isIpad = IS_IPAD();
+				SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
+				vc.callback = ^(NSUInteger selection, BOOL isFinal)
+				{
+					if(!isIpad && !isFinal)
+						return NO;
+
+					_timer.avoidDuplicateDescription = selection;
+
+					UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:generalSection]];
+					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:selection]];
+
+					if(isIpad)
+						[self dismissModalViewControllerAnimated:YES];
+					return YES;
+				};
+				if(isIpad)
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				}
+				else
+					targetViewController = vc;
 			}
 			break;
 		case timespanSection:
@@ -1837,8 +1816,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 {
 	SafeRetainAssign(_afterEventNavigationController, nil);
 	SafeRetainAssign(_afterEventViewController, nil);
-	SafeRetainAssign(_avoidDuplicateDescriptionController, nil);
-	SafeRetainAssign(_avoidDuplicateDescriptionNavigationController, nil);
 	SafeRetainAssign(_bouquetListController, nil);
 	SafeRetainAssign(_serviceListController, nil);
 	SafeRetainAssign(_datePickerController, nil);

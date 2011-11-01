@@ -10,7 +10,6 @@
 
 #import "ReloadableListController.h"
 #import "ServiceSourceDelegate.h"
-#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 typedef enum
 {
@@ -32,8 +31,7 @@ typedef enum
 															UITableViewDataSource,
 															ServiceSourceDelegate,
 															UIAlertViewDelegate,
-															UIActionSheetDelegate,
-															SimpleSingleSelectionListDelegate>
+															UIActionSheetDelegate>
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */

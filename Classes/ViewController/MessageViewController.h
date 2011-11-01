@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 #import "CellTextField.h" /* CellTextField, EditableTableViewCellDelegate */
-#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 /*!
  @brief Message View.
@@ -18,7 +17,6 @@
  */
 @interface MessageViewController : UIViewController <UITextFieldDelegate, UITableViewDelegate,
 													UITableViewDataSource,
-													SimpleSingleSelectionListDelegate,
 													EditableTableViewCellDelegate>
 {
 @private
@@ -30,7 +28,7 @@
 	CellTextField *_timeoutCell; /*!< @brief Timeout Cell. */
 	UIButton *_sendButton; /*!< @brief "Send" Button. */
 	NSUInteger _type; /*!< @brief Selected message type. */
-	UITableViewCell *_typeCell; /*!< @brief Cell with textual representation of message type. */
+	UITableViewCell __unsafe_unretained *_typeCell; /*!< @brief Cell with textual representation of message type. */
 }
 
 @end
