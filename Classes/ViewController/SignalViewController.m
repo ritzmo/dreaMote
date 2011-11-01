@@ -107,7 +107,14 @@ OSStatus RenderTone(
 void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 {
 	SignalViewController *viewController = (__bridge SignalViewController *)inClientData;
-	[viewController stopAudio];
+	if([viewController respondsToSelector:@selector(stopAudio)])
+		[viewController stopAudio];
+#if IS_DEBUG()
+	else
+	{
+		[NSException raise:@"ExcToneInterruptionInvalidController" format:@"ToneInterruptionListener lost reference to SignalViewController: %@ at %p", viewController, viewController];
+	}
+#endif
 }
 
 @implementation SignalViewController
@@ -356,26 +363,32 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)startAudio
 {
-	if(toneUnit == nil && [[NSUserDefaults standardUserDefaults] boolForKey:kSatFinderAudio])
+	@synchronized(self)
 	{
-		// start playback
-		[self createToneUnit];
-		OSErr err = AudioUnitInitialize(toneUnit);
-		NSAssert1(err == noErr, @"Error initializing unit: %ld", err);
-		err = AudioOutputUnitStart(toneUnit);
-		NSAssert1(err == noErr, @"Error starting unit: %ld", err);
+		if(toneUnit == nil && [[NSUserDefaults standardUserDefaults] boolForKey:kSatFinderAudio])
+		{
+			// start playback
+			[self createToneUnit];
+			OSErr err = AudioUnitInitialize(toneUnit);
+			NSAssert1(err == noErr, @"Error initializing unit: %ld", err);
+			err = AudioOutputUnitStart(toneUnit);
+			NSAssert1(err == noErr, @"Error starting unit: %ld", err);
+		}
 	}
 }
 
 - (void)stopAudio
 {
-	if(toneUnit)
+	@synchronized(self)
 	{
-		// stop audio playback
-		AudioOutputUnitStop(toneUnit);
-		AudioUnitUninitialize(toneUnit);
-		AudioComponentInstanceDispose(toneUnit);
-		toneUnit = nil;
+		if(toneUnit)
+		{
+			// stop audio playback
+			AudioOutputUnitStop(toneUnit);
+			AudioUnitUninitialize(toneUnit);
+			AudioComponentInstanceDispose(toneUnit);
+			toneUnit = nil;
+		}
 	}
 }
 
