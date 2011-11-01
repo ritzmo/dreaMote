@@ -222,6 +222,8 @@ enum bouquetListTags
 	_tableView.rowHeight = kServiceCellHeight;
 	_tableView.sectionHeaderHeight = 0;
 	_tableView.allowsSelectionDuringEditing = YES;
+	if(self.editing)
+		[_tableView setEditing:YES animated:NO];
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
@@ -515,7 +517,7 @@ enum bouquetListTags
 	_radioButton.enabled = YES;
 	if(_isSplit)
 	{
-		// TODO: what is this here for?
+		// NOTE: reload service list, important for e.g. enigma1
 		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
 		if(idxPath)
 			[self tableView:_tableView willSelectRowAtIndexPath:idxPath];
@@ -620,7 +622,7 @@ enum bouquetListTags
 	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
-	if(_listType == LIST_TYPE_PROVIDER)
+	if(_listType == LIST_TYPE_PROVIDER || [_bouquetDelegate isKindOfClass:[ServiceListController class]])
 		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	return cell;
@@ -650,11 +652,7 @@ enum bouquetListTags
 	if(!bouquet.valid)
 		return nil;
 
-	if(self.editing && _listType == LIST_TYPE_BOUQUETS)
-	{
-		[self contextMenu:indexPath];
-	}
-	else if(_bouquetDelegate)
+	if(_bouquetDelegate)
 	{
 		tableView.allowsSelection = NO;
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -670,6 +668,10 @@ enum bouquetListTags
 			else
 				[self.navigationController popViewControllerAnimated:YES];
 		}
+	}
+	else if(self.editing && _listType == LIST_TYPE_BOUQUETS)
+	{
+		[self contextMenu:indexPath];
 	}
 	else if(!_serviceListController.reloading)
 	{
@@ -701,8 +703,11 @@ enum bouquetListTags
 	if(self.editing && _listType == LIST_TYPE_BOUQUETS)
 	{
 		if(indexPath.row == (NSInteger)_bouquets.count)
+		{
 			return UITableViewCellEditingStyleInsert;
-		return UITableViewCellEditingStyleDelete;
+		}
+		else if(![_bouquetDelegate isKindOfClass:[ServiceListController class]])
+			return UITableViewCellEditingStyleDelete;
 	}
 	return UITableViewCellEditingStyleNone;
 }
@@ -741,7 +746,7 @@ enum bouquetListTags
 /* indentation */
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(_listType == LIST_TYPE_PROVIDER)
+	if(_listType == LIST_TYPE_PROVIDER || ([_bouquetDelegate isKindOfClass:[ServiceListController class]] && indexPath.row != (NSInteger)_bouquets.count))
 		return NO;
 	return YES;
 }
@@ -749,7 +754,7 @@ enum bouquetListTags
 /* movable? */
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.row == (NSInteger)_bouquets.count || _listType == LIST_TYPE_PROVIDER)
+	if(indexPath.row == (NSInteger)_bouquets.count || _listType == LIST_TYPE_PROVIDER || [_bouquetDelegate isKindOfClass:[ServiceListController class]])
 		return NO;
 	return YES;
 }
