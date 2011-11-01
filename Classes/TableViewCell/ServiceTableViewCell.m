@@ -42,8 +42,6 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
-
-		self.backgroundView = [[UIView alloc] init];
 	}
 
 	return self;
@@ -68,7 +66,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 {
 	// Abort if same service assigned
 	if(_service == newService) return;
-	SafeRetainAssign(_service, newService);
+	_service = newService;
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
