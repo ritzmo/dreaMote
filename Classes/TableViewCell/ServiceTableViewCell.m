@@ -26,6 +26,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 @implementation ServiceTableViewCell
 
+@synthesize loadPicon = _loadPicon;
 @synthesize serviceNameLabel = _serviceNameLabel;
 
 /* initialize */
@@ -42,6 +43,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
+
+		_loadPicon = YES;
 	}
 
 	return self;
@@ -49,9 +52,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (void)prepareForReuse
 {
-	self.service = nil;
 	self.editingAccessoryType = UITableViewCellAccessoryNone;
 	self.imageView.image = nil;
+	self.service = nil;
+
 	[super prepareForReuse];
 }
 
@@ -74,12 +78,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if(newService.valid)
 	{
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		self.imageView.image = newService.picon;
-	}
-	else
-	{
-		self.accessoryType = UITableViewCellAccessoryNone;
-		self.imageView.image = nil;
+		if(_loadPicon)
+			self.imageView.image = newService.picon;
 	}
 
 	// Redraw
