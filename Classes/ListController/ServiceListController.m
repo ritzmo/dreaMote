@@ -13,6 +13,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "UIDevice+SystemVersion.h"
 #import "UITableViewCell+EasyInit.h"
 
 #import "ServiceEventTableViewCell.h"
@@ -164,6 +165,14 @@ enum serviceListTags
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	_refreshServices = NO;
+	if(_searchBar)
+	{
+		CGFloat topOffset = -_tableView.contentInset.top;
+		if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
+			topOffset += _searchBar.frame.size.height;
+		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
+		NSLog(@"setBouquet_ topOffset: %.2f", topOffset);
+	}
 
 	// Eventually remove popover
 	if(self.popoverController != nil) {
@@ -470,6 +479,7 @@ enum serviceListTags
 			[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 			CGFloat topOffset = -_tableView.contentInset.top;
 			[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
+			NSLog(@"loadView_ topOffset: %.2f", topOffset);
 		}
 		else
 			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
@@ -671,6 +681,9 @@ enum serviceListTags
 #if IS_FULL()
 		_multiEPG.bouquet = nil;
 #endif
+		// TODO: why do we NOT need this? all other views require this ^^
+		//if(_searchBar)
+		//	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
 
 		[self emptyData];
 
@@ -1381,6 +1394,8 @@ enum serviceListTags
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
+		if(_searchBar)
+			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 	}
 
 	if(dataSource == _xmlReader)
@@ -1420,6 +1435,8 @@ enum serviceListTags
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
+		if(_searchBar)
+			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 	}
 
 	if(dataSource == _xmlReader)
@@ -1573,6 +1590,8 @@ enum serviceListTags
 		NSObject<ServiceProtocol> *service = [array objectAtIndex:indexPath.row];
 		((ServiceTableViewCell *)cell).service = service;
 
+		if(!cell.backgroundView)
+			cell.backgroundView = [[UIView alloc] init];
 		if([_selectedServices containsObject:service])
 			cell.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
 		else
