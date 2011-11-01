@@ -121,7 +121,7 @@
 /*!
  @brief EPGCache delegate protocol.
  */
-@protocol EPGCacheDelegate
+@protocol EPGCacheDelegate <ServiceSourceDelegate>
 /*!
  @brief Cache was successfully refreshed.
  */

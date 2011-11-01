@@ -104,20 +104,10 @@
 	_xmlReader = nil;
 }
 
-- (void)fetchServices
-{
-	@autoreleasepool {
-		_reloading = YES;
-		++pendingRequests;
-		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:NO];
-	}
-}
-
 - (void)fetchData
 {
-	@autoreleasepool {
-		[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
-
+	@autoreleasepool
+	{
 		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
 		[self.view addSubview: progressHUD];
 		progressHUD.delegate = self;

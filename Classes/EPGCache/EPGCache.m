@@ -228,6 +228,7 @@ static EPGCache *_sharedInstance = nil;
 {
 	NSObject<ServiceProtocol> *copy = [service copy];
 	[_serviceList addObject:copy];
+	[_delegate performSelectorOnMainThread:@selector(addService:) withObject:copy waitUntilDone:NO];
 
 	// delete existing entries for this bouquet
 	const char *stmt = "DELETE FROM events WHERE sref = ?;";
