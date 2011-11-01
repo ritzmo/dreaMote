@@ -42,6 +42,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
+
+		self.backgroundView = [[UIView alloc] init];
 	}
 
 	return self;
