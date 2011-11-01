@@ -51,9 +51,17 @@ enum serviceListTags
 - (void)deleteAction:(id)sender;
 
 /*!
+ @brief Long press gesture was issued.
+ */
+- (void)longPress:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView;
+
+- (void)longPressInMainTable:(UILongPressGestureRecognizer *)gesture;
+- (void)longPressInSearchTable:(UILongPressGestureRecognizer *)gesture;
+
+/*!
  @brief Should zap?
  */
-- (void)zapAction:(UILongPressGestureRecognizer *)gesture;
+- (void)zapAction:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView;
 
 /*!
  @brief Handle right button.
@@ -88,6 +96,8 @@ enum serviceListTags
 		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
 		_mainList = [[NSMutableArray alloc] init];
 		_subList = [[NSMutableArray alloc] init];
+		_filteredServices = [[NSMutableArray alloc] init];
+		_selectedServices = [[NSMutableSet alloc] init];
 		_refreshServices = YES;
 		_eventListController = nil;
 		_isRadio = NO;
@@ -114,6 +124,11 @@ enum serviceListTags
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	_tableView.tableHeaderView = nil; // references _searchBar
+	_searchDisplay.delegate = nil;
+	_searchDisplay.searchResultsDataSource = nil;
+	_searchDisplay.searchResultsDelegate = nil;
 }
 
 /* memory warning */
@@ -254,10 +269,20 @@ enum serviceListTags
 	   - Add to Bouquet
 	   - Add Marker
 	   - Rename
+	 ---------------------
+	 Multi-Select is recuded to this choices:
+	   - Add to bouquet
+	   - Reset selection
 	 */
 	NSMutableArray *items = nil;
-	if([_bouquet.sref hasPrefix:@"1:7:0:"])
+	if([_bouquet.sref hasPrefix:@"1:7:0:"] || _selectedServices.count)
+	{
 		items = [NSMutableArray arrayWithObject:NSLocalizedStringFromTable(@"Add to Bouquet", @"ServiceEditor", @"Add this service to another bouquet")];
+		if(_selectedServices.count)
+		{
+			[items addObject:NSLocalizedStringFromTable(@"Remove selection", @"ServiceEditor", @"Undo selection made by the user.")];
+		}
+	}
 	else
 	{
 		items = [NSMutableArray arrayWithObjects:
@@ -366,6 +391,8 @@ enum serviceListTags
 	const BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
 	[_tableView setEditing:editing animated:animated];
+	if(_searchDisplay.active)
+		[_searchDisplay.searchResultsTableView setEditing:editing animated:animated];
 	if(_supportsNowNext && wasEditing != editing && !_reloading)
 	{
 		id anyObject = [_mainList lastObject];
@@ -376,17 +403,6 @@ enum serviceListTags
 			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		}
 	}
-
-	UIGestureRecognizer *gestureRecognizer = nil;
-	for(UIGestureRecognizer *recognizer in _tableView.gestureRecognizers)
-	{
-		if([recognizer isKindOfClass:[UILongPressGestureRecognizer class]])
-		{
-			gestureRecognizer = recognizer;
-			break;
-		}
-	}
-	gestureRecognizer.enabled = !editing;
 }
 
 /* layout */
@@ -434,10 +450,39 @@ enum serviceListTags
 	if(self.editing)
 		[_tableView setEditing:YES animated:NO];
 
-	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(zapAction:)];
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressInMainTable:)];
 	longPressGesture.minimumPressDuration = 1;
-	longPressGesture.enabled = !self.editing;
+	longPressGesture.enabled = YES;
 	[_tableView addGestureRecognizer:longPressGesture];
+
+#if IS_LITE()
+	if(_delegate == nil && YES)// TODO: check purchase
+#endif
+	{
+		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+		_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+		_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		_searchBar.keyboardType = UIKeyboardTypeDefault;
+		_tableView.tableHeaderView = _searchBar;
+
+		if(_reloading)
+		{
+			[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+			CGFloat topOffset = -_tableView.contentInset.top;
+			[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
+		}
+		else
+			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+
+		_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+		_searchDisplay.delegate = self;
+		_searchDisplay.searchResultsDataSource = self;
+		_searchDisplay.searchResultsDelegate = self;
+	}
+#if IS_LITE()
+	else if(_reloading)
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#endif
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
@@ -448,6 +493,13 @@ enum serviceListTags
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	_radioButton = nil;
 	_multiEpgButton = nil;
+
+	_tableView.tableHeaderView = nil; // references _searchBar
+	_searchBar = nil;
+	_searchDisplay.delegate = nil;
+	_searchDisplay.searchResultsDataSource = nil;
+	_searchDisplay.searchResultsDelegate = nil;
+	_searchDisplay = nil;
 
 	[super viewDidUnload];
 }
@@ -734,6 +786,7 @@ enum serviceListTags
 	// Clean event list
 	[_mainList removeAllObjects];
 	[_subList removeAllObjects];
+	[_selectedServices removeAllObjects];
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
@@ -810,6 +863,50 @@ enum serviceListTags
 	return nil;
 }
 
+- (void)longPress:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView
+{
+	if(!self.editing)
+	{
+		[self zapAction:gesture inView:tableView];
+		return;
+	}
+
+	// only do something on gesture start
+	if(gesture.state != UIGestureRecognizerStateBegan)
+		return;
+
+	// get service
+	const CGPoint p = [gesture locationInView:tableView];
+	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
+	NSObject<ServiceProtocol> *service;
+	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
+	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
+	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
+	else
+		service = objectAtIndexPath;
+
+	// Check for invalid service
+	if(!service || !service.valid)
+		return;
+
+	if([_selectedServices containsObject:service])
+		[_selectedServices removeObject:service];
+	else
+		[_selectedServices addObject:service];
+	[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)longPressInMainTable:(UILongPressGestureRecognizer *)gesture
+{
+	[self longPress:gesture inView:_tableView];
+}
+
+- (void)longPressInSearchTable:(UILongPressGestureRecognizer *)gesture
+{
+	[self longPress:gesture inView:_searchDisplay.searchResultsTableView];
+}
+
 #pragma mark -
 #pragma mark SimpleSingleSelectionListDelegate
 #pragma mark -
@@ -819,9 +916,20 @@ enum serviceListTags
 	[popoverController dismissPopoverAnimated:YES];
 	popoverController = nil;
 
-	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	UITableView *tableView = nil;
+	NSArray *array = nil;
+	if(_searchDisplay.active){
+		tableView =_searchDisplay.searchResultsTableView;
+		array = _filteredServices;
+	}
+	else
+	{
+		tableView = _tableView;
+		array = _mainList;
+	}
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
@@ -830,7 +938,18 @@ enum serviceListTags
 	NSInteger selection = [newSelection integerValue];
 	if(selection != NSNotFound) // NOTE: this checks selection twice, but spares us from having to implement the default behavior twice
 	{
-		if([_bouquet.sref hasPrefix:@"1:7:0:"])
+		if(_selectedServices.count)
+		{
+			if(selection == 0)
+				selection = 2;
+			else
+			{
+				[_selectedServices removeAllObjects];
+				[tableView reloadData];
+				return;
+			}
+		}
+		else if([_bouquet.sref hasPrefix:@"1:7:0:"])
 		{
 			selection = 2;
 		}
@@ -852,7 +971,7 @@ enum serviceListTags
 		default:
 		case NSNotFound: /* just deselect */
 		{
-			[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			break;
 		}
 		case 0: /* add alternative */
@@ -875,7 +994,7 @@ enum serviceListTags
 		{
 			ServiceListController *sl = [[ServiceListController alloc] init];
 			sl.isRadio = _isRadio;
-			[sl setDelegate:self];
+			sl.delegate = self;
 			[sl setEditing:YES animated:NO];
 			sl.bouquet = service;
 
@@ -887,7 +1006,7 @@ enum serviceListTags
 			}
 			else
 				targetViewController = sl;
-			[_tableView deselectRowAtIndexPath:indexPath animated:YES]; // for simplicity, do not keep entry selected
+			[tableView deselectRowAtIndexPath:indexPath animated:YES]; // for simplicity, do not keep entry selected
 			break;
 		}
 		case 2: /* add to bouquet */
@@ -953,9 +1072,20 @@ enum serviceListTags
 
 - (void)serviceSelected:(NSObject<ServiceProtocol> *)newService
 {
-	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	UITableView *tableView = nil;
+	NSArray *array = nil;
+	if(_searchDisplay.active){
+		tableView =_searchDisplay.searchResultsTableView;
+		array = _filteredServices;
+	}
+	else
+	{
+		tableView = _tableView;
+		array = _mainList;
+	}
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
@@ -978,7 +1108,7 @@ enum serviceListTags
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		return;
 	}
-	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)removeAlternatives:(NSObject<ServiceProtocol> *)service
@@ -1007,25 +1137,59 @@ enum serviceListTags
 
 - (void)bouquetSelected:(NSObject<ServiceProtocol> *)newBouquet
 {
-	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	UITableView *tableView = nil;
+	NSArray *array = nil;
+	if(_searchDisplay.active){
+		tableView =_searchDisplay.searchResultsTableView;
+		array = _filteredServices;
+	}
+	else
+	{
+		tableView = _tableView;
+		array = _mainList;
+	}
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
 		service = objectAtIndexPath;
 
-	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddService:service toBouquet:newBouquet inBouquet:_bouquet isRadio:_isRadio];
-	if(!result.result)
+	NSMutableString *errorMessages = [[NSMutableString alloc] init];
+	NSUInteger selectedServicesCount = _selectedServices.count;
+	Result *result = nil;
+	[_selectedServices addObject:service];
+	@autoreleasepool
+	{
+		for(NSObject<ServiceProtocol> *servicee in _selectedServices)
+		{
+			result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddService:servicee toBouquet:newBouquet inBouquet:_bouquet isRadio:_isRadio];
+			if(!result.result)
+			{
+				if(errorMessages.length)
+					[errorMessages appendString:@"\n"];
+				[errorMessages appendString:result.resulttext];
+			}
+		}
+	}
+	[_selectedServices removeObject:service];
+
+	if(errorMessages.length)
 	{
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-															  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to add service %@ to bouquet %@: %@", @"ServiceEditor", @"Adding a service to a bouquet failed"), service.sname, newBouquet.sname, result.resulttext]
+															  message:[NSString stringWithFormat:NSLocalizedStringFromTable(@"Unable to add service(s) to bouquet %@: %@", @"ServiceEditor", @"Adding a service to a bouquet failed"), newBouquet.sname, errorMessages]
 															 delegate:nil
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
 	}
-	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+	else if(selectedServicesCount)
+	{
+		[_selectedServices removeAllObjects];
+		[tableView reloadData];
+	}
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -
@@ -1034,17 +1198,18 @@ enum serviceListTags
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
 	if (buttonIndex == actionSheet.cancelButtonIndex)
 	{
-		NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
-		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+		NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else if(buttonIndex == actionSheet.destructiveButtonIndex)
 	{
 		// delete
-		NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
-		[self tableView:_tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
-		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+		NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
+		[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:indexPath];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else
 	{
@@ -1059,9 +1224,20 @@ enum serviceListTags
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-	NSIndexPath *indexPath = [_tableView indexPathForSelectedRow];
+	UITableView *tableView = nil;
+	NSArray *array = nil;
+	if(_searchDisplay.active){
+		tableView =_searchDisplay.searchResultsTableView;
+		array = _filteredServices;
+	}
+	else
+	{
+		tableView = _tableView;
+		array = _mainList;
+	}
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	NSObject<ServiceProtocol> *service = nil;
-	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
+	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
 	const BOOL isNowNext = [objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)];
 	if(isNowNext)
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
@@ -1095,9 +1271,9 @@ enum serviceListTags
 	{
 		NSString *serviceName = [promptView promptFieldAtIndex:0].text;
 		NSObject<ServiceProtocol> *before = nil;
-		if(indexPath.row + 1 < (NSInteger)_mainList.count)
+		if(indexPath.row + 1 < (NSInteger)array.count)
 		{
-			objectAtIndexPath = [_mainList objectAtIndex:indexPath.row + 1];
+			objectAtIndexPath = [array objectAtIndex:indexPath.row + 1];
 			if(isNowNext)
 				before = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 			else
@@ -1118,7 +1294,7 @@ enum serviceListTags
 			[alert show];
 		}
 	}
-	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -1226,12 +1402,21 @@ enum serviceListTags
 		_radioButton.enabled = YES;
 		_reloading = NO;
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-#if INCLUDE_FEATURE(Extra_Animation)
-		if(!_isAll)
-			[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-		else
-#endif
+		if(_searchDisplay.active)
+		{
+			[self searchDisplayController:_searchDisplay shouldReloadTableForSearchString:_searchBar.text];
+			[_searchDisplay.searchResultsTableView reloadData];
 			[_tableView reloadData];
+		}
+		else
+		{
+#if INCLUDE_FEATURE(Extra_Animation)
+			if(!_isAll)
+				[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
+			else
+#endif
+				[_tableView reloadData];
+		}
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
@@ -1357,7 +1542,7 @@ enum serviceListTags
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if([[_mainList objectAtIndex:indexPath.row] conformsToProtocol:@protocol(EventProtocol)])
+	if(tableView == _tableView && [[_mainList objectAtIndex:indexPath.row] conformsToProtocol:@protocol(EventProtocol)])
 		return kServiceEventCellHeight;
 	return kServiceCellHeight;
 }
@@ -1365,8 +1550,9 @@ enum serviceListTags
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
 	UITableViewCell *cell = nil;
-	NSObject *firstObject = [_mainList objectAtIndex:indexPath.row];
+	NSObject *firstObject = [array objectAtIndex:indexPath.row];
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
@@ -1384,7 +1570,13 @@ enum serviceListTags
 	{
 		cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 
-		((ServiceTableViewCell *)cell).service = [_mainList objectAtIndex:indexPath.row];
+		NSObject<ServiceProtocol> *service = [array objectAtIndex:indexPath.row];
+		((ServiceTableViewCell *)cell).service = service;
+
+		if([_selectedServices containsObject:service])
+			cell.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
+		else
+			cell.backgroundView.backgroundColor = [UIColor whiteColor];
 	}
 
 	return cell;
@@ -1403,7 +1595,8 @@ enum serviceListTags
 	}
 
 	NSObject<ServiceProtocol> *service = nil;
-	id objectAtIndexPath = [_mainList objectAtIndex: indexPath.row];
+	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
+	id objectAtIndexPath = [array objectAtIndex: indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
@@ -1473,13 +1666,13 @@ enum serviceListTags
 /* number of rows */
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
-	return [_mainList count];
+	return tableView == _tableView ? _mainList.count : _filteredServices.count;
 }
 
 /* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(self.editing && ![_bouquet.sref hasPrefix:@"1:7:0:"])
+	if(self.editing && !(_isAll || [_bouquet.sref hasPrefix:@"1:7:0:"]))
 		return UITableViewCellEditingStyleDelete;
 	return UITableViewCellEditingStyleNone;
 }
@@ -1488,7 +1681,9 @@ enum serviceListTags
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSObject<ServiceProtocol> *service = nil;
-	id objectAtIndexPath = [_mainList objectAtIndex: indexPath.row];
+	const BOOL isSearch = tableView == _searchDisplay.searchResultsTableView;
+	NSMutableArray *array = (isSearch) ? _filteredServices : _mainList;
+	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
 	const BOOL isNowNext = [objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)];
 	if(isNowNext)
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
@@ -1498,8 +1693,28 @@ enum serviceListTags
 	Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorRemoveService:service fromBouquet:_bouquet isRadio:_isRadio];
 	if(result.result)
 	{
-		[_mainList removeObjectAtIndex:indexPath.row];
-		if(isNowNext)
+		[array removeObjectAtIndex:indexPath.row];
+		if(isSearch)
+		{
+			// this was a search: remove from the main array
+			objectAtIndexPath = [_mainList lastObject];
+			const BOOL realNowNext = [objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)];
+			if(realNowNext)
+			{
+				NSUInteger idx = 0;
+				for(NSObject<EventProtocol> *event in _mainList)
+				{
+					if(event.service == service)
+						break;
+					++idx;
+				}
+				[_mainList removeObjectAtIndex:idx];
+				[_subList removeObjectAtIndex:idx];
+			}
+			else
+				[_mainList removeObject:service];
+		}
+		else if(isNowNext)
 			[_subList removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
 	}
@@ -1512,7 +1727,7 @@ enum serviceListTags
 /* indentation */
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if([_bouquet.sref hasPrefix:@"1:7:0:"])
+	if(_isAll || [_bouquet.sref hasPrefix:@"1:7:0:"])
 		return NO;
 	return YES;
 }
@@ -1520,7 +1735,7 @@ enum serviceListTags
 /* movable? */
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if([_bouquet.sref hasPrefix:@"1:7:0:"])
+	if(_isAll || [_bouquet.sref hasPrefix:@"1:7:0:"] || tableView == _searchDisplay.searchResultsTableView)
 		return NO;
 	return !_reloading;
 }
@@ -1564,6 +1779,72 @@ enum serviceListTags
 }
 
 #pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+#pragma mark -
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+	if(scrollView != _searchDisplay.searchResultsTableView)
+		[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	if(scrollView != _searchDisplay.searchResultsTableView)
+		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+#pragma mark -
+#pragma mark UISearchDisplayController Delegate Methods
+#pragma mark -
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
+{
+	[_filteredServices removeAllObjects];
+	const BOOL caseInsensitive = [searchString isEqualToString:[searchString lowercaseString]];
+	NSStringCompareOptions options = caseInsensitive ? (NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) : 0;
+
+	id anyObject = [_mainList lastObject];
+	const BOOL isNowNext = [anyObject conformsToProtocol:@protocol(EventProtocol)];
+	if(isNowNext)
+	{
+		for(NSObject<EventProtocol> *event in _mainList)
+		{
+			NSRange range = [event.service.sname rangeOfString:searchString options:options];
+			if(range.location != NSNotFound)
+				[_filteredServices addObject:event.service];
+		}
+	}
+	else
+	{
+		for(NSObject<ServiceProtocol> *service in _mainList)
+		{
+			NSRange range = [service.sname rangeOfString:searchString options:options];
+			if(range.location != NSNotFound)
+				[_filteredServices addObject:service];
+		}
+	}
+
+    return YES;
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willUnloadSearchResultsTableView:(UITableView *)tableView
+{
+	// reload table view to refresh selection status
+	[_tableView reloadData];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)searchTableView
+{
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressInSearchTable:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[searchTableView addGestureRecognizer:longPressGesture];
+	searchTableView.editing = self.editing;
+	searchTableView.allowsSelectionDuringEditing = YES;
+}
+
+#pragma mark -
 #pragma mark Split view support
 #pragma mark -
 
@@ -1585,15 +1866,15 @@ enum serviceListTags
 #pragma mark Zapping
 
 /* zap */
-- (void)zapAction:(UILongPressGestureRecognizer *)gesture
+- (void)zapAction:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView
 {
 	// only do something on gesture start
 	if(gesture.state != UIGestureRecognizerStateBegan)
 		return;
 
 	// get service
-	const CGPoint p = [gesture locationInView:_tableView];
-	NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:p];
+	const CGPoint p = [gesture locationInView:tableView];
+	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
 	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
 		_service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
@@ -1625,11 +1906,11 @@ enum serviceListTags
 			zlc.zapDelegate = self;
 			popoverZapController = [[UIPopoverController alloc] initWithContentViewController:zlc];
 
-			CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+			CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
 			cellRect.origin.x = p.x - 25.0f;
 			cellRect.size.width = cellRect.size.width - cellRect.origin.x;
 			[popoverZapController presentPopoverFromRect:cellRect
-												  inView:_tableView
+												  inView:tableView
 								permittedArrowDirections:UIPopoverArrowDirectionLeft | UIPopoverArrowDirectionRight
 												animated:YES];
 		}
