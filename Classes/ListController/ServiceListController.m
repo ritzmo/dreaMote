@@ -107,6 +107,7 @@ enum serviceListTags
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterNoStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		_piconLoader = [[NSOperationQueue alloc] init];
 #if IS_FULL()
 		_multiEPG = [[MultiEPGListController alloc] init];
 		_multiEPG.multiEpgDelegate = self;
@@ -125,6 +126,8 @@ enum serviceListTags
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
+	[_piconLoader cancelAllOperations];
 
 	_tableView.tableHeaderView = nil; // references _searchBar
 	_searchDisplay.delegate = nil;
@@ -171,7 +174,6 @@ enum serviceListTags
 		if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
 			topOffset += _searchBar.frame.size.height;
 		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
-		NSLog(@"setBouquet_ topOffset: %.2f", topOffset);
 	}
 
 	// Eventually remove popover
@@ -479,7 +481,6 @@ enum serviceListTags
 			[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 			CGFloat topOffset = -_tableView.contentInset.top;
 			[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
-			NSLog(@"loadView_ topOffset: %.2f", topOffset);
 		}
 		else
 			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
@@ -796,6 +797,8 @@ enum serviceListTags
 /* remove content data */
 - (void)emptyData
 {
+	// Cancel picon loading operations
+	[_piconLoader cancelAllOperations];
 	// Clean event list
 	[_mainList removeAllObjects];
 	[_subList removeAllObjects];
@@ -1569,10 +1572,11 @@ enum serviceListTags
 {
 	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
 	UITableViewCell *cell = nil;
-	NSObject *firstObject = [array objectAtIndex:indexPath.row];
+	id firstObject = [array objectAtIndex:indexPath.row];
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
+		((ServiceEventTableViewCell *)cell).loadPicon = NO;
 
 		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
 		((ServiceEventTableViewCell *)cell).now = (NSObject<EventProtocol> *)firstObject;
@@ -1582,20 +1586,36 @@ enum serviceListTags
 		@catch (NSException * e) {
 			[(ServiceEventTableViewCell *)cell setNext:nil];
 		}
+
+		[_piconLoader addOperationWithBlock:^{
+			if(((ServiceEventTableViewCell *)cell).now == firstObject)
+			{
+				cell.imageView.image = ((NSObject<EventProtocol> *)firstObject).service.picon;
+				[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
+			}
+		}];
 	}
 	else
 	{
 		cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+		((ServiceTableViewCell *)cell).loadPicon = NO;
 
-		NSObject<ServiceProtocol> *service = [array objectAtIndex:indexPath.row];
-		((ServiceTableViewCell *)cell).service = service;
+		((ServiceTableViewCell *)cell).service = firstObject;
 
 		if(!cell.backgroundView)
 			cell.backgroundView = [[UIView alloc] init];
-		if([_selectedServices containsObject:service])
+		if([_selectedServices containsObject:firstObject])
 			cell.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
 		else
 			cell.backgroundView.backgroundColor = [UIColor whiteColor];
+
+		[_piconLoader addOperationWithBlock:^{
+			if(((ServiceTableViewCell *)cell).service == firstObject)
+			{
+				cell.imageView.image = ((NSObject<ServiceProtocol> *)firstObject).picon;
+				[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
+			}
+		}];
 	}
 
 	return cell;

@@ -101,6 +101,8 @@
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif
 
+	NSOperationQueue *_piconLoader; /*!< @brief Background operations loading the picons. */
+
 	/*!
 	 @brief Set with selected services in editing mode.
 	 @note Using a set probably disrupts the order, so we might want to consider using a list.
