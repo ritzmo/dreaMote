@@ -159,18 +159,20 @@ static EPGCache *_sharedInstance = nil;
 
 - (void)fetchServices
 {
-	@autoreleasepool {
-		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio]);
+	@autoreleasepool
+	{
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio];
 	}
 }
 
 - (void)fetchData
 {
-	@autoreleasepool {
-		SafeRetainAssign(_service, [_serviceList lastObject]);
+	@autoreleasepool
+	{
+		_service = [_serviceList lastObject];
 		[_serviceList removeLastObject];
 
-		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service];
 	}
 }
 
@@ -367,7 +369,7 @@ static EPGCache *_sharedInstance = nil;
 	@synchronized(self)
 	{
 		[queue cancelAllOperations];
-		SafeRetainAssign(_service, nil);
+		_service = nil;
 
 		// stop transcation
 		sqlite3_exec(database, "COMMIT", 0, 0, 0);
@@ -395,11 +397,10 @@ static EPGCache *_sharedInstance = nil;
 		return;
 	}
 
-	SafeRetainAssign(_delegate, delegate);
-	SafeCopyAssign(_bouquet, bouquet);
+	_delegate = delegate;
+	_bouquet = [bouquet copy];
 
 	// fetch list of services, followed by epg for each service
-	SafeRetainAssign(_serviceList, nil);
 	_serviceList = [[NSMutableArray alloc] init];
 	_isRadio = isRadio;
 	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
