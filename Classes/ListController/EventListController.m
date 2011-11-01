@@ -560,7 +560,25 @@
 		NSDateFormatter *format = [[NSDateFormatter alloc] init];
 		format.dateStyle = NSDateFormatterMediumStyle;
 		format.timeStyle = NSDateFormatterNoStyle;
-		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
+
+		if(section >= (NSInteger)_sectionOffsets.count)
+		{
+#if IS_DEBUG()
+			[NSException raise:@"ExcEventListInvalidSection" format:@"Title for invalid section (%d of %d) was requested.", section, _sectionOffsets.count];
+#endif
+			return @"???";
+		}
+
+		NSUInteger offset = [[_sectionOffsets objectAtIndex:section] integerValue];
+		if(offset >= events.count)
+		{
+#if IS_DEBUG()
+			[NSException raise:@"ExcEventListInvalidEvent" format:@"Tried to generate section title from invalid event (%d of %d).", offset, events.count];
+#endif
+			return @"???";
+		}
+
+		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:offset];
 		NSString *title = [format fuzzyDate:event.begin];
 		return title;
 	}
