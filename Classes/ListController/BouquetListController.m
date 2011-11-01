@@ -185,6 +185,12 @@ enum bouquetListTags
 		[_tableView deselectRowAtIndexPath:idx animated:NO];
 }
 
+- (void)reloadBouquets:(NSNotification *)note
+{
+	[self emptyData];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	BOOL wasEditing = self.editing;
@@ -227,12 +233,14 @@ enum bouquetListTags
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
+	// listen to bouquet changes
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadBouquets:) name:kBouquetsChangedNotification object:nil];
 }
 
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	SafeRetainAssign(_radioButton, nil);
+	_radioButton = nil;
 
 	[super viewDidUnload];
 }
@@ -323,7 +331,7 @@ enum bouquetListTags
 		if(popoverController)
 		{
 			[popoverController dismissPopoverAnimated:YES];
-			SafeRetainAssign(popoverController, nil);
+			popoverController = nil;
 		}
 		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
 													NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
@@ -465,7 +473,7 @@ enum bouquetListTags
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	if(_listType == LIST_TYPE_PROVIDER && [sharedRemoteConnector respondsToSelector:@selector(fetchProviders:isRadio:)])
 	{
-		SafeRetainAssign(_xmlReader, [sharedRemoteConnector fetchProviders:self isRadio:_isRadio]);
+		_xmlReader = [sharedRemoteConnector fetchProviders:self isRadio:_isRadio];
 	}
 	else
 	{
@@ -475,7 +483,7 @@ enum bouquetListTags
 			NSLog(@"Provider list requested but sharedRemoteConnector (%@) does not respond to the respective selector...", [sharedRemoteConnector description]);
 		}
 #endif
-		SafeRetainAssign(_xmlReader, [sharedRemoteConnector fetchBouquets:self isRadio:_isRadio]);
+		_xmlReader = [sharedRemoteConnector fetchBouquets:self isRadio:_isRadio];
 	}
 }
 
@@ -490,7 +498,7 @@ enum bouquetListTags
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 }
 
 #pragma mark -
@@ -546,7 +554,7 @@ enum bouquetListTags
 - (void)itemSelected:(NSNumber *)newSelection
 {
 	[popoverController dismissPopoverAnimated:YES];
-	SafeRetainAssign(popoverController, nil);
+	popoverController = nil;
 
 	switch([newSelection integerValue])
 	{
@@ -802,11 +810,12 @@ enum bouquetListTags
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] serviceEditorAddBouquet:bouquetName isRadio:_isRadio];
 		if(result.result)
 		{
-			// NOTE: we need to reload the bouquet list as we can't predict the name reliably
-			[self emptyData];
-
-			// Run this in our "temporary" queue
-			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+			NSDictionary *userInfo = nil;
+#if 0
+			// if we can make use of this information in the future: this is the code to enable :D
+			userInfo = [NSDictionary dictionaryWithObjectsAndKeys:bouquetName, @"bouquetName", nil];
+#endif
+			[[NSNotificationCenter defaultCenter] postNotificationName:kBouquetsChangedNotification object:nil userInfo:userInfo];
 		}
 		else
 		{

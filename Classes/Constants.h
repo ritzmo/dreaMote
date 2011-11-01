@@ -90,6 +90,7 @@
 // custom notifications
 #define kReadConnectionsNotification	@"dreaMoteDidReadConnections"
 #define kReconnectNotification			@"dreaMoteDidReconnect"
+#define kBouquetsChangedNotification	@"dreaMoteDidChangeBouquets" // currently only covers added bouquets
 
 // paths for custom configuration files
 #define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
