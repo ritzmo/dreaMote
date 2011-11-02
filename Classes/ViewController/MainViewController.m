@@ -48,8 +48,6 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.delegate = nil;
-
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -256,7 +254,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[self handleReconnect: nil];
-	[self.selectedViewController viewWillAppear:animated];
 	[super viewWillAppear:animated];
 }
 
@@ -269,8 +266,9 @@
 		welcomeController.aboutDelegate = self;
 		[self presentModalViewController:welcomeController animated:YES];
 	}
-	else if([self checkConnection])
-		[self.selectedViewController viewDidAppear:animated];
+	else
+		[self checkConnection];
+
 	[super viewDidAppear:animated];
 }
 
@@ -301,13 +299,8 @@
 {
 	[RemoteConnectorObject cancelPendingOperations];
 
-	if(![self checkConnection])
-	{
-		self.selectedViewController = [menuList lastObject];
-		return NO;
-	}
-
-	return YES;
+	// returns no if not selected
+	return [self checkConnection];
 }
 
 @end
