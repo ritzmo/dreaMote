@@ -32,8 +32,7 @@
 
 @implementation BaseXMLReader
 
-@synthesize encoding = _encoding;
-@synthesize document = _parser;
+@synthesize encoding, document;
 
 /* initialize */
 - (id)init
@@ -42,7 +41,7 @@
 	{
 		_done = NO;
 		_timeout = kTimeout;
-		_encoding = NSUTF8StringEncoding;
+		encoding = NSUTF8StringEncoding;
 	}
 	return self;
 }
@@ -50,26 +49,26 @@
 /* download and parse xml document */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	SafeRetainAssign(_parser, nil);
+	document = nil;
 	_done = NO;
-	NSError *localError = nil;
+	NSError __autoreleasing *localError = nil;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
 	NSError *__unsafe_unretained parserError = localError;
-	_parser = [[CXMLPushDocument alloc] initWithError:&parserError];
+	document = [[CXMLPushDocument alloc] initWithError:&parserError];
 
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:_timeout];
 	NSURLConnection *connection = [[NSURLConnection alloc]
 									initWithRequest:request
-									delegate:_parser];
+									delegate:document];
 	if(connection)
 	{
 		[APP_DELEGATE addNetworkOperation];
 		do
 		{
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		} while (!_parser.done);
+		} while (!document.done);
 		[APP_DELEGATE removeNetworkOperation];
 		[connection cancel]; // just in case, cancel the connection
 	}
@@ -85,7 +84,7 @@
 															 error:&localError
 													   withTimeout:_timeout];
 	if(localError == nil)
-		_parser = [[CXMLDocument alloc] initWithData:data encoding:_encoding options:0 error:&localError];
+		document = [[CXMLDocument alloc] initWithData:data encoding:encoding options:0 error:&localError];
 #endif
 	_done = YES;
 	// set error to eventual local error
@@ -103,13 +102,12 @@
 		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
 		{
 			BaseXMLReader *__unsafe_unretained dataSource = self;
-			NSError *__unsafe_unretained callbackError = localError;
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];
 			[invocation setSelector:errorParsing];
 			[invocation setArgument:&dataSource atIndex:2];
-			[invocation setArgument:&callbackError atIndex:3];
+			[invocation setArgument:&localError atIndex:3];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 									  waitUntilDone:NO];
 		}
@@ -132,7 +130,7 @@
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
-	return _parser;
+	return document;
 }
 
 /* send fake object back to callback */

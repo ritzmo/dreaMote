@@ -43,11 +43,11 @@ Example:
 */
 - (void)parseFull
 {
-	NSArray *resultNodes = [_parser nodesForXPath:@"/e2locations/e2location" error:nil];
+	NSArray *resultNodes = [document nodesForXPath:@"/e2locations/e2location" error:nil];
 	if(![resultNodes count])
 	{
 		// no locations, try old (before May 2009) format
-		resultNodes = [_parser nodesForXPath:@"/e2simplexmllist/e2simplexmlitem" error:nil];
+		resultNodes = [document nodesForXPath:@"/e2simplexmllist/e2simplexmlitem" error:nil];
 	}
 
 	for(CXMLElement *resultElement in resultNodes)

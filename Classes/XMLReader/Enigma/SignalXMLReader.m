@@ -76,7 +76,7 @@
 - (void)parseFull
 {
 	CXMLNode *currentChild = nil;
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/streaminfo" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/streaminfo" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{

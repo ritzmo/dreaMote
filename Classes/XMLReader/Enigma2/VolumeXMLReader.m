@@ -35,7 +35,7 @@
 - (void)parseFull
 {
 	CXMLNode *currentChild = nil;
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2volume" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/e2volume" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{

@@ -40,7 +40,7 @@ Example:
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2abouts/e2about" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/e2abouts/e2about" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{

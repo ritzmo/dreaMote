@@ -38,11 +38,10 @@ typedef CXMLDocument OurXMLDocument;
 @interface BaseXMLReader : NSObject <XMLReader>
 {
 @protected
-	BOOL	_done; /*!< @brief Finished parsing? */
+	BOOL _done; /*!< @brief Finished parsing? */
 	NSObject<DataSourceDelegate> *_delegate; /*!< @brief Delegate. */
-	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
+	OurXMLDocument *document; /*!< @brief CXMLDocument. */
 	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
-	NSStringEncoding _encoding; /*!< @brief Expected encoding of document. */
 }
 
 /*!

@@ -92,8 +92,8 @@
  */
 - (void)parseFull
 {
-	const NSObject<EventProtocol> *current_event = [self parseEvent: [_parser nodesForXPath:@"/currentservicedata/current_event" error:nil]];
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/currentservicedata/service" error:nil];
+	const NSObject<EventProtocol> *current_event = [self parseEvent: [document nodesForXPath:@"/currentservicedata/current_event" error:nil]];
+	const NSArray *resultNodes = [document nodesForXPath:@"/currentservicedata/service" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -135,7 +135,7 @@
 		break;
 	}
 
-	[self parseEvent: [_parser nodesForXPath:@"/currentservicedata/next_event" error:nil]];
+	[self parseEvent: [document nodesForXPath:@"/currentservicedata/next_event" error:nil]];
 }
 
 @end

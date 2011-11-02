@@ -45,7 +45,7 @@
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/movies/service" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/movies/service" error:nil];
 	NSUInteger idx = 0;
 
 	for(CXMLElement *resultElement in resultNodes)

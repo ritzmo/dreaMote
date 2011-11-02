@@ -39,7 +39,7 @@
 */
 - (void)parseFull
 {
-	NSArray *resultNodes = [_parser nodesForXPath:@"/e2currentserviceinformation/e2service" error:nil];
+	NSArray *resultNodes = [document nodesForXPath:@"/e2currentserviceinformation/e2service" error:nil];
 	CXMLElement *resultElement = nil;
 
 	for(resultElement in resultNodes)
@@ -59,7 +59,7 @@
 								 waitUntilDone: NO];
 	}
 
-	resultNodes = [_parser nodesForXPath:@"/e2currentserviceinformation/e2eventlist/e2event" error:nil];
+	resultNodes = [document nodesForXPath:@"/e2currentserviceinformation/e2eventlist/e2event" error:nil];
 	for(resultElement in resultNodes)
 	{
 		// An e2event in the xml represents an event, so create an instance of it.

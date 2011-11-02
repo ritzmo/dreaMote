@@ -125,7 +125,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	{
 		NSString *value = [[NSString alloc] initWithBytes:(const void *)characters
 												   length:length
-												 encoding:_encoding];
+												 encoding:self.encoding];
 		[currentString appendString:value];
 	}
 }

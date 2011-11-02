@@ -62,7 +62,7 @@
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/timers/timer" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/timers/timer" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
