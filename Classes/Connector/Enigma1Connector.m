@@ -292,6 +292,7 @@ enum enigma1MessageTypes {
 - (BaseXMLReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	[_bouquetsCacheLock lock];
+	_cachedBouquetsReader = nil; // TODO: bouquets always force a reload
 	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 	if(error)
 	{
@@ -332,6 +333,7 @@ enum enigma1MessageTypes {
 - (BaseXMLReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	[_bouquetsCacheLock lock];
+	_cachedBouquetsReader = nil; // TODO: providers always force a reload
 	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_PROVIDER|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 	if(error)
 	{
