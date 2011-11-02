@@ -203,6 +203,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 {
 	[_timer invalidate];
 	_timer = nil;
+	_refreshInterval = 999;
 
 	[self stopAudio];
 
