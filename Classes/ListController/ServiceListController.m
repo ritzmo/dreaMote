@@ -168,6 +168,7 @@ enum serviceListTags
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
 	_isAll = NO;
 	_reloading = YES;
+	[_searchDisplay setActive:NO animated:YES];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	_refreshServices = NO;
