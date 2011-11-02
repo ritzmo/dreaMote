@@ -257,6 +257,7 @@
 {
 	[self handleReconnect: nil];
 	[self.selectedViewController viewWillAppear:animated];
+	[super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -270,6 +271,7 @@
 	}
 	else if([self checkConnection])
 		[self.selectedViewController viewDidAppear:animated];
+	[super viewDidAppear:animated];
 }
 
 /* rotation depends on active view */
