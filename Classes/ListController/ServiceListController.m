@@ -86,9 +86,7 @@ enum serviceListTags
 
 @implementation ServiceListController
 
-@synthesize delegate = _delegate;
-@synthesize isAll = _isAll;
-@synthesize mgSplitViewController = _mgSplitViewController;
+@synthesize delegate, isAll, mgSplitViewController;
 @synthesize popoverController, popoverZapController;
 @synthesize showNowNext = _supportsNowNext;
 
@@ -104,9 +102,6 @@ enum serviceListTags
 		_selectedServices = [[NSMutableArray alloc] init];
 		_refreshServices = YES;
 		_eventListController = nil;
-		_isRadio = NO;
-		_delegate = nil;
-		_supportsNowNext = NO;
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterNoStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -166,7 +161,7 @@ enum serviceListTags
 
 	// Free Caches and reload data
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
-	_isAll = NO;
+	isAll = NO;
 	_reloading = YES;
 	[_searchDisplay setActive:NO animated:YES];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
@@ -349,7 +344,7 @@ enum serviceListTags
 
 #if IS_FULL()
 	// hide multi epg button if there is a delegate
-	if(_delegate == nil)
+	if(delegate == nil)
 	{
 		_multiEpgButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStyleBordered target:self action:@selector(openMultiEPG:)];
 	}
@@ -389,7 +384,7 @@ enum serviceListTags
 	[_tableView addGestureRecognizer:longPressGesture];
 
 #if IS_LITE()
-	if(_delegate == nil && YES)// TODO: check purchase
+	if(delegate == nil && YES)// TODO: check purchase
 #endif
 	{
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -442,8 +437,8 @@ enum serviceListTags
 {
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else if(_delegate && [_delegate isKindOfClass:[UIViewController class]])
-		[self.navigationController popToViewController:(UIViewController *)_delegate animated:YES];
+	else if(delegate && [delegate isKindOfClass:[UIViewController class]])
+		[self.navigationController popToViewController:(UIViewController *)delegate animated:YES];
 	else
 		[self.navigationController popViewControllerAnimated:YES];
 }
@@ -451,8 +446,8 @@ enum serviceListTags
 /* delete alternatives */
 - (void)deleteAction:(id)sender
 {
-	if(_delegate && [_delegate respondsToSelector:@selector(removeAlternatives:)])
-		[_delegate removeAlternatives:_bouquet];
+	if(delegate && [delegate respondsToSelector:@selector(removeAlternatives:)])
+		[delegate removeAlternatives:_bouquet];
 	[self doneAction:nil];
 }
 
@@ -461,7 +456,7 @@ enum serviceListTags
 	UIBarButtonItem *firstButton = nil;
 	UIBarButtonItem *secondButton = nil;
 
-	if(_delegate == nil && YES) // TODO: check purchase
+	if(delegate == nil && YES) // TODO: check purchase
 	{
 		const BOOL isIphone = IS_IPHONE();
 		// show on iPhone or on iPad in portrait
@@ -575,7 +570,7 @@ enum serviceListTags
 		// show radio button if in single bouquet mode and supported
 		if(isSingleBouquet
 		   && [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode]
-		   && ![_delegate isKindOfClass:[ServiceListController class]])
+		   && ![delegate isKindOfClass:[ServiceListController class]])
 		{
 			self.navigationItem.leftBarButtonItem = _radioButton;
 		}
@@ -1443,7 +1438,7 @@ enum serviceListTags
 		else
 		{
 #if INCLUDE_FEATURE(Extra_Animation)
-			if(!_isAll)
+			if(!isAll)
 				[_tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
 			else
 #endif
@@ -1505,7 +1500,7 @@ enum serviceListTags
 {
 	[_mainList addObject: service];
 #if INCLUDE_FEATURE(Extra_Animation)
-	if(!_isAll)
+	if(!isAll)
 	{
 		const NSInteger idx = _mainList.count-1;
 		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
@@ -1537,13 +1532,13 @@ enum serviceListTags
 		return;
 
 	// Callback mode
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
-		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
+		[delegate performSelector:@selector(serviceSelected:) withObject: service];
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
-		else if([_delegate isKindOfClass:[UIViewController class]])
-			[self.navigationController popToViewController:(UIViewController *)_delegate animated:YES];
+		else if([delegate isKindOfClass:[UIViewController class]])
+			[self.navigationController popToViewController:(UIViewController *)delegate animated:YES];
 		else
 			[self.navigationController popViewControllerAnimated:YES];
 	}
@@ -1666,16 +1661,16 @@ enum serviceListTags
 		return nil;
 
 	// Callback mode
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
 		tableView.allowsSelection = NO;
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-		[_delegate performSelector:@selector(serviceSelected:) withObject: service];
+		[delegate performSelector:@selector(serviceSelected:) withObject: service];
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
-		else if([_delegate isKindOfClass:[UIViewController class]])
-			[self.navigationController popToViewController:(UIViewController *)_delegate animated:YES];
+		else if([delegate isKindOfClass:[UIViewController class]])
+			[self.navigationController popToViewController:(UIViewController *)delegate animated:YES];
 		else
 			[self.navigationController popViewControllerAnimated:YES];
 	}
@@ -1731,7 +1726,7 @@ enum serviceListTags
 /* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(self.editing && !(_isAll || [_bouquet.sref hasPrefix:@"1:7:0:"]))
+	if(self.editing && !(isAll || [_bouquet.sref hasPrefix:@"1:7:0:"]))
 		return UITableViewCellEditingStyleDelete;
 	return UITableViewCellEditingStyleNone;
 }
@@ -1786,7 +1781,7 @@ enum serviceListTags
 /* indentation */
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(_isAll || [_bouquet.sref hasPrefix:@"1:7:0:"])
+	if(isAll || [_bouquet.sref hasPrefix:@"1:7:0:"])
 		return NO;
 	return YES;
 }
@@ -1794,7 +1789,7 @@ enum serviceListTags
 /* movable? */
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(_isAll || [_bouquet.sref hasPrefix:@"1:7:0:"] || tableView == _searchDisplay.searchResultsTableView)
+	if(isAll || [_bouquet.sref hasPrefix:@"1:7:0:"] || tableView == _searchDisplay.searchResultsTableView)
 		return NO;
 	return !_reloading;
 }

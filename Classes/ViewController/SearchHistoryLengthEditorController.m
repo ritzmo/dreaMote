@@ -23,7 +23,7 @@
 
 @implementation SearchHistoryLengthEditorController
 
-@synthesize delegate = _delegate;
+@synthesize delegate;
 @synthesize length = _length;
 
 /* initialize */
@@ -137,7 +137,7 @@
 	[stdDefaults setObject:[NSNumber numberWithInteger:length] forKey:kSearchHistoryLength];
 	[stdDefaults synchronize];
 
-	[_delegate performSelectorOnMainThread:@selector(didSetLength) withObject:nil waitUntilDone:NO];
+	[delegate performSelectorOnMainThread:@selector(didSetLength) withObject:nil waitUntilDone:NO];
 }
 
 @end

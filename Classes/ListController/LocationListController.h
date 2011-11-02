@@ -28,10 +28,7 @@
 @private
 	NSMutableArray *_locations; /*!< @brief Location List. */
 	BOOL _refreshLocations; /*!< @brief Refresh Location List on next open? */
-	BOOL _isSplit; /*!< @brief Split mode? */
-	BOOL _showDefault; /*!< @brief Show "Default Location"-Folder? */
 	MovieListController *_movieListController; /*!< @brief Caches Movie List instance. */
-	NSObject<LocationListDelegate> *__unsafe_unretained _delegate; /*!< @brief Delegate. */
 }
 
 /*!

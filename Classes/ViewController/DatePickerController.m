@@ -29,8 +29,7 @@
 #define kPickerSegmentControlHeight 30.0
 
 @synthesize date = _date;
-@synthesize format = _format;
-@synthesize callback;
+@synthesize format, callback;
 
 /* initialize */
 - (id)init
@@ -39,7 +38,7 @@
 	{
 		// this title will appear in the navigation bar
 		self.title = NSLocalizedString(@"Date Picker", @"Title of DatePickerController");
-		_format = [[NSDateFormatter alloc] init];
+		format = [[NSDateFormatter alloc] init];
 		self.datePickerMode = UIDatePickerModeDateAndTime;
 		self.modalPresentationStyle = UIModalPresentationFormSheet;
 		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
@@ -67,10 +66,10 @@
 	if(!new)
 		new = [NSDate date];
 
-	SafeRetainAssign(_date, new);
+	_date = new;
 
 	_datePickerView.date = _date;
-	_label.text = [_format stringFromDate: _date];
+	_label.text = [format stringFromDate:_date];
 }
 
 - (UIDatePickerMode)datePickerMode
@@ -86,23 +85,23 @@
 	switch(newDatePickerMode)
 	{
 		case UIDatePickerModeDateAndTime:
-			[_format setDateStyle:NSDateFormatterFullStyle];
-			[_format setTimeStyle:NSDateFormatterShortStyle];
+			[format setDateStyle:NSDateFormatterFullStyle];
+			[format setTimeStyle:NSDateFormatterShortStyle];
 			break;
 		case UIDatePickerModeTime:
-			[_format setDateStyle:NSDateFormatterNoStyle];
-			[_format setTimeStyle:NSDateFormatterShortStyle];
+			[format setDateStyle:NSDateFormatterNoStyle];
+			[format setTimeStyle:NSDateFormatterShortStyle];
 			break;
 		case UIDatePickerModeDate:
-			[_format setDateStyle:NSDateFormatterFullStyle];
-			[_format setTimeStyle:NSDateFormatterNoStyle];
+			[format setDateStyle:NSDateFormatterFullStyle];
+			[format setTimeStyle:NSDateFormatterNoStyle];
 			break;
 		default:
-			[_format setDateStyle:NSDateFormatterNoStyle];
-			[_format setTimeStyle:NSDateFormatterNoStyle];
+			[format setDateStyle:NSDateFormatterNoStyle];
+			[format setTimeStyle:NSDateFormatterNoStyle];
 			break;
 	}
-	_label.text = [_format stringFromDate:_date];
+	_label.text = [format stringFromDate:_date];
 }
 
 /* layout */
@@ -141,7 +140,7 @@
 	_label.textAlignment = UITextAlignmentCenter;
 	_label.textColor = [UIColor whiteColor];
 	_label.backgroundColor = [UIColor clearColor];
-	_label.text = [_format stringFromDate: _date];
+	_label.text = [format stringFromDate: _date];
 	[self.view addSubview: _label];
 }
 
@@ -185,7 +184,7 @@
 /* selection changed */
 - (void)timeChanged: (id)sender
 {
-	_label.text = [_format stringFromDate: [_datePickerView date]];
+	_label.text = [format stringFromDate: [_datePickerView date]];
 }
 
 @end

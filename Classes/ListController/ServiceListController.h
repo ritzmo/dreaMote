@@ -83,17 +83,14 @@
 	NSObject<ServiceProtocol> *_service; /*!< @brief Selected Service (if executing a gesture, borrowed reference). */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
-	NSObject<ServiceListDelegate, UIAppearanceContainer> __unsafe_unretained *_delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 	UIBarButtonItem *_multiEpgButton; /*!< @brief Multi-EPG toggle */
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
-	BOOL _isAll; /*!< @brief If the current bouquet 'All Services'? */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
-	MGSplitViewController __unsafe_unretained *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 #if IS_FULL()
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */

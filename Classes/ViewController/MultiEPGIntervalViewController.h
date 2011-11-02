@@ -17,11 +17,6 @@
  */
 @interface MultiEPGIntervalViewController : UIViewController <UITableViewDelegate,
 														UITableViewDataSource>
-{
-@private
-	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	NSObject<MultiEPGIntervalDelegate> __unsafe_unretained *_delegate; /*!< @brief Delegate. */
-}
 
 /*!
  @brief Standard constructor.

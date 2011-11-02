@@ -21,8 +21,7 @@
 
 @implementation EPGRefreshAdapterViewController
 
-@synthesize delegate = _delegate;
-@synthesize selectedItem = _selectedItem;
+@synthesize delegate, selectedItem;
 
 /* initialize */
 - (id)init
@@ -30,7 +29,6 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"EPGRefresh Adapter", @"Default title of EPGRefreshAdapterViewController");
-		_delegate = nil;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -129,7 +127,7 @@
 			break;
 	}
 
-	if((NSUInteger)row == _selectedItem)
+	if((NSUInteger)row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -140,15 +138,15 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:0]];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 
-	cell = [tableView cellForRowAtIndexPath: indexPath];
+	cell = [tableView cellForRowAtIndexPath:indexPath];
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-	_selectedItem = indexPath.row;
+	selectedItem = indexPath.row;
 
 	if(IS_IPAD())
 	{
@@ -161,10 +159,10 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
 		NSString *adapter = nil;
-		switch(_selectedItem)
+		switch(selectedItem)
 		{
 			default:
 			case 0:
@@ -181,7 +179,7 @@
 				break;
 		}
 
-		[_delegate performSelector:@selector(adapterSelected:) withObject:adapter];
+		[delegate performSelector:@selector(adapterSelected:) withObject:adapter];
 	}
 }
 

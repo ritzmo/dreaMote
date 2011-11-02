@@ -28,8 +28,6 @@ typedef BOOL (^simplesingleselection_callback_t)(NSUInteger, BOOL);
 {
 @private
 	NSArray *_items; /*!< @brief Items. */
-	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	simplesingleselection_callback_t callback; /*!< @brief Delegate. */
 }
 
 /*!

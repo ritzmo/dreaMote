@@ -44,8 +44,6 @@
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Current Service. */
-	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
-	UIPopoverController *popoverController; /*!< @brief Popover controller */
 
 	NSCalendar *_gregorian; /*!< @brief Calendar instance. */
 	BOOL _useSections; /*!< @brief Use sections? */

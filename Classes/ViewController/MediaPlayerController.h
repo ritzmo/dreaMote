@@ -58,8 +58,8 @@ enum retrieveCurrentUsing {
 	BaseXMLReader *_xmlReader; /*!< @brief Currently played. */
 	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
 
-	UIBarButtonItem *_shuffleButton;  /*!< @brief "Shuffle" Button. */
-	UIBarButtonItem *_deleteButton;
+	UIBarButtonItem *_shuffleButton; /*!< @brief "Shuffle" Button. */
+	UIBarButtonItem *_deleteButton; /*!< @brief "Delete" Button. */
 	float _progressActions; /*!< @brief Shuffle/Delete actions left or -1 on unknown. */
 
 	UIActionSheet *_closeSheet; /*!< @brief "Close MediaPlayer" sheet shown when disappearing. */
@@ -154,7 +154,16 @@ enum retrieveCurrentUsing {
  */
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
 
+
+
+/*!
+ @brief Delete Button.
+ */
 @property (nonatomic, readonly) UIBarButtonItem *deleteButton;
+
+/*!
+ @brief "Shuffle" Button.
+ */
 @property (nonatomic, readonly) UIBarButtonItem *shuffleButton;
 
 @end

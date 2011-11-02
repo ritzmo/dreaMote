@@ -53,7 +53,6 @@
 	UITableViewCell *_locationCell; /*!< @brief Location Cell. */
 	UITableViewCell *_repeatedCell; /*!< @brief Repeated Cell. */
 
-	NSObject<TimerViewDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<EventProtocol> *_event; /*!< @brief Associated Event. */
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */
 	NSObject<TimerProtocol> *_oldTimer; /*!< @brief Old Timer when changing existing one. */

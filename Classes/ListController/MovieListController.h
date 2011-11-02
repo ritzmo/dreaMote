@@ -45,7 +45,6 @@
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
 	BOOL _refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
-	BOOL _isSplit; /*!< @brief Split mode? */	
 	BOOL _sortTitle; /*!< @brief Sort by title? */
 
 	NSString *_currentLocation; /*!< @brief Current Location. */

@@ -57,10 +57,8 @@ enum bouquetListTags
 
 @implementation BouquetListController
 
-@synthesize bouquetDelegate = _bouquetDelegate;
-@synthesize serviceDelegate = _serviceDelegate;
+@synthesize bouquetDelegate, serviceDelegate, isSplit;
 @synthesize serviceListController = _serviceListController;
-@synthesize isSplit = _isSplit;
 
 /* initialize */
 - (id)init
@@ -71,7 +69,7 @@ enum bouquetListTags
 		_bouquets = [NSMutableArray array];
 		_refreshBouquets = YES;
 		_isRadio = NO;
-		_isSplit = NO;
+		isSplit = NO;
 		_serviceListController = nil;
 		_listType = LIST_TYPE_BOUQUETS;
 
@@ -253,15 +251,15 @@ enum bouquetListTags
 {
 	// add button to navigation bar if radio mode supported
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode]
-	   && !(   [_bouquetDelegate isKindOfClass:[ServiceListController class]]
-			|| [_serviceDelegate isKindOfClass:[ServiceListController class]]))
+	   && !(   [bouquetDelegate isKindOfClass:[ServiceListController class]]
+			|| [serviceDelegate isKindOfClass:[ServiceListController class]]))
 	{
 		self.navigationItem.leftBarButtonItem = _radioButton;
 	}
 	else
 		self.navigationItem.leftBarButtonItem = nil;
 
-	if(_serviceDelegate || _bouquetDelegate)
+	if(serviceDelegate || bouquetDelegate)
 	{
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
@@ -334,15 +332,15 @@ enum bouquetListTags
 		_serviceListController = [[ServiceListController alloc] init];
 	
 	// Redirect callback if we have one
-	if(_serviceDelegate != nil)
-		[_serviceListController setDelegate:_serviceDelegate];
+	if(serviceDelegate)
+		_serviceListController.delegate = serviceDelegate;
 	_serviceListController.bouquet = bouquet;
 	
 	// We do not want to refresh bouquet list when we return
 	_refreshBouquets = NO;
 	
 	// when in split view go back to service list, else push it on the stack
-	if(!_isSplit)
+	if(!isSplit)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_serviceListController])
@@ -399,7 +397,7 @@ enum bouquetListTags
 - (void)configureToolbar:(BOOL)animated
 {
 	// NOTE: rather hackish way to hide access to providers, but good enough :)
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesProviderList] && ![_bouquetDelegate isKindOfClass:[ServiceListController class]])
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesProviderList] && ![bouquetDelegate isKindOfClass:[ServiceListController class]])
 	{
 		const UIBarButtonItem *bouquetItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Bouquets", @"Bouquets button in bouquet list")
 																			  style:UIBarButtonItemStyleBordered
@@ -470,7 +468,7 @@ enum bouquetListTags
 {
 	_radioButton.enabled = YES;
 	// assume details will fail too if in split
-	if(_isSplit)
+	if(isSplit)
 	{
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
@@ -484,7 +482,7 @@ enum bouquetListTags
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_radioButton.enabled = YES;
-	if(_isSplit)
+	if(isSplit)
 	{
 		// NOTE: reload service list, important for e.g. enigma1
 		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
@@ -637,7 +635,7 @@ enum bouquetListTags
 	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
-	if(_listType == LIST_TYPE_PROVIDER || [_bouquetDelegate isKindOfClass:[ServiceListController class]])
+	if(_listType == LIST_TYPE_PROVIDER || [bouquetDelegate isKindOfClass:[ServiceListController class]])
 		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	return cell;
@@ -667,19 +665,19 @@ enum bouquetListTags
 	if(!bouquet.valid)
 		return nil;
 
-	if(_bouquetDelegate)
+	if(bouquetDelegate)
 	{
 		tableView.allowsSelection = NO;
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		[_bouquetDelegate performSelector:@selector(bouquetSelected:) withObject:bouquet];
+		[bouquetDelegate performSelector:@selector(bouquetSelected:) withObject:bouquet];
 
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		else
 		{
 			[self.navigationController setToolbarHidden:YES animated:YES];
-			if([_bouquetDelegate isKindOfClass:[UIViewController class]])
-				[self.navigationController popToViewController:(UIViewController *)_bouquetDelegate animated:YES];
+			if([bouquetDelegate isKindOfClass:[UIViewController class]])
+				[self.navigationController popToViewController:(UIViewController *)bouquetDelegate animated:YES];
 			else
 				[self.navigationController popViewControllerAnimated:YES];
 		}
@@ -721,7 +719,7 @@ enum bouquetListTags
 		{
 			return UITableViewCellEditingStyleInsert;
 		}
-		else if(![_bouquetDelegate isKindOfClass:[ServiceListController class]])
+		else if(![bouquetDelegate isKindOfClass:[ServiceListController class]])
 			return UITableViewCellEditingStyleDelete;
 	}
 	return UITableViewCellEditingStyleNone;
@@ -761,7 +759,7 @@ enum bouquetListTags
 /* indentation */
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(_listType == LIST_TYPE_PROVIDER || ([_bouquetDelegate isKindOfClass:[ServiceListController class]] && indexPath.row != (NSInteger)_bouquets.count))
+	if(_listType == LIST_TYPE_PROVIDER || ([bouquetDelegate isKindOfClass:[ServiceListController class]] && indexPath.row != (NSInteger)_bouquets.count))
 		return NO;
 	return YES;
 }
@@ -769,7 +767,7 @@ enum bouquetListTags
 /* movable? */
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(indexPath.row == (NSInteger)_bouquets.count || _listType == LIST_TYPE_PROVIDER || [_bouquetDelegate isKindOfClass:[ServiceListController class]])
+	if(indexPath.row == (NSInteger)_bouquets.count || _listType == LIST_TYPE_PROVIDER || [bouquetDelegate isKindOfClass:[ServiceListController class]])
 		return NO;
 	return YES;
 }

@@ -24,7 +24,7 @@
 
 @implementation ServiceZapListController
 
-@synthesize zapDelegate = _zapDelegate;
+@synthesize zapDelegate;
 @synthesize actionSheet = _actionSheet;
 
 + (BOOL)canStream
@@ -197,7 +197,7 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(!_zapDelegate) return nil;
+	if(!zapDelegate) return nil;
 	NSInteger row = indexPath.row;
 
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
@@ -213,7 +213,7 @@
 		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
 			++row;
 	}
-	[_zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
+	[zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
 	return indexPath;
 }
 
@@ -273,7 +273,7 @@
 		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
 		//	++buttonIndex;
 
-		[_zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
+		[zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
 }
 

@@ -20,7 +20,6 @@
 
 // Forward declarations...
 @class DatePickerController;
-@class SimpleSingleSelectionListController;
 @protocol AutoTimerViewDelegate;
 
 /*!
@@ -41,7 +40,6 @@
 	UIBarButtonItem *_cancelButtonItem;
 	UIBarButtonItem *_popoverButtonItem;
 
-	NSObject<AutoTimerViewDelegate> *_delegate; /*!< @brief Delegate. */
 	AutoTimer *_timer; /*!< @brief Associated AutoTimer. */
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
@@ -101,7 +99,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, strong) NSObject<AutoTimerViewDelegate> *delegate;
+@property (nonatomic, unsafe_unretained) NSObject<AutoTimerViewDelegate> *delegate;
 
 @end
 

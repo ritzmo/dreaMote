@@ -23,7 +23,6 @@
 @interface MainViewController : UITabBarController <UITabBarControllerDelegate,
 													AboutDreamoteDelegate>
 {
-	IBOutlet UITabBar *myTabBar; /*!< @brief Tab bar. */
 	NSMutableArray *menuList; /*!< @brief Item List. */
 @private
 	UIViewController *_bouquetController; /*!< @brief Bouquet List Tab. */
@@ -39,6 +38,6 @@
 /*!
  @brief Table View.
  */
-@property (nonatomic, strong) UITabBar *myTabBar;
+@property (nonatomic, strong) IBOutlet UITabBar *myTabBar;
 
 @end

@@ -18,7 +18,6 @@
  */
 @interface OtherListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
-	IBOutlet UITableView		*myTableView; /*!< @brief Table View. */
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
 	UIViewController *_aboutDreamoteViewController; /*!< @brief Cached About View. */
@@ -40,7 +39,7 @@
 /*!
  @brief Table View.
  */
-@property (nonatomic, strong) UITableView *myTableView;
+@property (nonatomic, strong) IBOutlet UITableView *myTableView;
 
 /*!
  @brief Config List.

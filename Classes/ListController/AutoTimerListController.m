@@ -25,7 +25,7 @@
 
 @implementation AutoTimerListController
 
-@synthesize isSplit = _isSplit;
+@synthesize isSplit;
 
 /* initialize */
 - (id)init
@@ -35,7 +35,6 @@
 		self.title = NSLocalizedString(@"AutoTimers", @"Title of AutoTimerListController");
 		_autotimers = [NSMutableArray array];
 		_refreshAutotimers = YES;
-		_isSplit = NO;
 	}
 	return self;
 }
@@ -332,7 +331,7 @@
 	// We do not want to refresh autotimer list when we return
 	_refreshAutotimers = NO;
 
-	if(!_isSplit)
+	if(!isSplit)
 		[self.navigationController pushViewController:_autotimerView animated:YES];
 	else
 		[_autotimerView.navigationController popToRootViewControllerAnimated:YES];
@@ -405,7 +404,7 @@
 		self.autotimerView.timer = newTimer;
 
 		// when in split view go back to autotimer view, else push it on the stack
-		if(!_isSplit)
+		if(!isSplit)
 			[self.navigationController pushViewController:_autotimerView animated:YES];
 		else
 		{

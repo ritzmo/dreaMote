@@ -40,8 +40,7 @@
 
 @implementation EventListController
 
-@synthesize dateFormatter = _dateFormatter;
-@synthesize popoverController;
+@synthesize dateFormatter, popoverController;
 #if INCLUDE_FEATURE(Ads)
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
@@ -54,8 +53,8 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
-		_dateFormatter = [[NSDateFormatter alloc] init];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_eventViewController = nil;
 		_service = nil;
 		_serviceListController = nil;
@@ -296,7 +295,7 @@
 	[[EPGCache sharedInstance] stopTransaction];
 #endif
 
-	[_dateFormatter resetReferenceDate];
+	[dateFormatter resetReferenceDate];
 
 	// eventually remove popover
 	if(popoverController)
@@ -484,7 +483,7 @@
 #endif
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
-	cell.formatter = _dateFormatter;
+	cell.formatter = dateFormatter;
 	cell.showService = NO;
 	if(_useSections)
 	{

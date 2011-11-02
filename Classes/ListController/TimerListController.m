@@ -41,9 +41,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 @implementation TimerListController
 
-@synthesize timers = _timers;
-@synthesize dateFormatter = _dateFormatter;
-@synthesize isSplit = _isSplit;
+@synthesize dateFormatter, isSplit;
 @synthesize timerViewController = _timerViewController;
 @synthesize willReappear = _willReappear;
 #if INCLUDE_FEATURE(Ads)
@@ -56,13 +54,12 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	if((self = [super init]))
 	{
-		self.timers = [NSMutableArray array];
+		_timers = [[NSMutableArray alloc] init];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
-		_dateFormatter = [[NSDateFormatter alloc] init];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_timerViewController = nil;
 		_willReappear = NO;
-		_isSplit = NO;
 	}
 	return self;
 }
@@ -231,7 +228,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	}
 
 	// Reset reference date of date formatter
-	[_dateFormatter resetReferenceDate];
+	[dateFormatter resetReferenceDate];
 }
 
 /* fetch timer list */
@@ -349,7 +346,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	NSInteger offset = 0;
 	if(section > 0)
 		offset = _dist[section-1];
-	((TimerTableViewCell *)cell).formatter = _dateFormatter;
+	((TimerTableViewCell *)cell).formatter = dateFormatter;
 	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
 
 	return cell;
@@ -402,7 +399,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_timerViewController.oldTimer = ourCopy;
 
 	// when in split view go back to timer view, else push it on the stack
-	if(!_isSplit)
+	if(!isSplit)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_timerViewController])
@@ -567,7 +564,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		_timerViewController.oldTimer = nil;
 
 		// when in split view go back to timer view, else push it on the stack
-		if(!_isSplit)
+		if(!isSplit)
 		{
 			// XXX: wtf?
 			if([self.navigationController.viewControllers containsObject:_timerViewController])

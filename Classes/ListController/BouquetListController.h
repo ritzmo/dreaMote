@@ -35,12 +35,9 @@ typedef enum
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
-	NSObject<ServiceListDelegate, UIAppearanceContainer> __unsafe_unretained *_serviceDelegate; /*!< @brief Service Delegate. */
-	NSObject<BouquetListDelegate, UIAppearanceContainer> __unsafe_unretained *_bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	bouquetListType _listType; /*!< @brief Show bouquet or provider list? */
-	BOOL _isSplit; /*!< @brief Split mode? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
 	UIPopoverController *popoverController; /*!< @brief Popover */

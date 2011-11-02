@@ -21,8 +21,7 @@
 
 @implementation TimeoutSelectionViewController
 
-@synthesize delegate = _delegate;
-@synthesize selectedItem = _selectedItem;
+@synthesize delegate, selectedItem;
 
 /* initialize */
 - (id)init
@@ -127,7 +126,7 @@
 	}
 	TABLEVIEWCELL_TEXT(cell) = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @"Seconds"), timeout];
 
-	if(row == _selectedItem)
+	if(row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -140,13 +139,13 @@
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:_selectedItem inSection:0]];
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:0]];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 
 	cell = [tableView cellForRowAtIndexPath:indexPath];
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-	_selectedItem = indexPath.row;
+	selectedItem = indexPath.row;
 
 	if(IS_IPAD())
 	{
@@ -161,13 +160,13 @@
 {
 	NSInteger timeout = 7;
 	
-	if(_selectedItem > 0)
+	if(selectedItem > 0)
 	{
 		timeout *= 2;
 		timeout += 1;
-		if(_selectedItem == 2)
+		if(selectedItem == 2)
 			timeout *= 2;
-		else if(_selectedItem == 3)
+		else if(selectedItem == 3)
 			timeout *= 3;
 	}
 
@@ -175,7 +174,7 @@
 	[stdDefaults setObject:[NSNumber numberWithInteger:timeout] forKey:kTimeoutKey];
 	[stdDefaults synchronize];
 
-	[_delegate performSelectorOnMainThread:@selector(didSetTimeout) withObject:nil waitUntilDone:NO];
+	[delegate performSelectorOnMainThread:@selector(didSetTimeout) withObject:nil waitUntilDone:NO];
 }
 
 @end

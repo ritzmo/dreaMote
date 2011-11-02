@@ -27,7 +27,6 @@
 	UIButton *_mailButton; /*!< @brief Mail button. */
 	UIButton *_twitterButton; /*!< @brief "Follow us" button. */
 	welcomeTypes welcomeType; /*!< @brief Welcome type. */
-	NSObject<AboutDreamoteDelegate> *__unsafe_unretained aboutDelegate;
 }
 
 /*!

@@ -27,7 +27,6 @@
 	CellTextField *_repcountCell; /*!< @brief Repeat count cell. */
 	NSInteger _repeated; /*!< @brief Current Flags. */
 	NSInteger _repcount; /*!< @brief Repeat count. */
-	id<RepeatedDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
 	BOOL _isSimple; /*!< @brief Simple Editor? */
 }
 

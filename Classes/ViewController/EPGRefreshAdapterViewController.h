@@ -18,11 +18,6 @@
  */
 @interface EPGRefreshAdapterViewController : UIViewController <UITableViewDelegate,
 														UITableViewDataSource>
-{
-@private
-	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	id<EPGRefreshAdapterDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
-}
 
 /*!
  @brief Standard constructor.

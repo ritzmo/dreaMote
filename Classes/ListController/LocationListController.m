@@ -27,10 +27,8 @@
 
 @implementation LocationListController
 
-@synthesize isSplit = _isSplit;
+@synthesize isSplit, showDefault, delegate;
 @synthesize movieListController = _movieListController;
-@synthesize showDefault = _showDefault;
-@synthesize delegate = _delegate;
 
 /* initialize */
 - (id)init
@@ -40,9 +38,7 @@
 		self.title = NSLocalizedString(@"Locations", @"Title of LocationListController");
 		_locations = [NSMutableArray array];
 		_refreshLocations = YES;
-		_isSplit = NO;
 		_movieListController = nil;
-		_delegate = nil;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
 		{
@@ -121,7 +117,7 @@
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
-	if(_delegate)
+	if(delegate)
 	{
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
@@ -244,7 +240,7 @@
 		if([error code] == 404)
 		{
 			// received 404, assume very old enigma2 without location support: insert default location (if not showing anyway)
-			if(!_showDefault)
+			if(!showDefault)
 			{
 				GenericLocation *location = [[GenericLocation alloc] init];
 				location.fullpath = @"/hdd/movie/";
@@ -256,7 +252,7 @@
 	}
 
 	// assume details will fail too if in split
-	if(_isSplit)
+	if(isSplit)
 	{
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
@@ -293,7 +289,7 @@
 	NSInteger row = indexPath.row;
 
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	if(_showDefault && row-- == 0)
+	if(showDefault && row-- == 0)
 	{
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Location", @"");;
 	}
@@ -321,7 +317,7 @@
 
 	NSInteger row = indexPath.row;
 	NSObject<LocationProtocol> *location = nil;
-	if(_showDefault) --row;
+	if(showDefault) --row;
 	if(row > -1)
 	{
 		if(row >= (NSInteger)_locations.count)
@@ -337,16 +333,16 @@
 	}
 
 	// Callback mode
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
 		tableView.allowsSelection = NO;
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		[_delegate performSelector:@selector(locationSelected:) withObject: location];
+		[delegate performSelector:@selector(locationSelected:) withObject: location];
 
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		else
-			[self.navigationController popToViewController: (UIViewController *)_delegate animated: YES];
+			[self.navigationController popToViewController: (UIViewController *)delegate animated: YES];
 	}
 	// Open movie list
 	else if(!_movieListController.reloading)
@@ -360,7 +356,7 @@
 		_refreshLocations = NO;
 
 		// when in split view go back to movie list, else push it on the stack
-		if(!_isSplit)
+		if(!isSplit)
 		{
 			// XXX: wtf?
 			if([self.navigationController.viewControllers containsObject:_movieListController])
@@ -393,7 +389,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	NSUInteger count = _locations.count;
-	if(_showDefault)
+	if(showDefault)
 		++count;
 	if(self.editing)
 		++count;
@@ -406,7 +402,7 @@
 	if(self.editing)
 	{
 		NSInteger row = indexPath.row;
-		if(_showDefault && row-- == 0)
+		if(showDefault && row-- == 0)
 			return UITableViewCellEditingStyleNone;
 		if(row == (NSInteger)_locations.count)
 			return UITableViewCellEditingStyleInsert;
@@ -432,7 +428,7 @@
 	else
 	{
 		NSInteger row = indexPath.row;
-		if(_showDefault) --row;
+		if(showDefault) --row;
 		NSObject<LocationProtocol> *location = [_locations objectAtIndex:row];
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delLocation:location.fullpath];
 		if(result.result)

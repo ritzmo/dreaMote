@@ -32,8 +32,7 @@
 
 @implementation MovieListController
 
-@synthesize popoverController;
-@synthesize isSplit = _isSplit;
+@synthesize popoverController, isSplit;
 
 /* initialize */
 - (id)init
@@ -47,7 +46,6 @@
 		_filteredMovies = [[NSMutableArray alloc] init];
 #endif
 		_refreshMovies = YES;
-		_isSplit = NO;
 
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -546,7 +544,7 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	if(_isSplit)
+	if(isSplit)
 	{
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
@@ -656,7 +654,7 @@
 
 	self.movieViewController.movie = movie;
 
-	if(!_isSplit)
+	if(!isSplit)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_movieViewController])

@@ -21,9 +21,9 @@
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "Objects/Generic/Result.h"
-#import "Objects/Generic/Service.h"
-#import "Objects/Generic/Timer.h"
+#import <Objects/Generic/Result.h>
+#import <Objects/Generic/Service.h>
+#import <Objects/Generic/Timer.h>
 
 /*!
  @brief Private functions of TimerViewController.
@@ -68,7 +68,7 @@
 /*! @brief The duration of the animation for the view shift. */
 #define kVerticalOffsetAnimationDuration		(CGFloat)0.30
 
-@synthesize delegate = _delegate;
+@synthesize delegate;
 @synthesize event = _event;
 @synthesize oldTimer = _oldTimer;
 @synthesize popoverController;
@@ -529,8 +529,8 @@
 			_timerJustplay.enabled = NO;
 		}
 
-		if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
-			[_delegate timerViewController:self editingWasCanceled:_oldTimer];
+		if(delegate && [delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
+			[delegate timerViewController:self editingWasCanceled:_oldTimer];
 		return;
 	}
 
@@ -594,8 +594,8 @@
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext];
 				else
 				{
-					if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:timerWasAdded:)])
-						[_delegate timerViewController:self timerWasAdded:_timer];
+					if(delegate && [delegate respondsToSelector:@selector(timerViewController:timerWasAdded:)])
+						[delegate timerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -606,8 +606,8 @@
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing timer: %@", @""), result.resulttext];
 				else
 				{
-					if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:timerWasEdited::)])
-						[_delegate timerViewController:self timerWasEdited:_timer :_oldTimer];
+					if(delegate && [delegate respondsToSelector:@selector(timerViewController:timerWasEdited::)])
+						[delegate timerViewController:self timerWasEdited:_timer :_oldTimer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -624,8 +624,8 @@
 										 otherButtonTitles:nil];
 			[notification show];
 
-			if(_delegate && [_delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
-				[_delegate timerViewController:self editingWasCanceled:_oldTimer];
+			if(delegate && [delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
+				[delegate timerViewController:self editingWasCanceled:_oldTimer];
 			return;
 		}
 

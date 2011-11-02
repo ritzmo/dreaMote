@@ -12,18 +12,15 @@
 
 @implementation PlayListController
 
-@synthesize clearButton = _clearButton;
-@synthesize playlist = _playlist;
-@synthesize saveButton = _saveButton;
-@synthesize loadButton = _loadButton;
+@synthesize clearButton, playlist, saveButton, loadButton;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Playlist", @"Title of PlayListController");
-		_playlist = [[FileListView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
-		_playlist.isPlaylist = YES;
+		self.playlist = [[FileListView alloc] initWithFrame: [[UIScreen mainScreen] applicationFrame]];
+		playlist.isPlaylist = YES;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
 			self.contentSizeForViewInPopover = CGSizeMake(430.0f, 800.0f);
@@ -34,7 +31,7 @@
 
 - (void)loadView
 {
-	self.view = _playlist;
+	self.view = playlist;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
@@ -42,13 +39,13 @@
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing: editing animated: animated];
-	[_playlist setEditing: editing animated: animated];
+	[playlist setEditing: editing animated: animated];
 
-	_clearButton.enabled = !editing;
+	clearButton.enabled = !editing;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerPlaylistHandling])
 	{
-		_saveButton.enabled = !editing;
-		_loadButton.enabled = !editing;
+		saveButton.enabled = !editing;
+		loadButton.enabled = !editing;
 	}
 }
 
@@ -56,8 +53,8 @@
 {
 	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerPlaylistHandling])
 	{
-		_saveButton.enabled = NO;
-		_loadButton.enabled = NO;
+		saveButton.enabled = NO;
+		loadButton.enabled = NO;
 	}
 	[super viewWillAppear:animated];
 }

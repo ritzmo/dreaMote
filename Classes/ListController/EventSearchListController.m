@@ -120,14 +120,14 @@
 	if(IS_IPAD())
 	{
 		// hide popover if already visible
-		if([popoverController isPopoverVisible])
+		if([self.popoverController isPopoverVisible])
 		{
-			[popoverController dismissPopoverAnimated:YES];
+			[self.popoverController dismissPopoverAnimated:YES];
 			self.popoverController = nil;
 			return;
 		}
 
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
+		self.popoverController = [[UIPopoverController alloc] initWithContentViewController:self.searchHistory];
 		/*!
 		 @note In case I want to bind this to the search bar at some point in the future,
 		 but currently I prefer it bound to an extra button.
@@ -135,7 +135,7 @@
 #if 0
 		if([sender isEqual:_searchBar])
 		{
-			[popoverController presentPopoverFromRect:_searchBar.frame
+			[self.popoverController presentPopoverFromRect:_searchBar.frame
 										inView:_searchBar
 										permittedArrowDirections:UIPopoverArrowDirectionUp
 										animated:YES];
@@ -143,7 +143,7 @@
 		else
 #endif
 		{
-			[popoverController presentPopoverFromBarButtonItem:sender
+			[self.popoverController presentPopoverFromBarButtonItem:sender
 										permittedArrowDirections:UIPopoverArrowDirectionUp
 										animated:YES];
 		}
@@ -257,7 +257,7 @@
 {
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
-	cell.formatter = _dateFormatter;
+	cell.formatter = self.dateFormatter;
 	cell.showService = YES;
 	if(_useSections)
 	{
@@ -372,9 +372,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	// eventually remove popover
-	if(popoverController)
+	if(self.popoverController)
 	{
-		[popoverController dismissPopoverAnimated:YES];
+		[self.popoverController dismissPopoverAnimated:YES];
 		self.popoverController = nil;
 	}
 

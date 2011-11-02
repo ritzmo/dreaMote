@@ -77,8 +77,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 @implementation AutoTimerViewController
 
-@synthesize delegate = _delegate;
-@synthesize popoverController;
+@synthesize delegate, popoverController;
 
 - (id)init
 {
@@ -605,7 +604,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				}
 				else
 				{
-					[_delegate autoTimerViewController:self timerWasAdded:_timer];
+					[delegate autoTimerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -620,7 +619,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				}
 				else
 				{
-					[_delegate autoTimerViewController:self timerWasEdited:_timer];
+					[delegate autoTimerViewController:self timerWasEdited:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
 			}
@@ -637,7 +636,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 										 otherButtonTitles:nil];
 			[notification show];
 
-			[_delegate autoTimerViewController:self editingWasCanceled:_timer];
+			[delegate autoTimerViewController:self editingWasCanceled:_timer];
 			return;
 		}
 
@@ -646,7 +645,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	else
 	{
 		self.navigationItem.leftBarButtonItem = _popoverButtonItem;
-		[_delegate autoTimerViewController:self editingWasCanceled:_timer];
+		[delegate autoTimerViewController:self editingWasCanceled:_timer];
 	}
 
 	_shouldSave = editing;

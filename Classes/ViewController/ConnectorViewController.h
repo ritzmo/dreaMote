@@ -17,11 +17,6 @@
  Also allows to start an "autodetection" routine.
  */
 @interface ConnectorViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-{
-@private
-	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	id<ConnectorDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
-}
 
 /*!
  @brief Standard Constructor.

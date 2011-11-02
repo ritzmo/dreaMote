@@ -36,7 +36,6 @@ typedef void(^autotimerfilter_callback_t)(BOOL, NSString *, autoTimerWhereType, 
 	autoTimerWhereType filterType; /*!< @brief Current mode. */
 	BOOL include; /*!< @brief Include Filter? */
 	UIBarButtonItem *_cancelButtonItem; /*!< @brief Cancel button. */
-	autotimerfilter_callback_t callback; /*!< @brief Callback. */
 
 	BOOL oldInclude; /*!< @brief Include state when loaded. */
 	NSString *__unsafe_unretained oldText; /*!< @brief Filter string when loaded. */

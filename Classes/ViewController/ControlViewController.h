@@ -19,11 +19,6 @@
 @interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
 													UIActionSheetDelegate,
 													VolumeSourceDelegate>
-{
-@private
-	UISwitch *_switchControl; /*!< @brief Mute switch. */
-	UISlider *_slider; /*!< @brief Volume slider. */
-}
 
 /*!
  @brief Mute switch.

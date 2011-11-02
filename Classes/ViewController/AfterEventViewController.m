@@ -22,7 +22,7 @@
 
 @implementation AfterEventViewController
 
-@synthesize delegate = _delegate;
+@synthesize delegate;
 
 /* initialize */
 - (id)init
@@ -199,9 +199,9 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
-		[_delegate performSelector:@selector(afterEventSelected:) withObject: [NSNumber numberWithInteger: _selectedItem]];
+		[delegate performSelector:@selector(afterEventSelected:) withObject: [NSNumber numberWithInteger: _selectedItem]];
 	}
 }
 

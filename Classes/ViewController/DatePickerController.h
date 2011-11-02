@@ -24,10 +24,8 @@ typedef void (^datepicker_callback_t)(NSDate *);
 @private
 	UILabel			*_label; /*!< @brief Label containing a textual representation of selected date. */
 	NSDate			*_date; /*!< @brief Date to preselect. */
-	NSDateFormatter *_format; /*!< @brief Cached DateFormatter for textual representation. */
 	UIDatePicker	*_datePickerView; /*!< @brief Actual Date Picker. */
 	UIDatePickerMode datePickerMode;
-	datepicker_callback_t callback;
 }
 
 /*!

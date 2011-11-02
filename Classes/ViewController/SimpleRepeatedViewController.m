@@ -20,7 +20,7 @@
 
 @implementation SimpleRepeatedViewController
 
-@synthesize delegate = _delegate;
+@synthesize delegate;
 
 /* initialize */
 - (id)init
@@ -350,10 +350,10 @@
 /* about to disapper */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
 		SEL mySel = @selector(repeatedSelected:withCount:);
-		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
+		NSMethodSignature *sig = [(NSObject *)delegate methodSignatureForSelector:mySel];
 		if(sig)
 		{
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
@@ -361,7 +361,7 @@
 			NSNumber *__unsafe_unretained repcount = [NSNumber numberWithInteger:[_repcountField.text integerValue]];
 
 			[invocation retainArguments];
-			[invocation setTarget:_delegate];
+			[invocation setTarget:delegate];
 			[invocation setSelector:mySel];
 			[invocation setArgument:&repeated atIndex:2];
 			[invocation setArgument:&repcount atIndex:3];

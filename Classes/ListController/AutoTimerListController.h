@@ -23,7 +23,6 @@
 @private
 	NSMutableArray *_autotimers; /*!< @brief AutoTimer List. */
 	BOOL _refreshAutotimers; /*!< @brief Refresh on next viewWillAppear? */
-	BOOL _isSplit; /*!< @brief Split mode? */
 	BOOL _parsing; /*!< @brief Currently parsing EPG? */
 	AutoTimerViewController *_autotimerView; /*!< @brief AutoTimer View. */
 }

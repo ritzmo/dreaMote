@@ -19,7 +19,6 @@
 {
 @private
 	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	id<AfterEventDelegate> __unsafe_unretained _delegate; /*!< @brief Delegate. */
 	BOOL _showAuto; /*!< @brief Show "kAfterEventAuto" Item? */
 	BOOL _showDefault; /*!< @brief Show "Default Action" for kAfterEventMax? */
 }
@@ -56,7 +55,7 @@
 @property (assign) BOOL showAuto;
 
 /*!
- @brief show "Default Action"?
+ @brief Show "Default Action" for kAfterEventMax?
  */
 @property (assign) BOOL showDefault;
 

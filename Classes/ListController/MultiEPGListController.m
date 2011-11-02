@@ -45,7 +45,7 @@
 
 @implementation MultiEPGListController
 
-@synthesize multiEpgDelegate = _mepgDelegate;
+@synthesize multiEpgDelegate;
 @synthesize progressHUD;
 
 - (id)init
@@ -549,7 +549,7 @@
 	locationInCell.x = lastTouch.x;
 	locationInCell.y = lastTouch.y - cellRect.origin.y;
 	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-	[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
+	[multiEpgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

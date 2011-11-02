@@ -159,10 +159,10 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_aboutText, nil);
-	SafeRetainAssign(_doneButton, nil);
-	SafeRetainAssign(_mailButton, nil);
-	SafeRetainAssign(_twitterButton, nil);
+	_aboutText = nil;
+	_doneButton = nil;
+	_mailButton = nil;
+	_twitterButton = nil;
 
 	[super viewDidUnload];
 }

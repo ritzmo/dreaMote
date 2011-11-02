@@ -21,8 +21,7 @@
 
 @implementation MultiEPGIntervalViewController
 
-@synthesize delegate = _delegate;
-@synthesize selectedItem = _selectedItem;
+@synthesize delegate, selectedItem;
 
 /* initialize */
 - (id)init
@@ -117,7 +116,7 @@
 
 	TABLEVIEWCELL_TEXT(cell) = [NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), (row + 1) * 30];
 
-	if((NSUInteger)row == _selectedItem)
+	if((NSUInteger)row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -128,15 +127,15 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:0]];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 
-	cell = [tableView cellForRowAtIndexPath: indexPath];
+	cell = [tableView cellForRowAtIndexPath:indexPath];
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-	_selectedItem = indexPath.row;
+	selectedItem = indexPath.row;
 
 	if(IS_IPAD())
 	{
@@ -150,10 +149,10 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-	[stdDefaults setObject:[NSNumber numberWithInteger:(_selectedItem + 1) * 30 * 60] forKey:kMultiEPGInterval];
+	[stdDefaults setObject:[NSNumber numberWithInteger:(selectedItem + 1) * 30 * 60] forKey:kMultiEPGInterval];
 	[stdDefaults synchronize];
 
-	[_delegate performSelectorOnMainThread:@selector(didSetInterval) withObject:nil waitUntilDone:NO];
+	[delegate performSelectorOnMainThread:@selector(didSetInterval) withObject:nil waitUntilDone:NO];
 }
 
 @end

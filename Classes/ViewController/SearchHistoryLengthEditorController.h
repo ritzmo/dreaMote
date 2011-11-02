@@ -20,7 +20,6 @@
 {
 @private
 	UITextField *_lengthTextField; /*!< @brief Text Field. */
-	NSObject<SearchHistoryLengthEditorDelegate> __unsafe_unretained *_delegate; /*!< @brief Delegate. */
 	NSInteger _length; /*!< @brief Current length as integer. */
 }
 

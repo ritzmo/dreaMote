@@ -10,26 +10,20 @@
 
 #import "FileListView.h"
 
-@interface PlayListController : UIViewController {
-@protected
-	FileListView *_playlist; /*!< @brief Playlist. */
-	UIBarButtonItem *_clearButton; /*!< @brief Clear Playlist. */
-	UIBarButtonItem *_saveButton; /*!< @brief Save Playlist. */
-	UIBarButtonItem *_loadButton; /*!< @brief Load Playlist. */
-}
+@interface PlayListController : UIViewController
 
 /*!
- @brief Get "Clear" Button.
+ @brief Get "Clear Playlist" Button.
  */
 @property (nonatomic, strong) UIBarButtonItem *clearButton;
 
 /*!
- @brief Get "Save" Button.
+ @brief Get "Save Playlist" Button.
  */
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 
 /*!
- @brief Get "Load" Button.
+ @brief Get "Load Playlist" Button.
  */
 @property (nonatomic, strong) UIBarButtonItem *loadButton;
 

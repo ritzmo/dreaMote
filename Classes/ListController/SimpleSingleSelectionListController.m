@@ -23,8 +23,7 @@
 @implementation SimpleSingleSelectionListController
 
 @synthesize items = _items;
-@synthesize selectedItem = _selectedItem;
-@synthesize callback;
+@synthesize selectedItem, callback;
 
 /* initialize */
 - (id)init
@@ -116,7 +115,7 @@
 
 	cell.textLabel.text = [_items objectAtIndex:row];
 
-	if((NSUInteger)row == _selectedItem)
+	if((NSUInteger)row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -127,9 +126,9 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	const NSUInteger previousSelection = _selectedItem;
-	_selectedItem = indexPath.row;
-	const BOOL willDispose = callback ? callback(_selectedItem, NO) : NO;
+	const NSUInteger previousSelection = selectedItem;
+	selectedItem = indexPath.row;
+	const BOOL willDispose = callback ? callback(selectedItem, NO) : NO;
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -151,7 +150,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	if(callback)
-		callback(_selectedItem, YES);
+		callback(selectedItem, YES);
 	callback = nil;
 }
 

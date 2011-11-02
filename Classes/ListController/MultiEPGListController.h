@@ -37,7 +37,6 @@
 @private
 	BOOL _willReapper; /*!< @brief Not removed from stack. */
 	EPGCache *_epgCache; /*!< @brief EPGCache Singleton. */
-	NSObject<MultiEPGDelegate> *__unsafe_unretained _mepgDelegate;
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
 	NSMutableArray *_services; /*!< @brief List of services. */
 	NSMutableDictionary *_events; /*!< @brief Dictionary (service sref) -> (event list). */
