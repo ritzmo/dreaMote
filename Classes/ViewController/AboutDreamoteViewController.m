@@ -89,7 +89,7 @@
 		default:
 		case welcomeTypeNone:
 			html = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/about.html"] usedEncoding:nil error:nil];
-			html = [html stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+			html = [html stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
 			break;
 		case welcomeTypeChanges:
 		{
@@ -188,7 +188,7 @@
 	MFMailComposeViewController *mvc = [[MFMailComposeViewController alloc] init];
 	mvc.mailComposeDelegate = self;
 	NSString *displayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	[mvc setSubject:[NSString stringWithFormat:@"App Feedback %@", displayName]];
 	[mvc setToRecipients:[NSArray arrayWithObject:@"dreamote@ritzmo.de"]];

@@ -119,7 +119,7 @@ static const char *basename(const char *path)
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
-	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 	NSNumber *multiEPGdefaultInterval = [NSNumber numberWithInteger:60*60*2];
 	NSString *testValue = nil;
 

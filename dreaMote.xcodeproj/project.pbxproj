@@ -3142,6 +3142,7 @@
 			buildPhases = (
 				DAC8BE4713B1FF9200CA00D9 /* Sources */,
 				DAC8BE4813B1FF9200CA00D9 /* Frameworks */,
+				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BE4913B1FF9200CA00D9 /* Resources */,
 			);
 			buildRules = (
@@ -3159,6 +3160,7 @@
 			buildPhases = (
 				DAC8BEAB13B2009F00CA00D9 /* Sources */,
 				DAC8BEAC13B2009F00CA00D9 /* Frameworks */,
+				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BEAD13B2009F00CA00D9 /* Resources */,
 			);
 			buildRules = (
@@ -3176,6 +3178,7 @@
 			buildPhases = (
 				DAC8BED113B200C500CA00D9 /* Sources */,
 				DAC8BED213B200C500CA00D9 /* Frameworks */,
+				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BED313B200C500CA00D9 /* Resources */,
 			);
 			buildRules = (
@@ -3536,6 +3539,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DA36A0841461B13600ABAF15 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "/usr/bin/env python";
+			shellScript = "import os\nos.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.7'\nimport csv\nfrom subprocess import Popen, PIPE\nfrom Foundation import NSMutableDictionary\n\ncmd = \"/usr/bin/git rev-parse --short HEAD\" # get the short commit hash from git\nbuild_number = Popen(cmd, shell=True, stdout=PIPE).stdout.read()\ninfo_plist = os.environ['BUILT_PRODUCTS_DIR'] + \"/\" + os.environ['WRAPPER_NAME'] + \"/Info.plist\"\n\n# Open the plist and write the short commit hash as the bundle version\nplist = NSMutableDictionary.dictionaryWithContentsOfFile_(info_plist)\ncore_version = csv.reader([plist['CFBundleShortVersionString'].rstrip()], delimiter=\" \").next()[0]\nfull_version = ''.join([core_version, '+', build_number])\nplist['CFBundleVersion'] = full_version\nplist.writeToFile_atomically_(info_plist, 1)\n\nprint 'project_bundle_version: '+full_version";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DAC8BE4713B1FF9200CA00D9 /* Sources */ = {
