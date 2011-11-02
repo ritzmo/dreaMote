@@ -106,7 +106,7 @@ OSStatus RenderTone(
 
 void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 {
-	SignalViewController *viewController = (__bridge SignalViewController *)inClientData;
+	SignalViewController __unsafe_unretained *viewController = (__bridge SignalViewController *)inClientData;
 	if([viewController respondsToSelector:@selector(stopAudio)])
 		[viewController stopAudio];
 #if IS_DEBUG()
@@ -279,9 +279,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// SNRdB
 	UITableViewCell *sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
-	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+	sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+	sourceCell.textLabel.textColor = [UIColor blackColor];
+	sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
 	_snrdBCell = sourceCell;
@@ -289,9 +289,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// BER
 	sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
-	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+	sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+	sourceCell.textLabel.textColor = [UIColor blackColor];
+	sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
 	_berCell = sourceCell;
@@ -314,12 +314,12 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_snr, nil);
-	SafeRetainAssign(_agc, nil);
-	SafeRetainAssign(_audioToggle, nil);
-	SafeRetainAssign(_interval, nil);
-	SafeRetainAssign(_snrdBCell, nil);
-	SafeRetainAssign(_berCell, nil);
+	_snr = nil;
+	_agc = nil;
+	_audioToggle = nil;
+	_interval = nil;
+	_snrdBCell = nil;
+	_berCell = nil;
 
 	AudioSessionSetActive(false);
 
@@ -562,8 +562,8 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 	const BOOL oldSnrdB =_hasSnrdB;
 	_hasSnrdB = signal.snrdb > -1;
-	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
-	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
+	_snrdBCell.textLabel.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
+	_berCell.textLabel.text = [NSString stringWithFormat: @"%i BER", signal.ber];
 
 	// calculate frequency for audio signal
 	const NSInteger fMin = 200;
