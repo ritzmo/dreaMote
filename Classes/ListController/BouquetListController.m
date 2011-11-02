@@ -650,7 +650,7 @@ enum bouquetListTags
 	if(_reloading)
 	{
 #if IS_DEBUG()
-		[NSException raise:@"BouquetListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+		NSLog(@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row);
 #endif
 		return nil;
 	}
