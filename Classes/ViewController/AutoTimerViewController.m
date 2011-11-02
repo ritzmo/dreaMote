@@ -8,6 +8,7 @@
 
 #import "AutoTimerViewController.h"
 
+#import "AutoTimerFilterViewController.h"
 #import "BouquetListController.h"
 #import "ServiceListController.h"
 #import "SimpleSingleSelectionListController.h"
@@ -66,8 +67,6 @@ enum sectionIds
 @property (unsafe_unretained, nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
-@property (unsafe_unretained, nonatomic, readonly) UINavigationController *filterNavigationController;
-@property (unsafe_unretained, nonatomic, readonly) AutoTimerFilterViewController *filterViewController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *serviceListController;
 @property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
@@ -136,15 +135,13 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)didReceiveMemoryWarning
 {
-	SafeRetainAssign(_afterEventNavigationController, nil);
-	SafeRetainAssign(_afterEventViewController, nil);
-	SafeRetainAssign(_bouquetListController, nil);
-	SafeRetainAssign(_serviceListController, nil);
-	SafeRetainAssign(_datePickerController, nil);
-	SafeRetainAssign(_datePickerNavigationController, nil);
-	SafeRetainAssign(_locationListController, nil);
-	SafeRetainAssign(_filterViewController, nil);
-	SafeRetainAssign(_filterNavigationController, nil);
+	_afterEventNavigationController = nil;
+	_afterEventViewController = nil;
+	_bouquetListController = nil;
+	_serviceListController = nil;
+	_datePickerController = nil;
+	_datePickerNavigationController = nil;
+	_locationListController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -253,31 +250,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	return _datePickerController;
 }
 
-- (UIViewController *)filterNavigationController
-{
-	if(IS_IPAD())
-	{
-		if(_filterNavigationController == nil)
-		{
-			_filterNavigationController = [[UINavigationController alloc] initWithRootViewController:self.filterViewController];
-			_filterNavigationController.modalPresentationStyle = _filterViewController.modalPresentationStyle;
-			_filterNavigationController.modalTransitionStyle = _filterViewController.modalTransitionStyle;
-		}
-		return _filterNavigationController;
-	}
-	return self.filterViewController;
-}
-
-- (AutoTimerFilterViewController *)filterViewController
-{
-	if(_filterViewController == nil)
-	{
-		_filterViewController = [[AutoTimerFilterViewController alloc] init];
-		_filterViewController.delegate = self;
-	}
-	return _filterViewController;
-}
-
 - (UIViewController *)locationListController
 {
 	if(_locationListController == nil)
@@ -307,7 +279,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 {
 	if(_timer != newTimer)
 	{
-		SafeRetainAssign(_timer, newTimer);
+		_timer = newTimer;
 
 		// stop editing
 		_shouldSave = NO;
@@ -529,24 +501,24 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_titleField, nil);
-	SafeRetainAssign(_matchField, nil);
-	SafeRetainAssign(_maxdurationField, nil);
-	SafeRetainAssign(_timerEnabled, nil);
-	SafeRetainAssign(_exactSearch, nil);
-	SafeRetainAssign(_sensitiveSearch, nil);
-	SafeRetainAssign(_overrideAlternatives, nil);
-	SafeRetainAssign(_timeframeSwitch, nil);
-	SafeRetainAssign(_timerJustplay, nil);
-	SafeRetainAssign(_timespanSwitch, nil);
-	SafeRetainAssign(_maxdurationSwitch, nil);
+	_titleField = nil;
+	_matchField = nil;
+	_maxdurationField = nil;
+	_timerEnabled = nil;
+	_exactSearch = nil;
+	_sensitiveSearch = nil;
+	_overrideAlternatives = nil;
+	_timeframeSwitch = nil;
+	_timerJustplay = nil;
+	_timespanSwitch = nil;
+	_maxdurationSwitch = nil;
 
 	_titleCell.delegate = nil;
 	_matchCell.delegate = nil;
 	_maxdurationCell.delegate = nil;
-	SafeRetainAssign(_titleCell, nil);
-	SafeRetainAssign(_matchCell, nil);
-	SafeRetainAssign(_maxdurationCell, nil);
+	_titleCell = nil;
+	_matchCell = nil;
+	_maxdurationCell = nil;
 
 	[super viewDidUnload];
 }
@@ -851,96 +823,36 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 }
 
 #pragma mark -
-#pragma mark AutoTimerFilterDelegate
+#pragma mark AutoTimerFilterViewControlelr callback code
 #pragma mark -
 
-- (void)filterSelected:(NSString *)newFilter filterType:(autoTimerWhereType)filterType include:(BOOL)include oldFilter:(NSString *)oldFilter oldInclude:(BOOL)oldInclude
+- (void)setFilterCallback:(AutoTimerFilterViewController *)vc isIpad:(BOOL)isIpad
 {
-	if(newFilter == nil)
-		return;
-
-	switch(filterType)
-	{
-		case autoTimerWhereTitle:
+	vc.callback = ^(BOOL done, NSString *newFilter, autoTimerWhereType filterType, BOOL include, NSString * oldFilter, BOOL oldInclude){
+		if(done && newFilter)
 		{
+			// NOTE: this is build with include and exclude reversed from the other arrays of the same name
+			const NSMutableArray * filterTable[][2] = {
+				{_timer.excludeTitle, _timer.includeTitle},
+				{_timer.excludeShortdescription, _timer.includeShortdescription},
+				{_timer.excludeDescription, _timer.includeDescription},
+				{_timer.excludeDayOfWeek, _timer.includeDayOfWeek},
+			};
+			const NSInteger sectionTable[] = {filterTitleSection, filterSdescSection, filterDescSection, filterWeekdaySection};
 			if(oldFilter)
-			{
-				if(oldInclude)
-					[_timer.includeTitle removeObject:oldFilter];
-				else
-					[_timer.excludeTitle removeObject:oldFilter];
-			}
-
-			const NSMutableArray *list = include ? _timer.includeTitle : _timer.excludeTitle;
-			for(NSString *filter in list)
+				[filterTable[filterType][oldInclude] removeObject:oldFilter];
+			for(NSString *filter in filterTable[filterType][include])
 			{
 				if([filter isEqualToString:newFilter]) return;
 			}
-			[list addObject:newFilter];
-			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterTitleSection] withRowAnimation:UITableViewRowAnimationFade];
-			break;
+			[filterTable[filterType][include] addObject:newFilter];
+			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:sectionTable[filterType]] withRowAnimation:UITableViewRowAnimationFade];
 		}
-		case autoTimerWhereShortdescription:
-		{
-			if(oldFilter)
-			{
-				if(oldInclude)
-					[_timer.includeShortdescription removeObject:oldFilter];
-				else
-					[_timer.excludeShortdescription removeObject:oldFilter];
-			}
-
-			const NSMutableArray *list = include ? _timer.includeShortdescription : _timer.excludeShortdescription;
-			for(NSString *filter in list)
-			{
-				if([filter isEqualToString:newFilter]) return;
-			}
-			[list addObject:newFilter];
-			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterSdescSection] withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		}
-		case autoTimerWhereDescription:
-		{
-			if(oldFilter)
-			{
-				if(oldInclude)
-					[_timer.includeDescription removeObject:oldFilter];
-				else
-					[_timer.excludeDescription removeObject:oldFilter];
-			}
-
-			const NSMutableArray *list = include ? _timer.includeDescription : _timer.excludeDescription;
-			for(NSString *filter in list)
-			{
-				if([filter isEqualToString:newFilter]) return;
-			}
-			[list addObject:newFilter];
-			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterDescSection] withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		}
-		case autoTimerWhereDayOfWeek:
-		{
-			if(oldFilter)
-			{
-				if(oldInclude)
-					[_timer.includeDayOfWeek removeObject:oldFilter];
-				else
-					[_timer.excludeDayOfWeek removeObject:oldFilter];
-			}
-
-			const NSMutableArray *list = include ? _timer.includeDayOfWeek : _timer.excludeDayOfWeek;
-			for(NSString *filter in list)
-			{
-				if([filter isEqualToString:newFilter]) return;
-			}
-			[list addObject:newFilter];
-			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:filterWeekdaySection] withRowAnimation:UITableViewRowAnimationFade];
-			break;
-		}
-		default:
-			NSLog(@"invalid filter type");
-			break;
-	}
+		if(isIpad)
+			[self dismissModalViewControllerAnimated:YES];
+		else
+			[self.navigationController popToViewController:self animated:YES];
+	};
 }
 
 #pragma mark -
@@ -1218,38 +1130,17 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			cell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			break;
+		case filterTitleSection:
 		case filterSdescSection:
-		{
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-			if(self.editing)
-			{
-				if(row == 0)
-				{
-					cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
-					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
-					break;
-				}
-				else
-					--row;
-			}
-
-			if(row < _timer.includeShortdescription.count)
-			{
-				cell.textLabel.text = [_timer.includeShortdescription objectAtIndex:row];
-				cell.accessoryType = UITableViewCellAccessoryCheckmark;
-				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
-				break;
-			}
-
-			row -= _timer.includeShortdescription.count;
-			cell.textLabel.text = [_timer.excludeShortdescription objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryNone;
-			break;
-		}
 		case filterDescSection:
 		{
+			const NSMutableArray * filterTable[][2] = {
+				{_timer.includeTitle, _timer.excludeTitle},
+				{_timer.includeShortdescription, _timer.excludeShortdescription},
+				{_timer.includeDescription, _timer.excludeDescription},
+			};
+			const NSInteger aPos = indexPath.section - filterTitleSection; // TODO: adjust if moving around sections
+
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			if(self.editing)
@@ -1264,46 +1155,16 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					--row;
 			}
 
-			if(row < _timer.includeDescription.count)
+			if(row < filterTable[aPos][0].count)
 			{
-				cell.textLabel.text = [_timer.includeDescription objectAtIndex:row];
+				cell.textLabel.text = [filterTable[aPos][0] objectAtIndex:row];
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
 				break;
 			}
 
-			row -= _timer.includeDescription.count;
-			cell.textLabel.text = [_timer.excludeDescription objectAtIndex:row];
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryNone;
-			break;
-		}
-		case filterTitleSection:
-		{
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-			if(self.editing)
-			{
-				if(row == 0)
-				{
-					cell.textLabel.text = NSLocalizedStringFromTable(@"New Filter", @"AutoTimer", @"add new filter");
-					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
-					break;
-				}
-				else
-					--row;
-			}
-
-			if(row < _timer.includeTitle.count)
-			{
-				cell.textLabel.text = [_timer.includeTitle objectAtIndex:row];
-				cell.accessoryType = UITableViewCellAccessoryCheckmark;
-				cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
-				break;
-			}
-
-			row -= _timer.includeTitle.count;
-			cell.textLabel.text = [_timer.excludeTitle objectAtIndex:row];
+			row -= filterTable[aPos][0].count;
+			cell.textLabel.text = [filterTable[aPos][1] objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			break;
@@ -1435,94 +1296,45 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			break;
 		}
 		case filterTitleSection:
-		{
-			if(editingStyle == UITableViewCellEditingStyleInsert)
-			{
-				targetViewController = self.filterNavigationController;
-				self.filterViewController.filterType = autoTimerWhereTitle;
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
-			}
-			else
-			{
-				if(row < _timer.includeTitle.count)
-					[_timer.includeTitle removeObjectAtIndex:row];
-				else
-				{
-					row -= _timer.includeTitle.count;
-					[_timer.excludeTitle removeObjectAtIndex:row];
-				}
-
-				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-						  withRowAnimation:UITableViewRowAnimationFade];
-			}
-			break;
-		}
 		case filterSdescSection:
-		{
-			if(editingStyle == UITableViewCellEditingStyleInsert)
-			{
-				targetViewController = self.filterNavigationController;
-				self.filterViewController.filterType = autoTimerWhereShortdescription;
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
-			}
-			else
-			{
-				if(row < _timer.includeShortdescription.count)
-					[_timer.includeShortdescription removeObjectAtIndex:row];
-				else
-				{
-					row -= _timer.includeShortdescription.count;
-					[_timer.excludeShortdescription removeObjectAtIndex:row];
-				}
-
-				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-						  withRowAnimation:UITableViewRowAnimationFade];
-			}
-			break;
-		}
 		case filterDescSection:
-		{
-			if(editingStyle == UITableViewCellEditingStyleInsert)
-			{
-				targetViewController = self.filterNavigationController;
-				self.filterViewController.filterType = autoTimerWhereDescription;
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
-			}
-			else
-			{
-				if(row < _timer.includeDescription.count)
-					[_timer.includeDescription removeObjectAtIndex:row];
-				else
-				{
-					row -= _timer.includeDescription.count;
-					[_timer.excludeDescription removeObjectAtIndex:row];
-				}
-
-				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
-						  withRowAnimation:UITableViewRowAnimationFade];
-			}
-			break;
-		}
 		case filterWeekdaySection:
 		{
+			const NSMutableArray * filterTable[][2] = {
+				{_timer.includeTitle, _timer.excludeTitle},
+				{_timer.includeShortdescription, _timer.excludeShortdescription},
+				{_timer.includeDescription, _timer.excludeDescription},
+				{_timer.includeDayOfWeek, _timer.excludeDayOfWeek},
+			};
+			const NSInteger whereTable[] = {autoTimerWhereTitle, autoTimerWhereShortdescription, autoTimerWhereDescription, autoTimerWhereDayOfWeek};
+			const NSInteger aPos = indexPath.section - filterTitleSection; // TODO: adjust if moving around sections
+
 			if(editingStyle == UITableViewCellEditingStyleInsert)
 			{
-				targetViewController = self.filterNavigationController;
-				self.filterViewController.filterType = autoTimerWhereDayOfWeek;
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
+				const BOOL isIpad = IS_IPAD();
+				AutoTimerFilterViewController *vc = [[AutoTimerFilterViewController alloc] init];
+				vc.filterType = whereTable[aPos];
+				vc.currentText = nil;
+				vc.include = YES;
+				[self setFilterCallback:vc isIpad:isIpad];
+
+				if(isIpad)
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				}
+				else
+					targetViewController = vc;
 			}
 			else
 			{
-				if(row < _timer.includeDayOfWeek.count)
-					[_timer.includeDayOfWeek removeObjectAtIndex:row];
+				if(row < filterTable[aPos][0].count)
+					[filterTable[aPos][0] removeObjectAtIndex:row];
 				else
 				{
-					row -= _timer.includeDayOfWeek.count;
-					[_timer.excludeDayOfWeek removeObjectAtIndex:row];
+					row -= filterTable[aPos][0].count;
+					[filterTable[aPos][1] removeObjectAtIndex:row];
 				}
 
 				[tv deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
@@ -1644,98 +1456,50 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			targetViewController = self.locationListController;
 			break;
 		case filterTitleSection:
-		{
-			targetViewController = self.filterNavigationController;
-			self.filterViewController.filterType = autoTimerWhereTitle;
-			if(self.editing && row-- == 0)
-			{
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
-			}
-			else
-			{
-				if(row < _timer.includeTitle.count)
-				{
-					self.filterViewController.currentText = [_timer.includeTitle objectAtIndex:row];
-					self.filterViewController.include = YES;
-					break;
-				}
-
-				row -= _timer.includeTitle.count;
-				self.filterViewController.currentText = [_timer.excludeTitle objectAtIndex:row];
-				self.filterViewController.include = NO;
-			}
-			break;
-		}
 		case filterSdescSection:
-		{
-			targetViewController = self.filterNavigationController;
-			self.filterViewController.filterType = autoTimerWhereShortdescription;
-			if(self.editing && row-- == 0)
-			{
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
-			}
-			else
-			{
-				if(row < _timer.includeShortdescription.count)
-				{
-					self.filterViewController.currentText = [_timer.includeShortdescription objectAtIndex:row];
-					self.filterViewController.include = YES;
-					break;
-				}
-
-				row -= _timer.includeShortdescription.count;
-				self.filterViewController.currentText = [_timer.excludeShortdescription objectAtIndex:row];
-				self.filterViewController.include = NO;
-			}
-			break;
-		}
 		case filterDescSection:
-		{
-			targetViewController = self.filterNavigationController;
-			self.filterViewController.filterType = autoTimerWhereDescription;
-			if(self.editing && row-- == 0)
-			{
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
-			}
-			else
-			{
-				if(row < _timer.includeDescription.count)
-				{
-					self.filterViewController.currentText = [_timer.includeDescription objectAtIndex:row];
-					self.filterViewController.include = YES;
-					break;
-				}
-
-				row -= _timer.includeDescription.count;
-				self.filterViewController.currentText = [_timer.excludeDescription objectAtIndex:row];
-				self.filterViewController.include = NO;
-			}
-			break;
-		}
 		case filterWeekdaySection:
 		{
-			targetViewController = self.filterNavigationController;
-			self.filterViewController.filterType = autoTimerWhereDayOfWeek;
+			const NSMutableArray * filterTable[][2] = {
+				{_timer.includeTitle, _timer.excludeTitle},
+				{_timer.includeShortdescription, _timer.excludeShortdescription},
+				{_timer.includeDescription, _timer.excludeDescription},
+				{_timer.includeDayOfWeek, _timer.excludeDayOfWeek},
+			};
+			const NSInteger whereTable[] = {autoTimerWhereTitle, autoTimerWhereShortdescription, autoTimerWhereDescription, autoTimerWhereDayOfWeek};
+			const NSInteger aPos = indexPath.section - filterTitleSection; // TODO: adjust if moving around sections
+
+			const BOOL isIpad = IS_IPAD();
+			AutoTimerFilterViewController *vc = [[AutoTimerFilterViewController alloc] init];
+			vc.filterType = whereTable[aPos];
+			[self setFilterCallback:vc isIpad:isIpad];
+
+			if(isIpad)
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
+
 			if(self.editing && row-- == 0)
 			{
-				self.filterViewController.currentText = nil;
-				self.filterViewController.include = YES;
+				vc.currentText = nil;
+				vc.include = YES;
 			}
 			else
 			{
-				if(row < _timer.includeDayOfWeek.count)
+				if(row < filterTable[aPos][0].count)
 				{
-					self.filterViewController.currentText = [_timer.includeDayOfWeek objectAtIndex:row];
-					self.filterViewController.include = YES;
+					vc.currentText = [filterTable[aPos][0] objectAtIndex:row];
+					vc.include = YES;
 					break;
 				}
 
-				row -= _timer.includeDayOfWeek.count;
-				self.filterViewController.currentText = [_timer.excludeDayOfWeek objectAtIndex:row];
-				self.filterViewController.include = NO;
+				row -= filterTable[aPos][0].count;
+				vc.currentText = [filterTable[aPos][1] objectAtIndex:row];
+				vc.include = NO;
 			}
 			break;
 		}
@@ -1814,15 +1578,13 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	SafeRetainAssign(_afterEventNavigationController, nil);
-	SafeRetainAssign(_afterEventViewController, nil);
-	SafeRetainAssign(_bouquetListController, nil);
-	SafeRetainAssign(_serviceListController, nil);
-	SafeRetainAssign(_datePickerController, nil);
-	SafeRetainAssign(_datePickerNavigationController, nil);
-	SafeRetainAssign(_locationListController, nil);
-	SafeRetainAssign(_filterViewController, nil);
-	SafeRetainAssign(_filterNavigationController, nil);
+	_afterEventNavigationController = nil;
+	_afterEventViewController = nil;
+	_bouquetListController = nil;
+	_serviceListController = nil;
+	_datePickerController = nil;
+	_datePickerNavigationController = nil;
+	_locationListController = nil;
 
 	[super viewDidDisappear:animated];
 }
@@ -1834,7 +1596,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
-	SafeRetainAssign(_popoverButtonItem, barButtonItem);
+	_popoverButtonItem = barButtonItem;
 
 	// assign popover button if there is no left button assigned.
 	if(!self.navigationItem.leftBarButtonItem)
@@ -1848,7 +1610,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-	SafeRetainAssign(_popoverButtonItem, nil);
+	_popoverButtonItem = nil;
 	if([self.navigationItem.leftBarButtonItem isEqual:barButtonItem])
 	{
 		[self.navigationItem setLeftBarButtonItem:nil animated:YES];

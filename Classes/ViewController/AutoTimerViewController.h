@@ -12,7 +12,6 @@
 #import "Objects/Generic/AutoTimer.h" /* TimerProtocol */
 #import "CellTextField.h" /* CellTextField */
 
-#import "AutoTimerFilterViewController.h" /* AutoTimerFilterDelegate */
 #import "AfterEventViewController.h" /* AfterEventDelegate */
 #import "LocationListController.h" /* LocationListDelegate */
 #import "BouquetListController.h" /* BouquetListDelegate */
@@ -34,7 +33,6 @@
 													ServiceListDelegate, BouquetListDelegate,
 													AfterEventDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
-													AutoTimerFilterDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
 {
@@ -71,8 +69,6 @@
 	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
 	UIViewController *_locationListController; /*!< @brief Cached Location List. */
-	UIViewController *_filterNavigationController; /*!< @brief Navigation Controller of Filter View. */
-	AutoTimerFilterViewController *_filterViewController; /*!< @brief Cached Filter View. */
 }
 
 /*!

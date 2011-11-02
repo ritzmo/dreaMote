@@ -34,7 +34,7 @@
 
 @implementation AutoTimerFilterViewController
 
-@synthesize delegate = _delegate;
+@synthesize callback;
 
 /*!
  @brief Keyboard offset.
@@ -155,49 +155,27 @@
 /* cancel */
 - (void)cancelEdit:(id)sender
 {
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
-		[self.navigationController popViewControllerAnimated: YES];
+	if(callback)
+		callback(NO, nil, filterType, include, oldText, oldInclude);
 }
 
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(_delegate != nil)
+	if(callback)
 	{
-		SEL mySel = @selector(filterSelected:filterType:include:oldFilter:oldInclude:);
-		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
-		if(sig)
-		{
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			__unsafe_unretained NSString *text = nil;
+		__unsafe_unretained NSString *text = nil;
 
-			if(filterType == autoTimerWhereDayOfWeek)
-				text = currentText;
-			else
-				text = filterTextfield.text;
+		if(filterType == autoTimerWhereDayOfWeek)
+			text = currentText;
+		else
+			text = filterTextfield.text;
 
-			if([text isEqualToString:@""])
-				text = nil;
+		if([text isEqualToString:@""])
+			text = nil;
 
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:mySel];
-			[invocation setArgument:&text atIndex:2];
-			[invocation setArgument:&filterType atIndex:3];
-			[invocation setArgument:&include atIndex:4];
-			[invocation setArgument:&oldText atIndex:5];
-			[invocation setArgument:&oldInclude atIndex:6];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
+		callback(YES, text, filterType, include, oldText, oldInclude);
 	}
-
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
-		[self.navigationController popViewControllerAnimated:YES];
 }
 
 /* rotate with device */
