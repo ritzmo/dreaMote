@@ -15,8 +15,7 @@
 
 @implementation SwipeTableView
 
-@synthesize lastSwipe = _lastSwipe;
-@synthesize lastTouch = _lastTouch;
+@synthesize lastSwipe, lastTouch;
 
 - (id)initWithFrame:(CGRect)frame style:(UITableViewStyle)style
 {
@@ -66,23 +65,23 @@
 
 - (void)swipeLeftAction:(UISwipeGestureRecognizer *)gesture
 {
-	_lastSwipe = oneFinger;
-	_lastSwipe |= swipeTypeLeft;
+	lastSwipe = oneFinger;
+	lastSwipe |= swipeTypeLeft;
 	[self swipeAction:gesture];
 }
 
 - (void)swipeRightAction:(UISwipeGestureRecognizer *)gesture
 {
-	_lastSwipe = oneFinger;
-	_lastSwipe |= swipeTypeRight;
+	lastSwipe = oneFinger;
+	lastSwipe |= swipeTypeRight;
 	[self swipeAction:gesture];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	const UITouch *touch = [[event allTouches] anyObject];
-	_lastTouch = [touch locationInView: self];
-	_lastSwipe = swipeTypeNone;
+	lastTouch = [touch locationInView: self];
+	lastSwipe = swipeTypeNone;
 
 	[super touchesBegan:touches withEvent:event];
 }

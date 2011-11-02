@@ -70,7 +70,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 - (void)setPackage:(Package *)newPackage
 {
 	if(package == newPackage) return;
-	SafeRetainAssign(package, newPackage);
+	package = newPackage;
 
 	self.textLabel.text = package.name;
 	versionLabel.text = package.version;

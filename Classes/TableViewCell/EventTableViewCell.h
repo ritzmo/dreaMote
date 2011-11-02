@@ -25,28 +25,12 @@ extern NSString *kEventCell_ID;
 	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
 	UILabel *_eventServiceLabel; /*!< @brief Service Label. */
 	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
-	BOOL _showService; /*!< @brief Display service name? */
 }
 
 /*!
  @brief Event.
  */
 @property (nonatomic, strong) NSObject<EventProtocol> *event;
-
-/*!
- @brief Name Label.
- */
-@property (nonatomic, strong) UILabel *eventNameLabel;
-
-/*!
- @brief Time Label.
- */
-@property (nonatomic, strong) UILabel *eventTimeLabel;
-
-/*!
- @brief Service name label.
- */
-@property (nonatomic, strong) UILabel *eventServiceLabel;
 
 /*!
  @brief Date Formatter.

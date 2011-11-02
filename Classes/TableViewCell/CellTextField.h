@@ -53,12 +53,15 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 extern NSString *kCellTextField_ID;
 
 @interface CellTextField : EditableTableViewCell <UITextFieldDelegate>
-{
-	CGFloat fixedWidth; /*!< @brief Fixed width of view. */
-    UITextField *view;
-}
 
+/*!
+ @brief Fixed width of view.
+ */
 @property (nonatomic, assign) CGFloat fixedWidth;
+
+/*!
+ @brief The textfield we show.
+ */
 @property (nonatomic, strong) UITextField *view;
 
 @end

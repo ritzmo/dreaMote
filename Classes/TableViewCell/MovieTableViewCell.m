@@ -28,9 +28,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 @implementation MovieTableViewCell
 
-@synthesize eventNameLabel = _eventNameLabel;
-@synthesize eventTimeLabel = _eventTimeLabel;
-@synthesize formatter = _formatter;
+@synthesize formatter;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -73,14 +71,14 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 {
 	// Abort if same movie assigned
 	if(_movie == newMovie) return;
-	SafeRetainAssign(_movie, newMovie);
+	_movie = newMovie;
 
 	if(!newMovie.valid)
 		self.accessoryType = UITableViewCellAccessoryNone;
 
 	// Set new label contents
 	_eventNameLabel.text = newMovie.title;
-	_eventTimeLabel.text = [_formatter fuzzyDate: newMovie.time];
+	_eventTimeLabel.text = [formatter fuzzyDate:newMovie.time];
 
 	// Redraw
 	[self setNeedsDisplay];

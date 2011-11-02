@@ -28,11 +28,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 @implementation EventTableViewCell
 
-@synthesize eventNameLabel = _eventNameLabel;
-@synthesize eventTimeLabel = _eventTimeLabel;
-@synthesize eventServiceLabel = _eventServiceLabel;
-@synthesize formatter = _formatter;
-@synthesize showService = _showService;
+@synthesize formatter, showService;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -40,7 +36,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		const UIView *myContentView = self.contentView;
-		_showService = NO;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -84,7 +79,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 {
 	// Same event, no need to change anything
 	if(_event == newEvent) return;
-	SafeRetainAssign(_event, newEvent);
+	_event = newEvent;
 
 	// Check if cache already generated
 	if(newEvent.timeString == nil)
@@ -101,7 +96,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	// Set Labels
 	_eventNameLabel.text = newEvent.title;
 	_eventTimeLabel.text = newEvent.timeString;
-	if(_showService)
+	if(showService)
 	{
 		@try{
 			_eventServiceLabel.text = newEvent.service.sname;

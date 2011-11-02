@@ -29,14 +29,4 @@ extern NSString *kMainCell_ID;
  */
 @property (nonatomic, strong) NSDictionary *dataDictionary;
 
-/*!
- @brief Name Label.
- */
-@property (nonatomic, strong) UILabel *nameLabel;
-
-/*!
- @brief Explanation Label.
- */
-@property (nonatomic, strong) UILabel *explainLabel;
-
 @end

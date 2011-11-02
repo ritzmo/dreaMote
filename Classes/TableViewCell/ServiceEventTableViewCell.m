@@ -26,9 +26,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 @implementation ServiceEventTableViewCell
 
-@synthesize formatter = _formatter;
-@synthesize loadPicon = _loadPicon;
-@synthesize serviceNameLabel = _serviceNameLabel;
+@synthesize formatter, loadPicon;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -79,7 +77,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		else // tested for en_US
 			timeWidth = (IS_IPAD()) ? 150 : 110;
 
-		_loadPicon = YES;
+		loadPicon = YES;
 	}
 
 	return self;
@@ -128,8 +126,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			if(new.timeString == nil)
 			{
 				// Not generated, do so...
-				const NSString *begin = [_formatter stringFromDate: beginDate];
-				const NSString *end = [_formatter stringFromDate: new.end];
+				const NSString *begin = [formatter stringFromDate:beginDate];
+				const NSString *end = [formatter stringFromDate:new.end];
 				if(begin && end)
 					new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 			}
@@ -150,7 +148,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 		if(serviceValid)
 		{
-			if(service.piconLoaded || _loadPicon)
+			if(service.piconLoaded || loadPicon)
 				self.imageView.image = service.picon;
 			self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		}
@@ -183,8 +181,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		if(new.timeString == nil)
 		{
 			// Not generated, do so...
-			const NSString *begin = [_formatter stringFromDate: beginDate];
-			const NSString *end = [_formatter stringFromDate: new.end];
+			const NSString *begin = [formatter stringFromDate:beginDate];
+			const NSString *end = [formatter stringFromDate:new.end];
 			if(begin && end)
 				new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 		}

@@ -29,10 +29,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 @implementation TimerTableViewCell
 
-@synthesize serviceNameLabel = _serviceNameLabel;
-@synthesize timerNameLabel = _timerNameLabel;
-@synthesize timerTimeLabel = _timerTimeLabel;
-@synthesize formatter = _formatter;
+@synthesize formatter;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -89,10 +86,10 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	if(newTimer.timeString == nil)
 	{
 		// It's not, create it
-		[_formatter setDateStyle:NSDateFormatterMediumStyle];
-		const NSString *begin = [_formatter fuzzyDate: newTimer.begin];
-		[_formatter setDateStyle:NSDateFormatterNoStyle];
-		const NSString *end = [_formatter stringFromDate: newTimer.end];
+		[formatter setDateStyle:NSDateFormatterMediumStyle];
+		const NSString *begin = [formatter fuzzyDate:newTimer.begin];
+		[formatter setDateStyle:NSDateFormatterNoStyle];
+		const NSString *end = [formatter stringFromDate:newTimer.end];
 		if(begin && end)
 			newTimer.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}

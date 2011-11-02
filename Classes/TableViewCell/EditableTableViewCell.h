@@ -51,10 +51,6 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 @protocol EditableTableViewCellDelegate;
 
 @interface EditableTableViewCell : UITableViewCell
-{
-    id <EditableTableViewCellDelegate> __unsafe_unretained delegate;
-    BOOL isInlineEditing;
-}
 
 // Exposes the delegate property to other objects.
 @property (nonatomic, unsafe_unretained) id <EditableTableViewCellDelegate> delegate;

@@ -25,28 +25,12 @@ extern NSString *kTimerCell_ID;
 	UILabel *_serviceNameLabel; /*!< @brief Service Label. */
 	UILabel *_timerNameLabel; /*!< @brief Name Label. */
 	UILabel *_timerTimeLabel; /*!< @brief Time Label. */
-	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
 /*!
  @brief Timer.
  */
 @property (nonatomic, strong) NSObject<TimerProtocol> *timer;
-
-/*!
- @brief Service Label.
- */
-@property (nonatomic, strong) UILabel *serviceNameLabel;
-
-/*!
- @brief Name Label.
- */
-@property (nonatomic, strong) UILabel *timerNameLabel;
-
-/*!
- @brief Time Label.
- */
-@property (nonatomic, strong) UILabel *timerTimeLabel;
 
 /*!
  @brief Date Formatter instance.

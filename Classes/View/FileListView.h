@@ -23,10 +23,8 @@
 	BOOL _isPlaylist; /*!< @brief Is playlist? */
 	NSInteger _playing; /*!< @brief Item marked as currently playing. */
 
-	BOOL _reloading; /*!< @brief Currently reloading. */
 	BaseXMLReader *_xmlReader; /*!< @brief XML Reader. */
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
-	UIViewController<FileListDelegate> *_fileDelegate; /*!< @brief Delegate. */
 	NSMutableArray *_files; /*!< @brief Current List of Files. */
 	NSMutableArray *_selected; /*!< @brief List of selected Files. */
 }
@@ -58,8 +56,15 @@
  */
 - (BOOL)selectPlayingByTitle:(NSString *)filename;
 
-@property (nonatomic, strong) UIViewController<FileListDelegate> *fileDelegate;
+/*!
+ @brief Delegate.
+ */
+@property (nonatomic, unsafe_unretained) UIViewController<FileListDelegate> *fileDelegate;
 @property (nonatomic) BOOL isPlaylist;
+
+/*!
+ @brief Currently reloading?
+ */
 @property (nonatomic) BOOL reloading;
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, readonly) NSMutableArray *files;

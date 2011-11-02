@@ -28,20 +28,13 @@ extern NSString *kServiceEventCell_ID;
 	UILabel *_nowTimeLabel; /*!< @brief Current Event Time Label. */
 	UILabel *_nextLabel; /*!< @brief Next Event Label. */
 	UILabel *_nextTimeLabel; /*!< @brief Current Event Time Label. */
-	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 	NSInteger timeWidth;
-	BOOL _loadPicon; /*!< @brief Load Picons internally. */
 }
 
 /*!
  @brief Date Formatter.
  */
 @property (nonatomic, strong) NSDateFormatter *formatter;
-
-/*!
- @brief Name Label.
- */
-@property (nonatomic, strong) UILabel *serviceNameLabel;
 
 /*!
  @brief Load Picons internally?

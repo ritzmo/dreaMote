@@ -32,8 +32,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 @implementation MultiEPGTableViewCell
 
-@synthesize serviceNameLabel = _serviceNameLabel;
-@synthesize begin = _begin;
+@synthesize begin;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -105,7 +104,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		[_lines removeAllObjects];
 		for(NSObject<EventProtocol> *event in _events)
 		{
-			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
+			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:begin];
 			[_lines addObject:[NSNumber numberWithFloat:left]];
 		}
 
@@ -196,9 +195,9 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	{
 		// check if this is just the last event so we had nothing to compare it to
 		NSObject<EventProtocol> *lastEvent = ((NSObject<EventProtocol> *)[_events lastObject]);
-		if([lastEvent.begin timeIntervalSinceDate:_begin] == lastBegin)
+		if([lastEvent.begin timeIntervalSinceDate:begin] == lastBegin)
 		{
-			const NSTimeInterval lastEnd = [lastEvent.end timeIntervalSinceDate:_begin];
+			const NSTimeInterval lastEnd = [lastEvent.end timeIntervalSinceDate:begin];
 			if(lastEnd < _secondsSinceBegin)
 				rectX = NSNotFound;
 			else

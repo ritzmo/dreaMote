@@ -24,7 +24,6 @@ extern NSString *kMultiEPGCell_ID;
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
 	NSArray *_events; /*!< @brief Matching Events. */
 	NSMutableArray *_lines; /*!< @brief Positions of vertical Lines. */
-	NSDate *_begin; /*!< @brief Begin of currently displayed timeframe. */
 	UILabel *_serviceNameLabel; /*!< @brief Servicename Label. */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Seconds since "_begin". */
 }
@@ -36,11 +35,6 @@ extern NSString *kMultiEPGCell_ID;
  @return Event at point or nil if invalid.
  */
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point;
-
-/*!
- @brief Servicename Label.
- */
-@property (nonatomic, strong) UILabel *serviceNameLabel;
 
 /*!
  @brief Service.

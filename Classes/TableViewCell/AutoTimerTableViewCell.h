@@ -30,9 +30,4 @@ extern NSString *kAutoTimerCell_ID;
  */
 @property (nonatomic, strong) AutoTimer *timer;
 
-/*!
- @brief Name Label.
- */
-@property (nonatomic, strong) UILabel *timerNameLabel;
-
 @end

@@ -22,13 +22,12 @@ extern NSString *kServiceCell_ID;
 @private	
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
 	UILabel *_serviceNameLabel; /*!< @brief Name Label. */
-	BOOL _loadPicon; /*!< @brief Load Picons internally. */
 }
 
 /*!
  @brief Name Label.
  */
-@property (nonatomic, strong) UILabel *serviceNameLabel;
+@property (nonatomic, readonly) UILabel *serviceNameLabel;
 
 /*!
  @brief Service.

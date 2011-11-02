@@ -17,8 +17,6 @@ NSString *kMainCell_ID = @"MainCell_ID";
 @implementation MainTableViewCell
 
 @synthesize dataDictionary = _dataDictionary;
-@synthesize nameLabel = _nameLabel;
-@synthesize explainLabel = _explainLabel;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

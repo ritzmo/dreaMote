@@ -55,7 +55,8 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 
 @implementation CellTextField
 
-@synthesize fixedWidth, view;
+@synthesize fixedWidth;
+@synthesize view;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
