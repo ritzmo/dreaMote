@@ -831,7 +831,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		if(done && newFilter)
 		{
 			// NOTE: this is build with include and exclude reversed from the other arrays of the same name
-			const NSMutableArray * filterTable[][2] = {
+			const __unsafe_unretained NSMutableArray * filterTable[][2] = {
 				{_timer.excludeTitle, _timer.includeTitle},
 				{_timer.excludeShortdescription, _timer.includeShortdescription},
 				{_timer.excludeDescription, _timer.includeDescription},
@@ -1133,7 +1133,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		case filterSdescSection:
 		case filterDescSection:
 		{
-			const NSMutableArray * filterTable[][2] = {
+			const __unsafe_unretained NSMutableArray * filterTable[][2] = {
 				{_timer.includeTitle, _timer.excludeTitle},
 				{_timer.includeShortdescription, _timer.excludeShortdescription},
 				{_timer.includeDescription, _timer.excludeDescription},
@@ -1299,7 +1299,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		case filterDescSection:
 		case filterWeekdaySection:
 		{
-			const NSMutableArray * filterTable[][2] = {
+			const __unsafe_unretained NSMutableArray * filterTable[][2] = {
 				{_timer.includeTitle, _timer.excludeTitle},
 				{_timer.includeShortdescription, _timer.excludeShortdescription},
 				{_timer.includeDescription, _timer.excludeDescription},
@@ -1459,7 +1459,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		case filterDescSection:
 		case filterWeekdaySection:
 		{
-			const NSMutableArray * filterTable[][2] = {
+			const __unsafe_unretained NSMutableArray * filterTable[][2] = {
 				{_timer.includeTitle, _timer.excludeTitle},
 				{_timer.includeShortdescription, _timer.excludeShortdescription},
 				{_timer.includeDescription, _timer.excludeDescription},
