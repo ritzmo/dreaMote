@@ -13,23 +13,7 @@
 
 @implementation GenericTimer
 
-@synthesize eit = _eit;
-@synthesize begin = _begin;
-@synthesize end = _end;
-@synthesize title = _title;
-@synthesize tdescription = _tdescription;
-@synthesize disabled = _disabled;
-@synthesize repeated = _repeated;
-@synthesize repeatcount = _repeatcount;
-@synthesize justplay = _justplay;
-@synthesize service = _service;
-@synthesize sref = _sref;
-@synthesize sname = _sname;
-@synthesize state = _state;
-@synthesize afterevent = _afterevent;
-@synthesize location = _location;
-@synthesize valid = _isValid;
-@synthesize timeString = _timeString;
+@synthesize eit, begin, end, title, tdescription, disabled, repeated, repeatcount, justplay, service, sref, sname, state, afterevent, location, valid, timeString;
 
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
@@ -93,9 +77,7 @@
 	if((self = [super init]))
 	{
 		_duration = -1;
-		_service = nil;
-		_isValid = YES;
-		_timeString = nil;
+		valid = YES;
 	}
 	return self;
 }
@@ -104,26 +86,25 @@
 {
 	if((self = [super init]))
 	{
-		_begin = [timer.begin copy];
-		_end = [timer.end copy];
-		_eit = [timer.eit copy];
-		_title = [timer.title copy];
-		_tdescription = [timer.tdescription copy];
-		_disabled = timer.disabled;
-		_justplay = timer.justplay;
-		_service = [timer.service copy];
-		_repeated = timer.repeated;
-		_repeatcount = timer.repeatcount;
-		_state = timer.state;
+		begin = [timer.begin copy];
+		end = [timer.end copy];
+		eit = [timer.eit copy];
+		title = [timer.title copy];
+		tdescription = [timer.tdescription copy];
+		disabled = timer.disabled;
+		justplay = timer.justplay;
+		service = [timer.service copy];
+		repeated = timer.repeated;
+		repeatcount = timer.repeatcount;
+		state = timer.state;
 		_duration = -1;
-		_isValid = timer.valid;
-		_afterevent = timer.afterevent;
-		_location = [timer.location copy];
+		valid = timer.valid;
+		afterevent = timer.afterevent;
+		location = [timer.location copy];
 	}
 
 	return self;
 }
-
 
 - (NSString *)description
 {
@@ -132,66 +113,66 @@
 
 - (NSString *)getStateString
 {
-	return [NSString stringWithFormat: @"%d", _state];
+	return [NSString stringWithFormat:@"%d", state];
 }
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	SafeRetainAssign(_timeString, nil);
+	self.timeString = nil;
 
-	SafeRetainAssign(_begin, [NSDate dateWithTimeIntervalSince1970:[newBegin doubleValue]]);
+	self.begin = [NSDate dateWithTimeIntervalSince1970:[newBegin doubleValue]];
 	if(_duration != -1){
-		SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:_duration]);
+		self.end = [begin dateByAddingTimeInterval:_duration];
 		_duration = -1;
 	}
 }
 
 - (void)setEndFromString: (NSString *)newEnd
 {
-	SafeRetainAssign(_timeString, nil);
-	SafeRetainAssign(_end, [NSDate dateWithTimeIntervalSince1970:[newEnd doubleValue]]);
+	self.timeString = nil;
+	self.end = [NSDate dateWithTimeIntervalSince1970:[newEnd doubleValue]];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	SafeRetainAssign(_timeString, nil);
+	self.timeString = nil;
 
-	if(_begin == nil) {
+	if(begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;
 	}
-	SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:[newDuration doubleValue]]);
+	self.end = [begin dateByAddingTimeInterval:[newDuration doubleValue]];
 }
 
 - (void)setSref: (NSString *)newSref
 {
-	if(_sname)
+	if(sname)
 	{
-		_service = [[GenericService alloc] init];
-		_service.sref = newSref;
-		_service.sname = _sname;
+		self.service = [[GenericService alloc] init];
+		service.sref = newSref;
+		service.sname = sname;
 
-		SafeRetainAssign(_sname, nil);
+		self.sname = nil;
 	}
 	else
 	{
-		SafeRetainAssign(_sref, newSref);
+		self.sref = newSref;
 	}
 }
 
 - (void)setSname: (NSString *)newSname
 {
-	if(_sref)
+	if(sref)
 	{
-		_service = [[GenericService alloc] init];
-		_service.sref = _sref;
-		_service.sname = newSname;
+		self.service = [[GenericService alloc] init];
+		service.sref = sref;
+		service.sname = newSname;
 
-		SafeRetainAssign(_sref, nil);
+		self.sref = nil;
 	}
 	else
 	{
-		SafeRetainAssign(_sname, newSname);
+		self.sname = newSname;
 	}
 }
 

@@ -12,13 +12,6 @@
  @brief Generic Signal.
  */
 @interface GenericSignal : NSObject
-{
-@private
-	float _snrdb; /*!< SNR in dB */
-	NSInteger _snr; /*!< SNR in % */
-	NSInteger _ber; /*!< BER */
-	NSInteger _agc; /*!< AGC in % */
-}
 
 /*!
  @brief SNR in dB.

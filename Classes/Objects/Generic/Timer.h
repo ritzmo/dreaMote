@@ -60,24 +60,7 @@ enum neutrinoTimerRepeat {
 @interface GenericTimer : NSObject <TimerProtocol>
 {
 @private
-	NSString *_location; /*!< @brief Record location. */
-	NSString *_eit; /*!< @brief Event Id. */
-	NSDate *_begin; /*!< @brief Begin. */
-	NSDate *_end; /*!< @brief End. */
-	BOOL _disabled; /*!< @brief Disabled? */
-	NSString *_title; /*!< @brief Title. */
-	NSString *_tdescription; /*!< @brief Description. */
-	NSInteger _repeated; /*!< @brief Repeated. */
-	NSInteger _repeatcount; /*!< @brief ??? */
-	BOOL _justplay; /*!< @brief Justplay? */
-	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
-	NSString *_sref; /*!< @brief Service Reference. */
-	NSString *_sname; /*!< @brief Service Name. */
-	NSInteger _state; /*!< @brief State. */
-	NSInteger _afterevent; /*!< @brief After Event Action. */
 	double _duration; /*!< @brief Event Duration. */
-	BOOL _isValid; /*!< @brief Valid or Fake Timer? */
-	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
 }
 
 /*!

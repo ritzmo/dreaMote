@@ -8,16 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "LocationProtocol.h"
+#import <Objects/LocationProtocol.h>
 
 /*!
  @brief Generic Location.
  */
 @interface GenericLocation : NSObject <LocationProtocol>
-{
-@private	
-	NSString *_fullpath; /*!< @brief Full path. */
-	BOOL _isValid; /*!< @brief Is this a valid location? */
-}
 
 @end

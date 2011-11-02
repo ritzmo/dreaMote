@@ -17,13 +17,6 @@ typedef enum
 } installedState;
 
 @interface Package : NSObject
-{
-@private
-	NSString *name;
-	NSString *version;
-	NSString *upgradeVersion;
-	installedState installed;
-}
 
 /*!
  @brief Generate a new package from given string.

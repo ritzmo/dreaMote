@@ -9,23 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface EPGRefreshSettings : NSObject
-{
-@private
-    BOOL enabled;
-	NSDate *begin;
-	NSDate *end;
-	NSInteger interval;
-	NSInteger delay_standby;
-	NSInteger lastscan;
-	BOOL inherit_autotimer;
-	BOOL afterevent;
-	BOOL force;
-	BOOL wakeup;
-	BOOL parse_autotimer;
-	NSString *adapter;
-	BOOL canDoBackgroundRefresh;
-	BOOL hasAutoTimer;
-}
 
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) NSDate *begin;

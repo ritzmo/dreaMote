@@ -27,7 +27,6 @@
 	return self;
 }
 
-
 - (BOOL)isValid
 {
 	// require title and artist for a valid service, one of them has to be non-empty

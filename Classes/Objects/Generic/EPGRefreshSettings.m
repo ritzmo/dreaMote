@@ -12,7 +12,6 @@
 
 @synthesize enabled, begin, end, interval, delay_standby, lastscan, inherit_autotimer, afterevent, force, wakeup, parse_autotimer, adapter, canDoBackgroundRefresh, hasAutoTimer;
 
-
 - (id)init
 {
 	if((self = [super init]))

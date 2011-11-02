@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ServiceProtocol.h"
+#import <Objects/ServiceProtocol.h>
 
 /*!
  @brief Generic Service.
@@ -16,13 +16,10 @@
 @interface GenericService : NSObject <ServiceProtocol>
 {
 @private
-	NSString *_sref; /*!< @brief Reference. */
-	NSString *_sname; /*!< @brief Name. */
 	BOOL _valid; /*!< @brief Valid service?. */
 	/* Picons */
 	BOOL _calculatedPicon; /*!< @brief Did we try to load the picon before? */
 	UIImage *_picon; /*!< @brief Picon. */
-	NSString *_piconName; /*!< @brief Name for Picon. */
 }
 
 /*!

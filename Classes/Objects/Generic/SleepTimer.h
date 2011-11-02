@@ -15,14 +15,6 @@ typedef enum
 } sleeptimerActions;
 
 @interface SleepTimer : NSObject
-{
-@private
-	sleeptimerActions action;
-	BOOL enabled;
-	NSString *text;
-	NSUInteger time;
-	BOOL valid;
-}
 
 @property (nonatomic, assign) sleeptimerActions action;
 @property (nonatomic, assign) BOOL enabled;

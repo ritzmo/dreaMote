@@ -12,33 +12,28 @@
 
 @implementation GenericService
 
-@synthesize sname = _sname;
-@synthesize piconName = _piconName;
+@synthesize sname, sref, piconName;
 
-- (id)initWithService:(NSObject<ServiceProtocol> *)service
+- (id)init
 {
 	if((self = [super init]))
 	{
-		_sref = [service.sref copy];
-		_sname = [service.sname copy];
-		_valid = service.valid;
-		_piconName = [service.piconName copy];
+		_valid = YES;
 	}
-
 	return self;
 }
 
-
-- (NSString *)sref
+- (id)initWithService:(NSObject<ServiceProtocol> *)service
 {
-	return _sref;
-}
+	if((self = [self init]))
+	{
+		self.sref = [service.sref copy];
+		self.sname = [service.sname copy];
+		_valid = service.valid;
+		self.piconName = [service.piconName copy];
+	}
 
-- (void)setSref:(NSString *)sref
-{
-	if(sref == _sref) return;
-	SafeRetainAssign(_sref, sref);
-	_valid = YES;
+	return self;
 }
 
 - (BOOL)isValid
@@ -60,27 +55,27 @@
 {
 	if(!_calculatedPicon)
 	{
-		if(_piconName)
+		if(self.piconName)
 		{
-			NSRange piconRange = [_piconName rangeOfString:@"/" options:NSBackwardsSearch];
+			NSRange piconRange = [self.piconName rangeOfString:@"/" options:NSBackwardsSearch];
 			if(piconRange.location != NSNotFound)
 			{
-				piconRange.length = [_piconName length] - piconRange.location - 1;
+				piconRange.length = [self.piconName length] - piconRange.location - 1;
 				piconRange.location += 1;
-				NSString *basename = [_piconName substringWithRange:piconRange];
-				NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-				_picon = [UIImage imageNamed:piconName];
+				NSString *basename = [self.piconName substringWithRange:piconRange];
+				NSString *fullpath = [[NSString alloc] initWithFormat:kPiconPath, basename];
+				_picon = [UIImage imageNamed:fullpath];
 			}
 		}
 		else
 		{
-			NSInteger length = [_sref length]+1;
-			char *sref = malloc(length);
-			if(!sref)
+			NSInteger length = [self.sref length]+1;
+			char *cSref = malloc(length);
+			if(!cSref)
 				return nil;
-			if(![_sref getCString:sref maxLength:length encoding:NSASCIIStringEncoding])
+			if(![self.sref getCString:cSref maxLength:length encoding:NSASCIIStringEncoding])
 			{
-				free(sref);
+				free(cSref);
 				return nil;
 			}
 			NSInteger i = length-2;
@@ -90,31 +85,31 @@
 			 */
 			for(; i > 18; --i)
 			{
-				if(sref[i] == ':')
+				if(cSref[i] == ':')
 				{
 					// rstrip(':')
 					do
 					{
 						length = i;
-						sref[i] = '\0';
+						cSref[i] = '\0';
 						--i;
-					} while(sref[i] == ':');
+					} while(cSref[i] == ':');
 
 					// skip one character from last ':'
 					for(--i; i > 0; --i)
 					{
-						if(sref[i] == ':')
+						if(cSref[i] == ':')
 						{
-							sref[i] = '_';
+							cSref[i] = '_';
 							--i; // there has to be at least one character != ':' before this one
 						}
 					}
 					break;
 				}
 			}
-			NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
-			NSString *piconName = [[NSString alloc] initWithFormat:kPiconPathPng, basename];
-			_picon = [UIImage imageNamed:piconName];
+			NSString *basename = [[NSString alloc] initWithBytesNoCopy:cSref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
+			NSString *fullpath = [[NSString alloc] initWithFormat:kPiconPathPng, basename];
+			_picon = [UIImage imageNamed:fullpath];
 		}
 
 		_calculatedPicon = YES;

@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../EventProtocol.h"
-#import "../TimerProtocol.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/TimerProtocol.h>
 
 typedef enum
 {
@@ -43,21 +43,6 @@ typedef enum
 @interface AutoTimer : NSObject
 {
 @private
-	NSString *name;
-	NSString *match;
-	BOOL enabled;
-	NSInteger idno;
-	NSDate *from;
-	NSDate *to;
-	NSInteger offsetBefore;
-	NSInteger offsetAfter;
-	NSString *encoding;
-	autoTimerSearchType searchType;
-	autoTimerSearchCase searchCase;
-	BOOL overrideAlternatives;
-	NSMutableArray *services;
-	NSMutableArray *bouquets;
-	NSArray *tags;
 	NSMutableArray *includeTitle;
 	NSMutableArray *includeShortdescription;
 	NSMutableArray *includeDescription;
@@ -66,12 +51,6 @@ typedef enum
 	NSMutableArray *excludeShortdescription;
 	NSMutableArray *excludeDescription;
 	NSMutableArray *excludeDayOfWeek;
-	NSInteger maxduration;
-	NSString *location;
-	BOOL justplay;
-	NSDate *before;
-	NSDate *after;
-	autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 	enum afterEvent afterEventAction; // TODO: support extended syntax
 	// TODO: add counter
 }

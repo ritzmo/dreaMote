@@ -10,8 +10,7 @@
 
 @implementation GenericVolume
 
-@synthesize current = _current;
-@synthesize ismuted = _ismuted;
+@synthesize current, ismuted;
 
 - (NSString *)description
 {
@@ -20,12 +19,12 @@
 
 - (void)setCurrentFromString: (NSString *)newCurrent
 {
-	_current = [newCurrent integerValue];
+	self.current = [newCurrent integerValue];
 }
 
 - (void)setIsmutedFromString: (NSString *)newMuted
 {
-	_ismuted = [newMuted isEqualToString: @"True"];
+	self.ismuted = [newMuted isEqualToString:@"True"];
 }
 
 @end

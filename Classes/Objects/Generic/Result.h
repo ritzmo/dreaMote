@@ -9,11 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface Result : NSObject {
-@private
-	BOOL _result; /*!< @brief Did the request succeed? */
-	NSString *_resulttext; /*!< @brief Textual representation or explanation of result. */
-}
+@interface Result : NSObject
 
 /*!
  @brief Create a new result instance.

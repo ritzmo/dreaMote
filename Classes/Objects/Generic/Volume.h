@@ -7,17 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Result.h"
+#import <Objects/Generic/Result.h>
 
 /*!
  @brief Generic Volume.
  */
 @interface GenericVolume : Result
-{
-@private
-	NSInteger _current; /*!< @brief Current audio level. */
-	BOOL _ismuted; /*!< @brief Audio currently muted? */
-}
 
 /*!
  @brief Current audio level.

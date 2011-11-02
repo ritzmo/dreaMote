@@ -8,19 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "FileProtocol.h"
+#import <Objects/FileProtocol.h>
 
 /*!
  @brief Generic File.
  */
 @interface GenericFile : NSObject <FileProtocol>
-{
-@private
-	NSString *_sref; /*!< @brief Reference. */
-	BOOL _isDirectory; /*!< @brief Directory?. */
-	NSString *_root; /*!< @brief Root. */
-	BOOL _valid; /*!< @brief Valid file? */
-}
 
 /*!
  @brief Init with existing fie.

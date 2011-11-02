@@ -16,7 +16,7 @@
 /*!
  @brief Full path
  */
-@property (nonatomic, retain) NSString *fullpath;
+@property (nonatomic, strong) NSString *fullpath;
 
 /*!
  @brief Valid or Fake Location.

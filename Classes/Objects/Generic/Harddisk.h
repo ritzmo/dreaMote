@@ -9,17 +9,22 @@
 #import <Foundation/Foundation.h>
 
 @interface Harddisk : NSObject
-{
-@private
-	NSString *_capacity; /*!< @brief Capacity. */
-	NSString *_free; /*!< @brief Free Space. */
-	NSString *_model; /*!< @brief Model. */
-}
 
 - (id)initWithModel:(NSString *)model andCapacity:(NSString *)capacity andFree:(NSString *)free;
 
+/*!
+ @brief Capacity.
+ */
 @property (nonatomic, strong) NSString *capacity;
+
+/*!
+ @brief Free space.
+ */
 @property (nonatomic, strong) NSString *free;
+
+/*!
+ @brief Drive Model.
+ */
 @property (nonatomic, strong) NSString *model;
 
 @end

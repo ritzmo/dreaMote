@@ -16,32 +16,32 @@
 /*!
  @brief title.
  */
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, strong) NSString *title;
 
 /*!
  @brief artist.
  */
-@property (nonatomic, retain) NSString *artist;
+@property (nonatomic, strong) NSString *artist;
 
 /*!
  @brief album.
  */
-@property (nonatomic, retain) NSString *album;
+@property (nonatomic, strong) NSString *album;
 
 /*!
  @brief genre.
  */
-@property (nonatomic, retain) NSString *genre;
+@property (nonatomic, strong) NSString *genre;
 
 /*!
  @brief year.
  */
-@property (nonatomic, retain) NSString *year;
+@property (nonatomic, strong) NSString *year;
 
 /*!
  @brief Full path to cover.
  */
-@property (nonatomic, retain) NSString *coverpath;
+@property (nonatomic, strong) NSString *coverpath;
 
 /*!
  @brief Valid or fake metadata.

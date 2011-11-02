@@ -142,27 +142,27 @@ enum weekDays {
 /*!
  @brief Associated event Id.
  */
-@property (nonatomic, retain) NSString *eit;
+@property (nonatomic, strong) NSString *eit;
 
 /*!
  @brief Begin.
  */
-@property (nonatomic, retain) NSDate *begin;
+@property (nonatomic, strong) NSDate *begin;
 
 /*!
  @brief End.
  */
-@property (nonatomic, retain) NSDate *end;
+@property (nonatomic, strong) NSDate *end;
 
 /*!
  @brief Title.
  */
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, strong) NSString *title;
 
 /*!
  @brief Description.
  */
-@property (nonatomic, retain) NSString *tdescription;
+@property (nonatomic, strong) NSString *tdescription;
 
 /*!
  @brief Disabled.
@@ -194,21 +194,21 @@ enum weekDays {
 /*!
  @brief Service.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *service;
 
 /*!
  @brief Service Reference.
  
  @note May be used as cache when generating service.
  */
-@property (nonatomic, retain) NSString *sref;
+@property (nonatomic, strong) NSString *sref;
 
 /*!
  @brief Service Name.
  
  @note May be used as cache when generating service.
  */
-@property (nonatomic, retain) NSString *sname;
+@property (nonatomic, strong) NSString *sname;
 
 /*!
  @brief Current state.
@@ -225,7 +225,7 @@ enum weekDays {
 /*!
  @brief Record location
  */
-@property (nonatomic, retain) NSString *location;
+@property (nonatomic, strong) NSString *location;
 
 /*!
  @brief Valid or Fake Timer?
@@ -233,8 +233,8 @@ enum weekDays {
 @property (nonatomic, assign) BOOL valid;
 
 /*!
- @brief Good question... :-)
+ @brief Cache for Begin/End Textual representation.
  */
-@property (nonatomic, retain) NSString *timeString;
+@property (nonatomic, strong) NSString *timeString;
 
 @end

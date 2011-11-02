@@ -10,15 +10,13 @@
 
 @implementation Result
 
-@synthesize result = _result;
-@synthesize resulttext = _resulttext;
+@synthesize result, resulttext;
 
 +(Result *)createResult
 {
 	Result *result = [[Result alloc] init];
 	return result;
 }
-
 
 - (NSString *)description
 {
@@ -27,7 +25,7 @@
 
 - (void)setResultFromString: (NSString *)newResult
 {
-	_result = [newResult isEqualToString: @"True"];
+	result = [newResult isEqualToString:@"True"];
 }
 
 @end
