@@ -24,7 +24,6 @@ extern NSString *kEventCell_ID;
 	UILabel *_eventNameLabel; /*!< @brief Name Label. */
 	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
 	UILabel *_eventServiceLabel; /*!< @brief Service Label. */
-	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 }
 
 /*!

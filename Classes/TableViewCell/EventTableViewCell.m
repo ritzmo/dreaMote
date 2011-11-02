@@ -85,10 +85,10 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	if(newEvent.timeString == nil)
 	{
 		// Not generated, do so...
-		[_formatter setDateStyle:NSDateFormatterMediumStyle];
-		const NSString *begin = [_formatter fuzzyDate: newEvent.begin];
-		[_formatter setDateStyle:NSDateFormatterNoStyle];
-		const NSString *end = [_formatter stringFromDate: newEvent.end];
+		[formatter setDateStyle:NSDateFormatterMediumStyle];
+		const NSString *begin = [formatter fuzzyDate:newEvent.begin];
+		[formatter setDateStyle:NSDateFormatterNoStyle];
+		const NSString *end = [formatter stringFromDate:newEvent.end];
 		if(begin && end)
 			newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
