@@ -31,6 +31,9 @@
 	#import "EPGCache.h"
 #endif
 
+// MKStoreKit
+#import "MKStoreManager.h"
+
 enum appDelegateAlertTags
 {
 	TAG_NONE = 0,
@@ -125,6 +128,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 #if !IS_DEBUG()
 	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
 #endif
+	[MKStoreManager sharedManager];
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];

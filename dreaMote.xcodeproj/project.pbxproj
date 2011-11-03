@@ -1301,13 +1301,13 @@
 		DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKProduct.m; sourceTree = "<group>"; };
 		DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKSubscriptionProduct.h; sourceTree = "<group>"; };
 		DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKSubscriptionProduct.m; sourceTree = "<group>"; };
-		DAABA9EE1462DA00002CDC31 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
 		DAABA9F01462DA00002CDC31 /* MKStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreManager.h; sourceTree = "<group>"; };
 		DAABA9F11462DA00002CDC31 /* MKStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreManager.m; sourceTree = "<group>"; };
 		DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreObserver.h; sourceTree = "<group>"; };
 		DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreObserver.m; sourceTree = "<group>"; };
 		DAABAA281462DBC0002CDC31 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
+		DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
 		DAB85AF7145864B40089A382 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAB85AFC145864BD0089A382 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2380,7 +2380,6 @@
 				DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */,
 				DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */,
 				DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */,
-				DAABA9EE1462DA00002CDC31 /* MKStoreKitConfigs.h */,
 				DAABA9F01462DA00002CDC31 /* MKStoreManager.h */,
 				DAABA9F11462DA00002CDC31 /* MKStoreManager.m */,
 				DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */,
@@ -2587,6 +2586,7 @@
 				DAC8C18013B2014D00CA00D9 /* XMLReader */,
 				DAC8C07E13B2014C00CA00D9 /* Constants.h */,
 				DAC8C07F13B2014C00CA00D9 /* Constants.m */,
+				DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */,
 				DAC8C10313B2014C00CA00D9 /* RecursiveFileAdder.h */,
 				DAC8C10413B2014C00CA00D9 /* RecursiveFileAdder.m */,
 				DAC8C11913B2014C00CA00D9 /* SynchronousRequestReader.h */,

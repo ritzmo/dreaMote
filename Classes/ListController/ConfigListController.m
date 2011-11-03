@@ -20,6 +20,8 @@
 #import "ConfigViewController.h"
 #import "ConnectionListController.h"
 
+#import "MKStoreManager.h"
+
 #define kMultiEPGRowTag 99
 #define kTimeoutRowTag 100
 #define kHistoryLengthRowTag 101
@@ -29,7 +31,8 @@ enum sectionIds
 	connectionSection = 0,
 	settingsSection = 1,
 	buttonSection = 2,
-	maxSection = 3,
+	purchaseSection = 3,
+	maxSection = 4,
 };
 
 enum settingsRows
@@ -495,6 +498,7 @@ enum settingsRows
 
 	switch(indexPath.section)
 	{
+		case purchaseSection:
 		case buttonSection:
 		case connectionSection:
 			cell = [UITableViewCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kVanilla_ID];
@@ -525,8 +529,8 @@ enum settingsRows
 		case connectionSection:
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			sourceCell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentLeft;
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.textLabel.textAlignment = UITextAlignmentLeft;
 
 			/*!
 			 @brief When editing we add a fake first item to the list so cover this here.
@@ -536,8 +540,8 @@ enum settingsRows
 				// Setup fake item and abort
 				if(row == 0)
 				{
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"New Connection", @"");
+					sourceCell.imageView.image = nil;
+					sourceCell.textLabel.text = NSLocalizedString(@"New Connection", @"");
 					break;
 				}
 
@@ -547,17 +551,17 @@ enum settingsRows
 
 			// Set image for cell
 			if([[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] == row)
-				TABLEVIEWCELL_IMAGE(sourceCell) = [UIImage imageNamed:@"emblem-favorite.png"];
+				sourceCell.imageView.image = [UIImage imageNamed:@"emblem-favorite.png"];
 			else if([RemoteConnectorObject getConnectedId] == row)
-				TABLEVIEWCELL_IMAGE(sourceCell) = [UIImage imageNamed:@"network-wired.png"];
+				sourceCell.imageView.image = [UIImage imageNamed:@"network-wired.png"];
 			else
-				TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+				sourceCell.imageView.image = nil;
 
 			// Title handling
 			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
 			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
-			TABLEVIEWCELL_TEXT(sourceCell) = hostTitle;
+			sourceCell.textLabel.text = hostTitle;
 
 			break;
 
@@ -639,35 +643,33 @@ enum settingsRows
 			break;
 		case buttonSection:
 		{
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.imageView.image = nil;
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			switch(row)
 			{
 				case 0:
-					sourceCell.accessoryType = UITableViewCellAccessoryNone;
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
+					sourceCell.textLabel.text = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
 					break;
 				case 1:
-					sourceCell.accessoryType = UITableViewCellAccessoryNone;
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Search Connections", @"Start AutoConfiguration from ConfigListController");
+					sourceCell.textLabel.text = NSLocalizedString(@"Search Connections", @"Start AutoConfiguration from ConfigListController");
 					break;
 #if IS_LITE()
 				case 2:
-					sourceCell.accessoryType = UITableViewCellAccessoryNone;
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
+					sourceCell.textLabel.text = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
 					break;
 #endif
 				default: break;
 			}
 			break;
 		}
+		case purchaseSection:
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.imageView.image = nil;
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+			sourceCell.textLabel.text = [[MKStoreManager sharedManager].purchasableObjectsDescription objectAtIndex:indexPath.row];
 		default:
 			break;
 	}
@@ -677,7 +679,10 @@ enum settingsRows
 /* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return maxSection;
+	NSInteger sections = purchaseSection;
+	if([SKPaymentQueue canMakePayments] && [MKStoreManager sharedManager].purchasableObjectsDescription.count)
+		++sections;
+	return sections;
 }
 
 /* number of rows in given section */
@@ -703,6 +708,8 @@ enum settingsRows
 #else
 			return ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]]) ? 3 : 2;
 #endif
+		case maxSection:
+			return [MKStoreManager sharedManager].purchasableObjectsDescription.count;
 		default:
 			return 0;
 	}
@@ -711,9 +718,15 @@ enum settingsRows
 /* section header */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section == connectionSection)
-		return NSLocalizedString(@"Configured Connections", @"");
-	return nil;
+	switch(section)
+	{
+		default:
+			return nil;
+		case connectionSection:
+			return NSLocalizedString(@"Configured Connections", @"Section title for connections in ConfigList");
+		case maxSection:
+			return NSLocalizedString(@"Purchase", @"Section title for In-App-Purchases in ConfigList");
+	}
 }
 
 /* rotate with device */

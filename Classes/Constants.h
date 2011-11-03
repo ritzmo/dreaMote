@@ -84,9 +84,6 @@
 #define kSatFinderDefaultInterval @"5.0"
 #define kSearchHistoryDefaultLength ((IS_IPAD()) ? @"12" : @"9")
 
-// in-app purchases
-#define kServiceEditorPurchase	@"com.ritzmo.dreaMote.ServiceEditor"
-
 //
 #define kVanilla_ID				@"Vanilla_ID"
 
