@@ -351,9 +351,13 @@ enum serviceListTags
 	if(delegate == nil)
 	{
 		_multiEpgButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Multi EPG", @"Multi EPG Button title") style:UIBarButtonItemStyleBordered target:self action:@selector(openMultiEPG:)];
+		self.navigationItem.rightBarButtonItem = _multiEpgButton;
 	}
-	// show "done" button if in delegate and single bouquet mode
 	else
+#else
+	if(delegate)
+#endif
+	// show "done" button if in delegate and single bouquet mode
 	{
 		const BOOL isSingleBouquet =
 			[[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSingleBouquet]
@@ -367,7 +371,6 @@ enum serviceListTags
 			self.navigationItem.rightBarButtonItem = button;
 		}
 	}
-#endif
 
 	[super loadView];
 	_tableView.delegate = self;
@@ -633,7 +636,7 @@ enum serviceListTags
 	else
 	{
 		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
-		if(isAlternative)
+		if(isAlternative && [delegate respondsToSelector:@selector(removeAlternatives:)])
 		{
 			UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
 																			 style:UIBarButtonItemStyleBordered
