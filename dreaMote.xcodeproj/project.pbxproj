@@ -319,6 +319,30 @@
 		DA7921091461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA79210A1461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA79210B1461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAABAA011462DA00002CDC31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E71462DA00002CDC31 /* NSData+Base64.m */; };
+		DAABAA021462DA00002CDC31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E71462DA00002CDC31 /* NSData+Base64.m */; };
+		DAABAA031462DA00002CDC31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E71462DA00002CDC31 /* NSData+Base64.m */; };
+		DAABAA071462DA00002CDC31 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */; };
+		DAABAA081462DA00002CDC31 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */; };
+		DAABAA091462DA00002CDC31 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */; };
+		DAABAA0A1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
+		DAABAA0B1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
+		DAABAA0C1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
+		DAABAA0D1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */; };
+		DAABAA0E1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */; };
+		DAABAA0F1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */; };
+		DAABAA101462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
+		DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
+		DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
+		DAABAA131462DA00002CDC31 /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */; };
+		DAABAA141462DA00002CDC31 /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */; };
+		DAABAA151462DA00002CDC31 /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */; };
+		DAABAA291462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
+		DAABAA2A1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
+		DAABAA2B1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
@@ -559,9 +583,6 @@
 		DAC8C1B713B2014D00CA00D9 /* NSArray+ArrayFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06313B2014C00CA00D9 /* NSArray+ArrayFromData.m */; };
 		DAC8C1B813B2014D00CA00D9 /* NSArray+ArrayFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06313B2014C00CA00D9 /* NSArray+ArrayFromData.m */; };
 		DAC8C1B913B2014D00CA00D9 /* NSArray+ArrayFromData.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06313B2014C00CA00D9 /* NSArray+ArrayFromData.m */; };
-		DAC8C1BA13B2014D00CA00D9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06513B2014C00CA00D9 /* NSData+Base64.m */; };
-		DAC8C1BB13B2014D00CA00D9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06513B2014C00CA00D9 /* NSData+Base64.m */; };
-		DAC8C1BC13B2014D00CA00D9 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06513B2014C00CA00D9 /* NSData+Base64.m */; };
 		DAC8C1BD13B2014D00CA00D9 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06713B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.m */; };
 		DAC8C1BE13B2014D00CA00D9 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06713B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.m */; };
 		DAC8C1BF13B2014D00CA00D9 /* NSDateFormatter+FuzzyFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C06713B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.m */; };
@@ -1272,6 +1293,21 @@
 		DA7920E11461ABCF0040615E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		DA7921071461AC0D0040615E /* SHKFacebookForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFacebookForm.h; sourceTree = "<group>"; };
 		DA7921081461AC0D0040615E /* SHKFacebookForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFacebookForm.m; sourceTree = "<group>"; };
+		DAABA9E41462DA00002CDC31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		DAABA9E51462DA00002CDC31 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		DAABA9E61462DA00002CDC31 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		DAABA9E71462DA00002CDC31 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		DAABA9EA1462DA00002CDC31 /* MKSKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKProduct.h; sourceTree = "<group>"; };
+		DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKProduct.m; sourceTree = "<group>"; };
+		DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKSubscriptionProduct.h; sourceTree = "<group>"; };
+		DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKSubscriptionProduct.m; sourceTree = "<group>"; };
+		DAABA9EE1462DA00002CDC31 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
+		DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
+		DAABA9F01462DA00002CDC31 /* MKStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreManager.h; sourceTree = "<group>"; };
+		DAABA9F11462DA00002CDC31 /* MKStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreManager.m; sourceTree = "<group>"; };
+		DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreObserver.h; sourceTree = "<group>"; };
+		DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreObserver.m; sourceTree = "<group>"; };
+		DAABAA281462DBC0002CDC31 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		DAB85AF7145864B40089A382 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAB85AFC145864BD0089A382 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1370,8 +1406,6 @@
 		DAC8C06013B2014C00CA00D9 /* Appirater.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Appirater.m; sourceTree = "<group>"; };
 		DAC8C06213B2014C00CA00D9 /* NSArray+ArrayFromData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ArrayFromData.h"; sourceTree = "<group>"; };
 		DAC8C06313B2014C00CA00D9 /* NSArray+ArrayFromData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ArrayFromData.m"; sourceTree = "<group>"; };
-		DAC8C06413B2014C00CA00D9 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
-		DAC8C06513B2014C00CA00D9 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		DAC8C06613B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+FuzzyFormatting.h"; sourceTree = "<group>"; };
 		DAC8C06713B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+FuzzyFormatting.m"; sourceTree = "<group>"; };
 		DAC8C06813B2014C00CA00D9 /* NSError+AutoLocalizedError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+AutoLocalizedError.h"; sourceTree = "<group>"; };
@@ -1765,6 +1799,7 @@
 				DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */,
 				DA529958144AF6B00010429A /* EventKit.framework in Frameworks */,
 				DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */,
+				DAABAA291462DBC0002CDC31 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1787,6 +1822,7 @@
 				DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */,
 				DA529959144AF6B00010429A /* EventKit.framework in Frameworks */,
 				DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */,
+				DAABAA2A1462DBC0002CDC31 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1808,6 +1844,7 @@
 				DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */,
 				DA52995A144AF6B00010429A /* EventKit.framework in Frameworks */,
 				DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */,
+				DAABAA2B1462DBC0002CDC31 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2335,6 +2372,35 @@
 			path = "ShareKit/Submodules/facebook-ios-sdk/src/JSON";
 			sourceTree = SOURCE_ROOT;
 		};
+		DAABA9E11462DA00002CDC31 /* MKStoreKit */ = {
+			isa = PBXGroup;
+			children = (
+				DAABA9E31462DA00002CDC31 /* Externals */,
+				DAABA9EA1462DA00002CDC31 /* MKSKProduct.h */,
+				DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */,
+				DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */,
+				DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */,
+				DAABA9EE1462DA00002CDC31 /* MKStoreKitConfigs.h */,
+				DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */,
+				DAABA9F01462DA00002CDC31 /* MKStoreManager.h */,
+				DAABA9F11462DA00002CDC31 /* MKStoreManager.m */,
+				DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */,
+				DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */,
+			);
+			path = MKStoreKit;
+			sourceTree = "<group>";
+		};
+		DAABA9E31462DA00002CDC31 /* Externals */ = {
+			isa = PBXGroup;
+			children = (
+				DAABA9E41462DA00002CDC31 /* JSONKit.h */,
+				DAABA9E51462DA00002CDC31 /* JSONKit.m */,
+				DAABA9E61462DA00002CDC31 /* NSData+Base64.h */,
+				DAABA9E71462DA00002CDC31 /* NSData+Base64.m */,
+			);
+			path = Externals;
+			sourceTree = "<group>";
+		};
 		DAC8BE4013B1FF9200CA00D9 = {
 			isa = PBXGroup;
 			children = (
@@ -2345,6 +2411,7 @@
 				DAC8BE4E13B1FF9200CA00D9 /* Frameworks */,
 				DAC8BE4C13B1FF9200CA00D9 /* Products */,
 				DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */,
+				DAABA9E11462DA00002CDC31 /* MKStoreKit */,
 				DA51CDAA144ACBED00C714ED /* ShareKit */,
 				DAC8C4BB13B202F600CA00D9 /* QuincyKit */,
 			);
@@ -2375,6 +2442,7 @@
 				DAC8C49D13B2026800CA00D9 /* MessageUI.framework */,
 				DAC8C49E13B2026800CA00D9 /* QuartzCore.framework */,
 				DAFA4BFF144ACF6B005DE541 /* Security.framework */,
+				DAABAA281462DBC0002CDC31 /* StoreKit.framework */,
 				DAC8C49F13B2026800CA00D9 /* SystemConfiguration.framework */,
 				DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */,
 			);
@@ -2543,8 +2611,6 @@
 				DAC8C09913B2014C00CA00D9 /* Insort */,
 				DAC8C06213B2014C00CA00D9 /* NSArray+ArrayFromData.h */,
 				DAC8C06313B2014C00CA00D9 /* NSArray+ArrayFromData.m */,
-				DAC8C06413B2014C00CA00D9 /* NSData+Base64.h */,
-				DAC8C06513B2014C00CA00D9 /* NSData+Base64.m */,
 				DAC8C06613B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.h */,
 				DAC8C06713B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.m */,
 				DAC8C06813B2014C00CA00D9 /* NSError+AutoLocalizedError.h */,
@@ -3328,6 +3394,7 @@
 				DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA7920E51461ABCF0040615E /* FBDialog.bundle in Resources */,
+				DAABAA0D1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3433,6 +3500,7 @@
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E61461ABCF0040615E /* FBDialog.bundle in Resources */,
+				DAABAA0E1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3535,6 +3603,7 @@
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E71461ABCF0040615E /* FBDialog.bundle in Resources */,
+				DAABAA0F1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3563,7 +3632,6 @@
 			files = (
 				DAC8C1B413B2014D00CA00D9 /* Appirater.m in Sources */,
 				DAC8C1B713B2014D00CA00D9 /* NSArray+ArrayFromData.m in Sources */,
-				DAC8C1BA13B2014D00CA00D9 /* NSData+Base64.m in Sources */,
 				DAC8C1BD13B2014D00CA00D9 /* NSDateFormatter+FuzzyFormatting.m in Sources */,
 				DAC8C1C013B2014D00CA00D9 /* NSError+AutoLocalizedError.m in Sources */,
 				DAC8C1C313B2014D00CA00D9 /* NSMutableArray+Shuffling.m in Sources */,
@@ -3813,6 +3881,12 @@
 				DA7920FD1461ABCF0040615E /* SBJsonParser.m in Sources */,
 				DA7921001461ABCF0040615E /* SBJsonWriter.m in Sources */,
 				DA7921091461AC0D0040615E /* SHKFacebookForm.m in Sources */,
+				DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */,
+				DAABAA011462DA00002CDC31 /* NSData+Base64.m in Sources */,
+				DAABAA071462DA00002CDC31 /* MKSKProduct.m in Sources */,
+				DAABAA0A1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
+				DAABAA101462DA00002CDC31 /* MKStoreManager.m in Sources */,
+				DAABAA131462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3822,7 +3896,6 @@
 			files = (
 				DAC8C1B513B2014D00CA00D9 /* Appirater.m in Sources */,
 				DAC8C1B813B2014D00CA00D9 /* NSArray+ArrayFromData.m in Sources */,
-				DAC8C1BB13B2014D00CA00D9 /* NSData+Base64.m in Sources */,
 				DAC8C1BE13B2014D00CA00D9 /* NSDateFormatter+FuzzyFormatting.m in Sources */,
 				DAC8C1C113B2014D00CA00D9 /* NSError+AutoLocalizedError.m in Sources */,
 				DAC8C1C413B2014D00CA00D9 /* NSMutableArray+Shuffling.m in Sources */,
@@ -4065,6 +4138,12 @@
 				DA7920FE1461ABCF0040615E /* SBJsonParser.m in Sources */,
 				DA7921011461ABCF0040615E /* SBJsonWriter.m in Sources */,
 				DA79210A1461AC0D0040615E /* SHKFacebookForm.m in Sources */,
+				DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */,
+				DAABAA021462DA00002CDC31 /* NSData+Base64.m in Sources */,
+				DAABAA081462DA00002CDC31 /* MKSKProduct.m in Sources */,
+				DAABAA0B1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
+				DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */,
+				DAABAA141462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4074,7 +4153,6 @@
 			files = (
 				DAC8C1B613B2014D00CA00D9 /* Appirater.m in Sources */,
 				DAC8C1B913B2014D00CA00D9 /* NSArray+ArrayFromData.m in Sources */,
-				DAC8C1BC13B2014D00CA00D9 /* NSData+Base64.m in Sources */,
 				DAC8C1BF13B2014D00CA00D9 /* NSDateFormatter+FuzzyFormatting.m in Sources */,
 				DAC8C1C213B2014D00CA00D9 /* NSError+AutoLocalizedError.m in Sources */,
 				DAC8C1C513B2014D00CA00D9 /* NSMutableArray+Shuffling.m in Sources */,
@@ -4283,6 +4361,12 @@
 				DA7920FF1461ABCF0040615E /* SBJsonParser.m in Sources */,
 				DA7921021461ABCF0040615E /* SBJsonWriter.m in Sources */,
 				DA79210B1461AC0D0040615E /* SHKFacebookForm.m in Sources */,
+				DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */,
+				DAABAA031462DA00002CDC31 /* NSData+Base64.m in Sources */,
+				DAABAA091462DA00002CDC31 /* MKSKProduct.m in Sources */,
+				DAABAA0C1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
+				DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */,
+				DAABAA151462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

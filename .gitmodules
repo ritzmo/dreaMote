@@ -10,3 +10,6 @@
 [submodule "TouchXML"]
 	path = TouchXML
 	url = git://github.com/ritzmo/TouchXML.git
+[submodule "MKStoreKit"]
+	path = MKStoreKit
+	url = git://github.com/ritzmo/MKStoreKit.git
