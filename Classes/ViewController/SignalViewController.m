@@ -104,19 +104,6 @@ OSStatus RenderTone(
 	return noErr;
 }
 
-void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
-{
-	SignalViewController __unsafe_unretained *viewController = (__bridge SignalViewController *)inClientData;
-	if([viewController respondsToSelector:@selector(stopAudio)])
-		[viewController stopAudio];
-#if IS_DEBUG()
-	else
-	{
-		[NSException raise:@"ExcToneInterruptionInvalidController" format:@"ToneInterruptionListener lost reference to SignalViewController: %@ at %p", viewController, viewController];
-	}
-#endif
-}
-
 @implementation SignalViewController
 
 - (id)init
@@ -192,7 +179,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	sampleRate = 44100;
 	_refreshInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:kSatFinderInterval];
+	AudioSessionSetActive(true);
 	[self startTimer];
 	[self startAudio];
 
@@ -206,6 +195,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	_refreshInterval = 999;
 
 	[self stopAudio];
+	AudioSessionSetActive(false);
 
 	[super viewWillDisappear: animated];
 }
@@ -298,21 +288,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	_berCell = sourceCell;
 }
 
-- (void)viewDidLoad
-{
-	sampleRate = 44100;
-
-	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, (__bridge void *)(self));
-	if (result == kAudioSessionNoError)
-	{
-		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
-		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
-	}
-	AudioSessionSetActive(true);
-
-	[super viewDidLoad];
-}
-
 - (void)viewDidUnload
 {
 	_snr = nil;
@@ -322,6 +297,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	_snrdBCell = nil;
 	_berCell = nil;
 
+	[self stopAudio];
 	AudioSessionSetActive(false);
 
 	[super viewDidUnload];

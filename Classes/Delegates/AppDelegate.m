@@ -13,6 +13,8 @@
 #include <fcntl.h>
 #import "LiteUnzip.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 #import "NSData+Base64.h"
 #import "NSArray+ArrayFromData.h"
 #import "UIDevice+SystemVersion.h"
@@ -46,6 +48,13 @@ static const char *basename(const char *path)
 			base = name + 1;
 	}
 	return base;
+}
+
+void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
+{
+#if IS_DEBUG()
+	NSLog(@"[AppDelegate] ToneInterruptionListener called. Anything to do?");
+#endif
 }
 
 @interface AppDelegate()
@@ -258,6 +267,14 @@ static const char *basename(const char *path)
 #ifdef __clang_analyzer__
 		[configurationDelegate release];
 #endif
+	}
+
+	// initialize audio session
+	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, (__bridge void *)(self));
+	if (result == kAudioSessionNoError)
+	{
+		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
 	}
 
 	return YES;
