@@ -26,6 +26,8 @@
 #import <XMLReader/BaseXMLReader.h>
 #import <XMLReader/SaxXMLReader.h>
 
+typedef void (^defer_load_operation_t)(void);
+
 enum serviceListTags
 {
 	TAG_MARKER = 99,
@@ -88,7 +90,6 @@ enum serviceListTags
 
 @synthesize delegate, isAll, mgSplitViewController;
 @synthesize popoverController, popoverZapController;
-@synthesize showNowNext = _supportsNowNext;
 
 /* initialize */
 - (id)init
@@ -111,11 +112,8 @@ enum serviceListTags
 		_multiEPG.multiEpgDelegate = self;
 #endif
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -314,6 +312,10 @@ enum serviceListTags
 	self.bouquet = nil;
 }
 
+#pragma mark -
+#pragma mark UIViewController lifecycle
+#pragma mark -
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	const BOOL wasEditing = self.editing;
@@ -430,130 +432,6 @@ enum serviceListTags
 	_searchDisplay = nil;
 
 	[super viewDidUnload];
-}
-
-/* cancel in delegate mode */
-- (void)doneAction:(id)sender
-{
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else if(delegate && [delegate isKindOfClass:[UIViewController class]])
-		[self.navigationController popToViewController:(UIViewController *)delegate animated:YES];
-	else
-		[self.navigationController popViewControllerAnimated:YES];
-}
-
-/* delete alternatives */
-- (void)deleteAction:(id)sender
-{
-	if(delegate && [delegate respondsToSelector:@selector(removeAlternatives:)])
-		[delegate removeAlternatives:_bouquet];
-	[self doneAction:nil];
-}
-
-- (void)configureRightBarButtonItem:(BOOL)animated forOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	UIBarButtonItem *firstButton = nil;
-	UIBarButtonItem *secondButton = nil;
-
-	if(delegate == nil && YES) // TODO: check purchase
-	{
-		const BOOL isIphone = IS_IPHONE();
-		// show on iPhone or on iPad in portrait
-		// NOTE: we do this for easy access, but the edit button here is flawed on in multi bouquet mode (which is forced on the iPad)
-		BOOL showButton = isIphone || UIInterfaceOrientationIsPortrait(interfaceOrientation);
-
-		// and don't show it at all if unsupported by backend
-		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
-			showButton = NO;
-
-		if(showButton)
-		{
-			if(_multiEpgButton)
-			{
-				firstButton = self.editButtonItem;
-				if(isIphone)
-				{
-					self.navigationItem.rightBarButtonItem = nil; // this might be set to the _multiEpgButton, so unset first
-					const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																									target:nil
-																									action:nil];
-					[self setToolbarItems:[NSArray arrayWithObjects:flexItem, _multiEpgButton, nil] animated:YES];
-					[self.navigationController setToolbarHidden:NO animated:animated];
-				}
-				else
-					secondButton = _multiEpgButton;
-			}
-			else
-				firstButton = self.editButtonItem;
-		}
-		else
-		{
-			firstButton = _multiEpgButton;
-			[self setToolbarItems:nil animated:animated];
-			[self.navigationController setToolbarHidden:YES animated:animated];
-		}
-	}
-	else
-	{
-		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
-		if(isAlternative)
-		{
-			UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
-																			 style:UIBarButtonItemStyleBordered														
-																			target:self
-																			action:@selector(deleteAction:)];
-			// on the iPhone we have the navigation item to return to the previous view, so no need for the done button in this clobbered view
-			if(IS_IPHONE())
-			{
-				firstButton = deleteButton;
-			}
-			else
-			{
-				firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-																			target:self
-																			action:@selector(doneAction:)];
-				secondButton = deleteButton;
-			}
-		}
-		else
-		{
-			[self setToolbarItems:nil animated:animated];
-			[self.navigationController setToolbarHidden:YES animated:animated];
-			firstButton = self.navigationItem.rightBarButtonItem;
-		}
-	}
-
-	if(secondButton)
-	{
-		NSArray *items = nil;
-		// iOS 5.0+
-		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-		{
-			items = [[NSArray alloc] initWithObjects:firstButton, secondButton, nil];
-			[self.navigationItem setRightBarButtonItems:items animated:animated];
-		}
-		else
-		{
-			const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																							target:nil
-																							action:nil];
-			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
-			items = [[NSArray alloc] initWithObjects:flexItem, secondButton, firstButton, nil];
-			[toolbar setItems:items animated:NO];
-			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-
-			[self.navigationItem setRightBarButtonItem:buttonItem animated:animated];
-		}
-	}
-	else
-	{
-		// iOS 5.0+
-		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-			[self.navigationItem setRightBarButtonItems:((firstButton) ? [NSArray arrayWithObject:firstButton] : nil) animated:animated];
-		else
-			[self.navigationItem setRightBarButtonItem:firstButton animated:animated];
-	}
 }
 
 /* about to appear */
@@ -678,6 +556,138 @@ enum serviceListTags
 #endif
 
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+}
+
+/* rotate with device */
+- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+{
+	return YES;
+}
+
+#pragma mark -
+
+/* cancel in delegate mode */
+- (void)doneAction:(id)sender
+{
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else if(delegate && [delegate isKindOfClass:[UIViewController class]])
+		[self.navigationController popToViewController:(UIViewController *)delegate animated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
+}
+
+/* delete alternatives */
+- (void)deleteAction:(id)sender
+{
+	if(delegate && [delegate respondsToSelector:@selector(removeAlternatives:)])
+		[delegate removeAlternatives:_bouquet];
+	[self doneAction:nil];
+}
+
+- (void)configureRightBarButtonItem:(BOOL)animated forOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+	UIBarButtonItem *firstButton = nil;
+	UIBarButtonItem *secondButton = nil;
+
+	if(delegate == nil && YES) // TODO: check purchase
+	{
+		const BOOL isIphone = IS_IPHONE();
+		// show on iPhone or on iPad in portrait
+		// NOTE: we do this for easy access, but the edit button here is flawed on in multi bouquet mode (which is forced on the iPad)
+		BOOL showButton = isIphone || UIInterfaceOrientationIsPortrait(interfaceOrientation);
+
+		// and don't show it at all if unsupported by backend
+		if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
+			showButton = NO;
+
+		if(showButton)
+		{
+			if(_multiEpgButton)
+			{
+				firstButton = self.editButtonItem;
+				if(isIphone)
+				{
+					self.navigationItem.rightBarButtonItem = nil; // this might be set to the _multiEpgButton, so unset first
+					const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																									target:nil
+																									action:nil];
+					[self setToolbarItems:[NSArray arrayWithObjects:flexItem, _multiEpgButton, nil] animated:YES];
+					[self.navigationController setToolbarHidden:NO animated:animated];
+				}
+				else
+					secondButton = _multiEpgButton;
+			}
+			else
+				firstButton = self.editButtonItem;
+		}
+		else
+		{
+			firstButton = _multiEpgButton;
+			[self setToolbarItems:nil animated:animated];
+			[self.navigationController setToolbarHidden:YES animated:animated];
+		}
+	}
+	else
+	{
+		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
+		if(isAlternative)
+		{
+			UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
+																			 style:UIBarButtonItemStyleBordered
+																			target:self
+																			action:@selector(deleteAction:)];
+			// on the iPhone we have the navigation item to return to the previous view, so no need for the done button in this clobbered view
+			if(IS_IPHONE())
+			{
+				firstButton = deleteButton;
+			}
+			else
+			{
+				firstButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+																			target:self
+																			action:@selector(doneAction:)];
+				secondButton = deleteButton;
+			}
+		}
+		else
+		{
+			[self setToolbarItems:nil animated:animated];
+			[self.navigationController setToolbarHidden:YES animated:animated];
+			firstButton = self.navigationItem.rightBarButtonItem;
+		}
+	}
+
+	if(secondButton)
+	{
+		NSArray *items = nil;
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+		{
+			items = [[NSArray alloc] initWithObjects:firstButton, secondButton, nil];
+			[self.navigationItem setRightBarButtonItems:items animated:animated];
+		}
+		else
+		{
+			const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																							target:nil
+																							action:nil];
+			UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+			items = [[NSArray alloc] initWithObjects:flexItem, secondButton, firstButton, nil];
+			[toolbar setItems:items animated:NO];
+			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+			[self.navigationItem setRightBarButtonItem:buttonItem animated:animated];
+		}
+	}
+	else
+	{
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			[self.navigationItem setRightBarButtonItems:((firstButton) ? [NSArray arrayWithObject:firstButton] : nil) animated:animated];
+		else
+			[self.navigationItem setRightBarButtonItem:firstButton animated:animated];
+	}
 }
 
 /* fetch main list */
@@ -1582,6 +1592,7 @@ enum serviceListTags
 	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
 	UITableViewCell *cell = nil;
 	id firstObject = [array objectAtIndex:indexPath.row];
+	defer_load_operation_t deferLoad = nil;
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
@@ -1598,13 +1609,13 @@ enum serviceListTags
 
 		if(!((NSObject<EventProtocol> *)firstObject).service.piconLoaded)
 		{
-			[_piconLoader addOperationWithBlock:^{
+			deferLoad = ^{
 				if(((ServiceEventTableViewCell *)cell).now == firstObject)
 				{
 					cell.imageView.image = ((NSObject<EventProtocol> *)firstObject).service.picon;
 					[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
 				}
-			}];
+			};
 		}
 	}
 	else
@@ -1623,15 +1634,17 @@ enum serviceListTags
 
 		if(!((NSObject<ServiceProtocol> *)firstObject).piconLoaded)
 		{
-			[_piconLoader addOperationWithBlock:^{
+			deferLoad = ^{
 				if(((ServiceTableViewCell *)cell).service == firstObject)
 				{
 					cell.imageView.image = ((NSObject<ServiceProtocol> *)firstObject).picon;
 					[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
 				}
-			}];
+			};
 		}
 	}
+	if(deferLoad) // && !tableView.decelerating)
+		[_piconLoader addOperationWithBlock:deferLoad];
 
 	return cell;
 }
@@ -1826,11 +1839,43 @@ enum serviceListTags
 
 #pragma mark -
 
-/* rotate with device */
-- (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation
+#if 0
+- (void)loadPiconsForVisibleRows
 {
-	return YES;
+	if(_mainList.count)
+	{
+		UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+		Class ServiceEventTableViewCellClass = [ServiceEventTableViewCell class];
+		NSArray *visiblePaths = [tableView indexPathsForVisibleRows];
+		for(NSIndexPath *indexPath in visiblePaths)
+		{
+			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			if([cell isKindOfClass:ServiceEventTableViewCellClass])
+			{
+				NSObject<EventProtocol> *now = ((ServiceEventTableViewCell *)cell).now;
+				[_piconLoader addOperationWithBlock:^{
+					if(((ServiceEventTableViewCell *)cell).now == now)
+					{
+						cell.imageView.image = now.service.picon;
+						[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
+					}
+				}];
+			}
+			else
+			{
+				NSObject<ServiceProtocol> *service = ((ServiceTableViewCell *)cell).service;
+				[_piconLoader addOperationWithBlock:^{
+					if(((ServiceTableViewCell *)cell).service == service)
+					{
+						cell.imageView.image = service.picon;
+						[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
+					}
+				}];
+			}
+        }
+	}
 }
+#endif
 
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
@@ -1846,7 +1891,18 @@ enum serviceListTags
 {
 	if(scrollView != _searchDisplay.searchResultsTableView)
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+#if 0
+	if(!decelerate)
+		[self loadPiconsForVisibleRows];
+#endif
 }
+
+#if 0
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+	[self loadPiconsForVisibleRows];
+}
+#endif
 
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
@@ -1854,6 +1910,7 @@ enum serviceListTags
 
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
 {
+	[_piconLoader cancelAllOperations];
 	[_filteredServices removeAllObjects];
 	const BOOL caseInsensitive = [searchString isEqualToString:[searchString lowercaseString]];
 	NSStringCompareOptions options = caseInsensitive ? (NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) : 0;
