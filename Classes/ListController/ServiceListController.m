@@ -26,6 +26,8 @@
 #import <XMLReader/BaseXMLReader.h>
 #import <XMLReader/SaxXMLReader.h>
 
+#import "MKStoreManager.h"
+
 typedef void (^defer_load_operation_t)(void);
 
 enum serviceListTags
@@ -386,7 +388,7 @@ enum serviceListTags
 	[_tableView addGestureRecognizer:longPressGesture];
 
 #if IS_LITE()
-	if(delegate == nil && YES)// TODO: check purchase
+	if(delegate == nil && [MKStoreManager isFeaturePurchased:kServiceEditorPurchase])
 #endif
 	{
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -590,7 +592,7 @@ enum serviceListTags
 	UIBarButtonItem *firstButton = nil;
 	UIBarButtonItem *secondButton = nil;
 
-	if(delegate == nil && YES) // TODO: check purchase
+	if(delegate == nil && [MKStoreManager isFeaturePurchased:kServiceEditorPurchase])
 	{
 		const BOOL isIphone = IS_IPHONE();
 		// show on iPhone or on iPad in portrait

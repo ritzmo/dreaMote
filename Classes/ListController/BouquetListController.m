@@ -25,6 +25,8 @@
 
 #import <XMLReader/BaseXMLReader.h>
 
+#import "MKStoreManager.h"
+
 enum bouquetListTags
 {
 	TAG_ADD = 99,
@@ -265,11 +267,12 @@ enum bouquetListTags
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = button;
 	}
-	else
+	else if([MKStoreManager isFeaturePurchased:kServiceEditorPurchase] && [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
 	{
-		// TODO: toggle based on purchase
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	}
+	else
+		self.navigationItem.rightBarButtonItem = nil;
 
 	// Refresh cache if we have a cleared one
 	if(_refreshBouquets && !_reloading)
