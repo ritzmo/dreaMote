@@ -25,8 +25,6 @@
 		obj.target = [NSString stringWithUTF8String:target];\
 	} while(0);
 
-static EPGCache *_sharedInstance = nil;
-
 @interface EPGCache()
 /*!
  @brief Get event following or preceding the one given in parameters.
@@ -37,17 +35,28 @@ static EPGCache *_sharedInstance = nil;
  @return Event on this service matching search parameters.
  */
 - (NSObject<EventProtocol> *)getEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service returnNext:(BOOL)next;
+
+/*!
+ @brief Application did enter background.
+ */
+- (void)didEnterBackground:(NSNotification *)note;
+
+/*!
+ @brief Application will enter foreground.
+ */
+- (void)willEnterForeground:(NSNotification *)note;
 @end
 
 @implementation EPGCache
 
 + (EPGCache *)sharedInstance
 {
+	static EPGCache *sharedInstance = nil;
 	static dispatch_once_t epgCacheSingletonToken;
 	dispatch_once(&epgCacheSingletonToken, ^{
-		_sharedInstance = [[EPGCache alloc] init];
+		sharedInstance = [[EPGCache alloc] init];
 	});
-	return _sharedInstance;
+	return sharedInstance;
 }
 
 - (id)init
@@ -169,9 +178,6 @@ static EPGCache *_sharedInstance = nil;
 {
 	@autoreleasepool
 	{
-		_service = [_serviceList lastObject];
-		[_serviceList removeLastObject];
-
 		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service];
 	}
 }
@@ -208,6 +214,37 @@ static EPGCache *_sharedInstance = nil;
 		sqlite3_exec(database, "COMMIT", 0, 0, 0);
 		sqlite3_exec(database, "BEGIN", 0, 0, 0);
 
+		// determine next service
+		_service = [_serviceList lastObject];
+		[_serviceList removeLastObject];
+
+		// delete existing entries for this service
+		const char *stmt = "DELETE FROM events WHERE sref = ?;";
+		sqlite3_stmt *compiledStatement = NULL;
+		if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		{
+			sqlite3_bind_text(compiledStatement, 1, [_service.sref UTF8String], -1, SQLITE_TRANSIENT);
+			if(sqlite3_step(compiledStatement) != SQLITE_DONE)
+			{
+#if IS_DEBUG()
+				const int errcode = sqlite3_errcode(database);
+				if(errcode == SQLITE_NOMEM)
+				{
+					NSLog(@"[EPGCache] sqlite3 ran out of memory while deleting past events, ignoring");
+				}
+				else
+				{
+					sqlite3_finalize(compiledStatement);
+					compiledStatement = NULL;
+					[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", _service.sname, _service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
+				}
+#else
+				// ignore
+#endif
+			}
+		}
+		sqlite3_finalize(compiledStatement);
+
 		[_delegate performSelectorOnMainThread:@selector(remainingServicesToRefresh:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
 		// continue fetching events
 		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
@@ -229,34 +266,6 @@ static EPGCache *_sharedInstance = nil;
 	NSObject<ServiceProtocol> *copy = [service copy];
 	[_serviceList addObject:copy];
 	[_delegate performSelectorOnMainThread:@selector(addService:) withObject:copy waitUntilDone:NO];
-
-	// delete existing entries for this bouquet
-	const char *stmt = "DELETE FROM events WHERE sref = ?;";
-	sqlite3_stmt *compiledStatement = NULL;
-	if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
-	{
-		sqlite3_bind_text(compiledStatement, 1, [copy.sref UTF8String], -1, SQLITE_TRANSIENT);
-		if(sqlite3_step(compiledStatement) != SQLITE_DONE)
-		{
-#if IS_DEBUG()
-			const int errcode = sqlite3_errcode(database);
-			if(errcode == SQLITE_NOMEM)
-			{
-				NSLog(@"sqlite3 ran out of memory while deleting past events, ignoring");
-			}
-			else
-			{
-				sqlite3_finalize(compiledStatement);
-				compiledStatement = NULL;
-				[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", service.sname, service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
-			}
-#else
-			// ignore
-#endif
-		}
-	}
-	sqlite3_finalize(compiledStatement);
-
 }
 
 #pragma mark -
@@ -338,7 +347,7 @@ static EPGCache *_sharedInstance = nil;
 					const int errcode = sqlite3_errcode(database);
 					if(errcode == SQLITE_NOMEM)
 					{
-						NSLog(@"sqlite3 ran out of memory while deleting past events, ignoring");
+						NSLog(@"[EPGCache] sqlite3 ran out of memory while deleting past events, ignoring");
 					}
 					else
 					{
@@ -380,6 +389,8 @@ static EPGCache *_sharedInstance = nil;
 		sqlite3_close(database);
 		database = NULL;
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self willEnterForeground:nil]; // abuse willEnterForeground to kill an eventual background thread
 }
 
 /* start refreshing a bouquet */
@@ -397,6 +408,7 @@ static EPGCache *_sharedInstance = nil;
 		[delegate performSelectorOnMainThread:@selector(finishedRefreshingCache) withObject:nil waitUntilDone:NO];
 		return;
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
 	_delegate = delegate;
 	_bouquet = [bouquet copy];
@@ -612,6 +624,41 @@ static EPGCache *_sharedInstance = nil;
 	}
 
 	sqlite3_close(db);
+}
+
+#pragma mark - Background Task Management
+
+- (void)didEnterBackground:(NSNotification *)note
+{
+#if IS_DEBUG()
+	NSLog(@"[EPGCache] Starting background task.");
+#endif
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+
+	// NOTE: we only observe if we are in fact active, so just start the background task
+	UIApplication *application = [UIApplication sharedApplication];
+	_backgroundTask = [application beginBackgroundTaskWithExpirationHandler: ^{
+		// Cancel operation, but preserve state of the database from before this probably incomplete request.
+		_xmlReader.delegate = nil;
+		[NSThread cancelPreviousPerformRequestsWithTarget:self];
+		sqlite3_exec(database, "ROLLBACK", 0, 0, 0);
+		[self stopTransaction];
+
+		[application endBackgroundTask:_backgroundTask];
+		_backgroundTask = UIBackgroundTaskInvalid;
+	}];
+}
+
+- (void)willEnterForeground:(NSNotification *)note
+{
+	if(_backgroundTask != UIBackgroundTaskInvalid)
+	{
+#if IS_DEBUG()
+		NSLog(@"[EPGCache] Ending background task.");
+#endif
+		[[UIApplication sharedApplication] endBackgroundTask:_backgroundTask];
+        _backgroundTask = UIBackgroundTaskInvalid;
+	}
 }
 
 @end

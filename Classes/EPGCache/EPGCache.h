@@ -32,7 +32,9 @@
 	NSObject<EPGCacheDelegate> *_delegate;
 	NSMutableArray *_serviceList;
 	BaseXMLReader *_xmlReader;
+
 	NSOperationQueue *queue; /*!< @brief Queue with pending event additions. */
+	UIBackgroundTaskIdentifier _backgroundTask; /*!< @brief Identifier for current background task. */
 
 	sqlite3 *database;
 	sqlite3_stmt *insert_stmt;
