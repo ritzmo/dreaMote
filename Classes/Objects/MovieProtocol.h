@@ -16,52 +16,52 @@
 /*!
  @brief Service Reference
  */
-@property (nonatomic, retain) NSString *sref;
+@property (nonatomic, strong) NSString *sref;
 
 /*!
  @brief Service Name
  */
-@property (nonatomic, retain) NSString *sname;
+@property (nonatomic, strong) NSString *sname;
 
 /*!
  @brief Begin.
  */
-@property (nonatomic, retain) NSDate *time;
+@property (nonatomic, strong) NSDate *time;
 
 /*!
  @brief Title.
  */
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, strong) NSString *title;
 
 /*!
  @brief Short Description.
  */
-@property (nonatomic, retain) NSString *sdescription;
+@property (nonatomic, strong) NSString *sdescription;
 
 /*!
  @brief Extended Description.
  */
-@property (nonatomic, retain) NSString *edescription;
+@property (nonatomic, strong) NSString *edescription;
 
 /*!
  @brief Length.
  */
-@property (nonatomic, retain) NSNumber *length;
+@property (nonatomic, strong) NSNumber *length;
 
 /*!
  @brief Filesize.
  */
-@property (nonatomic, retain) NSNumber *size;
+@property (nonatomic, strong) NSNumber *size;
 
 /*!
  @brief Filename.
  */
-@property (nonatomic, retain) NSString *filename;
+@property (nonatomic, strong) NSString *filename;
 
 /*!
  @brief Tags.
  */
-@property (nonatomic, retain) NSArray *tags;
+@property (nonatomic, strong) NSArray *tags;
 
 /*!
  @brief Valid or Fake Event.

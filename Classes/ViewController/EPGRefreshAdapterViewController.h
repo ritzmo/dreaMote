@@ -18,11 +18,6 @@
  */
 @interface EPGRefreshAdapterViewController : UIViewController <UITableViewDelegate,
 														UITableViewDataSource>
-{
-@private
-	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	id<EPGRefreshAdapterDelegate> _delegate; /*!< @brief Delegate. */
-}
 
 /*!
  @brief Standard constructor.
@@ -32,17 +27,15 @@
  */
 + (EPGRefreshAdapterViewController *)withAdapter:(NSString *)adapter;
 
-/*!
- @brief Set Delegate.
 
+
+/*!
+ @brief Delegate.
+ 
  The delegate will be called back when disappearing to inform it about the newly selected
  message type.
-
- @param delegate New delegate object.
  */
-- (void)setDelegate: (id<EPGRefreshAdapterDelegate>) delegate;
-
-
+@property (nonatomic, unsafe_unretained) id<EPGRefreshAdapterDelegate> delegate;
 
 /*!
  @brief Selected Item.

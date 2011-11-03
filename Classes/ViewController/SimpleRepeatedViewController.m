@@ -20,6 +20,8 @@
 
 @implementation SimpleRepeatedViewController
 
+@synthesize delegate;
+
 /* initialize */
 - (id)init
 {
@@ -43,7 +45,7 @@
 	simpleRepeatedViewController.repeated = repeated;
 	simpleRepeatedViewController.repcount = repcount;
 
-	return [simpleRepeatedViewController autorelease];
+	return simpleRepeatedViewController;
 }
 
 - (NSInteger)repeated
@@ -80,15 +82,6 @@
 	[(UITableView *)self.view reloadData];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_repcountField release];
-	[_repcountCell release];
-
-	[super dealloc];
-}
-
 /* layout */
 - (void)loadView
 {
@@ -103,7 +96,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// repeat count
 	_repcountField = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -128,15 +120,13 @@
 	{
 		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = barButtonItem;
-		[barButtonItem release];
 	}
 }
 
 - (void)viewDidUnload
 {
-	[_repcountField release];
 	_repcountField = nil;
-	[_repcountCell release]; // references _repcountField
+	 // references _repcountField
 	_repcountCell = nil;
 
 	[super viewDidUnload];
@@ -355,33 +345,23 @@
 	}
 }
 
-/* set delegate */
-- (void)setDelegate: (id<RepeatedDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
-}
-
 #pragma mark - UIViewController delegate methods
 
 /* about to disapper */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
 		SEL mySel = @selector(repeatedSelected:withCount:);
-		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
+		NSMethodSignature *sig = [(NSObject *)delegate methodSignatureForSelector:mySel];
 		if(sig)
 		{
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			NSNumber *repeated = [NSNumber numberWithInteger:_repeated];
-			NSNumber *repcount = [NSNumber numberWithInteger:[_repcountField.text integerValue]];
+			NSNumber *__unsafe_unretained repeated = [NSNumber numberWithInteger:_repeated];
+			NSNumber *__unsafe_unretained repcount = [NSNumber numberWithInteger:[_repcountField.text integerValue]];
 
 			[invocation retainArguments];
-			[invocation setTarget:_delegate];
+			[invocation setTarget:delegate];
 			[invocation setSelector:mySel];
 			[invocation setArgument:&repeated atIndex:2];
 			[invocation setArgument:&repcount atIndex:3];

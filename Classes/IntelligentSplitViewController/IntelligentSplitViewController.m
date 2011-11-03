@@ -65,7 +65,6 @@
 		}
 //	}
 
-	[super dealloc];
 }
 
 

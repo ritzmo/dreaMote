@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-// Forward declaration
-@protocol SimpleSingleSelectionListDelegate;
+/*!
+ @brief Callback type for selection callbacks.
+ Called upon selection of an item with the selected item and NO as parameters,
+ or the selected item and YES when dismissing.
+ The block should return YES if the selection is actually final.
+ @note A final selection will result in the callback being removed and the
+ parent view is assumed to remove this view.
+ */
+typedef BOOL (^simplesingleselection_callback_t)(NSUInteger, BOOL);
 
 /*!
  @brief Reusable single item selector.
@@ -21,9 +28,6 @@
 {
 @private
 	NSArray *_items; /*!< @brief Items. */
-	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	id<SimpleSingleSelectionListDelegate> _delegate; /*!< @brief Delegate. */
-	BOOL autoSubmit; /*!< @brief Submit after first selection. */
 }
 
 /*!
@@ -36,44 +40,16 @@
  */
 + (SimpleSingleSelectionListController *)withItems:(NSArray *)items andSelection:(NSUInteger)selectedItem andTitle:(NSString *)title;
 
+
+
 /*!
- @brief Set Delegate.
- 
- The delegate will be called back when disappearing to inform it about the newly selected
- item.
- 
- @param delegate New delegate object.
+ @brief Callback.
  */
-- (void)setDelegate: (id<SimpleSingleSelectionListDelegate>) delegate;
-
-
+@property (nonatomic, copy) simplesingleselection_callback_t callback;
 
 /*!
  @brief Selected Item.
  */
 @property (nonatomic) NSUInteger selectedItem;
-
-/*!
- @brief Submit automatically after first selection.
- */
-@property (nonatomic, assign) BOOL autoSubmit;
-
-@end
-
-
-
-/*!
- @brief SimpleSingleSelectionListController Delegate.
- 
- Implements callback functionality for SimpleSingleSelectionListController.
-*/
-@protocol SimpleSingleSelectionListDelegate<NSObject>
-
-/*!
- @brief Item was selected.
- 
- @param newSelection Selected item.
- */
-- (void)itemSelected:(NSNumber *)newSelection;
 
 @end

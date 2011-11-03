@@ -19,7 +19,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -32,7 +32,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addService:)
 								withObject: fakeObject
 								waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -40,7 +39,7 @@
 */
 - (void)parseFull
 {
-	NSArray *resultNodes = [_parser nodesForXPath:@"/e2currentserviceinformation/e2service" error:nil];
+	NSArray *resultNodes = [document nodesForXPath:@"/e2currentserviceinformation/e2service" error:nil];
 	CXMLElement *resultElement = nil;
 
 	for(resultElement in resultNodes)
@@ -51,7 +50,6 @@
 		// *grml*
 		if(newService.sname == nil || [newService.sname isEqualToString:@""])
 		{
-			[newService release];
 			newService = [[GenericService alloc] init];
 			newService.sname = NSLocalizedString(@"Nothing playing.", @"");
 		}
@@ -59,10 +57,9 @@
 		[_delegate performSelectorOnMainThread: @selector(addService:)
 									withObject: newService
 								 waitUntilDone: NO];
-		[newService release];
 	}
 
-	resultNodes = [_parser nodesForXPath:@"/e2currentserviceinformation/e2eventlist/e2event" error:nil];
+	resultNodes = [document nodesForXPath:@"/e2currentserviceinformation/e2eventlist/e2event" error:nil];
 	for(resultElement in resultNodes)
 	{
 		// An e2event in the xml represents an event, so create an instance of it.
@@ -72,14 +69,12 @@
 		NSString *title = newEvent.title;
 		if(title == nil || [title isEqualToString:@""])
 		{
-			[newEvent release];
 			continue;
 		}
 
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: newEvent
 								 waitUntilDone: NO];
-		[newEvent release];
 	}
 }
 

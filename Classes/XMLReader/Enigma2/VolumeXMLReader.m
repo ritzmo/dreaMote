@@ -17,7 +17,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -35,7 +35,7 @@
 - (void)parseFull
 {
 	CXMLNode *currentChild = nil;
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2volume" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/e2volume" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -66,7 +66,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addVolume:)
 									withObject: newVolume
 								 waitUntilDone: NO];
-		[newVolume release];
 
 		// Volume is unique
 		break;

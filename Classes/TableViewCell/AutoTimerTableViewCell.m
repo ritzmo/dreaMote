@@ -29,17 +29,6 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 
 @implementation AutoTimerTableViewCell
 
-@synthesize timerNameLabel = _timerNameLabel;
-
-/* dealloc */
-- (void)dealloc
-{
-	[_timerNameLabel release];
-	[_timer release];
-
-	[super dealloc];
-}
-
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -50,13 +39,11 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		// A label that displays the AutoTimer's name.
 		_timerNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
 										   selectedColor:[UIColor whiteColor]
 												fontSize:kAutoTimerNameTextSize
 													bold:YES];
-		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview: _timerNameLabel];
+		[myContentView addSubview:_timerNameLabel];
 	}
 	
 	return self;
@@ -73,7 +60,7 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 {
 	// Abort if same timer assigned
 	if(_timer == newTimer) return;
-	SafeRetainAssign(_timer, newTimer);
+	_timer = newTimer;
 
 	_timerNameLabel.text = newTimer.name;
 	if(newTimer.enabled)

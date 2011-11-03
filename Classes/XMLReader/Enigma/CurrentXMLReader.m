@@ -18,7 +18,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -31,7 +31,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addService:)
 								withObject: fakeObject
 								waitUntilDone: NO];
-	[fakeObject release];
 }
 
 - (NSObject<EventProtocol> *)parseEvent: (NSArray *)resultNodes
@@ -50,7 +49,6 @@
 		// Workaround unknown now/next
 		if(newEvent.title == nil)
 		{
-			[newEvent release];
 			return nil;
 		}
 
@@ -70,7 +68,7 @@
 			range.location = 1;
 			range.length = [rawDurationString length] - 2;
 			rawDurationString = [rawDurationString substringWithRange: range];
-			newEvent.end = [newEvent.begin addTimeInterval:[rawDurationString doubleValue] * 60.0];
+			newEvent.end = [newEvent.begin dateByAddingTimeInterval:[rawDurationString doubleValue] * 60.0];
 			break;
 		}
 
@@ -84,7 +82,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addEvent:)
 									withObject: newEvent
 									waitUntilDone: NO];
-		[newEvent autorelease];
 		return newEvent;
 	}
 	return nil;
@@ -95,8 +92,8 @@
  */
 - (void)parseFull
 {
-	const NSObject<EventProtocol> *current_event = [self parseEvent: [_parser nodesForXPath:@"/currentservicedata/current_event" error:nil]];
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/currentservicedata/service" error:nil];
+	const NSObject<EventProtocol> *current_event = [self parseEvent: [document nodesForXPath:@"/currentservicedata/current_event" error:nil]];
+	const NSArray *resultNodes = [document nodesForXPath:@"/currentservicedata/service" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -135,11 +132,10 @@
 		[_delegate performSelectorOnMainThread: @selector(addService:)
 									withObject: newService
 									waitUntilDone: NO];
-		[newService release];
 		break;
 	}
 
-	[self parseEvent: [_parser nodesForXPath:@"/currentservicedata/next_event" error:nil]];
+	[self parseEvent: [document nodesForXPath:@"/currentservicedata/next_event" error:nil]];
 }
 
 @end

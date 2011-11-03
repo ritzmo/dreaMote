@@ -53,7 +53,6 @@
 	UITableViewCell *_locationCell; /*!< @brief Location Cell. */
 	UITableViewCell *_repeatedCell; /*!< @brief Repeated Cell. */
 
-	NSObject<TimerViewDelegate> *_delegate; /*!< @brief Delegate. */
 	NSObject<EventProtocol> *_event; /*!< @brief Associated Event. */
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */
 	NSObject<TimerProtocol> *_oldTimer; /*!< @brief Old Timer when changing existing one. */
@@ -107,12 +106,12 @@
 /*!
  @brief Timer.
  */
-@property (nonatomic, retain) NSObject<TimerProtocol> *timer;
+@property (nonatomic, strong) NSObject<TimerProtocol> *timer;
 
 /*!
  @brief Old Timer if editing existing one.
  */
-@property (nonatomic, retain) NSObject<TimerProtocol> *oldTimer;
+@property (nonatomic, strong) NSObject<TimerProtocol> *oldTimer;
 
 /*!
  @brief Are we creating a new Timer?
@@ -122,7 +121,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, retain) NSObject<TimerViewDelegate> *delegate;
+@property (nonatomic, strong) NSObject<TimerViewDelegate> *delegate;
 
 @end
 

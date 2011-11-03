@@ -16,12 +16,12 @@
 /*!
  @brief File title.
  */
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, strong) NSString *title;
 
 /*!
  @brief File Reference.
  */
-@property (nonatomic, retain) NSString *sref;
+@property (nonatomic, strong) NSString *sref;
 
 /*!
  @brief Actually a directory?
@@ -31,7 +31,7 @@
 /*!
  @brief Root folder.
  */
-@property (nonatomic, retain) NSString *root;
+@property (nonatomic, strong) NSString *root;
 
 /*!
  @brief Valid or Fake File.

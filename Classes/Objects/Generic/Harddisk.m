@@ -10,17 +10,15 @@
 
 @implementation Harddisk
 
-@synthesize capacity = _capacity;
-@synthesize free = _free;
-@synthesize model = _model;
+@synthesize capacity, free, model;
 
-- (id)initWithModel:(NSString *)model andCapacity:(NSString *)capacity andFree:(NSString *)free
+- (id)initWithModel:(NSString *)newModel andCapacity:(NSString *)newCapacity andFree:(NSString *)newFree
 {
 	if((self = [super init]))
 	{
-		_model = [model retain];
-		_capacity = [capacity retain];
-		_free = [free retain];
+		self.model = newModel;
+		self.capacity = newCapacity;
+		self.free = newFree;
 	}
 	return self;
 }

@@ -18,9 +18,6 @@
 #import "iAd/ADBannerView.h"
 #endif
 
-// Forward declarations...
-@class CXMLDocument;
-
 /*!
  @brief Current View.
  
@@ -41,7 +38,6 @@
 	UITextView *_nextSummary; /*!< @brief Summary of next event. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
-	CXMLDocument *_currentXMLDoc; /*!< @brief Current XML Document. */
 #if INCLUDE_FEATURE(Ads)
 @private
 	id _adBannerView;

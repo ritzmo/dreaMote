@@ -38,9 +38,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"About", @"Title of AboutDreamoteViewController");
-
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
 
 		welcomeType = welcomeTypeNone;
 	}
@@ -53,24 +51,11 @@
 {
 	if((self = [super init]))
 	{
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
 
 		welcomeType = inWelcomeType;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	aboutDelegate = nil;
-	SafeRetainAssign(_aboutText, nil);
-	SafeRetainAssign(_doneButton, nil);
-	SafeRetainAssign(_mailButton, nil);
-	SafeRetainAssign(_twitterButton, nil);
-
-	[super dealloc];
 }
 
 /* layout */
@@ -92,7 +77,6 @@
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = contentView;
-	[contentView release];
 
 	CGRect frame;
 	const CGSize size = self.view.bounds.size;
@@ -105,7 +89,7 @@
 		default:
 		case welcomeTypeNone:
 			html = [NSString stringWithContentsOfFile:[[[NSBundle mainBundle] bundlePath] stringByAppendingString:@"/about.html"] usedEncoding:nil error:nil];
-			html = [html stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
+			html = [html stringByReplacingOccurrencesOfString:@"@CFBundleVersion" withString:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
 			break;
 		case welcomeTypeChanges:
 		{
@@ -142,7 +126,7 @@
 	[self.view addSubview:_aboutText];
 
 	frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
-	_doneButton = [[UIButton buttonWithType: UIButtonTypeRoundedRect] retain];
+	_doneButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
 	_doneButton.frame = frame;
 	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
 	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -153,7 +137,7 @@
 		if([MFMailComposeViewController canSendMail])
 		{
 			frame = CGRectMake(0, 400 + kTweenMargin, 32, 32);
-			_mailButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+			_mailButton = [UIButton buttonWithType:UIButtonTypeCustom];
 			_mailButton.frame = frame;
 			UIImage *image = [UIImage imageNamed:@"internet-mail.png"];
 			[_mailButton setImage:image forState:UIControlStateNormal];
@@ -163,7 +147,7 @@
 		}
 
 		frame = CGRectMake(size.width - 63, 400 + kTweenMargin, 61, 32);
-		_twitterButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+		_twitterButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		_twitterButton.frame = frame;
 		UIImage *image = [UIImage imageNamed:@"twitter-b.png"];
 		[_twitterButton setImage:image forState:UIControlStateNormal];
@@ -175,10 +159,10 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_aboutText, nil);
-	SafeRetainAssign(_doneButton, nil);
-	SafeRetainAssign(_mailButton, nil);
-	SafeRetainAssign(_twitterButton, nil);
+	_aboutText = nil;
+	_doneButton = nil;
+	_mailButton = nil;
+	_twitterButton = nil;
 
 	[super viewDidUnload];
 }
@@ -203,12 +187,8 @@
 {
 	MFMailComposeViewController *mvc = [[MFMailComposeViewController alloc] init];
 	mvc.mailComposeDelegate = self;
-#ifndef __clang_analyzer__
-	// NOTE: this is evil, and even though clang does not detect it, preemptively hide it from him
-	[mvc.mailComposeDelegate retain];
-#endif
 	NSString *displayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	[mvc setSubject:[NSString stringWithFormat:@"App Feedback %@", displayName]];
 	[mvc setToRecipients:[NSArray arrayWithObject:@"dreamote@ritzmo.de"]];
@@ -223,7 +203,6 @@
 		parentViewController = self.presentingViewController;
 	[self dismissModalViewControllerAnimated:NO];
 	[parentViewController presentModalViewController:mvc animated:YES];
-	[mvc release];
 }
 
 /* rotate with device on ipad, otherwise to portrait */
@@ -338,23 +317,21 @@
 /* load url? */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-	NSURL *requestURL = [[request URL] retain];
+	NSURL *requestURL = [request URL];
 
 	// Check to see what protocol/scheme the requested URL is.
 	if ( ([requestURL.scheme isEqualToString: @"http"]
 		  || [requestURL.scheme isEqualToString: @"https"])
 		&& (navigationType == UIWebViewNavigationTypeLinkClicked) )
 	{
-		return ![[UIApplication sharedApplication] openURL: [requestURL autorelease]];
+		return ![[UIApplication sharedApplication] openURL: requestURL];
 	}
 	else if( [requestURL.scheme isEqualToString:@"mailto"]
 		&& (navigationType == UIWebViewNavigationTypeLinkClicked) )
 	{
 		[self showMailComposer:nil];
-		[requestURL release];
 		return NO;
 	}
-	[requestURL release];
 
 	// If request url is something other than http or https it will open in UIWebView
 	// You could also check for the other following protocols: tel, mailto and sms
@@ -373,16 +350,11 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	NSObject<AboutDreamoteDelegate> *delegate = aboutDelegate; // make sure the pointer stays valid
 	aboutDelegate = nil;
 	[controller dismissModalViewControllerAnimated:YES];
-#ifndef __clang_analyzer__
-	// NOTE: we actually retain the delegate manually, though it is supposed to be a weak reference
-	// but as the static analyzer catches this evil behavior of ours, just don't show it to him
-	SafeRetainAssign(controller.mailComposeDelegate, nil);
-#endif
+	controller.mailComposeDelegate = nil;
 
 	if([delegate conformsToProtocol:@protocol(AboutDreamoteDelegate)])
 	{

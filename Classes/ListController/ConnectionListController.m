@@ -19,8 +19,8 @@
  */
 - (void)abortAction:(id)sender;
 
-@property (nonatomic, retain) NSArray *connections;
-@property (nonatomic, retain) NSObject<ConnectionListDelegate> *connectionDelegate;
+@property (nonatomic, strong) NSArray *connections;
+@property (nonatomic, strong) NSObject<ConnectionListDelegate> *connectionDelegate;
 @end
 
 @implementation ConnectionListController
@@ -55,10 +55,6 @@
 {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-	[_connections release];
-	[_delegate release];
-
-	[super dealloc];
 }
 
 #pragma mark UIViewController delegates
@@ -78,10 +74,8 @@
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(abortAction:)];
 	self.navigationItem.leftBarButtonItem = button;
-	[button release];
 
 	self.view = tableView;
-	[tableView release];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -106,7 +100,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSMutableDictionary *con = [[_connections objectAtIndex:indexPath.row] mutableCopy];
-	NSObject<ConnectionListDelegate> *delegate = [_delegate retain];
+	NSObject<ConnectionListDelegate> *delegate = _delegate;
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	else
@@ -114,8 +108,7 @@
 		[self.navigationController popViewControllerAnimated:NO];
 
 	[delegate connectionSelected:con];
-	[con autorelease];
-	[delegate release];
+	SafeRetainAssign(_delegate, nil);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

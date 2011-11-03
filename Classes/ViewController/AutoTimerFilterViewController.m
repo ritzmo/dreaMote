@@ -34,6 +34,8 @@
 
 @implementation AutoTimerFilterViewController
 
+@synthesize callback;
+
 /*!
  @brief Keyboard offset.
  The amount of vertical shift upwards to keep the text field in view as the keyboard appears.
@@ -68,11 +70,9 @@
 {
 	if(currentText == newText) return;
 
-	[currentText release];
-	currentText = [newText retain];
+	currentText = newText;
 
-	[oldText release];
-	oldText = [newText retain];
+	oldText = newText;
 
 	filterTextfield.text = newText;
 	[(UITableView *)self.view reloadData];
@@ -104,17 +104,6 @@
 	[(UITableView *)self.view reloadData];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_cancelButtonItem release];
-	[oldText release];
-	[currentText release];
-	[filterTextfield release];
-
-	[super dealloc];
-}
-
 /* layout */
 - (void)loadView
 {
@@ -129,7 +118,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	_cancelButtonItem = [[UIBarButtonItem alloc]
 						 initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
@@ -140,7 +128,6 @@
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 
 	filterTextfield = [[UITextField alloc] initWithFrame:CGRectZero];
 	filterTextfield.text = currentText;
@@ -159,9 +146,7 @@
 
 - (void)viewDidUnload
 {
-	[_cancelButtonItem release];
 	_cancelButtonItem = nil;
-	[filterTextfield release];
 	filterTextfield = nil;
 
 	[super viewDidUnload];
@@ -170,49 +155,27 @@
 /* cancel */
 - (void)cancelEdit:(id)sender
 {
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
-		[self.navigationController popViewControllerAnimated: YES];
+	if(callback)
+		callback(NO, nil, filterType, include, oldText, oldInclude);
 }
 
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(_delegate != nil)
+	if(callback)
 	{
-		SEL mySel = @selector(filterSelected:filterType:include:oldFilter:oldInclude:);
-		NSMethodSignature *sig = [(NSObject *)_delegate methodSignatureForSelector:mySel];
-		if(sig)
-		{
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			NSString *text = nil;
+		__unsafe_unretained NSString *text = nil;
 
-			if(filterType == autoTimerWhereDayOfWeek)
-				text = currentText;
-			else
-				text = filterTextfield.text;
+		if(filterType == autoTimerWhereDayOfWeek)
+			text = currentText;
+		else
+			text = filterTextfield.text;
 
-			if([text isEqualToString:@""])
-				text = nil;
+		if([text isEqualToString:@""])
+			text = nil;
 
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:mySel];
-			[invocation setArgument:&text atIndex:2];
-			[invocation setArgument:&filterType atIndex:3];
-			[invocation setArgument:&include atIndex:4];
-			[invocation setArgument:&oldText atIndex:5];
-			[invocation setArgument:&oldInclude atIndex:6];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
+		callback(YES, text, filterType, include, oldText, oldInclude);
 	}
-
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
-		[self.navigationController popViewControllerAnimated:YES];
 }
 
 /* rotate with device */
@@ -343,11 +306,11 @@
 			selectedItem = [currentText integerValue];
 
 		if(indexPath.row == 7)
-			currentText = [@"weekend" retain];
+			currentText = @"weekend";
 		else if(indexPath.row == 8)
-			currentText = [@"weekday" retain];
+			currentText = @"weekday";
 		else
-			currentText = [[NSString stringWithFormat:@"%d", indexPath.row] retain];
+			currentText = [NSString stringWithFormat:@"%d", indexPath.row];
 
 		cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:1]];
 	}
@@ -359,16 +322,6 @@
 		cell = [tableView cellForRowAtIndexPath:indexPath];
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
-}
-
-/* set delegate */
-- (void)setDelegate: (id<AutoTimerFilterDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
 }
 
 #pragma mark -

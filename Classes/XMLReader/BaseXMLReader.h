@@ -7,16 +7,17 @@
 //
 
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-#import "CXMLPushDocument.h"
+#import <XMLReader/CXMLPushDocument.h>
 typedef CXMLPushDocument OurXMLDocument;
 #else
-#import "CXMLDocument.h"
+#import <CXMLDocument.h>
 typedef CXMLDocument OurXMLDocument;
 #endif
+#import <CXMLElement.h>
 
-#import "RemoteConnector.h"
+#import <Connector/RemoteConnector.h>
 
-#import "DataSourceDelegate.h"
+#import <Delegates/DataSourceDelegate.h>
 
 /*!
  @brief Protocol used to guarantee that XML readers implement common functionality.
@@ -37,11 +38,10 @@ typedef CXMLDocument OurXMLDocument;
 @interface BaseXMLReader : NSObject <XMLReader>
 {
 @protected
-	BOOL	_done; /*!< @brief Finished parsing? */
+	BOOL _done; /*!< @brief Finished parsing? */
 	NSObject<DataSourceDelegate> *_delegate; /*!< @brief Delegate. */
-	OurXMLDocument *_parser; /*!< @brief CXMLDocument. */
+	OurXMLDocument *document; /*!< @brief CXMLDocument. */
 	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
-	NSStringEncoding _encoding; /*!< @brief Expected encoding of document. */
 }
 
 /*!
@@ -52,6 +52,16 @@ typedef CXMLDocument OurXMLDocument;
  @return Parsed XML Document.
  */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+
+/*!
+ @brief Delegate.
+ */
+@property (nonatomic, strong) NSObject<DataSourceDelegate> *delegate;
+
+/*!
+ @brief If using TouchXML to parse XML, this is the pointer to the document.
+ */
+@property (nonatomic, readonly) CXMLDocument *document;
 
 /*!
  @brief Expected encoding of document.

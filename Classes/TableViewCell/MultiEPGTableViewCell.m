@@ -32,35 +32,19 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 @implementation MultiEPGTableViewCell
 
-@synthesize serviceNameLabel = _serviceNameLabel;
-@synthesize begin = _begin;
-
-/* dealloc */
-- (void)dealloc
-{
-	[_serviceNameLabel release];
-	[_service release];
-	[_events release];
-	[_begin release];
-	[_lines release];
-
-	[super dealloc];
-}
+@synthesize begin;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		const UIView *myContentView = self.contentView;
-
 		// A label that displays the Servicename.
 		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
 											 selectedColor: [UIColor whiteColor]
 												  fontSize: kMultiEPGFontSize
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
-		[myContentView addSubview: _serviceNameLabel];
 
 		// no accessory
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -74,6 +58,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 - (void)prepareForReuse
 {
+	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+	self.service = nil;
 	self.events = nil;
 }
 
@@ -88,9 +74,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	// Abort if same service assigned
 	if(_service == newService) return;
-
-	// Free old service, assign new one
-	SafeRetainAssign(_service, newService);
+	_service = newService;
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
@@ -115,12 +99,12 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	@synchronized(self)
 	{
 		if(_events == new) return;
-		SafeRetainAssign(_events, new);
+		_events = new;
 
 		[_lines removeAllObjects];
 		for(NSObject<EventProtocol> *event in _events)
 		{
-			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:_begin];
+			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:begin];
 			[_lines addObject:[NSNumber numberWithFloat:left]];
 		}
 
@@ -153,7 +137,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	{
 		NSLog(@"invalid number of lines (0) in multi epg cell, returning first event if possible or nil");
 		if([_events count])
-			SafeReturn([_events objectAtIndex:0]);
+			[_events objectAtIndex:0];
 		return nil;
 	}
 
@@ -168,7 +152,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		// if x withing bounds of event, return it… ignore y for now, should not matter anyway.
 		if(point.x >= leftLine && point.x < rightLine)
 		{
-			return SafeReturn(event);
+			return event;
 		}
 		idx += 1;
 	}
@@ -211,9 +195,9 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	{
 		// check if this is just the last event so we had nothing to compare it to
 		NSObject<EventProtocol> *lastEvent = ((NSObject<EventProtocol> *)[_events lastObject]);
-		if([lastEvent.begin timeIntervalSinceDate:_begin] == lastBegin)
+		if([lastEvent.begin timeIntervalSinceDate:begin] == lastBegin)
 		{
-			const NSTimeInterval lastEnd = [lastEvent.end timeIntervalSinceDate:_begin];
+			const NSTimeInterval lastEnd = [lastEvent.end timeIntervalSinceDate:begin];
 			if(lastEnd < _secondsSinceBegin)
 				rectX = NSNotFound;
 			else
@@ -308,7 +292,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 			{
 				NSLog(@"Line: %.2f", kServiceWidth + [number floatValue] * widthPerSecond);
 			}
-			[formatter release];
 			[exception raise];
 #endif
 			break;
@@ -327,7 +310,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		label.adjustsFontSizeToFitWidth = YES;
 		label.textAlignment = UITextAlignmentCenter;
 		[self.contentView addSubview:label];
-		[label release];
 	}
 }
 

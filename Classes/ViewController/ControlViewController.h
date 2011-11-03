@@ -19,20 +19,15 @@
 @interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
 													UIActionSheetDelegate,
 													VolumeSourceDelegate>
-{
-@private
-	UISwitch *_switchControl; /*!< @brief Mute switch. */
-	UISlider *_slider; /*!< @brief Volume slider. */
-}
 
 /*!
  @brief Mute switch.
  */
-@property (nonatomic, retain) UISwitch *switchControl;
+@property (nonatomic, strong) UISwitch *switchControl;
 
 /*!
  @brief Volume slider.
  */
-@property (nonatomic, retain) UISlider *slider;
+@property (nonatomic, strong) UISlider *slider;
 
 @end

@@ -16,23 +16,28 @@
 /*!
  @brief Service Reference.
  */
-@property (nonatomic, retain) NSString *sref;
+@property (nonatomic, strong) NSString *sref;
 
 /*!
  @brief Name.
  */
-@property (nonatomic, retain) NSString *sname;
+@property (nonatomic, strong) NSString *sname;
 
 /*!
  @brief Picon Path.
  @note Only used if there is a specific baseName for this picon to use.
  */
-@property (nonatomic, retain) NSString *piconName;
+@property (nonatomic, strong) NSString *piconName;
 
 /*!
  @brief Valid or Fake Service.
  */
 @property (nonatomic, readonly, getter = isValid) BOOL valid;
+
+/*!
+ @brief Picon already loaded?
+ */
+@property (nonatomic, readonly) BOOL piconLoaded;
 
 /*!
  @brief Picon.

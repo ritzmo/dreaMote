@@ -8,21 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "MetadataProtocol.h"
+#import <Objects/MetadataProtocol.h>
 
 /*!
  @brief Metadata independent of connector.
  */
 @interface GenericMetadata : NSObject<MetadataProtocol>
-{
-@private
-	NSString *title;
-	NSString *artist;
-	NSString *album;
-	NSString *genre;
-	NSString *year;
-	NSString *coverpath;
-}
 
 /*!
  @brief Init with existing information.

@@ -11,7 +11,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "FileSourceDelegate.h"
 
-@class CXMLDocument;
+@class BaseXMLReader;
 @protocol FileProtocol;
 @protocol FileListDelegate;
 
@@ -23,10 +23,8 @@
 	BOOL _isPlaylist; /*!< @brief Is playlist? */
 	NSInteger _playing; /*!< @brief Item marked as currently playing. */
 
-	BOOL _reloading; /*!< @brief Currently reloading. */
-	CXMLDocument *_fileXMLDoc; /*!< @brief XML Document. */
+	BaseXMLReader *_xmlReader; /*!< @brief XML Reader. */
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
-	UIViewController<FileListDelegate> *_fileDelegate; /*!< @brief Delegate. */
 	NSMutableArray *_files; /*!< @brief Current List of Files. */
 	NSMutableArray *_selected; /*!< @brief List of selected Files. */
 }
@@ -58,12 +56,19 @@
  */
 - (BOOL)selectPlayingByTitle:(NSString *)filename;
 
-@property (nonatomic, retain) UIViewController<FileListDelegate> *fileDelegate;
+/*!
+ @brief Delegate.
+ */
+@property (nonatomic, unsafe_unretained) UIViewController<FileListDelegate> *fileDelegate;
 @property (nonatomic) BOOL isPlaylist;
+
+/*!
+ @brief Currently reloading?
+ */
 @property (nonatomic) BOOL reloading;
-@property (nonatomic, retain) NSString *path;
+@property (nonatomic, strong) NSString *path;
 @property (nonatomic, readonly) NSMutableArray *files;
-@property (nonatomic, readonly) NSMutableArray *selectedFiles;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *selectedFiles;
 
 @end
 

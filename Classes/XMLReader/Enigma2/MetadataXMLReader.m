@@ -18,7 +18,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -31,7 +31,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addMetadata:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -50,7 +49,7 @@ Example:
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2mediaplayercurrent/e2currenttrack" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/e2mediaplayercurrent/e2currenttrack" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -60,7 +59,6 @@ Example:
 		[_delegate performSelectorOnMainThread: @selector(addMetadata:)
 									withObject: newMetadata
 								 waitUntilDone: NO];
-		[newMetadata release];
 	}
 }
 

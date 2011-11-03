@@ -11,7 +11,16 @@
 
 #import "RemoteConnector.h"
 
-#import <CXMLDocument.h>
+#import <XMLReader/BaseXMLReader.h>
+
+typedef enum
+{
+	CACHE_TYPE_TV = 1<< 0,
+	CACHE_TYPE_RADIO = 1 << 1,
+	CACHE_MASK_BOUQUET = 1 << 2,
+	CACHE_MASK_PROVIDER = 1 << 3,
+	CACHE_MASK_ALL = 1 << 4,
+} cacheType;
 
 /*!
  @brief Connector for Enigma based STBs.
@@ -22,13 +31,13 @@
 	NSLock *_bouquetsCacheLock; /*!< @brief Lock for _cachedBouquetsXML. */
 
 	/*!
-	 @brief Cached Bouquet XML.
+	 @brief XML Reader responsible for current cached document.
 
 	 For performance Reasons the Service list is only fetched once when entering
 	 the Bouquet list so we have to cache this (already parsed) XML in memory.
 	*/
-	CXMLDocument *_cachedBouquetsXML;
-	BOOL _cacheIsRadio;
+	BaseXMLReader *_cachedBouquetsReader;
+	cacheType _cacheType;
 }
 
 @end

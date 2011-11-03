@@ -39,7 +39,6 @@ typedef enum
 														UITableViewDataSource>
 {
 @private
-	NSObject<ServiceZapListDelegate> *_zapDelegate; /*!< @brief Zap delegate. */
 	BOOL hasAction[zapActionMax]; /*!< @brief Cache of supported zap actions */
 	UIActionSheet *_actionSheet; /*!< @brief Action sheet if ran on iPhone/iPod Touch. */
 }
@@ -70,7 +69,10 @@ typedef enum
  */
 + (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
 
-@property (nonatomic, retain) NSObject<ServiceZapListDelegate> *zapDelegate;
+/*!
+ @brief Zap delegate.
+ */
+@property (nonatomic, unsafe_unretained) NSObject<ServiceZapListDelegate> *zapDelegate;
 
 @end
 

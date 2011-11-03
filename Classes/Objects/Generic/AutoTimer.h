@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "../EventProtocol.h"
-#import "../TimerProtocol.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/TimerProtocol.h>
 
 typedef enum
 {
@@ -43,21 +43,6 @@ typedef enum
 @interface AutoTimer : NSObject
 {
 @private
-	NSString *name;
-	NSString *match;
-	BOOL enabled;
-	NSInteger idno;
-	NSDate *from;
-	NSDate *to;
-	NSInteger offsetBefore;
-	NSInteger offsetAfter;
-	NSString *encoding;
-	autoTimerSearchType searchType;
-	autoTimerSearchCase searchCase;
-	BOOL overrideAlternatives;
-	NSMutableArray *services;
-	NSMutableArray *bouquets;
-	NSArray *tags;
 	NSMutableArray *includeTitle;
 	NSMutableArray *includeShortdescription;
 	NSMutableArray *includeDescription;
@@ -66,12 +51,6 @@ typedef enum
 	NSMutableArray *excludeShortdescription;
 	NSMutableArray *excludeDescription;
 	NSMutableArray *excludeDayOfWeek;
-	NSInteger maxduration;
-	NSString *location;
-	BOOL justplay;
-	NSDate *before;
-	NSDate *after;
-	autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 	enum afterEvent afterEventAction; // TODO: support extended syntax
 	// TODO: add counter
 }
@@ -82,34 +61,34 @@ typedef enum
 - (void)addExclude:(NSString *)exclude where:(autoTimerWhereType)where;
 
 @property (nonatomic, readonly) BOOL valid;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *match;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *match;
 @property (nonatomic) BOOL enabled;
 @property (nonatomic) NSInteger idno;
-@property (nonatomic, retain) NSDate *from;
-@property (nonatomic, retain) NSDate *to;
+@property (nonatomic, strong) NSDate *from;
+@property (nonatomic, strong) NSDate *to;
 @property (nonatomic) NSInteger offsetBefore;
 @property (nonatomic) NSInteger offsetAfter;
-@property (nonatomic, retain) NSString *encoding;
+@property (nonatomic, strong) NSString *encoding;
 @property (nonatomic) autoTimerSearchType searchType;
 @property (nonatomic) autoTimerSearchCase searchCase;
 @property (nonatomic) BOOL overrideAlternatives;
-@property (nonatomic, retain) NSMutableArray *services;
-@property (nonatomic, retain) NSMutableArray *bouquets;
-@property (nonatomic, retain) NSArray *tags;
-@property (nonatomic, readonly) NSMutableArray *includeTitle;
-@property (nonatomic, readonly) NSMutableArray *includeShortdescription;
-@property (nonatomic, readonly) NSMutableArray *includeDescription;
-@property (nonatomic, readonly) NSMutableArray *includeDayOfWeek;
-@property (nonatomic, readonly) NSMutableArray *excludeTitle;
-@property (nonatomic, readonly) NSMutableArray *excludeShortdescription;
-@property (nonatomic, readonly) NSMutableArray *excludeDescription;
-@property (nonatomic, readonly) NSMutableArray *excludeDayOfWeek;
+@property (nonatomic, strong) NSMutableArray *services;
+@property (nonatomic, strong) NSMutableArray *bouquets;
+@property (nonatomic, strong) NSArray *tags;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *includeTitle;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *includeShortdescription;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *includeDescription;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *includeDayOfWeek;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *excludeTitle;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *excludeShortdescription;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *excludeDescription;
+@property (unsafe_unretained, nonatomic, readonly) NSMutableArray *excludeDayOfWeek;
 @property (nonatomic) NSInteger maxduration;
-@property (nonatomic, retain) NSString *location;
+@property (nonatomic, strong) NSString *location;
 @property (nonatomic) BOOL justplay;
-@property (nonatomic, retain) NSDate *before;
-@property (nonatomic, retain) NSDate *after;
+@property (nonatomic, strong) NSDate *before;
+@property (nonatomic, strong) NSDate *after;
 @property (nonatomic) autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 @property (nonatomic) enum afterEvent afterEventAction;
 

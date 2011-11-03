@@ -19,7 +19,7 @@
 {
 	id cell = [tableView dequeueReusableCellWithIdentifier:identifier];
 	if(!cell)
-		cell = [[[[self class] alloc] initWithStyle:style reuseIdentifier:identifier] autorelease];
+		cell = [[[self class] alloc] initWithStyle:style reuseIdentifier:identifier];
 	return cell;
 }
 

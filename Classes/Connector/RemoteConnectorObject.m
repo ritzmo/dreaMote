@@ -30,9 +30,9 @@
 
 @interface RemoteConnectorObject()
 + (RemoteConnectorObject *)singleton;
-@property (nonatomic, retain) NSMutableArray *connections;
-@property (nonatomic, retain) NSDictionary *connection;
-@property (nonatomic, retain) NSMutableArray *netServices;
+@property (nonatomic, strong) NSMutableArray *connections;
+@property (nonatomic, strong) NSDictionary *connection;
+@property (nonatomic, strong) NSMutableArray *netServices;
 @property (nonatomic, readonly) NSOperationQueue *queue;
 @end
 
@@ -60,25 +60,14 @@ static RemoteConnectorObject *singleton;
 - (void)dealloc
 {
 	singleton = nil;
-	[queue release];
-	[netServiceBrowser release];
-	[netServices release];
-	[connections release];
-	[connection release];
-
-	[super dealloc];
 }
 
 + (RemoteConnectorObject *)singleton
 {
-	if(!singleton)
-	{
-		@synchronized(self)
-		{
-			if(!singleton)
-				singleton = [[RemoteConnectorObject alloc] init];
-		}
-	}
+	static dispatch_once_t remoteConnectorObjectInitializer;
+	dispatch_once(&remoteConnectorObjectInitializer, ^{
+		singleton = [[RemoteConnectorObject alloc] init];
+	});
 	return singleton;
 }
 
@@ -173,14 +162,12 @@ static RemoteConnectorObject *singleton;
 {
 	netService.delegate = nil;
 	[netServices addObject:netService];
-	[netService release];
 }
 
 - (void)netService:(NSNetService *)netService didNotResolve:(NSDictionary *)errorDict
 {
 	// ignore
 	netService.delegate = nil;
-	[netService release];
 }
 
 #pragma mark - NSNetServiceBrowserDelegate
@@ -190,7 +177,7 @@ static RemoteConnectorObject *singleton;
 	if(![netServices containsObject:netService])
 	{
 		netService.delegate = self;
-		[netService retain]; // we have to retain the service or it will be released before the resolve can finish, so release it in resolve callbacks
+		 // we have to retain the service or it will be released before the resolve can finish, so release it in resolve callbacks
 		[netService resolveWithTimeout:3]; // arbitrary value
 	}
 }
@@ -226,7 +213,6 @@ static RemoteConnectorObject *singleton;
 		return;
 
 	[netServiceBrowser stop];
-	[netServiceBrowser release];
 	netServiceBrowser = nil;
 
 	[netServices removeAllObjects];
@@ -284,10 +270,10 @@ static RemoteConnectorObject *singleton;
 		bonjour = [currentConnector matchNetServices:singleton.netServices];
 		if(bonjour)
 		{
-			addresses = [addresses mutableCopy];
+			NSMutableArray *newAddresses = [addresses mutableCopy];
 			// TODO: filter for duplicates (are we able to detect them realiably?)
-			[(NSMutableArray *)addresses addObjectsFromArray:bonjour];
-			[addresses autorelease];
+			[newAddresses addObjectsFromArray:bonjour];
+			addresses = newAddresses;
 		}
 
 		for(NSDictionary *connection in addresses)
@@ -310,9 +296,7 @@ static RemoteConnectorObject *singleton;
 						NSMutableDictionary *mutableConnection = [connection mutableCopy];
 						[mutableConnection setValue:@"YES" forKey:kLoginFailed];
 						[array addObject:mutableConnection];
-						[mutableConnection release];
 					}
-					[connector release];
 				}
 			}
 			CFRelease(reachability);
@@ -330,40 +314,32 @@ static RemoteConnectorObject *singleton;
 	connector = [Enigma2Connector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
-		[connector release];
 		return kEnigma2Connector;
 	}
-	[connector release];
 #endif
 
 #if INCLUDE_FEATURE(Enigma)
 	connector = [Enigma1Connector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
-		[connector release];
 		return kEnigma1Connector;
 	}
-	[connector release];
 #endif
 
 	#if INCLUDE_FEATURE(Neutrino)
 	connector = [NeutrinoConnector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
-		[connector release];
 		return kNeutrinoConnector;
 	}
-	[connector release];
 #endif
 
 #if INCLUDE_FEATURE(SVDRP)
 	connector = [SVDRPConnector newWithConnection:connection];
 	if([connector isReachable:nil])
 	{
-		[connector release];
 		return kSVDRPConnector;
 	}
-	[connector release];
 #endif
 
 	return kInvalidConnector;
@@ -415,23 +391,23 @@ static RemoteConnectorObject *singleton;
 
 + (NSObject<RemoteConnector> *)sharedRemoteConnector
 {
-	return SafeReturn(_sharedRemoteConnector);
+	return _sharedRemoteConnector;
 }
 
 + (NSURLCredential *)getCredential
 {
-	NSDictionary *connection = [[RemoteConnectorObject singleton].connection retain]; // retain to prevent dictionary from being freed by another thread
+	NSDictionary *connection = [RemoteConnectorObject singleton].connection; // retain to prevent dictionary from being freed by another thread
 	NSString *username = [connection objectForKey:kUsername];
 	NSString *password = [connection objectForKey:kPassword];
 	NSURLCredential *retVal = nil;
 	if([username length])
 	{
 		// make sure username & password exist for a little while
-		retVal = [NSURLCredential credentialWithUser:SafeReturn(username)
-											password:SafeReturn(password)
+		retVal = [NSURLCredential credentialWithUser:username
+											password:password
 										 persistence:NSURLCredentialPersistenceForSession];
 	}
-	[connection release]; // decrease refcount again
+	 // decrease refcount again
 	return retVal;
 }
 
@@ -446,7 +422,6 @@ static RemoteConnectorObject *singleton;
 	NSOperationQueue *queue = singleton ? singleton.queue : [RemoteConnectorObject singleton].queue; // odd, but slightly faster
 	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:target selector:sel object:nil];
 	[queue addOperation:operation];
-	[operation release];
 }
 
 @end

@@ -23,18 +23,10 @@
 	{
 		self.title = NSLocalizedString(@"About Receiver", @"Title of AboutViewController");
 		_about = nil;
-		_aboutXMLDoc = nil;
+		_xmlReader = nil;
 	}
 	
 	return self;
-}
-
-- (void)dealloc
-{
-	[_about release];
-	[_aboutXMLDoc release];
-
-	[super dealloc];
 }
 
 /* layout */
@@ -47,17 +39,17 @@
 
 - (void)fetchData
 {
-	CXMLDocument *newXMLDoc = nil;
+	BaseXMLReader *newXMLReader = nil;
 	@try {
 		_reloading = YES;
-		newXMLDoc = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
+		newXMLReader = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
 	}
 	@catch (NSException * e) {
 #if IS_DEBUG()
 		[e raise];
 #endif
 	}
-	SafeRetainAssign(_aboutXMLDoc, newXMLDoc);
+	SafeRetainAssign(_xmlReader, newXMLReader);
 }
 
 - (void)emptyData
@@ -69,14 +61,14 @@
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_aboutXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;

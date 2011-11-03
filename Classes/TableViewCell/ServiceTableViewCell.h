@@ -27,12 +27,20 @@ extern NSString *kServiceCell_ID;
 /*!
  @brief Name Label.
  */
-@property (nonatomic, retain) UILabel *serviceNameLabel;
+@property (nonatomic, readonly) UILabel *serviceNameLabel;
 
 /*!
  @brief Service.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> * service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> * service;
+
+/*!
+ @brief Load Picons internally?
+ When showing a large ammount of services (e.g. in the Service List) loading the picons can make
+ the UI respond slowly to user interaction. By factoring out the loading code into a background
+ thread the parent view can control this.
+ */
+@property (nonatomic, assign) BOOL loadPicon;
 
 @end
 

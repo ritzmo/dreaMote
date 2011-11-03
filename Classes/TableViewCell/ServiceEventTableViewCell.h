@@ -28,29 +28,31 @@ extern NSString *kServiceEventCell_ID;
 	UILabel *_nowTimeLabel; /*!< @brief Current Event Time Label. */
 	UILabel *_nextLabel; /*!< @brief Next Event Label. */
 	UILabel *_nextTimeLabel; /*!< @brief Current Event Time Label. */
-	NSDateFormatter *_formatter; /*!< @brief Date Formatter instance. */
 	NSInteger timeWidth;
 }
 
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) NSDateFormatter *formatter;
+@property (nonatomic, strong) NSDateFormatter *formatter;
 
 /*!
- @brief Name Label.
+ @brief Load Picons internally?
+ When showing a large ammount of services (e.g. in the Service List) loading the picons can make
+ the UI respond slowly to user interaction. By factoring out the loading code into a background
+ thread the parent view can control this.
  */
-@property (nonatomic, retain) UILabel *serviceNameLabel;
+@property (nonatomic, assign) BOOL loadPicon;
 
 /*!
  @brief Current Event.
  */
-@property (nonatomic, retain) NSObject<EventProtocol> *now;
+@property (nonatomic, strong) NSObject<EventProtocol> *now;
 
 /*!
  @brief Next Event.
  */
-@property (nonatomic, retain) NSObject<EventProtocol> *next;
+@property (nonatomic, strong) NSObject<EventProtocol> *next;
 
 @end
 

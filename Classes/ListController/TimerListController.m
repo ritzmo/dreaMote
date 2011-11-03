@@ -18,14 +18,14 @@
 
 #import "TimerTableViewCell.h"
 
-#import "Objects/Generic/Timer.h"
-#import "Objects/Generic/Result.h"
+#import <Objects/Generic/Timer.h>
+#import <Objects/Generic/Result.h>
 
 @interface TimerListController()
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
-@property (nonatomic, retain) id adBannerView;
+@property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
 - (void)cleanupTimers:(id)sender;
@@ -41,9 +41,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 @implementation TimerListController
 
-@synthesize timers = _timers;
-@synthesize dateFormatter = _dateFormatter;
-@synthesize isSplit = _isSplit;
+@synthesize dateFormatter, isSplit;
 @synthesize timerViewController = _timerViewController;
 @synthesize willReappear = _willReappear;
 #if INCLUDE_FEATURE(Ads)
@@ -56,13 +54,12 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	if((self = [super init]))
 	{
-		self.timers = [NSMutableArray array];
+		_timers = [[NSMutableArray alloc] init];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
-		_dateFormatter = [[NSDateFormatter alloc] init];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_timerViewController = nil;
 		_willReappear = NO;
-		_isSplit = NO;
 	}
 	return self;
 }
@@ -71,18 +68,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_cleanupButton release];
-	[_dateFormatter release];
-	[_timers release];
 	if(_timerViewController.delegate == self)
 		_timerViewController.delegate = nil;
-	[_timerViewController release];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
 #endif
-
-	[super dealloc];
 }
 
 /* memory warning */
@@ -92,7 +82,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	{
 		if(_timerViewController.delegate == self)
 			_timerViewController.delegate = nil;
-		SafeRetainAssign(_timerViewController, nil);
+		_timerViewController = nil;
 	}
 	
     [super didReceiveMemoryWarning];
@@ -111,7 +101,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 
 	// reload data
@@ -148,7 +137,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	SafeRetainAssign(_adBannerView, nil);
+	_adBannerView = nil;
 #endif
 	SafeRetainAssign(_cleanupButton, nil);
 
@@ -158,10 +147,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)setWillReappear:(BOOL)new
 {
 	// allow to skip refresh only if there is any data
-	/*
-	 @note this prevents problems with iOS3.2 where sections were not properly reloaded
-	 resulting in double section headers with the first set hiding the first timer.
-	 */
 	if(_dist[0] > 0) _willReappear = new;
 }
 
@@ -243,14 +228,14 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	}
 
 	// Reset reference date of date formatter
-	[_dateFormatter resetReferenceDate];
+	[dateFormatter resetReferenceDate];
 }
 
 /* fetch timer list */
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_timerXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
 }
 
 /* remove content data */
@@ -263,23 +248,14 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		_dist[i] = 0;
 	[_timers removeAllObjects];
 
-	/*!
-	 @note at least 3.2 has problems with repositioning the section titles, so only do a
-	 "pretty" reload on 4.0+
-	 */
 #if INCLUDE_FEATURE(Extra_Animation)
-	if([UIDevice runsIos4OrBetter])
-	{
-		NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
-		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	}
-	else
+	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
+	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+#else
+	[_tableView reloadData];
 #endif
-	{
-		[_tableView reloadData];
-	}
 
-	SafeRetainAssign(_timerXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 - (void)cancelConnection:(NSNotification *)notif
@@ -307,7 +283,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 #pragma mark -
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -370,7 +346,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	NSInteger offset = 0;
 	if(section > 0)
 		offset = _dist[section-1];
-	((TimerTableViewCell *)cell).formatter = _dateFormatter;
+	((TimerTableViewCell *)cell).formatter = dateFormatter;
 	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
 
 	return cell;
@@ -421,10 +397,9 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_timerViewController.delegate = self;
 	_timerViewController.timer = timer;
 	_timerViewController.oldTimer = ourCopy;
-	[ourCopy release];
 
 	// when in split view go back to timer view, else push it on the stack
-	if(!_isSplit)
+	if(!isSplit)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_timerViewController])
@@ -434,7 +409,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
-			[result release]; // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 		}
@@ -570,7 +544,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
 														   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	// Add new Timer
@@ -591,7 +564,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		_timerViewController.oldTimer = nil;
 
 		// when in split view go back to timer view, else push it on the stack
-		if(!_isSplit)
+		if(!isSplit)
 		{
 			// XXX: wtf?
 			if([self.navigationController.viewControllers containsObject:_timerViewController])
@@ -601,7 +574,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
 				[NSException raise:@"TimerViewTwiceInNavigationStack" format:@"_timerViewController was twice in navigation stack: %@", result];
-				[result release]; // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToViewController:self animated:NO]; // return to self, so we can push the timerview without any problems
 			}
@@ -646,7 +618,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 //#define __BOTTOM_AD__
 
-- (CGFloat)getBannerHeight:(UIDeviceOrientation)orientation
+- (CGFloat)getBannerHeight:(UIInterfaceOrientation)orientation
 {
 	if(UIInterfaceOrientationIsLandscape(orientation))
 		return IS_IPAD() ? 66 : 32;
@@ -664,18 +636,18 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	Class classAdBannerView = NSClassFromString(@"ADBannerView");
 	if(classAdBannerView != nil)
 	{
-		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
+		self.adBannerView = [[classAdBannerView alloc] initWithFrame:CGRectZero];
 		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
-														  bannerContentSizeIdentifierPortrait,
-														  bannerContentSizeIdentifierLandscape,
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape,
 														  nil]];
 		if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 #ifdef __BOTTOM_AD__
 		// Banner at Bottom
@@ -698,11 +670,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	{
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 		[UIView beginAnimations:@"fixupViews" context:nil];
 		if(_adBannerViewIsVisible)

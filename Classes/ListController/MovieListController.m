@@ -18,7 +18,6 @@
 #import "UIDevice+SystemVersion.h"
 
 #import <Objects/MovieProtocol.h>
-
 #import <Objects/Generic/Result.h>
 
 @interface MovieListController()
@@ -27,14 +26,13 @@
 /*!
  @brief Popover Controller.
  */
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 @property (nonatomic, assign) BOOL sortTitle;
 @end
 
 @implementation MovieListController
 
-@synthesize popoverController;
-@synthesize isSplit = _isSplit;
+@synthesize popoverController, isSplit;
 
 /* initialize */
 - (id)init
@@ -48,7 +46,6 @@
 		_filteredMovies = [[NSMutableArray alloc] init];
 #endif
 		_refreshMovies = YES;
-		_isSplit = NO;
 
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -73,25 +70,13 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[_movies release];
-	[_characters release];
-	[_currentKeys release];
-	[_dateFormatter release];
 	self.movieViewController = nil;
-	[_movieXMLDoc release];
-	[_sortButton release];
 #if IS_FULL()
-	SafeRetainAssign(_filteredMovies, nil);
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
-	[_searchBar release];
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	SafeRetainAssign(_searchDisplay, nil);
 #endif
-
-	[super dealloc];
 }
 
 /* getter of currentLocation property */
@@ -118,7 +103,7 @@
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
 	CGFloat topOffset = -_tableView.contentInset.top;
-	if(IS_IPHONE() && [UIDevice olderThanIos:5.0f] && [UIDevice newerThanIos:4.0f])
+	if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
 		topOffset += _searchBar.frame.size.height;
 	[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 #endif
@@ -226,8 +211,6 @@
 
 				self.navigationItem.rightBarButtonItem = buttonItem;
 
-				[buttonItem release];
-				[toolbar release];
 			}
 		}
 		else
@@ -238,8 +221,6 @@
 
 			self.navigationItem.rightBarButtonItem = nil;
 		}
-		[items release];
-		[flexItem release];
 	}
 	else
 	{
@@ -294,7 +275,7 @@
 		[_movies removeAllObjects];
 		if(IS_IPHONE())
 			self.movieViewController = nil;
-		SafeRetainAssign(_movieXMLDoc, nil);
+		SafeRetainAssign(_xmlReader, nil);
 	}
 
 	[_dateFormatter resetReferenceDate];
@@ -455,7 +436,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_movieXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation]);
 }
 
 /* remove content data */
@@ -478,7 +459,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_movieXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 /* select and return next movie */
@@ -561,9 +542,9 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	if(_isSplit)
+	if(isSplit)
 	{
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
@@ -571,14 +552,14 @@
 	}
 	else
 	{
-		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 #endif
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if(_sortTitle)
 	{
@@ -589,7 +570,7 @@
 	}
 	else
 	{
-		[super dataSourceDelegate:dataSource finishedParsingDocument:document];
+		[super dataSourceDelegateFinishedParsingDocument:dataSource];
 	}
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
@@ -673,7 +654,7 @@
 
 	self.movieViewController.movie = movie;
 
-	if(!_isSplit)
+	if(!isSplit)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_movieViewController])
@@ -683,7 +664,6 @@
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
 			[NSException raise:@"MovieViewTwiceInNavigationStack" format:@"_movieViewController was twice in navigation stack: %@", result];
-			[result release]; // never reached, but to keep me from going crazy :)
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 		}
@@ -812,7 +792,6 @@
 					NSMutableArray *newObject = [object mutableCopy];
 					[_characters setValue:newObject forKey:key];
 					[newObject removeObjectAtIndex:indexPath.row];
-					[newObject release];
 				}
 				else
 				{
@@ -840,7 +819,6 @@
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
 														delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
-		[alert release];
 	}
 }
 

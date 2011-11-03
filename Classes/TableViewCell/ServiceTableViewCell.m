@@ -26,16 +26,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 @implementation ServiceTableViewCell
 
+@synthesize loadPicon;
 @synthesize serviceNameLabel = _serviceNameLabel;
-
-/* dealloc */
-- (void)dealloc
-{
-	[_serviceNameLabel release];
-	[_service release];
-
-	[super dealloc];
-}
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -51,6 +43,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 													  bold: YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
+
+		loadPicon = YES;
 	}
 
 	return self;
@@ -58,8 +52,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (void)prepareForReuse
 {
-	self.service = nil;
+	self.editingAccessoryType = UITableViewCellAccessoryNone;
 	self.imageView.image = nil;
+	self.service = nil;
+
 	[super prepareForReuse];
 }
 
@@ -74,7 +70,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 {
 	// Abort if same service assigned
 	if(_service == newService) return;
-	SafeRetainAssign(_service, newService);
+	_service = newService;
 
 	// Change name
 	_serviceNameLabel.text = newService.sname;
@@ -82,12 +78,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if(newService.valid)
 	{
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		self.imageView.image = newService.picon;
-	}
-	else
-	{
-		self.accessoryType = UITableViewCellAccessoryNone;
-		self.imageView.image = nil;
+		if(newService.piconLoaded || loadPicon)
+			self.imageView.image = newService.picon;
 	}
 
 	// Redraw
@@ -100,7 +92,11 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
 
-	const NSInteger leftMargin = (self.imageView.image) ? (self.imageView.frame.size.width + 3) : contentRect.origin.x + kLeftMargin;
+	CGRect imageRect = self.imageView.frame;
+	if(self.editing)
+		imageRect.origin.x += kLeftMargin;
+	self.imageView.frame = imageRect;
+	const NSInteger leftMargin = contentRect.origin.x + ((self.imageView.image) ? (imageRect.size.width + imageRect.origin.x + kTweenMargin) : kLeftMargin);
 	const CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, contentRect.size.height - 2);
 	_serviceNameLabel.frame = frame;
 }

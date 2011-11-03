@@ -19,6 +19,8 @@
 
 #import "MultiEPGTableViewCell.h"
 
+#import <XMLReader/SaxXmlReader.h>
+
 @interface MultiEPGListController()
 /*!
  @brief Setup and assign toolbar items.
@@ -38,12 +40,12 @@
 /*!
  @brief Activity Indicator.
  */
-@property (nonatomic, retain) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 @end
 
 @implementation MultiEPGListController
 
-@synthesize multiEpgDelegate = _mepgDelegate;
+@synthesize multiEpgDelegate;
 @synthesize progressHUD;
 
 - (id)init
@@ -61,14 +63,7 @@
 
 - (void)dealloc
 {
-	[_curBegin release];
-	[_events release];
-	[_services release];
-	[_serviceXMLDocument release];
 	progressHUD.delegate = nil;
-	[progressHUD release];
-
-	[super dealloc];
 }
 
 /* layout */
@@ -83,7 +78,6 @@
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	self.view = contentView;
-	[contentView release];
 	CGRect visibleFrame = CGRectMake(0, headerHeight, contentView.frame.size.width, contentView.frame.size.height-headerHeight);
 	_tableView.frame = visibleFrame;
 	[contentView addSubview:_tableView];
@@ -97,7 +91,6 @@
 - (void)viewDidUnload
 {
 	_tableView.tableHeaderView = nil;
-	[_headerView release];
 	_headerView = nil;
 
 	[super viewDidUnload];
@@ -108,65 +101,58 @@
 	[_services removeAllObjects];
 	[_events removeAllObjects];
 	[_tableView reloadData];
-	[_serviceXMLDocument release];
-	_serviceXMLDocument = nil;
-}
-
-- (void)fetchServices
-{
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[_serviceXMLDocument release];
-	_reloading = YES;
-	++pendingRequests;
-	_serviceXMLDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:NO];
-	[pool release];
+	_xmlReader = nil;
 }
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+	@autoreleasepool
+	{
+		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+		[self.view addSubview: progressHUD];
+		progressHUD.delegate = self;
+		[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
+		[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
+		[progressHUD setMode:MBProgressHUDModeDeterminate];
+		progressHUD.progress = 0.0f;
+		[progressHUD show:YES];
+		progressHUD.taskInProgress = YES;
 
-	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-	[self.view addSubview: progressHUD];
-	progressHUD.delegate = self;
-	[progressHUD setLabelText:NSLocalizedString(@"Loading EPG…", @"Label of Progress HUD in MultiEPG")];
-	[progressHUD setDetailsLabelText:NSLocalizedString(@"This can take a while.", @"Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate.")];
-	[progressHUD setMode:MBProgressHUDModeDeterminate];
-	progressHUD.progress = 0.0f;
-	[progressHUD show:YES];
-	progressHUD.taskInProgress = YES;
-
-	_servicesToRefresh = -1;
-	_reloading = YES;
-	++pendingRequests;
-	[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
-	[pool release];
+		_servicesToRefresh = -1;
+		_reloading = YES;
+		++pendingRequests;
+		[_epgCache refreshBouquet:_bouquet delegate:self isRadio:NO];
+	}
 }
 
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	NSDate *newBegin = nil;
-	if(!_willReapper)
+	if(![EPGCache sharedInstance].reloading)
 	{
-		// reset visible area to to "now"
-		newBegin = [NSDate date];
-	}
-	else
-	{
-		// don't change visible area, but reload event data
-		newBegin = _curBegin;
-	}
-	self.curBegin = newBegin;
+		NSDate *newBegin = nil;
+		if(!_willReapper)
+		{
+			// reset visible area to to "now"
+			newBegin = [NSDate date];
+		}
+		else
+		{
+			// don't change visible area, but reload event data
+			newBegin = _curBegin;
+		}
+		self.curBegin = newBegin;
 
-	_willReapper = NO;
+		_willReapper = NO;
+	}
+	[super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
 	_headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, headerHeight);
+	[super viewDidAppear:animated];
 }
 
 /* about to disappear */
@@ -178,6 +164,7 @@
 		_refreshTimer = nil;
 		[timer invalidate];
 	}
+	[super viewWillDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -197,7 +184,7 @@
 	++pendingRequests;
 	// Same bouquet assigned, abort
 	if(_bouquet == new) return;
-	SafeCopyAssign(_bouquet, new);
+	_bouquet = [new copy];
 
 	// Free Caches and reload data
 	[self emptyData];
@@ -221,9 +208,7 @@
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:now];
 
-	[_curBegin release];
-	_curBegin = [[gregorian dateFromComponents:components] retain];
-	[gregorian release];
+	_curBegin = [gregorian dateFromComponents:components];
 	[_events removeAllObjects];
 	[_tableView reloadData];
 	_headerView.begin = _curBegin;
@@ -250,7 +235,7 @@
 - (void)backButtonPressed:(id)sender
 {
 	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]] : [_curBegin addTimeInterval:-[timeInterval floatValue]];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:-[timeInterval floatValue]];
 	self.curBegin = until;
 }
 
@@ -258,7 +243,7 @@
 - (void)forwardButtonPressed:(id)sender
 {
 	NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-	NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]] : [_curBegin addTimeInterval:[timeInterval floatValue]];
+	NSDate *until = [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]];
 	self.curBegin = until;
 }
 
@@ -275,7 +260,6 @@
 	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit) fromDate:_curBegin];
 	[components setHour: 20];
 	self.curBegin = [gregorian dateFromComponents:components];
-	[gregorian release];
 }
 
 /* setup toolbar */
@@ -308,12 +292,6 @@
 	NSArray *items = [[NSArray alloc] initWithObjects:backButton, nowButton, flexItem, primetimeButton, fwdButton, nil];
 	[self setToolbarItems:items animated:NO];
 
-	[items release];
-	[fwdButton release];
-	[primetimeButton release];
-	[flexItem release];
-	[nowButton release];
-	[backButton release];
 }
 
 /* refresh "now" timestamp */
@@ -332,24 +310,23 @@
 	// check if we are in visible timespan
 	NSDate *now = [[NSDate alloc] init];
 	_secondsSinceBegin = [now timeIntervalSinceDate:_curBegin];
-	[now release];
 	[_tableView reloadData];
 }
 
 /* entry point for thread fetching epg entries */
 - (void)readEPG
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	@synchronized(self)
-	{
-		NSDate *begin = SafeReturn(_curBegin);
-		NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-		NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:[timeInterval floatValue]] : [_curBegin addTimeInterval:[timeInterval floatValue]];
-		[_epgCache readEPGForTimeIntervalFrom:begin until:SafeReturn(until) to:SafeReturn(self)];
+		@synchronized(self)
+		{
+			NSDate *begin = _curBegin;
+			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
+			NSDate *until = [begin dateByAddingTimeInterval:[timeInterval floatValue]];
+			[_epgCache readEPGForTimeIntervalFrom:begin until:until to:self];
+		}
+
 	}
-
-	[pool release];
 }
 
 /* did rotate */
@@ -383,7 +360,6 @@
 		[actionSheet showFromTabBar:APP_DELEGATE.tabBarController.tabBar];
 	else
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-	[actionSheet release];
 }
 
 #pragma mark -
@@ -421,8 +397,11 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
+	if(dataSource && dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	if(--pendingRequests == 0)
 	{
 		// alert user
@@ -432,7 +411,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 
 		[_tableView reloadData];
 		_reloading = NO;
@@ -440,8 +418,11 @@
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
+	if(dataSource && dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	if(--pendingRequests == 0)
 	{
 		[_tableView reloadData];
@@ -479,7 +460,6 @@
 	{
 		arr = [[NSMutableArray alloc] initWithObjects:event, nil];
 		[_events setValue:arr forKey:event.service.sref];
-		[arr release];
 	}
 }
 
@@ -533,7 +513,7 @@
 
 	if(interval)
 	{
-		NSDate *until = ([UIDevice runsIos4OrBetter]) ? [_curBegin dateByAddingTimeInterval:interval] : [_curBegin addTimeInterval:interval];
+		NSDate *until = [_curBegin dateByAddingTimeInterval:interval];
 		self.curBegin = until;
 	}
 }
@@ -575,7 +555,8 @@
 	locationInCell.x = lastTouch.x;
 	locationInCell.y = lastTouch.y - cellRect.origin.y;
 	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-	[_mepgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
+	if([multiEpgDelegate respondsToSelector:@selector(multiEPG:didSelectEvent:onService:)])
+		[multiEpgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }

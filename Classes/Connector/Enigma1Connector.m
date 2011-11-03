@@ -34,6 +34,11 @@
 // Services are 'lightweight'
 #define MAX_SERVICES 2048
 
+/*! @brief Virtual Service Reference for 'All TV Services'. */
+static NSString *enigmaAllServices = @"ALL_SERVICES_ENIGMA";
+/*! @brief Virtual Service Reference for 'All Radio Services'. */
+static NSString *enigmaAllRadioServices = @"ALL_RADIO_SERVICES_ENIGMA";
+
 enum enigma1MessageTypes {
 	kEnigma1MessageTypeInfo = 0,
 	kEnigma1MessageTypeWarning = 1,
@@ -49,6 +54,7 @@ enum enigma1MessageTypes {
 	return
 		(feature == kFeaturesRadioMode) ||
 		(feature == kFeaturesBouquets) ||
+		//(feature == kFeaturesProviderList) ||
 		(feature == kFeaturesStreaming) ||
 		(feature == kFeaturesGUIRestart) ||
 		(feature == kFeaturesRecordInfo) ||
@@ -106,7 +112,7 @@ enum enigma1MessageTypes {
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
 
-	return (NSObject <RemoteConnector>*)[[Enigma1Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
+	return [[Enigma1Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
 }
 
 + (NSArray *)knownDefaultConnections
@@ -150,24 +156,11 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
-- (void)dealloc
-{
-	[_baseAddress release];
-	_baseAddress = nil;
-	[_cachedBouquetsXML release];
-	_cachedBouquetsXML = nil;
-	[_bouquetsCacheLock release];
-	_bouquetsCacheLock = nil;
-
-	[super dealloc];
-}
-
 - (void)freeCaches
 {
 	[_bouquetsCacheLock lock];
 
-	[_cachedBouquetsXML release];
-	_cachedBouquetsXML = nil;
+	SafeRetainAssign(_cachedBouquetsReader, nil);
 
 	[_bouquetsCacheLock unlock];
 }
@@ -204,10 +197,10 @@ enum enigma1MessageTypes {
 	return [[EnigmaRCEmulatorController alloc] init];
 }
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
 {
 	// check if delegate wants to be informated about errors
-	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
@@ -215,7 +208,7 @@ enum enigma1MessageTypes {
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
-		[invocation setArgument:&error atIndex:4];
+		[invocation setArgument:&error atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
@@ -224,7 +217,7 @@ enum enigma1MessageTypes {
 - (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
 {
 	// check if delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
 	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
 	{
@@ -270,34 +263,37 @@ enum enigma1MessageTypes {
  </bouquet>
  </bouquets>
  */
-- (NSError *)maybeRefreshBouquetsXMLCache:(BOOL)isRadio
+- (NSError *)maybeRefreshBouquetsXMLCache:(cacheType)requestedCacheType
 {
 	@synchronized(self)
 	{
-		if(!_cachedBouquetsXML || [_cachedBouquetsXML retainCount] == 1 || _cacheIsRadio != isRadio)
+		if(!_cachedBouquetsReader || _cacheType != requestedCacheType)
 		{
 			NSInteger mode = 0;
-			if(isRadio)
+			if(requestedCacheType & CACHE_TYPE_RADIO)
 				mode = 1;
-			_cacheIsRadio = isRadio;
+			NSInteger submode = 4;
+			if(requestedCacheType & CACHE_MASK_PROVIDER)
+				submode = 3;
+			else if(requestedCacheType & CACHE_MASK_ALL)
+				submode = 5;
+			_cacheType = requestedCacheType;
 
-			[_cachedBouquetsXML release];
-			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=4", mode] relativeToURL:_baseAddress];
+			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=%d", mode, submode] relativeToURL:_baseAddress];
 			NSError *returnValue = nil;
 
-			const BaseXMLReader *streamReader = [[BaseXMLReader alloc] init];
-			_cachedBouquetsXML = [[streamReader parseXMLFileAtURL: myURI parseError: &returnValue] retain];
-			[streamReader release];
-			return returnValue;
+			_cachedBouquetsReader = [[BaseXMLReader alloc] init];
+			[_cachedBouquetsReader parseXMLFileAtURL:myURI parseError:&returnValue];
 		}
 	}
 	return nil;
 }
 
-- (CXMLDocument *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (BaseXMLReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	[_bouquetsCacheLock lock];
-	NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
+	_cachedBouquetsReader = nil; // TODO: bouquets always force a reload
+	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 	if(error)
 	{
 		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
@@ -305,7 +301,6 @@ enum enigma1MessageTypes {
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: fakeService
 								waitUntilDone: NO];
-		[fakeService release];
 
 		[self indicateError:delegate error:error];
 		[_bouquetsCacheLock unlock];
@@ -315,8 +310,7 @@ enum enigma1MessageTypes {
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
-	[_cachedBouquetsXML retain]; // make sure that this is not deallocated while we run
-	resultNodes = [_cachedBouquetsXML nodesForXPath:@"/bouquets/bouquet" error:nil];
+	resultNodes = [_cachedBouquetsReader.document nodesForXPath:@"/bouquets/bouquet" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -324,43 +318,105 @@ enum enigma1MessageTypes {
 			break;
 
 		// A service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
+		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode:(CXMLNode *)resultElement isBouquet:YES];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: newService
 								waitUntilDone: NO];
-		[newService release];
 	}
 
 	[self indicateSuccess:delegate];
 	[_bouquetsCacheLock unlock];
-	return [_cachedBouquetsXML autorelease];
+	return _cachedBouquetsReader;
 }
 
-- (CXMLDocument *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (BaseXMLReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	[_bouquetsCacheLock lock];
-
-	// split view on ipad
-	if(!bouquet)
+	_cachedBouquetsReader = nil; // TODO: providers always force a reload
+	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_PROVIDER|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
+	if(error)
 	{
-		[self indicateSuccess:delegate];
-		goto fetchServices_out;
+		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: fakeService
+								waitUntilDone: NO];
+
+		[self indicateError:delegate error:error];
+		[_bouquetsCacheLock unlock];
+		return nil;
 	}
 
 	NSArray *resultNodes = nil;
 	NSUInteger parsedServicesCounter = 0;
 
-	// if cache is valid for this request, read services
-	if(_cacheIsRadio == isRadio)
+	resultNodes = [_cachedBouquetsReader.document nodesForXPath:@"/providers/provider" error:nil];
+
+	for(CXMLElement *resultElement in resultNodes)
 	{
-		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run
+		if(++parsedServicesCounter >= MAX_SERVICES)
+			break;
+
+		// A service in the xml represents a service, so create an instance of it.
+		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode:(CXMLNode *)resultElement isBouquet:NO];
+
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: newService
+								waitUntilDone: NO];
+	}
+
+	[self indicateSuccess:delegate];
+	[_bouquetsCacheLock unlock];
+	return _cachedBouquetsReader;
+}
+
+- (NSObject<ServiceProtocol> *)allServicesBouquet:(BOOL)isRadio
+{
+	GenericService *service = [[GenericService alloc] init];
+	service.sname = NSLocalizedString(@"All Services", @"Name of 'All Services'-Bouquet");
+	if(isRadio)
+		service.sref = enigmaAllRadioServices;
+	else
+		service.sref = enigmaAllServices;
+	return service;
+}
+
+- (BaseXMLReader *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	// split view on ipad
+	if(!bouquet)
+	{
+		[self indicateSuccess:delegate];
+		return nil;
+	}
+
+	[_bouquetsCacheLock lock];
+
+	NSArray *resultNodes = nil;
+	NSUInteger parsedServicesCounter = 0;
+
+	// Gather information on the needed cache type
+	cacheType thisType = (isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV);
+	NSString *sref = bouquet.sref;
+	if(sref == enigmaAllServices || sref == enigmaAllRadioServices)
+	{
+		thisType |= CACHE_MASK_ALL;
+	}
+	else if([bouquet isKindOfClass:[EnigmaService class]])
+	{
+		thisType |= (((EnigmaService *)bouquet).isBouquet) ? CACHE_MASK_BOUQUET : CACHE_MASK_PROVIDER;
+	}
+
+	// if cache is valid for this request, read services
+	if(_cacheType == thisType)
+	{
 		resultNodes = [bouquet nodesForXPath:@"service" error:nil];
 	}
 
 	if(!resultNodes || ![resultNodes count])
 	{
-		NSError *error = [self maybeRefreshBouquetsXMLCache:isRadio];
+		NSError *error = [self maybeRefreshBouquetsXMLCache:thisType];
 		if(error)
 		{
 			NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
@@ -368,16 +424,21 @@ enum enigma1MessageTypes {
 			[delegate performSelectorOnMainThread: @selector(addService:)
 									   withObject: fakeService
 									waitUntilDone: NO];
-			[fakeService release];
 
 			[self indicateError:delegate error:error];
-			goto fetchServices_out;
+			[_bouquetsCacheLock unlock];
+			return nil;
 		}
 
-		SafeReturn(_cachedBouquetsXML); // make sure that this is not deallocated while we run (might be another cache than before)
-		resultNodes = [_cachedBouquetsXML nodesForXPath:
-						[NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref]
-						error:nil];
+		NSString *tag = (thisType & CACHE_MASK_BOUQUET) ? @"bouquet" : @"provider";
+		NSString *xpath = nil;
+		if(thisType & CACHE_MASK_BOUQUET)
+			xpath = [NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref];
+		else if(thisType & CACHE_MASK_PROVIDER)
+			xpath = [NSString stringWithFormat: @"/providers/provider[reference=\"%@\"]/service", bouquet.sref];
+		else
+			xpath = [NSString stringWithFormat: @"/unknowns/unknown/service", tag, tag, bouquet.sref];
+		resultNodes = [_cachedBouquetsReader.document nodesForXPath:xpath error:nil];
 	}
 
 	for(CXMLElement *resultElement in resultNodes)
@@ -389,27 +450,24 @@ enum enigma1MessageTypes {
 		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
 
 		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: [[newService copy] autorelease] // XXX: create copy of service to prevent losing the root document
+								   withObject: [newService copy] // XXX: create copy of service to prevent losing the root document
 								waitUntilDone: NO];
-		[newService release];
 	}
 
 	[self indicateSuccess:delegate];
-fetchServices_out:
 	[_bouquetsCacheLock unlock];
 	return nil;
 }
 
-- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
 	NSError *parseError = nil;
 
-	const BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
+	return streamReader;
 }
 
 - (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
@@ -420,7 +478,6 @@ fetchServices_out:
 		NSObject<MovieProtocol> *movie = [[GenericMovie alloc] init];
 		movie.sref = service.sref;
 		NSURL *myURI = [self getStreamURLForMovie:movie];
-		[movie release];
 		return myURI;
 	}
 
@@ -439,7 +496,6 @@ fetchServices_out:
 
 		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		myURI = [NSURL URLWithString:myString];
-		[myString release];
 		return myURI;
 	}
 	return nil;
@@ -447,16 +503,15 @@ fetchServices_out:
 
 #pragma mark Timer
 
-- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
+- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: _baseAddress];
 
 	NSError *parseError = nil;
 
-	const BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
+	return streamReader;
 }
 
 - (Result *)addTimer:(NSObject<TimerProtocol> *) newTimer
@@ -502,7 +557,6 @@ fetchServices_out:
 	const NSRange myRange = [myString rangeOfString: @"Timer event was created successfully."];
 	result.result = (myRange.length > 0);
 	result.resulttext = myString;
-	[myString release];
 	return result;
 }
 
@@ -562,7 +616,6 @@ fetchServices_out:
 	const NSRange myRange = [myString rangeOfString: @"Timer event deleted successfully."];
 	result.result = (myRange.length > 0);
 	result.resulttext = myString;
-	[myString release];
 	return result;
 }
 
@@ -588,7 +641,7 @@ fetchServices_out:
 	return [self zapInternal: movie.sref];
 }
 
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location
+- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location
 {
 	if(location != nil)
 	{
@@ -602,10 +655,9 @@ fetchServices_out:
 
 	NSError *parseError = nil;
 
-	const BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
+	return streamReader;
 }
 
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie
@@ -654,20 +706,18 @@ fetchServices_out:
 
 	NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	myURI = [NSURL URLWithString:myString];
-	[myString release];
 	return myURI;
 }
 
 #pragma mark Control
 
-- (CXMLDocument *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+- (BaseXMLReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/currentservicedata" relativeToURL: _baseAddress];
 
-	const BaseXMLReader *streamReader = [[EnigmaCurrentXMLReader alloc] initWithDelegate: delegate];
-	CXMLDocument *doc = [streamReader parseXMLFileAtURL: myURI parseError: nil];
-	[streamReader autorelease];
-	return doc;
+	BaseXMLReader *streamReader = [[EnigmaCurrentXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
 }
 
 - (void)sendPowerstate: (NSString *) newState
@@ -739,12 +789,10 @@ fetchServices_out:
 	else
 		volumeObject.ismuted = NO;
 
-	[myString release];
 
 	[delegate performSelectorOnMainThread: @selector(addVolume:)
 							   withObject: volumeObject
 							waitUntilDone: NO];
-	[volumeObject release];
 }
 
 - (BOOL)toggleMuted
@@ -759,7 +807,6 @@ fetchServices_out:
 	const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 
 	const NSRange myRange = [myString rangeOfString: @"mute: 1"];
-	[myString release];
 	return (myRange.length > 0);
 }
 
@@ -779,7 +826,6 @@ fetchServices_out:
 	const NSRange myRange = [myString rangeOfString: @"Volume set."];
 	result.result = (myRange.length > 0);
 	result.resulttext = myString;
-	[myString release];
 	return result;
 }
 
@@ -821,7 +867,6 @@ fetchServices_out:
 
 	const BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
-	[streamReader autorelease];
 }
 
 #pragma mark Messaging
@@ -861,7 +906,6 @@ fetchServices_out:
 	const NSRange myRange = [myString rangeOfString: @"+ok"];
 	result.result = (myRange.length > 0);
 	result.resulttext = myString;
-	[myString release];
 	return result;
 }
 
@@ -915,7 +959,6 @@ fetchServices_out:
 		const NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		const NSRange myRange = [myString rangeOfString: @"/root/tmp/screenshot.jpg"];
 		const NSRange myRangeBmp = [myString rangeOfString: @"/root/tmp/screenshot.bmp"];
-		[myString release];
 
 		// Generate URI
 		if(myRange.length)
@@ -937,7 +980,7 @@ fetchServices_out:
 
 #pragma mark Unsupported
 
-- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];

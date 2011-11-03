@@ -14,7 +14,7 @@
 #import "MetadataSourceDelegate.h"
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
-@class CXMLDocument;
+@class BaseXMLReader;
 
 @interface MediaPlayerDetailsController : MediaPlayerController <UITableViewDelegate,
 															UITableViewDataSource,
@@ -25,13 +25,13 @@
 	NSObject<MetadataProtocol> *_currentTrack; /*!< @brief Meta-information to currently playing track. */
 	UIImage *_currentCover; /*!< @brief Coverart to currently playing track. */
 	UITableView *_tableView; /*!< @brief "Main" Table view. */
-	
-	CXMLDocument *_metadataXMLDoc; /*!< @brief Track metadata. */
+
+	BaseXMLReader *_xmlReaderMetadata; /*!< @brief Track metadata. */
 }
 
 /*!
  @brief Assign a new playlist and make ourselves its delegate.
  */
-@property (nonatomic, retain) FileListView *playlist;
+@property (nonatomic, strong) FileListView *playlist;
 
 @end

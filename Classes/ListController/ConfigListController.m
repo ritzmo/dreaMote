@@ -20,6 +20,8 @@
 #import "ConfigViewController.h"
 #import "ConnectionListController.h"
 
+#import "MKStoreManager.h"
+
 #define kMultiEPGRowTag 99
 #define kTimeoutRowTag 100
 #define kHistoryLengthRowTag 101
@@ -29,7 +31,8 @@ enum sectionIds
 	connectionSection = 0,
 	settingsSection = 1,
 	buttonSection = 2,
-	maxSection = 3,
+	purchaseSection = 3,
+	maxSection = 4,
 };
 
 enum settingsRows
@@ -61,7 +64,7 @@ enum settingsRows
 - (void)separateEventsChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
 
-@property (nonatomic,retain) MBProgressHUD *progressHUD;
+@property (nonatomic,strong) MBProgressHUD *progressHUD;
 @end
 
 /*!
@@ -84,7 +87,7 @@ enum settingsRows
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
-		_connections = [[RemoteConnectorObject getConnections] retain];
+		_connections = [RemoteConnectorObject getConnections];
 
 		// listen to changes in available connections
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
@@ -99,15 +102,8 @@ enum settingsRows
 
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-	[_connections release];
-	[_vibrateInRC release];
-	[_simpleRemote release];
-	[_sepEventsByDay release];
 
 	progressHUD.delegate = nil;
-	[progressHUD release];
-
-	[super dealloc];
 }
 
 /* layout */
@@ -125,7 +121,6 @@ enum settingsRows
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// RC Vibration
 	_vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -215,8 +210,7 @@ enum settingsRows
 
 - (void)rereadData:(NSNotification *)note
 {
-	[_connections release];
-	_connections = [[RemoteConnectorObject getConnections] retain];
+	_connections = [RemoteConnectorObject getConnections];
 
 	// just in case, read them too
 	[_vibrateInRC setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kVibratingRC]];
@@ -301,7 +295,6 @@ enum settingsRows
 		{
 			UIViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
 			[self presentModalViewController:welcomeController animated:YES];
-			[welcomeController release];
 		}
 		else if(indexPath.row == 1)
 		{
@@ -355,7 +348,6 @@ enum settingsRows
 				{
 					UIViewController *targetViewController = [ConfigViewController newConnection];
 					[self.navigationController pushViewController: targetViewController animated: YES];
-					[targetViewController release];
 				}
 				// edit existing one
 				else
@@ -379,7 +371,6 @@ enum settingsRows
 											 cancelButtonTitle:@"OK"
 											 otherButtonTitles:nil];
 					[notification show];
-					[notification release];
 				}
 				// did connect
 				else
@@ -396,7 +387,6 @@ enum settingsRows
 											cancelButtonTitle:@"OK"
 											otherButtonTitles:nil];
 						[notification show];
-						[notification release];
 					}
 
 					// not reachable
@@ -437,7 +427,7 @@ enum settingsRows
 		if(cell.tag == kTimeoutRowTag)
 		{
 			TimeoutSelectionViewController *vc = [TimeoutSelectionViewController withTimeout:kTimeout];
-			[vc setDelegate:self];
+			vc.delegate = self;
 			if(IS_IPAD())
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -445,7 +435,6 @@ enum settingsRows
 				navController.modalPresentationStyle = vc.modalPresentationStyle;
 
 				[self.navigationController presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 			{
@@ -455,7 +444,7 @@ enum settingsRows
 		else if(cell.tag == kHistoryLengthRowTag)
 		{
 			SearchHistoryLengthEditorController *vc = [SearchHistoryLengthEditorController withLength:[[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength]];
-			[vc setDelegate:self];
+			vc.delegate = self;
 			if(IS_IPAD())
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -463,7 +452,6 @@ enum settingsRows
 				navController.modalPresentationStyle = vc.modalPresentationStyle;
 
 				[self.navigationController presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 			{
@@ -475,7 +463,7 @@ enum settingsRows
 		{
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 			MultiEPGIntervalViewController *vc = [MultiEPGIntervalViewController withInterval:[timeInterval integerValue] / 60];
-			[vc setDelegate:self];
+			vc.delegate = self;
 			if(IS_IPAD())
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -483,7 +471,6 @@ enum settingsRows
 				navController.modalPresentationStyle = vc.modalPresentationStyle;
 
 				[self.navigationController presentModalViewController:navController animated:YES];
-				[navController release];
 			}
 			else
 			{
@@ -511,6 +498,7 @@ enum settingsRows
 
 	switch(indexPath.section)
 	{
+		case purchaseSection:
 		case buttonSection:
 		case connectionSection:
 			cell = [UITableViewCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kVanilla_ID];
@@ -541,8 +529,8 @@ enum settingsRows
 		case connectionSection:
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			sourceCell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentLeft;
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.textLabel.textAlignment = UITextAlignmentLeft;
 
 			/*!
 			 @brief When editing we add a fake first item to the list so cover this here.
@@ -552,8 +540,8 @@ enum settingsRows
 				// Setup fake item and abort
 				if(row == 0)
 				{
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"New Connection", @"");
+					sourceCell.imageView.image = nil;
+					sourceCell.textLabel.text = NSLocalizedString(@"New Connection", @"");
 					break;
 				}
 
@@ -563,17 +551,17 @@ enum settingsRows
 
 			// Set image for cell
 			if([[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] == row)
-				TABLEVIEWCELL_IMAGE(sourceCell) = [UIImage imageNamed:@"emblem-favorite.png"];
+				sourceCell.imageView.image = [UIImage imageNamed:@"emblem-favorite.png"];
 			else if([RemoteConnectorObject getConnectedId] == row)
-				TABLEVIEWCELL_IMAGE(sourceCell) = [UIImage imageNamed:@"network-wired.png"];
+				sourceCell.imageView.image = [UIImage imageNamed:@"network-wired.png"];
 			else
-				TABLEVIEWCELL_IMAGE(sourceCell) = nil;
+				sourceCell.imageView.image = nil;
 
 			// Title handling
 			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
 			if(![hostTitle length])
 				hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteHost];
-			TABLEVIEWCELL_TEXT(sourceCell) = hostTitle;
+			sourceCell.textLabel.text = hostTitle;
 
 			break;
 
@@ -616,7 +604,6 @@ enum settingsRows
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connection Timeout", @"Configuration item to choose connection timeout");
 					((DisplayCell *)sourceCell).view = timeLabel;
 					sourceCell.tag = kTimeoutRowTag;
-					[timeLabel release];
 					break;
 				}
 				/* Search History Length */
@@ -631,7 +618,6 @@ enum settingsRows
 					sourceCell.textLabel.text = NSLocalizedString(@"Search History Length", @"Label of cell in config which gives search history length");
 					((DisplayCell *)sourceCell).view = lengthLabel;
 					sourceCell.tag = kHistoryLengthRowTag;
-					[lengthLabel release];
 					break;
 				}
 #if IS_FULL()
@@ -648,7 +634,6 @@ enum settingsRows
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Multi-EPG Interval", @"Configuration item to choose timespan displayed by MultiEPG");
 					((DisplayCell *)sourceCell).view = timeLabel;
 					sourceCell.tag = kMultiEPGRowTag;
-					[timeLabel release];
 					break;
 				}
 #endif
@@ -658,35 +643,33 @@ enum settingsRows
 			break;
 		case buttonSection:
 		{
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.imageView.image = nil;
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			switch(row)
 			{
 				case 0:
-					sourceCell.accessoryType = UITableViewCellAccessoryNone;
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
+					sourceCell.textLabel.text = NSLocalizedString(@"Show Help", @"show welcome screen (help)");
 					break;
 				case 1:
-					sourceCell.accessoryType = UITableViewCellAccessoryNone;
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Search Connections", @"Start AutoConfiguration from ConfigListController");
+					sourceCell.textLabel.text = NSLocalizedString(@"Search Connections", @"Start AutoConfiguration from ConfigListController");
 					break;
 #if IS_LITE()
 				case 2:
-					sourceCell.accessoryType = UITableViewCellAccessoryNone;
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-					TABLEVIEWCELL_IMAGE(sourceCell) = nil;
-					TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-					TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
+					sourceCell.textLabel.text = NSLocalizedString(@"Export to dreaMote", @"export data from lite to full version");
 					break;
 #endif
 				default: break;
 			}
 			break;
 		}
+		case purchaseSection:
+			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.imageView.image = nil;
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+			sourceCell.textLabel.text = [[MKStoreManager sharedManager].purchasableObjectsDescription objectAtIndex:indexPath.row];
 		default:
 			break;
 	}
@@ -696,7 +679,10 @@ enum settingsRows
 /* number of section */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return maxSection;
+	NSInteger sections = purchaseSection;
+	if([SKPaymentQueue canMakePayments] && [MKStoreManager sharedManager].purchasableObjectsDescription.count)
+		++sections;
+	return sections;
 }
 
 /* number of rows in given section */
@@ -722,6 +708,8 @@ enum settingsRows
 #else
 			return ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]]) ? 3 : 2;
 #endif
+		case maxSection:
+			return [MKStoreManager sharedManager].purchasableObjectsDescription.count;
 		default:
 			return 0;
 	}
@@ -730,9 +718,15 @@ enum settingsRows
 /* section header */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section == connectionSection)
-		return NSLocalizedString(@"Configured Connections", @"");
-	return nil;
+	switch(section)
+	{
+		default:
+			return nil;
+		case connectionSection:
+			return NSLocalizedString(@"Configured Connections", @"Section title for connections in ConfigList");
+		case maxSection:
+			return NSLocalizedString(@"Purchase", @"Section title for In-App-Purchases in ConfigList");
+	}
 }
 
 /* rotate with device */
@@ -799,7 +793,6 @@ enum settingsRows
 		[tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 		UIViewController *targetViewController = [ConfigViewController newConnection];
 		[self.navigationController pushViewController: targetViewController animated: YES];
-		[targetViewController release];
 	}
 }
 
@@ -855,42 +848,39 @@ enum settingsRows
 
 - (void)doAutoConfiguration
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	NSArray *connections = [RemoteConnectorObject autodetectConnections];
+		NSArray *connections = [RemoteConnectorObject autodetectConnections];
 
-	progressHUD.taskInProgress = NO;
-	[progressHUD hide:YES];
+		progressHUD.taskInProgress = NO;
+		[progressHUD hide:YES];
 
-	NSUInteger len = connections.count;
-	if(len == 0)
-	{
-		const UIAlertView *notification = [[UIAlertView alloc]
-										   initWithTitle:NSLocalizedString(@"Error", @"")
-										   message:NSLocalizedString(@"Unable to find valid connection data.", @"")
-										   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-	}
-	else
-	{
-		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
-		if(IS_IPAD())
+		NSUInteger len = connections.count;
+		if(len == 0)
 		{
-			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
-			nc.modalPresentationStyle = tv.modalPresentationStyle;
-			nc.modalTransitionStyle = tv.modalTransitionStyle;
-			[self.navigationController presentModalViewController:nc animated:YES];
-			[nc release];
+			const UIAlertView *notification = [[UIAlertView alloc]
+											   initWithTitle:NSLocalizedString(@"Error", @"")
+											   message:NSLocalizedString(@"Unable to find valid connection data.", @"")
+											   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
 		}
 		else
 		{
-			[self.navigationController pushViewController:tv animated:YES];
+			ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
+			if(IS_IPAD())
+			{
+				UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
+				nc.modalPresentationStyle = tv.modalPresentationStyle;
+				nc.modalTransitionStyle = tv.modalTransitionStyle;
+				[self.navigationController presentModalViewController:nc animated:YES];
+			}
+			else
+			{
+				[self.navigationController pushViewController:tv animated:YES];
+			}
 		}
-		[tv release];
-	}
 
-	[pool release];
+	}
 }
 
 @end

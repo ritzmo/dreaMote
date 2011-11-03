@@ -15,7 +15,7 @@
 
 // forward declare
 @protocol EPGCacheDelegate;
-@class CXMLDocument;
+@class BaseXMLReader;
 
 /*!
  @brief Local EPGCache.
@@ -31,8 +31,10 @@
 	NSObject<ServiceProtocol> *_bouquet;
 	NSObject<EPGCacheDelegate> *_delegate;
 	NSMutableArray *_serviceList;
-	CXMLDocument *_currDocument;
+	BaseXMLReader *_xmlReader;
+
 	NSOperationQueue *queue; /*!< @brief Queue with pending event additions. */
+	UIBackgroundTaskIdentifier _backgroundTask; /*!< @brief Identifier for current background task. */
 
 	sqlite3 *database;
 	sqlite3_stmt *insert_stmt;
@@ -114,6 +116,14 @@
  @param delegate Delegate for callbacks
  */
 - (void)searchEPGForTitle:(NSString *)name delegate:(NSObject<EventSourceDelegate> *)delegate;
+
+
+
+/*!
+ @brief Is a bouquet currently being refreshed?
+ */
+@property (nonatomic, readonly) BOOL reloading;
+
 @end
 
 
@@ -121,7 +131,7 @@
 /*!
  @brief EPGCache delegate protocol.
  */
-@protocol EPGCacheDelegate
+@protocol EPGCacheDelegate <ServiceSourceDelegate>
 /*!
  @brief Cache was successfully refreshed.
  */

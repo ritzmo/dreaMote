@@ -21,7 +21,7 @@
 
 @implementation MultiEPGIntervalViewController
 
-@synthesize selectedItem = _selectedItem;
+@synthesize delegate, selectedItem;
 
 /* initialize */
 - (id)init
@@ -57,7 +57,7 @@
 	}
 	multiEPGIntervalViewController.selectedItem = selectedItem;
 
-	return [multiEPGIntervalViewController autorelease];
+	return multiEPGIntervalViewController;
 }
 
 /* layout */
@@ -74,12 +74,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */
@@ -118,7 +116,7 @@
 
 	TABLEVIEWCELL_TEXT(cell) = [NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), (row + 1) * 30];
 
-	if((NSUInteger)row == _selectedItem)
+	if((NSUInteger)row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -129,26 +127,20 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:0]];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 
-	cell = [tableView cellForRowAtIndexPath: indexPath];
+	cell = [tableView cellForRowAtIndexPath:indexPath];
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-	_selectedItem = indexPath.row;
+	selectedItem = indexPath.row;
 
 	if(IS_IPAD())
 	{
 		[self dismissModalViewControllerAnimated:YES];
 	}
-}
-
-/* set delegate */
-- (void)setDelegate:(NSObject<MultiEPGIntervalDelegate> *)delegate
-{
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods
@@ -157,10 +149,10 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-	[stdDefaults setObject:[NSNumber numberWithInteger:(_selectedItem + 1) * 30 * 60] forKey:kMultiEPGInterval];
+	[stdDefaults setObject:[NSNumber numberWithInteger:(selectedItem + 1) * 30 * 60] forKey:kMultiEPGInterval];
 	[stdDefaults synchronize];
 
-	[_delegate performSelectorOnMainThread:@selector(didSetInterval) withObject:nil waitUntilDone:NO];
+	[delegate performSelectorOnMainThread:@selector(didSetInterval) withObject:nil waitUntilDone:NO];
 }
 
 @end

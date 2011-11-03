@@ -78,7 +78,7 @@ OSStatus RenderTone(
 	const double amplitude = 0.25;
 
 	// Get the tone parameters out of the view controller
-	SignalViewController *viewController = (SignalViewController *)inRefCon;
+	SignalViewController *viewController = (__bridge SignalViewController *)inRefCon;
 	double theta = viewController->theta;
 	double theta_increment = 2.0 * M_PI * viewController->frequency / viewController->sampleRate;
 
@@ -104,12 +104,6 @@ OSStatus RenderTone(
 	return noErr;
 }
 
-void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
-{
-	SignalViewController *viewController = (SignalViewController *)inClientData;
-	[viewController stopAudio];
-}
-
 @implementation SignalViewController
 
 - (id)init
@@ -126,17 +120,8 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	[_snr release];
-	[_agc release];
-	[_audioToggle release];
-	[_interval release];
-	[_snrdBCell release];
-	[_berCell release];
-
 	[_timer invalidate];
 	_timer = nil;
-
-	[super dealloc];
 }
 
 - (void)createToneUnit
@@ -162,7 +147,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// Set our tone rendering function on the unit
 	AURenderCallbackStruct input;
 	input.inputProc = RenderTone;
-	input.inputProcRefCon = self;
+	input.inputProcRefCon = (__bridge void *)(self);
 	err = AudioUnitSetProperty(toneUnit,
 							   kAudioUnitProperty_SetRenderCallback,
 							   kAudioUnitScope_Input,
@@ -194,7 +179,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	sampleRate = 44100;
 	_refreshInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:kSatFinderInterval];
+	AudioSessionSetActive(true);
 	[self startTimer];
 	[self startAudio];
 
@@ -205,8 +192,10 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 {
 	[_timer invalidate];
 	_timer = nil;
+	_refreshInterval = 999;
 
 	[self stopAudio];
+	AudioSessionSetActive(false);
 
 	[super viewWillDisappear: animated];
 }
@@ -235,7 +224,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// SNR
 	_snr = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, 240, kSliderHeight)];
@@ -282,48 +270,34 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// SNRdB
 	UITableViewCell *sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
-	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+	sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+	sourceCell.textLabel.textColor = [UIColor blackColor];
+	sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
-	_snrdBCell = [sourceCell retain];
+	_snrdBCell = sourceCell;
 
 	// BER
 	sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
-	TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-	TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-	TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+	sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+	sourceCell.textLabel.textColor = [UIColor blackColor];
+	sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	sourceCell.indentationLevel = 1;
-	_berCell = [sourceCell retain];
-}
-
-- (void)viewDidLoad
-{
-	sampleRate = 44100;
-
-	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, self);
-	if (result == kAudioSessionNoError)
-	{
-		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
-		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
-	}
-	AudioSessionSetActive(true);
-
-	[super viewDidLoad];
+	_berCell = sourceCell;
 }
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_snr, nil);
-	SafeRetainAssign(_agc, nil);
-	SafeRetainAssign(_audioToggle, nil);
-	SafeRetainAssign(_interval, nil);
-	SafeRetainAssign(_snrdBCell, nil);
-	SafeRetainAssign(_berCell, nil);
+	_snr = nil;
+	_agc = nil;
+	_audioToggle = nil;
+	_interval = nil;
+	_snrdBCell = nil;
+	_berCell = nil;
 
+	[self stopAudio];
 	AudioSessionSetActive(false);
 
 	[super viewDidUnload];
@@ -366,26 +340,32 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 - (void)startAudio
 {
-	if(toneUnit == nil && [[NSUserDefaults standardUserDefaults] boolForKey:kSatFinderAudio])
+	@synchronized(self)
 	{
-		// start playback
-		[self createToneUnit];
-		OSErr err = AudioUnitInitialize(toneUnit);
-		NSAssert1(err == noErr, @"Error initializing unit: %ld", err);
-		err = AudioOutputUnitStart(toneUnit);
-		NSAssert1(err == noErr, @"Error starting unit: %ld", err);
+		if(toneUnit == nil && [[NSUserDefaults standardUserDefaults] boolForKey:kSatFinderAudio])
+		{
+			// start playback
+			[self createToneUnit];
+			OSErr err = AudioUnitInitialize(toneUnit);
+			NSAssert1(err == noErr, @"Error initializing unit: %ld", err);
+			err = AudioOutputUnitStart(toneUnit);
+			NSAssert1(err == noErr, @"Error starting unit: %ld", err);
+		}
 	}
 }
 
 - (void)stopAudio
 {
-	if(toneUnit)
+	@synchronized(self)
 	{
-		// stop audio playback
-		AudioOutputUnitStop(toneUnit);
-		AudioUnitUninitialize(toneUnit);
-		AudioComponentInstanceDispose(toneUnit);
-		toneUnit = nil;
+		if(toneUnit)
+		{
+			// stop audio playback
+			AudioOutputUnitStop(toneUnit);
+			AudioUnitUninitialize(toneUnit);
+			AudioComponentInstanceDispose(toneUnit);
+			toneUnit = nil;
+		}
 	}
 }
 
@@ -521,7 +501,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// Alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
@@ -530,7 +510,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 
 	// stop timer
 	[_timer invalidate];
@@ -538,7 +517,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	[self stopAudio];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 
@@ -560,8 +539,8 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 
 	const BOOL oldSnrdB =_hasSnrdB;
 	_hasSnrdB = signal.snrdb > -1;
-	TABLEVIEWCELL_TEXT(_snrdBCell) = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
-	TABLEVIEWCELL_TEXT(_berCell) = [NSString stringWithFormat: @"%i BER", signal.ber];
+	_snrdBCell.textLabel.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
+	_berCell.textLabel.text = [NSString stringWithFormat: @"%i BER", signal.ber];
 
 	// calculate frequency for audio signal
 	const NSInteger fMin = 200;

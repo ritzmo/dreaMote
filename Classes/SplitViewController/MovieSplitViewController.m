@@ -32,14 +32,6 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-	SafeRetainAssign(_locationListController, nil);
-	SafeRetainAssign(_movieListController, nil);
-	SafeRetainAssign(_movieListNavigationController, nil);
-
-	SafeRetainAssign(_viewArrayLocation, nil);
-
-	[super dealloc];
 }
 
 #pragma mark -
@@ -61,8 +53,7 @@
 	UIViewController *navController;
 	navController = [[UINavigationController alloc] initWithRootViewController: _locationListController];
 	_movieListNavigationController = [[UINavigationController alloc] initWithRootViewController: _movieListController];
-	_viewArrayLocation = [[NSArray arrayWithObjects: navController, _movieListNavigationController, nil] retain];
-	[navController release];
+	_viewArrayLocation = [NSArray arrayWithObjects: navController, _movieListNavigationController, nil];
 
 	// Build connection
 	_locationListController.movieListController = _movieListController;
@@ -77,11 +68,12 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
-	SafeRetainAssign(_locationListController, nil);
-	SafeRetainAssign(_movieListController, nil);
-	SafeRetainAssign(_movieListNavigationController, nil);
+	_locationListController.movieListController = nil;
+	_locationListController = nil;
+	_movieListController = nil;
+	_movieListNavigationController = nil;
 
-	SafeRetainAssign(_viewArrayLocation, nil);
+	_viewArrayLocation = nil;
 
 	[super viewDidUnload];
 }
@@ -112,8 +104,6 @@
 		_movieListController.isSplit = YES;
 		self.delegate = viewController;
 		newViewControllers = [NSArray arrayWithObjects: _movieListNavigationController, navController, nil];
-		[navController release];
-		[viewController release];
 	}
 	self.viewControllers = newViewControllers;
 

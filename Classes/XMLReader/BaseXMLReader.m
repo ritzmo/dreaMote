@@ -32,7 +32,8 @@
 
 @implementation BaseXMLReader
 
-@synthesize encoding = _encoding;
+@synthesize encoding, document;
+@synthesize delegate = _delegate;
 
 /* initialize */
 - (id)init
@@ -41,46 +42,36 @@
 	{
 		_done = NO;
 		_timeout = kTimeout;
-		_encoding = NSUTF8StringEncoding;
+		encoding = NSUTF8StringEncoding;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	SafeRetainAssign(_delegate, nil)
-	SafeRetainAssign(_parser, nil);
-
-	[super dealloc];
 }
 
 /* download and parse xml document */
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	SafeRetainAssign(_parser, nil);
+	document = nil;
 	_done = NO;
-	NSError *localError = nil;
+	NSError __autoreleasing *localError = nil;
 #ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-	_parser = [[CXMLPushDocument alloc] initWithError: &localError];
+	NSError *__unsafe_unretained parserError = localError;
+	document = [[CXMLPushDocument alloc] initWithError:&parserError];
 
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:_timeout];
 	NSURLConnection *connection = [[NSURLConnection alloc]
 									initWithRequest:request
-									delegate:_parser];
-	[request release];
+									delegate:document];
 	if(connection)
 	{
 		[APP_DELEGATE addNetworkOperation];
 		do
 		{
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		} while (!_parser.done);
+		} while (!document.done);
 		[APP_DELEGATE removeNetworkOperation];
 		[connection cancel]; // just in case, cancel the connection
-		[connection release];
 	}
 	else
 	{
@@ -94,7 +85,7 @@
 															 error:&localError
 													   withTimeout:_timeout];
 	if(localError == nil)
-		_parser = [[CXMLDocument alloc] initWithData:data encoding:_encoding options:0 error:&localError];
+		document = [[CXMLDocument alloc] initWithData:data encoding:encoding options:0 error:&localError];
 #endif
 	_done = YES;
 	// set error to eventual local error
@@ -107,17 +98,17 @@
 		[self sendErroneousObject];
 
 		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
 		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
 		{
+			BaseXMLReader *__unsafe_unretained dataSource = self;
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];
 			[invocation setSelector:errorParsing];
-			[invocation setArgument:&self atIndex:2];
-			[invocation setArgument:&_parser atIndex:3];
-			[invocation setArgument:&localError atIndex:4];
+			[invocation setArgument:&dataSource atIndex:2];
+			[invocation setArgument:&localError atIndex:3];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 									  waitUntilDone:NO];
 		}
@@ -127,20 +118,20 @@
 	[self parseFull];
 
 	// delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
 	if(_delegate && [_delegate respondsToSelector:finishedParsing] && sig)
 	{
+		BaseXMLReader *__unsafe_unretained dataSource = self;
 		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 		[invocation retainArguments];
 		[invocation setTarget:_delegate];
 		[invocation setSelector:finishedParsing];
-		[invocation setArgument:&self atIndex:2];
-		[invocation setArgument:&_parser atIndex:3];
+		[invocation setArgument:&dataSource atIndex:2];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
-	return _parser;
+	return document;
 }
 
 /* send fake object back to callback */

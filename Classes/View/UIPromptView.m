@@ -57,9 +57,7 @@ enum textfieldTags
 	[theTextField setBackgroundColor:[UIColor clearColor]];
 	[theTextField setTextAlignment:UITextAlignmentCenter];
 	[self addSubview:theTextField];
-	[theTextField release];
 
-	CGFloat offset;
 	if(newPromptViewStyle == UIPromptViewStyleLoginAndPasswordInput)
 	{
 		theTextField = [[UITextField alloc] initWithFrame:CGRectMake(12.0f, 85.0f, 260.0f, 25.0f)];
@@ -71,21 +69,12 @@ enum textfieldTags
 		[theTextField setTextAlignment:UITextAlignmentCenter];
 		[theTextField setSecureTextEntry:YES];
 		[self addSubview:theTextField];
-		[theTextField release];
 
 		self.message = @"\n\n\n";
-		offset = 110.0f;
 	}
 	else
 	{
 		self.message = @"\n";
-		offset = 130.0f;
-	}
-	
-	if(![UIDevice runsIos4OrBetter])
-	{
-		CGAffineTransform translate = CGAffineTransformMakeTranslation(0.0f, offset); 
-		[self setTransform:translate];
 	}
 }
 
@@ -107,12 +96,12 @@ enum textfieldTags
 	if(promptFieldIndex == 0 && promptViewStyle != UIPromptViewStyleDefault)
 	{
 		UITextField *field = (UITextField *)[self viewWithTag:TEXT_FIELD_0];
-		return SafeReturn(field);
+		return field;
 	}
 	else if(promptFieldIndex == 1 && promptViewStyle == UIPromptViewStyleLoginAndPasswordInput)
 	{
 		UITextField *field = (UITextField *)[self viewWithTag:TEXT_FIELD_1];
-		return SafeReturn(field);
+		return field;
 	}
 
 	NSException *e = [NSException exceptionWithName:NSRangeException reason:@"promptFieldIndex out of range" userInfo:nil];

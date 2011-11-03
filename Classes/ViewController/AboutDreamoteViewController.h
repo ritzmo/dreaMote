@@ -27,7 +27,6 @@
 	UIButton *_mailButton; /*!< @brief Mail button. */
 	UIButton *_twitterButton; /*!< @brief "Follow us" button. */
 	welcomeTypes welcomeType; /*!< @brief Welcome type. */
-	NSObject<AboutDreamoteDelegate> *aboutDelegate;
 }
 
 /*!
@@ -42,7 +41,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, assign) NSObject<AboutDreamoteDelegate> *aboutDelegate;
+@property (nonatomic, unsafe_unretained) NSObject<AboutDreamoteDelegate> *aboutDelegate;
 
 @end
 

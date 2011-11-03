@@ -16,10 +16,7 @@
  handed to the RemoteConnector which on its side will convert it to a native rc code
  of the STB.
  */
-@interface RCButton : UIButton {
-@public
-	IBOutlet NSInteger rcCode; /*!< @brief Assigned RC Code. */
-}
+@interface RCButton : UIButton
 
 /*!
  @brief Rc Code.

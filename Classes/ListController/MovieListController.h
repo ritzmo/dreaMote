@@ -14,7 +14,6 @@
 
 // Forward declarations...
 @class MovieViewController;
-@class CXMLDocument;
 
 /*!
  @brief Movie List.
@@ -45,9 +44,7 @@
 #endif
 
 	MovieViewController *_movieViewController; /*!< @brief Cached Movie Detail View. */
-	CXMLDocument *_movieXMLDoc; /*!< Current Movie XML Document. */
 	BOOL _refreshMovies; /*!< @brief Should Movie List be refreshed on next open? */
-	BOOL _isSplit; /*!< @brief Split mode? */	
 	BOOL _sortTitle; /*!< @brief Sort by title? */
 
 	NSString *_currentLocation; /*!< @brief Current Location. */
@@ -72,7 +69,7 @@
 /*!
  @brief Currently displayed directory
  */
-@property (nonatomic, retain) NSString *currentLocation;
+@property (nonatomic, strong) NSString *currentLocation;
 
 /*!
  @brief Controlled by a split view controller?
@@ -82,7 +79,7 @@
 /*!
  @brief Movie View Controller
  */
-@property (retain) MovieViewController *movieViewController;
+@property (strong) MovieViewController *movieViewController;
 
 /*!
  @brief Currently reloading.

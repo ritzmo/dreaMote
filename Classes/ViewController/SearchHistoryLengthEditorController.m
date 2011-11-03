@@ -22,6 +22,8 @@
 @end
 
 @implementation SearchHistoryLengthEditorController
+
+@synthesize delegate;
 @synthesize length = _length;
 
 /* initialize */
@@ -45,7 +47,7 @@
 {
 	SearchHistoryLengthEditorController *vc = [[SearchHistoryLengthEditorController alloc] init];
 	vc.length = length;
-	return [vc autorelease];
+	return vc;
 }
 
 /* layout */
@@ -62,7 +64,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	_lengthTextField = [[UITextField alloc] initWithFrame:CGRectZero];
 	
@@ -83,10 +84,9 @@
 	_lengthTextField.placeholder = NSLocalizedString(@"<history length>", @"");
 	_lengthTextField.text = [NSString stringWithFormat:@"%d", _length];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */
@@ -126,12 +126,6 @@
 	return cell;
 }
 
-/* set delegate */
-- (void)setDelegate:(NSObject<SearchHistoryLengthEditorDelegate> *)delegate
-{
-	_delegate = delegate;
-}
-
 #pragma mark - UIViewController delegate methods
 
 /* about to disappear */
@@ -143,7 +137,7 @@
 	[stdDefaults setObject:[NSNumber numberWithInteger:length] forKey:kSearchHistoryLength];
 	[stdDefaults synchronize];
 
-	[_delegate performSelectorOnMainThread:@selector(didSetLength) withObject:nil waitUntilDone:NO];
+	[delegate performSelectorOnMainThread:@selector(didSetLength) withObject:nil waitUntilDone:NO];
 }
 
 @end

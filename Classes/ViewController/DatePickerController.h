@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 
 /*!
+ @brief Our callback type.
+ For callbacks we use a block with one (NSDate *) parameter.
+ */
+typedef void (^datepicker_callback_t)(NSDate *);
+
+/*!
  @brief Date Picker.
  
  Allows to select a date.
@@ -18,11 +24,8 @@
 @private
 	UILabel			*_label; /*!< @brief Label containing a textual representation of selected date. */
 	NSDate			*_date; /*!< @brief Date to preselect. */
-	NSDateFormatter *_format; /*!< @brief Cached DateFormatter for textual representation. */
 	UIDatePicker	*_datePickerView; /*!< @brief Actual Date Picker. */
 	UIDatePickerMode datePickerMode;
-	SEL _selectCallback; /*!< @brief Callback selector. */
-	id _selectTarget; /*!< @brief Callback object. */
 }
 
 /*!
@@ -33,20 +36,12 @@
  */
 + (DatePickerController *)withDate: (NSDate *)ourDate;
 
-/*!
- @brief Set Callback Target.
- 
- @param target Target object.
- @param action Target selector.
- */
-- (void)setTarget: (id)target action: (SEL)action;
-
 
 
 /*!
  @brief Preselected Date.
  */
-@property (nonatomic, retain) NSDate *date;
+@property (nonatomic, strong) NSDate *date;
 
 /*!
  @brief Date Picker mode.
@@ -56,6 +51,11 @@
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) NSDateFormatter *format;
+@property (nonatomic, strong) NSDateFormatter *format;
+
+/*!
+ @brief Callback.
+ */
+@property (nonatomic, copy) datepicker_callback_t callback;
 
 @end

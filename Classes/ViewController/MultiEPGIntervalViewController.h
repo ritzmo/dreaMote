@@ -17,11 +17,6 @@
  */
 @interface MultiEPGIntervalViewController : UIViewController <UITableViewDelegate,
 														UITableViewDataSource>
-{
-@private
-	NSUInteger _selectedItem; /*!< @brief Selected Item. */
-	NSObject<MultiEPGIntervalDelegate> *_delegate; /*!< @brief Delegate. */
-}
 
 /*!
  @brief Standard constructor.
@@ -31,17 +26,15 @@
  */
 + (MultiEPGIntervalViewController *)withInterval: (NSUInteger)interval;
 
-/*!
- @brief Set Delegate.
 
+
+/*!
+ @brief Delegate.
+ 
  The delegate will be called back when disappearing to inform it that the interval
  was changed.
-
- @param delegate New delegate object.
  */
-- (void)setDelegate:(NSObject<MultiEPGIntervalDelegate> *)delegate;
-
-
+@property (nonatomic, unsafe_unretained) NSObject<MultiEPGIntervalDelegate> *delegate;
 
 /*!
  @brief Selected Item.

@@ -12,8 +12,10 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
-#import "../Objects/Generic/Event.h"
-#import "../Objects/Generic/Service.h"
+#import <Objects/Generic/Event.h>
+#import <Objects/Generic/Service.h>
+
+#import <XMLReader/BaseXMLReader.h>
 
 #define kMaxRetries	10
 
@@ -22,8 +24,6 @@
 	if(target)\
 		obj.target = [NSString stringWithUTF8String:target];\
 	} while(0);
-
-static EPGCache *_sharedInstance = nil;
 
 @interface EPGCache()
 /*!
@@ -35,28 +35,35 @@ static EPGCache *_sharedInstance = nil;
  @return Event on this service matching search parameters.
  */
 - (NSObject<EventProtocol> *)getEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service returnNext:(BOOL)next;
+
+/*!
+ @brief Application did enter background.
+ */
+- (void)didEnterBackground:(NSNotification *)note;
+
+/*!
+ @brief Application will enter foreground.
+ */
+- (void)willEnterForeground:(NSNotification *)note;
 @end
 
 @implementation EPGCache
 
 + (EPGCache *)sharedInstance
 {
-	if(_sharedInstance == nil)
-	{
-		@synchronized(self)
-		{
-			if(_sharedInstance == nil)
-				_sharedInstance = [[EPGCache alloc] init];
-		}
-	}
-	return _sharedInstance;
+	static EPGCache *sharedInstance = nil;
+	static dispatch_once_t epgCacheSingletonToken;
+	dispatch_once(&epgCacheSingletonToken, ^{
+		sharedInstance = [[EPGCache alloc] init];
+	});
+	return sharedInstance;
 }
 
 - (id)init
 {
 	if((self = [super init]))
 	{
-		_databasePath = [[kEPGCachePath stringByExpandingTildeInPath] retain];
+		_databasePath = [kEPGCachePath stringByExpandingTildeInPath];
 		queue = [[NSOperationQueue alloc] init];
 		[queue setMaxConcurrentOperationCount:1];
 	}
@@ -65,24 +72,22 @@ static EPGCache *_sharedInstance = nil;
 
 - (void)dealloc
 {
-	SafeRetainAssign(_bouquet, nil);
-	SafeRetainAssign(_databasePath, nil);
-	SafeRetainAssign(_service, nil);
-	SafeRetainAssign(_serviceList, nil);
 	[queue cancelAllOperations];
-	SafeRetainAssign(queue, nil);
+}
 
-	[super dealloc];
+- (BOOL)reloading
+{
+	return [_serviceList count] || _service;
 }
 
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
 {
 	// check if delegate wants to be informated about errors
-	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
@@ -90,7 +95,7 @@ static EPGCache *_sharedInstance = nil;
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
-		[invocation setArgument:&error atIndex:4];
+		[invocation setArgument:&error atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
@@ -99,7 +104,7 @@ static EPGCache *_sharedInstance = nil;
 - (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
 {
 	// check if delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
 	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
 	{
@@ -163,31 +168,30 @@ static EPGCache *_sharedInstance = nil;
 	}
 	sqlite3_close(db);
 
-	return [newEvent autorelease];
+	return newEvent;
 }
 
 - (void)fetchServices
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	SafeRetainAssign(_currDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio]);
-	[pool release];
+	@autoreleasepool
+	{
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio];
+	}
 }
 
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	SafeRetainAssign(_service, [_serviceList lastObject]);
-	[_serviceList removeLastObject];
-
-	SafeRetainAssign(_currDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
-	[pool release];
+	@autoreleasepool
+	{
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service];
+	}
 }
 
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 #if 0
 	// alert user
@@ -203,10 +207,10 @@ static EPGCache *_sharedInstance = nil;
 
 	// rollback just to be safe
 	sqlite3_exec(database, "ROLLBACK", 0, 0, 0);
-	[self dataSourceDelegate:dataSource finishedParsingDocument:document];
+	[self dataSourceDelegateFinishedParsingDocument:dataSource];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	NSUInteger count = [_serviceList count];
 	if(count)
@@ -214,6 +218,37 @@ static EPGCache *_sharedInstance = nil;
 		// commit last bunch of updates and start a new transaction
 		sqlite3_exec(database, "COMMIT", 0, 0, 0);
 		sqlite3_exec(database, "BEGIN", 0, 0, 0);
+
+		// determine next service
+		_service = [_serviceList lastObject];
+		[_serviceList removeLastObject];
+
+		// delete existing entries for this service
+		const char *stmt = "DELETE FROM events WHERE sref = ?;";
+		sqlite3_stmt *compiledStatement = NULL;
+		if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		{
+			sqlite3_bind_text(compiledStatement, 1, [_service.sref UTF8String], -1, SQLITE_TRANSIENT);
+			if(sqlite3_step(compiledStatement) != SQLITE_DONE)
+			{
+#if IS_DEBUG()
+				const int errcode = sqlite3_errcode(database);
+				if(errcode == SQLITE_NOMEM)
+				{
+					NSLog(@"[EPGCache] sqlite3 ran out of memory while deleting past events, ignoring");
+				}
+				else
+				{
+					sqlite3_finalize(compiledStatement);
+					compiledStatement = NULL;
+					[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", _service.sname, _service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
+				}
+#else
+				// ignore
+#endif
+			}
+		}
+		sqlite3_finalize(compiledStatement);
 
 		[_delegate performSelectorOnMainThread:@selector(remainingServicesToRefresh:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
 		// continue fetching events
@@ -235,35 +270,7 @@ static EPGCache *_sharedInstance = nil;
 {
 	NSObject<ServiceProtocol> *copy = [service copy];
 	[_serviceList addObject:copy];
-
-	// delete existing entries for this bouquet
-	const char *stmt = "DELETE FROM events WHERE sref = ?;";
-	sqlite3_stmt *compiledStatement = NULL;
-	if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
-	{
-		sqlite3_bind_text(compiledStatement, 1, [copy.sref UTF8String], -1, SQLITE_TRANSIENT);
-		if(sqlite3_step(compiledStatement) != SQLITE_DONE)
-		{
-#if IS_DEBUG()
-			const int errcode = sqlite3_errcode(database);
-			if(errcode == SQLITE_NOMEM)
-			{
-				NSLog(@"sqlite3 ran out of memory while deleting past events, ignoring");
-			}
-			else
-			{
-				sqlite3_finalize(compiledStatement);
-				compiledStatement = NULL;
-				[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", service.sname, service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
-			}
-#else
-			// ignore
-#endif
-		}
-	}
-	sqlite3_finalize(compiledStatement);
-
-	[copy release];
+	[_delegate performSelectorOnMainThread:@selector(addService:) withObject:copy waitUntilDone:NO];
 }
 
 #pragma mark -
@@ -303,7 +310,6 @@ static EPGCache *_sharedInstance = nil;
 {
 	NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(addEvent:) object:event];
 	[queue addOperation:operation];
-	[operation release];
 }
 
 /* start new transaction */
@@ -346,7 +352,7 @@ static EPGCache *_sharedInstance = nil;
 					const int errcode = sqlite3_errcode(database);
 					if(errcode == SQLITE_NOMEM)
 					{
-						NSLog(@"sqlite3 ran out of memory while deleting past events, ignoring");
+						NSLog(@"[EPGCache] sqlite3 ran out of memory while deleting past events, ignoring");
 					}
 					else
 					{
@@ -378,7 +384,7 @@ static EPGCache *_sharedInstance = nil;
 	@synchronized(self)
 	{
 		[queue cancelAllOperations];
-		SafeRetainAssign(_service, nil);
+		_service = nil;
 
 		// stop transcation
 		sqlite3_exec(database, "COMMIT", 0, 0, 0);
@@ -388,6 +394,8 @@ static EPGCache *_sharedInstance = nil;
 		sqlite3_close(database);
 		database = NULL;
 	}
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self willEnterForeground:nil]; // abuse willEnterForeground to kill an eventual background thread
 }
 
 /* start refreshing a bouquet */
@@ -401,17 +409,16 @@ static EPGCache *_sharedInstance = nil;
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 
 		[delegate performSelectorOnMainThread:@selector(finishedRefreshingCache) withObject:nil waitUntilDone:NO];
 		return;
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
-	SafeRetainAssign(_delegate, delegate);
-	SafeCopyAssign(_bouquet, bouquet);
+	_delegate = delegate;
+	_bouquet = [bouquet copy];
 
 	// fetch list of services, followed by epg for each service
-	SafeRetainAssign(_serviceList, nil);
 	_serviceList = [[NSMutableArray alloc] init];
 	_isRadio = isRadio;
 	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
@@ -498,8 +505,6 @@ static EPGCache *_sharedInstance = nil;
 
 					// send to delegate
 					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
-					[service release];
-					[event release];
 				}
 				break; // XXX: why do I need to do this?
 			}
@@ -573,7 +578,6 @@ static EPGCache *_sharedInstance = nil;
 			{
 				NSString *searchString = [[NSString alloc ] initWithFormat:@"%%%@%%", name];
 				sqlite3_bind_text(compiledStatement, 1, [searchString UTF8String], -1, SQLITE_TRANSIENT);
-				[searchString release];
 				while(sqlite3_step(compiledStatement) == SQLITE_ROW)
 				{
 					GenericEvent *event = [[GenericEvent alloc] init];
@@ -592,8 +596,6 @@ static EPGCache *_sharedInstance = nil;
 
 					// send to delegate
 					[delegate performSelectorOnMainThread:@selector(addEvent:) withObject:event waitUntilDone:NO];
-					[service release];
-					[event release];
 				}
 				break; // XXX: why do I need to do this?
 			}
@@ -627,6 +629,41 @@ static EPGCache *_sharedInstance = nil;
 	}
 
 	sqlite3_close(db);
+}
+
+#pragma mark - Background Task Management
+
+- (void)didEnterBackground:(NSNotification *)note
+{
+#if IS_DEBUG()
+	NSLog(@"[EPGCache] Starting background task.");
+#endif
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
+
+	// NOTE: we only observe if we are in fact active, so just start the background task
+	UIApplication *application = [UIApplication sharedApplication];
+	_backgroundTask = [application beginBackgroundTaskWithExpirationHandler: ^{
+		// Cancel operation, but preserve state of the database from before this probably incomplete request.
+		_xmlReader.delegate = nil;
+		[NSThread cancelPreviousPerformRequestsWithTarget:self];
+		sqlite3_exec(database, "ROLLBACK", 0, 0, 0);
+		[self stopTransaction];
+
+		[application endBackgroundTask:_backgroundTask];
+		_backgroundTask = UIBackgroundTaskInvalid;
+	}];
+}
+
+- (void)willEnterForeground:(NSNotification *)note
+{
+	if(_backgroundTask != UIBackgroundTaskInvalid)
+	{
+#if IS_DEBUG()
+		NSLog(@"[EPGCache] Ending background task.");
+#endif
+		[[UIApplication sharedApplication] endBackgroundTask:_backgroundTask];
+        _backgroundTask = UIBackgroundTaskInvalid;
+	}
 }
 
 @end

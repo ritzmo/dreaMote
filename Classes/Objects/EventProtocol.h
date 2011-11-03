@@ -17,12 +17,12 @@
 /*!
  @brief Event Id.
  */
-@property (nonatomic, retain) NSString *eit;
+@property (nonatomic, strong) NSString *eit;
 
 /*!
  @brief Begin.
  */
-@property (nonatomic, retain) NSDate *begin;
+@property (nonatomic, strong) NSDate *begin;
 
 /*!
  @brief End.
@@ -32,27 +32,27 @@
 /*!
  @brief Title.
  */
-@property (nonatomic, retain) NSString *title;
+@property (nonatomic, strong) NSString *title;
 
 /*!
  @brief Short Description.
  */
-@property (nonatomic, retain) NSString *sdescription;
+@property (nonatomic, strong) NSString *sdescription;
 
 /*!
  @brief Extended Description.
  */
-@property (nonatomic, retain) NSString *edescription;
+@property (nonatomic, strong) NSString *edescription;
 
 /*!
  @brief Cache for Begin/End Textual representation.
  */
-@property (nonatomic, retain) NSString *timeString;
+@property (nonatomic, strong) NSString *timeString;
 
 /*!
  @brief Service the Event is aired on.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *service;
 
 /*!
  @brief Valid or Fake Service.

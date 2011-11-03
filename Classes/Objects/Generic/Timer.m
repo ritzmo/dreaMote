@@ -13,29 +13,12 @@
 
 @implementation GenericTimer
 
-@synthesize eit = _eit;
-@synthesize begin = _begin;
-@synthesize end = _end;
-@synthesize title = _title;
-@synthesize tdescription = _tdescription;
-@synthesize disabled = _disabled;
-@synthesize repeated = _repeated;
-@synthesize repeatcount = _repeatcount;
-@synthesize justplay = _justplay;
-@synthesize service = _service;
-@synthesize sref = _sref;
-@synthesize sname = _sname;
-@synthesize state = _state;
-@synthesize afterevent = _afterevent;
-@synthesize location = _location;
-@synthesize valid = _isValid;
-@synthesize timeString = _timeString;
+@synthesize eit, begin, end, title, tdescription, disabled, repeated, repeatcount, justplay, service, sref, sname, state, afterevent, location, valid, timeString;
 
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	NSObject<TimerProtocol> *timer = [GenericTimer withEventAndService:ourEvent :newService];
-	[newService release];
 
 	return timer;
 }
@@ -61,14 +44,14 @@
 	else
 		timer.afterevent = kAfterEventNothing;
 
-	return [timer autorelease];
+	return timer;
 }
 
 + (NSObject<TimerProtocol> *)timer
 {
 	NSObject<TimerProtocol> *timer = [[GenericTimer alloc] init];
 	timer.begin = [NSDate date];
-	timer.end = [timer.begin addTimeInterval: (NSTimeInterval)3600];
+	timer.end = [timer.begin dateByAddingTimeInterval:(NSTimeInterval)3600];
 	timer.eit = nil;
 	timer.title = @"";
 	timer.tdescription = @"";
@@ -76,7 +59,6 @@
 	timer.justplay = NO;
 	NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
 	timer.service = newService;
-	[newService release];
 	timer.repeated = 0;
 	timer.repeatcount = 0;
 	timer.state = 0;
@@ -87,7 +69,7 @@
 	else
 		timer.afterevent = kAfterEventNothing;
 
-	return [timer autorelease];
+	return timer;
 }
 
 - (id)init
@@ -95,9 +77,7 @@
 	if((self = [super init]))
 	{
 		_duration = -1;
-		_service = nil;
-		_isValid = YES;
-		_timeString = nil;
+		valid = YES;
 	}
 	return self;
 }
@@ -106,40 +86,24 @@
 {
 	if((self = [super init]))
 	{
-		_begin = [timer.begin copy];
-		_end = [timer.end copy];
-		_eit = [timer.eit copy];
-		_title = [timer.title copy];
-		_tdescription = [timer.tdescription copy];
-		_disabled = timer.disabled;
-		_justplay = timer.justplay;
-		_service = [timer.service copy];
-		_repeated = timer.repeated;
-		_repeatcount = timer.repeatcount;
-		_state = timer.state;
+		begin = [timer.begin copy];
+		end = [timer.end copy];
+		eit = [timer.eit copy];
+		title = [timer.title copy];
+		tdescription = [timer.tdescription copy];
+		disabled = timer.disabled;
+		justplay = timer.justplay;
+		service = [timer.service copy];
+		repeated = timer.repeated;
+		repeatcount = timer.repeatcount;
+		state = timer.state;
 		_duration = -1;
-		_isValid = timer.valid;
-		_afterevent = timer.afterevent;
-		_location = [timer.location copy];
+		valid = timer.valid;
+		afterevent = timer.afterevent;
+		location = [timer.location copy];
 	}
 
 	return self;
-}
-
-- (void)dealloc
-{
-	[_begin release];
-	[_eit release];
-	[_end release];
-	[_location release];
-	[_service release];
-	[_sname release];
-	[_sref release];
-	[_title release];
-	[_timeString release];
-	[_tdescription release];
-
-	[super dealloc];
 }
 
 - (NSString *)description
@@ -149,80 +113,66 @@
 
 - (NSString *)getStateString
 {
-	return [NSString stringWithFormat: @"%d", _state];
+	return [NSString stringWithFormat:@"%d", state];
 }
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[_timeString release];
-	_timeString = nil;
+	self.timeString = nil;
 
-	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	self.begin = [NSDate dateWithTimeIntervalSince1970:[newBegin doubleValue]];
 	if(_duration != -1){
-		[_end release];
-		_end = [[_begin addTimeInterval: _duration] retain];
+		self.end = [begin dateByAddingTimeInterval:_duration];
 		_duration = -1;
 	}
 }
 
 - (void)setEndFromString: (NSString *)newEnd
 {
-	[_timeString release];
-	_timeString = nil;
-
-	[_end release];
-	_end = [[NSDate dateWithTimeIntervalSince1970: [newEnd doubleValue]] retain];
+	self.timeString = nil;
+	self.end = [NSDate dateWithTimeIntervalSince1970:[newEnd doubleValue]];
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[_timeString release];
-	_timeString = nil;
+	self.timeString = nil;
 
-	if(_begin == nil) {
+	if(begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;
 	}
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	self.end = [begin dateByAddingTimeInterval:[newDuration doubleValue]];
 }
 
 - (void)setSref: (NSString *)newSref
 {
-	if(_sname)
+	if(sname)
 	{
-		[_service release];
-		_service = [[GenericService alloc] init];
-		_service.sref = newSref;
-		_service.sname = _sname;
+		self.service = [[GenericService alloc] init];
+		service.sref = newSref;
+		service.sname = sname;
 
-		[_sname release];
-		_sname = nil;
+		self.sname = nil;
 	}
 	else
 	{
-		[_sref release];
-		_sref = [newSref retain];
+		self.sref = newSref;
 	}
 }
 
 - (void)setSname: (NSString *)newSname
 {
-	if(_sref)
+	if(sref)
 	{
-		[_service release];
-		_service = [[GenericService alloc] init];
-		_service.sref = _sref;
-		_service.sname = newSname;
+		self.service = [[GenericService alloc] init];
+		service.sref = sref;
+		service.sname = newSname;
 
-		[_sref release];
-		_sref = nil;
+		self.sref = nil;
 	}
 	else
 	{
-		[_sname release];
-		_sname = [newSname retain];
+		self.sname = newSname;
 	}
 }
 

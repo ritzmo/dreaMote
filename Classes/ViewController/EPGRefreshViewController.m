@@ -65,12 +65,12 @@ enum generalSectionItems
  */
 - (void)cancelEdit:(id)sender;
 
-@property (nonatomic, retain) UIPopoverController *popoverController;
-@property (nonatomic, retain) EPGRefreshSettings *settings;
-@property (nonatomic, readonly) UIViewController *bouquetListController;
-@property (nonatomic, readonly) UIViewController *serviceListController;
-@property (nonatomic, readonly) DatePickerController *datePickerController;
-@property (nonatomic, readonly) UIViewController *datePickerNavigationController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) EPGRefreshSettings *settings;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *serviceListController;
+@property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
+@property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
 @end
 
 @implementation EPGRefreshViewController
@@ -90,42 +90,9 @@ enum generalSectionItems
 	return self;
 }
 
-- (void)dealloc
-{
-	[_dateFormatter release];
-	[bouquets release];
-	[services release];
-	[settings release];
-
-	[_cancelButtonItem release];
-	[_popoverButtonItem release];
-	[popoverController release];
-
-	[_interval release];
-	[_intervalCell release];
-	[_delay release];
-	[_delayCell release];
-	[_enabled release];
-	[_force release];
-	[_wakeup release];
-	[_shutdown release];
-	[_inherit release];
-	[_parse release];
-
-	[_bouquetListController release];
-	[_serviceListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
-
-	[super dealloc];
-}
 
 - (void)didReceiveMemoryWarning
 {
-	[_bouquetListController release];
-	[_serviceListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
 
 	_bouquetListController = nil;
 	_serviceListController = nil;
@@ -152,7 +119,6 @@ enum generalSectionItems
 			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 			_bouquetListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 
-			[rootViewController release];
 		}
 		else
 			_bouquetListController = rootViewController;
@@ -186,7 +152,6 @@ enum generalSectionItems
 			_serviceListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 			_serviceListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 
-			[rootViewController release];
 		}
 		else
 			_serviceListController = rootViewController;
@@ -347,27 +312,18 @@ enum generalSectionItems
 
 - (void)viewDidUnload
 {
-	[_cancelButtonItem release];
 	_cancelButtonItem = nil;
-	[_interval release];
 	_interval = nil;
-	[_intervalCell release]; // depends on _interval
+	 // depends on _interval
 	_intervalCell = nil;
-	[_delay release];
 	_delay = nil;
-	[_delayCell release]; // depends on _delay
+	 // depends on _delay
 	_delayCell = nil;
-	[_enabled release];
 	_enabled = nil;
-	[_force release];
 	_force = nil;
-	[_wakeup release];
 	_wakeup = nil;
-	[_shutdown release];
 	_shutdown = nil;
-	[_inherit release];
 	_inherit = nil;
-	[_parse release];
 	_parse = nil;
 
 	[super viewDidUnload];
@@ -434,7 +390,6 @@ enum generalSectionItems
 										 cancelButtonTitle:@"OK"
 										 otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 			return;
 		}
 
@@ -484,7 +439,7 @@ enum generalSectionItems
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// show one error message at the most
 	if(--pendingRequests == 0)
@@ -499,15 +454,14 @@ enum generalSectionItems
 															cancelButtonTitle:@"OK"
 															otherButtonTitles:nil];
 				[alert show];
-				[alert release];
 				error = nil;
 			}
 		}
-		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if(--pendingRequests == 0)
 	{
@@ -594,7 +548,7 @@ enum generalSectionItems
 	}
 
 	// copy service for convenience reasons
-	[bouquets addObject:[[newBouquet copy] autorelease]];
+	[bouquets addObject:[newBouquet copy]];
 	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:bouquetSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -613,7 +567,7 @@ enum generalSectionItems
 	}
 
 	// copy service for convenience reasons
-	[services addObject:[[newService copy] autorelease]];
+	[services addObject:[newService copy]];
 	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:serviceSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
@@ -941,7 +895,6 @@ enum generalSectionItems
 															cancelButtonTitle:@"OK"
 															otherButtonTitles:nil];
 				[alert show];
-				[alert release];
 			}
 			break;
 		}
@@ -953,26 +906,27 @@ enum generalSectionItems
 			if(row == beginRow)
 			{
 				targetViewController = self.datePickerNavigationController;
-				self.datePickerController.date = [[settings.begin copy] autorelease];
-				[self.datePickerController setTarget: self action: @selector(fromSelected:)];
+				self.datePickerController.date = [settings.begin copy];
+				self.datePickerController.callback = ^(NSDate *date){[self fromSelected:date];};
 			}
 			else if(row == endRow)
 			{
 				targetViewController = self.datePickerNavigationController;
-				self.datePickerController.date = [[settings.end copy] autorelease];
-				[self.datePickerController setTarget: self action: @selector(toSelected:)];
+				self.datePickerController.date = [settings.end copy];
+				self.datePickerController.callback = ^(NSDate *date){[self toSelected:date];};
 			}
 			else if(row == adapterRow)
 			{
 				targetViewController = [EPGRefreshAdapterViewController withAdapter:settings.adapter];
-				[(EPGRefreshAdapterViewController *)targetViewController setDelegate:self];
+				((EPGRefreshAdapterViewController *)targetViewController).delegate = self;
 				if(IS_IPAD())
 				{
 					UIViewController *rootViewController = targetViewController;
 					targetViewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
 					targetViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
 					targetViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-					[targetViewController autorelease];
+					[self.navigationController presentModalViewController:targetViewController animated:YES];
+					targetViewController = nil;
 				}
 			}
 			break;
@@ -1066,10 +1020,6 @@ enum generalSectionItems
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-	[_bouquetListController release];
-	[_serviceListController release];
-	[_datePickerController release];
-	[_datePickerNavigationController release];
 
 	_bouquetListController = nil;
 	_serviceListController = nil;
@@ -1084,8 +1034,7 @@ enum generalSectionItems
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
-	[_popoverButtonItem release];
-	_popoverButtonItem = [barButtonItem retain];
+	_popoverButtonItem = barButtonItem;
 
 	// assign popover button if there is no left button assigned.
 	if(!self.navigationItem.leftBarButtonItem)
@@ -1099,7 +1048,6 @@ enum generalSectionItems
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-	[_popoverButtonItem release];
 	_popoverButtonItem = nil;
 	if([self.navigationItem.leftBarButtonItem isEqual: barButtonItem])
 	{

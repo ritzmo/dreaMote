@@ -10,10 +10,13 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "Objects/LocationProtocol.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "Objects/Generic/Location.h"
+#import "UIPromptView.h"
+
+#import <Objects/LocationProtocol.h>
+#import <Objects/Generic/Location.h>
+#import <Objects/Generic/Result.h>
 
 @interface LocationListController()
 /*!
@@ -24,9 +27,8 @@
 
 @implementation LocationListController
 
-@synthesize isSplit = _isSplit;
+@synthesize isSplit, showDefault, delegate;
 @synthesize movieListController = _movieListController;
-@synthesize showDefault = _showDefault;
 
 /* initialize */
 - (id)init
@@ -34,11 +36,9 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Locations", @"Title of LocationListController");
-		_locations = [[NSMutableArray array] retain];
+		_locations = [NSMutableArray array];
 		_refreshLocations = YES;
-		_isSplit = NO;
 		_movieListController = nil;
-		_delegate = nil;
 
 		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
 		{
@@ -50,23 +50,11 @@
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_locations release];
-	[_movieListController release];
-	[_locationXMLDoc release];
-	[_delegate release];
-
-	[super dealloc];
-}
-
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
 	if(!IS_IPAD())
 	{
-		[_movieListController release];
 		_movieListController = nil;
 	}
 	
@@ -93,6 +81,28 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = 38;
 	_tableView.sectionHeaderHeight = 0;
+	if(self.editing)
+		[_tableView setEditing:YES animated:NO];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
+{
+	const BOOL wasEditing = self.editing;
+	[super setEditing:editing animated:animated];
+	[_tableView setEditing:editing animated:animated];
+
+	if(wasEditing != editing)
+	{
+		if(animated)
+		{
+			if(editing)
+				[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_locations.count inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+			else
+				[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_locations.count inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+		}
+		else
+			[_tableView reloadData];
+	}
 }
 
 /* cancel in delegate mode */
@@ -107,15 +117,15 @@
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
-	if(_delegate)
+	if(delegate)
 	{
-		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
-		self.navigationItem.rightBarButtonItem = button;
-		[button release];
+		self.navigationItem.leftBarButtonItem = button;
 	}
 	else
-		self.navigationItem.rightBarButtonItem = nil;
+		self.navigationItem.leftBarButtonItem = nil;
+	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	// Refresh cache if we have a cleared one
 	if(_refreshLocations && !_reloading)
@@ -149,11 +159,9 @@
 
 		if(!IS_IPAD())
 		{
-			[_movieListController release];
 			_movieListController = nil;
 		}
-		[_locationXMLDoc release];
-		_locationXMLDoc = nil;
+		_xmlReader = nil;
 	}
 }
 
@@ -161,7 +169,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_locationXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self]);
 }
 
 /* remove content data */
@@ -175,8 +183,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	[_locationXMLDoc release];
-	_locationXMLDoc = nil;
+	_xmlReader = nil;
 }
 
 /* force a refresh */
@@ -191,30 +198,61 @@
 }
 
 #pragma mark -
+#pragma mark UIAlertViewDelegate
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+#define promptView (UIPromptView *)alertView
+	if(buttonIndex == alertView.cancelButtonIndex)
+	{
+		// do nothing
+	}
+	else
+	{
+		NSString *bookmark = [promptView promptFieldAtIndex:0].text;
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] addLocation:bookmark createFolder:YES];
+		if(result.result)
+		{
+			GenericLocation *location = [[GenericLocation alloc] init];
+			location.fullpath = bookmark;
+			location.valid = YES;
+			[self addLocation:location];
+		}
+		else
+		{
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																  message:[NSString stringWithFormat:NSLocalizedString(@"Unable to add bookmark: %@",@"Creating a bookmark has failed"), result.resulttext]
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+		}
+	}
+}
+
+#pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	if([error domain] == NSURLErrorDomain)
 	{
 		if([error code] == 404)
 		{
 			// received 404, assume very old enigma2 without location support: insert default location (if not showing anyway)
-			if(!_showDefault)
+			if(!showDefault)
 			{
 				GenericLocation *location = [[GenericLocation alloc] init];
 				location.fullpath = @"/hdd/movie/";
 				location.valid = YES;
 				[self addLocation:location];
-				[location release];
 			}
 			error = nil;
 		}
 	}
 
 	// assume details will fail too if in split
-	if(_isSplit)
+	if(isSplit)
 	{
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		[_tableView reloadData];
@@ -222,7 +260,7 @@
 	}
 	else
 	{
-		[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 }
 
@@ -250,15 +288,17 @@
 	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 	NSInteger row = indexPath.row;
 
-	if(_showDefault && row-- == 0)
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+	if(showDefault && row-- == 0)
 	{
-		TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Location", @"");;
-		return cell;
 	}
-
-	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	TABLEVIEWCELL_TEXT(cell) = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:row]).fullpath;
+	else if(row == (NSInteger)_locations.count)
+	{
+		cell.textLabel.text = NSLocalizedString(@"New Bookmark", @"Title of cell to add a new bookmark");
+	}
+	else
+		TABLEVIEWCELL_TEXT(cell) = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:row]).fullpath;
 
 	return cell;
 }
@@ -277,23 +317,32 @@
 
 	NSInteger row = indexPath.row;
 	NSObject<LocationProtocol> *location = nil;
-	if(_showDefault) --row;
+	if(showDefault) --row;
 	if(row > -1)
 	{
+		if(row >= (NSInteger)_locations.count)
+		{
+#if IS_DEBUG()
+			NSLog(@"Selection (%d) outside of bounds (%d) in LocationListController. This does not have to be bad!", indexPath.row, _locations.count);
+#endif
+			return nil;
+		}
 		location = [_locations objectAtIndex:row];
 		if(!location.valid)
 			return nil;
 	}
 
 	// Callback mode
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
-		[_delegate performSelector:@selector(locationSelected:) withObject: location];
+		tableView.allowsSelection = NO;
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		[delegate performSelector:@selector(locationSelected:) withObject: location];
 
 		if(IS_IPAD())
 			[self.navigationController dismissModalViewControllerAnimated:YES];
 		else
-			[self.navigationController popToViewController: (UIViewController *)_delegate animated: YES];
+			[self.navigationController popToViewController: (UIViewController *)delegate animated: YES];
 	}
 	// Open movie list
 	else if(!_movieListController.reloading)
@@ -307,7 +356,7 @@
 		_refreshLocations = NO;
 
 		// when in split view go back to movie list, else push it on the stack
-		if(!_isSplit)
+		if(!isSplit)
 		{
 			// XXX: wtf?
 			if([self.navigationController.viewControllers containsObject:_movieListController])
@@ -317,7 +366,6 @@
 				for(NSObject* obj in self.navigationController.viewControllers)
 					[result appendString:[obj description]];
 				[NSException raise:@"MovieListTwiceInNavigationStack" format:@"_movieListController was twice in navigation stack: %@", result];
-				[result release]; // never reached, but to keep me from going crazy :)
 #endif
 				[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 			}
@@ -341,17 +389,61 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section 
 {
 	NSUInteger count = _locations.count;
-	if(_showDefault)
+	if(showDefault)
+		++count;
+	if(self.editing)
 		++count;
 	return count;
 }
 
-/* set delegate */
-- (void)setDelegate: (id<LocationListDelegate, NSCoding>) delegate
+/* editing style */
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[_delegate release];
-	_delegate = [delegate retain];
+	if(self.editing)
+	{
+		NSInteger row = indexPath.row;
+		if(showDefault && row-- == 0)
+			return UITableViewCellEditingStyleNone;
+		if(row == (NSInteger)_locations.count)
+			return UITableViewCellEditingStyleInsert;
+		return UITableViewCellEditingStyleDelete;
+	}
+	return UITableViewCellEditingStyleNone;
 }
+
+/* commit editing style */
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if(editingStyle == UITableViewCellEditingStyleInsert)
+	{
+		UIPromptView *alertView = [[UIPromptView alloc] initWithTitle:NSLocalizedString(@"Enter path of bookmark", @"Title of prompt requesting name for new bookmark")
+															  message:nil
+															 delegate:self
+													cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+														okButtonTitle:@"OK"
+								   ];
+		alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
+		[alertView show];
+	}
+	else
+	{
+		NSInteger row = indexPath.row;
+		if(showDefault) --row;
+		NSObject<LocationProtocol> *location = [_locations objectAtIndex:row];
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delLocation:location.fullpath];
+		if(result.result)
+		{
+			[_locations removeObjectAtIndex:row];
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+		}
+		else
+		{
+			[tableView reloadData];
+		}
+	}
+}
+
+#pragma mark -
 
 /* support rotation */
 - (BOOL)shouldAutorotateToInterfaceOrientation: (UIInterfaceOrientation)interfaceOrientation

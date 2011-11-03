@@ -26,10 +26,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [super dealloc];
-}
 
 #pragma mark -
 #pragma mark UIViewController methods
@@ -49,8 +45,6 @@
 	navController1 = [[UINavigationController alloc] initWithRootViewController: playListController];
 	navController2 = [[UINavigationController alloc] initWithRootViewController: detailsController];
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
-	[navController1 release];
-	[navController2 release];
 
 	// Create "Clear" Button
 	UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Clear", @"Clear button/action in MediaPlayer")
@@ -58,7 +52,6 @@
 																   target:detailsController
 																   action:@selector(clearPlaylist:)];
 	playListController.clearButton = clearButton;
-	[clearButton release];
 
 	// Create "Save" Button
 	UIBarButtonItem *saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button/action in MediaPlayer")
@@ -66,7 +59,6 @@
 																   target:detailsController
 																   action:@selector(savePlaylist:)];
 	playListController.saveButton = saveButton;
-	[saveButton release];
 
 	// Create "Load" Button
 	UIBarButtonItem *loadButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Load", @"Load button/action in MediaPlayer")
@@ -74,7 +66,6 @@
 																  target:detailsController
 																  action:@selector(showPlaylists:)];
 	playListController.loadButton = loadButton;
-	[loadButton release];
 
 	// add buttons
 	UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -92,11 +83,12 @@
 	self.delegate = detailsController;
 
 	// release allocated ressources
-	[items release];
-	[flexItem release];
-	[flipItem release];
-	[playListController release];
-	[detailsController release];
+}
+
+- (void)viewDidUnload
+{
+	self.delegate = nil;
+	[super viewDidUnload];
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "ReloadableListController.h"
 #import "NowNextSourceDelegate.h"
 #import "ServiceSourceDelegate.h"
+#import "BouquetListController.h" /* BouquetListDelegate */
 #import "EventViewController.h"
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 #import "ServiceZapListController.h" /* ServiceZapListDelegate */
@@ -19,10 +20,36 @@
 #endif
 
 // Forward declarations
+@class BaseXMLReader;
 @class EventListController;
-@class CXMLDocument;
 @protocol ServiceProtocol;
-@protocol ServiceListDelegate;
+
+
+/*!
+ @brief Delegate for ServiceListController.
+
+ Objects wanting to be called back by a ServiceListController need to implement this Protocol.
+ */
+@protocol ServiceListDelegate <NSObject>
+
+/*!
+ @brief Service was selected.
+
+ @param newService Service that was selected.
+ */
+- (void)serviceSelected: (NSObject<ServiceProtocol> *)newService;
+
+/*!
+ @brief Remove alternatives for current service.
+
+ @param service Service to remove alternatives for.
+ */
+@optional
+- (void)removeAlternatives:(NSObject<ServiceProtocol> *)service;
+
+@end
+
+
 
 /*!
  @brief Service List.
@@ -41,6 +68,11 @@
 #if IS_FULL()
 													MultiEPGDelegate,
 #endif
+													UIActionSheetDelegate,
+													UIAlertViewDelegate,
+													ServiceListDelegate,
+													BouquetListDelegate,
+													UISearchDisplayDelegate,
 													MGSplitViewControllerDelegate>
 {
 @private
@@ -51,33 +83,28 @@
 	NSObject<ServiceProtocol> *_service; /*!< @brief Selected Service (if executing a gesture, borrowed reference). */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
-	id<ServiceListDelegate, NSCoding> _delegate; /*!< @brief Delegate. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
 	EventListController *_eventListController; /*!< @brief Caches Event List View. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
+	UIBarButtonItem *_multiEpgButton; /*!< @brief Multi-EPG toggle */
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
-	MGSplitViewController *_mgSplitViewController; /*!< @brief Associated MGSplitViewController. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 #if IS_FULL()
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif
 
-	CXMLDocument *_mainXMLDoc; /*!< Current Service/Event XML Document. */
-	CXMLDocument *_subXMLDoc; /*!< Next Event XML Document. */
-}
+	NSOperationQueue *_piconLoader; /*!< @brief Background operations loading the picons. */
 
-/*!
- @brief Set Service Selection Delegate.
- 
- This Function is required for Timers as they will use the provided Callback when you change the
- Service of a Timer.
- 
- @param delegate New delegate object.
- */
-- (void)setDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
+	NSMutableArray *_selectedServices; /*!< @brief Currently selected services. */
+	NSMutableArray *_filteredServices; /*!< @brief Filtered list of services when searching. */
+	UISearchBar *_searchBar; /*!< @brief Search bar. */
+	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
+
+	BaseXMLReader *_xmlReaderSub; /*!< XMLReader for list of 'Next' events if showing now/next. */
+}
 
 /*!
  @brief Move service selection to next item and return movie.
@@ -95,10 +122,34 @@
  */
 - (NSObject<ServiceProtocol> *)previousService;
 
+
+
+/*!
+ @brief Shows now next?
+ Can be used to force-disable now/next e.g. when showing 'All Services' bouquet.
+
+ @note Might be of use in delegate mode also...
+ */
+@property (nonatomic, assign) BOOL showNowNext;
+
+/*!
+ @brief Are we showing 'All Services'?
+ This is used to disable some animations because they take ages in large 'bouquets'.
+ */
+@property (nonatomic, assign) BOOL isAll;
+
 /*!
  @brief Bouquet.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *bouquet;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *bouquet;
+
+/*!
+ @brief Service Selection Delegate.
+
+ This Function is required for Timers as they will use the provided Callback when you change the
+ Service of a Timer.
+ */
+@property (nonatomic, unsafe_unretained) NSObject<ServiceListDelegate, UIAppearanceContainer> *delegate;
 
 /*!
  @brief Currently in radio mode?
@@ -108,29 +159,11 @@
 /*!
  @brief Associated MGSplitViewController.
  */
-@property (nonatomic, retain) MGSplitViewController *mgSplitViewController;
+@property (nonatomic, unsafe_unretained) MGSplitViewController *mgSplitViewController;
 
 /*!
  @brief Currently reloading.
  */
 @property (nonatomic, readonly) BOOL reloading;
-
-@end
-
-
-
-/*!
- @brief Delegate for ServiceListController.
-
- Objects wanting to be called back by a ServiceListController need to implement this Protocol.
- */
-@protocol ServiceListDelegate <NSObject>
-
-/*!
- @brief Service was selected.
- 
- @param newService Service that was selected.
- */
-- (void)serviceSelected: (NSObject<ServiceProtocol> *)newService;
 
 @end

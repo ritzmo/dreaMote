@@ -10,6 +10,9 @@
 
 #import "RemoteConnectorObject.h" // [+RemoteConnectorObject queueInvocationWithTarget: selector:]
 
+#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
+
 @implementation ReloadableListController
 
 /* initialize */
@@ -26,14 +29,10 @@
 - (void)dealloc
 {
 	_refreshHeaderView.delegate = nil;
-	[_refreshHeaderView release];
 	_refreshHeaderView = nil;
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-	[_tableView release];
 	_tableView = nil;
-
-	[super dealloc];
 }
 
 /* layout */
@@ -68,11 +67,9 @@
 - (void)viewDidUnload
 {
 	_refreshHeaderView.delegate = nil;
-	[_refreshHeaderView release];
 	_refreshHeaderView = nil;
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-	[_tableView release];
 	_tableView = nil;
 
 	[super viewDidUnload];
@@ -137,8 +134,11 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
+	if(dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	[_tableView reloadData];
@@ -154,11 +154,13 @@
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
+	if(dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+		_xmlReader = nil;
+
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 #if INCLUDE_FEATURE(Extra_Animation)

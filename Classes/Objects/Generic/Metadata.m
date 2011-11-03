@@ -27,18 +27,6 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[title release];
-	[artist release];
-	[album release];
-	[genre release];
-	[year release];
-	[coverpath release];
-
-	[super dealloc];
-}
-
 - (BOOL)isValid
 {
 	// require title and artist for a valid service, one of them has to be non-empty

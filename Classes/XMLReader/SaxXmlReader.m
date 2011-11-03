@@ -26,12 +26,8 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)dealloc
 {
-	[failureReason release];
-	[currentString release];
 	xmlFreeParserCtxt(_xmlParserContext);
 	_xmlParserContext = NULL;
-
-	[super dealloc];
 }
 
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
@@ -51,14 +47,18 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	if(con)
 	{
 		[APP_DELEGATE addNetworkOperation];
-		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, self, NULL, 0, NULL);
+		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, (__bridge void *)(self), NULL, 0, NULL);
 		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
+
 		while(!_done)
 		{
 			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 		}
 		[con cancel]; // just in case, cancel the connection
 		[APP_DELEGATE removeNetworkOperation];
+
+		xmlFreeParserCtxt(_xmlParserContext);
+		_xmlParserContext = NULL;
 	}
 	else
 	{
@@ -78,16 +78,18 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		[self sendErroneousObject];
 
 		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
 		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
 		{
+			BaseXMLReader *__unsafe_unretained dataSource = self;
+			NSError *__unsafe_unretained dataSourceError = failureReason;
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];
 			[invocation setSelector:errorParsing];
-			[invocation setArgument:&self atIndex:2];
-			[invocation setArgument:&failureReason atIndex:4];
+			[invocation setArgument:&dataSource atIndex:2];
+			[invocation setArgument:&dataSourceError atIndex:3];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 									  waitUntilDone:NO];
 		}
@@ -95,22 +97,21 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	else
 	{
 		// delegate wants to be informated about parsing end
-		SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+		SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 		NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
 		if(_delegate && [_delegate respondsToSelector:finishedParsing] && sig)
 		{
+			BaseXMLReader *__unsafe_unretained dataSource = self;
 			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 			[invocation retainArguments];
 			[invocation setTarget:_delegate];
 			[invocation setSelector:finishedParsing];
-			[invocation setArgument:&self atIndex:2];
+			[invocation setArgument:&dataSource atIndex:2];
 			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 										  waitUntilDone:NO];
 		}
 	}
 
-	[request release];
-	[con release];
 	return nil;
 }
 
@@ -124,9 +125,8 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	{
 		NSString *value = [[NSString alloc] initWithBytes:(const void *)characters
 												   length:length
-												 encoding:_encoding];
+												 encoding:self.encoding];
 		[currentString appendString:value];
-		[value release];
 	}
 }
 
@@ -138,17 +138,16 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	CFStringRef resultString = NULL;
 	va_list argList;
 	va_start(argList, msg);
-	resultString = CFStringCreateWithFormatAndArguments(NULL, NULL, (CFStringRef)format, argList);
+	resultString = CFStringCreateWithFormatAndArguments(NULL, NULL, (__bridge CFStringRef)format, argList);
 	va_end(argList);
 
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(NSString*)resultString forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(__bridge NSString*)resultString forKey:NSLocalizedDescriptionKey];
 	NSError *error = [NSError errorWithDomain:@"ParsingDomain" code:101 userInfo:userInfo];
 
-	failureReason = [error retain];
+	failureReason = error;
 	_done = YES;
 
 	CFRelease(resultString);
-	[format release];
 }
 
 - (void)endDocument
@@ -214,7 +213,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-	SafeRetainAssign(failureReason, error); // though accordings to the docs the connection can only fail once, lets make sure we don't leak anyway
+	failureReason = error;
 
 	_done = YES;
 }
@@ -244,7 +243,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	xmlParseChunk(_xmlParserContext, NULL, 0, 1);
-	_done = YES;
+	// NOTE: don't set _done, instead let the parser to it because it will be destroyed afterwards
 }
 
 @end
@@ -255,7 +254,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI, int nb_namespaces, const xmlChar **namespaces, int nb_attributes, int nb_defaulted, const xmlChar **attributes)
 {
-	[(SaxXmlReader *)ctx elementFound:localname
+	[(__bridge SaxXmlReader *)ctx elementFound:localname
 										prefix:prefix
 										   uri:URI
 								namespaceCount:nb_namespaces
@@ -267,24 +266,24 @@ static void startElementSAX(void *ctx, const xmlChar *localname, const xmlChar *
 
 static void	endElementSAX(void *ctx, const xmlChar *localname, const xmlChar *prefix, const xmlChar *URI)
 {
-	[(SaxXmlReader *)ctx endElement:localname prefix:prefix uri:URI];
+	[(__bridge SaxXmlReader *)ctx endElement:localname prefix:prefix uri:URI];
 }
 
 static void	charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
 {
-	[(SaxXmlReader *)ctx charactersFound:ch length:len];
+	[(__bridge SaxXmlReader *)ctx charactersFound:ch length:len];
 }
 
 static void errorEncounteredSAX(void *ctx, const char *msg, ...)
 {
 	va_list argList;
 	va_start(argList, msg);
-	[(SaxXmlReader *)ctx parsingError:msg, argList];
+	[(__bridge SaxXmlReader *)ctx parsingError:msg, argList];
 }
 
 static void endDocumentSAX(void *ctx)
 {
-	[(SaxXmlReader *)ctx endDocument];
+	[(__bridge SaxXmlReader *)ctx endDocument];
 }
 
 static xmlSAXHandler libxmlSAXHandlerStruct =

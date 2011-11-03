@@ -55,9 +55,7 @@ extern NSString *kDisplayCell_ID;
 	UIView	*view;
 }
 
-@property (nonatomic, retain) UIView *view;
-@property (nonatomic, readonly) UILabel *nameLabel;
-
-- (void)setView:(UIView *)inView;
+@property (nonatomic, strong) UIView *view;
+@property (unsafe_unretained, nonatomic, readonly) UILabel *nameLabel;
 
 @end

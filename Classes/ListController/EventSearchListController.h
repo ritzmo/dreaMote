@@ -24,6 +24,6 @@
 	SearchHistoryListController *_searchHistory; /*!< @brief Search History */
 }
 
-@property (nonatomic, readonly) SearchHistoryListController *searchHistory;
+@property (unsafe_unretained, nonatomic, readonly) SearchHistoryListController *searchHistory;
 
 @end

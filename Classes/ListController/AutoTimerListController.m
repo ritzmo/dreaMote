@@ -17,13 +17,15 @@
 #import "Insort/NSArray+CWSortedInsert.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 @interface AutoTimerListController()
 - (void)parseEPG:(id)sender;
 @end
 
 @implementation AutoTimerListController
 
-@synthesize isSplit = _isSplit;
+@synthesize isSplit;
 
 /* initialize */
 - (id)init
@@ -31,21 +33,10 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"AutoTimers", @"Title of AutoTimerListController");
-		_autotimers = [[NSMutableArray array] retain];
+		_autotimers = [NSMutableArray array];
 		_refreshAutotimers = YES;
-		_isSplit = NO;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[_autotimers release];
-	[_autotimerView release];
-	[_curDocument release];
-
-    [super dealloc];
 }
 
 /* free caches */
@@ -53,7 +44,6 @@
 {
 	if(!IS_IPAD())
 	{
-		[_autotimerView release];
 		_autotimerView = nil;
 	}
 
@@ -82,7 +72,6 @@
 		{
 			AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
 			self.autotimerView = avc;
-			[avc release];
 		}
 	}
 	return _autotimerView;
@@ -106,7 +95,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_curDocument, [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self]);
 }
 
 /* remove content data */
@@ -120,24 +109,23 @@
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_curDocument, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 /* run epg parsing on remote receiver */
 - (void)parseEPGDefer
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	Result *result = [[RemoteConnectorObject sharedRemoteConnector] parseAutoTimer];
+	@autoreleasepool {
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] parseAutoTimer];
 
-	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Finished parsing EPG", @"AutoTimer", @"Force parsing is finished, this could have been either an error or a success")
-														  message:result.resulttext // currently just dump the text there
-														 delegate:nil
-												cancelButtonTitle:@"OK"
-												otherButtonTitles:nil];
-	[alert show];
-	[alert release];
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Finished parsing EPG", @"AutoTimer", @"Force parsing is finished, this could have been either an error or a success")
+															  message:result.resulttext // currently just dump the text there
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
 
-	[pool release];
+	}
 	_parsing = NO;
 }
 
@@ -157,7 +145,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	if([error domain] == NSURLErrorDomain)
 	{
@@ -169,14 +157,13 @@
 														cancelButtonTitle:@"OK"
 														otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 			error = nil;
 		}
 	}
-	[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+	[super dataSourceDelegate:dataSource errorParsingDocument:error];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -215,9 +202,6 @@
 																					action:nil];
 	NSArray *items = [[NSArray alloc] initWithObjects:flexItem, parseButton, nil];
 	[self setToolbarItems:items animated:NO];
-	[items release];
-	[flexItem release];
-	[parseButton release];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -291,7 +275,6 @@
 
 		if(!IS_IPAD())
 		{
-			[_autotimerView release];
 			_autotimerView = nil;
 		}
 	}
@@ -344,12 +327,11 @@
 	// create a copy and work on it
 	AutoTimer *copy = [autotimer copy];
 	self.autotimerView.timer = copy;
-	[copy release];
 
 	// We do not want to refresh autotimer list when we return
 	_refreshAutotimers = NO;
 
-	if(!_isSplit)
+	if(!isSplit)
 		[self.navigationController pushViewController:_autotimerView animated:YES];
 	else
 		[_autotimerView.navigationController popToRootViewControllerAnimated:YES];
@@ -410,7 +392,6 @@
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:result.resulttext
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	// Add new Timer
@@ -423,7 +404,7 @@
 		self.autotimerView.timer = newTimer;
 
 		// when in split view go back to autotimer view, else push it on the stack
-		if(!_isSplit)
+		if(!isSplit)
 			[self.navigationController pushViewController:_autotimerView animated:YES];
 		else
 		{

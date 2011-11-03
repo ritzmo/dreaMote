@@ -31,11 +31,10 @@
 	if(_ctxt)
 		xmlFreeParserCtxt(_ctxt);
 	_ctxt = NULL;
-	[super dealloc];
 }
 
 /* initialize */
-- (id)initWithError: (NSError **)outError
+- (id)initWithError: (NSError * __unsafe_unretained *)outError
 {
 	if((self = [super init]))
 	{
@@ -69,7 +68,7 @@
 	{
 		_node = (xmlNodePtr)_ctxt->myDoc;
 		NSAssert(_node->_private == NULL, @"TODO");
-		_node->_private = self; // Note. NOT retained (TODO think more about _private usage)
+		_node->_private = (__bridge void *)self; // Note. NOT retained (TODO think more about _private usage)
 	}
 	else
 	{

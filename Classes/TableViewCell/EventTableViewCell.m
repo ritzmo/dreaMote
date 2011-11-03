@@ -28,24 +28,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 @implementation EventTableViewCell
 
-@synthesize eventNameLabel = _eventNameLabel;
-@synthesize eventTimeLabel = _eventTimeLabel;
-@synthesize eventServiceLabel = _eventServiceLabel;
-@synthesize formatter = _formatter;
-@synthesize showService = _showService;
-
-
-/* deallocate */
-- (void)dealloc
-{
-	[_eventNameLabel release];
-	[_eventTimeLabel release];
-	[_eventServiceLabel release];
-	[_formatter release];
-	[_event release];
-
-	[super dealloc];
-}
+@synthesize formatter, showService;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -53,7 +36,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		const UIView *myContentView = self.contentView;
-		_showService = NO;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -97,16 +79,16 @@ NSString *kEventCell_ID = @"EventCell_ID";
 {
 	// Same event, no need to change anything
 	if(_event == newEvent) return;
-	SafeRetainAssign(_event, newEvent);
+	_event = newEvent;
 
 	// Check if cache already generated
 	if(newEvent.timeString == nil)
 	{
 		// Not generated, do so...
-		[_formatter setDateStyle:NSDateFormatterMediumStyle];
-		const NSString *begin = [_formatter fuzzyDate: newEvent.begin];
-		[_formatter setDateStyle:NSDateFormatterNoStyle];
-		const NSString *end = [_formatter stringFromDate: newEvent.end];
+		[formatter setDateStyle:NSDateFormatterMediumStyle];
+		const NSString *begin = [formatter fuzzyDate:newEvent.begin];
+		[formatter setDateStyle:NSDateFormatterNoStyle];
+		const NSString *end = [formatter stringFromDate:newEvent.end];
 		if(begin && end)
 			newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
@@ -114,7 +96,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	// Set Labels
 	_eventNameLabel.text = newEvent.title;
 	_eventTimeLabel.text = newEvent.timeString;
-	if(_showService)
+	if(showService)
 	{
 		@try{
 			_eventServiceLabel.text = newEvent.service.sname;

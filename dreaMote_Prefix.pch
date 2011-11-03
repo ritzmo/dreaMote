@@ -17,22 +17,10 @@
 
 #define SafeDestroyButton(button) { \
 	[(button) removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents]; \
-	SafeRetainAssign((button), (nil)); \
+	(button) = (nil); \
 }
-#define SafeRetainAssign(var, newExpr) { \
-	id OLD = (var); \
-	id NEW = (newExpr); \
-	(var) = [NEW retain]; \
-	if(OLD) \
-		[OLD release]; \
-}
-#define SafeCopyAssign(var, newExpr) { \
-	id OLD = (var); \
-	id NEW = (newExpr); \
-	(var) = [NEW copy]; \
-	if(OLD) \
-		[OLD release]; \
-}
+#define SafeRetainAssign(var, newExpr) (var) = newExpr;
+#define SafeCopyAssign(var, newExpr) (var) = [(newExpr) copy];
 #define SafeReturn(var) [[var retain] autorelease]
 #define UnsetCellAndDelegate(cell) { \
 	(cell).delegate = (nil); \
@@ -56,7 +44,7 @@
 #define IS_FULL() (!IS_LITE())
 
 // macro to query included features
-#define INCLUDE_FEATURE(NAME) (ENABLE_FEATURE_##NAME)
+#define INCLUDE_FEATURE(NAME) (defined(ENABLE_FEATURE_##NAME) && ENABLE_FEATURE_##NAME)
 
 // disable foreign backends for coolmote
 #if defined(BUILD_COOLMOTE)
@@ -99,13 +87,6 @@
 #else
 	#define ENABLE_FEATURE_Ads 0
 #endif
-
-// fix for banners in iOS 4.0 and 4.1
-#ifdef __OBJC__
-	#import "UIDevice+SystemVersion.h"
-#endif
-#define bannerContentSizeIdentifierPortrait ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50)
-#define bannerContentSizeIdentifierLandscape ([UIDevice runsIos42OrBetter] ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32)
 
 // enable certain exceptions or debug code
 #if TARGET_IPHONE_SIMULATOR || defined(DEBUG) || (!defined(NS_BLOCK_ASSERTIONS) && !defined(NDEBUG))

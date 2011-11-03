@@ -20,7 +20,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 		_timeout = kTimeout * 3; // a lot higher timeout to allow to spin up hdd
 	}
 	return self;
@@ -34,7 +34,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addMovie:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -46,7 +45,7 @@
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/movies/service" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/movies/service" error:nil];
 	NSUInteger idx = 0;
 
 	for(CXMLElement *resultElement in resultNodes)
@@ -58,7 +57,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addMovie:)
 									withObject: newMovie
 								 waitUntilDone: NO];
-		[newMovie release];
 	}
 }
 

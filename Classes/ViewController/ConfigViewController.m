@@ -84,14 +84,14 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 /*!
  @brief "Make Default" Button.
  */
-@property (nonatomic,retain) UIButton *makeDefaultButton;
+@property (nonatomic,strong) UIButton *makeDefaultButton;
 
 /*!
  @brief "Connect" Button.
  */
-@property (nonatomic,retain) UIButton *connectButton;
+@property (nonatomic,strong) UIButton *connectButton;
 
-@property (nonatomic,retain) MBProgressHUD *progressHUD;
+@property (nonatomic,strong) MBProgressHUD *progressHUD;
 @end
 
 /*!
@@ -129,7 +129,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	configViewController.connection = newConnection;
 	configViewController.connectionIndex = atIndex;
 
-	return [configViewController autorelease];
+	return configViewController;
 }
 
 /* initiate ConfigViewController with new connection */
@@ -168,30 +168,16 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	SafeRetainAssign(_connection, nil);
 	UnsetCellAndDelegate(_remoteNameCell);
 	UnsetCellAndDelegate(_remoteAddressCell);
 	UnsetCellAndDelegate(_remotePortCell);
 	UnsetCellAndDelegate(_usernameCell);
 	UnsetCellAndDelegate(_passwordCell);
 
-	SafeRetainAssign(_remoteNameTextField, nil);
-	SafeRetainAssign(_remoteAddressTextField, nil);
-	SafeRetainAssign(_remotePortTextField, nil);
-	SafeRetainAssign(_usernameTextField, nil);
-	SafeRetainAssign(_passwordTextField, nil);
-	SafeRetainAssign(_singleBouquetSwitch, nil);
-	SafeRetainAssign(_advancedRemoteSwitch, nil);
-	SafeRetainAssign(_nowNextSwitch, nil);
-	SafeRetainAssign(_sslSwitch, nil);
-
 	SafeDestroyButton(_makeDefaultButton);
 	SafeDestroyButton(_connectButton);
 
 	progressHUD.delegate = nil;
-	SafeRetainAssign(progressHUD, nil);
-
-	[super dealloc];
 }
 
 - (NSDictionary *)connection
@@ -234,7 +220,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 							 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 							 otherButtonTitles:NSLocalizedString(@"Search", @"Button initiating autoconfiguration."), nil];
 	[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES]; // no idea what thread we are on, so force doing it NOW on the main thread
-	[notification release];
 }
 
 /* create a textfield */
@@ -257,7 +242,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	// has a clear 'x' button to the right
 	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 
-	return [returnTextField autorelease];
+	return returnTextField;
 }
 
 /* create a button */
@@ -270,7 +255,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	[button addTarget: self action: action
 		forControlEvents: UIControlEventTouchUpInside];
 	
-	return [button autorelease];
+	return button;
 }
 
 /* layout */
@@ -288,7 +273,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// Connector
 	_connector = [[_connection objectForKey: kConnector] integerValue];
@@ -297,14 +281,14 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	NSString *remoteName = [_connection objectForKey: kRemoteName];
 	if(remoteName == nil) // Work around unset property
 		remoteName = @"";
-	_remoteNameTextField = [[self create_TextField] retain];
+	_remoteNameTextField = [self create_TextField];
 	_remoteNameTextField.placeholder = NSLocalizedString(@"<name: e.g. living room>", @"Placeholder for remote hostname in config.");
-	_remoteNameTextField.text = [[remoteName copy] autorelease];
+	_remoteNameTextField.text = [remoteName copy];
 
 	// Remote Address
-	_remoteAddressTextField = [[self create_TextField] retain];
+	_remoteAddressTextField = [self create_TextField];
 	_remoteAddressTextField.placeholder = NSLocalizedString(@"<address: e.g. 192.168.1.10>", @"Placeholder for remote address in config.");
-	_remoteAddressTextField.text = [[[_connection objectForKey: kRemoteHost] copy] autorelease];
+	_remoteAddressTextField.text = [[_connection objectForKey: kRemoteHost] copy];
 	_remoteAddressTextField.keyboardType = UIKeyboardTypeURL;
 
 	// SSL
@@ -315,20 +299,20 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	// Remote Port
 	const NSNumber *port = [_connection objectForKey: kPort];
-	_remotePortTextField = [[self create_TextField] retain];
+	_remotePortTextField = [self create_TextField];
 	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
 	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
 	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
 	// Username
-	_usernameTextField = [[self create_TextField] retain];
+	_usernameTextField = [self create_TextField];
 	_usernameTextField.placeholder = NSLocalizedString(@"<username: usually root>", @"Placeholder for remote username in config.");
-	_usernameTextField.text = [[[_connection objectForKey: kUsername] copy] autorelease];
+	_usernameTextField.text = [[_connection objectForKey: kUsername] copy];
 
 	// Password
-	_passwordTextField = [[self create_TextField] retain];
+	_passwordTextField = [self create_TextField];
 	_passwordTextField.placeholder = NSLocalizedString(@"<password: usually dreambox>", @"Placeholder for remote password in config.");
-	_passwordTextField.text = [[[_connection objectForKey: kPassword] copy] autorelease];
+	_passwordTextField.text = [[_connection objectForKey: kPassword] copy];
 	_passwordTextField.secureTextEntry = YES;
 
 	// Connect Button
@@ -408,7 +392,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 											 message:NSLocalizedString(@"A connection needs at least a hostname.", @"No hostname entered in ConfigView.")
 											 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[notification show];
-				[notification release];
 				return;
 			}
 
@@ -478,7 +461,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		_sslSwitch.enabled = YES;
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
-		[cancelButtonItem release];
 
 		UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 		if(connectorCell)
@@ -505,7 +487,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 									message:NSLocalizedString(@"You need to configure this application before you can use it.", @"User tried to leave config view without any host set up.")
 									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
-		[notification release];
 	}
 	else
 	{
@@ -530,7 +511,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 									 message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
-		[notification release];
 		return;
 	}
 	else
@@ -548,7 +528,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 											 message:[error localizedDescription]
 											 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[notification show];
-				[notification release];
 				if(doAbort)
 				{
 					[RemoteConnectorObject connectTo:connectedId];
@@ -598,7 +577,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 									 message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
-		[notification release];
 		return;
 	}
 	else
@@ -613,7 +591,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 									message:[error localizedDescription]
 									delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 			if(doAbort)
 			{
 				[RemoteConnectorObject connectTo:connectedId];
@@ -695,7 +672,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 								message:NSLocalizedString(@"Could not determine remote box type.", @"Autodetection of host type failed.")
 								delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 
 			_connector = oldConnector;
 		}
@@ -941,14 +917,13 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 #if INCLUDE_FEATURE(Multiple_Connectors)
 		ConnectorViewController *targetViewController = [ConnectorViewController withConnector: _connector];
-		[targetViewController setDelegate: self];
+		targetViewController.delegate = self;
 		if(IS_IPAD())
 		{
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
 			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
 			navController.modalTransitionStyle = targetViewController.modalTransitionStyle;
 			[self.navigationController presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 		{
@@ -1131,9 +1106,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 - (void)doAutoConfiguration
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview: progressHUD];
     progressHUD.delegate = self;
     [progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
@@ -1141,46 +1116,42 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
     [progressHUD show:YES];
     progressHUD.taskInProgress = YES;
 
-	NSArray *connections = [RemoteConnectorObject autodetectConnections];
+		NSArray *connections = [RemoteConnectorObject autodetectConnections];
 
-	progressHUD.taskInProgress = NO;
-	[progressHUD hide:YES];
+		progressHUD.taskInProgress = NO;
+		[progressHUD hide:YES];
 
-	NSUInteger len = connections.count;
-	if(len == 0)
-	{
-		const UIAlertView *notification = [[UIAlertView alloc]
-									 initWithTitle:NSLocalizedString(@"Error", @"")
-									 message:NSLocalizedString(@"Unable to find valid connection data.", @"Error message: Autoconfiguration was unable to find a host in this network.")
-									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		[notification release];
-	}
-	else if(len == 1)
-	{
-		NSMutableDictionary *con = [[connections objectAtIndex:0] mutableCopy];
-		self.connection = con;
-		[con release];
-	}
-	else
-	{
-		ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
-		if(IS_IPAD())
+		NSUInteger len = connections.count;
+		if(len == 0)
 		{
-			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
-			nc.modalPresentationStyle = tv.modalPresentationStyle;
-			nc.modalTransitionStyle = tv.modalTransitionStyle;
-			[self.navigationController presentModalViewController:nc animated:YES];
-			[nc release];
+			const UIAlertView *notification = [[UIAlertView alloc]
+										 initWithTitle:NSLocalizedString(@"Error", @"")
+										 message:NSLocalizedString(@"Unable to find valid connection data.", @"Error message: Autoconfiguration was unable to find a host in this network.")
+										 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[notification show];
+		}
+		else if(len == 1)
+		{
+			NSMutableDictionary *con = [[connections objectAtIndex:0] mutableCopy];
+			self.connection = con;
 		}
 		else
 		{
-			[self.navigationController pushViewController:tv animated:YES];
+			ConnectionListController *tv = [ConnectionListController newWithConnections:connections andDelegate:self];
+			if(IS_IPAD())
+			{
+				UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:tv];
+				nc.modalPresentationStyle = tv.modalPresentationStyle;
+				nc.modalTransitionStyle = tv.modalTransitionStyle;
+				[self.navigationController presentModalViewController:nc animated:YES];
+			}
+			else
+			{
+				[self.navigationController pushViewController:tv animated:YES];
+			}
 		}
-		[tv release];
-	}
 
-	[pool release];
+	}
 }
 
 #pragma mark -

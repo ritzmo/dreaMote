@@ -17,9 +17,6 @@
 #import "iAd/ADBannerView.h"
 #endif
 
-// Forward Declarations...
-@class CXMLDocument;
-
 /*!
  @brief Timer List.
  
@@ -40,13 +37,10 @@
 @private
 	NSMutableArray *_timers; /*!< @brief Timer List. */
 	NSInteger _dist[kTimerStateMax]; /*!< @brief Offset of State in Timer List. */
-	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	TimerViewController *_timerViewController; /*!< @brief Cached Timer Detail View. */
 	BOOL _willReappear; /*!< @brief Used to guard free of ressources on close if we are opening a subview. */
-	BOOL _isSplit; /*!< @brief Split mode? */
 	UIBarButtonItem *_cleanupButton; /*!< @brief Cleanup button. */
 
-	CXMLDocument *_timerXMLDoc; /*!< @brief Current Timer XML Document. */
 #if INCLUDE_FEATURE(Ads)
 @private
 	id _adBannerView;
@@ -55,14 +49,9 @@
 }
 
 /*!
- @brief Timer List.
- */
-@property (nonatomic, retain) NSMutableArray *timers;
-
-/*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 /*!
  @brief Controlled by a split view controller?
@@ -72,7 +61,7 @@
 /*!
  @brief Timer View
  */
-@property (nonatomic, retain) IBOutlet TimerViewController *timerViewController;
+@property (nonatomic, strong) IBOutlet TimerViewController *timerViewController;
 
 /*!
  @breif View will reapper.

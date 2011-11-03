@@ -14,6 +14,8 @@
 
 @implementation EnigmaService
 
+@synthesize isBouquet = _isBouquet;
+
 - (NSString *)sref
 {
 	const NSArray *resultNodes = [_node nodesForXPath:@"reference" error:nil];
@@ -61,26 +63,33 @@
 #endif
 }
 
-- (id)initWithNode: (CXMLNode *)node
+- (id)initWithNode:(CXMLNode *)node isBouquet:(BOOL)isBouquet
 {
 	if((self = [super init]))
 	{
-		_node = [node retain];
+		_node = node;
+		_isBouquet = isBouquet;
 	}
 	return self;
 }
 
-- (void)dealloc
+- (id)initWithNode: (CXMLNode *)node
 {
-	[_node release];
-	[_picon release];
-
-	[super dealloc];
+	if((self = [super init]))
+	{
+		_node = node;
+	}
+	return self;
 }
 
 - (BOOL)isValid
 {
 	return _node && self.sref != nil;
+}
+
+- (BOOL)piconLoaded
+{
+	return _calculatedPicon;
 }
 
 - (UIImage *)picon
@@ -129,9 +138,7 @@
 		}
 		NSString *basename = [[NSString alloc] initWithBytesNoCopy:sref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
 		NSString *piconName = [[NSString alloc] initWithFormat:kPiconPath, basename];
-		_picon = [[UIImage imageNamed:piconName] retain];
-		[basename release]; // also frees sref
-		[piconName release];
+		_picon = [UIImage imageNamed:piconName];
 
 		_calculatedPicon = YES;
 	}

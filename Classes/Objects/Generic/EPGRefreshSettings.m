@@ -12,15 +12,6 @@
 
 @synthesize enabled, begin, end, interval, delay_standby, lastscan, inherit_autotimer, afterevent, force, wakeup, parse_autotimer, adapter, canDoBackgroundRefresh, hasAutoTimer;
 
-- (void)dealloc
-{
-	[begin release];
-	[end release];
-	[adapter release];
-
-	[super dealloc];
-}
-
 - (id)init
 {
 	if((self = [super init]))

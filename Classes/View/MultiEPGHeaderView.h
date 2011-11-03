@@ -24,6 +24,6 @@
 /*!
  @brief Begin of current timeframe.
  */
-@property (nonatomic, retain) NSDate *begin;
+@property (nonatomic, strong) NSDate *begin;
 
 @end

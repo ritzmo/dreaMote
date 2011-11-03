@@ -26,23 +26,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 @implementation ServiceEventTableViewCell
 
-@synthesize formatter = _formatter;
-@synthesize serviceNameLabel = _serviceNameLabel;
-
-/* dealloc */
-- (void)dealloc
-{
-	[_formatter release];
-	[_next release];
-	[_nextLabel release];
-	[_nextTimeLabel release];
-	[_now release];
-	[_nowLabel release];
-	[_serviceNameLabel release];
-	[_nowTimeLabel release];
-
-	[super dealloc];
-}
+@synthesize formatter, loadPicon;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -92,9 +76,28 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			timeWidth = (IS_IPAD()) ? 100 : 80;
 		else // tested for en_US
 			timeWidth = (IS_IPAD()) ? 150 : 110;
+
+		loadPicon = YES;
 	}
 
 	return self;
+}
+
+- (void)prepareForReuse
+{
+	_nowLabel.text = nil;
+	_nowTimeLabel.text = nil;
+	_nextLabel.text = nil;
+	_nextTimeLabel.text = nil;
+	_serviceNameLabel.text = nil;
+
+	self.imageView.image = nil;
+	self.accessoryType = UITableViewCellAccessoryNone;
+
+	_now = nil;
+	_next = nil;
+
+	[super prepareForReuse];
 }
 
 /* getter for now property */
@@ -108,7 +111,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 {
 	// Abort if same event assigned
 	if([_now isEqual:new]) return;
-	SafeRetainAssign(_now, new);
+	_now = new;
 
 	if(new.valid)
 	{
@@ -123,8 +126,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			if(new.timeString == nil)
 			{
 				// Not generated, do so...
-				const NSString *begin = [_formatter stringFromDate: beginDate];
-				const NSString *end = [_formatter stringFromDate: new.end];
+				const NSString *begin = [formatter stringFromDate:beginDate];
+				const NSString *end = [formatter stringFromDate:new.end];
 				if(begin && end)
 					new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 			}
@@ -142,27 +145,16 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			_nowTimeLabel.text = nil;
 		}
 		_serviceNameLabel.text = service.sname;
-		
+
 		if(serviceValid)
 		{
-			self.imageView.image = service.picon;
+			if(service.piconLoaded || loadPicon)
+				self.imageView.image = service.picon;
 			self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		}
-		else
-		{
-			self.imageView.image = nil;
-			self.accessoryType = UITableViewCellAccessoryNone;
 		}
 	}
 	else
-	{
-		self.accessoryType = UITableViewCellAccessoryNone;
 		_serviceNameLabel.text = new.title;
-		_nowLabel.text = nil;
-		_nowTimeLabel.text = nil;
-		_nextLabel.text = nil;
-		_nextTimeLabel.text = nil;
-	}
 
 	[self setNeedsDisplay];
 }
@@ -178,7 +170,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 {
 	// Abort if same event assigned
 	if([_next isEqual:new]) return;
-	SafeRetainAssign(_next, new);
+	_next = new;
 
 	NSDate *beginDate = new.begin;
 
@@ -189,19 +181,14 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		if(new.timeString == nil)
 		{
 			// Not generated, do so...
-			const NSString *begin = [_formatter stringFromDate: beginDate];
-			const NSString *end = [_formatter stringFromDate: new.end];
+			const NSString *begin = [formatter stringFromDate:beginDate];
+			const NSString *end = [formatter stringFromDate:new.end];
 			if(begin && end)
 				new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 		}
 
 		_nextLabel.text = new.title;
 		_nextTimeLabel.text = new.timeString;
-	}
-	else
-	{
-		_nextLabel.text = nil;
-		_nextTimeLabel.text = nil;
 	}
 
 	[self setNeedsDisplay];
@@ -212,7 +199,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 {
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
-	
+
 	if(!_now.service.valid)
 	{
 		const CGRect frame = CGRectMake(kLeftMargin, (contentRect.size.height - kServiceEventServiceSize) / 2 , contentRect.size.width - kRightMargin, kServiceEventServiceSize + 5);
@@ -221,7 +208,11 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	else
 	{
 		const NSInteger offset = 3;
-		const NSInteger leftMargin = (self.imageView.image) ? (self.imageView.frame.size.width + offset) : contentRect.origin.x + kLeftMargin;
+		CGRect imageRect = self.imageView.frame;
+		if(self.editing)
+			imageRect.origin.x += kLeftMargin;
+		self.imageView.frame = imageRect;
+		const NSInteger leftMargin = (self.imageView.image) ? (imageRect.size.width + imageRect.origin.x + offset) : contentRect.origin.x + kLeftMargin;
 
 		// Base frame
 		CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, kServiceEventServiceSize + offset);

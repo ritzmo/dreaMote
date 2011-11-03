@@ -13,6 +13,8 @@
 #include <fcntl.h>
 #import "LiteUnzip.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 #import "NSData+Base64.h"
 #import "NSArray+ArrayFromData.h"
 #import "UIDevice+SystemVersion.h"
@@ -28,6 +30,9 @@
 #if IS_FULL()
 	#import "EPGCache.h"
 #endif
+
+// MKStoreKit
+#import "MKStoreManager.h"
 
 enum appDelegateAlertTags
 {
@@ -46,6 +51,13 @@ static const char *basename(const char *path)
 			base = name + 1;
 	}
 	return base;
+}
+
+void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
+{
+#if IS_DEBUG()
+	NSLog(@"[AppDelegate] ToneInterruptionListener called. Anything to do?");
+#endif
 }
 
 @interface AppDelegate()
@@ -81,17 +93,6 @@ static const char *basename(const char *path)
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[window release];
-	[tabBarController release];
-	[cachedURL release];
-	[cachedFilename release];
-
-	[super dealloc];
-}
-
 - (BOOL)isBusy
 {
 	return cachedURL != nil;
@@ -106,15 +107,15 @@ static const char *basename(const char *path)
 
 - (void)checkReachable
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	NSError *error = nil;
-	[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+		NSError *error = nil;
+		[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
 
-	// this might have changed the features, so handle this like a reconnect
-	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+		// this might have changed the features, so handle this like a reconnect
+		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 
-	[pool release];
+	}
 }
 
 #pragma mark -
@@ -127,10 +128,11 @@ static const char *basename(const char *path)
 #if !IS_DEBUG()
 	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
 #endif
+	[MKStoreManager sharedManager];
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];
-	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+	NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
 	NSNumber *multiEPGdefaultInterval = [NSNumber numberWithInteger:60*60*2];
 	NSString *testValue = nil;
 
@@ -249,20 +251,11 @@ static const char *basename(const char *path)
 	[window addSubview: tabBarController.view];
 	[window makeKeyAndVisible];
 
-	// don't prompt for rating if launched with url to avoid (possibly) showing two alerts
+	// don't prompt for rating if zip file is found to avoid (possibly) showing two alerts
 	BOOL promptForRating = YES;
 
-	// for some reason handleOpenURL did not get called in my tests on iOS prior to 4.0
-	// so we call it here manually… the worst thing that can happen is that the data
-	// gets parsed twice so we have a little more computation to do.
-	NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-	if(url && ![UIDevice runsIos4OrBetter])
-	{
-		[self application:application handleOpenURL:url];
-		promptForRating = NO;
-	}
 	// check for .zip files possibly containing picons
-	else if([self checkForPicons])
+	if([self checkForPicons])
 	{
 		promptForRating = NO;
 	}
@@ -278,6 +271,14 @@ static const char *basename(const char *path)
 #ifdef __clang_analyzer__
 		[configurationDelegate release];
 #endif
+	}
+
+	// initialize audio session
+	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, (__bridge void *)(self));
+	if (result == kAudioSessionNoError)
+	{
+		UInt32 sessionCategory = kAudioSessionCategory_MediaPlayback;
+		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
 	}
 
 	return YES;
@@ -297,8 +298,7 @@ static const char *basename(const char *path)
 
 	if([url.path isEqualToString:@"/settings"])
 	{
-		[cachedURL release];
-		cachedURL = [url retain];
+		cachedURL = url;
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"About to import data", @"Title of Alert when import triggered")
 															  message:NSLocalizedString(@"You are about to import data into this application. All existing settings will be lost!", @"Message explaining what will happen on import")
 															 delegate:self
@@ -306,7 +306,6 @@ static const char *basename(const char *path)
 													otherButtonTitles:NSLocalizedString(@"Import", @"Button executing import"), nil];
 		alert.tag = TAG_URL;
 		[alert show];
-		[alert release];
 	}
 	// open bouquets list, bouquets are always on index 0 of the viewControllers
 	else if([url.path isEqualToString:@"/bouquets"])
@@ -390,8 +389,7 @@ static const char *basename(const char *path)
 		for (; i < gt.gl_matchc; ++i)
 		{
 			int len = strlen(gt.gl_pathv[i]);
-			[cachedFilename release];
-			cachedFilename = [[[NSFileManager defaultManager] stringWithFileSystemRepresentation:gt.gl_pathv[i] length:len] retain];
+			cachedFilename = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:gt.gl_pathv[i] length:len];
 
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Import Picons?", @"Title of Alert when a zip file was found in the documents folder possibly containing picons.")
 																  message:[NSString stringWithFormat:NSLocalizedString(@"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!", @"Message explaining what what happens on zip-file import."), basename(gt.gl_pathv[i])]
@@ -400,7 +398,6 @@ static const char *basename(const char *path)
 														otherButtonTitles:NSLocalizedString(@"Extract", @"Button executing zip extraction/deletion"), nil];
 			alert.tag = TAG_ZIP;
 			[alert show];
-			[alert release];
 			return YES;
 		}
 	}
@@ -410,79 +407,77 @@ static const char *basename(const char *path)
 
 - (void)unpackPicons
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	HUNZIP huz = {0};
-	ZIPENTRY ze = {0,0,0,0,0,0,0,{0}};
-	DWORD numitems = 0;
-	DWORD numdirs = 0;
-	NSString *message = nil;
-	DWORD archive = UnzipOpenFileA(&huz, [cachedFilename cStringUsingEncoding:NSASCIIStringEncoding], NULL);
+		HUNZIP huz = {0};
+		ZIPENTRY ze = {0,0,0,0,0,0,0,{0}};
+		DWORD numitems = 0;
+		DWORD numdirs = 0;
+		NSString *message = nil;
+		DWORD archive = UnzipOpenFileA(&huz, [cachedFilename cStringUsingEncoding:NSASCIIStringEncoding], NULL);
 
-	ze.Index = (DWORD)-1;
-	if(archive != ZR_OK || UnzipGetItem(huz, &ze))
-	{
-		NSLog(@"archive == %lu, %@", archive, cachedFilename);
-		message = NSLocalizedString(@"Unable to extract zip-file!", @"Zip-Extraction failed");
-		goto zipAlert;
-	}
-	numitems = ze.Index;
-
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-	NSString *documents = [paths objectAtIndex:0];
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	for(ze.Index = 0; ze.Index < numitems; ++(ze.Index))
-	{
-		if (UnzipGetItem(huz, &ze))
-			break;
-
-		// skip directory elements
-		if(ze.Attributes & S_IFDIR)
+		ze.Index = (DWORD)-1;
+		if(archive != ZR_OK || UnzipGetItem(huz, &ze))
 		{
-			++numdirs;
-			continue;
+			NSLog(@"archive == %lu, %@", archive, cachedFilename);
+			message = NSLocalizedString(@"Unable to extract zip-file!", @"Zip-Extraction failed");
+		}
+		else
+		{
+			numitems = ze.Index;
+
+			NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+			NSString *documents = [paths objectAtIndex:0];
+			NSFileManager *fileManager = [NSFileManager defaultManager];
+			for(ze.Index = 0; ze.Index < numitems; ++(ze.Index))
+			{
+				if (UnzipGetItem(huz, &ze))
+					break;
+
+				// skip directory elements
+				if(ze.Attributes & S_IFDIR)
+				{
+					++numdirs;
+					continue;
+				}
+
+				@autoreleasepool {
+
+					const char *base = basename(ze.Name); // picons might be in a subfolder, we don't want that
+					NSString *name = [[NSString alloc] initWithBytesNoCopy:(void *)base length:strlen(base) encoding:NSASCIIStringEncoding freeWhenDone:NO];
+					NSString *fullname = [documents stringByAppendingPathComponent:name];
+					UnzipItemToFile(huz, [fileManager fileSystemRepresentationWithPath:fullname], &ze);
+
+				}
+			}
+
+			NSError *error = nil;
+			if([[NSFileManager defaultManager] removeItemAtPath:cachedFilename error:&error] != YES)
+			{
+				message = NSLocalizedString(@"Failed to remove zip-file!\nPlease remove it manually using iTunes.", @"Removal of zip-file failed after extraction.");
+				NSLog(@"failed to delete %@", cachedFilename);
+			}
 		}
 
-		NSAutoreleasePool *subpool = [[NSAutoreleasePool alloc] init];
+		UnzipClose(huz);
+		UIAlertView *alert = nil;
+		if(message)
+		{
+			alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+											   message:message
+											  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		}
+		else
+		{
+			alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Done", @"")
+											   message:[NSString stringWithFormat:NSLocalizedString(@"%d files extracted successfully.", @"zip-file was extracted without any errors."), numitems-numdirs]
+											  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		}
+		[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
 
-		const char *base = basename(ze.Name); // picons might be in a subfolder, we don't want that
-		NSString *name = [[NSString alloc] initWithBytesNoCopy:(void *)base length:strlen(base) encoding:NSASCIIStringEncoding freeWhenDone:NO];
-		NSString *fullname = [documents stringByAppendingPathComponent:name];
-		UnzipItemToFile(huz, [fileManager fileSystemRepresentationWithPath:fullname], &ze);
+		cachedFilename = nil;
 
-		[name release];
-		[subpool release];
 	}
-
-	NSError *error = nil;
-	if([[NSFileManager defaultManager] removeItemAtPath:cachedFilename error:&error] != YES)
-	{
-		message = NSLocalizedString(@"Failed to remove zip-file!\nPlease remove it manually using iTunes.", @"Removal of zip-file failed after extraction.");
-		NSLog(@"failed to delete %@", cachedFilename);
-	}
-
-zipAlert:
-	UnzipClose(huz);
-	UIAlertView *alert = nil;
-	if(message)
-	{
-		alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-										   message:message
-										  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-	}
-	else
-	{
-		alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Done", @"")
-										   message:[NSString stringWithFormat:NSLocalizedString(@"%d files extracted successfully.", @"zip-file was extracted without any errors."), numitems-numdirs]
-										  delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-	}
-	[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:YES];
-	[alert release];
-
-	[cachedFilename release];
-	cachedFilename = nil;
-
-	[pool release];
 }
 
 #pragma mark -
@@ -566,7 +561,6 @@ zipAlert:
 	{
 		[NSThread detachNewThreadSelector:@selector(unpackPicons) toTarget:self withObject:nil];
 	}
-	[cachedURL release];
 	cachedURL = nil;
 }
 

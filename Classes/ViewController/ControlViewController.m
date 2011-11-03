@@ -62,8 +62,7 @@
 
 @implementation ControlViewController
 
-@synthesize switchControl = _switchControl;
-@synthesize slider = _slider;
+@synthesize switchControl, slider;
 
 /* initialize */
 - (id)init
@@ -81,10 +80,8 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	SafeDestroyButton(_slider);
-	SafeDestroyButton(_switchControl);
-
-	[super dealloc];
+	SafeDestroyButton(slider);
+	SafeDestroyButton(switchControl);
 }
 
 /* initiate download of volume state */
@@ -107,32 +104,31 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// Volume
-	_slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
-	[_slider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventValueChanged];
+	slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
+	[slider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventValueChanged];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
-	_slider.backgroundColor = [UIColor clearColor];
-	_slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	slider.backgroundColor = [UIColor clearColor];
+	slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-	_slider.minimumValue = 0;
-	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
-	_slider.continuous = NO;
+	slider.minimumValue = 0;
+	slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
+	slider.continuous = NO;
 
 	// Muted
-	_switchControl = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_switchControl addTarget:self action:@selector(toggleMuted:) forControlEvents:UIControlEventValueChanged];
+	switchControl = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[switchControl addTarget:self action:@selector(toggleMuted:) forControlEvents:UIControlEventValueChanged];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
-	_switchControl.backgroundColor = [UIColor clearColor];
+	switchControl.backgroundColor = [UIColor clearColor];
 }
 
 - (void)viewDidUnload
 {
-	SafeDestroyButton(_slider);
-	SafeDestroyButton(_switchControl);
+	SafeDestroyButton(slider);
+	SafeDestroyButton(switchControl);
 
 	[super viewDidUnload];
 }
@@ -144,7 +140,7 @@
 	[button setImage:image forState:UIControlStateNormal];
 	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 	
-	return [button autorelease];
+	return button;
 }
 
 /* start recording */
@@ -171,7 +167,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	((UIButton *)sender).enabled = YES;
 }
@@ -210,7 +205,6 @@
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -233,7 +227,6 @@
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -257,7 +250,6 @@
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-		[actionSheet release];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -265,7 +257,7 @@
 /* toggle muted state */
 - (void)toggleMuted:(id)sender
 {
-	[_switchControl setOn: [[RemoteConnectorObject sharedRemoteConnector] toggleMuted]];
+	[switchControl setOn:[[RemoteConnectorObject sharedRemoteConnector] toggleMuted]];
 }
 
 /* change volume */
@@ -385,12 +377,12 @@
 			if(indexPath.row == 0)
 			{
 				sourceCell.nameLabel.text = nil;
-				sourceCell.view = _slider;
+				sourceCell.view = slider;
 			}
 			else
 			{
 				sourceCell.nameLabel.text = NSLocalizedString(@"Mute", @"");
-				sourceCell.view = _switchControl;
+				sourceCell.view = switchControl;
 			}
 			break;
 		case 1:
@@ -439,7 +431,7 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	_slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
+	slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
 	[(UITableView *)self.view reloadData];
 
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchVolume)];
@@ -457,7 +449,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// Alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
@@ -466,10 +458,9 @@
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	//
 }
@@ -483,9 +474,9 @@
 {
 	if(volume == nil)
 		return;
-	
-	_switchControl.on = volume.ismuted;
-	_slider.value = (float)(volume.current);
+
+	switchControl.on = volume.ismuted;
+	slider.value = (float)(volume.current);
 }
 
 @end

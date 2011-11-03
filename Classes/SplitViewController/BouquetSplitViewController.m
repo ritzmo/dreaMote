@@ -20,14 +20,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-	[_bouquetListController release];
-	[_serviceListController release];
-
-	[super dealloc];
-}
-
 #pragma mark -
 #pragma mark UIViewController methods
 #pragma mark -
@@ -51,8 +43,16 @@
 	navController1 = [[UINavigationController alloc] initWithRootViewController: _bouquetListController];
 	navController2 = [[UINavigationController alloc] initWithRootViewController: _serviceListController];
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
-	[navController1 release];
-	[navController2 release];
+}
+
+- (void)viewDidUnload
+{
+	self.delegate = nil;
+	_bouquetListController = nil;
+	_serviceListController.mgSplitViewController = nil;
+	_serviceListController = nil;
+
+	[super viewDidUnload];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

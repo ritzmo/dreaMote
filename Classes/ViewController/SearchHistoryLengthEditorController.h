@@ -20,7 +20,6 @@
 {
 @private
 	UITextField *_lengthTextField; /*!< @brief Text Field. */
-	NSObject<SearchHistoryLengthEditorDelegate> *_delegate; /*!< @brief Delegate. */
 	NSInteger _length; /*!< @brief Current length as integer. */
 }
 
@@ -33,14 +32,12 @@
 + (SearchHistoryLengthEditorController *)withLength:(NSInteger)length;
 
 /*!
- @brief Set Delegate.
+ @brief Delegate.
 
  The delegate will be called back when disappearing to inform it that the length
  was changed.
-
- @param delegate New delegate object.
  */
-- (void)setDelegate:(NSObject<SearchHistoryLengthEditorDelegate> *)delegate;
+@property (nonatomic, unsafe_unretained) NSObject<SearchHistoryLengthEditorDelegate> *delegate;
 
 @end
 

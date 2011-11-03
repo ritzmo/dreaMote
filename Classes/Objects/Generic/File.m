@@ -10,37 +10,19 @@
 
 @implementation GenericFile
 
-@synthesize sref = _sref;
-@synthesize title = _title;
-@synthesize isDirectory = _isDirectory;
-@synthesize root = _root;
-@synthesize valid = _valid;
+@synthesize sref, title, isDirectory, root, valid;
 
 - (id)initWithFile:(NSObject <FileProtocol>*)file
 {
 	if((self = [super init]))
 	{
-		_sref = [file.sref copy];
-		_title = [file.title copy];
-		_isDirectory = file.isDirectory;
-		_root = [file.root copy];
-		_valid = file.valid;
+		sref = [file.sref copy];
+		title = [file.title copy];
+		isDirectory = file.isDirectory;
+		root = [file.root copy];
+		valid = file.valid;
 	}
 	return self;
-}
-
-- (void)dealloc
-{
-	[_root release];
-	[_sref release];
-	[_title release];
-
-	[super dealloc];
-}
-
-- (BOOL)isValid
-{
-	return _valid;
 }
 
 #pragma mark -

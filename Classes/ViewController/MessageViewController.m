@@ -8,14 +8,16 @@
 
 #import "MessageViewController.h"
 
+#import "Constants.h"
 #import "RemoteConnector.h"
 #import "RemoteConnectorObject.h"
-#import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
+
+#import "SimpleSingleSelectionListController.h"
 
 #import "DisplayCell.h"
 
-#import "Objects/Generic/Result.h"
+#import <Objects/Generic/Result.h>
 
 /*!
  @brief Private functions of MessageViewController.
@@ -64,8 +66,6 @@
 	SafeRetainAssign(_captionTextField, nil);
 	SafeRetainAssign(_timeoutTextField, nil);
 	SafeDestroyButton(_sendButton);
-
-	[super dealloc];
 }
 
 - (UITextField *)allocTextField
@@ -116,7 +116,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	// Message
 	_messageTextField = [self allocTextField];
@@ -211,7 +210,6 @@
 										 message:result.resulttext
 										 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[notification show];
-			[notification release];
 		}
 	}
 
@@ -222,7 +220,6 @@
 									 message:failureMessage
 									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[notification show];
-		[notification release];
 	}
 
 	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
@@ -232,20 +229,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
-}
-
-#pragma mark -
-#pragma mark SimpleSingleSelectionListDelegate methods
-#pragma mark -
-
-- (void)itemSelected:(NSNumber *)newType
-{
-	if(newType == nil)
-		return;
-
-	_type = [newType unsignedIntegerValue];
-
-	TABLEVIEWCELL_TEXT(_typeCell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 }
 
 #pragma mark - UITableView delegates
@@ -437,6 +420,7 @@
 	const NSInteger section = indexPath.section;
 	if(self.editing && section == 3)
 	{
+		const BOOL isIpad = IS_IPAD();
 		NSMutableArray *messages = [NSMutableArray array];
 		NSUInteger i = 0;
 		const NSUInteger maxMessageType = [[RemoteConnectorObject sharedRemoteConnector] getMaxMessageType];
@@ -446,14 +430,23 @@
 		}
 
 		SimpleSingleSelectionListController *targetViewController = [SimpleSingleSelectionListController withItems:messages andSelection:_type andTitle:NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController")];
-		[targetViewController setDelegate: self];
-		if(IS_IPAD())
+		targetViewController.callback = ^(NSUInteger selection, BOOL isFinal)
+		{
+			if(!isIpad && !isFinal)
+				return NO; // iPhone only handles final calls
+			_type = selection;
+
+			_typeCell.textLabel.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+			if(isIpad)
+				[self dismissModalViewControllerAnimated:YES];
+			return YES;
+		};
+		if(isIpad)
 		{
 			UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
 			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
 			navController.modalPresentationStyle = targetViewController.modalPresentationStyle;
 			[self.navigationController presentModalViewController:navController animated:YES];
-			[navController release];
 		}
 		else
 			[self.navigationController pushViewController: targetViewController animated: YES];

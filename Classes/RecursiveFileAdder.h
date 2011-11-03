@@ -11,19 +11,19 @@
 #import "FileListView.h"
 #import "FileSourceDelegate.h"
 
-@class CXMLDocument;
+@class BaseXMLReader;
 @protocol RecursiveFileAdderDelegate;
 
 @interface RecursiveFileAdder : NSObject <FileSourceDelegate>
 {
 @private
-	CXMLDocument *_fileXMLDoc;
+	BaseXMLReader *_xmlReader;
 	NSMutableArray *_remainingPaths;
-	NSObject<RecursiveFileAdderDelegate> *_delegate;
+	NSObject<RecursiveFileAdderDelegate> __unsafe_unretained *_delegate;
 }
 
 - (id)initWithPath:(NSString *)path;
-- (void)addFilesToDelegate:(NSObject<RecursiveFileAdderDelegate> *)delegate;
+- (void)addFilesToDelegate:(NSObject<RecursiveFileAdderDelegate> __unsafe_unretained *)delegate;
 
 @end
 

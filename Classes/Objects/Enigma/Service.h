@@ -19,6 +19,7 @@
 {
 @private
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Service. */
+	BOOL _isBouquet; /*!< @brief For Bouquets: Is this a userbouquet or a Provider?. */
 	/* Picons */
 	BOOL _calculatedPicon; /*!< @brief Did we try to load the picon before? */
 	UIImage *_picon; /*!< @brief Picon. */
@@ -31,5 +32,16 @@
  @return EnigmaService instance.
  */
 - (id)initWithNode: (CXMLNode *)node;
+
+/*!
+ @brief Extended initializer.
+
+ @param node Pointer to CXMLNode describing this Service.
+ @param isBouquet Is this a provider or a bouquet.
+ @return EnigmaService instance.
+ */
+- (id)initWithNode:(CXMLNode *)node isBouquet:(BOOL)isBouquet;
+
+@property (nonatomic, readonly) BOOL isBouquet;
 
 @end

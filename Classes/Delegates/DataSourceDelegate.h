@@ -20,22 +20,16 @@
 /*!
  @brief Document was parsed successfully.
 
- @note For SaxXmlReader based readers the document is always nil.
-
  @param dataSource Source that triggered this action.
- @param document Document that was just parsed.
 */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document;
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
 
 /*!
  @brief Failed to parse Document.
 
- @note For SaxXmlReader based readers the document is always nil.
-
  @param dataSource Source that triggered this action.
- @param document Document that was just parsed.
  @param error Error which occured.
 */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error;
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error;
 
 @end

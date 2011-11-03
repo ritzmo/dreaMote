@@ -11,8 +11,13 @@
 #import "ReloadableListController.h"
 #import "ServiceSourceDelegate.h"
 
+typedef enum
+{
+	LIST_TYPE_BOUQUETS,
+	LIST_TYPE_PROVIDER,
+} bouquetListType;
+
 // Forward declaration
-@class CXMLDocument;
 @class ServiceListController;
 @protocol BouquetListDelegate;
 @protocol ServiceListDelegate;
@@ -23,37 +28,33 @@
  Display list of known bouquets and start ServiceListController on selected ones.
  */
 @interface BouquetListController : ReloadableListController <UITableViewDelegate,
-													UITableViewDataSource, ServiceSourceDelegate>
+															UITableViewDataSource,
+															ServiceSourceDelegate,
+															UIAlertViewDelegate,
+															UIActionSheetDelegate>
 {
 @private
 	NSMutableArray *_bouquets; /*!< @brief Bouquet List. */
-	id<ServiceListDelegate, NSCoding> _serviceDelegate; /*!< @brief Service Delegate. */
-	id<BouquetListDelegate, NSCoding> _bouquetDelegate; /*!< @brief Bouquet Delegate. */
 	BOOL _refreshBouquets; /*!< @brief Refresh Bouquet List on next open? */
 	BOOL _isRadio; /*!< @brief Are we in radio mode? */
-	BOOL _isSplit; /*!< @brief Split mode? */
+	bouquetListType _listType; /*!< @brief Show bouquet or provider list? */
 	ServiceListController *_serviceListController; /*!< @brief Caches Service List instance. */
 	UIBarButtonItem *_radioButton; /*!< @brief Radio/TV-mode toggle */
-
-	CXMLDocument *_bouquetXMLDoc; /*!< @brief Bouquet XML. */
+	UIPopoverController *popoverController; /*!< @brief Popover */
 }
-
-/*!
- @brief Set Service Selection Delegate.
- 
- This Function is required for Timers as they will use the provided Callback when you change the
- Service of a Timer.
- 
- @param delegate New delegate object.
- */
-- (void)setServiceDelegate: (id<ServiceListDelegate, NSCoding>) delegate;
-
-
 
 /*!
  @brief Bouquet Delegate.
  */
-@property (nonatomic, assign) NSObject<BouquetListDelegate, NSCoding> *bouquetDelegate;
+@property (nonatomic, unsafe_unretained) NSObject<BouquetListDelegate, UIAppearanceContainer> *bouquetDelegate;
+
+/*!
+ @brief Service Selection Delegate.
+
+ This Function is required for Timers as they will use the provided Callback when you change the
+ Service of a Timer.
+ */
+@property (nonatomic, unsafe_unretained) NSObject<ServiceListDelegate, UIAppearanceContainer> *serviceDelegate;
 
 /*!
  @brief Currently in radio mode?
@@ -68,7 +69,7 @@
 /*!
  @brief Service List
  */
-@property (nonatomic, retain) IBOutlet ServiceListController *serviceListController;
+@property (nonatomic, strong) IBOutlet ServiceListController *serviceListController;
 
 /*!
  @brief View will reapper.

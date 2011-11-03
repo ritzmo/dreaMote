@@ -35,7 +35,6 @@ static NSDate *_thisNight = nil;
 /* reset reference */
 - (void)resetReferenceDate
 {
-	[_thisNight release];
 	_thisNight = nil;
 }
 
@@ -70,7 +69,7 @@ static NSDate *_thisNight = nil;
 	
 	// Set reference date if none set
 	if(_thisNight == nil)
-		_thisNight = [[NSDate dateWithTimeIntervalSinceNow: -((NSInteger)[NSDate timeIntervalSinceReferenceDate] + [[self timeZone] secondsFromGMT]) % ONEDAY] retain];
+		_thisNight = [NSDate dateWithTimeIntervalSinceNow: -((NSInteger)[NSDate timeIntervalSinceReferenceDate] + [[self timeZone] secondsFromGMT]) % ONEDAY];
 	
 	// Get seconds the event is away from 00:00 today
 	const NSInteger secSinceToday = (NSInteger)([date timeIntervalSinceDate: _thisNight]+0.9);

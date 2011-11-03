@@ -10,16 +10,7 @@
 
 @implementation GenericMovie
 
-@synthesize sref = _sref;
-@synthesize sname = _sname;
-@synthesize time = _time;
-@synthesize title = _title;
-@synthesize sdescription = _sdescription;
-@synthesize edescription = _edescription;
-@synthesize length = _length;
-@synthesize filename = _name;
-@synthesize size = _size;
-@synthesize tags = _tags;
+@synthesize sref, sname, time, title, sdescription, edescription, length, filename, size, tags;
 
 - (id)init
 {
@@ -37,59 +28,42 @@
 	return self;
 }
 
-- (void)dealloc
-{
-	[_sref release];
-	[_sname release];
-	[_time release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
-	[_length release];
-	[_size release];
-	[_tags release];
-
-	[super dealloc];
-}
-
 - (BOOL)isValid
 {
-	return _sref != nil;
+	return sref != nil;
 }
 
 - (NSComparisonResult)timeCompare:(NSObject<MovieProtocol> *)otherMovie
 {
-	NSComparisonResult res = [otherMovie.time compare:_time];
+	NSComparisonResult res = [otherMovie.time compare:self.time];
 	if(res == NSOrderedSame)
 	{
-		res = [_title caseInsensitiveCompare:otherMovie.title];
+		res = [self.title caseInsensitiveCompare:otherMovie.title];
 	}
 	return res;
 }
 
 - (NSComparisonResult)titleCompare:(NSObject<MovieProtocol> *)otherMovie
 {
-	NSComparisonResult res = [_title caseInsensitiveCompare:otherMovie.title];
+	NSComparisonResult res = [title caseInsensitiveCompare:otherMovie.title];
 	if(res == NSOrderedSame)
 	{
-		res = [_time compare:otherMovie.time];
+		res = [self.time compare:otherMovie.time];
 	}
 	return res;
 }
 
 - (void)setTimeFromString: (NSString *)newTime
 {
-	[_time release];
-	_time = [[NSDate dateWithTimeIntervalSince1970: [newTime doubleValue]] retain];
+	self.time = [NSDate dateWithTimeIntervalSince1970:[newTime doubleValue]];
 }
 
 - (void)setTagsFromString: (NSString *)newTags
 {
-	[_tags release];
 	if([newTags isEqualToString: @""])
-		_tags = [[NSArray array] retain];
+		self.tags = [NSArray array];
 	else
-		_tags = [[newTags componentsSeparatedByString:@" "] retain];
+		self.tags = [newTags componentsSeparatedByString:@" "];
 }
 
 @end

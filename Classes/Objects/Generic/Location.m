@@ -10,24 +10,16 @@
 
 @implementation GenericLocation
 
-@synthesize fullpath = _fullpath;
-@synthesize valid = _isValid;
+@synthesize fullpath, valid;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
-		_fullpath = nil;
-		_isValid = NO;
+		fullpath = nil;
+		valid = NO;
 	}
 	return self;
-}
-
-- (void)dealloc
-{
-	[_fullpath release];
-
-	[super dealloc];
 }
 
 @end

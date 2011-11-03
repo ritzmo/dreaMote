@@ -22,6 +22,8 @@
 #import "RCButton.h"
 #import "UIPromptView.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 #define kTransitionDuration	(CGFloat)0.6
 
 /*!
@@ -49,12 +51,12 @@ enum mediaPlayerTags
 /*!
  @brief Popover Controller.
  */
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 /*!
  @brief Activity Indicator.
  */
-@property (nonatomic, retain) MBProgressHUD *progressHUD;
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 @end
 
 @implementation MediaPlayerController
@@ -87,21 +89,8 @@ enum mediaPlayerTags
 
 - (void)dealloc
 {
-	[_addFolderItem release];
-	[_addPlayToggle release];
-	[_fileList release];
-	[_playlist release];
-	[_controls release];
-	[_shuffleButton release];
-	[_timer release];
-	[_currentXMLDoc release];
 	[_closeSheet dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
-	SafeRetainAssign(_closeSheet, nil); // should not be needed after dismissing the sheet, but play it safe
-
 	progressHUD.delegate = nil;
-	[progressHUD release];
-
-	[super dealloc];
 }
 
 - (void)newTrackPlaying
@@ -130,47 +119,46 @@ enum mediaPlayerTags
 
 - (void)fetchAbout
 {
-	CXMLDocument *newDocument = nil;
+	BaseXMLReader *newReader = nil;
 	@try {
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
 	}
 	@catch (NSException * e) {
 #if IS_DEBUG()
 		[e raise];
 #endif
 	}
-	SafeRetainAssign(_currentXMLDoc, newDocument);
+	_xmlReader = newReader;
 }
 
 - (void)fetchCurrent
 {
-	CXMLDocument *newDocument = nil;
+	BaseXMLReader *newReader = nil;
 	@try {
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
 	}
 	@catch (NSException * e) {
 #if IS_DEBUG()
 		[e raise];
 #endif
 	}
-	SafeRetainAssign(_currentXMLDoc, newDocument);
+	_xmlReader = newReader;
 }
 
 - (void)sendCommand:(NSString *)command
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
-	if(!result.result)
-	{
-		// Alert user
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
-															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-		[alert show];
-		[alert release];
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
+		if(!result.result)
+		{
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[alert show];
+		}
+
 	}
-
-	[pool release];
 }
 
 - (void)buttonPressed:(RCButton *)sender
@@ -267,29 +255,27 @@ enum mediaPlayerTags
 	];
 	alertView.promptViewStyle = UIPromptViewStylePlainTextInput;
 	[alertView show];
-	[alertView release];
 }
 
 - (void)multiDeleteDefer
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	const NSArray *selectedFiles = [_playlist.selectedFiles copy]; // NOTE: create a copy to prevent mutation during enumeration
-	NSUInteger count = selectedFiles.count;
-	// XXX: we abuse the shuffle callbacks here...
-	[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
-	for(NSObject<FileProtocol> *file in selectedFiles)
-	{
-		/*Result *result = */[[RemoteConnectorObject sharedRemoteConnector] removeTrack:file];
-		// XXX: we silently ignore errors
-		--count;
+		const NSArray *selectedFiles = [_playlist.selectedFiles copy]; // NOTE: create a copy to prevent mutation during enumeration
+		NSUInteger count = selectedFiles.count;
+		// XXX: we abuse the shuffle callbacks here...
 		[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
-	}
-	[_playlist.selectedFiles removeAllObjects]; // XXX: assume we successfully removed all tracks
-	[selectedFiles release];
-	[self performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
+		for(NSObject<FileProtocol> *file in selectedFiles)
+		{
+			/*Result *result = */[[RemoteConnectorObject sharedRemoteConnector] removeTrack:file];
+			// XXX: we silently ignore errors
+			--count;
+			[self performSelectorOnMainThread:@selector(remainingShuffleActions:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
+		}
+		[_playlist.selectedFiles removeAllObjects]; // XXX: assume we successfully removed all tracks
+		[self performSelectorOnMainThread:@selector(finishedShuffling) withObject:nil waitUntilDone:NO];
 
-	[pool release];
+	}
 }
 
 - (IBAction)multiDelete:(id)sender
@@ -315,9 +301,9 @@ enum mediaPlayerTags
 
 - (void)shuffleDefer
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	[[RemoteConnectorObject sharedRemoteConnector] shufflePlaylist:self playlist:_playlist.files];
-	[pool release];
+	@autoreleasepool {
+		[[RemoteConnectorObject sharedRemoteConnector] shufflePlaylist:self playlist:_playlist.files];
+	}
 }
 
 - (IBAction)shuffle:(id)sender
@@ -372,7 +358,6 @@ enum mediaPlayerTags
 - (void)configureToolbar
 {
 	// "Add Folder" Button
-	[_addFolderItem release];
 	_addFolderItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Folder", @"")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
@@ -384,7 +369,6 @@ enum mediaPlayerTags
 																					action:nil];
 
 	// create a bordered style button with custom title
-	[_addPlayToggle release];
 	_addPlayToggle = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Adding to Playlist", @"")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
@@ -393,8 +377,6 @@ enum mediaPlayerTags
 	NSArray *items = [[NSArray alloc] initWithObjects:_addFolderItem, flexItem, _addPlayToggle, nil];
 	[self setToolbarItems:items animated:NO];
 
-	[items release];
-	[flexItem release];
 }
 
 - (void)hideToolbar
@@ -421,7 +403,6 @@ enum mediaPlayerTags
 		[actionSheet showInView:self.view];
 	else
 		[actionSheet showFromTabBar:self.tabBarController.tabBar];
-	[actionSheet release];
 }
 
 - (IBAction)toggleAddPlay:(id)sender
@@ -435,20 +416,20 @@ enum mediaPlayerTags
 
 - (void)addCurrentFolder
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	@autoreleasepool {
 
-	_massAdd = YES;
-	[_fileList getFiles];
-	_massAdd = NO;
+		_massAdd = YES;
+		[_fileList getFiles];
+		_massAdd = NO;
 
-	[_playlist refreshData];
-	[pool release];
+		[_playlist refreshData];
+	}
 }
 
 - (void)dismissActionSheet:(NSNotification *)notif
 {
-	[SafeReturn(_closeSheet) dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
-	SafeRetainAssign(_closeSheet, nil);
+	[_closeSheet dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
+	_closeSheet = nil;
 }
 
 #pragma mark -
@@ -514,7 +495,6 @@ enum mediaPlayerTags
 				[rfa addFilesToDelegate:self];
 				[progressHUD show:YES];
 				progressHUD.taskInProgress = YES;
-				[rfa release];
 			}
 			else
 			{
@@ -532,9 +512,7 @@ enum mediaPlayerTags
 									 toTarget:self
 								   withObject:@"exit"];
 		}
-		id old = _closeSheet;
 		_closeSheet = nil;
-		[old autorelease]; // delay release
 	}
 }
 
@@ -574,7 +552,6 @@ enum mediaPlayerTags
 															  message:message
 															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
-		[alert release];
 	}
 #undef promptView
 }
@@ -604,11 +581,10 @@ enum mediaPlayerTags
 {
 	@synchronized(self)
 	{
-		UIActionSheet *sheet = SafeReturn(_closeSheet); // make sure object persists
+		UIActionSheet *sheet = _closeSheet;
 		if(sheet)
 		{
 			[sheet dismissWithClickedButtonIndex:sheet.cancelButtonIndex animated:NO];
-			SafeRetainAssign(_closeSheet, nil); // remove reference
 		}
 	}
 
@@ -719,7 +695,6 @@ enum mediaPlayerTags
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = contentView;
-	[contentView release];
 
 	// file list
 	frame = self.view.frame;
@@ -759,28 +734,24 @@ enum mediaPlayerTags
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
 	[_controls addSubview: roundedButtonType];
-	[roundedButtonType release];
 	localX += imageWidth + kTweenMargin;
 
 	// stop
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_stop.png" andKeyCode: kButtonCodeStop];
 	[_controls addSubview: roundedButtonType];
-	[roundedButtonType release];
 	localX += imageWidth + kTweenMargin;
 
 	// play/pause
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause];
 	[_controls addSubview: roundedButtonType];
-	[roundedButtonType release];
 	localX += imageWidth + kTweenMargin;
 
 	// next
 	frame = CGRectMake(localX * factor, 0, imageWidth * factor, imageHeight * factor);
 	roundedButtonType = [self newButton:frame withImage:@"key_ff.png" andKeyCode: kButtonCodeFFwd];
 	[_controls addSubview: roundedButtonType];
-	[roundedButtonType release];
 	//localX += imageWidth + kTweenMargin;
 
 	[self.view addSubview: _playlist];
@@ -834,12 +805,7 @@ enum mediaPlayerTags
 
 			self.navigationItem.leftBarButtonItem = buttonItem;
 
-			[buttonItem release];
-			[items release];
-			[flexItem release];
-			[toolbar release];
 		}
-		[flipItem release];
 	}
 	else
 	{
@@ -889,7 +855,6 @@ enum mediaPlayerTags
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Unable to start playback", @"") message:result.resulttext
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
-			[alert release];
 		}
 	}
 	// filelist
@@ -920,7 +885,6 @@ enum mediaPlayerTags
 																  message:message
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 
 			// flip view (presumably) back
 			[self flipView:nil];
@@ -939,7 +903,6 @@ enum mediaPlayerTags
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Could not add song to playlist", @"") message:result.resulttext
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
-			[alert release];
 		}
 	}
 }
@@ -973,7 +936,6 @@ enum mediaPlayerTags
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Removing track failed", @"") message:result.resulttext
 															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
-		[alert release];
 	}
 	else
 	{
@@ -1005,13 +967,13 @@ enum mediaPlayerTags
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// we want the playlist to indicate errors, since this is a recurring event
 	// the annoyance would be huge
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	//
 }

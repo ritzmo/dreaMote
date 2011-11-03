@@ -20,7 +20,6 @@
 // Forward declarations...
 @protocol ServiceProtocol;
 @class EventViewController;
-@class CXMLDocument;
 
 /*!
  @brief Event List.
@@ -45,16 +44,13 @@
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Current Service. */
-	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
-	UIPopoverController *popoverController; /*!< @brief Popover controller */
 
 	NSCalendar *_gregorian; /*!< @brief Calendar instance. */
 	BOOL _useSections; /*!< @brief Use sections? */
 	NSInteger _lastDay; /*!< @brief Last day with events if using sections / day. */
 	NSMutableArray *_sectionOffsets; /*!< @brief Array of first indices. */
 
-	CXMLDocument *_eventXMLDoc; /*!< @brief Event XML Document. */
-	ServiceListController *_serviceListController; /*!< @brief Parent/Service List controller. */
+	ServiceListController *__unsafe_unretained _serviceListController; /*!< @brief Parent/Service List controller. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 
@@ -104,21 +100,21 @@
 /*!
  @brief Service.
  */
-@property (nonatomic, retain) NSObject<ServiceProtocol> *service;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *service;
 
 /*!
  @brief Date Formatter.
  */
-@property (nonatomic, retain) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 /*!
  @brief Popover Controller.
  */
-@property (nonatomic, retain) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIPopoverController *popoverController;
 
 /*!
  @brief Serivce List.
  */
-@property (nonatomic, assign) ServiceListController *serviceListController;
+@property (nonatomic, unsafe_unretained) ServiceListController *serviceListController;
 
 @end

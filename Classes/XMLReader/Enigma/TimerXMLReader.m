@@ -18,7 +18,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -33,7 +33,6 @@
 	[_delegate performSelectorOnMainThread: @selector(addTimer:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
-	[fakeObject release];
 }
 
 /*
@@ -63,7 +62,7 @@
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/timers/timer" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/timers/timer" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -73,7 +72,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addTimer:)
 									withObject: newTimer
 								 waitUntilDone: NO];
-		[newTimer release];
 	}
 }
 

@@ -12,18 +12,11 @@
 
 @implementation GenericEvent
 
-@synthesize service = _service;
-@synthesize eit = _eit;
-@synthesize begin = _begin;
-@synthesize end = _end;
-@synthesize title = _title;
-@synthesize sdescription = _sdescription;
-@synthesize edescription = _edescription;
-@synthesize timeString = _timeString;
+@synthesize service, eit, begin, end, title, sdescription, edescription, timeString;
 
 - (BOOL)isValid
 {
-	return _service || (_begin && _end);
+	return self.service || (self.begin && self.end);
 }
 
 - (id)init
@@ -31,9 +24,6 @@
 	if((self = [super init]))
 	{
 		_duration = -1;
-		_begin = nil;
-		_end = nil;
-		_timeString = nil;
 	}
 	return self;
 }
@@ -43,29 +33,16 @@
 	if((self = [super init]))
 	{
 		// don't try to copy service, only one backend knows it anyway
-		_eit = [event.eit copy];
-		_begin = [event.begin copy];
-		_end = [event.end copy];
-		_title = [event.title copy];
-		_sdescription = [event.sdescription copy];
-		_edescription = [event.edescription copy];
+		self.eit = [event.eit copy];
+		self.begin = [event.begin copy];
+		self.end = [event.end copy];
+		self.title = [event.title copy];
+		self.sdescription = [event.sdescription copy];
+		self.edescription = [event.edescription copy];
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_service release];
-	[_eit release];
-	[_begin release];
-	[_end release];
-	[_title release];
-	[_sdescription release];
-	[_edescription release];
-	[_timeString release];
-
-	[super dealloc];
-}
 
 - (NSString *)description
 {
@@ -74,29 +51,24 @@
 
 - (void)setBeginFromString: (NSString *)newBegin
 {
-	[_timeString release];
-	_timeString = nil;
+	self.timeString = nil;
 
-	[_begin release];
-	_begin = [[NSDate dateWithTimeIntervalSince1970: [newBegin doubleValue]] retain];
+	self.begin = [NSDate dateWithTimeIntervalSince1970:[newBegin doubleValue]];
 	if(_duration != -1){
-		[_end release];
-		_end = [[_begin addTimeInterval: _duration] retain];
+		self.end = [self.begin dateByAddingTimeInterval:_duration];
 		_duration = -1;
 	}
 }
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[_timeString release];
-	_timeString = nil;
+	self.timeString = nil;
 
-	if(_begin == nil) {
+	if(self.begin == nil) {
 		_duration = [newDuration doubleValue];
 		return;
 	}
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	self.end = [self.begin dateByAddingTimeInterval:[newDuration doubleValue]];
 }
 
 - (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent

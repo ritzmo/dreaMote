@@ -11,13 +11,15 @@
 #import "SaxXmlReader.h"
 #import "ServiceSourceDelegate.h"
 
+@class GenericService;
+
 /*!
  @brief Enigma2 Service XML Reader.
  */
 @interface Enigma2ServiceXMLReader : SaxXmlReader
 {
 @private
-	NSObject<ServiceProtocol> *currentService; /*!< @brief Current Service. */
+	GenericService *currentService; /*!< @brief Current Service. */
 }
 
 /*!

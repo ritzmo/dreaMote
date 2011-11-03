@@ -22,7 +22,7 @@
 
 @implementation ConnectorViewController
 
-@synthesize selectedItem = _selectedItem;
+@synthesize delegate, selectedItem;
 
 /* initialize */
 - (id)init
@@ -30,8 +30,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Connector", @"Default title of ConnectorViewController");
-		_selectedItem = kInvalidConnector;
-		_delegate = nil;
+		selectedItem = kInvalidConnector;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -48,7 +47,7 @@
 	ConnectorViewController *connectorViewController = [[ConnectorViewController alloc] init];
 	connectorViewController.selectedItem = connectorKey;
 
-	return [connectorViewController autorelease];
+	return connectorViewController;
 }
 
 /* dealloc */
@@ -56,8 +55,6 @@
 {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-
-	[super dealloc];
 }
 
 /* layout */
@@ -65,7 +62,6 @@
 {
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Autodetect", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(doAutodetect:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 
 	// create and configure the table view
 	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
@@ -78,13 +74,12 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 }
 
 /* start autodetection */
 - (void)doAutodetect: (id)sender
 {
-	_selectedItem = kInvalidConnector;
+	selectedItem = kInvalidConnector;
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
 	else
@@ -135,7 +130,7 @@
 			break;
 	}
 
-	if((NSInteger)indexPath.row == _selectedItem)
+	if((NSInteger)indexPath.row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -146,28 +141,18 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:selectedItem inSection:0]];
 	cell.accessoryType = UITableViewCellAccessoryNone;
 
 	cell = [tableView cellForRowAtIndexPath: indexPath];
 	cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-	_selectedItem = indexPath.row;
+	selectedItem = indexPath.row;
 
 	if(IS_IPAD())
 		[self.navigationController dismissModalViewControllerAnimated:YES];
-}
-
-/* set delegate */
-- (void)setDelegate: (id<ConnectorDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
 }
 
 #pragma mark - UIViewController delegate methods
@@ -175,9 +160,9 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
-		[_delegate performSelector:@selector(connectorSelected:) withObject: [NSNumber numberWithInteger: _selectedItem]];
+		[delegate performSelector:@selector(connectorSelected:) withObject:[NSNumber numberWithInteger:selectedItem]];
 	}
 }
 

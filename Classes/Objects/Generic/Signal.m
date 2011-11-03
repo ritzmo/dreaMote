@@ -10,16 +10,13 @@
 
 @implementation GenericSignal
 
-@synthesize snrdb = _snrdb;
-@synthesize snr = _snr;
-@synthesize ber = _ber;
-@synthesize agc = _agc;
+@synthesize snrdb, snr, ber, agc;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
-		_snrdb = -1;
+		snrdb = -1;
 	}
 	return self;
 }

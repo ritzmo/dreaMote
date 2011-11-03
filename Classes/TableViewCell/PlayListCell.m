@@ -25,7 +25,7 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 		indicator.frame = CGRectZero;
 		[self.contentView addSubview:indicator];
 
-		self.backgroundView = [[[UIView alloc] init] autorelease];
+		self.backgroundView = [[UIView alloc] init];
 	}
 	return self;
 }
@@ -104,11 +104,5 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 	}
 }
 
-- (void)dealloc
-{
-	[indicator release];
-
-    [super dealloc];
-}
 
 @end

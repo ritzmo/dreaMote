@@ -23,7 +23,7 @@ static const char *kEnigma2TextElement = "e2text";
 static const NSUInteger kEnigma2TextElementLength = 7;
 
 @interface Enigma2SleepTimerXMLReader()
-@property (nonatomic, retain) SleepTimer *sleepTimer;
+@property (nonatomic, strong) SleepTimer *sleepTimer;
 @end
 
 @implementation Enigma2SleepTimerXMLReader
@@ -35,17 +35,9 @@ static const NSUInteger kEnigma2TextElementLength = 7;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[sleepTimer release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -57,7 +49,6 @@ static const NSUInteger kEnigma2TextElementLength = 7;
 	[_delegate performSelectorOnMainThread:@selector(addSleepTimer:)
 								withObject:fake
 							 waitUntilDone:NO];
-	[fake release];
 }
 
 /*
@@ -74,7 +65,7 @@ static const NSUInteger kEnigma2TextElementLength = 7;
 {
 	if(!strncmp((const char *)localname, kEnigma2SleepTimerElement, kEnigma2SleepTimerElementLength))
 	{
-		self.sleepTimer = [[[SleepTimer alloc] init] autorelease];
+		self.sleepTimer = [[SleepTimer alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2EnabledElement, kEnigma2EnabledElementLength)
 			||	!strncmp((const char *)localname, kEnigma2MinutesElement, kEnigma2MinutesElementLength)

@@ -19,7 +19,6 @@
 {
 @private
 	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	id<AfterEventDelegate> _delegate; /*!< @brief Delegate. */
 	BOOL _showAuto; /*!< @brief Show "kAfterEventAuto" Item? */
 	BOOL _showDefault; /*!< @brief Show "Default Action" for kAfterEventMax? */
 }
@@ -35,17 +34,15 @@
  */
 + (AfterEventViewController *)withAfterEvent: (NSUInteger)afterEvent andAuto: (BOOL)showAuto;
 
+
+
 /*!
  @brief Set Delegate.
- 
+
  The delegate will be called back when disappearing to inform it about the newly selected
  after event action.
- 
- @param delegate New delegate object.
  */
-- (void)setDelegate: (id<AfterEventDelegate>) delegate;
-
-
+@property (nonatomic, unsafe_unretained) id<AfterEventDelegate> delegate;
 
 /*!
  @brief Selected Item.
@@ -58,7 +55,7 @@
 @property (assign) BOOL showAuto;
 
 /*!
- @brief show "Default Action"?
+ @brief Show "Default Action" for kAfterEventMax?
  */
 @property (assign) BOOL showDefault;
 

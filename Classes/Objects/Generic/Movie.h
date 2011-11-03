@@ -8,24 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-#import "MovieProtocol.h"
+#import <Objects/MovieProtocol.h>
 
 /*!
  @brief Generic Movie.
  */
 @interface GenericMovie : NSObject <MovieProtocol>
-{
-@private	
-	NSString *_sref; /*!< @brief Service Reference. */
-	NSString *_sname; /*!< @brief Service Name. */
-	NSDate *_time; /*!< @brief Begin. */
-	NSString *_title; /*!< @brief Title. */
-	NSString *_sdescription; /*!< @brief Short Description. */
-	NSString *_edescription; /*!< @brief Extended Description. */
-	NSNumber *_length; /*!< @brief Length. */
-	NSString *_name; /*!< @brief Filename. */
-	NSNumber *_size; /*!< @brief Filesize. */
-	NSArray *_tags; /*!< @brief Tags. */
-}
 
 @end

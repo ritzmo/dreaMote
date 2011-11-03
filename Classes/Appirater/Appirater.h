@@ -146,7 +146,10 @@ extern NSString *const kAppiraterDeclinedToRate;
 
 @interface Appirater : NSObject <UIAlertViewDelegate> {
 
+	UIAlertView		*ratingAlert;
 }
+
+@property(nonatomic, retain) UIAlertView *ratingAlert;
 
 /*
  DEPRECATED: While still functional, it's better to use
@@ -200,5 +203,18 @@ extern NSString *const kAppiraterDeclinedToRate;
  in those methods).
  */
 + (void)userDidSignificantEvent:(BOOL)canPromptForRating;
+
+/*
+ Tells Appirater to open the App Store page where the user can specify a
+ rating for the app. Also records the fact that this has happened, so the
+ user won't be prompted again to rate the app.
+
+ The only case where you should call this directly is if your app has an
+ explicit "Rate this app" command somewhere.  In all other cases, don't worry
+ about calling this -- instead, just call the other functions listed above,
+ and let Appirater handle the bookkeeping of deciding when to ask the user
+ whether to rate the app.
+ */
++ (void)rateApp;
 
 @end

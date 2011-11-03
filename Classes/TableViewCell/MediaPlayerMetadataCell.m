@@ -122,25 +122,6 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 	return self;
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[_albumLabel release];
-	[_album release];
-	[_artistLabel release];
-	[_artist release];
-	[_genreLabel release];
-	[_genre release];
-	[_titleLabel release];
-	[_title release];
-	[_yearLabel release];
-	[_year release];
-	[_coverart release];
-	[_metadata release];
-
-	[super dealloc];
-}
-
 /* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -158,7 +139,7 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 - (void)setMetadata:(NSObject <MetadataProtocol>*)new
 {
 	if([_metadata isEqual:new]) return;
-	SafeRetainAssign(_metadata, new);
+	_metadata = new;
 
 	// update text in subviews
 	_album.text = _metadata.album;
@@ -182,9 +163,9 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 {
 	if([_coverart isEqual:new]) return;
 
-	if(_coverart)
+	if(_coverart && [_coverart.superview isEqual:self.contentView])
 		[_coverart removeFromSuperview];
-	SafeRetainAssign(_coverart, new);
+	_coverart = new;
 	if(new)
 		[self.contentView addSubview:new];
 

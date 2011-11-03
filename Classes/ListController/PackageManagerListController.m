@@ -59,8 +59,8 @@
 		_packages = nil;
 		_refreshPackages = YES;
 		_listType = kPackageListUpgradable;
-		_filteredPackages = [[NSMutableArray array] retain];
-		_selectedPackages = [[NSMutableArray array] retain];
+		_filteredPackages = [NSMutableArray array];
+		_selectedPackages = [NSMutableArray array];
 	}
 	return self;
 }
@@ -68,18 +68,10 @@
 /* dealloc */
 - (void)dealloc
 {
-	SafeRetainAssign(_packages, nil);
-	SafeRetainAssign(_filteredPackages, nil);
-	SafeRetainAssign(_selectedPackages, nil);
-	[_filteredPackages release];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	[_searchDisplay release];
-
-    [super dealloc];
 }
 
 /* getter of willReapper */
@@ -195,7 +187,6 @@
 {
 	NSArray *selectedPackages = [_selectedPackages copy];
 	[[RemoteConnectorObject sharedRemoteConnector] packageManagementCommit:selectedPackages];
-	[selectedPackages release];
 
 	// refresh data
 	_reviewingChanges = !_reviewingChanges;
@@ -221,7 +212,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 		return;
 	}
 
@@ -252,9 +242,6 @@
 																						target:nil
 																						action:nil];
 		items = [[NSArray alloc] initWithObjects:abortButton, flexItem, commitButton, nil];
-		[flexItem release];
-		[commitButton release];
-		[abortButton release];
 		animated = YES;
 	}
 	else
@@ -270,21 +257,14 @@
 		{
 			const UIBarButtonItem *upgradeButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Upgrade", @"PackageManager", @"Upgrade all available packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpgrade:)];
 			items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, upgradeButton, nil];
-			[upgradeButton release];
 		}
 		else
 		{
 			const UIBarButtonItem *changesButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Commit", @"PackageManager", @"Commit changes made in list") style:UIBarButtonItemStyleBordered target:self action:@selector(commitChanges:)];
 			items = [[NSArray alloc] initWithObjects:regularButton, installedButton, upgradableButton, flexItem, changesButton, nil];
-			[changesButton release];
 		}
-		[flexItem release];
-		[upgradableButton release];
-		[installedButton release];
-		[regularButton release];
 	}
 	[self setToolbarItems:items animated:animated];
-	[items release];
 }
 
 /* load view */
@@ -315,7 +295,6 @@
 
 	UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Update", @"PackageManager", @"Update remote list of packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpdate:)];
 	self.navigationItem.rightBarButtonItem = regularButton;
-	[regularButton release];
 }
 
 - (void)viewDidUnload

@@ -17,14 +17,13 @@
  @brief done editing
  */
 - (void)doneAction:(id)sender;
-@property (nonatomic, retain) NSArray *items;
+@property (nonatomic, strong) NSArray *items;
 @end
 
 @implementation SimpleSingleSelectionListController
 
 @synthesize items = _items;
-@synthesize selectedItem = _selectedItem;
-@synthesize autoSubmit;
+@synthesize selectedItem, callback;
 
 /* initialize */
 - (id)init
@@ -32,7 +31,7 @@
 	if((self = [super init]))
 	{
 		self.title = nil;
-		_delegate = nil;
+		callback = nil;
 
 		if([self respondsToSelector:@selector(modalPresentationStyle)])
 		{
@@ -47,10 +46,6 @@
 {
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
-
-	[_items release];
-
-	[super dealloc];
 }
 
 /* create SimpleSingleSelectionListController with given type preselected */
@@ -61,7 +56,7 @@
 	vc.items = items;
 	vc.title = title;
 
-	return [vc autorelease];
+	return vc;
 }
 
 /* layout */
@@ -78,12 +73,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */
@@ -122,7 +115,7 @@
 
 	cell.textLabel.text = [_items objectAtIndex:row];
 
-	if((NSUInteger)row == _selectedItem)
+	if((NSUInteger)row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	else
 		cell.accessoryType = UITableViewCellAccessoryNone;
@@ -133,32 +126,22 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	[tableView deselectRowAtIndexPath: indexPath animated: YES];
+	const NSUInteger previousSelection = selectedItem;
+	selectedItem = indexPath.row;
+	const BOOL willDispose = callback ? callback(selectedItem, NO) : NO;
 
-	UITableViewCell *cell = [tableView cellForRowAtIndexPath: [NSIndexPath indexPathForRow: _selectedItem inSection: 0]];
-	cell.accessoryType = UITableViewCellAccessoryNone;
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-	cell = [tableView cellForRowAtIndexPath: indexPath];
-	cell.accessoryType = UITableViewCellAccessoryCheckmark;
-
-	_selectedItem = indexPath.row;
-
-	if(autoSubmit)
+	if(!willDispose)
 	{
-		[_delegate performSelector:@selector(itemSelected:) withObject:[NSNumber numberWithInteger:_selectedItem]];
-		_delegate = nil; // prevent viewWillDisappear from calling back again
-	}
-	if(IS_IPAD())
-	{
-		[self dismissModalViewControllerAnimated:YES];
-	}
-}
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:previousSelection inSection:0]];
+		cell.accessoryType = UITableViewCellAccessoryNone;
 
-/* set delegate */
-- (void)setDelegate: (id<SimpleSingleSelectionListDelegate>) delegate
-{
-	// we only borrow the reference to our delegate, but given our life is shorter than that of our parent there should be no problem
-	_delegate = delegate;
+		cell = [tableView cellForRowAtIndexPath:indexPath];
+		cell.accessoryType = UITableViewCellAccessoryCheckmark;
+	}
+	else
+		callback = nil;
 }
 
 #pragma mark - UIViewController delegate methods
@@ -166,10 +149,9 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
-	{
-		[_delegate performSelector:@selector(itemSelected:) withObject:[NSNumber numberWithInteger:_selectedItem]];
-	}
+	if(callback)
+		callback(selectedItem, YES);
+	callback = nil;
 }
 
 @end

@@ -19,12 +19,12 @@
  @brief Hide action sheet if visible.
  */
 - (void)dismissActionSheet:(NSNotification *)notif;
-@property (nonatomic, retain) UIActionSheet *actionSheet;
+@property (nonatomic, strong) UIActionSheet *actionSheet;
 @end
 
 @implementation ServiceZapListController
 
-@synthesize zapDelegate = _zapDelegate;
+@synthesize zapDelegate;
 @synthesize actionSheet = _actionSheet;
 
 + (BOOL)canStream
@@ -49,11 +49,6 @@
 											   destructiveButtonTitle:nil
 													otherButtonTitles:nil];
 	zlc.actionSheet = actionSheet;
-	[actionSheet release];
-#ifndef __clang_analyzer__
-	// NOTE: this is evil and clang detects it :D
-	[zlc.actionSheet.delegate retain];
-#endif
 	[zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Zap on receiver", @"")];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"OPlayer"];
@@ -69,12 +64,9 @@
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 	[zlc.actionSheet showFromTabBar:tabBar];
 
-	if([UIDevice runsIos4OrBetter])
-	{
-		[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 
-	return [zlc autorelease];
+	return zlc;
 }
 
 + (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
@@ -121,11 +113,7 @@
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
-	SafeRetainAssign(_zapDelegate, nil);
 	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
-	SafeRetainAssign(_actionSheet, nil);
-
-	[super dealloc];
 }
 
 - (void)loadView
@@ -139,7 +127,6 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -154,8 +141,8 @@
 
 - (void)dismissActionSheet:(NSNotification *)notif
 {
-	[SafeReturn(_actionSheet) dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
-	SafeRetainAssign(_actionSheet, nil);
+	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
+	_actionSheet = nil;
 }
 
 #pragma mark	-
@@ -210,7 +197,7 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(!_zapDelegate) return nil;
+	if(!zapDelegate) return nil;
 	NSInteger row = indexPath.row;
 
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
@@ -226,7 +213,7 @@
 		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
 			++row;
 	}
-	[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)row];
+	[zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
 	return indexPath;
 }
 
@@ -234,6 +221,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	tableView.allowsSelection = NO;
 }
 
 /* number of sections */
@@ -261,14 +249,12 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-#ifndef __clang_analyzer__
 	id<UIActionSheetDelegate> delegate = nil;
 	@synchronized(self)
 	{
 		delegate = actionSheet.delegate;
 		actionSheet.delegate = nil;
 	}
-#endif
 
 	if(buttonIndex == actionSheet.cancelButtonIndex)
 	{
@@ -287,12 +273,8 @@
 		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
 		//	++buttonIndex;
 
-		[_zapDelegate serviceZapListController:SafeReturn(self) selectedAction:(zapAction)buttonIndex];
+		[zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
 	}
-#ifndef __clang_analyzer__
-	// NOTE: we retain the delegate, so we have to release it here again
-	[delegate autorelease];
-#endif
 }
 
 @end

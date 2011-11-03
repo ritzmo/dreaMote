@@ -12,13 +12,11 @@
 #import "Objects/Generic/AutoTimer.h" /* TimerProtocol */
 #import "CellTextField.h" /* CellTextField */
 
-#import "AutoTimerFilterViewController.h" /* AutoTimerFilterDelegate */
 #import "AfterEventViewController.h" /* AfterEventDelegate */
 #import "LocationListController.h" /* LocationListDelegate */
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
-#import "SimpleSingleSelectionListController.h" /* SimpleSingleSelectionListDelegate */
 
 // Forward declarations...
 @class DatePickerController;
@@ -34,8 +32,6 @@
 													ServiceListDelegate, BouquetListDelegate,
 													AfterEventDelegate, LocationListDelegate,
 													EditableTableViewCellDelegate,
-													AutoTimerFilterDelegate,
-													SimpleSingleSelectionListDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
 {
@@ -44,7 +40,6 @@
 	UIBarButtonItem *_cancelButtonItem;
 	UIBarButtonItem *_popoverButtonItem;
 
-	NSObject<AutoTimerViewDelegate> *_delegate; /*!< @brief Delegate. */
 	AutoTimer *_timer; /*!< @brief Associated AutoTimer. */
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
 	BOOL _shouldSave; /*!< @brief Should save on exit? */
@@ -72,10 +67,6 @@
 	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
 	UIViewController *_locationListController; /*!< @brief Cached Location List. */
-	UIViewController *_filterNavigationController; /*!< @brief Navigation Controller of Filter View. */
-	AutoTimerFilterViewController *_filterViewController; /*!< @brief Cached Filter View. */
-	SimpleSingleSelectionListController *_avoidDuplicateDescriptionController; /*!< @brief Cached ADD Selector. */
-	UIViewController *_avoidDuplicateDescriptionNavigationController; /*!< @brief Cached ADD Navigation Controller. */
 }
 
 /*!
@@ -98,7 +89,7 @@
 /*!
  @brief AutoTimer.
  */
-@property (nonatomic, retain) AutoTimer *timer;
+@property (nonatomic, strong) AutoTimer *timer;
 
 /*!
  @brief Are we creating a new AutoTimer?
@@ -108,7 +99,7 @@
 /*!
  @brief Delegate.
  */
-@property (nonatomic, retain) NSObject<AutoTimerViewDelegate> *delegate;
+@property (nonatomic, unsafe_unretained) NSObject<AutoTimerViewDelegate> *delegate;
 
 @end
 

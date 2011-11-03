@@ -8,32 +8,19 @@
 
 #import "NSArray+ArrayFromData.h"
 
-#import "UIDevice+SystemVersion.h"
-
 @implementation NSArray(ArrayFromData)
 
 + (id)arrayWithData:(NSData *)data
 {
-	return [[[NSArray alloc] initWithData:data] autorelease];
+	return [[NSArray alloc] initWithData:data];
 }
 
 - (id)initWithData:(NSData *)data
 {
-	NSPropertyListSerialization *plist = nil;
-	if([UIDevice runsIos4OrBetter])
-	{
-		plist = [NSPropertyListSerialization propertyListWithData:data
-														  options:NSPropertyListImmutable
-														   format:nil
-															error:nil];
-	}
-	else
-	{
-		plist = [NSPropertyListSerialization propertyListFromData:data
-												 mutabilityOption:NSPropertyListImmutable
-														   format:nil
-												 errorDescription:nil];
-	}
+	NSPropertyListSerialization *plist = [NSPropertyListSerialization propertyListWithData:data
+																				   options:NSPropertyListImmutable
+																					format:nil
+																					 error:nil];
 	return [self initWithArray:(NSArray *)plist];
 }
 

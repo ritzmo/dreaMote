@@ -8,20 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-/*!
- @brief Does the current device run on iOS 4.0 or better?
-
- @return YES if systemVersion >= 4.0, else NO.
- */
-#define runsIos4OrBetter	newerThanIos:4.0f
-
-/*!
- @brief Does the current device run on iOS 4.2 or better?
-
- @return YES if systemVersion >= 4.2, else NO.
- */
-#define runsIos42OrBetter	newerThanIos:4.2f
-
 @interface UIDevice(SystemVersion)
 
 /*!

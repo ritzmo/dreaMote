@@ -55,25 +55,16 @@ typedef enum
 {
 	if((self = [super init]))
 	{
-		_address = [inAddress retain];
+		_address = inAddress;
 		_port = inPort > 0 ? inPort : 2001;
 		_serviceCache = nil;
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_address release];
-	[_socket release];
-	[_serviceCache release];
-
-	[super dealloc];
-}
 
 - (void)freeCaches
 {
-	[_serviceCache release];
 	_serviceCache = nil;
 }
 
@@ -82,7 +73,7 @@ typedef enum
 	NSString *address = [connection objectForKey: kRemoteHost];
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 
-	return (NSObject <RemoteConnector>*)[[SVDRPConnector alloc] initWithAddress:address andPort:port];
+	return [[SVDRPConnector alloc] initWithAddress:address andPort:port];
 }
 
 + (NSArray *)knownDefaultConnections
@@ -106,8 +97,7 @@ typedef enum
 
 - (void)getSocket
 {
-	[_socket release];
-	_socket = [[BufferedSocket bufferedSocket] retain];
+	_socket = [BufferedSocket bufferedSocket];
 
 	@try {
 		[_socket connectToHostName: _address port: _port];
@@ -119,7 +109,6 @@ typedef enum
 		NSLog(@"SVDRPConnector failed in getSocket");
 		[e raise];
 #endif
-		[_socket release];
 		_socket = nil;
 	}
 }
@@ -132,7 +121,6 @@ typedef enum
 		const NSString *tmp = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
 		if([tmp length] > 2)
 			retVal = [tmp substringToIndex: [tmp length] - 2];
-		[tmp release];
 	}
 	@catch (NSException * e) {
 		// ignore
@@ -163,10 +151,10 @@ typedef enum
 	}
 }
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
 {
 	// check if delegate wants to be informated about errors
-	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:error:);
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
@@ -181,7 +169,7 @@ typedef enum
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
-		[invocation setArgument:&error atIndex:4];
+		[invocation setArgument:&error atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
@@ -190,7 +178,7 @@ typedef enum
 - (void)indicateSuccess:(NSObject<DataSourceDelegate> *)delegate
 {
 	// check if delegate wants to be informated about parsing end
-	SEL finishedParsing = @selector(dataSourceDelegate:finishedParsingDocument:);
+	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:finishedParsing];
 	if(delegate && [delegate respondsToSelector:finishedParsing] && sig)
 	{
@@ -213,7 +201,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"CHAN %@\r\n", service.sref]];
 
@@ -229,7 +221,7 @@ typedef enum
 
 // TODO: does the vdr actually have bouquets?
 // FIXME: for now we just return a fake service, we don't support favourite online mode anyway
-- (CXMLDocument *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (BaseXMLReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -246,7 +238,6 @@ typedef enum
 	[delegate performSelectorOnMainThread: @selector(addService:)
 							   withObject: newService
 							waitUntilDone: NO];
-	[newService release];
 
 	[self indicateSuccess:delegate];
 	return nil;
@@ -293,7 +284,7 @@ typedef enum
 	return parserContinue;
 }
 
-- (CXMLDocument *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (BaseXMLReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -313,14 +304,11 @@ typedef enum
 		[delegate performSelectorOnMainThread: @selector(addService:)
 								   withObject: fakeObject
 								waitUntilDone: NO];
-		[fakeObject release];
 
 		[self indicateError:delegate error:nil];
 		return nil;
 	}
-	if(_serviceCache != nil)
-		[_serviceCache release];
-	_serviceCache = [[NSMutableDictionary dictionaryWithCapacity: 50] retain]; // XXX: any suggestions for a good starting value?
+	_serviceCache = [NSMutableDictionary dictionaryWithCapacity: 50]; // XXX: any suggestions for a good starting value?
 
 	[_socket writeString: @"LSTC\r\n"];
 
@@ -337,7 +325,6 @@ typedef enum
 		}
 		@catch(NSException *e)
 		{
-			[newService release];
 			NSError *error = [NSError errorWithDomain:@"myDomain"
 												 code:110
 											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
@@ -354,7 +341,6 @@ typedef enum
 			if(newService.sref)
 				[_serviceCache setObject: newService forKey: newService.sref];
 		}
-		[newService release];
 	}
 
 	[APP_DELEGATE removeNetworkOperation];
@@ -363,7 +349,7 @@ typedef enum
 	return nil;
 }
 
-- (CXMLDocument *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
@@ -375,7 +361,6 @@ typedef enum
 		[delegate performSelectorOnMainThread: @selector(addEvent:)
 								   withObject: fakeObject
 								waitUntilDone: NO];
-		[fakeObject release];
 
 		[self indicateError:delegate error:nil];
 		return nil;
@@ -398,7 +383,6 @@ typedef enum
 			if(newEvent != nil)
 			{
 				NSLog(@"Already got event... buggy SVDRP?");
-				[newEvent release];
 				newEvent = nil;
 			}
 
@@ -432,21 +416,18 @@ typedef enum
 			// replace | by \n
 			[desc replaceOccurrencesOfString:@"|" withString:@"\n" options:NSLiteralSearch range:NSMakeRange(0, [desc length])];
 			newEvent.edescription = desc;
-			[desc release];
 		}
 		else if([firstFive isEqualToString:@"215-e"])
 		{
 			[delegate performSelectorOnMainThread: @selector(addEvent:)
 									   withObject: newEvent
 									waitUntilDone: NO];
-			[newEvent release];
 			newEvent = nil;
 		}
 	}
 	if(newEvent != nil)
 	{
 		NSLog(@"Event was not released... buggy SVDRP?");
-		[newEvent release];
 	}
 
 	[APP_DELEGATE removeNetworkOperation];
@@ -500,7 +481,6 @@ typedef enum
 		service.sname = @"???";
 		service.sref = [components objectAtIndex: 1];
 		newTimer.service = service;
-		[service release];
 	}
 
 	// Day
@@ -509,8 +489,7 @@ typedef enum
 	tmpInteger = [line length];
 	if(tmpInteger == 7)
 	{
-		[*comps release];
-		*comps = [[gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]] retain];
+		*comps = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate: [NSDate date]];
 		newTimer.repeat = line;
 	}
 	// repeating timer with startdate in MTWTF--@YYYY-MM-DD
@@ -548,7 +527,7 @@ typedef enum
 	[*comps setMinute: [[line substringFromIndex: 2] integerValue]];
 	NSDate *end = [gregorian dateFromComponents: *comps];
 	if([newTimer.begin compare: end] == NSOrderedDescending)
-		end = [end addTimeInterval: 86400];
+		end = [end dateByAddingTimeInterval:86400];
 	newTimer.end = end;
 
 	// Determine state
@@ -574,7 +553,7 @@ typedef enum
 	return parserContinue;
 }
 
-- (CXMLDocument *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
+- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
@@ -588,7 +567,6 @@ typedef enum
 		[delegate performSelectorOnMainThread: @selector(addTimer:)
 								   withObject: fakeObject
 								waitUntilDone: NO];
-		[fakeObject release];
 
 		[self indicateError:delegate error:nil];
 		return nil;
@@ -614,7 +592,6 @@ typedef enum
 		}
 		@catch (NSException *e)
 		{
-			[newTimer release];
 			NSError *error = [NSError errorWithDomain:@"myDomain"
 												 code:110
 											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
@@ -629,10 +606,7 @@ typedef enum
 									   withObject:newTimer
 									waitUntilDone:NO];
 		}
-		[newTimer release];
 	}
-	[comps release];
-	[gregorian release];
 
 	[APP_DELEGATE removeNetworkOperation];
 	[self indicateSuccess:delegate];
@@ -647,7 +621,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	NSString *timerString;
 	const NSInteger flags = newTimer.disabled ? 1 : 0;
@@ -655,7 +633,6 @@ typedef enum
 	const NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
 	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.begin];
 	const NSDateComponents *endComponents = [gregorian components: NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: newTimer.end];
-	[gregorian release];
 
 	NSString *dayStr = [NSString stringWithFormat: @"%d-%d-%d",
 						[beginComponents year], [beginComponents month], [beginComponents day]];
@@ -691,12 +668,20 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	// we need the timer id of vdr!
 	// XXX: we should figure out a better way to detect an svdrptimer though
 	if(![newTimer respondsToSelector: @selector(toString)])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = [NSString stringWithFormat:NSLocalizedString(@"Invalid timer object received: %@.", @"[SVDRPConnector {edit,del}Timer::] did not receive an SVDRPTimer as parameter."), newTimer];
+		return result;
+	}
 	const NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
 
 	[_socket writeString: [NSString stringWithFormat: @"MODT %@\r\n", timerString]];
@@ -716,12 +701,20 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	// we need the timer id of vdr!
 	// XXX: we should figure out a better way to detect an svdrptimer though
 	if(![oldTimer respondsToSelector: @selector(toString)])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = [NSString stringWithFormat:NSLocalizedString(@"Invalid timer object received: %@.", @"[SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter."), oldTimer];
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"DELT %@\r\n", ((SVDRPTimer *)oldTimer).tid]];
 	[APP_DELEGATE removeNetworkOperation];
@@ -748,7 +741,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"PLAY %@\r\n", movie.sref]];
 
@@ -803,7 +800,7 @@ typedef enum
 	return rc;
 }
 
-- (CXMLDocument *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	if(location != nil)
 	{
@@ -823,7 +820,6 @@ typedef enum
 		[delegate performSelectorOnMainThread: @selector(addMovie:)
 								   withObject: fakeObject
 								waitUntilDone: NO];
-		[fakeObject release];
 
 		[self indicateError:delegate error:nil];
 		return nil;
@@ -848,7 +844,6 @@ typedef enum
 		}
 		@catch(NSException *e)
 		{
-			[movie release];
 			NSError *error = [NSError errorWithDomain:@"myDomain"
 												 code:110
 											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%@: %@", [e name], [e reason]] forKey:NSLocalizedDescriptionKey]];
@@ -864,10 +859,7 @@ typedef enum
 									waitUntilDone:NO];
 		}
 
-		[movie release];
 	}
-	[comps release];
-	[gregorian release];
 
 	[APP_DELEGATE removeNetworkOperation];
 	[self indicateSuccess:delegate];
@@ -882,7 +874,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"DELR %@\r\n", movie.sref]];
 
@@ -933,7 +929,6 @@ typedef enum
 	[delegate performSelectorOnMainThread: @selector(addVolume:)
 							   withObject: volumeObject
 							waitUntilDone: NO];
-	[volumeObject release];
 }
 
 - (void)getSignal:(id)target action:(SEL)action
@@ -965,7 +960,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"VOLU %d\r\n", newVolume]];
 
@@ -1053,7 +1052,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"HITK %@\r\n", buttonCode]];
 	[APP_DELEGATE removeNetworkOperation];
@@ -1074,7 +1077,11 @@ typedef enum
 	if(!_socket || ![_socket isConnected])
 		[self getSocket];
 	if(![_socket isConnected])
-		return NO;
+	{
+		result.result = NO;
+		result.resulttext = NSLocalizedString(@"Unable to connect to remote host.", @"Unable to initiate connection.");
+		return result;
+	}
 
 	[_socket writeString: [NSString stringWithFormat: @"MESG %@\r\n", message]];
 	[APP_DELEGATE removeNetworkOperation];
@@ -1126,7 +1133,7 @@ typedef enum
 	return;
 }
 
-- (CXMLDocument *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];

@@ -9,13 +9,13 @@
 #import "ServiceXMLReader.h"
 
 #import "Constants.h"
-#import "../../Objects/Generic/Service.h"
+#import <Objects/Generic/Service.h>
 
 static const char *kEnigma2ServiceElement = "e2service";
 static const NSUInteger kEnigma2ServiceElementLength = 10;
 
 @interface Enigma2ServiceXMLReader()
-@property (nonatomic, retain) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
 @end
 
 @implementation Enigma2ServiceXMLReader
@@ -27,17 +27,9 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[currentService release];
-
-	[super dealloc];
 }
 
 /* send fake object */
@@ -48,7 +40,6 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 	[_delegate performSelectorOnMainThread: @selector(addService:)
 								withObject: fakeService
 							 waitUntilDone: NO];
-	[fakeService release];
 }
 
 /*
@@ -65,7 +56,7 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 {
 	if(!strncmp((const char *)localname, kEnigma2ServiceElement, kEnigma2ServiceElementLength))
 	{
-		self.currentService = [[[GenericService alloc] init] autorelease];
+		self.currentService = [[GenericService alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength)
 			||	!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength)
@@ -85,9 +76,10 @@ static const NSUInteger kEnigma2ServiceElementLength = 10;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{
-		// if service begins with 1:64: this is a marker
-		if(![[currentString substringToIndex: 5] isEqualToString: @"1:64:"])
-			currentService.sref = currentString;
+		currentService.sref = currentString;
+		// if service begins with 1:64: this is a marker and thus invalid
+		if([currentString hasPrefix:@"1:64:"])
+			[currentService setValid:NO];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))
 	{

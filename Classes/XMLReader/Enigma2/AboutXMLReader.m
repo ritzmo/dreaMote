@@ -17,7 +17,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -40,7 +40,7 @@ Example:
 */
 - (void)parseFull
 {
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/e2abouts/e2about" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/e2abouts/e2about" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -50,7 +50,6 @@ Example:
 		[_delegate performSelectorOnMainThread: @selector(addAbout:)
 									withObject: newAbout
 								 waitUntilDone: NO];
-		[newAbout release];
 	}
 }
 

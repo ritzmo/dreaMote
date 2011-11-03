@@ -48,19 +48,6 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.delegate = nil;
-
-	[myTabBar release];
-	[menuList release];
-	[_bouquetController release];
-	[_currentController release];
-	[_mediaplayerController release];
-	[_movieController release];
-	[_otherController release];
-	[_rcController release];
-	[_serviceController release];
-	[_timerController release];
-
-	[super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,13 +81,10 @@
 	{
 		viewController = [[BouquetListController alloc] init];
 		_bouquetController = [[UINavigationController alloc] initWithRootViewController: viewController];
-		[viewController release];
 		viewController = [[ServiceListController alloc] init];
 		_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
-		[viewController release];
 		viewController = [[TimerListController alloc] init];
 		_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
-		[viewController release];
 	}
 	_rcController = nil;
 	_otherController = [[OtherListController alloc] init];
@@ -120,7 +104,6 @@
 	[menuList addObject: _timerController];
 	[menuList addObject: navController];
 
-	[navController release];
 
 	[self setViewControllers: menuList];
 	self.selectedViewController = navController; // we don't own it any more, but it is retained by the array
@@ -128,17 +111,6 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
-}
-
-- (void)setSelectedIndex:(NSUInteger)selectedIndex
-{
-	[self.selectedViewController viewWillDisappear:YES];
-	[self.selectedViewController viewDidDisappear:YES];
-
-	[super setSelectedIndex:selectedIndex];
-
-	[self.selectedViewController viewWillAppear:YES];
-	[self.selectedViewController viewDidAppear:YES];
 }
 
 #pragma mark -
@@ -167,7 +139,6 @@
 										 cancelButtonTitle:@"OK"
 										 otherButtonTitles:nil];
 				[notification show];
-				[notification release];
 			}
 		}
 	}
@@ -239,7 +210,6 @@
 
 	// RC second to last
 	[menuList removeObject: _rcController];
-	[_rcController release];
 	if(useSimpleRemote || sharedRemoteConnector == nil)
 		_rcController = [[SimpleRCEmulatorController alloc] init];
 	else
@@ -249,9 +219,6 @@
 	_rcController.tabBarItem.image = image;
 
 	[self setViewControllers: menuList];
-	// initial load
-	if(self.selectedIndex == NSNotFound)
-		self.selectedViewController = [menuList lastObject];
 	} // end synchronized
 }
 
@@ -277,7 +244,6 @@
 		[_otherController.navigationController pushViewController: targetViewController animated: YES];
 		[self.selectedViewController viewWillAppear:YES];
 		[self.selectedViewController viewDidAppear:YES];
-		[targetViewController release];
 		return NO;
 	}
 	return YES;
@@ -288,7 +254,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[self handleReconnect: nil];
-	[self.selectedViewController viewWillAppear:animated];
+	[super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -299,10 +265,11 @@
 		AboutDreamoteViewController *welcomeController = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeType];
 		welcomeController.aboutDelegate = self;
 		[self presentModalViewController:welcomeController animated:YES];
-		[welcomeController release];
 	}
-	else if([self checkConnection])
-		[self.selectedViewController viewDidAppear:animated];
+	else
+		[self checkConnection];
+
+	[super viewDidAppear:animated];
 }
 
 /* rotation depends on active view */
@@ -330,25 +297,10 @@
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-	[self.selectedViewController viewWillDisappear:YES];
-	[self.selectedViewController viewDidDisappear:YES];
 	[RemoteConnectorObject cancelPendingOperations];
 
-	if(![self checkConnection])
-	{
-		self.selectedViewController = [menuList lastObject];
-		[self.selectedViewController viewWillAppear:YES];
-		[self.selectedViewController viewDidAppear:YES];
-		return NO;
-	}
-
-	return YES;
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-	[viewController viewWillAppear:YES];
-	[viewController viewDidAppear:YES];
+	// returns no if not selected
+	return [self checkConnection];
 }
 
 @end

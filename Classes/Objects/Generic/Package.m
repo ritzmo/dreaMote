@@ -31,7 +31,7 @@
 		pkg.version = [pkg.version stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
 	pkg.installed = state;
 
-	return [pkg autorelease];
+	return pkg;
 }
 
 - (id)init

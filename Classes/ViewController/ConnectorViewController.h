@@ -17,11 +17,6 @@
  Also allows to start an "autodetection" routine.
  */
 @interface ConnectorViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-{
-@private
-	NSInteger _selectedItem; /*!< @brief Selected Item. */
-	id<ConnectorDelegate> _delegate; /*!< @brief Delegate. */
-}
 
 /*!
  @brief Standard Constructor.
@@ -31,17 +26,15 @@
  */
 + (ConnectorViewController *)withConnector: (NSInteger) connectorKey;
 
+
+
 /*!
- @brief Set Delegate.
+ @brief Delegate.
  
  The delegate will be called back when disappearing to inform it about the newly selected
  connector id.
- 
- @param delegate New delegate object.
  */
-- (void)setDelegate: (id<ConnectorDelegate>) delegate;
-
-
+@property (nonatomic, unsafe_unretained) id<ConnectorDelegate> delegate;
 
 /*!
  @brief Selected Item.

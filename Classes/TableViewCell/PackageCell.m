@@ -51,7 +51,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 		indicator.frame = CGRectZero;
 		[self.contentView addSubview:indicator];
 
-		self.backgroundView = [[[UIView alloc] init] autorelease];
+		self.backgroundView = [[UIView alloc] init];
 	}
 	return self;
 }
@@ -70,7 +70,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 - (void)setPackage:(Package *)newPackage
 {
 	if(package == newPackage) return;
-	SafeRetainAssign(package, newPackage);
+	package = newPackage;
 
 	self.textLabel.text = package.name;
 	versionLabel.text = package.version;
@@ -194,14 +194,6 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	}
 }
 
-- (void)dealloc
-{
-	[availableLabel release];
-	[indicator release];
-	[versionLabel release];
-
-    [super dealloc];
-}
 						  
 /* Create and configure a label. */
 - (UILabel *)newLabelWithPrimaryColor:(UIColor *)primaryColor selectedColor:(UIColor *)selectedColor fontSize:(CGFloat)fontSize bold:(BOOL)bold

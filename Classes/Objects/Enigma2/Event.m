@@ -113,8 +113,7 @@
 {
 	if(_end == new)
 		return;
-	[_end release];
-	_end = [new retain];
+	SafeRetainAssign(_end, new);
 }
 
 - (NSDate *)begin
@@ -125,10 +124,9 @@
 		for(CXMLElement *resultElement in resultNodes)
 		{
 			double begin = [[resultElement stringValue] doubleValue];
-			[_timeString release];
 			_timeString = nil;
 			if(begin)
-				_begin = [[NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]] retain];
+				_begin = [NSDate dateWithTimeIntervalSince1970: [[resultElement stringValue] doubleValue]];
 			break;
 		}
 	}
@@ -139,8 +137,7 @@
 {
 	if(_begin == new)
 		return;
-	[_begin release];
-	_begin = [new retain];
+	SafeRetainAssign(_begin, new);
 }
 
 - (NSString *)eit
@@ -171,21 +168,11 @@
 	{
 		_begin = nil;
 		_end = nil;
-		_node = [node retain];
+		_node = node;
 	}
 	return self;
 }
 
-- (void)dealloc
-{
-	[_begin release];
-	[_end release];
-	[_node release];
-	[_timeString release];
-	[_service release];
-
-	[super dealloc];
-}
 
 - (NSString *)description
 {
@@ -202,8 +189,7 @@
 
 - (void)setEndFromDurationString: (NSString *)newDuration
 {
-	[_timeString release];
-	_timeString = nil;
+	SafeRetainAssign(_timeString, nil);
 
 	// no begin, die quietly
 	if(self.begin == nil)
@@ -212,8 +198,7 @@
 		return;
 	}
 
-	[_end release];
-	_end = [[_begin addTimeInterval: [newDuration doubleValue]] retain];
+	SafeRetainAssign(_end, [_begin dateByAddingTimeInterval:[newDuration doubleValue]]);
 }
 
 - (BOOL)isEqualToEvent: (NSObject<EventProtocol> *)otherEvent

@@ -10,9 +10,11 @@
 
 #import "RemoteConnectorObject.h"
 
+#import <XMLReader/BaseXMLReader.h>
+
 @interface RecursiveFileAdder()
 - (void)fetchData;
-@property (nonatomic, retain) NSObject<RecursiveFileAdderDelegate> *delegate;
+@property (nonatomic, unsafe_unretained) NSObject<RecursiveFileAdderDelegate> *delegate;
 @end
 
 @implementation RecursiveFileAdder
@@ -26,15 +28,6 @@
 		_remainingPaths = [[NSMutableArray alloc] initWithObjects:path, nil];
 	}
 	return self;
-}
-
-- (void)dealloc
-{
-	[_remainingPaths release];
-	[_delegate release];
-	[_fileXMLDoc release];
-
-	[super dealloc];
 }
 
 /* add file to list */
@@ -55,19 +48,18 @@
 	// file
 	else if(file != nil)
 	{
-		[_delegate recursiveFileAdder:self addFile:SafeReturn(file)];
+		[_delegate recursiveFileAdder:self addFile:file];
 	}
 }
 
 /* start download of file list */
 - (void)fetchData
 {
-	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-	NSString *path = [[_remainingPaths lastObject] retain];
-	[_remainingPaths removeLastObject];
-	SafeRetainAssign(_fileXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path]);
-	[path release];
-	[pool release];
+	@autoreleasepool {
+		NSString *path = [_remainingPaths lastObject];
+		[_remainingPaths removeLastObject];
+		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path]);
+	}
 }
 
 - (void)addFilesToDelegate:(NSObject<RecursiveFileAdderDelegate> *)delegate
@@ -80,7 +72,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
@@ -89,7 +81,6 @@
 												cancelButtonTitle:@"OK"
 												otherButtonTitles:nil];
 	[alert show];
-	[alert release];
 
 	// TODO: is it a good idea to try to continue at any cost?
 	if([_remainingPaths count])
@@ -98,11 +89,11 @@
 	}
 	else
 	{
-		[_delegate recursiveFileAdderDoneAddingFiles:SafeReturn(self)];
+		[_delegate recursiveFileAdderDoneAddingFiles:self];
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if([_remainingPaths count])
 	{
@@ -110,7 +101,7 @@
 	}
 	else
 	{
-		[_delegate recursiveFileAdderDoneAddingFiles:SafeReturn(self)];
+		[_delegate recursiveFileAdderDoneAddingFiles:self];
 	}
 }
 

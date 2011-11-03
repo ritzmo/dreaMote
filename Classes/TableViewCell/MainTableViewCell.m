@@ -17,8 +17,6 @@ NSString *kMainCell_ID = @"MainCell_ID";
 @implementation MainTableViewCell
 
 @synthesize dataDictionary = _dataDictionary;
-@synthesize nameLabel = _nameLabel;
-@synthesize explainLabel = _explainLabel;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -66,16 +64,6 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	offset = (IS_IPAD()) ? 28 : 21;
 	frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - kRightMargin, 22);
 	_explainLabel.frame = frame;
-}
-
-/* dealloc */
-- (void)dealloc
-{
-	[_nameLabel release];
-	[_explainLabel release];
-	[_dataDictionary release];
-
-	[super dealloc];
 }
 
 /* (de)select */

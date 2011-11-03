@@ -19,7 +19,7 @@
 {
 	if((self = [super init]))
 	{
-		_delegate = [delegate retain];
+		_delegate = delegate;
 	}
 	return self;
 }
@@ -76,7 +76,7 @@
 - (void)parseFull
 {
 	CXMLNode *currentChild = nil;
-	const NSArray *resultNodes = [_parser nodesForXPath:@"/streaminfo" error:nil];
+	const NSArray *resultNodes = [document nodesForXPath:@"/streaminfo" error:nil];
 
 	for(CXMLElement *resultElement in resultNodes)
 	{
@@ -106,7 +106,6 @@
 		[_delegate performSelectorOnMainThread: @selector(addSignal:)
 									withObject: newSignal
 								 waitUntilDone: NO];
-		[newSignal release];
 		
 		// Signal is unique
 		break;

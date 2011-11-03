@@ -9,10 +9,10 @@
 #import <UIKit/UIKit.h>
 
 typedef enum {
-	UIPromptViewStyleDefault = 0,
-	UIPromptViewStyleSecureTextInput,
-	UIPromptViewStylePlainTextInput,
-	UIPromptViewStyleLoginAndPasswordInput
+	UIPromptViewStyleDefault = UIAlertViewStyleDefault,
+	UIPromptViewStyleSecureTextInput = UIAlertViewStyleSecureTextInput,
+	UIPromptViewStylePlainTextInput = UIAlertViewStylePlainTextInput,
+	UIPromptViewStyleLoginAndPasswordInput = UIAlertViewStyleLoginAndPasswordInput
 } UIPromptViewStyle;
 
 /*!

@@ -22,9 +22,7 @@
 {
 @private
 	NSMutableArray *_autotimers; /*!< @brief AutoTimer List. */
-	CXMLDocument *_curDocument; /*!< @brief Current XML Document. */
 	BOOL _refreshAutotimers; /*!< @brief Refresh on next viewWillAppear? */
-	BOOL _isSplit; /*!< @brief Split mode? */
 	BOOL _parsing; /*!< @brief Currently parsing EPG? */
 	AutoTimerViewController *_autotimerView; /*!< @brief AutoTimer View. */
 }
@@ -33,7 +31,7 @@
  @brief AutoTimer View.
  @note Should only be set explicitly if in split mode.
  */
-@property (retain) AutoTimerViewController *autotimerView;
+@property (strong) AutoTimerViewController *autotimerView;
 
 /*!
  @brief Controlled by a split view controller?

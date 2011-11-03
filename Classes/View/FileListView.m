@@ -13,7 +13,9 @@
 #import "UITableViewCell+EasyInit.h"
 #import "PlayListCell.h"
 
-#import "Objects/FileProtocol.h"
+#import <Objects/FileProtocol.h>
+
+#import <XMLReader/BaseXMLReader.h>
 
 @interface FileListView()
 - (void)fetchData;
@@ -21,8 +23,7 @@
 
 @implementation FileListView
 
-@synthesize fileDelegate = _fileDelegate;
-@synthesize reloading = _reloading;
+@synthesize fileDelegate, reloading;
 @synthesize files = _files;
 
 - (id)initWithFrame:(CGRect)frame
@@ -38,7 +39,7 @@
 
 		_files = [[NSMutableArray alloc] init];
 		_playing = NSNotFound;
-		_reloading = NO;
+		reloading = NO;
 
 		// add header view
 		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.bounds.size.height, self.bounds.size.width, self.bounds.size.height)];
@@ -54,20 +55,11 @@
 	self.delegate = nil;
 	self.dataSource = nil;
 	_refreshHeaderView.delegate = nil;
-
-	SafeRetainAssign(_path, nil);
-	SafeRetainAssign(_files, nil);
-	SafeRetainAssign(_fileDelegate, nil);
-	SafeRetainAssign(_fileXMLDoc, nil);
-	SafeRetainAssign(_refreshHeaderView, nil);
-	SafeRetainAssign(_selected, nil);
-
-	[super dealloc];
 }
 
 - (NSString *)path
 {
-	return SafeReturn(_path);
+	return _path;
 }
 
 - (BOOL)isPlaylist
@@ -83,10 +75,10 @@
 
 - (NSMutableArray *)selectedFiles
 {
-	if(_selected) return SafeReturn(_selected);
+	if(_selected) return _selected;
 
 	_selected = [[NSMutableArray alloc] init];
-	return SafeReturn(_selected);
+	return _selected;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
@@ -100,8 +92,8 @@
 		{
 			[_selected removeAllObjects]; // not using property here to prevent possibly useless creation of this array
 
-			if(_fileDelegate != nil)
-				[_fileDelegate fileListView:self fileMultiSelected:nil];
+			if([fileDelegate respondsToSelector:@selector(fileListView:fileMultiSelected:)])
+				[fileDelegate fileListView:self fileMultiSelected:nil];
 		}
 	}
 }
@@ -112,7 +104,7 @@
 	[_files removeAllObjects];
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex: 0];
 	[self reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
-	SafeRetainAssign(_fileXMLDoc, nil);
+	_xmlReader = nil;
 }
 
 - (void)setPath:(NSString *)new
@@ -132,13 +124,13 @@
 /* start download of file list */
 - (void)fetchData
 {
-	CXMLDocument *newDocument = nil;
-	_reloading = YES;
+	BaseXMLReader *newReader = nil;
+	reloading = YES;
 	if(self.isPlaylist)
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist:self];
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist:self];
 	else
-		newDocument = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:_path];
-	SafeRetainAssign(_fileXMLDoc, newDocument);
+		newReader = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:_path];
+	_xmlReader = newReader;
 }
 
 /* select file by name */
@@ -196,7 +188,7 @@
 	else
 	{
 #if IS_DEBUG()
-		[NSException raise:@"FileListViewInconsistent" format:@"tried to remove file (%@, %@) which was not found in our list, %@", file.root, file.sref, _reloading ? @"was reloading" : @"not reloading"];
+		[NSException raise:@"FileListViewInconsistent" format:@"tried to remove file (%@, %@) which was not found in our list, %@", file.root, file.sref, reloading ? @"was reloading" : @"not reloading"];
 #endif
 		NSLog(@"ignoring attempted removal of file which (no longer) exists in our list");
 	}
@@ -210,9 +202,9 @@
 	for(NSObject<FileProtocol> *file in _files)
 	{
 		// file is no directory, just add
-		if(!file.isDirectory)
+		if(!file.isDirectory && [fileDelegate respondsToSelector:@selector(fileListView:fileSelected:)])
 		{
-			[_fileDelegate fileListView:self fileSelected:file];
+			[fileDelegate fileListView:self fileSelected:file];
 		}
 	}
 }
@@ -221,9 +213,9 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	_reloading = NO;
+	reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
 	[self reloadData];
 
@@ -236,13 +228,12 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
-	_reloading = NO;
+	reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
 #if INCLUDE_FEATURE(Extra_Animation)
 	[self reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
@@ -282,18 +273,18 @@
 	else
 		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 
-	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
-	TABLEVIEWCELL_TEXT(cell) = file.title;
+	cell.textLabel.text = file.title;
 
 	if(file.valid)
 	{
 		if(_isPlaylist)
 		{
 			if(indexPath.row == _playing)
-				TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-volume-high.png"];
+				cell.imageView.image = [UIImage imageNamed:@"audio-volume-high.png"];
 			else
-				TABLEVIEWCELL_IMAGE(cell) = nil;
+				cell.imageView.image = nil;
 
 			if([_selected containsObject:file])
 				[(PlayListCell *)cell setMultiSelected:YES animated:NO];
@@ -301,13 +292,13 @@
 		else
 		{
 			if(file.isDirectory)
-				TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"folder.png"];
+				cell.imageView.image = [UIImage imageNamed:@"folder.png"];
 			else
-				TABLEVIEWCELL_IMAGE(cell) = [UIImage imageNamed:@"audio-x-generic.png"];
+				cell.imageView.image = [UIImage imageNamed:@"audio-x-generic.png"];
 		}
 	}
 	else
-		TABLEVIEWCELL_IMAGE(cell) = nil;
+		cell.imageView.image = nil;
 
 	return cell;
 }
@@ -316,7 +307,7 @@
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// do nothing if reloading
-	if(_reloading)
+	if(reloading)
 	{
 #if IS_DEBUG()
 		[NSException raise:@"FileListViewUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
@@ -325,7 +316,7 @@
 	}
 
 	// See if we have a valid file
-	NSObject<FileProtocol> *file = SafeReturn([_files objectAtIndex:indexPath.row]);
+	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
 	if(!file.valid)
 		return nil;
 	// if we're in playlist mode and we have a delegate call it back
@@ -341,11 +332,11 @@
 			else
 				[self.selectedFiles removeObject:file];
 
-			if(_fileDelegate != nil)
-				[_fileDelegate fileListView:self fileMultiSelected:file];
+			if([fileDelegate respondsToSelector:@selector(fileListView:fileMultiSelected:)])
+				[fileDelegate fileListView:self fileMultiSelected:file];
 		}
-		else if(_fileDelegate != nil)
-			[_fileDelegate fileListView:self fileSelected:file];
+		else if([fileDelegate respondsToSelector:@selector(fileListView:fileSelected:)])
+			[fileDelegate fileListView:self fileSelected:file];
 		return nil;
 	}
 	// change current folder or ask what to do with file
@@ -356,8 +347,8 @@
 			self.path = file.sref;
 			return nil;
 		}
-		else if(_fileDelegate != nil)
-			[_fileDelegate fileListView:self fileSelected:file];
+		else if([fileDelegate respondsToSelector:@selector(fileListView:fileSelected:)])
+			[fileDelegate fileListView:self fileSelected:file];
 	}
 	return indexPath;
 }
@@ -366,8 +357,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(!_isPlaylist) return;
-	NSObject<FileProtocol> *file = [_files objectAtIndex: indexPath.row];
-	[_fileDelegate fileListView:self fileRemoved:file];
+	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
+	if([fileDelegate respondsToSelector:@selector(fileListView:fileRemoved:)])
+		[fileDelegate fileListView:self fileRemoved:file];
 }
 
 /* row selected */
@@ -419,7 +411,7 @@
 
 - (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
 {
-	return _reloading;
+	return reloading;
 }
 
 @end

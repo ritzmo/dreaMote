@@ -100,10 +100,5 @@ NSString* kCellTextView_ID = @"CellTextView_ID";
 	}
 }
 
-- (void)dealloc
-{
-    [view release];
-    [super dealloc];
-}
 
 @end

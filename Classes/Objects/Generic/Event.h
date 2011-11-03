@@ -8,9 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "EventProtocol.h"
-
-@protocol ServiceProtocol;
+#import <Objects/EventProtocol.h>
 
 /*!
  @brief Generic Event.
@@ -18,16 +16,7 @@
 @interface GenericEvent : NSObject <EventProtocol>
 {
 @private
-	NSObject<ServiceProtocol> *_service; /*!< @brief Associated service. */
-	NSString *_eit; /*!< @brief Event Id. */
-	NSDate *_begin; /*!< @brief Begin. */
-	NSDate *_end; /*!< @brief End. */
-	NSString *_title; /*!< @brief Title. */
-	NSString *_sdescription; /*!< @brief Short Description. */
-	NSString *_edescription; /*!< @brief Extended Description. */
-	double _duration; /*!< @brief Duration. */
-
-	NSString *_timeString; /*!< @brief Cache for Begin/End Textual representation. */
+	NSTimeInterval _duration; /*!< @brief Duration. */
 }
 
 /*!

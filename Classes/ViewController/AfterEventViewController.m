@@ -22,6 +22,8 @@
 
 @implementation AfterEventViewController
 
+@synthesize delegate;
+
 /* initialize */
 - (id)init
 {
@@ -45,7 +47,7 @@
 	afterEventViewController.selectedItem = afterEvent;
 	afterEventViewController.showAuto = showAuto;
 
-	return [afterEventViewController autorelease];
+	return afterEventViewController;
 }
 
 - (NSUInteger)selectedItem
@@ -81,12 +83,6 @@
 	[(UITableView *)self.view reloadData];
 }
 
-/* dealloc */
-- (void)dealloc
-{
-	[super dealloc];
-}
-
 /* layout */
 - (void)loadView
 {
@@ -101,12 +97,10 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
-	[tableView release];
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
-	[button release];
 }
 
 /* finish */
@@ -200,24 +194,14 @@
 	}
 }
 
-/* set delegate */
-- (void)setDelegate: (id<AfterEventDelegate>) delegate
-{
-	/*!
-	 @note We do not retain the target, this theoretically could be a problem but
-	 is not in this case.
-	 */
-	_delegate = delegate;
-}
-
 #pragma mark - UIViewController delegate methods
 
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(_delegate != nil)
+	if(delegate != nil)
 	{
-		[_delegate performSelector:@selector(afterEventSelected:) withObject: [NSNumber numberWithInteger: _selectedItem]];
+		[delegate performSelector:@selector(afterEventSelected:) withObject: [NSNumber numberWithInteger: _selectedItem]];
 	}
 }
 

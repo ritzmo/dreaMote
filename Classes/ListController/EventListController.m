@@ -33,15 +33,14 @@
 - (void)zapAction:(id)sender;
 #if INCLUDE_FEATURE(Ads)
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
-@property (nonatomic, retain) id adBannerView;
+@property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
 @end
 
 @implementation EventListController
 
-@synthesize dateFormatter = _dateFormatter;
-@synthesize popoverController;
+@synthesize dateFormatter, popoverController;
 #if INCLUDE_FEATURE(Ads)
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
@@ -54,14 +53,14 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Events", @"Default Title of EventListController");
-		_dateFormatter = [[NSDateFormatter alloc] init];
-		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_eventViewController = nil;
 		_service = nil;
 		_serviceListController = nil;
-		_events = [[NSMutableArray array] retain];
+		_events = [NSMutableArray array];
 		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-		_sectionOffsets = [[NSMutableArray array] retain];
+		_sectionOffsets = [NSMutableArray array];
 #if IS_FULL()
 		_filteredEvents = [[NSMutableArray alloc] init];
 #endif
@@ -75,7 +74,7 @@
 	EventListController *eventListController = [[EventListController alloc] init];
 	eventListController.service = ourService;
 
-	return [eventListController autorelease];
+	return eventListController;
 }
 
 /* getter for service property */
@@ -95,6 +94,7 @@
 	self.title = newService.sname;
 
 	// Clean event list
+	_reloading = YES;
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
@@ -109,37 +109,20 @@
 /* dealloc */
 - (void)dealloc
 {
-	[_events release];
-	[_service release];
-	[_dateFormatter release];
-	[_eventViewController release];
-	[_eventXMLDoc release];
-	[popoverController release];
-	[_zapListController release];
-	[_gregorian release];
-	[_sectionOffsets release];
 #if IS_FULL()
-	[_filteredEvents release];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	[_searchDisplay release];
 #endif
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
-	_adBannerView = nil;
 #endif
-
-	[super dealloc];
 }
 
 /* memory warning */
 - (void)didReceiveMemoryWarning
 {
-	[_eventViewController release];
 	_eventViewController = nil;
 	
     [super didReceiveMemoryWarning];
@@ -157,7 +140,6 @@
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
-	[zapButton release];
 
 #if IS_FULL()
 	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -175,6 +157,15 @@
 	_searchDisplay.searchResultsDelegate = self;
 #endif
 
+	if(_reloading)
+	{
+		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#if IS_FULL()
+		// NOTE: yes, this looks weird - but it works :P
+		[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height/2.0f) animated:YES];
+#endif
+	}
+
 #if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE())
 		[self createAdBannerView];
@@ -185,7 +176,6 @@
 {
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
-	[_adBannerView release];
 	_adBannerView = nil;
 #endif
 #if IS_FULL()
@@ -209,7 +199,7 @@
 	[epgCache startTransaction:_service];
 #endif
 	_reloading = YES;
-	SafeRetainAssign(_eventXMLDoc, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
+	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
 }
 
 /* remove content data */
@@ -248,7 +238,7 @@
 		[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
 	}
 
-	SafeRetainAssign(_eventXMLDoc, nil);
+	SafeRetainAssign(_xmlReader, nil);
 }
 
 /* rotate with device */
@@ -305,7 +295,7 @@
 	[[EPGCache sharedInstance] stopTransaction];
 #endif
 
-	[_dateFormatter resetReferenceDate];
+	[dateFormatter resetReferenceDate];
 
 	// eventually remove popover
 	if(popoverController)
@@ -394,7 +384,6 @@
 														cancelButtonTitle:@"OK"
 														otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 		}
 	}
 }
@@ -405,15 +394,15 @@
 #pragma mark DataSourceDelegate methods
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(CXMLDocument *)document error:(NSError *)error
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	[super dataSourceDelegate:dataSource errorParsingDocument:document error:error];
+	[super dataSourceDelegate:dataSource errorParsingDocument:error];
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 #endif
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource finishedParsingDocument:(CXMLDocument *)document
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -494,7 +483,7 @@
 #endif
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
-	cell.formatter = _dateFormatter;
+	cell.formatter = dateFormatter;
 	cell.showService = NO;
 	if(_useSections)
 	{
@@ -535,7 +524,6 @@
 		for(NSObject* obj in self.navigationController.viewControllers)
 			[result appendString:[obj description]];
 		[NSException raise:@"EventViewTwiceInNavigationStack" format:@"_eventViewController was twice in navigation stack: %@", result];
-		[result release]; // never reached, but to keep me from going crazy :)
 #endif
 		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 	}
@@ -571,9 +559,26 @@
 		NSDateFormatter *format = [[NSDateFormatter alloc] init];
 		format.dateStyle = NSDateFormatterMediumStyle;
 		format.timeStyle = NSDateFormatterNoStyle;
-		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:[[_sectionOffsets objectAtIndex:section] integerValue]];
+
+		if(section >= (NSInteger)_sectionOffsets.count)
+		{
+#if IS_DEBUG()
+			[NSException raise:@"ExcEventListInvalidSection" format:@"Title for invalid section (%d of %d) was requested.", section, _sectionOffsets.count];
+#endif
+			return @"???";
+		}
+
+		NSUInteger offset = [[_sectionOffsets objectAtIndex:section] integerValue];
+		if(offset >= events.count)
+		{
+#if IS_DEBUG()
+			[NSException raise:@"ExcEventListInvalidEvent" format:@"Tried to generate section title from invalid event (%d of %d).", offset, events.count];
+#endif
+			return @"???";
+		}
+
+		NSObject<EventProtocol> *event = (NSObject<EventProtocol> *)[events objectAtIndex:offset];
 		NSString *title = [format fuzzyDate:event.begin];
-		[format release];
 		return title;
 	}
 	return nil;
@@ -605,7 +610,7 @@
 
 //#define __BOTTOM_AD__
 
-- (CGFloat)getBannerHeight:(UIDeviceOrientation)orientation
+- (CGFloat)getBannerHeight:(UIInterfaceOrientation)orientation
 {
 	if(UIInterfaceOrientationIsLandscape(orientation))
 		return IS_IPAD() ? 66 : 32;
@@ -623,18 +628,18 @@
 	Class classAdBannerView = NSClassFromString(@"ADBannerView");
 	if(classAdBannerView != nil)
 	{
-		self.adBannerView = [[[classAdBannerView alloc] initWithFrame:CGRectZero] autorelease];
+		self.adBannerView = [[classAdBannerView alloc] initWithFrame:CGRectZero];
 		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
-														  bannerContentSizeIdentifierPortrait,
-														  bannerContentSizeIdentifierLandscape,
+														  ADBannerContentSizeIdentifierPortrait,
+														  ADBannerContentSizeIdentifierLandscape,
 														  nil]];
 		if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 #ifdef __BOTTOM_AD__
 		// Banner at Bottom
@@ -657,11 +662,11 @@
 	{
 		if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierLandscape];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 		}
 		else
 		{
-			[_adBannerView setCurrentContentSizeIdentifier:bannerContentSizeIdentifierPortrait];
+			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
 		[UIView beginAnimations:@"fixupViews" context:nil];
 		if(_adBannerViewIsVisible)
@@ -755,9 +760,7 @@
 
 			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
 			zlc.zapDelegate = self;
-			[popoverController release];
 			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
-			[zlc release];
 
 			[popoverController presentPopoverFromBarButtonItem:sender
 									  permittedArrowDirections:UIPopoverArrowDirectionUp
@@ -801,7 +804,6 @@
 													cancelButtonTitle:@"OK"
 													otherButtonTitles:nil];
 		[alert show];
-		[alert release];
 	}
 	else
 		[ServiceZapListController openStream:streamingURL withAction:selectedAction];
