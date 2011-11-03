@@ -128,26 +128,31 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
-	NSDate *newBegin = nil;
-	if(!_willReapper)
+	if(![EPGCache sharedInstance].reloading)
 	{
-		// reset visible area to to "now"
-		newBegin = [NSDate date];
-	}
-	else
-	{
-		// don't change visible area, but reload event data
-		newBegin = _curBegin;
-	}
-	self.curBegin = newBegin;
+		NSDate *newBegin = nil;
+		if(!_willReapper)
+		{
+			// reset visible area to to "now"
+			newBegin = [NSDate date];
+		}
+		else
+		{
+			// don't change visible area, but reload event data
+			newBegin = _curBegin;
+		}
+		self.curBegin = newBegin;
 
-	_willReapper = NO;
+		_willReapper = NO;
+	}
+	[super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	const CGFloat headerHeight = (IS_IPAD()) ? 40 : kMultiEPGCellHeight;
 	_headerView.frame = CGRectMake(0, 0, self.view.frame.size.width, headerHeight);
+	[super viewDidAppear:animated];
 }
 
 /* about to disappear */
@@ -159,6 +164,7 @@
 		_refreshTimer = nil;
 		[timer invalidate];
 	}
+	[super viewWillDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -549,7 +555,8 @@
 	locationInCell.x = lastTouch.x;
 	locationInCell.y = lastTouch.y - cellRect.origin.y;
 	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
-	[multiEpgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
+	if([multiEpgDelegate respondsToSelector:@selector(multiEPG:didSelectEvent:onService:)])
+		[multiEpgDelegate multiEPG:self didSelectEvent:event onService:cell.service];
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
