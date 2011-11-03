@@ -75,6 +75,11 @@
 	[queue cancelAllOperations];
 }
 
+- (BOOL)reloading
+{
+	return [_serviceList count] || _service;
+}
+
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -

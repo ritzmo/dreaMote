@@ -116,6 +116,14 @@
  @param delegate Delegate for callbacks
  */
 - (void)searchEPGForTitle:(NSString *)name delegate:(NSObject<EventSourceDelegate> *)delegate;
+
+
+
+/*!
+ @brief Is a bouquet currently being refreshed?
+ */
+@property (nonatomic, readonly) BOOL reloading;
+
 @end
 
 
