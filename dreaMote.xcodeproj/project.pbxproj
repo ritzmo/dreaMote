@@ -331,9 +331,6 @@
 		DAABAA0A1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
 		DAABAA0B1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
 		DAABAA0C1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
-		DAABAA0D1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */; };
-		DAABAA0E1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */; };
-		DAABAA0F1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */; };
 		DAABAA101462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
 		DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
 		DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
@@ -343,6 +340,9 @@
 		DAABAA291462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAABAA2A1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAABAA2B1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
+		DAABAA311462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */; };
+		DAABAA321462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */; };
+		DAABAA331462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */; };
 		DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
@@ -1302,12 +1302,12 @@
 		DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKSubscriptionProduct.h; sourceTree = "<group>"; };
 		DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKSubscriptionProduct.m; sourceTree = "<group>"; };
 		DAABA9EE1462DA00002CDC31 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
-		DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
 		DAABA9F01462DA00002CDC31 /* MKStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreManager.h; sourceTree = "<group>"; };
 		DAABA9F11462DA00002CDC31 /* MKStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreManager.m; sourceTree = "<group>"; };
 		DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreObserver.h; sourceTree = "<group>"; };
 		DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreObserver.m; sourceTree = "<group>"; };
 		DAABAA281462DBC0002CDC31 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
 		DAB85AF7145864B40089A382 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAB85AFC145864BD0089A382 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2381,7 +2381,6 @@
 				DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */,
 				DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */,
 				DAABA9EE1462DA00002CDC31 /* MKStoreKitConfigs.h */,
-				DAABA9EF1462DA00002CDC31 /* MKStoreKitConfigs.plist */,
 				DAABA9F01462DA00002CDC31 /* MKStoreManager.h */,
 				DAABA9F11462DA00002CDC31 /* MKStoreManager.m */,
 				DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */,
@@ -3178,6 +3177,7 @@
 				DAC8C4F113B2034100CA00D9 /* Localizable.strings */,
 				DAC8C50813B2038300CA00D9 /* MainWindow-iPad.xib */,
 				DAC8C50A13B2038300CA00D9 /* MainWindow.xib */,
+				DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */,
 				DAC8C50C13B2038300CA00D9 /* OtherList.xib */,
 				DAB85AF6145864B40089A382 /* PackageManager.strings */,
 				DAC8C4D113B2032300CA00D9 /* welcome_de.html */,
@@ -3394,7 +3394,7 @@
 				DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA7920E51461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DAABAA0D1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */,
+				DAABAA311462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3500,7 +3500,7 @@
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E61461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DAABAA0E1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */,
+				DAABAA321462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3603,7 +3603,7 @@
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E71461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DAABAA0F1462DA00002CDC31 /* MKStoreKitConfigs.plist in Resources */,
+				DAABAA331462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
