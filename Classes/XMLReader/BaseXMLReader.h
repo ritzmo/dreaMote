@@ -54,6 +54,11 @@ typedef CXMLDocument OurXMLDocument;
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
 
 /*!
+ @brief Delegate.
+ */
+@property (nonatomic, strong) NSObject<DataSourceDelegate> *delegate;
+
+/*!
  @brief If using TouchXML to parse XML, this is the pointer to the document.
  */
 @property (nonatomic, readonly) CXMLDocument *document;

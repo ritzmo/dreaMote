@@ -33,6 +33,7 @@
 @implementation BaseXMLReader
 
 @synthesize encoding, document;
+@synthesize delegate = _delegate;
 
 /* initialize */
 - (id)init
