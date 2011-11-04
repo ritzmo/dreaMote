@@ -109,7 +109,7 @@ static RemoteConnectorObject *singleton;
 		default:
 			return NO;
 	}
-	SafeRetainAssign(_sharedRemoteConnector, sharedRemoteConnector);
+	_sharedRemoteConnector = sharedRemoteConnector;
 
 	singleton.connection = connection;
 	return YES;
@@ -117,9 +117,7 @@ static RemoteConnectorObject *singleton;
 
 + (void)disconnect
 {
-	if(_sharedRemoteConnector)
-		SafeRetainAssign(_sharedRemoteConnector, nil);
-
+	_sharedRemoteConnector = nil;
 	[RemoteConnectorObject singleton].connection = nil;
 }
 
@@ -377,6 +375,14 @@ static RemoteConnectorObject *singleton;
 			return [value boolValue];
 	}
 	return NO;
+}
+
++ (BOOL)hideOutdatedWarning
+{
+	const id value = [[RemoteConnectorObject singleton].connection objectForKey:kHideOutdatedWarning];
+	if(value == nil)
+		return NO;
+	return [value boolValue];
 }
 
 + (NSInteger)getConnectedId

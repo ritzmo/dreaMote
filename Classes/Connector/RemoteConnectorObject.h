@@ -119,6 +119,14 @@
 + (BOOL)showNowNext;
 
 /*!
+ @brief Should hide "old version" warning for this host?
+ @note This warning only exists with Enigma2.
+
+ @return YES if the warning should be hidden.
+ */
++ (BOOL)hideOutdatedWarning;
+
+/*!
  @brief Returns Id of currently active Connection.
  @note If active Connection is not found in List of known Connections this function
  returns the Id of current default Connection.
