@@ -25,8 +25,6 @@
 	UISlider *_agc; /*!< @brief AGC % Slider. */
 	UISlider *_interval; /*!< @brief Refresh interval Slider. */
 	UISwitch *_audioToggle; /*!< @brief Enable/disable audio. */
-	UITableViewCell *_snrdBCell; /*!< @brief Cell containing SNR dB. */
-	UITableViewCell *_berCell; /*!< @brief Cell containing BER. */
 	BOOL _hasSnrdB; /*!< @brief SNR dB value is valid. */
 	NSTimeInterval _refreshInterval; /*!< @brief Current refresh Interval. */
 	AudioComponentInstance toneUnit; /*!< @brief AudioUnit generating audio aid. */

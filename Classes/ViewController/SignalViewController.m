@@ -266,26 +266,6 @@ OSStatus RenderTone(
 	[_audioToggle setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kSatFinderAudio]];
 	[_audioToggle addTarget:self action:@selector(audioToggleSwitched:) forControlEvents:UIControlEventValueChanged];
 	_audioToggle.backgroundColor = [UIColor clearColor];
-
-	// SNRdB
-	UITableViewCell *sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-
-	sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-	sourceCell.textLabel.textColor = [UIColor blackColor];
-	sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-	sourceCell.indentationLevel = 1;
-	_snrdBCell = sourceCell;
-
-	// BER
-	sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-
-	sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-	sourceCell.textLabel.textColor = [UIColor blackColor];
-	sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-	sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-	sourceCell.indentationLevel = 1;
-	_berCell = sourceCell;
 }
 
 - (void)viewDidUnload
@@ -294,8 +274,6 @@ OSStatus RenderTone(
 	_agc = nil;
 	_audioToggle = nil;
 	_interval = nil;
-	_snrdBCell = nil;
-	_berCell = nil;
 
 	[self stopAudio];
 	AudioSessionSetActive(false);
@@ -471,10 +449,14 @@ OSStatus RenderTone(
 			}
 			break;
 		case 1:
-			if(_hasSnrdB && indexPath.row == 0)
-				sourceCell = _snrdBCell;
-			else
-				sourceCell = _berCell;
+			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+			sourceCell.textLabel.textColor = [UIColor blackColor];
+			sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			sourceCell.indentationLevel = 1;
+			// NOTE: there is no useful default text, so don't set any
 			break;
 		case 2:
 			sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -519,7 +501,8 @@ OSStatus RenderTone(
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+	// NOTE: no reason for this reload
+	//[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 
 	if(_refreshInterval <= 0)
 		[self fetchSignalDefer];
@@ -533,24 +516,30 @@ OSStatus RenderTone(
 {
 	if(signal == nil)
 		return;
-	
+
 	_snr.value = (float)(signal.snr);
 	_agc.value = (float)(signal.agc);
 
 	const BOOL oldSnrdB =_hasSnrdB;
 	_hasSnrdB = signal.snrdb > -1;
-	_snrdBCell.textLabel.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
-	_berCell.textLabel.text = [NSString stringWithFormat: @"%i BER", signal.ber];
-
-	// calculate frequency for audio signal
-	const NSInteger fMin = 200;
-	const NSInteger fMax = 3000;
-	frequency = fMin + (signal.snr * fMax / 100);
 
 	// there is a weird glitch that prevents the second row from being shown unless we do a full reload, so do it here
 	// while we still know that we need to do one.
 	if(oldSnrdB != _hasSnrdB)
 		[(UITableView *)self.view reloadData];
+
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+	if(_hasSnrdB)
+	{
+		cell.textLabel.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
+		cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+	}
+	cell.textLabel.text = [NSString stringWithFormat: @"%i BER", signal.ber];
+
+	// calculate frequency for audio signal
+	const NSInteger fMin = 200;
+	const NSInteger fMax = 3000;
+	frequency = fMin + (signal.snr * fMax / 100);
 }
 
 @end
