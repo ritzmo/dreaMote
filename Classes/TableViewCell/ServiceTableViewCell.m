@@ -52,7 +52,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (void)prepareForReuse
 {
-	self.editingAccessoryType = UITableViewCellAccessoryNone;
+	self.accessoryType = UITableViewCellAccessoryNone;
 	self.imageView.image = nil;
 	self.service = nil;
 
