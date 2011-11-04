@@ -23,6 +23,8 @@
 	#import "EPGCache.h"
 #endif
 
+#import "MKStoreManager.h"
+
 #define ONEDAY 86400
 
 @interface EventListController()
@@ -167,7 +169,7 @@
 	}
 
 #if INCLUDE_FEATURE(Ads)
-	if(IS_IPHONE())
+	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
 		[self createAdBannerView];
 #endif
 }

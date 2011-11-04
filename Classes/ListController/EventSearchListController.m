@@ -22,6 +22,8 @@
 #import "Insort/NSArray+CWSortedInsert.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "MKStoreManager.h"
+
 #define kTransitionDuration	0.6
 
 @interface EventSearchListController()
@@ -103,7 +105,8 @@
 	self.navigationItem.rightBarButtonItem = barButtonItem;
 
 #if INCLUDE_FEATURE(Ads)
-	[self createAdBannerView];
+	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+		[self createAdBannerView];
 #endif
 }
 

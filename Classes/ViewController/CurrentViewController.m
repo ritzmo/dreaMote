@@ -20,6 +20,8 @@
 #import "ServiceTableViewCell.h"
 #import "CellTextView.h"
 
+#import "MKStoreManager.h"
+
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
@@ -77,7 +79,8 @@
 	_tableView.dataSource = self;
 
 #if INCLUDE_FEATURE(Ads)
-	[self createAdBannerView];
+	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+		[self createAdBannerView];
 #endif
 }
 

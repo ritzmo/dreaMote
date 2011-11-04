@@ -21,6 +21,8 @@
 #import <Objects/Generic/Timer.h>
 #import <Objects/Generic/Result.h>
 
+#import "MKStoreManager.h"
+
 @interface TimerListController()
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
@@ -124,7 +126,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 #if INCLUDE_FEATURE(Ads)
-	if(IS_IPHONE())
+	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
 		[self createAdBannerView];
 #endif
 

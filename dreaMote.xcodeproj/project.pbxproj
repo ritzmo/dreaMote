@@ -283,6 +283,8 @@
 		DA681B2413B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
 		DA681B2513B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
 		DA681B2613B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
+		DA73A4111463D6E800E6F505 /* MKStoreKitConfigs Full.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA73A4101463D6E800E6F505 /* MKStoreKitConfigs Full.plist */; };
+		DA73A4131463D6F300E6F505 /* MKStoreKitConfigs Lite.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA73A4121463D6F300E6F505 /* MKStoreKitConfigs Lite.plist */; };
 		DA7920E21461ABCF0040615E /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7920CB1461ABCF0040615E /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA7920E31461ABCF0040615E /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7920CB1461ABCF0040615E /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA7920E41461ABCF0040615E /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7920CB1461ABCF0040615E /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -340,9 +342,6 @@
 		DAABAA291462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAABAA2A1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAABAA2B1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
-		DAABAA311462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */; };
-		DAABAA321462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */; };
-		DAABAA331462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */ = {isa = PBXBuildFile; fileRef = DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */; };
 		DAB85AF8145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
 		DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAB85AF6145864B40089A382 /* PackageManager.strings */; };
@@ -1268,6 +1267,8 @@
 		DA681B1913B483FB00232190 /* NSNetService+IpString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNetService+IpString.m"; sourceTree = "<group>"; };
 		DA681B1F13B4976700232190 /* Screenshot_Save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot_Save.png; sourceTree = "<group>"; };
 		DA681B2013B4976700232190 /* Setup_Auto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Setup_Auto.png; sourceTree = "<group>"; };
+		DA73A4101463D6E800E6F505 /* MKStoreKitConfigs Full.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MKStoreKitConfigs Full.plist"; sourceTree = "<group>"; };
+		DA73A4121463D6F300E6F505 /* MKStoreKitConfigs Lite.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MKStoreKitConfigs Lite.plist"; sourceTree = "<group>"; };
 		DA7920CA1461ABCF0040615E /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Facebook.h; path = "ShareKit/Submodules/facebook-ios-sdk/src/Facebook.h"; sourceTree = SOURCE_ROOT; };
 		DA7920CB1461ABCF0040615E /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Facebook.m; path = "ShareKit/Submodules/facebook-ios-sdk/src/Facebook.m"; sourceTree = SOURCE_ROOT; };
 		DA7920CC1461ABCF0040615E /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = "ShareKit/Submodules/facebook-ios-sdk/src/FBConnect.h"; sourceTree = SOURCE_ROOT; };
@@ -1306,7 +1307,6 @@
 		DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreObserver.h; sourceTree = "<group>"; };
 		DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreObserver.m; sourceTree = "<group>"; };
 		DAABAA281462DBC0002CDC31 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MKStoreKitConfigs.plist; sourceTree = "<group>"; };
 		DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
 		DAB85AF7145864B40089A382 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAB85AFC145864BD0089A382 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PackageManager.strings; sourceTree = "<group>"; };
@@ -3177,7 +3177,8 @@
 				DAC8C4F113B2034100CA00D9 /* Localizable.strings */,
 				DAC8C50813B2038300CA00D9 /* MainWindow-iPad.xib */,
 				DAC8C50A13B2038300CA00D9 /* MainWindow.xib */,
-				DAABAA301462DDD4002CDC31 /* MKStoreKitConfigs.plist */,
+				DA73A4101463D6E800E6F505 /* MKStoreKitConfigs Full.plist */,
+				DA73A4121463D6F300E6F505 /* MKStoreKitConfigs Lite.plist */,
 				DAC8C50C13B2038300CA00D9 /* OtherList.xib */,
 				DAB85AF6145864B40089A382 /* PackageManager.strings */,
 				DAC8C4D113B2032300CA00D9 /* welcome_de.html */,
@@ -3210,6 +3211,7 @@
 				DAC8BE4813B1FF9200CA00D9 /* Frameworks */,
 				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BE4913B1FF9200CA00D9 /* Resources */,
+				DA73A4141463D7D300E6F505 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3228,6 +3230,7 @@
 				DAC8BEAC13B2009F00CA00D9 /* Frameworks */,
 				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BEAD13B2009F00CA00D9 /* Resources */,
+				DA73A4141463D7D300E6F505 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3246,6 +3249,7 @@
 				DAC8BED213B200C500CA00D9 /* Frameworks */,
 				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BED313B200C500CA00D9 /* Resources */,
+				DA73A4141463D7D300E6F505 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3394,7 +3398,7 @@
 				DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA7920E51461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DAABAA311462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */,
+				DA73A4111463D6E800E6F505 /* MKStoreKitConfigs Full.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3500,7 +3504,7 @@
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E61461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DAABAA321462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */,
+				DA73A4131463D6F300E6F505 /* MKStoreKitConfigs Lite.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3603,7 +3607,6 @@
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E71461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DAABAA331462DDD4002CDC31 /* MKStoreKitConfigs.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3622,6 +3625,19 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = "/usr/bin/env python";
 			shellScript = "import os\nos.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.7'\nimport csv\nfrom subprocess import Popen, PIPE\nfrom Foundation import NSMutableDictionary\n\ncmd = \"/usr/bin/git rev-parse --short HEAD\" # get the short commit hash from git\nbuild_number = Popen(cmd, shell=True, stdout=PIPE).stdout.read()\ninfo_plist = os.environ['BUILT_PRODUCTS_DIR'] + \"/\" + os.environ['WRAPPER_NAME'] + \"/Info.plist\"\n\n# Open the plist and write the short commit hash as the bundle version\nplist = NSMutableDictionary.dictionaryWithContentsOfFile_(info_plist)\ncore_version = csv.reader([plist['CFBundleShortVersionString'].rstrip()], delimiter=\" \").next()[0]\nfull_version = ''.join([core_version, '+', build_number])\nplist['CFBundleVersion'] = full_version\nplist.writeToFile_atomically_(info_plist, 1)\n\nprint 'project_bundle_version: '+full_version";
+		};
+		DA73A4141463D7D300E6F505 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = "/usr/bin/env python";
+			shellScript = "import os\n\nfilenames = {\n    'dreaMote': 'MKStoreKitConfigs Full.plist',\n    'dreaMoteLite': 'MKStoreKitConfigs Lite.plist',\n}\nbefore = filenames.get(os.environ['TARGET_NAME'], None)\n\nif before:\n    basedir = os.path.join(os.environ['BUILT_PRODUCTS_DIR'], os.environ['WRAPPER_NAME'])\n    fullpath = os.path.join(basedir, before)\n    if os.path.exists(fullpath):\n        target = os.path.join(basedir, 'MKStoreKitConfigs.plist')\n        os.rename(fullpath, target)\n        print fullpath, 'renamed to', target\n    else:\n        raise Exception, 'Source configuration %s not found!' % (fullpath,)\nelse:\n    print 'Target %s has no source file name defined, ignoring build step.' % (os.environ['TARGET_NAME'], )";
 		};
 /* End PBXShellScriptBuildPhase section */
 

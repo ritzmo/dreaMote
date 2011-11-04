@@ -36,8 +36,13 @@
 // To avoid making mistakes map plist entries to macros on this page.
 // when you include MKStoreManager in your clss, these macros get defined there
 
-#define kServiceEditorPurchase	@"com.ritzmo.dreaMote.ServiceEditor"
-#define kConsumableBaseFeatureId @"de.ritzmo.dreaMote."
+#if IS_FULL()
+	#define kServiceEditorPurchase	@"de.ritzmo.dreaMote.ServiceEditor"
+	#define kConsumableBaseFeatureId @"de.ritzmo.dreaMote."
+#else
+	#define kServiceEditorPurchase	@"de.ritzmo.dreaMoteLite.ServiceEditor"
+	#define kAdFreePurchase			@"de.ritzmo.dreaMoteLite.AdRemoval"
+#endif
 
 #if IS_DEBUG()
 	#define SERVER_PRODUCT_MODEL 1

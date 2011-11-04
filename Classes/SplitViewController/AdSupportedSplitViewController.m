@@ -3,10 +3,12 @@
 //  dreaMote
 //
 //  Created by Moritz Venn on 02.03.11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
 #import "AdSupportedSplitViewController.h"
+
+#import "MKStoreManager.h"
 
 @interface AdSupportedSplitViewController()
 #if INCLUDE_FEATURE(Ads)
@@ -30,7 +32,8 @@
 	[super loadView];
 
 #if INCLUDE_FEATURE(Ads)
-	[self createAdBannerView];
+	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+		[self createAdBannerView];
 #endif
 }
 
