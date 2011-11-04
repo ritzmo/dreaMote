@@ -46,6 +46,7 @@
 @implementation MultiEPGListController
 
 @synthesize multiEpgDelegate;
+@synthesize pendingRequests;
 @synthesize progressHUD;
 
 - (id)init

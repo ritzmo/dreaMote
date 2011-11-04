@@ -43,7 +43,6 @@
 	NSDate *_curBegin; /*!< @brief Current begin of timespan. */
 	MBProgressHUD *progressHUD; /*!< @brief Progress Hud. */
 	MultiEPGHeaderView *_headerView; /*!< @brief Timeline. */
-	NSInteger pendingRequests; /*!< @brief Pending requests. */
 	NSTimer *_refreshTimer; /*!< @brief Timer used to refresh "_secondsSinceBegin". */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Offset to "_curBegin". */
 	float _servicesToRefresh; /*!< @brief Number of services to refresh. */
@@ -63,6 +62,11 @@
  @brief MultiEPG Delegate.
  */
 @property (nonatomic, unsafe_unretained) NSObject<MultiEPGDelegate> *multiEpgDelegate;
+
+/*!
+ @brief Pending requests.
+ */
+@property (nonatomic) NSInteger pendingRequests;
 
 /*!
  @brief View will reapper.

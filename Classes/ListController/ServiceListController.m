@@ -331,6 +331,12 @@ enum serviceListTags
 		const BOOL isNowNext = [anyObject conformsToProtocol:@protocol(EventProtocol)];
 		if(editing || !isNowNext)
 		{
+			_reloading = YES;
+			[_searchDisplay setActive:NO animated:YES];
+			[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
+#if IS_FULL()
+			_multiEPG.pendingRequests++;
+#endif
 			[self emptyData];
 			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		}
@@ -1142,6 +1148,9 @@ enum serviceListTags
 	{
 		// NOTE: reload service list to get the sref of the alternative service
 		[self emptyData];
+#if IS_FULL()
+		_multiEPG.pendingRequests++;
+#endif
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		return;
 	}
@@ -1164,6 +1173,9 @@ enum serviceListTags
 	{
 		// NOTE: we don't know which service reference the original service is going to have, so just reload everything
 		[self emptyData];
+#if IS_FULL()
+		_multiEPG.pendingRequests++;
+#endif
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 	}
 }
@@ -1297,6 +1309,9 @@ enum serviceListTags
 		{
 			// TODO: optimize
 			[self emptyData];
+#if IS_FULL()
+			_multiEPG.pendingRequests++;
+#endif
 			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		}
 		else
@@ -1324,6 +1339,9 @@ enum serviceListTags
 		{
 			// TODO: optimize
 			[self emptyData];
+#if IS_FULL()
+			_multiEPG.pendingRequests++;
+#endif
 			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		}
 		else
