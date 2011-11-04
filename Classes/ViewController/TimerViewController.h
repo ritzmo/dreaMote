@@ -47,9 +47,6 @@
 	CellTextField *_descriptionCell; /*!< @brief Description Cell. */
 	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */
 	UISwitch *_timerJustplay; /*!< @brief Justplay Switch. */
-	UITableViewCell *_afterEventCell; /*!< @brief After Event Cell. */
-	UITableViewCell *_locationCell; /*!< @brief Location Cell. */
-	UITableViewCell *_repeatedCell; /*!< @brief Repeated Cell. */
 
 	NSObject<EventProtocol> *_event; /*!< @brief Associated Event. */
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */

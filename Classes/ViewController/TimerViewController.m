@@ -98,7 +98,6 @@ enum timerSections
 		_datePickerController = nil;
 		_afterEventViewController = nil;
 		_simpleRepeatedViewController = nil;
-		_repeatedCell = nil;
 		_popoverButtonItem = nil;
 	}
 	return self;
@@ -502,10 +501,6 @@ enum timerSections
 	self.navigationItem.rightBarButtonItem = nil;
 	_cancelButtonItem = nil;
 
-	_afterEventCell = nil;
-	_repeatedCell = nil;
-	_locationCell = nil;
-
 	[super viewDidUnload];
 }
 
@@ -714,102 +709,17 @@ enum timerSections
 
 - (void)repeatedSelected:(NSNumber *)newRepeated withCount:(NSNumber *)newCount;
 {
-	NSInteger repeated = -1, repeatcount;
+	NSInteger repeatcount;
 	if(newRepeated == nil)
 		return;
 
-	repeated = [newRepeated integerValue];
-	_timer.repeated = repeated;
+	_timer.repeated = [newRepeated integerValue];
 	repeatcount = [newCount integerValue];
-	if(repeatcount < 0) repeatcount = 0;
+	if(repeatcount < 0)
+		repeatcount = 0;
 	_timer.repeatcount = repeatcount;
 
-	if(_repeatedCell == nil)
-		return;
-
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
-	{
-		if(repeated == 0)
-		{
-			TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Never", @"Repeated");
-		}
-		else
-		{
-			NSMutableString *text = nil;
-
-			if(repeated == 31)
-			{
-				TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Weekdays", @"Repeated");
-				return;
-			}
-			else if (repeated == 127)
-			{
-				TABLEVIEWCELL_TEXT(_repeatedCell) = NSLocalizedString(@"Daily", @"Repeated");
-				return;
-			}
-
-			text = [NSMutableString stringWithCapacity: 10];
-			if(repeated & weekdayMon)
-				[text appendString: NSLocalizedString(@"Mon", "Weekday")];
-			if(repeated & weekdayTue)
-				[text appendString: NSLocalizedString(@"Tue", "Weekday")];
-			if(repeated & weekdayWed)
-				[text appendString: NSLocalizedString(@"Wed", "Weekday")];
-			if(repeated & weekdayThu)
-				[text appendString: NSLocalizedString(@"Thu", "Weekday")];
-			if(repeated & weekdayFri)
-				[text appendString: NSLocalizedString(@"Fri", "Weekday")];
-			if(repeated & weekdaySat)
-				[text appendString: NSLocalizedString(@"Sat", "Weekday")];
-			if(repeated & weekdaySun)
-				[text appendString: NSLocalizedString(@"Sun", "Weekday")];
-
-			TABLEVIEWCELL_TEXT(_repeatedCell) = text;
-		}
-	}
-	else
-	{
-		NSString *text = nil;
-		if(repeated == neutrinoTimerRepeatNever)
-			text = NSLocalizedString(@"Never", @"Repeated");
-		else if (repeated == neutrinoTimerRepeatDaily)
-			text =  NSLocalizedString(@"Daily", @"Repeated");
-		else if (repeated == neutrinoTimerRepeatWeekly)
-			text = NSLocalizedString(@"Weekly", @"Repeated");
-		else if (repeated == neutrinoTimerRepeatBiweekly)
-			text = NSLocalizedString(@"2-weekly", @"Repeated");
-		else if (repeated == neutrinoTimerRepeatFourweekly)
-			text = NSLocalizedString(@"4-weekly", @"Repeated");
-		else if (repeated == neutrinoTimerRepeatMonthly)
-			text = NSLocalizedString(@"Monthly", @"Repeated");
-		else if (repeated & neutrinoTimerRepeatWeekdays)
-		{
-			NSMutableString *mtext = [NSMutableString stringWithCapacity:10];
-			if(repeated & neutrinoTimerRepeatMonday)
-				[mtext appendString: NSLocalizedString(@"Mon", "Weekday")];
-			if(repeated & neutrinoTimerRepeatTuesday)
-				[mtext appendString: NSLocalizedString(@"Tue", "Weekday")];
-			if(repeated & neutrinoTimerRepeatWednesday)
-				[mtext appendString: NSLocalizedString(@"Wed", "Weekday")];
-			if(repeated & neutrinoTimerRepeatThursday)
-				[mtext appendString: NSLocalizedString(@"Thu", "Weekday")];
-			if(repeated & neutrinoTimerRepeatFriday)
-				[mtext appendString: NSLocalizedString(@"Fri", "Weekday")];
-			if(repeated & neutrinoTimerRepeatSaturday)
-				[mtext appendString: NSLocalizedString(@"Sat", "Weekday")];
-			if(repeated & neutrinoTimerRepeatSunday)
-				[mtext appendString: NSLocalizedString(@"Sun", "Weekday")];
-
-			if([mtext length])
-				text = mtext;
-			else
-				text = NSLocalizedString(@"Never", @"Repeated"); // XXX: is this right?
-		}
-		if(repeatcount > 0)
-			text = [text stringByAppendingFormat:@" (%d times)", repeatcount];
-
-		TABLEVIEWCELL_TEXT(_repeatedCell) = text;
-	}
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:sectionRepeated] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
@@ -822,18 +732,8 @@ enum timerSections
 		return;
 	
 	_timer.afterevent = [newAfterEvent integerValue];
-	
-	if(_afterEventCell == nil)
-		return;
 
-	if(_timer.afterevent == kAfterEventNothing)
-		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Nothing", @"After Event");
-	else if(_timer.afterevent == kAfterEventStandby)
-		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
-	else if(_timer.afterevent == kAfterEventDeepstandby)
-		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Deep Standby", @"");
-	else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
-		TABLEVIEWCELL_TEXT(_afterEventCell) = NSLocalizedString(@"Auto", @"");
+	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:sectionAfterEvent] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
@@ -842,15 +742,16 @@ enum timerSections
 
 - (void)locationSelected:(NSObject <LocationProtocol>*)newLocation
 {
+	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionLocation]];
 	if(newLocation)
 	{
 		_timer.location = newLocation.fullpath;
-		_locationCell.textLabel.text = newLocation.fullpath;
+		cell.textLabel.text = newLocation.fullpath;
 	}
 	else
 	{
 		_timer.location = nil;
-		_locationCell.textLabel.text = NSLocalizedString(@"Default Location", @"");
+		cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
 	}
 }
 
@@ -979,7 +880,7 @@ enum timerSections
 		case sectionRepeated:
 		case sectionLocation:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
 			if(self.editing)
@@ -1062,16 +963,100 @@ enum timerSections
 			sourceCell.textLabel.text = [self format_BeginEnd:_timer.end];
 			break;
 		case sectionAfterEvent:
-			_afterEventCell = sourceCell;
-			[self afterEventSelected: [NSNumber numberWithInteger: _timer.afterevent]];
+			if(_timer.afterevent == kAfterEventNothing)
+				sourceCell.textLabel.text = NSLocalizedString(@"Nothing", @"After Event");
+			else if(_timer.afterevent == kAfterEventStandby)
+				sourceCell.textLabel.text = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
+			else if(_timer.afterevent == kAfterEventDeepstandby)
+				sourceCell.textLabel.text = NSLocalizedString(@"Deep Standby", @"");
+			else //if(_timer.afterevent == kFeaturesTimerAfterEventAuto)
+				sourceCell.textLabel.text = NSLocalizedString(@"Auto", @"");
 			break;
 		case sectionRepeated:
-			_repeatedCell = sourceCell;
-			[self repeatedSelected:[NSNumber numberWithInteger:_timer.repeated] withCount:[NSNumber numberWithInteger:_timer.repeatcount]];
+		{
+			NSInteger repeated = _timer.repeated;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesSimpleRepeated])
+			{
+				if(repeated == 0)
+				{
+					sourceCell.textLabel.text = NSLocalizedString(@"Never", @"Repeated");
+				}
+				else if(repeated == 31)
+				{
+					sourceCell.textLabel.text = NSLocalizedString(@"Weekdays", @"Repeated");
+				}
+				else if (repeated == 127)
+				{
+					sourceCell.textLabel.text = NSLocalizedString(@"Daily", @"Repeated");
+				}
+				else
+				{
+					NSMutableString *text = [NSMutableString stringWithCapacity: 10];
+					if(repeated & weekdayMon)
+						[text appendString: NSLocalizedString(@"Mon", "Weekday")];
+					if(repeated & weekdayTue)
+						[text appendString: NSLocalizedString(@"Tue", "Weekday")];
+					if(repeated & weekdayWed)
+						[text appendString: NSLocalizedString(@"Wed", "Weekday")];
+					if(repeated & weekdayThu)
+						[text appendString: NSLocalizedString(@"Thu", "Weekday")];
+					if(repeated & weekdayFri)
+						[text appendString: NSLocalizedString(@"Fri", "Weekday")];
+					if(repeated & weekdaySat)
+						[text appendString: NSLocalizedString(@"Sat", "Weekday")];
+					if(repeated & weekdaySun)
+						[text appendString: NSLocalizedString(@"Sun", "Weekday")];
+
+					sourceCell.textLabel.text = text;
+				}
+			}
+			else
+			{
+				NSString *text = nil;
+				if(repeated == neutrinoTimerRepeatNever)
+					text = NSLocalizedString(@"Never", @"Repeated");
+				else if (repeated == neutrinoTimerRepeatDaily)
+					text =  NSLocalizedString(@"Daily", @"Repeated");
+				else if (repeated == neutrinoTimerRepeatWeekly)
+					text = NSLocalizedString(@"Weekly", @"Repeated");
+				else if (repeated == neutrinoTimerRepeatBiweekly)
+					text = NSLocalizedString(@"2-weekly", @"Repeated");
+				else if (repeated == neutrinoTimerRepeatFourweekly)
+					text = NSLocalizedString(@"4-weekly", @"Repeated");
+				else if (repeated == neutrinoTimerRepeatMonthly)
+					text = NSLocalizedString(@"Monthly", @"Repeated");
+				else if (repeated & neutrinoTimerRepeatWeekdays)
+				{
+					NSMutableString *mtext = [NSMutableString stringWithCapacity:10];
+					if(repeated & neutrinoTimerRepeatMonday)
+						[mtext appendString: NSLocalizedString(@"Mon", "Weekday")];
+					if(repeated & neutrinoTimerRepeatTuesday)
+						[mtext appendString: NSLocalizedString(@"Tue", "Weekday")];
+					if(repeated & neutrinoTimerRepeatWednesday)
+						[mtext appendString: NSLocalizedString(@"Wed", "Weekday")];
+					if(repeated & neutrinoTimerRepeatThursday)
+						[mtext appendString: NSLocalizedString(@"Thu", "Weekday")];
+					if(repeated & neutrinoTimerRepeatFriday)
+						[mtext appendString: NSLocalizedString(@"Fri", "Weekday")];
+					if(repeated & neutrinoTimerRepeatSaturday)
+						[mtext appendString: NSLocalizedString(@"Sat", "Weekday")];
+					if(repeated & neutrinoTimerRepeatSunday)
+						[mtext appendString: NSLocalizedString(@"Sun", "Weekday")];
+
+					if([mtext length])
+						text = mtext;
+					else
+						text = NSLocalizedString(@"Never", @"Repeated"); // XXX: is this right?
+				}
+				if(_timer.repeatcount > 0)
+					text = [text stringByAppendingFormat:@" (%d times)", _timer.repeatcount];
+
+				sourceCell.textLabel.text = text;
+			}
 			break;
+		}
 		case sectionLocation:
-			_locationCell = sourceCell;
-			TABLEVIEWCELL_TEXT(sourceCell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
+			sourceCell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
 		default:
 			break;
