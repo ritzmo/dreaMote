@@ -45,8 +45,6 @@
 	CellTextField *_titleCell; /*!< @brief Title Cell. */
 	UITextField *_timerDescription; /*!< @brief Description Field. */
 	CellTextField *_descriptionCell; /*!< @brief Description Cell. */
-	UITableViewCell *_timerBeginCell; /*!< @brief Begin Cell. */
-	UITableViewCell *_timerEndCell; /*!< @brief End Cell. */
 	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */
 	UISwitch *_timerJustplay; /*!< @brief Justplay Switch. */
 	UITableViewCell *_afterEventCell; /*!< @brief After Event Cell. */

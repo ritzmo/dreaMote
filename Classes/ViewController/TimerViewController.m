@@ -57,6 +57,20 @@
 @property (unsafe_unretained, nonatomic, readonly) CellTextField *timerDescriptionCell;
 @end
 
+enum timerSections
+{
+	sectionTitle = 0,
+	sectionDescription = 1,
+	sectionGeneral = 2,
+	sectionService = 3,
+	sectionBegin = 4,
+	sectionEnd = 5,
+	sectionAfterEvent = 6,
+	sectionRepeated = 7,
+	sectionLocation = 8,
+	sectionMax = 9
+};
+
 @implementation TimerViewController
 
 /*!
@@ -84,8 +98,6 @@
 		_datePickerController = nil;
 		_afterEventViewController = nil;
 		_simpleRepeatedViewController = nil;
-		_timerBeginCell = nil;
-		_timerEndCell = nil;
 		_repeatedCell = nil;
 		_popoverButtonItem = nil;
 	}
@@ -142,19 +154,19 @@
 
 	_titleCell.delegate = nil;
 	_descriptionCell.delegate = nil;
-	SafeRetainAssign(_descriptionCell, nil);
+	_descriptionCell = nil;
 }
 
 - (void)didReceiveMemoryWarning
 {
-	SafeRetainAssign(_afterEventNavigationController , nil);
-	SafeRetainAssign(_afterEventViewController , nil);
-	SafeRetainAssign(_bouquetListController , nil);
-	SafeRetainAssign(_datePickerController , nil);
-	SafeRetainAssign(_datePickerNavigationController , nil);
-	SafeRetainAssign(_locationListController , nil);
-	SafeRetainAssign(_simpleRepeatedNavigationController , nil);
-	SafeRetainAssign(_simpleRepeatedViewController , nil);
+	_afterEventNavigationController = nil;
+	_afterEventViewController = nil;
+	_bouquetListController = nil;
+	_datePickerController = nil;
+	_datePickerNavigationController = nil;
+	_locationListController = nil;
+	_simpleRepeatedNavigationController = nil;
+	_simpleRepeatedViewController = nil;
 	
 	[super didReceiveMemoryWarning];
 }
@@ -479,19 +491,17 @@
 - (void)viewDidUnload
 {
 	_titleCell.delegate = nil;
-	SafeRetainAssign(_titleCell, nil);
-	SafeRetainAssign(_timerTitle, nil);
+	_titleCell = nil;
+	_timerTitle = nil;
 	_descriptionCell.delegate = nil;
-	SafeRetainAssign(_descriptionCell, nil);
-	SafeRetainAssign(_timerDescription, nil);
-	SafeRetainAssign(_timerEnabled, nil);
-	SafeRetainAssign(_timerJustplay, nil);
+	_descriptionCell = nil;
+	_timerDescription = nil;
+	_timerEnabled = nil;
+	_timerJustplay = nil;
 	self.navigationItem.leftBarButtonItem = nil;
 	self.navigationItem.rightBarButtonItem = nil;
-	SafeRetainAssign(_cancelButtonItem, nil);
+	_cancelButtonItem = nil;
 
-	_timerBeginCell = nil;
-	_timerEndCell = nil;
 	_afterEventCell = nil;
 	_repeatedCell = nil;
 	_locationCell = nil;
@@ -659,30 +669,6 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
-}
-
-#pragma mark -
-#pragma mark DatePickerController callbacks
-#pragma mark -
-
-- (void)beginSelected: (NSDate *)newDate
-{
-	if(newDate == nil)
-		return;
-	
-	_timer.begin = newDate;
-	if(_timerBeginCell)
-		TABLEVIEWCELL_TEXT(_timerBeginCell) = [self format_BeginEnd: newDate];
-}
-
-- (void)endSelected: (NSDate *)newDate
-{
-	if(newDate == nil)
-		return;
-	
-	_timer.end = newDate;
-	if(_timerEndCell)
-		TABLEVIEWCELL_TEXT(_timerEndCell) = [self format_BeginEnd: newDate];
 }
 
 #pragma mark -
@@ -879,11 +865,11 @@
 #endif
 	switch(section)
 	{
-		case 0:
+		case sectionTitle:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
 				return defaultSectionHeaderHeight;
 			return 0;
-		case 1:
+		case sectionDescription:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
 				return defaultSectionHeaderHeight;
 			return 0;
@@ -895,47 +881,47 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	const NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	NSInteger sections = 6;
-	if([sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
-		++sections;
-	if([sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
-		++sections;
-	if([sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-		++sections;
+	NSInteger sections = sectionMax;
+	if(![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
+		--sections;
+	if(![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
+		--sections;
+	if(![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+		--sections;
 	return sections;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+	if(section >= sectionAfterEvent && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEvent])
 		++section;
-	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
+	if(section >= sectionRepeated && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerRepeated])
 		++section;
-	if(section > 7 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
+	if(section >= sectionLocation && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
 		++section;
 		
 	switch (section) {
-		case 0:
+		case sectionTitle:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
 				return NSLocalizedString(@"Title", @"");
 			return nil;
-		case 1:
+		case sectionDescription:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
 				return NSLocalizedString(@"Description", @"");
 			return nil;
-		case 2:
+		case sectionGeneral:
 			return NSLocalizedString(@"General", @"in timer settings dialog");
-		case 3:
+		case sectionService:
 			return NSLocalizedString(@"Service", @"");
-		case 4:
+		case sectionBegin:
 			return NSLocalizedString(@"Begin", @"");
-		case 5:
+		case sectionEnd:
 			return NSLocalizedString(@"End", @"");
-		case 6:
+		case sectionAfterEvent:
 			return NSLocalizedString(@"After Event", @"");
-		case 7:
+		case sectionRepeated:
 			return NSLocalizedString(@"Repeated", @"");
-		case 8:
+		case sectionLocation:
 			return NSLocalizedString(@"Location", @"");
 		default:
 			return nil;
@@ -946,15 +932,15 @@
 {
 	switch(section)
 	{
-		case 0:
+		case sectionTitle:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
 				return 1;
 			return 0;
-		case 1:
+		case sectionDescription:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
 				return 1;
 			return 0;
-		case 2:
+		case sectionGeneral:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
 				return 2;
 			return 1;
@@ -971,27 +957,27 @@
 	UITableViewCell *cell = nil;
 
 	switch (section) {
-		case 0:
+		case sectionTitle:
 			cell = _titleCell;
 			break;
-		case 1:
+		case sectionDescription:
 			cell = _descriptionCell;
 			break;
-		case 2:
+		case sectionGeneral:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			break;
-		case 3:
+		case sectionService:
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 			cell.imageView.layer.masksToBounds = YES;
 			cell.imageView.layer.cornerRadius = 5.0f;
 			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			setEditingStyle = NO;
 			break;
-		case 4:
-		case 5:
-		case 6:
-		case 7:
-		case 8:
+		case sectionBegin:
+		case sectionEnd:
+		case sectionAfterEvent:
+		case sectionRepeated:
+		case sectionLocation:
 			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
@@ -1020,21 +1006,21 @@
 	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = nil;
 
-	if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+	if(section >= sectionAfterEvent && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEvent])
 		++section;
-	if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
+	if(section >= sectionRepeated && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerRepeated])
 		++section;
-	if(section > 7 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
+	if(section >= sectionLocation && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
 		++section;
 
 	sourceCell = [self obtainTableCellForSection: tableView: section];
 
 	// we are creating a new cell, setup its attributes
 	switch (section) {
-		case 0:
-		case 1:
+		case sectionTitle:
+		case sectionDescription:
 			break;
-		case 2:
+		case sectionGeneral:
 			switch (indexPath.row) {
 				case 0:
 					if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
@@ -1051,7 +1037,7 @@
 					break;
 			}
 			break;
-		case 3:
+		case sectionService:
 			if([self.timer.service.sname length])
 			{
 				((ServiceTableViewCell *)sourceCell).service = _timer.service;
@@ -1069,23 +1055,21 @@
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 
 			break;
-		case 4:
-			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.begin];
-			_timerBeginCell = sourceCell;
+		case sectionBegin:
+			sourceCell.textLabel.text = [self format_BeginEnd:_timer.begin];
 			break;
-		case 5:
-			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _timer.end];
-			_timerEndCell = sourceCell;
+		case sectionEnd:
+			sourceCell.textLabel.text = [self format_BeginEnd:_timer.end];
 			break;
-		case 6:
+		case sectionAfterEvent:
 			_afterEventCell = sourceCell;
 			[self afterEventSelected: [NSNumber numberWithInteger: _timer.afterevent]];
 			break;
-		case 7:
+		case sectionRepeated:
 			_repeatedCell = sourceCell;
 			[self repeatedSelected:[NSNumber numberWithInteger:_timer.repeated] withCount:[NSNumber numberWithInteger:_timer.repeatcount]];
 			break;
-		case 8:
+		case sectionLocation:
 			_locationCell = sourceCell;
 			TABLEVIEWCELL_TEXT(sourceCell) = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
@@ -1103,33 +1087,50 @@
 		NSInteger section = indexPath.section;
 		UIViewController *targetViewController = nil;
 
-		if(section > 5 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEvent])
+		if(section >= sectionAfterEvent && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEvent])
 			++section;
-		if(section > 6 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerRepeated])
+		if(section >= sectionRepeated && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerRepeated])
 			++section;
 
-		if(section == 3)
+		if(section == sectionService)
 		{
 			// property takes care of overly complex initialization
 			targetViewController = self.bouquetListController;
 		}
-		else if(section == 4)
+		else if(section == sectionBegin)
 		{
 			// property takes care of initialization (including navigation controller)
 			self.datePickerController.date = [_timer.begin copy];
-			self.datePickerController.callback = ^(NSDate *date){[self beginSelected:date];};
+
+			self.datePickerController.callback = ^(NSDate *newDate){
+				if(newDate == nil)
+					return;
+
+				_timer.begin = newDate;
+				UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
+				if(cell)
+					cell.textLabel.text = [self format_BeginEnd:newDate];
+			};
 
 			targetViewController = self.datePickerNavigationController;
 		}
-		else if(section == 5)
+		else if(section == sectionEnd)
 		{
 			// property takes care of initialization (including navigation controller)
 			self.datePickerController.date = [_timer.end copy];
-			self.datePickerController.callback = ^(NSDate *date){[self endSelected:date];};
+			self.datePickerController.callback = ^(NSDate *newDate){
+				if(newDate == nil)
+					return;
+
+				_timer.end = newDate;
+				UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
+				if(cell)
+					cell.textLabel.text = [self format_BeginEnd:newDate];
+			};
 
 			targetViewController = self.datePickerNavigationController;
 		}
-		else if(section == 6)
+		else if(section == sectionAfterEvent)
 		{
 			self.afterEventViewController.selectedItem = _timer.afterevent;
 			// FIXME: why gives directly assigning this an error?
@@ -1138,7 +1139,7 @@
 
 			targetViewController = self.afterEventNavigationController;
 		}
-		else if(section == 7)
+		else if(section == sectionRepeated)
 		{
 			// property takes care of initialization
 			self.simpleRepeatedViewController.repeated = _timer.repeated;
@@ -1149,7 +1150,7 @@
 				self.simpleRepeatedViewController.isSimple = NO;
 			targetViewController = self.simpleRepeatedNavigationController;
 		}
-		else if(section == 8)
+		else if(section == sectionLocation)
 		{
 			// property takes care of initialization
 			targetViewController = self.locationListController;
