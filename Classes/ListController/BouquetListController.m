@@ -251,6 +251,8 @@ enum bouquetListTags
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	_tableView.allowsSelection = YES;
+
 	// add button to navigation bar if radio mode supported
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRadioMode]
 	   && !(   [bouquetDelegate isKindOfClass:[ServiceListController class]]

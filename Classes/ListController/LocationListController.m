@@ -117,6 +117,8 @@
 /* about to display */
 - (void)viewWillAppear:(BOOL)animated
 {
+	_tableView.allowsSelection = YES;
+
 	if(delegate)
 	{
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel

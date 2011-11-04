@@ -448,6 +448,8 @@ enum serviceListTags
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+	_tableView.allowsSelection = YES;
+
 	if(IS_IPHONE())
 	{
 		const BOOL isSingleBouquet =

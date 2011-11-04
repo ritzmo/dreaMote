@@ -137,6 +137,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	((UITableView *)self.view).allowsSelection = YES;
+
 	hasAction[zapActionRemote] = YES;
 	hasAction[zapActionOPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]];
 	hasAction[zapActionOPlayerLite] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]];
