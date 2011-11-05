@@ -665,11 +665,17 @@ enum settingsRows
 			break;
 		}
 		case purchaseSection:
+		{
+			NSUInteger count = [MKStoreManager sharedManager].purchasableObjectCount;
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			sourceCell.imageView.image = nil;
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-			sourceCell.textLabel.text = [[MKStoreManager sharedManager].purchasableObjectsDescription objectAtIndex:indexPath.row];
+			if((NSUInteger)indexPath.row < count)
+				sourceCell.textLabel.text = [[MKStoreManager sharedManager].purchasableObjectsDescription objectAtIndex:indexPath.row];
+			else
+				sourceCell.textLabel.text = NSLocalizedString(@"Restore Purchases", @"Restore previous purchases in config list");
+		}
 		default:
 			break;
 	}
@@ -708,8 +714,11 @@ enum settingsRows
 #else
 			return ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"dreaMote://"]]) ? 3 : 2;
 #endif
-		case maxSection:
-			return [MKStoreManager sharedManager].purchasableObjectsDescription.count;
+		case purchaseSection:
+		{
+			NSUInteger count = [MKStoreManager sharedManager].purchasableObjectCount;
+			return count ? count + 1 : 0;
+		}
 		default:
 			return 0;
 	}
@@ -724,7 +733,7 @@ enum settingsRows
 			return nil;
 		case connectionSection:
 			return NSLocalizedString(@"Configured Connections", @"Section title for connections in ConfigList");
-		case maxSection:
+		case purchaseSection:
 			return NSLocalizedString(@"Purchase", @"Section title for In-App-Purchases in ConfigList");
 	}
 }
