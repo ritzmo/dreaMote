@@ -13,7 +13,6 @@
 #import "CellTextField.h" /* CellTextField */
 
 #import "AfterEventViewController.h" /* AfterEventDelegate */
-#import "LocationListController.h" /* LocationListDelegate */
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
@@ -30,7 +29,7 @@
 @interface AutoTimerViewController : UIViewController <UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, BouquetListDelegate,
-													AfterEventDelegate, LocationListDelegate,
+													AfterEventDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
@@ -66,7 +65,6 @@
 	UIViewController *_serviceListController; /*!< @brief Cached Service List. */
 	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
-	UIViewController *_locationListController; /*!< @brief Cached Location List. */
 }
 
 /*!

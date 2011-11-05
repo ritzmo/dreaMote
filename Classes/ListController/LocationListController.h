@@ -12,8 +12,14 @@
 #import "MovieListController.h"
 #import "ReloadableListController.h"
 
-// Forward declaration
-@protocol LocationListDelegate;
+
+/*!
+ @brief Location was selected.
+
+ @param newLocation Location that was selected.
+ @param canceling Selection was canceled.
+ */
+typedef void (^locationCallback_t)(NSObject<LocationProtocol> *newLocation, BOOL canceling);
 
 /*!
  @brief Location list.
@@ -41,9 +47,9 @@
 
 
 /*!
- @brief Location Selection Delegate.
+ @brief Location Selection Callback.
  */
-@property (nonatomic, unsafe_unretained) NSObject<LocationListDelegate> *delegate;
+@property (nonatomic, copy) locationCallback_t callback;
 
 /*!
  @brief Controlled by a split view controller?
@@ -64,23 +70,5 @@
  @breif View will reapper.
  */
 @property (nonatomic) BOOL willReappear;
-
-@end
-
-
-
-/*!
- @brief Delegate for LocationListController.
- 
- Objects wanting to be called back by a LocationListController need to implement this Protocol.
- */
-@protocol LocationListDelegate <NSObject>
-
-/*!
- @brief Location was selected.
- 
- @param newLocation Location that was selected.
- */
-- (void)locationSelected: (NSObject<LocationProtocol> *)newLocation;
 
 @end

@@ -9,8 +9,9 @@
 #import "TimerViewController.h"
 
 #import "BouquetListController.h"
-#import "ServiceListController.h"
 #import "DatePickerController.h"
+#import "LocationListController.h"
+#import "ServiceListController.h"
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -49,7 +50,6 @@
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
 @property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *locationListController;
 @property (unsafe_unretained, nonatomic, readonly) SimpleRepeatedViewController *simpleRepeatedViewController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *simpleRepeatedNavigationController;
 
@@ -163,7 +163,6 @@ enum timerSections
 	_bouquetListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
-	_locationListController = nil;
 	_simpleRepeatedNavigationController = nil;
 	_simpleRepeatedViewController = nil;
 	
@@ -252,26 +251,6 @@ enum timerSections
 	if(_datePickerController == nil)
 		_datePickerController = [[DatePickerController alloc] init];
 	return _datePickerController;
-}
-
-- (UIViewController *)locationListController
-{
-	if(_locationListController == nil)
-	{
-		LocationListController *rootViewController = [[LocationListController alloc] init];
-		rootViewController.delegate = self;
-		rootViewController.showDefault = YES;
-
-		if(IS_IPAD())
-		{
-			_locationListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-			_locationListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-			_locationListController.modalTransitionStyle = rootViewController.modalTransitionStyle;
-		}
-		else
-			_locationListController = rootViewController;
-	}
-	return _locationListController;
 }
 
 - (UIViewController *)simpleRepeatedNavigationController
@@ -737,25 +716,6 @@ enum timerSections
 }
 
 #pragma mark -
-#pragma mark LocationListDelegate methods
-#pragma mark -
-
-- (void)locationSelected:(NSObject <LocationProtocol>*)newLocation
-{
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionLocation]];
-	if(newLocation)
-	{
-		_timer.location = newLocation.fullpath;
-		cell.textLabel.text = newLocation.fullpath;
-	}
-	else
-	{
-		_timer.location = nil;
-		cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
-	}
-}
-
-#pragma mark -
 #pragma mark UITableView delegates
 #pragma mark -
 
@@ -1137,8 +1097,39 @@ enum timerSections
 		}
 		else if(section == sectionLocation)
 		{
-			// property takes care of initialization
-			targetViewController = self.locationListController;
+			const BOOL isIpad = IS_IPAD();
+			LocationListController *vc = [[LocationListController alloc] init];
+			vc.showDefault = YES;
+			vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling){
+				if(!canceling)
+				{
+					UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionLocation]];
+					if(newLocation)
+					{
+						_timer.location = newLocation.fullpath;
+						cell.textLabel.text = newLocation.fullpath;
+					}
+					else
+					{
+						_timer.location = nil;
+						cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
+					}
+				}
+
+				if(isIpad)
+					[self dismissModalViewControllerAnimated:YES];
+				else
+					[self.navigationController popToViewController:self animated:YES];
+			};
+
+			if(isIpad)
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
 		}
 		else
 			return nil;
@@ -1260,7 +1251,6 @@ enum timerSections
 	_bouquetListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
-	_locationListController = nil;
 	_simpleRepeatedNavigationController = nil;
 	_simpleRepeatedViewController = nil;
 }

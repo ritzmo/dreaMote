@@ -27,7 +27,7 @@
 
 @implementation LocationListController
 
-@synthesize isSplit, showDefault, delegate;
+@synthesize isSplit, showDefault, callback;
 @synthesize movieListController = _movieListController;
 
 /* initialize */
@@ -38,14 +38,10 @@
 		self.title = NSLocalizedString(@"Locations", @"Title of LocationListController");
 		_locations = [NSMutableArray array];
 		_refreshLocations = YES;
-		_movieListController = nil;
 
-		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
-		{
-			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 450.0f);
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.contentSizeForViewInPopover = CGSizeMake(370.0f, 450.0f);
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -108,10 +104,8 @@
 /* cancel in delegate mode */
 - (void)doneAction:(id)sender
 {
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
-		[self.navigationController popViewControllerAnimated:YES];
+	if(callback)
+		callback(nil, YES);
 }
 
 /* about to display */
@@ -119,7 +113,7 @@
 {
 	_tableView.allowsSelection = YES;
 
-	if(delegate)
+	if(callback)
 	{
 		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																				target:self action:@selector(doneAction:)];
@@ -171,7 +165,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self]);
+	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchLocationlist:self];
 }
 
 /* remove content data */
@@ -335,16 +329,11 @@
 	}
 
 	// Callback mode
-	if(delegate != nil)
+	if(callback)
 	{
 		tableView.allowsSelection = NO;
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		[delegate performSelector:@selector(locationSelected:) withObject: location];
-
-		if(IS_IPAD())
-			[self.navigationController dismissModalViewControllerAnimated:YES];
-		else
-			[self.navigationController popToViewController: (UIViewController *)delegate animated: YES];
+		callback(location, NO);
 	}
 	// Open movie list
 	else if(!_movieListController.reloading)

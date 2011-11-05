@@ -10,9 +10,10 @@
 
 #import "AutoTimerFilterViewController.h"
 #import "BouquetListController.h"
+#import "DatePickerController.h"
+#import "LocationListController.h"
 #import "ServiceListController.h"
 #import "SimpleSingleSelectionListController.h"
-#import "DatePickerController.h"
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -70,7 +71,6 @@ enum sectionIds
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *serviceListController;
 @property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *locationListController;
 @end
 
 static NSArray *avoidDuplicateDescriptionTexts = nil;
@@ -140,7 +140,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_serviceListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
-	_locationListController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -247,26 +246,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	if(_datePickerController == nil)
 		_datePickerController = [[DatePickerController alloc] init];
 	return _datePickerController;
-}
-
-- (UIViewController *)locationListController
-{
-	if(_locationListController == nil)
-	{
-		LocationListController *rootViewController = [[LocationListController alloc] init];
-		rootViewController.delegate = self;
-		rootViewController.showDefault = YES;
-
-		if(IS_IPAD())
-		{
-			_locationListController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-			_locationListController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-			_locationListController.modalTransitionStyle = rootViewController.modalTransitionStyle;
-		}
-		else
-			_locationListController = rootViewController;
-	}
-	return _locationListController;
 }
 
 - (AutoTimer *)timer
@@ -799,26 +778,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aftereventSection]];
 	[self setAfterEventText:cell];
-}
-
-#pragma mark -
-#pragma mark LocationListDelegate methods
-#pragma mark -
-
-- (void)locationSelected:(NSObject <LocationProtocol>*)newLocation
-{
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:locationSection]];
-
-	if(newLocation)
-	{
-		_timer.location = newLocation.fullpath;
-		cell.textLabel.text = newLocation.fullpath;
-	}
-	else
-	{
-		_timer.location = nil;
-		cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
-	}
 }
 
 #pragma mark -
@@ -1452,8 +1411,42 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			break;
 		}
 		case locationSection:
-			targetViewController = self.locationListController;
+		{
+			const BOOL isIpad = IS_IPAD();
+			LocationListController *vc = [[LocationListController alloc] init];
+			vc.showDefault = YES;
+			vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling){
+				if(!canceling)
+				{
+					UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:locationSection]];
+					if(newLocation)
+					{
+						_timer.location = newLocation.fullpath;
+						cell.textLabel.text = newLocation.fullpath;
+					}
+					else
+					{
+						_timer.location = nil;
+						cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
+					}
+				}
+
+				if(isIpad)
+					[self dismissModalViewControllerAnimated:YES];
+				else
+					[self.navigationController popToViewController:self animated:YES];
+			};
+			
+			if(isIpad)
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
 			break;
+		}
 		case filterTitleSection:
 		case filterSdescSection:
 		case filterDescSection:
@@ -1583,7 +1576,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_serviceListController = nil;
 	_datePickerController = nil;
 	_datePickerNavigationController = nil;
-	_locationListController = nil;
 
 	[super viewDidDisappear:animated];
 }

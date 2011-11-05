@@ -14,7 +14,6 @@
 #import "CellTextField.h" /* CellTextField */
 
 #import "AfterEventViewController.h" /* AfterEventDelegate */
-#import "LocationListController.h" /* LocationListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "SimpleRepeatedViewController.h" /* RepeatedDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
@@ -31,7 +30,7 @@
 @interface TimerViewController : UIViewController <UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, AfterEventDelegate,
-													RepeatedDelegate, LocationListDelegate,
+													RepeatedDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
@@ -59,7 +58,6 @@
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
 	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
 	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
-	UIViewController *_locationListController; /*!< @brief Cached Location List. */
 	UIViewController *_simpleRepeatedNavigationController; /*!< @brief Navigation Controller of _simpleRepeatedViewController */
 	SimpleRepeatedViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
 }
