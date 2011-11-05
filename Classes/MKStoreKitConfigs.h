@@ -44,13 +44,15 @@
 	#define kAdFreePurchase			@"de.ritzmo.dreaMoteLite.AdRemoval"
 #endif
 
+// NOTE: setting this adds remote verification
+#define SERVER_PRODUCT_MODEL 1
+
+// NOTE: enabling this will trigger an additional remote check against a custom database of "purchases"
 #if IS_DEBUG()
-	#define SERVER_PRODUCT_MODEL 1
-	#define OWN_SERVER @"http://ritzmo.de/iphone/mkstorekit"
+	#define OWN_SERVER @"http://ritzmo.de/iphone/sbstore"
 	#define REVIEW_ALLOWED 1
 #else
-	#define SERVER_PRODUCT_MODEL 0
-	#define OWN_SERVER nil
+	#define OWN_SERVER @"http://ritzmo.de/iphone/store"
 	#define REVIEW_ALLOWED 0
 #endif
 
