@@ -104,7 +104,7 @@
 	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Settings", @"Title of Settings in Other List"), @"title",
 						 NSLocalizedString(@"Change configuration and edit known hosts", @"Explaination of Settings in Other List"), @"explainText",
-						 [ConfigListController class], @"viewControllerClass",
+						 [[ConfigListController alloc] init], @"viewController",
 						 nil]];
 
 	_epgrefreshDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
