@@ -20,6 +20,7 @@
 #import "AboutDreamoteViewController.h"
 #if IS_FULL()
 	#import "AutoTimerListController.h"
+	#import "AutoTimerSplitViewController.h"
 #endif
 #import "BouquetListController.h"
 #import "ConfigViewController.h"
@@ -88,88 +89,89 @@
 
 	UIViewController *targetViewController;
 
-	_aboutDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	_aboutDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"About Receiver", @"Title of About Receiver in Other List"), @"title",
 						NSLocalizedString(@"Information on software and tuners", @"Explaination of About Receiver in Other List"), @"explainText",
-						[AboutViewController class], @"viewController",
+						[AboutViewController class], @"viewControllerClass",
 						nil];
 
 #if IS_FULL()
-	_autotimerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	Class viewControllerClass = (isIpad) ? [AutoTimerSplitViewController class] : [AutoTimerListController class];
+	_autotimerDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"AutoTimer-Plugin", @"Title of AutoTimer in Other List"), @"title",
 						 NSLocalizedString(@"Add and edit AutoTimers", @"Explaination of AutoTimer in Other List"), @"explainText",
-						 [AutoTimerListController class], @"viewController",
+						 viewControllerClass, @"viewControllerClass",
 						 nil];
 #endif
 
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Settings", @"Title of Settings in Other List"), @"title",
 						 NSLocalizedString(@"Change configuration and edit known hosts", @"Explaination of Settings in Other List"), @"explainText",
-						 [ConfigListController class], @"viewController",
+						 [ConfigListController class], @"viewControllerClass",
 						 nil]];
 
-	_epgrefreshDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	_epgrefreshDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"EPGRefresh-Plugin", @"Title of EPGRefresh in Other List"), @"title",
 							  NSLocalizedString(@"Settings of EPGRefresh-Plugin", @"Explaination of EPGRefresh in Other List"), @"explainText",
-							  [EPGRefreshViewController class], @"viewController",
+							  [EPGRefreshViewController class], @"viewControllerClass",
 							  nil];
 
-	_eventSearchDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	_eventSearchDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Search EPG", @"Title of Event Search in Other List"), @"title",
 							NSLocalizedString(@"Search EPG for event titles", @"Explaination of Event Search in Other List"), @"explainText",
-							[EventSearchListController class], @"viewController",
+							[EventSearchListController class], @"viewControllerClass",
 							nil];
 
-	_signalDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	_signalDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							   NSLocalizedString(@"Signal Finder", @"Title of Signal Finder in Other List"), @"title",
 							   NSLocalizedString(@"Displays current SNR/AGC", @"Explaination of Signal Finder in Other List"), @"explainText",
-							   [SignalViewController class], @"viewController",
+							   [SignalViewController class], @"viewControllerClass",
 							   nil];
 
 	if(!isIpad)
 	{
-		_locationsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+		_locationsDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Recording Locations", @"Title of Location List in Other List"), @"title",
 							NSLocalizedString(@"Show recording locations", @"Explaination of Location List in Other List"), @"explainText",
-							[LocationListController class], @"viewController",
+							[LocationListController class], @"viewControllerClass",
 							nil];
 
-		_recordDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+		_recordDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Movies", @"Title of Movie List in Other List"), @"title",
 							NSLocalizedString(@"Recorded Movies", @"Explaination of Movie List in Other List"), @"explainText",
-							[MovieListController class], @"viewController",
+							[MovieListController class], @"viewControllerClass",
 							nil];
 
 		targetViewController = [[MediaPlayerController alloc] init];
-		_mediaPlayerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+		_mediaPlayerDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								  NSLocalizedString(@"Media Player", @"Title of Media Player in Other List"), @"title",
 								  NSLocalizedString(@"Control the remote media player", @"Explaination of Media Player in Other List"), @"explainText",
-								  [MediaPlayerController class], @"viewController",
+								  [MediaPlayerController class], @"viewControllerClass",
 								  nil];
 	}
 
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"Control", @"Title of Control View in Other List"), @"title",
 						NSLocalizedString(@"Control Powerstate and Volume", @"Explaination of Control View in Other List"), @"explainText",
-						[ControlViewController class], @"viewController",
+						[ControlViewController class], @"viewControllerClass",
 						nil]];
 
-	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
+	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Messages", @"Title of Message View in Other List"), @"title",
 						 NSLocalizedString(@"Send short Messages", @"Explaination of Message View in Other List"), @"explainText",
-						 [MessageViewController class], @"viewController",
+						 [MessageViewController class], @"viewControllerClass",
 						 nil]];
 
-	_sleeptimerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	_sleeptimerDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Sleep Timer", @"Title of Sleep Timer in Other List"), @"title",
 							  NSLocalizedString(@"Edit and (de)activate Sleep Timer", @"Explaination of Sleep Timer in Other List"), @"explainText",
-							  [SleepTimerViewController class], @"viewController",
+							  [SleepTimerViewController class], @"viewControllerClass",
 							  nil];
 
-	_packageManagerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+	_packageManagerDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Package Manager", @"Title of Package Manager in Other List"), @"title",
 							  NSLocalizedString(@"Install/Update/Remove packages", @"Explaination of Package Manager in Other List"), @"explainText",
-							  [PackageManagerListController class], @"viewController",
+							  [PackageManagerListController class], @"viewControllerClass",
 							  nil];
 
 	// Add the "About" button to the navigation bar
@@ -453,12 +455,45 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	Class targetViewControllerClass = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
-	UIViewController *targetViewController = [[targetViewControllerClass alloc] init];
+	NSMutableDictionary *selectedDictionary = [menuList objectAtIndex:indexPath.row];
+	UIViewController *targetViewController = [selectedDictionary objectForKey:@"viewController"];
+	if(targetViewController == nil)
+	{
+		Class targetViewControllerClass = [selectedDictionary objectForKey:@"viewControllerClass"];
+		targetViewController = [[targetViewControllerClass alloc] init];
+		[selectedDictionary setObject:targetViewController forKey:@"viewController"];
+	}
+
 	if(mgSplitViewController)
 	{
-		UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
-		mgSplitViewController.detailViewController = navController;
+		if([targetViewController isKindOfClass:[MGSplitViewController class]])
+		{
+			UIViewController *masterViewController = ((MGSplitViewController *)targetViewController).masterViewController;
+			UIViewController *detailViewController = ((MGSplitViewController *)targetViewController).detailViewController;
+
+			UIViewController *pushViewController = masterViewController;
+			// NOTE: does not work reliably, because the view controller is removed from the stack after pushing it the first time
+			if([masterViewController isKindOfClass:[UINavigationController class]])
+			{
+				NSLog(@"WARNING: Stealing a view controller from a navigation stack does NOT work reliably, find a better way to do this!");
+				pushViewController = ((UINavigationController *)masterViewController).visibleViewController;
+			}
+			[self.navigationController pushViewController:pushViewController animated:YES];
+
+			if(detailViewController != mgSplitViewController.detailViewController)
+				[detailViewController.view removeFromSuperview];
+			UIViewController *navController = nil;
+			if([detailViewController isKindOfClass:[UINavigationController class]])
+				navController = detailViewController;
+			else
+				navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+			mgSplitViewController.detailViewController = navController;
+		}
+		else
+		{
+			UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
+			mgSplitViewController.detailViewController = navController;
+		}
 	}
 	else
 		[self.navigationController pushViewController:targetViewController animated:YES];
