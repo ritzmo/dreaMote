@@ -30,8 +30,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])){
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kPackageNameTextSize];
 		self.textLabel.backgroundColor = [UIColor clearColor];
-		if(IS_IPHONE())
-			self.textLabel.adjustsFontSizeToFitWidth = YES;
+		self.textLabel.adjustsFontSizeToFitWidth = YES;
 
 		versionLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
 										selectedColor:[UIColor whiteColor]
@@ -147,6 +146,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 		indicator.frame = indicatorFrame;
 	}
 
+#if 0
 	if(package.upgradeVersion && IS_IPAD())
 	{
 		CGRect frame = CGRectMake(
@@ -172,6 +172,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 		availableLabel.frame = frame;
 	}
 	else
+#endif
 	{
 		CGRect frame = CGRectMake(
 								  contentRect.origin.x + kRightMargin,
