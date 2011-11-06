@@ -64,7 +64,7 @@
 
 // various text sizes
 #define kMainTextSize			((IS_IPAD()) ? 22 : 18)
-#define kMainDetailsSize		((IS_IPAD()) ? 20 : 14)
+#define kMainDetailsSize		((IS_IPAD()) ? 18 : 14)
 #define kServiceTextSize		((IS_IPAD()) ? 20 : 16)
 #define kServiceEventServiceSize ((IS_IPAD()) ? 18 : 14)
 #define kServiceEventEventSize	((IS_IPAD()) ? 15 : 12)
