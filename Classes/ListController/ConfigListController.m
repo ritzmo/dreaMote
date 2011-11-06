@@ -123,25 +123,22 @@ enum settingsRows
 
 	self.view = tableView;
 
+	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	// RC Vibration
-	_vibrateInRC = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_vibrateInRC setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kVibratingRC]];
+	_vibrateInRC = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_vibrateInRC.on = [stdDefaults boolForKey: kVibratingRC];
 	[_vibrateInRC addTarget:self action:@selector(vibrationChanged:) forControlEvents:UIControlEventValueChanged];
-
-	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_vibrateInRC.backgroundColor = [UIColor clearColor];
 
 	// Simple remote
-	_simpleRemote = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_simpleRemote setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote]];
+	_simpleRemote = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_simpleRemote.on = [stdDefaults boolForKey: kPrefersSimpleRemote];
 	[_simpleRemote addTarget:self action:@selector(simpleRemoteChanged:) forControlEvents:UIControlEventValueChanged];
-
-	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_simpleRemote.backgroundColor = [UIColor clearColor];
 
 	// Simple remote
-	_sepEventsByDay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_sepEventsByDay setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kSeparateEpgByDay]];
+	_sepEventsByDay = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_sepEventsByDay.on = [stdDefaults boolForKey:kSeparateEpgByDay];
 	[_sepEventsByDay addTarget:self action:@selector(separateEventsChanged:) forControlEvents:UIControlEventValueChanged];
 	_sepEventsByDay.backgroundColor = [UIColor clearColor];
 
@@ -151,9 +148,9 @@ enum settingsRows
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_vibrateInRC, nil);
-	SafeRetainAssign(_simpleRemote, nil);
-	SafeRetainAssign(_sepEventsByDay, nil);
+	_vibrateInRC = nil;
+	_simpleRemote = nil;
+	_sepEventsByDay = nil;
 
 	[super viewDidUnload];
 }
