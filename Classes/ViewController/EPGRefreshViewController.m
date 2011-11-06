@@ -9,8 +9,9 @@
 #import "EPGRefreshViewController.h"
 
 #import "BouquetListController.h"
-#import "ServiceListController.h"
 #import "DatePickerController.h"
+#import "ServiceListController.h"
+#import "SimpleSingleSelectionListController.h"
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -21,8 +22,8 @@
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "Objects/Generic/Result.h"
-#import "Objects/Generic/Service.h"
+#import <Objects/Generic/Result.h>
+#import <Objects/Generic/Service.h>
 
 enum sectionIds
 {
@@ -572,20 +573,6 @@ enum generalSectionItems
 }
 
 #pragma mark -
-#pragma mark EPGRefreshAdapterDelegate methods
-#pragma mark -
-
-- (void)adapterSelected:(NSString *)newAdapter
-{
-	if(newAdapter == nil)
-		return;
-
-	settings.adapter = newAdapter;
-	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:adapterRow inSection:generalSection]];
-	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Refresh using: %@", @"EPGRefresh", @"Refresh using different Adapter"), [self logicalToHumanReadableAdapterName:settings.adapter]];
-}
-
-#pragma mark -
 #pragma mark UITableView delegates
 #pragma mark -
 
@@ -917,17 +904,42 @@ enum generalSectionItems
 			}
 			else if(row == adapterRow)
 			{
-				targetViewController = [EPGRefreshAdapterViewController withAdapter:settings.adapter];
-				((EPGRefreshAdapterViewController *)targetViewController).delegate = self;
-				if(IS_IPAD())
+				const BOOL isIpad = IS_IPAD();
+				NSArray *lookupTable = [NSArray arrayWithObjects:@"main", @"pip", @"pip_hidden", @"record", nil];
+				SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
+														   [NSArray arrayWithObjects:
+															NSLocalizedStringFromTable(@"Main Picture", @"EPGRefresh", @"Adapter name"),
+															NSLocalizedStringFromTable(@"Picture in Picture", @"EPGRefresh", @"Adapter name"),
+															NSLocalizedStringFromTable(@"Picture in Picture (hidden)", @"EPGRefresh", @"Adapter name"),
+															NSLocalizedStringFromTable(@"Fake Recording", @"EPGRefresh", @"Adapter name"), nil]
+																							andSelection:[lookupTable indexOfObject:settings.adapter]
+																								andTitle:NSLocalizedString(@"EPGRefresh Adapter", @"Default title of EPGRefreshAdapterViewController")];
+				vc.callback = ^(NSUInteger selection, BOOL isFinal, BOOL canceling)
 				{
-					UIViewController *rootViewController = targetViewController;
-					targetViewController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-					targetViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-					targetViewController.modalPresentationStyle = rootViewController.modalPresentationStyle;
-					[self.navigationController presentModalViewController:targetViewController animated:YES];
-					targetViewController = nil;
+					if(!canceling)
+					{
+						if(!isIpad && !isFinal)
+							return NO;
+
+						settings.adapter = [lookupTable objectAtIndex:selection];
+						UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
+						cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Refresh using: %@", @"EPGRefresh", @"Refresh using different Adapter"), [self logicalToHumanReadableAdapterName:settings.adapter]];
+					}
+					else if(!isIpad)
+						[self.navigationController popToViewController:self animated:YES];
+
+					if(isIpad)
+						[self dismissModalViewControllerAnimated:YES];
+					return YES;
+				};
+				if(isIpad)
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
 				}
+				else
+					targetViewController = vc;
 			}
 			break;
 		}

@@ -851,9 +851,6 @@
 		DAC8C2EC13B2014D00CA00D9 /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15B13B2014D00CA00D9 /* EnigmaRCEmulatorController.m */; };
 		DAC8C2ED13B2014D00CA00D9 /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15B13B2014D00CA00D9 /* EnigmaRCEmulatorController.m */; };
 		DAC8C2EE13B2014D00CA00D9 /* EnigmaRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15B13B2014D00CA00D9 /* EnigmaRCEmulatorController.m */; };
-		DAC8C2EF13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15D13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m */; };
-		DAC8C2F013B2014D00CA00D9 /* EPGRefreshAdapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15D13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m */; };
-		DAC8C2F113B2014D00CA00D9 /* EPGRefreshAdapterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15D13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m */; };
 		DAC8C2F213B2014D00CA00D9 /* EPGRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15F13B2014D00CA00D9 /* EPGRefreshViewController.m */; };
 		DAC8C2F313B2014D00CA00D9 /* EPGRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15F13B2014D00CA00D9 /* EPGRefreshViewController.m */; };
 		DAC8C2F413B2014D00CA00D9 /* EPGRefreshViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C15F13B2014D00CA00D9 /* EPGRefreshViewController.m */; };
@@ -1628,8 +1625,6 @@
 		DAC8C15913B2014D00CA00D9 /* DatePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DatePickerController.m; sourceTree = "<group>"; };
 		DAC8C15A13B2014D00CA00D9 /* EnigmaRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnigmaRCEmulatorController.h; sourceTree = "<group>"; };
 		DAC8C15B13B2014D00CA00D9 /* EnigmaRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnigmaRCEmulatorController.m; sourceTree = "<group>"; };
-		DAC8C15C13B2014D00CA00D9 /* EPGRefreshAdapterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshAdapterViewController.h; sourceTree = "<group>"; };
-		DAC8C15D13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPGRefreshAdapterViewController.m; sourceTree = "<group>"; };
 		DAC8C15E13B2014D00CA00D9 /* EPGRefreshViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPGRefreshViewController.h; sourceTree = "<group>"; };
 		DAC8C15F13B2014D00CA00D9 /* EPGRefreshViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = EPGRefreshViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		DAC8C16013B2014D00CA00D9 /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
@@ -2976,8 +2971,6 @@
 				DAC8C15913B2014D00CA00D9 /* DatePickerController.m */,
 				DAC8C15A13B2014D00CA00D9 /* EnigmaRCEmulatorController.h */,
 				DAC8C15B13B2014D00CA00D9 /* EnigmaRCEmulatorController.m */,
-				DAC8C15C13B2014D00CA00D9 /* EPGRefreshAdapterViewController.h */,
-				DAC8C15D13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m */,
 				DAC8C15E13B2014D00CA00D9 /* EPGRefreshViewController.h */,
 				DAC8C15F13B2014D00CA00D9 /* EPGRefreshViewController.m */,
 				DAC8C16013B2014D00CA00D9 /* EventViewController.h */,
@@ -3740,7 +3733,6 @@
 				DAC8C2E613B2014D00CA00D9 /* CurrentViewController.m in Sources */,
 				DAC8C2E913B2014D00CA00D9 /* DatePickerController.m in Sources */,
 				DAC8C2EC13B2014D00CA00D9 /* EnigmaRCEmulatorController.m in Sources */,
-				DAC8C2EF13B2014D00CA00D9 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAC8C2F213B2014D00CA00D9 /* EPGRefreshViewController.m in Sources */,
 				DAC8C2F513B2014D00CA00D9 /* EventViewController.m in Sources */,
 				DAC8C2F813B2014D00CA00D9 /* MainViewController.m in Sources */,
@@ -3997,7 +3989,6 @@
 				DAC8C2E713B2014D00CA00D9 /* CurrentViewController.m in Sources */,
 				DAC8C2EA13B2014D00CA00D9 /* DatePickerController.m in Sources */,
 				DAC8C2ED13B2014D00CA00D9 /* EnigmaRCEmulatorController.m in Sources */,
-				DAC8C2F013B2014D00CA00D9 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAC8C2F313B2014D00CA00D9 /* EPGRefreshViewController.m in Sources */,
 				DAC8C2F613B2014D00CA00D9 /* EventViewController.m in Sources */,
 				DAC8C2F913B2014D00CA00D9 /* MainViewController.m in Sources */,
@@ -4237,7 +4228,6 @@
 				DAC8C2E813B2014D00CA00D9 /* CurrentViewController.m in Sources */,
 				DAC8C2EB13B2014D00CA00D9 /* DatePickerController.m in Sources */,
 				DAC8C2EE13B2014D00CA00D9 /* EnigmaRCEmulatorController.m in Sources */,
-				DAC8C2F113B2014D00CA00D9 /* EPGRefreshAdapterViewController.m in Sources */,
 				DAC8C2F413B2014D00CA00D9 /* EPGRefreshViewController.m in Sources */,
 				DAC8C2F713B2014D00CA00D9 /* EventViewController.m in Sources */,
 				DAC8C2FA13B2014D00CA00D9 /* MainViewController.m in Sources */,

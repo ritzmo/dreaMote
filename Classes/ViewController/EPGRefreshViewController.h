@@ -12,7 +12,6 @@
 
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "CellTextField.h" /* EditableTableViewCellDelegate */
-#import "EPGRefreshAdapterViewController.h" /* EPGRefreshAdapterDelegate */
 #import "EPGRefreshSettingsSourceDelegate.h" /* EPGRefreshSettingsSourceDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
@@ -30,7 +29,6 @@
 													ServiceListDelegate, BouquetListDelegate,
 													ServiceSourceDelegate,
 													EditableTableViewCellDelegate,
-													EPGRefreshAdapterDelegate,
 													EPGRefreshSettingsSourceDelegate>
 {
 @private
