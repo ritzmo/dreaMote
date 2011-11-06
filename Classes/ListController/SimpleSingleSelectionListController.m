@@ -82,10 +82,9 @@
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(IS_IPAD())
-		[self.navigationController dismissModalViewControllerAnimated:YES];
-	else
-		[self.navigationController popViewControllerAnimated:YES];
+	if(callback)
+		callback(NSNotFound, NO, YES);
+	callback = nil;
 }
 
 /* rotate with device */
@@ -128,7 +127,7 @@
 {
 	const NSUInteger previousSelection = selectedItem;
 	selectedItem = indexPath.row;
-	const BOOL willDispose = callback ? callback(selectedItem, NO) : NO;
+	const BOOL willDispose = callback ? callback(selectedItem, NO, NO) : NO;
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -150,7 +149,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
 	if(callback)
-		callback(selectedItem, YES);
+		callback(selectedItem, YES, NO);
 	callback = nil;
 }
 

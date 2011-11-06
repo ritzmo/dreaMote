@@ -19,6 +19,7 @@
 #import "AboutDreamoteViewController.h"
 #import "ConfigViewController.h"
 #import "ConnectionListController.h"
+#import "SimpleSingleSelectionListController.h"
 
 #import "MKStoreManager.h"
 
@@ -220,22 +221,6 @@ enum settingsRows
 	[(UITableView *)self.view reloadData];
 }
 
-#pragma mark -
-#pragma mark MultiEPGIntervalDelegate
-#pragma mark -
-#if IS_FULL()
-
-- (void)didSetInterval
-{
-	NSInteger row = multiEpgRow;
-	if(IS_IPAD() && vibrationRow < multiEpgRow)
-		--row;
-	NSIndexPath *idx = [NSIndexPath indexPathForRow:row inSection:settingsSection];
-
-	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
-}
-
-#endif
 #pragma mark -
 #pragma mark TimeoutSelection
 #pragma mark -
@@ -461,10 +446,37 @@ enum settingsRows
 #if IS_FULL()
 		else if(cell.tag == kMultiEPGRowTag)
 		{
+			const BOOL isIpad = IS_IPAD();
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
-			MultiEPGIntervalViewController *vc = [MultiEPGIntervalViewController withInterval:[timeInterval integerValue] / 60];
-			vc.delegate = self;
-			if(IS_IPAD())
+			NSInteger selection = (([timeInterval integerValue] / 60) / 30) - 1;
+			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
+													   [NSArray arrayWithObjects:[NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), 30],
+														[NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), 60],
+														[NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), 90],
+														[NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), 120], nil]
+																						andSelection:selection
+																							andTitle:NSLocalizedString(@"Multi-EPG Interval", @"Default title of MultiEPGIntervalViewController")];
+			vc.callback = ^(NSUInteger newSelection, BOOL isFinal, BOOL canceling)
+			{
+				if(!canceling)
+				{
+					if(!isIpad && !isFinal)
+						return NO;
+
+					NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+					[stdDefaults setObject:[NSNumber numberWithInteger:(newSelection + 1) * 30 * 60] forKey:kMultiEPGInterval];
+					[stdDefaults synchronize];
+					[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+				}
+				else if(!isIpad)
+					[self.navigationController popToViewController:self animated:YES];
+
+				if(isIpad)
+					[self dismissModalViewControllerAnimated:YES];
+				return YES;
+			};
+
+			if(isIpad)
 			{
 				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
 				navController.modalPresentationStyle = vc.modalPresentationStyle;

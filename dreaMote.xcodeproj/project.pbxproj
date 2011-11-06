@@ -875,9 +875,6 @@
 		DAC8C30413B2014D00CA00D9 /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16B13B2014D00CA00D9 /* MovieViewController.m */; };
 		DAC8C30513B2014D00CA00D9 /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16B13B2014D00CA00D9 /* MovieViewController.m */; };
 		DAC8C30613B2014D00CA00D9 /* MovieViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16B13B2014D00CA00D9 /* MovieViewController.m */; };
-		DAC8C30713B2014D00CA00D9 /* MultiEPGIntervalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16D13B2014D00CA00D9 /* MultiEPGIntervalViewController.m */; };
-		DAC8C30813B2014D00CA00D9 /* MultiEPGIntervalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16D13B2014D00CA00D9 /* MultiEPGIntervalViewController.m */; };
-		DAC8C30913B2014D00CA00D9 /* MultiEPGIntervalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16D13B2014D00CA00D9 /* MultiEPGIntervalViewController.m */; };
 		DAC8C30A13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16F13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m */; };
 		DAC8C30B13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16F13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m */; };
 		DAC8C30C13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C16F13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m */; };
@@ -1647,8 +1644,6 @@
 		DAC8C16913B2014D00CA00D9 /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		DAC8C16A13B2014D00CA00D9 /* MovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieViewController.h; sourceTree = "<group>"; };
 		DAC8C16B13B2014D00CA00D9 /* MovieViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MovieViewController.m; sourceTree = "<group>"; };
-		DAC8C16C13B2014D00CA00D9 /* MultiEPGIntervalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGIntervalViewController.h; sourceTree = "<group>"; };
-		DAC8C16D13B2014D00CA00D9 /* MultiEPGIntervalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGIntervalViewController.m; sourceTree = "<group>"; };
 		DAC8C16E13B2014D00CA00D9 /* NeutrinoRCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeutrinoRCEmulatorController.h; sourceTree = "<group>"; };
 		DAC8C16F13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NeutrinoRCEmulatorController.m; sourceTree = "<group>"; };
 		DAC8C17013B2014D00CA00D9 /* RCEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCEmulatorController.h; sourceTree = "<group>"; };
@@ -2997,8 +2992,6 @@
 				DAC8C16913B2014D00CA00D9 /* MessageViewController.m */,
 				DAC8C16A13B2014D00CA00D9 /* MovieViewController.h */,
 				DAC8C16B13B2014D00CA00D9 /* MovieViewController.m */,
-				DAC8C16C13B2014D00CA00D9 /* MultiEPGIntervalViewController.h */,
-				DAC8C16D13B2014D00CA00D9 /* MultiEPGIntervalViewController.m */,
 				DAC8C16E13B2014D00CA00D9 /* NeutrinoRCEmulatorController.h */,
 				DAC8C16F13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m */,
 				DAC8C17013B2014D00CA00D9 /* RCEmulatorController.h */,
@@ -3755,7 +3748,6 @@
 				DAC8C2FE13B2014D00CA00D9 /* MediaPlayerDetailsController.m in Sources */,
 				DAC8C30113B2014D00CA00D9 /* MessageViewController.m in Sources */,
 				DAC8C30413B2014D00CA00D9 /* MovieViewController.m in Sources */,
-				DAC8C30713B2014D00CA00D9 /* MultiEPGIntervalViewController.m in Sources */,
 				DAC8C30A13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m in Sources */,
 				DAC8C30D13B2014D00CA00D9 /* RCEmulatorController.m in Sources */,
 				DAC8C31013B2014D00CA00D9 /* SignalViewController.m in Sources */,
@@ -4013,7 +4005,6 @@
 				DAC8C2FF13B2014D00CA00D9 /* MediaPlayerDetailsController.m in Sources */,
 				DAC8C30213B2014D00CA00D9 /* MessageViewController.m in Sources */,
 				DAC8C30513B2014D00CA00D9 /* MovieViewController.m in Sources */,
-				DAC8C30813B2014D00CA00D9 /* MultiEPGIntervalViewController.m in Sources */,
 				DAC8C30B13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m in Sources */,
 				DAC8C30E13B2014D00CA00D9 /* RCEmulatorController.m in Sources */,
 				DAC8C31113B2014D00CA00D9 /* SignalViewController.m in Sources */,
@@ -4254,7 +4245,6 @@
 				DAC8C30013B2014D00CA00D9 /* MediaPlayerDetailsController.m in Sources */,
 				DAC8C30313B2014D00CA00D9 /* MessageViewController.m in Sources */,
 				DAC8C30613B2014D00CA00D9 /* MovieViewController.m in Sources */,
-				DAC8C30913B2014D00CA00D9 /* MultiEPGIntervalViewController.m in Sources */,
 				DAC8C30C13B2014D00CA00D9 /* NeutrinoRCEmulatorController.m in Sources */,
 				DAC8C30F13B2014D00CA00D9 /* RCEmulatorController.m in Sources */,
 				DAC8C31213B2014D00CA00D9 /* SignalViewController.m in Sources */,

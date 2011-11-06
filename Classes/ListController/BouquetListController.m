@@ -528,7 +528,8 @@ enum bouquetListTags
 																								  nil]
 																					andSelection:NSNotFound
 																						andTitle:nil];
-		vc.callback = ^(NSUInteger selectedItem, BOOL isClosing){
+		vc.callback = ^(NSUInteger selectedItem, BOOL isClosing, BOOL canceling){
+			// NOTE: ignore cancel as the button is not visible in our case
 			[popoverController dismissPopoverAnimated:YES];
 			popoverController = nil;
 

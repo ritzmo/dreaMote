@@ -10,13 +10,13 @@
 
 /*!
  @brief Callback type for selection callbacks.
- Called upon selection of an item with the selected item and NO as parameters,
- or the selected item and YES when dismissing.
- The block should return YES if the selection is actually final.
- @note A final selection will result in the callback being removed and the
- parent view is assumed to remove this view.
+
+ @param newSelection Selected item or NSNotFound if invalid.
+ @param willDisappear View is closing.
+ @param canceling This is actually a cancel operation.
+ @return YES if this selection is final and the view will disappear.
  */
-typedef BOOL (^simplesingleselection_callback_t)(NSUInteger, BOOL);
+typedef BOOL (^simplesingleselection_callback_t)(NSUInteger newSelection, BOOL willDisappear, BOOL canceling);
 
 /*!
  @brief Reusable single item selector.

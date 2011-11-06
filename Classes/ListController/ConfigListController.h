@@ -8,9 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#if IS_FULL()
-	#import "MultiEPGIntervalViewController.h" /* MultiEPGIntervalDelegate */
-#endif
 #import "ConnectionListController.h" /* ConnectionListDelegate */
 #import "SearchHistoryLengthEditorController.h" /* SearchHistoryLengthEditorDelegate */
 #import "TimeoutSelectionViewController.h" /* TimeoutSelectionDelegate */
@@ -22,9 +19,6 @@
  Allows to set Application preferences and Add/Remove of known Connections.
  */
 @interface ConfigListController : UIViewController <UITableViewDelegate,
-#if IS_FULL()
-													MultiEPGIntervalDelegate,
-#endif
 													ConnectionListDelegate,
 													TimeoutSelectionDelegate,
 													UITableViewDataSource,

@@ -430,13 +430,19 @@
 		}
 
 		SimpleSingleSelectionListController *targetViewController = [SimpleSingleSelectionListController withItems:messages andSelection:_type andTitle:NSLocalizedString(@"Message Type", @"Default title of MessageTypeViewController")];
-		targetViewController.callback = ^(NSUInteger selection, BOOL isFinal)
+		targetViewController.callback = ^(NSUInteger selection, BOOL isFinal, BOOL canceling)
 		{
-			if(!isIpad && !isFinal)
-				return NO; // iPhone only handles final calls
-			_type = selection;
+			if(!canceling)
+			{
+				if(!isIpad && !isFinal)
+					return NO; // iPhone only handles final calls
+				_type = selection;
 
-			_typeCell.textLabel.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+				_typeCell.textLabel.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+			}
+			else if(!isIpad)
+				[self.navigationController popToViewController:self animated:YES];
+
 			if(isIpad)
 				[self dismissModalViewControllerAnimated:YES];
 			return YES;

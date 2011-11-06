@@ -1324,15 +1324,20 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			{
 				const BOOL isIpad = IS_IPAD();
 				SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
-				vc.callback = ^(NSUInteger selection, BOOL isFinal)
+				vc.callback = ^(NSUInteger selection, BOOL isFinal, BOOL canceling)
 				{
-					if(!isIpad && !isFinal)
-						return NO;
+					if(!canceling)
+					{
+						if(!isIpad && !isFinal)
+							return NO;
 
-					_timer.avoidDuplicateDescription = selection;
+						_timer.avoidDuplicateDescription = selection;
 
-					UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:generalSection]];
-					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:selection]];
+						UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
+						cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:selection]];
+					}
+					else if(!isIpad)
+						[self.navigationController popToViewController:self animated:YES];
 
 					if(isIpad)
 						[self dismissModalViewControllerAnimated:YES];
