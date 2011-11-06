@@ -14,6 +14,8 @@
 
 #import "MainTableViewCell.h"
 
+#import "MGSplitViewController.h"
+
 #import "AboutViewController.h"
 #import "AboutDreamoteViewController.h"
 #if IS_FULL()
@@ -47,7 +49,7 @@
 
 @implementation OtherListController
 
-@synthesize myTableView;
+@synthesize myTableView, mgSplitViewController;
 
 - (id)init
 {
@@ -75,16 +77,9 @@
     [super didReceiveMemoryWarning];
 }
 
-/* getter of (readonly) configListController property */
-- (ConfigListController *)configListController
-{
-	if(!_configListController)
-		_configListController = [[ConfigListController alloc] init];
-	return _configListController;
-}
-
 - (void)viewDidLoad
 {
+	const BOOL isIpad = IS_IPAD();
 	menuList = [[NSMutableArray alloc] init];
 
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
@@ -93,107 +88,99 @@
 
 	UIViewController *targetViewController;
 
-	targetViewController = [[AboutViewController alloc] init];
 	_aboutDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"About Receiver", @"Title of About Receiver in Other List"), @"title",
 						NSLocalizedString(@"Information on software and tuners", @"Explaination of About Receiver in Other List"), @"explainText",
-						targetViewController, @"viewController",
+						[AboutViewController class], @"viewController",
 						nil];
 
 #if IS_FULL()
-	targetViewController = [[AutoTimerListController alloc] init];
 	_autotimerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"AutoTimer-Plugin", @"Title of AutoTimer in Other List"), @"title",
 						 NSLocalizedString(@"Add and edit AutoTimers", @"Explaination of AutoTimer in Other List"), @"explainText",
-						 targetViewController, @"viewController",
+						 [AutoTimerListController class], @"viewController",
 						 nil];
 #endif
 
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Settings", @"Title of Settings in Other List"), @"title",
 						 NSLocalizedString(@"Change configuration and edit known hosts", @"Explaination of Settings in Other List"), @"explainText",
-						 self.configListController, @"viewController",
+						 [ConfigListController class], @"viewController",
 						 nil]];
 
-	targetViewController = [[EPGRefreshViewController alloc] init];
 	_epgrefreshDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"EPGRefresh-Plugin", @"Title of EPGRefresh in Other List"), @"title",
 							  NSLocalizedString(@"Settings of EPGRefresh-Plugin", @"Explaination of EPGRefresh in Other List"), @"explainText",
-							  targetViewController, @"viewController",
+							  [EPGRefreshViewController class], @"viewController",
 							  nil];
 
-	targetViewController = [[EventSearchListController alloc] init];
 	_eventSearchDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Search EPG", @"Title of Event Search in Other List"), @"title",
 							NSLocalizedString(@"Search EPG for event titles", @"Explaination of Event Search in Other List"), @"explainText",
-							targetViewController, @"viewController",
+							[EventSearchListController class], @"viewController",
 							nil];
 
-	targetViewController = [[SignalViewController alloc] init];
 	_signalDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							   NSLocalizedString(@"Signal Finder", @"Title of Signal Finder in Other List"), @"title",
 							   NSLocalizedString(@"Displays current SNR/AGC", @"Explaination of Signal Finder in Other List"), @"explainText",
-							   targetViewController, @"viewController",
+							   [SignalViewController class], @"viewController",
 							   nil];
 
-	if(!IS_IPAD())
+	if(!isIpad)
 	{
-		targetViewController = [[LocationListController alloc] init];
 		_locationsDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Recording Locations", @"Title of Location List in Other List"), @"title",
 							NSLocalizedString(@"Show recording locations", @"Explaination of Location List in Other List"), @"explainText",
-							targetViewController, @"viewController",
+							[LocationListController class], @"viewController",
 							nil];
 
-		targetViewController = [[MovieListController alloc] init];
 		_recordDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							NSLocalizedString(@"Movies", @"Title of Movie List in Other List"), @"title",
 							NSLocalizedString(@"Recorded Movies", @"Explaination of Movie List in Other List"), @"explainText",
-							targetViewController, @"viewController",
+							[MovieListController class], @"viewController",
 							nil];
+
+		targetViewController = [[MediaPlayerController alloc] init];
+		_mediaPlayerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+								  NSLocalizedString(@"Media Player", @"Title of Media Player in Other List"), @"title",
+								  NSLocalizedString(@"Control the remote media player", @"Explaination of Media Player in Other List"), @"explainText",
+								  [MediaPlayerController class], @"viewController",
+								  nil];
 	}
 
-	targetViewController = [[MediaPlayerController alloc] init];
-	_mediaPlayerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-								   NSLocalizedString(@"Media Player", @"Title of Media Player in Other List"), @"title",
-								   NSLocalizedString(@"Control the remote media player", @"Explaination of Media Player in Other List"), @"explainText",
-								   targetViewController, @"viewController",
-								   nil];
-
-	targetViewController = [[ControlViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"Control", @"Title of Control View in Other List"), @"title",
 						NSLocalizedString(@"Control Powerstate and Volume", @"Explaination of Control View in Other List"), @"explainText",
-						targetViewController, @"viewController",
+						[ControlViewController class], @"viewController",
 						nil]];
 
-	targetViewController = [[MessageViewController alloc] init];
 	[menuList addObject:[NSDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Messages", @"Title of Message View in Other List"), @"title",
 						 NSLocalizedString(@"Send short Messages", @"Explaination of Message View in Other List"), @"explainText",
-						 targetViewController, @"viewController",
+						 [MessageViewController class], @"viewController",
 						 nil]];
 
-	targetViewController = [[SleepTimerViewController alloc] init];
 	_sleeptimerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Sleep Timer", @"Title of Sleep Timer in Other List"), @"title",
 							  NSLocalizedString(@"Edit and (de)activate Sleep Timer", @"Explaination of Sleep Timer in Other List"), @"explainText",
-							  targetViewController, @"viewController",
+							  [SleepTimerViewController class], @"viewController",
 							  nil];
 
-	targetViewController = [[PackageManagerListController alloc] init];
 	_packageManagerDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Package Manager", @"Title of Package Manager in Other List"), @"title",
 							  NSLocalizedString(@"Install/Update/Remove packages", @"Explaination of Package Manager in Other List"), @"explainText",
-							  targetViewController, @"viewController",
+							  [PackageManagerListController class], @"viewController",
 							  nil];
 
 	// Add the "About" button to the navigation bar
-	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStylePlain target:self action:@selector(aboutDreamoteAction:)];
-	self.navigationItem.leftBarButtonItem = buttonItem;
+	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStyleBordered target:self action:@selector(aboutDreamoteAction:)];
+	if(isIpad)
+		self.navigationItem.rightBarButtonItem = buttonItem; // left button somehow gets shrinked pretty badly, so use the right one instead
+	else
+		self.navigationItem.leftBarButtonItem = buttonItem;
 
 	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	if(IS_IPAD())
+	if(isIpad)
 		myTableView.rowHeight = kUIRowHeight;
 
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
@@ -208,7 +195,7 @@
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.myTableView = nil;
-	self.navigationItem.leftBarButtonItem = nil;
+	self.navigationItem.leftBarButtonItem = self.navigationItem.rightBarButtonItem = nil;
 
 	_aboutDreamoteViewController = nil;
 #if IS_FULL()
@@ -245,9 +232,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+	const BOOL isIpad = IS_IPAD();
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
-	[myTableView deselectRowAtIndexPath:tableSelection animated:YES];
+	if(!isIpad)
+		[myTableView deselectRowAtIndexPath:tableSelection animated:YES];
 
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
@@ -258,7 +247,7 @@
 	/* The menu reorganization might be buggy, this should be redone
 	   as it was a bad hack to begin with */
 	// Add/Remove Record
-	if(!IS_IPAD())
+	if(!isIpad)
 	{
 		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
 		{
@@ -316,7 +305,7 @@
 	{
 		if(![menuList containsObject: _signalDictionary])
 		{
-			[menuList insertObject: _signalDictionary atIndex: (IS_IPAD()) ? 3 : 4];
+			[menuList insertObject: _signalDictionary atIndex: (isIpad) ? 3 : 4];
 			reload = YES;
 		}
 	}
@@ -334,7 +323,7 @@
 	{
 		if(![menuList containsObject: _packageManagerDictionary])
 		{
-			[menuList insertObject: _packageManagerDictionary atIndex: (IS_IPAD()) ? 4 : 5];
+			[menuList insertObject: _packageManagerDictionary atIndex: (isIpad) ? 4 : 5];
 			reload = YES;
 		}
 	}
@@ -352,7 +341,7 @@
 	{
 		if(![menuList containsObject: _sleeptimerDictionary])
 		{
-			[menuList insertObject: _sleeptimerDictionary atIndex: (IS_IPAD()) ? 4 : 5];
+			[menuList insertObject: _sleeptimerDictionary atIndex: (isIpad) ? 4 : 5];
 			reload = YES;
 		}
 	}
@@ -464,18 +453,15 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UIViewController *targetViewController = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
-	if([self.navigationController.viewControllers containsObject:targetViewController])
+	Class targetViewControllerClass = [[menuList objectAtIndex: indexPath.row] objectForKey:@"viewController"];
+	UIViewController *targetViewController = [[targetViewControllerClass alloc] init];
+	if(mgSplitViewController)
 	{
-#if IS_DEBUG()
-		NSMutableString* result = [[NSMutableString alloc] init];
-		for(NSObject* obj in self.navigationController.viewControllers)
-			[result appendString:[obj description]];
-		[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [targetViewController description], result];
-#endif
-		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+		UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
+		mgSplitViewController.detailViewController = navController;
 	}
-	[self.navigationController pushViewController:targetViewController animated:YES];
+	else
+		[self.navigationController pushViewController:targetViewController animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -494,6 +480,23 @@
 /* rotate with device */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	return YES;
+}
+
+#pragma mark OtherViewProtocol
+
+- (void)forceConfigDialog
+{
+	// TODO: select settings item?
+	if([self.navigationController.visibleViewController isKindOfClass:[ConfigViewController class]])
+	{
+		((ConfigViewController *)self.navigationController.visibleViewController).mustSave = YES;
+	}
+	else
+	{
+		ConfigViewController *targetViewController = [ConfigViewController newConnection];
+		targetViewController.mustSave = YES;
+		[self.navigationController pushViewController:targetViewController animated:YES];
+	}
 }
 
 @end

@@ -1057,6 +1057,9 @@
 		DAC8C51413B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
+		DAD9F0911466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
+		DAD9F0921466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
+		DAD9F0931466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
 		DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
@@ -1765,6 +1768,9 @@
 		DAC8C50913B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "Resources/en.lproj/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAC8C50B13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/MainWindow.xib; sourceTree = "<group>"; };
 		DAC8C50D13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/OtherList.xib; sourceTree = "<group>"; };
+		DAD9F08E1466EA11007C0A31 /* OtherViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewProtocol.h; sourceTree = "<group>"; };
+		DAD9F08F1466EA7B007C0A31 /* OtherSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherSplitViewController.h; sourceTree = "<group>"; };
+		DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherSplitViewController.m; sourceTree = "<group>"; };
 		DAFA4BFF144ACF6B005DE541 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
@@ -2577,6 +2583,7 @@
 				DAC8C07E13B2014C00CA00D9 /* Constants.h */,
 				DAC8C07F13B2014C00CA00D9 /* Constants.m */,
 				DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */,
+				DAD9F08E1466EA11007C0A31 /* OtherViewProtocol.h */,
 				DAC8C10313B2014C00CA00D9 /* RecursiveFileAdder.h */,
 				DAC8C10413B2014C00CA00D9 /* RecursiveFileAdder.m */,
 				DAC8C11913B2014C00CA00D9 /* SynchronousRequestReader.h */,
@@ -2882,6 +2889,8 @@
 				DAC8C11613B2014C00CA00D9 /* MovieSplitViewController.m */,
 				DAC8C11713B2014C00CA00D9 /* TimerSplitViewController.h */,
 				DAC8C11813B2014C00CA00D9 /* TimerSplitViewController.m */,
+				DAD9F08F1466EA7B007C0A31 /* OtherSplitViewController.h */,
+				DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */,
 			);
 			path = SplitViewController;
 			sourceTree = "<group>";
@@ -3887,6 +3896,7 @@
 				DAABAA0A1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
 				DAABAA101462DA00002CDC31 /* MKStoreManager.m in Sources */,
 				DAABAA131462DA00002CDC31 /* MKStoreObserver.m in Sources */,
+				DAD9F0911466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4142,6 +4152,7 @@
 				DAABAA0B1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
 				DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */,
 				DAABAA141462DA00002CDC31 /* MKStoreObserver.m in Sources */,
+				DAD9F0921466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4363,6 +4374,7 @@
 				DAABAA0C1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
 				DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */,
 				DAABAA151462DA00002CDC31 /* MKStoreObserver.m in Sources */,
+				DAD9F0931466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

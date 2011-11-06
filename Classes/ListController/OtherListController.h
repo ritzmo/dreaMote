@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+#import <OtherViewProtocol.h>
+
 @class ConfigListController;
+@class MGSplitViewController;
 
 /*!
  @brief Other Items
@@ -16,7 +19,9 @@
  Display list of possible actions with currently selected connection (based on RemoteConnector
  features) that are not present in the tab bar.
  */
-@interface OtherListController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface OtherListController : UIViewController <UITableViewDelegate,
+													OtherViewProtocol,
+													UITableViewDataSource>
 {
 	NSMutableArray	*menuList; /*!< @brief Item List. */
 @private
@@ -42,8 +47,8 @@
 @property (nonatomic, strong) IBOutlet UITableView *myTableView;
 
 /*!
- @brief Config List.
+ @brief Parrent split view controller if available.
  */
-@property (unsafe_unretained, nonatomic, readonly) ConfigListController *configListController;
+@property (nonatomic, unsafe_unretained) MGSplitViewController *mgSplitViewController;
 
 @end

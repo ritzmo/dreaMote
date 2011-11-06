@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "AboutDreamoteViewController.h" /* AboutDreamoteDelegate */
-
-@class OtherListController;
+#import <ViewController/AboutDreamoteViewController.h> /* AboutDreamoteDelegate */
+#import <OtherViewProtocol.h>
 
 /*!
  @brief Main View.
@@ -29,7 +28,7 @@
 	UIViewController *_currentController; /*!< @brief "Currently playing" Tab. */
 	UIViewController *_mediaplayerController; /*!< @brief "MediaPlayer" Tab on iPad. */
 	UIViewController *_movieController; /*!< @brief "Movies" Tab on iPad. */
-	OtherListController *_otherController;  /*!< @brief "Other" Tab. */
+	UIViewController<OtherViewProtocol> *_otherController;  /*!< @brief "Other" Tab. */
 	UIViewController *_rcController;  /*!< @brief RC Emulator Tab. */
 	UIViewController *_serviceController; /*!< @brief Service List Tab. */
 	UIViewController *_timerController;  /*!< @brief Timer Tab. */

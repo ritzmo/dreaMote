@@ -15,6 +15,7 @@
 #import "BouquetSplitViewController.h"
 #import "MediaPlayerSplitViewController.h"
 #import "MovieSplitViewController.h"
+#import "OtherSplitViewController.h"
 #import "TimerSplitViewController.h"
 
 #import "BouquetListController.h"
@@ -60,7 +61,7 @@
 
 - (void)awakeFromNib
 {
-	UINavigationController *navController = nil;
+	const BOOL isIpad = IS_IPAD();
 	UIViewController *viewController = nil;
 	UIImage *image = nil;
 	menuList = [[NSMutableArray alloc] init];
@@ -70,7 +71,7 @@
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
 
 	_currentController = [[CurrentViewController alloc] init];
-	if(IS_IPAD())
+	if(isIpad)
 	{
 		_bouquetController = [[BouquetSplitViewController alloc] init];
 		_timerController = [[TimerSplitViewController alloc] init];
@@ -87,8 +88,19 @@
 		_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
 	}
 	_rcController = nil;
-	_otherController = [[OtherListController alloc] init];
-	navController = [[UINavigationController alloc] initWithRootViewController: _otherController];
+	[menuList addObject:_timerController];
+
+	if(isIpad)
+	{
+		_otherController = [[OtherSplitViewController alloc] init];
+		[menuList addObject:_otherController];
+	}
+	else
+	{
+		_otherController = [[OtherListController alloc] init];
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:_otherController];
+		[menuList addObject:navController];
+	}
 
 	// assign tab bar images
 	image = [UIImage imageNamed: @"bouquet.png"];
@@ -101,12 +113,8 @@
 	image = [UIImage imageNamed: @"others.png"];
 	_otherController.tabBarItem.image = image;
 
-	[menuList addObject: _timerController];
-	[menuList addObject: navController];
-
-
-	[self setViewControllers: menuList];
-	self.selectedViewController = navController; // we don't own it any more, but it is retained by the array
+	self.viewControllers = menuList;
+	self.selectedViewController = [menuList lastObject];
 	self.delegate = self;
 
 	// listen to connection changes
@@ -230,20 +238,8 @@
 	// handleReconnect makes sure that a connection is established unless impossible
 	if(![RemoteConnectorObject isConnected])
 	{
-		// dialog (probably) already visible
-		if([self.selectedViewController isEqual:[menuList lastObject]]
-		   && [_otherController.navigationController.visibleViewController isKindOfClass:[ConfigViewController class]])
-		{
-			((ConfigViewController *)_otherController.navigationController.visibleViewController).mustSave = YES;
-			return NO;
-		}
-
-		ConfigViewController *targetViewController = [ConfigViewController newConnection];
-		targetViewController.mustSave = YES;
+		[_otherController forceConfigDialog];
 		self.selectedViewController = [menuList lastObject];
-		[_otherController.navigationController pushViewController: targetViewController animated: YES];
-		[self.selectedViewController viewWillAppear:YES];
-		[self.selectedViewController viewDidAppear:YES];
 		return NO;
 	}
 	return YES;
