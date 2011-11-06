@@ -420,6 +420,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 						[(UITableView *)self.view endUpdates];
 					}
 				}
+
+				// NOTE: if this is the first connection, we need to establish it here to properly check for features.
+				if(_mustSave)
+					[RemoteConnectorObject connectTo:_connectionIndex];
 			}
 			else
 			{
