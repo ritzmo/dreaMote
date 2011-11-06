@@ -43,6 +43,7 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		_explainLabel.textColor = [UIColor grayColor];
 		_explainLabel.highlightedTextColor = [UIColor whiteColor];
 		_explainLabel.font = [UIFont systemFontOfSize:kMainDetailsSize];
+		_explainLabel.adjustsFontSizeToFitWidth = YES;
 		[self.contentView addSubview:_explainLabel];
 	}
 	
