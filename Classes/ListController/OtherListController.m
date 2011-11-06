@@ -86,9 +86,6 @@
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
 	// and add it to a mutable array.  If you want to add more pages, simply call "addObject" on "menuList"
 	// with an additional NSDictionary.  Note we use NSLocalizedString to load a localized version of its title.
-
-	UIViewController *targetViewController;
-
 	_aboutDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"About Receiver", @"Title of About Receiver in Other List"), @"title",
 						NSLocalizedString(@"Information on software and tuners", @"Explaination of About Receiver in Other List"), @"explainText",
@@ -142,7 +139,6 @@
 							[MovieListController class], @"viewControllerClass",
 							nil];
 
-		targetViewController = [[MediaPlayerController alloc] init];
 		_mediaPlayerDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								  NSLocalizedString(@"Media Player", @"Title of Media Player in Other List"), @"title",
 								  NSLocalizedString(@"Control the remote media player", @"Explaination of Media Player in Other List"), @"explainText",
