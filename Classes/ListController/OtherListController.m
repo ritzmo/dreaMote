@@ -224,7 +224,7 @@
 
 - (void)handleReconnect: (NSNotification *)note
 {
-	if(_recordDictionary) // check an arbitrary item for nil
+	if(_aboutDictionary) // check an arbitrary item for nil
 		[self viewWillAppear:YES];
 }
 
