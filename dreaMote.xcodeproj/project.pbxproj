@@ -1294,6 +1294,8 @@
 		DA7920E11461ABCF0040615E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		DA7921071461AC0D0040615E /* SHKFacebookForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFacebookForm.h; sourceTree = "<group>"; };
 		DA7921081461AC0D0040615E /* SHKFacebookForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFacebookForm.m; sourceTree = "<group>"; };
+		DAAB66EB1468473A0099DBA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
+		DAAB66ED146847440099DBA9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAABA9E41462DA00002CDC31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		DAABA9E51462DA00002CDC31 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		DAABA9E61462DA00002CDC31 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -3164,6 +3166,7 @@
 		DAC8C4BA13B202D600CA00D9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */,
 				DAC8C4CD13B2032300CA00D9 /* about.html */,
 				DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */,
 				DAC8C4CE13B2032300CA00D9 /* changes_de.html */,
@@ -4401,6 +4404,15 @@
 				DA51CE00144ACBED00C714ED /* zh_CN */,
 			);
 			name = ShareKit.strings;
+			sourceTree = "<group>";
+		};
+		DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DAAB66EB1468473A0099DBA9 /* en */,
+				DAAB66ED146847440099DBA9 /* de */,
+			);
+			name = ServiceEditor.strings;
 			sourceTree = "<group>";
 		};
 		DAB85AF6145864B40089A382 /* PackageManager.strings */ = {

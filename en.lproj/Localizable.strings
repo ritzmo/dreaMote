@@ -117,10 +117,10 @@
 /* No comment provided by engineer. */
 /*"Album" = "Album";*/
 
-/* No comment provided by engineer. */
+/* 'All Services' button in bouquet list */
 /*"All" = "All";*/
 
-/* No comment provided by engineer. */
+/* Name of 'All Services'-Bouquet */
 /*"All Services" = "All Services";*/
 
 /* No comment provided by engineer. */
@@ -150,7 +150,8 @@
 /* No comment provided by engineer. */
 /*"Begin" = "Begin";*/
 
-/* Title of BouquetListController */
+/* Bouquets button in bouquet list
+   Title of BouquetListController */
 /*"Bouquets" = "Bouquets";*/
 
 /* Button in Appirater alert suggesting to buy paid version */
@@ -193,7 +194,7 @@
    Default title of ConfigViewController */
 "Configuration" = "Settings";
 
-/* No comment provided by engineer. */
+/* Section title for connections in ConfigList */
 /*"Configured Connections" = "Configured Connections";*/
 
 /* Message type */
@@ -325,6 +326,9 @@
 
 /* Title of prompt requesting name for playlist to be saved in MediaPlayer */
 /*"Enter name of Playlist" = "Enter name of Playlist";*/
+
+/* Title of prompt requesting name for new bookmark */
+/*"Enter path of bookmark" = "Enter path of bookmark";*/
 
 /* Default title of EPGRefreshViewController */
 "EPGRefresh" = "EPGRefresh";
@@ -461,6 +465,9 @@
 /* No comment provided by engineer. */
 /*"Invalid message type." = "Invalid message type.";*/
 
+/* [SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter. */
+/*"Invalid timer object received: %@." = "Invalid timer object received: %@.";*/
+
 /* No comment provided by engineer. */
 /*"Justplay" = "Justplay";*/
 
@@ -554,6 +561,9 @@
 
 /* don't refresh sat finder */
 /*"never" = "never";*/
+
+/* Title of cell to add a new bookmark */
+/*"New Bookmark" = "New Bookmark";*/
 
 /* No comment provided by engineer. */
 /*"New Connection" = "New Connection";*/
@@ -667,8 +677,14 @@
 /* MultiEPG change to 20:00 */
 /*"Primetime" = "Primetime";*/
 
+/* Provider button in bouquet list */
+/*"Provider" = "Provider";*/
+
 /* Pull down to refresh status */
 /*"Pull down to refresh..." = "Pull down to refresh...";*/
+
+/* Section title for In-App-Purchases in ConfigList */
+/*"Purchase" = "Purchase";*/
 
 /* Message type */
 /*"Question" = "Question";*/
@@ -756,6 +772,9 @@
 
 /* used in confirmation dialog: really restart? */
 /*"restart" = "restart";*/
+
+/* Restore previous purchases in config list */
+/*"Restore Purchases" = "Restore Purchases";*/
 
 /* Timer type */
 "Running" = "Running";
@@ -957,6 +976,9 @@
 /* No comment provided by engineer. */
 /*"Type" = "Type";*/
 
+/* Creating a bookmark has failed */
+/*"Unable to add bookmark: %@" = "Unable to add bookmark: %@";*/
+
 /* Connection failed due to improper authentication */
 /*"Unable to authenticate. Wrong password?" = "Unable to authenticate. Wrong password?";*/
 
@@ -965,6 +987,9 @@
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Unable to connect to host.\nPlease restart the application.";
+
+/* Unable to initiate connection. */
+/*"Unable to connect to remote host." = "Unable to connect to remote host.";*/
 
 /* No comment provided by engineer. */
 /*"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality";*/

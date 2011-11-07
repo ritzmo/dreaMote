@@ -117,10 +117,10 @@
 /* No comment provided by engineer. */
 "Album" = "Album";
 
-/* No comment provided by engineer. */
+/* 'All Services' button in bouquet list */
 "All" = "Alle";
 
-/* No comment provided by engineer. */
+/* Name of 'All Services'-Bouquet */
 "All Services" = "Alle Sender";
 
 /* No comment provided by engineer. */
@@ -150,7 +150,8 @@
 /* No comment provided by engineer. */
 "Begin" = "Anfang";
 
-/* Title of BouquetListController */
+/* Bouquets button in bouquet list
+   Title of BouquetListController */
 "Bouquets" = "Bouquets";
 
 /* Button in Appirater alert suggesting to buy paid version */
@@ -193,7 +194,7 @@
    Default title of ConfigViewController */
 "Configuration" = "Konfiguration";
 
-/* No comment provided by engineer. */
+/* Section title for connections in ConfigList */
 "Configured Connections" = "Bekannte Verbindungen";
 
 /* Message type */
@@ -326,6 +327,9 @@
 /* Title of prompt requesting name for playlist to be saved in MediaPlayer */
 "Enter name of Playlist" = "Titel der Wiedergabeliste eingeben";
 
+/* Title of prompt requesting name for new bookmark */
+"Enter path of bookmark" = "Pfad des Lezezeichen angeben";
+
 /* Default title of EPGRefreshViewController */
 "EPGRefresh" = "EPGRefresh";
 
@@ -447,7 +451,7 @@
 "Information on software and tuners" = "Informationen zu Software & Tunern";
 
 /* Explaination of Package Manager in Other List */
-"Install/Update/Remove packages" = "Pakete installieren/löschen oder Upgrades einspielen";
+"Install/Update/Remove packages" = "Pakete installieren/löschen/aktualisieren";
 
 /* instant sat finder refresh */
 "instant" = "durchgehend";
@@ -460,6 +464,9 @@
 
 /* No comment provided by engineer. */
 "Invalid message type." = "Ungültiger Typ.";
+
+/* [SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter. */
+"Invalid timer object received: %@." = "Ungültigen Timer erhalten: %@.";
 
 /* No comment provided by engineer. */
 "Justplay" = "Nur wiedergeben";
@@ -554,6 +561,9 @@
 
 /* don't refresh sat finder */
 "never" = "nie";
+
+/* Title of cell to add a new bookmark */
+"New Bookmark" = "Neues Lesezeichen";
 
 /* No comment provided by engineer. */
 "New Connection" = "Neue Verbindung";
@@ -667,8 +677,14 @@
 /* MultiEPG change to 20:00 */
 "Primetime" = "Primetime";
 
+/* Provider button in bouquet list */
+"Provider" = "Provider";
+
 /* Pull down to refresh status */
 "Pull down to refresh..." = "Herunterziehen zum Aktualisieren...";
+
+/* Section title for In-App-Purchases in ConfigList */
+"Purchase" = "Zusatzkäufe";
 
 /* Message type */
 "Question" = "Frage";
@@ -756,6 +772,9 @@
 
 /* used in confirmation dialog: really restart? */
 "restart" = "GUI neu starten";
+
+/* Restore previous purchases in config list */
+"Restore Purchases" = "Käufe wiederherstellen";
 
 /* Timer type */
 "Running" = "Aktiv";
@@ -957,6 +976,9 @@
 /* No comment provided by engineer. */
 "Type" = "Typ";
 
+/* Creating a bookmark has failed */
+"Unable to add bookmark: %@" = "Konnte Lesezeichen nicht hinzufügen: %@";
+
 /* Connection failed due to improper authentication */
 "Unable to authenticate. Wrong password?" = "Authentifizierung fehlgeschlagen. Passwort fehlerhaft?";
 
@@ -965,6 +987,9 @@
 
 /* No comment provided by engineer. */
 "Unable to connect to host.\nPlease restart the application." = "Konnte nicht zum Server verbinden.\nBitte starten Sie die Applikation neu.";
+
+/* Unable to initiate connection. */
+"Unable to connect to remote host." = "Konnte nicht zum Server verbinden.";
 
 /* No comment provided by engineer. */
 "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Konnte nicht erkennen ob die Aktion erfolgreich war. Für volle Funktionalität bitte das WebInterface aktualisieren.";

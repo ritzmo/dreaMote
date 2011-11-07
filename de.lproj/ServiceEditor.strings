@@ -1,0 +1,63 @@
+/* Add new alternative service to currently selected service */
+"Add Alternative" = "Alternative hinzufügen";
+
+/* Add new marker before this position */
+"Add Marker" = "Marker einfügen";
+
+/* Add this service to another bouquet */
+"Add to Bouquet" = "Zu Bouquet hinzufügen";
+
+/* Delete selected service */
+"Delete" = "Löschen";
+
+/* Button removing service alternatives */
+"Delete all" = "Alle löschen";
+
+/* Title of prompt requesting name for new bouquet */
+"Enter name of bouquet" = "Namen für neues Bouquet eingeben";
+
+/* Title of prompt requesting new name for an existing service */
+"Enter new name" = "Neuen Namen eingeben";
+
+/* Title of prompt requesting new name for an existing bouquet */
+"Enter new name of bouquet" = "Neuen Namen eingeben";
+
+/* Title of prompt requesting name for a marker the user requested */
+"Enter title for marker" = "Namen des Marker eingeben";
+
+/* Title of cell to add a bouquet */
+"New Bouquet" = "Neues Bouquet";
+
+/* Open selected service */
+"Open" = "Öffnen";
+
+/* Undo selection made by the user. */
+"Remove selection" = "Auswahl rückgängig";
+
+/* Rename currently selected service */
+"Rename" = "Umbenennen";
+
+/* Show alternatives for selected service */
+"Show Alternatives" = "Alternativen anzeigen";
+
+/* Creating a marker has failed */
+"Unable to add marker: %@" = "Konnte Marker nicht hinzufügen: %@";
+
+/* Adding an alternative to a service failed */
+"Unable to add service %@ to alternative %@: %@" = "Sender %1$@ konnte nicht zu Alternative %2$@ hinzugefügt werden: %3$@";
+
+/* Adding a service to a bouquet failed */
+"Unable to add service(s) to bouquet %@: %@" = "Sender konnte(n) nicht zum Bouquet %1$@ hinzugefügt werden: %2$@";
+
+/* Creating a bouquet has failed */
+"Unable to create bouquet: %@" = "Bouquet konnte nicht erstellt werden: %@";
+
+/* Removing alternatives failed */
+"Unable to remove alternatives: %@" = "Alternativen konnten nicht entfernt werden: %@";
+
+/* Renaming a bouquet has failed */
+"Unable to rename bouquet: %@" = "Bouquet konnte nicht umbenannt werden: %@";
+
+/* Renaming a service has failed */
+"Unable to rename service: %@" = "Sender konnte nicht umbenannt werden: %@";
+
