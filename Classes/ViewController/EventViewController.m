@@ -596,7 +596,7 @@
 	SHKItem *item = [SHKItem text:[NSString stringWithFormat:NSLocalizedString(@"Hey, check out %@ on %@. %@", @"Default sharing string for events"), _event.title, _event.service.sname, [self format_BeginEnd:_event.begin]]];
 	if(!_summaryView)
 		_summaryView = [self create_Summary];
-	[item setAlternateText:[[item text] stringByAppendingFormat:@"\n\n%@", _summaryView.text] toShareOn:@"Email"];
+	[item setAlternateText:[[item text] stringByAppendingFormat:@" <br/><br/>%@", _summaryView.text] toShareOn:@"Email"];
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
 	[actionSheet showInView:self.view];
