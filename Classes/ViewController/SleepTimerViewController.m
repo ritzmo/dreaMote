@@ -100,10 +100,12 @@ enum generalSectionItems
 	_tableView.rowHeight = kUIRowHeight;
 	_tableView.allowsSelectionDuringEditing = YES;
 
-	_cancelButtonItem = [[UIBarButtonItem alloc]
-						initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-						target: self
-						action: @selector(cancelEdit:)];
+	if(IS_IPHONE())
+	{
+		_cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+																		  target:self
+																		  action:@selector(cancelEdit:)];
+	}
 
 	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
