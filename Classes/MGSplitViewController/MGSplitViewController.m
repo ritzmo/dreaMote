@@ -23,17 +23,6 @@
 #define MG_ANIMATION_CHANGE_SPLIT_ORIENTATION	@"ChangeSplitOrientation"	// Animation ID for internal use.
 #define MG_ANIMATION_CHANGE_SUBVIEWS_ORDER		@"ChangeSubviewsOrder"	// Animation ID for internal use.
 
-#ifdef SafeRetainAssign
-#undef SafeRetainAssign
-#endif
-#define SafeRetainAssign(var, newExpr) { \
-	id OLD = (var); \
-	id NEW = (newExpr); \
-	(var) = [NEW retain]; \
-	if(OLD) \
-		[OLD release]; \
-}
-
 @interface MGSplitViewController (MGPrivateMethods)
 
 - (void)setup;

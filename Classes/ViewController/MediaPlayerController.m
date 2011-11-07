@@ -764,10 +764,10 @@ enum mediaPlayerTags
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	_fileList.fileDelegate = nil;
-	SafeRetainAssign(_fileList, nil);
+	_fileList = nil;
 	_playlist.fileDelegate = nil;
-	SafeRetainAssign(_playlist, nil);
-	SafeRetainAssign(_controls, nil);
+	_playlist = nil;
+	_controls = nil;
 	// NOTE: we deliberately don't release _closeSheet here, but it's pretty safe to assume that it's nil at this point
 
 	[super viewDidUnload];

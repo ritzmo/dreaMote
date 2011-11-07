@@ -125,11 +125,11 @@ enum generalSectionItems
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_cancelButtonItem, nil);
-	SafeRetainAssign(_time, nil);
-	SafeRetainAssign(_timeCell, nil); // references _time
-	SafeRetainAssign(_enabled, nil);
-	SafeRetainAssign(_shutdown, nil);
+	_cancelButtonItem = nil;
+	_time = nil;
+	_timeCell = nil; // references _time
+	_enabled = nil;
+	_shutdown = nil;
 
 	[super viewDidUnload];
 }

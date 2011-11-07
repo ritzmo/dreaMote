@@ -86,7 +86,7 @@
 
 		if(_autotimerView.delegate == self)
 			_autotimerView.delegate = nil;
-		SafeRetainAssign(_autotimerView, newAutotimerView);
+		_autotimerView = newAutotimerView;
 		_autotimerView.delegate = self;
 	}
 }
@@ -95,7 +95,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self]);
+	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self];
 }
 
 /* remove content data */
@@ -109,7 +109,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 }
 
 /* run epg parsing on remote receiver */

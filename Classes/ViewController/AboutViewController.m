@@ -49,19 +49,19 @@
 		[e raise];
 #endif
 	}
-	SafeRetainAssign(_xmlReader, newXMLReader);
+	_xmlReader = newXMLReader;
 }
 
 - (void)emptyData
 {
-	SafeRetainAssign(_about, nil);
+	_about = nil;
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 }
 
 #pragma mark -
@@ -86,7 +86,7 @@
 
 - (void)addAbout: (NSObject<AboutProtocol> *)about
 {
-	SafeRetainAssign(_about, about);
+	_about = about;
 }
 
 #pragma mark - UITableView delegates

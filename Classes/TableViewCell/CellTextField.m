@@ -89,7 +89,7 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 {
 	if(view == inView) return;
 	if(view.delegate == self) view.delegate = nil;
-	SafeRetainAssign(view, inView);
+	view = inView;
 	view.delegate = self;
 
 	/*!

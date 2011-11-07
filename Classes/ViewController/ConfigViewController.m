@@ -188,7 +188,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 - (void)setConnection:(NSMutableDictionary *)con
 {
 	if(_connection == con) return;
-	SafeRetainAssign(_connection, con);
+	_connection = con;
 
 	if(_remoteAddressTextField) // check if initialized
 	{
@@ -351,15 +351,15 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	UnsetCellAndDelegate(_usernameCell);
 	UnsetCellAndDelegate(_passwordCell);
 
-	SafeRetainAssign(_remoteNameTextField, nil);
-	SafeRetainAssign(_remoteAddressTextField, nil);
-	SafeRetainAssign(_remotePortTextField, nil);
-	SafeRetainAssign(_usernameTextField, nil);
-	SafeRetainAssign(_passwordTextField, nil);
-	SafeRetainAssign(_singleBouquetSwitch, nil);
-	SafeRetainAssign(_advancedRemoteSwitch, nil);
-	SafeRetainAssign(_nowNextSwitch, nil);
-	SafeRetainAssign(_sslSwitch, nil);
+	_remoteNameTextField = nil;
+	_remoteAddressTextField = nil;
+	_remotePortTextField = nil;
+	_usernameTextField = nil;
+	_passwordTextField = nil;
+	_singleBouquetSwitch = nil;
+	_advancedRemoteSwitch = nil;
+	_nowNextSwitch = nil;
+	_sslSwitch = nil;
 
 	SafeDestroyButton(_makeDefaultButton);
 	SafeDestroyButton(_connectButton);

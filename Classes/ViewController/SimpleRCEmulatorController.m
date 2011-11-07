@@ -87,7 +87,7 @@
 {
 	SafeDestroyButton(_lameButton);
 	SafeDestroyButton(_menuButton);
-	SafeRetainAssign(_swipeArea, nil);
+	_swipeArea = nil;
 
 	[super viewDidUnload];
 }

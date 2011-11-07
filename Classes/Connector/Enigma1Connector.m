@@ -160,7 +160,7 @@ enum enigma1MessageTypes {
 {
 	[_bouquetsCacheLock lock];
 
-	SafeRetainAssign(_cachedBouquetsReader, nil);
+	_cachedBouquetsReader = nil;
 
 	[_bouquetsCacheLock unlock];
 }

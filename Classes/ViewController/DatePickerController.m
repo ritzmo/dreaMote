@@ -146,8 +146,8 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_datePickerView, nil);
-	SafeRetainAssign(_label, nil);
+	_datePickerView = nil;
+	_label = nil;
 
 	[super viewDidUnload];
 }

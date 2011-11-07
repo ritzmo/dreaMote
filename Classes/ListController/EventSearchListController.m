@@ -112,8 +112,8 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_searchBar, nil);
-	SafeRetainAssign(_tableView, nil);
+	_searchBar = nil;
+	_tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -167,12 +167,12 @@
 
 	// perform native search
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesEPGSearch])
-		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] searchEPG:self title:title])
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] searchEPG:self title:title];
 #if IS_FULL()
 	// serch in epg cache
 	else
 	{
-		SafeRetainAssign(_xmlReader, nil);
+		_xmlReader = nil;
 		[[EPGCache sharedInstance] searchEPGForTitle:title delegate:self];
 	}
 #endif
@@ -336,7 +336,7 @@
 
 	[_events removeAllObjects];
 	[_tableView reloadData];
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 	
 	// Run this in our "temporary" queue
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];

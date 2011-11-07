@@ -41,7 +41,7 @@
 	if([new isEqual: _playlist]) return;
 	if(_playlist && _playlist.fileDelegate == self)
 		_playlist.fileDelegate = nil;
-	SafeRetainAssign(_playlist, new);
+	_playlist = new;
 	_playlist.fileDelegate = self;
 }
 
@@ -93,10 +93,10 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self]; // NOTE: parent should do this, but since we set it, we should unset it
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-	SafeRetainAssign(_tableView, nil);
+	_tableView = nil;
 	// _fileList is also unset in super, but do it here to keep things more logical, as we also set it in this class
 	_fileList.fileDelegate = nil;
-	SafeRetainAssign(_fileList, nil);
+	_fileList = nil;
 
 	[super viewDidUnload];
 }
@@ -137,8 +137,8 @@
 /* remove content data */
 - (void)emptyData
 {
-	SafeRetainAssign(_currentTrack, nil);
-	SafeRetainAssign(_currentCover, nil);
+	_currentTrack = nil;
+	_currentCover = nil;
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 	_xmlReaderMetadata = nil;
@@ -280,7 +280,7 @@
 - (void)addMetadata:(NSObject <MetadataProtocol>*)anItem
 {
 	if(anItem == nil) return;
-	SafeRetainAssign(_currentTrack, anItem);
+	_currentTrack = anItem;
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0];
 
 	if(!(_currentTrack.coverpath == nil || [_currentTrack.coverpath isEqualToString: @""])
@@ -288,7 +288,7 @@
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchCoverart)];
 	else
 	{
-		SafeRetainAssign(_currentCover, nil);
+		_currentCover = nil;
 	}
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }

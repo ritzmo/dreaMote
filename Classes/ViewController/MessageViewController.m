@@ -62,9 +62,9 @@
 	UnsetCellAndDelegate(_captionCell);
 	UnsetCellAndDelegate(_timeoutCell);
 	_typeCell = nil;
-	SafeRetainAssign(_messageTextField, nil);
-	SafeRetainAssign(_captionTextField, nil);
-	SafeRetainAssign(_timeoutTextField, nil);
+	_messageTextField = nil;
+	_captionTextField = nil;
+	_timeoutTextField = nil;
 	SafeDestroyButton(_sendButton);
 }
 
@@ -149,9 +149,9 @@
 	UnsetCellAndDelegate(_captionCell);
 	UnsetCellAndDelegate(_timeoutCell);
 	_typeCell = nil;
-	SafeRetainAssign(_messageTextField, nil);
-	SafeRetainAssign(_captionTextField, nil);
-	SafeRetainAssign(_timeoutTextField, nil);
+	_messageTextField = nil;
+	_captionTextField = nil;
+	_timeoutTextField = nil;
 	SafeDestroyButton(_sendButton);
 
 	[super viewDidUnload];

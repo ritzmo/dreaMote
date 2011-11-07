@@ -267,19 +267,19 @@
 
 - (void)viewDidUnload
 {
-	SafeRetainAssign(_toolbar, nil);
-	SafeRetainAssign(rcView, nil);
+	_toolbar = nil;
+	rcView = nil;
 
-	SafeRetainAssign(_screenView, nil);
-	SafeRetainAssign(_scrollView, nil);
-	SafeRetainAssign(_imageView, nil);
-	SafeRetainAssign(_screenshotButton, nil);
+	_screenView = nil;
+	_scrollView = nil;
+	_imageView = nil;
+	_screenshotButton = nil;
 
-	SafeRetainAssign(_keyPad, nil);
-	SafeRetainAssign(_navigationPad, nil);
+	_keyPad = nil;
+	_navigationPad = nil;
 
 	[_queue cancelAllOperations];
-	SafeRetainAssign(_queue, nil);
+	_queue = nil;
 
 	[super viewDidUnload];
 }

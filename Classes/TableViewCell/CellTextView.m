@@ -79,7 +79,7 @@ NSString* kCellTextView_ID = @"CellTextView_ID";
 
 - (void)setView:(UITextView *)inView
 {
-	SafeRetainAssign(view, inView);
+	view = inView;
 	[self.contentView addSubview:inView];
 	[self layoutSubviews];
 }

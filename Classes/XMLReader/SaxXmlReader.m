@@ -67,9 +67,9 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 #else
 		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown connection error occured.", @"Data connection failed for unknown reason.")
 															 forKey:NSLocalizedDescriptionKey];
-		SafeRetainAssign(failureReason, [NSError errorWithDomain:@"myDomain"
-															code:900
-														userInfo:userInfo]);
+		failureReason = [NSError errorWithDomain:@"myDomain"
+											code:900
+										userInfo:userInfo];
 #endif
 	}
 

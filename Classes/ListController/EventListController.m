@@ -90,7 +90,7 @@
 {
 	// No change, return immediately
 	if(_service == newService) return;
-	SafeRetainAssign(_service, newService);
+	_service = newService;
 
 	// Set title
 	self.title = newService.sname;
@@ -183,11 +183,11 @@
 #if IS_FULL()
 	[_filteredEvents removeAllObjects];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
+	_searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	SafeRetainAssign(_searchDisplay, nil);
+	_searchDisplay = nil;
 #endif
 	[super viewDidUnload];
 }
@@ -201,7 +201,7 @@
 	[epgCache startTransaction:_service];
 #endif
 	_reloading = YES;
-	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service]);
+	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service];
 }
 
 /* remove content data */
@@ -240,7 +240,7 @@
 		[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
 	}
 
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 }
 
 /* rotate with device */
@@ -770,7 +770,7 @@
 		}
 		else
 		{
-			SafeRetainAssign(_zapListController, [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar]);
+			_zapListController = [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar];
 		}
 	}
 	// else just zap on remote host
@@ -788,7 +788,7 @@
 {
 	NSURL *streamingURL = nil;
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	SafeRetainAssign(_zapListController, nil);
+	_zapListController = nil;
 
 	if(selectedAction == zapActionRemote)
 	{

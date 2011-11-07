@@ -141,7 +141,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_adBannerView setDelegate:nil];
 	_adBannerView = nil;
 #endif
-	SafeRetainAssign(_cleanupButton, nil);
+	_cleanupButton = nil;
 
 	[super viewDidUnload];
 }
@@ -223,7 +223,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		{
 			if(_timerViewController.delegate == self)
 				_timerViewController.delegate = nil;
-			SafeRetainAssign(_timerViewController, nil);
+			_timerViewController = nil;
 
 			[self emptyData];
 		}
@@ -237,7 +237,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self]);
+	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchTimers:self];
 }
 
 /* remove content data */
@@ -257,7 +257,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_tableView reloadData];
 #endif
 
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 }
 
 - (void)cancelConnection:(NSNotification *)notif

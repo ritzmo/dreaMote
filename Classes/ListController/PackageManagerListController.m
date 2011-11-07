@@ -98,7 +98,7 @@
 {
 	_reloading = YES;
 
-	SafeRetainAssign(_packages, [[RemoteConnectorObject sharedRemoteConnector] packageManagementList:_listType]);
+	_packages = [[RemoteConnectorObject sharedRemoteConnector] packageManagementList:_listType];
 	[self performSelectorOnMainThread:@selector(dataFetched) withObject:nil waitUntilDone:NO];
 }
 
@@ -106,7 +106,7 @@
 - (void)emptyData
 {
 	// Clean event list
-	SafeRetainAssign(_packages, nil);
+	_packages = nil;
 	[_selectedPackages removeAllObjects]; // no use in keeping them around with new packages
 	reloadTable();
 }
@@ -301,11 +301,11 @@
 {
 	[_filteredPackages removeAllObjects];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
+	_searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	SafeRetainAssign(_searchDisplay, nil);
+	_searchDisplay = nil;
 
 	[super viewDidUnload];
 }

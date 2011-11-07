@@ -108,7 +108,7 @@
 		[self.navigationController popViewControllerAnimated:NO];
 
 	[delegate connectionSelected:con];
-	SafeRetainAssign(_delegate, nil);
+	_delegate = nil;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

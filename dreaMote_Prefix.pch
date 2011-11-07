@@ -19,8 +19,20 @@
 	[(button) removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents]; \
 	(button) = (nil); \
 }
-#define SafeRetainAssign(var, newExpr) (var) = newExpr;
-#define SafeCopyAssign(var, newExpr) (var) = [(newExpr) copy];
+#define SafeRetainAssign(var, newExpr) { \
+	id OLD = (var); \
+	id NEW = (newExpr); \
+	(var) = [NEW retain]; \
+	if(OLD) \
+		[OLD release]; \
+}
+#define SafeCopyAssign(var, newExpr) { \
+	id OLD = (var); \
+	id NEW = (newExpr); \
+	(var) = [NEW copy]; \
+	if(OLD) \
+		[OLD release]; \
+}
 #define SafeReturn(var) [[var retain] autorelease]
 #define UnsetCellAndDelegate(cell) { \
 	(cell).delegate = (nil); \

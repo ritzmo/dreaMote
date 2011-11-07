@@ -111,7 +111,7 @@
 {
 	// Same bouquet assigned, abort
 	if([_path isEqualToString: new]) return;
-	SafeRetainAssign(_path, new);
+	_path = new;
 
 	// Free Caches and reload data
 	[self emptyData];

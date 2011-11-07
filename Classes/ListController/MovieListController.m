@@ -90,7 +90,7 @@
 {
 	if(_currentLocation == newLocation ||
 	   [_currentLocation isEqualToString: newLocation]) return;
-	SafeRetainAssign(_currentLocation, newLocation);
+	_currentLocation = newLocation;
 
 	// Set Title
 	if(newLocation)
@@ -162,7 +162,7 @@
 
 		if(_movieViewController && _movieViewController.movieList == self)
 			_movieViewController.movieList = nil;
-		SafeRetainAssign(_movieViewController, new);
+		_movieViewController = new;
 		if(_movieViewController)
 			_movieViewController.movieList = self;
 	}
@@ -275,7 +275,7 @@
 		[_movies removeAllObjects];
 		if(IS_IPHONE())
 			self.movieViewController = nil;
-		SafeRetainAssign(_xmlReader, nil);
+		_xmlReader = nil;
 	}
 
 	[_dateFormatter resetReferenceDate];
@@ -289,7 +289,7 @@
 	 */
 	if(_currentLocation)
 	{
-		SafeRetainAssign(_currentLocation, nil);
+		_currentLocation = nil;
 		_refreshMovies = YES;
 	}
 
@@ -314,7 +314,7 @@
 	if(!movies.count)
 	{
 		[_characters removeAllObjects];
-		SafeRetainAssign(_currentKeys, nil);
+		_currentKeys = nil;
 		return;
 	}
 
@@ -335,12 +335,12 @@
 		if(arr.count)
 			[_characters setValue:[arr sortedArrayUsingSelector:@selector(titleCompare:)] forKey:@"#"];
 
-		SafeRetainAssign(_currentKeys, [[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)]);
+		_currentKeys = [[_characters allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	}
 	else
 	{
 		[_characters removeAllObjects];
-		SafeRetainAssign(_currentKeys, nil);
+		_currentKeys = nil;
 	}
 }
 
@@ -417,16 +417,16 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
-	SafeRetainAssign(_currentKeys, nil);
-	SafeRetainAssign(_sortButton, nil);
+	_currentKeys = nil;
+	_sortButton = nil;
 #if IS_FULL()
 	[_filteredMovies removeAllObjects];
 	_tableView.tableHeaderView = nil; // references _searchBar
-	SafeRetainAssign(_searchBar, nil);
+	_searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
-	SafeRetainAssign(_searchDisplay, nil);
+	_searchDisplay = nil;
 #endif
 
 	[super viewDidUnload];
@@ -436,7 +436,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
-	SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation]);
+	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation];
 }
 
 /* remove content data */
@@ -445,7 +445,7 @@
 	// Clean movie list(s)
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
-	SafeRetainAssign(_currentKeys, nil);
+	_currentKeys = nil;
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(_sortTitle)
 	{
@@ -459,7 +459,7 @@
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_xmlReader, nil);
+	_xmlReader = nil;
 }
 
 /* select and return next movie */

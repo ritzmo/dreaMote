@@ -58,7 +58,7 @@
 	@autoreleasepool {
 		NSString *path = [_remainingPaths lastObject];
 		[_remainingPaths removeLastObject];
-		SafeRetainAssign(_xmlReader, [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path]);
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchFiles:self path:path];
 	}
 }
 
@@ -90,6 +90,9 @@
 	else
 	{
 		[_delegate recursiveFileAdderDoneAddingFiles:self];
+
+		if(dataSource == _xmlReader)
+			_xmlReader = nil;
 	}
 }
 
@@ -102,6 +105,9 @@
 	else
 	{
 		[_delegate recursiveFileAdderDoneAddingFiles:self];
+
+		if(dataSource == _xmlReader)
+			_xmlReader = nil;
 	}
 }
 

@@ -143,18 +143,18 @@
 
 - (void)emptyData
 {
-	SafeRetainAssign(_service, nil);
-	SafeRetainAssign(_now, nil);
-	SafeRetainAssign(_next, nil);
+	_service = nil;
+	_now = nil;
+	_next = nil;
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 3)];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 #else
 	[_tableView reloadData];
 #endif
-	SafeRetainAssign(_nowSummary, nil);
-	SafeRetainAssign(_nextSummary, nil);
-	SafeRetainAssign(_xmlReader, nil);
+	_nowSummary = nil;
+	_nextSummary = nil;
+	_xmlReader = nil;
 }
 
 #pragma mark -
@@ -179,7 +179,7 @@
 
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
-	SafeCopyAssign(_service, service);
+	_service = [service copy];
 }
 
 #pragma mark -
@@ -190,12 +190,12 @@
 {
 	if(_now == nil)
 	{
-		SafeCopyAssign(_now, event);
+		_now = [event copy];
 		_nowSummary = [self newSummary: event];
 	}
 	else
 	{
-		SafeCopyAssign(_next, event);
+		_next = [event copy];
 		_nextSummary = [self newSummary: event];
 	}
 }
