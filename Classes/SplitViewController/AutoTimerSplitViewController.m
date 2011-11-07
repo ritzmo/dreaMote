@@ -25,9 +25,10 @@
 	lc.autotimerView = vc;
 
 	// Setup navigation controllers and add to split view
-	UIViewController *navController;
-	navController = [[UINavigationController alloc] initWithRootViewController:vc];
-	self.viewControllers = [NSArray arrayWithObjects: lc, navController, nil];
+	UIViewController *navController1, *navController2;
+	navController1 = [[UINavigationController alloc] initWithRootViewController:lc];
+	navController2 = [[UINavigationController alloc] initWithRootViewController:vc];
+	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
 }
 
 @end
