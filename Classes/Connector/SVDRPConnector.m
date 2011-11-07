@@ -679,7 +679,7 @@ typedef enum
 	if(![newTimer respondsToSelector: @selector(toString)])
 	{
 		result.result = NO;
-		result.resulttext = [NSString stringWithFormat:NSLocalizedString(@"Invalid timer object received: %@.", @"[SVDRPConnector {edit,del}Timer::] did not receive an SVDRPTimer as parameter."), newTimer];
+		result.resulttext = [NSString stringWithFormat:NSLocalizedString(@"Invalid timer object received: %@.", @"[SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter."), newTimer];
 		return result;
 	}
 	const NSString *timerString = [NSString stringWithFormat: @"%@ %@", ((SVDRPTimer *)newTimer).tid, [(SVDRPTimer *)newTimer toString]];
