@@ -114,13 +114,11 @@
 - (void)setEvent: (NSObject<EventProtocol> *)newEvent
 {
 	if(_event != newEvent)
-	{
-		SafeRetainAssign(_event, newEvent);
-	}
+		_event = newEvent;
 
 	_similarFetched = NO;
 	[_similarEvents removeAllObjects];
-	SafeRetainAssign(_summaryView, [self create_Summary]);
+	_summaryView = [self create_Summary];
 
 	if(newEvent != nil)
 		self.title = newEvent.title;
@@ -678,7 +676,7 @@
 		}
 		else
 		{
-			SafeRetainAssign(_zapListController, [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar]);
+			_zapListController = [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar];
 		}
 	}
 	// else just zap on remote host
@@ -696,7 +694,7 @@
 {
 	NSURL *streamingURL = nil;
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	SafeRetainAssign(_zapListController, nil);
+	_zapListController = nil;
 
 	if(selectedAction == zapActionRemote)
 	{
