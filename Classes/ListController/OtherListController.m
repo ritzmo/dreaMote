@@ -233,8 +233,22 @@
 	const BOOL isIpad = IS_IPAD();
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
-	if(!isIpad)
+	if(mgSplitViewController)
+	{
+		NSMutableDictionary *selectedDictionary = [menuList objectAtIndex:tableSelection.row];
+		UIViewController *masterViewController = [selectedDictionary objectForKey:@"masterViewController"];
+		if(masterViewController)
+		{
+			MGSplitViewController *targetViewController = [selectedDictionary objectForKey:@"viewController"];
+			UINavigationController *navController = (UINavigationController *)targetViewController.masterViewController;
+			[navController pushViewController:masterViewController animated:NO];
+			[selectedDictionary removeObjectForKey:@"masterViewController"];
+		}
+	}
+	else
+	{
 		[myTableView deselectRowAtIndexPath:tableSelection animated:YES];
+	}
 
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 	if(![RemoteConnectorObject isConnected])
@@ -468,11 +482,11 @@
 			UIViewController *detailViewController = ((MGSplitViewController *)targetViewController).detailViewController;
 
 			UIViewController *pushViewController = masterViewController;
-			// NOTE: does not work reliably, because the view controller is removed from the stack after pushing it the first time
 			if([masterViewController isKindOfClass:[UINavigationController class]])
 			{
-				NSLog(@"WARNING: Stealing a view controller from a navigation stack does NOT work reliably, find a better way to do this!");
+				NSLog(@"WARNING: Stealing a view controller from a navigation stack does is dangerous, think of a better way!");
 				pushViewController = ((UINavigationController *)masterViewController).visibleViewController;
+				[selectedDictionary setObject:pushViewController forKey:@"masterViewController"];
 			}
 			[self.navigationController pushViewController:pushViewController animated:YES];
 
