@@ -6,7 +6,7 @@ import re
 import os
 import codecs
 pattern = re.compile('^"(.*?)" = "(.*?)";.*?')
-tables = "Localizable", "AutoTimer", "EPGRefresh", "PackageManager"
+tables = "Localizable", "AutoTimer", "EPGRefresh", "PackageManager", "ServiceEditor"
 
 def find(dirname, recursive, *args):
 	files = []
