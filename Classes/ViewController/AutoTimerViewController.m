@@ -952,6 +952,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
 					/* FALL THROUGH */
 				default:
 					break;
