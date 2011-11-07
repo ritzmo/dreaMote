@@ -524,7 +524,7 @@ enum bouquetListTags
 		}
 		SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
 																								  NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
-																								  NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
+																								  NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename currently selected service"),
 																								  nil]
 																					andSelection:NSNotFound
 																						andTitle:nil];
@@ -553,7 +553,7 @@ enum bouquetListTags
 										  destructiveButtonTitle:nil//NSLocalizedStringFromTable(@"Delete", @"ServiceEditor", @"Delete selected service")
 											   otherButtonTitles:
 							 NSLocalizedStringFromTable(@"Open", @"ServiceEditor", @"Open selected service"),
-							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename selected service"),
+							 NSLocalizedStringFromTable(@"Rename", @"ServiceEditor", @"Rename currently selected service"),
 							 nil];
 		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
 			[as showInView:self.view];
