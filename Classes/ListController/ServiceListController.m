@@ -646,7 +646,7 @@ enum serviceListTags
 		const BOOL isAlternative = [_bouquet.sref hasPrefix:@"1:134:"];
 		if(isAlternative && [delegate respondsToSelector:@selector(removeAlternatives:)])
 		{
-			UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service 6alternatives")
+			UIBarButtonItem *deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Delete all", @"ServiceEditor", @"Button removing service alternatives")
 																			 style:UIBarButtonItemStyleBordered
 																			target:self
 																			action:@selector(deleteAction:)];
