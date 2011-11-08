@@ -7,6 +7,8 @@
  *
  */
 
+#import "DreamoteConfiguration.h"
+
 // padding for margins
 #define kLeftMargin				5
 #define kTopMargin				5
@@ -23,8 +25,8 @@
 #define kSliderHeight			7
 #define kSwitchButtonWidth		94
 #define kSwitchButtonHeight		27
-#define kTextFieldHeight		((IS_IPAD()) ? 35 : 30)
-#define kTextViewHeight			((IS_IPAD()) ? 300 : 220)
+#define kTextFieldHeight		([DreamoteConfiguration singleton].textFieldHeight)
+#define kTextViewHeight			([DreamoteConfiguration singleton].textViewHeight)
 #define kSearchBarHeight		40
 #define kLabelHeight			20
 #define kProgressIndicatorSize	40
@@ -37,20 +39,20 @@
 
 // specific font metrics used in our text fields and text views
 #define kFontName				@"Arial"
-#define kTextFieldFontSize		((IS_IPAD()) ? 22 : 18)
-#define kTextViewFontSize		((IS_IPAD()) ? 22 : 18)
-#define kMultiEPGFontSize		((IS_IPAD()) ? 16 : 10)
+#define kTextFieldFontSize		([DreamoteConfiguration singleton].textFieldFontSize)
+#define kTextViewFontSize		([DreamoteConfiguration singleton].textViewFontSize)
+#define kMultiEPGFontSize		([DreamoteConfiguration singleton].multiEpgFontSize)
 
 // UITableView row heights
-#define kUISmallRowHeight		((IS_IPAD()) ? 43 : 38)
-#define kUIRowHeight			((IS_IPAD()) ? 55 : 50)
-#define kUIRowLabelHeight		22
-#define kEventCellHeight		((IS_IPAD()) ? 53 : 48)
-#define kServiceCellHeight		38
-#define kServiceEventCellHeight	((IS_IPAD()) ? 60 : 50)
-#define kMetadataCellHeight		275
-#define kAutoTimerCellHeight	38
-#define kPackageCellHeight		((IS_IPAD()) ? 50 : 42)
+#define kUISmallRowHeight		([DreamoteConfiguration singleton].uiSmallRowHeight)
+#define kUIRowHeight			([DreamoteConfiguration singleton].uiRowHeight)
+#define kUIRowLabelHeight		([DreamoteConfiguration singleton].uiRowLabelHeight)
+#define kEventCellHeight		([DreamoteConfiguration singleton].eventCellHeight)
+#define kServiceCellHeight		([DreamoteConfiguration singleton].serviceCellHeight)
+#define kServiceEventCellHeight	([DreamoteConfiguration singleton].serviceEventCellHeight)
+#define kMetadataCellHeight		([DreamoteConfiguration singleton].metadataCellHeight)
+#define kAutoTimerCellHeight	([DreamoteConfiguration singleton].autotimerCellHeight)
+#define kPackageCellHeight		([DreamoteConfiguration singleton].packageCellHeight)
 
 // MultiEPG heights
 #define kMultiEPGHeaderHeightIpad	(40) // Size of Header of iPad (else cell height)
@@ -63,20 +65,20 @@
 #define kCellTopOffset			12
 
 // various text sizes
-#define kMainTextSize			((IS_IPAD()) ? 22 : 18)
-#define kMainDetailsSize		((IS_IPAD()) ? 18 : 14)
-#define kServiceTextSize		((IS_IPAD()) ? 20 : 16)
-#define kServiceEventServiceSize ((IS_IPAD()) ? 18 : 14)
-#define kServiceEventEventSize	((IS_IPAD()) ? 15 : 12)
-#define kEventNameTextSize		((IS_IPAD()) ? 18 : 14)
-#define kEventDetailsTextSize	((IS_IPAD()) ? 15 : 12)
-#define kTimerServiceTextSize	((IS_IPAD()) ? 20 : 14)
-#define kTimerNameTextSize		((IS_IPAD()) ? 15 : 12)
-#define kTimerTimeTextSize		((IS_IPAD()) ? 15 : 12)
-#define kDatePickerFontSize		((IS_IPAD()) ? 26 : 14)
-#define kAutoTimerNameTextSize	((IS_IPAD()) ? 20 : 16)
-#define kPackageNameTextSize	((IS_IPAD()) ? 21 : 12)
-#define kPackageVersionTextSize	((IS_IPAD()) ? 18 : 12)
+#define kMainTextSize			([DreamoteConfiguration singleton].mainTextSize)
+#define kMainDetailsSize		([DreamoteConfiguration singleton].mainDetailsSize)
+#define kServiceTextSize		([DreamoteConfiguration singleton].serviceTextSize)
+#define kServiceEventServiceSize ([DreamoteConfiguration singleton].serviceEventServiceSize)
+#define kServiceEventEventSize	([DreamoteConfiguration singleton].serviceEventEventSize)
+#define kEventNameTextSize		([DreamoteConfiguration singleton].eventNameTextSize)
+#define kEventDetailsTextSize	([DreamoteConfiguration singleton].eventDetailsTextSize)
+#define kTimerServiceTextSize	([DreamoteConfiguration singleton].timerServiceTextSize)
+#define kTimerNameTextSize		([DreamoteConfiguration singleton].timerNameTextSize)
+#define kTimerTimeTextSize		([DreamoteConfiguration singleton].timerTimeTextSize)
+#define kDatePickerFontSize		([DreamoteConfiguration singleton].datePickerFontSize)
+#define kAutoTimerNameTextSize	([DreamoteConfiguration singleton].autotimerNameTextSize)
+#define kPackageNameTextSize	([DreamoteConfiguration singleton].packageNameTextSize)
+#define kPackageVersionTextSize	([DreamoteConfiguration singleton].packageVersionTextSize)
 
 // defaults
 #define kDefaultTimeout			@"15"
@@ -91,6 +93,7 @@
 #define kReadConnectionsNotification	@"dreaMoteDidReadConnections"
 #define kReconnectNotification			@"dreaMoteDidReconnect"
 #define kBouquetsChangedNotification	@"dreaMoteDidChangeBouquets" // currently only covers added bouquets
+#define kChangedThemeNotification		@"dreaMoteDidChangeTheme"
 
 // paths for custom configuration files
 #define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
@@ -131,6 +134,13 @@ extern const char *kPiconGlob;
 #define kSatFinderAudio			@"satFinderWithAudio"
 
 #define kCurrentDatabaseVersion 2
+
+// theme constants
+typedef enum {
+	THEME_DEFAULT = 0,
+	THEME_BLUE = 1,
+	THEME_HIGHCONTRAST = 2,
+} themeType;
 
 // shared e2 xml element names
 extern const char *kEnigma2Servicereference;

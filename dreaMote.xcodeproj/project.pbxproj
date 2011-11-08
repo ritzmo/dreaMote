@@ -10,6 +10,12 @@
 		DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
+		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
+		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
+		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
+		DA3316521469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */; };
+		DA3316531469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */; };
+		DA3316541469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */; };
 		DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */; };
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
@@ -1071,6 +1077,10 @@
 
 /* Begin PBXFileReference section */
 		DA21B20914561FB7002903A4 /* PackageManager.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PackageManager.png; sourceTree = "<group>"; };
+		DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteConfiguration.h; sourceTree = "<group>"; };
+		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
+		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
+		DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteIpadConfiguration.m; sourceTree = "<group>"; };
 		DA3603D3146716EA003E2DDD /* AutoTimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSplitViewController.h; sourceTree = "<group>"; };
 		DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSplitViewController.m; sourceTree = "<group>"; };
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
@@ -1852,6 +1862,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA33164A14695DC600A63BA8 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */,
+				DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */,
+				DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */,
+				DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
 		DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */ = {
 			isa = PBXGroup;
 			children = (
@@ -2574,6 +2595,7 @@
 			children = (
 				DAC8C05E13B2014C00CA00D9 /* Appirater */,
 				DAC8C06113B2014C00CA00D9 /* Categories */,
+				DA33164A14695DC600A63BA8 /* Configuration */,
 				DAC8C07213B2014C00CA00D9 /* Connector */,
 				DAC8C08013B2014C00CA00D9 /* Delegates */,
 				DAC8C09613B2014C00CA00D9 /* EPGCache */,
@@ -3906,6 +3928,8 @@
 				DAABAA131462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 				DAD9F0911466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 				DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */,
+				DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */,
+				DA3316521469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4162,6 +4186,8 @@
 				DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */,
 				DAABAA141462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 				DAD9F0921466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
+				DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */,
+				DA3316531469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4384,6 +4410,8 @@
 				DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */,
 				DAABAA151462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 				DAD9F0931466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
+				DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */,
+				DA3316541469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
