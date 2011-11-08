@@ -89,6 +89,7 @@ enum mediaPlayerTags
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	[_closeSheet dismissWithClickedButtonIndex:_closeSheet.cancelButtonIndex animated:NO];
 	progressHUD.delegate = nil;
 }
@@ -758,11 +759,20 @@ enum mediaPlayerTags
 	[self.view addSubview: _controls];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self stopObservingThemeChanges];
 	_fileList.fileDelegate = nil;
 	_fileList = nil;
 	_playlist.fileDelegate = nil;

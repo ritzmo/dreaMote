@@ -34,6 +34,8 @@
 
 @implementation PackageManagerListController
 
+@synthesize searchBar;
+
 /* initialize */
 - (id)init
 {
@@ -52,7 +54,7 @@
 /* dealloc */
 - (void)dealloc
 {
-	_tableView.tableHeaderView = nil; // references _searchBar
+	_tableView.tableHeaderView = nil; // references searchBar
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -100,7 +102,7 @@
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	[_tableView reloadData];
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 }
 
 - (void)setRegularType:(id)sender
@@ -261,16 +263,16 @@
 	_tableView.sectionHeaderHeight = 0;
 	_tableView.allowsSelectionDuringEditing = YES;
 
-	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-	_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-	_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_searchBar.keyboardType = UIKeyboardTypeDefault;
-	_tableView.tableHeaderView = _searchBar;
+	searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	searchBar.keyboardType = UIKeyboardTypeDefault;
+	_tableView.tableHeaderView = searchBar;
 
 	// hide the searchbar
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height)];
 
-	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
 	_searchDisplay.delegate = self;
 	_searchDisplay.searchResultsDataSource = self;
 	_searchDisplay.searchResultsDelegate = self;
@@ -279,13 +281,15 @@
 
 	UIBarButtonItem *regularButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Update", @"PackageManager", @"Update remote list of packages") style:UIBarButtonItemStyleBordered target:self action:@selector(doUpdate:)];
 	self.navigationItem.rightBarButtonItem = regularButton;
+
+	[self theme];
 }
 
 - (void)viewDidUnload
 {
 	[_filteredPackages removeAllObjects];
-	_tableView.tableHeaderView = nil; // references _searchBar
-	_searchBar = nil;
+	_tableView.tableHeaderView = nil; // references searchBar
+	searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -310,7 +314,7 @@
 		_reloading = YES;
 		[self emptyData];
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
-		[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height-_tableView.contentInset.top) animated:NO];
+		[_tableView setContentOffset:CGPointMake(0, -searchBar.frame.size.height-_tableView.contentInset.top) animated:NO];
 
 		// Run this in our "temporary" queue
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];

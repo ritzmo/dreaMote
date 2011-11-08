@@ -46,6 +46,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
+
 /* initialize with welcome type */
 - (id)initWithWelcomeType:(welcomeTypes)inWelcomeType
 {
@@ -155,10 +160,24 @@
 
 		[self.view addSubview:_twitterButton];
 	}
+	[self theme];
+}
+
+- (void)theme
+{
+	self.view.backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
+	[super theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	_aboutText = nil;
 	_doneButton = nil;
 	_mailButton = nil;

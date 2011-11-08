@@ -39,8 +39,8 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		_timerNameLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
-										   selectedColor:[UIColor whiteColor]
+		_timerNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kAutoTimerNameTextSize
 													bold:YES];
 		[myContentView addSubview:_timerNameLabel];

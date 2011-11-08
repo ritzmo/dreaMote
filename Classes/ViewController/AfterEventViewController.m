@@ -40,6 +40,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
+
 /* new AfterEventViewController */
 + (AfterEventViewController *)withAfterEvent: (NSUInteger)afterEvent andAuto: (BOOL)showAuto
 {
@@ -101,6 +106,20 @@
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	[super viewDidUnload];
 }
 
 /* finish */

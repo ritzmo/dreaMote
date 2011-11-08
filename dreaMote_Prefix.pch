@@ -7,6 +7,7 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
+	#import "UIViewController+Theming.h"
 #endif
 
 #define TABLEVIEWCELL_TEXT(a) (a).textLabel.text

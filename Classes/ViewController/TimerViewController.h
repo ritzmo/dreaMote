@@ -19,7 +19,6 @@
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 // Forward declarations...
-@class DatePickerController;
 @protocol TimerViewDelegate;
 
 /*!
@@ -39,6 +38,7 @@
 	UIPopoverController *popoverController;
 	UIBarButtonItem *_cancelButtonItem;
 	UIBarButtonItem *_popoverButtonItem;
+	UITableView *_tableView;
 
 	UITextField *_timerTitle; /*!< @brief Title Field. */
 	CellTextField *_titleCell; /*!< @brief Title Cell. */
@@ -56,10 +56,6 @@
 	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
-	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
-	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
-	UIViewController *_simpleRepeatedNavigationController; /*!< @brief Navigation Controller of _simpleRepeatedViewController */
-	SimpleRepeatedViewController *_simpleRepeatedViewController; /*!< @brief Cached Repeated Flags Selector. */
 }
 
 /*!

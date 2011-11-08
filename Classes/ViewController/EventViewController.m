@@ -85,6 +85,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
+
 + (EventViewController *)withEventAndService: (NSObject<EventProtocol> *) newEvent: (NSObject<ServiceProtocol> *) newService
 {
 	EventViewController *eventViewController = [[EventViewController alloc] init];
@@ -162,6 +167,20 @@
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
 	self.navigationItem.rightBarButtonItem = zapButton;
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	[super viewDidUnload];
 }
 
 - (void)addTimer: (id)sender

@@ -100,7 +100,7 @@
 
 	NSMutableArray *_selectedServices; /*!< @brief Currently selected services. */
 	NSMutableArray *_filteredServices; /*!< @brief Filtered list of services when searching. */
-	UISearchBar *_searchBar; /*!< @brief Search bar. */
+	UISearchBar *searchBar; /*!< @brief Search bar. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
 
 	BaseXMLReader *_xmlReaderSub; /*!< XMLReader for list of 'Next' events if showing now/next. */
@@ -123,6 +123,11 @@
 - (NSObject<ServiceProtocol> *)previousService;
 
 
+
+/*!
+ @brief Search bar.
+ */
+@property (nonatomic, readonly) UISearchBar *searchBar;
 
 /*!
  @brief Shows now next?

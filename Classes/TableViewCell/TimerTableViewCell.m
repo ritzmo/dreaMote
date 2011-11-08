@@ -42,26 +42,26 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-											 selectedColor: [UIColor whiteColor]
-												  fontSize: kTimerServiceTextSize
-													  bold: YES];
+		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												  fontSize:kTimerServiceTextSize
+													  bold:YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 
 		// A label that displays the Timername.
-		_timerNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-										   selectedColor: [UIColor whiteColor]
-												fontSize: kTimerNameTextSize
-													bold: YES];
+		_timerNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												fontSize:kTimerNameTextSize
+													bold:YES];
 		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerNameLabel];
 
 		// A label that displays the Timer time.
-		_timerTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-										   selectedColor: [UIColor whiteColor]
-												fontSize: kTimerTimeTextSize
-													bold: NO];
+		_timerTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												fontSize:kTimerTimeTextSize
+													bold:NO];
 		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerTimeLabel];
 	}

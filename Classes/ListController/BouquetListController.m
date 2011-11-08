@@ -27,6 +27,8 @@
 
 #import "MKStoreManager.h"
 
+#import "GradientView.h"
+
 enum bouquetListTags
 {
 	TAG_ADD = 99,
@@ -238,6 +240,8 @@ enum bouquetListTags
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 	// listen to bouquet changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadBouquets:) name:kBouquetsChangedNotification object:nil];
+
+	[self theme];
 }
 
 - (void)viewDidUnload

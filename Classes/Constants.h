@@ -93,7 +93,7 @@
 #define kReadConnectionsNotification	@"dreaMoteDidReadConnections"
 #define kReconnectNotification			@"dreaMoteDidReconnect"
 #define kBouquetsChangedNotification	@"dreaMoteDidChangeBouquets" // currently only covers added bouquets
-#define kChangedThemeNotification		@"dreaMoteDidChangeTheme"
+#define kThemeChangedNotification		@"dreaMoteDidChangeTheme"
 
 // paths for custom configuration files
 #define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"
@@ -134,13 +134,6 @@ extern const char *kPiconGlob;
 #define kSatFinderAudio			@"satFinderWithAudio"
 
 #define kCurrentDatabaseVersion 2
-
-// theme constants
-typedef enum {
-	THEME_DEFAULT = 0,
-	THEME_BLUE = 1,
-	THEME_HIGHCONTRAST = 2,
-} themeType;
 
 // shared e2 xml element names
 extern const char *kEnigma2Servicereference;

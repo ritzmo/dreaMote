@@ -13,13 +13,10 @@
 #import "CellTextField.h" /* EditableTableViewCellDelegate */
 #import "SleepTimerSourceDelegate.h" /* SleepTimerSourceDelegate */
 
-// Forward declarations...
-@class DatePickerController;
-
 /*!
- @brief EPGRefresh View.
+ @brief Sleep timer View.
 
- Display EPGRefresh settings & services and allow to commit changes.
+ Display Sleep timer settings and allow to change them.
  */
 @interface SleepTimerViewController : ReloadableListController <UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,

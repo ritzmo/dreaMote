@@ -16,9 +16,6 @@
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "ServiceSourceDelegate.h" /* ServiceSourceDelegate */
 
-// Forward declarations...
-@class DatePickerController;
-
 /*!
  @brief EPGRefresh View.
 
@@ -57,8 +54,6 @@
 
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
 	UIViewController *_serviceListController; /*!< @brief Cached Service List. */
-	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
-	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
 }
 
 @end

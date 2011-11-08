@@ -37,10 +37,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 		const UIView *myContentView = self.contentView;
 
 		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-											 selectedColor: [UIColor whiteColor]
-												  fontSize: kServiceTextSize
-													  bold: YES];
+		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												  fontSize:kServiceTextSize
+													  bold:YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 

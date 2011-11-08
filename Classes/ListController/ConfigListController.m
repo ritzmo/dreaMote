@@ -101,6 +101,7 @@ enum settingsRows
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self stopObservingThemeChanges];
 
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
@@ -145,16 +146,20 @@ enum settingsRows
 
 	// add edit button
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+	[self theme];
 }
 
 - (void)viewDidLoad
 {
+	[self startObservingThemeChanges];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productsFetched:) name:kProductFetchedNotification object:nil];
 	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productsFetched:) name:kProductFetchedNotification object:nil];
 	_vibrateInRC = nil;
 	_simpleRemote = nil;

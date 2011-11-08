@@ -35,6 +35,7 @@
 	[super loadGroupedTableView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
+	[self theme];
 }
 
 - (void)fetchData

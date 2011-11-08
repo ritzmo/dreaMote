@@ -204,6 +204,8 @@
 	[self setToolbarItems:items animated:NO];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+	[self theme];
 }
 
 /* (un)set editing */

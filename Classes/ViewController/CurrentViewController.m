@@ -72,6 +72,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
+
 /* layout */
 - (void)loadView
 {
@@ -83,10 +88,18 @@
 	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
 		[self createAdBannerView];
 #endif
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 #if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	_adBannerView = nil;

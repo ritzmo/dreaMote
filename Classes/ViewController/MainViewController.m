@@ -119,6 +119,8 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
+
+	//[self theme];
 }
 
 #pragma mark -

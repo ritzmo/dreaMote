@@ -54,7 +54,7 @@
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 
-	UISearchBar *_searchBar; /*!< @brief Search bar, either for event search or in full version. */
+	UISearchBar *searchBar; /*!< @brief Search bar, either for event search or in full version. */
 #if IS_FULL()
 	NSMutableArray *_filteredEvents; /*!< @brief Filtered list of events when searching. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
@@ -101,6 +101,11 @@
  @brief Service.
  */
 @property (nonatomic, strong) NSObject<ServiceProtocol> *service;
+
+/*!
+ @brief Search bar.
+ */
+@property (nonatomic, readonly) UISearchBar *searchBar;
 
 /*!
  @brief Date Formatter.

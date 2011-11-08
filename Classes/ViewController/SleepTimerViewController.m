@@ -8,8 +8,6 @@
 
 #import "SleepTimerViewController.h"
 
-#import "DatePickerController.h"
-
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
@@ -51,6 +49,10 @@ enum generalSectionItems
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
 
 #pragma mark -
 #pragma mark Helper methods
@@ -123,10 +125,19 @@ enum generalSectionItems
 	_shutdown.backgroundColor = [UIColor clearColor];
 
 	[self setEditing:YES animated:YES];
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	_cancelButtonItem = nil;
 	_time = nil;
 	_timeCell = nil; // references _time

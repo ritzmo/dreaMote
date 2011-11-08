@@ -121,6 +121,8 @@
 		UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = barButtonItem;
 	}
+
+	[self theme];
 }
 
 - (void)viewDidUnload

@@ -39,36 +39,36 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-											 selectedColor: [UIColor whiteColor]
-												  fontSize: kServiceEventServiceSize
-													  bold: YES];
+		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												  fontSize:kServiceEventServiceSize
+													  bold:YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 
 		// label that might be used to display currently playing event
-		_nowLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-									 selectedColor: [UIColor whiteColor]
-										  fontSize: kServiceEventEventSize
-											  bold:	NO];
+		_nowLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+										  fontSize:kServiceEventEventSize
+											  bold:NO];
 		[myContentView addSubview: _nowLabel];
 
-		_nowTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-									 selectedColor: [UIColor whiteColor]
-										  fontSize: kServiceEventEventSize
-											  bold:	NO];
+		_nowTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+										  fontSize:kServiceEventEventSize
+											  bold:NO];
 		[myContentView addSubview: _nowTimeLabel];
 
-		_nextLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-									 selectedColor: [UIColor whiteColor]
-										  fontSize: kServiceEventEventSize
-											  bold:	NO];
+		_nextLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+										  fontSize:kServiceEventEventSize
+											  bold:NO];
 		[myContentView addSubview: _nextLabel];
 
-		_nextTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-									  selectedColor: [UIColor whiteColor]
-										   fontSize: kServiceEventEventSize
-											   bold:	NO];
+		_nextTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									  selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+										   fontSize:kServiceEventEventSize
+											   bold:NO];
 		[myContentView addSubview: _nextTimeLabel];
 
 		NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];

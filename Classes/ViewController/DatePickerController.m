@@ -142,6 +142,8 @@
 	_label.backgroundColor = [UIColor clearColor];
 	_label.text = [format stringFromDate: _date];
 	[self.view addSubview: _label];
+
+	[self theme];
 }
 
 - (void)viewDidUnload

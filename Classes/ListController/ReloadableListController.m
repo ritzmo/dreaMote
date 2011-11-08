@@ -8,12 +8,17 @@
 
 #import "ReloadableListController.h"
 
+#import "DreamoteConfiguration.h"
 #import "RemoteConnectorObject.h" // [+RemoteConnectorObject queueInvocationWithTarget: selector:]
+
+#import <View/GradientView.h>
 
 #import <XMLReader/BaseXMLReader.h>
 #import <XMLReader/SaxXmlReader.h>
 
 @implementation ReloadableListController
+
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -28,6 +33,7 @@
 /* dealloc */
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	_refreshHeaderView.delegate = nil;
 	_refreshHeaderView = nil;
 	_tableView.delegate = nil;
@@ -64,17 +70,6 @@
 	[_tableView addSubview:_refreshHeaderView];
 }
 
-- (void)viewDidUnload
-{
-	_refreshHeaderView.delegate = nil;
-	_refreshHeaderView = nil;
-	_tableView.delegate = nil;
-	_tableView.dataSource = nil;
-	_tableView = nil;
-
-	[super viewDidUnload];
-}
-
 - (void)loadGroupedTableView
 {
 	// create table view
@@ -105,6 +100,24 @@
 		_refreshHeaderView.delegate = self;
 		[_tableView addSubview:_refreshHeaderView];
 	}
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	_refreshHeaderView.delegate = nil;
+	_refreshHeaderView = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
+	_tableView = nil;
+	
+	[super viewDidUnload];
 }
 
 /* view did appear */

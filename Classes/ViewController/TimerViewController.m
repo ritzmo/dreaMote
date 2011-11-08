@@ -48,10 +48,6 @@
 @property (unsafe_unretained, nonatomic, readonly) AfterEventViewController *afterEventViewController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
-@property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
-@property (unsafe_unretained, nonatomic, readonly) SimpleRepeatedViewController *simpleRepeatedViewController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *simpleRepeatedNavigationController;
 
 @property (unsafe_unretained, nonatomic, readonly) CellTextField *timerTitleCell;
 @property (unsafe_unretained, nonatomic, readonly) CellTextField *timerDescriptionCell;
@@ -95,9 +91,7 @@ enum timerSections
 
 		_creatingNewTimer = NO;
 		_bouquetListController = nil;
-		_datePickerController = nil;
 		_afterEventViewController = nil;
-		_simpleRepeatedViewController = nil;
 		_popoverButtonItem = nil;
 	}
 	return self;
@@ -148,8 +142,9 @@ enum timerSections
 
 - (void)dealloc
 {
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	[self stopObservingThemeChanges];
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 
 	_titleCell.delegate = nil;
 	_descriptionCell.delegate = nil;
@@ -161,10 +156,6 @@ enum timerSections
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
-	_simpleRepeatedNavigationController = nil;
-	_simpleRepeatedViewController = nil;
 	
 	[super didReceiveMemoryWarning];
 }
@@ -231,53 +222,6 @@ enum timerSections
 	return _bouquetListController;
 }
 
-- (UIViewController *)datePickerNavigationController
-{
-	if(IS_IPAD())
-	{
-		if(_datePickerNavigationController == nil)
-		{
-			_datePickerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.datePickerController];
-			_datePickerNavigationController.modalPresentationStyle = _datePickerController.modalPresentationStyle;
-			_datePickerNavigationController.modalTransitionStyle = _datePickerController.modalTransitionStyle;
-		}
-		return _datePickerNavigationController;
-	}
-	return _datePickerController;
-}
-
-- (DatePickerController *)datePickerController
-{
-	if(_datePickerController == nil)
-		_datePickerController = [[DatePickerController alloc] init];
-	return _datePickerController;
-}
-
-- (UIViewController *)simpleRepeatedNavigationController
-{
-	if(IS_IPAD())
-	{
-		if(_simpleRepeatedNavigationController == nil)
-		{
-			_simpleRepeatedNavigationController = [[UINavigationController alloc] initWithRootViewController:self.simpleRepeatedViewController];
-			_simpleRepeatedNavigationController.modalPresentationStyle = _simpleRepeatedViewController.modalPresentationStyle;
-			_simpleRepeatedNavigationController.modalTransitionStyle = _simpleRepeatedViewController.modalTransitionStyle;
-		}
-		return _simpleRepeatedNavigationController;
-	}
-	return _simpleRepeatedViewController;
-}
-
-- (SimpleRepeatedViewController *)simpleRepeatedViewController
-{
-	if(_simpleRepeatedViewController == nil)
-	{
-		_simpleRepeatedViewController = [[SimpleRepeatedViewController alloc] init];
-		_simpleRepeatedViewController.delegate = self;
-	}
-	return _simpleRepeatedViewController;
-}
-
 - (NSObject<TimerProtocol> *)timer
 {
 	return _timer;
@@ -297,7 +241,8 @@ enum timerSections
 		animated = YES;
 		NSLog(@"[TimerViewController setTimer:] about to set editing");
 #endif
-		[self setEditing:NO animated:animated];
+		if(_tableView)
+			[self setEditing:NO animated:animated];
 	}
 	
 	_timerTitle.text = newTimer.title;
@@ -305,8 +250,8 @@ enum timerSections
 	[_timerEnabled setOn: !newTimer.disabled];
 	[_timerJustplay setOn: newTimer.justplay];
 
-	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
+	[_tableView reloadData];
+	[_tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
 	
 	// Eventually remove popover
 	if(self.popoverController != nil) {
@@ -337,14 +282,15 @@ enum timerSections
 		animated = YES;
 		NSLog(@"[TimerViewController setCreatingNewTimer:] about to set editing");
 #endif
-		[self setEditing:YES animated:animated];
+		if(_tableView)
+			[self setEditing:YES animated:animated];
 	}
 	else
 	{
 #if IS_DEBUG()
 		NSLog(@"[TimerViewController setCreatingNewTimer:] no new timer, disabled timer or anything but waiting. doing another table reload.");
 #endif
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 	}
 }
 
@@ -426,16 +372,16 @@ enum timerSections
 	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
 
 	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	
-	self.view = tableView;
+	self.view = _tableView;
 
 	_timerTitle = [self newTitleField];
 	_titleCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -464,10 +410,20 @@ enum timerSections
 	// default editing mode depends on our mode
 	_shouldSave = NO;
 	[self setEditing: _creatingNewTimer];
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
+	_tableView = nil;
 	_titleCell.delegate = nil;
 	_titleCell = nil;
 	_timerTitle = nil;
@@ -628,7 +584,7 @@ enum timerSections
 	_timerEnabled.enabled = editing;
 	_timerJustplay.enabled = editing;
 
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (void)cancelEdit:(id)sender
@@ -670,16 +626,16 @@ enum timerSections
 	// during our runtime.
 	_timer.service = [newService copy];
 	// XXX: how do people keep running into this?
-	if([(UITableView *)self.view numberOfSections] == 6)
+	if([_tableView numberOfSections] == 6)
 	{
 #if IS_DEBUG()
 		[NSException raise:@"TimerViewInvalidSectionCount" format:@"invalid number of sections (6) in table view"];
 #else
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 #endif
 	}
 	else
-		[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -698,7 +654,7 @@ enum timerSections
 		repeatcount = 0;
 	_timer.repeatcount = repeatcount;
 
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:sectionRepeated] withRowAnimation:UITableViewRowAnimationNone];
+	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionRepeated] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
@@ -712,7 +668,7 @@ enum timerSections
 	
 	_timer.afterevent = [newAfterEvent integerValue];
 
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:sectionAfterEvent] withRowAnimation:UITableViewRowAnimationNone];
+	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionAfterEvent] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
@@ -1044,36 +1000,49 @@ enum timerSections
 		}
 		else if(section == sectionBegin)
 		{
-			// property takes care of initialization (including navigation controller)
-			self.datePickerController.date = [_timer.begin copy];
+			DatePickerController *vc = [[DatePickerController alloc] init];
+			if(IS_IPAD())
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
 
-			self.datePickerController.callback = ^(NSDate *newDate){
+			vc.date = [_timer.begin copy];
+			vc.callback = ^(NSDate *newDate){
 				if(newDate == nil)
 					return;
 
 				_timer.begin = newDate;
-				UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
+				UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
 				if(cell)
 					cell.textLabel.text = [self format_BeginEnd:newDate];
 			};
-
-			targetViewController = self.datePickerNavigationController;
 		}
 		else if(section == sectionEnd)
 		{
-			// property takes care of initialization (including navigation controller)
-			self.datePickerController.date = [_timer.end copy];
-			self.datePickerController.callback = ^(NSDate *newDate){
+			DatePickerController *vc = [[DatePickerController alloc] init];
+			if(IS_IPAD())
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
+
+			vc.date = [_timer.end copy];
+			vc.callback = ^(NSDate *newDate){
 				if(newDate == nil)
 					return;
 
 				_timer.end = newDate;
-				UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
+				UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
 				if(cell)
 					cell.textLabel.text = [self format_BeginEnd:newDate];
 			};
-
-			targetViewController = self.datePickerNavigationController;
 		}
 		else if(section == sectionAfterEvent)
 		{
@@ -1086,14 +1055,23 @@ enum timerSections
 		}
 		else if(section == sectionRepeated)
 		{
-			// property takes care of initialization
-			self.simpleRepeatedViewController.repeated = _timer.repeated;
-			self.simpleRepeatedViewController.repcount = _timer.repeatcount;
+			SimpleRepeatedViewController *vc = [[SimpleRepeatedViewController alloc] init];
+			vc.delegate = self;
+			if(IS_IPAD())
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
+
+			vc.repeated = _timer.repeated;
+			vc.repcount = _timer.repeatcount;
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
-				self.simpleRepeatedViewController.isSimple = YES;
+				vc.isSimple = YES;
 			else// if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesComplicatedRepeated])
-				self.simpleRepeatedViewController.isSimple = NO;
-			targetViewController = self.simpleRepeatedNavigationController;
+				vc.isSimple = NO;
 		}
 		else if(section == sectionLocation)
 		{
@@ -1245,14 +1223,9 @@ enum timerSections
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-
 	_afterEventNavigationController = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
-	_simpleRepeatedNavigationController = nil;
-	_simpleRepeatedViewController = nil;
 }
 
 #pragma mark -

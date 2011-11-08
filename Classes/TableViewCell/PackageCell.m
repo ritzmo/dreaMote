@@ -30,17 +30,19 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])){
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kPackageNameTextSize];
 		self.textLabel.backgroundColor = [UIColor clearColor];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		self.textLabel.adjustsFontSizeToFitWidth = YES;
 
-		versionLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
-										selectedColor:[UIColor whiteColor]
+		versionLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].detailsTextColor
+										selectedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor
 											 fontSize:kPackageVersionTextSize
 												 bold:YES];
 		versionLabel.adjustsFontSizeToFitWidth = YES;
 		[self.contentView addSubview:versionLabel];
 
-		availableLabel = [self newLabelWithPrimaryColor:[UIColor blackColor]
-										  selectedColor:[UIColor whiteColor]
+		availableLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].detailsTextColor
+										  selectedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor
 											   fontSize:kPackageVersionTextSize
 												   bold:YES];
 		availableLabel.adjustsFontSizeToFitWidth = YES;

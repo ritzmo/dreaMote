@@ -53,7 +53,7 @@
 
 	// create the rc view
 	// NOTE: we size it height*height because this is the largest area we might fill
-	frame = CGRectMake(0, _toolbar.frame.size.height, mainViewSize.height, mainViewSize.height - _toolbar.frame.size.height);
+	frame = CGRectMake(0, toolbar.frame.size.height, mainViewSize.height, mainViewSize.height - toolbar.frame.size.height);
 	rcView = [[UIView alloc] initWithFrame: frame];
 	[self.view addSubview:rcView];
 
@@ -81,6 +81,8 @@
 	[_swipeArea setBackgroundImage:image forState:UIControlStateHighlighted];
 	[_swipeArea setBackgroundImage:image forState:UIControlStateNormal];
 	[rcView addSubview: _swipeArea];
+
+	[self theme];
 }
 
 - (void)viewDidUnload

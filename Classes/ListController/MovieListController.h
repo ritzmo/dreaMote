@@ -39,7 +39,7 @@
 
 #if IS_FULL()
 	NSMutableArray *_filteredMovies; /*!< @brief Filtered list of movies when searching. */
-	UISearchBar *_searchBar; /*!< @brief Search bar. */
+	UISearchBar *searchBar; /*!< @brief Search bar. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
 #endif
 
@@ -85,6 +85,13 @@
  @brief Currently reloading.
  */
 @property (nonatomic, readonly) BOOL reloading;
+
+#if IS_FULL()
+/*!
+ @brief Seach bar.
+ */
+@property (nonatomic, readonly) UISearchBar *searchBar;
+#endif
 
 /*!
  @breif View will reapper.

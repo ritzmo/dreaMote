@@ -63,4 +63,6 @@
  */
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
 
+@property (nonatomic, readonly) SwipeTableView *tableView;
+
 @end

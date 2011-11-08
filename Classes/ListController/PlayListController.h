@@ -32,4 +32,9 @@
  */
 @property (nonatomic, strong) FileListView *playlist;
 
+/*!
+ @brief Convenience accessor to tableview / playlist
+ */
+@property (nonatomic, readonly) UITableView *tableView;
+
 @end

@@ -41,18 +41,18 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Eventname.
-		_eventNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-										   selectedColor: [UIColor whiteColor]
-												fontSize: kEventNameTextSize
-													bold: YES];
+		_eventNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												fontSize:kEventNameTextSize
+													bold:YES];
 		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
 		
 		// A label that displays the Eventtime.
-		_eventTimeLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-										   selectedColor: [UIColor whiteColor]
-												fontSize: kEventDetailsTextSize
-													bold: NO];
+		_eventTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												fontSize:kEventDetailsTextSize
+													bold:NO];
 		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
 	}

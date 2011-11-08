@@ -31,8 +31,8 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		_nameLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
 		_nameLabel.backgroundColor = [UIColor clearColor];
 		_nameLabel.opaque = NO;
-		_nameLabel.textColor = [UIColor blackColor];
-		_nameLabel.highlightedTextColor = [UIColor whiteColor];
+		_nameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		_nameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		_nameLabel.font = [UIFont boldSystemFontOfSize:kMainTextSize];
 		[self.contentView addSubview:_nameLabel];
 
@@ -40,8 +40,8 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		_explainLabel = [[UILabel alloc] initWithFrame:CGRectZero];	// layoutSubViews will decide the final frame
 		_explainLabel.backgroundColor = [UIColor clearColor];
 		_explainLabel.opaque = NO;
-		_explainLabel.textColor = [UIColor grayColor];
-		_explainLabel.highlightedTextColor = [UIColor whiteColor];
+		_explainLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+		_explainLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
 		_explainLabel.font = [UIFont systemFontOfSize:kMainDetailsSize];
 		_explainLabel.adjustsFontSizeToFitWidth = YES;
 		[self.contentView addSubview:_explainLabel];

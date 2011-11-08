@@ -70,8 +70,6 @@ enum generalSectionItems
 @property (nonatomic, strong) EPGRefreshSettings *settings;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *serviceListController;
-@property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
 @end
 
 @implementation EPGRefreshViewController
@@ -91,14 +89,10 @@ enum generalSectionItems
 	return self;
 }
 
-
 - (void)didReceiveMemoryWarning
 {
-
 	_bouquetListController = nil;
 	_serviceListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -158,31 +152,6 @@ enum generalSectionItems
 			_serviceListController = rootViewController;
 	}
 	return _serviceListController;
-}
-
-- (UIViewController *)datePickerNavigationController
-{
-	if(IS_IPAD())
-	{
-		if(_datePickerNavigationController == nil)
-		{
-			_datePickerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.datePickerController];
-			_datePickerNavigationController.modalPresentationStyle = _datePickerController.modalPresentationStyle;
-			_datePickerNavigationController.modalTransitionStyle = _datePickerController.modalTransitionStyle;
-		}
-		return _datePickerNavigationController;
-	}
-	return _datePickerController;
-}
-
-- (DatePickerController *)datePickerController
-{
-	if(_datePickerController == nil)
-	{
-		_datePickerController = [[DatePickerController alloc] init];
-		[_datePickerController setDatePickerMode:UIDatePickerModeTime];
-	}
-	return _datePickerController;
 }
 
 #pragma mark -
@@ -309,6 +278,8 @@ enum generalSectionItems
 	_parse.backgroundColor = [UIColor clearColor];
 
 	[self setEditing:YES animated:YES];
+
+	[self theme];
 }
 
 - (void)viewDidUnload
@@ -892,17 +863,28 @@ enum generalSectionItems
 			// adjust row
 			if(!settings.canDoBackgroundRefresh && row >= adapterRow) ++row;
 
-			if(row == beginRow)
+			if(row == beginRow || row == endRow)
 			{
-				targetViewController = self.datePickerNavigationController;
-				self.datePickerController.date = [settings.begin copy];
-				self.datePickerController.callback = ^(NSDate *date){[self fromSelected:date];};
-			}
-			else if(row == endRow)
-			{
-				targetViewController = self.datePickerNavigationController;
-				self.datePickerController.date = [settings.end copy];
-				self.datePickerController.callback = ^(NSDate *date){[self toSelected:date];};
+				DatePickerController *vc = [[DatePickerController alloc] init];
+				if(IS_IPAD())
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				}
+				else
+					targetViewController = vc;
+
+				if(row == beginRow)
+				{
+					vc.date = [settings.begin copy];
+					vc.callback = ^(NSDate *date){[self fromSelected:date];};
+				}
+				else if(row == endRow)
+				{
+					vc.date = [settings.end copy];
+					vc.callback = ^(NSDate *date){[self toSelected:date];};
+				}
 			}
 			else if(row == adapterRow)
 			{
@@ -1034,11 +1016,8 @@ enum generalSectionItems
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-
 	_bouquetListController = nil;
 	_serviceListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
 }
 
 #pragma mark -

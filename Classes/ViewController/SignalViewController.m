@@ -117,6 +117,7 @@ OSStatus RenderTone(
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
@@ -266,10 +267,19 @@ OSStatus RenderTone(
 	[_audioToggle setOn: [[NSUserDefaults standardUserDefaults] boolForKey: kSatFinderAudio]];
 	[_audioToggle addTarget:self action:@selector(audioToggleSwitched:) forControlEvents:UIControlEventValueChanged];
 	_audioToggle.backgroundColor = [UIColor clearColor];
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	_snr = nil;
 	_agc = nil;
 	_audioToggle = nil;

@@ -77,6 +77,8 @@
 /* dealloc */
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
+
 	((UITableView *)self.view).delegate = nil;
 	((UITableView *)self.view).dataSource = nil;
 
@@ -123,10 +125,19 @@
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	switchControl.backgroundColor = [UIColor clearColor];
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	SafeDestroyButton(slider);
 	SafeDestroyButton(switchControl);
 

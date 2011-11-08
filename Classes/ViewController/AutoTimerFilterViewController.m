@@ -142,6 +142,8 @@
 	filterTextfield.returnKeyType = UIReturnKeyDone;
 	filterTextfield.clearButtonMode = UITextFieldViewModeWhileEditing;
 	filterTextfield.placeholder = NSLocalizedStringFromTable(@"<filter text>", @"AutoTimer", @"Placeholder of Textfield in Filter Editor");
+
+	[self theme];
 }
 
 - (void)viewDidUnload

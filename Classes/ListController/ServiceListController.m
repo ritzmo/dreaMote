@@ -92,6 +92,7 @@ enum serviceListTags
 
 @synthesize delegate, isAll, mgSplitViewController;
 @synthesize popoverController, popoverZapController;
+@synthesize searchBar;
 
 /* initialize */
 - (id)init
@@ -127,7 +128,7 @@ enum serviceListTags
 
 	[_piconLoader cancelAllOperations];
 
-	_tableView.tableHeaderView = nil; // references _searchBar
+	_tableView.tableHeaderView = nil; // references searchBar
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -167,11 +168,11 @@ enum serviceListTags
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	_refreshServices = NO;
-	if(_searchBar)
+	if(searchBar)
 	{
 		CGFloat topOffset = -_tableView.contentInset.top;
 		if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
-			topOffset += _searchBar.frame.size.height;
+			topOffset += searchBar.frame.size.height;
 		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 	}
 
@@ -400,11 +401,11 @@ enum serviceListTags
 	if(delegate == nil && [MKStoreManager isFeaturePurchased:kServiceEditorPurchase])
 #endif
 	{
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-		_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-		_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-		_searchBar.keyboardType = UIKeyboardTypeDefault;
-		_tableView.tableHeaderView = _searchBar;
+		searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+		searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+		searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		searchBar.keyboardType = UIKeyboardTypeDefault;
+		_tableView.tableHeaderView = searchBar;
 
 		if(_reloading)
 		{
@@ -413,9 +414,9 @@ enum serviceListTags
 			[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 		}
 		else
-			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+			[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height)];
 
-		_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+		_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
 		_searchDisplay.delegate = self;
 		_searchDisplay.searchResultsDataSource = self;
 		_searchDisplay.searchResultsDelegate = self;
@@ -427,6 +428,8 @@ enum serviceListTags
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
+
+	[self theme];
 }
 
 - (void)viewDidUnload
@@ -435,8 +438,8 @@ enum serviceListTags
 	_radioButton = nil;
 	_multiEpgButton = nil;
 
-	_tableView.tableHeaderView = nil; // references _searchBar
-	_searchBar = nil;
+	_tableView.tableHeaderView = nil; // references searchBar
+	searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -491,7 +494,7 @@ enum serviceListTags
 		_multiEPG.bouquet = nil;
 #endif
 		// TODO: why do we NOT need this? all other views require this ^^
-		//if(_searchBar)
+		//if(searchBar)
 		//	[_tableView setContentOffset:CGPointMake(0, -_tableView.contentInset.top) animated:YES];
 
 		[self emptyData];
@@ -1442,8 +1445,8 @@ enum serviceListTags
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
-		if(_searchBar)
-			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+		if(searchBar)
+			[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 	}
 
 	if(dataSource == _xmlReader)
@@ -1467,7 +1470,7 @@ enum serviceListTags
 		[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 		if(_searchDisplay.active)
 		{
-			[self searchDisplayController:_searchDisplay shouldReloadTableForSearchString:_searchBar.text];
+			[self searchDisplayController:_searchDisplay shouldReloadTableForSearchString:searchBar.text];
 			[_searchDisplay.searchResultsTableView reloadData];
 			[_tableView reloadData];
 		}
@@ -1483,8 +1486,8 @@ enum serviceListTags
 #if IS_FULL()
 		[_multiEPG dataSourceDelegateFinishedParsingDocument:dataSource];
 #endif
-		if(_searchBar)
-			[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+		if(searchBar)
+			[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 	}
 
 	if(dataSource == _xmlReader)
@@ -1651,12 +1654,13 @@ enum serviceListTags
 
 		((ServiceTableViewCell *)cell).service = firstObject;
 
-		if(!cell.backgroundView)
+		const BOOL shouldSelect = [_selectedServices containsObject:firstObject];
+		if(!cell.backgroundView && shouldSelect)
 			cell.backgroundView = [[UIView alloc] init];
-		if([_selectedServices containsObject:firstObject])
+		if(shouldSelect)
 			cell.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
 		else
-			cell.backgroundView.backgroundColor = [UIColor whiteColor];
+			cell.backgroundView.backgroundColor = [UIColor clearColor];
 
 		if(!((NSObject<ServiceProtocol> *)firstObject).piconLoaded)
 		{

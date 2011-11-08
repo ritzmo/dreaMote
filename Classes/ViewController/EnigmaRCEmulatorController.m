@@ -46,7 +46,7 @@
 	const CGSize mainViewSize = self.view.bounds.size;
 
 	// create the rc view and prepare different frames used for orientations
-	_portraitFrame = CGRectMake(0, _toolbar.frame.size.height, mainViewSize.width, mainViewSize.height - _toolbar.frame.size.height);
+	_portraitFrame = CGRectMake(0, toolbar.frame.size.height, mainViewSize.width, mainViewSize.height - toolbar.frame.size.height);
 	if(IS_IPAD())
 	{
 		if(usesAdvancedRemote)
@@ -395,6 +395,8 @@
 		roundedButtonType = [self newButton:frame withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
 		[rcView addSubview: roundedButtonType];
 	}
+
+	[self theme];
 }
 
 @end

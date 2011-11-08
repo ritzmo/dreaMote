@@ -33,6 +33,9 @@
 @implementation MovieListController
 
 @synthesize popoverController, isSplit;
+#if IS_FULL()
+@synthesize searchBar;
+#endif
 
 /* initialize */
 - (id)init
@@ -72,7 +75,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.movieViewController = nil;
 #if IS_FULL()
-	_tableView.tableHeaderView = nil; // references _searchBar
+	_tableView.tableHeaderView = nil; // references searchBar
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -104,7 +107,7 @@
 #if IS_FULL()
 	CGFloat topOffset = -_tableView.contentInset.top;
 	if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
-		topOffset += _searchBar.frame.size.height;
+		topOffset += searchBar.frame.size.height;
 	[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 #endif
 
@@ -380,11 +383,11 @@
 		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
 
 #if IS_FULL()
-	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-	_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-	_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_searchBar.keyboardType = UIKeyboardTypeDefault;
-	_tableView.tableHeaderView = _searchBar;
+	searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	searchBar.keyboardType = UIKeyboardTypeDefault;
+	_tableView.tableHeaderView = searchBar;
 
 	if(_reloading)
 	{
@@ -396,10 +399,10 @@
 	else
 	{
 		// hide the searchbar
-		[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+		[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height)];
 	}
 
-	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
 	_searchDisplay.delegate = self;
 	_searchDisplay.searchResultsDataSource = self;
 	_searchDisplay.searchResultsDelegate = self;
@@ -410,6 +413,8 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
+
+	[self theme];
 }
 
 - (void)viewDidUnload
@@ -421,8 +426,8 @@
 	_sortButton = nil;
 #if IS_FULL()
 	[_filteredMovies removeAllObjects];
-	_tableView.tableHeaderView = nil; // references _searchBar
-	_searchBar = nil;
+	_tableView.tableHeaderView = nil; // references searchBar
+	searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -555,7 +560,7 @@
 		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 #if IS_FULL()
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
 }
 
@@ -573,7 +578,7 @@
 		[super dataSourceDelegateFinishedParsingDocument:dataSource];
 	}
 #if IS_FULL()
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
 }
 
@@ -685,21 +690,26 @@
 	return 1;
 }
 
+/* header height */
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(_sortTitle)
+		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+	return 0;
+}
+
+/* section header */
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+}
+
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if(_sortTitle)
 		return [_currentKeys objectAtIndex:section];
 	return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-#ifndef defaultSectionHeaderHeight
-#define defaultSectionHeaderHeight 34
-#endif
-	if(_sortTitle)
-		return defaultSectionHeaderHeight;
-	return 0;
 }
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView

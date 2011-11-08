@@ -40,10 +40,10 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor: [UIColor blackColor]
-											 selectedColor: [UIColor whiteColor]
-												  fontSize: kMultiEPGFontSize
-													  bold: YES];
+		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
+												  fontSize:kMultiEPGFontSize
+													  bold:YES];
 		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 
 		// no accessory

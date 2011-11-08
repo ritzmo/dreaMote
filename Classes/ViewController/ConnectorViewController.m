@@ -74,6 +74,8 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
+
+	[self theme];
 }
 
 /* start autodetection */

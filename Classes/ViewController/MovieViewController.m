@@ -66,6 +66,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
+
 + (MovieViewController *)withMovie: (NSObject<MovieProtocol> *) newMovie
 {
 	MovieViewController *movieViewController = [[MovieViewController alloc] init];
@@ -125,6 +130,20 @@
 	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	self.view = tableView;
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	[super viewDidUnload];
 }
 
 //* Start playback of the movie on the remote box

@@ -27,9 +27,14 @@
 	BOOL _reviewingChanges;
 
 	NSMutableArray *_filteredPackages; /*!< @brief Filtered list of packages when searching. */
-	UISearchBar *_searchBar; /*!< @brief Search bar. */
+	UISearchBar *searchBar; /*!< @brief Search bar. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
 }
+
+/*!
+ @brief Search bar.
+ */
+@property (nonatomic, readonly) UISearchBar *searchBar;
 
 /*!
  @brief View will reapper.

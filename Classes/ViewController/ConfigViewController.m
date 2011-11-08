@@ -341,6 +341,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	_nowNextSwitch.backgroundColor = [UIColor clearColor];
 
 	[self setEditing:YES animated:NO];
+
+	[self theme];
 }
 
 - (void)viewDidUnload

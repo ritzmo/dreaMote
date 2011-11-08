@@ -28,11 +28,28 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
 
 - (void)loadView
 {
 	self.view = playlist;
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	[super viewDidUnload];
 }
 
 /* (un)set editing */
@@ -57,6 +74,11 @@
 		loadButton.enabled = NO;
 	}
 	[super viewWillAppear:animated];
+}
+
+- (UITableView *)tableView
+{
+	return playlist;
 }
 
 @end

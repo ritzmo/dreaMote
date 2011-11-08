@@ -8,10 +8,31 @@
 
 #import <Foundation/Foundation.h>
 
+// theme constants
+typedef enum {
+	THEME_DEFAULT = 0,
+	THEME_BLUE,
+	THEME_HIGHCONTRAST,
+	THEME_MAX,
+} themeType;
+
 @interface DreamoteConfiguration : NSObject
 
 + (DreamoteConfiguration *)singleton;
 
+- (void)styleNavigationController:(UINavigationController *)navigationController;
+- (void)styleToolbar:(UIToolbar *)toolbar;
+- (void)styleSearchBar:(UISearchBar *)searchBar;
+- (void)styleTableView:(UITableView *)tableView;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
+
+@property (nonatomic) themeType currentTheme;
+@property (nonatomic, readonly) UIColor *backgroundColor;
+@property (nonatomic, readonly) UIColor *textColor;
+@property (nonatomic, readonly) UIColor *highlightedTextColor;
+@property (nonatomic, readonly) UIColor *detailsTextColor;
+@property (nonatomic, readonly) UIColor *highlightedDetailsTextColor;
 @property (nonatomic, readonly) CGFloat textFieldHeight;
 @property (nonatomic, readonly) CGFloat textViewHeight;
 @property (nonatomic, readonly) CGFloat textFieldFontSize;

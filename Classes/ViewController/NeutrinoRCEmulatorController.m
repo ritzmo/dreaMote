@@ -28,7 +28,7 @@
 	CGSize mainViewSize = self.view.bounds.size;
 
 	// create the rc view and prepare different frames used for orientations
-	_portraitFrame = CGRectMake(0, _toolbar.frame.size.height, mainViewSize.width, mainViewSize.height - _toolbar.frame.size.height);
+	_portraitFrame = CGRectMake(0, toolbar.frame.size.height, mainViewSize.width, mainViewSize.height - toolbar.frame.size.height);
 	if(IS_IPAD())
 		_landscapeFrame = CGRectMake(140, 130, mainViewSize.height - 140, mainViewSize.width - 130);
 	else
@@ -255,6 +255,8 @@
 	[rcView addSubview: roundedButtonType];
 	
 	/* End Volume pad */
+
+	[self theme];
 }
 
 @end

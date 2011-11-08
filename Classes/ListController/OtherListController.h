@@ -44,7 +44,7 @@
 /*!
  @brief Table View.
  */
-@property (nonatomic, strong) IBOutlet UITableView *myTableView;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
 
 /*!
  @brief Parrent split view controller if available.

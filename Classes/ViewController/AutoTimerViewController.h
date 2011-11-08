@@ -18,7 +18,6 @@
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 // Forward declarations...
-@class DatePickerController;
 @protocol AutoTimerViewDelegate;
 
 /*!
@@ -63,8 +62,6 @@
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
 	UIViewController *_bouquetListController; /*!< @brief Cached Bouquet List. */
 	UIViewController *_serviceListController; /*!< @brief Cached Service List. */
-	UINavigationController *_datePickerNavigationController; /*!< @brief Navigation Controller of Date Picker. */
-	DatePickerController *_datePickerController; /*!< @brief Cached Date Picker. */
 }
 
 /*!

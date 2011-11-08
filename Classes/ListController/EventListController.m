@@ -48,6 +48,7 @@
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
 @synthesize serviceListController = _serviceListController;
+@synthesize searchBar;
 
 /* initialize */
 - (id)init
@@ -112,7 +113,7 @@
 - (void)dealloc
 {
 #if IS_FULL()
-	_tableView.tableHeaderView = nil; // references _searchBar
+	_tableView.tableHeaderView = nil; // references searchBar
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -144,16 +145,16 @@
 	self.navigationItem.rightBarButtonItem = zapButton;
 
 #if IS_FULL()
-	_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
-	_searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-	_searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	_searchBar.keyboardType = UIKeyboardTypeDefault;
-	_tableView.tableHeaderView = _searchBar;
+	searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
+	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
+	searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	searchBar.keyboardType = UIKeyboardTypeDefault;
+	_tableView.tableHeaderView = searchBar;
 
 	// hide the searchbar
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height)];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height)];
 
-	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:_searchBar contentsController:self];
+	_searchDisplay = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
 	_searchDisplay.delegate = self;
 	_searchDisplay.searchResultsDataSource = self;
 	_searchDisplay.searchResultsDelegate = self;
@@ -164,7 +165,7 @@
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
 		// NOTE: yes, this looks weird - but it works :P
-		[_tableView setContentOffset:CGPointMake(0, -_searchBar.frame.size.height/2.0f) animated:YES];
+		[_tableView setContentOffset:CGPointMake(0, -searchBar.frame.size.height/2.0f) animated:YES];
 #endif
 	}
 
@@ -172,6 +173,7 @@
 	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
 		[self createAdBannerView];
 #endif
+	[self theme];
 }
 
 - (void)viewDidUnload
@@ -182,8 +184,8 @@
 #endif
 #if IS_FULL()
 	[_filteredEvents removeAllObjects];
-	_tableView.tableHeaderView = nil; // references _searchBar
-	_searchBar = nil;
+	_tableView.tableHeaderView = nil; // references searchBar
+	searchBar = nil;
 	_searchDisplay.delegate = nil;
 	_searchDisplay.searchResultsDataSource = nil;
 	_searchDisplay.searchResultsDelegate = nil;
@@ -400,7 +402,7 @@
 {
 	[super dataSourceDelegate:dataSource errorParsingDocument:error];
 #if IS_FULL()
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
 }
 
@@ -415,7 +417,7 @@
 	[_tableView reloadData];
 #endif
 #if IS_FULL()
-	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
+	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
 }
 
@@ -540,13 +542,18 @@
 	return _useSections ? _sectionOffsets.count : 1;
 }
 
-/* section header height */
+/* header height */
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-#ifndef defaultSectionHeaderHeight
-	#define defaultSectionHeaderHeight 34
-#endif
-	return _useSections ? defaultSectionHeaderHeight: 0;
+	if(_useSections)
+		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+	return 0;
+}
+
+/* section header */
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 }
 
 /* section titles */

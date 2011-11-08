@@ -58,6 +58,7 @@
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	UnsetCellAndDelegate(_messageCell);
 	UnsetCellAndDelegate(_captionCell);
 	UnsetCellAndDelegate(_timeoutCell);
@@ -141,10 +142,19 @@
 	_sendButton.enabled = YES;
 
 	[self setEditing: YES animated: NO];
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	UnsetCellAndDelegate(_messageCell);
 	UnsetCellAndDelegate(_captionCell);
 	UnsetCellAndDelegate(_timeoutCell);

@@ -50,7 +50,7 @@
 
 @implementation OtherListController
 
-@synthesize myTableView, mgSplitViewController;
+@synthesize tableView, mgSplitViewController;
 
 - (id)init
 {
@@ -66,6 +66,7 @@
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self stopObservingThemeChanges];
 }
 
 - (void)didReceiveMemoryWarning
@@ -177,22 +178,26 @@
 	else
 		self.navigationItem.leftBarButtonItem = buttonItem;
 
-	myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	if(isIpad)
-		myTableView.rowHeight = kUIRowHeight;
+		tableView.rowHeight = kUIRowHeight;
 
 	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
-	myTableView.autoresizesSubviews = YES;
-	myTableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
+
+	[self startObservingThemeChanges];
+	[self theme];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	self.myTableView = nil;
+	self.tableView = nil;
 	self.navigationItem.leftBarButtonItem = self.navigationItem.rightBarButtonItem = nil;
 
 	_aboutDreamoteViewController = nil;
@@ -232,7 +237,7 @@
 {
 	const BOOL isIpad = IS_IPAD();
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-	NSIndexPath *tableSelection = [myTableView indexPathForSelectedRow];
+	NSIndexPath *tableSelection = [tableView indexPathForSelectedRow];
 	if(mgSplitViewController)
 	{
 		NSMutableDictionary *selectedDictionary = [menuList objectAtIndex:tableSelection.row];
@@ -247,7 +252,7 @@
 	}
 	else
 	{
-		[myTableView deselectRowAtIndexPath:tableSelection animated:YES];
+		[tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
 
 	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
@@ -447,7 +452,7 @@
 	}
 
 	if(reload)
-		[myTableView reloadData];
+		[tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -509,9 +514,9 @@
 		[self.navigationController pushViewController:targetViewController animated:YES];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	MainTableViewCell *cell = [MainTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMainCell_ID];
+	MainTableViewCell *cell = [MainTableViewCell reusableTableViewCellInView:tv withIdentifier:kMainCell_ID];
 
 	// set accessory type
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

@@ -85,11 +85,11 @@
 	const CGSize size = self.view.bounds.size;
 	CGRect frame = CGRectMake(0, 0, size.width, kSearchBarHeight);
 
-	_searchBar = [[UISearchBar alloc] initWithFrame: frame];
-	_searchBar.delegate = self;
-	_searchBar.showsCancelButton = YES;
-	_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-	[contentView addSubview: _searchBar];
+	searchBar = [[UISearchBar alloc] initWithFrame: frame];
+	searchBar.delegate = self;
+	searchBar.showsCancelButton = YES;
+	searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	[contentView addSubview: searchBar];
 
 	frame = CGRectMake(0, kSearchBarHeight, size.width, size.height - kSearchBarHeight);
 	_tableView = [[SwipeTableView alloc] initWithFrame: frame style:UITableViewStylePlain];
@@ -108,11 +108,12 @@
 	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
 		[self createAdBannerView];
 #endif
+	[self theme];
 }
 
 - (void)viewDidUnload
 {
-	_searchBar = nil;
+	searchBar = nil;
 	_tableView = nil;
 
 	[super viewDidUnload];
@@ -136,10 +137,10 @@
 		 but currently I prefer it bound to an extra button.
 		 */
 #if 0
-		if([sender isEqual:_searchBar])
+		if([sender isEqual:searchBar])
 		{
-			[self.popoverController presentPopoverFromRect:_searchBar.frame
-										inView:_searchBar
+			[self.popoverController presentPopoverFromRect:searchBar.frame
+										inView:searchBar
 										permittedArrowDirections:UIPopoverArrowDirectionUp
 										animated:YES];
 		}
@@ -161,7 +162,7 @@
 - (void)fetchData
 {
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
-	NSData *data = [_searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
+	NSData *data = [searchBar.text dataUsingEncoding: NSISOLatin1StringEncoding allowLossyConversion: YES];
 	NSString *title = [[NSString alloc] initWithData: data encoding: NSISOLatin1StringEncoding];
 	[self.searchHistory prepend:title];
 
@@ -187,7 +188,7 @@
 {
 	// set search text
 	NSString *textCopy = [text copy];
-	_searchBar.text = textCopy;
+	searchBar.text = textCopy;
 
 	// initiate search
 	[self searchBarSearchButtonClicked:nil];
@@ -326,9 +327,9 @@
 #pragma mark UISearchBarDelegate delegate methods
 
 /* called when keyboard search button pressed */
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarSearchButtonClicked:(UISearchBar *)pSearchBar
 {
-	[searchBar resignFirstResponder];
+	[pSearchBar resignFirstResponder];
 
 	_useSections = [[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay];
 	[_sectionOffsets removeAllObjects];
@@ -343,9 +344,9 @@
 }
 
 /* called when cancel button pressed */
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void)searchBarCancelButtonClicked:(UISearchBar *)pSearchBar
 {
-	[searchBar resignFirstResponder];
+	[pSearchBar resignFirstResponder];
 }
 
 /* rotation finished */
@@ -354,9 +355,9 @@
 	//[UIView beginAnimations:nil context:NULL];
 	//[UIView setAnimationDuration: kTransitionDuration];
 
-	// adjust size of _searchBar & _tableView
+	// adjust size of searchBar & _tableView
 	const CGSize mainViewSize = self.view.bounds.size;
-	_searchBar.frame = CGRectMake(0, 0, mainViewSize.width, kSearchBarHeight);
+	searchBar.frame = CGRectMake(0, 0, mainViewSize.width, kSearchBarHeight);
 	_tableView.frame = CGRectMake(0, kSearchBarHeight, mainViewSize.width, mainViewSize.height - kSearchBarHeight);
 
 	//[UIView commitAnimations];

@@ -69,8 +69,6 @@ enum sectionIds
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *afterEventNavigationController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *bouquetListController;
 @property (unsafe_unretained, nonatomic, readonly) UIViewController *serviceListController;
-@property (unsafe_unretained, nonatomic, readonly) DatePickerController *datePickerController;
-@property (unsafe_unretained, nonatomic, readonly) UIViewController *datePickerNavigationController;
 @end
 
 static NSArray *avoidDuplicateDescriptionTexts = nil;
@@ -88,7 +86,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		_creatingNewTimer = NO;
 		_bouquetListController = nil;
-		_datePickerController = nil;
 		_afterEventViewController = nil;
 		_popoverButtonItem = nil;
 
@@ -127,6 +124,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	_titleCell.delegate = nil;
 	_matchCell.delegate = nil;
 	_maxdurationCell.delegate = nil;
@@ -138,8 +136,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
 	_serviceListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
 
 	[super didReceiveMemoryWarning];
 }
@@ -224,28 +220,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			_serviceListController = rootViewController;
 	}
 	return _serviceListController;
-}
-
-- (UIViewController *)datePickerNavigationController
-{
-	if(IS_IPAD())
-	{
-		if(_datePickerNavigationController == nil)
-		{
-			_datePickerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.datePickerController];
-			_datePickerNavigationController.modalPresentationStyle = _datePickerController.modalPresentationStyle;
-			_datePickerNavigationController.modalTransitionStyle = _datePickerController.modalTransitionStyle;
-		}
-		return _datePickerNavigationController;
-	}
-	return _datePickerController;
-}
-
-- (DatePickerController *)datePickerController
-{
-	if(_datePickerController == nil)
-		_datePickerController = [[DatePickerController alloc] init];
-	return _datePickerController;
 }
 
 - (AutoTimer *)timer
@@ -475,10 +449,20 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	// default editing mode depends on our mode
 	_shouldSave = NO;
 	[self setEditing: _creatingNewTimer];
+
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
+
 	_titleField = nil;
 	_matchField = nil;
 	_maxdurationField = nil;
@@ -1359,19 +1343,28 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			if(row == 0)
 				break;
 
-			else if(row == 1)
+			DatePickerController *vc = [[DatePickerController alloc] init];
+			if(IS_IPAD())
 			{
-				self.datePickerController.date = [_timer.from copy];
-				self.datePickerController.callback = ^(NSDate *date){[self fromSelected:date];};
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
+
+			if(row == 1)
+			{
+				vc.date = [_timer.from copy];
+				vc.callback = ^(NSDate *date){[self fromSelected:date];};
 			}
 			else
 			{
-				self.datePickerController.date = [_timer.to copy];
-				self.datePickerController.callback = ^(NSDate *date){[self toSelected:date];};
+				vc.date = [_timer.to copy];
+				vc.callback = ^(NSDate *date){[self toSelected:date];};
 			}
 
-			[self.datePickerController setDatePickerMode:UIDatePickerModeTime];
-			targetViewController = self.datePickerNavigationController;
+			[vc setDatePickerMode:UIDatePickerModeTime];
 			break;
 		}
 		case timeframeSection:
@@ -1379,22 +1372,31 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			if(row == 0)
 				break;
 
-			else if(row == 1)
+			DatePickerController *vc = [[DatePickerController alloc] init];
+			if(IS_IPAD())
 			{
-				self.datePickerController.date = [_timer.after copy];
-				self.datePickerController.callback = ^(NSDate *date){[self afterSelected:date];};
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+			}
+			else
+				targetViewController = vc;
+
+			if(row == 1)
+			{
+				vc.date = [_timer.after copy];
+				vc.callback = ^(NSDate *date){[self afterSelected:date];};
 			}
 			else
 			{
-				self.datePickerController.date = [_timer.before copy];
-				self.datePickerController.callback = ^(NSDate *date){[self beforeSelected:date];};
+				vc.date = [_timer.before copy];
+				vc.callback = ^(NSDate *date){[self beforeSelected:date];};
 			}
 
 			// XXX: I would prefer UIDatePickerModeDateAndTime here but this does not provide us
 			// with a year selection, so restrict this to UIDatePickerModeDate for now (which is
 			// similar to the way it's handled on the receiver itself)
-			[self.datePickerController setDatePickerMode:UIDatePickerModeDate];
-			targetViewController = self.datePickerNavigationController;
+			[vc setDatePickerMode:UIDatePickerModeDate];
 			break;
 		}
 		case servicesSection:
@@ -1580,8 +1582,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_afterEventViewController = nil;
 	_bouquetListController = nil;
 	_serviceListController = nil;
-	_datePickerController = nil;
-	_datePickerNavigationController = nil;
 
 	[super viewDidDisappear:animated];
 }

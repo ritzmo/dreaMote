@@ -69,7 +69,7 @@
 
 @implementation RCEmulatorController
 
-@synthesize rcView;
+@synthesize rcView, toolbar;
 
 - (id)init
 {
@@ -162,7 +162,7 @@
 		[items addObject:flexItem];
 	}
 
-	[_toolbar setItems:items animated:animated];
+	[toolbar setItems:items animated:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -180,10 +180,10 @@
 	}
 
 	// eventually fix toolbar size
-	[_toolbar sizeToFit];
-	const CGFloat toolbarHeight = _toolbar.frame.size.height;
+	[toolbar sizeToFit];
+	const CGFloat toolbarHeight = toolbar.frame.size.height;
 	const CGFloat width = self.view.frame.size.width;
-	_toolbar.frame = CGRectMake(0, -1, width, toolbarHeight);
+	toolbar.frame = CGRectMake(0, -1, width, toolbarHeight);
 	// XXX: hackish
 	[self didRotateFromInterfaceOrientation:self.interfaceOrientation];
 
@@ -222,18 +222,18 @@
 	CGSize mainViewSize = self.view.bounds.size;
 	CGRect frame;
 
-	_toolbar = [UIToolbar new];
-	_toolbar.barStyle = UIBarStyleDefault;
+	toolbar = [UIToolbar new];
+	toolbar.barStyle = UIBarStyleDefault;
 
-	// size up the _toolbar and set its frame
-	[_toolbar sizeToFit];
+	// size up the toolbar and set its frame
+	[toolbar sizeToFit];
 	const CGFloat toolbarOrigin = -1;
-	const CGFloat toolbarHeight = _toolbar.frame.size.height;
-	_toolbar.frame = CGRectMake(0,
+	const CGFloat toolbarHeight = toolbar.frame.size.height;
+	toolbar.frame = CGRectMake(0,
 								toolbarOrigin,
 								mainViewSize.width,
 								toolbarHeight);
-	[self.view addSubview:_toolbar];
+	[self.view addSubview:toolbar];
 
 	// ImageView for Screenshots
 	frame = CGRectMake(0, toolbarOrigin + toolbarHeight, mainViewSize.width, mainViewSize.height - (toolbarOrigin + toolbarHeight) - self.tabBarController.tabBar.frame.size.height - self.navigationController.navigationBar.frame.size.height);
@@ -267,7 +267,7 @@
 
 - (void)viewDidUnload
 {
-	_toolbar = nil;
+	toolbar = nil;
 	rcView = nil;
 
 	_screenView = nil;
@@ -451,7 +451,7 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 	_imageView.image = nil;
-    [_toolbar performSelector:@selector(sizeToFit)
+    [toolbar performSelector:@selector(sizeToFit)
                          withObject:nil
                          afterDelay:(0.5f * duration)];
 
@@ -470,7 +470,7 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	// adjust size of _screenView & _scrollView
-	CGRect frame = _toolbar.frame;
+	CGRect frame = toolbar.frame;
 	frame.origin.y += frame.size.height;
 	frame.size.height = self.view.frame.size.height - frame.origin.y;
 	_screenView.frame = frame;

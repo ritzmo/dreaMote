@@ -76,6 +76,7 @@
 	self.navigationItem.leftBarButtonItem = button;
 
 	self.view = tableView;
+	[self theme];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

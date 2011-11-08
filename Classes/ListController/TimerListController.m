@@ -132,6 +132,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelConnection:) name:kReconnectNotification object:nil];
+
+	[self theme];
 }
 
 - (void)viewDidUnload
@@ -428,6 +430,20 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
 {
 	return kTimerStateMax + 1;
+}
+
+/* header height */
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(section == 0)
+		return 0;
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+/* section header */
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 }
 
 /* section title */

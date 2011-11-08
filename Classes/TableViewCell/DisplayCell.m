@@ -64,8 +64,8 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 
 		self.textLabel.backgroundColor = [UIColor clearColor];
 		self.textLabel.opaque = NO;
-		self.textLabel.textColor = [UIColor blackColor];
-		self.textLabel.highlightedTextColor = [UIColor blackColor];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		self.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 		self.textLabel.adjustsFontSizeToFitWidth = YES;
 	}

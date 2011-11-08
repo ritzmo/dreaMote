@@ -79,6 +79,7 @@
 	_tableView.sectionHeaderHeight = 0;
 	if(self.editing)
 		[_tableView setEditing:YES animated:NO];
+	[self theme];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated

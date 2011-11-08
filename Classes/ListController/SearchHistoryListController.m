@@ -32,6 +32,10 @@
     return self;
 }
 
+- (void)dealloc
+{
+	[self stopObservingThemeChanges];
+}
 
 - (void)loadView
 {
@@ -46,6 +50,19 @@
 	self.view = tableView;
 	
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	[super viewDidUnload];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
