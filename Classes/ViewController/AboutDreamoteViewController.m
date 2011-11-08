@@ -123,6 +123,15 @@
 			break;
 		}
 	}
+	switch([DreamoteConfiguration singleton].currentTheme)
+	{
+		default:
+			html = [html stringByReplacingOccurrencesOfString:@"@CSS" withString:@""];
+			break;
+		case THEME_HIGHCONTRAST:
+			html = [html stringByReplacingOccurrencesOfString:@"@CSS" withString:@"a:visited,a{color:darkgray}body,li,ul,div{color:gray}"];
+			break;
+	}
 	[_aboutText loadHTMLString:html baseURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] bundlePath]]];
 	_aboutText.backgroundColor = [UIColor clearColor];
 	_aboutText.autoresizingMask = (UIViewAutoresizingFlexibleWidth);
@@ -131,7 +140,7 @@
 	[self.view addSubview:_aboutText];
 
 	frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
-	_doneButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
+	_doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
 	_doneButton.frame = frame;
 	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
 	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
