@@ -1049,9 +1049,6 @@
 		DAC8C4E313B2032300CA00D9 /* welcome_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4D213B2032300CA00D9 /* welcome_en.html */; };
 		DAC8C4E413B2032300CA00D9 /* welcome_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4D213B2032300CA00D9 /* welcome_en.html */; };
 		DAC8C4E513B2032300CA00D9 /* welcome_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4D213B2032300CA00D9 /* welcome_en.html */; };
-		DAC8C4E613B2032300CA00D9 /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4D313B2032300CA00D9 /* welcome_fr.html */; };
-		DAC8C4E713B2032300CA00D9 /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4D313B2032300CA00D9 /* welcome_fr.html */; };
-		DAC8C4E813B2032300CA00D9 /* welcome_fr.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4D313B2032300CA00D9 /* welcome_fr.html */; };
 		DAC8C4F313B2034100CA00D9 /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */; };
 		DAC8C4F413B2034100CA00D9 /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */; };
 		DAC8C4F513B2034100CA00D9 /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */; };
@@ -3425,7 +3422,6 @@
 				DAC8C4DA13B2032300CA00D9 /* changes_en.html in Resources */,
 				DAC8C4E013B2032300CA00D9 /* welcome_de.html in Resources */,
 				DAC8C4E313B2032300CA00D9 /* welcome_en.html in Resources */,
-				DAC8C4E613B2032300CA00D9 /* welcome_fr.html in Resources */,
 				DAC8C4DD13B2032300CA00D9 /* epgcache.sqlite in Resources */,
 				DAC8C50E13B2038300CA00D9 /* MainWindow-iPad.xib in Resources */,
 				DAC8C51113B2038300CA00D9 /* MainWindow.xib in Resources */,
@@ -3528,7 +3524,6 @@
 				DAC8C4DE13B2032300CA00D9 /* epgcache.sqlite in Resources */,
 				DAC8C4E113B2032300CA00D9 /* welcome_de.html in Resources */,
 				DAC8C4E413B2032300CA00D9 /* welcome_en.html in Resources */,
-				DAC8C4E713B2032300CA00D9 /* welcome_fr.html in Resources */,
 				DAC8C4F413B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F713B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4FA13B2034100CA00D9 /* Localizable.strings in Resources */,
@@ -3631,7 +3626,6 @@
 				DAC8C4DF13B2032300CA00D9 /* epgcache.sqlite in Resources */,
 				DAC8C4E213B2032300CA00D9 /* welcome_de.html in Resources */,
 				DAC8C4E513B2032300CA00D9 /* welcome_en.html in Resources */,
-				DAC8C4E813B2032300CA00D9 /* welcome_fr.html in Resources */,
 				DAC8C4F513B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F813B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4FB13B2034100CA00D9 /* Localizable.strings in Resources */,
