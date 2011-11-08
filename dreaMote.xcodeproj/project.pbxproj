@@ -358,6 +358,9 @@
 		DAC298FF1469A452001D55FC /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC298FE1469A452001D55FC /* GradientView.m */; };
 		DAC299001469A452001D55FC /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC298FE1469A452001D55FC /* GradientView.m */; };
 		DAC299011469A452001D55FC /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC298FE1469A452001D55FC /* GradientView.m */; };
+		DAC299041469F06B001D55FC /* UISearchBar+Textfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */; };
+		DAC299051469F06B001D55FC /* UISearchBar+Textfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */; };
+		DAC299061469F06B001D55FC /* UISearchBar+Textfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -1329,6 +1332,8 @@
 		DAC298F914699895001D55FC /* UIViewController+Theming.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Theming.m"; sourceTree = "<group>"; };
 		DAC298FD1469A452001D55FC /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		DAC298FE1469A452001D55FC /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		DAC299021469F06A001D55FC /* UISearchBar+Textfield.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Textfield.h"; sourceTree = "<group>"; };
+		DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Textfield.m"; sourceTree = "<group>"; };
 		DAC8BE4B13B1FF9200CA00D9 /* dreaMote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dreaMote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -2653,6 +2658,8 @@
 				DAC8C06D13B2014C00CA00D9 /* NSString+URLEncode.m */,
 				DAC8C06E13B2014C00CA00D9 /* UIDevice+SystemVersion.h */,
 				DAC8C06F13B2014C00CA00D9 /* UIDevice+SystemVersion.m */,
+				DAC299021469F06A001D55FC /* UISearchBar+Textfield.h */,
+				DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */,
 				DAC8C07013B2014C00CA00D9 /* UITableViewCell+EasyInit.h */,
 				DAC8C07113B2014C00CA00D9 /* UITableViewCell+EasyInit.m */,
 				DAC298F814699895001D55FC /* UIViewController+Theming.h */,
@@ -3940,6 +3947,7 @@
 				DA3316521469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 				DAC298FA14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC298FF1469A452001D55FC /* GradientView.m in Sources */,
+				DAC299041469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4200,6 +4208,7 @@
 				DA3316531469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 				DAC298FB14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC299001469A452001D55FC /* GradientView.m in Sources */,
+				DAC299051469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4426,6 +4435,7 @@
 				DA3316541469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 				DAC298FC14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC299011469A452001D55FC /* GradientView.m in Sources */,
+				DAC299061469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
