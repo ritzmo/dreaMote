@@ -23,7 +23,6 @@ extern NSString *kAutoTimerCell_ID;
 {
 @private	
 	AutoTimer *_timer; /*!< @brief Timer. */
-	UILabel *_timerNameLabel; /*!< @brief Name Label. */
 }
 
 /*!

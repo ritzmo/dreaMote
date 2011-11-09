@@ -34,16 +34,9 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		const UIView *myContentView = self.contentView;
-
-		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-		_timerNameLabel = [self newLabelWithPrimaryColor:nil
-										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												fontSize:kAutoTimerNameTextSize
-													bold:YES];
-		[myContentView addSubview:_timerNameLabel];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kAutoTimerNameTextSize];
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	}
 	
 	return self;
@@ -51,7 +44,7 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 
 - (void)theme
 {
-	_timerNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	[super theme];
 }
 
@@ -68,11 +61,11 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 	if(_timer == newTimer) return;
 	_timer = newTimer;
 
-	_timerNameLabel.text = newTimer.name;
+	self.textLabel.text = newTimer.name;
 	if(newTimer.enabled)
-		_timerNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	else
-		_timerNameLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+		self.textLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -89,7 +82,7 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 		CGRect frame;
 
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, contentRect.origin.y, contentRect.size.width - (kLeftMargin + kRightMargin), contentRect.size.height);
-		_timerNameLabel.frame = frame;
+		self.textLabel.frame = frame;
 	}
 }
 
@@ -97,7 +90,6 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
-	_timerNameLabel.highlighted = selected;
 }
 
 /* Create and configure a label. */

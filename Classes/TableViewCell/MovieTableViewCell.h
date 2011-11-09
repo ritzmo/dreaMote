@@ -24,8 +24,6 @@ extern NSString *kMovieCell_ID;
 {
 @private	
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
-	UILabel *_eventNameLabel; /*!< @brief Name Label. */
-	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
 }
 
 /*!

@@ -24,7 +24,6 @@ extern NSString *kServiceEventCell_ID;
 @private
 	NSObject<EventProtocol> *_now; /*!< @brief Current event. */
 	NSObject<EventProtocol> *_next; /*!< @brief Next event. */
-	UILabel *_serviceNameLabel; /*!< @brief Name Label. */
 	UILabel *_nowLabel; /*!< @brief Current Event Label. */
 	UILabel *_nowTimeLabel; /*!< @brief Current Event Time Label. */
 	UILabel *_nextLabel; /*!< @brief Next Event Label. */

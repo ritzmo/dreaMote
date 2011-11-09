@@ -39,12 +39,9 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												  fontSize:kMultiEPGFontSize
-													  bold:YES];
-		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kMultiEPGFontSize];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
 		// no accessory
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -59,6 +56,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 - (void)prepareForReuse
 {
 	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	self.service = nil;
 	self.events = nil;
 }
@@ -77,7 +76,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	_service = newService;
 
 	// Change name
-	_serviceNameLabel.text = newService.sname;
+	self.textLabel.text = newService.sname;
 	self.imageView.image = newService.picon;
 
 	// Redraw
@@ -244,28 +243,30 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 				realFrame.origin.x = realFrame.origin.x + (frame.size.width - realFrame.size.width) / 2.0f;
 			}
 			self.imageView.frame = realFrame;
-			_serviceNameLabel.frame = CGRectZero;
+			self.textLabel.frame = CGRectZero;
 		}
 		else
 		{
-			_serviceNameLabel.numberOfLines = 0;
-			_serviceNameLabel.adjustsFontSizeToFitWidth = YES;
-			_serviceNameLabel.frame = frame;
+			self.textLabel.numberOfLines = 0;
+			self.textLabel.adjustsFontSizeToFitWidth = YES;
+			self.textLabel.frame = frame;
 		}
 	}
 	else
 	{
 		const CGRect frame = CGRectMake(contentRect.origin.x + kLeftMargin, 0, contentRect.size.width - kLeftMargin - kRightMargin, contentRect.size.height);
-		_serviceNameLabel.numberOfLines = 1;
-		_serviceNameLabel.adjustsFontSizeToFitWidth = NO;
-		_serviceNameLabel.frame = frame;
+		self.textLabel.numberOfLines = 1;
+		self.textLabel.adjustsFontSizeToFitWidth = NO;
+		self.textLabel.frame = frame;
 	}
 	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-	[self.contentView addSubview:_serviceNameLabel];
+	[self.contentView addSubview:self.textLabel];
 	[self.contentView addSubview:self.imageView];
 
 	NSInteger idx = 0;
 	const NSInteger count = [_lines count] - 1;
+	UIColor *primaryColor = [DreamoteConfiguration singleton].textColor;
+	UIColor *selectedColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	for(NSObject<EventProtocol> *event in self.events)
 	{
 		CGFloat leftLine;
@@ -301,24 +302,16 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		const CGRect frame = CGRectMake(kServiceWidth + leftLine, 0, rightLine, contentRect.size.height);
 		idx += 1;
 
-		UILabel *label = [self newLabelWithPrimaryColor: [UIColor blackColor]
-										  selectedColor: [UIColor whiteColor]
-											   fontSize: kMultiEPGFontSize
-												   bold: NO];
+		UILabel *label = [self newLabelWithPrimaryColor:primaryColor
+										  selectedColor:selectedColor
+											   fontSize:kMultiEPGFontSize
+												   bold:NO];
 		label.text = event.title;
 		label.frame = frame;
 		label.adjustsFontSizeToFitWidth = YES;
 		label.textAlignment = UITextAlignmentCenter;
 		[self.contentView addSubview:label];
 	}
-}
-
-/* (de)select */
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-	[super setSelected:selected animated:animated];
-
-	_serviceNameLabel.highlighted = selected;
 }
 
 /* Create and configure a label. */

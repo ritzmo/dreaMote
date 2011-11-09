@@ -27,21 +27,15 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 @implementation ServiceTableViewCell
 
 @synthesize loadPicon;
-@synthesize serviceNameLabel = _serviceNameLabel;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		const UIView *myContentView = self.contentView;
-
-		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												  fontSize:kServiceTextSize
-													  bold:YES];
-		[myContentView addSubview: _serviceNameLabel];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
 		loadPicon = YES;
 	}
@@ -51,8 +45,8 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 - (void)theme
 {
-	_serviceNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_serviceNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	[super theme];
 }
 
@@ -63,6 +57,11 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	self.service = nil;
 
 	[super prepareForReuse];
+}
+
+- (UILabel *)serviceNameLabel
+{
+	return self.textLabel;
 }
 
 /* getter for service property */
@@ -79,7 +78,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	_service = newService;
 
 	// Change name
-	_serviceNameLabel.text = newService.sname;
+	self.textLabel.text = newService.sname;
 
 	if(newService.valid)
 	{
@@ -104,15 +103,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	self.imageView.frame = imageRect;
 	const NSInteger leftMargin = contentRect.origin.x + ((self.imageView.image) ? (imageRect.size.width + imageRect.origin.x + kTweenMargin) : kLeftMargin);
 	const CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, contentRect.size.height - 2);
-	_serviceNameLabel.frame = frame;
-}
-
-/* (de)select */
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-	[super setSelected:selected animated:animated];
-
-	_serviceNameLabel.highlighted = selected;
+	self.textLabel.frame = frame;
 }
 
 /* Create and configure a label. */

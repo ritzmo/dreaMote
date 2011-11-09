@@ -23,7 +23,6 @@ extern NSString *kEventCell_ID;
 {
 @private	
 	NSObject<EventProtocol> *_event; /*!< @brief Assigned Event. */
-	UILabel *_eventNameLabel; /*!< @brief Name Label. */
 	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
 	UILabel *_eventServiceLabel; /*!< @brief Service Label. */
 }

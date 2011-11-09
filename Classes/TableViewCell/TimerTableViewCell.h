@@ -23,8 +23,6 @@ extern NSString *kTimerCell_ID;
 {
 @private	
 	NSObject<TimerProtocol> *_timer; /*!< @brief Timer. */
-	UILabel *_serviceNameLabel; /*!< @brief Service Label. */
-	UILabel *_timerNameLabel; /*!< @brief Name Label. */
 	UILabel *_timerTimeLabel; /*!< @brief Time Label. */
 }
 

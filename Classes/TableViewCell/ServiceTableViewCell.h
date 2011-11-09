@@ -23,7 +23,6 @@ extern NSString *kServiceCell_ID;
 {
 @private	
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
-	UILabel *_serviceNameLabel; /*!< @brief Name Label. */
 }
 
 /*!

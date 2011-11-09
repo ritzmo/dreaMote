@@ -26,7 +26,6 @@ extern NSString *kMultiEPGCell_ID;
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
 	NSArray *_events; /*!< @brief Matching Events. */
 	NSMutableArray *_lines; /*!< @brief Positions of vertical Lines. */
-	UILabel *_serviceNameLabel; /*!< @brief Servicename Label. */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Seconds since "_begin". */
 }
 

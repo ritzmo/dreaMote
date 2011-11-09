@@ -38,12 +38,9 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												  fontSize:kServiceEventServiceSize
-													  bold:YES];
-		[myContentView addSubview: _serviceNameLabel];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kServiceEventServiceSize];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.textColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
 		// label that might be used to display currently playing event
 		_nowLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
@@ -84,8 +81,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 - (void)theme
 {
-	_serviceNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_serviceNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_nowLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	_nowLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_nowTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
@@ -103,7 +100,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	_nowTimeLabel.text = nil;
 	_nextLabel.text = nil;
 	_nextTimeLabel.text = nil;
-	_serviceNameLabel.text = nil;
+	self.textLabel.text = nil;
 
 	self.imageView.image = nil;
 	self.accessoryType = UITableViewCellAccessoryNone;
@@ -158,7 +155,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 			_nowTimeLabel.text = nil;
 		}
-		_serviceNameLabel.text = service.sname;
+		self.textLabel.text = service.sname;
 
 		if(serviceValid)
 		{
@@ -168,7 +165,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		}
 	}
 	else
-		_serviceNameLabel.text = new.title;
+		self.textLabel.text = new.title;
 
 	[self setNeedsDisplay];
 }
@@ -217,7 +214,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	if(!_now.service.valid)
 	{
 		const CGRect frame = CGRectMake(kLeftMargin, (contentRect.size.height - kServiceEventServiceSize) / 2 , contentRect.size.width - kRightMargin, kServiceEventServiceSize + 5);
-		_serviceNameLabel.frame = frame;
+		self.textLabel.frame = frame;
 	}
 	else
 	{
@@ -230,7 +227,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 		// Base frame
 		CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, kServiceEventServiceSize + offset);
-		_serviceNameLabel.frame = frame;
+		self.textLabel.frame = frame;
 
 		frame.origin.y += frame.size.height;
 		frame.size.width = timeWidth;
@@ -250,14 +247,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		frame.size.width = contentRect.size.width - frame.origin.x - kRightMargin;
 		_nextLabel.frame = frame;
 	}
-}
-
-/* (de)select */
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-	[super setSelected:selected animated:animated];
-
-	_serviceNameLabel.highlighted = selected;
 }
 
 /* Create and configure a label. */

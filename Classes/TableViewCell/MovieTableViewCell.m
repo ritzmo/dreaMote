@@ -16,16 +16,6 @@
  */
 NSString *kMovieCell_ID = @"MovieCell_ID";
 
-/*!
- @brief Private functions of MovieTableViewCell.
- */
-@interface MovieTableViewCell()
-/*!
- @brief Private helper to create a label.
- */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold;
-@end
-
 @implementation MovieTableViewCell
 
 @synthesize formatter;
@@ -33,26 +23,17 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
+	if((self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]))
 	{
-		const UIView *myContentView = self.contentView;
-
-		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		// A label that displays the Eventname.
-		_eventNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												fontSize:kEventNameTextSize
-													bold:YES];
-		[myContentView addSubview: _eventNameLabel];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kEventNameTextSize];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		
-		// A label that displays the Eventtime.
-		_eventTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												fontSize:kEventDetailsTextSize
-													bold:NO];
-		[myContentView addSubview: _eventTimeLabel];
+		self.detailTextLabel.font = [UIFont systemFontOfSize:kEventDetailsTextSize];
+		self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	}
 	
 	return self;
@@ -60,10 +41,10 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 - (void)theme
 {
-	_eventNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_eventNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	_eventTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_eventTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	[super theme];
 }
 
@@ -84,8 +65,8 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		self.accessoryType = UITableViewCellAccessoryNone;
 
 	// Set new label contents
-	_eventNameLabel.text = newMovie.title;
-	_eventTimeLabel.text = [formatter fuzzyDate:newMovie.time];
+	self.textLabel.text = newMovie.title;
+	self.detailTextLabel.text = [formatter fuzzyDate:newMovie.time];
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -104,43 +85,12 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		
 		// Place the name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, kEventNameTextSize + 2);
-		_eventNameLabel.frame = frame;
+		self.textLabel.frame = frame;
 
 		// Place the time label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, kEventDetailsTextSize + 2);
-		_eventTimeLabel.frame = frame;
+		self.detailTextLabel.frame = frame;
 	}
-}
-
-/* (de)select */
-- (void)setSelected:(BOOL) selected animated:(BOOL) animated
-{
-	[super setSelected:selected animated:animated];
-
-	_eventNameLabel.highlighted = selected;
-	_eventTimeLabel.highlighted = selected;
-}
-
-/* Create and configure a label. */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold
-{
-	UIFont *font;
-	UILabel *newLabel;
-
-	if (bold) {
-		font = [UIFont boldSystemFontOfSize:fontSize];
-	} else {
-		font = [UIFont systemFontOfSize:fontSize];
-	}
-
-	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	newLabel.backgroundColor = [UIColor clearColor];
-	newLabel.opaque = NO;
-	newLabel.textColor = primaryColor;
-	newLabel.highlightedTextColor = selectedColor;
-	newLabel.font = font;
-	
-	return newLabel;
 }
 
 @end

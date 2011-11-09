@@ -34,26 +34,20 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
+	if((self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]))
 	{
 		const UIView *myContentView = self.contentView;
 
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		// A label that displays the Servicename.
-		_serviceNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												  fontSize:kTimerServiceTextSize
-													  bold:YES];
-		[myContentView addSubview: _serviceNameLabel];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kTimerServiceTextSize];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
-		// A label that displays the Timername.
-		_timerNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												fontSize:kTimerNameTextSize
-													bold:YES];
-		[myContentView addSubview: _timerNameLabel];
+		self.detailTextLabel.font = [UIFont boldSystemFontOfSize:kTimerNameTextSize];
+		self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
 		// A label that displays the Timer time.
 		_timerTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
@@ -68,10 +62,10 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (void)theme
 {
-	_serviceNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_serviceNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	_timerNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_timerNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_timerTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	_timerTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	[super theme];
@@ -103,8 +97,8 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	}
 
 	// Change label texts
-	_serviceNameLabel.text = newTimer.service.sname;
-	_timerNameLabel.text = newTimer.title;
+	self.textLabel.text = newTimer.service.sname;
+	self.detailTextLabel.text = newTimer.title;
 	_timerTimeLabel.text = newTimer.timeString;
 
 	// Redraw
@@ -123,7 +117,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 		// Place the name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset, contentRect.size.width - kRightMargin, kTimerNameTextSize + 2);
-		_serviceNameLabel.frame = frame;
+		self.textLabel.frame = frame;
 		if(IS_IPAD())
 			offset += kTimerServiceTextSize;
 		else
@@ -131,7 +125,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 		// Place the other name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, offset - 1, contentRect.size.width - kRightMargin, kTimerNameTextSize + 2);
-		_timerNameLabel.frame = frame;
+		self.detailTextLabel.frame = frame;
 		if(IS_IPAD())
 			offset += kTimerNameTextSize;
 		else
@@ -147,8 +141,6 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
 	[super setSelected:selected animated:animated];
-	_serviceNameLabel.highlighted = selected;
-	_timerNameLabel.highlighted = selected;
 	_timerTimeLabel.highlighted = selected;
 }
 

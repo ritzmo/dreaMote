@@ -41,11 +41,9 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		// A label that displays the Eventname.
-		_eventNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
-										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
-												fontSize:kEventNameTextSize
-													bold:YES];
-		[myContentView addSubview: _eventNameLabel];
+		self.textLabel.font = [UIFont boldSystemFontOfSize:kEventNameTextSize];
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		
 		// A label that displays the Eventtime.
 		_eventTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
@@ -68,8 +66,8 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 - (void)theme
 {
-	_eventNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	_eventNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_eventTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	_eventTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_eventServiceLabel.textColor = [DreamoteConfiguration singleton].textColor;
@@ -103,7 +101,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	}
 
 	// Set Labels
-	_eventNameLabel.text = newEvent.title;
+	self.textLabel.text = newEvent.title;
 	_eventTimeLabel.text = newEvent.timeString;
 	if(showService)
 	{
@@ -134,7 +132,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		
 		// Place the name label.
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 7, contentRect.size.width - kRightMargin, kEventNameTextSize + 2);
-		_eventNameLabel.frame = frame;
+		self.textLabel.frame = frame;
 
 		// Place the time label.
 		frame.origin.y += frame.size.height + 3;
@@ -152,7 +150,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 {
 	[super setSelected:selected animated:animated];
 
-	_eventNameLabel.highlighted = selected;
 	_eventTimeLabel.highlighted = selected;
 	_eventServiceLabel.highlighted = selected;
 }
