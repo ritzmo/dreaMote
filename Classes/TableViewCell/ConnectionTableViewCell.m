@@ -56,6 +56,17 @@ NSString *kConnectionCell_ID = @"ConnectionCell_ID";
 	return self;
 }
 
+- (void)theme
+{
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_descriptionLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_descriptionLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_statusLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_statusLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	[super theme];
+}
+
 /* layout */
 - (void)layoutSubviews
 {

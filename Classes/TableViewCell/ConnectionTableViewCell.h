@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -16,7 +17,7 @@ extern NSString *kConnectionCell_ID;
 /*!
  @brief UITableViewCell optimized to display possible connections.
  */
-@interface ConnectionTableViewCell : UITableViewCell
+@interface ConnectionTableViewCell : BaseTableViewCell
 {
 @private
 	NSDictionary	*_dataDictionary; /*!< @brief Item. */

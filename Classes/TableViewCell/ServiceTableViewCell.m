@@ -41,13 +41,19 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												  fontSize:kServiceTextSize
 													  bold:YES];
-		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 
 		loadPicon = YES;
 	}
 
 	return self;
+}
+
+- (void)theme
+{
+	_serviceNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_serviceNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
 }
 
 - (void)prepareForReuse

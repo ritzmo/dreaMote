@@ -46,7 +46,6 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												  fontSize:kTimerServiceTextSize
 													  bold:YES];
-		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 
 		// A label that displays the Timername.
@@ -54,7 +53,6 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kTimerNameTextSize
 													bold:YES];
-		_timerNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerNameLabel];
 
 		// A label that displays the Timer time.
@@ -62,11 +60,21 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kTimerTimeTextSize
 													bold:NO];
-		_timerTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _timerTimeLabel];
 	}
 	
 	return self;
+}
+
+- (void)theme
+{
+	_serviceNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_serviceNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_timerNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_timerNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_timerTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_timerTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
 }
 
 /* getter for timer property */

@@ -50,6 +50,15 @@ NSString *kMainCell_ID = @"MainCell_ID";
 	return self;
 }
 
+- (void)theme
+{
+	_nameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_nameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_explainLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_explainLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	[super theme];
+}
+
 /* layout */
 - (void)layoutSubviews
 {

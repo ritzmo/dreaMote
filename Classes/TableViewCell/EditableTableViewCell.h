@@ -47,10 +47,11 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 */
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 @protocol EditableTableViewCellDelegate;
 
-@interface EditableTableViewCell : UITableViewCell
+@interface EditableTableViewCell : BaseTableViewCell
 
 // Exposes the delegate property to other objects.
 @property (nonatomic, unsafe_unretained) id <EditableTableViewCellDelegate> delegate;

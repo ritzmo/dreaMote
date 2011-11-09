@@ -132,6 +132,7 @@ extern const char *kPiconGlob;
 #define kSearchHistoryLength	@"searchHistoryLength"
 #define kSeparateEpgByDay		@"separateEpgByDay"
 #define kSatFinderAudio			@"satFinderWithAudio"
+#define kActiveTheme			@"activeTheme"
 
 #define kCurrentDatabaseVersion 2
 

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 // cell identifier for this custom cell
 extern NSString *kPlayListCell_ID;
 
-@interface PlayListCell : UITableViewCell
+@interface PlayListCell : BaseTableViewCell
 {
 @private
 	UIImageView *indicator; /*!< @brief Indicator Image. */

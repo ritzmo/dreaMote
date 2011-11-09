@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Objects/EventProtocol.h"
+#import <TableViewCell/BaseTableViewCell.h>
+
+#import <Objects/EventProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -17,7 +19,7 @@ extern NSString *kEventCell_ID;
 /*!
  @brief UITableViewCell optimized to display Events.
  */
-@interface EventTableViewCell : UITableViewCell
+@interface EventTableViewCell : BaseTableViewCell
 {
 @private	
 	NSObject<EventProtocol> *_event; /*!< @brief Assigned Event. */

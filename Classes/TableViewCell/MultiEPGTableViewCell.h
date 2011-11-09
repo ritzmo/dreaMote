@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Objects/ServiceProtocol.h"
-#import "Objects/EventProtocol.h"
+#import <TableViewCell/BaseTableViewCell.h>
+
+#import <Objects/ServiceProtocol.h>
+#import <Objects/EventProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -18,7 +20,7 @@ extern NSString *kMultiEPGCell_ID;
 /*!
  @brief UITableViewCell optimized to display vertical 1-Service/x-Events combination.
  */
-@interface MultiEPGTableViewCell : UITableViewCell
+@interface MultiEPGTableViewCell : BaseTableViewCell
 {
 @private	
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */

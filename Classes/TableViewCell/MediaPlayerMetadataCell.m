@@ -122,6 +122,31 @@ NSString *kMetadataCell_ID = @"MetadataCell_ID";
 	return self;
 }
 
+- (void)theme
+{
+	_albumLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_albumLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_album.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_album.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	_artistLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_artistLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_artist.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_artist.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	_genreLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_genreLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_genre.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_genre.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	_titleLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_titleLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_title.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_title.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	_yearLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_yearLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_year.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	_year.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	[super theme];
+}
+
 /* (de)select */
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

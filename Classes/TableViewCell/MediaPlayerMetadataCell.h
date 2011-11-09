@@ -6,9 +6,10 @@
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
-#import "MetadataProtocol.h"
+#import <Objects/MetadataProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -18,7 +19,7 @@ extern NSString *kMetadataCell_ID;
 /*!
  @brief UITableViewCell used to display Metainformation in MediaPlayer.
  */
-@interface MediaPlayerMetadataCell : UITableViewCell
+@interface MediaPlayerMetadataCell : BaseTableViewCell
 {
 @private
 	NSObject<MetadataProtocol> *_metadata; /*!< @brief Current set of Metadata. */

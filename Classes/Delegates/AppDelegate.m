@@ -149,6 +149,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 
+	// load theme
+	[DreamoteConfiguration singleton].currentTheme = [stdDefaults integerForKey:kActiveTheme];
+
 	// not configured at all
 	if((testValue = [stdDefaults stringForKey: kActiveConnection]) == nil)
 	{
@@ -268,9 +271,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 		// NOTE: class has to have retain count 1 as SHKConfiguration does not retain it
 		id configurationDelegate = [[classConfigurationDelegate alloc] init];
 		[SHKConfiguration sharedInstanceWithDelegate:configurationDelegate];
-#ifdef __clang_analyzer__
-		[configurationDelegate release];
-#endif
 	}
 
 	// initialize audio session

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/Generic/AutoTimer.h"
+#import <TableViewCell/BaseTableViewCell.h>
+#import <Objects/Generic/AutoTimer.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -18,7 +19,7 @@ extern NSString *kAutoTimerCell_ID;
 /*!
  @brief UITableViewCell optimized to display AutoTimers.
  */
-@interface AutoTimerTableViewCell : UITableViewCell
+@interface AutoTimerTableViewCell : BaseTableViewCell
 {
 @private	
 	AutoTimer *_timer; /*!< @brief Timer. */

@@ -45,7 +45,6 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kEventNameTextSize
 													bold:YES];
-		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
 		
 		// A label that displays the Eventtime.
@@ -53,11 +52,19 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kEventDetailsTextSize
 													bold:NO];
-		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
 	}
 	
 	return self;
+}
+
+- (void)theme
+{
+	_eventNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_eventNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_eventTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_eventTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
 }
 
 /* getter for movie property */

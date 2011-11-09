@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
-#import "Objects/EventProtocol.h"
+#import <Objects/EventProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -18,7 +19,7 @@ extern NSString *kServiceEventCell_ID;
 /*!
  @brief UITableViewCell optimized to display Service/Now/Next combination.
  */
-@interface ServiceEventTableViewCell : UITableViewCell
+@interface ServiceEventTableViewCell : BaseTableViewCell
 {
 @private
 	NSObject<EventProtocol> *_now; /*!< @brief Current event. */

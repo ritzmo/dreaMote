@@ -57,6 +57,17 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	return self;
 }
 
+- (void)theme
+{
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	versionLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	versionLabel.textColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	availableLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+	availableLabel.textColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
+	[super theme];
+}
+
 - (void)prepareForReuse
 {
 	[self setMultiSelected:NO animated:NO];

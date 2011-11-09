@@ -11,6 +11,8 @@
 
 #import "UIDevice+SystemVersion.h"
 
+#import "Constants.h"
+
 #import <View/GradientView.h>
 
 #define darkBlueColor colorWithRed:0.1 green:0.15 blue:0.55 alpha:1
@@ -34,7 +36,6 @@
 			singleton = [[DreamoteIpadConfiguration alloc] init];
 		else
 			singleton = [[DreamoteConfiguration alloc] init];
-		singleton.currentTheme = THEME_HIGHCONTRAST;
 	});
 	return singleton;
 }
@@ -114,6 +115,7 @@
 - (void)styleTableView:(UITableView *)tableView
 {
 	tableView.backgroundColor = self.backgroundColor;
+	[tableView reloadData]; // force reload so the cells apply the new theme
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -175,6 +177,13 @@
 }
 
 #pragma mark Properties
+
+- (void)setCurrentTheme:(themeType)newCurrentTheme
+{
+	if(currentTheme == newCurrentTheme) return;
+	currentTheme = newCurrentTheme;
+	[[NSNotificationCenter defaultCenter] postNotificationName:kThemeChangedNotification object:nil userInfo:nil];
+}
 
 - (UIColor *)backgroundColor
 {

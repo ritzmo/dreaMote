@@ -45,7 +45,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kEventNameTextSize
 													bold:YES];
-		_eventNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventNameLabel];
 		
 		// A label that displays the Eventtime.
@@ -53,7 +52,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kEventDetailsTextSize
 													bold:NO];
-		_eventTimeLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _eventTimeLabel];
 		
 		// A label that displays the Service name.
@@ -61,11 +59,22 @@ NSString *kEventCell_ID = @"EventCell_ID";
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kEventDetailsTextSize
 													bold:NO];
-		_eventServiceLabel.textAlignment = UITextAlignmentRight; // default
+		_eventServiceLabel.textAlignment = UITextAlignmentRight;
 		[myContentView addSubview: _eventServiceLabel];
 	}
 
 	return self;
+}
+
+- (void)theme
+{
+	_eventNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_eventNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_eventTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_eventTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_eventServiceLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_eventServiceLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
 }
 
 /* getter for event property */

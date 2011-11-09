@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Objects/ServiceProtocol.h"
+#import <TableViewCell/BaseTableViewCell.h>
+
+#import <Objects/ServiceProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -17,7 +19,7 @@ extern NSString *kServiceCell_ID;
 /*!
  @brief UITableViewCell optimized to display Services.
  */
-@interface ServiceTableViewCell : UITableViewCell
+@interface ServiceTableViewCell : BaseTableViewCell
 {
 @private	
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */

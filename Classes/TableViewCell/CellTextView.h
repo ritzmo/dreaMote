@@ -47,11 +47,12 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 */
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 // cell identifier for this custom cell
 extern NSString *kCellTextView_ID;
 
-@interface CellTextView : UITableViewCell
+@interface CellTextView : BaseTableViewCell
 {
     UITextView *view;
 }

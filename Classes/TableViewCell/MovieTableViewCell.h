@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
+
 #import <Objects/MovieProtocol.h>
 
 
@@ -18,7 +20,7 @@ extern NSString *kMovieCell_ID;
 /*!
  @brief UITableViewCell optimized to display Movies.
  */
-@interface MovieTableViewCell : UITableViewCell
+@interface MovieTableViewCell : BaseTableViewCell
 {
 @private	
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */

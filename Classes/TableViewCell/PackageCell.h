@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 #import <Objects/Generic/Package.h>
 
 // cell identifier for this custom cell
 extern NSString *kPackageCell_ID;
 
-@interface PackageCell : UITableViewCell
+@interface PackageCell : BaseTableViewCell
 {
 @private
 	UIImageView *indicator; /*!< @brief Indicator Image. */

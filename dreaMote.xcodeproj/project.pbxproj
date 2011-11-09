@@ -1073,6 +1073,9 @@
 		DAD9F0911466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
 		DAD9F0921466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
 		DAD9F0931466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
+		DADDDE00146AA75D00BE035E /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDDFF146AA75D00BE035E /* BaseTableViewCell.m */; };
+		DADDDE01146AA75D00BE035E /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDDFF146AA75D00BE035E /* BaseTableViewCell.m */; };
+		DADDDE02146AA75D00BE035E /* BaseTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDDFF146AA75D00BE035E /* BaseTableViewCell.m */; };
 		DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
@@ -1798,6 +1801,8 @@
 		DAD9F08E1466EA11007C0A31 /* OtherViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewProtocol.h; sourceTree = "<group>"; };
 		DAD9F08F1466EA7B007C0A31 /* OtherSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherSplitViewController.h; sourceTree = "<group>"; };
 		DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherSplitViewController.m; sourceTree = "<group>"; };
+		DADDDDFE146AA75D00BE035E /* BaseTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseTableViewCell.h; sourceTree = "<group>"; };
+		DADDDDFF146AA75D00BE035E /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
 		DAFA4BFF144ACF6B005DE541 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
@@ -2945,6 +2950,8 @@
 			children = (
 				DAC8C11C13B2014D00CA00D9 /* AutoTimerTableViewCell.h */,
 				DAC8C11D13B2014D00CA00D9 /* AutoTimerTableViewCell.m */,
+				DADDDDFE146AA75D00BE035E /* BaseTableViewCell.h */,
+				DADDDDFF146AA75D00BE035E /* BaseTableViewCell.m */,
 				DAC8C11E13B2014D00CA00D9 /* CellTextField.h */,
 				DAC8C11F13B2014D00CA00D9 /* CellTextField.m */,
 				DAC8C12013B2014D00CA00D9 /* CellTextView.h */,
@@ -3948,6 +3955,7 @@
 				DAC298FA14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC298FF1469A452001D55FC /* GradientView.m in Sources */,
 				DAC299041469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
+				DADDDE00146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4209,6 +4217,7 @@
 				DAC298FB14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC299001469A452001D55FC /* GradientView.m in Sources */,
 				DAC299051469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
+				DADDDE01146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4436,6 +4445,7 @@
 				DAC298FC14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC299011469A452001D55FC /* GradientView.m in Sources */,
 				DAC299061469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
+				DADDDE02146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

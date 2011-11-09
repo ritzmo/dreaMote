@@ -33,6 +33,13 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 	return self;
 }
 
+- (void)theme
+{
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
+}
+
 - (void)prepareForReuse
 {
 	[self setMultiSelected:NO animated:NO];

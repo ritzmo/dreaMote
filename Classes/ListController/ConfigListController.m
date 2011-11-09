@@ -26,6 +26,7 @@
 #define kMultiEPGRowTag 99
 #define kTimeoutRowTag 100
 #define kHistoryLengthRowTag 101
+#define kThemeRowTag 102
 
 enum sectionIds
 {
@@ -39,12 +40,13 @@ enum sectionIds
 enum settingsRows
 {
 	simpleRemoteRow = 0,
-	separateEventsRow = 1,
-	vibrationRow = 2,
-	timeoutRow = 3,
-	historyLengthRow = 4,
+	separateEventsRow,
+	vibrationRow,
+	themeRow,
+	timeoutRow,
+	historyLengthRow,
 #if IS_FULL()
-	multiEpgRow = 5,
+	multiEpgRow,
 #endif
 };
 
@@ -275,6 +277,7 @@ enum settingsRows
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 		if(cell.tag == kTimeoutRowTag
 		   || cell.tag == kHistoryLengthRowTag
+		   || cell.tag == kThemeRowTag
 #if IS_FULL()
 		   || cell.tag == kMultiEPGRowTag
 #endif
@@ -451,6 +454,47 @@ enum settingsRows
 			}
 			else
 				targetViewController = vc;
+		}
+		else if(cell.tag == kThemeRowTag)
+		{
+			const BOOL isIpad = IS_IPAD();
+			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
+													   [NSArray arrayWithObjects:@"Default", @"Blue", @"Night", nil]
+																						andSelection:[DreamoteConfiguration singleton].currentTheme
+																							andTitle:NSLocalizedString(@"Theme", @"Title for theme selection")];
+			vc.callback = ^(NSUInteger newSelection, BOOL isFinal, BOOL canceling)
+			{
+				if(!canceling)
+				{
+					if(!isIpad && !isFinal)
+						return NO;
+
+					[DreamoteConfiguration singleton].currentTheme = newSelection;
+					NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+					[stdDefaults setObject:[NSNumber numberWithInteger:newSelection] forKey:kActiveTheme];
+					[stdDefaults synchronize];
+					[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+				}
+				else if(!isIpad)
+					[self.navigationController popToViewController:self animated:YES];
+				
+				if(isIpad)
+					[self dismissModalViewControllerAnimated:YES];
+				return YES;
+			};
+			
+			if(isIpad)
+			{
+				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+				navController.modalPresentationStyle = vc.modalPresentationStyle;
+				
+				[self.navigationController presentModalViewController:navController animated:YES];
+			}
+			else
+			{
+				[self.navigationController pushViewController:vc animated:YES];
+			}
 		}
 #if IS_FULL()
 		else if(cell.tag == kMultiEPGRowTag)
@@ -659,6 +703,20 @@ enum settingsRows
 						((DisplayCell *)sourceCell).view = _vibrateInRC;
 					}
 					break;
+				/* Theme */
+				case themeRow:
+				{
+					UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+					label.backgroundColor = [UIColor clearColor];
+					label.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					label.textAlignment = UITextAlignmentRight;
+					label.text = [NSString stringWithFormat:@"%d", [DreamoteConfiguration singleton].currentTheme];
+					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);;
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Theme", @"Configuration item to choose theme");
+					((DisplayCell *)sourceCell).view = label;
+					sourceCell.tag = kThemeRowTag;
+					break;
+				}
 				/* Timeout */
 				case timeoutRow:
 				{

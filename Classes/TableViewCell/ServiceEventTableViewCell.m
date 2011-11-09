@@ -43,7 +43,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 											 selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												  fontSize:kServiceEventServiceSize
 													  bold:YES];
-		_serviceNameLabel.textAlignment = UITextAlignmentLeft; // default
 		[myContentView addSubview: _serviceNameLabel];
 
 		// label that might be used to display currently playing event
@@ -81,6 +80,21 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	}
 
 	return self;
+}
+
+- (void)theme
+{
+	_serviceNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_serviceNameLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_nowLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_nowLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_nowTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_nowTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_nextLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_nextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	_nextTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	_nextTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
 }
 
 - (void)prepareForReuse

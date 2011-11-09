@@ -72,6 +72,13 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	return self;
 }
 
+- (void)theme
+{
+	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+	[super theme];
+}
+
 - (void)prepareForReuse
 {
 	if([view superview] == self.contentView)

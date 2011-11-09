@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -16,7 +17,7 @@ extern NSString *kMainCell_ID;
 /*!
  @brief UITableViewCell optimized to display elements on MainViewController.
  */
-@interface MainTableViewCell : UITableViewCell
+@interface MainTableViewCell : BaseTableViewCell
 {
 @private
 	NSDictionary	*_dataDictionary; /*!< @brief Item. */
