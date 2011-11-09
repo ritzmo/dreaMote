@@ -199,16 +199,6 @@
 {
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	if(IS_IPAD())
-	{
-		contentView.backgroundColor = [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
-	}
-	else
-	{
-		contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
-	}
-
-	// setup our content view so that it auto-rotates along with the UViewController
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
@@ -294,7 +284,7 @@
 
 - (void)theme
 {
-	self.view.backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
+	self.view.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewBackgroundColor;
 	[super theme];
 }
 
