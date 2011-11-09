@@ -65,8 +65,6 @@ NSString *kCellTextField_ID = @"CellTextField_ID";
 		// turn off selection use
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 		self.textLabel.adjustsFontSizeToFitWidth = YES;
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		fixedWidth = -1;
 	}
 	return self;

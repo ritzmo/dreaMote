@@ -42,12 +42,6 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 	return self;
 }
 
-- (void)theme
-{
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	[super theme];
-}
-
 /* getter for timer property */
 - (AutoTimer *)timer
 {

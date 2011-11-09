@@ -39,8 +39,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kServiceEventServiceSize];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.textColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
 		// label that might be used to display currently playing event
 		_nowLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
@@ -81,8 +79,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 - (void)theme
 {
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_nowLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	_nowLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_nowTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;

@@ -40,8 +40,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kMultiEPGFontSize];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
 		// no accessory
 		self.accessoryType = UITableViewCellAccessoryNone;
@@ -56,8 +54,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 - (void)prepareForReuse
 {
 	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	self.service = nil;
 	self.events = nil;
 }

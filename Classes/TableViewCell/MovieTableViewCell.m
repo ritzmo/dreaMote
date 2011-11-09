@@ -28,8 +28,6 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kEventNameTextSize];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		
 		self.detailTextLabel.font = [UIFont systemFontOfSize:kEventDetailsTextSize];
 		self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
@@ -41,8 +39,6 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 - (void)theme
 {
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	[super theme];

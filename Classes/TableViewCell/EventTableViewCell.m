@@ -42,8 +42,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 		// A label that displays the Eventname.
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kEventNameTextSize];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		
 		// A label that displays the Eventtime.
 		_eventTimeLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
@@ -66,8 +64,6 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 - (void)theme
 {
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_eventTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	_eventTimeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_eventServiceLabel.textColor = [DreamoteConfiguration singleton].textColor;

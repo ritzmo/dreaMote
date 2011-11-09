@@ -34,20 +34,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-
 		loadPicon = YES;
 	}
 
 	return self;
-}
-
-- (void)theme
-{
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	[super theme];
 }
 
 - (void)prepareForReuse

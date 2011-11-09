@@ -19,8 +19,6 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])){
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		self.textLabel.backgroundColor = [UIColor clearColor];
 
 		indicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotSelected.png"]];
@@ -31,13 +29,6 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 		self.backgroundView.backgroundColor = [UIColor clearColor];
 	}
 	return self;
-}
-
-- (void)theme
-{
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	[super theme];
 }
 
 - (void)prepareForReuse

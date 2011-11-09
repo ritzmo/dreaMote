@@ -42,9 +42,8 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kTimerServiceTextSize];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 
+		self.detailTextLabel.backgroundColor = [UIColor clearColor];
 		self.detailTextLabel.font = [UIFont boldSystemFontOfSize:kTimerNameTextSize];
 		self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
 		self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
@@ -62,8 +61,6 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (void)theme
 {
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	_timerTimeLabel.textColor = [DreamoteConfiguration singleton].textColor;

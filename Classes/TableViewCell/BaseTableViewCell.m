@@ -19,7 +19,9 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		// ???
+		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
+		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+		self.textLabel.backgroundColor = [UIColor clearColor];
 	}
 	return self;
 }
@@ -33,8 +35,10 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 
 - (void)theme
 {
-	/*
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	self.textLabel.textColor = singleton.textColor;
+	self.textLabel.highlightedTextColor = singleton.highlightedTextColor;
+	/*
 	switch(singleton.currentTheme)
 	{
 		default:

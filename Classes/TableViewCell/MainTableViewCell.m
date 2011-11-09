@@ -27,8 +27,6 @@ NSString *kMainCell_ID = @"MainCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 		self.textLabel.backgroundColor = [UIColor clearColor];
-		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kMainTextSize];
 
 		self.detailTextLabel.backgroundColor = [UIColor clearColor];
@@ -43,8 +41,6 @@ NSString *kMainCell_ID = @"MainCell_ID";
 
 - (void)theme
 {
-	self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.textLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 	self.detailTextLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
 	self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedDetailsTextColor;
 	[super theme];
