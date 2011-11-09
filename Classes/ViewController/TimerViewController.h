@@ -112,6 +112,11 @@
  */
 @property (nonatomic, strong) NSObject<TimerViewDelegate> *delegate;
 
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
+
 @end
 
 

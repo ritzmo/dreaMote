@@ -40,6 +40,8 @@
 
 @implementation MessageViewController
 
+@synthesize tableView = _tableView;
+
 // the amount of vertical shift upwards keep the text field in view as the keyboard appears
 #define kOFFSET_FOR_KEYBOARD					90
 
@@ -106,17 +108,17 @@
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.sectionFooterHeight = 1;
-	tableView.sectionHeaderHeight = 1;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.sectionFooterHeight = 1;
+	_tableView.sectionHeaderHeight = 1;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	// Message
 	_messageTextField = [self allocTextField];
@@ -163,6 +165,7 @@
 	_captionTextField = nil;
 	_timeoutTextField = nil;
 	SafeDestroyButton(_sendButton);
+	_tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -193,9 +196,9 @@
 	const NSInteger type = _type;
 	const NSInteger timeout = [_timeoutTextField.text integerValue];
 
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath
-								animated: YES
-								scrollPosition: UITableViewScrollPositionNone];
+	[_tableView selectRowAtIndexPath:indexPath
+							animated:YES
+					  scrollPosition:UITableViewScrollPositionNone];
 
 	// XXX: we could also join these messages
 	if(message == nil || [message isEqualToString: @""])
@@ -232,7 +235,7 @@
 		[notification show];
 	}
 
-	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
+	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /* rotate with device */
@@ -303,25 +306,48 @@
 	{
 		case 0:
 		case 4:
-			return 34;
+			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 		case 1:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
-				return 34;
-			break;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageCaption])
+				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+			return 0;
 		case 2:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
-				return 34;
-			break;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageTimeout])
+				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+			return 0;
 		case 3:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
-				return 34;
-			break;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageType])
+				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+			return 0;
 		default:
-			break;
+			return 0;
 	}
-
-	return 0;
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	switch(section)
+	{
+		case 0:
+		case 4:
+			return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+		case 1:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageCaption])
+				return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+			return nil;
+		case 2:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageTimeout])
+				return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+			return nil;
+		case 3:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageType])
+				return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+			return nil;
+		default:
+			return nil;
+	}
+}
+
 
 // determine the adjustable height of a row. these are determined by the sections and if a
 // section is set to be hidden the row size is reduced to 0.
@@ -335,15 +361,15 @@
 		case 4:
 			return kUIRowHeight;
 		case 1:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageCaption])
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageCaption])
 				return kUIRowHeight;
 			break;
 		case 2:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageTimeout])
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageTimeout])
 				return kUIRowHeight;
 			break;
 		case 3:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMessageType])
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageType])
 				return kUIRowHeight;
 			break;
 		default:
@@ -550,7 +576,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) 
 												 name:UIKeyboardWillShowNotification object:self.view.window];
 
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 
 	[super viewWillAppear: animated];
 }

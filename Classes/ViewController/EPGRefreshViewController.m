@@ -552,6 +552,32 @@ enum generalSectionItems
 	return maxSection;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	switch(section)
+	{
+		case generalSection:
+		case serviceSection:
+		case bouquetSection:
+			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+		default:
+			return 0;
+	}
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	switch(section)
+	{
+		case generalSection:
+		case serviceSection:
+		case bouquetSection:
+			return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+		default:
+			return nil;
+	}
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	switch(section)

@@ -501,10 +501,8 @@
 			if([detailViewController isKindOfClass:[UINavigationController class]])
 				navController = (UINavigationController *)detailViewController;
 			else
-			{
 				navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
-				[[DreamoteConfiguration singleton] styleNavigationController:navController];
-			}
+			[[DreamoteConfiguration singleton] styleNavigationController:navController];
 			mgSplitViewController.detailViewController = navController;
 		}
 		else

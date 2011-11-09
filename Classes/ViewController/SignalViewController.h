@@ -20,6 +20,7 @@
 													SignalSourceDelegate>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	NSTimer *_timer; /*!< @brief NSTimer to refresh data. */
 	UISlider *_snr; /*!< @brief SNR % Slider. */
 	UISlider *_agc; /*!< @brief AGC % Slider. */
@@ -33,5 +34,10 @@
 	double sampleRate; /*!< @brief Sample rate for tone. */
 	double theta; /*!< @brief Current theta value for tone. */
 }
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end

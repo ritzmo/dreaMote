@@ -27,6 +27,7 @@
 													MBProgressHUDDelegate>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	UITextField *_remoteNameTextField; /*!< @brief Name Text Field. */
 	CellTextField *_remoteNameCell; /*!< @brief Name Cell. */
 	UITextField *_remoteAddressTextField; /*!< @brief  Text Field. */
@@ -93,5 +94,10 @@
  @brief Force user to save this entry.
  */
 @property (nonatomic) BOOL mustSave;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end

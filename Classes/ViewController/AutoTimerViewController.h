@@ -37,6 +37,7 @@
 	UIPopoverController *popoverController;
 	UIBarButtonItem *_cancelButtonItem;
 	UIBarButtonItem *_popoverButtonItem;
+	UITableView *_tableView;
 
 	AutoTimer *_timer; /*!< @brief Associated AutoTimer. */
 	BOOL _creatingNewTimer; /*!< @brief Are we creating a new timer? */
@@ -95,6 +96,11 @@
  @brief Delegate.
  */
 @property (nonatomic, unsafe_unretained) NSObject<AutoTimerViewDelegate> *delegate;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

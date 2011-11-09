@@ -19,6 +19,15 @@
 @interface ControlViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,
 													UIActionSheetDelegate,
 													VolumeSourceDelegate>
+{
+@private
+	UITableView *_tableView; /*!< @brief Table View. */
+}
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 /*!
  @brief Mute switch.

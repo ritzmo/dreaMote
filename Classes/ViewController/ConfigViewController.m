@@ -110,6 +110,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 @synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
 @synthesize progressHUD = progressHUD;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -165,8 +166,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 /* dealloc */
 - (void)dealloc
 {
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 
 	UnsetCellAndDelegate(_remoteNameCell);
 	UnsetCellAndDelegate(_remoteAddressCell);
@@ -200,7 +201,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		_advancedRemoteSwitch.on = [[con objectForKey:kAdvancedRemote] boolValue];
 
 		[self connectorSelected:[con objectForKey:kConnector]];
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 	}
 }
 
@@ -264,15 +265,15 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	// Connector
 	_connector = [[_connection objectForKey: kConnector] integerValue];
@@ -405,21 +406,21 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				// FIXME: ugly!
 				if(_connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || _connectionIndex != [RemoteConnectorObject getConnectedId])
 				{
-					const NSInteger numberOfRowsInSection = [(UITableView *)self.view numberOfRowsInSection:2];
-					const NSInteger newNumberOfRowsInSection = [self tableView:(UITableView *)self.view numberOfRowsInSection:2];
+					const NSInteger numberOfRowsInSection = [_tableView numberOfRowsInSection:2];
+					const NSInteger newNumberOfRowsInSection = [self tableView:_tableView numberOfRowsInSection:2];
 					if(numberOfRowsInSection != newNumberOfRowsInSection) // XXX: seen a weird crash because of this, handle it
 					{
 #if IS_DEBUG()
 						[NSException raise:@"numberOfRowsDidNotMatch" format:@"was %d, is now %d. _connector %d, kConnector %@", numberOfRowsInSection, newNumberOfRowsInSection, _connector, [[_connection objectForKey:kConnector] stringValue]];
 #endif
-						[(UITableView *)self.view reloadData];
+						[_tableView reloadData];
 					}
 					else
 					{
-						[(UITableView *)self.view beginUpdates];
-						[(UITableView *)self.view insertSections: [NSIndexSet indexSetWithIndex: 3]
-												withRowAnimation: UITableViewRowAnimationFade];
-						[(UITableView *)self.view endUpdates];
+						[_tableView beginUpdates];
+						[_tableView insertSections:[NSIndexSet indexSetWithIndex:3]
+												withRowAnimation:UITableViewRowAnimationFade];
+						[_tableView endUpdates];
 					}
 				}
 
@@ -454,7 +455,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		_nowNextSwitch.enabled = NO;
 		_sslSwitch.enabled = NO;
 
-		UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+		UITableViewCell *connectorCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 		if(connectorCell)
 			connectorCell.accessoryType = UITableViewCellAccessoryNone;
 	}
@@ -468,7 +469,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(cancelEdit:)];
 		[self.navigationItem setLeftBarButtonItem: cancelButtonItem animated: YES];
 
-		UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+		UITableViewCell *connectorCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 		if(connectorCell)
 			connectorCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
@@ -542,7 +543,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			}
 		}
 	}
-	NSInteger numberOfSections = [(UITableView *)self.view numberOfSections];
+	NSInteger numberOfSections = [_tableView numberOfSections];
 #if IS_DEBUG()
 	NSInteger curDefault = [[stdDefaults objectForKey:kActiveConnection] integerValue];
 #endif
@@ -550,17 +551,17 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	if(numberOfSections == 4)
 	{
-		[(UITableView *)self.view beginUpdates];
-		[(UITableView *)self.view deleteSections:[NSIndexSet indexSetWithIndex:3]
+		[_tableView beginUpdates];
+		[_tableView deleteSections:[NSIndexSet indexSetWithIndex:3]
 								withRowAnimation:UITableViewRowAnimationFade];
-		[(UITableView *)self.view endUpdates];
+		[_tableView endUpdates];
 	}
 	else if(numberOfSections != 3) // NOTE: we also expect "3" if this was fired multiple times
 	{
 #if IS_DEBUG()
 		[NSException raise:@"InvalidSectionCountOnMakeDefault" format:@"numberOfSections was %d, expected 4. kActiveConnection was %d, _connectionIndex is %d, connected was %d", numberOfSections, curDefault, _connectionIndex, connectedId];
 #else
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 #endif
 	}
 	
@@ -604,31 +605,29 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			}
 		}
 	}
-	const NSInteger numberOfRowsInSection = [(UITableView *)self.view numberOfRowsInSection:3];
+	const NSInteger numberOfRowsInSection = [_tableView numberOfRowsInSection:3];
 	const BOOL isDefault = (_connectionIndex == [stdDefaults integerForKey: kActiveConnection]);
 
 	if(isDefault && numberOfRowsInSection == 1)
 	{
-		[(UITableView *)self.view beginUpdates];
-		[(UITableView *)self.view deleteSections: [NSIndexSet indexSetWithIndex: 3]
-									withRowAnimation: UITableViewRowAnimationFade];
-		[(UITableView *)self.view endUpdates];
+		[_tableView beginUpdates];
+		[_tableView deleteSections:[NSIndexSet indexSetWithIndex:3]
+				  withRowAnimation:UITableViewRowAnimationFade];
+		[_tableView endUpdates];
 	}
 	else if(!isDefault && numberOfRowsInSection == 2)
 	{
-		[(UITableView *)self.view beginUpdates];
-		[(UITableView *)self.view
-				deleteRowsAtIndexPaths: [NSArray arrayWithObject:
-											[NSIndexPath indexPathForRow:0 inSection:3]]
-				withRowAnimation: UITableViewRowAnimationFade];
-		[(UITableView *)self.view endUpdates];
+		[_tableView beginUpdates];
+		[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:3]]
+						  withRowAnimation:UITableViewRowAnimationFade];
+		[_tableView endUpdates];
 	}
 	else
 	{
 #if IS_DEBUG()
 		[NSException raise:@"InvalidRowCountOnDoConnect" format:@"%@, numberOfRowsInSection %d", isDefault ? @"is default" : @"not default", numberOfRowsInSection];
 #else
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 #endif
 	}
 
@@ -660,7 +659,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	if(_connector == kInvalidConnector)
 	{
-		((UITableView *)self.view).userInteractionEnabled = NO;
+		_tableView.userInteractionEnabled = NO;
 
 		NSDictionary *tempConnection = [NSDictionary dictionaryWithObjectsAndKeys:
 								_remoteAddressTextField.text, kRemoteHost,
@@ -682,10 +681,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			_connector = oldConnector;
 		}
 
-		((UITableView *)self.view).userInteractionEnabled = YES;
+		_tableView.userInteractionEnabled = YES;
 	}
 
-	UITableViewCell *connectorCell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	UITableViewCell *connectorCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 	if(_connector == kEnigma1Connector)
 		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Enigma", @"");
 	else if(_connector == kEnigma2Connector)
@@ -699,7 +698,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	// update port placeholder
 	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 #pragma mark - UITableView delegates
@@ -717,6 +716,38 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		|| (_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] && _connectionIndex == [RemoteConnectorObject getConnectedId]))
 		return 3;
 	return 4;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	switch(section)
+	{
+		case 1:
+			if(_connector == kSVDRPConnector)
+				return 0;
+		case 0:
+		case 2:
+		case 3:
+			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+		default:
+			return 0;
+	}
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	switch(section)
+	{
+		case 1:
+			if(_connector == kSVDRPConnector)
+				return nil;
+		case 0:
+		case 2:
+		case 3:
+			return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+		default:
+			return nil;
+	}
 }
 
 /* title for sections */
@@ -1072,7 +1103,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 		if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 			scrollPosition = UITableViewScrollPositionTop;
-		[(UITableView *)self.view scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
+		[_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
 	}
 		
 }
@@ -1115,12 +1146,12 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	@autoreleasepool {
 
 		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview: progressHUD];
-    progressHUD.delegate = self;
-    [progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
-    [progressHUD setMode:MBProgressHUDModeIndeterminate];
-    [progressHUD show:YES];
-    progressHUD.taskInProgress = YES;
+		[self.view addSubview: progressHUD];
+		progressHUD.delegate = self;
+		[progressHUD setLabelText:NSLocalizedString(@"Searching…", @"Label of Progress HUD during AutoConfiguration")];
+		[progressHUD setMode:MBProgressHUDModeIndeterminate];
+		[progressHUD show:YES];
+		progressHUD.taskInProgress = YES;
 
 		NSArray *connections = [RemoteConnectorObject autodetectConnections];
 
@@ -1156,7 +1187,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				[self.navigationController pushViewController:tv animated:YES];
 			}
 		}
-
 	}
 }
 

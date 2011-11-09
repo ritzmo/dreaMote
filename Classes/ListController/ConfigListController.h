@@ -26,11 +26,17 @@
 													MBProgressHUDDelegate>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	NSMutableArray *_connections; /*!< @brief List of Connections. */
 	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
 	UISwitch *_simpleRemote; /*!< @brief "Use simple remote" UISwitch. */
 	UISwitch *_sepEventsByDay; /*!< @brief "Separate events by day" UISwitch. */
 	MBProgressHUD *progressHUD; /*!< @brief ProgressHUD if being shown. */
 }
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end

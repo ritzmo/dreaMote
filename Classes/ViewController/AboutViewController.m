@@ -102,6 +102,18 @@
 	return 3;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(_about == nil) return 0;
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	if(_about == nil) return nil;
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if(_about == nil) return nil;

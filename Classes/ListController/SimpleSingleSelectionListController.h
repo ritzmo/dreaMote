@@ -28,6 +28,7 @@ typedef BOOL (^simplesingleselection_callback_t)(NSUInteger newSelection, BOOL w
 {
 @private
 	NSArray *_items; /*!< @brief Items. */
+	UITableView *_tableView; /*!< @brief Table View. */
 }
 
 /*!
@@ -51,5 +52,10 @@ typedef BOOL (^simplesingleselection_callback_t)(NSUInteger newSelection, BOOL w
  @brief Selected Item.
  */
 @property (nonatomic) NSUInteger selectedItem;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end

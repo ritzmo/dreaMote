@@ -156,6 +156,7 @@
 						break;
 				}
 				headerView = gradientView;
+				headerLabel.frame = CGRectMake(10.0, 0.0, 300.0, 44.0);
 			}
 			else if(currentTheme == THEME_HIGHCONTRAST)
 			{
@@ -240,7 +241,7 @@
 		default:
 			return [UIColor whiteColor];
 		case THEME_HIGHCONTRAST:
-			return [UIColor darkGrayColor];
+			return [UIColor lightGrayColor];
 	}
 }
 

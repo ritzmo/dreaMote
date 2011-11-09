@@ -20,6 +20,7 @@
 													EditableTableViewCellDelegate>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	UITextField *_messageTextField; /*!< @brief Text Field. */
 	CellTextField *_messageCell; /*!< @brief Text Cell. */
 	UITextField *_captionTextField; /*!< @brief Caption Field. */
@@ -30,5 +31,11 @@
 	NSUInteger _type; /*!< @brief Selected message type. */
 	UITableViewCell __unsafe_unretained *_typeCell; /*!< @brief Cell with textual representation of message type. */
 }
+
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end

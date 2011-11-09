@@ -241,6 +241,16 @@ enum generalSectionItems
 #pragma mark UITableView delegates
 #pragma mark -
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	return NSLocalizedString(@"General", @"in timer settings dialog");

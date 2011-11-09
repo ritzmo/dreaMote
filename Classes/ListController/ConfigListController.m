@@ -82,6 +82,7 @@ enum settingsRows
 @implementation ConfigListController
 
 @synthesize progressHUD;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -103,8 +104,8 @@ enum settingsRows
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self stopObservingThemeChanges];
 
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 
 	progressHUD.delegate = nil;
 }
@@ -112,18 +113,18 @@ enum settingsRows
 /* layout */
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.allowsSelectionDuringEditing = YES;
-	//tableView.rowHeight = 48.0;
-	//tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.allowsSelectionDuringEditing = YES;
+	//_tableView.rowHeight = 48.0;
+	//_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	// RC Vibration
@@ -164,6 +165,7 @@ enum settingsRows
 	_vibrateInRC = nil;
 	_simpleRemote = nil;
 	_sepEventsByDay = nil;
+	_tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -181,22 +183,20 @@ enum settingsRows
 	{
 		if(editing)
 		{
-			[(UITableView*)self.view insertRowsAtIndexPaths: [NSArray arrayWithObject:
-											[NSIndexPath indexPathForRow:0 inSection:0]]
-							withRowAnimation: UITableViewRowAnimationFade];
+			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationFade];
 		}
 		else
 		{
-			[(UITableView*)self.view deleteRowsAtIndexPaths: [NSArray arrayWithObject:
-											[NSIndexPath indexPathForRow:0 inSection:0]]
-							withRowAnimation: UITableViewRowAnimationFade];
+			[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationFade];
 		}
 	}
 	else
 	{
-		[(UITableView*)self.view reloadData];
+		[_tableView reloadData];
 	}
-	[(UITableView*)self.view setEditing: editing animated: animated];
+	[_tableView setEditing: editing animated: animated];
 }
 
 - (void)simpleRemoteChanged:(id)sender
@@ -228,7 +228,7 @@ enum settingsRows
 	[_simpleRemote setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kPrefersSimpleRemote]];
 	[_sepEventsByDay setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay]];
 
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (void)productsFetched:(NSNotification *)note
@@ -247,7 +247,7 @@ enum settingsRows
 		--row;
 	NSIndexPath *idx = [NSIndexPath indexPathForRow:row inSection:settingsSection];
 
-	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
+	[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
@@ -260,7 +260,7 @@ enum settingsRows
 	if(IS_IPAD() && vibrationRow < historyLengthRow)
 		--row;
 	NSIndexPath *idx = [NSIndexPath indexPathForRow:row inSection:settingsSection];
-	[(UITableView *)self.view reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
+	[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:idx] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark	-
@@ -568,10 +568,10 @@ enum settingsRows
 		case purchaseSection:
 		case buttonSection:
 		case connectionSection:
-			cell = [UITableViewCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kVanilla_ID];
+			cell = [UITableViewCell reusableTableViewCellInView:_tableView withIdentifier:kVanilla_ID];
 			break;
 		case settingsSection:
-			cell = [DisplayCell reusableTableViewCellInView:(UITableView *)self.view withIdentifier:kDisplayCell_ID];
+			cell = [DisplayCell reusableTableViewCellInView:_tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).nameLabel.adjustsFontSizeToFitWidth = NO;
 			break;
 		default:
@@ -792,6 +792,20 @@ enum settingsRows
 	}
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(section == connectionSection || section == purchaseSection)
+		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+	return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	if(section == connectionSection || section == purchaseSection)
+		return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+	return 0;
+}
+
 /* section header */
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
@@ -879,10 +893,10 @@ enum settingsRows
 - (void)viewWillAppear:(BOOL)animated
 {
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
-	NSIndexPath *tableSelection = [(UITableView *)self.view indexPathForSelectedRow];
-	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view selectRowAtIndexPath:tableSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
-	[(UITableView *)self.view deselectRowAtIndexPath:tableSelection animated:YES];
+	NSIndexPath *tableSelection = [_tableView indexPathForSelectedRow];
+	[_tableView reloadData];
+	[_tableView selectRowAtIndexPath:tableSelection animated:NO scrollPosition:UITableViewScrollPositionNone];
+	[_tableView deselectRowAtIndexPath:tableSelection animated:YES];
 
 	// start bonjour search
 	[RemoteConnectorObject start];
@@ -895,7 +909,7 @@ enum settingsRows
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	// unset editing if not going into a subview
-	if(self.editing && [(UITableView *)self.view indexPathForSelectedRow] == nil)
+	if(self.editing && [_tableView indexPathForSelectedRow] == nil)
 		[self setEditing:NO animated:animated];
 
 	// end bonjour search

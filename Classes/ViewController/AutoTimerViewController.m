@@ -76,6 +76,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 @implementation AutoTimerViewController
 
 @synthesize delegate, popoverController;
+@synthesize tableView = _tableView;
 
 - (id)init
 {
@@ -254,8 +255,8 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 
-	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view
+	[_tableView reloadData];
+	[_tableView
 						scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
 						atScrollPosition:UITableViewScrollPositionTop
 						animated:NO];
@@ -369,7 +370,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	}
 
 	if(idxSet)
-		[(UITableView *)self.view reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -387,17 +388,17 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	self.navigationItem.leftBarButtonItem = _cancelButtonItem;
 
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
-	tableView.allowsSelectionDuringEditing = YES;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.allowsSelectionDuringEditing = YES;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	_titleField = [self newTitleField];
 	_matchField = [self newMatchField];
@@ -481,6 +482,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_titleCell = nil;
 	_matchCell = nil;
 	_maxdurationCell = nil;
+	_tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -613,7 +615,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	_shouldSave = editing;
 	[super setEditing: editing animated: animated];
-	[(UITableView *)self.view setEditing:editing animated:animated];
+	[_tableView setEditing:editing animated:animated];
 
 	[_titleCell setEditing:editing animated:animated];
 	[_matchCell setEditing:editing animated:animated];
@@ -629,7 +631,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_timespanSwitch.enabled = editing;
 	_maxdurationSwitch.enabled = editing;
 
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (void)cancelEdit:(id)sender
@@ -657,7 +659,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	_timer.from = newDate;
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timespanSection]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timespanSection]];
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 }
 
@@ -668,7 +670,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	_timer.to = newDate;
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timespanSection]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timespanSection]];
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 }
 
@@ -679,7 +681,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	_timer.before = newDate;
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timeframeSection]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:timeframeSection]];
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 }
 
@@ -690,7 +692,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	_timer.after = newDate;
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timeframeSection]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:timeframeSection]];
 	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 }
 
@@ -710,7 +712,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	// copy service for convenience reasons
 	[_timer.bouquets addObject:[newBouquet copy]];
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:bouquetSection] withRowAnimation:UITableViewRowAnimationFade];
+	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:bouquetSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -729,7 +731,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	// copy service for convenience reasons
 	[_timer.services addObject:[newService copy]];
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:servicesSection] withRowAnimation:UITableViewRowAnimationFade];
+	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:servicesSection] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark -
@@ -760,7 +762,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	_timer.afterEventAction = [newAfterEvent integerValue];
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aftereventSection]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aftereventSection]];
 	[self setAfterEventText:cell];
 }
 
@@ -788,7 +790,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				if([filter isEqualToString:newFilter]) return;
 			}
 			[filterTable[filterType][include] addObject:newFilter];
-			[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:sectionTable[filterType]] withRowAnimation:UITableViewRowAnimationFade];
+			[_tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionTable[filterType]] withRowAnimation:UITableViewRowAnimationFade];
 		}
 		if(isIpad)
 			[self dismissModalViewControllerAnimated:YES];
@@ -804,6 +806,16 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return maxSection;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -1552,7 +1564,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		scrollPosition = UITableViewScrollPositionTop;
-	[(UITableView *)self.view scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
+	[_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:scrollPosition animated:YES];
 }
 
 #pragma mark -

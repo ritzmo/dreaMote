@@ -63,6 +63,7 @@
 @implementation ControlViewController
 
 @synthesize switchControl, slider;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -79,8 +80,8 @@
 {
 	[self stopObservingThemeChanges];
 
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 
 	SafeDestroyButton(slider);
 	SafeDestroyButton(switchControl);
@@ -96,16 +97,16 @@
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	// Volume
 	slider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 280, kSliderHeight)];
@@ -140,6 +141,7 @@
 	[self stopObservingThemeChanges];
 	SafeDestroyButton(slider);
 	SafeDestroyButton(switchControl);
+	_tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -160,7 +162,7 @@
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	((UIButton *)sender).enabled = NO;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow: 0 inSection: 1];
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath animated: YES scrollPosition: UITableViewScrollPositionNone];
+	[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 #if IS_DEBUG()
 	if(![sharedRemoteConnector respondsToSelector:@selector(instantRecord)])
 	{
@@ -168,7 +170,7 @@
 	}
 #endif
 	Result *result = ([sharedRemoteConnector respondsToSelector:@selector(instantRecord)]) ? [sharedRemoteConnector instantRecord] : nil;
-	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
+	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	if(!result.result)
 	{
@@ -191,9 +193,9 @@
 		((UIButton *)sender).enabled = NO;
 		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
-		[(UITableView *)self.view selectRowAtIndexPath: indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 		[[RemoteConnectorObject sharedRemoteConnector] standby];
-		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -206,8 +208,8 @@
 		((UIButton *)sender).enabled = NO;
 		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:section];
-		[(UITableView *)self.view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"reboot", "used in confirmation dialog: really reboot?")]
 																	   delegate:self
@@ -228,8 +230,8 @@
 		((UIButton *)sender).enabled = NO;
 		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:2 inSection:section];
-		[(UITableView *)self.view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"restart", "used in confirmation dialog: really restart?")]
 																	   delegate:self
@@ -251,8 +253,8 @@
 		const NSInteger section = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesInstantRecord] ? 2 : 1;
 		const NSInteger row = [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesGUIRestart] ? 3: 2;
 		NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-		[(UITableView *)self.view selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-		[(UITableView *)self.view deselectRowAtIndexPath:indexPath animated:YES];
+		[_tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+		[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		const UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Really %@?", @"Confirmation dialog title"), NSLocalizedString(@"shutdown", "used in confirmation dialog: really shutdown?")]
 																	   delegate:self
@@ -340,6 +342,16 @@
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesInstantRecord])
 		return 3;
 	return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 }
 
 /* section titles */
@@ -443,7 +455,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	slider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchVolume)];
 

@@ -82,6 +82,7 @@ enum timerSections
 @synthesize event = _event;
 @synthesize oldTimer = _oldTimer;
 @synthesize popoverController;
+@synthesize tableView = _tableView;
 
 - (id)init
 {
@@ -376,11 +377,11 @@ enum timerSections
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kUIRowHeight;
-
-	// setup our content view so that it auto-rotates along with the UViewController
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
+
 	self.view = _tableView;
 
 	_timerTitle = [self newTitleField];
@@ -677,21 +678,18 @@ enum timerSections
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-#ifndef defaultSectionHeaderHeight
-#define defaultSectionHeaderHeight 34
-#endif
 	switch(section)
 	{
 		case sectionTitle:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
-				return defaultSectionHeaderHeight;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerTitle])
+				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 			return 0;
 		case sectionDescription:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
-				return defaultSectionHeaderHeight;
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerDescription])
+				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 			return 0;
 		default:
-			return defaultSectionHeaderHeight;
+			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 	}
 }
 
@@ -706,6 +704,23 @@ enum timerSections
 	if(![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
 		--sections;
 	return sections;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	switch(section)
+	{
+		case sectionTitle:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
+				return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+			return nil;
+		case sectionDescription:
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerDescription])
+				return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+			return nil;
+		default:
+			return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

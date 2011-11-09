@@ -106,6 +106,8 @@ OSStatus RenderTone(
 
 @implementation SignalViewController
 
+@synthesize tableView = _tableView;
+
 - (id)init
 {
 	if((self = [super init]))
@@ -118,8 +120,8 @@ OSStatus RenderTone(
 - (void)dealloc
 {
 	[self stopObservingThemeChanges];
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 
 	[_timer invalidate];
 	_timer = nil;
@@ -215,16 +217,16 @@ OSStatus RenderTone(
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	// SNR
 	_snr = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, 240, kSliderHeight)];
@@ -280,6 +282,7 @@ OSStatus RenderTone(
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
+	_tableView = nil;
 	_snr = nil;
 	_agc = nil;
 	_audioToggle = nil;
@@ -361,7 +364,7 @@ OSStatus RenderTone(
 {
 	_refreshInterval = (double)(int)_interval.value;
 	[[NSUserDefaults standardUserDefaults] setDouble:_refreshInterval forKey:kSatFinderInterval];
-	[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
+	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
 
 	// start new timer
 	[self startTimer];
@@ -369,7 +372,7 @@ OSStatus RenderTone(
 
 - (void)intervalChanged:(id)sender
 {
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 	cell.textLabel.text = [self getIntervalTitle:(double)(int)_interval.value];
 }
 
@@ -401,6 +404,20 @@ OSStatus RenderTone(
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return 4;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(section == 3)
+		return 0;
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	if(section == 3)
+		return nil;
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -512,7 +529,7 @@ OSStatus RenderTone(
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	// NOTE: no reason for this reload
-	//[(UITableView *)self.view reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+	//[_tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 
 	if(_refreshInterval <= 0)
 		[self fetchSignalDefer];
@@ -536,13 +553,13 @@ OSStatus RenderTone(
 	// there is a weird glitch that prevents the second row from being shown unless we do a full reload, so do it here
 	// while we still know that we need to do one.
 	if(oldSnrdB != _hasSnrdB)
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 
-	UITableViewCell *cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
 	if(_hasSnrdB)
 	{
 		cell.textLabel.text = [NSString stringWithFormat: @"SNR %.2f dB", signal.snrdb];
-		cell = [(UITableView *)self.view cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
+		cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
 	}
 	cell.textLabel.text = [NSString stringWithFormat: @"%i BER", signal.ber];
 
