@@ -232,6 +232,16 @@
 	return 3;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	switch (section)

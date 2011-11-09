@@ -34,4 +34,6 @@
  */
 @property (nonatomic, strong) FileListView *playlist;
 
+@property (nonatomic, readonly) UITableView *tableView;
+
 @end

@@ -17,6 +17,8 @@
 
 @interface DreamoteConfiguration()
 - (void)styleNavigationBar:(UINavigationBar *)navigationBar;
+@property (nonatomic, readonly) UIColor *sectionLabelColor;
+@property (nonatomic, readonly) UIColor *sectionLabelShadowColor;
 @end
 
 @implementation DreamoteConfiguration
@@ -131,30 +133,41 @@
 		NSString *text = [tableView.dataSource tableView:tableView titleForHeaderInSection:section];
 		if(text)
 		{
-			// NOTE: we might want to use an image for this, it annoys me when the gradient turns translucent (which an image won't :D)
-			GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
-			switch(currentTheme)
-			{
-				default:
-					[gradientView gradientFrom:[UIColor colorWithRed:1 green:0 blue:0 alpha:.75] to:[UIColor colorWithRed:1 green:0 blue:0 alpha:.46]];
-					break;
-				case THEME_HIGHCONTRAST:
-					[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
-					gradientView.centerGradient = YES;
-					break;
-			}
-
-			UILabel *headerLabel = [[UILabel alloc] initWithFrame:gradientView.frame];
+			UIView *headerView = nil;
+			UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 			headerLabel.backgroundColor = [UIColor clearColor];
 			headerLabel.opaque = NO;
-			headerLabel.textColor = self.highlightedTextColor; // NOTE: inverted on purpose
-			headerLabel.highlightedTextColor = self.textColor;
-			headerLabel.font = [UIFont boldSystemFontOfSize:20]; // TODO: find a better & free font :D
+			headerLabel.textColor = self.sectionLabelColor;
+			headerLabel.font = [UIFont fontWithName:@"Helvetica" size:20]; // TODO: find a better & free font :D
 			headerLabel.text = text;
 
-			[gradientView addSubview:headerLabel];
+			if(tableView.style == UITableViewStylePlain)
+			{
+				// NOTE: we might want to use an image for this, it annoys me when the gradient turns translucent (which an image won't :D)
+				GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				switch(currentTheme)
+				{
+					default:
+						[gradientView gradientFrom:[UIColor colorWithRed:1 green:0 blue:0 alpha:.75] to:[UIColor colorWithRed:1 green:0 blue:0 alpha:.46]];
+						break;
+					case THEME_HIGHCONTRAST:
+						[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
+						gradientView.centerGradient = YES;
+						break;
+				}
+				headerView = gradientView;
+			}
+			else if(currentTheme == THEME_HIGHCONTRAST)
+			{
+				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				headerView.backgroundColor = [UIColor clearColor];
+				headerLabel.frame = CGRectMake(30.0, 0.0, 260.0, 44.0);
+				headerLabel.shadowColor = self.sectionLabelShadowColor;
+				headerLabel.shadowOffset = CGSizeMake(0,2);
+			}
+			[headerView addSubview:headerLabel];
 
-			return gradientView;
+			return headerView;
 		}
 	}
 	return nil;
@@ -218,6 +231,22 @@
 		case THEME_HIGHCONTRAST:
 			return [UIColor darkGrayColor];
 	}
+}
+
+- (UIColor *)sectionLabelColor
+{
+	switch(currentTheme)
+	{
+		default:
+			return [UIColor whiteColor];
+		case THEME_HIGHCONTRAST:
+			return [UIColor darkGrayColor];
+	}
+}
+
+- (UIColor *)sectionLabelShadowColor
+{
+	return [UIColor grayColor];
 }
 
 - (CGFloat)textFieldHeight

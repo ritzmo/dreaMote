@@ -783,6 +783,13 @@ enum mediaPlayerTags
 	[super viewDidUnload];
 }
 
+- (void)theme
+{
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	self.view.backgroundColor = [singleton backgroundColor];
+	[super theme];
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing:editing animated:animated];

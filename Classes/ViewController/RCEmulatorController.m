@@ -84,6 +84,7 @@
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	[_queue cancelAllOperations];
 }
 
@@ -265,8 +266,15 @@
 	_queue = [[NSOperationQueue alloc] init];
 }
 
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
 - (void)viewDidUnload
 {
+	[self stopObservingThemeChanges];
 	toolbar = nil;
 	rcView = nil;
 
@@ -282,6 +290,12 @@
 	_queue = nil;
 
 	[super viewDidUnload];
+}
+
+- (void)theme
+{
+	self.view.backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
+	[super theme];
 }
 
 - (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode

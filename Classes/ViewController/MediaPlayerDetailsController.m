@@ -22,6 +22,8 @@
 
 @implementation MediaPlayerDetailsController
 
+@synthesize tableView = _tableView;
+
 /* dealloc */
 - (void)dealloc
 {
@@ -75,6 +77,11 @@
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
+	if(IS_IPAD())
+	{
+		_tableView.backgroundView = [[UIView alloc] init];
+	}
 
 	[self.view addSubview: _tableView];
 
@@ -188,13 +195,24 @@
 	return 2;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	if(!_currentTrack.valid && section == 0)
+		return 0;
+	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	switch(section)
 	{
 		case 0:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
-				&& _currentTrack.valid)
+			if(_currentTrack.valid)
 				return NSLocalizedString(@"Now Playing", @"");
 			return nil;
 		case 1:
@@ -209,8 +227,7 @@
 	switch(section)
 	{
 		case 0:
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMediaPlayerMetadata]
-				&& _currentTrack.valid)
+			if(_currentTrack.valid)
 				return 1;
 			return 0;
 		case 1:

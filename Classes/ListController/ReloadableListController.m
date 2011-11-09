@@ -80,6 +80,12 @@
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
+	// on the ipad we need a dummy background view to be able to render the background
+	if(IS_IPAD())
+	{
+		[_tableView setBackgroundView:[[UIView alloc] init]];
+	}
+
 #if INCLUDE_FEATURE(Ads)
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
 	contentView.autoresizesSubviews = YES;

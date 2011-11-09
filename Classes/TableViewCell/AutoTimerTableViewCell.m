@@ -39,7 +39,7 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		_timerNameLabel = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+		_timerNameLabel = [self newLabelWithPrimaryColor:nil
 										   selectedColor:[DreamoteConfiguration singleton].highlightedTextColor
 												fontSize:kAutoTimerNameTextSize
 													bold:YES];
@@ -64,9 +64,9 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 
 	_timerNameLabel.text = newTimer.name;
 	if(newTimer.enabled)
-		_timerNameLabel.textColor = [UIColor blackColor];
+		_timerNameLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	else
-		_timerNameLabel.textColor = [UIColor grayColor];
+		_timerNameLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
 
 	// Redraw
 	[self setNeedsDisplay];
