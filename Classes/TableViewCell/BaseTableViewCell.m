@@ -8,7 +8,8 @@
 
 #import "BaseTableViewCell.h"
 
-#import "DreamoteConfiguration.h"
+#import <Configuration/DreamoteConfiguration.h>
+#import <View/ColoredAccessoryView.h>
 
 NSString *kBaseCell_ID = @"BaseCell_ID";
 
@@ -25,6 +26,7 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 
 - (void)prepareForReuse
 {
+	self.accessoryType = self.accessoryType;
 	[self theme];
 	[super prepareForReuse];
 }
@@ -44,6 +46,19 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 			break;
 	}
 	*/
+}
+
+- (void)setAccessoryType:(UITableViewCellAccessoryType)accessoryType
+{
+	[super setAccessoryType:accessoryType];
+	if(accessoryType == UITableViewCellAccessoryDisclosureIndicator && [DreamoteConfiguration singleton].currentTheme == THEME_HIGHCONTRAST)
+	{
+		ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:[DreamoteConfiguration singleton].detailsTextColor
+															 andHighlightedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor];
+		self.accessoryView = cav;
+	}
+	else
+		self.accessoryView = nil;
 }
 
 @end
