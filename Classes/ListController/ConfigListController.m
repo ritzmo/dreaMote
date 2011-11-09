@@ -417,46 +417,39 @@ enum settingsRows
 	}
 	else if(indexPath.section == settingsSection)
 	{
+		const BOOL isIpad = IS_IPAD();
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+		UIViewController *targetViewController = nil;
 
 		if(cell.tag == kTimeoutRowTag)
 		{
 			TimeoutSelectionViewController *vc = [TimeoutSelectionViewController withTimeout:kTimeout];
 			vc.delegate = self;
-			if(IS_IPAD())
+			if(isIpad)
 			{
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-
-				[self.navigationController presentModalViewController:navController animated:YES];
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
 			}
 			else
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
+				targetViewController = vc;
 		}
 		else if(cell.tag == kHistoryLengthRowTag)
 		{
 			SearchHistoryLengthEditorController *vc = [SearchHistoryLengthEditorController withLength:[[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength]];
 			vc.delegate = self;
-			if(IS_IPAD())
+			if(isIpad)
 			{
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-
-				[self.navigationController presentModalViewController:navController animated:YES];
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
 			}
 			else
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
+				targetViewController = vc;
 		}
 #if IS_FULL()
 		else if(cell.tag == kMultiEPGRowTag)
 		{
-			const BOOL isIpad = IS_IPAD();
 			NSNumber *timeInterval = [[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval];
 			NSInteger selection = (([timeInterval integerValue] / 60) / 30) - 1;
 			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
@@ -488,16 +481,20 @@ enum settingsRows
 
 			if(isIpad)
 			{
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-
-				[self.navigationController presentModalViewController:navController animated:YES];
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
 			}
 			else
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
+				targetViewController = vc;
+		}
+
+		if(targetViewController)
+		{
+			if(isIpad)
+				[self presentModalViewController:targetViewController animated:YES];
+			else
+				[self.navigationController pushViewController:targetViewController animated:YES];
 		}
 #endif
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
