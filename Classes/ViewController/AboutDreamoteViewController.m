@@ -118,7 +118,7 @@
 		default:
 			html = [html stringByReplacingOccurrencesOfString:@"@CSS" withString:@""];
 			break;
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			html = [html stringByReplacingOccurrencesOfString:@"@CSS" withString:@"a:visited,a{color:darkgray}body,li,ul,div{color:gray}"];
 			break;
 	}

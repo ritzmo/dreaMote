@@ -12,7 +12,7 @@
 typedef enum {
 	THEME_DEFAULT = 0,
 	THEME_BLUE,
-	THEME_HIGHCONTRAST,
+	THEME_NIGHT,
 	THEME_MAX,
 } themeType;
 
@@ -21,6 +21,7 @@ typedef enum {
 + (DreamoteConfiguration *)singleton;
 
 - (void)styleNavigationController:(UINavigationController *)navigationController;
+- (void)styleTabBar:(UITabBar *)tabBar;
 - (void)styleToolbar:(UIToolbar *)toolbar;
 - (void)styleSearchBar:(UISearchBar *)searchBar;
 - (void)styleTableView:(UITableView *)tableView;

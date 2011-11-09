@@ -42,7 +42,7 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 			break;
 		case THEME_BLUE:
 			break;
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			break;
 	}
 	*/
@@ -51,7 +51,7 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 - (void)setAccessoryType:(UITableViewCellAccessoryType)accessoryType
 {
 	[super setAccessoryType:accessoryType];
-	if(accessoryType == UITableViewCellAccessoryDisclosureIndicator && [DreamoteConfiguration singleton].currentTheme == THEME_HIGHCONTRAST)
+	if(accessoryType == UITableViewCellAccessoryDisclosureIndicator && [DreamoteConfiguration singleton].currentTheme == THEME_NIGHT)
 	{
 		ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:[DreamoteConfiguration singleton].detailsTextColor
 															 andHighlightedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor];

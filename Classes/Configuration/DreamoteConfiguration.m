@@ -63,12 +63,35 @@
 				navigationBar.titleTextAttributes = nil;
 			navigationBar.tintColor = [UIColor darkBlueColor];
 			break;
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			if(isIos5)
 				navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[self textColor], UITextAttributeTextColor, nil];
 			navigationBar.barStyle = UIBarStyleBlack;
 			navigationBar.tintColor = nil;
 			break;
+	}
+}
+
+- (void)styleTabBar:(UITabBar *)tabBar
+{
+	const BOOL isIos5 = [UIDevice newerThanIos:5.0f];
+	if(isIos5)
+	{
+		switch(currentTheme)
+		{
+			default:
+				tabBar.tintColor = nil;
+				tabBar.selectedImageTintColor = nil;
+				break;
+			case THEME_BLUE:
+				tabBar.tintColor = [UIColor darkBlueColor];
+				tabBar.selectedImageTintColor = [UIColor colorWithRed:.9 green:.2 blue:.15 alpha:.5]; // TODO: decide if I like this color :D
+				break;
+			case THEME_NIGHT:
+				tabBar.tintColor = [UIColor blackColor];
+				tabBar.selectedImageTintColor = [UIColor darkGrayColor];
+				break;
+		}
 	}
 }
 
@@ -84,7 +107,7 @@
 		case THEME_BLUE:
 			toolbar.tintColor = [UIColor darkBlueColor];
 			break;
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			toolbar.barStyle = UIBarStyleBlack;
 			toolbar.tintColor = nil;
 			break;
@@ -104,7 +127,7 @@
 			searchBar.barStyle = UIBarStyleBlack;
 			searchBar.tintColor = [UIColor darkBlueColor];
 			break;
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			// TODO: improve
 			searchBar.barStyle = UIBarStyleBlack;
 			searchBar.tintColor = nil;
@@ -155,7 +178,7 @@
 					default:
 						[gradientView gradientFrom:[UIColor colorWithRed:1 green:0 blue:0 alpha:.75] to:[UIColor colorWithRed:1 green:0 blue:0 alpha:.46]];
 						break;
-					case THEME_HIGHCONTRAST:
+					case THEME_NIGHT:
 						[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
 						gradientView.centerGradient = YES;
 						break;
@@ -163,7 +186,7 @@
 				headerView = gradientView;
 				headerLabel.frame = CGRectMake(10.0, 0.0, 300.0, 44.0);
 			}
-			else if(currentTheme == THEME_HIGHCONTRAST)
+			else if(currentTheme == THEME_NIGHT)
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
@@ -197,7 +220,7 @@
 			return nil;
 		case THEME_BLUE:
 			return [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:0.9];
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			return [UIColor blackColor];
 	}
 }
@@ -215,7 +238,7 @@
 	{
 		default:
 			return [UIColor blackColor];
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			return [UIColor grayColor];
 	}
 }
@@ -226,7 +249,7 @@
 	{
 		default:
 			return [UIColor whiteColor];
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			return [UIColor grayColor];
 	}
 }
@@ -237,7 +260,7 @@
 	{
 		default:
 			return [UIColor grayColor];
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			return [UIColor darkGrayColor];
 	}
 }
@@ -248,7 +271,7 @@
 	{
 		default:
 			return [UIColor whiteColor];
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			return [UIColor darkGrayColor];
 	}
 }
@@ -259,7 +282,7 @@
 	{
 		default:
 			return [UIColor whiteColor];
-		case THEME_HIGHCONTRAST:
+		case THEME_NIGHT:
 			return [UIColor lightGrayColor];
 	}
 }

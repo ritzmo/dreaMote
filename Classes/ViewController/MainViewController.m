@@ -47,6 +47,7 @@
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.delegate = nil;
 }
@@ -119,8 +120,23 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
+}
 
-	//[self theme];
+- (void)theme
+{
+	[[DreamoteConfiguration singleton] styleTabBar:self.tabBar];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	[super viewDidUnload];
 }
 
 #pragma mark -
