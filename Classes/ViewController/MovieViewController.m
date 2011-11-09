@@ -286,6 +286,31 @@
 	return 7;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	if(section == 0)
+		return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
+	{
+		switch(section)
+		{
+			case 1:
+				if(![_movie.sname length])
+					return nil;
+				break;
+			case 5:
+				if([_movie.length integerValue] == -1)
+					return nil;
+				break;
+			default: break;
+		}
+		return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+	}
+
+	return nil;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	// First section is always present
@@ -396,7 +421,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if(section == 0)
-		return 34;
+		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesExtendedRecordInfo])
 	{
@@ -412,7 +437,7 @@
 				break;
 			default: break;
 		}
-		return 34;
+		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 	}
 
 	return 0;

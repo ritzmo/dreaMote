@@ -368,6 +368,32 @@
 	return sections;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+	NSInteger fakeSection = section;
+	if(fakeSection > 2 && !_isSearch)
+		++fakeSection;
+	if(fakeSection > 3 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+		++fakeSection;
+
+	if(fakeSection < 5)
+		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+	return 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+	NSInteger fakeSection = section;
+	if(fakeSection > 2 && !_isSearch)
+		++fakeSection;
+	if(fakeSection > 3 && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearchSimilar])
+		++fakeSection;
+
+	if(fakeSection < 5)
+		return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
+	return nil;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
 	if(section > 2 && !_isSearch)
