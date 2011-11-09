@@ -21,6 +21,8 @@
 	UILabel *fourthTime; /*!< @brief Fourth label with time. */
 }
 
+- (void)theme;
+
 /*!
  @brief Begin of current timeframe.
  */

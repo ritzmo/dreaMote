@@ -40,9 +40,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kMultiEPGFontSize];
-
-		// no accessory
 		self.accessoryType = UITableViewCellAccessoryNone;
+		self.backgroundColor = [UIColor clearColor];
 		
 		_lines = [[NSMutableArray alloc] init];
 		_secondsSinceBegin = -1;
@@ -162,7 +161,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / multiEpgInterval;
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
-	CGContextSetRGBFillColor(ctx, 0.0f, 1.0f, 0.0f, 0.5f);
+	[[DreamoteConfiguration singleton].multiEpgFillColor setFill];
 	CGContextSetLineWidth(ctx, 0.25f);
 	const CGFloat xPosNow = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
 	CGFloat rectX = NSNotFound, rectW = NSNotFound;

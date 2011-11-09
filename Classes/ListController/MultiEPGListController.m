@@ -87,6 +87,14 @@
 	[contentView addSubview:_headerView];
 
 	[self configureToolbar];
+	[self theme];
+}
+
+- (void)theme
+{
+	[_headerView theme];
+	self.view.backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
+	[super theme];
 }
 
 - (void)viewDidUnload

@@ -32,23 +32,23 @@
 	{
 		self.opaque = NO;
 
-		firstTime = [self newLabelWithPrimaryColor:[UIColor blackColor]
-									 selectedColor:[UIColor whiteColor]
+		firstTime = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:nil
 										  fontSize:kMultiEPGFontSize
 											  bold:YES];
 
-		secondTime = [self newLabelWithPrimaryColor:[UIColor blackColor]
-									 selectedColor:[UIColor whiteColor]
+		secondTime = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:nil
 										  fontSize:kMultiEPGFontSize
 											  bold:YES];
 
-		thirdTime = [self newLabelWithPrimaryColor:[UIColor blackColor]
-									 selectedColor:[UIColor whiteColor]
+		thirdTime = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:nil
 										  fontSize:kMultiEPGFontSize
 											  bold:YES];		
 
-		fourthTime = [self newLabelWithPrimaryColor:[UIColor blackColor]
-									 selectedColor:[UIColor whiteColor]
+		fourthTime = [self newLabelWithPrimaryColor:[DreamoteConfiguration singleton].textColor
+									 selectedColor:nil
 										  fontSize:kMultiEPGFontSize
 											  bold:YES];
 
@@ -67,6 +67,15 @@
 	}
 
 	return self;
+}
+
+- (void)theme
+{
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	firstTime.textColor = singleton.textColor;
+	secondTime.textColor = singleton.textColor;
+	thirdTime.textColor = singleton.textColor;
+	fourthTime.textColor = singleton.textColor;
 }
 
 - (void)setFrame:(CGRect)frame

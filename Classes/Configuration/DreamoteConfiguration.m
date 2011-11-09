@@ -276,6 +276,17 @@
 	}
 }
 
+- (UIColor *)multiEpgFillColor
+{
+	switch (currentTheme)
+	{
+		default:
+			return [UIColor greenColor];
+		case THEME_NIGHT:
+			return [UIColor lightGrayColor];
+	}
+}
+
 - (UIColor *)sectionLabelColor
 {
 	switch(currentTheme)

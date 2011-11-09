@@ -35,6 +35,7 @@ typedef enum {
 @property (nonatomic, readonly) UIColor *highlightedTextColor;
 @property (nonatomic, readonly) UIColor *detailsTextColor;
 @property (nonatomic, readonly) UIColor *highlightedDetailsTextColor;
+@property (nonatomic, readonly) UIColor *multiEpgFillColor;
 @property (nonatomic, readonly) CGFloat textFieldHeight;
 @property (nonatomic, readonly) CGFloat textViewHeight;
 @property (nonatomic, readonly) CGFloat textFieldFontSize;
