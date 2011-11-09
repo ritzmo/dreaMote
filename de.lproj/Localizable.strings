@@ -72,7 +72,7 @@
 
 /* About Button Text
    Title of AboutDreamoteViewController */
-"About" = "Über dreaMote";
+"About" = "Über";
 
 /* Title of About Receiver in Other List
    Title of AboutViewController */
