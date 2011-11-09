@@ -10,6 +10,13 @@
 
 @implementation DreamoteIpadConfiguration
 
+- (UIColor *)groupedTableViewBackgroundColor
+{
+	if(self.currentTheme == THEME_DEFAULT)
+		return [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
+	return self.backgroundColor;
+}
+
 - (CGFloat)textFieldHeight
 {
 	return 35;

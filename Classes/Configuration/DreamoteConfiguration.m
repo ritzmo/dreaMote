@@ -114,8 +114,11 @@
 
 - (void)styleTableView:(UITableView *)tableView
 {
-	tableView.backgroundColor = self.backgroundColor;
+	tableView.backgroundColor = (tableView.style == UITableViewStyleGrouped) ? self.groupedTableViewBackgroundColor : self.backgroundColor;
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	[tableView reloadData]; // force reload so the cells apply the new theme
+	if(indexPath)
+		[tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -191,12 +194,19 @@
 	{
 		default:
 		case THEME_DEFAULT:
-			return [UIColor lightGrayColor];
+			return nil;
 		case THEME_BLUE:
 			return [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:0.9];
 		case THEME_HIGHCONTRAST:
 			return [UIColor blackColor];
 	}
+}
+
+- (UIColor *)groupedTableViewBackgroundColor
+{
+	if(currentTheme == THEME_DEFAULT)
+		return [UIColor groupTableViewBackgroundColor];
+	return self.backgroundColor;
 }
 
 - (UIColor *)textColor

@@ -29,6 +29,7 @@ typedef enum {
 
 @property (nonatomic) themeType currentTheme;
 @property (nonatomic, readonly) UIColor *backgroundColor;
+@property (nonatomic, readonly) UIColor *groupedTableViewBackgroundColor;
 @property (nonatomic, readonly) UIColor *textColor;
 @property (nonatomic, readonly) UIColor *highlightedTextColor;
 @property (nonatomic, readonly) UIColor *detailsTextColor;
