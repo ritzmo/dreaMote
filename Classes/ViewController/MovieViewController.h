@@ -31,6 +31,7 @@
 	UIPopoverController *popoverController; /*!< @brief Popover controller. */
 	NSObject<MovieProtocol> *_movie; /*!< @brief Movie. */
 	UITextView *_summaryView; /*!< @brief Summary of the movie. */
+	UITableView *_tableView; /*!< @brief Table View. */
 }
 
 /*!
@@ -52,4 +53,10 @@
  @brief Movie List.
  */
 @property (nonatomic, strong) MovieListController *movieList;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
+
 @end

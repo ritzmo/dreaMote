@@ -11,9 +11,12 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "BaseTableViewCell.h"
+
 @implementation SearchHistoryListController
 
 @synthesize historyDelegate = _historyDelegate;
+@synthesize tableView = _tableView;
 
 - (id)init
 {
@@ -26,8 +29,7 @@
 		if(_history == nil) // no history yet
 			_history = [[NSMutableArray alloc] init];
 
-		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
-			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 450.0f);
+		self.contentSizeForViewInPopover = CGSizeMake(370.0f, 450.0f);
     }
     return self;
 }
@@ -39,18 +41,25 @@
 
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = 38;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	
-	self.view = tableView;
-	
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = 38;
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.sectionHeaderHeight = 0;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_tableView.backgroundView = [[UIView alloc] init];
+
+	self.view = _tableView;
+
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	[self theme];
+}
+
+- (void)theme
+{
+	UIColor *color = [DreamoteConfiguration singleton].backgroundColor;
+	_tableView.backgroundView.backgroundColor =  color ? color : [UIColor whiteColor];
 }
 
 - (void)viewDidLoad
@@ -62,6 +71,7 @@
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
+	_tableView = nil;
 	[super viewDidUnload];
 }
 
@@ -71,7 +81,7 @@
 		[self saveHistory];
 
 	[super setEditing:editing animated:animated];
-	[(UITableView *)self.view setEditing:editing animated:animated];
+	[_tableView setEditing:editing animated:animated];
 }
 
 - (void)prepend:(NSString *)new
@@ -90,7 +100,7 @@
 	[_history insertObject:new atIndex:0];
 
 	// reload data
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (void)saveHistory
@@ -106,10 +116,10 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	TABLEVIEWCELL_TEXT(cell) = [_history objectAtIndex:indexPath.row];
+	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+	cell.textLabel.text = [_history objectAtIndex:indexPath.row];
 	return cell;
 }
 

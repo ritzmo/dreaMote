@@ -10,9 +10,11 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "UITableViewCell+EasyInit.h"
 
+#import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
+
+#import "BaseTableViewCell.h"
 
 @interface ServiceZapListController()
 /*!
@@ -26,6 +28,7 @@
 
 @synthesize zapDelegate;
 @synthesize actionSheet = _actionSheet;
+@synthesize tableView = _tableView;
 
 + (BOOL)canStream
 {
@@ -107,38 +110,58 @@
 	{
 		self.title = NSLocalizedString(@"Select type of zap", @"Title of ServiceZapListController");
 
-		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
-			self.contentSizeForViewInPopover = CGSizeMake(220.0f, 250.0f);
+		self.contentSizeForViewInPopover = CGSizeMake(220.0f, 250.0f);
 	}
 	return self;
 }
 
 - (void)dealloc
 {
+	[self stopObservingThemeChanges];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 
 	[_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:NO];
 }
 
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = 38;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = 38;
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.sectionHeaderHeight = 0;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	_tableView.backgroundView = [[UIView alloc] init];
 
-	self.view = tableView;
+	self.view = _tableView;
 	[self theme];
+}
+
+- (void)theme
+{
+	UIColor *color = [DreamoteConfiguration singleton].backgroundColor;
+	_tableView.backgroundView.backgroundColor =  color ? color : [UIColor whiteColor];
+}
+
+- (void)viewDidLoad
+{
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
+}
+
+- (void)viewDidUnload
+{
+	[self stopObservingThemeChanges];
+	_tableView = nil;
+	[super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	((UITableView *)self.view).allowsSelection = YES;
+	_tableView.allowsSelection = YES;
 
 	hasAction[zapActionRemote] = YES;
 	hasAction[zapActionOPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]];
@@ -147,6 +170,7 @@
 	hasAction[zapActionYxplayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
 	hasAction[zapActionGoodPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]];
 	hasAction[zapActionAcePlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]];
+	[_tableView reloadData];
 }
 
 - (void)dismissActionSheet:(NSNotification *)notif
@@ -163,10 +187,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSInteger row = indexPath.row;
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-	TABLEVIEWCELL_FONT(cell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
+	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 	{
 		if(!hasAction[zapActionOPlayer] && row > zapActionRemote)
 			++row;
@@ -185,25 +208,25 @@
 	{
 		default:
 		case zapActionRemote:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Zap on receiver", @"");
+			cell.textLabel.text = NSLocalizedString(@"Zap on receiver", @"");
 			break;
 		case zapActionOPlayer:
-			TABLEVIEWCELL_TEXT(cell) = @"OPlayer";
+			cell.textLabel.text = @"OPlayer";
 			break;
 		case zapActionOPlayerLite:
-			TABLEVIEWCELL_TEXT(cell) = @"OPlayer Lite";
+			cell.textLabel.text = @"OPlayer Lite";
 			break;
 		case zapActionBuzzPlayer:
-			TABLEVIEWCELL_TEXT(cell) = @"BUZZ Player";
+			cell.textLabel.text = @"BUZZ Player";
 			break;
 		case zapActionYxplayer:
-			TABLEVIEWCELL_TEXT(cell) = @"yxplayer";
+			cell.textLabel.text = @"yxplayer";
 			break;
 		case zapActionGoodPlayer:
-			TABLEVIEWCELL_TEXT(cell) = @"GoodPlayer";
+			cell.textLabel.text = @"GoodPlayer";
 			break;
 		case zapActionAcePlayer:
-			TABLEVIEWCELL_TEXT(cell) = @"AcePlayer";
+			cell.textLabel.text = @"AcePlayer";
 			break;
 	}
 	return cell;

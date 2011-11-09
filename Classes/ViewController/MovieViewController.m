@@ -48,19 +48,16 @@
 @implementation MovieViewController
 
 @synthesize movieList, popoverController;
+@synthesize tableView = _tableView;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Movie", @"Default title of MovieViewController");
-		_movie = nil;
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	
 	return self;
@@ -109,27 +106,27 @@
         [self.popoverController dismissPopoverAnimated:YES];
     }
 
-	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view
-						scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
-						atScrollPosition: UITableViewScrollPositionTop
-						animated: NO];
+	[_tableView reloadData];
+	[_tableView
+						scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+						atScrollPosition:UITableViewScrollPositionTop
+						animated:NO];
 }
 
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.sectionFooterHeight = 1;
-	tableView.sectionHeaderHeight = 1;
+	_tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.sectionFooterHeight = 1;
+	_tableView.sectionHeaderHeight = 1;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	[self theme];
 }
@@ -143,6 +140,7 @@
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
+	_tableView = nil;
 	[super viewDidUnload];
 }
 
@@ -151,14 +149,13 @@
 - (void)playAction: (id)sender
 {
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:6];
-	[(UITableView *)self.view
-						selectRowAtIndexPath: indexPath
-						animated: YES
-						scrollPosition: UITableViewScrollPositionNone];
+	[_tableView selectRowAtIndexPath:indexPath
+							animated:YES
+							scrollPosition:UITableViewScrollPositionNone];
 
 	[[RemoteConnectorObject sharedRemoteConnector] playMovie: _movie];
 
-	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
+	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITextView *)create_Summary

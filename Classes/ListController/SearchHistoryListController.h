@@ -15,6 +15,7 @@
 @private
 	NSMutableArray *_history; /*!< @brief Previously looked for strings. */
 	NSObject<SearchHistoryListDelegate> *__unsafe_unretained _historyDelegate; /*!< @brief Delegate. */
+	UITableView *_tableView; /*!< @brief Table View. */
 }
 
 /*!
@@ -31,6 +32,11 @@
 - (void)saveHistory;
 
 @property (nonatomic, unsafe_unretained) NSObject<SearchHistoryListDelegate> *historyDelegate;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 
