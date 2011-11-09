@@ -61,6 +61,7 @@
 
 @synthesize popoverController;
 @synthesize service = _service;
+@synthesize tableView = _tableView;
 
 - (id)init
 {
@@ -128,10 +129,10 @@
 	if(newEvent != nil)
 		self.title = newEvent.title;
 
-	[(UITableView *)self.view reloadData];
-	[(UITableView *)self.view scrollToRowAtIndexPath: [NSIndexPath indexPathForRow:0 inSection:0]
-								atScrollPosition: UITableViewScrollPositionTop
-								animated: NO];
+	[_tableView reloadData];
+	[_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]
+								atScrollPosition:UITableViewScrollPositionTop
+								animated:NO];
 	
 	_xmlReader = nil;
 }
@@ -148,21 +149,21 @@
 
 	// reload data if value changed
 	if(oldSearch != newSearch)
-		[(UITableView *)self.view reloadData];
+		[_tableView reloadData];
 }
 
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
-	tableView.delegate = self;
-	tableView.dataSource = self;
+	_tableView = [[SwipeTableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	// Create zap button
 	UIBarButtonItem *zapButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Zap", @"") style:UIBarButtonItemStylePlain target:self action:@selector(zapAction:)];
@@ -180,6 +181,7 @@
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
+	_tableView = nil;
 	[super viewDidUnload];
 }
 
@@ -192,14 +194,14 @@
 		++section;
 	NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:section];
 
-	[(UITableView *)self.view selectRowAtIndexPath: indexPath
-								animated: YES
-								scrollPosition: UITableViewScrollPositionNone];
+	[_tableView selectRowAtIndexPath:indexPath
+								animated:YES
+								scrollPosition:UITableViewScrollPositionNone];
 
-	TimerViewController *targetViewController = [TimerViewController newWithEventAndService: _event: _service];
-	[self.navigationController pushViewController: targetViewController animated: YES];
+	TimerViewController *targetViewController = [TimerViewController newWithEventAndService:_event :_service];
+	[self.navigationController pushViewController:targetViewController animated:YES];
 
-	[(UITableView *)self.view deselectRowAtIndexPath: indexPath animated: YES];
+	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITextView *)create_Summary
@@ -272,7 +274,7 @@
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
-	//[(UITableView*)self.view reloadData];
+	//[_tableView reloadData];
 }
 
 #pragma mark -
@@ -282,7 +284,7 @@
 - (void)addEvent: (NSObject<EventProtocol> *)event
 {
 	[_similarEvents addObject: event];
-	[(UITableView*)self.view reloadData];
+	[_tableView reloadData];
 }
 
 #pragma mark -
@@ -340,7 +342,7 @@
 			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchEvents)];
 
 			// XXX: animated reload looks weird
-			[(UITableView *)self.view reloadData];
+			[_tableView reloadData];
 		}
 	}
 	else
@@ -639,6 +641,7 @@
 	controller.editViewDelegate = self;
 	controller.modalPresentationStyle = UIModalPresentationFormSheet;
 	controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	[[DreamoteConfiguration singleton] styleNavigationController:controller]; // NOTE: this is as close to theming it as we can get
 	[self presentModalViewController:controller animated:YES];
 
 }

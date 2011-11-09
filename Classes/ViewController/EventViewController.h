@@ -43,6 +43,7 @@
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
 	UIPopoverController *popoverController; /*!< @brief Popover controller */
 	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
+	UITableView *_tableView; /*!< @brief Table View. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	BaseXMLReader *_xmlReader; /*!< @brief Current Event XML Reader. */
@@ -81,5 +82,10 @@
  @brief Result of an EPG Search?
  */
 @property (nonatomic) BOOL search;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
