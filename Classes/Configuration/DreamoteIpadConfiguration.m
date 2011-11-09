@@ -24,7 +24,7 @@
 
 - (CGFloat)textViewHeight
 {
-	return 300;
+	return 280;
 }
 
 - (CGFloat)textFieldFontSize

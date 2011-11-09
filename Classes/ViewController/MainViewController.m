@@ -78,6 +78,9 @@
 		_timerController = [[TimerSplitViewController alloc] init];
 		_mediaplayerController = [[MediaPlayerSplitViewController alloc] init];
 		_movieController = [[MovieSplitViewController alloc] init];
+
+		// NOTE: consistency is more important to us than the little space it takes on the ipad
+		_currentController = [[UINavigationController alloc] initWithRootViewController:_currentController];
 	}
 	else
 	{
