@@ -497,16 +497,20 @@
 
 			if(detailViewController != mgSplitViewController.detailViewController)
 				[detailViewController.view removeFromSuperview];
-			UIViewController *navController = nil;
+			UINavigationController *navController = nil;
 			if([detailViewController isKindOfClass:[UINavigationController class]])
-				navController = detailViewController;
+				navController = (UINavigationController *)detailViewController;
 			else
+			{
 				navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+				[[DreamoteConfiguration singleton] styleNavigationController:navController];
+			}
 			mgSplitViewController.detailViewController = navController;
 		}
 		else
 		{
-			UIViewController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
+			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
+			[[DreamoteConfiguration singleton] styleNavigationController:navController];
 			mgSplitViewController.detailViewController = navController;
 		}
 	}
