@@ -12,6 +12,8 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <TableViewCell/BaseTableViewCell.h>
+
 @interface SimpleSingleSelectionListController()
 /*!
  @brief done editing
@@ -109,7 +111,7 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];;
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 	const NSInteger row = indexPath.row;
 
 	cell.textLabel.text = [_items objectAtIndex:row];

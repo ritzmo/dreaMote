@@ -15,7 +15,7 @@
 
 #import "SimpleSingleSelectionListController.h"
 
-#import "DisplayCell.h"
+#import <TableViewCell/DisplayCell.h>
 
 #import <Objects/Generic/Result.h>
 
@@ -393,11 +393,11 @@
 			((CellTextField *)cell).delegate = self;	// so we can detect when cell editing starts
 			break;
 		case 3:
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-			TABLEVIEWCELL_ALIGN(cell) = UITextAlignmentLeft;
-			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
-			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
+			cell.textLabel.textAlignment = UITextAlignmentLeft;
+			cell.textLabel.textColor = [UIColor blackColor];
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			break;
 		case 4:
@@ -436,7 +436,7 @@
 			if(self.editing)
 				sourceCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-			TABLEVIEWCELL_TEXT(sourceCell) = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
+			sourceCell.textLabel.text = [[RemoteConnectorObject sharedRemoteConnector] getMessageTitle: _type];
 
 			_typeCell = sourceCell;
 			break;

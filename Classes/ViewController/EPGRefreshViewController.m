@@ -16,8 +16,8 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
-#import "DisplayCell.h"
-#import "ServiceTableViewCell.h"
+#import <TableViewCell/DisplayCell.h>
+#import <TableViewCell/ServiceTableViewCell.h>
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
@@ -627,7 +627,7 @@ enum generalSectionItems
 	{
 		case startSection:
 		{
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
 			switch(row)
@@ -656,19 +656,19 @@ enum generalSectionItems
 					cell.textLabel.text = NSLocalizedStringFromTable(@"Refresh automatically", @"EPGRefresh", @"Toggle 'Refresh EPG automatically'");
 					break;
 				case beginRow:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:settings.begin withDateStyle:NSDateFormatterNoStyle]];
 					break;
 				case endRow:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:settings.end withDateStyle:NSDateFormatterNoStyle]];
 					break;
 				case adapterRow:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					cell.textLabel.adjustsFontSizeToFitWidth = YES;
@@ -732,7 +732,7 @@ enum generalSectionItems
 			{
 				if(row == 0)
 				{
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
 					cell.textLabel.textAlignment = UITextAlignmentLeft;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -756,7 +756,7 @@ enum generalSectionItems
 			{
 				if(row == 0)
 				{
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
 					cell.textLabel.textAlignment = UITextAlignmentLeft;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;

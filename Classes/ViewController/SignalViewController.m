@@ -14,7 +14,7 @@
 
 #import "Signal.h"
 
-#import "DisplayCell.h"
+#import <TableViewCell/DisplayCell.h>
 
 @interface SignalViewController()
 /*!
@@ -476,7 +476,7 @@ OSStatus RenderTone(
 			}
 			break;
 		case 1:
-			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			sourceCell.textLabel.textColor = [UIColor blackColor];

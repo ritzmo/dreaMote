@@ -12,6 +12,8 @@
 #import "RemoteConnector.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <TableViewCell/BaseTableViewCell.h>
+
 @interface ConnectorViewController()
 /*!
  @brief start autodetection
@@ -114,25 +116,25 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 	// we are creating a new cell, setup its attributes
 	switch(indexPath.row)
 	{
 		case kEnigma2Connector:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Enigma 2", @"");
+			cell.textLabel.text = NSLocalizedString(@"Enigma 2", @"");
 			break;
 		case kEnigma1Connector:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Enigma", @"");
+			cell.textLabel.text = NSLocalizedString(@"Enigma", @"");
 			break;
 		case kNeutrinoConnector:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Neutrino", @"");
+			cell.textLabel.text = NSLocalizedString(@"Neutrino", @"");
 			break;
 		case kSVDRPConnector:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"SVDRP", @"");
+			cell.textLabel.text = NSLocalizedString(@"SVDRP", @"");
 			break;
 		default:
-			TABLEVIEWCELL_TEXT(cell) = @"???";
+			cell.textLabel.text = @"???";
 			break;
 	}
 

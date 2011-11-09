@@ -10,12 +10,6 @@
 	#import "UIViewController+Theming.h"
 #endif
 
-#define TABLEVIEWCELL_TEXT(a) (a).textLabel.text
-#define TABLEVIEWCELL_FONT(a) (a).textLabel.font
-#define TABLEVIEWCELL_ALIGN(a) (a).textLabel.textAlignment
-#define TABLEVIEWCELL_COLOR(a) (a).textLabel.textColor
-#define TABLEVIEWCELL_IMAGE(a) (a).imageView.image
-
 #define SafeDestroyButton(button) { \
 	[(button) removeTarget:nil action:NULL forControlEvents:UIControlEventAllEvents]; \
 	(button) = (nil); \

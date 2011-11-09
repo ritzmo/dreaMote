@@ -11,6 +11,8 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <TableViewCell/BaseTableViewCell.h>
+
 @interface AutoTimerFilterViewController()
 /*!
  @brief stop editing
@@ -216,57 +218,57 @@
 
 	if(indexPath.section == 0)
 	{
-		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 		if(indexPath.row == 0)
 		{
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedStringFromTable(@"Include", @"AutoTimer", @"Include Filter");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Include", @"AutoTimer", @"Include Filter");
 			cell.accessoryType = include ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 		}
 		else
 		{
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedStringFromTable(@"Exclude", @"AutoTimer", @"Exclude Filter");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Exclude", @"AutoTimer", @"Exclude Filter");
 			cell.accessoryType = include ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
 		}
 	}
 	else if(filterType == autoTimerWhereDayOfWeek)
 	{
-		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 		switch(indexPath.row)
 		{
 			case 0:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Monday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Monday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"0"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 1:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Tuesday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Tuesday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"1"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 2:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Wednesday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Wednesday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"2"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 3:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Thursday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Thursday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"3"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 4:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Friday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Friday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"4"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 5:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Saturday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Saturday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"5"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 6:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Sunday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Sunday", @"");
 				cell.accessoryType = [currentText isEqualToString:@"6"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 7:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedStringFromTable(@"Sat-Sun", @"AutoTimer", @"weekday filter");
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Sat-Sun", @"AutoTimer", @"weekday filter");
 				cell.accessoryType = [currentText isEqualToString:@"weekend"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			case 8:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedStringFromTable(@"Mon-Fri", @"AutoTimer", @"weekday filter");
+				cell.textLabel.text = NSLocalizedStringFromTable(@"Mon-Fri", @"AutoTimer", @"weekday filter");
 				cell.accessoryType = [currentText isEqualToString:@"weekday"] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				break;
 			default:

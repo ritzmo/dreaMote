@@ -12,6 +12,8 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <TableViewCell/BaseTableViewCell.h>
+
 @interface TimeoutSelectionViewController()
 /*!
  @brief done editing
@@ -117,7 +119,7 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];;
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 	const NSUInteger row = indexPath.row;
 	NSInteger timeout = 7;
 
@@ -130,7 +132,7 @@
 		else if(row == 3)
 			timeout *= 3;
 	}
-	TABLEVIEWCELL_TEXT(cell) = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @"Seconds"), timeout];
+	cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @"Seconds"), timeout];
 
 	if(row == selectedItem)
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;

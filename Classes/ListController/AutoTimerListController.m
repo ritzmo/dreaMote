@@ -11,11 +11,13 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 
-#import "AutoTimerTableViewCell.h"
-#import "Objects/Generic/Result.h"
+#import <Objects/Generic/Result.h>
 
 #import "Insort/NSArray+CWSortedInsert.h"
 #import "UITableViewCell+EasyInit.h"
+
+#import <TableViewCell/AutoTimerTableViewCell.h>
+#import <TableViewCell/BaseTableViewCell.h>
 
 #import <XMLReader/BaseXMLReader.h>
 
@@ -300,8 +302,8 @@
 	// First section, "New Timer"
 	if(indexPath.section == 0)
 	{
-		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"");
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
+		cell.textLabel.text = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"");
 		return cell;
 	}
 

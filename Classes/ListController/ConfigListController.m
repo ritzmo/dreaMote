@@ -14,7 +14,7 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "DisplayCell.h"
+#import <TableViewCell/DisplayCell.h>
 
 #import "AboutDreamoteViewController.h"
 #import "ConfigViewController.h"
@@ -607,7 +607,7 @@ enum settingsRows
 		case purchaseSection:
 		case buttonSection:
 		case connectionSection:
-			cell = [UITableViewCell reusableTableViewCellInView:_tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:_tableView withIdentifier:kBaseCell_ID];
 			break;
 		case settingsSection:
 			cell = [DisplayCell reusableTableViewCellInView:_tableView withIdentifier:kDisplayCell_ID];

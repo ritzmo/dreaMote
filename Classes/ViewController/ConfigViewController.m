@@ -13,7 +13,7 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "DisplayCell.h"
+#import <TableViewCell/DisplayCell.h>
 
 /*!
  @brief Mapping connector -> default port
@@ -686,15 +686,15 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	UITableViewCell *connectorCell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
 	if(_connector == kEnigma1Connector)
-		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Enigma", @"");
+		connectorCell.textLabel.text = NSLocalizedString(@"Enigma", @"");
 	else if(_connector == kEnigma2Connector)
-		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Enigma 2", @"");
+		connectorCell.textLabel.text = NSLocalizedString(@"Enigma 2", @"");
 	else if(_connector == kNeutrinoConnector)
-		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"Neutrino", @"");
+		connectorCell.textLabel.text = NSLocalizedString(@"Neutrino", @"");
 	else if(_connector == kSVDRPConnector)
-		TABLEVIEWCELL_TEXT(connectorCell) = NSLocalizedString(@"SVDRP", @"");
+		connectorCell.textLabel.text = NSLocalizedString(@"SVDRP", @"");
 	else
-		TABLEVIEWCELL_TEXT(connectorCell) = @"???";
+		connectorCell.textLabel.text = @"???";
 
 	// update port placeholder
 	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
@@ -877,7 +877,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			switch(row)
 			{
 				case 0:
-					sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 #if INCLUDE_FEATURE(Multiple_Connectors)
 					if(self.editing)
@@ -885,16 +885,16 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 #endif
 					
 					if(_connector == kEnigma1Connector)
-						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Enigma", @"");
+						sourceCell.textLabel.text = NSLocalizedString(@"Enigma", @"");
 					else if(_connector == kEnigma2Connector)
-						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Enigma 2", @"");
+						sourceCell.textLabel.text = NSLocalizedString(@"Enigma 2", @"");
 					else if(_connector == kNeutrinoConnector)
-						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"Neutrino", @"");
+						sourceCell.textLabel.text = NSLocalizedString(@"Neutrino", @"");
 					else if(_connector == kSVDRPConnector)
-						TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"SVDRP", @"");
+						sourceCell.textLabel.text = NSLocalizedString(@"SVDRP", @"");
 					else
-						TABLEVIEWCELL_TEXT(sourceCell) = @"???";
-					TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+						sourceCell.textLabel.text = @"???";
+					sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 1:
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];

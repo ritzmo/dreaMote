@@ -10,7 +10,8 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
-#import "PackageCell.h"
+
+#import <TableViewCell/PackageCell.h>
 
 #import "UITableViewCell+EasyInit.h"
 
@@ -367,7 +368,7 @@
 	{
 		if(row == 0)
 		{
-			UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			switch(_listType)
 			{
 				case kPackageListInstalled:

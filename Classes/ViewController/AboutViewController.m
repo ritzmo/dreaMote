@@ -15,6 +15,8 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "BaseTableViewCell.h"
+
 @implementation AboutViewController
 
 - (id)init
@@ -193,10 +195,10 @@
 	// special handling if about not yet set, can only be row 0 of section 0
 	if(_about == nil)
 	{
-		sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-		TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-		TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"No Data…", @"Placeholder if no data has been received yet.");
+		sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+		sourceCell.textLabel.text = NSLocalizedString(@"No Data…", @"Placeholder if no data has been received yet.");
 		return sourceCell;
 	}
 
@@ -244,10 +246,10 @@
 		}
 		case 2:
 		{
-			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-			TABLEVIEWCELL_TEXT(sourceCell) = [_about.tuners objectAtIndex: indexPath.row];
+			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
+			sourceCell.textLabel.text = [_about.tuners objectAtIndex: indexPath.row];
 			break;
 		}
 		default:

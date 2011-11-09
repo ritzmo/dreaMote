@@ -15,9 +15,9 @@
 #import "NSString+URLEncode.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "EventTableViewCell.h"
-#import "CellTextView.h"
-#import "DisplayCell.h"
+#import <TableViewCell/EventTableViewCell.h>
+#import <TableViewCell/CellTextView.h>
+#import <TableViewCell/DisplayCell.h>
 #import "Constants.h"
 
 #import <XMLReader/BaseXMLReader.h>
@@ -492,42 +492,42 @@
 			break;
 		case 1:
 		case 2:
-			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			
-			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+			sourceCell.textLabel.textColor = [UIColor blackColor];
+			sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 0;
 			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 
 			if(section == 1)
-				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.begin];
+				sourceCell.textLabel.text = [self format_BeginEnd: _event.begin];
 			 else
-				TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _event.end];
+				sourceCell.textLabel.text = [self format_BeginEnd: _event.end];
 			break;
 		case 3:
-			sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-			TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-			TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-			TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+			sourceCell.textLabel.textColor = [UIColor blackColor];
+			sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 1;
-			TABLEVIEWCELL_TEXT(sourceCell) = _event.service.sname;
+			sourceCell.textLabel.text = _event.service.sname;
 				
 			break;
 		case 4:
 			if(![_similarEvents count])
 			{
-				sourceCell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+				sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-				TABLEVIEWCELL_ALIGN(sourceCell) = UITextAlignmentCenter;
-				TABLEVIEWCELL_COLOR(sourceCell) = [UIColor blackColor];
-				TABLEVIEWCELL_FONT(sourceCell) = [UIFont systemFontOfSize:kTextViewFontSize];
+				sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+				sourceCell.textLabel.textColor = [UIColor blackColor];
+				sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 				sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 				sourceCell.indentationLevel = 1;
-				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"No similar Events", @"");
+				sourceCell.textLabel.text = NSLocalizedString(@"No similar Events", @"");
 			}
 			else
 			{

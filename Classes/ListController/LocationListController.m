@@ -14,6 +14,8 @@
 
 #import "UIPromptView.h"
 
+#import <TableViewCell/BaseTableViewCell.h>
+
 #import <Objects/LocationProtocol.h>
 #import <Objects/Generic/Location.h>
 #import <Objects/Generic/Result.h>
@@ -285,20 +287,20 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 	NSInteger row = indexPath.row;
 
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	if(showDefault && row-- == 0)
 	{
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Location", @"");;
+		cell.textLabel.text = NSLocalizedString(@"Default Location", @"");;
 	}
 	else if(row == (NSInteger)_locations.count)
 	{
 		cell.textLabel.text = NSLocalizedString(@"New Bookmark", @"Title of cell to add a new bookmark");
 	}
 	else
-		TABLEVIEWCELL_TEXT(cell) = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:row]).fullpath;
+		cell.textLabel.text = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:row]).fullpath;
 
 	return cell;
 }

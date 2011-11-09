@@ -11,7 +11,8 @@
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
-#import "PlayListCell.h"
+
+#import <TableViewCell/PlayListCell.h>
 
 #import <Objects/FileProtocol.h>
 
@@ -271,7 +272,7 @@
 	if(_isPlaylist)
 		cell = [PlayListCell reusableTableViewCellInView:tableView withIdentifier:kPlayListCell_ID];
 	else
-		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];

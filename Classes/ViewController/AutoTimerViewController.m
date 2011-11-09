@@ -25,6 +25,8 @@
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <TableViewCell/BaseTableViewCell.h>
+
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/AutoTimer.h>
@@ -744,15 +746,15 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		return;
 
 	if(_timer.afterEventAction == kAfterEventNothing)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Nothing", @"After Event");
+		cell.textLabel.text = NSLocalizedString(@"Nothing", @"After Event");
 	else if(_timer.afterEventAction == kAfterEventStandby)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
+		cell.textLabel.text = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
 	else if(_timer.afterEventAction == kAfterEventDeepstandby)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"");
+		cell.textLabel.text = NSLocalizedString(@"Deep Standby", @"");
 	else if(_timer.afterEventAction == kAfterEventAuto)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"");
+		cell.textLabel.text = NSLocalizedString(@"Auto", @"");
 	else //if(_timer.afterEventAction == kAfterEventMax)
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"Default After Event action (usually auto on enigma2 receivers)");
+		cell.textLabel.text = NSLocalizedString(@"Default Action", @"Default After Event action (usually auto on enigma2 receivers)");
 }
 
 - (void)afterEventSelected: (NSNumber *)newAfterEvent
@@ -943,7 +945,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					cell.textLabel.text = NSLocalizedString(@"Justplay", @"");
 					break;
 				case 5:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -981,14 +983,14 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 					break;
 				case 1:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.from withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 2:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.to withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -1007,7 +1009,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 					break;
 				case 1:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.adjustsFontSizeToFitWidth = YES;
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"After: %@", @"AutoTimer", @"timeframe after"), [self format_Time:_timer.after withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
@@ -1015,7 +1017,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
 				case 2:
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.adjustsFontSizeToFitWidth = YES;
 					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Before: %@", @"AutoTimer", @"timeframe before"), [self format_Time:_timer.before withDateStyle:NSDateFormatterFullStyle andTimeStyle:NSDateFormatterNoStyle]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
@@ -1031,7 +1033,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			{
 				if(row == 0)
 				{
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -1054,7 +1056,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			{
 				if(row == 0)
 				{
-					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -1072,14 +1074,14 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			break;
 		}
 		case aftereventSection:
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			[self setAfterEventText:cell];
 			break;
 		case locationSection:
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
@@ -1096,7 +1098,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			};
 			const NSInteger aPos = indexPath.section - filterTitleSection; // TODO: adjust if moving around sections
 
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			if(self.editing)
 			{
@@ -1126,7 +1128,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 		}
 		case filterWeekdaySection:
 		{
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			if(self.editing)
 			{

@@ -11,7 +11,9 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "TimerProtocol.h"
+#import <TableViewCell/BaseTableViewCell.h>
+
+#import <Objects/TimerProtocol.h>
 
 @interface AfterEventViewController()
 /*!
@@ -157,29 +159,29 @@
 /* to determine which UITableViewCell to be used on a given row. */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+	UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 	// we are creating a new cell, setup its attributes
 	switch(indexPath.row)
 	{
 		case kAfterEventNothing:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Nothing", @"After Event");
+			cell.textLabel.text = NSLocalizedString(@"Nothing", @"After Event");
 			break;
 		case kAfterEventStandby:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
+			cell.textLabel.text = NSLocalizedString(@"Standby", @"Standby. Either as AfterEvent action or Button in Controls.");
 			break;
 		case kAfterEventDeepstandby:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Deep Standby", @"After Event");
+			cell.textLabel.text = NSLocalizedString(@"Deep Standby", @"After Event");
 			break;
 		case kAfterEventAuto:
 			if(_showAuto)
 			{
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Auto", @"After Event");
+				cell.textLabel.text = NSLocalizedString(@"Auto", @"After Event");
 				break;
 			}
 			/* FALL THROUGH */
 		case kAfterEventMax:
-			TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Default Action", @"Default After Event action (usually auto on enigma2 receivers)");
+			cell.textLabel.text = NSLocalizedString(@"Default Action", @"Default After Event action (usually auto on enigma2 receivers)");
 			break;
 		default:
 			break;

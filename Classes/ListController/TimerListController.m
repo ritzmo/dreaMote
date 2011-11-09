@@ -16,7 +16,7 @@
 #import "UIDevice+SystemVersion.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "TimerTableViewCell.h"
+#import <TableViewCell/TimerTableViewCell.h>
 
 #import <Objects/Generic/Timer.h>
 #import <Objects/Generic/Result.h>
@@ -332,10 +332,10 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	// First section, "New Timer"
 	if(section == 0)
 	{
-		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-		TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"New Timer", @"");
-		TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize]; // FIXME: Looks a little weird though
+		cell.textLabel.text = NSLocalizedString(@"New Timer", @"");
+		cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize]; // FIXME: Looks a little weird though
 
 		return cell;
 	}

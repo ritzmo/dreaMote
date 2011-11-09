@@ -17,7 +17,7 @@
 #import "SimpleSingleSelectionListController.h"
 #import "UIPromptView.h"
 
-#import "ServiceTableViewCell.h"
+#import <TableViewCell/ServiceTableViewCell.h>
 
 #import <Objects/ServiceProtocol.h>
 #import <Objects/Generic/Result.h>
@@ -638,7 +638,7 @@ enum bouquetListTags
 {
 	if(indexPath.row == (NSInteger)_bouquets.count)
 	{
-		UITableViewCell *cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 		cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"ServiceEditor", @"Title of cell to add a bouquet");
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
 		return cell;

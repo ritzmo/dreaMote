@@ -17,8 +17,8 @@
 #import "NSString+URLEncode.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "CellTextView.h"
-#import "DisplayCell.h"
+#import <TableViewCell/CellTextView.h>
+#import <TableViewCell/DisplayCell.h>
 
 #import "SHK.h"
 
@@ -489,11 +489,11 @@
 		case 3:
 		case 4:
 		case 5:
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-			TABLEVIEWCELL_ALIGN(cell) = UITextAlignmentCenter;
-			TABLEVIEWCELL_COLOR(cell) = [UIColor blackColor];
-			TABLEVIEWCELL_FONT(cell) = [UIFont systemFontOfSize:kTextViewFontSize];
+			cell.textLabel.textAlignment = UITextAlignmentCenter;
+			cell.textLabel.textColor = [UIColor blackColor];
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
 			cell.indentationLevel = 0;
@@ -522,25 +522,25 @@
 			_summaryView.backgroundColor = sourceCell.backgroundColor;
 			break;
 		case 1:
-			TABLEVIEWCELL_TEXT(sourceCell) = _movie.sname;
+			sourceCell.textLabel.text = _movie.sname;
 			break;
 		case 2:
 			if([_movie.size integerValue] != -1)
-				TABLEVIEWCELL_TEXT(sourceCell) = [self format_size: _movie.size];
+				sourceCell.textLabel.text = [self format_size: _movie.size];
 			else
-				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"N/A", @"");
+				sourceCell.textLabel.text = NSLocalizedString(@"N/A", @"");
 			break;
 		case 3:
 			if(![_movie.tags count])
-				TABLEVIEWCELL_TEXT(sourceCell) = NSLocalizedString(@"None", @"");
+				sourceCell.textLabel.text = NSLocalizedString(@"None", @"");
 			else
-				TABLEVIEWCELL_TEXT(sourceCell) = [_movie.tags objectAtIndex: indexPath.row];
+				sourceCell.textLabel.text = [_movie.tags objectAtIndex: indexPath.row];
 			break;
 		case 4:
-			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: _movie.time];
+			sourceCell.textLabel.text = [self format_BeginEnd: _movie.time];
 			break;
 		case 5:
-			TABLEVIEWCELL_TEXT(sourceCell) = [self format_BeginEnd: [_movie.time dateByAddingTimeInterval:[_movie.length doubleValue]]];
+			sourceCell.textLabel.text = [self format_BeginEnd: [_movie.time dateByAddingTimeInterval:[_movie.length doubleValue]]];
 			break;
 		case 6:
 		{

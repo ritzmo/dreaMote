@@ -11,8 +11,10 @@
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "TimerProtocol.h"
-#import "Objects/Generic/Timer.h"
+#import <TableViewCell/BaseTableViewCell.h>
+
+#import <Objects/TimerProtocol.h>
+#import <Objects/Generic/Timer.h>
 
 @interface SimpleRepeatedViewController()
 - (IBAction)doneAction:(id)sender;
@@ -180,42 +182,42 @@
 	{
 		if(indexPath.section == 0)
 		{
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			// we are creating a new cell, setup its attributes
 			switch(indexPath.row)
 			{
 				case 0:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Never", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"Never", @"Repeated");
 					if(_repeated == neutrinoTimerRepeatNever) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 1:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Daily", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"Daily", @"Repeated");
 					if(_repeated == neutrinoTimerRepeatDaily) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 2:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Weekly", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"Weekly", @"Repeated");
 					if(_repeated == neutrinoTimerRepeatWeekly) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 3:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"2-weekly", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"2-weekly", @"Repeated");
 					if(_repeated == neutrinoTimerRepeatBiweekly) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 4:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"4-weekly", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"4-weekly", @"Repeated");
 					if(_repeated == neutrinoTimerRepeatFourweekly) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 5:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Monthly", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"Monthly", @"Repeated");
 					if(_repeated == neutrinoTimerRepeatMonthly) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 6:
-					TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Other", @"Repeated");
+					cell.textLabel.text = NSLocalizedString(@"Other", @"Repeated");
 					if(_repeated & neutrinoTimerRepeatWeekdays) cell.accessoryType = UITableViewCellAccessoryCheckmark;
 					else cell.accessoryType = UITableViewCellAccessoryNone;
 					break;
@@ -239,30 +241,30 @@
 
 	if(_isSimple || ((_repeated & neutrinoTimerRepeatWeekdays) > 0 && indexPath.section == 2))
 	{
-		cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 		// we are creating a new cell, setup its attributes
 		switch(indexPath.row)
 		{
 			case 0:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Monday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Monday", @"");
 				break;
 			case 1:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Tuesday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Tuesday", @"");
 				break;
 			case 2:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Wednesday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Wednesday", @"");
 				break;
 			case 3:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Thursday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Thursday", @"");
 				break;
 			case 4:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Friday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Friday", @"");
 				break;
 			case 5:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Saturday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Saturday", @"");
 				break;
 			case 6:
-				TABLEVIEWCELL_TEXT(cell) = NSLocalizedString(@"Sunday", @"");
+				cell.textLabel.text = NSLocalizedString(@"Sunday", @"");
 				break;
 			default:
 				break;

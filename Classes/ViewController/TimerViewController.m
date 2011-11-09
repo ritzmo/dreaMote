@@ -16,8 +16,8 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
-#import "DisplayCell.h"
-#import "ServiceTableViewCell.h"
+#import <TableViewCell/DisplayCell.h>
+#import <TableViewCell/ServiceTableViewCell.h>
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
@@ -810,7 +810,7 @@ enum timerSections
 		case sectionAfterEvent:
 		case sectionRepeated:
 		case sectionLocation:
-			cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
 
