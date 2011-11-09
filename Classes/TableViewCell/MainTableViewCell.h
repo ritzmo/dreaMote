@@ -21,8 +21,6 @@ extern NSString *kMainCell_ID;
 {
 @private
 	NSDictionary	*_dataDictionary; /*!< @brief Item. */
-	UILabel			*_nameLabel; /*!< @brief Name Label. */
-	UILabel			*_explainLabel; /*!< @brief Explanation Label. */
 }
 
 /*!
