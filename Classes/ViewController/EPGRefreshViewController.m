@@ -737,6 +737,7 @@ enum generalSectionItems
 				{
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 					cell.textLabel.text = NSLocalizedStringFromTable(@"New Service", @"AutoTimer", @"add new service filter");
+					cell.textLabel.textAlignment = UITextAlignmentLeft;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
@@ -760,6 +761,7 @@ enum generalSectionItems
 				{
 					cell = [UITableViewCell reusableTableViewCellInView:tableView withIdentifier:kVanilla_ID];
 					cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"AutoTimer", @"add new bouquet filter");
+					cell.textLabel.textAlignment = UITextAlignmentLeft;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					break;
