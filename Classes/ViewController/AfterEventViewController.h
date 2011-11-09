@@ -18,6 +18,7 @@
 @interface AfterEventViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	NSInteger _selectedItem; /*!< @brief Selected Item. */
 	BOOL _showAuto; /*!< @brief Show "kAfterEventAuto" Item? */
 	BOOL _showDefault; /*!< @brief Show "Default Action" for kAfterEventMax? */
@@ -58,6 +59,11 @@
  @brief Show "Default Action" for kAfterEventMax?
  */
 @property (assign) BOOL showDefault;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

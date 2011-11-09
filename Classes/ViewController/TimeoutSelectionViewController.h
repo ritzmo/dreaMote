@@ -17,6 +17,10 @@
  */
 @interface TimeoutSelectionViewController : UIViewController <UITableViewDelegate,
 														UITableViewDataSource>
+{
+@private
+	UITableView *_tableView; /*!< @brief Table View. */
+}
 
 /*!
  @brief Standard constructor.
@@ -40,6 +44,11 @@
  @brief Selected Item.
  */
 @property (nonatomic) NSUInteger selectedItem;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

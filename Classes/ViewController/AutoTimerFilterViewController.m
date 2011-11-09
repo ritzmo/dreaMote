@@ -35,6 +35,7 @@
 @implementation AutoTimerFilterViewController
 
 @synthesize callback;
+@synthesize tableView = _tableView;
 
 /*!
  @brief Keyboard offset.
@@ -52,11 +53,8 @@
 	{
 		self.title = NSLocalizedString(@"Filter", @"Default title of AutoTimerFilterViewController");
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -75,7 +73,7 @@
 	oldText = newText;
 
 	filterTextfield.text = newText;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (BOOL)include
@@ -89,7 +87,7 @@
 
 	if(include == newInclude) return;
 	include = newInclude;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (autoTimerWhereType)filterType
@@ -101,23 +99,23 @@
 {
 	if(filterType == newFilterType) return;
 	filterType = newFilterType;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 /* layout */
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	_cancelButtonItem = [[UIBarButtonItem alloc]
 						 initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
@@ -150,6 +148,7 @@
 {
 	_cancelButtonItem = nil;
 	filterTextfield = nil;
+	_tableView = nil;
 
 	[super viewDidUnload];
 }

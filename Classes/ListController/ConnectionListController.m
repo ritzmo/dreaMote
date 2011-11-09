@@ -27,6 +27,7 @@
 
 @synthesize connections = _connections;
 @synthesize connectionDelegate = _delegate;
+@synthesize tableView = _tableView;
 
 + (ConnectionListController *)newWithConnections:(NSArray *)connections andDelegate:(NSObject<ConnectionListDelegate> *)delegate
 {
@@ -53,30 +54,38 @@
 
 - (void)dealloc
 {
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 }
 
 #pragma mark UIViewController delegates
 
 - (void)loadView
 {
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	tableView.sectionHeaderHeight = 0;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	_tableView.sectionHeaderHeight = 0;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 	if(IS_IPAD())
-		tableView.rowHeight = kUIRowHeight;
+	{
+		_tableView.rowHeight = kUIRowHeight;
+		_tableView.backgroundView = [[UIView alloc] init];
+	}
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(abortAction:)];
 	self.navigationItem.leftBarButtonItem = button;
 
-	self.view = tableView;
+	self.view = _tableView;
 	[self theme];
+}
+
+- (void)viewDidUnload
+{
+	_tableView = nil;
+	[super viewDidUnload];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

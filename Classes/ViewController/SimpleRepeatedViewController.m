@@ -21,6 +21,7 @@
 @implementation SimpleRepeatedViewController
 
 @synthesize delegate;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -29,11 +30,8 @@
 	{
 		self.title = NSLocalizedString(@"Repeated", @"Default title of SimpleRepeatedViewController");
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -56,7 +54,7 @@
 - (void)setRepeated:(NSInteger)newRepeated
 {
 	_repeated = newRepeated;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (NSInteger)repcount
@@ -79,23 +77,23 @@
 {
 	if(_isSimple == isSimple) return;
 	_isSimple = isSimple;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 /* layout */
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	// repeat count
 	_repcountField = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -130,6 +128,7 @@
 	_repcountField = nil;
 	 // references _repcountField
 	_repcountCell = nil;
+	_tableView = nil;
 
 	[super viewDidUnload];
 }
@@ -328,7 +327,7 @@
 					break;
 				default: break;
 			}
-			[(UITableView *)self.view reloadData];
+			[_tableView reloadData];
 		}
 		else if(indexPath.section == 2)
 		{

@@ -23,6 +23,7 @@
 															UITableViewDelegate, UITableViewDataSource>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	UITextField *_repcountField; /*!< @brief Repeat count. */
 	CellTextField *_repcountCell; /*!< @brief Repeat count cell. */
 	NSInteger _repeated; /*!< @brief Current Flags. */
@@ -63,6 +64,11 @@
  @brief "Simple" Editor?
  */
 @property (assign) BOOL isSimple;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

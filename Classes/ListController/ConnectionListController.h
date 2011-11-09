@@ -19,6 +19,7 @@
 														UITableViewDataSource>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	NSArray *_connections; /*!< @brief List of found connections. */
 	NSObject<ConnectionListDelegate> *_delegate; /*!< @brief Delegate. */
 }
@@ -31,6 +32,11 @@
  @return ConnectionListController instance.
  */
 + (ConnectionListController *)newWithConnections:(NSArray *)connections andDelegate:(NSObject<ConnectionListDelegate> *)delegate;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

@@ -22,6 +22,7 @@
 @implementation TimeoutSelectionViewController
 
 @synthesize delegate, selectedItem;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -30,11 +31,8 @@
 	{
 		self.title = NSLocalizedString(@"Connection Timeout", @"Default title of TimeoutSelectionViewController");
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -64,22 +62,28 @@
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
 																			target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
 
 	[self theme];
+}
+
+- (void)viewDidUnload
+{
+	_tableView = nil;
+	[super viewDidUnload];
 }
 
 /* finish */

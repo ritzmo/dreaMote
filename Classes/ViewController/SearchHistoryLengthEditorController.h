@@ -19,6 +19,7 @@
 														UITableViewDataSource>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	UITextField *_lengthTextField; /*!< @brief Text Field. */
 	NSInteger _length; /*!< @brief Current length as integer. */
 }
@@ -38,6 +39,11 @@
  was changed.
  */
 @property (nonatomic, unsafe_unretained) NSObject<SearchHistoryLengthEditorDelegate> *delegate;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

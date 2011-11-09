@@ -23,6 +23,7 @@
 @implementation AfterEventViewController
 
 @synthesize delegate;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -31,11 +32,8 @@
 	{
 		self.title = NSLocalizedString(@"After Event", @"Default title of AfterEventViewController");
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -63,7 +61,7 @@
 - (void)setSelectedItem:(NSUInteger)newSelectedItem
 {
 	_selectedItem = newSelectedItem;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (BOOL)showAuto
@@ -74,7 +72,7 @@
 - (void)setShowAuto:(BOOL)newShowAuto
 {
 	_showAuto = newShowAuto;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 - (BOOL)showDefault
@@ -85,23 +83,23 @@
 - (void)setShowDefault:(BOOL)newShowDefault
 {
 	_showDefault = newShowDefault;
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 /* layout */
 - (void)loadView
 {
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 																			target:self action:@selector(doneAction:)];
@@ -119,6 +117,7 @@
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
+	_tableView = nil;
 	[super viewDidUnload];
 }
 

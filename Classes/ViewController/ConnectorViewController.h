@@ -17,7 +17,10 @@
  Also allows to start an "autodetection" routine.
  */
 @interface ConnectorViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-
+{
+@private
+	UITableView *_tableView; /*!< @brief Table View. */
+}
 /*!
  @brief Standard Constructor.
  
@@ -40,6 +43,11 @@
  @brief Selected Item.
  */
 @property (nonatomic) NSInteger selectedItem;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end
 

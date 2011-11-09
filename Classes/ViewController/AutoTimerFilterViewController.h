@@ -31,6 +31,7 @@ typedef void(^autotimerfilter_callback_t)(BOOL, NSString *, autoTimerWhereType, 
 															EditableTableViewCellDelegate>
 {
 @private
+	UITableView *_tableView; /*!< @brief Table View. */
 	UITextField *filterTextfield; /*!< @brief Filter Label. */
 	NSString *currentText; /*!< @brief Current Filter string. */
 	autoTimerWhereType filterType; /*!< @brief Current mode. */
@@ -60,5 +61,10 @@ typedef void(^autotimerfilter_callback_t)(BOOL, NSString *, autoTimerWhereType, 
  @brief Include Filter?
  */
 @property (nonatomic, assign) BOOL include;
+
+/*!
+ @brief Table View.
+ */
+@property (nonatomic, readonly) UITableView *tableView;
 
 @end

@@ -23,6 +23,7 @@
 @implementation ConnectorViewController
 
 @synthesize delegate, selectedItem;
+@synthesize tableView = _tableView;
 
 /* initialize */
 - (id)init
@@ -32,11 +33,8 @@
 		self.title = NSLocalizedString(@"Connector", @"Default title of ConnectorViewController");
 		selectedItem = kInvalidConnector;
 
-		if([self respondsToSelector:@selector(modalPresentationStyle)])
-		{
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -53,8 +51,8 @@
 /* dealloc */
 - (void)dealloc
 {
-	((UITableView *)self.view).delegate = nil;
-	((UITableView *)self.view).dataSource = nil;
+	_tableView.delegate = nil;
+	_tableView.dataSource = nil;
 }
 
 /* layout */
@@ -64,18 +62,24 @@
 	self.navigationItem.rightBarButtonItem = button;
 
 	// create and configure the table view
-	UITableView *tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
-	tableView.delegate = self;
-	tableView.dataSource = self;
-	tableView.rowHeight = kUIRowHeight;
+	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];	
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.rowHeight = kUIRowHeight;
+	_tableView.autoresizesSubviews = YES;
+	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	if(IS_IPAD())
+		_tableView.backgroundView = [[UIView alloc] init];
 
-	// setup our content view so that it auto-rotates along with the UViewController
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
-	self.view = tableView;
+	self.view = _tableView;
 
 	[self theme];
+}
+
+- (void)viewDidUnload
+{
+	_tableView = nil;
+	[super viewDidUnload];
 }
 
 /* start autodetection */
