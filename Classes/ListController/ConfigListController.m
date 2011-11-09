@@ -457,7 +457,6 @@ enum settingsRows
 		}
 		else if(cell.tag == kThemeRowTag)
 		{
-			const BOOL isIpad = IS_IPAD();
 			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
 													   [NSArray arrayWithObjects:@"Default", @"Blue", @"Night", nil]
 																						andSelection:[DreamoteConfiguration singleton].currentTheme
@@ -485,16 +484,12 @@ enum settingsRows
 			
 			if(isIpad)
 			{
-				UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-				navController.modalPresentationStyle = vc.modalPresentationStyle;
-				
-				[self.navigationController presentModalViewController:navController animated:YES];
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
 			}
 			else
-			{
-				[self.navigationController pushViewController:vc animated:YES];
-			}
+				targetViewController = vc;
 		}
 #if IS_FULL()
 		else if(cell.tag == kMultiEPGRowTag)
