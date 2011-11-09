@@ -169,7 +169,7 @@
 				headerView.backgroundColor = [UIColor clearColor];
 				headerLabel.frame = CGRectMake(30.0, 0.0, 260.0, 44.0);
 				headerLabel.shadowColor = self.sectionLabelShadowColor;
-				headerLabel.shadowOffset = CGSizeMake(0,2);
+				headerLabel.shadowOffset = CGSizeMake(0,1);
 			}
 			[headerView addSubview:headerLabel];
 
