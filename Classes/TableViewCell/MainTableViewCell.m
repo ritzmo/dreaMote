@@ -23,10 +23,8 @@ NSString *kMainCell_ID = @"MainCell_ID";
 {
 	if((self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]))
 	{
-		// you can do this here specifically or at the table level for all cells
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-		self.textLabel.backgroundColor = [UIColor clearColor];
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kMainTextSize];
 
 		self.detailTextLabel.backgroundColor = [UIColor clearColor];
