@@ -151,13 +151,15 @@
 		default:
 		case THEME_DEFAULT:
 		{
-			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+			if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
+				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			cell.backgroundColor = [UIColor whiteColor];
 			break;
 		}
 		case THEME_BLUE:
 		{
-			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+			if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
+				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			if(tableView.style == UITableViewStyleGrouped)
 			{
 				cell.backgroundColor = self.backgroundColor;
@@ -171,7 +173,8 @@
 		case THEME_NIGHT:
 		{
 			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:.7] : [UIColor clearColor];
-			cell.selectionStyle = UITableViewCellSelectionStyleGray;
+			if(cell.selectionStyle == UITableViewCellSelectionStyleBlue)
+				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.backgroundColor = backgroundColor;
 			break;
 		}
