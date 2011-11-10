@@ -489,6 +489,49 @@ enum settingsRows
 #endif
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+	else if(indexPath.section == purchaseSection)
+	{
+		NSArray *purchasables = [MKStoreManager sharedManager].purchasableObjectsList;
+		if(indexPath.row < (NSInteger)purchasables.count)
+		{
+			[[MKStoreManager sharedManager] buyFeature:[purchasables objectAtIndex:indexPath.row]
+											onComplete:^(NSString *featureId)
+			{
+				const UIAlertView *notification = [[UIAlertView alloc]
+												   initWithTitle:NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully")
+												   message:nil
+												   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+			}
+										   onCancelled:^
+			{
+				// TODO: anything? MKStoreKit already shows an alert
+			}];
+		}
+		else
+		{
+			[[MKStoreManager sharedManager] restorePreviousTransactionsOnComplete:^
+			{
+				const UIAlertView *notification = [[UIAlertView alloc]
+												   initWithTitle:NSLocalizedString(@"Restore completed", @"In-App-Purchase were restored successfully")
+												   message:nil
+												   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+			}
+																		  onError:^(NSError *error)
+			{
+				NSLog(@"error %@, error code %d", error, error.code);
+				if(!error || error.domain != SKErrorDomain) return;
+				const UIAlertView *notification = [[UIAlertView alloc] initWithTitle:[error localizedFailureReason]
+																			 message:[error localizedRecoverySuggestion]
+																			delegate:nil
+																   cancelButtonTitle:@"OK"
+																   otherButtonTitles:nil];
+				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+			}];
+		}
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
 	else
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
