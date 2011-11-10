@@ -228,7 +228,7 @@ enum settingsRows
 
 - (void)productsFetched:(NSNotification *)note
 {
-	[(UITableView *)self.view reloadData];
+	[_tableView reloadData];
 }
 
 #pragma mark -
