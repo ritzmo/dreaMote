@@ -111,8 +111,8 @@
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	myTextView.backgroundColor = [UIColor clearColor];
-	myTextView.textColor = [UIColor blackColor];
+	myTextView.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewCellColor; // to optimize drawing set a background color
+	myTextView.textColor = [DreamoteConfiguration singleton].textColor;
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
 	
@@ -413,7 +413,6 @@
 				case 1:
 					sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 					((CellTextView *)sourceCell).view = _nowSummary;
-					_nowSummary.backgroundColor = sourceCell.backgroundColor;
 					break;
 				case 2:
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -438,7 +437,6 @@
 				case 1:
 					sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 					((CellTextView *)sourceCell).view = _nextSummary;
-					_nowSummary.backgroundColor = sourceCell.backgroundColor;
 					break;
 				case 2:
 					sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -453,8 +451,7 @@
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-	return sourceCell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];;
 }
 
 #pragma mark - UIViewController delegate methods

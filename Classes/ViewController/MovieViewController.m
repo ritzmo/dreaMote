@@ -162,7 +162,8 @@
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	myTextView.textColor = [UIColor blackColor];
+	myTextView.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewCellColor; // to optimize drawing set a background color
+	myTextView.textColor = [DreamoteConfiguration singleton].textColor;
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
 
@@ -492,7 +493,6 @@
 			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 			cell.textLabel.textAlignment = UITextAlignmentCenter;
-			cell.textLabel.textColor = [UIColor blackColor];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
@@ -519,7 +519,6 @@
 	switch (section) {
 		case 0:
 			((CellTextView *)sourceCell).view = _summaryView;
-			_summaryView.backgroundColor = sourceCell.backgroundColor;
 			break;
 		case 1:
 			sourceCell.textLabel.text = _movie.sname;
@@ -545,7 +544,6 @@
 		case 6:
 		{
 			NSInteger row = indexPath.row;
-			sourceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
 
 			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
 				++row;
@@ -610,8 +608,7 @@
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-	return sourceCell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];;
 }
 
 /* rotate with device */

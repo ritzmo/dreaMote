@@ -271,6 +271,18 @@
 	}
 }
 
+// NOTE: redundant to styling the theme as we DON'T use this function there, but needed for display cells.
+- (UIColor *)groupedTableViewCellColor
+{
+	switch(currentTheme)
+	{
+		default:
+			return self.backgroundColor;
+		case THEME_NIGHT:
+			return [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:.7];
+	}
+}
+
 - (UIColor *)textColor
 {
 	switch(currentTheme)

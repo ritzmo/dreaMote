@@ -208,7 +208,8 @@
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	myTextView.textColor = [UIColor blackColor];
+	myTextView.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewCellColor; // to optimize drawing set a background color
+	myTextView.textColor = [DreamoteConfiguration singleton].textColor;
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
 	
@@ -488,14 +489,12 @@
 			sourceCell = [CellTextView reusableTableViewCellInView:tableView withIdentifier:kCellTextView_ID];
 
 			((CellTextView *)sourceCell).view = _summaryView;
-			_summaryView.backgroundColor = sourceCell.backgroundColor;
 			break;
 		case 1:
 		case 2:
 			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-			sourceCell.textLabel.textColor = [UIColor blackColor];
 			sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 0;
@@ -510,7 +509,6 @@
 			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-			sourceCell.textLabel.textColor = [UIColor blackColor];
 			sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 1;
@@ -523,7 +521,6 @@
 				sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 				sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-				sourceCell.textLabel.textColor = [UIColor blackColor];
 				sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 				sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 				sourceCell.indentationLevel = 1;
@@ -585,8 +582,7 @@
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-	return sourceCell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];;
 }
 
 #pragma mark - UIViewController delegate methods
