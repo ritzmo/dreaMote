@@ -736,6 +736,7 @@ enum settingsRows
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			sourceCell.imageView.image = nil;
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
+			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			if((NSUInteger)indexPath.row < count)
 				sourceCell.textLabel.text = [[MKStoreManager sharedManager].purchasableObjectsDescription objectAtIndex:indexPath.row];
 			else
