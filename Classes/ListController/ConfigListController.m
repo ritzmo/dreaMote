@@ -738,7 +738,7 @@ enum settingsRows
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	NSInteger sections = purchaseSection;
-	if([SKPaymentQueue canMakePayments] && [MKStoreManager sharedManager].purchasableObjectsDescription.count)
+	if([SKPaymentQueue canMakePayments] && [MKStoreManager sharedManager].purchasableObjectCount)
 		++sections;
 	return sections;
 }
