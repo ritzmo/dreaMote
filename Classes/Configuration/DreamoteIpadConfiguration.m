@@ -12,9 +12,14 @@
 
 - (UIColor *)groupedTableViewBackgroundColor
 {
-	if(self.currentTheme == THEME_DEFAULT)
-		return [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
-	return self.backgroundColor;
+	switch(self.currentTheme)
+	{
+		case THEME_DEFAULT:
+		case THEME_BLUE:
+			return [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
+		default:
+			return self.backgroundColor;
+	}
 }
 
 - (CGFloat)textFieldHeight

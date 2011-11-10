@@ -227,9 +227,13 @@
 
 - (UIColor *)groupedTableViewBackgroundColor
 {
-	if(currentTheme == THEME_DEFAULT)
-		return [UIColor groupTableViewBackgroundColor];
-	return self.backgroundColor;
+	switch(currentTheme)
+	{
+		default:
+			return [UIColor groupTableViewBackgroundColor];
+		case THEME_NIGHT:
+			return [UIColor blackColor];
+	}
 }
 
 - (UIColor *)textColor
