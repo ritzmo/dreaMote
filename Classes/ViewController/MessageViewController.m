@@ -395,14 +395,11 @@
 		case 3:
 			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
-			cell.textLabel.textAlignment = UITextAlignmentLeft;
-			cell.textLabel.textColor = [UIColor blackColor];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 			break;
 		case 4:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
-			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 		default:
 			break;
 	}

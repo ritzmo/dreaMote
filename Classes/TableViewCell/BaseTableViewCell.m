@@ -29,6 +29,7 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 - (void)prepareForReuse
 {
 	self.accessoryType = self.accessoryType;
+	self.editingAccessoryType = self.editingAccessoryType;
 	[self theme];
 	[super prepareForReuse];
 }
@@ -63,6 +64,19 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 	}
 	else
 		self.accessoryView = nil;
+}
+
+- (void)setEditingAccessoryType:(UITableViewCellAccessoryType)editingAccessoryType
+{
+	[super setEditingAccessoryType:editingAccessoryType];
+	if(editingAccessoryType == UITableViewCellAccessoryDisclosureIndicator && [DreamoteConfiguration singleton].currentTheme == THEME_NIGHT)
+	{
+		ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:[DreamoteConfiguration singleton].detailsTextColor
+															 andHighlightedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor];
+		self.editingAccessoryView = cav;
+	}
+	else
+		self.editingAccessoryView = nil;
 }
 
 @end
