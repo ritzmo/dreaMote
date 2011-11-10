@@ -25,7 +25,7 @@ typedef enum {
 - (void)styleToolbar:(UIToolbar *)toolbar;
 - (void)styleSearchBar:(UISearchBar *)searchBar;
 - (void)styleTableView:(UITableView *)tableView;
-- (void)styleTableViewCell:(UITableViewCell *)tableViewCell inTableView:(UITableView *)tableView;
+- (UITableViewCell *)styleTableViewCell:(UITableViewCell *)tableViewCell inTableView:(UITableView *)tableView;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 

@@ -144,39 +144,41 @@
 		[tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
 }
 
-- (void)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView
+- (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView
 {
 	switch(currentTheme)
 	{
 		default:
 		case THEME_DEFAULT:
+		{
+			UIColor *backgroundColor = [UIColor whiteColor];
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-			cell.backgroundView = nil;
+			cell.backgroundColor = backgroundColor;
 			break;
+		}
 		case THEME_BLUE:
+		{
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			if(tableView.style == UITableViewStyleGrouped)
 			{
-				if(!cell.backgroundView)
-					cell.backgroundView = [[UIView alloc] init];
-				cell.backgroundColor = self.backgroundColor;
+				UIColor *backgroundColor = self.backgroundColor;
+				cell.backgroundColor = backgroundColor;
 			}
 			else
 			{
 				// TODO: image?
 			}
 			break;
+		}
 		case THEME_NIGHT:
 		{
 			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:.7] : [UIColor clearColor];
 			cell.selectionStyle = UITableViewCellSelectionStyleGray;
-			if(cell.backgroundView)
-				cell.backgroundView.backgroundColor = backgroundColor;
-			else
-				cell.backgroundColor = backgroundColor;
+			cell.backgroundColor = backgroundColor;
 			break;
 		}
 	}
+	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
