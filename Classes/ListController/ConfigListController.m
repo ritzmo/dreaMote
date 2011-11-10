@@ -706,6 +706,8 @@ enum settingsRows
 					label.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					label.textAlignment = UITextAlignmentRight;
 					label.text = [NSString stringWithFormat:@"%d", [DreamoteConfiguration singleton].currentTheme];
+					label.textColor = [DreamoteConfiguration singleton].textColor;
+					label.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);;
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Theme", @"Configuration item to choose theme");
 					((DisplayCell *)sourceCell).view = label;
@@ -720,6 +722,8 @@ enum settingsRows
 					timeLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					timeLabel.textAlignment = UITextAlignmentRight;
 					timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @"Seconds"), kTimeout];
+					timeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+					timeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 					timeLabel.frame = CGRectMake(0, 0, [timeLabel sizeThatFits:timeLabel.bounds.size].width, kSwitchButtonHeight);;
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connection Timeout", @"Configuration item to choose connection timeout");
 					((DisplayCell *)sourceCell).view = timeLabel;
@@ -734,6 +738,8 @@ enum settingsRows
 					lengthLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					lengthLabel.textAlignment = UITextAlignmentRight;
 					lengthLabel.text = [NSString stringWithFormat:@"%d", [[NSUserDefaults standardUserDefaults] integerForKey:kSearchHistoryLength]];
+					lengthLabel.textColor = [DreamoteConfiguration singleton].textColor;
+					lengthLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 					lengthLabel.frame = CGRectMake(0, 0, [lengthLabel sizeThatFits:lengthLabel.bounds.size].width, kSwitchButtonHeight);;
 					sourceCell.textLabel.text = NSLocalizedString(@"Search History Length", @"Label of cell in config which gives search history length");
 					((DisplayCell *)sourceCell).view = lengthLabel;
@@ -750,6 +756,8 @@ enum settingsRows
 					timeLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					timeLabel.textAlignment = UITextAlignmentRight;
 					timeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"%d min", @"Minutes"), [timeInterval integerValue] / 60];
+					timeLabel.textColor = [DreamoteConfiguration singleton].textColor;
+					timeLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 					timeLabel.frame = CGRectMake(0, 0, [timeLabel sizeThatFits:timeLabel.bounds.size].width, kSwitchButtonHeight);;
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Multi-EPG Interval", @"Configuration item to choose timespan displayed by MultiEPG");
 					((DisplayCell *)sourceCell).view = timeLabel;
