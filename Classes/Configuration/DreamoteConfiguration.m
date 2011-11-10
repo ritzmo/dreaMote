@@ -151,9 +151,8 @@
 		default:
 		case THEME_DEFAULT:
 		{
-			UIColor *backgroundColor = [UIColor whiteColor];
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-			cell.backgroundColor = backgroundColor;
+			cell.backgroundColor = [UIColor whiteColor];
 			break;
 		}
 		case THEME_BLUE:
@@ -161,12 +160,11 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			if(tableView.style == UITableViewStyleGrouped)
 			{
-				UIColor *backgroundColor = self.backgroundColor;
-				cell.backgroundColor = backgroundColor;
+				cell.backgroundColor = self.backgroundColor;
 			}
 			else
 			{
-				// TODO: image?
+				// TODO: image? needs extra handling with multi select!
 			}
 			break;
 		}
@@ -254,7 +252,7 @@
 	{
 		default:
 		case THEME_DEFAULT:
-			return nil;
+			return [UIColor whiteColor];
 		case THEME_BLUE:
 			return [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:0.9];
 		case THEME_NIGHT:
