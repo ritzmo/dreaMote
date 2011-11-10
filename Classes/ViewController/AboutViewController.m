@@ -199,6 +199,7 @@
 
 		sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 		sourceCell.textLabel.text = NSLocalizedString(@"No Data…", @"Placeholder if no data has been received yet.");
+		[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 		return sourceCell;
 	}
 
@@ -255,7 +256,8 @@
 		default:
 			break;
 	}
-	
+
+	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 	return sourceCell;
 }
 

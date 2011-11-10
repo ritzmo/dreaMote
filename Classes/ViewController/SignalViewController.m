@@ -479,7 +479,6 @@ OSStatus RenderTone(
 			sourceCell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
-			sourceCell.textLabel.textColor = [UIColor blackColor];
 			sourceCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			sourceCell.indentationLevel = 1;
@@ -502,7 +501,8 @@ OSStatus RenderTone(
 		default:
 			break;
 	}
-	
+
+	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 	return sourceCell;
 }
 

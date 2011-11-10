@@ -120,6 +120,8 @@
 
 	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	cell.textLabel.text = [_history objectAtIndex:indexPath.row];
+
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

@@ -800,6 +800,8 @@ enum settingsRows
 		default:
 			break;
 	}
+
+	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 	return sourceCell;
 }
 

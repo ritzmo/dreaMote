@@ -519,13 +519,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	MainTableViewCell *cell = [MainTableViewCell reusableTableViewCellInView:tv withIdentifier:kMainCell_ID];
-
-	// set accessory type
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-	// get the view controller's info dictionary based on the indexPath's row
 	cell.dataDictionary = [menuList objectAtIndex:indexPath.row];
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

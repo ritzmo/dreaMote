@@ -944,6 +944,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			break;
 	}
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 	return sourceCell;
 }
 

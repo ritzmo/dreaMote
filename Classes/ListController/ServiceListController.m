@@ -1676,6 +1676,7 @@ enum serviceListTags
 	if(deferLoad) // && !tableView.decelerating)
 		[_piconLoader addOperationWithBlock:deferLoad];
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

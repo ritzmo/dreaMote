@@ -581,6 +581,7 @@
 	cell.events = [_events valueForKey:service.sref];
 	cell.secondsSinceBegin = _secondsSinceBegin;
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

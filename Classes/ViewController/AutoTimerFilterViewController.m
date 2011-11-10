@@ -281,6 +281,8 @@
 		((CellTextField *)cell).delegate = self;
 		((CellTextField *)cell).view = filterTextfield;
 	}
+
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

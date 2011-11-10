@@ -130,6 +130,7 @@
 	CellTextField *cell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 	cell.view = _lengthTextField;
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

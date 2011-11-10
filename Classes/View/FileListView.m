@@ -301,6 +301,7 @@
 	else
 		cell.imageView.image = nil;
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

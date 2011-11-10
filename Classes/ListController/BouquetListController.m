@@ -650,6 +650,7 @@ enum bouquetListTags
 	else
 		cell.editingAccessoryType = UITableViewCellAccessoryNone;
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

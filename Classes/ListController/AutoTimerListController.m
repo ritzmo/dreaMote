@@ -310,6 +310,7 @@
 	cell = [AutoTimerTableViewCell reusableTableViewCellInView:tableView withIdentifier:kAutoTimerCell_ID];
 	((AutoTimerTableViewCell *)cell).timer = [_autotimers objectAtIndex:indexPath.row];
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

@@ -624,6 +624,7 @@
 		cell.movie = [movies objectAtIndex:indexPath.row];
 	}
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

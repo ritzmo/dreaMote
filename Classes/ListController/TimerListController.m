@@ -353,6 +353,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	((TimerTableViewCell *)cell).formatter = dateFormatter;
 	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

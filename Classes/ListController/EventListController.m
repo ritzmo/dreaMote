@@ -497,6 +497,7 @@
 	else
 		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex: indexPath.row];
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

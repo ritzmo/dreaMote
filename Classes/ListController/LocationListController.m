@@ -302,6 +302,7 @@
 	else
 		cell.textLabel.text = ((NSObject<LocationProtocol> *)[_locations objectAtIndex:row]).fullpath;
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

@@ -395,6 +395,7 @@
 	if([_selectedPackages containsObject:cell.package])
 		[cell setMultiSelected:YES animated:NO];
 
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 

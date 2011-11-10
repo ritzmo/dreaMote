@@ -293,6 +293,8 @@ enum generalSectionItems
 			break;
 		default: break;
 	}
+
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 
