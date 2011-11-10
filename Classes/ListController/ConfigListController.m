@@ -64,6 +64,7 @@ enum settingsRows
 - (void)vibrationChanged:(id)sender;
 - (void)separateEventsChanged:(id)sender;
 - (void)rereadData:(NSNotification *)note;
+- (void)productsFetched:(NSNotification *)note;
 
 @property (nonatomic,strong) MBProgressHUD *progressHUD;
 @end
@@ -146,8 +147,15 @@ enum settingsRows
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewDidLoad
+{
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productsFetched:) name:kProductFetchedNotification object:nil];
+	[super viewDidLoad];
+}
+
 - (void)viewDidUnload
 {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productsFetched:) name:kProductFetchedNotification object:nil];
 	_vibrateInRC = nil;
 	_simpleRemote = nil;
 	_sepEventsByDay = nil;
@@ -191,7 +199,7 @@ enum settingsRows
 	[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
 
 	// we need to post a notification so the main view reloads the rc
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 }
@@ -215,6 +223,11 @@ enum settingsRows
 	[_simpleRemote setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kPrefersSimpleRemote]];
 	[_sepEventsByDay setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kSeparateEpgByDay]];
 
+	[(UITableView *)self.view reloadData];
+}
+
+- (void)productsFetched:(NSNotification *)note
+{
 	[(UITableView *)self.view reloadData];
 }
 
@@ -384,7 +397,7 @@ enum settingsRows
 						[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
 
 						// post notification
-						[[NSNotificationCenter defaultCenter] removeObserver:self];
+						[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 						[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 						[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 					}
@@ -844,7 +857,7 @@ enum settingsRows
 						 withRowAnimation: UITableViewRowAnimationFade];
 
 		// post notification
-		[[NSNotificationCenter defaultCenter] removeObserver:self];
+		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 	}
