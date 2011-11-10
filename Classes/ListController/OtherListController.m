@@ -193,6 +193,19 @@
 	[self theme];
 }
 
+- (void)theme
+{
+	[super theme];
+
+	// TODO: find a way to fix this!
+	NSIndexPath *idxPath = [tableView indexPathForSelectedRow];
+	if(idxPath)
+	{
+		[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:idxPath] withRowAnimation:UITableViewRowAnimationNone];
+		[tableView selectRowAtIndexPath:idxPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+	}
+}
+
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
@@ -522,8 +535,7 @@
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.dataDictionary = [menuList objectAtIndex:indexPath.row];
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tv];
 }
 
 /* rotate with device */
