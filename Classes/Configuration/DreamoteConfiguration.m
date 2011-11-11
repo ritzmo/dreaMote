@@ -73,7 +73,7 @@
 			if(isIos5)
 				navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[self textColor], UITextAttributeTextColor, nil];
 			navigationBar.barStyle = UIBarStyleBlack;
-			navigationBar.tintColor = [UIColor colorWithRed:54.0/255.0 green:54.0/255.0 blue:54.0/255.0 alpha:1];
+			navigationBar.tintColor = [UIColor colorWithRed:.17 green:.17 blue:.17 alpha:1];
 			break;
 	}
 }
@@ -98,7 +98,7 @@
 				tabBar.selectedImageTintColor = [UIColor darkGrayColor];
 				break;
 			case THEME_DARK:
-				tabBar.tintColor = [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1];
+				tabBar.tintColor = [UIColor colorWithRed:.17 green:.17 blue:.17 alpha:1];
 				tabBar.selectedImageTintColor = nil;
 				break;
 		}
@@ -122,7 +122,7 @@
 			toolbar.tintColor = nil;
 			break;
 		case THEME_DARK:
-			toolbar.tintColor = [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1];
+			toolbar.tintColor = [UIColor colorWithRed:.17 green:.17 blue:.17 alpha:1];
 			break;
 	}
 }
@@ -144,6 +144,10 @@
 			// TODO: improve
 			searchBar.barStyle = UIBarStyleBlack;
 			searchBar.tintColor = nil;
+			break;
+		case THEME_DARK:
+			searchBar.barStyle = UIBarStyleBlack;
+			searchBar.tintColor = [UIColor colorWithWhite:.1 alpha:1];
 			break;
 	}
 }
@@ -193,7 +197,7 @@
 		}
 		case THEME_DARK:
 		{
-			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1] : [UIColor clearColor];
+			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.35 green:.35 blue:.35 alpha:1] : [UIColor clearColor];
 			if(cell.selectionStyle == UITableViewCellSelectionStyleBlue)
 				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.backgroundColor = backgroundColor;
@@ -240,6 +244,9 @@
 						[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
 						gradientView.centerGradient = YES;
 						break;
+					case THEME_DARK:
+						[gradientView gradientFrom:[UIColor colorWithRed:.35 green:.35 blue:.35 alpha:.75] to:[UIColor colorWithRed:.17 green:.17 blue:.17 alpha:.46]];
+						break;
 				}
 				headerView = gradientView;
 				headerLabel.frame = CGRectMake(10.0, 0.0, 300.0, 44.0);
@@ -281,7 +288,7 @@
 		case THEME_NIGHT:
 			return [UIColor blackColor];
 		case THEME_DARK:
-			return [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1];
+			return [UIColor colorWithRed:.35 green:.35 blue:.35 alpha:1];
 	}
 }
 
@@ -294,7 +301,7 @@
 		case THEME_NIGHT:
 			return [UIColor blackColor];
 		case THEME_DARK:
-			return [UIColor colorWithRed:54.0/255.0 green:54.0/255.0 blue:54.0/255.0 alpha:1];
+			return [UIColor colorWithRed:.17 green:.17 blue:.17 alpha:1];
 	}
 }
 
