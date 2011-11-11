@@ -69,6 +69,12 @@
 			navigationBar.barStyle = UIBarStyleBlack;
 			navigationBar.tintColor = nil;
 			break;
+		case THEME_DARK:
+			if(isIos5)
+				navigationBar.titleTextAttributes = [NSDictionary dictionaryWithObjectsAndKeys:[self textColor], UITextAttributeTextColor, nil];
+			navigationBar.barStyle = UIBarStyleBlack;
+			navigationBar.tintColor = [UIColor colorWithRed:54.0/255.0 green:54.0/255.0 blue:54.0/255.0 alpha:1];
+			break;
 	}
 }
 
@@ -84,12 +90,16 @@
 				tabBar.selectedImageTintColor = nil;
 				break;
 			case THEME_BLUE:
-				tabBar.tintColor = [UIColor darkBlueColor];
-				tabBar.selectedImageTintColor = [UIColor colorWithRed:.9 green:.2 blue:.15 alpha:.5]; // TODO: decide if I like this color :D
+				tabBar.tintColor = [UIColor colorWithRed:0 green:0 blue:.4 alpha:1];
+				tabBar.selectedImageTintColor = [UIColor clearColor];
 				break;
 			case THEME_NIGHT:
 				tabBar.tintColor = [UIColor blackColor];
 				tabBar.selectedImageTintColor = [UIColor darkGrayColor];
+				break;
+			case THEME_DARK:
+				tabBar.tintColor = [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1];
+				tabBar.selectedImageTintColor = nil;
 				break;
 		}
 	}
@@ -110,6 +120,9 @@
 		case THEME_NIGHT:
 			toolbar.barStyle = UIBarStyleBlack;
 			toolbar.tintColor = nil;
+			break;
+		case THEME_DARK:
+			toolbar.tintColor = [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1];
 			break;
 	}
 }
@@ -172,11 +185,18 @@
 		}
 		case THEME_NIGHT:
 		{
-			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:.7] : [UIColor clearColor];
+			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1] : [UIColor clearColor];
 			if(cell.selectionStyle == UITableViewCellSelectionStyleBlue)
 				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.backgroundColor = backgroundColor;
 			break;
+		}
+		case THEME_DARK:
+		{
+			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1] : [UIColor clearColor];
+			if(cell.selectionStyle == UITableViewCellSelectionStyleBlue)
+				cell.selectionStyle = UITableViewCellSelectionStyleGray;
+			cell.backgroundColor = backgroundColor;
 		}
 	}
 	return cell;
@@ -224,7 +244,7 @@
 				headerView = gradientView;
 				headerLabel.frame = CGRectMake(10.0, 0.0, 300.0, 44.0);
 			}
-			else if(currentTheme == THEME_NIGHT)
+			else if(currentTheme == THEME_NIGHT || currentTheme == THEME_DARK)
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
@@ -257,9 +277,11 @@
 		case THEME_DEFAULT:
 			return [UIColor whiteColor];
 		case THEME_BLUE:
-			return [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:0.9];
+			return [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
 		case THEME_NIGHT:
 			return [UIColor blackColor];
+		case THEME_DARK:
+			return [UIColor colorWithRed:80.0/255.0 green:80.0/255.0 blue:80.0/255.0 alpha:1];
 	}
 }
 
@@ -271,6 +293,8 @@
 			return [UIColor groupTableViewBackgroundColor];
 		case THEME_NIGHT:
 			return [UIColor blackColor];
+		case THEME_DARK:
+			return [UIColor colorWithRed:54.0/255.0 green:54.0/255.0 blue:54.0/255.0 alpha:1];
 	}
 }
 
@@ -282,7 +306,7 @@
 		default:
 			return self.backgroundColor;
 		case THEME_NIGHT:
-			return [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:.7];
+			return [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1];
 	}
 }
 
@@ -294,6 +318,8 @@
 			return [UIColor blackColor];
 		case THEME_NIGHT:
 			return [UIColor grayColor];
+		case THEME_DARK:
+			return [UIColor whiteColor];
 	}
 }
 
@@ -316,6 +342,8 @@
 			return [UIColor grayColor];
 		case THEME_NIGHT:
 			return [UIColor darkGrayColor];
+		case THEME_DARK:
+			return [UIColor lightGrayColor];
 	}
 }
 

@@ -12,6 +12,7 @@
 typedef enum {
 	THEME_DEFAULT = 0,
 	THEME_BLUE,
+	THEME_DARK,
 	THEME_NIGHT,
 	THEME_MAX,
 } themeType;

@@ -458,7 +458,7 @@ enum settingsRows
 		else if(cell.tag == kThemeRowTag)
 		{
 			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
-													   [NSArray arrayWithObjects:@"Default", @"Blue", @"Night", nil]
+													   [NSArray arrayWithObjects:@"Default", @"Blue", @"Dark", @"Night", nil]
 																						andSelection:[DreamoteConfiguration singleton].currentTheme
 																							andTitle:NSLocalizedString(@"Theme", @"Title for theme selection")];
 			vc.callback = ^(NSUInteger newSelection, BOOL isFinal, BOOL canceling)
