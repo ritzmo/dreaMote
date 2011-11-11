@@ -179,7 +179,10 @@
 		case THEME_DEFAULT:
 		{
 			if(tableView.style == UITableViewStylePlain)
+			{
 				cell.backgroundView = nil;
+				cell.selectedBackgroundView = nil;
+			}
 			if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			cell.backgroundColor = [UIColor whiteColor];
@@ -198,6 +201,8 @@
 				UIImage *image = [UIImage imageNamed:@"Cell_Blue.png"];
 				cell.backgroundView = [[UIImageView alloc] initWithImage:image];
 				cell.backgroundColor = nil;
+				image = [UIImage imageNamed:@"CellHighlighted_Blue.png"];
+				cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:image];
 			}
 			break;
 		}
@@ -208,6 +213,7 @@
 			{
 				backgroundColor = nil;
 				cell.backgroundView = nil;
+				cell.selectedBackgroundView = nil;
 			}
 			else
 				backgroundColor = [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1];
@@ -223,6 +229,7 @@
 			{
 				backgroundColor = nil;
 				cell.backgroundView = nil;
+				cell.selectedBackgroundView = nil;
 			}
 			else
 				backgroundColor = [UIColor colorWithRed:.35 green:.35 blue:.35 alpha:1];
@@ -279,9 +286,9 @@
 			}
 			else
 			{
-				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 40.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(50.0, 0.0, 260.0, 44.0);
+				labelFrame = CGRectMake(50.0, 0.0, 260.0, 40.0);
 				color = [UIColor darkBlueColor];
 				font = [UIFont fontWithName:@"Georgia-Italic" size:17];
 			}
