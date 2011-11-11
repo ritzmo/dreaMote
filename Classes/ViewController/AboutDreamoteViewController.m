@@ -119,6 +119,7 @@
 			html = [html stringByReplacingOccurrencesOfString:@"@CSS" withString:@""];
 			break;
 		case THEME_NIGHT:
+		case THEME_DARK:
 			html = [html stringByReplacingOccurrencesOfString:@"@CSS" withString:@"a:visited,a{color:darkgray}body,li,ul,div{color:gray}"];
 			break;
 	}
