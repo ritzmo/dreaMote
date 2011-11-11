@@ -178,6 +178,8 @@
 		default:
 		case THEME_DEFAULT:
 		{
+			if(tableView.style == UITableViewStylePlain)
+				cell.backgroundView = nil;
 			if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			cell.backgroundColor = [UIColor whiteColor];
@@ -195,12 +197,20 @@
 			{
 				UIImage *image = [UIImage imageNamed:@"Cell_Blue.png"];
 				cell.backgroundView = [[UIImageView alloc] initWithImage:image];
+				cell.backgroundColor = nil;
 			}
 			break;
 		}
 		case THEME_NIGHT:
 		{
-			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1] : [UIColor clearColor];
+			UIColor *backgroundColor = nil;
+			if(tableView.style == UITableViewStylePlain)
+			{
+				backgroundColor = nil;
+				cell.backgroundView = nil;
+			}
+			else
+				backgroundColor = [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1];
 			if(cell.selectionStyle == UITableViewCellSelectionStyleBlue)
 				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.backgroundColor = backgroundColor;
@@ -208,10 +218,18 @@
 		}
 		case THEME_DARK:
 		{
-			UIColor *backgroundColor = (tableView.style == UITableViewStyleGrouped) ? [UIColor colorWithRed:.35 green:.35 blue:.35 alpha:1] : [UIColor clearColor];
+			UIColor *backgroundColor = nil;
+			if(tableView.style == UITableViewStylePlain)
+			{
+				backgroundColor = nil;
+				cell.backgroundView = nil;
+			}
+			else
+				backgroundColor = [UIColor colorWithRed:.35 green:.35 blue:.35 alpha:1];
 			if(cell.selectionStyle == UITableViewCellSelectionStyleBlue)
 				cell.selectionStyle = UITableViewCellSelectionStyleGray;
 			cell.backgroundColor = backgroundColor;
+			break;
 		}
 	}
 	return cell;
