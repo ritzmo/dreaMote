@@ -37,6 +37,11 @@
 @property (nonatomic, readonly) UISearchBar *searchBar;
 
 /*!
+ @brief Is this view slave to a split view?
+ */
+@property (nonatomic) BOOL isSlave;
+
+/*!
  @brief View will reapper.
  */
 @property (nonatomic) BOOL willReappear;

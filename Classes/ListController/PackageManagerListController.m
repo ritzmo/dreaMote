@@ -35,7 +35,7 @@
 
 @implementation PackageManagerListController
 
-@synthesize searchBar;
+@synthesize searchBar, isSlave;
 
 /* initialize */
 - (id)init

@@ -90,6 +90,7 @@
 	{
 		_movieListController.movieViewController = nil;
 		_movieListController.isSplit = NO;
+		_movieListController.isSlave = YES;
 		self.delegate = _movieListController;
 		newViewControllers = _viewArrayLocation;
 	}
@@ -102,6 +103,7 @@
 		_movieListController.navigationItem.leftBarButtonItem = nil; // FIXME: GAAAAAH!
 		_movieListController.movieViewController = viewController;
 		_movieListController.isSplit = YES;
+		_movieListController.isSlave = NO;
 		self.delegate = viewController;
 		newViewControllers = [NSArray arrayWithObjects: _movieListNavigationController, navController, nil];
 	}

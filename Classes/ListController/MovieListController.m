@@ -32,7 +32,7 @@
 
 @implementation MovieListController
 
-@synthesize popoverController, isSplit;
+@synthesize popoverController, isSplit, isSlave;
 #if IS_FULL()
 @synthesize searchBar;
 #endif

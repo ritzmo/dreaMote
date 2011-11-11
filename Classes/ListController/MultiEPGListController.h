@@ -64,6 +64,11 @@
 @property (nonatomic, unsafe_unretained) NSObject<MultiEPGDelegate> *multiEpgDelegate;
 
 /*!
+ @brief Is this view slave to a split view?
+ */
+@property (nonatomic) BOOL isSlave;
+
+/*!
  @brief Pending requests.
  */
 @property (nonatomic) NSInteger pendingRequests;

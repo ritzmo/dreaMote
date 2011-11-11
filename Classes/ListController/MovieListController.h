@@ -77,6 +77,11 @@
 @property (nonatomic) BOOL isSplit;
 
 /*!
+ @brief Is this view slave to a split view?
+ */
+@property (nonatomic) BOOL isSlave;
+
+/*!
  @brief Movie View Controller
  */
 @property (strong) MovieViewController *movieViewController;

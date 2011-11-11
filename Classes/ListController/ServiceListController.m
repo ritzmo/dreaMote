@@ -216,6 +216,12 @@ enum serviceListTags
 	return _reloading;
 }
 
+/*! getter of isSlave property */
+- (BOOL)isSlave
+{
+	return mgSplitViewController != nil;
+}
+
 /* getter for isRadio property */
 - (BOOL)isRadio
 {
@@ -1388,6 +1394,7 @@ enum serviceListTags
 		}
 		_eventListController.service = service;
 		_eventListController.serviceListController = self;
+		_eventListController.isSlave = self.isSlave;
 
 		NSInteger idx = NSNotFound;
 		if([[_mainList lastObject] conformsToProtocol:@protocol(EventProtocol)])
@@ -1734,6 +1741,7 @@ enum serviceListTags
 
 		_eventListController.service = service;
 		_eventListController.serviceListController = self;
+		_eventListController.isSlave = self.isSlave;
 
 		_refreshServices = NO;
 		// XXX: wtf?

@@ -48,6 +48,7 @@
 @synthesize multiEpgDelegate;
 @synthesize pendingRequests;
 @synthesize progressHUD;
+@synthesize isSlave;
 
 - (id)init
 {

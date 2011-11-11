@@ -8,6 +8,8 @@
 
 #import "UIViewController+Theming.h"
 
+#import "ServiceListController.h" // silence "isSlave" warning
+
 #import "Constants.h"
 #import "DreamoteConfiguration.h"
 
@@ -27,7 +29,10 @@
 	if([self respondsToSelector:@selector(toolbar)])
 		[singleton styleToolbar:[(id)self toolbar]];
 	if([self respondsToSelector:@selector(tableView)])
-		[singleton styleTableView:[(id)self tableView]];
+	{
+		BOOL slave = ([self respondsToSelector:@selector(isSlave)]) && [(id)self isSlave] ? YES : NO;
+		[singleton styleTableView:[(id)self tableView] isSlave:slave];
+	}
 }
 
 - (void)doTheme:(NSNotification *)note

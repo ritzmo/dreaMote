@@ -48,7 +48,7 @@
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
 @synthesize serviceListController = _serviceListController;
-@synthesize searchBar;
+@synthesize searchBar, isSlave;
 
 /* initialize */
 - (id)init

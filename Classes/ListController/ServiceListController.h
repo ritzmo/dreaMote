@@ -162,6 +162,11 @@
 @property (nonatomic) BOOL isRadio;
 
 /*!
+ @brief Is this view slave to a split view?
+ */
+@property (nonatomic, readonly) BOOL isSlave;
+
+/*!
  @brief Associated MGSplitViewController.
  */
 @property (nonatomic, unsafe_unretained) MGSplitViewController *mgSplitViewController;

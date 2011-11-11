@@ -154,7 +154,17 @@
 
 - (void)styleTableView:(UITableView *)tableView
 {
-	tableView.backgroundColor = (tableView.style == UITableViewStyleGrouped) ? self.groupedTableViewBackgroundColor : self.backgroundColor;
+	[self styleTableView:tableView isSlave:NO];
+}
+
+- (void)styleTableView:(UITableView *)tableView isSlave:(BOOL)slave
+{
+	UIColor *backgroundColor = nil;
+	if(slave && currentTheme == THEME_DARK)
+		backgroundColor = self.groupedTableViewBackgroundColor;
+	else
+		backgroundColor = (tableView.style == UITableViewStyleGrouped) ? self.groupedTableViewBackgroundColor : self.backgroundColor;
+	tableView.backgroundColor = backgroundColor;
 	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	[tableView reloadData]; // force reload so the cells apply the new theme
 	if(indexPath)

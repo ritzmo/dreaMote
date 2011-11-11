@@ -514,12 +514,18 @@
 			if([detailViewController isKindOfClass:[UINavigationController class]])
 				navController = (UINavigationController *)detailViewController;
 			else
+			{
+				if([detailViewController respondsToSelector:@selector(setIsSlave:)])
+					[(id)detailViewController setIsSlave:YES];
 				navController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
+			}
 			[[DreamoteConfiguration singleton] styleNavigationController:navController];
 			mgSplitViewController.detailViewController = navController;
 		}
 		else
 		{
+			if([targetViewController respondsToSelector:@selector(setIsSlave:)])
+				[(id)targetViewController setIsSlave:YES];
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
 			[[DreamoteConfiguration singleton] styleNavigationController:navController];
 			mgSplitViewController.detailViewController = navController;

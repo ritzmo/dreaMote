@@ -113,6 +113,11 @@
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 /*!
+ @brief Is this view a slave/details view to a split view?
+ */
+@property (nonatomic) BOOL isSlave;
+
+/*!
  @brief Popover Controller.
  */
 @property (nonatomic, strong) UIPopoverController *popoverController;
