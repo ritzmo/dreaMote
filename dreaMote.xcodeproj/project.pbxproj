@@ -10,6 +10,12 @@
 		DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
+		DA2F23B7146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
+		DA2F23B8146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
+		DA2F23B9146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
+		DA2F23BC146DB87E007DC7F6 /* Header_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */; };
+		DA2F23BD146DB87E007DC7F6 /* Header_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */; };
+		DA2F23BE146DB87E007DC7F6 /* Header_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */; };
 		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
@@ -1089,6 +1095,8 @@
 
 /* Begin PBXFileReference section */
 		DA21B20914561FB7002903A4 /* PackageManager.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PackageManager.png; sourceTree = "<group>"; };
+		DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Blue.png; sourceTree = "<group>"; };
+		DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Header_Blue.png; sourceTree = "<group>"; };
 		DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteConfiguration.h; sourceTree = "<group>"; };
 		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
 		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
@@ -2494,6 +2502,8 @@
 		DAC8BEF713B200F100CA00D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */,
+				DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */,
 				DAC8BEFE13B200F100CA00D9 /* EGOTableViewPullRefresh */,
 				DAC8BF0A13B200F100CA00D9 /* Full */,
 				DAC8BF3B13B200F100CA00D9 /* Lite */,
@@ -3455,6 +3465,8 @@
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA7920E51461ABCF0040615E /* FBDialog.bundle in Resources */,
 				DA73A4111463D6E800E6F505 /* MKStoreKitConfigs Full.plist in Resources */,
+				DA2F23B7146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
+				DA2F23BC146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3560,6 +3572,8 @@
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E61461ABCF0040615E /* FBDialog.bundle in Resources */,
 				DA73A4131463D6F300E6F505 /* MKStoreKitConfigs Lite.plist in Resources */,
+				DA2F23B8146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
+				DA2F23BD146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3661,6 +3675,8 @@
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E71461ABCF0040615E /* FBDialog.bundle in Resources */,
+				DA2F23B9146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
+				DA2F23BE146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

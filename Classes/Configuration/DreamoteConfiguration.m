@@ -91,7 +91,7 @@
 				break;
 			case THEME_BLUE:
 				tabBar.tintColor = [UIColor colorWithRed:0 green:0 blue:.4 alpha:1];
-				tabBar.selectedImageTintColor = [UIColor clearColor];
+				tabBar.selectedImageTintColor = [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
 				break;
 			case THEME_NIGHT:
 				tabBar.tintColor = [UIColor blackColor];
@@ -99,7 +99,7 @@
 				break;
 			case THEME_DARK:
 				tabBar.tintColor = [UIColor colorWithRed:.17 green:.17 blue:.17 alpha:1];
-				tabBar.selectedImageTintColor = nil;
+				tabBar.selectedImageTintColor = [UIColor colorWithRed:.33 green:.33 blue:.33 alpha:1];;
 				break;
 		}
 	}
@@ -193,7 +193,8 @@
 			}
 			else
 			{
-				// TODO: image? needs extra handling with multi select!
+				UIImage *image = [UIImage imageNamed:@"Cell_Blue.png"];
+				cell.backgroundView = [[UIImageView alloc] initWithImage:image];
 			}
 			break;
 		}
@@ -221,58 +222,109 @@
 #ifndef defaultSectionHeaderHeight
 #define defaultSectionHeaderHeight 34
 #endif
-	if(currentTheme != THEME_DEFAULT)
-		return 44.0;
-	return defaultSectionHeaderHeight;
+	switch(currentTheme)
+	{
+		default:
+			return defaultSectionHeaderHeight;
+		case THEME_BLUE:
+			return 40.0;
+		case THEME_DARK:
+		case THEME_NIGHT:
+			return 44.0;
+	}
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-	if(currentTheme != THEME_DEFAULT)
-	{
-		NSString *text = [tableView.dataSource tableView:tableView titleForHeaderInSection:section];
-		if(text)
-		{
-			UIView *headerView = nil;
-			UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-			headerLabel.backgroundColor = [UIColor clearColor];
-			headerLabel.opaque = NO;
-			headerLabel.textColor = self.sectionLabelColor;
-			headerLabel.font = [UIFont fontWithName:@"Helvetica" size:20]; // TODO: find a better & free font :D
-			headerLabel.text = text;
+	if(currentTheme == THEME_DEFAULT)
+		return nil;
+	NSString *text = [tableView.dataSource tableView:tableView titleForHeaderInSection:section];
+	if(!text)
+		return nil;
 
+	UIView *headerView = nil;
+	CGRect labelFrame;
+	UIColor *color = nil;
+	UIFont *font = nil;
+	switch(currentTheme)
+	{
+		default:
+		//case THEME_BLUE:
+		{
 			if(tableView.style == UITableViewStylePlain)
 			{
-				// NOTE: we might want to use an image for this, it annoys me when the gradient turns translucent (which an image won't :D)
-				GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
-				switch(currentTheme)
-				{
-					default:
-						[gradientView gradientFrom:[UIColor colorWithRed:1 green:0 blue:0 alpha:.75] to:[UIColor colorWithRed:1 green:0 blue:0 alpha:.46]];
-						break;
-					case THEME_NIGHT:
-						[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
-						gradientView.centerGradient = YES;
-						break;
-					case THEME_DARK:
-						[gradientView gradientFrom:[UIColor colorWithRed:.35 green:.35 blue:.35 alpha:.75] to:[UIColor colorWithRed:.17 green:.17 blue:.17 alpha:.46]];
-						break;
-				}
-				headerView = gradientView;
-				headerLabel.frame = CGRectMake(10.0, 0.0, 300.0, 44.0);
+				UIImage *image = [UIImage imageNamed:@"Header_Blue.png"];
+				headerView = [[UIImageView alloc] initWithImage:image];
+				labelFrame = headerView.frame;
+				labelFrame.origin.x += 10; labelFrame.size.width -= 10;
+				font = [UIFont fontWithName:@"Georgia" size:20];
 			}
-			else if(currentTheme == THEME_NIGHT || currentTheme == THEME_DARK)
+			else
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				headerLabel.frame = CGRectMake(30.0, 0.0, 260.0, 44.0);
-				headerLabel.shadowColor = self.sectionLabelShadowColor;
-				headerLabel.shadowOffset = CGSizeMake(0,1);
+				labelFrame = CGRectMake(50.0, 0.0, 260.0, 44.0);
+				color = [UIColor darkBlueColor];
+				font = [UIFont fontWithName:@"Georgia-Italic" size:17];
 			}
-			[headerView addSubview:headerLabel];
-
-			return headerView;
+			break;
 		}
+		case THEME_NIGHT:
+		{
+			if(tableView.style == UITableViewStylePlain)
+			{
+				GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
+				gradientView.centerGradient = YES;
+				headerView = gradientView;
+				labelFrame = CGRectMake(10.0, 0.0, 300.0, 44.0);
+			}
+			else
+			{
+				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				headerView.backgroundColor = [UIColor clearColor];
+				labelFrame = CGRectMake(30.0, 0.0, 260.0, 44.0);
+			}
+			font = [UIFont fontWithName:@"Helvetica" size:20];
+			break;
+		}
+		case THEME_DARK:
+		{
+			if(tableView.style == UITableViewStylePlain)
+			{
+				GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				[gradientView gradientFrom:[UIColor colorWithRed:.35 green:.35 blue:.35 alpha:.75] to:[UIColor colorWithRed:.17 green:.17 blue:.17 alpha:.46]];
+				headerView = gradientView;
+				labelFrame = CGRectMake(10.0, 0.0, 300.0, 44.0);
+			}
+			else
+			{
+				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
+				headerView.backgroundColor = [UIColor clearColor];
+				labelFrame = CGRectMake(30.0, 0.0, 260.0, 44.0);
+			}
+			font = [UIFont fontWithName:@"Helvetica" size:20];
+			break;
+		}
+	}
+
+	if(headerView)
+	{
+		UILabel *headerLabel = [[UILabel alloc] initWithFrame:labelFrame];
+		headerLabel.backgroundColor = [UIColor clearColor];
+		headerLabel.opaque = NO;
+		headerLabel.textColor = color ? color : self.sectionLabelColor;
+		headerLabel.font = font;
+		headerLabel.text = text;
+		UIColor *shadowColor = self.sectionLabelShadowColor;
+		if(shadowColor)
+		{
+			headerLabel.shadowColor = shadowColor;
+			headerLabel.shadowOffset = CGSizeMake(0, 1);
+		}
+		[headerView addSubview:headerLabel];
+
+		return headerView;
 	}
 	return nil;
 }
@@ -298,7 +350,7 @@
 		case THEME_NIGHT:
 			return [UIColor blackColor];
 		case THEME_DARK:
-			return [UIColor colorWithRed:.35 green:.35 blue:.35 alpha:1];
+			return [UIColor colorWithRed:.33 green:.33 blue:.33 alpha:1];
 	}
 }
 
@@ -311,7 +363,7 @@
 		case THEME_NIGHT:
 			return [UIColor blackColor];
 		case THEME_DARK:
-			return [UIColor colorWithRed:.17 green:.17 blue:.17 alpha:1];
+			return [UIColor colorWithRed:.18 green:.18 blue:.18 alpha:1];
 	}
 }
 
@@ -392,6 +444,8 @@
 	{
 		default:
 			return [UIColor whiteColor];
+		case THEME_BLUE:
+			return [UIColor colorWithRed:0.95 green:0.95 blue:0.95 alpha:1];
 		case THEME_NIGHT:
 			return [UIColor lightGrayColor];
 	}
@@ -399,7 +453,14 @@
 
 - (UIColor *)sectionLabelShadowColor
 {
-	return [UIColor grayColor];
+	switch(currentTheme)
+	{
+		default:
+			return nil;
+		case THEME_NIGHT:
+		case THEME_DARK:
+			return [UIColor grayColor];
+	}
 }
 
 - (CGFloat)textFieldHeight
