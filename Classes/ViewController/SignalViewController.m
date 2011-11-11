@@ -11,6 +11,7 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import "Signal.h"
 
@@ -271,6 +272,27 @@ OSStatus RenderTone(
 	_audioToggle.backgroundColor = [UIColor clearColor];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = singleton.tintColor;
+		//_snr.minimumTrackTintColor = tintColor;
+		//_agc.minimumTrackTintColor = tintColor;
+		//_interval.minimumTrackTintColor = tintColor;
+		_audioToggle.onTintColor = tintColor;
+	}
+	//else
+	{
+		UIImage *sliderImage = singleton.sliderImage;
+		[_snr setMinimumTrackImage:sliderImage forState:UIControlStateNormal];
+		[_agc setMinimumTrackImage:sliderImage forState:UIControlStateNormal];
+		[_interval setMinimumTrackImage:sliderImage forState:UIControlStateNormal];
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad

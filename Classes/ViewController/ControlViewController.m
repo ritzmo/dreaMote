@@ -11,6 +11,7 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import "DisplayCell.h"
 
@@ -128,6 +129,21 @@
 	switchControl.backgroundColor = [UIColor clearColor];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	if([UIDevice newerThanIos:5.0f])
+	{
+		//slider.minimumTrackTintColor = singleton.tintColor;
+		switchControl.onTintColor = singleton.tintColor;
+	}
+	//else
+	{
+		[slider setMinimumTrackImage:singleton.sliderImage forState:UIControlStateNormal];
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad

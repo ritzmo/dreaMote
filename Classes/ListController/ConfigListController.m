@@ -13,6 +13,7 @@
 #import "NSData+Base64.h"
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import <TableViewCell/DisplayCell.h>
 
@@ -115,6 +116,7 @@ enum settingsRows
 /* layout */
 - (void)loadView
 {
+	const BOOL isIpad = IS_IPAD();
 	_tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStyleGrouped];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
@@ -123,17 +125,20 @@ enum settingsRows
 	//_tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	if(IS_IPAD())
+	if(isIpad)
 		_tableView.backgroundView = [[UIView alloc] init];
 
 	self.view = _tableView;
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-	// RC Vibration
-	_vibrateInRC = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_vibrateInRC.on = [stdDefaults boolForKey: kVibratingRC];
-	[_vibrateInRC addTarget:self action:@selector(vibrationChanged:) forControlEvents:UIControlEventValueChanged];
-	_vibrateInRC.backgroundColor = [UIColor clearColor];
+	if(!isIpad)
+	{
+		// RC Vibration
+		_vibrateInRC = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+		_vibrateInRC.on = [stdDefaults boolForKey: kVibratingRC];
+		[_vibrateInRC addTarget:self action:@selector(vibrationChanged:) forControlEvents:UIControlEventValueChanged];
+		_vibrateInRC.backgroundColor = [UIColor clearColor];
+	}
 
 	// Simple remote
 	_simpleRemote = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -151,6 +156,18 @@ enum settingsRows
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	[self theme];
+}
+
+- (void)theme
+{
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
+		_vibrateInRC.onTintColor = tintColor;
+		_simpleRemote.onTintColor = tintColor;
+		_sepEventsByDay.onTintColor = tintColor;
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad

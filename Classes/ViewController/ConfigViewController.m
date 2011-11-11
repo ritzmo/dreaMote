@@ -12,6 +12,7 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import <TableViewCell/DisplayCell.h>
 
@@ -344,6 +345,19 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	[self setEditing:YES animated:NO];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
+		_sslSwitch.onTintColor = tintColor;
+		_singleBouquetSwitch.onTintColor = tintColor;
+		_advancedRemoteSwitch.onTintColor = tintColor;
+		_nowNextSwitch.onTintColor = tintColor;
+	}
+	[super theme];
 }
 
 - (void)viewDidUnload

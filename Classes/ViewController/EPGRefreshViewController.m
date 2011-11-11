@@ -21,6 +21,7 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
@@ -280,6 +281,21 @@ enum generalSectionItems
 	[self setEditing:YES animated:YES];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
+		_enabled.onTintColor = tintColor;
+		_force.onTintColor = tintColor;
+		_wakeup.onTintColor = tintColor;
+		_shutdown.onTintColor = tintColor;
+		_inherit.onTintColor = tintColor;
+		_parse.onTintColor = tintColor;
+	}
+	[super theme];
 }
 
 - (void)viewDidUnload

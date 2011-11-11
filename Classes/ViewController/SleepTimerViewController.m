@@ -14,6 +14,7 @@
 #import "DisplayCell.h"
 
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 enum generalSectionItems
 {
@@ -127,6 +128,17 @@ enum generalSectionItems
 	[self setEditing:YES animated:YES];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
+		_enabled.onTintColor = tintColor;
+		_shutdown.onTintColor = tintColor;
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad

@@ -456,6 +456,7 @@
 {
 	switch (currentTheme)
 	{
+		case THEME_BLUE: // TODO: use another iamge for this?
 		default:
 			return [UIColor greenColor];
 		case THEME_NIGHT:
@@ -470,7 +471,7 @@
 		default:
 			return nil;
 		case THEME_BLUE:
-			return [UIColor darkBlueColor];
+			return [UIColor colorWithRed:0.16 green:0.36 blue:0.66 alpha:1];
 	}
 }
 
@@ -496,6 +497,17 @@
 		case THEME_NIGHT:
 		case THEME_DARK:
 			return [UIColor grayColor];
+	}
+}
+
+- (UIImage *)sliderImage
+{
+	switch(currentTheme)
+	{
+		default:
+			return nil;
+		case THEME_BLUE:
+			return [[UIImage imageNamed:@"Slider_Blue.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
 	}
 }
 

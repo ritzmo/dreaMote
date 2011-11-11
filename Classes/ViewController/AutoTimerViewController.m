@@ -24,6 +24,7 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import <TableViewCell/BaseTableViewCell.h>
 
@@ -454,6 +455,23 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	[self setEditing: _creatingNewTimer];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
+		_timerEnabled.onTintColor = tintColor;
+		_exactSearch.onTintColor = tintColor;
+		_sensitiveSearch.onTintColor = tintColor;
+		_overrideAlternatives.onTintColor = tintColor;
+		_timeframeSwitch.onTintColor = tintColor;
+		_timerJustplay.onTintColor = tintColor;
+		_timespanSwitch.onTintColor = tintColor;
+		_maxdurationSwitch.onTintColor = tintColor;
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad

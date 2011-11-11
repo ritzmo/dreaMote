@@ -20,6 +20,9 @@
 		DA2F23C1146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */; };
 		DA2F23C2146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */; };
 		DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */; };
+		DA2F23C7146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
+		DA2F23C8146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
+		DA2F23C9146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
 		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
@@ -1104,6 +1107,7 @@
 		DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellHighlighted_Blue.png; sourceTree = "<group>"; };
 		DA2F23C3146DD253007DC7F6 /* MultiEPGCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGCellContentView.h; sourceTree = "<group>"; };
 		DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGCellContentView.m; sourceTree = "<group>"; };
+		DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Blue.png; sourceTree = "<group>"; };
 		DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteConfiguration.h; sourceTree = "<group>"; };
 		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
 		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
@@ -2585,6 +2589,7 @@
 				DAC8BF4C13B200F100CA00D9 /* Setup_2.png */,
 				DA681B2013B4976700232190 /* Setup_Auto.png */,
 				DAC8BF4D13B200F100CA00D9 /* Simplerc.png */,
+				DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */,
 				DAC8BF4E13B200F100CA00D9 /* system-shutdown.png */,
 				DAC8BF4F13B200F100CA00D9 /* timer.png */,
 				DAC8BF5013B200F100CA00D9 /* twitter-b.png */,
@@ -3478,6 +3483,7 @@
 				DA2F23B7146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
 				DA2F23BC146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 				DA2F23C0146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */,
+				DA2F23C7146DE818007DC7F6 /* Slider_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3586,6 +3592,7 @@
 				DA2F23B8146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
 				DA2F23BD146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 				DA2F23C1146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */,
+				DA2F23C8146DE818007DC7F6 /* Slider_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3690,6 +3697,7 @@
 				DA2F23B9146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
 				DA2F23BE146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 				DA2F23C2146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */,
+				DA2F23C9146DE818007DC7F6 /* Slider_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

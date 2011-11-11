@@ -21,6 +21,7 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
+#import "UIDevice+SystemVersion.h"
 
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
@@ -413,6 +414,17 @@ enum timerSections
 	[self setEditing: _creatingNewTimer];
 
 	[self theme];
+}
+
+- (void)theme
+{
+	if([UIDevice newerThanIos:5.0f])
+	{
+		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
+		_timerEnabled.onTintColor = tintColor;
+		_timerJustplay.onTintColor = tintColor;
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad
