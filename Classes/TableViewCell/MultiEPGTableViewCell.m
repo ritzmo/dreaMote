@@ -9,10 +9,6 @@
 #import "Constants.h"
 #import "MultiEPGTableViewCell.h"
 
-#if IS_DEBUG()
-#import "NSDateFormatter+FuzzyFormatting.h"
-#endif
-
 /*!
  @brief Cell identifier for this cell.
  */
@@ -20,19 +16,9 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 #define kServiceWidth ((IS_IPAD()) ? 100 : 70)
 
-/*!
- @brief Private functions of ServiceTableViewCell.
- */
-@interface MultiEPGTableViewCell()
-/*!
- @brief Private helper to create a label.
- */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold;
-@end
-
 @implementation MultiEPGTableViewCell
 
-@synthesize begin;
+@synthesize epgView;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -42,9 +28,9 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		self.textLabel.font = [UIFont boldSystemFontOfSize:kMultiEPGFontSize];
 		self.accessoryType = UITableViewCellAccessoryNone;
 		self.backgroundColor = [UIColor clearColor];
-		
-		_lines = [[NSMutableArray alloc] init];
-		_secondsSinceBegin = -1;
+
+		epgView = [[MultiEPGCellContentView alloc] initWithFrame:CGRectZero];
+		[self.contentView addSubview:epgView];
 	}
 
 	return self;
@@ -52,9 +38,8 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 - (void)prepareForReuse
 {
-	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
 	self.service = nil;
-	self.events = nil;
+	epgView.events = nil;
 }
 
 /* getter for service property */
@@ -78,140 +63,15 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 	[self setNeedsDisplay];
 }
 
-/* getter of events property */
-- (NSArray *)events
-{
-	@synchronized(self)
-	{
-		return _events;
-	}
-}
-
-/* setter of events property */
-- (void)setEvents:(NSArray *)new
-{
-	@synchronized(self)
-	{
-		if(_events == new) return;
-		_events = new;
-
-		[_lines removeAllObjects];
-		for(NSObject<EventProtocol> *event in _events)
-		{
-			CGFloat left = (CGFloat)[event.begin timeIntervalSinceDate:begin];
-			[_lines addObject:[NSNumber numberWithFloat:left]];
-		}
-
-		// Redraw
-		[self setNeedsDisplay];
-	}
-}
-
-
-/* getter of secondsSinceBegin property */
-- (NSTimeInterval)secondsSinceBegin
-{
-	return _secondsSinceBegin;
-}
-
-/* setter of now property */
-- (void)setSecondsSinceBegin:(NSTimeInterval)secondsSinceBegin
-{
-	if(_secondsSinceBegin == secondsSinceBegin) return;
-	_secondsSinceBegin = secondsSinceBegin;
-
-	// Redraw
-	[self setNeedsDisplay];
-}
-
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
 {
-	const NSInteger count = [_lines count] - 1;
-	if(count == -1)
-	{
-		NSLog(@"invalid number of lines (0) in multi epg cell, returning first event if possible or nil");
-		if([_events count])
-			[_events objectAtIndex:0];
+	const NSInteger serviceWidth = kServiceWidth;
+	if(point.x < serviceWidth)
 		return nil;
-	}
 
-	const CGFloat widthPerSecond = (self.bounds.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
-	NSInteger idx = 0;
-	for(NSObject<EventProtocol> *event in _events)
-	{
-		const CGFloat eventBegin = [[_lines objectAtIndex:idx] floatValue];
-		const CGFloat leftLine = (eventBegin < 0) ? kServiceWidth : kServiceWidth + eventBegin * widthPerSecond;
-		const CGFloat rightLine = (idx < count) ? kServiceWidth + [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: self.bounds.size.width;
-
-		// if x withing bounds of event, return it… ignore y for now, should not matter anyway.
-		if(point.x >= leftLine && point.x < rightLine)
-		{
-			return event;
-		}
-		idx += 1;
-	}
-	return nil;
-}
-
-/* draw cell */
-- (void)drawRect:(CGRect)rect
-{
-	const CGRect contentRect = self.contentView.bounds;
-	const CGFloat multiEpgInterval = [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
-	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / multiEpgInterval;
-	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
-	[[DreamoteConfiguration singleton].multiEpgFillColor setFill];
-	CGContextSetLineWidth(ctx, 0.25f);
-	const CGFloat xPosNow = kServiceWidth + (CGFloat)_secondsSinceBegin * widthPerSecond;
-	CGFloat rectX = NSNotFound, rectW = NSNotFound;
-
-	CGFloat lastBegin = NSNotFound;
-	for(NSNumber *number in _lines)
-	{
-		const CGFloat eventBegin = [number floatValue];
-		const CGFloat xPos = (eventBegin < 0) ? kServiceWidth : kServiceWidth + eventBegin * widthPerSecond;
-		if(eventBegin <= _secondsSinceBegin)
-		{
-			rectX = xPos;
-			lastBegin = eventBegin;
-		}
-		else if(rectX != NSNotFound && lastBegin != NSNotFound && lastBegin <= _secondsSinceBegin)
-		{
-			rectW = xPos - rectX;
-			lastBegin = NSNotFound;
-		}
-		CGContextMoveToPoint(ctx, xPos, 0);
-		CGContextAddLineToPoint(ctx, xPos, contentRect.size.height);
-	}
-	CGContextStrokePath(ctx);
-	if(lastBegin != NSNotFound) // we found a potential match
-	{
-		// check if this is just the last event so we had nothing to compare it to
-		NSObject<EventProtocol> *lastEvent = ((NSObject<EventProtocol> *)[_events lastObject]);
-		if([lastEvent.begin timeIntervalSinceDate:begin] == lastBegin)
-		{
-			const NSTimeInterval lastEnd = [lastEvent.end timeIntervalSinceDate:begin];
-			if(lastEnd < _secondsSinceBegin)
-				rectX = NSNotFound;
-			else
-				rectW = contentRect.size.width - rectX;
-		}
-	}
-	if(rectX != NSNotFound && rectW != NSNotFound)
-		CGContextFillRect(ctx, CGRectMake(rectX, 0, rectW, contentRect.size.height));
-
-	// now
-	if(_secondsSinceBegin > -1 && _secondsSinceBegin <= multiEpgInterval)
-	{
-		CGContextSetRGBStrokeColor(ctx, 1.0f, 0.0f, 0.0f, 0.8f);
-		CGContextSetLineWidth(ctx, 0.4f);
-		CGContextMoveToPoint(ctx, xPosNow, 0);
-		CGContextAddLineToPoint(ctx, xPosNow, contentRect.size.height);
-		CGContextStrokePath(ctx);
-	}
-
-	[super drawRect:rect];
+	CGPoint newPoint = point;
+	newPoint.x -= serviceWidth;
+	return [epgView eventAtPoint:newPoint];
 }
 
 /* layout */
@@ -219,12 +79,12 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
-	const CGFloat widthPerSecond = (contentRect.size.width - kServiceWidth) / [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
+	const NSInteger serviceWidth = kServiceWidth;
 
 	// Place the location label.
 	if(_service.valid)
 	{
-		const CGRect frame = CGRectMake(contentRect.origin.x, 0, kServiceWidth, contentRect.size.height);
+		const CGRect frame = CGRectMake(contentRect.origin.x, 0, serviceWidth, contentRect.size.height);
 		if(self.imageView.image)
 		{
 			CGRect realFrame = frame;
@@ -246,6 +106,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 			self.textLabel.adjustsFontSizeToFitWidth = YES;
 			self.textLabel.frame = frame;
 		}
+		epgView.frame = CGRectMake(contentRect.origin.x + serviceWidth, 0, contentRect.size.width - serviceWidth, contentRect.size.height);
 	}
 	else
 	{
@@ -254,84 +115,6 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		self.textLabel.adjustsFontSizeToFitWidth = NO;
 		self.textLabel.frame = frame;
 	}
-	[self.contentView.subviews makeObjectsPerformSelector: @selector(removeFromSuperview)];
-	[self.contentView addSubview:self.textLabel];
-	[self.contentView addSubview:self.imageView];
-
-	NSInteger idx = 0;
-	const NSInteger count = [_lines count] - 1;
-	UIColor *primaryColor = [DreamoteConfiguration singleton].textColor;
-	UIColor *selectedColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	for(NSObject<EventProtocol> *event in self.events)
-	{
-		CGFloat leftLine;
-		CGFloat rightLine;
-		@try
-		{
-			const CGFloat eventBegin = [[_lines objectAtIndex:idx] floatValue];
-			leftLine = (eventBegin < 0) ? 0 : eventBegin * widthPerSecond;
-			rightLine = (idx < count) ? [[_lines objectAtIndex:idx+1] floatValue] * widthPerSecond: contentRect.size.width - kServiceWidth;
-		}
-		@catch(NSException *exception)
-		{
-#if IS_DEBUG()
-			NSLog(@"Exception in [MultiEPGTableViewCell layoutSubviews]: idx %d, count %d, count events %d", idx, count, self.events.count);
-			NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-			[formatter setDateStyle:NSDateFormatterNoStyle];
-			[formatter setTimeStyle:NSDateFormatterShortStyle];
-			NSLog(@"Service: %@", _service.sname);
-			for(NSObject<EventProtocol> *event in _events)
-			{
-				NSLog(@"Event: %@, %@ - %@", event.title, [formatter fuzzyDate:event.begin], [formatter fuzzyDate:event.end]);
-			}
-			for(NSNumber *number in _lines)
-			{
-				NSLog(@"Line: %.2f", kServiceWidth + [number floatValue] * widthPerSecond);
-			}
-			[exception raise];
-#endif
-			break;
-		}
-
-		rightLine -= leftLine;
-		const CGRect frame = CGRectMake(kServiceWidth + leftLine, 0, rightLine, contentRect.size.height);
-		idx += 1;
-
-		UILabel *label = [self newLabelWithPrimaryColor:primaryColor
-										  selectedColor:selectedColor
-											   fontSize:kMultiEPGFontSize
-												   bold:NO];
-		label.text = event.title;
-		label.frame = frame;
-		label.adjustsFontSizeToFitWidth = YES;
-		label.textAlignment = UITextAlignmentCenter;
-		[self.contentView addSubview:label];
-	}
-}
-
-/* Create and configure a label. */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold
-{
-	UIFont *font;
-	UILabel *newLabel;
-
-	if (bold) {
-		font = [UIFont boldSystemFontOfSize:fontSize];
-	} else {
-		font = [UIFont systemFontOfSize:fontSize];
-	}
-
-	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	newLabel.backgroundColor = [UIColor clearColor];
-	newLabel.opaque = NO;
-	newLabel.textColor = primaryColor;
-	newLabel.highlightedTextColor = selectedColor;
-	newLabel.font = font;
-	newLabel.lineBreakMode = UILineBreakModeCharacterWrap;
-	newLabel.numberOfLines = 0;
-	newLabel.adjustsFontSizeToFitWidth = YES;
-	
-	return newLabel;
 }
 
 @end

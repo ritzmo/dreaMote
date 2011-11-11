@@ -463,6 +463,17 @@
 	}
 }
 
+- (UIColor *)tintColor
+{
+	switch(currentTheme)
+	{
+		default:
+			return nil;
+		case THEME_BLUE:
+			return [UIColor darkBlueColor];
+	}
+}
+
 - (UIColor *)sectionLabelColor
 {
 	switch(currentTheme)

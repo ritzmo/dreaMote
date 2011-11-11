@@ -578,9 +578,9 @@
 
 	NSObject<ServiceProtocol> *service = [_services objectAtIndex:indexPath.row];
 	cell.service = service;
-	cell.begin = _curBegin;
-	cell.events = [_events valueForKey:service.sref];
-	cell.secondsSinceBegin = _secondsSinceBegin;
+	cell.epgView.begin = _curBegin;
+	cell.epgView.events = [_events valueForKey:service.sref];
+	cell.epgView.secondsSinceBegin = _secondsSinceBegin;
 
 	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;

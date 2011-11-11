@@ -19,6 +19,7 @@
 		DA2F23C0146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */; };
 		DA2F23C1146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */; };
 		DA2F23C2146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */; };
+		DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */; };
 		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
@@ -1101,6 +1102,8 @@
 		DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Blue.png; sourceTree = "<group>"; };
 		DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Header_Blue.png; sourceTree = "<group>"; };
 		DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellHighlighted_Blue.png; sourceTree = "<group>"; };
+		DA2F23C3146DD253007DC7F6 /* MultiEPGCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGCellContentView.h; sourceTree = "<group>"; };
+		DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGCellContentView.m; sourceTree = "<group>"; };
 		DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteConfiguration.h; sourceTree = "<group>"; };
 		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
 		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
@@ -3015,10 +3018,12 @@
 				DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */,
 				DAC8C13B13B2014D00CA00D9 /* FileListView.h */,
 				DAC8C13C13B2014D00CA00D9 /* FileListView.m */,
-				DAC8C13D13B2014D00CA00D9 /* MultiEPGHeaderView.h */,
-				DAC8C13E13B2014D00CA00D9 /* MultiEPGHeaderView.m */,
 				DAC298FD1469A452001D55FC /* GradientView.h */,
 				DAC298FE1469A452001D55FC /* GradientView.m */,
+				DA2F23C3146DD253007DC7F6 /* MultiEPGCellContentView.h */,
+				DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */,
+				DAC8C13D13B2014D00CA00D9 /* MultiEPGHeaderView.h */,
+				DAC8C13E13B2014D00CA00D9 /* MultiEPGHeaderView.m */,
 				DAC8C13F13B2014D00CA00D9 /* RCButton.h */,
 				DAC8C14013B2014D00CA00D9 /* RCButton.m */,
 				DAC8C14113B2014D00CA00D9 /* SwipeTableView.h */,
@@ -3988,6 +3993,7 @@
 				DAC299041469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 				DADDDE00146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE05146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
+				DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

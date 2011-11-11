@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <TableViewCell/BaseTableViewCell.h>
 
+#import <View/MultiEPGCellContentView.h>
+
 #import <Objects/ServiceProtocol.h>
 #import <Objects/EventProtocol.h>
 
@@ -22,11 +24,9 @@ extern NSString *kMultiEPGCell_ID;
  */
 @interface MultiEPGTableViewCell : BaseTableViewCell
 {
-@private	
+@private
+	MultiEPGCellContentView *_epgView; /*!< @brief Class dedicated to managing the cell contents. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
-	NSArray *_events; /*!< @brief Matching Events. */
-	NSMutableArray *_lines; /*!< @brief Positions of vertical Lines. */
-	NSTimeInterval _secondsSinceBegin; /*!< @brief Seconds since "_begin". */
 }
 
 /*!
@@ -43,18 +43,8 @@ extern NSString *kMultiEPGCell_ID;
 @property (nonatomic, strong) NSObject<ServiceProtocol> *service;
 
 /*!
- @brief Events.
+ @brief View doing the actual work.
  */
-@property (strong) NSArray *events;
-
-/*!
- @brief Begin of current timeframe.
- */
-@property (nonatomic, strong) NSDate *begin;
-
-/*!
- @brief Delayed interval since "begin".
- */
-@property (nonatomic, assign) NSTimeInterval secondsSinceBegin;
+@property (nonatomic, strong) MultiEPGCellContentView *epgView;
 
 @end
