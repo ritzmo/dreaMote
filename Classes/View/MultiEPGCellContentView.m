@@ -34,6 +34,7 @@
     if((self = [super initWithFrame:frame]))
 	{
 		self.backgroundColor = [UIColor clearColor];
+		self.contentMode = UIViewContentModeRedraw;
 		_secondsSinceBegin = NSNotFound;
     }
     return self;

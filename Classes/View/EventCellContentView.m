@@ -20,6 +20,7 @@
     if((self = [super initWithFrame:frame]))
 	{
 		self.backgroundColor = [UIColor clearColor];
+		self.contentMode = UIViewContentModeRedraw;
     }
     return self;
 }

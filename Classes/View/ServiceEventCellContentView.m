@@ -19,6 +19,7 @@
     if((self = [super initWithFrame:frame]))
 	{
 		self.backgroundColor = [UIColor clearColor];
+		self.contentMode = UIViewContentModeRedraw;
 		NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];
 		if([localeIdentifier isEqualToString:@"de"])
 			timeWidth = (IS_IPAD()) ? 100 : 80;
