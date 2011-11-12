@@ -53,7 +53,7 @@
 
 - (UIImage *)picon
 {
-	if(!_calculatedPicon)
+	if(!_calculatedPicon && _valid)
 	{
 		if(self.piconName)
 		{
