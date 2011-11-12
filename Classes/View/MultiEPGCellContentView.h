@@ -16,6 +16,7 @@
 	NSArray *_events; /*!< @brief Matching Events. */
 	NSMutableArray *_lines; /*!< @brief Positions of vertical Lines. */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Seconds since "_begin". */
+	BOOL highlighted;
 }
 
 /*!
@@ -40,5 +41,7 @@
  @brief Delayed interval since "begin".
  */
 @property (nonatomic, assign) NSTimeInterval secondsSinceBegin;
+
+@property (nonatomic, getter=isHighlighted) BOOL highlighted;
 
 @end

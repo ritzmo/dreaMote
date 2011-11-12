@@ -59,6 +59,7 @@
 #define kMultiEPGCellHeight			(25) // iPhone/iPod Touch without Picon
 #define kMultiEPGCellHeightIpad		(60) // iPad
 #define kMultiEPGCellHeightPicon	(42) // iPhone/iPod Touch with Picon
+#define kMultiEPGServiceWidth		((IS_IPAD()) ? 100 : 70)
 
 // table view cell content offsets
 #define kCellLeftOffset			8

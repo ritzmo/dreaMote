@@ -452,18 +452,6 @@
 	}
 }
 
-- (UIColor *)multiEpgFillColor
-{
-	switch (currentTheme)
-	{
-		case THEME_BLUE: // TODO: use another iamge for this?
-		default:
-			return [UIColor greenColor];
-		case THEME_NIGHT:
-			return [UIColor lightGrayColor];
-	}
-}
-
 - (UIColor *)tintColor
 {
 	switch(currentTheme)
@@ -508,6 +496,27 @@
 			return nil;
 		case THEME_BLUE:
 			return [[UIImage imageNamed:@"Slider_Blue.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+	}
+}
+
+- (UIImage *)multiEpgCurrentBackground
+{
+	switch(currentTheme)
+	{
+		case THEME_BLUE: // TODO: create image for this?
+		default:
+			return nil;
+	}
+}
+
+- (UIColor *)multiEpgCurrentFillColor
+{
+	switch(currentTheme)
+	{
+		default:
+			return [UIColor greenColor];
+		case THEME_NIGHT:
+			return [UIColor lightGrayColor];
 	}
 }
 

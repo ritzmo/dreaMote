@@ -11,8 +11,6 @@
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 
-#define kServiceWidth ((IS_IPAD()) ? 100 : 75)
-
 /*!
  @brief Private functions of MultiEPGHeaderView.
  */
@@ -52,13 +50,14 @@
 										  fontSize:kMultiEPGFontSize
 											  bold:YES];
 
+		const NSInteger serviceWidth = kMultiEPGServiceWidth;
 		const CGFloat interval = [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
-		const CGFloat widthPerSecond = (frame.size.width - kServiceWidth) / interval;
-		const CGFloat leftOffset = kServiceWidth / 2;
-		firstTime.frame = CGRectMake(frame.origin.x + leftOffset, frame.origin.y, kServiceWidth, frame.size.height);
-		secondTime.frame = CGRectMake(firstTime.frame.origin.x + (interval / 2.8f) * widthPerSecond, frame.origin.y, kServiceWidth, frame.size.height);
-		thirdTime.frame = CGRectMake(secondTime.frame.origin.x + (interval / 2.8f) * widthPerSecond, frame.origin.y, kServiceWidth, frame.size.height);
-		fourthTime.frame = CGRectMake(thirdTime.frame.origin.x + (interval / 2.8f) * widthPerSecond, frame.origin.y, kServiceWidth, frame.size.height);
+		const CGFloat widthPerSecond = (frame.size.width - serviceWidth) / interval;
+		const CGFloat leftOffset = serviceWidth / 2;
+		firstTime.frame = CGRectMake(frame.origin.x + leftOffset, frame.origin.y, serviceWidth, frame.size.height);
+		secondTime.frame = CGRectMake(firstTime.frame.origin.x + (interval / 2.8f) * widthPerSecond, frame.origin.y, serviceWidth, frame.size.height);
+		thirdTime.frame = CGRectMake(secondTime.frame.origin.x + (interval / 2.8f) * widthPerSecond, frame.origin.y, serviceWidth, frame.size.height);
+		fourthTime.frame = CGRectMake(thirdTime.frame.origin.x + (interval / 2.8f) * widthPerSecond, frame.origin.y, serviceWidth, frame.size.height);
 
 		[self addSubview:firstTime];
 		[self addSubview:secondTime];
@@ -82,9 +81,10 @@
 {
 	[super setFrame:frame];
 
+	const NSInteger serviceWidth = kMultiEPGServiceWidth;
 	const CGFloat interval = [[[NSUserDefaults standardUserDefaults] objectForKey:kMultiEPGInterval] floatValue];
-	const CGFloat widthPerSecond = (frame.size.width - kServiceWidth) / interval;
-	const CGFloat leftOffset = kServiceWidth / 2;
+	const CGFloat widthPerSecond = (frame.size.width - serviceWidth) / interval;
+	const CGFloat leftOffset = serviceWidth / 2;
 
 	CGFloat factor = 1;
 	if(interval == 1800)
@@ -94,7 +94,7 @@
 	else
 		factor = 4;
 
-	CGRect myFrame = CGRectMake(frame.origin.x + leftOffset, frame.origin.y, kServiceWidth, frame.size.height);
+	CGRect myFrame = CGRectMake(frame.origin.x + leftOffset, frame.origin.y, serviceWidth, frame.size.height);
 	const CGFloat step = (interval / factor) * widthPerSecond;
 	firstTime.frame = myFrame;
 	myFrame.origin.x += step;

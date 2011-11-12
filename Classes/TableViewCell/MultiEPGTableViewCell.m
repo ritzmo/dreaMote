@@ -14,8 +14,6 @@
  */
 NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
-#define kServiceWidth ((IS_IPAD()) ? 100 : 70)
-
 @implementation MultiEPGTableViewCell
 
 @synthesize epgView;
@@ -30,6 +28,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 		self.backgroundColor = [UIColor clearColor];
 
 		epgView = [[MultiEPGCellContentView alloc] initWithFrame:CGRectZero];
+		epgView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 		[self.contentView addSubview:epgView];
 	}
 
@@ -65,7 +64,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 
 - (NSObject<EventProtocol> *)eventAtPoint:(CGPoint)point
 {
-	const NSInteger serviceWidth = kServiceWidth;
+	const NSInteger serviceWidth = kMultiEPGServiceWidth;
 	if(point.x < serviceWidth)
 		return nil;
 
@@ -79,7 +78,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	[super layoutSubviews];
 	const CGRect contentRect = self.contentView.bounds;
-	const NSInteger serviceWidth = kServiceWidth;
+	const NSInteger serviceWidth = kMultiEPGServiceWidth;
 
 	// Place the location label.
 	if(_service.valid)
