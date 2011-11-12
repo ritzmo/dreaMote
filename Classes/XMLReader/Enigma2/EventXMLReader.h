@@ -23,7 +23,6 @@
 @private
 	BOOL _getServices; /*!< @brief Add service object. */
 	SEL _delegateSelector; /*!< @brief Selector to perform on delegate. */
-	NSObject<EventProtocol> *_currentEvent; /*!< @brief Current Event. */
 }
 
 /*!

@@ -9,9 +9,10 @@
 #import "EventXMLReader.h"
 
 #import "Constants.h"
+#import "NSDateFormatter+FuzzyFormatting.h"
 
-#import "../../Objects/Generic/Event.h"
-#import "../../Objects/Generic/Service.h"
+#import <Objects/Generic/Event.h>
+#import <Objects/Generic/Service.h>
 
 static const char *kEnigma2EventElement = "e2event";
 static const NSUInteger kEnigma2EventElementLength = 8;
@@ -36,13 +37,24 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 
 @interface Enigma2EventXMLReader()
 @property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
+@property (nonatomic, strong) NSDateFormatter *formatter;
 @end
 
 @implementation Enigma2EventXMLReader
 
-@synthesize currentEvent = _currentEvent;
+@synthesize currentEvent, formatter;
 
 /* initialize */
+- (id)init
+{
+	if((self = [super init]))
+	{
+		formatter = [[NSDateFormatter alloc] init];
+		[formatter setTimeStyle:NSDateFormatterShortStyle];
+	}
+	return self;
+}
+
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
 {
 	return [self initWithDelegateAndGetServices:delegate getServices:NO];
@@ -50,7 +62,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 
 - (id)initWithDelegateAndGetServices:(NSObject<EventSourceDelegate> *)delegate getServices:(BOOL)getServices
 {
-	if((self = [super init]))
+	if((self = [self init]))
 	{
 		_delegate = delegate;
 		_delegateSelector = @selector(addEvent:);
@@ -63,7 +75,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 /* initialize */
 - (id)initWithNowDelegate:(NSObject<NowSourceDelegate> *)delegate
 {
-	if((self = [super init]))
+	if((self = [self init]))
 	{
 		_delegate = delegate;
 		_delegateSelector = @selector(addNowEvent:);
@@ -76,7 +88,7 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 /* initialize */
 - (id)initWithNextDelegate:(NSObject<NextSourceDelegate> *)delegate
 {
-	if((self = [super init]))
+	if((self = [self init]))
 	{
 		_delegate = delegate;
 		_delegateSelector = @selector(addNextEvent:);
@@ -158,48 +170,53 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 
 	if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
-		[_delegate performSelectorOnMainThread: _delegateSelector
-									withObject: self.currentEvent
-								 waitUntilDone: NO];
+		const NSString *begin = [formatter stringFromDate:currentEvent.begin];
+		const NSString *end = [formatter stringFromDate:currentEvent.end];
+		if(begin && end)
+			currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+
+		[_delegate performSelectorOnMainThread:_delegateSelector
+									withObject:currentEvent
+								 waitUntilDone:NO];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventExtendedDescription, kEnigma2EventExtendedDescriptionLength))
 	{
-		_currentEvent.edescription = currentString;
+		currentEvent.edescription = currentString;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventDescription, kEnigma2EventDescriptionLength))
 	{
-		_currentEvent.sdescription = currentString;
+		currentEvent.sdescription = currentString;
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2EventTitle, kEnigma2EventTitleLength)
 			||	!strncmp((const char *)localname, kEnigma2EventLegacyTitle, kEnigma2EventLegacyTitleLength)
 		)
 	{
-		_currentEvent.title = currentString;
+		currentEvent.title = currentString;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventDuration, kEnigma2EventDurationLength))
 	{
-		[_currentEvent setEndFromDurationString:currentString];
+		[currentEvent setEndFromDurationString:currentString];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventBegin, kEnigma2EventBeginLength))
 	{
-		[_currentEvent setBeginFromString:currentString];
+		[currentEvent setBeginFromString:currentString];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventEventId, kEnigma2EventEventIdLength))
 	{
-		_currentEvent.eit = currentString;
+		currentEvent.eit = currentString;
 	}
 	else if(_getServices)
 	{
 		if(!strncmp((const char *)localname, kEnigma2EventSref, kEnigma2EventSrefLength))
 		{
-			_currentEvent.service.sref = currentString;
+			currentEvent.service.sref = currentString;
 			// if service begins with 1:64: this is a marker
 			if([currentString hasPrefix:@"1:64:"])
-				[(GenericService *)_currentEvent.service setValid:NO];
+				[(GenericService *)currentEvent.service setValid:NO];
 		}
 		else if(!strncmp((const char *)localname, kEnigma2EventSname, kEnigma2EventSnameLength))
 		{
-			_currentEvent.service.sname = currentString;
+			currentEvent.service.sname = currentString;
 		}
 	}
 
