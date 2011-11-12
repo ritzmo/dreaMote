@@ -111,7 +111,7 @@
 		primaryColor =  singleton.textColor;
 	}
 	[primaryColor set];
-	
+
 	if(self.editing)
 		offsetX += kLeftMargin;
 
@@ -128,6 +128,25 @@
 	UIImage *picon = now.service.picon;
 	if(picon)
 	{
+		if(picon.size.height > boundsHeight)
+		{
+			CGSize size = CGSizeMake(picon.size.width*(boundsHeight/picon.size.height), boundsHeight);
+			UIGraphicsBeginImageContextWithOptions(size, NO, 0);
+			CGContextRef context = UIGraphicsGetCurrentContext();
+
+			// Flip the context because UIKit coordinate system is upside down to Quartz coordinate system
+			CGContextTranslateCTM(context, 0.0, boundsHeight);
+			CGContextScaleCTM(context, 1.0, -1.0);
+
+			// Draw the original image to the context
+			CGContextSetBlendMode(context, kCGBlendModeCopy);
+			CGContextDrawImage(context, CGRectMake(0.0, 0.0, size.width, boundsHeight), picon.CGImage);
+
+			// Retrieve the UIImage from the current context
+			picon = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
+		}
+
 		point = CGPointMake(offsetX, (boundsHeight - picon.size.height) / 2);
 		[picon drawAtPoint:point];
 		offsetX += picon.size.width;
