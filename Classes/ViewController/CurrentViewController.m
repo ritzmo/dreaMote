@@ -406,8 +406,8 @@
 				default:
 				case 0:
 					sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
-					((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
-					((EventTableViewCell *)sourceCell).event = _now;
+					((EventTableViewCell *)sourceCell).cellView.formatter = _dateFormatter;
+					((EventTableViewCell *)sourceCell).cellView.event = _now;
 					sourceCell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 1:
@@ -430,8 +430,8 @@
 				default:
 				case 0:
 					sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
-					((EventTableViewCell *)sourceCell).formatter = _dateFormatter;
-					((EventTableViewCell *)sourceCell).event = _next;
+					((EventTableViewCell *)sourceCell).cellView.formatter = _dateFormatter;
+					((EventTableViewCell *)sourceCell).cellView.event = _next;
 					sourceCell.accessoryType = UITableViewCellAccessoryNone;
 					break;
 				case 1:

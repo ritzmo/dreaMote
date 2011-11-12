@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <TableViewCell/BaseTableViewCell.h>
 
+#import <View/EventCellContentView.h>
 #import <Objects/EventProtocol.h>
 
 /*!
@@ -20,29 +21,10 @@ extern NSString *kEventCell_ID;
  @brief UITableViewCell optimized to display Events.
  */
 @interface EventTableViewCell : BaseTableViewCell
-{
-@private	
-	NSObject<EventProtocol> *_event; /*!< @brief Assigned Event. */
-	UILabel *_eventTimeLabel; /*!< @brief Time Label. */
-	UILabel *_eventServiceLabel; /*!< @brief Service Label. */
-}
 
 /*!
- @brief Event.
+ @brief View doing the actual work.
  */
-@property (nonatomic, strong) NSObject<EventProtocol> *event;
-
-/*!
- @brief Date Formatter.
- */
-@property (nonatomic, strong) NSDateFormatter *formatter;
-
-/*!
- @brief Display service name?
- 
- @note This needs to be set before assigning a new event to work properly.
- Also the Events needs to keep a copy of the service.
- */
-@property (nonatomic, assign) BOOL showService;
+@property (nonatomic, strong) EventCellContentView *cellView;
 
 @end

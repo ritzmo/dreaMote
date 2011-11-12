@@ -344,6 +344,9 @@
 		DA8B18D4146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */; };
 		DA8B18D5146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */; };
 		DA8B18D6146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */; };
+		DA8B18DA146EF08D005B7E7C /* EventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D9146EF08D005B7E7C /* EventCellContentView.m */; };
+		DA8B18DB146EF08D005B7E7C /* EventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D9146EF08D005B7E7C /* EventCellContentView.m */; };
+		DA8B18DC146EF08E005B7E7C /* EventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D9146EF08D005B7E7C /* EventCellContentView.m */; };
 		DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1340,6 +1343,8 @@
 		DA7921081461AC0D0040615E /* SHKFacebookForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFacebookForm.m; sourceTree = "<group>"; };
 		DA8B18D2146EB805005B7E7C /* ServiceEventCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceEventCellContentView.h; sourceTree = "<group>"; };
 		DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceEventCellContentView.m; sourceTree = "<group>"; };
+		DA8B18D8146EF08D005B7E7C /* EventCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCellContentView.h; sourceTree = "<group>"; };
+		DA8B18D9146EF08D005B7E7C /* EventCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventCellContentView.m; sourceTree = "<group>"; };
 		DAAB66EB1468473A0099DBA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAAB66ED146847440099DBA9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAABA9E41462DA00002CDC31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
@@ -3026,6 +3031,8 @@
 				DAC8C36D13B201B800CA00D9 /* MBProgressHUD */,
 				DADDDE03146AC7C300BE035E /* ColoredAccessoryView.h */,
 				DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */,
+				DA8B18D8146EF08D005B7E7C /* EventCellContentView.h */,
+				DA8B18D9146EF08D005B7E7C /* EventCellContentView.m */,
 				DAC8C13B13B2014D00CA00D9 /* FileListView.h */,
 				DAC8C13C13B2014D00CA00D9 /* FileListView.m */,
 				DAC298FD1469A452001D55FC /* GradientView.h */,
@@ -4010,6 +4017,7 @@
 				DADDDE05146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */,
 				DA8B18D4146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */,
+				DA8B18DA146EF08D005B7E7C /* EventCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4274,6 +4282,7 @@
 				DADDDE01146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA8B18D5146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */,
+				DA8B18DB146EF08D005B7E7C /* EventCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4504,6 +4513,7 @@
 				DADDDE02146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA8B18D6146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */,
+				DA8B18DC146EF08E005B7E7C /* EventCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

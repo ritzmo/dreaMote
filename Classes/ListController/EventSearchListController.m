@@ -261,15 +261,15 @@
 {
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
-	cell.formatter = self.dateFormatter;
-	cell.showService = YES;
+	cell.cellView.formatter = self.dateFormatter;
+	cell.cellView.showService = YES;
 	if(_useSections)
 	{
 		const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
-		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex:offset + indexPath.row];
+		cell.cellView.event = (NSObject<EventProtocol> *)[_events objectAtIndex:offset + indexPath.row];
 	}
 	else
-		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
+		cell.cellView.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 
 	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
@@ -287,7 +287,7 @@
 		return nil;
 	}
 
-	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
+	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).cellView.event;
 	NSObject<ServiceProtocol> *service = nil;
 
 	// NOTE: if we encounter an exception we assume an invalid service
