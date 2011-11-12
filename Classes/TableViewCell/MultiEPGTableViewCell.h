@@ -25,7 +25,6 @@ extern NSString *kMultiEPGCell_ID;
 @interface MultiEPGTableViewCell : BaseTableViewCell
 {
 @private
-	MultiEPGCellContentView *_epgView; /*!< @brief Class dedicated to managing the cell contents. */
 	NSObject<ServiceProtocol> *_service; /*!< @brief Service. */
 }
 
