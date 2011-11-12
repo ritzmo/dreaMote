@@ -14,7 +14,6 @@
 {
 @private
 	NSArray *_events; /*!< @brief Matching Events. */
-	NSMutableArray *_lines; /*!< @brief Positions of vertical Lines. */
 	NSTimeInterval _secondsSinceBegin; /*!< @brief Seconds since "_begin". */
 	BOOL highlighted;
 }
