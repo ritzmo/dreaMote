@@ -98,16 +98,16 @@
 	const CGFloat boundsHeight = contentRect.size.height;
 
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
-	UIColor *primaryColor = nil, *secondaryColor = nil;
+	UIColor *primaryColor = nil;
 	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.serviceEventServiceSize];
 	UIFont *secondaryFont = [UIFont systemFontOfSize:singleton.serviceEventEventSize];
 	if(highlighted)
 	{
-		primaryColor =  secondaryColor = singleton.highlightedTextColor;
+		primaryColor =  singleton.highlightedTextColor;
 	}
 	else
 	{
-		primaryColor =  secondaryColor = singleton.textColor;
+		primaryColor =  singleton.textColor;
 	}
 	[primaryColor set];
 	
@@ -120,7 +120,7 @@
 	{
 		NSString *text = now.valid ? now.service.sname : now.title;
 		point = CGPointMake(offsetX, (boundsHeight - primaryFont.lineHeight) / 2);
-		[text drawAtPoint:point forWidth:contentRect.size.width-offsetX withFont:primaryFont lineBreakMode:UILineBreakModeTailTruncation];
+		[text drawAtPoint:point forWidth:boundsWidth-offsetX withFont:primaryFont lineBreakMode:UILineBreakModeTailTruncation];
 		return;
 	}
 	// eventually draw picon
@@ -134,13 +134,13 @@
 	else
 		offsetX += kLeftMargin;
 
-	CGFloat forWidth = contentRect.size.width-offsetX;
+	CGFloat forWidth = boundsWidth-offsetX;
 	// draw service name
-	point = CGPointMake(offsetX, 1);
+	point = CGPointMake(offsetX, 0);
 	[now.service.sname drawAtPoint:point forWidth:forWidth withFont:primaryFont lineBreakMode:UILineBreakModeTailTruncation];
 
 	// draw 'now time' if present
-	point.y += primaryFont.lineHeight;
+	point.y += primaryFont.lineHeight - 2; // XXX: wtf?
 	[now.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 
 	point.x += 5 + timeWidth;
@@ -157,7 +157,7 @@
 		point.y += secondaryFont.lineHeight;
 		[next.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 		point.x += 5 + timeWidth;
-		[next.title drawAtPoint:point forWidth:boundsWidth-point.x withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
+		[next.title drawAtPoint:point forWidth:forWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 	}
 }
 
