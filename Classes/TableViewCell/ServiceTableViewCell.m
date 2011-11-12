@@ -9,113 +9,162 @@
 #import "Constants.h"
 #import "ServiceTableViewCell.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 /*!
  @brief Cell identifier for this cell.
  */
 NSString *kServiceCell_ID = @"ServiceCell_ID";
 
-/*!
- @brief Private functions of ServiceTableViewCell.
- */
+@interface ServiceCellContentView : UIView
+@property (nonatomic, strong) CALayer *imageLayer;
+@property (nonatomic, unsafe_unretained) UIFont *font;
+@property (nonatomic, unsafe_unretained) NSObject<ServiceProtocol> *service;
+@property (nonatomic, getter=isHighlighted) BOOL highlighted;
+@property (nonatomic, getter=isEditing) BOOL editing;
+@end
+
+@implementation ServiceCellContentView
+
+@synthesize editing, font, highlighted, imageLayer, service;
+
+- (id)initWithFrame:(CGRect)frame
+{
+	if((self = [super initWithFrame:frame]))
+	{
+		self.contentMode = UIViewContentModeRedraw;
+		self.backgroundColor = [UIColor clearColor];
+		imageLayer = [CALayer layer];
+		[self.layer addSublayer:imageLayer];
+	}
+	return self;
+}
+
+- (void)setHighlighted:(BOOL)lit
+{
+	if(highlighted != lit)
+	{
+		highlighted = lit;
+		[self setNeedsDisplay];
+	}
+}
+
+- (void)drawRect:(CGRect)rect
+{
+	const CGRect contentRect = self.bounds;
+	CGFloat offsetX = contentRect.origin.x;
+	const CGFloat boundsWidth = contentRect.size.width;
+	const CGFloat boundsHeight = contentRect.size.height;
+
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	UIColor *primaryColor = nil;
+	if(highlighted)
+	{
+		primaryColor =  singleton.highlightedTextColor;
+	}
+	else
+	{
+		primaryColor =  singleton.textColor;
+	}
+	[primaryColor set];
+
+	if(self.editing)
+		offsetX += kLeftMargin;
+
+	CGPoint point;
+	// eventually draw picon
+	UIImage *picon = service.picon;
+	if(picon)
+	{
+		CGFloat width = picon.size.width;
+		CGFloat height = picon.size.height;
+		if(height > boundsHeight)
+		{
+			width *= boundsHeight/height;
+			height = boundsHeight;
+		}
+
+		imageLayer.contents = (id)picon.CGImage;
+		imageLayer.frame = CGRectMake(offsetX, 0, width, height);
+		offsetX += width + kTweenMargin;
+	}
+	else
+	{
+		imageLayer.contents = nil;
+		offsetX += kLeftMargin;
+	}
+
+	CGFloat forWidth = boundsWidth-offsetX;
+	point = CGPointMake(offsetX, (boundsHeight - font.lineHeight) / 2);
+	[service.sname drawAtPoint:point forWidth:forWidth withFont:font lineBreakMode:UILineBreakModeTailTruncation];
+	[super drawRect:rect];
+}
+@end
+
 @interface ServiceTableViewCell()
-/*!
- @brief Private helper to create a label.
- */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold;
+@property (nonatomic, strong) ServiceCellContentView *cellView;
 @end
 
 @implementation ServiceTableViewCell
 
-@synthesize loadPicon;
+@synthesize cellView, font, service;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		self.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
-		loadPicon = YES;
+		cellView = [[ServiceCellContentView alloc] initWithFrame:self.contentView.bounds];
+		cellView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[self.contentView addSubview:cellView];
+		self.font = [UIFont boldSystemFontOfSize:[DreamoteConfiguration singleton].serviceTextSize];
 	}
-
 	return self;
 }
 
 - (void)prepareForReuse
 {
 	self.accessoryType = UITableViewCellAccessoryNone;
-	self.imageView.image = nil;
-	self.service = nil;
+	// NOTE: we don't release our strong or the cellView's borrowed references here to avoid a draw operation
 
 	[super prepareForReuse];
 }
 
-- (UILabel *)serviceNameLabel
+- (void)setRoundedPicons:(BOOL)roundedPicons
 {
-	return self.textLabel;
+	if(roundedPicons)
+	{
+		cellView.imageLayer.cornerRadius = 10.0;
+		cellView.imageLayer.masksToBounds = YES;
+	}
+	else
+	{
+		cellView.imageLayer.cornerRadius = 0;
+		cellView.imageLayer.masksToBounds = NO;
+	}
 }
 
-/* getter for service property */
-- (NSObject<ServiceProtocol> *)service
+- (void)setFont:(UIFont *)newFont
 {
-	return _service;
+	if(font != newFont)
+	{
+		font = newFont;
+		cellView.font = newFont;
+		// NOTE: we don't trigger a redisplay here to optimize things a bit
+		//[cellView setNeedsDisplay];
+	}
 }
 
 /* setter for service property */
 - (void)setService:(NSObject<ServiceProtocol> *)newService
 {
 	// Abort if same service assigned
-	if(_service == newService) return;
-	_service = newService;
-
-	// Change name
-	self.textLabel.text = newService.sname;
+	if(service == newService) return;
+	service = newService;
 
 	if(newService.valid)
-	{
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-		if(newService.piconLoaded || loadPicon)
-			self.imageView.image = newService.picon;
-	}
-
-	// Redraw
-	[self setNeedsDisplay];
+	cellView.service = newService;
+	[cellView setNeedsDisplay];
 }
-
-/* layout */
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	const CGRect contentRect = self.contentView.bounds;
-
-	CGRect imageRect = self.imageView.frame;
-	if(self.editing)
-		imageRect.origin.x += kLeftMargin;
-	self.imageView.frame = imageRect;
-	const NSInteger leftMargin = contentRect.origin.x + ((self.imageView.image) ? (imageRect.size.width + imageRect.origin.x + kTweenMargin) : kLeftMargin);
-	const CGRect frame = CGRectMake(leftMargin, 1, contentRect.size.width - leftMargin - kRightMargin, contentRect.size.height - 2);
-	self.textLabel.frame = frame;
-}
-
-/* Create and configure a label. */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold
-{
-	UIFont *font;
-	UILabel *newLabel;
-
-	if (bold) {
-		font = [UIFont boldSystemFontOfSize:fontSize];
-	} else {
-		font = [UIFont systemFontOfSize:fontSize];
-	}
-
-	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	newLabel.backgroundColor = [UIColor clearColor];
-	newLabel.opaque = NO;
-	newLabel.textColor = primaryColor;
-	newLabel.highlightedTextColor = selectedColor;
-	newLabel.font = font;
-	
-	return newLabel;
-}
-
 @end

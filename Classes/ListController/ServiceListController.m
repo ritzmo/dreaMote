@@ -1648,7 +1648,6 @@ enum serviceListTags
 	else
 	{
 		cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-		((ServiceTableViewCell *)cell).loadPicon = NO;
 
 		((ServiceTableViewCell *)cell).service = firstObject;
 

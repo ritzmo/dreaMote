@@ -360,8 +360,7 @@
 			{
 				case 0:
 					sourceCell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-					sourceCell.imageView.layer.masksToBounds = YES;
-					sourceCell.imageView.layer.cornerRadius = 5.0f;
+					[(ServiceTableViewCell *)sourceCell setRoundedPicons:YES];
 					((ServiceTableViewCell *)sourceCell).service = _service;
 					sourceCell.accessoryType = UITableViewCellAccessoryNone;
 					break;

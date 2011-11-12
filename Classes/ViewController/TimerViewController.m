@@ -812,9 +812,8 @@ enum timerSections
 			break;
 		case sectionService:
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-			cell.imageView.layer.masksToBounds = YES;
-			cell.imageView.layer.cornerRadius = 5.0f;
-			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			[(ServiceTableViewCell *)cell setRoundedPicons:YES];
+			((ServiceTableViewCell *)cell).font = [UIFont systemFontOfSize:kTextViewFontSize];
 			setEditingStyle = NO;
 			break;
 		case sectionBegin:

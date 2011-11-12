@@ -760,7 +760,7 @@ enum generalSectionItems
 			}
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			((ServiceTableViewCell *)cell).font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [services objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
@@ -784,7 +784,7 @@ enum generalSectionItems
 			}
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			((ServiceTableViewCell *)cell).font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [bouquets objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;

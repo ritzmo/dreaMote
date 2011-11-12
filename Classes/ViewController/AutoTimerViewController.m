@@ -1062,7 +1062,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			}
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			((ServiceTableViewCell *)cell).font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [_timer.services objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
@@ -1085,7 +1085,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 			}
 
 			cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
-			((ServiceTableViewCell *)cell).serviceNameLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			((ServiceTableViewCell *)cell).font = [UIFont systemFontOfSize:kTextViewFontSize];
 			((ServiceTableViewCell *)cell).service = [_timer.bouquets objectAtIndex:row];
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryNone;
