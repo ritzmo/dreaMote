@@ -91,10 +91,13 @@
 	{
 		if(animated)
 		{
+			NSInteger row = _locations.count;
+			if(showDefault)
+				++row;
 			if(editing)
-				[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_locations.count inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+				[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 			else
-				[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_locations.count inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+				[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 		}
 		else
 			[_tableView reloadData];
