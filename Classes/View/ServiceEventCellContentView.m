@@ -80,6 +80,14 @@
 	[self setNeedsDisplay];
 }
 
+- (void)setHighlighted:(BOOL)lit
+{
+	if(highlighted != lit)
+	{
+		highlighted = lit;
+		[self setNeedsDisplay];
+	}
+}
 
 - (void)drawRect:(CGRect)rect
 {
