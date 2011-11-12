@@ -341,6 +341,9 @@
 		DA7921091461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA79210A1461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA79210B1461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA8B18D4146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */; };
+		DA8B18D5146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */; };
+		DA8B18D6146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */; };
 		DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1335,6 +1338,8 @@
 		DA7920E11461ABCF0040615E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		DA7921071461AC0D0040615E /* SHKFacebookForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFacebookForm.h; sourceTree = "<group>"; };
 		DA7921081461AC0D0040615E /* SHKFacebookForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFacebookForm.m; sourceTree = "<group>"; };
+		DA8B18D2146EB805005B7E7C /* ServiceEventCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServiceEventCellContentView.h; sourceTree = "<group>"; };
+		DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceEventCellContentView.m; sourceTree = "<group>"; };
 		DAAB66EB1468473A0099DBA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAAB66ED146847440099DBA9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAABA9E41462DA00002CDC31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
@@ -3031,6 +3036,8 @@
 				DAC8C13E13B2014D00CA00D9 /* MultiEPGHeaderView.m */,
 				DAC8C13F13B2014D00CA00D9 /* RCButton.h */,
 				DAC8C14013B2014D00CA00D9 /* RCButton.m */,
+				DA8B18D2146EB805005B7E7C /* ServiceEventCellContentView.h */,
+				DA8B18D3146EB805005B7E7C /* ServiceEventCellContentView.m */,
 				DAC8C14113B2014D00CA00D9 /* SwipeTableView.h */,
 				DAC8C14213B2014D00CA00D9 /* SwipeTableView.m */,
 				DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */,
@@ -4002,6 +4009,7 @@
 				DADDDE00146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE05146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */,
+				DA8B18D4146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4265,6 +4273,7 @@
 				DAC299051469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 				DADDDE01146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
+				DA8B18D5146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4494,6 +4503,7 @@
 				DAC299061469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 				DADDDE02146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
+				DA8B18D6146EB806005B7E7C /* ServiceEventCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

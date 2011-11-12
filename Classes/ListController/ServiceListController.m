@@ -1631,15 +1631,18 @@ enum serviceListTags
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
-		((ServiceEventTableViewCell *)cell).loadPicon = NO;
-
-		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
-		((ServiceEventTableViewCell *)cell).now = (NSObject<EventProtocol> *)firstObject;
-		@try {
-			((ServiceEventTableViewCell *)cell).next = [_subList objectAtIndex:indexPath.row];
+		ServiceEventCellContentView *cv = ((ServiceEventTableViewCell *)cell).cellView;
+		cv.formatter = _dateFormatter;
+		cv.now = firstObject;
+		if(((NSObject<EventProtocol> *)firstObject).service.valid)
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		@try
+		{
+			cv.next = [_subList objectAtIndex:indexPath.row];
 		}
-		@catch (NSException * e) {
-			[(ServiceEventTableViewCell *)cell setNext:nil];
+		@catch (NSException *e)
+		{
+			cv.next = nil;
 		}
 	}
 	else
