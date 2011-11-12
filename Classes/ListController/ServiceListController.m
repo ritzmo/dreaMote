@@ -28,8 +28,6 @@
 
 #import "MKStoreManager.h"
 
-typedef void (^defer_load_operation_t)(void);
-
 enum serviceListTags
 {
 	TAG_MARKER = 99,
@@ -1522,6 +1520,7 @@ enum serviceListTags
 	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
 					  withRowAnimation: UITableViewRowAnimationLeft];
 #endif
+	[_piconLoader addOperationWithBlock:^{ [event.service picon]; }];
 #if IS_FULL()
 	[_multiEPG addService:event.service];
 #endif
@@ -1553,6 +1552,7 @@ enum serviceListTags
 						  withRowAnimation:UITableViewRowAnimationLeft];
 	}
 #endif
+	[_piconLoader addOperationWithBlock:^{ [service picon]; }];
 #if IS_FULL()
 	[_multiEPG addService:service];
 #endif
@@ -1628,7 +1628,6 @@ enum serviceListTags
 	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
 	UITableViewCell *cell = nil;
 	id firstObject = [array objectAtIndex:indexPath.row];
-	defer_load_operation_t deferLoad = nil;
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
@@ -1641,17 +1640,6 @@ enum serviceListTags
 		}
 		@catch (NSException * e) {
 			[(ServiceEventTableViewCell *)cell setNext:nil];
-		}
-
-		if(!((NSObject<EventProtocol> *)firstObject).service.piconLoaded)
-		{
-			deferLoad = ^{
-				if(((ServiceEventTableViewCell *)cell).now == firstObject)
-				{
-					cell.imageView.image = ((NSObject<EventProtocol> *)firstObject).service.picon;
-					[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
-				}
-			};
 		}
 	}
 	else
@@ -1669,19 +1657,7 @@ enum serviceListTags
 		else
 			cell.backgroundView.backgroundColor = [UIColor clearColor];
 
-		if(!((NSObject<ServiceProtocol> *)firstObject).piconLoaded)
-		{
-			deferLoad = ^{
-				if(((ServiceTableViewCell *)cell).service == firstObject)
-				{
-					cell.imageView.image = ((NSObject<ServiceProtocol> *)firstObject).picon;
-					[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
-				}
-			};
-		}
 	}
-	if(deferLoad) // && !tableView.decelerating)
-		[_piconLoader addOperationWithBlock:deferLoad];
 
 	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
