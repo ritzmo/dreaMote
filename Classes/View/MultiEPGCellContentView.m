@@ -161,7 +161,6 @@
 	const CGFloat boundsX = contentRect.origin.x;
 	const CGFloat boundsHeight = contentRect.size.height;
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
-	CGContextSetRGBStrokeColor(ctx, 0.5f, 0.5f, 0.5f, 1.0f);
 	CGContextSetLineWidth(ctx, 0.25f);
 
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
