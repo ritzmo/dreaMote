@@ -14,22 +14,6 @@
 
 #import "UITableViewCell+EasyInit.h"
 
-#if INCLUDE_FEATURE(Extra_Animation)
-	#define reloadTable() { \
-		if(IS_IPHONE()) \
-		[_tableView reloadData]; \
-		else \
-		{ \
-			NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:0]; \
-			[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight]; \
-		} \
-	}
-#else
-	#define reloadTable() { \
-		[_tableView reloadData]; \
-	}
-#endif
-
 #define setLoading() { \
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView]; \
 	CGFloat topOffset = -_tableView.contentInset.top; \
@@ -108,14 +92,14 @@
 	// Clean event list
 	_packages = nil;
 	[_selectedPackages removeAllObjects]; // no use in keeping them around with new packages
-	reloadTable();
+	[_tableView reloadData];
 }
 
 - (void)dataFetched
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
-	reloadTable();
+	[_tableView reloadData];
 	[_tableView setContentOffset:CGPointMake(0, _searchBar.frame.size.height) animated:YES];
 }
 
@@ -199,7 +183,7 @@
 {
 	_reviewingChanges = NO;
 	[self configureToolbar];
-	reloadTable();
+	[_tableView reloadData];
 }
 
 - (void)commitChanges:(id)sender
@@ -224,7 +208,7 @@
 	{
 		_reviewingChanges = !_reviewingChanges;
 		[self configureToolbar];
-		reloadTable();
+		[_tableView reloadData];
 	}
 }
 
