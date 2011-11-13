@@ -1628,8 +1628,6 @@ enum serviceListTags
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
 		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
 		((ServiceEventTableViewCell *)cell).now = firstObject;
-		if(((NSObject<EventProtocol> *)firstObject).service.valid)
-			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		@try
 		{
 			((ServiceEventTableViewCell *)cell).next = [_subList objectAtIndex:indexPath.row];

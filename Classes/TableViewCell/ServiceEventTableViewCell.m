@@ -65,6 +65,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 				new.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 		}
 	}
+	if(new.service.valid)
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	// don't redraw until next is set
 }
@@ -172,7 +174,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		[NSLocalizedString(@"No EPG", @"Placeholder text in Now/Next-ServiceList if no EPG data present") drawAtPoint:point forWidth:boundsWidth-point.x withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 		return;
 	}
-	[now.title drawAtPoint:point forWidth:boundsWidth-point.x withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
+	[now.title drawAtPoint:point forWidth:boundsWidth-point.x withFont:secondaryFont lineBreakMode:UILineBreakModeTailTruncation];
 
 	if(next.begin)
 	{
@@ -180,7 +182,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		point.y += secondaryFont.lineHeight;
 		[next.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 		point.x += 5 + timeWidth;
-		[next.title drawAtPoint:point forWidth:forWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
+		[next.title drawAtPoint:point forWidth:forWidth withFont:secondaryFont lineBreakMode:UILineBreakModeTailTruncation];
 	}
 }
 
