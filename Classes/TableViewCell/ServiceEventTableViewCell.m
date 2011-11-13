@@ -95,9 +95,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	[self setNeedsDisplay];
 }
 
-- (void)drawContentRect:(CGRect)rect
+- (void)drawContentRect:(CGRect)contentRect
 {
-	const CGRect contentRect = self.bounds;
 	CGFloat offsetX = contentRect.origin.x;
 	const CGFloat boundsWidth = contentRect.size.width;
 	const CGFloat boundsHeight = contentRect.size.height;
