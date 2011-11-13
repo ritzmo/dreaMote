@@ -97,7 +97,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	CGFloat forWidth = boundsWidth-offsetX;
 	point = CGPointMake(offsetX, (boundsHeight - font.lineHeight) / 2);
 	[service.sname drawAtPoint:point forWidth:forWidth withFont:font lineBreakMode:UILineBreakModeTailTruncation];
-	[super drawRect:rect];
+	//[super drawRect:rect];
 }
 @end
 

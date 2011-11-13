@@ -246,7 +246,7 @@
 		CGContextStrokePath(ctx);
 	}
 
-	[super drawRect:rect];
+	//[super drawRect:rect];
 }
 
 @end

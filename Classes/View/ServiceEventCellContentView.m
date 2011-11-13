@@ -92,7 +92,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-	[super drawRect:rect];
+	//[super drawRect:rect];
 	const CGRect contentRect = self.bounds;
 	CGFloat offsetX = contentRect.origin.x;
 	const CGFloat boundsWidth = contentRect.size.width;
