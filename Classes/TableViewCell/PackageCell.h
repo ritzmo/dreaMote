@@ -7,20 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/FastTableViewCell.h>
 
 #import <Objects/Generic/Package.h>
 
 // cell identifier for this custom cell
 extern NSString *kPackageCell_ID;
 
-@interface PackageCell : BaseTableViewCell
+@interface PackageCell : FastTableViewCell
 {
 @private
-	UIImageView *indicator; /*!< @brief Indicator Image. */
-	UILabel *versionLabel;
-	UILabel *availableLabel;
-	Package *package;
+	UIImage *indicatorImage; /*!< @brief Indicator Image. */
 	BOOL _multiSelected;
 }
 
