@@ -169,12 +169,13 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	[now.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 
 	point.x += 5 + timeWidth;
+	forWidth = boundsWidth - point.x;
 	if(!now.begin)
 	{
-		[NSLocalizedString(@"No EPG", @"Placeholder text in Now/Next-ServiceList if no EPG data present") drawAtPoint:point forWidth:boundsWidth-point.x withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
+		[NSLocalizedString(@"No EPG", @"Placeholder text in Now/Next-ServiceList if no EPG data present") drawAtPoint:point forWidth:forWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
 		return;
 	}
-	[now.title drawAtPoint:point forWidth:boundsWidth-point.x withFont:secondaryFont lineBreakMode:UILineBreakModeTailTruncation];
+	[now.title drawAtPoint:point forWidth:forWidth withFont:secondaryFont lineBreakMode:UILineBreakModeTailTruncation];
 
 	if(next.begin)
 	{
