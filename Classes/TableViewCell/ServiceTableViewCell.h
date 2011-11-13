@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/FastTableViewCell.h>
 
 #import <Objects/ServiceProtocol.h>
 
@@ -19,7 +19,7 @@ extern NSString *kServiceCell_ID;
 /*!
  @brief UITableViewCell optimized to display Services.
  */
-@interface ServiceTableViewCell : BaseTableViewCell
+@interface ServiceTableViewCell : FastTableViewCell
 
 /*!
  @brief Enable/Disable use of picon rounding.
