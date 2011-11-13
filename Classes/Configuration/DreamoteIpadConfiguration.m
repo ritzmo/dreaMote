@@ -77,6 +77,11 @@
 	return 60;
 }
 
+- (CGFloat)timerCellHeight
+{
+	return 63;
+}
+
 - (CGFloat)metadataCellHeight
 {
 	return 275;

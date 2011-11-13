@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/FastTableViewCell.h>
 
 #import <Objects/TimerProtocol.h>
 
@@ -19,12 +19,7 @@ extern NSString *kTimerCell_ID;
 /*!
  @brief UITableViewCell optimized to display Timers.
  */
-@interface TimerTableViewCell : BaseTableViewCell
-{
-@private	
-	NSObject<TimerProtocol> *_timer; /*!< @brief Timer. */
-	UILabel *_timerTimeLabel; /*!< @brief Time Label. */
-}
+@interface TimerTableViewCell : FastTableViewCell
 
 /*!
  @brief Timer.

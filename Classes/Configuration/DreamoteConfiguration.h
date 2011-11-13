@@ -54,6 +54,7 @@ typedef enum {
 @property (nonatomic, readonly) CGFloat eventCellHeight;
 @property (nonatomic, readonly) CGFloat serviceCellHeight;
 @property (nonatomic, readonly) CGFloat serviceEventCellHeight;
+@property (nonatomic, readonly) CGFloat timerCellHeight;
 @property (nonatomic, readonly) CGFloat metadataCellHeight;
 @property (nonatomic, readonly) CGFloat autotimerCellHeight;
 @property (nonatomic, readonly) CGFloat packageCellHeight;

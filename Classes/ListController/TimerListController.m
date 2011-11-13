@@ -119,7 +119,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[super loadView];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
-	_tableView.rowHeight = 62;
+	_tableView.rowHeight = [DreamoteConfiguration singleton].timerCellHeight;
 	_tableView.allowsSelectionDuringEditing = YES;
 
 	_cleanupButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cleanup", @"Timer cleanup button") style:UIBarButtonItemStylePlain target:self action:@selector(cleanupTimers:)];

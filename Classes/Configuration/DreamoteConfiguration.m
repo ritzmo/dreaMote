@@ -621,6 +621,11 @@
 	return 12;
 }
 
+- (CGFloat)timerCellHeight
+{
+	return 50;
+}
+
 - (CGFloat)eventNameTextSize
 {
 	return 14;
