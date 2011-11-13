@@ -16,6 +16,7 @@
 NSString *kPackageCell_ID = @"PlayListCell_ID";
 
 @interface PackageCell()
+- (void)forceMultiSelected:(BOOL)selected;
 @property (nonatomic, strong) CALayer *imageLayer;
 @end
 
@@ -30,13 +31,14 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 		self.shouldIndentWhileEditing = NO;
 		imageLayer = [CALayer layer];
 		[self addSublayer:imageLayer];
+		[self forceMultiSelected:NO];
 	}
 	return self;
 }
 
 - (void)prepareForReuse
 {
-	[self setMultiSelected:NO animated:NO];
+	[self forceMultiSelected:NO];
 	// NOTE: don't unset package to avoid a redraw...
 }
 
@@ -56,6 +58,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
 	[super setEditing:editing animated:animated];
+	imageLayer.hidden = !editing;
 
 #if IS_DEBUG()
 	NSParameterAssert([self.superview isKindOfClass:[UITableView class]]);
@@ -68,15 +71,9 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	}
 }
 
-- (void)setMultiSelected:(BOOL)selected animated:(BOOL)animated
+- (void)forceMultiSelected:(BOOL)selected
 {
 	_multiSelected = selected;
-	if(animated)
-	{
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.2f];
-	}
-
 	if(selected)
 	{
 		indicatorImage = [UIImage imageNamed:@"IsSelected.png"];
@@ -89,7 +86,19 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 		imageLayer.contents = (id)indicatorImage.CGImage;
 		self.backgroundView.backgroundColor = [UIColor clearColor];
 	}
+}
+
+- (void)setMultiSelected:(BOOL)selected animated:(BOOL)animated
+{
+	if(animated)
+	{
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.2f];
+	}
+
+	[self forceMultiSelected:selected];
 	[self setNeedsDisplay];
+
 	if(animated)
 	{
 		[UIView commitAnimations];
@@ -124,7 +133,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	}
 	[primaryColor set];
 
-	if(indicatorImage && self.editing)
+	if(self.editing)
 	{
 		const NSInteger IMAGE_SIZE = 30;
 		CGRect indicatorFrame = CGRectMake(-30,
@@ -132,10 +141,8 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 										   IMAGE_SIZE,
 										   IMAGE_SIZE);
 		imageLayer.frame = indicatorFrame;
-		imageLayer.hidden = NO;
 	}
-	else
-		imageLayer.hidden = YES;
+
 	offsetX += kRightMargin;
 
 	// package name
