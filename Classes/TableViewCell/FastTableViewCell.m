@@ -12,6 +12,14 @@
 @end
 
 @implementation FastCellContentView
+- (void)setFrame:(CGRect)newFrame
+{
+	if(!CGRectEqualToRect(self.frame, newFrame))
+	{
+		[super setFrame:newFrame];
+		[self setNeedsDisplay];
+	}
+}
 - (void)drawRect:(CGRect)rect
 {
 	[(FastTableViewCell *)[self superview] drawContentRect:rect];
@@ -33,19 +41,13 @@
 		contentView = [[FastCellContentView alloc] initWithFrame:CGRectZero];
 		contentView.backgroundColor = [UIColor clearColor];
 		contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		contentView.contentMode = UIViewContentModeRedraw;
+		contentView.contentMode = UIViewContentModeLeft;
 		[self addSubview:contentView];
 	}
 	return self;
 }
 
 // TODO: forward background, so we can make the view opaque
-
-- (void)setNeedsDisplay
-{
-	[super setNeedsDisplay];
-	[contentView setNeedsDisplay];
-}
 
 - (void)layoutSubviews
 {
