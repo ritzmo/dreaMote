@@ -51,18 +51,15 @@
 
 // TODO: forward background, so we can make the view opaque
 
+- (void)setNeedsDisplay
+{
+	[super setNeedsDisplay];
+	[contentView setNeedsDisplay];
+}
+
 - (void)addSublayer:(CALayer *)layer
 {
 	[contentView.layer addSublayer:layer];
-}
-
-- (void)layoutSubviews
-{
-	CGRect b = [self bounds];
-	b.size.width += 30; // allow extra width to slide for editing
-	b.origin.x -= (self.editing && !self.showingDeleteConfirmation) ? 0 : 30; // start 30px left unless editing
-	[contentView setFrame:b];
-    [super layoutSubviews];
 }
 
 - (void)drawContentRect:(CGRect)rect
