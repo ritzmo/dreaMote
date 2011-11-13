@@ -14,4 +14,6 @@
 
 @interface FastTableViewCell : BaseTableViewCell<FastTableViewCellProtocol>
 
+- (void)addSublayer:(CALayer *)layer;
+
 @end

@@ -8,6 +8,8 @@
 
 #import "FastTableViewCell.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @interface FastCellContentView : UIView
 @end
 
@@ -48,6 +50,11 @@
 }
 
 // TODO: forward background, so we can make the view opaque
+
+- (void)addSublayer:(CALayer *)layer
+{
+	[contentView.layer addSublayer:layer];
+}
 
 - (void)layoutSubviews
 {
