@@ -190,10 +190,10 @@
 		}
 		case THEME_BLUE:
 		{
-			if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
-				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 			if(tableView.style == UITableViewStyleGrouped)
 			{
+				if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
+					cell.selectionStyle = UITableViewCellSelectionStyleBlue;
 				cell.backgroundColor = self.backgroundColor;
 			}
 			else
