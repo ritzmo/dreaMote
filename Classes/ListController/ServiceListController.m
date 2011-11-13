@@ -719,15 +719,15 @@ enum serviceListTags
 	if(self.showNowNext)
 	{
 		pendingRequests = 2;
+		_tableView.rowHeight = kServiceEventCellHeight;
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNowData)];
-		_tableView.rowHeight = kServiceEventCellHeight;
 	}
 	else
 	{
 		pendingRequests = 1;
-		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio];
 		_tableView.rowHeight = kServiceCellHeight;
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio];
 	}
 }
 
@@ -1626,18 +1626,17 @@ enum serviceListTags
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
-		ServiceEventCellContentView *cv = ((ServiceEventTableViewCell *)cell).cellView;
-		cv.formatter = _dateFormatter;
-		cv.now = firstObject;
+		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
+		((ServiceEventTableViewCell *)cell).now = firstObject;
 		if(((NSObject<EventProtocol> *)firstObject).service.valid)
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 		@try
 		{
-			cv.next = [_subList objectAtIndex:indexPath.row];
+			((ServiceEventTableViewCell *)cell).next = [_subList objectAtIndex:indexPath.row];
 		}
 		@catch (NSException *e)
 		{
-			cv.next = nil;
+			((ServiceEventTableViewCell *)cell).next = nil;
 		}
 	}
 	else

@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/FastTableViewCell.h>
 
-#import <View/ServiceEventCellContentView.h>
+#import <Objects/EventProtocol.h>
 
 /*!
  @brief Cell identifier for this cell.
@@ -19,12 +19,26 @@ extern NSString *kServiceEventCell_ID;
 /*!
  @brief UITableViewCell optimized to display Service/Now/Next combination.
  */
-@interface ServiceEventTableViewCell : BaseTableViewCell
+@interface ServiceEventTableViewCell : FastTableViewCell
+{
+@private
+	NSInteger timeWidth; /*!< @brief Width reserved for time. */
+}
 
 /*!
- @brief Custom rendering view.
+ @brief Date Formatter.
  */
-@property (nonatomic, strong) ServiceEventCellContentView *cellView;
+@property (nonatomic, strong) NSDateFormatter *formatter;
+
+/*!
+ @brief Current Event.
+ */
+@property (nonatomic, strong) NSObject<EventProtocol> *now;
+
+/*!
+ @brief Next Event.
+ */
+@property (nonatomic, strong) NSObject<EventProtocol> *next;
 
 @end
 
