@@ -195,7 +195,7 @@
 	if(prevX < 0)
 		prevX = 0;
 	else
-		prevX += widthPerSecond;
+		prevX *= widthPerSecond;
 
 	// iterate over elements 1 to n+1 while actually working on element i-1 ;)
 	for(NSObject<EventProtocol> *event in events)
@@ -215,9 +215,8 @@
 			// draw image
 			if(currentBgImage)
 			{
-				CGPoint point = curRect.origin;
-				point.y = (boundsHeight - currentBgImage.size.height) / 2;;
-				[currentBgImage drawAtPoint:point];
+				// TODO: any way to optimize this?
+				[currentBgImage drawInRect:curRect];
 			}
 			// fill color
 			else
