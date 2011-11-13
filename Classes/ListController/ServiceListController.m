@@ -721,11 +721,13 @@ enum serviceListTags
 		pendingRequests = 2;
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
 		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNowData)];
+		_tableView.rowHeight = kServiceEventCellHeight;
 	}
 	else
 	{
 		pendingRequests = 1;
 		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio];
+		_tableView.rowHeight = kServiceCellHeight;
 	}
 }
 
@@ -1615,13 +1617,6 @@ enum serviceListTags
 #pragma mark		Table View
 #pragma mark	-
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if(tableView == _tableView && [[_mainList objectAtIndex:indexPath.row] conformsToProtocol:@protocol(EventProtocol)])
-		return kServiceEventCellHeight;
-	return kServiceCellHeight;
-}
-
 /* cell for row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1855,46 +1850,6 @@ enum serviceListTags
 }
 
 #pragma mark -
-
-#if 0
-- (void)loadPiconsForVisibleRows
-{
-	if(_mainList.count)
-	{
-		UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
-		Class ServiceEventTableViewCellClass = [ServiceEventTableViewCell class];
-		NSArray *visiblePaths = [tableView indexPathsForVisibleRows];
-		for(NSIndexPath *indexPath in visiblePaths)
-		{
-			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-			if([cell isKindOfClass:ServiceEventTableViewCellClass])
-			{
-				NSObject<EventProtocol> *now = ((ServiceEventTableViewCell *)cell).now;
-				[_piconLoader addOperationWithBlock:^{
-					if(((ServiceEventTableViewCell *)cell).now == now)
-					{
-						cell.imageView.image = now.service.picon;
-						[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
-					}
-				}];
-			}
-			else
-			{
-				NSObject<ServiceProtocol> *service = ((ServiceTableViewCell *)cell).service;
-				[_piconLoader addOperationWithBlock:^{
-					if(((ServiceTableViewCell *)cell).service == service)
-					{
-						cell.imageView.image = service.picon;
-						[cell performSelectorOnMainThread:@selector(setNeedsLayout) withObject:nil waitUntilDone:NO];
-					}
-				}];
-			}
-        }
-	}
-}
-#endif
-
-#pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 #pragma mark -
 
@@ -1908,18 +1863,7 @@ enum serviceListTags
 {
 	if(scrollView != _searchDisplay.searchResultsTableView)
 		[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
-#if 0
-	if(!decelerate)
-		[self loadPiconsForVisibleRows];
-#endif
 }
-
-#if 0
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-	[self loadPiconsForVisibleRows];
-}
-#endif
 
 #pragma mark -
 #pragma mark UISearchDisplayController Delegate Methods
@@ -1970,6 +1914,7 @@ enum serviceListTags
 	[searchTableView addGestureRecognizer:longPressGesture];
 	searchTableView.editing = self.editing;
 	searchTableView.allowsSelectionDuringEditing = YES;
+	searchTableView.rowHeight = kServiceCellHeight;
 }
 
 #pragma mark -
