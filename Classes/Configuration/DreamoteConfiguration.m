@@ -503,7 +503,8 @@
 {
 	switch(currentTheme)
 	{
-		case THEME_BLUE: // TODO: create image for this?
+		case THEME_BLUE:
+			return [UIImage imageNamed:@"Mepg_Current_Blue.png"];
 		default:
 			return nil;
 	}

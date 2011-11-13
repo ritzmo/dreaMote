@@ -286,6 +286,8 @@
 		DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA52995C144AF88D0010429A /* EventKitUI.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		DA561227146FACE300390225 /* Mepg_Current_Blue~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = DA561226146FACE300390225 /* Mepg_Current_Blue~ipad.png */; };
+		DA56122A146FC9F700390225 /* Mepg_Current_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA561229146FC9F700390225 /* Mepg_Current_Blue.png */; };
 		DA681B0F13B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
 		DA681B1013B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
 		DA681B1113B356C200232190 /* ConnectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */; };
@@ -1306,6 +1308,8 @@
 		DA51CE97144ACBEE00C714ED /* SHKViewControllerWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKViewControllerWrapper.m; sourceTree = "<group>"; };
 		DA529957144AF6B00010429A /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		DA52995C144AF88D0010429A /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
+		DA561226146FACE300390225 /* Mepg_Current_Blue~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Mepg_Current_Blue~ipad.png"; sourceTree = "<group>"; };
+		DA561229146FC9F700390225 /* Mepg_Current_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mepg_Current_Blue.png; sourceTree = "<group>"; };
 		DA681B0D13B356C200232190 /* ConnectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionTableViewCell.h; sourceTree = "<group>"; };
 		DA681B0E13B356C200232190 /* ConnectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionTableViewCell.m; sourceTree = "<group>"; };
 		DA681B1313B35BEC00232190 /* ConnectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionListController.h; sourceTree = "<group>"; };
@@ -2586,6 +2590,8 @@
 				DAC8BF4113B200F100CA00D9 /* media-playback-start.png */,
 				DAC8BF4213B200F100CA00D9 /* mediaplayer.png */,
 				DAC8BF4313B200F100CA00D9 /* menu.png */,
+				DA561229146FC9F700390225 /* Mepg_Current_Blue.png */,
+				DA561226146FACE300390225 /* Mepg_Current_Blue~ipad.png */,
 				DAC8BF4413B200F100CA00D9 /* movie.png */,
 				DAC8BF4513B200F100CA00D9 /* network-wired.png */,
 				DAC8BF4613B200F100CA00D9 /* NotSelected.png */,
@@ -3498,6 +3504,8 @@
 				DA2F23BC146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 				DA2F23C0146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */,
 				DA2F23C7146DE818007DC7F6 /* Slider_Blue.png in Resources */,
+				DA561227146FACE300390225 /* Mepg_Current_Blue~ipad.png in Resources */,
+				DA56122A146FC9F700390225 /* Mepg_Current_Blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
