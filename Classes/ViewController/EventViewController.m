@@ -531,9 +531,9 @@
 				sourceCell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
-				((EventTableViewCell*)sourceCell).cellView.formatter = _dateFormatter;
-				((EventTableViewCell*)sourceCell).cellView.showService = YES;
-				((EventTableViewCell*)sourceCell).cellView.event = (NSObject<EventProtocol> *)[_similarEvents objectAtIndex: indexPath.row];
+				((EventTableViewCell*)sourceCell).formatter = _dateFormatter;
+				((EventTableViewCell*)sourceCell).showService = YES;
+				((EventTableViewCell*)sourceCell).event = (NSObject<EventProtocol> *)[_similarEvents objectAtIndex: indexPath.row];
 			}
 			break;
 		case 5:

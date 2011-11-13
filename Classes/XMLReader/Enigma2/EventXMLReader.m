@@ -35,67 +35,59 @@ static const NSUInteger kEnigma2EventSrefLength = 24;
 static const char *kEnigma2EventSname = "e2eventservicename";
 static const NSUInteger kEnigma2EventSnameLength = 19;
 
+typedef enum {
+	FORMAT_NONE,
+	FORMAT_EVENTLIST,
+	FORMAT_NOWNEXT,
+} formattingStyle_t;
+
 @interface Enigma2EventXMLReader()
 @property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
 @property (nonatomic, strong) NSDateFormatter *formatter;
+@property (nonatomic) formattingStyle_t formattingStyle;
 @end
 
 @implementation Enigma2EventXMLReader
 
-@synthesize currentEvent, formatter;
+@synthesize currentEvent, formatter, formattingStyle;
 
 /* initialize */
-- (id)init
+- (id)initWithDelegate:(NSObject<DataSourceDelegate> *)delegate getServices:(BOOL)getServices selector:(SEL)selector formattingStyle:(formattingStyle_t)format
 {
 	if((self = [super init]))
 	{
-		formatter = [[NSDateFormatter alloc] init];
-		[formatter setTimeStyle:NSDateFormatterShortStyle];
+		if(format != FORMAT_NONE)
+		{
+			formatter = [[NSDateFormatter alloc] init];
+			[formatter setTimeStyle:NSDateFormatterShortStyle];
+		}
+		_delegate = delegate;
+		_delegateSelector = selector;
+		_getServices = getServices;
+		formattingStyle = format;
+		_timeout = kTimeout * 2;
 	}
 	return self;
 }
 
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
 {
-	return [self initWithDelegateAndGetServices:delegate getServices:NO];
+	return [self initWithDelegate:delegate getServices:NO selector:@selector(addEvent:) formattingStyle:FORMAT_NONE];
 }
 
 - (id)initWithDelegateAndGetServices:(NSObject<EventSourceDelegate> *)delegate getServices:(BOOL)getServices
 {
-	if((self = [self init]))
-	{
-		_delegate = delegate;
-		_delegateSelector = @selector(addEvent:);
-		_getServices = getServices;
-		_timeout = kTimeout * 2; // encountered some services with a crazy long epg
-	}
-	return self;
+	return [self initWithDelegate:delegate getServices:getServices selector:@selector(addEvent:) formattingStyle:FORMAT_EVENTLIST];
 }
 
-/* initialize */
 - (id)initWithNowDelegate:(NSObject<NowSourceDelegate> *)delegate
 {
-	if((self = [self init]))
-	{
-		_delegate = delegate;
-		_delegateSelector = @selector(addNowEvent:);
-		_getServices = YES;
-		_timeout = kTimeout * 2;
-	}
-	return self;
+	return [self initWithDelegate:delegate getServices:YES selector:@selector(addNowEvent:) formattingStyle:FORMAT_NOWNEXT];
 }
 
-/* initialize */
 - (id)initWithNextDelegate:(NSObject<NextSourceDelegate> *)delegate
 {
-	if((self = [self init]))
-	{
-		_delegate = delegate;
-		_delegateSelector = @selector(addNextEvent:);
-		_getServices = NO;
-		_timeout = kTimeout * 2;
-	}
-	return self;
+	return [self initWithDelegate:delegate getServices:NO selector:@selector(addNextEvent:) formattingStyle:FORMAT_NOWNEXT];
 }
 
 /* send fake object */
@@ -170,10 +162,22 @@ static const NSUInteger kEnigma2EventSnameLength = 19;
 
 	if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
-		const NSString *begin = [formatter stringFromDate:currentEvent.begin];
-		const NSString *end = [formatter stringFromDate:currentEvent.end];
-		if(begin && end)
-			currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+		if(formattingStyle == FORMAT_NOWNEXT)
+		{
+			const NSString *begin = [formatter stringFromDate:currentEvent.begin];
+			const NSString *end = [formatter stringFromDate:currentEvent.end];
+			if(begin && end)
+				currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+		}
+		else if(formattingStyle == FORMAT_EVENTLIST)
+		{
+			[formatter setDateStyle:NSDateFormatterMediumStyle];
+			const NSString *begin = [formatter fuzzyDate:currentEvent.begin];
+			[formatter setDateStyle:NSDateFormatterNoStyle];
+			const NSString *end = [formatter stringFromDate:currentEvent.end];
+			if(begin && end)
+				currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+		}
 
 		[_delegate performSelectorOnMainThread:_delegateSelector
 									withObject:currentEvent

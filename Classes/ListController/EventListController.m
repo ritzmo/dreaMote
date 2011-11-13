@@ -487,14 +487,14 @@
 #endif
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
-	cell.cellView.formatter = dateFormatter;
+	cell.formatter = dateFormatter;
 	if(_useSections)
 	{
 		const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
-		cell.cellView.event = (NSObject<EventProtocol> *)[events objectAtIndex:offset + indexPath.row];
+		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex:offset + indexPath.row];
 	}
 	else
-		cell.cellView.event = (NSObject<EventProtocol> *)[events objectAtIndex: indexPath.row];
+		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex: indexPath.row];
 
 	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
@@ -512,7 +512,7 @@
 		return nil;
 	}
 
-	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).cellView.event;
+	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
 
 	if(_eventViewController == nil)
 		_eventViewController = [[EventViewController alloc] init];
