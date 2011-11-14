@@ -582,7 +582,7 @@
 	cell.epgView.events = [_events valueForKey:service.sref];
 	cell.epgView.secondsSinceBegin = _secondsSinceBegin;
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 	return cell;
 }
 

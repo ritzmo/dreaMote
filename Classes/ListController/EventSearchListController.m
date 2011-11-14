@@ -271,7 +271,7 @@
 	else
 		cell.event = (NSObject<EventProtocol> *)[_events objectAtIndex: indexPath.row];
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 	return cell;
 }
 

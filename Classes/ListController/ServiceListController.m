@@ -1653,7 +1653,7 @@ enum serviceListTags
 
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
+	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 	return cell;
 }
 

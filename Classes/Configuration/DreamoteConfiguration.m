@@ -173,6 +173,11 @@
 
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView
 {
+	return [self styleTableViewCell:cell inTableView:tableView asSlave:NO];
+}
+
+- (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave
+{
 	switch(currentTheme)
 	{
 		default:
@@ -228,7 +233,8 @@
 			if(tableView.style == UITableViewStylePlain)
 			{
 				backgroundColor = nil;
-				cell.backgroundView = nil;
+				UIImage *image = slave ? [UIImage imageNamed:@"Cell_DarkGroup.png"] : [UIImage imageNamed:@"Cell_Dark.png"];
+				cell.backgroundView = [[UIImageView alloc] initWithImage:image];
 				cell.selectedBackgroundView = nil;
 			}
 			else

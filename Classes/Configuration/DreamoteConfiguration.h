@@ -28,6 +28,7 @@ typedef enum {
 - (void)styleTableView:(UITableView *)tableView;
 - (void)styleTableView:(UITableView *)tableView isSlave:(BOOL)slave;
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)tableViewCell inTableView:(UITableView *)tableView;
+- (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 
