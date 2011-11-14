@@ -204,7 +204,7 @@ enum bouquetListTags
 
 	if(wasEditing != editing)
 	{
-		if(animated)
+		if(animated && _listType == LIST_TYPE_BOUQUETS)
 		{
 			if(editing)
 				[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_bouquets.count inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
@@ -643,6 +643,8 @@ enum bouquetListTags
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
 	if(_listType == LIST_TYPE_PROVIDER || [bouquetDelegate isKindOfClass:[ServiceListController class]])
 		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	else
+		cell.editingAccessoryType = UITableViewCellAccessoryNone;
 
 	return cell;
 }
