@@ -458,6 +458,10 @@
 			return nil;
 		case THEME_BLUE:
 			return [UIColor colorWithRed:0.16 green:0.36 blue:0.66 alpha:1];
+		case THEME_DARK:
+			return [UIColor colorWithRed:.33 green:.33 blue:.33 alpha:1];
+		case THEME_NIGHT:
+			return [UIColor colorWithHue:0 saturation:0 brightness:.05 alpha:1];
 	}
 }
 
