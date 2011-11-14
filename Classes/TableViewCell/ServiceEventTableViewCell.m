@@ -36,13 +36,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	return self;
 }
 
-- (void)prepareForReuse
-{
-	self.accessoryType = UITableViewCellAccessoryNone;
-
-	[super prepareForReuse];
-}
-
 /* setter for now property */
 - (void)setNow:(NSObject<EventProtocol> *)new
 {
@@ -67,6 +60,8 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	}
 	if(new.service.valid)
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	else
+		self.accessoryType = UITableViewCellAccessoryNone;
 
 	// don't redraw until next is set
 }
