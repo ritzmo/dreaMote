@@ -253,16 +253,9 @@
 #ifndef defaultSectionHeaderHeight
 #define defaultSectionHeaderHeight 34
 #endif
-	switch(currentTheme)
-	{
-		default:
-			return defaultSectionHeaderHeight;
-		case THEME_BLUE:
-			return 40.0;
-		case THEME_DARK:
-		case THEME_NIGHT:
-			return 44.0;
-	}
+	if(currentTheme == THEME_DEFAULT)
+		return defaultSectionHeaderHeight;
+	return 40.0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -305,16 +298,15 @@
 			if(tableView.style == UITableViewStylePlain)
 			{
 				GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
-				[gradientView gradientFrom:[UIColor colorWithRed:.5 green:.5 blue:.5 alpha:.75] to:[UIColor colorWithRed:0 green:0 blue:0 alpha:.35]];
-				gradientView.centerGradient = YES;
+				[gradientView gradientFrom:[UIColor colorWithHue:0 saturation:0 brightness:.2 alpha:.75] to:[UIColor colorWithHue:0 saturation:0 brightness:0 alpha:.35] center:YES];
 				headerView = gradientView;
-				labelFrame = CGRectMake(10.0, 0.0, 300.0, 44.0);
+				labelFrame = CGRectMake(10.0, 0.0, 300.0, 40.0);
 			}
 			else
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(30.0, 0.0, 260.0, 44.0);
+				labelFrame = CGRectMake(30.0, 0.0, 260.0, 40.0);
 			}
 			font = [UIFont fontWithName:@"Helvetica" size:20];
 			break;
@@ -324,15 +316,15 @@
 			if(tableView.style == UITableViewStylePlain)
 			{
 				GradientView *gradientView = [[GradientView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
-				[gradientView gradientFrom:[UIColor colorWithRed:.35 green:.35 blue:.35 alpha:.75] to:[UIColor colorWithRed:.17 green:.17 blue:.17 alpha:.46]];
+				[gradientView gradientFrom:[UIColor colorWithRed:.35 green:.35 blue:.35 alpha:.75] to:[UIColor colorWithRed:.17 green:.17 blue:.17 alpha:.46] center:YES];
 				headerView = gradientView;
-				labelFrame = CGRectMake(10.0, 0.0, 300.0, 44.0);
+				labelFrame = CGRectMake(10.0, 0.0, 300.0, 40.0);
 			}
 			else
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(30.0, 0.0, 260.0, 44.0);
+				labelFrame = CGRectMake(30.0, 0.0, 260.0, 40.0);
 			}
 			font = [UIFont fontWithName:@"Helvetica" size:20];
 			break;
