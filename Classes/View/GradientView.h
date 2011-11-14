@@ -9,20 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface GradientView : UIView
-{
-@private
-	CGFloat _startR;
-	CGFloat _startG;
-	CGFloat _startB;
-	CGFloat _startA;
-	CGFloat _endR;
-	CGFloat _endG;
-	CGFloat _endB;
-	CGFloat _endA;
-}
 
-- (void)gradientFrom:(UIColor *)from to:(UIColor *)to;
-
-@property (nonatomic) BOOL centerGradient;
+- (void)gradientFrom:(UIColor *)from to:(UIColor *)to center:(BOOL)center;
 
 @end
