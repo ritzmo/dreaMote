@@ -56,11 +56,18 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 - (void)setAccessoryType:(UITableViewCellAccessoryType)accessoryType
 {
 	[super setAccessoryType:accessoryType];
-	if(accessoryType == UITableViewCellAccessoryDisclosureIndicator && [DreamoteConfiguration singleton].currentTheme == THEME_NIGHT)
+	if(accessoryType == UITableViewCellAccessoryDisclosureIndicator || accessoryType == UITableViewCellAccessoryCheckmark)
 	{
-		ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:[DreamoteConfiguration singleton].detailsTextColor
-															 andHighlightedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor];
-		self.accessoryView = cav;
+		DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+		if(singleton.currentTheme == THEME_NIGHT || singleton.currentTheme == THEME_DARK)
+		{
+			ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:singleton.detailsTextColor
+																 andHighlightedColor:singleton.highlightedDetailsTextColor
+																	forAccessoryType:accessoryType];
+			self.accessoryView = cav;
+		}
+		else
+			self.accessoryView = nil;
 	}
 	else
 		self.accessoryView = nil;
@@ -69,11 +76,18 @@ NSString *kBaseCell_ID = @"BaseCell_ID";
 - (void)setEditingAccessoryType:(UITableViewCellAccessoryType)editingAccessoryType
 {
 	[super setEditingAccessoryType:editingAccessoryType];
-	if(editingAccessoryType == UITableViewCellAccessoryDisclosureIndicator && [DreamoteConfiguration singleton].currentTheme == THEME_NIGHT)
+	if(editingAccessoryType == UITableViewCellAccessoryDisclosureIndicator || editingAccessoryType == UITableViewCellAccessoryCheckmark)
 	{
-		ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:[DreamoteConfiguration singleton].detailsTextColor
-															 andHighlightedColor:[DreamoteConfiguration singleton].highlightedDetailsTextColor];
-		self.editingAccessoryView = cav;
+		DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+		if(singleton.currentTheme == THEME_NIGHT || singleton.currentTheme == THEME_DARK)
+		{
+			ColoredAccessoryView *cav = [ColoredAccessoryView accessoryViewWithColor:singleton.detailsTextColor
+																 andHighlightedColor:singleton.highlightedDetailsTextColor
+																	forAccessoryType:editingAccessoryType];
+			self.editingAccessoryView = cav;
+		}
+		else
+			self.editingAccessoryView = nil;
 	}
 	else
 		self.editingAccessoryView = nil;

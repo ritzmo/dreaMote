@@ -12,8 +12,9 @@
 
 @interface ColoredAccessoryView : UIControl
 
-+ (ColoredAccessoryView *)accessoryViewWithColor:(UIColor *)color andHighlightedColor:(UIColor *)highlightedColor;
++ (ColoredAccessoryView *)accessoryViewWithColor:(UIColor *)color andHighlightedColor:(UIColor *)highlightedColor forAccessoryType:(UITableViewCellAccessoryType)accessoryType;
 
+@property (nonatomic, assign) UITableViewCellAccessoryType accessoryType;
 @property (nonatomic, strong) UIColor *accessoryColor;
 @property (nonatomic, strong) UIColor *highlightedColor;
 
