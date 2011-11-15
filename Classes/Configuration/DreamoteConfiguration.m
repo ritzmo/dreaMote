@@ -498,6 +498,10 @@
 			return nil;
 		case THEME_BLUE:
 			return [[UIImage imageNamed:@"Slider_Blue.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+		case THEME_DARK:
+			return [[UIImage imageNamed:@"Slider_Dark.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
+		case THEME_NIGHT:
+			return [[UIImage imageNamed:@"Slider_Night.png"] stretchableImageWithLeftCapWidth:10.0 topCapHeight:0.0];
 	}
 }
 
