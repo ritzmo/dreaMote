@@ -13,14 +13,15 @@
 
 + (BOOL)newerThanIos:(float)version
 {
-	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
+	static float currentVersion;
+	if(!currentVersion)
+		currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
 	return (currentVersion >= version);
 }
 
 + (BOOL)olderThanIos:(float)version
 {
-	float currentVersion = [[[UIDevice currentDevice] systemVersion] floatValue];
-	return (currentVersion < version);
+	return ![self newerThanIos:version];
 }
 
 @end
