@@ -8,44 +8,14 @@
 
 #import "PackageCell.h"
 
-#import <QuartzCore/QuartzCore.h>
-
 #import "Constants.h"
 
 // cell identifier for this custom cell
 NSString *kPackageCell_ID = @"PlayListCell_ID";
 
-@interface PackageCell()
-- (void)forceMultiSelected:(BOOL)selected;
-@property (nonatomic, strong) CALayer *imageLayer;
-@end
-
 @implementation PackageCell
 
-@synthesize imageLayer, package;
-
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])){
-		self.backgroundView = [[UIView alloc] init];
-		self.shouldIndentWhileEditing = NO;
-		imageLayer = [CALayer layer];
-		[self addSublayer:imageLayer];
-		[self forceMultiSelected:NO];
-	}
-	return self;
-}
-
-- (void)prepareForReuse
-{
-	[self forceMultiSelected:NO];
-	// NOTE: don't unset package to avoid a redraw...
-}
-
-- (Package *)package
-{
-	return package;
-}
+@synthesize package;
 
 - (void)setPackage:(Package *)newPackage
 {
@@ -55,67 +25,12 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	[self setNeedsDisplay];
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated
-{
-	[super setEditing:editing animated:animated];
-	imageLayer.hidden = !editing;
-
-#if IS_DEBUG()
-	NSParameterAssert([self.superview isKindOfClass:[UITableView class]]);
-#endif
-
-	if([self.superview respondsToSelector:@selector(isEditing)])
-	{
-		if(_multiSelected && ![(UITableView *)self.superview isEditing])
-			[self setMultiSelected:NO animated:YES];
-	}
-}
-
-- (void)forceMultiSelected:(BOOL)selected
-{
-	_multiSelected = selected;
-	if(selected)
-	{
-		indicatorImage = [UIImage imageNamed:@"IsSelected.png"];
-		imageLayer.contents = (id)indicatorImage.CGImage;
-		self.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
-	}
-	else
-	{
-		indicatorImage = [UIImage imageNamed:@"NotSelected.png"];
-		imageLayer.contents = (id)indicatorImage.CGImage;
-		self.backgroundView.backgroundColor = [UIColor clearColor];
-	}
-}
-
-- (void)setMultiSelected:(BOOL)selected animated:(BOOL)animated
-{
-	if(animated)
-	{
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.2f];
-	}
-
-	[self forceMultiSelected:selected];
-	[self setNeedsDisplay];
-
-	if(animated)
-	{
-		[UIView commitAnimations];
-	}
-}
-
-- (BOOL)toggleMultiSelected
-{
-	[self setMultiSelected:!_multiSelected animated:YES];
-	return _multiSelected;
-}
-
 - (void)drawContentRect:(CGRect)contentRect
 {
+	[super drawContentRect:contentRect]; // set frame for multi selection pixmap
+
 	CGFloat offsetX = contentRect.origin.x;
 	const CGFloat boundsWidth = contentRect.size.width;
-	const CGFloat boundsHeight = contentRect.size.height;
 
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 	UIColor *primaryColor = nil, *secondaryColor = nil;
@@ -132,16 +47,6 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 		secondaryColor = singleton.detailsTextColor;
 	}
 	[primaryColor set];
-
-	if(self.editing)
-	{
-		const NSInteger IMAGE_SIZE = 30;
-		CGRect indicatorFrame = CGRectMake(-30,
-										   (boundsHeight - IMAGE_SIZE) / 2,
-										   IMAGE_SIZE,
-										   IMAGE_SIZE);
-		imageLayer.frame = indicatorFrame;
-	}
 
 	offsetX += kRightMargin;
 

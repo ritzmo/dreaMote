@@ -7,34 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TableViewCell/FastTableViewCell.h>
+#import <TableViewCell/MultiSelectionTableViewCell.h>
 
 #import <Objects/Generic/Package.h>
 
 // cell identifier for this custom cell
 extern NSString *kPackageCell_ID;
 
-@interface PackageCell : FastTableViewCell
-{
-@private
-	UIImage *indicatorImage; /*!< @brief Indicator Image. */
-	BOOL _multiSelected;
-}
-
-/*!
- @brief Set selection in Multi-Select mode.
-
- @param selected If the cell should be selected.
- @param animated Animate (de)selection?
- */
-- (void)setMultiSelected:(BOOL)selected animated:(BOOL)animated;
-
-/*!
- @brief Toggle selection in Multi-Select mode.
-
- @return selection status after running this method
- */
-- (BOOL)toggleMultiSelected;
+@interface PackageCell : MultiSelectionTableViewCell
 
 @property (nonatomic, strong) Package *package;
 
