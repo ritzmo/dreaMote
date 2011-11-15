@@ -171,22 +171,6 @@
 	return newEvent;
 }
 
-- (void)fetchServices
-{
-	@autoreleasepool
-	{
-		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio];
-	}
-}
-
-- (void)fetchData
-{
-	@autoreleasepool
-	{
-		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service];
-	}
-}
-
 #pragma mark -
 #pragma mark DataSourceDelegate
 #pragma mark -
@@ -252,7 +236,9 @@
 
 		[_delegate performSelectorOnMainThread:@selector(remainingServicesToRefresh:) withObject:[NSNumber numberWithUnsignedInteger:count] waitUntilDone:NO];
 		// continue fetching events
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchEPG:self service:_service];
+		});
 	}
 	// indicate that we're done
 	else
@@ -421,7 +407,9 @@
 	// fetch list of services, followed by epg for each service
 	_serviceList = [[NSMutableArray alloc] init];
 	_isRadio = isRadio;
-	[NSThread detachNewThreadSelector:@selector(fetchServices) toTarget:self withObject:nil];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices:self bouquet:_bouquet isRadio:_isRadio];
+	});
 }
 
 /* remove old events from cache */

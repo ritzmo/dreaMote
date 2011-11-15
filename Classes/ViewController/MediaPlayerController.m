@@ -174,11 +174,16 @@ enum mediaPlayerTags
 		default: return;
 	}
 
-	// Spawn a thread to send the request so that the UI is not blocked while
-	// waiting for the response.
-	[NSThread detachNewThreadSelector:@selector(sendCommand:)
-							 toTarget:self
-						   withObject: command];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
+		if(!result.result)
+		{
+			// Alert user
+			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
+																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+			[alert show];
+		}
+	});
 }
 
 - (UIButton*)newButton:(CGRect)frame withImage:(NSString*)imagePath andKeyCode:(int)keyCode
@@ -300,13 +305,6 @@ enum mediaPlayerTags
 	[NSThread detachNewThreadSelector:@selector(multiDeleteDefer) toTarget:self withObject:nil];
 }
 
-- (void)shuffleDefer
-{
-	@autoreleasepool {
-		[[RemoteConnectorObject sharedRemoteConnector] shufflePlaylist:self playlist:_playlist.files];
-	}
-}
-
 - (IBAction)shuffle:(id)sender
 {
 	[popoverController dismissPopoverAnimated:YES];
@@ -324,7 +322,10 @@ enum mediaPlayerTags
 	_deleteButton.enabled = NO;
 	_shuffleButton.enabled = NO;
 	_progressActions = -1;
-	[NSThread detachNewThreadSelector:@selector(shuffleDefer) toTarget:self withObject:nil];
+
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[[RemoteConnectorObject sharedRemoteConnector] shufflePlaylist:self playlist:_playlist.files];
+	});
 }
 
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration

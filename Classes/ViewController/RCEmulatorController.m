@@ -21,12 +21,6 @@
 
 @interface RCEmulatorController()
 /*!
- @brief entry point of thread which loads the screenshot
- @param dummy ui element
- */
-- (void)loadImageThread:(id)dummy;
-
-/*!
  @brief set screenshot type to osd
  @param sender ui element
  */
@@ -333,13 +327,7 @@
 
 - (void)loadImage:(id)dummy
 {
-	[NSThread detachNewThreadSelector:@selector(loadImageThread:) toTarget:self withObject:nil];
-}
-
-- (void)loadImageThread:(id)dummy
-{
-	@autoreleasepool {
-
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		NSData *data = [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType];
 		UIImage * image = [UIImage imageWithData: data];
 		if(image != nil)
@@ -352,8 +340,7 @@
 			_scrollView.zoomScale = 1.0f;
 			_imageView.frame = CGRectMake(0, 0, scaledWidth, scaledHeight);
 		}
-
-	}
+	});
 }
 
 - (void)setOSDType:(id)sender

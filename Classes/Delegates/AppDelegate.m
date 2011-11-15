@@ -60,10 +60,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 #endif
 }
 
-@interface AppDelegate()
-- (void)checkReachable;
-@end
-
 @interface AppDelegate(Picons)
 /*!
  @brief Check if Picons zip exists and ask to unpack if true.
@@ -103,19 +99,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	welcomeTypes returnValue = welcomeType;
 	welcomeType = welcomeTypeNone;
 	return returnValue;
-}
-
-- (void)checkReachable
-{
-	@autoreleasepool {
-
-		NSError *error = nil;
-		[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
-
-		// this might have changed the features, so handle this like a reconnect
-		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-
-	}
 }
 
 #pragma mark -
@@ -232,7 +215,13 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	{
 		if([RemoteConnectorObject connectTo:[activeConnectionId integerValue]])
 		{
-			[NSThread detachNewThreadSelector:@selector(checkReachable) toTarget:self withObject:nil];
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+				NSError *error = nil;
+				[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+
+				// this might have changed the features, so handle this like a reconnect
+				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+			});
 			treatAsFirst = NO;
 		}
 

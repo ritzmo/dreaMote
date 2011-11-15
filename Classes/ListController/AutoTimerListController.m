@@ -118,14 +118,7 @@
 - (void)parseEPGDefer
 {
 	@autoreleasepool {
-		Result *result = [[RemoteConnectorObject sharedRemoteConnector] parseAutoTimer];
-
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Finished parsing EPG", @"AutoTimer", @"Force parsing is finished, this could have been either an error or a success")
-															  message:result.resulttext // currently just dump the text there
-															 delegate:nil
-													cancelButtonTitle:@"OK"
-													otherButtonTitles:nil];
-		[alert show];
+		
 
 	}
 	_parsing = NO;
@@ -138,7 +131,18 @@
 	@synchronized(self)
 	{
 		if(!_parsing)
-			[NSThread detachNewThreadSelector:@selector(parseEPGDefer) toTarget:self withObject:nil];
+		{
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+				Result *result = [[RemoteConnectorObject sharedRemoteConnector] parseAutoTimer];
+
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedStringFromTable(@"Finished parsing EPG", @"AutoTimer", @"Force parsing is finished, this could have been either an error or a success")
+																	  message:result.resulttext // currently just dump the text there
+																	 delegate:nil
+															cancelButtonTitle:@"OK"
+															otherButtonTitles:nil];
+				[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+			});
+		}
 		_parsing = YES;
 	}
 }

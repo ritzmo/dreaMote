@@ -231,7 +231,7 @@
 	[self refreshNow];
 
 	++pendingRequests;
-	[NSThread detachNewThreadSelector:@selector(readEPG) toTarget:self withObject:nil];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ [self readEPG]; });
 }
 
 /* getter of willReapper */
@@ -387,10 +387,8 @@
 	{
 		[self emptyData];
 
-		// Spawn a thread to fetch the event data so that the UI is not blocked while the
-		// application parses the XML file(s).
 		// NOTE: not running from our queue as we don't want this to be canceled
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ [self fetchData]; });
 	}
 	else
 	{
@@ -490,7 +488,7 @@
 	_servicesToRefresh = -1;
 	_reloading = NO;
 
-	[NSThread detachNewThreadSelector:@selector(readEPG) toTarget:self withObject:nil];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ [self readEPG]; });
 }
 
 - (void)remainingServicesToRefresh:(NSNumber *)count

@@ -65,7 +65,7 @@
 - (void)addFilesToDelegate:(NSObject<RecursiveFileAdderDelegate> *)delegate
 {
 	self.delegate = delegate;
-	[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ [self fetchData]; });
 }
 
 #pragma mark -
@@ -83,24 +83,14 @@
 	[alert show];
 
 	// TODO: is it a good idea to try to continue at any cost?
-	if([_remainingPaths count])
-	{
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
-	}
-	else
-	{
-		[_delegate recursiveFileAdderDoneAddingFiles:self];
-
-		if(dataSource == _xmlReader)
-			_xmlReader = nil;
-	}
+	[self dataSourceDelegateFinishedParsingDocument:dataSource];
 }
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
 	if([_remainingPaths count])
 	{
-		[NSThread detachNewThreadSelector:@selector(fetchData) toTarget:self withObject:nil];
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{ [self fetchData]; });
 	}
 	else
 	{
