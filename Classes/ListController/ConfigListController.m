@@ -474,8 +474,8 @@ enum settingsRows
 		}
 		else if(cell.tag == kThemeRowTag)
 		{
-			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:
-													   [NSArray arrayWithObjects:@"Default", @"Blue", @"Dark", @"Night", nil]
+			DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[singleton themeNames]
 																						andSelection:[DreamoteConfiguration singleton].currentTheme
 																							andTitle:NSLocalizedString(@"Theme", @"Title for theme selection")];
 			vc.callback = ^(NSUInteger newSelection, BOOL isFinal, BOOL canceling)
@@ -718,14 +718,15 @@ enum settingsRows
 				/* Theme */
 				case themeRow:
 				{
+					DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 					UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
 					label.backgroundColor = [UIColor clearColor];
 					label.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					label.textAlignment = UITextAlignmentRight;
-					label.text = [NSString stringWithFormat:@"%d", [DreamoteConfiguration singleton].currentTheme];
-					label.textColor = [DreamoteConfiguration singleton].textColor;
-					label.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);;
+					label.text = [[singleton themeNames] objectAtIndex:singleton.currentTheme];
+					label.textColor = singleton.textColor;
+					label.highlightedTextColor = singleton.highlightedTextColor;
+					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Theme", @"Configuration item to choose theme");
 					((DisplayCell *)sourceCell).view = label;
 					sourceCell.tag = kThemeRowTag;

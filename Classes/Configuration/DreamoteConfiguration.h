@@ -20,6 +20,7 @@ typedef enum {
 @interface DreamoteConfiguration : NSObject
 
 + (DreamoteConfiguration *)singleton;
+- (NSArray *)themeNames;
 
 - (void)styleNavigationController:(UINavigationController *)navigationController;
 - (void)styleTabBar:(UITabBar *)tabBar;

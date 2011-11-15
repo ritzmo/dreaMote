@@ -40,6 +40,15 @@
 	return singleton;
 }
 
+- (NSArray *)themeNames
+{
+	return [NSArray arrayWithObjects:NSLocalizedString(@"Default", @"Name of default theme"),
+			NSLocalizedString(@"Blue", @"Name of blue theme"),
+			NSLocalizedString(@"Dark", @"Name of dark theme"),
+			NSLocalizedString(@"Night", @"Name of night theme"),
+			nil];
+}
+
 - (void)styleNavigationController:(UINavigationController *)navigationController
 {
 	[self styleNavigationBar:navigationController.navigationBar];
