@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA00A7B8147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
+		DA00A7B9147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
+		DA00A7BA147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
 		DA20F3F314714B200099CB4F /* Cell_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA20F3F114714B200099CB4F /* Cell_Dark.png */; };
 		DA20F3F414714B200099CB4F /* Cell_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA20F3F114714B200099CB4F /* Cell_Dark.png */; };
 		DA20F3F514714B200099CB4F /* Cell_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA20F3F114714B200099CB4F /* Cell_Dark.png */; };
@@ -1112,6 +1115,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA00A7B6147272DF00D3DA55 /* MultiSelectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectionTableViewCell.h; sourceTree = "<group>"; };
+		DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectionTableViewCell.m; sourceTree = "<group>"; };
 		DA20F3F114714B200099CB4F /* Cell_Dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Dark.png; sourceTree = "<group>"; };
 		DA20F3F214714B200099CB4F /* Cell_DarkGroup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_DarkGroup.png; sourceTree = "<group>"; };
 		DA21B20914561FB7002903A4 /* PackageManager.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PackageManager.png; sourceTree = "<group>"; };
@@ -3023,6 +3028,8 @@
 				DAC8C12D13B2014D00CA00D9 /* MovieTableViewCell.m */,
 				DAC8C12E13B2014D00CA00D9 /* MultiEPGTableViewCell.h */,
 				DAC8C12F13B2014D00CA00D9 /* MultiEPGTableViewCell.m */,
+				DA00A7B6147272DF00D3DA55 /* MultiSelectionTableViewCell.h */,
+				DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */,
 				DA51C47C144CCC4700EA63C5 /* PackageCell.h */,
 				DA51C47D144CCC4700EA63C5 /* PackageCell.m */,
 				DAC8C13013B2014D00CA00D9 /* PlayListCell.h */,
@@ -4034,6 +4041,7 @@
 				DADDDE05146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */,
 				DA56122D146FE67900390225 /* FastTableViewCell.m in Sources */,
+				DA00A7B8147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4298,6 +4306,7 @@
 				DADDDE01146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA56122E146FE67900390225 /* FastTableViewCell.m in Sources */,
+				DA00A7B9147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4528,6 +4537,7 @@
 				DADDDE02146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA56122F146FE67900390225 /* FastTableViewCell.m in Sources */,
+				DA00A7BA147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
