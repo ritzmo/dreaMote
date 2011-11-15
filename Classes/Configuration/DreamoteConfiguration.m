@@ -328,14 +328,15 @@
 				[gradientView gradientFrom:[UIColor colorWithRed:.35 green:.35 blue:.35 alpha:.75] to:[UIColor colorWithRed:.17 green:.17 blue:.17 alpha:.46] center:YES];
 				headerView = gradientView;
 				labelFrame = CGRectMake(10.0, 0.0, 300.0, 40.0);
+				font = [UIFont fontWithName:@"Georgia" size:20];
 			}
 			else
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(30.0, 0.0, 260.0, 40.0);
+				labelFrame = CGRectMake(45.0, 0.0, 260.0, 40.0);
+				font = [UIFont fontWithName:@"Georgia-Italic" size:18];
 			}
-			font = [UIFont fontWithName:@"Helvetica" size:20];
 			break;
 		}
 	}
