@@ -21,6 +21,7 @@
 {
 	AutoTimer *timer = [[AutoTimer alloc] init];
 	timer.encoding = @"ISO8859-15";
+	timer.overrideAlternatives = YES;
 	return timer;
 }
 
@@ -50,7 +51,6 @@
 		enabled = YES;
 		searchType = SEARCH_TYPE_PARTIAL;
 		searchCase = CASE_INSENSITIVE;
-		overrideAlternatives = YES;
 		afterEventAction = kAfterEventMax;
 		maxduration = -1;
 		offsetBefore = -1;
