@@ -507,6 +507,8 @@
 	{
 		case THEME_BLUE:
 			return [UIImage imageNamed:@"Mepg_Current_Blue.png"];
+		case THEME_DARK:
+			return [UIImage imageNamed:@"Cell_Dark.png"];
 		default:
 			return nil;
 	}
