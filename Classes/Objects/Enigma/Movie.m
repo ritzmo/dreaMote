@@ -12,7 +12,7 @@
 
 @implementation EnigmaMovie
 
-@synthesize idx = _idx;
+@synthesize idx = _idx, timeString;
 
 - (NSArray *)tags
 {

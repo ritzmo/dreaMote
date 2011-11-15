@@ -10,6 +10,7 @@
 
 #import "MovieSourceDelegate.h"
 #import "ReloadableListController.h"
+#import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 // Forward declarations...
@@ -23,6 +24,7 @@
  */
 @interface MovieListController : ReloadableListController <UITableViewDelegate,
 													UITableViewDataSource,
+													MBProgressHUDDelegate,
 													MovieSourceDelegate,
 #if IS_FULL()
 													UISearchDisplayDelegate,
@@ -32,10 +34,12 @@
 @private
 	UIPopoverController *popoverController;
 	NSMutableArray *_movies; /*!< @brief Movie List. */
+	NSMutableSet *_selected; /*!< @brief Set of selected Movies. */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 	UIBarButtonItem *_sortButton; /*!< @brief Sort Button. */
 	NSArray *_currentKeys; /*!< @brief Cached keys. */
 	NSMutableDictionary *_characters; /*!< @brief First characters -> movies for current list. */
+	UIBarButtonItem *_deleteButton; /*!< @brief Delete Button for Multi select. */
 
 #if IS_FULL()
 	NSMutableArray *_filteredMovies; /*!< @brief Filtered list of movies when searching. */

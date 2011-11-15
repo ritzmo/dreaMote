@@ -22,17 +22,30 @@
 
 @interface MovieListController()
 - (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch;
+- (void)updateButtons;
+
+/*!
+ @brief Multi-Delete from Playlist.
+
+ @param sender Unused parameter required by Buttons.
+ */
+- (IBAction)multiDelete:(id)sender;
 
 /*!
  @brief Popover Controller.
  */
 @property (nonatomic, strong) UIPopoverController *popoverController;
 @property (nonatomic, assign) BOOL sortTitle;
+
+/*!
+ @brief Activity Indicator.
+ */
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 @end
 
 @implementation MovieListController
 
-@synthesize popoverController, isSplit, isSlave;
+@synthesize popoverController, progressHUD, isSplit, isSlave;
 #if IS_FULL()
 @synthesize searchBar;
 #endif
@@ -44,6 +57,7 @@
 	{
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 		_movies = [[NSMutableArray alloc] init];
+		_selected = [[NSMutableSet alloc] init];
 		_characters = [[NSMutableDictionary alloc] init];
 #if IS_FULL()
 		_filteredMovies = [[NSMutableArray alloc] init];
@@ -59,12 +73,9 @@
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 		_sortTitle = [stdDefaults boolForKey:kSortMoviesByTitle];
 
-		if([self respondsToSelector:@selector(setContentSizeForViewInPopover:)])
-		{
-			self.contentSizeForViewInPopover = CGSizeMake(370.0f, 600.0f);
-			self.modalPresentationStyle = UIModalPresentationFormSheet;
-			self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		}
+		self.contentSizeForViewInPopover = CGSizeMake(370.0f, 600.0f);
+		self.modalPresentationStyle = UIModalPresentationFormSheet;
+		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	}
 	return self;
 }
@@ -183,8 +194,14 @@
 /* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
+	if(!editing) // clear once when switching editing off
+	{
+		[_selected removeAllObjects];
+		[self updateButtons];
+	}
 	[super setEditing: editing animated: animated];
 	[_tableView setEditing: editing animated: animated];
+	[self.navigationController setToolbarHidden:!editing animated:animated];
 }
 
 /* about to appear */
@@ -368,6 +385,72 @@
 	[stdDefaults synchronize];
 }
 
+- (void)multiDeleteDefer
+{
+	NSMutableString *errorMessages = [[NSMutableString alloc] init];
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+
+	NSSet *set = [_selected copy];
+	float countPerMovie = 1/(float)[set count];
+	for(NSObject<MovieProtocol> *movie in set)
+	{
+		Result *result = [sharedRemoteConnector delMovie: movie];
+		if(result.result)
+			[_movies removeObject:movie];
+		else
+			[errorMessages appendFormat:@"\n%@", result.resulttext];
+		progressHUD.progress += countPerMovie;
+	}
+	if(errorMessages.length)
+	{
+		// alert user if movie could not be deleted
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:errorMessages
+															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+	}
+
+	// resort current table view if sorting by title
+	if(_sortTitle)
+		[self setSortTitle:YES allowSearch:YES];
+	// reload active table view
+	if(_searchDisplay.active)
+		[_searchDisplay.searchResultsTableView reloadData];
+	else
+		[_tableView reloadData];
+}
+
+- (void)multiDelete:(id)sender
+{
+	[popoverController dismissPopoverAnimated:YES];
+	self.popoverController = nil;
+
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	[self.view addSubview:progressHUD];
+	progressHUD.delegate = self;
+	[progressHUD setLabelText:NSLocalizedString(@"Deleting", @"Label of Progress HUD in MovieList when deleting multiple items")];
+	[progressHUD setMode:MBProgressHUDModeDeterminate];
+	progressHUD.progress = 0.0f;
+	[progressHUD showWhileExecuting:@selector(multiDeleteDefer) onTarget:self withObject:nil animated:YES];
+
+	_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MovieList");
+	_deleteButton.enabled = NO;
+}
+
+- (void)updateButtons
+{
+	NSUInteger count = _selected.count;
+	if(count)
+	{
+		_deleteButton.title = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
+		_deleteButton.enabled = YES;
+	}
+	else
+	{
+		_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+		_deleteButton.enabled = NO;
+	}
+}
+
 /* layout */
 - (void)loadView
 {
@@ -375,12 +458,19 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kUIRowHeight;
+	_tableView.allowsSelectionDuringEditing = YES;
 
 	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:self action:@selector(switchSort:)];
 	if(_sortTitle)
 		_sortButton.title = NSLocalizedString(@"Sort by time", @"Sort (movies) by time");
 	else
 		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
+
+	_deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", @"Delete button in MovieList")
+													 style:UIBarButtonItemStyleBordered
+													target:self
+													action:@selector(multiDelete:)];
+	_deleteButton.enabled = NO;
 
 #if IS_FULL()
 	searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -411,6 +501,11 @@
 		[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #endif
 
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+	[self setToolbarItems:[NSArray arrayWithObjects:_deleteButton, flexItem, nil]];
+
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
 
@@ -422,8 +517,10 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
+	[self setToolbarItems:nil];
 	_currentKeys = nil;
 	_sortButton = nil;
+	_deleteButton = nil;
 #if IS_FULL()
 	[_filteredMovies removeAllObjects];
 	_tableView.tableHeaderView = nil; // references searchBar
@@ -450,6 +547,7 @@
 	// Clean movie list(s)
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
+	[_selected removeAllObjects];
 	_currentKeys = nil;
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(_sortTitle)
@@ -600,6 +698,16 @@
 	}
 }
 
+#pragma mark -
+#pragma mark MBProgressHUDDelegate
+#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[progressHUD removeFromSuperview];
+	self.progressHUD = nil;
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
@@ -609,11 +717,12 @@
 {
 	MovieTableViewCell *cell = [MovieTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMovieCell_ID];
 
+	NSObject<MovieProtocol> *movie = nil;
 	cell.formatter = _dateFormatter;
 	if(_sortTitle)
 	{
 		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
-		cell.movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
 	}
 	else
 	{
@@ -621,15 +730,18 @@
 #if IS_FULL()
 		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
 #endif
-		cell.movie = [movies objectAtIndex:indexPath.row];
+		movie = [movies objectAtIndex:indexPath.row];
 	}
+	cell.movie = movie;
+	if([_selected containsObject:movie])
+		[(MovieTableViewCell *)cell setMultiSelected:YES animated:NO];
 
 	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 	return cell;
 }
 
-/* select row */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+/* row selected */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// do nothing if reloading
 	if(_reloading)
@@ -637,7 +749,7 @@
 #if IS_DEBUG()
 		[NSException raise:@"MovieListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
 #endif
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	NSObject<MovieProtocol> *movie = nil;
@@ -656,29 +768,45 @@
 	}
 
 	if(!movie.valid)
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];;
 
-	self.movieViewController.movie = movie;
-
-	if(!isSplit)
+	if(self.editing)
 	{
-		// XXX: wtf?
-		if([self.navigationController.viewControllers containsObject:_movieViewController])
+		MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+		if([_selected containsObject:cell.movie])
 		{
-#if IS_DEBUG()
-			NSMutableString* result = [[NSMutableString alloc] init];
-			for(NSObject* obj in self.navigationController.viewControllers)
-				[result appendString:[obj description]];
-			[NSException raise:@"MovieViewTwiceInNavigationStack" format:@"_movieViewController was twice in navigation stack: %@", result];
-#endif
-			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+			[_selected removeObject:cell.movie];
+			[cell setMultiSelected:NO animated:YES];
 		}
-		[self.navigationController pushViewController: _movieViewController animated: YES];
+		else
+		{
+			[_selected addObject:cell.movie];
+			[cell setMultiSelected:YES animated:YES];
+		}
+		[self updateButtons];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+	else
+	{
+		self.movieViewController.movie = movie;
 
-	_refreshMovies = NO;
-
-	return indexPath;
+		if(!isSplit)
+		{
+			// XXX: wtf?
+			if([self.navigationController.viewControllers containsObject:_movieViewController])
+			{
+#if IS_DEBUG()
+				NSMutableString* result = [[NSMutableString alloc] init];
+				for(NSObject* obj in self.navigationController.viewControllers)
+					[result appendString:[obj description]];
+				[NSException raise:@"MovieViewTwiceInNavigationStack" format:@"_movieViewController was twice in navigation stack: %@", result];
+#endif
+				[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+			}
+			[self.navigationController pushViewController:_movieViewController animated:YES];
+		}
+		_refreshMovies = NO;
+	}
 }
 
 /* number of sections */
@@ -744,7 +872,8 @@
 /* editing style */
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return UITableViewCellEditingStyleDelete;
+	// allow swipe to delete and multi selection
+	return (tableView.editing) ? UITableViewCellEditingStyleNone : UITableViewCellEditingStyleDelete;
 }
 
 /* edit action */
@@ -884,14 +1013,17 @@
 	if(_sortTitle)
 	{
 		[self setSortTitle:YES allowSearch:NO];
-		[_tableView reloadData];
 	}
+	[_tableView reloadData]; // refresh possibly changed multi selection images
 }
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)searchTableView
 {
+	searchTableView.backgroundColor = _tableView.backgroundColor;
+	searchTableView.allowsSelectionDuringEditing = YES;
+	searchTableView.editing = _tableView.editing;
 	searchTableView.rowHeight = _tableView.rowHeight;
-	[searchTableView reloadData];
+	[searchTableView reloadData]; // need this reload to fix row height
 }
 
 #endif

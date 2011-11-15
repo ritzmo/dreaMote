@@ -10,7 +10,7 @@
 
 @implementation GenericMovie
 
-@synthesize sref, sname, time, title, sdescription, edescription, length, filename, size, tags;
+@synthesize sref, sname, time, timeString, title, sdescription, edescription, length, filename, size, tags;
 
 - (id)init
 {

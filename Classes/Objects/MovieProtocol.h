@@ -29,6 +29,11 @@
 @property (nonatomic, strong) NSDate *time;
 
 /*!
+ @brief Cache for Begin Textual representation.
+ */
+@property (nonatomic, strong) NSString *timeString;
+
+/*!
  @brief Title.
  */
 @property (nonatomic, strong) NSString *title;

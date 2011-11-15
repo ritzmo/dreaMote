@@ -18,51 +18,25 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 
 @implementation MovieTableViewCell
 
-@synthesize formatter;
-
-/* initialize */
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-	if((self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier]))
-	{
-		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-		self.textLabel.font = [UIFont boldSystemFontOfSize:kEventNameTextSize];
-		
-		self.detailTextLabel.font = [UIFont systemFontOfSize:kEventDetailsTextSize];
-		self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
-		self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	}
-	
-	return self;
-}
-
-- (void)theme
-{
-	self.detailTextLabel.textColor = [DreamoteConfiguration singleton].textColor;
-	self.detailTextLabel.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
-	[super theme];
-}
-
-/* getter for movie property */
-- (NSObject<MovieProtocol> *)movie
-{
-	return _movie;
-}
+@synthesize formatter, movie;
 
 /* setter for movie property */
 - (void)setMovie:(NSObject<MovieProtocol> *)newMovie
 {
 	// Abort if same movie assigned
-	if(_movie == newMovie) return;
-	_movie = newMovie;
+	if(movie == newMovie) return;
+	movie = newMovie;
 
-	if(!newMovie.valid)
+	if(newMovie.valid)
+	{
+		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+		if(!newMovie.timeString)
+		{
+			newMovie.timeString = [formatter fuzzyDate:movie.time];
+		}
+	}
+	else
 		self.accessoryType = UITableViewCellAccessoryNone;
-
-	// Set new label contents
-	self.textLabel.text = newMovie.title;
-	self.detailTextLabel.text = [formatter fuzzyDate:newMovie.time];
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -87,6 +61,34 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, 30, contentRect.size.width - kRightMargin, kEventDetailsTextSize + 2);
 		self.detailTextLabel.frame = frame;
 	}
+}
+
+- (void)drawContentRect:(CGRect)contentRect
+{
+	[super drawContentRect:contentRect]; // draw multi selection pixmap
+
+	CGFloat offsetX = contentRect.origin.x + kLeftMargin;
+	const CGFloat forWidth = contentRect.size.width - offsetX;
+
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	UIColor *primaryColor = nil;
+	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.eventNameTextSize];
+	UIFont *secondaryFont = [UIFont systemFontOfSize:singleton.eventDetailsTextSize];
+	if(self.highlighted)
+	{
+		primaryColor =  singleton.highlightedTextColor;
+	}
+	else
+	{
+		primaryColor =  singleton.textColor;
+	}
+	[primaryColor set];
+
+	CGPoint point = CGPointMake(offsetX, 7);
+	[movie.title drawAtPoint:point forWidth:forWidth withFont:primaryFont minFontSize:16 actualFontSize:NULL lineBreakMode:UILineBreakModeTailTruncation baselineAdjustment:UIBaselineAdjustmentAlignCenters];
+
+	point.y = 30;
+	[movie.timeString drawAtPoint:point forWidth:forWidth withFont:secondaryFont minFontSize:14 actualFontSize:NULL lineBreakMode:UILineBreakModeTailTruncation baselineAdjustment:UIBaselineAdjustmentAlignCenters];
 }
 
 @end
