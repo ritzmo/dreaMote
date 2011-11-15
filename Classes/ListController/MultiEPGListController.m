@@ -93,8 +93,13 @@
 
 - (void)theme
 {
-	[_headerView theme];
-	self.view.backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
+	UIColor *backgroundColor = nil;
+	if(isSlave)
+		backgroundColor = [DreamoteConfiguration singleton].groupedTableViewBackgroundColor;
+	else
+		backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
+	_headerView.backgroundColor = backgroundColor;
+	self.view.backgroundColor = backgroundColor;
 	[super theme];
 }
 
