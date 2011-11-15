@@ -214,6 +214,15 @@ enum serviceListTags
 	return _reloading;
 }
 
+#if IS_FULL()
+/* custom setter for split view to forward isSlave to multi epg */
+- (void)setMgSplitViewController:(MGSplitViewController *)new
+{
+	mgSplitViewController = new;
+	_multiEPG.isSlave = new != nil;
+}
+#endif
+
 /*! getter of isSlave property */
 - (BOOL)isSlave
 {
