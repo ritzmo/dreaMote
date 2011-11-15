@@ -20,6 +20,8 @@
 #import <Objects/MovieProtocol.h>
 #import <Objects/Generic/Result.h>
 
+#define deleteExtraWidth	35
+
 @interface MovieListController()
 - (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch;
 - (void)updateButtons;
@@ -432,23 +434,31 @@
 	progressHUD.progress = 0.0f;
 	[progressHUD showWhileExecuting:@selector(multiDeleteDefer) onTarget:self withObject:nil animated:YES];
 
-	_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MovieList");
+	NSString *text = NSLocalizedString(@"Delete", @"Delete button in MovieList");
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
 	_deleteButton.enabled = NO;
 }
 
 - (void)updateButtons
 {
 	NSUInteger count = _selected.count;
+	NSString *text = nil;
 	if(count)
 	{
-		_deleteButton.title = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
+		text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
 		_deleteButton.enabled = YES;
 	}
 	else
 	{
-		_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+		text = NSLocalizedString(@"Delete", @"Delete button in MovieList");
 		_deleteButton.enabled = NO;
 	}
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	if(_deleteButton.frame.size.width != textSize.width + deleteExtraWidth)
+		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
 }
 
 /* layout */
@@ -466,10 +476,15 @@
 	else
 		_sortButton.title = NSLocalizedString(@"Sort A-Z", @"Sort (movies) alphabetically");
 
-	_deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", @"Delete button in MovieList")
-													 style:UIBarButtonItemStyleBordered
-													target:self
-													action:@selector(multiDelete:)];
+	_deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	_deleteButton.titleLabel.font = [UIFont systemFontOfSize:17];
+	[_deleteButton setBackgroundImage:[[UIImage imageNamed:@"delete.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+	[_deleteButton setImage:[UIImage imageNamed:@"trashicon.png"] forState:UIControlStateNormal];
+	NSString *text = NSLocalizedString(@"Delete", @"Delete button in MovieList");
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+	[_deleteButton addTarget:self action:@selector(multiDelete:) forControlEvents:UIControlEventTouchUpInside];
 	_deleteButton.enabled = NO;
 
 #if IS_FULL()
@@ -504,7 +519,8 @@
 	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																					target:nil
 																					action:nil];
-	[self setToolbarItems:[NSArray arrayWithObjects:_deleteButton, flexItem, nil]];
+	const UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithCustomView:_deleteButton];
+	[self setToolbarItems:[NSArray arrayWithObjects:deleteItem, flexItem, nil]];
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReconnect:) name:kReconnectNotification object:nil];
@@ -520,7 +536,7 @@
 	[self setToolbarItems:nil];
 	_currentKeys = nil;
 	_sortButton = nil;
-	_deleteButton = nil;
+	SafeDestroyButton(_deleteButton);
 #if IS_FULL()
 	[_filteredMovies removeAllObjects];
 	_tableView.tableHeaderView = nil; // references searchBar

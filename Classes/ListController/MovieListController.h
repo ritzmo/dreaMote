@@ -39,7 +39,7 @@
 	UIBarButtonItem *_sortButton; /*!< @brief Sort Button. */
 	NSArray *_currentKeys; /*!< @brief Cached keys. */
 	NSMutableDictionary *_characters; /*!< @brief First characters -> movies for current list. */
-	UIBarButtonItem *_deleteButton; /*!< @brief Delete Button for Multi select. */
+	UIButton *_deleteButton; /*!< @brief Delete Button for Multi select. */
 
 #if IS_FULL()
 	NSMutableArray *_filteredMovies; /*!< @brief Filtered list of movies when searching. */
