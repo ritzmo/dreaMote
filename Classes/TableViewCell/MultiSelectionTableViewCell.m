@@ -26,6 +26,10 @@
 		self.backgroundView = [[UIView alloc] init];
 		self.shouldIndentWhileEditing = NO;
 		imageLayer = [CALayer layer];
+		NSMutableDictionary *newActions = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+										   [NSNull null], @"contents",
+										   nil];
+		imageLayer.actions = newActions;
 		[self addSublayer:imageLayer];
 		[self forceMultiSelected:NO];
 	}

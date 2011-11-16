@@ -30,6 +30,10 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
 		imageLayer = [CALayer layer];
+		NSMutableDictionary *newActions = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+										   [NSNull null], @"contents",
+										   nil];
+		imageLayer.actions = newActions;
 		[self addSublayer:imageLayer];
 		self.font = [UIFont boldSystemFontOfSize:[DreamoteConfiguration singleton].serviceTextSize];
 	}
