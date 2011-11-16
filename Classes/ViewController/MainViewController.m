@@ -177,10 +177,11 @@
 		&& (
 			[RemoteConnectorObject isSingleBouquet] ||
 			![sharedRemoteConnector hasFeature: kFeaturesBouquets]);
-	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey: kPrefersSimpleRemote];
+	const BOOL useSimpleRemote = [[NSUserDefaults standardUserDefaults] boolForKey:kPrefersSimpleRemote];
+	const BOOL isIpad = IS_IPAD();
 
 	// Toggle single bouquet mode
-	if(!IS_IPAD() && isSingleBouquet)
+	if(!isIpad && isSingleBouquet)
 	{
 		if(![menuList containsObject: _serviceController])
 		{
@@ -210,7 +211,7 @@
 		[menuList removeObject: _currentController];
 	}
 
-	if(IS_IPAD())
+	if(isIpad)
 	{
 		if([sharedRemoteConnector hasFeature: kFeaturesMediaPlayer])
 		{
@@ -247,7 +248,7 @@
 	UIImage *image = [UIImage imageNamed: @"remote.png"];
 	_rcController.tabBarItem.image = image;
 
-	[self setViewControllers: menuList];
+	[self performSelectorOnMainThread:@selector(setViewControllers:) withObject:menuList waitUntilDone:NO];
 	} // end synchronized
 }
 
