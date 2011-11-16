@@ -38,6 +38,10 @@
 @implementation EGORefreshTableHeaderView
 
 @synthesize delegate=_delegate;
+@synthesize statusLabel=_statusLabel;
+@synthesize lastUpdatedLabel=_lastUpdatedLabel;
+@synthesize arrorImage=_arrowImage;
+@synthesize activityView=_activityView;
 
 
 - (id)initWithFrame:(CGRect)frame arrowImageName:(NSString *)arrow textColor:(UIColor *)textColor  {
