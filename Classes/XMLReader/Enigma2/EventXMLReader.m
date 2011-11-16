@@ -100,6 +100,7 @@ typedef enum {
 	{
 		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[(GenericService *)fakeService setValid:NO];
 		fakeObject.service = fakeService;
 	}
 
