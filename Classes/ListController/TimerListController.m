@@ -23,6 +23,8 @@
 
 #import "MKStoreManager.h"
 
+#define deleteExtraWidth	35
+
 @interface TimerListController()
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
@@ -32,6 +34,13 @@
 #endif
 - (void)cleanupTimers:(id)sender;
 - (void)cancelConnection:(NSNotification *)notif;
+- (void)multiDelete:(id)sender;
+- (void)updateButtons;
+
+/*!
+ @brief Activity Indicator.
+ */
+@property (nonatomic, strong) MBProgressHUD *progressHUD;
 @end
 
 /*!
@@ -43,7 +52,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 @implementation TimerListController
 
-@synthesize dateFormatter, isSplit;
+@synthesize dateFormatter, isSplit, progressHUD;
 @synthesize timerViewController = _timerViewController;
 @synthesize willReappear = _willReappear;
 #if INCLUDE_FEATURE(Ads)
@@ -57,11 +66,10 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	if((self = [super init]))
 	{
 		_timers = [[NSMutableArray alloc] init];
+		_selected = [[NSMutableSet alloc] init];
 		self.title = NSLocalizedString(@"Timers", @"Title of TimerListController");
 		dateFormatter = [[NSDateFormatter alloc] init];
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-		_timerViewController = nil;
-		_willReappear = NO;
 	}
 	return self;
 }
@@ -130,6 +138,23 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		[self createAdBannerView];
 #endif
 
+	_deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	_deleteButton.titleLabel.font = [UIFont systemFontOfSize:17];
+	[_deleteButton setBackgroundImage:[[UIImage imageNamed:@"delete.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+	[_deleteButton setImage:[UIImage imageNamed:@"trashicon.png"] forState:UIControlStateNormal];
+	NSString *text = NSLocalizedString(@"Delete", @"Delete button in TimerList");
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+	[_deleteButton addTarget:self action:@selector(multiDelete:) forControlEvents:UIControlEventTouchUpInside];
+	_deleteButton.enabled = NO;
+
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+	const UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithCustomView:_deleteButton];
+	[self setToolbarItems:[NSArray arrayWithObjects:deleteItem, flexItem, nil]];
+
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelConnection:) name:kReconnectNotification object:nil];
 
@@ -144,6 +169,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_adBannerView = nil;
 #endif
 	_cleanupButton = nil;
+	SafeDestroyButton(_deleteButton);
 
 	[super viewDidUnload];
 }
@@ -157,8 +183,15 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 /* (un)set editing */
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
+	if(!editing) // clear once when switching editing off
+	{
+		[_selected removeAllObjects];
+		[self updateButtons];
+	}
+
 	[super setEditing: editing animated: animated];
 	[_tableView setEditing: editing animated: animated];
+	[self.navigationController setToolbarHidden:!editing animated:animated];
 
 	if(animated && !_reloading)
 	{
@@ -251,6 +284,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	for(i = 0; i < kTimerStateMax; i++)
 		_dist[i] = 0;
 	[_timers removeAllObjects];
+	[_selected removeAllObjects];
 
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, kTimerStateMax + 1)];
@@ -266,6 +300,78 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	[self emptyData];
 	_reloading = NO;
+}
+
+- (void)multiDeleteDefer
+{
+	NSMutableString *errorMessages = [[NSMutableString alloc] init];
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+
+	NSInteger state = 0;
+	NSSet *set = [_selected copy];
+	float countPerTimer = 1/(float)[set count];
+	for(NSObject<TimerProtocol> *timer in set)
+	{
+		Result *result = [sharedRemoteConnector delTimer:timer];
+		if(result.result)
+		{
+			// fix distance array
+			state = stateMap[timer.state];
+			for(; state < kTimerStateMax; ++state){
+				--_dist[state];
+			}
+			[_timers removeObject:timer];
+		}
+		else
+			[errorMessages appendFormat:@"\n%@", result.resulttext];
+		progressHUD.progress += countPerTimer;
+	}
+	if(errorMessages.length)
+	{
+		// alert user if timer(s) could not be deleted
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:errorMessages
+															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+		[alert show];
+	}
+
+	[_tableView reloadData];
+}
+
+- (void)multiDelete:(id)sender
+{
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	[self.view addSubview:progressHUD];
+	progressHUD.delegate = self;
+	[progressHUD setLabelText:NSLocalizedString(@"Deleting", @"Label of Progress HUD in TimerList when deleting multiple items")];
+	[progressHUD setMode:MBProgressHUDModeDeterminate];
+	progressHUD.progress = 0.0f;
+	[progressHUD showWhileExecuting:@selector(multiDeleteDefer) onTarget:self withObject:nil animated:YES];
+
+	NSString *text = NSLocalizedString(@"Delete", @"Delete button in TimerList");
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+	_deleteButton.enabled = NO;
+}
+
+- (void)updateButtons
+{
+	NSUInteger count = _selected.count;
+	NSString *text = nil;
+	if(count)
+	{
+		text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in TimerList"), count];
+		_deleteButton.enabled = YES;
+	}
+	else
+	{
+		text = NSLocalizedString(@"Delete", @"Delete button in TimerList");
+		_deleteButton.enabled = NO;
+	}
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	if(_deleteButton.frame.size.width != textSize.width + deleteExtraWidth)
+		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
 }
 
 /* rotate with device */
@@ -319,6 +425,16 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 #endif
 }
 
+#pragma mark -
+#pragma mark MBProgressHUDDelegate
+#pragma mark -
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+	[progressHUD removeFromSuperview];
+	self.progressHUD = nil;
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-
@@ -351,20 +467,33 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	if(section > 0)
 		offset = _dist[section-1];
 	((TimerTableViewCell *)cell).formatter = dateFormatter;
-	((TimerTableViewCell *)cell).timer = [_timers objectAtIndex: offset + indexPath.row];
+	NSObject<TimerProtocol> *timer = [_timers objectAtIndex:offset + indexPath.row];
+	((TimerTableViewCell *)cell).timer = timer;
+	if([_selected containsObject:timer])
+		[(TimerTableViewCell *)cell setMultiSelected:YES animated:NO];
 
 	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	return cell;
 }
 
 /* row selected */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(self.editing)
 	{
 		if(indexPath.section == 0)
-			[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
-		return nil;
+			return [self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
+		else
+		{
+			TimerTableViewCell *cell = (TimerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+			const BOOL selected = [cell toggleMultiSelected];
+			if(selected)
+				[_selected addObject:cell.timer];
+			else
+				[_selected removeObject:cell.timer];
+			[self updateButtons];
+		}
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	// do nothing if reloading
@@ -373,7 +502,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 #if IS_DEBUG()
 		[NSException raise:@"TimerListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
 #endif
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	NSInteger index = indexPath.row;
@@ -384,8 +513,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
 	if(!timer.valid)
 	{
-		[tableView deselectRowAtIndexPath: indexPath animated: YES];
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	NSObject<TimerProtocol> *ourCopy = [timer copy];
@@ -424,7 +552,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	// NOTE: set this here so the edit button won't get screwed
 	_timerViewController.creatingNewTimer = NO;
-	return indexPath;
 }
 
 /* number of sections */
@@ -488,7 +615,9 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	if(indexPath.section == 0)
 		return UITableViewCellEditingStyleInsert;
-	return UITableViewCellEditingStyleDelete;
+	if(!self.editing)
+		return UITableViewCellEditingStyleDelete;
+	return UITableViewCellEditingStyleNone;
 }
 
 /* edit action */

@@ -57,6 +57,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (void)drawContentRect:(CGRect)contentRect
 {
+	[super drawContentRect:contentRect];
 	CGFloat offsetX = contentRect.origin.x;
 	const CGFloat boundsWidth = contentRect.size.width;
 

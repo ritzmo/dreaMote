@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/TimerProtocol.h"
+#import <Objects/TimerProtocol.h>
 #import "ReloadableListController.h"
 #import "TimerSourceDelegate.h"
 #import "TimerViewController.h" /* TimerViewDelegate */
+#import "MBProgressHUD.h" /* MBProgressHUDDelegate */
 
 #if INCLUDE_FEATURE(Ads)
 #import "iAd/ADBannerView.h"
@@ -31,6 +32,7 @@
 													ADBannerViewDelegate,
 #endif
 													UITableViewDataSource,
+													MBProgressHUDDelegate,
 													TimerSourceDelegate,
 													TimerViewDelegate>
 {
@@ -40,6 +42,8 @@
 	TimerViewController *_timerViewController; /*!< @brief Cached Timer Detail View. */
 	BOOL _willReappear; /*!< @brief Used to guard free of ressources on close if we are opening a subview. */
 	UIBarButtonItem *_cleanupButton; /*!< @brief Cleanup button. */
+	NSMutableSet *_selected; /*!< @brief Selected Timer. */
+	UIButton *_deleteButton; /*!< @brief Button used for Multi Delete. */
 
 #if INCLUDE_FEATURE(Ads)
 @private
