@@ -789,16 +789,12 @@
 	if(self.editing)
 	{
 		MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-		if([_selected containsObject:cell.movie])
-		{
-			[_selected removeObject:cell.movie];
-			[cell setMultiSelected:NO animated:YES];
-		}
-		else
-		{
+		const BOOL selected = [cell toggleMultiSelected];
+
+		if(selected)
 			[_selected addObject:cell.movie];
-			[cell setMultiSelected:YES animated:YES];
-		}
+		else
+			[_selected removeObject:cell.movie];
 		[self updateButtons];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
