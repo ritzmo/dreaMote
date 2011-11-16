@@ -59,7 +59,7 @@ enum retrieveCurrentUsing {
 	enum retrieveCurrentUsing _retrieveCurrentUsing; /*!< @brief Way to retrieve currently playing track. */
 
 	UIBarButtonItem *_shuffleButton; /*!< @brief "Shuffle" Button. */
-	UIBarButtonItem *_deleteButton; /*!< @brief "Delete" Button. */
+	UIButton *_deleteButton; /*!< @brief Actual "Delete" Button. */
 	float _progressActions; /*!< @brief Shuffle/Delete actions left or -1 on unknown. */
 
 	UIActionSheet *_closeSheet; /*!< @brief "Close MediaPlayer" sheet shown when disappearing. */
@@ -159,7 +159,7 @@ enum retrieveCurrentUsing {
 /*!
  @brief Delete Button.
  */
-@property (nonatomic, readonly) UIBarButtonItem *deleteButton;
+@property (nonatomic, readonly) UIButton *deleteButton;
 
 /*!
  @brief "Shuffle" Button.

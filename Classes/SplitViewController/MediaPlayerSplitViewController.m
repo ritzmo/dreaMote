@@ -74,7 +74,8 @@
 	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																					target:nil
 																					action:nil];
-	NSArray *items = [[NSArray alloc] initWithObjects:detailsController.deleteButton, clearButton, flexItem, saveButton, loadButton, detailsController.shuffleButton, nil];
+	const UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithCustomView:detailsController.deleteButton];
+	NSArray *items = [[NSArray alloc] initWithObjects:deleteItem, clearButton, flexItem, saveButton, loadButton, detailsController.shuffleButton, nil];
 	[playListController setToolbarItems:items animated:NO];
 	[playListController.navigationController setToolbarHidden:NO animated:YES];
 	playListController.navigationItem.leftBarButtonItem = flipItem;

@@ -14,6 +14,7 @@
 #import "Constants.h"
 
 #import <View/GradientView.h>
+#import "EGORefreshTableHeaderView.h"
 
 #define darkBlueColor colorWithRed:0.1 green:0.15 blue:0.55 alpha:1
 
@@ -255,6 +256,38 @@
 		}
 	}
 	return cell;
+}
+
+- (void)styleRefreshHeader:(EGORefreshTableHeaderView *)refreshHeader
+{
+	const BOOL isIos5 = [UIDevice newerThanIos:5.0f];
+	switch(currentTheme)
+	{
+		default:
+			refreshHeader.statusLabel.textColor = [UIColor colorWithRed:87.0f/255.0f green:108.0f/255.0f blue:137.0f/255.0f alpha:1.0f];
+			refreshHeader.statusLabel.shadowColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+			refreshHeader.arrorImage.contents = (id)[UIImage imageNamed:@"blueArrow.png"].CGImage;
+			if(isIos5)
+				refreshHeader.activityView.color = nil;
+			refreshHeader.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+			break;
+		case THEME_NIGHT:
+			refreshHeader.statusLabel.textColor = self.textColor;
+			refreshHeader.arrorImage.contents = (id)[UIImage imageNamed:@"grayArrow.png"].CGImage;
+			refreshHeader.statusLabel.shadowColor = nil;
+			refreshHeader.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+			if(isIos5)
+				refreshHeader.activityView.color = self.textColor;
+			break;
+		case THEME_DARK:
+			refreshHeader.statusLabel.textColor = self.textColor;
+			refreshHeader.statusLabel.shadowColor = nil;
+			refreshHeader.arrorImage.contents = (id)[UIImage imageNamed:@"whiteArrow.png"].CGImage;
+			refreshHeader.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+			if(isIos5)
+				refreshHeader.activityView.color = self.textColor;
+			break;
+	}
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

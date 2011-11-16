@@ -57,6 +57,13 @@
 - (BOOL)selectPlayingByTitle:(NSString *)filename;
 
 /*!
+ @brief Style this view.
+ As our parent view will take care of our background and cells, we just make
+ sure that the header is styled correctly.
+ */
+- (void)theme;
+
+/*!
  @brief Delegate.
  */
 @property (nonatomic, unsafe_unretained) UIViewController<FileListDelegate> *fileDelegate;

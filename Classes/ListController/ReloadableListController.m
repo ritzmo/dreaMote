@@ -124,34 +124,7 @@
 	self.view.backgroundColor = backgroundColor;
 #endif
 
-	const BOOL isIos5 = [UIDevice newerThanIos:5.0f];
-	switch(singleton.currentTheme)
-	{
-		default:
-			_refreshHeaderView.statusLabel.textColor = [UIColor colorWithRed:87.0f/255.0f green:108.0f/255.0f blue:137.0f/255.0f alpha:1.0f];
-			_refreshHeaderView.statusLabel.shadowColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
-			_refreshHeaderView.arrorImage.contents = (id)[UIImage imageNamed:@"blueArrow.png"].CGImage;
-			if(isIos5)
-				_refreshHeaderView.activityView.color = nil;
-			_refreshHeaderView.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-			break;
-		case THEME_NIGHT:
-			_refreshHeaderView.statusLabel.textColor = singleton.textColor;
-			_refreshHeaderView.arrorImage.contents = (id)[UIImage imageNamed:@"grayArrow.png"].CGImage;
-			_refreshHeaderView.statusLabel.shadowColor = nil;
-			_refreshHeaderView.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-			if(isIos5)
-				_refreshHeaderView.activityView.color = singleton.textColor;
-			break;
-		case THEME_DARK:
-			_refreshHeaderView.statusLabel.textColor = singleton.textColor;
-			_refreshHeaderView.statusLabel.shadowColor = nil;
-			_refreshHeaderView.arrorImage.contents = (id)[UIImage imageNamed:@"whiteArrow.png"].CGImage;
-			_refreshHeaderView.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-			if(isIos5)
-				_refreshHeaderView.activityView.color = singleton.textColor;
-			break;
-	}
+	[singleton styleRefreshHeader:_refreshHeaderView];
 	[super theme];
 }
 

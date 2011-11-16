@@ -24,6 +24,7 @@
 
 #import <XMLReader/BaseXMLReader.h>
 
+#define deleteExtraWidth	35
 #define kTransitionDuration	(CGFloat)0.6
 
 /*!
@@ -77,10 +78,16 @@ enum mediaPlayerTags
 														style:UIBarButtonItemStyleBordered
 													   target:self
 													   action:@selector(shuffle:)];
-		_deleteButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", @"Delete button in MediaPlayer")
-														 style:UIBarButtonItemStyleBordered
-														target:self
-														action:@selector(multiDelete:)];
+		_deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[_deleteButton setTitleEdgeInsets:UIEdgeInsetsMake(-1, 0, 0, 0)];
+		_deleteButton.titleLabel.font = [UIFont systemFontOfSize:17];
+		[_deleteButton setBackgroundImage:[[UIImage imageNamed:@"delete.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
+		[_deleteButton setImage:[UIImage imageNamed:@"trashicon.png"] forState:UIControlStateNormal];
+		NSString *text = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+		CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+		[_deleteButton setTitle:text forState:UIControlStateNormal];
+		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+		[_deleteButton addTarget:self action:@selector(multiDelete:) forControlEvents:UIControlEventTouchUpInside];
 		_deleteButton.enabled = NO;
 	}
 
@@ -298,7 +305,10 @@ enum mediaPlayerTags
 	[progressHUD show:YES];
 	progressHUD.taskInProgress = YES;
 
-	_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+	NSString *text = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
 	_deleteButton.enabled = NO;
 	_shuffleButton.enabled = NO;
 	_progressActions = -1;
@@ -683,16 +693,6 @@ enum mediaPlayerTags
 
 	// setup our parent content view and embed it to your view controller
 	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
-	if(IS_IPAD())
-	{
-		contentView.backgroundColor = [UIColor colorWithRed:0.821f green:0.834f blue:0.860f alpha:1];
-	}
-	else
-	{
-		contentView.backgroundColor = [UIColor groupTableViewBackgroundColor];	// use the table view background color
-	}
-
-	// setup our content view so that it auto-rotates along with the UViewController
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
@@ -786,8 +786,13 @@ enum mediaPlayerTags
 
 - (void)theme
 {
-	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
-	self.view.backgroundColor = [singleton backgroundColor];
+	const DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	// TODO: check if background is correct and should not be the grouped color
+	self.view.backgroundColor = [singleton groupedTableViewBackgroundColor];
+	[singleton styleTableView:_playlist isSlave:YES];
+	[_playlist theme];
+	[singleton styleTableView:_fileList isSlave:YES];
+	[_fileList theme];
 	[super theme];
 }
 
@@ -803,10 +808,11 @@ enum mediaPlayerTags
 		const UIBarButtonItem *flipItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
 																						target:self
 																						action:@selector(flipView:)];
+		const UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithCustomView:_deleteButton];
 		// iOS 5.0+
 		if([self.navigationItem respondsToSelector:@selector(leftBarButtonItems)])
 		{
-			self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:flipItem, _shuffleButton, _deleteButton, nil];
+			self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:flipItem, _shuffleButton, deleteItem, nil];
 		}
 		else
 		{
@@ -817,7 +823,7 @@ enum mediaPlayerTags
 			const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
 																							target:nil
 																							action:nil];
-			NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, _deleteButton, flexItem, nil];
+			NSArray *items = [[NSArray alloc] initWithObjects:flipItem, _shuffleButton, deleteItem, flexItem, nil];
 			[toolbar setItems:items animated:NO];
 			UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
 
@@ -932,16 +938,21 @@ enum mediaPlayerTags
 #endif
 
 	NSUInteger count = fileListView.selectedFiles.count;
+	NSString *text;
 	if(count)
 	{
-		_deleteButton.title = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
+		text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
 		_deleteButton.enabled = YES;
 	}
 	else
 	{
-		_deleteButton.title = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+		text = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
 		_deleteButton.enabled = NO;
 	}
+	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
+	[_deleteButton setTitle:text forState:UIControlStateNormal];
+	if(_deleteButton.frame.size.width != textSize.width + deleteExtraWidth)
+		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
 }
 
 /* playlist item was removed */

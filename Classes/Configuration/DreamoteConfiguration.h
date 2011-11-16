@@ -17,6 +17,9 @@ typedef enum {
 	THEME_MAX,
 } themeType;
 
+// Forward declare
+@class EGORefreshTableHeaderView;
+
 @interface DreamoteConfiguration : NSObject
 
 + (DreamoteConfiguration *)singleton;
@@ -28,6 +31,7 @@ typedef enum {
 - (void)styleSearchBar:(UISearchBar *)searchBar;
 - (void)styleTableView:(UITableView *)tableView;
 - (void)styleTableView:(UITableView *)tableView isSlave:(BOOL)slave;
+- (void)styleRefreshHeader:(EGORefreshTableHeaderView *)refreshHeader;
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)tableViewCell inTableView:(UITableView *)tableView;
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;

@@ -10,6 +10,8 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+
+#import "UIDevice+SystemVersion.h"
 #import "UITableViewCell+EasyInit.h"
 
 #import <TableViewCell/PlayListCell.h>
@@ -48,6 +50,12 @@
 		[self addSubview:_refreshHeaderView];
     }
     return self;
+}
+
+- (void)theme
+{
+	[[DreamoteConfiguration singleton] styleRefreshHeader:_refreshHeaderView];
+	[self reloadData];
 }
 
 - (void)dealloc
