@@ -99,6 +99,7 @@
 	else
 		backgroundColor = [DreamoteConfiguration singleton].backgroundColor;
 	_headerView.backgroundColor = backgroundColor;
+	[_headerView theme];
 	self.view.backgroundColor = backgroundColor;
 	[super theme];
 }

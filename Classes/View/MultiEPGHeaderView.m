@@ -70,11 +70,13 @@
 
 - (void)theme
 {
-	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
-	firstTime.textColor = singleton.textColor;
-	secondTime.textColor = singleton.textColor;
-	thirdTime.textColor = singleton.textColor;
-	fourthTime.textColor = singleton.textColor;
+	const DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	UIColor *textColor = singleton.textColor;
+	firstTime.textColor = textColor;
+	secondTime.textColor = textColor;
+	thirdTime.textColor = textColor;
+	fourthTime.textColor = textColor;
+	// NOTE: don't do background color here as it might be incorrect ;)
 }
 
 - (void)setFrame:(CGRect)frame
