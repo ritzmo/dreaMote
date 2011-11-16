@@ -16,6 +16,18 @@
 		DA1CEA7114731EB900709BEF /* trashicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA1CEA6D14731EB900709BEF /* trashicon.png */; };
 		DA1CEA7214731EB900709BEF /* trashicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA1CEA6D14731EB900709BEF /* trashicon.png */; };
 		DA1CEA7314731EB900709BEF /* trashicon.png in Resources */ = {isa = PBXBuildFile; fileRef = DA1CEA6D14731EB900709BEF /* trashicon.png */; };
+		DA1CEA751473A49700709BEF /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0313B200F100CA00D9 /* grayArrow.png */; };
+		DA1CEA761473A49700709BEF /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0313B200F100CA00D9 /* grayArrow.png */; };
+		DA1CEA771473A49800709BEF /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0313B200F100CA00D9 /* grayArrow.png */; };
+		DA1CEA781473A49B00709BEF /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0413B200F100CA00D9 /* grayArrow@2x.png */; };
+		DA1CEA791473A49B00709BEF /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0413B200F100CA00D9 /* grayArrow@2x.png */; };
+		DA1CEA7A1473A49C00709BEF /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0413B200F100CA00D9 /* grayArrow@2x.png */; };
+		DA1CEA831473AA1400709BEF /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0513B200F100CA00D9 /* whiteArrow.png */; };
+		DA1CEA841473AA1400709BEF /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0513B200F100CA00D9 /* whiteArrow.png */; };
+		DA1CEA851473AA1500709BEF /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0513B200F100CA00D9 /* whiteArrow.png */; };
+		DA1CEA861473AA1900709BEF /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0613B200F100CA00D9 /* whiteArrow@2x.png */; };
+		DA1CEA871473AA1900709BEF /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0613B200F100CA00D9 /* whiteArrow@2x.png */; };
+		DA1CEA881473AA1A00709BEF /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0613B200F100CA00D9 /* whiteArrow@2x.png */; };
 		DA20F3F314714B200099CB4F /* Cell_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA20F3F114714B200099CB4F /* Cell_Dark.png */; };
 		DA20F3F414714B200099CB4F /* Cell_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA20F3F114714B200099CB4F /* Cell_Dark.png */; };
 		DA20F3F514714B200099CB4F /* Cell_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA20F3F114714B200099CB4F /* Cell_Dark.png */; };
@@ -3542,6 +3554,10 @@
 				DA6126981472DD2C006F6C76 /* Slider_Night.png in Resources */,
 				DA1CEA6E14731EB900709BEF /* delete.png in Resources */,
 				DA1CEA7114731EB900709BEF /* trashicon.png in Resources */,
+				DA1CEA751473A49700709BEF /* grayArrow.png in Resources */,
+				DA1CEA781473A49B00709BEF /* grayArrow@2x.png in Resources */,
+				DA1CEA831473AA1400709BEF /* whiteArrow.png in Resources */,
+				DA1CEA861473AA1900709BEF /* whiteArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3657,6 +3673,10 @@
 				DA6126991472DD2C006F6C76 /* Slider_Night.png in Resources */,
 				DA1CEA6F14731EB900709BEF /* delete.png in Resources */,
 				DA1CEA7214731EB900709BEF /* trashicon.png in Resources */,
+				DA1CEA761473A49700709BEF /* grayArrow.png in Resources */,
+				DA1CEA791473A49B00709BEF /* grayArrow@2x.png in Resources */,
+				DA1CEA841473AA1400709BEF /* whiteArrow.png in Resources */,
+				DA1CEA871473AA1900709BEF /* whiteArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3768,6 +3788,10 @@
 				DA61269A1472DD2C006F6C76 /* Slider_Night.png in Resources */,
 				DA1CEA7014731EB900709BEF /* delete.png in Resources */,
 				DA1CEA7314731EB900709BEF /* trashicon.png in Resources */,
+				DA1CEA771473A49800709BEF /* grayArrow.png in Resources */,
+				DA1CEA7A1473A49C00709BEF /* grayArrow@2x.png in Resources */,
+				DA1CEA851473AA1500709BEF /* whiteArrow.png in Resources */,
+				DA1CEA881473AA1A00709BEF /* whiteArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

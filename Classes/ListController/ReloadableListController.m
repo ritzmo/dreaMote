@@ -11,6 +11,10 @@
 #import "DreamoteConfiguration.h"
 #import "RemoteConnectorObject.h" // [+RemoteConnectorObject queueInvocationWithTarget: selector:]
 
+#import "UIDevice+SystemVersion.h"
+
+#import "ServiceListController.h" // isSlave
+
 #import <View/GradientView.h>
 
 #import <XMLReader/BaseXMLReader.h>
@@ -106,6 +110,49 @@
 		_refreshHeaderView.delegate = self;
 		[_tableView addSubview:_refreshHeaderView];
 	}
+}
+
+- (void)theme
+{
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+#if INCLUDE_FEATURE(Ads)
+	UIColor *backgroundColor = nil;
+	if(_tableView.style == UITableViewStyleGrouped || ([self respondsToSelector:@selector(isSlave)] && [(id)self isSlave]))
+		backgroundColor = singleton.groupedTableViewBackgroundColor;
+	else
+		backgroundColor = singleton.backgroundColor;
+	self.view.backgroundColor = backgroundColor;
+#endif
+
+	const BOOL isIos5 = [UIDevice newerThanIos:5.0f];
+	switch(singleton.currentTheme)
+	{
+		default:
+			_refreshHeaderView.statusLabel.textColor = [UIColor colorWithRed:87.0f/255.0f green:108.0f/255.0f blue:137.0f/255.0f alpha:1.0f];
+			_refreshHeaderView.statusLabel.shadowColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+			_refreshHeaderView.arrorImage.contents = (id)[UIImage imageNamed:@"blueArrow.png"].CGImage;
+			if(isIos5)
+				_refreshHeaderView.activityView.color = nil;
+			_refreshHeaderView.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+			break;
+		case THEME_NIGHT:
+			_refreshHeaderView.statusLabel.textColor = singleton.textColor;
+			_refreshHeaderView.arrorImage.contents = (id)[UIImage imageNamed:@"grayArrow.png"].CGImage;
+			_refreshHeaderView.statusLabel.shadowColor = nil;
+			_refreshHeaderView.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+			if(isIos5)
+				_refreshHeaderView.activityView.color = singleton.textColor;
+			break;
+		case THEME_DARK:
+			_refreshHeaderView.statusLabel.textColor = singleton.textColor;
+			_refreshHeaderView.statusLabel.shadowColor = nil;
+			_refreshHeaderView.arrorImage.contents = (id)[UIImage imageNamed:@"whiteArrow.png"].CGImage;
+			_refreshHeaderView.activityView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
+			if(isIos5)
+				_refreshHeaderView.activityView.color = singleton.textColor;
+			break;
+	}
+	[super theme];
 }
 
 - (void)viewDidLoad
