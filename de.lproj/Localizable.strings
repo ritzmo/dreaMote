@@ -150,6 +150,9 @@
 /* No comment provided by engineer. */
 "Begin" = "Anfang";
 
+/* Name of blue theme */
+"Blue" = "Blau";
+
 /* Bouquets button in bouquet list
    Title of BouquetListController */
 "Bouquets" = "Bouquets";
@@ -258,11 +261,17 @@
 /* Repeated */
 "Daily" = "Täglich";
 
+/* Name of dark theme */
+"Dark" = "Dunkel";
+
 /* Title of DatePickerController */
 "Date Picker" = "Datumsauswahl";
 
 /* After Event */
 "Deep Standby" = "Herunterfahren";
+
+/* Name of default theme */
+"Default" = "Standard";
 
 /* Default After Event action (usually auto on enigma2 receivers) */
 "Default Action" = "Standard";
@@ -270,13 +279,17 @@
 /* No comment provided by engineer. */
 "Default Location" = "Standardverzeichnis";
 
-/* Delete button in MediaPlayer */
+/* Delete button in MediaPlayer
+   Delete button in MovieList
+   Delete button in TimerList */
 "Delete" = "Löschen";
 
 /* No comment provided by engineer. */
 "Delete failed" = "Entfernen fehlgeschlagen";
 
-/* Label of Progress HUD in MediaPlayer when deleting multiple items from playlist */
+/* Label of Progress HUD in MediaPlayer when deleting multiple items from playlist
+   Label of Progress HUD in MovieList when deleting multiple items
+   Label of Progress HUD in TimerList when deleting multiple items */
 "Deleting" = "Lösche…";
 
 /* No comment provided by engineer. */
@@ -574,6 +587,9 @@
 /* No comment provided by engineer. */
 "Next" = "Danach";
 
+/* Name of night theme */
+"Night" = "Nachtmodus";
+
 /* No comment provided by engineer. */
 "No" = "Nein";
 
@@ -686,6 +702,9 @@
 /* Section title for In-App-Purchases in ConfigList */
 "Purchase" = "Zusatzkäufe";
 
+/* In-App-Purchase was completed successfully */
+"Purchase completed" = "Kauf abgeschlossen";
+
 /* Message type */
 "Question" = "Frage";
 
@@ -772,6 +791,9 @@
 
 /* used in confirmation dialog: really restart? */
 "restart" = "GUI neu starten";
+
+/* In-App-Purchase were restored successfully */
+"Restore completed" = "Wiederherstellung abgeschlossen";
 
 /* Restore previous purchases in config list */
 "Restore Purchases" = "Käufe wiederherstellen";
@@ -927,6 +949,10 @@
 
 /* No comment provided by engineer. */
 "The match attribute is mandatory." = "\"Finde in Titel\" muss gesetzt sein.";
+
+/* Configuration item to choose theme
+   Title for theme selection */
+"Theme" = "Thema";
 
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 "This can take a while." = "Diese Aktion dauert einige Minuten.";
