@@ -13,11 +13,24 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import "MBProgressHUD.h"
+
 #import "SimpleSingleSelectionListController.h"
 
 #import <TableViewCell/DisplayCell.h>
 
 #import <Objects/Generic/Result.h>
+
+#define showCompletedHudWithText(text) { \
+	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
+	[self.navigationController.view addSubview:hud]; \
+	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
+	hud.mode = MBProgressHUDModeCustomView; \
+	hud.labelText = (text); \
+	hud.removeFromSuperViewOnHide = YES; \
+	[hud show:YES]; \
+	[hud hide:YES afterDelay:3]; \
+}
 
 /*!
  @brief Private functions of MessageViewController.
@@ -216,7 +229,9 @@
 	{
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] sendMessage:
 															message :caption :type :timeout];
-		if(!result.result)
+		if(result.result)
+			showCompletedHudWithText(NSLocalizedString(@"Message sent", @"Text of HUD when message was sent successfully"))
+		else
 		{
 			UIAlertView *notification = [[UIAlertView alloc]
 										 initWithTitle:NSLocalizedString(@"Could not send message.", @"")

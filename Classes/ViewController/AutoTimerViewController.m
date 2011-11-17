@@ -15,22 +15,34 @@
 #import "ServiceListController.h"
 #import "SimpleSingleSelectionListController.h"
 
+#import "MBProgressHUD.h"
+
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
-
-#import "CellTextField.h"
-#import "DisplayCell.h"
-#import "ServiceTableViewCell.h"
 
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
 
 #import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/CellTextField.h>
+#import <TableViewCell/DisplayCell.h>
+#import <TableViewCell/ServiceTableViewCell.h>
 
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/AutoTimer.h>
+
+#define showCompletedHudWithText(text) { \
+	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
+	[self.navigationController.view addSubview:hud]; \
+	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
+	hud.mode = MBProgressHUDModeCustomView; \
+	hud.labelText = (text); \
+	hud.removeFromSuperViewOnHide = YES; \
+	[hud show:YES]; \
+	[hud hide:YES afterDelay:3]; \
+}
 
 enum sectionIds
 {
@@ -589,6 +601,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				}
 				else
 				{
+					showCompletedHudWithText(NSLocalizedString(@"AutoTimer added", @"Text of HUD when AutoTimer was added successfully"))
 					[delegate autoTimerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}
@@ -604,6 +617,7 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 				}
 				else
 				{
+					showCompletedHudWithText(NSLocalizedString(@"AutoTimer changed", @"Text of HUD when AutoTimer was changed successfully"))
 					[delegate autoTimerViewController:self timerWasEdited:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
 				}

@@ -52,6 +52,9 @@
 		DA2F23C9146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
 		DA30A5D714758E8A0052C2C9 /* MultiEPGCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */; };
 		DA30A5D914758E8B0052C2C9 /* MultiEPGCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */; };
+		DA30A5DC1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */; };
+		DA30A5DD1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */; };
+		DA30A5DE1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */; };
 		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
@@ -1154,6 +1157,7 @@
 		DA2F23C3146DD253007DC7F6 /* MultiEPGCellContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiEPGCellContentView.h; sourceTree = "<group>"; };
 		DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGCellContentView.m; sourceTree = "<group>"; };
 		DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Blue.png; sourceTree = "<group>"; };
+		DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "MBProgressHUD/Demo/Images/37x-Checkmark.png"; sourceTree = SOURCE_ROOT; };
 		DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteConfiguration.h; sourceTree = "<group>"; };
 		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
 		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
@@ -1955,6 +1959,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA30A5DA1475C7BE0052C2C9 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */,
+			);
+			name = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 		DA33164A14695DC600A63BA8 /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
@@ -2568,6 +2580,7 @@
 				DAC8BEFE13B200F100CA00D9 /* EGOTableViewPullRefresh */,
 				DAC8BF0A13B200F100CA00D9 /* Full */,
 				DAC8BF3B13B200F100CA00D9 /* Lite */,
+				DA30A5DA1475C7BE0052C2C9 /* MBProgressHUD */,
 				DAC8BEF813B200F100CA00D9 /* 4-sided-arrow.png */,
 				DAC8BEF913B200F100CA00D9 /* audio-volume-high.png */,
 				DAC8BEFA13B200F100CA00D9 /* audio-x-generic.png */,
@@ -3560,6 +3573,7 @@
 				DA1CEA781473A49B00709BEF /* grayArrow@2x.png in Resources */,
 				DA1CEA831473AA1400709BEF /* whiteArrow.png in Resources */,
 				DA1CEA861473AA1900709BEF /* whiteArrow@2x.png in Resources */,
+				DA30A5DC1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3679,6 +3693,7 @@
 				DA1CEA791473A49B00709BEF /* grayArrow@2x.png in Resources */,
 				DA1CEA841473AA1400709BEF /* whiteArrow.png in Resources */,
 				DA1CEA871473AA1900709BEF /* whiteArrow@2x.png in Resources */,
+				DA30A5DD1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3794,6 +3809,7 @@
 				DA1CEA7A1473A49C00709BEF /* grayArrow@2x.png in Resources */,
 				DA1CEA851473AA1500709BEF /* whiteArrow.png in Resources */,
 				DA1CEA881473AA1A00709BEF /* whiteArrow@2x.png in Resources */,
+				DA30A5DE1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

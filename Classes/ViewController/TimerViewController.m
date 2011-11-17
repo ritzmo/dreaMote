@@ -19,6 +19,8 @@
 #import <TableViewCell/DisplayCell.h>
 #import <TableViewCell/ServiceTableViewCell.h>
 
+#import "MBProgressHUD.h"
+
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
@@ -26,6 +28,17 @@
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/Timer.h>
+
+#define showCompletedHudWithText(text) { \
+	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
+	[self.navigationController.view addSubview:hud]; \
+	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
+	hud.mode = MBProgressHUDModeCustomView; \
+	hud.labelText = (text); \
+	hud.removeFromSuperViewOnHide = YES; \
+	[hud show:YES]; \
+	[hud hide:YES afterDelay:3]; \
+}
 
 /*!
  @brief Private functions of TimerViewController.
@@ -547,6 +560,8 @@ enum timerSections
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext];
 				else
 				{
+					showCompletedHudWithText(NSLocalizedString(@"Timer added", @"Text of HUD when timer was added successfully"))
+
 					if(delegate && [delegate respondsToSelector:@selector(timerViewController:timerWasAdded:)])
 						[delegate timerViewController:self timerWasAdded:_timer];
 					[self.navigationController popViewControllerAnimated: YES];
@@ -559,6 +574,8 @@ enum timerSections
 					message = [NSString stringWithFormat: NSLocalizedString(@"Error editing timer: %@", @""), result.resulttext];
 				else
 				{
+					showCompletedHudWithText(NSLocalizedString(@"Timer changed", @"Text of HUD when timer was changed successfully"))
+
 					if(delegate && [delegate respondsToSelector:@selector(timerViewController:timerWasEdited::)])
 						[delegate timerViewController:self timerWasEdited:_timer :_oldTimer];
 					[self.navigationController popViewControllerAnimated: YES];

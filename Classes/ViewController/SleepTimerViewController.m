@@ -11,10 +11,23 @@
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
 
-#import "DisplayCell.h"
+#import <TableViewCell/DisplayCell.h>
+
+#import "MBProgressHUD.h"
 
 #import "UITableViewCell+EasyInit.h"
 #import "UIDevice+SystemVersion.h"
+
+#define showCompletedHudWithText(text) { \
+	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
+	[self.navigationController.view addSubview:hud]; \
+	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
+	hud.mode = MBProgressHUDModeCustomView; \
+	hud.labelText = (text); \
+	hud.removeFromSuperViewOnHide = YES; \
+	[hud show:YES]; \
+	[hud hide:YES afterDelay:3]; \
+}
 
 enum generalSectionItems
 {
@@ -238,6 +251,12 @@ enum generalSectionItems
 		}
 		else
 		{
+			NSString *text;
+			if(settings.enabled)
+				text = NSLocalizedString(@"Sleep Timer set", @"Text of HUD when sleep timer was set successfully");
+			else
+				text = NSLocalizedString(@"Sleep Timer disabled", @"Text of HUD when sleep timer was disabled successfully");
+			showCompletedHudWithText(text);
 			_shouldSave = NO;
 			[self setEditing:NO animated:YES];
 		}
