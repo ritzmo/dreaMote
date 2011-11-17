@@ -414,10 +414,12 @@
 	// resort current table view if sorting by title
 	if(_sortTitle)
 		[self setSortTitle:YES allowSearch:YES];
+#if IS_FULL()
 	// reload active table view
 	if(_searchDisplay.active)
 		[_searchDisplay.searchResultsTableView reloadData];
 	else
+#endif
 		[_tableView reloadData];
 }
 

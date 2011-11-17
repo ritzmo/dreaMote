@@ -50,6 +50,8 @@
 		DA2F23C7146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
 		DA2F23C8146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
 		DA2F23C9146DE818007DC7F6 /* Slider_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */; };
+		DA30A5D714758E8A0052C2C9 /* MultiEPGCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */; };
+		DA30A5D914758E8B0052C2C9 /* MultiEPGCellContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */; };
 		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
@@ -4363,6 +4365,7 @@
 				DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA56122E146FE67900390225 /* FastTableViewCell.m in Sources */,
 				DA00A7B9147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
+				DA30A5D714758E8A0052C2C9 /* MultiEPGCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4594,6 +4597,7 @@
 				DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA56122F146FE67900390225 /* FastTableViewCell.m in Sources */,
 				DA00A7BA147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
+				DA30A5D914758E8B0052C2C9 /* MultiEPGCellContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
