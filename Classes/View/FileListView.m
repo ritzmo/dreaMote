@@ -276,41 +276,40 @@
 /* create cell for given row */
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	const DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 	UITableViewCell *cell = nil;
-	if(_isPlaylist)
-		cell = [PlayListCell reusableTableViewCellInView:tableView withIdentifier:kPlayListCell_ID];
-	else
-		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
-
-	cell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
-	cell.textLabel.text = file.title;
-
-	if(file.valid)
+	const BOOL fileValid = file.valid;
+	if(_isPlaylist && fileValid)
 	{
-		if(_isPlaylist)
-		{
-			if(indexPath.row == _playing)
-				cell.imageView.image = [UIImage imageNamed:@"audio-volume-high.png"];
-			else
-				cell.imageView.image = nil;
+		PlayListCell *pcell = [PlayListCell reusableTableViewCellInView:tableView withIdentifier:kPlayListCell_ID];
+		pcell.file = file;
 
-			if([_selected containsObject:file])
-				[(PlayListCell *)cell setMultiSelected:YES animated:NO];
-		}
+		if(indexPath.row == _playing)
+			pcell.imageView.image = [UIImage imageNamed:@"audio-volume-high.png"];
 		else
-		{
-			if(file.isDirectory)
-				cell.imageView.image = [UIImage imageNamed:@"folder.png"];
-			else
-				cell.imageView.image = [UIImage imageNamed:@"audio-x-generic.png"];
-		}
+			pcell.imageView.image = nil;
+
+		if([_selected containsObject:file])
+			[pcell setMultiSelected:YES animated:NO];
+		cell = pcell;
 	}
 	else
-		cell.imageView.image = nil;
+	{
+		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
+		cell.textLabel.textColor = singleton.textColor;
+		cell.textLabel.font = [UIFont boldSystemFontOfSize:singleton.textViewFontSize-1];
+		cell.textLabel.text = file.title;
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
-	return cell;
+		if(!fileValid)
+			cell.imageView.image = nil;
+		else if(file.isDirectory)
+			cell.imageView.image = [UIImage imageNamed:@"folder.png"];
+		else
+			cell.imageView.image = [UIImage imageNamed:@"audio-x-generic.png"];
+	}
+
+	return [singleton styleTableViewCell:cell inTableView:tableView];
 }
 
 /* select row */

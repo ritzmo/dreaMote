@@ -7,31 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/MultiSelectionTableViewCell.h>
+
+#import <Objects/FileProtocol.h>
 
 // cell identifier for this custom cell
 extern NSString *kPlayListCell_ID;
 
-@interface PlayListCell : BaseTableViewCell
-{
-@private
-	UIImageView *indicator; /*!< @brief Indicator Image. */
-	BOOL _multiSelected;
-}
+@interface PlayListCell : MultiSelectionTableViewCell
 
 /*!
- @brief Set selection in Multi-Select mode.
-
- @param selected If the cell should be selected.
- @param animated Animate (de)selection?
+ @brief Currently displayed file.
  */
-- (void)setMultiSelected:(BOOL)selected animated:(BOOL)animated;
-
-/*!
- @brief Toggle selection in Multi-Select mode.
-
- @return selection status after running this method
- */
-- (BOOL)toggleMultiSelected;
+@property (nonatomic, strong) NSObject<FileProtocol> *file;
 
 @end

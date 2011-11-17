@@ -15,95 +15,38 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 
 @implementation PlayListCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+@synthesize file;
+
+- (void)setFile:(NSObject<FileProtocol> *)newFile
 {
-	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])){
-		self.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-		self.textLabel.backgroundColor = [UIColor clearColor];
-
-		indicator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"NotSelected.png"]];
-		indicator.frame = CGRectZero;
-		[self.contentView addSubview:indicator];
-
-		self.backgroundView = [[UIView alloc] init];
-		self.backgroundView.backgroundColor = [UIColor clearColor];
-	}
-	return self;
+	if(file == newFile) return;
+	file = newFile;
+	[self setNeedsDisplay];
 }
 
-- (void)prepareForReuse
+- (void)drawContentRect:(CGRect)contentRect
 {
-	[self setMultiSelected:NO animated:NO];
-	self.textLabel.text = nil;
-}
+	[super drawContentRect:contentRect];
+	CGFloat offsetX = contentRect.origin.x;
+	const CGFloat boundsWidth = contentRect.size.width;
+	const CGFloat boundsHeight = contentRect.size.height;
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated
-{
-	// prevent some gui glitches
-	if(editing != self.editing)
+	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.textViewFontSize-1];
+	UIColor *primaryColor = nil;
+	if(self.highlighted)
 	{
-		[super setEditing:editing animated:animated];
-		self.textLabel.backgroundColor = [UIColor clearColor]; // WTF?!
-	}
-
-#if IS_DEBUG()
-	NSParameterAssert([self.superview isKindOfClass:[UITableView class]]);
-#endif
-
-	if([self.superview respondsToSelector:@selector(isEditing)])
-	{
-		if(_multiSelected && ![(UITableView *)self.superview isEditing])
-			[self setMultiSelected:NO animated:YES];
-	}
-}
-
-- (void)setMultiSelected:(BOOL)selected animated:(BOOL)animated
-{
-	_multiSelected = selected;
-	if(animated)
-	{
-		[UIView beginAnimations:nil context:NULL];
-		[UIView setAnimationDuration:0.2f];
-	}
-
-	if(selected)
-	{
-		indicator.image = [UIImage imageNamed:@"IsSelected.png"];
-		self.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
+		primaryColor =  singleton.highlightedTextColor;
 	}
 	else
 	{
-		indicator.image = [UIImage imageNamed:@"NotSelected.png"];
-		self.backgroundView.backgroundColor = [UIColor clearColor];
+		primaryColor =  singleton.textColor;
 	}
+	[primaryColor set];
 
-	if(animated)
-	{
-		[UIView commitAnimations];
-	}
+	CGPoint point = CGPointMake(offsetX + kLeftMargin, (boundsHeight - primaryFont.lineHeight) / 2);
+	CGFloat forWidth = boundsWidth - offsetX;
+	[file.title drawAtPoint:point forWidth:forWidth withFont:primaryFont lineBreakMode:UILineBreakModeTailTruncation];
 }
-
-- (BOOL)toggleMultiSelected
-{
-	[self setMultiSelected:!_multiSelected animated:YES];
-	return _multiSelected;
-}
-
-- (void)layoutSubviews
-{
-	[super layoutSubviews];
-	CGRect contentRect = [self.contentView bounds];
-
-	if(self.editing)
-	{
-		const NSInteger IMAGE_SIZE = 30;
-		CGRect indicatorFrame = CGRectMake(-30,
-										   (0.5f * contentRect.size.height) - (0.5f * IMAGE_SIZE),
-										   IMAGE_SIZE,
-										   IMAGE_SIZE);
-		indicator.frame = indicatorFrame;
-	}
-}
-
 
 @end
