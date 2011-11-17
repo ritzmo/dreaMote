@@ -114,16 +114,6 @@
 	_xmlReader = nil;
 }
 
-/* run epg parsing on remote receiver */
-- (void)parseEPGDefer
-{
-	@autoreleasepool {
-		
-
-	}
-	_parsing = NO;
-}
-
 /* initiate epg parsing on remote receiver */
 - (void)parseEPG:(id)sender
 {
@@ -141,9 +131,11 @@
 															cancelButtonTitle:@"OK"
 															otherButtonTitles:nil];
 				[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+				_parsing = NO;
 			});
 		}
-		_parsing = YES;
+		else
+			_parsing = YES;
 	}
 }
 
