@@ -20,6 +20,8 @@
 #import <Objects/MovieProtocol.h>
 #import <Objects/Generic/Result.h>
 
+#import "MBProgressHUD.h"
+
 #define deleteExtraWidth	35
 
 @interface MovieListController()
@@ -410,6 +412,8 @@
 															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
 	}
+	else
+		showCompletedHudWithText(NSLocalizedString(@"Movies deleted", @"Text of HUD when multiple movies were removed"));
 
 	// resort current table view if sorting by title
 	if(_sortTitle)
@@ -965,6 +969,8 @@
 				}
 			}
 		}
+
+		showCompletedHudWithText(NSLocalizedString(@"Movie deleted", @"Text of HUD when a movied was removed successfully"));
 
 		[tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
 	}

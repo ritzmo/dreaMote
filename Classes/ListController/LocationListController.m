@@ -20,6 +20,8 @@
 #import <Objects/Generic/Location.h>
 #import <Objects/Generic/Result.h>
 
+#import "MBProgressHUD.h"
+
 @interface LocationListController()
 /*!
  @brief done editing
@@ -431,6 +433,7 @@
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delLocation:location.fullpath];
 		if(result.result)
 		{
+			showCompletedHudWithText(NSLocalizedString(@"Bookmark deleted", @"Text of HUD when a bookmark was removed successfully"));
 			[_locations removeObjectAtIndex:row];
 			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
 		}

@@ -103,6 +103,15 @@
 	#define IS_DEBUG()	(0)
 #endif
 
-#ifndef NSINTEGER_DEFINED
-	#define NSInteger int
-#endif
+// re-usable macro to show a temporary "everything fine" hud
+// NOTE: you still need to manually include MBProgressHUD.h
+#define showCompletedHudWithText(text) { \
+	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
+	[self.navigationController.view addSubview:hud]; \
+	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
+	hud.mode = MBProgressHUDModeCustomView; \
+	hud.labelText = (text); \
+	hud.removeFromSuperViewOnHide = YES; \
+	[hud show:YES]; \
+	[hud hide:YES afterDelay:3]; \
+}

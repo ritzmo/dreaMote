@@ -21,6 +21,8 @@
 
 #import <XMLReader/BaseXMLReader.h>
 
+#import "MBProgressHUD.h"
+
 @interface AutoTimerListController()
 - (void)parseEPG:(id)sender;
 @end
@@ -382,6 +384,7 @@
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delAutoTimer:timer];
 		if(result.result)
 		{
+			showCompletedHudWithText(NSLocalizedString(@"AutoTimer deleted", @"Text of HUD when an AutoTimer was removed successfully"));
 			[_autotimers removeObjectAtIndex: index];
 			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
 								 withRowAnimation:UITableViewRowAnimationFade];

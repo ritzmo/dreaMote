@@ -33,17 +33,6 @@
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/AutoTimer.h>
 
-#define showCompletedHudWithText(text) { \
-	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
-	[self.navigationController.view addSubview:hud]; \
-	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
-	hud.mode = MBProgressHUDModeCustomView; \
-	hud.labelText = (text); \
-	hud.removeFromSuperViewOnHide = YES; \
-	[hud show:YES]; \
-	[hud hide:YES afterDelay:3]; \
-}
-
 enum sectionIds
 {
 	titleSection = 0,

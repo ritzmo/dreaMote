@@ -21,6 +21,7 @@
 #import <Objects/Generic/Timer.h>
 #import <Objects/Generic/Result.h>
 
+#import "MBProgressHUD.h"
 #import "MKStoreManager.h"
 
 #define deleteExtraWidth	35
@@ -334,6 +335,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 		[alert show];
 	}
+	else
+		showCompletedHudWithText(NSLocalizedString(@"Timers deleted", @"Text of HUD when multiple timer were removed successfully"));
 
 	[_tableView reloadData];
 }
@@ -664,6 +667,8 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] delTimer: timer];
 		if(result.result)
 		{
+			showCompletedHudWithText(NSLocalizedString(@"Timer deleted", @"Text of HUD when timer was removed successfully"));
+
 			// If we have a constant timer Id don't refresh all data
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesConstantTimerId])
 			{

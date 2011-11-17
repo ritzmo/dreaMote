@@ -26,6 +26,7 @@
 #import <XMLReader/BaseXMLReader.h>
 #import <XMLReader/SaxXMLReader.h>
 
+#import "MBProgressHUD.h"
 #import "MKStoreManager.h"
 
 enum serviceListTags
@@ -1165,15 +1166,19 @@ enum serviceListTags
 													otherButtonTitles:nil];
 		[alert show];
 	}
-	else if(![service.sref hasPrefix:@"1:134:"])
+	else
 	{
-		// NOTE: reload service list to get the sref of the alternative service
-		[self emptyData];
+		showCompletedHudWithText(NSLocalizedStringFromTable(@"Alternative added", @"ServiceEditor", @"Text of HUD when a service was added as alternative to the currently selected one"));
+		if(![service.sref hasPrefix:@"1:134:"])
+		{
+			// NOTE: reload service list to get the sref of the alternative service
+			[self emptyData];
 #if IS_FULL()
-		_multiEPG.pendingRequests++;
+			_multiEPG.pendingRequests++;
 #endif
-		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
-		return;
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
+			return;
+		}
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -1192,6 +1197,7 @@ enum serviceListTags
 	}
 	else
 	{
+		showCompletedHudWithText(NSLocalizedStringFromTable(@"Alternatives deleted", @"ServiceEditor", @"Text of HUD when all alternatives were removed for a services"));
 		// NOTE: we don't know which service reference the original service is going to have, so just reload everything
 		[self emptyData];
 #if IS_FULL()
@@ -1259,6 +1265,7 @@ enum serviceListTags
 	}
 	else if(selectedServicesCount)
 	{
+		showCompletedHudWithText(NSLocalizedStringFromTable(@"Service(s) added", @"ServiceEditor", @"Text of HUD when one or multiple services were added to a bouquet"));
 		[_selectedServices removeAllObjects];
 		[tableView reloadData];
 	}
