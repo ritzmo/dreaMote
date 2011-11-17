@@ -45,6 +45,7 @@
 	_timerListController = [[TimerListController alloc] init];
 	_timerListController.isSplit = YES;
 	_timerViewController = [TimerViewController newTimer];
+	_timerViewController.delegate = _timerListController;
 	_timerListController.timerViewController = _timerViewController;
 
 	// Make timer view delegate of split view
@@ -65,6 +66,8 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 
 	_timerListController.timerViewController = nil;
+	if(_timerViewController.delegate == _timerListController)
+		_timerViewController.delegate = nil;
 	_timerListController = nil;
 	_timerViewController = nil;
 
