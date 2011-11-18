@@ -37,7 +37,8 @@
 	timer.searchCase = CASE_SENSITIVE;
 	timer.searchType = SEARCH_TYPE_EXACT;
 	timer.overrideAlternatives = YES;
-	timer.services = [NSMutableArray arrayWithObject:event.service];
+	if(event.service)
+		[timer.services addObject:event.service];
 	timer.afterEventAction = kAfterEventMax;
 	return timer;
 }
