@@ -191,12 +191,15 @@
 
 - (void)loadView
 {
-	// setup our parent content view and embed it to your view controller
-	UIView *contentView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	UIView *backView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]];
+	backView.autoresizesSubviews = YES;
+	backView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	contentView = [[UIView alloc] initWithFrame:backView.frame];
 	contentView.autoresizesSubviews = YES;
 	contentView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
-	self.view = contentView;
+	[backView addSubview:contentView];
+	self.view = backView;
 
 	// Flip Button
 	_screenshotButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Screenshot", @"")
@@ -262,6 +265,7 @@
 	toolbar = nil;
 	rcView = nil;
 
+	contentView = nil;
 	_screenView = nil;
 	_scrollView = nil;
 	_imageView = nil;
@@ -278,7 +282,9 @@
 
 - (void)theme
 {
-	self.view.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewBackgroundColor;
+	contentView.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewBackgroundColor;
+	self.view.backgroundColor = contentView.backgroundColor;
+
 	[super theme];
 }
 
@@ -304,21 +310,21 @@
 
 	[UIView setAnimationTransition:
 				([rcView superview] ? UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
-				forView: self.view
-				cache: YES];
+				forView:contentView
+				cache:YES];
 
 	if ([_screenView superview])
 	{
 		[_screenView removeFromSuperview];
 		_screenshotButton.title = NSLocalizedString(@"Screenshot", @"");
-		[self.view addSubview: rcView];
+		[contentView addSubview: rcView];
 	}
 	else
 	{
 		[self loadImage: nil];
 		[rcView removeFromSuperview];
 		_screenshotButton.title = NSLocalizedString(@"Done", @"");
-		[self.view addSubview: _screenView];
+		[contentView addSubview:_screenView];
 	}
 
 	[UIView commitAnimations];
@@ -464,6 +470,7 @@
 	CGRect frame = toolbar.frame;
 	frame.origin.y += frame.size.height;
 	frame.size.height = self.view.frame.size.height - frame.origin.y;
+	contentView.frame = self.view.frame;
 	_screenView.frame = frame;
 	frame.origin.y = 0;
 	_scrollView.frame = frame;

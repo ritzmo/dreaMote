@@ -30,7 +30,7 @@
 
 - (void)viewDidLoad
 {
-	[self.view addSubview: self.rcView];
+	[contentView addSubview:self.rcView];
 }
 #endif
 
@@ -49,13 +49,13 @@
 
 	[super loadView];
 
-	const CGSize mainViewSize = self.view.bounds.size;
+	const CGSize mainViewSize = contentView.bounds.size;
 
 	// create the rc view
 	// NOTE: we size it height*height because this is the largest area we might fill
 	frame = CGRectMake(0, toolbar.frame.size.height, mainViewSize.height, mainViewSize.height - toolbar.frame.size.height);
 	rcView = [[UIView alloc] initWithFrame: frame];
-	[self.view addSubview:rcView];
+	[contentView addSubview:rcView];
 
 	// TODO: we could add a volume slider too...
 
@@ -80,7 +80,7 @@
 	UIImage *image = [UIImage imageNamed:@"4-sided-arrow.png"];
 	[_swipeArea setBackgroundImage:image forState:UIControlStateHighlighted];
 	[_swipeArea setBackgroundImage:image forState:UIControlStateNormal];
-	[rcView addSubview: _swipeArea];
+	[rcView addSubview:_swipeArea];
 
 	[self theme];
 }
@@ -101,13 +101,13 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	const UITouch *touch = [[event allTouches] anyObject];
-	lastLocation = [touch locationInView: self.view];
+	lastLocation = [touch locationInView:contentView];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	const UITouch *touch = [[event allTouches] anyObject];
-	const CGPoint location = [touch locationInView: self.view];
+	const CGPoint location = [touch locationInView:contentView];
 	const CGFloat xDisplacement = location.x - lastLocation.x;
 	const CGFloat yDisplacement = location.y - lastLocation.y;
 	const CGFloat xDisplacementAbs = (CGFloat)fabs(xDisplacement);
@@ -172,7 +172,7 @@
 	const CGFloat factor = (IS_IPAD()) ? 2.0f : 0.9f;
 	const CGFloat imageWidth = 135 * factor;
 	const CGFloat imageHeight = 105 * factor;
-	CGSize mainViewSize = self.view.bounds.size;
+	CGSize mainViewSize = contentView.bounds.size;
 
 	// check if we are going to rotate and eventually adjust size
 	if(self.interfaceOrientation != interfaceOrientation)

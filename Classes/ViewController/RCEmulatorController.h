@@ -30,6 +30,7 @@
 	NSInteger _screenshotType; /*!< @brief Selected Screenshot type. */
 @protected
 	IBOutlet UIToolbar *toolbar; /*!< @brief Toolbar. */
+	IBOutlet UIView *contentView; /*!< @brief Container view. */
 	IBOutlet UIView *rcView; /*!< @brief Remote Controller view. */
 	UIView *_keyPad; /*!< @brief View containing Number keys. */
 	UIView *_navigationPad; /*!< @brief View containing Navigation keys. */

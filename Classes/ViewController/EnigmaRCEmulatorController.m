@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad
 {
-	[self.view addSubview: self.rcView];
+	[contentView addSubview:self.rcView];
 }
 #endif
 
@@ -43,7 +43,7 @@
 
 	[super loadView];
 
-	const CGSize mainViewSize = self.view.bounds.size;
+	const CGSize mainViewSize = contentView.bounds.size;
 
 	// create the rc view and prepare different frames used for orientations
 	_portraitFrame = CGRectMake(0, toolbar.frame.size.height, mainViewSize.width, mainViewSize.height - toolbar.frame.size.height);
@@ -68,7 +68,7 @@
 	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 		_portraitFrame.origin.y += 10;
 	rcView = [[UIView alloc] initWithFrame: _portraitFrame];
-	[self.view addSubview:rcView];
+	[contentView addSubview:rcView];
 
 	// initialize this
 	currX = kTopMargin;
