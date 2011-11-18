@@ -49,6 +49,9 @@
 		DA2645FE1476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
 		DA2645FF1476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
 		DA2646001476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
+		DA2646031476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */; };
+		DA2646041476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */; };
+		DA2646051476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */; };
 		DA2F23B7146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
 		DA2F23B8146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
 		DA2F23B9146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
@@ -1158,6 +1161,8 @@
 		DA2645F51476D17100B91162 /* LegacySHKConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacySHKConfigurator.h; sourceTree = "<group>"; };
 		DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacySHKConfigurator.m; sourceTree = "<group>"; };
 		DA2645FD1476D22D00B91162 /* ShareKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ShareKit.bundle; path = ShareKit/Classes/ShareKit/ShareKit.bundle; sourceTree = SOURCE_ROOT; };
+		DA2646011476D31F00B91162 /* DreamoteSHKConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteSHKConfigurator.h; sourceTree = "<group>"; };
+		DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteSHKConfigurator.m; sourceTree = "<group>"; };
 		DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Blue.png; sourceTree = "<group>"; };
 		DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Header_Blue.png; sourceTree = "<group>"; };
 		DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellHighlighted_Blue.png; sourceTree = "<group>"; };
@@ -1968,6 +1973,8 @@
 				DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */,
 				DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */,
 				DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */,
+				DA2646011476D31F00B91162 /* DreamoteSHKConfigurator.h */,
+				DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -4104,6 +4111,7 @@
 				DA2645F01476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
 				DA2645F71476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
 				DA2645FA1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
+				DA2646031476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4370,6 +4378,7 @@
 				DA2645F11476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
 				DA2645F81476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
 				DA2645FB1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
+				DA2646041476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4602,6 +4611,7 @@
 				DA2645F21476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
 				DA2645F91476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
 				DA2645FC1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
+				DA2646051476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
