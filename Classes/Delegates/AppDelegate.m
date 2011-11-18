@@ -254,12 +254,11 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	[Appirater appLaunched:promptForRating];
 
 	// NOTE: try to look up class as it is not present in public git since it contains some secret information
-	Class classConfigurationDelegate = NSClassFromString(@"DreamoteSHKConfigurationDelegate");
-	if(classConfigurationDelegate != nil)
+	Class classConfigurator = NSClassFromString(@"DreamoteSHKConfigurator");
+	if(classConfigurator != nil)
 	{
-		// NOTE: class has to have retain count 1 as SHKConfiguration does not retain it
-		id configurationDelegate = [[classConfigurationDelegate alloc] init];
-		[SHKConfiguration sharedInstanceWithDelegate:configurationDelegate];
+		id configurator = [[classConfigurator alloc] init];
+		[SHKConfiguration sharedInstanceWithConfigurator:configurator];
 	}
 
 	// initialize audio session

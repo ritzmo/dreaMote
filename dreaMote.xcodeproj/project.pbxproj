@@ -37,6 +37,18 @@
 		DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
 		DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */ = {isa = PBXBuildFile; fileRef = DA21B20914561FB7002903A4 /* PackageManager.png */; };
+		DA2645F01476D15F00B91162 /* SHKCustomActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645EF1476D15F00B91162 /* SHKCustomActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645F11476D15F00B91162 /* SHKCustomActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645EF1476D15F00B91162 /* SHKCustomActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645F21476D15F00B91162 /* SHKCustomActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645EF1476D15F00B91162 /* SHKCustomActionSheet.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645F71476D17100B91162 /* DefaultSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645F41476D17100B91162 /* DefaultSHKConfigurator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645F81476D17100B91162 /* DefaultSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645F41476D17100B91162 /* DefaultSHKConfigurator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645F91476D17100B91162 /* DefaultSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645F41476D17100B91162 /* DefaultSHKConfigurator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645FA1476D17100B91162 /* LegacySHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645FB1476D17100B91162 /* LegacySHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645FC1476D17100B91162 /* LegacySHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA2645FE1476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
+		DA2645FF1476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
+		DA2646001476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
 		DA2F23B7146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
 		DA2F23B8146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
 		DA2F23B9146DB2A0007DC7F6 /* Cell_Blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */; };
@@ -75,12 +87,6 @@
 		DA51C47E144CCC4700EA63C5 /* PackageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C47D144CCC4700EA63C5 /* PackageCell.m */; };
 		DA51C47F144CCC4700EA63C5 /* PackageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C47D144CCC4700EA63C5 /* PackageCell.m */; };
 		DA51C480144CCC4700EA63C5 /* PackageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C47D144CCC4700EA63C5 /* PackageCell.m */; };
-		DA51CE98144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA51CE99144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA51CE9A144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA51CE9B144ACBEE00C714ED /* LegacySHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAF144ACBED00C714ED /* LegacySHKConfigurationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA51CE9C144ACBEE00C714ED /* LegacySHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAF144ACBED00C714ED /* LegacySHKConfigurationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA51CE9D144ACBEE00C714ED /* LegacySHKConfigurationDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDAF144ACBED00C714ED /* LegacySHKConfigurationDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CE9E144ACBEE00C714ED /* SHKConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDB1144ACBED00C714ED /* SHKConfiguration.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CE9F144ACBEE00C714ED /* SHKConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDB1144ACBED00C714ED /* SHKConfiguration.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CEA0144ACBEE00C714ED /* SHKConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDB1144ACBED00C714ED /* SHKConfiguration.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -171,9 +177,6 @@
 		DA51CEF5144ACBEE00C714ED /* SHKCustomShareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CEF6144ACBEE00C714ED /* SHKCustomShareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CEF7144ACBEE00C714ED /* SHKCustomShareMenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* ShareKit.strings */; };
-		DA51CEF9144ACBEE00C714ED /* ShareKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* ShareKit.strings */; };
-		DA51CEFA144ACBEE00C714ED /* ShareKit.strings in Resources */ = {isa = PBXBuildFile; fileRef = DA51CDF7144ACBED00C714ED /* ShareKit.strings */; };
 		DA51CEFB144ACBEE00C714ED /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE03144ACBED00C714ED /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CEFC144ACBEE00C714ED /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE03144ACBED00C714ED /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51CEFD144ACBEE00C714ED /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51CE03144ACBED00C714ED /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1148,6 +1151,13 @@
 		DA20F3F114714B200099CB4F /* Cell_Dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Dark.png; sourceTree = "<group>"; };
 		DA20F3F214714B200099CB4F /* Cell_DarkGroup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_DarkGroup.png; sourceTree = "<group>"; };
 		DA21B20914561FB7002903A4 /* PackageManager.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PackageManager.png; sourceTree = "<group>"; };
+		DA2645EE1476D15F00B91162 /* SHKCustomActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKCustomActionSheet.h; sourceTree = "<group>"; };
+		DA2645EF1476D15F00B91162 /* SHKCustomActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCustomActionSheet.m; sourceTree = "<group>"; };
+		DA2645F31476D17100B91162 /* DefaultSHKConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultSHKConfigurator.h; sourceTree = "<group>"; };
+		DA2645F41476D17100B91162 /* DefaultSHKConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultSHKConfigurator.m; sourceTree = "<group>"; };
+		DA2645F51476D17100B91162 /* LegacySHKConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacySHKConfigurator.h; sourceTree = "<group>"; };
+		DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacySHKConfigurator.m; sourceTree = "<group>"; };
+		DA2645FD1476D22D00B91162 /* ShareKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ShareKit.bundle; path = ShareKit/Classes/ShareKit/ShareKit.bundle; sourceTree = SOURCE_ROOT; };
 		DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Blue.png; sourceTree = "<group>"; };
 		DA2F23BB146DB87E007DC7F6 /* Header_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Header_Blue.png; sourceTree = "<group>"; };
 		DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CellHighlighted_Blue.png; sourceTree = "<group>"; };
@@ -1171,10 +1181,6 @@
 		DA51C478144CC85000EA63C5 /* PackageManagerListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageManagerListController.m; sourceTree = "<group>"; };
 		DA51C47C144CCC4700EA63C5 /* PackageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PackageCell.h; sourceTree = "<group>"; };
 		DA51C47D144CCC4700EA63C5 /* PackageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PackageCell.m; sourceTree = "<group>"; };
-		DA51CDAC144ACBED00C714ED /* DefaultSHKConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultSHKConfigurationDelegate.h; sourceTree = "<group>"; };
-		DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultSHKConfigurationDelegate.m; sourceTree = "<group>"; };
-		DA51CDAE144ACBED00C714ED /* LegacySHKConfigurationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacySHKConfigurationDelegate.h; sourceTree = "<group>"; };
-		DA51CDAF144ACBED00C714ED /* LegacySHKConfigurationDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacySHKConfigurationDelegate.m; sourceTree = "<group>"; };
 		DA51CDB0144ACBED00C714ED /* SHKConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKConfiguration.h; sourceTree = "<group>"; };
 		DA51CDB1144ACBED00C714ED /* SHKConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKConfiguration.m; sourceTree = "<group>"; };
 		DA51CDB4144ACBED00C714ED /* SHKOAuthSharer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKOAuthSharer.h; sourceTree = "<group>"; };
@@ -1236,15 +1242,6 @@
 		DA51CDF3144ACBED00C714ED /* SHKCustomShareMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCustomShareMenu.m; sourceTree = "<group>"; };
 		DA51CDF4144ACBED00C714ED /* SHKCustomShareMenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKCustomShareMenuCell.h; sourceTree = "<group>"; };
 		DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCustomShareMenuCell.m; sourceTree = "<group>"; };
-		DA51CDF8144ACBED00C714ED /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDF9144ACBED00C714ED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDFA144ACBED00C714ED /* eu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = eu; path = eu.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDFB144ACBED00C714ED /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDFC144ACBED00C714ED /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDFD144ACBED00C714ED /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDFE144ACBED00C714ED /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CDFF144ACBED00C714ED /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/ShareKit.strings; sourceTree = "<group>"; };
-		DA51CE00144ACBED00C714ED /* zh_CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh_CN; path = zh_CN.lproj/ShareKit.strings; sourceTree = "<group>"; };
 		DA51CE02144ACBED00C714ED /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		DA51CE03144ACBED00C714ED /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		DA51CE07144ACBED00C714ED /* SHKCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKCopy.h; sourceTree = "<group>"; };
@@ -1990,8 +1987,8 @@
 				DA51CDAB144ACBED00C714ED /* Configuration */,
 				DA51CDB2144ACBED00C714ED /* Core */,
 				DA51CDED144ACBED00C714ED /* Customize UI */,
-				DA51CDF6144ACBED00C714ED /* Localization */,
 				DA51CE01144ACBED00C714ED /* Reachability */,
+				DA2645FD1476D22D00B91162 /* ShareKit.bundle */,
 				DA51CE04144ACBED00C714ED /* Sharers */,
 				DA51CE85144ACBEE00C714ED /* SHKConfig.h */,
 				DA51CE86144ACBEE00C714ED /* UI */,
@@ -2003,10 +2000,10 @@
 		DA51CDAB144ACBED00C714ED /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				DA51CDAC144ACBED00C714ED /* DefaultSHKConfigurationDelegate.h */,
-				DA51CDAD144ACBED00C714ED /* DefaultSHKConfigurationDelegate.m */,
-				DA51CDAE144ACBED00C714ED /* LegacySHKConfigurationDelegate.h */,
-				DA51CDAF144ACBED00C714ED /* LegacySHKConfigurationDelegate.m */,
+				DA2645F31476D17100B91162 /* DefaultSHKConfigurator.h */,
+				DA2645F41476D17100B91162 /* DefaultSHKConfigurator.m */,
+				DA2645F51476D17100B91162 /* LegacySHKConfigurator.h */,
+				DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */,
 				DA51CDB0144ACBED00C714ED /* SHKConfiguration.h */,
 				DA51CDB1144ACBED00C714ED /* SHKConfiguration.m */,
 			);
@@ -2130,6 +2127,8 @@
 		DA51CDED144ACBED00C714ED /* Customize UI */ = {
 			isa = PBXGroup;
 			children = (
+				DA2645EE1476D15F00B91162 /* SHKCustomActionSheet.h */,
+				DA2645EF1476D15F00B91162 /* SHKCustomActionSheet.m */,
 				DA51CDEE144ACBED00C714ED /* SHKCustomFormController.h */,
 				DA51CDEF144ACBED00C714ED /* SHKCustomFormController.m */,
 				DA51CDF0144ACBED00C714ED /* SHKCustomFormFieldCell.h */,
@@ -2140,14 +2139,6 @@
 				DA51CDF5144ACBED00C714ED /* SHKCustomShareMenuCell.m */,
 			);
 			path = "Customize UI";
-			sourceTree = "<group>";
-		};
-		DA51CDF6144ACBED00C714ED /* Localization */ = {
-			isa = PBXGroup;
-			children = (
-				DA51CDF7144ACBED00C714ED /* ShareKit.strings */,
-			);
-			path = Localization;
 			sourceTree = "<group>";
 		};
 		DA51CE01144ACBED00C714ED /* Reachability */ = {
@@ -3550,7 +3541,6 @@
 				DA681B2413B4976700232190 /* Setup_Auto.png in Resources */,
 				DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */,
 				DA51CEE9144ACBEE00C714ED /* SHKSharers.plist in Resources */,
-				DA51CEF8144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA7920E51461ABCF0040615E /* FBDialog.bundle in Resources */,
 				DA73A4111463D6E800E6F505 /* MKStoreKitConfigs Full.plist in Resources */,
@@ -3571,6 +3561,7 @@
 				DA1CEA831473AA1400709BEF /* whiteArrow.png in Resources */,
 				DA1CEA861473AA1900709BEF /* whiteArrow@2x.png in Resources */,
 				DA30A5DC1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
+				DA2645FE1476D22D00B91162 /* ShareKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3670,7 +3661,6 @@
 				DA681B2213B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2513B4976700232190 /* Setup_Auto.png in Resources */,
 				DA51CEEA144ACBEE00C714ED /* SHKSharers.plist in Resources */,
-				DA51CEF9144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF41144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
@@ -3691,6 +3681,7 @@
 				DA1CEA841473AA1400709BEF /* whiteArrow.png in Resources */,
 				DA1CEA871473AA1900709BEF /* whiteArrow@2x.png in Resources */,
 				DA30A5DD1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
+				DA2645FF1476D22D00B91162 /* ShareKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3787,7 +3778,6 @@
 				DA681B2313B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2613B4976700232190 /* Setup_Auto.png in Resources */,
 				DA51CEEB144ACBEE00C714ED /* SHKSharers.plist in Resources */,
-				DA51CEFA144ACBEE00C714ED /* ShareKit.strings in Resources */,
 				DA51CF42144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AFA145864B40089A382 /* PackageManager.strings in Resources */,
@@ -3807,6 +3797,7 @@
 				DA1CEA851473AA1500709BEF /* whiteArrow.png in Resources */,
 				DA1CEA881473AA1A00709BEF /* whiteArrow@2x.png in Resources */,
 				DA30A5DE1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
+				DA2646001476D22D00B91162 /* ShareKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4004,8 +3995,6 @@
 				DA681B1513B35BEC00232190 /* ConnectionListController.m in Sources */,
 				DA681B1A13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 				DAFAAE8913EBEBCE002A2E6A /* UIPromptView.m in Sources */,
-				DA51CE98144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */,
-				DA51CE9B144ACBEE00C714ED /* LegacySHKConfigurationDelegate.m in Sources */,
 				DA51CE9E144ACBEE00C714ED /* SHKConfiguration.m in Sources */,
 				DA51CEA1144ACBEE00C714ED /* SHKOAuthSharer.m in Sources */,
 				DA51CEA4144ACBEE00C714ED /* SHKSharer.m in Sources */,
@@ -4112,6 +4101,9 @@
 				DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */,
 				DA56122D146FE67900390225 /* FastTableViewCell.m in Sources */,
 				DA00A7B8147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
+				DA2645F01476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
+				DA2645F71476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
+				DA2645FA1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4270,8 +4262,6 @@
 				DA681B1B13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 				DA681B1D13B4909900232190 /* LiteUnzip.m in Sources */,
 				DAFAAE8A13EBEBCE002A2E6A /* UIPromptView.m in Sources */,
-				DA51CE99144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */,
-				DA51CE9C144ACBEE00C714ED /* LegacySHKConfigurationDelegate.m in Sources */,
 				DA51CE9F144ACBEE00C714ED /* SHKConfiguration.m in Sources */,
 				DA51CEA2144ACBEE00C714ED /* SHKOAuthSharer.m in Sources */,
 				DA51CEA5144ACBEE00C714ED /* SHKSharer.m in Sources */,
@@ -4377,6 +4367,9 @@
 				DA56122E146FE67900390225 /* FastTableViewCell.m in Sources */,
 				DA00A7B9147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
 				DA30A5D714758E8A0052C2C9 /* MultiEPGCellContentView.m in Sources */,
+				DA2645F11476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
+				DA2645F81476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
+				DA2645FB1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4501,8 +4494,6 @@
 				DA681B1C13B483FB00232190 /* NSNetService+IpString.m in Sources */,
 				DA681B1E13B4909A00232190 /* LiteUnzip.m in Sources */,
 				DAFAAE8B13EBEBCE002A2E6A /* UIPromptView.m in Sources */,
-				DA51CE9A144ACBEE00C714ED /* DefaultSHKConfigurationDelegate.m in Sources */,
-				DA51CE9D144ACBEE00C714ED /* LegacySHKConfigurationDelegate.m in Sources */,
 				DA51CEA0144ACBEE00C714ED /* SHKConfiguration.m in Sources */,
 				DA51CEA3144ACBEE00C714ED /* SHKOAuthSharer.m in Sources */,
 				DA51CEA6144ACBEE00C714ED /* SHKSharer.m in Sources */,
@@ -4608,28 +4599,15 @@
 				DA56122F146FE67900390225 /* FastTableViewCell.m in Sources */,
 				DA00A7BA147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */,
 				DA30A5D914758E8B0052C2C9 /* MultiEPGCellContentView.m in Sources */,
+				DA2645F21476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
+				DA2645F91476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
+				DA2645FC1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		DA51CDF7144ACBED00C714ED /* ShareKit.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DA51CDF8144ACBED00C714ED /* de */,
-				DA51CDF9144ACBED00C714ED /* en */,
-				DA51CDFA144ACBED00C714ED /* eu */,
-				DA51CDFB144ACBED00C714ED /* fr */,
-				DA51CDFC144ACBED00C714ED /* ja */,
-				DA51CDFD144ACBED00C714ED /* ko */,
-				DA51CDFE144ACBED00C714ED /* nl */,
-				DA51CDFF144ACBED00C714ED /* vi */,
-				DA51CE00144ACBED00C714ED /* zh_CN */,
-			);
-			name = ShareKit.strings;
-			sourceTree = "<group>";
-		};
 		DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
