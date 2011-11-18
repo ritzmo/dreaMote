@@ -8,16 +8,24 @@
 
 #import "EventListController.h"
 
+#if IS_FULL()
+	#import "AutoTimerViewController.h"
+#endif
 #import "EventTableViewCell.h"
 #import "EventViewController.h"
+#import "SimpleSingleSelectionListController.h"
+#import "TimerViewController.h"
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "Objects/ServiceProtocol.h"
-#import "Objects/EventProtocol.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/Generic/AutoTimer.h>
+#import <Objects/Generic/Result.h>
+#import <Objects/Generic/Timer.h>
+#import <Objects/ServiceProtocol.h>
 
 #if IS_FULL()
 	#import "EPGCache.h"
@@ -33,6 +41,14 @@
  @param sender ui element
  */
 - (void)zapAction:(id)sender;
+/*!
+ @brief Event was/is being held.
+ */
+- (void)longPress:(UILongPressGestureRecognizer *)gesture;
+/*!
+ @brief Helper method for gesture handling.
+ */
+- (void)itemSelected:(NSNumber *)selection;
 #if INCLUDE_FEATURE(Ads)
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, strong) id adBannerView;
@@ -174,6 +190,16 @@
 		[self createAdBannerView];
 #endif
 	[self theme];
+}
+
+- (void)viewDidLoad
+{
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[_tableView addGestureRecognizer:longPressGesture];
+
+	[super viewDidLoad];
 }
 
 - (void)viewDidUnload
@@ -346,6 +372,171 @@
 - (void)sortEventsInSections
 {
 	[self sortEventsInSections:YES];
+}
+
+#pragma mark Gestures
+
+- (void)longPress:(UILongPressGestureRecognizer *)gesture
+{
+	// only do something on gesture start
+	if(gesture.state != UIGestureRecognizerStateBegan)
+		return;
+
+	// get event
+	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+	const CGPoint p = [gesture locationInView:tableView];
+	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
+	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
+
+	// Check for invalid event
+	if(!event || !event.valid)
+		return;
+	[tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone]; // visiblity mark event
+
+#if IS_FULL()
+	// choice: autotimer editor, timer editor, add timer
+	// this is different from the non-full or non-autotimer ui for consistency reasons
+	// you get the convenience of just adding a timer without further interaction
+	// but also the choice of opening the editor which is similar to the autotimer approach
+	// because just adding an autotimer from the information we can gather here is stupid
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer])
+	{
+		if(IS_IPAD())
+		{
+			if(popoverController)
+				[popoverController dismissPopoverAnimated:YES];
+			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
+																									  NSLocalizedString(@"AutoTimer Editor", @"Open Editor for new AutoTimer"),
+																									  NSLocalizedString(@"Timer Editor", @"Open Editor for new Timer"),
+																									  NSLocalizedString(@"Add Timer", @""),
+																									  nil]
+																						andSelection:NSNotFound
+																							andTitle:nil];
+			vc.callback = ^(NSUInteger selectedItem, BOOL isClosing, BOOL canceling){
+				// NOTE: ignore cancel as the button is not visible in our case
+				[popoverController dismissPopoverAnimated:YES];
+				popoverController = nil;
+
+				[self performSelectorOnMainThread:@selector(itemSelected:) withObject:[NSNumber numberWithUnsignedInteger:selectedItem] waitUntilDone:NO];
+
+				return YES;
+			};
+			vc.contentSizeForViewInPopover = CGSizeMake(183.0f, 185.0f);
+			popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+			CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
+			cellRect.origin.x = p.x - 25.0f;
+			cellRect.size.width = cellRect.size.width - cellRect.origin.x;
+			[popoverController presentPopoverFromRect:cellRect
+											   inView:tableView
+							 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
+											 animated:YES];
+		}
+		else
+		{
+			UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:nil
+															delegate:self
+												   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+											  destructiveButtonTitle:nil
+												   otherButtonTitles:
+								 NSLocalizedString(@"AutoTimer Editor", @"Open Editor for new AutoTimer"),
+								 NSLocalizedString(@"Timer Editor", @"Open Editor for new Timer"),
+								 NSLocalizedString(@"Add Timer", @""),
+								 nil];
+			if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+				[as showInView:self.view];
+			else
+				[as showFromTabBar:self.tabBarController.tabBar];
+		}
+	}
+	else
+#endif
+		[self itemSelected:[NSNumber numberWithInteger:2]];
+}
+
+- (void)itemSelected:(NSNumber *)selection
+{
+	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
+	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
+
+	NSObject<ServiceProtocol> *service = _service ? _service : event.service;
+	if(!service)
+	{
+		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+															  message:NSLocalizedString(@"Unable to add timer: Service not found.", @"")
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+		[alert show];
+		return;
+	}
+
+	switch([selection integerValue])
+	{
+		default:
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			break;
+		/* AutoTimer Editor */
+		case 0:
+		{
+			AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+			avc.timer = [AutoTimer timerFromEvent:event];
+			if(!avc.timer.services.count)
+				[avc.timer.services addObject:service];
+
+			[self.navigationController pushViewController:avc animated:YES];
+			// NOTE: set this here so the edit button won't get screwed
+			avc.creatingNewTimer = YES;
+			break;
+		}
+		/* Timer Editor */
+		case 1:
+		{
+			TimerViewController *targetViewController = [TimerViewController newWithEventAndService:event :service];
+			[self.navigationController pushViewController:targetViewController animated:YES];
+			break;
+		}
+		/* Add Timer */
+		case 2:
+		{
+			NSObject<TimerProtocol> *timer = [GenericTimer withEventAndService:event :service];
+
+			Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTimer:timer];
+			if(result.result)
+				showCompletedHudWithText(NSLocalizedString(@"Timer added", @"Text of HUD when timer was added successfully"))
+			else
+			{
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	  message:[NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext]
+																	 delegate:nil
+															cancelButtonTitle:@"OK"
+															otherButtonTitles:nil];
+					[alert show];
+			}
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			break;
+		}
+
+	}
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate methods
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+	if(buttonIndex == actionSheet.cancelButtonIndex)
+	{
+		NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
+	else
+	{
+		buttonIndex -= actionSheet.firstOtherButtonIndex;
+		[self itemSelected:[NSNumber numberWithInteger:buttonIndex]];
+	}
 }
 
 #pragma mark -
@@ -866,6 +1057,10 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)searchTableView
 {
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[searchTableView addGestureRecognizer:longPressGesture];
 	searchTableView.rowHeight = _tableView.rowHeight;
 	[searchTableView reloadData];
 }
