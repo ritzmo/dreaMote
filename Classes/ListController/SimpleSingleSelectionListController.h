@@ -20,7 +20,7 @@ typedef BOOL (^simplesingleselection_callback_t)(NSUInteger newSelection, BOOL w
 
 /*!
  @brief Reusable single item selector.
- 
+ @todo Add convenience method to show UIActionSheet (on iPhone/iPod Touch)
  Allows to choose a single item from a list of multiple choices.
  */
 @interface SimpleSingleSelectionListController : UIViewController <UITableViewDelegate,
