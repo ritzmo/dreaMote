@@ -327,15 +327,15 @@
 
 - (void)loadImage:(id)dummy
 {
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		NSData *data = [[RemoteConnectorObject sharedRemoteConnector] getScreenshot: _screenshotType];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		NSData *data = [[RemoteConnectorObject sharedRemoteConnector] getScreenshot:_screenshotType];
 		UIImage * image = [UIImage imageWithData: data];
 		if(image != nil)
 		{
 			CGFloat scale = image.size.width > 720 ? kImageScaleHuge : kImageScale;
 			const CGFloat scaledWidth = image.size.width*scale;
 			const CGFloat scaledHeight = image.size.height*scale;
-			_imageView.image = image;
+			[_imageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
 			_scrollView.contentSize = CGSizeMake(scaledWidth, scaledHeight);
 			_scrollView.zoomScale = 1.0f;
 			_imageView.frame = CGRectMake(0, 0, scaledWidth, scaledHeight);
