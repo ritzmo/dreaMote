@@ -215,7 +215,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	{
 		if([RemoteConnectorObject connectTo:[activeConnectionId integerValue]])
 		{
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 				NSError *error = nil;
 				[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
 
