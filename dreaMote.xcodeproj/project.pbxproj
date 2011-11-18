@@ -414,9 +414,6 @@
 		DAC298FF1469A452001D55FC /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC298FE1469A452001D55FC /* GradientView.m */; };
 		DAC299001469A452001D55FC /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC298FE1469A452001D55FC /* GradientView.m */; };
 		DAC299011469A452001D55FC /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC298FE1469A452001D55FC /* GradientView.m */; };
-		DAC299041469F06B001D55FC /* UISearchBar+Textfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */; };
-		DAC299051469F06B001D55FC /* UISearchBar+Textfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */; };
-		DAC299061469F06B001D55FC /* UISearchBar+Textfield.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC299031469F06A001D55FC /* UISearchBar+Textfield.m */; };
 		DAC8BE5013B1FF9200CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		DAC8BE5213B1FF9200CA00D9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE5113B1FF9200CA00D9 /* Foundation.framework */; };
 		DAC8BEB113B2009F00CA00D9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
@@ -4110,7 +4107,6 @@
 				DA3316521469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 				DAC298FA14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC298FF1469A452001D55FC /* GradientView.m in Sources */,
-				DAC299041469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 				DADDDE00146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE05146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA2F23C5146DD253007DC7F6 /* MultiEPGCellContentView.m in Sources */,
@@ -4376,7 +4372,6 @@
 				DA3316531469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 				DAC298FB14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC299001469A452001D55FC /* GradientView.m in Sources */,
-				DAC299051469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 				DADDDE01146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA56122E146FE67900390225 /* FastTableViewCell.m in Sources */,
@@ -4608,7 +4603,6 @@
 				DA3316541469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
 				DAC298FC14699895001D55FC /* UIViewController+Theming.m in Sources */,
 				DAC299011469A452001D55FC /* GradientView.m in Sources */,
-				DAC299061469F06B001D55FC /* UISearchBar+Textfield.m in Sources */,
 				DADDDE02146AA75D00BE035E /* BaseTableViewCell.m in Sources */,
 				DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */,
 				DA56122F146FE67900390225 /* FastTableViewCell.m in Sources */,
