@@ -26,6 +26,7 @@
 // ShareKit
 #import "SHKConfiguration.h"
 #import "SHKFacebook.h"
+#import "DreamoteSHKConfigurator.h"
 
 #if IS_FULL()
 	#import "EPGCache.h"
@@ -261,13 +262,8 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	}
 	[Appirater appLaunched:promptForRating];
 
-	// NOTE: try to look up class as it is not present in public git since it contains some secret information
-	Class classConfigurator = NSClassFromString(@"DreamoteSHKConfigurator");
-	if(classConfigurator != nil)
-	{
-		id configurator = [[classConfigurator alloc] init];
-		[SHKConfiguration sharedInstanceWithConfigurator:configurator];
-	}
+	DreamoteSHKConfigurator *configurator = [[DreamoteSHKConfigurator alloc] init];
+	[SHKConfiguration sharedInstanceWithConfigurator:configurator];
 
 	// initialize audio session
 	OSStatus result = AudioSessionInitialize(NULL, NULL, ToneInterruptionListener, (__bridge void *)(self));
