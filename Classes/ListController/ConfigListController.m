@@ -804,16 +804,22 @@ enum settingsRows
 		}
 		case purchaseSection:
 		{
-			NSUInteger count = [MKStoreManager sharedManager].purchasableObjectCount;
-			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			MKStoreManager *manager = [MKStoreManager sharedManager];
+			NSUInteger count = manager.purchasableObjectCount;
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			sourceCell.imageView.image = nil;
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			if((NSUInteger)indexPath.row < count)
-				sourceCell.textLabel.text = [[MKStoreManager sharedManager].purchasableObjectsDescription objectAtIndex:indexPath.row];
+			{
+				sourceCell.accessoryType = [MKStoreManager isFeaturePurchased:[manager.purchasableObjectsList objectAtIndex:indexPath.row]] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				sourceCell.textLabel.text = [manager.purchasableObjectsDescription objectAtIndex:indexPath.row];
+			}
 			else
+			{
+				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 				sourceCell.textLabel.text = NSLocalizedString(@"Restore Purchases", @"Restore previous purchases in config list");
+			}
 		}
 		default:
 			break;
