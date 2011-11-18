@@ -568,11 +568,7 @@ enum settingsRows
 			[[MKStoreManager sharedManager] buyFeature:[purchasables objectAtIndex:indexPath.row]
 											onComplete:^(NSString *featureId)
 			{
-				const UIAlertView *notification = [[UIAlertView alloc]
-												   initWithTitle:NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully")
-												   message:nil
-												   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+				showCompletedHudWithText(NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully"));
 			}
 										   onCancelled:^
 			{
@@ -583,11 +579,7 @@ enum settingsRows
 		{
 			[[MKStoreManager sharedManager] restorePreviousTransactionsOnComplete:^
 			{
-				const UIAlertView *notification = [[UIAlertView alloc]
-												   initWithTitle:NSLocalizedString(@"Restore completed", @"In-App-Purchase were restored successfully")
-												   message:nil
-												   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+				showCompletedHudWithText(NSLocalizedString(@"Restore completed", @"In-App-Purchase were restored successfully"));
 			}
 																		  onError:^(NSError *error)
 			{
