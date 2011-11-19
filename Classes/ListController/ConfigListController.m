@@ -549,7 +549,7 @@ enum settingsRows
 			else
 				targetViewController = vc;
 		}
-
+#endif
 		if(targetViewController)
 		{
 			if(isIpad)
@@ -557,7 +557,7 @@ enum settingsRows
 			else
 				[self.navigationController pushViewController:targetViewController animated:YES];
 		}
-#endif
+
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	else if(indexPath.section == purchaseSection)
