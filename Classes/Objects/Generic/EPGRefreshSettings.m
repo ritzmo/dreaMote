@@ -10,7 +10,7 @@
 
 @implementation EPGRefreshSettings
 
-@synthesize enabled, begin, end, interval, delay_standby, lastscan, inherit_autotimer, afterevent, force, wakeup, parse_autotimer, adapter, canDoBackgroundRefresh, hasAutoTimer;
+@synthesize enabled, begin, end, interval, delay_standby, lastscan, inherit_autotimer, interval_in_seconds, afterevent, force, wakeup, parse_autotimer, adapter, canDoBackgroundRefresh, hasAutoTimer;
 
 - (id)init
 {

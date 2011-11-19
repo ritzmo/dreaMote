@@ -83,6 +83,12 @@
 		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.interval"])
 		{
 			settings.interval = [currentString integerValue];
+			settings.interval_in_seconds = NO;
+		}
+		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.interval_seconds"])
+		{
+			settings.interval = [currentString integerValue];
+			settings.interval_in_seconds = YES;
 		}
 		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.delay_standby"])
 		{

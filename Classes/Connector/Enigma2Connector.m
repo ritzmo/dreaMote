@@ -1066,17 +1066,21 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)setEPGRefreshSettings:(EPGRefreshSettings *)settings andServices:(NSArray *)services andBouquets:(NSArray *)bouquets
 {
-	NSString *settingsString = [NSString stringWithFormat:@"/epgrefresh/set?enabled=%@&begin=%d&end=%d&interval=%d&delay_standby=%d&inherit_autotimer=%@&afterevent=%@&force=%@&wakeup=%@&adapter=%@&parse_autotimer=%@",
+	NSMutableString *settingsString = [NSMutableString stringWithFormat:@"/epgrefresh/set?enabled=%@&begin=%d&end=%d&delay_standby=%d&inherit_autotimer=%@&afterevent=%@&force=%@&wakeup=%@&adapter=%@&parse_autotimer=%@",
 								settings.enabled ? @"true" : @"",
 								settings.begin ? (int)[settings.begin timeIntervalSince1970] : 0,
 								settings.end ? (int)[settings.end timeIntervalSince1970] : 0,
-								settings.interval, settings.delay_standby,
+								settings.delay_standby,
 								settings.inherit_autotimer ? @"true" : @"",
 								settings.afterevent ? @"true" : @"",
 								settings.force ? @"true" : @"",
 								settings.wakeup ? @"true" : @"",
 								settings.adapter,
 								settings.parse_autotimer ? @"true" : @""];
+	if(settings.interval_in_seconds)
+		[settingsString appendFormat:@"&interval_seconds=%d", settings.interval];
+	else
+		[settingsString appendFormat:@"&interval=%d", settings.interval];
 
 	Result *result = [self getResultFromSimpleXmlWithRelativeString:settingsString];
 	if(result.result)
