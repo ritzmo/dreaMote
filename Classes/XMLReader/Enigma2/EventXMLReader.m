@@ -195,6 +195,7 @@ typedef enum {
 				const NSString *end = [formatter stringFromDate:currentEvent.end];
 				if(begin && end)
 					currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+				break;
 			}
 			case RESPONSE_EVENTLIST:
 			{
@@ -204,6 +205,7 @@ typedef enum {
 				const NSString *end = [formatter stringFromDate:currentEvent.end];
 				if(begin && end)
 					currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+				break;
 			}
 		}
 
