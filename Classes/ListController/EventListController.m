@@ -10,11 +10,13 @@
 
 #if IS_FULL()
 	#import "AutoTimerViewController.h"
+	#import "TimerViewController.h"
+	#import "SimpleSingleSelectionListController.h"
 #endif
 #import "EventTableViewCell.h"
 #import "EventViewController.h"
-#import "SimpleSingleSelectionListController.h"
-#import "TimerViewController.h"
+
+#import "MBProgressHUD.h"
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
@@ -383,7 +385,11 @@
 		return;
 
 	// get event
+#if IS_FULL()
 	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+#else
+	UITableView *tableView = _tableView;
+#endif
 	const CGPoint p = [gesture locationInView:tableView];
 	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
 	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
@@ -455,7 +461,11 @@
 
 - (void)itemSelected:(NSNumber *)selection
 {
+#if IS_FULL()
 	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+#else
+	UITableView *tableView = _tableView;
+#endif
 	NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
 	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
 
@@ -476,6 +486,7 @@
 		default:
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			break;
+#if IS_FULL()
 		/* AutoTimer Editor */
 		case 0:
 		{
@@ -496,6 +507,7 @@
 			[self.navigationController pushViewController:targetViewController animated:YES];
 			break;
 		}
+#endif
 		/* Add Timer */
 		case 2:
 		{
@@ -526,7 +538,11 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+#if IS_FULL()
 	UITableView *tableView = (_searchDisplay.active) ? _searchDisplay.searchResultsTableView : _tableView;
+#else
+	UITableView *tableView = _tableView;
+#endif
 	if(buttonIndex == actionSheet.cancelButtonIndex)
 	{
 		NSIndexPath *indexPath = [tableView indexPathForSelectedRow];
