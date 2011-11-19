@@ -24,6 +24,8 @@ typedef enum
 	WEBIF_VERSION_1_6_5,
 	/*! @brief Save/Load/Clear MP playlist. */
 	WEBIF_VERSION_1_6_8,
+	/*! @brief Combined Now/Next request, proper loading MP playlist. */
+	WEBIF_VERSION_1_7_0,
 	/*! @brief Upper bound. */
 	WEBIF_VERSION_MAX,
 } webifVersion;

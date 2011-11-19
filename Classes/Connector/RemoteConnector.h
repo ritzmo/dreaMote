@@ -170,6 +170,10 @@ enum connectorFeatures {
 	 @brief Get dedicated provider list.
 	 */
 	kFeaturesProviderList,
+	/*!
+	 @brief Allows to retrieve now/next through event-like interface in a single call.
+	 */
+	kFeaturesOptimizedNowNext,
 };
 
 /*!
@@ -402,6 +406,17 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 - (BaseXMLReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+/*!
+ @brief Request list of current and upcoming event from the receiver.
+
+ @param delegate Delegate to be called back.
+ @param bouquet Bouquet to request events of.
+ @param isRadio Fetch radio services?
+ @return Pointer to newly created XMLReader.
+ */
+@optional // kFeaturesOptimizedNowNext
+- (BaseXMLReader *)getNowNext:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request bouquet list by upcoming event from the receiver.

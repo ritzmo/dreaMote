@@ -70,7 +70,7 @@ enum bouquetMode {
 };
 
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
-	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.6.5", @"1.6.8"
+	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.6.5", @"1.6.8", @"1.7.0"
 };
 
 @interface Enigma2Connector()
@@ -105,9 +105,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				return NO;
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_8:
-			// NOTE: no known version has this yet, but it will be in "the one after 1.6.8"
-			if(feature == kFeaturesMediaPlayerPlaylistLoad)
+			// NOTE: 1.7.0 is neither not yet final, but it will include both features
+			if(feature == kFeaturesMediaPlayerPlaylistLoad || feature == kFeaturesOptimizedNowNext)
 				return NO;
+			/* FALL THROUGH */
+		case WEBIF_VERSION_1_7_0:
 			break;
 	}
 
@@ -486,6 +488,15 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref urlencode], event.eit] relativeToURL: _baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
+}
+- (BaseXMLReader *)getNowNext:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+{
+	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
+	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgnownext?bRef=%@", sref] relativeToURL:_baseAddress];
+
+	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNowNextDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }

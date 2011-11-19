@@ -48,6 +48,14 @@
  @param target Delegate.
  @return Enigma2EventXMLReader instance.
  */
+- (id)initWithNowNextDelegate:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate;
+
+/*!
+ @brief Standard initializer.
+
+ @param target Delegate.
+ @return Enigma2EventXMLReader instance.
+ */
 - (id)initWithNowDelegate:(NSObject<NowSourceDelegate> *)delegate;
 
 /*!

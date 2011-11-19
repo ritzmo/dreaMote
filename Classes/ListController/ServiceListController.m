@@ -728,10 +728,18 @@ enum serviceListTags
 	_reloading = YES;
 	if(self.showNowNext)
 	{
-		pendingRequests = 2;
 		_tableView.rowHeight = kServiceEventCellHeight;
-		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
-		[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNowData)];
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesOptimizedNowNext])
+		{
+			pendingRequests = 1;
+			_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] getNowNext:self bouquet:_bouquet isRadio:_isRadio];
+		}
+		else
+		{
+			pendingRequests = 2;
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
+			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNowData)];
+		}
 	}
 	else
 	{

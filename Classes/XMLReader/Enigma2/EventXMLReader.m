@@ -36,27 +36,29 @@ static const char *kEnigma2EventSname = "e2eventservicename";
 static const NSUInteger kEnigma2EventSnameLength = 19;
 
 typedef enum {
-	FORMAT_NONE,
-	FORMAT_EVENTLIST,
-	FORMAT_NOWNEXT,
-} formattingStyle_t;
+	RESPONSE_UNKNOWN,
+	RESPONSE_EVENTLIST,
+	RESPONSE_NOW_OR_NEXT,
+	RESPONSE_NOWNEXT,
+} responseType_t;
 
 @interface Enigma2EventXMLReader()
 @property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
 @property (nonatomic, strong) NSDateFormatter *formatter;
-@property (nonatomic) formattingStyle_t formattingStyle;
+@property (nonatomic) responseType_t responseType;
+@property (nonatomic) NSUInteger counter;
 @end
 
 @implementation Enigma2EventXMLReader
 
-@synthesize currentEvent, formatter, formattingStyle;
+@synthesize counter, currentEvent, formatter, responseType;
 
 /* initialize */
-- (id)initWithDelegate:(NSObject<DataSourceDelegate> *)delegate getServices:(BOOL)getServices selector:(SEL)selector formattingStyle:(formattingStyle_t)format
+- (id)initWithDelegate:(NSObject<DataSourceDelegate> *)delegate getServices:(BOOL)getServices selector:(SEL)selector responseType:(responseType_t)response
 {
 	if((self = [super init]))
 	{
-		if(format != FORMAT_NONE)
+		if(response != RESPONSE_UNKNOWN)
 		{
 			formatter = [[NSDateFormatter alloc] init];
 			[formatter setTimeStyle:NSDateFormatterShortStyle];
@@ -64,7 +66,7 @@ typedef enum {
 		_delegate = delegate;
 		_delegateSelector = selector;
 		_getServices = getServices;
-		formattingStyle = format;
+		responseType = response;
 		_timeout = kTimeout * 2;
 	}
 	return self;
@@ -72,22 +74,27 @@ typedef enum {
 
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:NO selector:@selector(addEvent:) formattingStyle:FORMAT_NONE];
+	return [self initWithDelegate:delegate getServices:NO selector:@selector(addEvent:) responseType:RESPONSE_UNKNOWN];
 }
 
 - (id)initWithDelegateAndGetServices:(NSObject<EventSourceDelegate> *)delegate getServices:(BOOL)getServices
 {
-	return [self initWithDelegate:delegate getServices:getServices selector:@selector(addEvent:) formattingStyle:FORMAT_EVENTLIST];
+	return [self initWithDelegate:delegate getServices:getServices selector:@selector(addEvent:) responseType:RESPONSE_EVENTLIST];
+}
+
+- (id)initWithNowNextDelegate:(NSObject<NowSourceDelegate,NextSourceDelegate> *)delegate
+{
+	return [self initWithDelegate:delegate getServices:YES selector:NULL responseType:RESPONSE_NOWNEXT];
 }
 
 - (id)initWithNowDelegate:(NSObject<NowSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:YES selector:@selector(addNowEvent:) formattingStyle:FORMAT_NOWNEXT];
+	return [self initWithDelegate:delegate getServices:YES selector:@selector(addNowEvent:) responseType:RESPONSE_NOW_OR_NEXT];
 }
 
 - (id)initWithNextDelegate:(NSObject<NextSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:NO selector:@selector(addNextEvent:) formattingStyle:FORMAT_NOWNEXT];
+	return [self initWithDelegate:delegate getServices:NO selector:@selector(addNextEvent:) responseType:RESPONSE_NOW_OR_NEXT];
 }
 
 /* send fake object */
@@ -163,24 +170,44 @@ typedef enum {
 
 	if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
-		if(formattingStyle == FORMAT_NOWNEXT)
+		SEL selector = _delegateSelector;
+		switch(responseType)
 		{
-			const NSString *begin = [formatter stringFromDate:currentEvent.begin];
-			const NSString *end = [formatter stringFromDate:currentEvent.end];
-			if(begin && end)
-				currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
-		}
-		else if(formattingStyle == FORMAT_EVENTLIST)
-		{
-			[formatter setDateStyle:NSDateFormatterMediumStyle];
-			const NSString *begin = [formatter fuzzyDate:currentEvent.begin];
-			[formatter setDateStyle:NSDateFormatterNoStyle];
-			const NSString *end = [formatter stringFromDate:currentEvent.end];
-			if(begin && end)
-				currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+			default: break;
+			case RESPONSE_NOWNEXT:
+			{
+				++counter; // increment counter for the next event
+				if(counter % 2)
+				{
+					selector = @selector(addNowEvent:); // the current event was even -> now
+					_getServices = NO; // the next event is odd -> don't get service
+				}
+				else
+				{
+					selector = @selector(addNextEvent:);
+					_getServices = YES;
+				}
+				/* FALL THROUGH */
+			}
+			case RESPONSE_NOW_OR_NEXT:
+			{
+				const NSString *begin = [formatter stringFromDate:currentEvent.begin];
+				const NSString *end = [formatter stringFromDate:currentEvent.end];
+				if(begin && end)
+					currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+			}
+			case RESPONSE_EVENTLIST:
+			{
+				[formatter setDateStyle:NSDateFormatterMediumStyle];
+				const NSString *begin = [formatter fuzzyDate:currentEvent.begin];
+				[formatter setDateStyle:NSDateFormatterNoStyle];
+				const NSString *end = [formatter stringFromDate:currentEvent.end];
+				if(begin && end)
+					currentEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
+			}
 		}
 
-		[_delegate performSelectorOnMainThread:_delegateSelector
+		[_delegate performSelectorOnMainThread:selector
 									withObject:currentEvent
 								 waitUntilDone:NO];
 	}
