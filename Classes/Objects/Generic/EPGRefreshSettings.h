@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL enabled;
 @property (nonatomic, strong) NSDate *begin;
 @property (nonatomic, strong) NSDate *end;
+@property (nonatomic, assign) BOOL interval_in_seconds;
 @property (nonatomic, assign) NSInteger interval;
 @property (nonatomic, assign) NSInteger delay_standby;
 @property (nonatomic, assign) NSInteger lastscan;

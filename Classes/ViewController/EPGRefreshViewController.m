@@ -699,9 +699,13 @@ enum generalSectionItems
 						_intervalCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 						_intervalCell.view = _interval;
 						_intervalCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-						_intervalCell.textLabel.text = NSLocalizedStringFromTable(@"Time on service (min.)", @"EPGRefresh", @"Label for cell 'Time to stay on service (minutes)'");
 						_intervalCell.fixedWidth = 94.0f;
 					}
+					// this could change, so always set this label not just on initialization
+					if(settings.interval_in_seconds)
+						_intervalCell.textLabel.text = NSLocalizedStringFromTable(@"Time on service (sec.)", @"EPGRefresh", @"Label for cell 'Time to stay on service (seconds)'");
+					else
+						_intervalCell.textLabel.text = NSLocalizedStringFromTable(@"Time on service (min.)", @"EPGRefresh", @"Label for cell 'Time to stay on service (minutes)'");
 					cell = _intervalCell;
 					break;
 				case wakeupRow:
