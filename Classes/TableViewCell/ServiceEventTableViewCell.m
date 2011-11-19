@@ -161,7 +161,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 	// draw 'now time' if present
 	point.y += primaryFont.lineHeight - 2; // XXX: wtf?
-	[now.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
+	[now.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont minFontSize:8 actualFontSize:NULL lineBreakMode:UILineBreakModeClip baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
 
 	point.x += 5 + timeWidth;
 	forWidth = boundsWidth - point.x;
@@ -176,7 +176,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	{
 		point.x = offsetX;
 		point.y += secondaryFont.lineHeight;
-		[next.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont lineBreakMode:UILineBreakModeClip];
+		[next.timeString drawAtPoint:point forWidth:timeWidth withFont:secondaryFont minFontSize:8 actualFontSize:NULL lineBreakMode:UILineBreakModeClip baselineAdjustment:UIBaselineAdjustmentAlignBaselines];
 		point.x += 5 + timeWidth;
 		[next.title drawAtPoint:point forWidth:forWidth withFont:secondaryFont lineBreakMode:UILineBreakModeTailTruncation];
 	}
