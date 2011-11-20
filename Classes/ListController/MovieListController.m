@@ -42,6 +42,23 @@
 @property (nonatomic, assign) BOOL sortTitle;
 
 /*!
+ @brief Tags of current movies.
+ */
+@property (nonatomic, strong) NSMutableSet *allTags;
+
+/*!
+ @brief List of currently selected tags.
+ @note Must be nil if no tags selected!
+ */
+@property (nonatomic, strong) NSArray *selectedTags;
+
+/*!
+ @brief List of movies with the currently selected Tags.
+ @note Can be nil if not used to spare some ressources.
+ */
+@property (nonatomic, strong) NSMutableArray *taggedMovies;
+
+/*!
  @brief Activity Indicator.
  */
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
@@ -49,7 +66,7 @@
 
 @implementation MovieListController
 
-@synthesize popoverController, progressHUD, isSplit, isSlave;
+@synthesize allTags, popoverController, progressHUD, isSplit, isSlave, selectedTags, taggedMovies;
 #if IS_FULL()
 @synthesize searchBar;
 #endif
@@ -60,6 +77,7 @@
 	if((self = [super init]))
 	{
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
+		allTags = [[NSMutableSet alloc] init];
 		_movies = [[NSMutableArray alloc] init];
 		_selected = [[NSMutableSet alloc] init];
 		_characters = [[NSMutableDictionary alloc] init];
@@ -71,8 +89,6 @@
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-
-		_movieViewController = nil;
 
 		NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 		_sortTitle = [stdDefaults boolForKey:kSortMoviesByTitle];
@@ -297,6 +313,7 @@
 	if(_refreshMovies)
 	{
 		[_movies removeAllObjects];
+		[taggedMovies removeAllObjects];
 		if(IS_IPHONE())
 			self.movieViewController = nil;
 		_xmlReader = nil;
@@ -334,7 +351,9 @@
 	NSArray *movies = _movies;
 #if IS_FULL()
 	if(allowSearch && _searchDisplay.active) movies = _filteredMovies;
+	else
 #endif
+	if(selectedTags) movies = taggedMovies;
 	if(!movies.count)
 	{
 		[_characters removeAllObjects];
@@ -400,7 +419,11 @@
 	{
 		Result *result = [sharedRemoteConnector delMovie: movie];
 		if(result.result)
+		{
 			[_movies removeObject:movie];
+			if(selectedTags && [taggedMovies containsObject:movie])
+				[taggedMovies removeObject:movie];
+		}
 		else
 			[errorMessages appendFormat:@"\n%@", result.resulttext];
 		progressHUD.progress += countPerMovie;
@@ -540,6 +563,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
+	[allTags removeAllObjects];
+	selectedTags = nil;
+	taggedMovies = nil;
 	[self setToolbarItems:nil];
 	_currentKeys = nil;
 	_sortButton = nil;
@@ -571,6 +597,8 @@
 	[_characters removeAllObjects];
 	[_movies removeAllObjects];
 	[_selected removeAllObjects];
+	[allTags removeAllObjects];
+	[taggedMovies removeAllObjects];
 	_currentKeys = nil;
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(_sortTitle)
@@ -613,7 +641,9 @@
 		NSArray *movies = _movies;
 #if IS_FULL()
 		if(_searchDisplay.active) movies = _filteredMovies;
+		else
 #endif
+		if(selectedTags) movies = taggedMovies;
 		if(indexPath.row < (NSInteger)[movies count] - 1)
 			indexPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
 		else
@@ -710,14 +740,19 @@
 /* add movie to list */
 - (void)addMovie: (NSObject<MovieProtocol> *)movie
 {
-	[_movies addObject: movie];
-	if(!_sortTitle)
+	[_movies addObject:movie];
+	[allTags addObjectsFromArray:movie.tags];
+
+	if(selectedTags)
 	{
-#if INCLUDE_FEATURE(Extra_Animation)
-		const NSUInteger idx = _movies.count-1;
-		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
-						  withRowAnimation:UITableViewRowAnimationLeft];
-#endif
+		for(NSString *tag in selectedTags)
+		{
+			if([movie.tags containsObject:tag])
+			{
+				[taggedMovies addObject:movie];
+				break;
+			}
+		}
 	}
 }
 
@@ -752,7 +787,9 @@
 		NSArray *movies = _movies;
 #if IS_FULL()
 		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
+		else
 #endif
+		if(selectedTags) movies = taggedMovies;
 		movie = [movies objectAtIndex:indexPath.row];
 	}
 	cell.movie = movie;
@@ -786,7 +823,9 @@
 		NSArray *movies = _movies;
 #if IS_FULL()
 		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
+		else
 #endif
+		if(selectedTags) movies = taggedMovies;
 		movie = [movies objectAtIndex:indexPath.row];
 	}
 
@@ -885,7 +924,7 @@
 #if IS_FULL()
 	if(tableView == _searchDisplay.searchResultsTableView) return _filteredMovies.count;
 #endif
-	return [_movies count];
+	return (selectedTags) ? taggedMovies.count : _movies.count;
 }
 
 /* editing style */
@@ -922,7 +961,10 @@
 		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
 	}
 	else
-		movie = [_movies objectAtIndex:indexPath.row];
+	{
+		NSArray *movies = (selectedTags) ? taggedMovies : _movies;
+		movie = [movies objectAtIndex:indexPath.row];
+	}
 
 	if(!movie.valid)
 		return;
@@ -931,6 +973,8 @@
 	if(result.result)
 	{
 		[_movies removeObject:movie];
+		if(selectedTags)
+			[taggedMovies removeObject:movie];
 		if(_sortTitle)
 		{
 			NSString *key = [_currentKeys objectAtIndex:indexPath.section];
@@ -1017,7 +1061,8 @@
 	[_filteredMovies removeAllObjects];
 	const BOOL caseInsensitive = [searchString isEqualToString:[searchString lowercaseString]];
 	NSStringCompareOptions options = caseInsensitive ? (NSCaseInsensitiveSearch|NSDiacriticInsensitiveSearch) : 0;
-	for(NSObject<MovieProtocol> *movie in _movies)
+	NSArray *movies = selectedTags ? taggedMovies : _movies;
+	for(NSObject<MovieProtocol> *movie in movies)
 	{
 		NSRange range = [movie.title rangeOfString:searchString options:options];
 		if(range.length)
