@@ -120,6 +120,7 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 			||	!strncmp((const char *)localname, kEnigma2TimerState, kEnigma2TimerStateLength)
 			||	!strncmp((const char *)localname, kEnigma2TimerRepeated, kEnigma2TimerRepeatedLength)
 			||	!strncmp((const char *)localname, kEnigma2Location, kEnigma2LocationLength)
+			||	!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength)
 		)
 	{
 		currentString = [[NSMutableString alloc] init];
@@ -192,6 +193,10 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 	{
 		if(![currentString isEqualToString:@"None"])
 			currentTimer.location = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
+	{
+		[currentTimer setTagsFromString:currentString];
 	}
 
 	// this either does nothing or releases the string that was in use
