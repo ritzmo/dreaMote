@@ -151,7 +151,6 @@
 	{
 		_node = node;
 		_size = [NSNumber numberWithInt: -1];
-		_tags = [NSArray array];
 		_length = [NSNumber numberWithInt: -1];
 	}
 	return self;
