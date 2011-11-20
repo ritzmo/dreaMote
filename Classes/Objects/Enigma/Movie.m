@@ -16,7 +16,7 @@
 
 - (NSArray *)tags
 {
-	return _tags;
+	return nil;
 }
 
 - (void)setTags: (NSArray *)new

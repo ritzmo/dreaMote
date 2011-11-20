@@ -10,7 +10,7 @@
 
 #import "CXMLNode.h"
 
-#import "MovieProtocol.h"
+#import <Objects/MovieProtocol.h>
 
 /*!
  @brief Movie in Enigma.
@@ -20,7 +20,6 @@
 @private
 	NSNumber *_length; /*!< @brief Length. */
 	NSNumber *_size; /*!< @brief Size. */
-	NSArray *_tags; /*!< @brief Tags. */
 	NSUInteger _idx; /*!< @brief Index in result. Used for sorting. */
 
 	CXMLNode *_node; /*!< @brief CXMLNode describing this Movie. */
