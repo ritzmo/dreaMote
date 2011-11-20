@@ -747,12 +747,10 @@
 	{
 		for(NSString *tag in selectedTags)
 		{
-			if([movie.tags containsObject:tag])
-			{
-				[taggedMovies addObject:movie];
-				break;
-			}
+			if(![movie.tags containsObject:tag])
+				return;
 		}
+		[taggedMovies addObject:movie];
 	}
 }
 
