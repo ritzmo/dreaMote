@@ -575,6 +575,12 @@ enum settingsRows
 				// TODO: anything? MKStoreKit already shows an alert
 			}];
 		}
+#if IS_DEBUG()
+		else if(indexPath.row == (NSInteger)purchasables.count + 1)
+		{
+			[[MKStoreManager sharedManager] removeAllKeychainData];
+		}
+#endif
 		else
 		{
 			[[MKStoreManager sharedManager] restorePreviousTransactionsOnComplete:^
@@ -815,6 +821,13 @@ enum settingsRows
 				sourceCell.accessoryType = [MKStoreManager isFeaturePurchased:[manager.purchasableObjectsList objectAtIndex:indexPath.row]] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 				sourceCell.textLabel.text = [manager.purchasableObjectsDescription objectAtIndex:indexPath.row];
 			}
+#if IS_DEBUG()
+			else if((NSUInteger)indexPath.row == count + 1)
+			{
+				sourceCell.accessoryType = UITableViewCellAccessoryNone;
+				sourceCell.textLabel.text = NSLocalizedString(@"Forget Purchases", @"Forget previous purchases in config list (debug builds only)");
+			}
+#endif
 			else
 			{
 				sourceCell.accessoryType = UITableViewCellAccessoryNone;
@@ -864,6 +877,10 @@ enum settingsRows
 		case purchaseSection:
 		{
 			NSUInteger count = [MKStoreManager sharedManager].purchasableObjectCount;
+#if IS_DEBUG()
+			if(count)
+				++count;
+#endif
 			return count ? count + 1 : 0;
 		}
 		default:
