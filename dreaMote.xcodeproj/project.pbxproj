@@ -396,6 +396,9 @@
 		DAAAC5DD14791D970030739E /* TagXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5DC14791D970030739E /* TagXMLReader.m */; };
 		DAAAC5DE14791D970030739E /* TagXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5DC14791D970030739E /* TagXMLReader.m */; };
 		DAAAC5DF14791D970030739E /* TagXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5DC14791D970030739E /* TagXMLReader.m */; };
+		DAAAC5E8147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */; };
+		DAAAC5E9147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */; };
+		DAAAC5EA147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */; };
 		DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1399,6 +1402,8 @@
 		DAAAC5DB14791D960030739E /* TagXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagXMLReader.h; sourceTree = "<group>"; };
 		DAAAC5DC14791D970030739E /* TagXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagXMLReader.m; sourceTree = "<group>"; };
 		DAAAC5E014791DC10030739E /* TagSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagSourceDelegate.h; sourceTree = "<group>"; };
+		DAAAC5E6147926AF0030739E /* SimpleMultiSelectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleMultiSelectionListController.h; sourceTree = "<group>"; };
+		DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleMultiSelectionListController.m; sourceTree = "<group>"; };
 		DAAB66EB1468473A0099DBA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAAB66ED146847440099DBA9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAABA9E41462DA00002CDC31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
@@ -2894,6 +2899,8 @@
 				DAC8C0B913B2014C00CA00D9 /* ServiceListController.m */,
 				DAC8C0BA13B2014C00CA00D9 /* ServiceZapListController.h */,
 				DAC8C0BB13B2014C00CA00D9 /* ServiceZapListController.m */,
+				DAAAC5E6147926AF0030739E /* SimpleMultiSelectionListController.h */,
+				DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */,
 				DAC8C0BC13B2014C00CA00D9 /* SimpleSingleSelectionListController.h */,
 				DAC8C0BD13B2014C00CA00D9 /* SimpleSingleSelectionListController.m */,
 				DAC8C0BE13B2014C00CA00D9 /* TimerListController.h */,
@@ -4123,6 +4130,7 @@
 				DA2646031476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 				DAAAC5D814791D320030739E /* Tag.m in Sources */,
 				DAAAC5DD14791D970030739E /* TagXMLReader.m in Sources */,
+				DAAAC5E8147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4391,6 +4399,7 @@
 				DA2646041476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 				DAAAC5D914791D320030739E /* Tag.m in Sources */,
 				DAAAC5DE14791D970030739E /* TagXMLReader.m in Sources */,
+				DAAAC5E9147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4626,6 +4635,7 @@
 				DA2646051476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 				DAAAC5DA14791D320030739E /* Tag.m in Sources */,
 				DAAAC5DF14791D970030739E /* TagXMLReader.m in Sources */,
+				DAAAC5EA147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
