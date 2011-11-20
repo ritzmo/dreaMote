@@ -264,6 +264,7 @@ enum packageManagementList
 @protocol ServiceSourceDelegate;
 @protocol SignalSourceDelegate;
 @protocol SleepTimerSourceDelegate;
+@protocol TagSourceDelegate;
 @protocol TimerSourceDelegate;
 @protocol VolumeSourceDelegate;
 @protocol FileSourceDelegate;
@@ -531,6 +532,15 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 - (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
+
+/*!
+ @brief Request list of all available Tags from the Receiver.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to newly created XMLReader.
+ */
+@optional // kFeaturesRecordingLocations
+- (BaseXMLReader *)fetchTags:(NSObject<TagSourceDelegate> *)delegate;
 
 #pragma mark -
 #pragma mark Recordings

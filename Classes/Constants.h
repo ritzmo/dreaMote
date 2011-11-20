@@ -156,3 +156,5 @@ extern const char *kEnigma2SettingValue;
 #define kEnigma2SettingValueLength 15
 extern const char *kEnigma2Location;
 #define kEnigma2LocationLength 11
+extern const char *kEnigma2SimpleXmlItem;
+#define kEnigma2SimpleXmlItemLength 16

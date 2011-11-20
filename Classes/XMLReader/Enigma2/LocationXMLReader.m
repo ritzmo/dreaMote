@@ -11,9 +11,6 @@
 #import <Constants.h>
 #import <Objects/Generic/Location.h>
 
-static const char * kEnigma2SimpleXmlItem = "e2simplexmlitem";
-static const NSInteger kEnigma2SimpleXmlItemLength = 16;
-
 @implementation Enigma2LocationXMLReader
 
 /* initialize */

@@ -37,6 +37,7 @@
 #import <XMLReader/Enigma2/ServiceXMLReader.h>
 #import <XMLReader/Enigma2/SignalXMLReader.h>
 #import <XMLReader/Enigma2/SleepTimerXMLReader.h>
+#import <XMLReader/Enigma2/TagXMLReader.h>
 #import <XMLReader/Enigma2/TimerXMLReader.h>
 #import <XMLReader/Enigma2/VolumeXMLReader.h>
 
@@ -589,6 +590,16 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 {
 	NSString *relativeURL = @"/web/timercleanup?cleanup=true";
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+}
+
+- (BaseXMLReader *)fetchTags:(NSObject<TagSourceDelegate> *)delegate
+{
+	// NOTE: the older "movietags" API is unsupported because there is not much we can do with it in that old a web interface version ;)
+	NSURL *myURI = [NSURL URLWithString: @"/web/gettags" relativeToURL:_baseAddress];
+
+	BaseXMLReader *streamReader = [[Enigma2TagXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
 }
 
 #pragma mark Recordings
