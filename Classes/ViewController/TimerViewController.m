@@ -8,10 +8,11 @@
 
 #import "TimerViewController.h"
 
-#import "BouquetListController.h"
-#import "DatePickerController.h"
-#import "LocationListController.h"
-#import "ServiceListController.h"
+#import <ListController/BouquetListController.h>
+#import <ListController/LocationListController.h>
+#import <ListController/ServiceListController.h>
+#import <ListController/SimpleMultiSelectionListController.h>
+#import <ViewController/DatePickerController.h>
 
 #import "RemoteConnectorObject.h"
 #import "Constants.h"
@@ -27,7 +28,61 @@
 
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
+#import <Objects/Generic/Tag.h>
 #import <Objects/Generic/Timer.h>
+
+#import <Delegates/TagSourceDelegate.h>
+
+#pragma mark - Tag Loader
+
+typedef void (^tagLoaderCallback_t)(NSArray *tags, BOOL success);
+
+@interface DeferTagLoader : NSObject<TagSourceDelegate>
+- (void)loadTags;
+@property (nonatomic, copy) tagLoaderCallback_t callback;
+@property (nonatomic, strong) NSMutableArray *tags;
+@property (nonatomic, strong) BaseXMLReader *xmlReader;
+@end
+
+@implementation DeferTagLoader
+@synthesize callback, tags, xmlReader;
+
+- (id)init
+{
+	if((self = [super init]))
+	{
+		tags = [NSMutableArray array];
+	}
+	return self;
+}
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+{
+	if(callback)
+		callback(tags, NO);
+	callback = nil;
+}
+
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+{
+	if(callback)
+		callback(tags, YES);
+	callback = nil;
+}
+
+- (void)loadTags
+{
+	xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchTags:self];
+}
+
+- (void)addTag:(Tag *)anItem
+{
+	if(anItem.valid)
+		[tags addObject:anItem.tag];
+}
+@end
+
+#pragma mark - TimerViewController
 
 /*!
  @brief Private functions of TimerViewController.
@@ -1174,7 +1229,62 @@ enum timerSections
 			}
 			case sectionTags:
 			{
-				// TODO: implement
+				NSMutableSet *allTags = [NSMutableSet setWithArray:_timer.tags];
+				DeferTagLoader *tagLoad = [[DeferTagLoader alloc] init];
+				MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+				[self.view addSubview:progressHUD];
+				progressHUD.removeFromSuperViewOnHide = YES;
+				[progressHUD setLabelText:NSLocalizedString(@"Loading Tags", @"Label of Progress HUD in TimerList when loading list of available tags")];
+				[progressHUD setMode:MBProgressHUDModeIndeterminate];
+				[progressHUD show:YES];
+				tagLoad.callback = ^(NSArray *tags, BOOL success)
+				{
+					[progressHUD hide:YES];
+					if(success)
+					{
+						[allTags addObjectsFromArray:tags];
+						SimpleMultiSelectionListController *vc = [SimpleMultiSelectionListController withItems:[allTags sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(caseInsensitiveCompare:)]]]
+																								  andSelection:[NSSet setWithArray:_timer.tags]
+																									  andTitle:NSLocalizedString(@"Select Tags", @"")];
+
+						const BOOL isIpad = IS_IPAD();
+						vc.callback = ^(NSSet *newSelectedItems, BOOL cancel)
+						{
+							if(!cancel)
+							{
+								_timer.tags = [newSelectedItems allObjects];
+								UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+								if(cell)
+									cell.textLabel.text = [_timer.tags componentsJoinedByString:@" "];
+							}
+
+							if(isIpad)
+								[self dismissModalViewControllerAnimated:YES];
+							else
+								[self.navigationController popToViewController:self animated:YES];
+						};
+
+						if(isIpad)
+						{
+							UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+							targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+							targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+							[self presentModalViewController:targetViewController animated:YES];
+						}
+						else
+							[self.navigationController pushViewController:vc animated:YES];
+					}
+					else
+					{
+						UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																		message:NSLocalizedString(@"Unable to retrieve tag list.", @"")
+																	   delegate:nil
+															  cancelButtonTitle:@"OK"
+															  otherButtonTitles:nil];
+						[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+					}
+				};
+				[RemoteConnectorObject queueInvocationWithTarget:tagLoad selector:@selector(loadTags)];
 				return [tv deselectRowAtIndexPath:indexPath animated:YES];
 			}
 		}
