@@ -8,15 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "BaseXMLReader.h"
-#import "LocationSourceDelegate.h"
+#import <XMLReader/SaxXmlReader.h>
+#import <Delegates/LocationSourceDelegate.h>
 
 /*!
  @brief Enigma2 Location XML Reader.
  */
-@interface Enigma2LocationXMLReader : BaseXMLReader
-{
-}
+@interface Enigma2LocationXMLReader : SaxXmlReader
 
 /*!
  @brief Standard initializer.

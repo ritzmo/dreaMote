@@ -763,8 +763,6 @@
 		DAC8C23613B2014D00CA00D9 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D313B2014C00CA00D9 /* About.m */; };
 		DAC8C23813B2014D00CA00D9 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D513B2014C00CA00D9 /* Event.m */; };
 		DAC8C23913B2014D00CA00D9 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D513B2014C00CA00D9 /* Event.m */; };
-		DAC8C23B13B2014D00CA00D9 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D713B2014C00CA00D9 /* Location.m */; };
-		DAC8C23C13B2014D00CA00D9 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D713B2014C00CA00D9 /* Location.m */; };
 		DAC8C23E13B2014D00CA00D9 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D913B2014C00CA00D9 /* Metadata.m */; };
 		DAC8C23F13B2014D00CA00D9 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D913B2014C00CA00D9 /* Metadata.m */; };
 		DAC8C24113B2014D00CA00D9 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0DB13B2014C00CA00D9 /* Service.m */; };
@@ -1610,8 +1608,6 @@
 		DAC8C0D313B2014C00CA00D9 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
 		DAC8C0D413B2014C00CA00D9 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		DAC8C0D513B2014C00CA00D9 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
-		DAC8C0D613B2014C00CA00D9 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
-		DAC8C0D713B2014C00CA00D9 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		DAC8C0D813B2014C00CA00D9 /* Metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
 		DAC8C0D913B2014C00CA00D9 /* Metadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Metadata.m; sourceTree = "<group>"; };
 		DAC8C0DA13B2014C00CA00D9 /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
@@ -2947,8 +2943,6 @@
 				DAC8C0D313B2014C00CA00D9 /* About.m */,
 				DAC8C0D413B2014C00CA00D9 /* Event.h */,
 				DAC8C0D513B2014C00CA00D9 /* Event.m */,
-				DAC8C0D613B2014C00CA00D9 /* Location.h */,
-				DAC8C0D713B2014C00CA00D9 /* Location.m */,
 				DAC8C0D813B2014C00CA00D9 /* Metadata.h */,
 				DAC8C0D913B2014C00CA00D9 /* Metadata.m */,
 				DAC8C0DA13B2014C00CA00D9 /* Service.h */,
@@ -3886,7 +3880,6 @@
 				DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C23513B2014D00CA00D9 /* About.m in Sources */,
 				DAC8C23813B2014D00CA00D9 /* Event.m in Sources */,
-				DAC8C23B13B2014D00CA00D9 /* Location.m in Sources */,
 				DAC8C23E13B2014D00CA00D9 /* Metadata.m in Sources */,
 				DAC8C24113B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */,
@@ -4158,7 +4151,6 @@
 				DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C23613B2014D00CA00D9 /* About.m in Sources */,
 				DAC8C23913B2014D00CA00D9 /* Event.m in Sources */,
-				DAC8C23C13B2014D00CA00D9 /* Location.m in Sources */,
 				DAC8C23F13B2014D00CA00D9 /* Metadata.m in Sources */,
 				DAC8C24213B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,

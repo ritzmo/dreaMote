@@ -8,8 +8,11 @@
 
 #import "LocationXMLReader.h"
 
-#import "../../Objects/Enigma2/Location.h"
-#import "../../Objects/Generic/Location.h"
+#import <Constants.h>
+#import <Objects/Generic/Location.h>
+
+static const char * kEnigma2SimpleXmlItem = "e2simplexmlitem";
+static const NSInteger kEnigma2SimpleXmlItemLength = 16;
 
 @implementation Enigma2LocationXMLReader
 
@@ -41,24 +44,28 @@ Example:
  <e2location>/hdd/movie/</e2location> 
 </e2locations> 
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	NSArray *resultNodes = [document nodesForXPath:@"/e2locations/e2location" error:nil];
-	if(![resultNodes count])
+	if(		!strncmp((const char *)localname, kEnigma2Location, kEnigma2LocationLength)
+	   ||	!strncmp((const char *)localname, kEnigma2SimpleXmlItem, kEnigma2SimpleXmlItemLength))
 	{
-		// no locations, try old (before May 2009) format
-		resultNodes = [document nodesForXPath:@"/e2simplexmllist/e2simplexmlitem" error:nil];
+		currentString = [[NSMutableString alloc] init];
 	}
+}
 
-	for(CXMLElement *resultElement in resultNodes)
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(		!strncmp((const char *)localname, kEnigma2Location, kEnigma2LocationLength)
+	   ||	!strncmp((const char *)localname, kEnigma2SimpleXmlItem, kEnigma2SimpleXmlItemLength))
 	{
-		// An e2movie in the xml represents a movie, so create an instance of it.
-		NSObject<LocationProtocol> *newLocation = [[Enigma2Location alloc] initWithNode: (CXMLNode *)resultElement];
-		
-		[_delegate performSelectorOnMainThread: @selector(addLocation:)
-									withObject: newLocation
-								 waitUntilDone: NO];
+		GenericLocation *newLocation = [[GenericLocation alloc] init];
+		newLocation.fullpath = currentString;
+		newLocation.valid = YES;
+		[_delegate performSelectorOnMainThread:@selector(addLocation:)
+									withObject:newLocation
+								 waitUntilDone:NO];
 	}
+	currentString = nil;
 }
 
 @end
