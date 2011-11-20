@@ -137,6 +137,13 @@ enum weekDays {
  */
 - (void)setEndFromDurationString: (NSString *)newDuration;
 
+/*!
+ @brief Set Tag list from String representation.
+
+ @param newTags String representation of Tags.
+ */
+- (void)setTagsFromString: (NSString *)newTags;
+
 
 
 /*!
@@ -236,5 +243,10 @@ enum weekDays {
  @brief Cache for Begin/End Textual representation.
  */
 @property (nonatomic, strong) NSString *timeString;
+
+/*!
+ @brief Tags.
+ */
+@property (nonatomic, strong) NSArray *tags;
 
 @end

@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "EventProtocol.h"
-#import "TimerProtocol.h"
-#import "ServiceProtocol.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/TimerProtocol.h>
+#import <Objects/ServiceProtocol.h>
 
 /*!
  @brief Event Types in Neutrino.

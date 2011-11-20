@@ -8,104 +8,78 @@
 
 #import "Timer.h"
 
-#import "Service.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/ServiceProtocol.h>
 
 @implementation SVDRPTimer
 
-@synthesize auxiliary = _auxiliary;
-@synthesize eit = _eit;
-@synthesize begin = _begin;
-@synthesize end = _end;
-@synthesize file = _file;
-@synthesize flags = _flags;
-@synthesize title = _title;
-@synthesize tdescription = _tdescription;
-@synthesize disabled = _disabled;
-@synthesize repeat = _repeat;
-@synthesize repeated = _repeated;
-@synthesize repeatcount = _repeatcount;
-@synthesize justplay = _justplay;
-@synthesize lifetime = _lifetime;
-@synthesize priority = _priority;
-@synthesize service = _service;
-@synthesize sref = _sref;
-@synthesize sname = _sname;
-@synthesize state = _state;
-@synthesize afterevent = _afterevent;
-@synthesize valid = _isValid;
-@synthesize timeString = _timeString;
-@synthesize tid = _tid;
-@synthesize hasRepeatBegin = _hasRepeatBegin;
+@synthesize auxiliary, eit, begin, end, file, flags, title, tdescription, disabled, repeat, repeated, repeatcount, justplay, lifetime, priority, service, sref, sname, state, afterevent, valid, timeString, tid, hasRepeatBegin;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
-		_service = nil;
-		_isValid = YES;
-		_timeString = nil;
+		valid = YES;
 	}
 	return self;
 }
-
 
 - (id)initWithSVDRPTimer:(SVDRPTimer *)timer
 {
 	if((self = [super init]))
 	{
-		_begin = [timer.begin copy];
-		_end = [timer.end copy];
-		_eit = [timer.eit copy];
-		_title = [timer.title copy];
-		_tdescription = [timer.tdescription copy];
-		_disabled = timer.disabled;
-		_justplay = timer.justplay;
-		_service = [timer.service copy];
-		_repeated = timer.repeated;
-		_repeatcount = timer.repeatcount;
-		_state = timer.state;
-		_isValid = timer.valid;
-		_afterevent = timer.afterevent;
-		_repeat = [timer.repeat copy];
-		_auxiliary = [timer.auxiliary copy];
-		_tid = [timer.tid copy];
-		_hasRepeatBegin = timer.hasRepeatBegin;
-		_flags = timer.flags;
-		_lifetime = [timer.lifetime copy];
-		_priority = [timer.priority copy];
+		begin = [timer.begin copy];
+		end = [timer.end copy];
+		eit = [timer.eit copy];
+		title = [timer.title copy];
+		tdescription = [timer.tdescription copy];
+		disabled = timer.disabled;
+		justplay = timer.justplay;
+		service = [timer.service copy];
+		repeated = timer.repeated;
+		repeatcount = timer.repeatcount;
+		state = timer.state;
+		valid = timer.valid;
+		afterevent = timer.afterevent;
+		repeat = [timer.repeat copy];
+		auxiliary = [timer.auxiliary copy];
+		tid = [timer.tid copy];
+		hasRepeatBegin = timer.hasRepeatBegin;
+		flags = timer.flags;
+		lifetime = [timer.lifetime copy];
+		priority = [timer.priority copy];
 	}
 	
 	return self;
 }
 
-
 - (NSString *)toString
 {
-	NSInteger newFlags = _flags;
-	if(_disabled)
+	NSInteger newFlags = flags;
+	if(disabled)
 		newFlags |= 1;
 	else
 		newFlags &= ~1;
 
 	const NSCalendar *gregorian = [[NSCalendar alloc]
 								initWithCalendarIdentifier:NSGregorianCalendar];
-	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _begin];
-	const NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate: _end];
+	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:begin];
+	const NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:end];
 
 	NSString *dayStr;
-	if(_hasRepeatBegin)
+	if(hasRepeatBegin)
 		dayStr = [NSString stringWithFormat: @"%@@%d-%02d-%02d",
-					_repeat, [beginComponents year], [beginComponents month], [beginComponents day]];
-	else if(_repeat != nil)
-		dayStr = _repeat;
+					repeat, [beginComponents year], [beginComponents month], [beginComponents day]];
+	else if(repeat != nil)
+		dayStr = repeat;
 	else
 		dayStr = [NSString stringWithFormat: @"%d-%02d-%02d",
 					[beginComponents year], [beginComponents month], [beginComponents day]];
 
 	return [NSString stringWithFormat: @"%d:%@:%@:%04d:%04d:%@:%@:%@:%@",
-		newFlags, _service.sref, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
-		[endComponents hour] * 100 + [endComponents minute], _priority, _lifetime,
-		_file, _auxiliary];
+		newFlags, service.sref, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
+		[endComponents hour] * 100 + [endComponents minute], priority, lifetime,
+		file, auxiliary];
 }
 
 - (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
@@ -185,5 +159,16 @@
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];
 #endif
 }
+
+- (NSArray *)tags
+{
+	return nil;
+}
+
+- (void)setTags:(NSArray *)tags
+{ }
+
+- (void)setTagsFromString:(NSString *)newTags
+{ }
 
 @end

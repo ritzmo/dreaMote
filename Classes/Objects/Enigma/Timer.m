@@ -10,8 +10,8 @@
 
 #import "CXMLElement.h"
 
-#import "EventProtocol.h"
-#import "../Generic/Service.h"
+#import <Objects/EventProtocol.h>
+#import <Objects/Generic/Service.h>
 
 @implementation EnigmaTimer
 
@@ -237,6 +237,17 @@
 	_state = new;
 }
 
+- (NSArray *)tags
+{
+	return nil;
+}
+
+- (void)setTags:(NSArray *)tags
+{ }
+
+- (void)setTagsFromString:(NSString *)newTags
+{ }
+
 - (id)init
 {
 	if((self = [super init]))
@@ -283,7 +294,6 @@
 
 	return self;
 }
-
 
 - (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
 {

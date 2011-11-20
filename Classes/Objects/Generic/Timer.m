@@ -9,11 +9,11 @@
 #import "Timer.h"
 
 #import "RemoteConnectorObject.h"
-#import "Service.h"
+#import <Objects/Generic/Service.h>
 
 @implementation GenericTimer
 
-@synthesize eit, begin, end, title, tdescription, disabled, repeated, repeatcount, justplay, service, sref, sname, state, afterevent, location, valid, timeString;
+@synthesize eit, begin, end, tags, title, tdescription, disabled, repeated, repeatcount, justplay, service, sref, sname, state, afterevent, location, valid, timeString;
 
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
@@ -174,6 +174,14 @@
 	{
 		self.sname = newSname;
 	}
+}
+
+- (void)setTagsFromString: (NSString *)newTags
+{
+	if([newTags isEqualToString: @""])
+		self.tags = [NSArray array];
+	else
+		self.tags = [newTags componentsSeparatedByString:@" "];
 }
 
 - (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
