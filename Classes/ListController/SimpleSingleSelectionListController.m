@@ -84,9 +84,10 @@
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(callback)
-		callback(NSNotFound, NO, YES);
+	simplesingleselection_callback_t call = callback;
 	callback = nil;
+	if(call)
+		call(NSNotFound, NO, YES);
 }
 
 /* rotate with device */
@@ -151,9 +152,10 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(callback)
-		callback(selectedItem, YES, NO);
+	simplesingleselection_callback_t call = callback;
 	callback = nil;
+	if(call)
+		call(selectedItem, YES, NO);
 }
 
 @end
