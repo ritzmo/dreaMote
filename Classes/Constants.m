@@ -17,3 +17,4 @@ const char *kEnigma2Tags = "e2tags";
 const char *kEnigma2Settings = "e2settings";
 const char *kEnigma2SettingName = "e2settingname";
 const char *kEnigma2SettingValue = "e2settingvalue";
+const char *kEnigma2Location = "e2location";

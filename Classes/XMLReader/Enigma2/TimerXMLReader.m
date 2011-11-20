@@ -8,9 +8,9 @@
 
 #import "TimerXMLReader.h"
 
-#import "Constants.h"
-#import "../../Objects/Generic/Service.h"
-#import "../../Objects/Generic/Timer.h"
+#import <Constants.h>
+#import <Objects/Generic/Service.h>
+#import <Objects/Generic/Timer.h>
 
 static const char *kEnigma2TimerElement = "e2timer";
 static const NSUInteger kEnigma2TimerElementLength = 8;
@@ -32,8 +32,6 @@ static const char *kEnigma2TimerState = "e2state";
 static const NSUInteger kEnigma2TimerStateLength = 8;
 static const char *kEnigma2TimerRepeated = "e2repeated";
 static const NSUInteger kEnigma2TimerRepeatedLength = 11;
-static const char *kEnigma2TimerLocation = "e2location";
-static const NSUInteger kEnigma2TimerLocationLength = 11;
 
 @interface Enigma2TimerXMLReader()
 @property (nonatomic,strong) NSObject<TimerProtocol> *currentTimer;
@@ -121,7 +119,7 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 			||	!strncmp((const char *)localname, kEnigma2TimerAfterEvent, kEnigma2TimerAfterEventLength)
 			||	!strncmp((const char *)localname, kEnigma2TimerState, kEnigma2TimerStateLength)
 			||	!strncmp((const char *)localname, kEnigma2TimerRepeated, kEnigma2TimerRepeatedLength)
-			||	!strncmp((const char *)localname, kEnigma2TimerLocation, kEnigma2TimerLocationLength)
+			||	!strncmp((const char *)localname, kEnigma2Location, kEnigma2LocationLength)
 		)
 	{
 		currentString = [[NSMutableString alloc] init];
@@ -190,7 +188,7 @@ static const NSUInteger kEnigma2TimerLocationLength = 11;
 	{
 		currentTimer.repeated = [currentString integerValue];
 	}
-	else if(!strncmp((const char *)localname, kEnigma2TimerLocation, kEnigma2TimerLocationLength))
+	else if(!strncmp((const char *)localname, kEnigma2Location, kEnigma2LocationLength))
 	{
 		if(![currentString isEqualToString:@"None"])
 			currentTimer.location = currentString;
