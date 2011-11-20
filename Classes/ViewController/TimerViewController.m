@@ -1255,7 +1255,7 @@ enum timerSections
 								_timer.tags = [newSelectedItems allObjects];
 								UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
 								if(cell)
-									cell.textLabel.text = [_timer.tags componentsJoinedByString:@" "];
+									cell.textLabel.text = (_timer.tags.count) ? [_timer.tags componentsJoinedByString:@" "] : NSLocalizedString(@"None", @"");
 							}
 
 							if(isIpad)
