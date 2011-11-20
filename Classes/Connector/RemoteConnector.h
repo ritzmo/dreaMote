@@ -106,7 +106,11 @@ enum connectorFeatures {
 	kFeaturesCurrent,
 	/*! @brief Supports radio mode. */
 	kFeaturesRadioMode,
-	/*! @brief Support recording locations. */
+	/*!
+	 @brief Support recording locations and tags.
+	 @note Tags are not reflected in the feature name because support for them was
+	 added to dreamote later, but both were added to the web interface at the same time.
+	 */
 	kFeaturesRecordingLocations,
 	/*! @brief Offers interface to a media player. */
 	kFeaturesMediaPlayer,
