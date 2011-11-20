@@ -162,7 +162,7 @@
 {
 	UITextView *myTextView = [[UITextView alloc] initWithFrame:CGRectZero];
 	myTextView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-	myTextView.backgroundColor = [DreamoteConfiguration singleton].groupedTableViewCellColor; // to optimize drawing set a background color
+	myTextView.backgroundColor = [UIColor clearColor];
 	myTextView.textColor = [DreamoteConfiguration singleton].textColor;
 	myTextView.font = [UIFont fontWithName:kFontName size:kTextViewFontSize];
 	myTextView.editable = NO;
