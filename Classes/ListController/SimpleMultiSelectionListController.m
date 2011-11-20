@@ -52,7 +52,10 @@
 + (SimpleMultiSelectionListController *)withItems:(NSArray *)items andSelection:(NSSet *)selectedItems andTitle:(NSString *)title
 {
 	SimpleMultiSelectionListController *vc = [[SimpleMultiSelectionListController alloc] init];
-	vc.selectedItems = [selectedItems mutableCopy];
+	if(selectedItems)
+		vc.selectedItems = [selectedItems mutableCopy];
+	else
+		vc.selectedItems = [NSMutableSet set];
 	vc.items = items;
 	vc.title = title;
 
@@ -88,17 +91,19 @@
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(callback)
-		callback(selectedItems, NO);
+	simplemultiselection_callback_t call = callback;
 	callback = nil;
+	if(call)
+		call(selectedItems, NO);
 }
 
 /* cancel */
 - (void)cancelAction:(id)sender
 {
-	if(callback)
-		callback(nil, YES);
+	simplemultiselection_callback_t call = callback;
 	callback = nil;
+	if(call)
+		call(nil, YES);
 }
 
 /* rotate with device */
@@ -152,6 +157,16 @@
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - UIViewController delegate methods
+
+/* about to disappear */
+- (void)viewWillDisappear:(BOOL)animated
+{
+	if(callback)
+		callback(selectedItems, NO);
+	callback = nil;
 }
 
 @end
