@@ -46,12 +46,12 @@ typedef enum {
 @property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
 @property (nonatomic, strong) NSDateFormatter *formatter;
 @property (nonatomic) responseType_t responseType;
-@property (nonatomic) NSUInteger counter;
+@property (nonatomic) BOOL isNext;
 @end
 
 @implementation Enigma2EventXMLReader
 
-@synthesize counter, currentEvent, formatter, responseType;
+@synthesize currentEvent, formatter, isNext, responseType;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<DataSourceDelegate> *)delegate getServices:(BOOL)getServices selector:(SEL)selector responseType:(responseType_t)response
@@ -176,17 +176,17 @@ typedef enum {
 			default: break;
 			case RESPONSE_NOWNEXT:
 			{
-				++counter; // increment counter for the next event
-				if(counter % 2)
-				{
-					selector = @selector(addNowEvent:); // the current event was even -> now
-					_getServices = NO; // the next event is odd -> don't get service
-				}
-				else
+				if(isNext)
 				{
 					selector = @selector(addNextEvent:);
 					_getServices = YES;
 				}
+				else
+				{
+					selector = @selector(addNowEvent:);
+					_getServices = NO;
+				}
+				isNext = !isNext;
 				/* FALL THROUGH */
 			}
 			case RESPONSE_NOW_OR_NEXT:
