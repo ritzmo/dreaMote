@@ -329,7 +329,7 @@
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 40.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(50.0, 0.0, 260.0, 40.0);
+				labelFrame = CGRectMake(IS_IPAD() ? 50 : 13, 0, 260, 40);
 				color = [UIColor darkBlueColor];
 				font = [UIFont fontWithName:@"Georgia-Italic" size:17];
 			}
@@ -348,7 +348,7 @@
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(30.0, 0.0, 260.0, 40.0);
+				labelFrame = CGRectMake(IS_IPAD() ? 30 : 13, 0, 260, 40);
 			}
 			font = [UIFont fontWithName:@"Helvetica" size:20];
 			break;
@@ -367,7 +367,7 @@
 			{
 				headerView = [[UIView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300.0, 44.0)];
 				headerView.backgroundColor = [UIColor clearColor];
-				labelFrame = CGRectMake(45.0, 0.0, 260.0, 40.0);
+				labelFrame = CGRectMake(IS_IPAD() ? 45 : 13, 0, 260, 40);
 				font = [UIFont fontWithName:@"Georgia-Italic" size:18];
 			}
 			break;
