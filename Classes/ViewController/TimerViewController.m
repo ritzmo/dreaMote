@@ -67,7 +67,8 @@ enum timerSections
 	sectionAfterEvent = 6,
 	sectionRepeated = 7,
 	sectionLocation = 8,
-	sectionMax = 9
+	sectionTags = 9,
+	sectionMax = 10
 };
 
 @implementation TimerViewController
@@ -720,7 +721,7 @@ enum timerSections
 	if(![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
 		--sections;
 	if(![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-		--sections;
+		sections -= 2;
 	return sections;
 }
 
@@ -743,13 +744,16 @@ enum timerSections
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	if(section >= sectionAfterEvent && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEvent])
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
 		++section;
-	if(section >= sectionRepeated && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerRepeated])
+	if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
 		++section;
-	if(section >= sectionLocation && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
+	if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
 		++section;
-		
+	if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+		++section;
+
 	switch (section) {
 		case sectionTitle:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerTitle])
@@ -773,6 +777,8 @@ enum timerSections
 			return NSLocalizedString(@"Repeated", @"");
 		case sectionLocation:
 			return NSLocalizedString(@"Location", @"");
+		case sectionTags:
+			return NSLocalizedString(@"Tags", @"");
 		default:
 			return nil;
 	}
@@ -827,6 +833,7 @@ enum timerSections
 		case sectionAfterEvent:
 		case sectionRepeated:
 		case sectionLocation:
+		case sectionTags:
 			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
@@ -855,11 +862,14 @@ enum timerSections
 	NSInteger section = indexPath.section;
 	UITableViewCell *sourceCell = nil;
 
-	if(section >= sectionAfterEvent && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEvent])
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
 		++section;
-	if(section >= sectionRepeated && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerRepeated])
+	if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
 		++section;
-	if(section >= sectionLocation && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
+	if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+		++section;
+	if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
 		++section;
 
 	sourceCell = [self obtainTableCellForSection: tableView: section];
@@ -1006,6 +1016,11 @@ enum timerSections
 		case sectionLocation:
 			sourceCell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
 			break;
+		case sectionTags:
+		{
+			sourceCell.textLabel.text = (_timer.tags.count) ? [_timer.tags componentsJoinedByString:@" "] : NSLocalizedString(@"None", @"");
+			break;
+		}
 		default:
 			break;
 	}
@@ -1014,138 +1029,157 @@ enum timerSections
 	return sourceCell;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(self.editing)
 	{
 		NSInteger section = indexPath.section;
 		UIViewController *targetViewController = nil;
+		const BOOL isIpad = IS_IPAD();
 
-		if(section >= sectionAfterEvent && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerAfterEvent])
+		NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+		if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
 			++section;
-		if(section >= sectionRepeated && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerRepeated])
+		if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
+			++section;
+		if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+			++section;
+		if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
 			++section;
 
-		if(section == sectionService)
+		switch(section)
 		{
-			// property takes care of overly complex initialization
-			targetViewController = self.bouquetListController;
-		}
-		else if(section == sectionBegin)
-		{
-			DatePickerController *vc = [[DatePickerController alloc] init];
-			if(IS_IPAD())
+			default:
+				return [tv deselectRowAtIndexPath:indexPath animated:YES];
+			case sectionService:
 			{
-				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
-				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				// property takes care of overly complex initialization
+				targetViewController = self.bouquetListController;
+				break;
 			}
-			else
-				targetViewController = vc;
-
-			vc.date = [_timer.begin copy];
-			vc.callback = ^(NSDate *newDate){
-				if(newDate == nil)
-					return;
-
-				_timer.begin = newDate;
-				UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
-				if(cell)
-					cell.textLabel.text = [self format_BeginEnd:newDate];
-			};
-		}
-		else if(section == sectionEnd)
-		{
-			DatePickerController *vc = [[DatePickerController alloc] init];
-			if(IS_IPAD())
+			case sectionBegin:
 			{
-				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
-				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
-			}
-			else
-				targetViewController = vc;
-
-			vc.date = [_timer.end copy];
-			vc.callback = ^(NSDate *newDate){
-				if(newDate == nil)
-					return;
-
-				_timer.end = newDate;
-				UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
-				if(cell)
-					cell.textLabel.text = [self format_BeginEnd:newDate];
-			};
-		}
-		else if(section == sectionAfterEvent)
-		{
-			self.afterEventViewController.selectedItem = _timer.afterevent;
-			// FIXME: why gives directly assigning this an error?
-			const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
-			self.afterEventViewController.showAuto = showAuto;
-
-			targetViewController = self.afterEventNavigationController;
-		}
-		else if(section == sectionRepeated)
-		{
-			SimpleRepeatedViewController *vc = [[SimpleRepeatedViewController alloc] init];
-			vc.delegate = self;
-			if(IS_IPAD())
-			{
-				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
-				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
-			}
-			else
-				targetViewController = vc;
-
-			vc.repeated = _timer.repeated;
-			vc.repcount = _timer.repeatcount;
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
-				vc.isSimple = YES;
-			else// if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesComplicatedRepeated])
-				vc.isSimple = NO;
-		}
-		else if(section == sectionLocation)
-		{
-			const BOOL isIpad = IS_IPAD();
-			LocationListController *vc = [[LocationListController alloc] init];
-			vc.showDefault = YES;
-			vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling){
-				if(!canceling)
+				DatePickerController *vc = [[DatePickerController alloc] init];
+				if(isIpad)
 				{
-					UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionLocation]];
-					if(newLocation)
-					{
-						_timer.location = newLocation.fullpath;
-						cell.textLabel.text = newLocation.fullpath;
-					}
-					else
-					{
-						_timer.location = nil;
-						cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
-					}
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
 				}
+				else
+					targetViewController = vc;
+
+				vc.date = [_timer.begin copy];
+				vc.callback = ^(NSDate *newDate){
+					if(newDate == nil)
+						return;
+
+					_timer.begin = newDate;
+					UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
+					if(cell)
+						cell.textLabel.text = [self format_BeginEnd:newDate];
+				};
+				break;
+			}
+			case sectionEnd:
+			{
+				DatePickerController *vc = [[DatePickerController alloc] init];
+				if(isIpad)
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				}
+				else
+					targetViewController = vc;
+
+				vc.date = [_timer.end copy];
+				vc.callback = ^(NSDate *newDate){
+					if(newDate == nil)
+						return;
+
+					_timer.end = newDate;
+					UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
+					if(cell)
+						cell.textLabel.text = [self format_BeginEnd:newDate];
+				};
+				break;
+			}
+			case sectionAfterEvent:
+			{
+				self.afterEventViewController.selectedItem = _timer.afterevent;
+				// FIXME: why gives directly assigning this an error?
+				const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
+				self.afterEventViewController.showAuto = showAuto;
+
+				targetViewController = self.afterEventNavigationController;
+				break;
+			}
+			case sectionRepeated:
+			{
+				SimpleRepeatedViewController *vc = [[SimpleRepeatedViewController alloc] init];
+				vc.delegate = self;
+				if(isIpad)
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				}
+				else
+					targetViewController = vc;
+
+				vc.repeated = _timer.repeated;
+				vc.repcount = _timer.repeatcount;
+				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSimpleRepeated])
+					vc.isSimple = YES;
+				else// if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesComplicatedRepeated])
+					vc.isSimple = NO;
+				break;
+			}
+			case sectionLocation:
+			{
+				LocationListController *vc = [[LocationListController alloc] init];
+				vc.showDefault = YES;
+				vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling){
+					if(!canceling)
+					{
+						UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionLocation]];
+						if(newLocation)
+						{
+							_timer.location = newLocation.fullpath;
+							cell.textLabel.text = newLocation.fullpath;
+						}
+						else
+						{
+							_timer.location = nil;
+							cell.textLabel.text = NSLocalizedString(@"Default Location", @"");
+						}
+					}
+
+					if(isIpad)
+						[self dismissModalViewControllerAnimated:YES];
+					else
+						[self.navigationController popToViewController:self animated:YES];
+				};
 
 				if(isIpad)
-					[self dismissModalViewControllerAnimated:YES];
+				{
+					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+				}
 				else
-					[self.navigationController popToViewController:self animated:YES];
-			};
-
-			if(isIpad)
-			{
-				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
-				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+					targetViewController = vc;
+				break;
 			}
-			else
-				targetViewController = vc;
+			case sectionTags:
+			{
+				// TODO: implement
+				return [tv deselectRowAtIndexPath:indexPath animated:YES];
+			}
 		}
-		else
-			return nil;
 
-		if(IS_IPAD())
+		if(isIpad)
 			[self.navigationController presentModalViewController:targetViewController animated:YES];
 		else
 		{
@@ -1164,8 +1198,7 @@ enum timerSections
 		}
 	}
 
-	// We don't want any actual response :-)
-	return nil;
+	[tv deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark -
