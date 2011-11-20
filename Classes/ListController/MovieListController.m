@@ -10,6 +10,7 @@
 
 #import "MovieTableViewCell.h"
 #import "MovieViewController.h"
+#import "SimpleMultiSelectionListController.h"
 
 #import "Constants.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
@@ -27,6 +28,12 @@
 @interface MovieListController()
 - (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch;
 - (void)updateButtons;
+- (void)setupLeftBarButton;
+
+/*!
+ @brief Open Tag selection.
+ */
+- (void)tags:(id)sender;
 
 /*!
  @brief Multi-Delete from Playlist.
@@ -39,6 +46,8 @@
  @brief Popover Controller.
  */
 @property (nonatomic, strong) UIPopoverController *popoverController;
+@property (nonatomic, strong) UIBarButtonItem *popoverButtonItem;
+@property (nonatomic, strong) UIPopoverController *tagPopoverController;
 @property (nonatomic, assign) BOOL sortTitle;
 
 /*!
@@ -50,7 +59,7 @@
  @brief List of currently selected tags.
  @note Must be nil if no tags selected!
  */
-@property (nonatomic, strong) NSArray *selectedTags;
+@property (nonatomic, strong) NSSet *selectedTags;
 
 /*!
  @brief List of movies with the currently selected Tags.
@@ -66,7 +75,7 @@
 
 @implementation MovieListController
 
-@synthesize allTags, popoverController, progressHUD, isSplit, isSlave, selectedTags, taggedMovies;
+@synthesize allTags, popoverButtonItem, popoverController, progressHUD, isSplit, isSlave, selectedTags, taggedMovies, tagPopoverController;
 #if IS_FULL()
 @synthesize searchBar;
 #endif
@@ -133,6 +142,8 @@
 		self.title = NSLocalizedString(@"Movies", @"Title of MovieListController");
 
 	// Free Caches and reload data
+	selectedTags = nil;
+	taggedMovies = nil;
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
@@ -227,6 +238,10 @@
 /* about to appear */
 - (void)viewWillAppear:(BOOL)animated
 {
+	const BOOL isIpad = IS_IPAD();
+	if(isIpad)
+		[self setupLeftBarButton];
+
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordDelete])
 	{
 		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
@@ -234,7 +249,7 @@
 																						action:nil];
 		NSArray *items = nil;
 
-		if(IS_IPAD())
+		if(isIpad)
 		{
 			// iOS 5.0+
 			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
@@ -255,7 +270,17 @@
 		}
 		else
 		{
-			items = [[NSArray alloc] initWithObjects:_sortButton, flexItem, self.editButtonItem, nil];
+			// NOTE: this is actually not the right place to check for this, but fixing this requires some more refactoring :)
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
+			{
+				UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Tags", @"")
+																			  style:UIBarButtonItemStyleBordered
+																			 target:self
+																			 action:@selector(tags:)];
+				items = [[NSArray alloc] initWithObjects:tagButton, flexItem, _sortButton, flexItem, self.editButtonItem, nil];
+			}
+			else
+				items = [[NSArray alloc] initWithObjects:_sortButton, flexItem, self.editButtonItem, nil];
 			[self setToolbarItems:items animated:NO];
 			[self.navigationController setToolbarHidden:NO animated:YES];
 
@@ -468,6 +493,71 @@
 	[_deleteButton setTitle:text forState:UIControlStateNormal];
 	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
 	_deleteButton.enabled = NO;
+}
+
+- (void)tags:(id)sender
+{
+	SimpleMultiSelectionListController *vc = [SimpleMultiSelectionListController withItems:[allTags sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(caseInsensitiveCompare:)]]]
+																			  andSelection:selectedTags
+																				  andTitle:NSLocalizedString(@"Select Tags", @"")];
+
+	const BOOL isIpad = IS_IPAD();
+	vc.callback = ^(NSSet *newSelectedItems, BOOL cancel)
+	{
+		if(!cancel)
+		{
+			if(newSelectedItems.count)
+			{
+				selectedTags = newSelectedItems;
+				taggedMovies = [[NSMutableArray alloc] init];
+				for(NSObject<MovieProtocol> *movie in _movies)
+				{
+					if([selectedTags isSubsetOfSet:[NSSet setWithArray:movie.tags]])
+						[taggedMovies addObject:movie];
+				}
+#if IS_FULL()
+				if(_searchDisplay.isActive)
+					[self searchDisplayController:_searchDisplay shouldReloadTableForSearchString:_searchDisplay.searchBar.text];
+#endif
+			}
+			else
+			{
+				selectedTags = nil;
+				taggedMovies = nil;
+			}
+			UITableView *tableView = _tableView;
+#if IS_FULL()
+			if(_searchDisplay.isActive) tableView = _searchDisplay.searchResultsTableView;
+#endif
+			[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		}
+
+		if(isIpad)
+		{
+			[tagPopoverController dismissPopoverAnimated:YES];
+			tagPopoverController = nil;
+		}
+		else
+			[self.navigationController popToViewController:self animated:YES];
+	};
+
+	if(isIpad)
+	{
+		// hide popover if already visible
+		if([tagPopoverController isPopoverVisible])
+		{
+			[tagPopoverController dismissPopoverAnimated:YES];
+			tagPopoverController = nil;
+			return;
+		}
+
+		tagPopoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+		[tagPopoverController presentPopoverFromBarButtonItem:sender
+									 permittedArrowDirections:UIPopoverArrowDirectionUp
+													 animated:YES];
+	}
+	else
+		[self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)updateButtons
@@ -1095,19 +1185,67 @@
 #pragma mark Split view support
 #pragma mark -
 
+- (void)setupLeftBarButton
+{
+	UIBarButtonItem *tagButton = nil;
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
+	{
+		tagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Tags", @"")
+													 style:UIBarButtonItemStyleBordered
+													target:self
+													action:@selector(tags:)];
+	}
+	NSMutableArray *items;
+	if(tagButton && popoverButtonItem)
+	{
+		items = [NSMutableArray arrayWithObjects:popoverButtonItem, tagButton, nil];
+	}
+	else if(tagButton)
+		items = [NSMutableArray arrayWithObject:tagButton];
+	else if(popoverButtonItem)
+		items = [NSMutableArray arrayWithObject:popoverButtonItem];
+	else
+		items = [NSMutableArray array];
+
+	// iOS 5.0+
+	if([self.navigationItem respondsToSelector:@selector(leftBarButtonItems)])
+	{
+		self.navigationItem.leftBarButtonItems = items;
+	}
+	// Code for older iOS *grml*
+	else if(items.count > 1)
+	{
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+		UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+		[items addObject:flexItem];
+		[toolbar setItems:items animated:NO];
+		UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+		self.navigationItem.leftBarButtonItem = buttonItem;
+	}
+	else if(items.count)
+		self.navigationItem.leftBarButtonItem = [items objectAtIndex:0];
+	else
+		self.navigationItem.leftBarButtonItem = nil;
+}
+
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
-	self.navigationItem.leftBarButtonItem = barButtonItem;
+	self.popoverButtonItem = barButtonItem;
 	pc.contentViewController = aViewController;
 	self.popoverController = pc;
+	[self setupLeftBarButton];
 }
 
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
-	self.navigationItem.leftBarButtonItem = nil;
+	self.popoverButtonItem = nil;
 	self.popoverController = nil;
+	[self setupLeftBarButton];
 }
 
 @end
