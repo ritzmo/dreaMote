@@ -1,0 +1,260 @@
+1.0:
+- in extended service list, go straight to current event on swipe left and
+  next on swipe right
+- (un)zoom screenshot on double tap
+
+1.0-full:
+- add multi epg
+- allow to scroll through events in event view using left/right swipes
+- allow to scroll through movies in movie view using left/right swipes
+
+1.0.1:
+- extend fuzzy date formatter to show weekday for next 7d
+- show full date in some places (event/timer/movie view) 
+- fix possible crashes when switching to another receiver after being
+ connected to Enigma2
+- fix rare crash in multi epg when switching tv/radio mode while its not
+ visible
+ - properly adjust maximum volume when switching connections
+Enigma2:
+- if using event as timer base and not changing settings incorporate offset
+ configured on stb
+- Enigma:
+  - fix screenshot with stock web interface
+  - check for proper status code on instant record
+  - fix removing timers
+  - ipad stability improvements
+- SVDRP:
+  - generic stability improvements
+- Neutrino:
+  - fix problem modifying timers
+  - ipad stabilty improvements
+
+1.0.1-full:
+- add emulated epg search for non-Enigma2 receivers
+ (works on local epg cache so results can be mixed)
+
+1.0.2:
+- Add welcome screen on first launch (explains first steps)
+- Remove "connection test" option (done once when switching hosts now)
+- Allow ':' and '@' in credential
+Enigma:
+- Add support for radio mode
+- Cleanup timer list
+Enigma2:
+- Movies were shown twice under some circumstances
+- Cleanup timer list
+Neutrino:
+- Improve support for Neutrino HD
+- Fixes problems with some versions of zapit
+- Fixes possible problems with german umlauts
+
+1.0.2-full:
+- Indicate progress when refreshing Multi-EPG
+
+1.0.2-lite:
+- Fix event list size decreasing if reshown while an ad was visible
+- Fix crashes on iOS 4.0 and 4.1 (seriously? upgrade!)
+
+1.0.3:
+- Allow to open IMDb for Events/Movies (requires IMDb App 2.1)
+- Link to Twitter-Feed in "About"
+- Picon Support fixed (Picons are iPad only)
+Enigma2:
+- Fix creating new timers not based on events
+Neutrino:
+- Handle timers more reliable
+
+1.0.3-full:
+- Multi-EPG timespan made configurable
+
+1.0.3-lite:
+- Ad could hide search bar of EPG search
+
+1.1.0:
+- Allow to save screenshots (long touch on image, iOS 3.2+)
+- Changed order of timer sections (Running, Prepared, Waiting, Finished)
+- Allow to sort movies alphabetically
+- Ask for confirmation before restarting / shutting down a remote receiver
+- Different timeouts to choose from
+Enigma2:
+- Allow to open OPlayer, BUZZ Player, yxplayer for streaming
+- Ability to shuffle MediaPlayer playlist
+- Similar events can be selected
+Neutrino:
+- Native Home/d-box buttons (previously Exit/Menu)
+
+1.1.0-full:
+- Fix different timespans in Multi-EPG
+- Custom header in Multi-EPG similar to the one on Enigma2-STBs
+- Improve Multi-EPG refresh speed and device response time while doing so
+Enigma2:
+- Support of AutoTimer-Plugin
+
+1.1.1:
+- Fix next/previous movie by swiping in alphabetized list
+- Add standby button to emulated rc
+Enigma2:
+- Support of EPGRefresh-Plugin
+- Advanced remote working properly again with newer web interface
+
+1.1.1-full:
+- Fix displaying movies if receiver supports locations
+- Fix zapping on iPhone/iPod Touch
+- Allow to search recordings (title and current folder only)
+- Allow to set record location to default location manually
+
+1.1.1-lite:
+Enigma2:
+- Ad could hide search bar of EPG search after rotation
+
+1.1.2:
+Enigma2:
+- Fix possible crash on iPhone 4 when zapping
+- Allow to select year in AutoTimer timeframe
+
+1.1.3:
+Neutrino:
+- Initial support for repeating timers
+- Fix editing timers
+- Allow to display OSD screenshot
+Enigma2:
+- Fix toggling standby if action of "power" key was changed
+
+1.1.3-full:
+Enigma2:
+- Fix problems with EPGRefresh-Plugin (requires experimental plugin newer than 2011/05/21)
+
+1.1.4:
+Enigma2:
+- Ask if MediaPlayer should be exited when leaving view
+- Allow to show recordings on iPhone with Enigma2 older than February 2009
+Neutrino:
+- Implemented "Playing" view
+
+1.1.5:
+- Disable most animations on armv6 to increase performance
+- Quick access to zap-functionality by holding service for 1s (iOS 3.2+ only)
+- Fix crash when deleting a movie from the alphabetized movie list
+- Fix possible problems with interface orientation on iPad
+Enigma2:
+- Add SleepTimer-Support (requires WebInterface >= 1.6.5)
+- Scroll back to previously playing title when reopening MediaPlayer
+- Allow multiple selection when removing tracks from MediaPlayer playlist
+- Fix possible crash after leaving list of recordings on iPhone/iPod Touch
+- Detect available features more reliably (and hide not supported ones)
+Neutrino:
+- Allow to start an external streaming app (OPlayer (HD) (Lite), BUZZPlayer, yxplayer)
+
+1.1.5-full:
+- Fix problems with canceling refresh of MultiEPG on iPhone/iPod Touch
+Enigma2:
+- (AutoTimer) Improve support for "avoidDuplicateDescription" (modes 2 and 3 supported)
+
+1.1.6:
+- Add "auto configuration" support, finds STBs with default settings
+- Support uploading Picons as zip-files
+- Allow to change Signal Finder refresh interval
+- Allow to start streaming or IMDb search from "Playing" view
+- Fix another possible crash when deleting a movie from the alphabetized movie list
+Neutrino:
+- Fix possible crash if picons are missing
+
+1.1.6-full:
+- Fix dimensions of picons in MultiEPG
+
+1.1.7:
+- Fix disabled edit button in settings after receiver search
+- Generic stability improvements
+Enigma2:
+- Fix picons for renamed services
+- Fix possible race condition when emptying MediaPlayer playlist
+- Fix possible crash if trying to start stream from current service if service reference is not available
+Enigma1:
+- Allow to start an external streaming app (OPlayer (HD) (Lite), BUZZPlayer, yxplayer)
+SVDRP:
+- Don't crash on connection failure
+
+1.1.7-lite:
+Enigma2:
+- Fix possible Crash in SleepTimer Editor
+
+1.1.7-full:
+Enigma2:
+- Fix AutoTimer frontend
+
+1.1.8:
+- Generic stability improvements
+Enigma2:
+- Allow to initiate EPGRefresh plugin
+
+1.1.8-full:
+- Changed selection by swipe to always use "previous" for a swipe to the right
+- Swipes (in event, movie and service view) are more easy to execute, more views will be supported in future version
+Enigma2:
+- Allow to initiate AutoTimer plugin
+
+1.1.9:
+- Fix "Swipe to delete"
+- Fix "auto configuration" on iPhone/iPod Touch
+Enigma:
+- Improve Stream URL retrieval success rate
+Enigma2:
+- Allow to save/load playlists in MediaPlayer on iPad
+
+1.1.10:
+- Fix network activity indicator
+- Allow to add events to local calendar
+- Allow to share events and recorded movies on twitter/facebook/via email
+- EPG can be separated by day
+- Add optional audio aid to signal finder
+Enigma2:
+- Add last time of refresh to EPGRefresh if backend supports it
+- Add support for package management
+
+1.1.10-full:
+- Fix possible problems with MultiEPG on iOS older than 4.0
+- Highlight current event in MultiEPG
+- Allow to configure length of search history
+- Allow to search for titles in regular event list
+- Allow to scroll through service in event list using left/right swipes
+Enigma2:
+- Allow to add AutoTimer based on events (from event view)
+- Fix missing refresh of AutoTimer list after changes
+
+1.1.10-lite:
+Enigma2:
+- Allow to configure length of search history
+
+----- 1.1.11 and 1.1.12 were localization fixes ---
+
+1.1.13:
+- Fix possible crash since 1.1.10 if system memory was low
+- Sharing to Facebook now has a default text
+- Bouquet & Service List more reliable in delegate mode
+- Fix Input Alerts on iOS 5
+- Fix disappearing exact SNRdb/BER cells in Signal Finder
+
+1.2.0:
+- Improve scrolling performance in service list
+- Fix possible layout problems right after initial configuration
+- Also share event description via email
+Enigma2:
+- Add Support for Provider list and retrieving all services
+- Service Editor available as In-App Purchase
+- Allow to add/remove bookmarks
+- Fix possible crash in Package Manager on the iPad
+- Fix "prefer alternatives" setting in autotimer
+
+1.2.0-full:
+- Continue to load EPG data for MultiEPG in Background
+
+1.3.0:
+- Add support for different themes (three schemes to begin with)
+- Add Multi-Delete to Timer and Movie List
+- Confirmation when adding a timer / sending a message etc succeeded
+- Long press gesture in event list added (add timer)
+Enigma2:
+- Support for the upcoming web interface 1.7.0
+- Allow to change timer tags
+- Allow to filter movies by tags
