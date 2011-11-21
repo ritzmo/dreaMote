@@ -23,9 +23,11 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	if((self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]))
 	{
-		self.textLabel.font = [UIFont boldSystemFontOfSize:kMultiEPGFontSize];
+		const DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+		self.textLabel.textColor = singleton.textColor;
+		self.textLabel.highlightedTextColor = singleton.highlightedTextColor;
+		self.textLabel.font = [UIFont boldSystemFontOfSize:singleton.multiEpgFontSize];
 		self.accessoryType = UITableViewCellAccessoryNone;
-		self.backgroundColor = [UIColor clearColor];
 
 		epgView = [[MultiEPGCellContentView alloc] initWithFrame:CGRectZero];
 		epgView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
@@ -39,6 +41,7 @@ NSString *kMultiEPGCell_ID = @"MultiEPGCell_ID";
 {
 	self.service = nil;
 	epgView.events = nil;
+	[super prepareForReuse];
 }
 
 /* getter for service property */
