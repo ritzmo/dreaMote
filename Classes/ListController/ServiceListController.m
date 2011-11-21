@@ -446,6 +446,12 @@ enum serviceListTags
 	[self theme];
 }
 
+- (void)theme
+{
+	[super theme];
+	mgSplitViewController.view.backgroundColor = _tableView.backgroundColor;
+}
+
 - (void)viewDidUnload
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
