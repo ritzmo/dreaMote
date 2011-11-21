@@ -562,33 +562,47 @@ enum settingsRows
 	}
 	else if(indexPath.section == purchaseSection)
 	{
+		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+		[self.view addSubview:progressHUD];
+		progressHUD.removeFromSuperViewOnHide = YES;
+		[progressHUD setLabelText:NSLocalizedString(@"Working…", @"Label of Progress HUD in ConfigList when waiting for the AppStore")];
+		[progressHUD setMode:MBProgressHUDModeIndeterminate];
+		[progressHUD show:YES];
 		NSArray *purchasables = [MKStoreManager sharedManager].purchasableObjectsList;
 		if(indexPath.row < (NSInteger)purchasables.count)
 		{
 			[[MKStoreManager sharedManager] buyFeature:[purchasables objectAtIndex:indexPath.row]
 											onComplete:^(NSString *featureId)
 			{
-				showCompletedHudWithText(NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully"));
+				progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+				progressHUD.mode = MBProgressHUDModeCustomView;
+				progressHUD.labelText = NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully");
+				[progressHUD hide:YES afterDelay:2];
 			}
 										   onCancelled:^
 			{
-				// TODO: anything? MKStoreKit already shows an alert
+				[progressHUD hide:YES];
 			}];
 		}
 #if IS_DEBUG()
 		else if(indexPath.row == (NSInteger)purchasables.count + 1)
 		{
 			[[MKStoreManager sharedManager] removeAllKeychainData];
+			[progressHUD hide:YES];
 		}
 #endif
 		else
 		{
 			[[MKStoreManager sharedManager] restorePreviousTransactionsOnComplete:^
 			{
-				showCompletedHudWithText(NSLocalizedString(@"Restore completed", @"In-App-Purchase were restored successfully"));
+				progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+				progressHUD.mode = MBProgressHUDModeCustomView;
+				progressHUD.labelText = NSLocalizedString(@"Restore completed", @"In-App-Purchase were restored successfully");
+				[progressHUD hide:YES afterDelay:2];
 			}
 																		  onError:^(NSError *error)
 			{
+				[progressHUD hide:YES];
 				NSLog(@"error %@, error code %d", error, error.code);
 				if(!error || error.domain != SKErrorDomain) return;
 				const UIAlertView *notification = [[UIAlertView alloc] initWithTitle:[error localizedFailureReason]
