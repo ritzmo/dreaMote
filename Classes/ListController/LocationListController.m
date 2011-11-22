@@ -112,8 +112,10 @@
 /* cancel in delegate mode */
 - (void)doneAction:(id)sender
 {
-	if(callback)
-		callback(nil, YES);
+	locationCallback_t call = callback;
+	callback = nil;
+	if(call)
+		call(nil, YES);
 }
 
 /* about to display */
@@ -340,9 +342,11 @@
 	// Callback mode
 	if(callback)
 	{
+		locationCallback_t call = callback;
+		callback = nil;
 		tableView.allowsSelection = NO;
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		callback(location, NO);
+		call(location, NO);
 	}
 	// Open movie list
 	else if(!_movieListController.reloading)
