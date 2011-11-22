@@ -42,7 +42,6 @@
 		self.datePickerMode = UIDatePickerModeDateAndTime;
 		self.modalPresentationStyle = UIModalPresentationFormSheet;
 		self.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-		callback = nil;
 	}
 	
 	return self;
@@ -155,9 +154,7 @@
 /* rotate with device on ipad, otherwise to portrait */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	if(IS_IPAD())
-		return YES;
-	return UIInterfaceOrientationIsPortrait(interfaceOrientation);
+	return IS_IPAD() || UIInterfaceOrientationIsPortrait(interfaceOrientation);
 }
 
 /* finish */
@@ -172,7 +169,9 @@
 			NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:date];
 			date = [gregorian dateFromComponents:components];
 		}
-		callback(date);
+		datepicker_callback_t call = callback;
+		callback = nil;
+		call(date);
 	}
 
 	if(IS_IPAD())
