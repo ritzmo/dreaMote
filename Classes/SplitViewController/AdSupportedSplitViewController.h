@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #if INCLUDE_FEATURE(Ads)
-#import "iAd/ADBannerView.h"
+	#import <iAd/ADBannerView.h>
 #endif
 
 #import "MGSplitViewController/MGSplitViewController.h"

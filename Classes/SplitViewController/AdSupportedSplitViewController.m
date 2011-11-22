@@ -14,6 +14,7 @@
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
+- (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation withAnimation:(BOOL)animate;
 @property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
@@ -25,34 +26,27 @@
 #if INCLUDE_FEATURE(Ads)
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
-#endif
 
 - (void)loadView
 {
 	[super loadView];
 
-#if INCLUDE_FEATURE(Ads)
 	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
 		[self createAdBannerView];
-#endif
 }
 
 
 - (void)viewDidUnload
 {
-#if INCLUDE_FEATURE(Ads)
 	[_adBannerView setDelegate:nil];
 	_adBannerView = nil;
-#endif
 	[super viewDidUnload];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
-#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:self.interfaceOrientation];
-#endif
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation 
@@ -60,13 +54,23 @@
 {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation 
 											duration:duration];
-#if INCLUDE_FEATURE(Ads)
 	[self fixupAdView:toInterfaceOrientation];
-#endif
+
+}
+
+- (void)setMasterViewController:(UIViewController *)masterViewController
+{
+	[super setMasterViewController:masterViewController];
+	[self fixupAdView:self.interfaceOrientation withAnimation:NO];
+}
+
+- (void)setDetailViewController:(UIViewController *)detailViewController
+{
+	[super setDetailViewController:detailViewController];
+	[self fixupAdView:self.interfaceOrientation withAnimation:NO];
 }
 
 #pragma mark ADBannerViewDelegate
-#if INCLUDE_FEATURE(Ads)
 
 //#define __BOTTOM_AD__
 
@@ -116,8 +120,13 @@
 	}
 }
 
-// XXX: only supports vertical split
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation
+{
+	[self fixupAdView:toInterfaceOrientation withAnimation:YES];
+}
+
+// XXX: only supports vertical split
+- (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation withAnimation:(BOOL)animate
 {
 	if (_adBannerView != nil)
 	{
@@ -129,7 +138,8 @@
 		{
 			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
 		}
-		[UIView beginAnimations:@"fixupViews" context:nil];
+		if(animate)
+			[UIView beginAnimations:@"fixupViews" context:nil];
 		if(_adBannerViewIsVisible)
 		{
 			CGRect adBannerViewFrame = [_adBannerView frame];
@@ -180,7 +190,8 @@
 			self.masterViewController.view.frame = masterViewFrame;
 			self.detailViewController.view.frame = detailViewFrame;
 		}
-		[UIView commitAnimations];
+		if(animate)
+			[UIView commitAnimations];
 	}
 }
 
@@ -201,6 +212,6 @@
 		[self fixupAdView:self.interfaceOrientation];
 	}
 }
-#endif
 
+#endif
 @end
