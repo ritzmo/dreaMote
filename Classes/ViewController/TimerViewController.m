@@ -58,16 +58,18 @@ typedef void (^tagLoaderCallback_t)(NSArray *tags, BOOL success);
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	if(callback)
-		callback(tags, NO);
+	tagLoaderCallback_t call = callback;
 	callback = nil;
+	if(call)
+		call(tags, NO);
 }
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
-	if(callback)
-		callback(tags, YES);
+	tagLoaderCallback_t call = callback;
 	callback = nil;
+	if(call)
+		call(tags, YES);
 }
 
 - (void)loadTags

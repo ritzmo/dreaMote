@@ -158,8 +158,10 @@
 /* cancel */
 - (void)cancelEdit:(id)sender
 {
-	if(callback)
-		callback(NO, nil, filterType, include, oldText, oldInclude);
+	autotimerfilter_callback_t call = callback;
+	callback = nil;
+	if(call)
+		call(NO, nil, filterType, include, oldText, oldInclude);
 }
 
 /* finish */
@@ -177,7 +179,9 @@
 		if([text isEqualToString:@""])
 			text = nil;
 
-		callback(YES, text, filterType, include, oldText, oldInclude);
+		autotimerfilter_callback_t call = callback;
+		callback = nil;
+		call(YES, text, filterType, include, oldText, oldInclude);
 	}
 }
 

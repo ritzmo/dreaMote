@@ -164,9 +164,10 @@
 /* about to disappear */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(callback)
-		callback(selectedItems, NO);
+	simplemultiselection_callback_t call = callback;
 	callback = nil;
+	if(call)
+		call(selectedItems, NO);
 }
 
 @end
