@@ -53,7 +53,9 @@
 	#define REVIEW_ALLOWED 1
 #else
 	#define OWN_SERVER @"http://ritzmo.de/iphone/store"
-	#define REVIEW_ALLOWED 0
+	#ifdef REVIEW_ALLOWED
+		#undef REVIEW_ALLOWED
+	#endif
 #endif
 
 //#warning Shared Secret Missing Ignore this warning if you don't use auto-renewable subscriptions
