@@ -40,7 +40,7 @@
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
 #if INCLUDE_FEATURE(Ads)
 @private
-	id _adBannerView;
+	ADBannerView *_adBannerView;
 	BOOL _adBannerViewIsVisible;
 #endif
 }

@@ -27,6 +27,7 @@
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
+- (void)destroyAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 @property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
@@ -63,13 +64,14 @@
 		_dateFormatter = [[NSDateFormatter alloc] init];
 		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-		_now = nil;
-		_next = nil;
-		_service = nil;
-		_xmlReader = nil;
 	}
 	
 	return self;
+}
+
+- (void)dealloc
+{
+	[self destroyAdBannerView];
 }
 
 /* layout */
@@ -88,8 +90,7 @@
 - (void)viewDidUnload
 {
 #if INCLUDE_FEATURE(Ads)
-	[_adBannerView setDelegate:nil];
-	_adBannerView = nil;
+	[self destroyAdBannerView];
 #endif
 	[super viewDidUnload];
 }
@@ -493,35 +494,39 @@
 
 - (void)createAdBannerView
 {
-	Class classAdBannerView = NSClassFromString(@"ADBannerView");
-	if(classAdBannerView != nil)
+	self.adBannerView = [[ADBannerView alloc] initWithFrame:CGRectZero];
+	[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
+													  ADBannerContentSizeIdentifierPortrait,
+													  ADBannerContentSizeIdentifierLandscape,
+													  nil]];
+	if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
 	{
-		self.adBannerView = [[classAdBannerView alloc] initWithFrame:CGRectZero];
-		[_adBannerView setRequiredContentSizeIdentifiers:[NSSet setWithObjects:
-														  ADBannerContentSizeIdentifierPortrait,
-														  ADBannerContentSizeIdentifierLandscape,
-														  nil]];
-		if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-		{
-			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
-		}
-		else
-		{
-			[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
-		}
-#ifdef __BOTTOM_AD__
-		// Banner at Bottom
-		CGRect cgRect =[[UIScreen mainScreen] bounds];
-		CGSize cgSize = cgRect.size;
-		[_adBannerView setFrame:CGRectOffset([_adBannerView frame], 0, cgSize.height + [self getBannerHeight])];
-#else
-		// Banner at the Top
-		[_adBannerView setFrame:CGRectOffset([_adBannerView frame], 0, -[self getBannerHeight])];
-#endif
-		[_adBannerView setDelegate:self];
-
-		[self.view addSubview:_adBannerView];
+		[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierLandscape];
 	}
+	else
+	{
+		[_adBannerView setCurrentContentSizeIdentifier:ADBannerContentSizeIdentifierPortrait];
+	}
+#ifdef __BOTTOM_AD__
+	// Banner at Bottom
+	CGRect cgRect =[[UIScreen mainScreen] bounds];
+	CGSize cgSize = cgRect.size;
+	[_adBannerView setFrame:CGRectOffset([_adBannerView frame], 0, cgSize.height + [self getBannerHeight])];
+#else
+	// Banner at the Top
+	[_adBannerView setFrame:CGRectOffset([_adBannerView frame], 0, -[self getBannerHeight])];
+#endif
+	[_adBannerView setDelegate:self];
+
+	[self.view addSubview:_adBannerView];
+}
+
+- (void)destroyAdBannerView
+{
+	//[_adBannerView cancelBannerViewAction];
+	[_adBannerView removeFromSuperview];
+	_adBannerView.delegate = nil;
+	_adBannerView = nil;
 }
 
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation
