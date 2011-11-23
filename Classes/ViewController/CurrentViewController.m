@@ -29,6 +29,7 @@
 - (void)createAdBannerView;
 - (void)destroyAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
+- (void)adsWereRemoved:(NSNotification *)note;
 @property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
@@ -71,7 +72,9 @@
 
 - (void)dealloc
 {
+#if INCLUDE_FEATURE(Ads)
 	[self destroyAdBannerView];
+#endif
 }
 
 /* layout */
@@ -83,13 +86,17 @@
 
 #if INCLUDE_FEATURE(Ads)
 	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	{
 		[self createAdBannerView];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];
+	}
 #endif
 }
 
 - (void)viewDidUnload
 {
 #if INCLUDE_FEATURE(Ads)
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kAdRemovalPurchased object:nil];
 	[self destroyAdBannerView];
 #endif
 	[super viewDidUnload];
@@ -527,6 +534,13 @@
 	[_adBannerView removeFromSuperview];
 	_adBannerView.delegate = nil;
 	_adBannerView = nil;
+}
+
+- (void)adsWereRemoved:(NSNotification *)note
+{
+	_adBannerViewIsVisible = NO;
+	[self fixupAdView:self.interfaceOrientation];
+	[self destroyAdBannerView];
 }
 
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation

@@ -81,6 +81,11 @@
  @brief Create banner view
  */
 - (void)createAdBannerView;
+
+/*!
+ @brief Ad-Free IAP was purchased.
+ */
+- (void)adsWereRemoved:(NSNotification *)note;
 #endif
 
 /*!

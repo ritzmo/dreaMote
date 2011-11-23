@@ -171,13 +171,17 @@
 
 #if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	{
 		[self createAdBannerView];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];
+	}
 #endif
 }
 
 - (void)viewDidUnload
 {
 #if INCLUDE_FEATURE(Ads)
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kAdRemovalPurchased object:nil];
 	[self destroyAdBannerView];
 #endif
 #if IS_FULL()
@@ -660,6 +664,13 @@
 	[_adBannerView removeFromSuperview];
 	_adBannerView.delegate = nil;
 	_adBannerView = nil;
+}
+
+- (void)adsWereRemoved:(NSNotification *)note
+{
+	_adBannerViewIsVisible = NO;
+	[self fixupAdView:self.interfaceOrientation];
+	[self destroyAdBannerView];
 }
 
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation

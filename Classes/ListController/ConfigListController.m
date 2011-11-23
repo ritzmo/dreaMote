@@ -512,6 +512,12 @@ enum settingsRows
 												   message:nil
 												   delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+#if INCLUDE_FEATURE(Ads)
+			 if([featureId isEqualToString:kAdFreePurchase])
+			 {
+				 [[NSNotificationCenter defaultCenter] postNotificationName:kAdRemovalPurchased object:nil userInfo:nil];
+			 }
+#endif
 			}
 										   onCancelled:^
 			{
