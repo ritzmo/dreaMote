@@ -62,7 +62,7 @@
 
 #if INCLUDE_FEATURE(Ads)
 @private
-	id _adBannerView;
+	ADBannerView *_adBannerView;
 	BOOL _adBannerViewIsVisible;
 	CGFloat _adBannerHeight;
 #endif
