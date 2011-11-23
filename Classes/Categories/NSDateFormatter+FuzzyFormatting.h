@@ -27,4 +27,9 @@
  */
 - (void)resetReferenceDate;
 
+/*!
+ @brief Request a reset of the reference date.
+ */
++ (void)resetReferenceDate;
+
 @end
