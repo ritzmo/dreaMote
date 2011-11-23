@@ -38,6 +38,11 @@ static NSDate *_thisNight = nil;
 	_thisNight = nil;
 }
 
++ (void)resetReferenceDate
+{
+	_thisNight = nil;
+}
+
 /* translate date to string */
 // NOTE: iOS4 brings its own simple fuzzer, but we want a more specific one.
 - (NSString *)fuzzyDate:(NSDate *)date
