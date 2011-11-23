@@ -3650,7 +3650,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = "/usr/bin/env python";
-			shellScript = "import os\n\nfilenames = {\n    'dreaMote': 'MKStoreKitConfigs Full.plist',\n    'dreaMoteLite': 'MKStoreKitConfigs Lite.plist',\n}\nbefore = filenames.get(os.environ['TARGET_NAME'], None)\n\nif before:\n    basedir = os.path.join(os.environ['BUILT_PRODUCTS_DIR'], os.environ['WRAPPER_NAME'])\n    fullpath = os.path.join(basedir, before)\n    if os.path.exists(fullpath):\n        target = os.path.join(basedir, 'MKStoreKitConfigs.plist')\n        os.rename(fullpath, target)\n        print fullpath, 'renamed to', target\n    else:\n        raise Exception, 'Source configuration %s not found!' % (fullpath,)\nelse:\n    print 'Target %s has no source file name defined, ignoring build step.' % (os.environ['TARGET_NAME'], )";
+			shellScript = "import os\n\nfilenames = {\n    'dreaMote': 'MKStoreKitConfigs Full.plist',\n    'dreaMote Lite': 'MKStoreKitConfigs Lite.plist',\n}\nbefore = filenames.get(os.environ['TARGET_NAME'], None)\n\nif before:\n    basedir = os.path.join(os.environ['BUILT_PRODUCTS_DIR'], os.environ['WRAPPER_NAME'])\n    fullpath = os.path.join(basedir, before)\n    if os.path.exists(fullpath):\n        target = os.path.join(basedir, 'MKStoreKitConfigs.plist')\n        os.rename(fullpath, target)\n        print fullpath, 'renamed to', target\n    else:\n        raise Exception, 'Source configuration %s not found!' % (fullpath,)\nelse:\n    print 'Target %s has no source file name defined, ignoring build step.' % (os.environ['TARGET_NAME'], )";
 		};
 /* End PBXShellScriptBuildPhase section */
 
