@@ -8,6 +8,7 @@
 
 #import "AdSupportedSplitViewController.h"
 
+#import <Constants.h>
 #import "MKStoreManager.h"
 
 @interface AdSupportedSplitViewController()
@@ -16,6 +17,7 @@
 - (void)destroyAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation withAnimation:(BOOL)animate;
+- (void)adsWereRemoved:(NSNotification *)note;
 @property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
@@ -33,7 +35,10 @@
 	[super loadView];
 
 	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	{
 		[self createAdBannerView];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];
+	}
 }
 
 - (void)dealloc
@@ -43,6 +48,7 @@
 
 - (void)viewDidUnload
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kAdRemovalPurchased object:nil];
 	[self destroyAdBannerView];
 	[super viewDidUnload];
 }
@@ -126,6 +132,13 @@
 	[_adBannerView removeFromSuperview];
 	_adBannerView.delegate = nil;
 	_adBannerView = nil;
+}
+
+- (void)adsWereRemoved:(NSNotification *)note
+{
+	_adBannerViewIsVisible = NO;
+	[self fixupAdView:self.interfaceOrientation withAnimation:YES];
+	[self destroyAdBannerView];
 }
 
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation

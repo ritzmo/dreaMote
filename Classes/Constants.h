@@ -95,6 +95,7 @@
 #define kReconnectNotification			@"dreaMoteDidReconnect"
 #define kBouquetsChangedNotification	@"dreaMoteDidChangeBouquets" // currently only covers added bouquets
 #define kThemeChangedNotification		@"dreaMoteDidChangeTheme"
+#define kAdRemovalPurchased				@"dreaMoteDoDisableAds"
 
 // paths for custom configuration files
 #define kConfigPath @"~/Library/Preferences/com.ritzMo.dreaMote.Connections.plist"

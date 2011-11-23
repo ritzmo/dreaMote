@@ -31,6 +31,7 @@
 - (void)createAdBannerView;
 - (void)destroyAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
+- (void)adsWereRemoved:(NSNotification *)note;
 @property (nonatomic, strong) id adBannerView;
 @property (nonatomic) BOOL adBannerViewIsVisible;
 #endif
@@ -137,7 +138,10 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 #if INCLUDE_FEATURE(Ads)
 	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	{
 		[self createAdBannerView];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];
+	}
 #endif
 
 	_deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -168,6 +172,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 #if INCLUDE_FEATURE(Ads)
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kAdRemovalPurchased object:nil];
 	[self destroyAdBannerView];
 #endif
 	_cleanupButton = nil;
@@ -820,6 +825,13 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[_adBannerView removeFromSuperview];
 	_adBannerView.delegate = nil;
 	_adBannerView = nil;
+}
+
+- (void)adsWereRemoved:(NSNotification *)note
+{
+	_adBannerViewIsVisible = NO;
+	[self fixupAdView:self.interfaceOrientation];
+	[self destroyAdBannerView];
 }
 
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation

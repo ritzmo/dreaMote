@@ -275,6 +275,12 @@ enum settingsRows
 			 progressHUD.mode = MBProgressHUDModeCustomView;
 			 progressHUD.labelText = NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully");
 			 [progressHUD hide:YES afterDelay:2];
+#if INCLUDE_FEATURE(Ads)
+			 if([featureId isEqualToString:kAdFreePurchase])
+			 {
+				 [[NSNotificationCenter defaultCenter] postNotificationName:kAdRemovalPurchased object:nil userInfo:nil];
+			 }
+#endif
 		 }
 									   onCancelled:^
 		 {
