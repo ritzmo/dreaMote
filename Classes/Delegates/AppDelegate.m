@@ -15,8 +15,9 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-#import "NSData+Base64.h"
 #import "NSArray+ArrayFromData.h"
+#import "NSData+Base64.h"
+#import "NSDateFormatter+FuzzyFormatting.h"
 #import "UIDevice+SystemVersion.h"
 
 #import "Appirater.h"
@@ -343,6 +344,8 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	// remove past event
 	[[EPGCache sharedInstance] cleanCache];
 #endif
+	// reset reference date
+	[NSDateFormatter resetReferenceDate];
 
 	// stop bonjour discovery which might have been running since the app started
 	// otherwise this is a noop
