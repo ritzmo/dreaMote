@@ -224,7 +224,7 @@ enum buttonCodes {
 	// Advanced Remote
 	kButtonCodeRecord = 167,
 	kButtonCodePVR = 393,
-	kButtonCodePlayPause = 164,
+	kButtonCodePlayPause = 207,
 	kButtonCodeFFwd = 163,
 	kButtonCodeFRwd = 165,
 	kButtonCodeStop = 128,
