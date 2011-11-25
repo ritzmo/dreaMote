@@ -22,9 +22,6 @@
 		DA2645FE1476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
 		DA2645FF1476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
 		DA2646001476D22D00B91162 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA2645FD1476D22D00B91162 /* ShareKit.bundle */; };
-		DA2646031476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */; };
-		DA2646041476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */; };
-		DA2646051476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */; };
 		DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */; };
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
@@ -1087,7 +1084,6 @@
 		DA2645F51476D17100B91162 /* LegacySHKConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacySHKConfigurator.h; sourceTree = "<group>"; };
 		DA2645F61476D17100B91162 /* LegacySHKConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LegacySHKConfigurator.m; sourceTree = "<group>"; };
 		DA2645FD1476D22D00B91162 /* ShareKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = ShareKit.bundle; path = ShareKit/Classes/ShareKit/ShareKit.bundle; sourceTree = SOURCE_ROOT; };
-		DA2646021476D31F00B91162 /* DreamoteSHKConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteSHKConfigurator.m; sourceTree = "<group>"; };
 		DA3603D3146716EA003E2DDD /* AutoTimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSplitViewController.h; sourceTree = "<group>"; };
 		DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSplitViewController.m; sourceTree = "<group>"; };
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
@@ -3917,7 +3913,6 @@
 				DA2645F01476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
 				DA2645F71476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
 				DA2645FA1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
-				DA2646031476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 				DA7786751476DA9E00BECC34 /* DreamoteSHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4176,7 +4171,6 @@
 				DA2645F11476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
 				DA2645F81476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
 				DA2645FB1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
-				DA2646041476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 				DA7786761476DA9E00BECC34 /* DreamoteSHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4401,7 +4395,6 @@
 				DA2645F21476D15F00B91162 /* SHKCustomActionSheet.m in Sources */,
 				DA2645F91476D17100B91162 /* DefaultSHKConfigurator.m in Sources */,
 				DA2645FC1476D17100B91162 /* LegacySHKConfigurator.m in Sources */,
-				DA2646051476D31F00B91162 /* DreamoteSHKConfigurator.m in Sources */,
 				DA7786771476DA9E00BECC34 /* DreamoteSHKConfigurator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
