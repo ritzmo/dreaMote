@@ -659,7 +659,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 																  message:[NSString stringWithFormat:NSLocalizedString(@"Received invalid row (%d, %d) which was mapped to index %d of %d. Please reload this table and try again.", @"User interaction with TimerList failed because index could not be retrieved."), indexPath.section, indexPath.row, index, _timers.count]
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alert show];
-			[alert release];
 #endif
 			return;
 		}

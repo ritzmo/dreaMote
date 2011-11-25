@@ -1095,7 +1095,6 @@
 																		  message:[NSString stringWithFormat:NSLocalizedString(@"An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!", @""), exceptionName]
 																		 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 					[alert show];
-					[alert release];
 					return; // do NOT call deleteRowsAtIndexPaths
 #endif
 				}
