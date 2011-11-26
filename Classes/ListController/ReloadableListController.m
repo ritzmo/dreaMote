@@ -114,18 +114,14 @@
 
 - (void)theme
 {
-	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
-#if INCLUDE_FEATURE(Ads)
-	UIColor *backgroundColor = nil;
-	if(_tableView.style == UITableViewStyleGrouped || ([self respondsToSelector:@selector(isSlave)] && [(id)self isSlave]))
-		backgroundColor = singleton.groupedTableViewBackgroundColor;
-	else
-		backgroundColor = singleton.backgroundColor;
-	self.view.backgroundColor = backgroundColor;
-#endif
-
-	[singleton styleRefreshHeader:_refreshHeaderView];
 	[super theme];
+#if INCLUDE_FEATURE(Ads)
+	self.view.backgroundColor = _tableView.backgroundColor;
+#endif
+	self.navigationController.view.backgroundColor = _tableView.backgroundColor;
+
+	const DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
+	[singleton styleRefreshHeader:_refreshHeaderView];
 }
 
 - (void)viewDidLoad
