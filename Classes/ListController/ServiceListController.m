@@ -550,7 +550,7 @@ enum serviceListTags
 	}
 	else
 #endif
-		[self configureRightBarButtonItem:NO forOrientation:self.interfaceOrientation];
+		[self configureRightBarButtonItem:animated forOrientation:self.interfaceOrientation];
 
 	_refreshServices = YES;
 	[super viewWillAppear: animated];
