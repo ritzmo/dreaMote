@@ -178,6 +178,10 @@ enum connectorFeatures {
 	 @brief Allows to retrieve now/next through event-like interface in a single call.
 	 */
 	kFeaturesOptimizedNowNext,
+	/*!
+	 @brief Recordings can be moved between folders. Requires kFeaturesRecordingLocations.
+	 */
+	kFeaturesMovingRecordings,
 };
 
 /*!
@@ -554,6 +558,16 @@ enum packageManagementList
  */
 @optional // kFeaturesRecordDelete
 - (Result *)delMovie:(NSObject<MovieProtocol> *) movie;
+
+/*!
+ @brief Move a given Movie on Receiver HDD.
+
+ @param movie Movie to move.
+ @param location Directory to move movie to.
+ @return Valid result if recording was moved, invalid one with given reason otherwise.
+ */
+@optional // kFeaturesMovingRecordings
+- (Result *)moveMovie:(NSObject<MovieProtocol> *)movie toLocation:(NSString *)location;
 
 /*!
  @brief Request Recording Locations from the Receiver.

@@ -106,8 +106,12 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				return NO;
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_8:
-			// NOTE: 1.7.0 is neither not yet final, but it will include both features
-			if(feature == kFeaturesMediaPlayerPlaylistLoad || feature == kFeaturesOptimizedNowNext)
+			// NOTE: 1.7.0 is neither not yet final, but it will include these features
+			if(
+			   (feature == kFeaturesMediaPlayerPlaylistLoad) ||
+			   (feature == kFeaturesOptimizedNowNext) ||
+			   (feature == kFeaturesMovingRecordings)
+			   )
 				return NO;
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_7_0:
@@ -648,6 +652,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 {
 	NSString *relativeURL = [NSString stringWithFormat:@"/web/moviedelete?sRef=%@", [movie.sref urlencode]];
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+}
+
+- (Result *)moveMovie:(NSObject<MovieProtocol> *)movie toLocation:(NSString *)location
+{
+	// NOTE: force moving in background because this might be a time intensive operation between different drives
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/moviedelete?sRef=%@&dirname=%@&background=1", [movie.sref urlencode], [location urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
 - (Result *)instantRecord
