@@ -170,8 +170,10 @@ enum serviceListTags
 	if(searchBar)
 	{
 		CGFloat topOffset = -_tableView.contentInset.top;
+#if 0 // TODO: at least on the simulator this has the contrary effect... recheck this!
 		if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
 			topOffset += searchBar.frame.size.height;
+#endif
 		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
 	}
 
@@ -1547,11 +1549,6 @@ enum serviceListTags
 - (void)addNowEvent:(NSObject <EventProtocol>*)event
 {
 	[_mainList addObject: event];
-#if INCLUDE_FEATURE(Extra_Animation)
-	const NSInteger idx = _mainList.count-1;
-	[_tableView insertRowsAtIndexPaths: [NSArray arrayWithObject: [NSIndexPath indexPathForRow:idx inSection:0]]
-					  withRowAnimation: UITableViewRowAnimationLeft];
-#endif
 	[_piconLoader addOperationWithBlock:^{ [event.service picon]; }];
 #if IS_FULL()
 	[_multiEPG addService:event.service];
@@ -1576,14 +1573,6 @@ enum serviceListTags
 - (void)addService: (NSObject<ServiceProtocol> *)service
 {
 	[_mainList addObject: service];
-#if INCLUDE_FEATURE(Extra_Animation)
-	if(!isAll)
-	{
-		const NSInteger idx = _mainList.count-1;
-		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
-						  withRowAnimation:UITableViewRowAnimationLeft];
-	}
-#endif
 	[_piconLoader addOperationWithBlock:^{ [service picon]; }];
 #if IS_FULL()
 	[_multiEPG addService:service];
