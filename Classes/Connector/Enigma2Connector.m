@@ -657,7 +657,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 - (Result *)moveMovie:(NSObject<MovieProtocol> *)movie toLocation:(NSString *)location
 {
 	// NOTE: force moving in background because this might be a time intensive operation between different drives
-	NSString *relativeURL = [NSString stringWithFormat:@"/web/moviedelete?sRef=%@&dirname=%@&background=1", [movie.sref urlencode], [location urlencode]];
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/moviemove?sRef=%@&dirname=%@&background=1", [movie.sref urlencode], [location urlencode]];
 	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
