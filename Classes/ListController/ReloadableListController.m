@@ -118,7 +118,12 @@
 #if INCLUDE_FEATURE(Ads)
 	self.view.backgroundColor = _tableView.backgroundColor;
 #endif
-	self.navigationController.view.backgroundColor = _tableView.backgroundColor;
+	// NOTE: evil hack from hell is evil!
+	// this "fixes" popovers on the ipad while still giving us a proper non-white background
+	// in regular views which otherwise would show visual distortion when animating the toolbar
+	// in or out while also animating pushing / poping a view to/from the navigation stack.
+	if(self.navigationController.view.superview.superview.superview)
+		self.navigationController.view.backgroundColor = _tableView.backgroundColor;
 
 	const DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 	[singleton styleRefreshHeader:_refreshHeaderView];
