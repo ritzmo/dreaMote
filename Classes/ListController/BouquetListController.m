@@ -364,7 +364,7 @@ enum bouquetListTags
 		}
 		[_serviceListController setEditing:self.editing animated:YES];
 		[self.navigationController setToolbarHidden:YES animated:YES];
-		[self.navigationController pushViewController: _serviceListController animated:YES];
+		[self.navigationController pushViewController:_serviceListController animated:YES];
 	}
 	else
 		[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
@@ -496,7 +496,7 @@ enum bouquetListTags
 		// NOTE: reload service list, important for e.g. enigma1
 		NSIndexPath *idxPath = [_tableView indexPathForSelectedRow];
 		if(idxPath)
-			[self tableView:_tableView willSelectRowAtIndexPath:idxPath];
+			[self tableView:_tableView didSelectRowAtIndexPath:idxPath];
 	}
 	[super dataSourceDelegateFinishedParsingDocument:dataSource];
 }
@@ -655,28 +655,28 @@ enum bouquetListTags
 }
 
 /* select row */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// do nothing if reloading
 	if(_reloading)
 	{
 #if IS_DEBUG()
-		NSLog(@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row);
+		NSLog(@"didSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row);
 #endif
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 	if(indexPath.row >= (NSInteger)_bouquets.count)
 	{
 #if IS_DEBUG()
 		NSLog(@"Selection (%d) outside of bounds (%d) in BouquetListController. This does not have to be bad!", indexPath.row, _bouquets.count);
 #endif
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	// See if we have a valid bouquet
 	NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex: indexPath.row];
 	if(!bouquet.valid)
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	if(bouquetDelegate)
 	{
@@ -704,8 +704,7 @@ enum bouquetListTags
 		[self showServicelist:bouquet];
 	}
 	else
-		return nil;
-	return indexPath;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /* number of sections */
