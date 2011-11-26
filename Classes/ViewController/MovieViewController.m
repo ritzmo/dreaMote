@@ -8,23 +8,29 @@
 
 #import "MovieViewController.h"
 
-#import "Constants.h"
-#import "MovieListController.h"
-#import "RemoteConnectorObject.h"
-#import "TimerViewController.h"
+#import <Constants.h>
+#import <Connector/RemoteConnectorObject.h>
 
-#import "NSDateFormatter+FuzzyFormatting.h"
-#import "NSString+URLEncode.h"
-#import "UITableViewCell+EasyInit.h"
+#import <ListController/LocationListController.h>
+#import <ListController/MovieListController.h>
+#import <ViewController/TimerViewController.h>
+
+#import <Categories/NSDateFormatter+FuzzyFormatting.h>
+#import <Categories/NSString+URLEncode.h>
+#import <Categories/UITableViewCell+EasyInit.h>
+
+#import <Objects/Generic/Result.h>
 
 #import <TableViewCell/CellTextView.h>
 #import <TableViewCell/DisplayCell.h>
 
+#import "MBProgressHUD.h"
 #import "SHK.h"
 
 @interface MovieViewController()
 - (UITextView *)create_Summary;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
+- (void)moveAction:(id)sender;
 @property (nonatomic, strong) UIPopoverController *popoverController;
 @end
 
@@ -156,6 +162,54 @@
 	[[RemoteConnectorObject sharedRemoteConnector] playMovie: _movie];
 
 	[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+/* move movie on receiver */
+- (void)moveAction:(id)sender
+{
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	if([sharedRemoteConnector hasFeature:kFeaturesRecordingLocations] && [sharedRemoteConnector hasFeature:kFeaturesMovingRecordings])
+	{
+		const BOOL isIpad = IS_IPAD();
+		LocationListController *vc = [[LocationListController alloc] init];
+		vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling)
+		{
+			if(!canceling && newLocation.valid)
+			{
+				Result *result = [sharedRemoteConnector moveMovie:_movie toLocation:newLocation.fullpath];
+				if(result.result)
+					showCompletedHudWithText(NSLocalizedString(@"Movie moved", @"Text in HUD when moving a movie succeeded."))
+				else
+				{
+					const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																		  message:result.resulttext
+																		 delegate:nil
+																cancelButtonTitle:@"OK"
+																otherButtonTitles:nil];
+					[alert show];
+				}
+			}
+
+			if(isIpad)
+				[self dismissModalViewControllerAnimated:YES];
+			else
+				[self.navigationController popToViewController:self animated:YES];
+		};
+
+		if(isIpad)
+		{
+			UIViewController *nc = [[UINavigationController alloc] initWithRootViewController:vc];
+			nc.modalPresentationStyle = vc.modalPresentationStyle;
+			nc.modalTransitionStyle = vc.modalTransitionStyle;
+			[self presentModalViewController:nc animated:YES];
+		}
+		else
+			[self.navigationController pushViewController:vc animated:YES];
+	}
+	else
+	{
+		// TODO: warn user, something is very wrong here :)
+	}
 }
 
 - (UITextView *)create_Summary
@@ -352,6 +406,8 @@
 	if(section == 6)
 	{
 		NSUInteger rows = 2;
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMovingRecordings])
+			++rows;
 		if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]])
 			++rows;
 
@@ -545,7 +601,10 @@
 		{
 			NSInteger row = indexPath.row;
 
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 0)
+			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMovingRecordings] && row > 0)
+				++row;
+
+			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 1)
 				++row;
 
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
@@ -571,34 +630,38 @@
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(playAction:) withImage:@"media-playback-start.png"];
 					break;
 				case 1:
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Move", @"");
+					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(moveAction:) withImage:nil];
+					break;
+				case 2:
 					((DisplayCell *)sourceCell).nameLabel.text = @"IMDb";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openIMDb:) withImage:nil];
 					break;
-				case 2:
+				case 3:
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Share", @"");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(share:) withImage:nil];
 					break;
-				case 3:
+				case 4:
 					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayer:) withImage:nil];
 					break;
-				case 4:
+				case 5:
 					((DisplayCell *)sourceCell).nameLabel.text = @"OPlayer Lite";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openOPlayerLite:) withImage:nil];
 					break;
-				case 5:
+				case 6:
 					((DisplayCell *)sourceCell).nameLabel.text = @"BUZZ Player";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openBuzzPlayer:) withImage:nil];
 					break;
-				case 6:
+				case 7:
 					((DisplayCell *)sourceCell).nameLabel.text = @"yxplayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openYxplayer:) withImage:nil];
 					break;
-				case 7:
+				case 8:
 					((DisplayCell *)sourceCell).nameLabel.text = @"GoodPlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openGoodplayer:) withImage:nil];
 					break;
-				case 8:
+				case 9:
 					((DisplayCell *)sourceCell).nameLabel.text = @"AcePlayer";
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(openAcePlayer:) withImage:nil];
 					break;
