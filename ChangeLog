@@ -245,6 +245,7 @@ Enigma2:
 - Allow to add/remove bookmarks
 - Fix possible crash in Package Manager on the iPad
 - Fix "prefer alternatives" setting in autotimer
+- Fix Play/Pause button on advanced remote with Enigma2 3.2+
 
 1.2.0-full:
 - Continue to load EPG data for MultiEPG in Background
@@ -258,3 +259,4 @@ Enigma2:
 - Support for the upcoming web interface 1.7.0
 - Allow to change timer tags
 - Allow to filter movies by tags
+- Allow to move movies between locations (required web interface 1.7.0)
