@@ -316,6 +316,8 @@ enum neutrinoMessageTypes {
 																  error:&error];
 
 		NSString *myString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		NSString *bogusAddress = [NSString stringWithFormat:@"%@:%d", _baseAddress.host, [_baseAddress.port integerValue]];
+		myString = [myString stringByReplacingOccurrencesOfString:bogusAddress withString:_baseAddress.host];
 		myURI = [NSURL URLWithString:myString];
 		return myURI;
 	}
