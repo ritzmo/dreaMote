@@ -125,17 +125,17 @@ ABOUT = """<?xml version="1.0" encoding="UTF-8"?>
 	</e2about>
 </e2abouts>"""
 
-NOSERVICES_E2 = """<?xml version="1.0" encoding="UTF-8"?>
-<e2servicelist>
-</e2servicelist>"""
-
 SERVICES_E2 = """<?xml version="1.0" encoding="UTF-8"?>
 <e2servicelist>
-	<e2service>
-		<e2servicereference>%s</e2servicereference>
-		<e2servicename>%s</e2servicename>
-	</e2service>
+	%(services)s
 </e2servicelist>"""
+
+SERVICE_E2 = """
+	<e2service>
+		<e2servicereference>%(sref)s</e2servicereference>
+		<e2servicename>%(sname)s</e2servicename>
+	</e2service>
+"""
 
 EPGSERVICE = """<?xml version="1.0" encoding="UTF-8"?>
 <e2eventlist>
@@ -468,8 +468,13 @@ TYPE_E2 = 0
 TYPE_E1 = 1
 TYPE_NEUTRINO = 2
 
-movies = []
-timers = []
+RADIO_E2 = '1:7:2:0:0:0:0:0:0:0:(type == 2)FROM BOUQUET "bouquets.radio" ORDER BY bouquet'
+FAVOURITES_E2 = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'
+FAVOURITES_RADIO_E2 = '1:7:2:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.favourites.radio" ORDER BY bouquet'
+PROVIDERS_E2 = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 195) || (type == 25) FROM PROVIDERS ORDER BY name'
+PROVIDERS_RADIO_E2 = '1:7:2:0:0:0:0:0:0:0:(type == 2) FROM PROVIDERS ORDER BY name'
+ALLSERVICES_E2 = '1:7:1:0:0:0:0:0:0:0:(type == 1) || (type == 17) || (type == 195) || (type == 25) ORDER BY name'
+ALLSERVICES_RADIO_E2 = '1:7:2:0:0:0:0:0:0:0:(type == 2) ORDER BY name'
 
 PlaylistEntry=1
 SwitchTimerEntry=2
@@ -666,6 +671,11 @@ class Timer:
 			announceTime = self.begin - 10
 			return "%d %d %d %d %d %d %d %s\n" % (self.eit, type, repeat, repcount, announceTime, self.begin, self.end, data)
 
+class Service:
+	def __init__(self, sref, sname):
+		self.sname = sname
+		self.sref = sref
+
 class State:
 	def __init__(self):
 		self.movies = []
@@ -673,9 +683,36 @@ class State:
 		self.is_muted = False
 		self.reset()
 
+	def getBouquetsForType(self, type="tv"):
+		if type == "radio":
+			return self.bouquets_r
+		elif type == "providers_radio":
+			return self.providers_r
+		elif type == "providers":
+			return self.providers_t
+		return self.bouquets_t
+
+	def getServicesForBouquet(self, bRef):
+		return self.services.setdefault(bRef, [])
+
 	def reset(self):
 		self.setupMovies()
 		self.setupTimers()
+		self.setupServices()
+
+	def setupServices(self):
+		self.bouquets_r = [Service(FAVOURITES_RADIO_E2, "Demo Radio Bouquet")]
+		self.bouquets_t = [Service(FAVOURITES_E2, "Demo Bouquet")]
+		self.providers_r = [Service(PROVIDERS_RADIO_E2, "Sole Radio Provider")]
+		self.providers_t = [Service(PROVIDERS_E2, "Sole Provider")]
+		self.services = {
+				FAVOURITES_RADIO_E2: [Service(':::::::::::DUNNO:::::::::::', 'Demo Radio Service')],
+				PROVIDERS_RADIO_E2: [Service(':::::::::::DUNNO:::::::::::', 'Demo Radio Service')],
+				ALLSERVICES_RADIO_E2: [Service(':::::::::::DUNNO:::::::::::', 'Demo Radio Service'), Service("-99", "Some Radio Service without Provider")],
+				FAVOURITES_E2: [Service('1:0:1:445D:453:1:C00000:0:0:0:', 'Demo Service')],
+				PROVIDERS_E2: [Service('1:0:1:445D:453:1:C00000:0:0:0:', 'Demo Service'), Service("-1", "Some Service"), Service("-2", "Some other Service")],
+				ALLSERVICES_E2: [Service('1:0:1:445D:453:1:C00000:0:0:0:', 'Demo Service'), Service("-1", "Some Service"), Service("-2", "Some other Service"), Service("-3", "Some Service without Provider")],
+		}
 
 	def setupMovies(self):
 		del self.movies[:]
@@ -757,6 +794,7 @@ class Simple(resource.Resource):
 		def get(name, default=None):
 			ret = req.args.get(name)
 			return ret[0] if ret else default
+		returndoc = ''
 		lastComp = req.postpath[-1]
 # ENIGMA2
 		if lastComp == "getcurrent":
@@ -771,21 +809,19 @@ class Simple(resource.Resource):
 			sRef = sRef and sRef[0]
 			returndoc = SIMPLEXMLRESULT % ('True', 'Active service switched to '+sRef)
 		elif req.path == "/web/getservices":
-			sRef = req.args.get('sRef')
-			sRef = sRef and sRef[0]
-			RADIO = '1:7:2:0:0:0:0:0:0:0:(type == 2)FROM BOUQUET "bouquets.radio" ORDER BY bouquet'
-			FAVOURITES = '1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.favourites.tv" ORDER BY bouquet'
-			FAVOURITES_RADIO = '1:7:2:0:0:0:0:0:0:0:FROM BOUQUET "userbouquet.favourites.radio" ORDER BY bouquet'
-			if sRef == FAVOURITES:
-				returndoc = SERVICES_E2 % ('1:0:1:445D:453:1:C00000:0:0:0:', 'Demo Service')
-			elif sRef == FAVOURITES_RADIO:
-				returndoc = SERVICES_E2 % (':::::::::::DUNNO:::::::::::', 'Demo Radio Service')
-			elif sRef == RADIO:
-				returndoc = SERVICES_E2 % (FAVOURITES_RADIO, 'Demo Radio Bouquet')
+			sRef = get('sRef')
+			if sRef == RADIO_E2:
+				services = state.getBouquetsForType("radio")
+			elif sRef == PROVIDERS_E2:
+				services = state.getBouquetsForType("providers")
+			elif sRef == PROVIDERS_RADIO_E2:
+				services = state.getBouquetsForType("providers_radio")
 			elif not sRef: # XXX: what is real tv bouquets sref?
-				returndoc = SERVICES_E2 % (FAVOURITES, 'Demo Bouquet')
+				services = state.getBouquetsForType("tv")
+			# TODO: implement provider and "all services"
 			else:
-				returndoc = NOSERVICES_E2
+				services = state.getServicesForBouquet(sRef)
+			returndoc = SERVICES_E2 % {"services": ''.join([SERVICE_E2 % {"sref": x.sref, "sname": x.sname} for x in services])}
 		elif lastComp == "epgnow" or lastComp == "epgnext":
 			sRef = req.args.get('bRef')
 			sRef = sRef and sRef[0]
@@ -935,6 +971,116 @@ class Simple(resource.Resource):
 				files = ''
 			returndoc = FILELIST % (files,)
 ### /MEDIAPLAYER
+### SERVICE EDITOR
+		elif req.path.startswith("/bouqueteditor"):
+			MODE_TV = 0
+			MODE_RADIO = 1
+			if lastComp == "addbouquet":
+				name = get("name")
+				mode = int(get("mode", 0))
+				if mode == MODE_RADIO:
+					bouquets = state.bouquets_r
+				else:
+					bouquets = state.bouquets_t
+				bouquets.append(Service(name, name))
+			elif lastComp == "removebouquet":
+				bRef = get("sBouquetRef")
+				mode = int(get("mode", 0))
+				if mode == MODE_RADIO:
+					bouquets = state.bouquets_r
+				else:
+					bouquets = state.bouquets_t
+				for bouquet in bouquets[:]:
+					if bouquet.sref == bRef:
+						bouquets.remove(bouquet)
+						break
+			elif lastComp == "movebouquet":
+				bRef = get("sBouquetRef")
+				mode = int(get("mode", 0))
+				position = int(get("position"))
+				if mode == MODE_RADIO:
+					bouquets = state.bouquets_r
+				else:
+					bouquets = state.bouquets_t
+				idx = 0
+				for bouquet in bouquets[:]:
+					if bouquet.sref == bRef:
+						break
+					idx += 1
+				bouquets.insert(position, bouquets.pop(idx))
+			elif lastComp == "moveservice":
+				bRef = get("sBouquetRef")
+				sRef = get("sRef")
+				mode = int(get("mode", 0))
+				position = int(get("position"))
+				services = state.getServicesForBouquet(bRef)
+				idx = 0
+				for service in services[:]:
+					if service.sref == sRef:
+						break
+					idx += 1
+				services.insert(position, services.pop(idx))
+			elif lastComp == "renameservice":
+				bRef = get("sBouquetRef")
+				sRef = get("sRef")
+				newName = get("newName")
+				mode = int(get("mode", 0))
+				sRefBefore = get("sRefBefore")
+				if bRef is not None:
+					# assume moving services
+					# XXX: we assume sRefBefore always is the next service or in other words that we won't change our position
+					services = state.getServicesForBouquet(bRef)
+					for service in services:
+						if service.sref == sRef:
+							service.sname = newName
+							break
+				else:
+					# assume moving bouquets
+					if mode == MODE_RADIO:
+						bouquets = state.bouquets_r
+					else:
+						bouquets = state.bouquets_t
+					for bouquet in bouquets:
+						if bouquet.sref == sRef:
+							bouquet.sname = newName
+							break
+			elif lastComp == "addservicetoalternative":
+				# TODO: implement
+				returndoc = "UNHANDLED METHOD"
+			elif lastComp == "addservicetobouquet":
+				bRef = get("sBouquetRef")
+				sRef = get("sRef")
+				name = get("Name")
+				services = state.getServicesForBouquet(bRef)
+				services.append(Service(sRef, name))
+			elif lastComp == "removeservice":
+				bRef = get("sBouquetRef")
+				sRef = get("sRef")
+				services = state.getServicesForBouquet(bRef)
+				for service in services[:]:
+					if service.sref == sRef:
+						services.remove(service)
+			elif lastComp == "removealternativeservices":
+				# TODO: implement
+				returndoc = "UNHANDLED METHOD"
+			elif lastComp == "addmarkertobouquet":
+				bRef = get("sBouquetRef")
+				name = get("Name")
+				sRefBefore = get("sRefBefore")
+				idx = 0
+				services = state.getServicesForBouquet(bRef)
+				marker = Service("1:64:1:0:0:0:0:0:0:0::"+name, name)
+				if sRefBefore:
+					for service in services[:]:
+						if service.sref == sRefBefore:
+							services.insert(idx, marker)
+							break
+						idx += 1
+				else:
+					services.append(marker)
+			if not returndoc:
+				returndoc = SIMPLEXMLRESULT % ('True', "SOME TEXT - and not really sure if everything worked :D'")
+### /SERVICE EDITOR
 # ENIGMA
 		elif lastComp == "boxstatus":
 			returndoc = BOXSTATUS
