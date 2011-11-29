@@ -686,6 +686,9 @@
 /* Section title for In-App-Purchases in ConfigList */
 "Purchase" = "Zusatzkäufe";
 
+/* In-App-Purchase was completed successfully */
+"Purchase completed" = "Kauf abgeschlossen";
+
 /* Message type */
 "Question" = "Frage";
 
@@ -772,6 +775,9 @@
 
 /* used in confirmation dialog: really restart? */
 "restart" = "GUI neu starten";
+
+/* In-App-Purchase were restored successfully */
+"Restore completed" = "Wiederherstellung abgeschlossen";
 
 /* Restore previous purchases in config list */
 "Restore Purchases" = "Käufe wiederherstellen";
