@@ -301,7 +301,7 @@
 	if(indexPath.section == 0)
 	{
 		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
-		cell.textLabel.text = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"");
+		cell.textLabel.text = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"Text for cell which allows to add a new AutoTimer");
 		return cell;
 	}
 

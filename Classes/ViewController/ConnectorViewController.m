@@ -60,7 +60,7 @@
 /* layout */
 - (void)loadView
 {
-	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Autodetect", @"") style:UIBarButtonItemStyleBordered target:self action:@selector(doAutodetect:)];
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Autodetect", @"Button in Connection Editor which detects the remote receiver type automatically.") style:UIBarButtonItemStyleBordered target:self action:@selector(doAutodetect:)];
 	self.navigationItem.rightBarButtonItem = button;
 
 	// create and configure the table view

@@ -488,12 +488,12 @@ OSStatus RenderTone(
 			sourceCell.selectionStyle = UITableViewCellSelectionStyleNone;
 			if(indexPath.row == 0)
 			{
-				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"SNR", @"");
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"SNR", @"Signal to Noise Ratio (in Percent)");
 				((DisplayCell *)sourceCell).view = _snr;
 			}
 			else
 			{
-				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"AGC", @"");
+				((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"AGC", @"Automatic Gain Control (in Percent)");
 				((DisplayCell *)sourceCell).view = _agc;
 			}
 			break;

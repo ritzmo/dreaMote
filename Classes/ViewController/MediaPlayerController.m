@@ -370,7 +370,7 @@ enum mediaPlayerTags
 - (void)configureToolbar
 {
 	// "Add Folder" Button
-	_addFolderItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Folder", @"")
+	_addFolderItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Add Folder", @"Button in MediaPlayer to add current folder to playlist")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
 																	action:@selector(addFolderQuestion:)];
@@ -381,7 +381,7 @@ enum mediaPlayerTags
 																					action:nil];
 
 	// create a bordered style button with custom title
-	_addPlayToggle = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Adding to Playlist", @"")
+	_addPlayToggle = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Adding to Playlist", @"Used in MediaPlayer, append tracks to playlist")
 																	style:UIBarButtonItemStyleBordered
 																	target:self
 																	action:@selector(toggleAddPlay:)];

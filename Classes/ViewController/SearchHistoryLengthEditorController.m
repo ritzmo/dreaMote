@@ -79,7 +79,7 @@
 	// has a clear 'x' button to the right
 	_lengthTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	// contents
-	_lengthTextField.placeholder = NSLocalizedString(@"<history length>", @"");
+	_lengthTextField.placeholder = NSLocalizedString(@"<history length>", @"Placeholder for textfield with search history length");
 	_lengthTextField.text = [NSString stringWithFormat:@"%d", _length];
 
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel

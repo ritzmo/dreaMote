@@ -124,18 +124,18 @@
 
 	// Message
 	_messageTextField = [self allocTextField];
-	_messageTextField.placeholder = NSLocalizedString(@"<message text>", @"");
+	_messageTextField.placeholder = NSLocalizedString(@"<message text>", @"Placeholder for message text field");
 	_messageTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Caption
 	_captionTextField = [self allocTextField];
-	_captionTextField.placeholder = NSLocalizedString(@"<message caption>", @"");
+	_captionTextField.placeholder = NSLocalizedString(@"<message caption>", @"Placeholder for message caption field");
 	_captionTextField.keyboardType = UIKeyboardTypeDefault;
 
 	// Timeout
 	_timeoutTextField = [self allocTextField];
 	_timeoutTextField.text = [[NSUserDefaults standardUserDefaults] stringForKey: kMessageTimeout];
-	_timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"");
+	_timeoutTextField.placeholder = NSLocalizedString(@"<message timeout>", @"Placeholder for message timeout field");
 	_timeoutTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
 	// Default type

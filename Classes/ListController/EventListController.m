@@ -416,7 +416,7 @@
 			if(popoverController)
 				[popoverController dismissPopoverAnimated:YES];
 			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
-																									  NSLocalizedString(@"AutoTimer Editor", @"Open Editor for new AutoTimer"),
+																									  NSLocalizedStringFromTable(@"AutoTimer Editor", @"AutoTimer", @"Open Editor for new AutoTimer"),
 																									  NSLocalizedString(@"Timer Editor", @"Open Editor for new Timer"),
 																									  NSLocalizedString(@"Add Timer", @""),
 																									  nil]
@@ -448,7 +448,7 @@
 												   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
 											  destructiveButtonTitle:nil
 												   otherButtonTitles:
-								 NSLocalizedString(@"AutoTimer Editor", @"Open Editor for new AutoTimer"),
+								 NSLocalizedStringFromTable(@"AutoTimer Editor", @"AutoTimer", @"Open Editor for new AutoTimer"),
 								 NSLocalizedString(@"Timer Editor", @"Open Editor for new Timer"),
 								 NSLocalizedString(@"Add Timer", @""),
 								 nil];

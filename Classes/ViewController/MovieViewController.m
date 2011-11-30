@@ -630,7 +630,7 @@
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(playAction:) withImage:@"media-playback-start.png"];
 					break;
 				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Move", @"");
+					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Move", @"Button in MovieView to move current movie");
 					((DisplayCell *)sourceCell).view = [self createButtonForSelector:@selector(moveAction:) withImage:nil];
 					break;
 				case 2:
