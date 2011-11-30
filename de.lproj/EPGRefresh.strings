@@ -52,6 +52,9 @@
 /* Label for cell 'Time to stay on service (minutes)' */
 "Time on service (min.)" = "Verbleibe auf Sender (min.)";
 
+/* Label for cell 'Time to stay on service (seconds)' */
+"Time on service (sec.)" = "Verbleibe auf Sender (sek.)";
+
 /* Wakeup from Deep Standby for EPG refresh */
 "Wakeup for refresh" = "Aufwachen für Aktualisierung";
 

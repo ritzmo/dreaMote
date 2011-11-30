@@ -34,16 +34,16 @@
 /* Label for Filesystems Item in MediaPlayer Filelist */
 "<Filesystems>" = "<Medien>";
 
-/* No comment provided by engineer. */
+/* Placeholder for textfield with search history length */
 "<history length>" = "<verlaufslänge>";
 
-/* No comment provided by engineer. */
+/* Placeholder for message caption field */
 "<message caption>" = "<nachrichtentitel>";
 
-/* No comment provided by engineer. */
+/* Placeholder for message text field */
 "<message text>" = "<nachrichtentext>";
 
-/* No comment provided by engineer. */
+/* Placeholder for message timeout field */
 "<message timeout>" = "<nachrichten dauer>";
 
 /* Placeholder for SleepTimer duration field */
@@ -90,7 +90,7 @@
 /* Add new AutoTimer based on this event */
 "Add AutoTimer" = "Neuer AutoTimer";
 
-/* No comment provided by engineer. */
+/* Button in MediaPlayer to add current folder to playlist */
 "Add Folder" = "Ordner hinzufügen";
 
 /* Used in MediaPlayer, add shown folders recursively */
@@ -111,7 +111,7 @@
 /* Default title of AfterEventViewController */
 "After Event" = "Nach der Aufnahme";
 
-/* No comment provided by engineer. */
+/* Automatic Gain Control (in Percent) */
 "AGC" = "AGC";
 
 /* No comment provided by engineer. */
@@ -135,11 +135,20 @@
 /* After Event */
 "Auto" = "Automatisch";
 
-/* No comment provided by engineer. */
+/* Button in Connection Editor which detects the remote receiver type automatically. */
 "Autodetect" = "Erkenne";
 
 /* Default title of AutoTimerViewController */
 "AutoTimer" = "AutoTimer";
+
+/* Text of HUD when AutoTimer was added successfully */
+"AutoTimer added" = "AutoTimer hinzugefügt ";
+
+/* Text of HUD when AutoTimer was changed successfully */
+"AutoTimer changed" = "AutoTimer geändert";
+
+/* Text of HUD when an AutoTimer was removed successfully */
+"AutoTimer deleted" = "AutoTimer gelöscht";
 
 /* Title of AutoTimer in Other List */
 "AutoTimer-Plugin" = "AutoTimer-Plugin";
@@ -152,6 +161,9 @@
 
 /* Name of blue theme */
 "Blue" = "Blau";
+
+/* Text of HUD when a bookmark was removed successfully */
+"Bookmark deleted" = "Lesezeichen gelöscht";
 
 /* Bouquets button in bouquet list
    Title of BouquetListController */
@@ -415,6 +427,9 @@
 /* Timer type */
 "Finished" = "Beendet";
 
+/* Forget previous purchases in config list (debug builds only) */
+"Forget Purchases" = "Einkäufe vergessen";
+
 /* Weekday */
 "Fri" = "Fre";
 
@@ -490,6 +505,9 @@
 /* Label of Progress HUD in MultiEPG */
 "Loading EPG…" = "Lade EPG…";
 
+/* Label of Progress HUD in TimerList when loading list of available tags */
+"Loading Tags" = "Lade Tags";
+
 /* Loading Status */
 "Loading..." = "Lade...";
 
@@ -525,6 +543,9 @@
 /* No comment provided by engineer. */
 "Message cannot be empty." = "Nachricht darf nicht leer sein.";
 
+/* Text of HUD when message was sent successfully */
+"Message sent" = "Nachricht gesendet";
+
 /* Default title of MessageTypeViewController */
 "Message Type" = "Nachrichtentyp";
 
@@ -543,12 +564,24 @@
 /* Tab Title of OtherListController */
 "More" = "Mehr";
 
+/* Button in MovieView to move current movie */
+"Move" = "Verschieben";
+
 /* Default title of MovieViewController */
 "Movie" = "Aufnahme";
+
+/* Text of HUD when a movied was removed successfully */
+"Movie deleted" = "Aufnahme gelöscht";
+
+/* Text in HUD when moving a movie succeeded. */
+"Movie moved" = "Aufnahme verschoben";
 
 /* Title of Movie List in Other List
    Title of MovieListController */
 "Movies" = "Aufnahmen";
+
+/* Text of HUD when multiple movies were removed */
+"Movies deleted" = "Aufnahme gelöscht";
 
 /* Multi EPG Button title */
 "Multi EPG" = "Multi EPG";
@@ -569,11 +602,11 @@
 /* No comment provided by engineer. */
 "Neutrino" = "Neutrino";
 
-/* Repeated */
-"Never" = "Nie";
-
 /* don't refresh sat finder */
 "never" = "nie";
+
+/* Repeated */
+"Never" = "Nie";
 
 /* Title of cell to add a new bookmark */
 "New Bookmark" = "Neues Lesezeichen";
@@ -786,11 +819,11 @@
 /* Cell Label of repeat count in Neutrino */
 "Repetitions" = "Wiederholungen";
 
-/* No comment provided by engineer. */
-"Restart" = "GUI neu starten";
-
 /* used in confirmation dialog: really restart? */
 "restart" = "GUI neu starten";
+
+/* No comment provided by engineer. */
+"Restart" = "GUI neu starten";
 
 /* In-App-Purchase were restored successfully */
 "Restore completed" = "Wiederherstellung abgeschlossen";
@@ -841,6 +874,9 @@
 /* No comment provided by engineer. */
 "Select Service" = "Sender auswählen";
 
+/* No comment provided by engineer. */
+"Select Tags" = "Tags auswählen";
+
 /* Title of ServiceZapListController */
 "Select type of zap" = "Womit umschalten?";
 
@@ -886,11 +922,11 @@
 /* Label of Progress HUD in MediaPlayer when shuffling playlist */
 "Shuffling Playlist" = "Wird gemischt";
 
-/* Toggle Shutdown/Standby of SleepTimer */
-"Shutdown" = "Herunterfahren";
-
 /* used in confirmation dialog: really shutdown? */
 "shutdown" = "herunterfahren";
+
+/* Toggle Shutdown/Standby of SleepTimer */
+"Shutdown" = "Herunterfahren";
 
 /* Title of SignalViewController */
 "Signal" = "Signal";
@@ -914,7 +950,13 @@
    Title of Sleep Timer in Other List */
 "Sleep Timer" = "Ausschalt-Timer";
 
-/* No comment provided by engineer. */
+/* Text of HUD when sleep timer was disabled successfully */
+"Sleep Timer disabled" = "Ausschalt-Timer inaktiv";
+
+/* Text of HUD when sleep timer was set successfully */
+"Sleep Timer set" = "Ausschalt-Timer aktiv";
+
+/* Signal to Noise Ratio (in Percent) */
 "SNR" = "SNR";
 
 /* Sort (movies) alphabetically */
@@ -972,8 +1014,23 @@
 /* Default title of TimerViewController */
 "Timer" = "Timer";
 
+/* Text of HUD when timer was added successfully */
+"Timer added" = "Timer hinzugefügt";
+
+/* Text of HUD when timer was changed successfully */
+"Timer changed" = "Timer geändert";
+
+/* Text of HUD when timer was removed successfully */
+"Timer deleted" = "Timer gelöscht";
+
+/* Open Editor for new Timer */
+"Timer Editor" = "Timer Editor";
+
 /* Title of TimerListController */
 "Timers" = "Timer";
+
+/* Text of HUD when multiple timer were removed successfully */
+"Timers deleted" = "Timer gelöscht";
 
 /* No comment provided by engineer. */
 "Title" = "Titel";
@@ -1005,6 +1062,9 @@
 /* Creating a bookmark has failed */
 "Unable to add bookmark: %@" = "Konnte Lesezeichen nicht hinzufügen: %@";
 
+/* No comment provided by engineer. */
+"Unable to add timer: Service not found." = "Konnte Timer nicht hinzufügen: Sender nicht gefunden.";
+
 /* Connection failed due to improper authentication */
 "Unable to authenticate. Wrong password?" = "Authentifizierung fehlgeschlagen. Passwort fehlerhaft?";
 
@@ -1031,6 +1091,9 @@
 
 /* No comment provided by engineer. */
 "Unable to map button to keycode!" = "Konnte Taste keine Funktion zuweisen!";
+
+/* No comment provided by engineer. */
+"Unable to retrieve tag list." = "Tags konnten nicht geladen werden.";
 
 /* No comment provided by engineer. */
 "Unable to start playback" = "Wiedergabe konnte nicht gestartet werden";
@@ -1082,6 +1145,9 @@
 
 /* Default sharing string for movies */
 "What's your opinion on \"%@\"?" = "Was haltet ihr von \"%@\"?";
+
+/* Label of Progress HUD in ConfigList when waiting for the AppStore */
+"Working…" = "Arbeite…";
 
 /* No comment provided by engineer. */
 "Year" = "Jahr";

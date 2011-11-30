@@ -7,6 +7,12 @@
 /* Add this service to another bouquet */
 /*"Add to Bouquet" = "Add to Bouquet";*/
 
+/* Text of HUD when a service was added as alternative to the currently selected one */
+/*"Alternative added" = "Alternative added";*/
+
+/* Text of HUD when all alternatives were removed for a services */
+/*"Alternatives deleted" = "Alternatives deleted";*/
+
 /* Delete selected service */
 /*"Delete" = "Delete";*/
 
@@ -36,6 +42,9 @@
 
 /* Rename currently selected service */
 /*"Rename" = "Rename";*/
+
+/* Text of HUD when one or multiple services were added to a bouquet */
+/*"Service(s) added" = "Service(s) added";*/
 
 /* Show alternatives for selected service */
 /*"Show Alternatives" = "Show Alternatives";*/

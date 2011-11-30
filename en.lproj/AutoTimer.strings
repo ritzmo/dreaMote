@@ -16,6 +16,9 @@
 /* Avoid Duplicate Description 2 (timer on all services) */
 /*"All Services" = "All Services";*/
 
+/* Open Editor for new AutoTimer */
+/*"AutoTimer Editor" = "AutoTimer Editor";*/
+
 /* timeframe before */
 /*"Before: %@" = "Before: %@";*/
 
@@ -43,7 +46,7 @@
 /* weekday filter */
 /*"Mon-Fri" = "Mon-Fri";*/
 
-/* No comment provided by engineer. */
+/* Text for cell which allows to add a new AutoTimer */
 /*"New AutoTimer" = "New AutoTimer";*/
 
 /* add new bouquet filter */
