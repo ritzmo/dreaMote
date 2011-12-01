@@ -15,6 +15,7 @@ typedef enum
 {
 	SEARCH_TYPE_EXACT,
 	SEARCH_TYPE_PARTIAL,
+	SEARCH_TYPE_DESCRIPTION,
 } autoTimerSearchType;
 
 typedef enum

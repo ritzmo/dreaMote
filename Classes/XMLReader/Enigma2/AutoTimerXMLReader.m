@@ -206,7 +206,12 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchType, kEnigma2ATSearchTypeLength))
 			{
-				currentAT.searchType = [value isEqualToString:@"exact"] ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
+				if([value isEqualToString:@"exact"])
+					currentAT.searchType = SEARCH_TYPE_EXACT;
+				else if([value isEqualToString:@"description"])
+					currentAT.searchType = SEARCH_TYPE_DESCRIPTION;
+				else // should not be needed, but just to be sure...
+					currentAT.searchType = SEARCH_TYPE_PARTIAL;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOverrideAlternatives, kEnigma2ATOverrideAlternativesLength))
 			{
