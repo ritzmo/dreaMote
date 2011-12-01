@@ -76,6 +76,7 @@ enum sectionIds
 @end
 
 static NSArray *avoidDuplicateDescriptionTexts = nil;
+static NSArray *searchTypeTexts = nil;
 
 @implementation AutoTimerViewController
 
@@ -102,6 +103,15 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 						NSLocalizedStringFromTable(@"All Services", @"AutoTimer", @"Avoid Duplicate Description 2 (timer on all services)"),
 						NSLocalizedStringFromTable(@"Timers/Recordings", @"AutoTimer", @"Avoid Duplicate Description 3 (timers on all services and recordings)"),
 						nil
+			];
+		}
+		if(searchTypeTexts == nil)
+		{
+			searchTypeTexts = [[NSArray alloc] initWithObjects:
+							   NSLocalizedStringFromTable(@"Partial", @"AutoTimer", @"Search type: partial event title"),
+							   NSLocalizedStringFromTable(@"Exact", @"AutoTimer", @"Search type: exact event title"),
+							   NSLocalizedStringFromTable(@"in Description", @"AutoTimer", @"Search type: partial in event description"),
+							   nil
 			];
 		}
 	}
@@ -251,7 +261,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	else
 		_maxdurationField.text = [NSString stringWithFormat:@"%d", _timer.maxduration];
 	_timerEnabled.on = _timer.enabled;
-	_exactSearch.on = _timer.searchType == SEARCH_TYPE_EXACT;
 	_sensitiveSearch.on = _timer.searchCase == CASE_SENSITIVE;
 	_overrideAlternatives.on = _timer.overrideAlternatives;
 	_timeframeSwitch.on = (_timer.after != nil && _timer.before != nil);
@@ -413,11 +422,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_timerEnabled.on = _timer.enabled;
 	_timerEnabled.backgroundColor = [UIColor clearColor];
 
-	// Exact
-	_exactSearch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	_exactSearch.on = (_timer.searchType == SEARCH_TYPE_EXACT);
-	_exactSearch.backgroundColor = [UIColor clearColor];
-
 	// Case-Sensitive
 	_sensitiveSearch = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	_sensitiveSearch.on = (_timer.searchCase == CASE_SENSITIVE);
@@ -464,7 +468,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	{
 		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
 		_timerEnabled.onTintColor = tintColor;
-		_exactSearch.onTintColor = tintColor;
 		_sensitiveSearch.onTintColor = tintColor;
 		_overrideAlternatives.onTintColor = tintColor;
 		_timeframeSwitch.onTintColor = tintColor;
@@ -489,7 +492,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	_matchField = nil;
 	_maxdurationField = nil;
 	_timerEnabled = nil;
-	_exactSearch = nil;
 	_sensitiveSearch = nil;
 	_overrideAlternatives = nil;
 	_timeframeSwitch = nil;
@@ -572,7 +574,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 
 		_timer.enabled = _timerEnabled.on;
 		_timer.justplay = _timerJustplay.on;
-		_timer.searchType = _exactSearch.on ? SEARCH_TYPE_EXACT : SEARCH_TYPE_PARTIAL;
 		_timer.searchCase = _sensitiveSearch.on ? CASE_SENSITIVE : CASE_INSENSITIVE;
 		_timer.overrideAlternatives = _overrideAlternatives.on;
 
@@ -645,7 +646,6 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	[_maxdurationCell setEditing:editing animated:animated];
 
 	_timerEnabled.enabled = editing;
-	_exactSearch.enabled = editing;
 	_sensitiveSearch.enabled = editing;
 	_overrideAlternatives.enabled = editing;
 	_timerJustplay.enabled = editing;
@@ -946,9 +946,12 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 					break;
 				case 1:
-					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
-					((DisplayCell *)cell).view = _exactSearch;
-					cell.textLabel.text = NSLocalizedString(@"Exact Title", @"");
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
+					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Search Type: %@", @"AutoTimer", @"searchType attribute of autotimer. Can be partial, exact or in description.."), [searchTypeTexts objectAtIndex:_timer.searchType]];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
 					break;
 				case 2:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
@@ -1341,10 +1344,14 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 	switch(indexPath.section)
 	{
 		case generalSection:
-			if(row == 5)
+			if(row == 1 || row == 5)
 			{
 				const BOOL isIpad = IS_IPAD();
-				SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
+				SimpleSingleSelectionListController *vc = nil;
+				if(row == 1)
+					vc = [SimpleSingleSelectionListController withItems:searchTypeTexts andSelection:_timer.searchType andTitle:NSLocalizedStringFromTable(@"Search Type", @"AutoTimer", @"Title of search type selector.")];
+				else
+					vc = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
 				vc.callback = ^(NSUInteger selection, BOOL isFinal, BOOL canceling)
 				{
 					if(!canceling)
@@ -1352,10 +1359,17 @@ static NSArray *avoidDuplicateDescriptionTexts = nil;
 						if(!isIpad && !isFinal)
 							return NO;
 
-						_timer.avoidDuplicateDescription = selection;
-
 						UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
-						cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:selection]];
+						if(row == 1)
+						{
+							_timer.searchType = selection;
+							cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Search Type: %@", @"AutoTimer", @"searchType attribute of autotimer. Can be partial, exact or in description.."), [searchTypeTexts objectAtIndex:_timer.searchType]];
+						}
+						else
+						{
+							_timer.avoidDuplicateDescription = selection;
+							cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:selection]];
+						}
 					}
 					else if(!isIpad)
 						[self.navigationController popToViewController:self animated:YES];

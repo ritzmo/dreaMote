@@ -51,7 +51,6 @@
 	CellTextField *_maxdurationCell; /*!< @brief Cell for Maxduration. */
 	UITextField *_maxdurationField; /*!< @brief Textfield for Maxduration. */
 	UISwitch *_timerEnabled; /*!< @brief Enable/Disable Switch. */
-	UISwitch *_exactSearch; /*!< @brief Exact/Partial Search. */
 	UISwitch *_sensitiveSearch; /*!< @brief Case-(in)sensitive Search. */
 	UISwitch *_overrideAlternatives; /*!< @brief Override Alternatives? */
 	UISwitch *_timeframeSwitch; /*!< @brief Enable/Disable Timeframe. */
