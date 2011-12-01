@@ -183,10 +183,15 @@
 
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView
 {
-	return [self styleTableViewCell:cell inTableView:tableView asSlave:NO];
+	return [self styleTableViewCell:cell inTableView:tableView asSlave:NO multiSelected:NO];
 }
 
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave
+{
+	return [self styleTableViewCell:cell inTableView:tableView asSlave:slave multiSelected:NO];
+}
+
+- (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave multiSelected:(BOOL)selected
 {
 	switch(currentTheme)
 	{
@@ -195,8 +200,18 @@
 		{
 			if(tableView.style == UITableViewStylePlain)
 			{
-				cell.backgroundView = nil;
+				// remove old background views
 				cell.selectedBackgroundView = nil;
+				if(![cell.backgroundView isMemberOfClass:[UIView class]])
+					cell.backgroundView = nil;
+
+				// create a new background view only if selected
+				if(!cell.backgroundView && selected)
+					cell.backgroundView = [[UIView alloc] init];
+				if(selected)
+					cell.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
+				else
+					cell.backgroundView.backgroundColor = [UIColor clearColor];
 			}
 			if(cell.selectionStyle == UITableViewCellSelectionStyleGray)
 				cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -213,6 +228,7 @@
 			}
 			else
 			{
+				// TODO: implement selection
 				UIImage *image = [UIImage imageNamed:@"Cell_Blue.png"];
 				cell.backgroundView = [[UIImageView alloc] initWithImage:image];
 				cell.backgroundColor = nil;
@@ -226,6 +242,7 @@
 			UIColor *backgroundColor = nil;
 			if(tableView.style == UITableViewStylePlain)
 			{
+				// TODO: implement selection
 				backgroundColor = nil;
 				cell.backgroundView = nil;
 				cell.selectedBackgroundView = nil;
@@ -242,6 +259,7 @@
 			UIColor *backgroundColor = nil;
 			if(tableView.style == UITableViewStylePlain)
 			{
+				// TODO: implement selection
 				backgroundColor = nil;
 				UIImage *image = slave ? [UIImage imageNamed:@"Cell_DarkGroup.png"] : [UIImage imageNamed:@"Cell_Dark.png"];
 				cell.backgroundView = [[UIImageView alloc] initWithImage:image];

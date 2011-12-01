@@ -1663,17 +1663,10 @@ enum serviceListTags
 		((ServiceTableViewCell *)cell).service = firstObject;
 
 		const BOOL shouldSelect = [_selectedServices containsObject:firstObject];
-		if(!cell.backgroundView && shouldSelect)
-			cell.backgroundView = [[UIView alloc] init];
-		if(shouldSelect)
-			cell.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
-		else
-			cell.backgroundView.backgroundColor = [UIColor clearColor];
-
+		return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave multiSelected:shouldSelect];
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 }
 
 /* select row */

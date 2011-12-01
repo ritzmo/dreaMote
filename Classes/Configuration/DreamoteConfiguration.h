@@ -34,6 +34,7 @@ typedef enum {
 - (void)styleRefreshHeader:(EGORefreshTableHeaderView *)refreshHeader;
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)tableViewCell inTableView:(UITableView *)tableView;
 - (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave;
+- (UITableViewCell *)styleTableViewCell:(UITableViewCell *)cell inTableView:(UITableView *)tableView asSlave:(BOOL)slave multiSelected:(BOOL)selected;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 
