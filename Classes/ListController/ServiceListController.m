@@ -734,19 +734,20 @@ enum serviceListTags
 	if(self.showNowNext)
 	{
 		_tableView.rowHeight = kServiceEventCellHeight;
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesOptimizedNowNext])
+		NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+		if([sharedRemoteConnector hasFeature:kFeaturesOptimizedNowNext])
 		{
 			pendingRequests = 1;
-			_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] getNowNext:self bouquet:_bouquet isRadio:_isRadio];
+			_xmlReader = [sharedRemoteConnector getNowNext:self bouquet:_bouquet isRadio:_isRadio];
 		}
 		else
 		{
 			pendingRequests = 2;
 			[RemoteConnectorObject queueBlock:^{
-				_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio];
+				_xmlReader = [sharedRemoteConnector getNow:self bouquet:_bouquet isRadio:_isRadio];
 			}];
 			[RemoteConnectorObject queueBlock:^{
-				_xmlReaderSub = [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio];
+				_xmlReaderSub = [sharedRemoteConnector getNext:self bouquet:_bouquet isRadio:_isRadio];
 			}];
 		}
 	}
