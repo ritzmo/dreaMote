@@ -185,7 +185,9 @@
 
 - (void)gotAutoTimerVersion:(NSNumber *)aVersion
 {
-	_autotimerVersion = [aVersion integerValue];
+	NSInteger intVersion = [aVersion integerValue];
+	_autotimerVersion = intVersion;
+	_autotimerView.autotimerVersion = intVersion;
 }
 
 #pragma mark - View lifecycle
@@ -318,19 +320,19 @@
 }
 
 /* select row */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(self.editing)
 	{
 		if(indexPath.section == 0)
 			[self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	// See if we have a valid autotimer
 	AutoTimer *autotimer = [_autotimers objectAtIndex:indexPath.row];
 	if(!autotimer.valid)
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	// create a copy and work on it
 	AutoTimer *copy = [autotimer copy];
@@ -347,7 +349,6 @@
 
 	// NOTE: set this here so the edit button won't get screwed
 	_autotimerView.creatingNewTimer = NO;
-	return indexPath;
 }
 
 /* number of sections */
