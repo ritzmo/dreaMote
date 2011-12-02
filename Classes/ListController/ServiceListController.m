@@ -1550,6 +1550,11 @@ enum serviceListTags
 {
 	[_mainList addObject: event];
 	[_piconLoader addOperationWithBlock:^{ [event.service picon]; }];
+#if INCLUDE_FEATURE(Extra_Animation)
+	const NSInteger idx = _mainList.count-1;
+	[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
+					  withRowAnimation:UITableViewRowAnimationLeft];
+#endif
 #if IS_FULL()
 	[_multiEPG addService:event.service];
 #endif
@@ -1574,6 +1579,14 @@ enum serviceListTags
 {
 	[_mainList addObject: service];
 	[_piconLoader addOperationWithBlock:^{ [service picon]; }];
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(!isAll)
+	{
+		const NSInteger idx = _mainList.count-1;
+		[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]]
+						  withRowAnimation:UITableViewRowAnimationLeft];
+	}
+#endif
 #if IS_FULL()
 	[_multiEPG addService:service];
 #endif
