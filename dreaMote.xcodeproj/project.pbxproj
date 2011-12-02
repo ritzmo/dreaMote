@@ -76,6 +76,8 @@
 		DA3316521469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */; };
 		DA3316531469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */; };
 		DA3316541469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */; };
+		DA34E3EC1488C8BE00CBA5F8 /* AutoTimerSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EB1488C8BE00CBA5F8 /* AutoTimerSettings.m */; };
+		DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EF1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m */; };
 		DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */; };
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
@@ -1181,6 +1183,11 @@
 		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
 		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
 		DA3316511469624100A63BA8 /* DreamoteIpadConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteIpadConfiguration.m; sourceTree = "<group>"; };
+		DA34E3EA1488C8BE00CBA5F8 /* AutoTimerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettings.h; sourceTree = "<group>"; };
+		DA34E3EB1488C8BE00CBA5F8 /* AutoTimerSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSettings.m; sourceTree = "<group>"; };
+		DA34E3EE1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsXMLReader.h; sourceTree = "<group>"; };
+		DA34E3EF1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSettingsXMLReader.m; sourceTree = "<group>"; };
+		DA34E3F11488CBCE00CBA5F8 /* AutoTimerSettingsSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsSourceDelegate.h; sourceTree = "<group>"; };
 		DA3603D3146716EA003E2DDD /* AutoTimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSplitViewController.h; sourceTree = "<group>"; };
 		DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSplitViewController.m; sourceTree = "<group>"; };
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
@@ -2805,6 +2812,7 @@
 				DAC8C08113B2014C00CA00D9 /* AboutSourceDelegate.h */,
 				DAC8C08213B2014C00CA00D9 /* AppDelegate.h */,
 				DAC8C08313B2014C00CA00D9 /* AppDelegate.m */,
+				DA34E3F11488CBCE00CBA5F8 /* AutoTimerSettingsSourceDelegate.h */,
 				DAC8C08413B2014C00CA00D9 /* AutoTimerSourceDelegate.h */,
 				DAC8C08513B2014C00CA00D9 /* DataSourceDelegate.h */,
 				DAC8C08613B2014C00CA00D9 /* EPGRefreshSettingsSourceDelegate.h */,
@@ -2975,6 +2983,8 @@
 			children = (
 				DAC8C0DF13B2014C00CA00D9 /* AutoTimer.h */,
 				DAC8C0E013B2014C00CA00D9 /* AutoTimer.m */,
+				DA34E3EA1488C8BE00CBA5F8 /* AutoTimerSettings.h */,
+				DA34E3EB1488C8BE00CBA5F8 /* AutoTimerSettings.m */,
 				DAC8C0E113B2014C00CA00D9 /* EPGRefreshSettings.h */,
 				DAC8C0E213B2014C00CA00D9 /* EPGRefreshSettings.m */,
 				DAC8C0E313B2014C00CA00D9 /* Event.h */,
@@ -3232,6 +3242,8 @@
 				DAC8C19213B2014D00CA00D9 /* AboutXMLReader.m */,
 				DAC8C19313B2014D00CA00D9 /* AutoTimerXMLReader.h */,
 				DAC8C19413B2014D00CA00D9 /* AutoTimerXMLReader.m */,
+				DA34E3EE1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.h */,
+				DA34E3EF1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m */,
 				DAC8C19513B2014D00CA00D9 /* CurrentXMLReader.h */,
 				DAC8C19613B2014D00CA00D9 /* CurrentXMLReader.m */,
 				DAC8C19713B2014D00CA00D9 /* EPGRefreshSettingsXMLReader.h */,
@@ -4131,6 +4143,8 @@
 				DAAAC5D814791D320030739E /* Tag.m in Sources */,
 				DAAAC5DD14791D970030739E /* TagXMLReader.m in Sources */,
 				DAAAC5E8147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
+				DA34E3EC1488C8BE00CBA5F8 /* AutoTimerSettings.m in Sources */,
+				DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
