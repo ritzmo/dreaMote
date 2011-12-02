@@ -111,9 +111,12 @@ typedef enum {
 		fakeObject.service = fakeService;
 	}
 
-	[_delegate performSelectorOnMainThread: _delegateSelector
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	SEL selector = _delegateSelector;
+	if(selector == NULL) // only possible in combined now/next where one callback should suffice
+		selector = @selector(addNowEvent:);
+	[_delegate performSelectorOnMainThread:selector
+								withObject:fakeObject
+							 waitUntilDone:NO];
 }
 
 /*
