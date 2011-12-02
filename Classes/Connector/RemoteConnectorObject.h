@@ -162,4 +162,11 @@
  */
 + (void)queueInvocationWithTarget:(id)target selector:(SEL)sel;
 
+/*!
+ @brief Queue a new block.
+
+ Adds a block to our "temporary" queue.
+ */
++ (void)queueBlock:(void (^)(void))block;
+
 @end

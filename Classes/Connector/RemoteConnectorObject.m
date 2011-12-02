@@ -430,4 +430,10 @@ static RemoteConnectorObject *singleton;
 	[queue addOperation:operation];
 }
 
++ (void)queueBlock:(void (^)(void))block
+{
+	NSOperationQueue *queue = singleton ? singleton.queue : [RemoteConnectorObject singleton].queue; // odd, but slightly faster
+	[queue addOperationWithBlock:block];
+}
+
 @end
