@@ -36,9 +36,6 @@ enum serviceListTags
 };
 
 @interface ServiceListController()
-- (void)fetchNowData;
-- (void)fetchNextData;
-
 - (void)itemSelected:(NSNumber *)newSelection;
 
 /*!
@@ -745,8 +742,12 @@ enum serviceListTags
 		else
 		{
 			pendingRequests = 2;
-			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNextData)];
-			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchNowData)];
+			[RemoteConnectorObject queueBlock:^{
+				_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio];
+			}];
+			[RemoteConnectorObject queueBlock:^{
+				_xmlReaderSub = [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio];
+			}];
 		}
 	}
 	else
@@ -755,18 +756,6 @@ enum serviceListTags
 		_tableView.rowHeight = kServiceCellHeight;
 		_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchServices: self bouquet: _bouquet isRadio:_isRadio];
 	}
-}
-
-/* fetch now list */
-- (void)fetchNowData
-{
-	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] getNow:self bouquet:_bouquet isRadio:_isRadio];
-}
-
-/* fetch next list */
-- (void)fetchNextData
-{
-	_xmlReaderSub = [[RemoteConnectorObject sharedRemoteConnector] getNext:self bouquet:_bouquet isRadio:_isRadio];
 }
 
 /* remove content data */
