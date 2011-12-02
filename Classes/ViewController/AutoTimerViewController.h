@@ -92,6 +92,12 @@
 @property (assign) BOOL creatingNewTimer;
 
 /*!
+ @brief Version of the AutoTimer in use.
+ @note Used to hide/show some features.
+ */
+@property (assign) NSInteger autotimerVersion;
+
+/*!
  @brief Delegate.
  */
 @property (nonatomic, unsafe_unretained) NSObject<AutoTimerViewDelegate> *delegate;

@@ -80,7 +80,7 @@ static NSArray *searchTypeTexts = nil;
 
 @implementation AutoTimerViewController
 
-@synthesize delegate, popoverController;
+@synthesize autotimerVersion, delegate, popoverController;
 @synthesize tableView = _tableView;
 
 - (id)init
@@ -1349,7 +1349,14 @@ static NSArray *searchTypeTexts = nil;
 				const BOOL isIpad = IS_IPAD();
 				SimpleSingleSelectionListController *vc = nil;
 				if(row == 1)
-					vc = [SimpleSingleSelectionListController withItems:searchTypeTexts andSelection:_timer.searchType andTitle:NSLocalizedStringFromTable(@"Search Type", @"AutoTimer", @"Title of search type selector.")];
+				{
+					NSArray *items = nil;
+					if(autotimerVersion < 6)
+						items = [searchTypeTexts subarrayWithRange:NSMakeRange(0, 2)];
+					else
+						items = searchTypeTexts;
+					vc = [SimpleSingleSelectionListController withItems:items andSelection:_timer.searchType andTitle:NSLocalizedStringFromTable(@"Search Type", @"AutoTimer", @"Title of search type selector.")];
+				}
 				else
 					vc = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
 				vc.callback = ^(NSUInteger selection, BOOL isFinal, BOOL canceling)

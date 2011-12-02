@@ -872,9 +872,22 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 	[timerString appendString:@"/autotimer/edit?"];
 	[timerString appendFormat:@"match=%@&name=%@&enabled=%d&justplay=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0, changeTimer.justplay ? 1 : 0];
-	[timerString appendFormat:@"&searchType=%@&searchCase=%@&overrideAlternatives=%d", (changeTimer.searchType == SEARCH_TYPE_EXACT) ? @"exact" : @"partial", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
+	[timerString appendFormat:@"&searchCase=%@&overrideAlternatives=%d", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
 	[timerString appendFormat:@"&avoidDuplicateDescription=%d&location=%@", (int)changeTimer.avoidDuplicateDescription, changeTimer.location ? [changeTimer.location urlencode] : @""];
 
+	switch(changeTimer.searchType)
+	{
+		case SEARCH_TYPE_DESCRIPTION:
+			[timerString appendString:@"&searchType=description"];
+			break;
+		case SEARCH_TYPE_EXACT:
+			[timerString appendString:@"&searchType=exact"];
+			break;
+		default:
+		case SEARCH_TYPE_PARTIAL:
+			[timerString appendString:@"&searchType=partial"];
+			break;
+	}
 	if(changeTimer.encoding)
 	{
 		[timerString appendFormat:@"&encoding=%@", [changeTimer.encoding urlencode]];

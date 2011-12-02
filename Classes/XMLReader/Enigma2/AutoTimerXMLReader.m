@@ -10,6 +10,10 @@
 
 #import "Constants.h"
 
+static const char *kEnigma2ATBaseElement = "autotimer";
+static const NSUInteger kEnigma2ATBaseElementLength = 10;
+static const char *kEnigma2ATVersion = "version";
+static const NSUInteger kEnigma2ATVersionLength = 8;
 static const char *kEnigma2ATElement = "timer";
 static const NSUInteger kEnigma2ATElementLength = 6;
 static const char *kEnigma2ATName = "name";
@@ -322,6 +326,30 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
 	{
 		currentString = [[NSMutableString alloc] init];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2ATBaseElement, kEnigma2ATBaseElementLength))
+	{
+		NSInteger i = 0;
+		for(; i < attributeCount; ++i)
+		{
+			const NSInteger valueLength = (int)(attributes[i].end - attributes[i].value);
+			NSString *value = [[NSString alloc] initWithBytes:(const void *)attributes[i].value
+                                                       length:valueLength
+                                                     encoding:NSUTF8StringEncoding];
+			if(!strncmp((const char*)attributes[i].localname, kEnigma2ATVersion, kEnigma2ATVersionLength))
+			{
+				NSInteger intValue = [value integerValue];
+				if(intValue <= 0)
+				{
+#if IS_DEBUG()
+					NSLog(@"AutoTimer supposedly invalid version '%@', ignoring!", value);
+#endif
+					continue;
+				}
+				NSNumber *version = [NSNumber numberWithInteger:intValue];
+				[_delegate performSelectorOnMainThread:@selector(gotAutoTimerVersion:) withObject:version waitUntilDone:NO];
+			}
+		}
 	}
 }
 

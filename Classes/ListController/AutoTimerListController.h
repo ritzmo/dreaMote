@@ -25,6 +25,7 @@
 	BOOL _refreshAutotimers; /*!< @brief Refresh on next viewWillAppear? */
 	BOOL _parsing; /*!< @brief Currently parsing EPG? */
 	AutoTimerViewController *_autotimerView; /*!< @brief AutoTimer View. */
+	NSInteger _autotimerVersion; /*! @brief Version of AutoTimer in use. */
 }
 
 /*!

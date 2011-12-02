@@ -26,4 +26,11 @@
  */
 - (void)addAutoTimer: (AutoTimer *)anItem;
 
+/*!
+ @brief AutoTimer version was determined.
+
+ @param aVersion AutoTimer Version.
+ */
+- (void)gotAutoTimerVersion:(NSNumber *)aVersion;
+
 @end

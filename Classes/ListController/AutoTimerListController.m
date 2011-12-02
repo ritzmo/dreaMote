@@ -183,6 +183,11 @@
 #endif
 }
 
+- (void)gotAutoTimerVersion:(NSNumber *)aVersion
+{
+	_autotimerVersion = [aVersion integerValue];
+}
+
 #pragma mark - View lifecycle
 
 /* load view */
@@ -330,6 +335,7 @@
 	// create a copy and work on it
 	AutoTimer *copy = [autotimer copy];
 	self.autotimerView.timer = copy;
+	_autotimerView.autotimerVersion = _autotimerVersion;
 
 	// We do not want to refresh autotimer list when we return
 	_refreshAutotimers = NO;
