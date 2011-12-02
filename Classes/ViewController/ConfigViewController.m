@@ -413,6 +413,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			}
 
 			NSMutableArray *connections = [RemoteConnectorObject getConnections];
+			BOOL checkFeatures = NO;
 			if(_connectionIndex == -1)
 			{
 				_connectionIndex = [connections count];
@@ -440,7 +441,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 				// NOTE: if this is the first connection, we need to establish it here to properly check for features.
 				if(_mustSave)
+				{
 					[RemoteConnectorObject connectTo:_connectionIndex];
+					checkFeatures = YES;
+				}
 			}
 			else
 			{
@@ -449,12 +453,22 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				// Reconnect because changes won't be applied otherwise
 				if(_connectionIndex == [RemoteConnectorObject getConnectedId])
 				{
-					[RemoteConnectorObject connectTo: _connectionIndex];
+					[RemoteConnectorObject connectTo:_connectionIndex];
+					checkFeatures = YES;
 				}
 			}
 
-			// post notification
-			[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+				if(checkFeatures)
+				{
+					// check reachability to determine features
+					NSError *error = nil;
+					[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+				}
+
+				// post notification
+				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+			});
 		}
 
 		[self.navigationItem setLeftBarButtonItem: nil animated: YES];
