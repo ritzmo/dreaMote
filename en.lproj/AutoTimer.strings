@@ -31,6 +31,9 @@
 /* Error message if AutoTimer could not be edited. */
 /*"Error editing AutoTimer: %@" = "Error editing AutoTimer: %@";*/
 
+/* Search type: exact event title */
+/*"Exact" = "Exact";*/
+
 /* Exclude Filter */
 /*"Exclude" = "Exclude";*/
 
@@ -39,6 +42,9 @@
 
 /* timespan from */
 /*"From: %@" = "From: %@";*/
+
+/* Search type: partial in event description */
+/*"in Description" = "in Description";*/
 
 /* Include Filter */
 /*"Include" = "Include";*/
@@ -64,11 +70,20 @@
 /* Start forced parsing of EPG */
 /*"Parse EPG" = "Parse EPG";*/
 
+/* Search type: partial event title */
+/*"Partial" = "Partial";*/
+
 /* Avoid Duplicate Description 1 (timers on same service) */
 /*"Same Service" = "Same Service";*/
 
 /* weekday filter */
 /*"Sat-Sun" = "Sat-Sun";*/
+
+/* Title of search type selector. */
+/*"Search Type" = "Search Type";*/
+
+/* searchType attribute of autotimer. Can be partial, exact or in description.. */
+/*"Search Type: %@" = "Search Type: %@";*/
 
 /* section header for service restriction */
 /*"Services" = "Services";*/

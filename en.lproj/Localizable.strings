@@ -391,9 +391,6 @@
 /* Title of exact section of SatFinder */
 "Exact" = "Exact";
 
-/* No comment provided by engineer. */
-/*"Exact Title" = "Exact Title";*/
-
 /* export data from lite to full version */
 /*"Export to dreaMote" = "Export to dreaMote";*/
 
@@ -602,11 +599,11 @@
 /* No comment provided by engineer. */
 "Neutrino" = "Neutrino";
 
-/* don't refresh sat finder */
-/*"never" = "never";*/
-
 /* Repeated */
 "Never" = "Never";
+
+/* don't refresh sat finder */
+/*"never" = "never";*/
 
 /* Title of cell to add a new bookmark */
 /*"New Bookmark" = "New Bookmark";*/
@@ -819,11 +816,11 @@
 /* Cell Label of repeat count in Neutrino */
 /*"Repetitions" = "Repetitions";*/
 
-/* used in confirmation dialog: really restart? */
-/*"restart" = "restart";*/
-
 /* No comment provided by engineer. */
 "Restart" = "Restart";
+
+/* used in confirmation dialog: really restart? */
+/*"restart" = "restart";*/
 
 /* In-App-Purchase were restored successfully */
 /*"Restore completed" = "Restore completed";*/
@@ -922,11 +919,11 @@
 /* Label of Progress HUD in MediaPlayer when shuffling playlist */
 /*"Shuffling Playlist" = "Shuffling Playlist";*/
 
-/* used in confirmation dialog: really shutdown? */
-/*"shutdown" = "shutdown";*/
-
 /* Toggle Shutdown/Standby of SleepTimer */
 "Shutdown" = "Shutdown";
+
+/* used in confirmation dialog: really shutdown? */
+/*"shutdown" = "shutdown";*/
 
 /* Title of SignalViewController */
 "Signal" = "Signal";
