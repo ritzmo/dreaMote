@@ -298,6 +298,23 @@ static NSArray *searchTypeTexts = nil;
 	[self setEditing:YES animated:YES];
 }
 
+- (void)loadSettings
+{
+	// NOTE: retaining self is intended here!
+	[RemoteConnectorObject queueBlock:^{
+		[[RemoteConnectorObject sharedRemoteConnector] getAutoTimerSettings:self];
+	}];
+}
+
+#pragma mark -
+#pragma mark AutoTimerSettingsSourceDelegate methods
+#pragma mark -
+
+- (void)autotimerSettingsRead:(AutoTimerSettings *)anItem
+{
+	autotimerVersion = anItem.version;
+}
+
 #pragma mark -
 #pragma mark Helper methods
 #pragma mark -

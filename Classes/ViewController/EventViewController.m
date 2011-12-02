@@ -683,6 +683,7 @@
 - (void)addAutoTimer:(id)sender
 {
 	AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+	[avc loadSettings]; // start loading settings to determine available features
 	avc.timer = [AutoTimer timerFromEvent:_event];
 	// NOTE: no need to set the delegate
 

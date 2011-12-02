@@ -8,11 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/ServiceProtocol.h" /* ServiceProtocol */
-#import "Objects/Generic/AutoTimer.h" /* TimerProtocol */
+#import <Objects/ServiceProtocol.h> /* ServiceProtocol */
+#import <Objects/Generic/AutoTimer.h> /* TimerProtocol */
 #import "CellTextField.h" /* CellTextField */
 
 #import "AfterEventViewController.h" /* AfterEventDelegate */
+#import "AutoTimerSettingsSourceDelegate.h" /* AutoTimerSettingsSourceDelegate */
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "ServiceListController.h" /* ServiceListDelegate */
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
@@ -29,6 +30,7 @@
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, BouquetListDelegate,
 													AfterEventDelegate,
+													AutoTimerSettingsSourceDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>
@@ -79,6 +81,17 @@
  */
 + (AutoTimerViewController *)newAutoTimer;
 
+/*!
+ @brief Start loading the settings.
+
+ Needed when being shown from a view other than the AutoTimerList because
+ then we don't know which version of the AutoTimer is installed and in
+ effect do not know which features to show.
+ @note This actually gives us more information than the list gives us,
+ so properly process them in a future version and also incorporate them
+ when shown from the AutoTimerList.
+ */
+- (void)loadSettings;
 
 
 /*!

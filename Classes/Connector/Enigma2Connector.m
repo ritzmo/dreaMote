@@ -26,6 +26,7 @@
 #import <XMLReader/Enigma2/AboutXMLReader.h>
 #if IS_FULL()
 	#import <XMLReader/Enigma2/AutoTimerXMLReader.h>
+	#import <XMLReader/Enigma2/AutoTimerSettingsXMLReader.h>
 #endif
 #import <XMLReader/Enigma2/CurrentXMLReader.h>
 #import <XMLReader/Enigma2/EPGRefreshSettingsXMLReader.h>
@@ -844,9 +845,17 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self getResultFromSimpleXmlWithRelativeString:@"/autotimer/parse"];
 }
 
+- (BaseXMLReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/autotimer/get" relativeToURL:_baseAddress];
+
+	BaseXMLReader *streamReader = [[Enigma2AutoTimerSettingsXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
+}
+
 - (BaseXMLReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
 {
-
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer" relativeToURL:_baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2AutoTimerXMLReader alloc] initWithDelegate:delegate];

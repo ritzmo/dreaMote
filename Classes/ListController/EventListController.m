@@ -495,6 +495,7 @@
 		case 0:
 		{
 			AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+			[avc loadSettings]; // start loading settings to determine available features
 			avc.timer = [AutoTimer timerFromEvent:event];
 			if(!avc.timer.services.count)
 				[avc.timer.services addObject:service];

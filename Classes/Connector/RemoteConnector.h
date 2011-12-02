@@ -256,6 +256,7 @@ enum packageManagementList
 @protocol TimerProtocol;
 @protocol FileProtocol;
 @protocol AboutSourceDelegate;
+@protocol AutoTimerSettingsSourceDelegate;
 @protocol AutoTimerSourceDelegate;
 @protocol EPGRefreshSettingsSourceDelegate;
 @protocol EventSourceDelegate;
@@ -752,6 +753,15 @@ enum packageManagementList
  */
 @optional // kFeaturesAutoTimer
 - (Result *)parseAutoTimer;
+
+/*!
+ @brief Retrieve AutoTimer settings.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to newly created XMLReader.
+ */
+@optional // kFeaturesAutoTimer
+- (BaseXMLReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate;;
 
 /*!
  @brief Retrieve List of AutoTimers.
