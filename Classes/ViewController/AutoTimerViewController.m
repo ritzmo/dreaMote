@@ -307,6 +307,20 @@ static NSArray *searchTypeTexts = nil;
 }
 
 #pragma mark -
+#pragma mark DataSourceDelegate methods
+#pragma mark -
+
+- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+{
+	// ignore
+}
+
+- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+{
+	// ignore
+}
+
+#pragma mark -
 #pragma mark AutoTimerSettingsSourceDelegate methods
 #pragma mark -
 
