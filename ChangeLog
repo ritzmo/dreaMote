@@ -260,3 +260,7 @@ Enigma2:
 - Allow to change timer tags
 - Allow to filter movies by tags
 - Allow to move movies between locations (required web interface 1.7.0)
+
+1.3.0-full:
+Enigma2:
+- Allow to edit AutoTimer settings (needs recent experimental plugin)
