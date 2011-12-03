@@ -246,6 +246,7 @@ enum packageManagementList
 
 // Forward declarations...
 @class AutoTimer;
+@class AutoTimerSettings;
 @class BaseXMLReader;
 @class EPGRefreshSettings;
 @class Result;
@@ -762,6 +763,15 @@ enum packageManagementList
  */
 @optional // kFeaturesAutoTimer
 - (BaseXMLReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate;;
+
+/*!
+ @brief Modify AutoTimer settings.
+
+ @param settings New settings to apply.
+ @return Valid Result if settings were changed successfully.
+ */
+@optional // kFeaturesAutoTimer
+- (Result *)setAutoTimerSettings:(AutoTimerSettings *)settings;
 
 /*!
  @brief Retrieve List of AutoTimers.

@@ -79,6 +79,7 @@
 		DA34E3EC1488C8BE00CBA5F8 /* AutoTimerSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EB1488C8BE00CBA5F8 /* AutoTimerSettings.m */; };
 		DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EF1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m */; };
 		DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */; };
+		DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */; };
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
 		DA51C45C144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
@@ -1190,6 +1191,8 @@
 		DA34E3F11488CBCE00CBA5F8 /* AutoTimerSettingsSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsSourceDelegate.h; sourceTree = "<group>"; };
 		DA3603D3146716EA003E2DDD /* AutoTimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSplitViewController.h; sourceTree = "<group>"; };
 		DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSplitViewController.m; sourceTree = "<group>"; };
+		DA3F60A0148A09D9008FC0DF /* AutoTimerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsViewController.h; sourceTree = "<group>"; };
+		DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSettingsViewController.m; sourceTree = "<group>"; };
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
 		DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiteUnzip.m; sourceTree = "<group>"; };
 		DA51C459144C343F00EA63C5 /* SearchHistoryLengthEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchHistoryLengthEditorController.h; sourceTree = "<group>"; };
@@ -3149,6 +3152,8 @@
 				DAC8C14B13B2014D00CA00D9 /* AfterEventViewController.m */,
 				DAC8C14C13B2014D00CA00D9 /* AutoTimerFilterViewController.h */,
 				DAC8C14D13B2014D00CA00D9 /* AutoTimerFilterViewController.m */,
+				DA3F60A0148A09D9008FC0DF /* AutoTimerSettingsViewController.h */,
+				DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */,
 				DAC8C14E13B2014D00CA00D9 /* AutoTimerViewController.h */,
 				DAC8C14F13B2014D00CA00D9 /* AutoTimerViewController.m */,
 				DAC8C15013B2014D00CA00D9 /* ConfigViewController.h */,
@@ -4145,6 +4150,7 @@
 				DAAAC5E8147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 				DA34E3EC1488C8BE00CBA5F8 /* AutoTimerSettings.m in Sources */,
 				DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */,
+				DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

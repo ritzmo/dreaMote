@@ -854,6 +854,44 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return streamReader;
 }
 
+- (Result *)setAutoTimerSettings:(AutoTimerSettings *)settings
+{
+	NSMutableString *relativeURL = [NSMutableString stringWithFormat:@"/autotimer/set?autopoll=%@&interval=%d&try_guessing=%@&disabled_on_conflict=%@&addsimilar_on_conflict=%@&show_in_extensionsmenu=%@&fastscan=%@&notifconflict=%@&notifsimilar=%@&maxdaysinfuture=%d",
+									settings.autopoll ? @"true" : @"",
+									settings.interval,
+									settings.try_guessing ? @"true" : @"",
+									settings.disabled_on_conflict ? @"true" : @"",
+									settings.addsimilar_on_conflict ? @"true" : @"",
+									settings.show_in_extensionsmenu ? @"true" : @"",
+									settings.fastscan ? @"true" : @"",
+									settings.notifconflict ? @"true" : @"",
+									settings.notifsimilar ? @"true" : @"",
+									settings.maxdays];
+	if(settings.refresh == REFRESH_NONE)
+	{
+		[relativeURL appendString:@"&refresh=none"];
+	}
+	else if(settings.refresh == REFRESH_AUTO)
+	{
+		[relativeURL appendString:@"&refresh=auto"];
+	}
+	else if(settings.refresh == REFRESH_ALL)
+	{
+		[relativeURL appendString:@"&refresh=all"];
+	}
+
+	if(settings.editor == EDITOR_CLASSIC)
+	{
+		[relativeURL appendString:@"&editor=plain"];
+	}
+	else if(settings.editor == EdiTOR_WIZARD)
+	{
+		[relativeURL appendString:@"&editor=wizard"];
+	}
+
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
+}
+
 - (BaseXMLReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer" relativeToURL:_baseAddress];

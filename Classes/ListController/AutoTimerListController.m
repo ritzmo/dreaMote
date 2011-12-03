@@ -16,6 +16,8 @@
 #import "Insort/NSArray+CWSortedInsert.h"
 #import "UITableViewCell+EasyInit.h"
 
+#import <ViewController/AutoTimerSettingsViewController.h>
+
 #import <TableViewCell/AutoTimerTableViewCell.h>
 #import <TableViewCell/BaseTableViewCell.h>
 
@@ -24,12 +26,14 @@
 #import "MBProgressHUD.h"
 
 @interface AutoTimerListController()
+- (void)openSettings:(id)sender;
 - (void)parseEPG:(id)sender;
+@property (nonatomic, strong) AutoTimerSettings *settings;
 @end
 
 @implementation AutoTimerListController
 
-@synthesize isSplit;
+@synthesize isSplit, mgSplitViewController, settings;
 
 /* initialize */
 - (id)init
@@ -95,11 +99,34 @@
 	}
 }
 
+- (void)configureToolbar
+{
+	// NOTE: always using toolbar now, as eventually we have to use one anyway (when adding settings), even though it looks kinda stupid on (at least) the iPad
+	const UIBarButtonItem *parseButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Parse EPG", @"AutoTimer", @"Start forced parsing of EPG") style:UIBarButtonItemStyleBordered target:self action:@selector(parseEPG:)];
+	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																					target:nil
+																					action:nil];
+
+	NSArray *items = nil;
+	if(self.settings)
+	{
+		const UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Settings", @"AutoTimer", @"Open Settings dialog") style:UIBarButtonItemStyleBordered target:self action:@selector(openSettings:)];
+		items = [[NSArray alloc] initWithObjects:settingsButton, flexItem, parseButton, nil];
+	}
+	else
+		items = [[NSArray alloc] initWithObjects:flexItem, parseButton, nil];
+	[self setToolbarItems:items animated:NO];
+}
+
 /* fetch contents */
 - (void)fetchData
 {
 	_reloading = YES;
-	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchAutoTimers:self];
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	_xmlReader = [sharedRemoteConnector fetchAutoTimers:self];
+	[RemoteConnectorObject queueBlock:^{
+		_xmlReaderSub = [sharedRemoteConnector getAutoTimerSettings:self];
+	}];
 }
 
 /* remove content data */
@@ -114,6 +141,22 @@
 	[_tableView reloadData];
 #endif
 	_xmlReader = nil;
+	_xmlReaderSub = nil;
+}
+
+- (void)openSettings:(id)sender
+{
+	AutoTimerSettingsViewController *vc = [[AutoTimerSettingsViewController alloc] init];
+	vc.settings = self.settings;
+	vc.willReappear = YES; // prevent the view from loading the settings again
+
+	if(mgSplitViewController)
+	{
+		UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+		self.mgSplitViewController.detailViewController = targetViewController;
+	}
+	else
+		[self.navigationController pushViewController:vc animated:YES];
 }
 
 /* initiate epg parsing on remote receiver */
@@ -147,6 +190,14 @@
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
+	if(dataSource == _xmlReaderSub)
+	{
+		self.settings = nil;
+		[self configureToolbar];
+		_xmlReaderSub = nil;
+		return;
+	}
+
 	if([error domain] == NSURLErrorDomain)
 	{
 		if([error code] == 404)
@@ -165,6 +216,12 @@
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
+	if(dataSource == _xmlReaderSub)
+	{
+		_xmlReaderSub = nil;
+		return;
+	}
+
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	[_tableView reloadData];
@@ -190,6 +247,17 @@
 	_autotimerView.autotimerVersion = intVersion;
 }
 
+#pragma mark -
+#pragma mark AutoTimerSettingsSourceDelegate
+#pragma mark -
+
+- (void)autotimerSettingsRead:(AutoTimerSettings *)anItem
+{
+	// NOTE: theoretically we might need to copy this, but since we use a sax reader for the settings this is ok
+	self.settings = anItem;
+	[self configureToolbar];
+}
+
 #pragma mark - View lifecycle
 
 /* load view */
@@ -202,13 +270,7 @@
 	_tableView.sectionHeaderHeight = 0;
 	_tableView.allowsSelectionDuringEditing = YES;
 
-	// NOTE: always using toolbar now, as eventually we have to use one anyway (when adding settings), even though it looks kinda stupid on (at least) the iPad
-	const UIBarButtonItem *parseButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Parse EPG", @"AutoTimer", @"Start forced parsing of EPG") style:UIBarButtonItemStyleBordered target:self action:@selector(parseEPG:)];
-	const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																					target:nil
-																					action:nil];
-	NSArray *items = [[NSArray alloc] initWithObjects:flexItem, parseButton, nil];
-	[self setToolbarItems:items animated:NO];
+	[self configureToolbar];
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "ReloadableListController.h"
+#import "AutoTimerSettingsSourceDelegate.h" /* AutoTimerSettingsSourceDelegate */
 #import "AutoTimerSourceDelegate.h" /* AutoTimerSourceDelegate */
 #import "AutoTimerViewController.h" /* AutoTimerViewDelegate */
 
@@ -17,6 +18,7 @@
  */
 @interface AutoTimerListController : ReloadableListController <UITableViewDelegate,
 															UITableViewDataSource,
+															AutoTimerSettingsSourceDelegate,
 															AutoTimerSourceDelegate,
 															AutoTimerViewDelegate>
 {
@@ -26,6 +28,8 @@
 	BOOL _parsing; /*!< @brief Currently parsing EPG? */
 	AutoTimerViewController *_autotimerView; /*!< @brief AutoTimer View. */
 	NSInteger _autotimerVersion; /*! @brief Version of AutoTimer in use. */
+
+	BaseXMLReader *_xmlReaderSub; /*! @brief Second XML Reader (for Settings) */
 }
 
 /*!
@@ -43,5 +47,10 @@
  @brief View will reapper.
  */
 @property (nonatomic) BOOL willReappear;
+
+/*!
+ @brief Split View Controller.
+ */
+@property (nonatomic, unsafe_unretained) MGSplitViewController *mgSplitViewController;
 
 @end
