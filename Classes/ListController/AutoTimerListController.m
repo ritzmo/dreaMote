@@ -407,7 +407,24 @@
 	if(!isSplit)
 		[self.navigationController pushViewController:_autotimerView animated:YES];
 	else
+	{
+		// put _autotimerView back into details view if not there already
+		if(mgSplitViewController)
+		{
+			UIViewController *vc = mgSplitViewController.detailViewController;
+			if([vc isKindOfClass:[UINavigationController class]])
+			{
+				UINavigationController *nc = (UINavigationController *)vc;
+				if([nc.viewControllers objectAtIndex:0] != _autotimerView)
+				{
+					nc = [[UINavigationController alloc] initWithRootViewController:_autotimerView];
+					[[DreamoteConfiguration singleton] styleNavigationController:nc];
+					self.mgSplitViewController.detailViewController = nc;
+				}
+			}
+		}
 		[_autotimerView.navigationController popToRootViewControllerAnimated:YES];
+	}
 
 	// NOTE: set this here so the edit button won't get screwed
 	_autotimerView.creatingNewTimer = NO;
