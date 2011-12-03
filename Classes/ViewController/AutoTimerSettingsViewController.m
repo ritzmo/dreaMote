@@ -396,7 +396,7 @@ enum sectionItems
 		case autopollRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _autopoll;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Poll automatically", @"AutoTimer", @"Label for cell 'autopoll'");
 			break;
 		case intervalRow:
 			if(_intervalCell == nil)
@@ -404,7 +404,7 @@ enum sectionItems
 				_intervalCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 				_intervalCell.view = _interval;
 				_intervalCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-				_intervalCell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"Label for cell ''");
+				_intervalCell.textLabel.text = NSLocalizedStringFromTable(@"Poll interval (in h)", @"AutoTimer", @"Label for cell 'interval'");
 				_intervalCell.fixedWidth = 94.0f;
 			}
 			cell = _intervalCell;
@@ -412,51 +412,51 @@ enum sectionItems
 		case try_guessingRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _try_guessing;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Guess event by begin/end", @"AutoTimer", @"Label for cell 'try_guessing'");
 			break;
 		case refreshRow:
 			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Modify timers: %@", @"AutoTimer", @""), [refreshTexts objectAtIndex:settings.refresh]];
+			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Modify timers: %@", @"AutoTimer", @"Text for cell with timer modification behavior"), [refreshTexts objectAtIndex:settings.refresh]];
 			break;
 		case editorRow:
 			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			cell.textLabel.adjustsFontSizeToFitWidth = YES;
-			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Editor for new Timers: %@", @"AutoTimer", @""), [editorTexts objectAtIndex:settings.editor]];
+			cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"Editor for new Timers: %@", @"AutoTimer", @"Text for cell with default editor for new autotimers on the receiver"), [editorTexts objectAtIndex:settings.editor]];
 			break;
 		case disabled_on_conflictRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _disabled_on_conflict;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Add timer disabled on conflict", @"AutoTimer", @"Label for cell 'disabled_on_conflict'");
 			break;
 		case addsimilar_on_conflictRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _addsimilar_on_conflict;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Add similar timer on conflict", @"AutoTimer", @"Label for cell 'addsimilar_on_conflict'");
 			break;
 		case show_in_extensionsmenuRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _show_in_extensionsmenu;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Show in extension menu", @"AutoTimer", @"Label for cell 'show_in_extensionsmenu'");
 			break;
 		case fastscanRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _fastscan;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Support \"Fast-Scan\"", @"AutoTimer", @"Label for cell 'fastscan'");
 			break;
 		case notifconflictRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _notifconflict;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Notification on conflicts", @"AutoTimer", @"Label for cell 'notifconflict'");
 			break;
 		case notifSimilarRow:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			((DisplayCell *)cell).view = _notifsimilar;
-			cell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"");
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Notification for similar timers", @"AutoTimer", @"Label for cell 'notifsimilar'");
 			break;
 		case maxdaysRow:
 			if(_maxdaysCell == nil)
@@ -464,7 +464,7 @@ enum sectionItems
 				_maxdaysCell = [[CellTextField alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 				_maxdaysCell.view = _maxdays;
 				_maxdaysCell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-				_maxdaysCell.textLabel.text = NSLocalizedStringFromTable(@"", @"AutoTimer", @"Label for cell ''");
+				_maxdaysCell.textLabel.text = NSLocalizedStringFromTable(@"Add timer for the next X days", @"AutoTimer", @"Label for cell 'maxdays_in_future'");
 				_maxdaysCell.fixedWidth = 94.0f;
 			}
 			cell = _maxdaysCell;
