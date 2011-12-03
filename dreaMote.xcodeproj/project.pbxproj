@@ -335,6 +335,12 @@
 		DA56122D146FE67900390225 /* FastTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA56122C146FE67900390225 /* FastTableViewCell.m */; };
 		DA56122E146FE67900390225 /* FastTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA56122C146FE67900390225 /* FastTableViewCell.m */; };
 		DA56122F146FE67900390225 /* FastTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA56122C146FE67900390225 /* FastTableViewCell.m */; };
+		DA5FC382148AD96F006C27D1 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5FC381148AD96F006C27D1 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA5FC383148AD96F006C27D1 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5FC381148AD96F006C27D1 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA5FC384148AD96F006C27D1 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5FC381148AD96F006C27D1 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		DA5FC388148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5FC387148AD9A6006C27D1 /* SHKiOS5Twitter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA5FC389148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5FC387148AD9A6006C27D1 /* SHKiOS5Twitter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA5FC38A148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5FC387148AD9A6006C27D1 /* SHKiOS5Twitter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA6126931472D84F006F6C76 /* Slider_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6126921472D84F006F6C76 /* Slider_Dark.png */; };
 		DA6126941472D84F006F6C76 /* Slider_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6126921472D84F006F6C76 /* Slider_Dark.png */; };
 		DA6126951472D84F006F6C76 /* Slider_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6126921472D84F006F6C76 /* Slider_Dark.png */; };
@@ -1364,6 +1370,9 @@
 		DA561229146FC9F700390225 /* Mepg_Current_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mepg_Current_Blue.png; sourceTree = "<group>"; };
 		DA56122B146FE67900390225 /* FastTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FastTableViewCell.h; sourceTree = "<group>"; };
 		DA56122C146FE67900390225 /* FastTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FastTableViewCell.m; sourceTree = "<group>"; };
+		DA5FC381148AD96F006C27D1 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		DA5FC386148AD9A6006C27D1 /* SHKiOS5Twitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKiOS5Twitter.h; sourceTree = "<group>"; };
+		DA5FC387148AD9A6006C27D1 /* SHKiOS5Twitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKiOS5Twitter.m; sourceTree = "<group>"; };
 		DA6126921472D84F006F6C76 /* Slider_Dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Dark.png; sourceTree = "<group>"; };
 		DA6126971472DD2C006F6C76 /* Slider_Night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Night.png; sourceTree = "<group>"; };
 		DA681B0D13B356C200232190 /* ConnectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionTableViewCell.h; sourceTree = "<group>"; };
@@ -1923,6 +1932,7 @@
 				DA529958144AF6B00010429A /* EventKit.framework in Frameworks */,
 				DA52995D144AF88D0010429A /* EventKitUI.framework in Frameworks */,
 				DAABAA291462DBC0002CDC31 /* StoreKit.framework in Frameworks */,
+				DA5FC382148AD96F006C27D1 /* Twitter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1946,6 +1956,7 @@
 				DA529959144AF6B00010429A /* EventKit.framework in Frameworks */,
 				DA52995E144AF88D0010429A /* EventKitUI.framework in Frameworks */,
 				DAABAA2A1462DBC0002CDC31 /* StoreKit.framework in Frameworks */,
+				DA5FC383148AD96F006C27D1 /* Twitter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1968,6 +1979,7 @@
 				DA52995A144AF6B00010429A /* EventKit.framework in Frameworks */,
 				DA52995F144AF88D0010429A /* EventKitUI.framework in Frameworks */,
 				DAABAA2B1462DBC0002CDC31 /* StoreKit.framework in Frameworks */,
+				DA5FC384148AD96F006C27D1 /* Twitter.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2457,6 +2469,8 @@
 		DA51CE80144ACBEE00C714ED /* Twitter */ = {
 			isa = PBXGroup;
 			children = (
+				DA5FC386148AD9A6006C27D1 /* SHKiOS5Twitter.h */,
+				DA5FC387148AD9A6006C27D1 /* SHKiOS5Twitter.m */,
 				DA51CE81144ACBEE00C714ED /* SHKTwitter.h */,
 				DA51CE82144ACBEE00C714ED /* SHKTwitter.m */,
 				DA51CE83144ACBEE00C714ED /* SHKTwitterForm.h */,
@@ -2580,6 +2594,7 @@
 				DAFA4BFF144ACF6B005DE541 /* Security.framework */,
 				DAABAA281462DBC0002CDC31 /* StoreKit.framework */,
 				DAC8C49F13B2026800CA00D9 /* SystemConfiguration.framework */,
+				DA5FC381148AD96F006C27D1 /* Twitter.framework */,
 				DAC8BE4F13B1FF9200CA00D9 /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -4143,6 +4158,7 @@
 				DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */,
 				DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */,
 				DA3F60A6148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
+				DA5FC388148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4410,6 +4426,7 @@
 				DAAAC5DE14791D970030739E /* TagXMLReader.m in Sources */,
 				DAAAC5E9147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 				DA3F60A5148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
+				DA5FC389148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4644,6 +4661,7 @@
 				DAAAC5DF14791D970030739E /* TagXMLReader.m in Sources */,
 				DAAAC5EA147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 				DA3F60A4148AA920008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
+				DA5FC38A148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
