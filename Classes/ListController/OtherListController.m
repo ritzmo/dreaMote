@@ -261,6 +261,12 @@
 			UINavigationController *navController = (UINavigationController *)targetViewController.masterViewController;
 			[navController pushViewController:masterViewController animated:NO];
 			[selectedDictionary removeObjectForKey:@"masterViewController"];
+
+			if([masterViewController respondsToSelector:@selector(setMgSplitViewController:)])
+			{
+				NSLog(@"Note: Giving master its previous split view back, this is some crazy sh**!");
+				[(AutoTimerListController *)masterViewController setMgSplitViewController:targetViewController];
+			}
 		}
 	}
 	else
@@ -505,6 +511,11 @@
 				NSLog(@"WARNING: Stealing a view controller from a navigation stack does is dangerous, think of a better way!");
 				pushViewController = ((UINavigationController *)masterViewController).visibleViewController;
 				[selectedDictionary setObject:pushViewController forKey:@"masterViewController"];
+			}
+			if([pushViewController respondsToSelector:@selector(setMgSplitViewController:)])
+			{
+				NSLog(@"Note: Transferring split view controller to subview - this could get messy!");
+				[(AutoTimerListController *)pushViewController setMgSplitViewController:mgSplitViewController];
 			}
 			[self.navigationController pushViewController:pushViewController animated:YES];
 
