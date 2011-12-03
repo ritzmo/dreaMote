@@ -1,8 +1,14 @@
+/* Placeholder for maxdays field in AutoTimer settings (add timer for days on the next X days) */
+"<days>" = "<Tage (0 = unbegrenzt)>";
+
 /* Placeholder of AutoTimer Title field */
 "<enter title>" = "<titel eingeben>";
 
 /* Placeholder of Textfield in Filter Editor */
 "<filter text>" = "<zu suchender text>";
+
+/* Placeholder for interval field in AutoTimer settings (time in hours between automated polling) */
+"<hours>" = "<Stunden>";
 
 /* Placeholder of AutoTimer Maxduration field */
 "<maximum duration>" = "<maximale dauer>";
@@ -10,20 +16,44 @@
 /* Placeholder of AutoTimer Match field */
 "<text to find in title>" = "<zu suchender text>";
 
+/* Label for cell 'addsimilar_on_conflict' */
+"Add similar timer on conflict" = "Alternativen timer bei Konflikt hinzufügen";
+
+/* Label for cell 'disabled_on_conflict' */
+"Add timer disabled on conflict" = "Bei Konflikt deaktiviert hinzufügen";
+
+/* Label for cell 'maxdays_in_future' */
+"Add timer for the next X days" = "Timer nur für die nächsten X Tage";
+
 /* timeframe after */
 "After: %@" = "Nach: %@";
 
 /* Avoid Duplicate Description 2 (timer on all services) */
 "All Services" = "Auf allen Sender";
 
+/* Type of timers to modify: All timers */
+"All timers" = "Alle Timer";
+
+/* User requested autopoll but interval is equal to or less than 0. */
+"Automated Search for events requires a valid interval to be set!" = "Bei automatischer Suche muss ein gültiges Intervall angegeben werden!";
+
 /* Open Editor for new AutoTimer */
 "AutoTimer Editor" = "AutoTimer Editor";
+
+/* Type of timers to modify: Only AutoTimers created during this session */
+"AutoTimers" = "nur AutoTimer";
 
 /* timeframe before */
 "Before: %@" = "Bevor: %@";
 
 /* section header for bouquet restriction */
 "Bouquets" = "Bouquets";
+
+/* Editor Type: Regular Editor */
+"Classic" = "Klassisch";
+
+/* Text for cell with default editor for new autotimers on the receiver */
+"Editor for new Timers: %@" = "Editor für neue AutoTimer: %@";
 
 /* Error message if AutoTimer could not be added. */
 "Error adding AutoTimer: %@" = "Konnte neuen AutoTimer nicht hinzufügen: %@";
@@ -43,11 +73,20 @@
 /* timespan from */
 "From: %@" = "Von: %@";
 
+/* Label for cell 'try_guessing' */
+"Guess event by begin/end" = "Timer anhand Anfang-/Endzeit erkennen";
+
 /* Search type: partial in event description */
 "in Description" = "in der Beschreibung";
 
 /* Include Filter */
 "Include" = "Einschließen";
+
+/* Title of timer modification behavior selection. */
+"Modify Timers" = "Ändere Timer";
+
+/* Text for cell with timer modification behavior */
+"Modify timers: %@" = "Ändere Timer: %@";
 
 /* weekday filter */
 "Mon-Fri" = "Mon-Fre";
@@ -67,11 +106,26 @@
 /* Avoid Duplicate Description disabled */
 "No" = "Nein";
 
+/* Type of timers to modify: None */
+"None" = "Niemals";
+
+/* Label for cell 'notifsimilar' */
+"Notification for similar timers" = "Benachrichtigung bei Alternativtimern";
+
+/* Label for cell 'notifconflict' */
+"Notification on conflicts" = "Benachrichtigung bei Konflikten";
+
 /* Start forced parsing of EPG */
 "Parse EPG" = "EPG Durchsuchen";
 
 /* Search type: partial event title */
 "Partial" = "Teil des Titels";
+
+/* Label for cell 'autopoll' */
+"Poll automatically" = "Automatisch suchen";
+
+/* Label for cell 'interval' */
+"Poll interval (in h)" = "Abfrageintervall (in Stunden)";
 
 /* Avoid Duplicate Description 1 (timers on same service) */
 "Same Service" = "Auf dem gleichen Sender";
@@ -88,8 +142,21 @@
 /* section header for service restriction */
 "Services" = "Nur auf Sender";
 
+/* Default title of AutoTimerSettingsViewController
+   Open Settings dialog */
+"Settings" = "Einstellungen";
+
+/* Label for cell 'show_in_extensionsmenu' */
+"Show in extension menu" = "In Erweiterungsmenü anzeigen";
+
+/* Label for cell 'fastscan' */
+"Support \"Fast-Scan\"" = "\"Fast-Scan\"-Unterstützung";
+
 /* section header for timeframe */
 "Timeframe" = "Zeitraum";
+
+/* Title of (new) timer editor selector. */
+"Timer Editor" = "Timer Editor";
 
 /* Avoid Duplicate Description 3 (timers on all services and recordings) */
 "Timers/Recordings" = "Timer/Aufnahmen";
@@ -111,4 +178,7 @@
 
 /* option (e.g. timespan or timeframe) unset */
 "unset" = "ungesetzt";
+
+/* Editor Type: Wizard */
+"Wizard" = "Assistent";
 
