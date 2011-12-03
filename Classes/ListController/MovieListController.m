@@ -143,6 +143,7 @@
 
 	// Free Caches and reload data
 	selectedTags = nil;
+	_tagButton.title = NSLocalizedString(@"Tags", @"");
 	taggedMovies = nil;
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
@@ -273,11 +274,7 @@
 			// NOTE: this is actually not the right place to check for this, but fixing this requires some more refactoring :)
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
 			{
-				UIBarButtonItem *tagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Tags", @"")
-																			  style:UIBarButtonItemStyleBordered
-																			 target:self
-																			 action:@selector(tags:)];
-				items = [[NSArray alloc] initWithObjects:tagButton, flexItem, _sortButton, flexItem, self.editButtonItem, nil];
+				items = [[NSArray alloc] initWithObjects:_tagButton, flexItem, _sortButton, flexItem, self.editButtonItem, nil];
 			}
 			else
 				items = [[NSArray alloc] initWithObjects:_sortButton, flexItem, self.editButtonItem, nil];
@@ -519,9 +516,11 @@
 				if(_searchDisplay.isActive)
 					[self searchDisplayController:_searchDisplay shouldReloadTableForSearchString:_searchDisplay.searchBar.text];
 #endif
+				_tagButton.title = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Tags", @""), newSelectedItems.count];
 			}
 			else
 			{
+				_tagButton.title = NSLocalizedString(@"Tags", @"");
 				selectedTags = nil;
 				taggedMovies = nil;
 			}
@@ -607,6 +606,11 @@
 	[_deleteButton addTarget:self action:@selector(multiDelete:) forControlEvents:UIControlEventTouchUpInside];
 	_deleteButton.enabled = NO;
 
+	_tagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Tags", @"")
+												 style:UIBarButtonItemStyleBordered
+												target:self
+												action:@selector(tags:)];
+
 #if IS_FULL()
 	searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
 	searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -660,6 +664,7 @@
 	_currentKeys = nil;
 	_sortButton = nil;
 	SafeDestroyButton(_deleteButton);
+	_tagButton = nil;
 #if IS_FULL()
 	[_filteredMovies removeAllObjects];
 	_tableView.tableHeaderView = nil; // references searchBar
@@ -1189,10 +1194,7 @@
 	UIBarButtonItem *tagButton = nil;
 	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
 	{
-		tagButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Tags", @"")
-													 style:UIBarButtonItemStyleBordered
-													target:self
-													action:@selector(tags:)];
+		tagButton = _tagButton;
 	}
 	NSMutableArray *items;
 	if(tagButton && popoverButtonItem)

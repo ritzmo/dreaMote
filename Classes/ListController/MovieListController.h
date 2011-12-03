@@ -40,6 +40,7 @@
 	NSArray *_currentKeys; /*!< @brief Cached keys. */
 	NSMutableDictionary *_characters; /*!< @brief First characters -> movies for current list. */
 	UIButton *_deleteButton; /*!< @brief Delete Button for Multi select. */
+	UIBarButtonItem *_tagButton; /*!< @brief "Tags" button. */
 
 #if IS_FULL()
 	NSMutableArray *_filteredMovies; /*!< @brief Filtered list of movies when searching. */
