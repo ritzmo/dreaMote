@@ -34,6 +34,7 @@ typedef enum
 @property (assign) BOOL fastscan;
 @property (assign) BOOL notifconflict;
 @property (assign) BOOL notifsimilar;
+@property (assign) NSInteger maxdays;
 @property (assign) BOOL hasVps;
 @property (assign) NSInteger version;
 

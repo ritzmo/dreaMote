@@ -92,7 +92,7 @@
 		}
 		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.editor"])
 		{
-			if([currentString isEqualToString:@"classic"])
+			if([currentString isEqualToString:@"plain"])
 				settings.editor = EDITOR_CLASSIC;
 			else
 				settings.editor = EdiTOR_WIZARD;
@@ -120,6 +120,10 @@
 		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.notifsimilar"])
 		{
 			settings.notifsimilar = [currentString boolValue];
+		}
+		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.maxdaysinfuture"])
+		{
+			settings.maxdays = [currentString integerValue];
 		}
 		else if([lastSettingName isEqualToString:@"hasVps"])
 		{
