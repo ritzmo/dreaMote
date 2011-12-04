@@ -17,16 +17,6 @@
  */
 NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 
-/*!
- @brief Private functions of TimerTableViewCell.
- */
-@interface AutoTimerTableViewCell()
-/*!
- @brief Private helper to create a label.
- */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold;
-@end
-
 @implementation AutoTimerTableViewCell
 
 /* initialize */
@@ -52,14 +42,15 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 - (void)setTimer:(AutoTimer *)newTimer
 {
 	// Abort if same timer assigned
-	if(_timer == newTimer) return;
-	_timer = newTimer;
-
-	self.textLabel.text = newTimer.name;
 	if(newTimer.enabled)
 		self.textLabel.textColor = [DreamoteConfiguration singleton].textColor;
 	else
 		self.textLabel.textColor = [DreamoteConfiguration singleton].detailsTextColor;
+
+	if(_timer == newTimer) return;
+	_timer = newTimer;
+
+	self.textLabel.text = newTimer.name;
 
 	// Redraw
 	[self setNeedsDisplay];
@@ -78,34 +69,6 @@ NSString *kAutoTimerCell_ID = @"AutoTimerCell_ID";
 		frame = CGRectMake(contentRect.origin.x + kLeftMargin, contentRect.origin.y, contentRect.size.width - (kLeftMargin + kRightMargin), contentRect.size.height);
 		self.textLabel.frame = frame;
 	}
-}
-
-/* (de)select */
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-	[super setSelected:selected animated:animated];
-}
-
-/* Create and configure a label. */
-- (UILabel *)newLabelWithPrimaryColor:(UIColor *) primaryColor selectedColor:(UIColor *) selectedColor fontSize:(CGFloat) fontSize bold:(BOOL) bold
-{
-	UIFont *font;
-	UILabel *newLabel;
-
-	if (bold) {
-		font = [UIFont boldSystemFontOfSize:fontSize];
-	} else {
-		font = [UIFont systemFontOfSize:fontSize];
-	}
-
-	newLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-	newLabel.backgroundColor = [UIColor clearColor];
-	newLabel.opaque = NO;
-	newLabel.textColor = primaryColor;
-	newLabel.highlightedTextColor = selectedColor;
-	newLabel.font = font;
-	
-	return newLabel;
 }
 
 @end
