@@ -6,18 +6,15 @@
 //  Copyright 2009-2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <XMLReader/SaxXmlReader.h>
 
-#import "BaseXMLReader.h"
-#import "EventSourceDelegate.h"
-#import "ServiceSourceDelegate.h"
+#import <Delegates/EventSourceDelegate.h>
+#import <Delegates/ServiceSourceDelegate.h>
 
 /*!
  @brief Enigma2 getcurrent XML Reader.
  */
-@interface Enigma2CurrentXMLReader : BaseXMLReader
-{
-}
+@interface Enigma2CurrentXMLReader : SaxXmlReader
 
 /*!
  @brief Standard initializer.
@@ -25,6 +22,6 @@
  @param target Delegate.
  @return Enigma2CurrentXMLReader instance.
  */
-- (id)initWithDelegate:(NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
+- (id)initWithDelegate:(NSObject<EventSourceDelegate, ServiceSourceDelegate> *)delegate;
 
 @end

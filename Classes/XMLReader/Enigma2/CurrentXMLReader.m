@@ -8,11 +8,31 @@
 
 #import "CurrentXMLReader.h"
 
-#import "../../Objects/Enigma2/Event.h"
-#import "../../Objects/Enigma2/Service.h"
-#import "../../Objects/Generic/Service.h"
+#import <Constants.h>
+
+#import <XMLReader/Enigma2/ServiceXMLReader.h>
+#import <XMLReader/Enigma2/EventXMLReader.h>
+
+#import <Objects/Generic/Service.h>
+
+@interface Enigma2CurrentXMLReader()
+@property (nonatomic, strong) Enigma2ServiceXMLReader *sreader;
+@property (nonatomic, strong) Enigma2EventXMLReader *ereader;
+@end
+
+@interface Enigma2ServiceXMLReader()
+- (void)charactersFound:(const xmlChar *)characters length:(int)length;
+@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
+@end
+
+@interface Enigma2EventXMLReader()
+- (void)charactersFound:(const xmlChar *)characters length:(int)length;
+@property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
+@end
 
 @implementation Enigma2CurrentXMLReader
+
+@synthesize sreader, ereader;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
@@ -20,6 +40,8 @@
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		sreader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:nil];
+		ereader = [[Enigma2EventXMLReader alloc] initWithDelegate:nil];
 	}
 	return self;
 }
@@ -37,45 +59,49 @@
 /*
  Example:
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	NSArray *resultNodes = [document nodesForXPath:@"/e2currentserviceinformation/e2service" error:nil];
-	CXMLElement *resultElement = nil;
+	[sreader elementFound:localname prefix:prefix uri:URI namespaceCount:namespaceCount namespaces:namespaces attributeCount:attributeCount defaultAttributeCount:defaultAttributeCount attributes:attributes];
+	[ereader elementFound:localname prefix:prefix uri:URI namespaceCount:namespaceCount namespaces:namespaces attributeCount:attributeCount defaultAttributeCount:defaultAttributeCount attributes:attributes];
+}
 
-	for(resultElement in resultNodes)
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2ServiceElement, kEnigma2ServiceElementLength))
 	{
-		// An e2service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[Enigma2Service alloc] initWithNode: (CXMLNode *)resultElement];
-
-		// *grml*
+		NSObject<ServiceProtocol> *newService = sreader.currentService;
 		if(newService.sname == nil || [newService.sname isEqualToString:@""])
 		{
 			newService = [[GenericService alloc] init];
 			newService.sname = NSLocalizedString(@"Nothing playing.", @"");
 		}
 
-		[_delegate performSelectorOnMainThread: @selector(addService:)
-									withObject: newService
-								 waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread:@selector(addService:)
+									withObject:newService
+								 waitUntilDone:NO];
 	}
-
-	resultNodes = [document nodesForXPath:@"/e2currentserviceinformation/e2eventlist/e2event" error:nil];
-	for(resultElement in resultNodes)
+	else if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
-		// An e2event in the xml represents an event, so create an instance of it.
-		NSObject<EventProtocol> *newEvent = [[Enigma2Event alloc] initWithNode: (CXMLNode *)resultElement];
-
-		// Workaround unknown now/next
+		NSObject<EventProtocol> *newEvent = ereader.currentEvent;
 		NSString *title = newEvent.title;
 		if(title == nil || [title isEqualToString:@""])
-		{
-			continue;
-		}
+			return; // don't push event
 
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
-									withObject: newEvent
-								 waitUntilDone: NO];
+		[_delegate performSelectorOnMainThread:@selector(addEvent:)
+									withObject:newEvent
+								 waitUntilDone:NO];
 	}
+	else
+	{
+		[sreader endElement:localname prefix:prefix uri:URI];
+		[ereader endElement:localname prefix:prefix uri:URI];
+	}
+}
+
+- (void)charactersFound:(const xmlChar *)characters length:(int)length
+{
+	[sreader charactersFound:characters length:length];
+	[ereader charactersFound:characters length:length];
 }
 
 @end
