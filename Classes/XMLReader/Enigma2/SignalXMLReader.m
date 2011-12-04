@@ -8,11 +8,26 @@
 
 #import "SignalXMLReader.h"
 
-#import "../../Objects/Generic/Signal.h"
+#import <Objects/Generic/Signal.h>
 
-#import "CXMLElement.h"
+static const char *kEnigma2Signal = "e2frontendstatus";
+static const NSUInteger kEnigma2SignalLength = 17;
+static const char *kEnigma2Snrdb = "e2snrdb";
+static const NSUInteger kEnigma2SnrdbLength = 8;
+static const char *kEnigma2Snr = "e2snr";
+static const NSUInteger kEnigma2SnrLength = 6;
+static const char *kEnigma2Ber = "e2ber";
+static const NSUInteger kEnigma2BerLength = 6;
+static const char *kEnigma2Agc = "e2acg";
+static const NSUInteger kEnigma2AgcLength = 6;
+
+@interface Enigma2SignalXMLReader()
+@property (nonatomic, strong) GenericSignal *signal;
+@end
 
 @implementation Enigma2SignalXMLReader
+
+@synthesize signal;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<SignalSourceDelegate> *)delegate
@@ -34,46 +49,48 @@
 	<e2acg>85 %</e2acg>
  </e2frontendstatus>
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	CXMLNode *currentChild = nil;
-	const NSArray *resultNodes = [document nodesForXPath:@"/e2frontendstatus" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigma2Signal, kEnigma2SignalLength))
 	{
-		GenericSignal *newSignal = [[GenericSignal alloc] init];
-		
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			const NSString *elementName = [currentChild name];			
-			if ([elementName isEqualToString:@"e2snrdb"]) {
-				const NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-				newSignal.snrdb = [[str substringToIndex: [str length] - 3] floatValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2snr"]) {
-				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-				newSignal.snr = [[str substringToIndex: [str length] - 2] integerValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2ber"]) {
-				newSignal.ber = [[[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]] integerValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"e2acg"]) {
-				NSString *str = [[currentChild stringValue] stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-				newSignal.agc = [[str substringToIndex: [str length] - 2] integerValue];
-				continue;
-			}
-		}
+		signal = [[GenericSignal alloc] init];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Snrdb, kEnigma2SnrdbLength)
+			||	!strncmp((const char *)localname, kEnigma2Snr, kEnigma2SnrLength)
+			||	!strncmp((const char *)localname, kEnigma2Ber, kEnigma2BerLength)
+			||	!strncmp((const char *)localname, kEnigma2Agc, kEnigma2AgcLength)
+			)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
 
-		[_delegate performSelectorOnMainThread: @selector(addSignal:)
-									withObject: newSignal
-								 waitUntilDone: NO];
-		
-		// Signal is unique
-		break;
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2Signal, kEnigma2SignalLength))
+	{
+		[_delegate performSelectorOnMainThread:@selector(addSignal:)
+									withObject:signal
+								 waitUntilDone:NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Snrdb, kEnigma2SnrdbLength))
+	{
+		const NSString *str = [currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		signal.snrdb = [[str substringToIndex:[str length] - 3] floatValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Snr, kEnigma2SnrLength))
+	{
+		NSString *str = [currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		signal.snr = [[str substringToIndex: [str length] - 2] integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Ber, kEnigma2BerLength))
+	{
+		signal.ber = [[currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Agc, kEnigma2AgcLength))
+	{
+		NSString *str = [currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		signal.agc = [[str substringToIndex: [str length] - 2] integerValue];
 	}
 }
 
