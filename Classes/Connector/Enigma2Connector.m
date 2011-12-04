@@ -42,8 +42,9 @@
 #import <XMLReader/Enigma2/TimerXMLReader.h>
 #import <XMLReader/Enigma2/VolumeXMLReader.h>
 
-#import <CXMLDocument.h>
-#import <CXMLElement.h>
+#import <libxml/parser.h>
+#import <libxml/tree.h>
+#import <libxml/xpath.h>
 
 #import <ViewController/EnigmaRCEmulatorController.h>
 
@@ -285,19 +286,21 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	{
 		if(error != nil && !_wasWarned)
 		{
-			NSError *parsingError = nil;
-			CXMLDocument *dom = [[CXMLDocument alloc] initWithData:data options:0 error:&parsingError];
-			if(parsingError)
+			NSRange dataRange = NSMakeRange(0, [data length]);
+			NSRange versionBegin = [data rangeOfData:[NSData dataWithBytesNoCopy:"e2webifversion>" length:15 freeWhenDone:NO] options:0 range:dataRange];
+			NSRange versionEnd = {NSNotFound, NSNotFound};
+			if(versionBegin.location != NSNotFound)
 			{
-				// XXX: for now just hand this error up
-				*error = parsingError;
-				return NO;
+				dataRange.location = versionBegin.location;
+				dataRange.length -= versionBegin.location;
+				versionEnd = [data rangeOfData:[NSData dataWithBytesNoCopy:"</e2webifversion" length:16 freeWhenDone:NO] options:0 range:dataRange];
 			}
-
-			const NSArray *resultNodes = [dom nodesForXPath:@"/e2abouts/e2about/e2webifversion" error:nil];
-			for(CXMLElement *currentChild in resultNodes)
+			if(versionEnd.location != NSNotFound)
 			{
-				NSMutableString *stringValue = [[currentChild stringValue] mutableCopy];
+				versionBegin.location += 15;
+				versionBegin.length = versionEnd.location - versionBegin.location;
+
+				NSMutableString *stringValue = [[NSMutableString alloc] initWithData:[data subdataWithRange:versionBegin] encoding:NSUTF8StringEncoding];
 				// XXX: reading out versions like these is quite difficult, so we artificial relabel them so 1.6.0 > 1.6rc > 1.6beta
 				[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:NSMakeRange(0, [stringValue length])];
 				[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:NSMakeRange(0, [stringValue length])];
@@ -319,7 +322,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				{
 					*error = [NSError errorWithDomain:@"myDomain"
 												code:98
-											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), [currentChild stringValue], webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
+											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
 				}
 			}
 
@@ -342,7 +345,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)getResultFromSimpleXmlWithRelativeString:(NSString *)relativeURL
 {
-	CXMLDocument *dom = nil;
+	xmlDocPtr doc = NULL;
 	NSError *error = nil;
 	NSURL *myURI = [[NSURL alloc] initWithString:relativeURL relativeToURL:_baseAddress];
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
@@ -351,34 +354,59 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 	if(error == nil)
 	{
-		dom = [[CXMLDocument alloc] initWithData:data options:0 error:&error];
+		doc = xmlReadMemory([data bytes], [data length], "", NULL, XML_PARSE_RECOVER);
 	}
 
 	Result *result = [Result createResult];
 	result.result = NO;
-	if(error != nil)
+	if(!doc)
 	{
-		result.resulttext = [error localizedDescription];
+		xmlErrorPtr	theLastErrorPtr = xmlGetLastError();
+		result.resulttext = [NSString stringWithUTF8String:theLastErrorPtr->message];
 	}
-	else
+	else do
 	{
-		const NSArray *resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2state" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
+		xmlXPathContextPtr xpathCtx;
+		xmlXPathObjectPtr xpathObj;
+		xmlNodeSetPtr nodes;
+
+		xpathCtx = xmlXPathNewContext(doc);
+		if(!xpathCtx) break;
+
+		// get state
+		xpathObj = xmlXPathEvalExpression((xmlChar *)"/e2simplexmlresult/e2state", xpathCtx);
+		if(!xpathObj) break;
+
+		nodes = xpathObj->nodesetval;
+		if(!nodes) break;
+
+		if(nodes->nodeNr > 0)
 		{
-			if([[currentChild stringValue] boolValue])
-			{
+			xmlChar *stringVal = xmlNodeListGetString(doc, nodes->nodeTab[0]->children, 1);
+			if(!memcmp(stringVal, "True", 5) || !memcmp(stringVal, "true", 5)) // NOTE: official syntax is 'True', but I used 'true' once myself so better make sure :P
 				result.result = YES;
-			}
-			break;
+			xmlFree(stringVal);
 		}
 
-		resultNodes = [dom nodesForXPath:@"/e2simplexmlresult/e2statetext" error:nil];
-		for(CXMLElement *currentChild in resultNodes)
+		xmlXPathFreeObject(xpathObj);
+
+		// get text
+		xpathObj = xmlXPathEvalExpression((xmlChar *)"/e2simplexmlresult/e2statetext", xpathCtx);
+		if(!xpathObj) break;
+
+		nodes = xpathObj->nodesetval;
+		if(!nodes) break;
+
+		if(nodes->nodeNr > 0)
 		{
-			result.resulttext = [currentChild stringValue];
-			break;
+			xmlChar *stringVal = xmlNodeListGetString(doc, nodes->nodeTab[0]->children, 1);
+			result.resulttext = [NSString stringWithCString:(const char *)stringVal encoding:NSUTF8StringEncoding];
+			xmlFree(stringVal);
 		}
-	}
+
+		xmlXPathFreeObject(xpathObj);
+		xmlXPathFreeContext(xpathCtx);
+	} while(0);
 
 	return result;
 }
