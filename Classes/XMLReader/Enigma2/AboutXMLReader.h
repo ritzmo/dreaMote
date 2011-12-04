@@ -6,17 +6,14 @@
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <XMLReader/SaxXmlReader.h>
 
-#import "BaseXMLReader.h"
-#import "AboutSourceDelegate.h"
+#import <Delegates/AboutSourceDelegate.h>
 
 /*!
  @brief Enigma2 About XML Reader.
  */
-@interface Enigma2AboutXMLReader : BaseXMLReader
-{
-}
+@interface Enigma2AboutXMLReader : SaxXmlReader
 
 /*!
  @brief Standard initializer.

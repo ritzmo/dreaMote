@@ -11,11 +11,13 @@
 #import "RemoteConnectorObject.h"
 
 #import "AboutProtocol.h"
-#import "MainTableViewCell.h" /* hdd */
 #import "Constants.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "BaseTableViewCell.h"
+#import <Objects/Generic/Harddisk.h>
+
+#import <TableViewCell/BaseTableViewCell.h>
+#import <TableViewCell/MainTableViewCell.h> /* hdd */
 
 @implementation AboutViewController
 
@@ -124,7 +126,7 @@
 		case 0:
 			return NSLocalizedString(@"Version Information", @"Title of section in About View containing versioning information");
 		case 1:
-			return (_about.hdd != nil) ? NSLocalizedString(@"Harddisk", @"Title of section in About View containing harddisk information (if any)") : nil;
+			return (_about.hdd.count) ? NSLocalizedString(@"Harddisk", @"Title of section in About View containing harddisk information (if any)") : nil;
 		case 2:
 			return (_about.tuners != nil) ? NSLocalizedString(@"Tuners", @"Title of section in About View containing tuner information (if any)") : nil;
 		default:
@@ -145,13 +147,9 @@
 		case 0:
 			return 3;
 		case 1:
-			if(_about.hdd == nil)
-				return 0;
-			return 1;
+			return _about.hdd.count;
 		case 2:
-			if(_about.tuners == nil)
-				return 0;
-			return [_about.tuners count];
+			return _about.tuners.count;
 		default:
 			return 0;
 	}
@@ -167,7 +165,7 @@
 	{
 		case 1:
 		{
-			if(_about.hdd == nil)
+			if(!_about.hdd.count)
 				return 0;
 			break;
 		}
@@ -237,11 +235,21 @@
 		}
 		case 1:
 		{
+			NSUInteger row = indexPath.row;
 			sourceCell = [MainTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMainCell_ID];
-
-			((MainTableViewCell *)sourceCell).dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
-							_about.hdd.model, @"title",
-							[NSString stringWithFormat:NSLocalizedString(@"%@ of %@ free", @"Free space on harddisk (available of total free), includes size."), _about.hdd.free, _about.hdd.capacity], @"explainText", nil];
+			if(row < _about.hdd.count)
+			{
+				Harddisk *hdd = [_about.hdd objectAtIndex:indexPath.row];
+				((MainTableViewCell *)sourceCell).dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+							hdd.model, @"title",
+							[NSString stringWithFormat:NSLocalizedString(@"%@ of %@ free", @"Free space on harddisk (available of total free), includes size."), hdd.free, hdd.capacity], @"explainText", nil];
+			}
+			else
+			{
+				((MainTableViewCell *)sourceCell).dataDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+																	NSLocalizedString(@"Unknown", @"") , @"title",
+																	@"", @"explainText", nil];
+			}
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			break;
 		}

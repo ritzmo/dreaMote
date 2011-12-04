@@ -70,6 +70,9 @@
 		DA30A5DC1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */; };
 		DA30A5DD1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */; };
 		DA30A5DE1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */; };
+		DA32C848148B97CE00B8C638 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DA32C847148B97CE00B8C638 /* About.m */; };
+		DA32C849148B97CE00B8C638 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DA32C847148B97CE00B8C638 /* About.m */; };
+		DA32C84A148B97CE00B8C638 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DA32C847148B97CE00B8C638 /* About.m */; };
 		DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
 		DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */; };
@@ -782,8 +785,6 @@
 		DAC8C23013B2014D00CA00D9 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CE13B2014C00CA00D9 /* Service.m */; };
 		DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D013B2014C00CA00D9 /* Timer.m */; };
 		DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D013B2014C00CA00D9 /* Timer.m */; };
-		DAC8C23513B2014D00CA00D9 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D313B2014C00CA00D9 /* About.m */; };
-		DAC8C23613B2014D00CA00D9 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D313B2014C00CA00D9 /* About.m */; };
 		DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0E013B2014C00CA00D9 /* AutoTimer.m */; };
 		DAC8C24713B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0E213B2014C00CA00D9 /* EPGRefreshSettings.m */; };
 		DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0E213B2014C00CA00D9 /* EPGRefreshSettings.m */; };
@@ -1174,6 +1175,8 @@
 		DA2F23C4146DD253007DC7F6 /* MultiEPGCellContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiEPGCellContentView.m; sourceTree = "<group>"; };
 		DA2F23C6146DE818007DC7F6 /* Slider_Blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Blue.png; sourceTree = "<group>"; };
 		DA30A5DB1475C7E40052C2C9 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "MBProgressHUD/Demo/Images/37x-Checkmark.png"; sourceTree = SOURCE_ROOT; };
+		DA32C846148B97CE00B8C638 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
+		DA32C847148B97CE00B8C638 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
 		DA33164B14695DDD00A63BA8 /* DreamoteConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteConfiguration.h; sourceTree = "<group>"; };
 		DA33164C14695DDD00A63BA8 /* DreamoteConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DreamoteConfiguration.m; sourceTree = "<group>"; };
 		DA3316501469624100A63BA8 /* DreamoteIpadConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DreamoteIpadConfiguration.h; sourceTree = "<group>"; };
@@ -1629,8 +1632,6 @@
 		DAC8C0CE13B2014C00CA00D9 /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DAC8C0CF13B2014C00CA00D9 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		DAC8C0D013B2014C00CA00D9 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
-		DAC8C0D213B2014C00CA00D9 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
-		DAC8C0D313B2014C00CA00D9 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
 		DAC8C0DC13B2014C00CA00D9 /* EventProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventProtocol.h; sourceTree = "<group>"; };
 		DAC8C0DD13B2014C00CA00D9 /* FileProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileProtocol.h; sourceTree = "<group>"; };
 		DAC8C0DF13B2014C00CA00D9 /* AutoTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimer.h; sourceTree = "<group>"; };
@@ -2970,8 +2971,6 @@
 		DAC8C0D113B2014C00CA00D9 /* Enigma2 */ = {
 			isa = PBXGroup;
 			children = (
-				DAC8C0D213B2014C00CA00D9 /* About.h */,
-				DAC8C0D313B2014C00CA00D9 /* About.m */,
 			);
 			path = Enigma2;
 			sourceTree = "<group>";
@@ -2979,6 +2978,8 @@
 		DAC8C0DE13B2014C00CA00D9 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
+				DA32C846148B97CE00B8C638 /* About.h */,
+				DA32C847148B97CE00B8C638 /* About.m */,
 				DAC8C0DF13B2014C00CA00D9 /* AutoTimer.h */,
 				DAC8C0E013B2014C00CA00D9 /* AutoTimer.m */,
 				DA34E3EA1488C8BE00CBA5F8 /* AutoTimerSettings.h */,
@@ -3913,7 +3914,6 @@
 				DAC8C22C13B2014D00CA00D9 /* Movie.m in Sources */,
 				DAC8C22F13B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */,
-				DAC8C23513B2014D00CA00D9 /* About.m in Sources */,
 				DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */,
 				DAC8C24713B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
 				DAC8C24A13B2014D00CA00D9 /* Event.m in Sources */,
@@ -4143,6 +4143,7 @@
 				DA3F60A6148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC388148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA5FC38D148AF045006C27D1 /* DeferTagLoader.m in Sources */,
+				DA32C848148B97CE00B8C638 /* About.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4187,7 +4188,6 @@
 				DAC8C22D13B2014D00CA00D9 /* Movie.m in Sources */,
 				DAC8C23013B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */,
-				DAC8C23613B2014D00CA00D9 /* About.m in Sources */,
 				DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
 				DAC8C24B13B2014D00CA00D9 /* Event.m in Sources */,
 				DAC8C24E13B2014D00CA00D9 /* File.m in Sources */,
@@ -4408,6 +4408,7 @@
 				DA3F60A5148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC389148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA5FC38E148AF045006C27D1 /* DeferTagLoader.m in Sources */,
+				DA32C849148B97CE00B8C638 /* About.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4642,6 +4643,7 @@
 				DAAAC5EA147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
 				DA3F60A4148AA920008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC38A148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
+				DA32C84A148B97CE00B8C638 /* About.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
