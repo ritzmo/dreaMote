@@ -91,6 +91,8 @@ static const NSUInteger kEnigma2IsmutedLength = 10;
 	{
 		volume.ismuted = [currentString boolValue];
 	}
+
+	self.currentString = nil;
 }
 
 @end

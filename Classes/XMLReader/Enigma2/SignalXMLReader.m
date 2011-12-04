@@ -92,6 +92,8 @@ static const NSUInteger kEnigma2AgcLength = 6;
 		NSString *str = [currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		signal.agc = [[str substringToIndex: [str length] - 2] integerValue];
 	}
+
+	self.currentString = nil;
 }
 
 @end
