@@ -8,12 +8,15 @@
 
 #import "AutoTimerViewController.h"
 
-#import "AutoTimerFilterViewController.h"
-#import "BouquetListController.h"
-#import "DatePickerController.h"
-#import "LocationListController.h"
-#import "ServiceListController.h"
-#import "SimpleSingleSelectionListController.h"
+#import <ListController/BouquetListController.h>
+#import <ListController/LocationListController.h>
+#import <ListController/ServiceListController.h>
+#import <ListController/SimpleMultiSelectionListController.h>
+#import <ListController/SimpleSingleSelectionListController.h>
+#import <ViewController/AutoTimerFilterViewController.h>
+#import <ViewController/DatePickerController.h>
+
+#import <DeferTagLoader.h>
 
 #import "MBProgressHUD.h"
 
@@ -36,20 +39,21 @@
 enum sectionIds
 {
 	titleSection = 0,
-	matchSection = 1,
-	generalSection = 2,
-	timespanSection = 3,
-	timeframeSection = 4,
-	durationSection = 5,
-	servicesSection = 6,
-	bouquetSection = 7,
-	aftereventSection = 8,
-	locationSection = 9,
-	filterTitleSection = 10,
-	filterSdescSection = 11,
-	filterDescSection = 12,
-	filterWeekdaySection = 13,
-	maxSection = 14,
+	matchSection,
+	generalSection,
+	timespanSection,
+	timeframeSection,
+	durationSection,
+	servicesSection,
+	bouquetSection,
+	aftereventSection,
+	locationSection,
+	tagsSection,
+	filterTitleSection,
+	filterSdescSection,
+	filterDescSection,
+	filterWeekdaySection,
+	maxSection,
 };
 
 /*!
@@ -896,6 +900,8 @@ static NSArray *searchTypeTexts = nil;
 			return NSLocalizedString(@"After Event", @"");
 		case locationSection:
 			return NSLocalizedString(@"Location", @"");
+		case tagsSection:
+			return NSLocalizedString(@"Tags", @"");
 		case filterSdescSection:
 			return NSLocalizedString(@"Filter: Shortdescription", @"");
 		case filterDescSection:
@@ -917,6 +923,7 @@ static NSArray *searchTypeTexts = nil;
 		case matchSection:
 		case aftereventSection:
 		case locationSection:
+		case tagsSection:
 			return 1;
 		case generalSection:
 			return 6;
@@ -1140,6 +1147,13 @@ static NSArray *searchTypeTexts = nil;
 			cell.accessoryType = UITableViewCellAccessoryNone;
 			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			cell.textLabel.text = (_timer.location) ? _timer.location : NSLocalizedString(@"Default Location", @"");
+			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+			break;
+		case tagsSection:
+			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
+			cell.accessoryType = UITableViewCellAccessoryNone;
+			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.textLabel.text = (_timer.tags.count) ? [_timer.tags componentsJoinedByString:@" "] : NSLocalizedString(@"None", @"");
 			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 			break;
 		case filterTitleSection:
@@ -1542,6 +1556,66 @@ static NSArray *searchTypeTexts = nil;
 			else
 				targetViewController = vc;
 			break;
+		}
+		case tagsSection:
+		{
+			NSMutableSet *allTags = [NSMutableSet setWithArray:_timer.tags];
+			DeferTagLoader *tagLoad = [[DeferTagLoader alloc] init];
+			MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+			[self.view addSubview:progressHUD];
+			progressHUD.removeFromSuperViewOnHide = YES;
+			[progressHUD setLabelText:NSLocalizedString(@"Loading Tags", @"Label of Progress HUD in TimerList when loading list of available tags")];
+			[progressHUD setMode:MBProgressHUDModeIndeterminate];
+			[progressHUD show:YES];
+			tagLoad.callback = ^(NSArray *tags, BOOL success)
+			{
+				[progressHUD hide:YES];
+				if(success)
+				{
+					[allTags addObjectsFromArray:tags];
+					SimpleMultiSelectionListController *vc = [SimpleMultiSelectionListController withItems:[allTags sortedArrayUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES selector:@selector(caseInsensitiveCompare:)]]]
+																							  andSelection:[NSSet setWithArray:_timer.tags]
+																								  andTitle:NSLocalizedString(@"Select Tags", @"")];
+
+					const BOOL isIpad = IS_IPAD();
+					vc.callback = ^(NSSet *newSelectedItems, BOOL cancel)
+					{
+						if(!cancel)
+						{
+							_timer.tags = [newSelectedItems allObjects];
+							UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+							if(cell)
+								cell.textLabel.text = (_timer.tags.count) ? [_timer.tags componentsJoinedByString:@" "] : NSLocalizedString(@"None", @"");
+						}
+
+						if(isIpad)
+							[self dismissModalViewControllerAnimated:YES];
+						else
+							[self.navigationController popToViewController:self animated:YES];
+					};
+
+					if(isIpad)
+					{
+						UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+						targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+						targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
+						[self presentModalViewController:targetViewController animated:YES];
+					}
+					else
+						[self.navigationController pushViewController:vc animated:YES];
+				}
+				else
+				{
+					UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	message:NSLocalizedString(@"Unable to retrieve tag list.", @"")
+																   delegate:nil
+														  cancelButtonTitle:@"OK"
+														  otherButtonTitles:nil];
+					[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+				}
+			};
+			[RemoteConnectorObject queueInvocationWithTarget:tagLoad selector:@selector(loadTags)];
+			return [tv deselectRowAtIndexPath:indexPath animated:YES];
 		}
 		case filterTitleSection:
 		case filterSdescSection:
