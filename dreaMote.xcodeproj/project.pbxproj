@@ -862,8 +862,6 @@
 		DAC8C29013B2014D00CA00D9 /* SynchronousRequestReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11A13B2014C00CA00D9 /* SynchronousRequestReader.m */; };
 		DAC8C29113B2014D00CA00D9 /* SynchronousRequestReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11A13B2014C00CA00D9 /* SynchronousRequestReader.m */; };
 		DAC8C29213B2014D00CA00D9 /* AutoTimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11D13B2014D00CA00D9 /* AutoTimerTableViewCell.m */; };
-		DAC8C29313B2014D00CA00D9 /* AutoTimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11D13B2014D00CA00D9 /* AutoTimerTableViewCell.m */; };
-		DAC8C29413B2014D00CA00D9 /* AutoTimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11D13B2014D00CA00D9 /* AutoTimerTableViewCell.m */; };
 		DAC8C29513B2014D00CA00D9 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11F13B2014D00CA00D9 /* CellTextField.m */; };
 		DAC8C29613B2014D00CA00D9 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11F13B2014D00CA00D9 /* CellTextField.m */; };
 		DAC8C29713B2014D00CA00D9 /* CellTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C11F13B2014D00CA00D9 /* CellTextField.m */; };
@@ -4239,7 +4237,6 @@
 				DAC8C28A13B2014D00CA00D9 /* MovieSplitViewController.m in Sources */,
 				DAC8C28D13B2014D00CA00D9 /* TimerSplitViewController.m in Sources */,
 				DAC8C29013B2014D00CA00D9 /* SynchronousRequestReader.m in Sources */,
-				DAC8C29313B2014D00CA00D9 /* AutoTimerTableViewCell.m in Sources */,
 				DAC8C29613B2014D00CA00D9 /* CellTextField.m in Sources */,
 				DAC8C29913B2014D00CA00D9 /* CellTextView.m in Sources */,
 				DAC8C29C13B2014D00CA00D9 /* DisplayCell.m in Sources */,
@@ -4493,7 +4490,6 @@
 				DAC8C28B13B2014D00CA00D9 /* MovieSplitViewController.m in Sources */,
 				DAC8C28E13B2014D00CA00D9 /* TimerSplitViewController.m in Sources */,
 				DAC8C29113B2014D00CA00D9 /* SynchronousRequestReader.m in Sources */,
-				DAC8C29413B2014D00CA00D9 /* AutoTimerTableViewCell.m in Sources */,
 				DAC8C29713B2014D00CA00D9 /* CellTextField.m in Sources */,
 				DAC8C29A13B2014D00CA00D9 /* CellTextView.m in Sources */,
 				DAC8C29D13B2014D00CA00D9 /* DisplayCell.m in Sources */,
