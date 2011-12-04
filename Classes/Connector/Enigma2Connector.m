@@ -407,6 +407,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		xmlXPathFreeObject(xpathObj);
 		xmlXPathFreeContext(xpathCtx);
 	} while(0);
+	xmlFreeDoc(doc);
 
 	return result;
 }
