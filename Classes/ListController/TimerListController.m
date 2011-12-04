@@ -462,7 +462,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		cell.textLabel.text = NSLocalizedString(@"New Timer", @"");
 		cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize]; // FIXME: Looks a little weird though
 
-		return cell;
+		return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	}
 
 	// Timer state is section - 1, so make this a little more readable
@@ -481,8 +481,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	if([_selected containsObject:timer])
 		[(TimerTableViewCell *)cell setMultiSelected:YES animated:NO];
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 }
 
 /* row selected */

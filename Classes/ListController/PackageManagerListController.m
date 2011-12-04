@@ -379,7 +379,7 @@
 				default:
 					break;
 			}
-			return cell;
+			return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 		}
 
 		packages = _selectedPackages;
@@ -395,8 +395,7 @@
 	if([_selectedPackages containsObject:cell.package])
 		[cell setMultiSelected:YES animated:NO];
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 }
 
 /* select row */

@@ -641,7 +641,7 @@ enum bouquetListTags
 		UITableViewCell *cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 		cell.textLabel.text = NSLocalizedStringFromTable(@"New Bouquet", @"ServiceEditor", @"Title of cell to add a bouquet");
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:kServiceTextSize];
-		return cell;
+		return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
@@ -650,8 +650,7 @@ enum bouquetListTags
 	else
 		cell.editingAccessoryType = UITableViewCellAccessoryNone;
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 }
 
 /* select row */

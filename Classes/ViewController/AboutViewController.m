@@ -198,7 +198,7 @@
 		sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 		sourceCell.textLabel.text = NSLocalizedString(@"No Data…", @"Placeholder if no data has been received yet.");
 		[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-		return sourceCell;
+		return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 	}
 
 	// we are creating a new cell, setup its attributes
@@ -265,8 +265,7 @@
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-	return sourceCell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 }
 
 #pragma mark - UIViewController delegate methods

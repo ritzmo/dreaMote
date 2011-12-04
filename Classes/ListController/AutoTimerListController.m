@@ -371,14 +371,13 @@
 	{
 		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 		cell.textLabel.text = NSLocalizedStringFromTable(@"New AutoTimer", @"AutoTimer", @"Text for cell which allows to add a new AutoTimer");
-		return cell;
+		return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	}
 
 	cell = [AutoTimerTableViewCell reusableTableViewCellInView:tableView withIdentifier:kAutoTimerCell_ID];
 	((AutoTimerTableViewCell *)cell).timer = [_autotimers objectAtIndex:indexPath.row];
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 }
 
 /* select row */
