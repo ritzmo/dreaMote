@@ -2744,14 +2744,14 @@
 				DAC8C18013B2014D00CA00D9 /* XMLReader */,
 				DAC8C07E13B2014C00CA00D9 /* Constants.h */,
 				DAC8C07F13B2014C00CA00D9 /* Constants.m */,
+				DA5FC38B148AF045006C27D1 /* DeferTagLoader.h */,
+				DA5FC38C148AF045006C27D1 /* DeferTagLoader.m */,
 				DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */,
 				DAD9F08E1466EA11007C0A31 /* OtherViewProtocol.h */,
 				DAC8C10313B2014C00CA00D9 /* RecursiveFileAdder.h */,
 				DAC8C10413B2014C00CA00D9 /* RecursiveFileAdder.m */,
 				DAC8C11913B2014C00CA00D9 /* SynchronousRequestReader.h */,
 				DAC8C11A13B2014C00CA00D9 /* SynchronousRequestReader.m */,
-				DA5FC38B148AF045006C27D1 /* DeferTagLoader.h */,
-				DA5FC38C148AF045006C27D1 /* DeferTagLoader.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
