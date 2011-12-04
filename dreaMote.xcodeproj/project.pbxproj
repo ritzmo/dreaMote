@@ -784,8 +784,6 @@
 		DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D013B2014C00CA00D9 /* Timer.m */; };
 		DAC8C23513B2014D00CA00D9 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D313B2014C00CA00D9 /* About.m */; };
 		DAC8C23613B2014D00CA00D9 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D313B2014C00CA00D9 /* About.m */; };
-		DAC8C23E13B2014D00CA00D9 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D913B2014C00CA00D9 /* Metadata.m */; };
-		DAC8C23F13B2014D00CA00D9 /* Metadata.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D913B2014C00CA00D9 /* Metadata.m */; };
 		DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0E013B2014C00CA00D9 /* AutoTimer.m */; };
 		DAC8C24713B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0E213B2014C00CA00D9 /* EPGRefreshSettings.m */; };
 		DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0E213B2014C00CA00D9 /* EPGRefreshSettings.m */; };
@@ -1633,8 +1631,6 @@
 		DAC8C0D013B2014C00CA00D9 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		DAC8C0D213B2014C00CA00D9 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
 		DAC8C0D313B2014C00CA00D9 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
-		DAC8C0D813B2014C00CA00D9 /* Metadata.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Metadata.h; sourceTree = "<group>"; };
-		DAC8C0D913B2014C00CA00D9 /* Metadata.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Metadata.m; sourceTree = "<group>"; };
 		DAC8C0DC13B2014C00CA00D9 /* EventProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventProtocol.h; sourceTree = "<group>"; };
 		DAC8C0DD13B2014C00CA00D9 /* FileProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileProtocol.h; sourceTree = "<group>"; };
 		DAC8C0DF13B2014C00CA00D9 /* AutoTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimer.h; sourceTree = "<group>"; };
@@ -2976,8 +2972,6 @@
 			children = (
 				DAC8C0D213B2014C00CA00D9 /* About.h */,
 				DAC8C0D313B2014C00CA00D9 /* About.m */,
-				DAC8C0D813B2014C00CA00D9 /* Metadata.h */,
-				DAC8C0D913B2014C00CA00D9 /* Metadata.m */,
 			);
 			path = Enigma2;
 			sourceTree = "<group>";
@@ -3920,7 +3914,6 @@
 				DAC8C22F13B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C23513B2014D00CA00D9 /* About.m in Sources */,
-				DAC8C23E13B2014D00CA00D9 /* Metadata.m in Sources */,
 				DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */,
 				DAC8C24713B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
 				DAC8C24A13B2014D00CA00D9 /* Event.m in Sources */,
@@ -4195,7 +4188,6 @@
 				DAC8C23013B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C23613B2014D00CA00D9 /* About.m in Sources */,
-				DAC8C23F13B2014D00CA00D9 /* Metadata.m in Sources */,
 				DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
 				DAC8C24B13B2014D00CA00D9 /* Event.m in Sources */,
 				DAC8C24E13B2014D00CA00D9 /* File.m in Sources */,

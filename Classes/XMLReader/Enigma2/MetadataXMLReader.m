@@ -8,10 +8,30 @@
 
 #import "MetadataXMLReader.h"
 
-#import "../../Objects/Enigma2/Metadata.h"
-#import "../../Objects/Generic/Metadata.h"
+#import <Objects/Generic/Metadata.h>
+
+static const char *kEnigma2Currenttrack = "e2currenttrack";
+static const NSUInteger kEnigma2CurrenttrackLength = 15;
+static const char *kEnigma2Artist = "e2artist";
+static const NSUInteger kEnigma2ArtistLength = 9;
+static const char *kEnigma2Title = "e2title";
+static const NSUInteger kEnigma2TitleLength = 8;
+static const char *kEnigma2Album = "e2album";
+static const NSUInteger kEnigma2AlbumLength = 8;
+static const char *kEnigma2Year = "e2year";
+static const NSUInteger kEnigma2YearLength = 7;
+static const char *kEnigma2Genre = "e2genre";
+static const NSUInteger kEnigma2GenreLength = 8;
+static const char *kEnigma2Coverfile = "e2coverfile";
+static const NSUInteger kEnigma2CoverfileLength = 12;
+
+@interface Enigma2MetadataXMLReader()
+@property (nonatomic, strong) GenericMetadata *metadata;
+@end
 
 @implementation Enigma2MetadataXMLReader
+
+@synthesize metadata;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<MetadataSourceDelegate> *)delegate
@@ -28,9 +48,9 @@
 {
 	NSObject<MetadataProtocol> *fakeObject = [[GenericMetadata alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addMetadata:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread:@selector(addMetadata:)
+								withObject:fakeObject
+							 waitUntilDone:NO];
 }
 
 /*
@@ -47,19 +67,57 @@ Example:
  </e2currenttrack> 
 </e2mediaplayercurrent> 
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSArray *resultNodes = [document nodesForXPath:@"/e2mediaplayercurrent/e2currenttrack" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigma2Currenttrack, kEnigma2CurrenttrackLength))
 	{
-		// An e2movie in the xml represents a movie, so create an instance of it.
-		NSObject<MetadataProtocol> *newMetadata = [[Enigma2Metadata alloc] initWithNode: (CXMLNode *)resultElement];
-		
-		[_delegate performSelectorOnMainThread: @selector(addMetadata:)
-									withObject: newMetadata
-								 waitUntilDone: NO];
+		metadata = [[GenericMetadata alloc] init];
 	}
+	else if(	!strncmp((const char *)localname, kEnigma2Artist, kEnigma2ArtistLength)
+			||	!strncmp((const char *)localname, kEnigma2Title, kEnigma2TitleLength)
+			||	!strncmp((const char *)localname, kEnigma2Album, kEnigma2AlbumLength)
+			||	!strncmp((const char *)localname, kEnigma2Year, kEnigma2YearLength)
+			||	!strncmp((const char *)localname, kEnigma2Genre, kEnigma2GenreLength)
+			||	!strncmp((const char *)localname, kEnigma2Coverfile, kEnigma2CoverfileLength)
+			)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigma2Currenttrack, kEnigma2CurrenttrackLength))
+	{
+		[_delegate performSelectorOnMainThread:@selector(addMetadata:)
+									withObject:metadata
+								 waitUntilDone:NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Artist, kEnigma2ArtistLength))
+	{
+		metadata.artist = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Title, kEnigma2TitleLength))
+	{
+		metadata.title = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Album, kEnigma2AlbumLength))
+	{
+		metadata.album = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Year, kEnigma2YearLength))
+	{
+		metadata.year = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Genre, kEnigma2GenreLength))
+	{
+		metadata.genre = currentString;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2Coverfile, kEnigma2CoverfileLength))
+	{
+		metadata.coverpath = currentString;
+	}
+	self.currentString = nil;
 }
 
 @end
