@@ -79,6 +79,7 @@
 		[_delegate performSelectorOnMainThread:@selector(addService:)
 									withObject:newService
 								 waitUntilDone:NO];
+		sreader = nil; // cleanup early
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventElement, kEnigma2EventElementLength))
 	{
