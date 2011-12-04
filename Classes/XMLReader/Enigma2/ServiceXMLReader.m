@@ -11,9 +11,6 @@
 #import "Constants.h"
 #import <Objects/Generic/Service.h>
 
-static const char *kEnigma2ServiceElement = "e2service";
-static const NSUInteger kEnigma2ServiceElementLength = 10;
-
 @interface Enigma2ServiceXMLReader()
 @property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
 @end

@@ -14,8 +14,6 @@
 #import <Objects/Generic/Event.h>
 #import <Objects/Generic/Service.h>
 
-static const char *kEnigma2EventElement = "e2event";
-static const NSUInteger kEnigma2EventElementLength = 8;
 static const char *kEnigma2EventExtendedDescription = "e2eventdescriptionextended";
 static const NSUInteger kEnigma2EventExtendedDescriptionLength = 27;
 static const char *kEnigma2EventDescription = "e2eventdescription";

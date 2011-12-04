@@ -19,3 +19,5 @@ const char *kEnigma2SettingName = "e2settingname";
 const char *kEnigma2SettingValue = "e2settingvalue";
 const char *kEnigma2Location = "e2location";
 const char *kEnigma2SimpleXmlItem = "e2simplexmlitem";
+const char *kEnigma2ServiceElement = "e2service";
+const char *kEnigma2EventElement = "e2event";
