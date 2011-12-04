@@ -251,10 +251,11 @@ Enigma2:
 - Continue to load EPG data for MultiEPG in Background
 
 1.3.0:
-- Add support for different themes (three schemes to begin with)
+- Add support for different themes (four schemes to begin with)
 - Add Multi-Delete to Timer and Movie List
 - Confirmation when adding a timer / sending a message etc succeeded
 - Long press gesture in event list added (add timer)
+- Support multiple harddrives in "About Receiver"
 Enigma2:
 - Support for the upcoming web interface 1.7.0
 - Allow to change timer tags
