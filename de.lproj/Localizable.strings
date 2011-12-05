@@ -599,11 +599,11 @@
 /* No comment provided by engineer. */
 "Neutrino" = "Neutrino";
 
-/* Repeated */
-"Never" = "Nie";
-
 /* don't refresh sat finder */
 "never" = "nie";
+
+/* Repeated */
+"Never" = "Nie";
 
 /* Title of cell to add a new bookmark */
 "New Bookmark" = "Neues Lesezeichen";
@@ -816,11 +816,11 @@
 /* Cell Label of repeat count in Neutrino */
 "Repetitions" = "Wiederholungen";
 
-/* No comment provided by engineer. */
-"Restart" = "GUI neu starten";
-
 /* used in confirmation dialog: really restart? */
 "restart" = "GUI neu starten";
+
+/* No comment provided by engineer. */
+"Restart" = "GUI neu starten";
 
 /* In-App-Purchase were restored successfully */
 "Restore completed" = "Wiederherstellung abgeschlossen";
@@ -919,11 +919,11 @@
 /* Label of Progress HUD in MediaPlayer when shuffling playlist */
 "Shuffling Playlist" = "Wird gemischt";
 
-/* Toggle Shutdown/Standby of SleepTimer */
-"Shutdown" = "Herunterfahren";
-
 /* used in confirmation dialog: really shutdown? */
 "shutdown" = "herunterfahren";
+
+/* Toggle Shutdown/Standby of SleepTimer */
+"Shutdown" = "Herunterfahren";
 
 /* Title of SignalViewController */
 "Signal" = "Signal";
@@ -1095,11 +1095,17 @@
 /* No comment provided by engineer. */
 "Unable to start playback" = "Wiedergabe konnte nicht gestartet werden";
 
+/* No comment provided by engineer. */
+"Unknown" = "Unbekannt";
+
 /* Data connection failed for unknown reason. */
 "Unknown connection error occured." = "Ein unbekannter Verbindungsfehler ist aufgetreten.";
 
 /* Remote host did return error code but no specific message. */
 "Unknown Error." = "Ein unbekannter Fehler ist aufgetreten.";
+
+/* Data parsing failed for unknown reason. */
+"Unknown parsing error occured." = "Ein unbekannter Verarbeitungsfehler ist aufgetreten.";
 
 /* Unable to find service name for service id */
 "Unknown Service (%@)" = "Unbekannter Sender (%@)";

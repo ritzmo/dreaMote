@@ -139,6 +139,9 @@
 /* searchType attribute of autotimer. Can be partial, exact or in description.. */
 "Search Type: %@" = "Suche %@";
 
+/* searchForDuplicateDescription attribute of autotimer. Defines where avoidDuplicateDescription searches for 'uniqueness'. */
+"Search unique Description in %@" = "Einzigartig in %@";
+
 /* section header for service restriction */
 "Services" = "Nur auf Sender";
 
@@ -164,6 +167,15 @@
 /* section header for timespan */
 "Timespan" = "Uhrzeit";
 
+/* Search For Duplicates: in Title */
+"Title" = "Titel";
+
+/* Search For Duplicates: in Title and Short+Extended Description */
+"Title and all descriptions" = "Titel und Beschreibungen";
+
+/* Search For Duplicates: in Title and Short Description */
+"Title and short description" = "Titel und Kurzbeschreibung";
+
 /* timespan to */
 "To: %@" = "Bis: %@";
 
@@ -175,6 +187,9 @@
 
 /* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings. */
 "Unique Description: %@" = "Eindeutige Beschreibung: %@";
+
+/* Title of 'search for duplicate description' selector. */
+"Unique in" = "Eindeutig in";
 
 /* option (e.g. timespan or timeframe) unset */
 "unset" = "ungesetzt";
