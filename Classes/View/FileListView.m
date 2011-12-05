@@ -280,6 +280,7 @@
 	UITableViewCell *cell = nil;
 	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
 	const BOOL fileValid = file.valid;
+	const BOOL isIphone = IS_IPHONE();
 	if(_isPlaylist && fileValid)
 	{
 		PlayListCell *pcell = [PlayListCell reusableTableViewCellInView:tableView withIdentifier:kPlayListCell_ID];
@@ -292,12 +293,11 @@
 
 		if([_selected containsObject:file])
 			[pcell setMultiSelected:YES animated:NO];
-		cell = pcell;
+		cell = [singleton styleTableViewCell:pcell inTableView:tableView asSlave:isIphone];
 	}
 	else
 	{
 		cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
-		cell.textLabel.textColor = singleton.textColor;
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:singleton.textViewFontSize-1];
 		cell.textLabel.text = file.title;
 
@@ -307,9 +307,10 @@
 			cell.imageView.image = [UIImage imageNamed:@"folder.png"];
 		else
 			cell.imageView.image = [UIImage imageNamed:@"audio-x-generic.png"];
+		[singleton styleTableViewCell:cell inTableView:tableView asSlave:isIphone || !_isPlaylist];
 	}
 
-	return [singleton styleTableViewCell:cell inTableView:tableView];
+	return cell;
 }
 
 /* select row */
