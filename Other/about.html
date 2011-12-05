@@ -1,21 +1,193 @@
-<html><head><style type="text/css">@CSS</style></head>
+<html><head><script type="text/javascript">function touchEvents(){document.documentElement.style.webkitTouchCallout="none";document.documentElement.style.webkitUserSelect="none";var b=document.getElementsByTagName('a');for(var i=0;i<b.length;i++){b[i].addEventListener('touchstart',function(a){this.className="hover"},false);b[i].addEventListener('touchstop',function(a){this.className=""},false)}}
+function toggleElem(name,hide){var elem=document.getElementById(name);if(elem.style.display=="block"&&hide!==false)elem.style.display="none";else elem.style.display="block"}function showElem(name){toggleElem(name,false)}function scrollShow(name){showElem(name);document.getElementById(name).scrollIntoView();}
+</script><style type="text/css">pre{white-space:pre-wrap;padding-top:1em;margin-top:5em}@CSS</style></head>
 <body style="background-color: transparent; margin: 2px; padding: 0px; padding-top: 5px; font-family: Helvetica; font-size: 0.9em;">
 dreaMote @CFBundleVersion by Moritz Venn in 2008-2011.<br /><br />
 Remote Control, Tab-Bar &amp; Application Icons were donated by mfgeg. Thanks!<br />
 Settings Icons as well as various Buttons are part of the <a href="http://tango.freedesktop.org">Tango Icon Library</a> and were released to the Public Domain.<br /><br />
 Used Frameworks (license):
 <ul style="margin: 0px;padding-left: 25px;">
-<li><a href="https://github.com/TouchCode/TouchXML">TouchXML</a> (MIT)</li>
-<li><a href="http://smallsockets.sourceforge.net/">SmallSockets</a> (zlib/libpng)</li>
-<li><a href="http://blog.jayway.com/2009/03/28/adding-sorted-inserts-to-uimutablearray/">NSArray sorted inserts</a> (3-clause BSD)</li>
-<li><a href="https://github.com/ShareKit/ShareKit">ShareKit</a> (MIT)</li>
-<li><a href="https://github.com/mattgemmell/MGSplitViewController">MGSplitViewController</a> by Matt Legend Gemmell (proprietary)</li>
-<li><a href="https://github.com/enormego/EGOTableViewPullRefresh">EGOTableViewPullRefresh</a> (MIT)</li>
-<li><a href="https://github.com/jdg/MBProgressHUD">MBProgressHUD</a> (MIT)</li>
-<li><a href="http://quincykit.net">QuincyKit</a> (MIT)</li>
-<li><a href="https://code.google.com/p/plcrashreporter/">PLCrashReporter</a> (MIT)</li>
-<li><a href="https://code.google.com/p/protobuf-c/">protobuf-c</a> (Apache License 2.0)</li>
-<li><a href="http://www.codeproject.com/KB/library/LiteZip.aspx">LiteUnzip</a> (LGPL3)</li>
+<li><a href="https://github.com/TouchCode/TouchXML">TouchXML</a> <a href="javascript:scrollShow('2bsd')">(2-clause BSD)</a></li>
+<li><a href="http://smallsockets.sourceforge.net/">SmallSockets</a> <a href="javascript:scrollShow('zlib')">(zlib/libpng)</a></li>
+<li><a href="http://blog.jayway.com/2009/03/28/adding-sorted-inserts-to-uimutablearray/">NSArray sorted inserts</a> <a href="javascript:scrollShow('3bsd')">(3-clause BSD)</a></li>
+<li><a href="https://github.com/ShareKit/ShareKit">ShareKit</a> <a href="javascript:scrollShow('mit')">(MIT)</a></li>
+<li><a href="https://github.com/mattgemmell/MGSplitViewController">MGSplitViewController</a> by Matt Legend Gemmell <a href="javascript:scrollShow('mattgemmell')">(proprietary)</a></li>
+<li><a href="https://github.com/enormego/EGOTableViewPullRefresh">EGOTableViewPullRefresh</a> <a href="javascript:scrollShow('mit')">(MIT)</a></li>
+<li><a href="https://github.com/jdg/MBProgressHUD">MBProgressHUD</a> <a href="javascript:scrollShow('mit')">(MIT)</a></li>
+<li><a href="http://quincykit.net">QuincyKit</a> <a href="javascript:scrollShow('mit')">(MIT)</a></li>
+<li><a href="https://code.google.com/p/plcrashreporter/">PLCrashReporter</a> <a href="javascript:scrollShow('mit')">(MIT)</a></li>
+<li><a href="https://code.google.com/p/protobuf-c/">protobuf-c</a> <a href="javascript:scrollShow('protobuf')">(Apache License 2.0)</a></li>
+<li><a href="http://www.codeproject.com/KB/library/LiteZip.aspx">LiteUnzip</a> <a href="javascript:scrollShow('lgpl3')">(LGPL3)</a></li>
 </ul>
+<pre id="2bsd" style="display:none">TouchXML is licensed under the 2-clause BSD license ("Simplified BSD License" or "FreeBSD License") license. The license is reproduced below:
+
+Copyright 2011 Jonathan Wight. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY JONATHAN WIGHT ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL JONATHAN WIGHT OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+The views and conclusions contained in the software and documentation are those of the authors and should not be interpreted as representing official policies, either expressed or implied, of Jonathan Wight.</pre>
+<pre id="zlib" style="display:none">SmallSockets is copyright © 2001 Steven Frank
+
+This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation (and/or about box) would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source distribution.
+</pre>
+<pre id="3bsd" style="display:none">NSArray+CWSortedInsert was created by Fredrik Olsson on 2008-03-21. Copyright 2008 Jayway. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+* Neither the name of the <organization> nor the
+  names of its contributors may be used to endorse or promote products
+  derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY <copyright holder> ''AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <copyright holder> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+<pre id="mit" style="display:none">EGOTableViewPullRefresh Copyright 2009 enormego. All rights reserved.
+MBProgressHUD Copyright (c) 2011 Matej Bukovinski.
+PLCrashReporter Copyright (c) 2008-2009 Plausible Labs Cooperative, Inc. All rights reserved.
+QuincyKit Copyright (c) 2009-2011 Andreas Linde. All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+</pre>
+<pre id="mattgemmell" style="display:none">License Agreement for Source Code provided by Matt Legend Gemmell
+
+This software is supplied to you by Matt Legend Gemmell in consideration of your agreement to the following terms, and your use, installation, modification or redistribution of this software constitutes acceptance of these terms. If you do not agree with these terms, please do not use, install, modify or redistribute this software.
+
+In consideration of your agreement to abide by the following terms, and subject to these terms, Matt Legend Gemmell grants you a personal, non-exclusive license, to use, reproduce, modify and redistribute the software, with or without modifications, in source and/or binary forms; provided that if you redistribute the software in its entirety and without modifications, you must retain this notice and the following text and disclaimers in all such redistributions of the software, and that in all cases attribution of Matt Legend Gemmell as the original author of the source code shall be included in all such resulting software products or distributions.
+
+Neither the name, trademarks, service marks or logos of Matt Legend Gemmell or Instinctive Code may be used to endorse or promote products derived from the software without specific prior written permission from Matt Legend Gemmell. Except as expressly stated in this notice, no other rights or licenses, express or implied, are granted by Matt Legend Gemmell herein, including but not limited to any patent rights that may be infringed by your derivative works or by other works in which the software may be incorporated.
+
+The software is provided by Matt Legend Gemmell on an "AS IS" basis. MATT LEGEND GEMMELL AND INSTINCTIVE CODE MAKE NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, REGARDING THE SOFTWARE OR ITS USE AND OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+
+IN NO EVENT SHALL MATT LEGEND GEMMELL OR INSTINCTIVE CODE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR DISTRIBUTION OF THE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF MATT LEGEND GEMMELL OR INSTINCTIVE CODE HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+<pre id="protobuf" style="display:none">Protobuf-c Copyright (c) 2008-2011, Dave Benson.  All rights reserved.
+
+Redistribution and use in source and binary forms, with
+or without modification, are permitted provided that the
+following conditions are met:
+
+Redistributions of source code must retain the above
+copyright notice, this list of conditions and the following
+disclaimer.
+
+Redistributions in binary form must reproduce
+the above copyright notice, this list of conditions and
+the following disclaimer in the documentation and/or other
+materials provided with the distribution.
+
+Neither the name
+of "protobuf-c" nor the names of its contributors
+may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER
+OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.
+</pre>
+<pre id="lgpl3" style="display:none">                   GNU LESSER GENERAL PUBLIC LICENSE
+                       Version 3, 29 June 2007
+
+ Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+
+  This version of the GNU Lesser General Public License incorporates
+the terms and conditions of version 3 of the GNU General Public
+License, supplemented by the additional permissions listed below.
+
+  0. Additional Definitions.
+
+  As used herein, "this License" refers to version 3 of the GNU Lesser
+General Public License, and the "GNU GPL" refers to version 3 of the GNU
+General Public License.
+
+  "The Library" refers to a covered work governed by this License,
+other than an Application or a Combined Work as defined below.
+
+  An "Application" is any work that makes use of an interface provided
+by the Library, but which is not otherwise based on the Library.
+Defining a subclass of a class defined by the Library is deemed a mode
+of using an interface provided by the Library.
+
+  A "Combined Work" is a work produced by combining or linking an
+Application with the Library.  The particular version of the Library
+with which the Combined Work was made is also called the "Linked
+Version".
+
+  The "Minimal Corresponding Source" for a Combined Work means the
+Corresponding Source for the Combined Work, excluding any source code
+for portions of the Combined Work that, considered in isolation, are
+based on the Application, and not on the Linked Version.
+
+  The "Corresponding Application Code" for a Combined Work means the
+object code and/or source code for the Application, including any data
+and utility programs needed for reproducing the Combined Work from the
+Application, but excluding the System Libraries of the Combined Work.
+
+  1. Exception to Section 3 of the GNU GPL.
+
+  You may convey a covered work under sections 3 and 4 of this License
+without being bound by section 3 of the GNU GPL.
+
+  2. Conveying Modified Versions.
+
+  If you modify a copy of the Library, and, in your modifications, a
+facility refers to a function or data to be supplied by an Application
+</pre>
 </body>
 </html>
