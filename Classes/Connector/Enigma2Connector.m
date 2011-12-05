@@ -361,8 +361,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	result.result = NO;
 	if(!doc)
 	{
-		xmlErrorPtr	theLastErrorPtr = xmlGetLastError();
-		result.resulttext = [NSString stringWithUTF8String:theLastErrorPtr->message];
+		xmlErrorPtr theLastErrorPtr = xmlGetLastError();
+		if(error)
+			result.resulttext = [error localizedDescription];
+		else if(theLastErrorPtr)
+			result.resulttext = [NSString stringWithUTF8String:theLastErrorPtr->message];
+		else
+			result.resulttext = NSLocalizedString(@"Unknown parsing error occured.", @"Data parsing failed for unknown reason.");
 	}
 	else do
 	{
