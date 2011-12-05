@@ -56,6 +56,18 @@ enum sectionIds
 	maxSection,
 };
 
+enum generalSectionRows
+{
+	generalSectionRowEnabled = 0,
+	generalSectionRowType,
+	generalSectionRowCase,
+	generalSectionRowPreferAlternatives,
+	generalSectionRowJustplay,
+	generalSectionRowAvoidDuplicateDescription,
+	generalSectionRowSearchForDuplicateDescription,
+	generalSectionRowMax,
+};
+
 /*!
  @brief Private functions of AutoTimerViewController.
  */
@@ -80,6 +92,7 @@ enum sectionIds
 @end
 
 static NSArray *avoidDuplicateDescriptionTexts = nil;
+static NSArray *searchForDuplicateDescriptionTexts = nil;
 static NSArray *searchTypeTexts = nil;
 
 @implementation AutoTimerViewController
@@ -107,6 +120,15 @@ static NSArray *searchTypeTexts = nil;
 						NSLocalizedStringFromTable(@"All Services", @"AutoTimer", @"Avoid Duplicate Description 2 (timer on all services)"),
 						NSLocalizedStringFromTable(@"Timers/Recordings", @"AutoTimer", @"Avoid Duplicate Description 3 (timers on all services and recordings)"),
 						nil
+			];
+		}
+		if(searchForDuplicateDescriptionTexts == nil)
+		{
+			searchForDuplicateDescriptionTexts = [[NSArray alloc] initWithObjects:
+												  NSLocalizedStringFromTable(@"Title", @"AutoTimer", @"Search For Duplicates: in Title"),
+												  NSLocalizedStringFromTable(@"Title and short description", @"AutoTimer", @"Search For Duplicates: in Title and Short Description"),
+												  NSLocalizedStringFromTable(@"Title and all descriptions", @"AutoTimer", @"Search For Duplicates: in Title and Short+Extended Description"),
+												  nil
 			];
 		}
 		if(searchTypeTexts == nil)
@@ -926,7 +948,12 @@ static NSArray *searchTypeTexts = nil;
 		case tagsSection:
 			return 1;
 		case generalSection:
-			return 6;
+		{
+			NSInteger count = generalSectionRowMax;
+			if(autotimerVersion < 7)
+				--count;
+			return count;
+		}
 		case durationSection:
 			return _maxdurationSwitch.on ? 2 : 1;
 		case timespanSection:
@@ -978,12 +1005,12 @@ static NSArray *searchTypeTexts = nil;
 		{
 			switch(row)
 			{
-				case 0:
+				case generalSectionRowEnabled:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timerEnabled;
 					cell.textLabel.text = NSLocalizedString(@"Enabled", @"");
 					break;
-				case 1:
+				case generalSectionRowType:
 					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Search Type: %@", @"AutoTimer", @"searchType attribute of autotimer. Can be partial, exact or in description.."), [searchTypeTexts objectAtIndex:_timer.searchType]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
@@ -991,24 +1018,32 @@ static NSArray *searchTypeTexts = nil;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					cell.textLabel.adjustsFontSizeToFitWidth = YES;
 					break;
-				case 2:
+				case generalSectionRowCase:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _sensitiveSearch;
 					cell.textLabel.text = NSLocalizedString(@"Case-Sensitive", @"case-sensitive matching (of autotimers)");
 					break;
-				case 3:
+				case generalSectionRowPreferAlternatives:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _overrideAlternatives;
 					cell.textLabel.text = NSLocalizedString(@"Prefer Alternatives", @"");
 					break;
-				case 4:
+				case generalSectionRowJustplay:
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timerJustplay;
 					cell.textLabel.text = NSLocalizedString(@"Justplay", @"");
 					break;
-				case 5:
+				case generalSectionRowAvoidDuplicateDescription:
 					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
 					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:_timer.avoidDuplicateDescription]];
+					cell.accessoryType = UITableViewCellAccessoryNone;
+					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					cell.textLabel.adjustsFontSizeToFitWidth = YES;
+					break;
+				case generalSectionRowSearchForDuplicateDescription:
+					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
+					cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Search unique Description in %@", @"AutoTimer", @"searchForDuplicateDescription attribute of autotimer. Defines where avoidDuplicateDescription searches for 'uniqueness'."), [searchForDuplicateDescriptionTexts objectAtIndex:_timer.searchForDuplicateDescription]];
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
@@ -1389,11 +1424,14 @@ static NSArray *searchTypeTexts = nil;
 	switch(indexPath.section)
 	{
 		case generalSection:
-			if(row == 1 || row == 5)
+			if(row >= generalSectionRowSearchForDuplicateDescription && autotimerVersion < 7)
+				++row;
+
+			if(row == generalSectionRowType || row == generalSectionRowAvoidDuplicateDescription || row == generalSectionRowSearchForDuplicateDescription)
 			{
 				const BOOL isIpad = IS_IPAD();
 				SimpleSingleSelectionListController *vc = nil;
-				if(row == 1)
+				if(row == generalSectionRowType)
 				{
 					NSArray *items = nil;
 					if(autotimerVersion < 6)
@@ -1402,8 +1440,10 @@ static NSArray *searchTypeTexts = nil;
 						items = searchTypeTexts;
 					vc = [SimpleSingleSelectionListController withItems:items andSelection:_timer.searchType andTitle:NSLocalizedStringFromTable(@"Search Type", @"AutoTimer", @"Title of search type selector.")];
 				}
-				else
+				else if(row == generalSectionRowAvoidDuplicateDescription)
 					vc = [SimpleSingleSelectionListController withItems:avoidDuplicateDescriptionTexts andSelection:_timer.avoidDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique Description", @"AutoTimer", @"Title of avoid duplicate description selector.")];
+				else //if(row == generalSectionRowSearchForDuplicateDescription)
+					vc = [SimpleSingleSelectionListController withItems:searchForDuplicateDescriptionTexts andSelection:_timer.searchForDuplicateDescription andTitle:NSLocalizedStringFromTable(@"Unique in", @"AutoTimer", @"Title of 'search for duplicate description' selector.")];
 				vc.callback = ^(NSUInteger selection, BOOL isFinal, BOOL canceling)
 				{
 					if(!canceling)
@@ -1412,15 +1452,20 @@ static NSArray *searchTypeTexts = nil;
 							return NO;
 
 						UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
-						if(row == 1)
+						if(row == generalSectionRowType)
 						{
 							_timer.searchType = selection;
 							cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Search Type: %@", @"AutoTimer", @"searchType attribute of autotimer. Can be partial, exact or in description.."), [searchTypeTexts objectAtIndex:_timer.searchType]];
 						}
-						else
+						else if(row == generalSectionRowAvoidDuplicateDescription)
 						{
 							_timer.avoidDuplicateDescription = selection;
 							cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Unique Description: %@", @"AutoTimer", @"avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings."), [avoidDuplicateDescriptionTexts objectAtIndex:selection]];
+						}
+						else //if(row == generalSectionRowSearchForDuplicateDescription)
+						{
+							_timer.searchForDuplicateDescription = selection;
+							cell.textLabel.text = [NSString stringWithFormat: NSLocalizedStringFromTable(@"Search unique Description in %@", @"AutoTimer", @"searchForDuplicateDescription attribute of autotimer. Defines where avoidDuplicateDescription searches for 'uniqueness'."), [searchForDuplicateDescriptionTexts objectAtIndex:selection]];
 						}
 					}
 					else if(!isIpad)

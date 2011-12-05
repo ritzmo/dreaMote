@@ -41,6 +41,13 @@ typedef enum
 	autoTimerAddRecording = 3,
 } autoTimerAvoidDuplicateDescription;
 
+typedef enum
+{
+	autoTimerSearchTitle = 0,
+	autoTimerSearchSdesc = 1,
+	autoTimerSearchEdesc = 2,
+} autoTimerSearchForDuplicateDescription;
+
 @interface AutoTimer : NSObject
 {
 @private
@@ -91,6 +98,7 @@ typedef enum
 @property (nonatomic, strong) NSDate *before;
 @property (nonatomic, strong) NSDate *after;
 @property (nonatomic) autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
+@property (nonatomic) autoTimerSearchForDuplicateDescription searchForDuplicateDescription;
 @property (nonatomic) enum afterEvent afterEventAction;
 
 @end

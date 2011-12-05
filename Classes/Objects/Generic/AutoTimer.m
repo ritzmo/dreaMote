@@ -15,7 +15,7 @@
 
 @implementation AutoTimer
 
-@synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, before, after, avoidDuplicateDescription, afterEventAction;
+@synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, before, after, avoidDuplicateDescription, searchForDuplicateDescription, afterEventAction;
 
 + (AutoTimer *)timer
 {
@@ -57,6 +57,7 @@
 		offsetBefore = -1;
 		offsetAfter = -1;
 		idno = -1;
+		searchForDuplicateDescription = autoTimerSearchEdesc;
 	}
 	return self;
 }

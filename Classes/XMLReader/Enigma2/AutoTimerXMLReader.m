@@ -66,6 +66,8 @@ static const char *kEnigma2ATBefore = "before";
 static const NSUInteger kEnigma2ATBeforeLength = 7;
 static const char *kEnigma2ATAvoidDuplicateDescription = "avoidDuplicateDescription";
 static const NSUInteger kEnigma2ATAvoidDuplicateDescriptionLength = 26;
+static const char *kEnigma2ATSearchForDuplicateDescription = "searchForDuplicateDescription";
+static const NSUInteger kEnigma2ATSearchForDuplicateDescriptionLength = 30;
 static const char *kEnigma2ATAfterevent = "afterevent";
 static const NSUInteger kEnigma2ATAftereventLength = 11;
 static const char *kEnigma2ATWhere = "where";
@@ -224,6 +226,10 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAvoidDuplicateDescription, kEnigma2ATAvoidDuplicateDescriptionLength))
 			{
 				currentAT.avoidDuplicateDescription = [value integerValue];
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSearchForDuplicateDescription, kEnigma2ATSearchForDuplicateDescriptionLength))
+			{
+				currentAT.searchForDuplicateDescription = [value integerValue];
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATAfter, kEnigma2ATAfterLength))
 			{
