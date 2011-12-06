@@ -12,6 +12,8 @@
 #import <Objects/Generic/Service.h>
 #import <Objects/Generic/Timer.h>
 
+#import "NSObject+Queue.h"
+
 static const char *kEnigma2TimerElement = "e2timer";
 static const NSUInteger kEnigma2TimerElementLength = 8;
 static const char *kEnigma2TimerEventId = "e2eit";
@@ -47,6 +49,8 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([delegate respondsToSelector:@selector(addTimers:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -58,9 +62,19 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
-	[_delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread:@selector(addTimer:)
+								withObject:fakeObject
+							 waitUntilDone:NO];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<TimerSourceDelegate> *)_delegate addTimers:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
 }
 
 /*
@@ -131,9 +145,20 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 {
 	if(!strncmp((const char *)localname, kEnigma2TimerElement, kEnigma2TimerElementLength))
 	{
-		[_delegate performSelectorOnMainThread: @selector(addTimer:)
-									withObject: currentTimer
-								 waitUntilDone: NO];
+		if(self.currentItems)
+		{
+			[self.currentItems addObject:currentTimer];
+			if(self.currentItems.count >= kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addTimers:dispatchArray];
+			}
+		}
+		else
+		{
+			[(NSObject<TimerSourceDelegate> *)[_delegate queueOnMainThread] addTimer:currentTimer];
+		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{

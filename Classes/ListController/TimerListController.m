@@ -434,6 +434,38 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 #endif
 }
 
+/* add multiple timers to list */
+- (void)addTimers:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation) && defined(ENABLE_LAGGY_ANIMATIONS)
+	NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:items.count];
+#endif
+	for(NSObject<TimerProtocol> *newTimer in items)
+	{
+		NSUInteger state = stateMap[newTimer.state];
+		NSUInteger index = _dist[state];
+
+		[_timers insertObject:newTimer atIndex:index];
+
+		for(; state < kTimerStateMax; state++){
+			_dist[state]++;
+		}
+#if INCLUDE_FEATURE(Extra_Animation) && defined(ENABLE_LAGGY_ANIMATIONS)
+		state = newTimer.state;
+		if(state > 0)
+			index -= _dist[state - 1];
+
+		[indexPaths addObject:[NSIndexPath indexPathForRow:index inSection:state + 1]];
+#endif
+	}
+#if INCLUDE_FEATURE(Extra_Animation) && defined(ENABLE_LAGGY_ANIMATIONS)
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths
+						  withRowAnimation:UITableViewRowAnimationTop];
+#endif
+}
+
+
 #pragma mark -
 #pragma mark MBProgressHUDDelegate
 #pragma mark -

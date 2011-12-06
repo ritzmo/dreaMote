@@ -25,5 +25,13 @@
  */
 - (void)addTimer: (NSObject<TimerProtocol> *)anItem;
 
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of timers to add.
+ */
+@optional
+- (void)addTimers:(NSArray *)items;
+
 @end
 
