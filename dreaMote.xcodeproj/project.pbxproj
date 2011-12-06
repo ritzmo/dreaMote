@@ -86,6 +86,15 @@
 		DA3F60A4148AA920008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
 		DA3F60A5148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
 		DA3F60A6148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
+		DA4DD256148E50F800B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
+		DA4DD257148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
+		DA4DD258148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
+		DA4DD259148E50F900B23CD3 /* NSObject+Invoke.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD252148E50F800B23CD3 /* NSObject+Invoke.m */; };
+		DA4DD25A148E50F900B23CD3 /* NSObject+Invoke.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD252148E50F800B23CD3 /* NSObject+Invoke.m */; };
+		DA4DD25B148E50F900B23CD3 /* NSObject+Invoke.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD252148E50F800B23CD3 /* NSObject+Invoke.m */; };
+		DA4DD25C148E50F900B23CD3 /* NSObject+Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD254148E50F800B23CD3 /* NSObject+Queue.m */; };
+		DA4DD25D148E50F900B23CD3 /* NSObject+Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD254148E50F800B23CD3 /* NSObject+Queue.m */; };
+		DA4DD25E148E50F900B23CD3 /* NSObject+Queue.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD254148E50F800B23CD3 /* NSObject+Queue.m */; };
 		DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA51C45B144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
 		DA51C45C144C343F00EA63C5 /* SearchHistoryLengthEditorController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA51C45A144C343F00EA63C5 /* SearchHistoryLengthEditorController.m */; };
@@ -1193,6 +1202,12 @@
 		DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSplitViewController.m; sourceTree = "<group>"; };
 		DA3F60A0148A09D9008FC0DF /* AutoTimerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsViewController.h; sourceTree = "<group>"; };
 		DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSettingsViewController.m; sourceTree = "<group>"; };
+		DA4DD24F148E50F800B23CD3 /* DDInvocationGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDInvocationGrabber.h; sourceTree = "<group>"; };
+		DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDInvocationGrabber.m; sourceTree = "<group>"; };
+		DA4DD251148E50F800B23CD3 /* NSObject+Invoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Invoke.h"; sourceTree = "<group>"; };
+		DA4DD252148E50F800B23CD3 /* NSObject+Invoke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Invoke.m"; sourceTree = "<group>"; };
+		DA4DD253148E50F800B23CD3 /* NSObject+Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Queue.h"; sourceTree = "<group>"; };
+		DA4DD254148E50F800B23CD3 /* NSObject+Queue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Queue.m"; sourceTree = "<group>"; };
 		DA4EC5FF13B2368E0019DAC7 /* LiteUnzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiteUnzip.h; sourceTree = "<group>"; };
 		DA4EC60013B2368E0019DAC7 /* LiteUnzip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiteUnzip.m; sourceTree = "<group>"; };
 		DA51C459144C343F00EA63C5 /* SearchHistoryLengthEditorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchHistoryLengthEditorController.h; sourceTree = "<group>"; };
@@ -2002,6 +2017,19 @@
 			path = Configuration;
 			sourceTree = "<group>";
 		};
+		DA4DD24E148E50F800B23CD3 /* NSObject-Invoke-Queue */ = {
+			isa = PBXGroup;
+			children = (
+				DA4DD24F148E50F800B23CD3 /* DDInvocationGrabber.h */,
+				DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */,
+				DA4DD251148E50F800B23CD3 /* NSObject+Invoke.h */,
+				DA4DD252148E50F800B23CD3 /* NSObject+Invoke.m */,
+				DA4DD253148E50F800B23CD3 /* NSObject+Queue.h */,
+				DA4DD254148E50F800B23CD3 /* NSObject+Queue.m */,
+			);
+			path = "NSObject-Invoke-Queue";
+			sourceTree = "<group>";
+		};
 		DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */ = {
 			isa = PBXGroup;
 			children = (
@@ -2557,6 +2585,7 @@
 				DAC8BE4C13B1FF9200CA00D9 /* Products */,
 				DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */,
 				DAABA9E11462DA00002CDC31 /* MKStoreKit */,
+				DA4DD24E148E50F800B23CD3 /* NSObject-Invoke-Queue */,
 				DA51CDAA144ACBED00C714ED /* ShareKit */,
 				DAC8C4BB13B202F600CA00D9 /* QuincyKit */,
 			);
@@ -4152,6 +4181,9 @@
 				DA5FC388148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA5FC38D148AF045006C27D1 /* DeferTagLoader.m in Sources */,
 				DA32C848148B97CE00B8C638 /* About.m in Sources */,
+				DA4DD256148E50F800B23CD3 /* DDInvocationGrabber.m in Sources */,
+				DA4DD259148E50F900B23CD3 /* NSObject+Invoke.m in Sources */,
+				DA4DD25C148E50F900B23CD3 /* NSObject+Queue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4417,6 +4449,9 @@
 				DA5FC389148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA5FC38E148AF045006C27D1 /* DeferTagLoader.m in Sources */,
 				DA32C849148B97CE00B8C638 /* About.m in Sources */,
+				DA4DD257148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */,
+				DA4DD25A148E50F900B23CD3 /* NSObject+Invoke.m in Sources */,
+				DA4DD25D148E50F900B23CD3 /* NSObject+Queue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4652,6 +4687,9 @@
 				DA3F60A4148AA920008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC38A148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA32C84A148B97CE00B8C638 /* About.m in Sources */,
+				DA4DD258148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */,
+				DA4DD25B148E50F900B23CD3 /* NSObject+Invoke.m in Sources */,
+				DA4DD25E148E50F900B23CD3 /* NSObject+Queue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -284,6 +284,24 @@
 #endif
 }
 
+- (void)addLocations:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = _locations.count;
+	NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:items.count];
+#endif
+	[_locations addObjectsFromArray:items];
+#if INCLUDE_FEATURE(Extra_Animation)
+	for(NSObject<LocationProtocol> *location in items)
+	{
+		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		++count;
+	}
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+#endif
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-

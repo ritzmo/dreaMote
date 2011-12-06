@@ -515,6 +515,24 @@ enum bouquetListTags
 #endif
 }
 
+- (void)addServices:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = _bouquets.count;
+	NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:items.count];
+#endif
+	[_bouquets addObjectsFromArray:items];
+#if INCLUDE_FEATURE(Extra_Animation)
+	for(NSObject<ServiceProtocol> *service in items)
+	{
+		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		++count;
+	}
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+#endif
+}
+
 #pragma mark Context menu
 
 - (void)contextMenu:(NSIndexPath *)indexPath

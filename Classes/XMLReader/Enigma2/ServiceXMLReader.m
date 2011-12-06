@@ -8,6 +8,8 @@
 
 #import "ServiceXMLReader.h"
 
+#import "NSObject+Queue.h"
+
 #import "Constants.h"
 #import <Objects/Generic/Service.h>
 
@@ -44,7 +46,10 @@
 - (void)finishedParsingDocument
 {
 	if(self.currentItems.count)
+	{
 		[(NSObject<ServiceSourceDelegate> *)_delegate addServices:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
 	[super finishedParsingDocument];
 }
 
@@ -88,14 +93,11 @@
 	{
 		if(self.currentItems)
 		{
-			// TODO: does this really have to happen on the main thread?
-			[self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentService waitUntilDone:NO];
+			[[self queueOnMainThread] maybeDispatch:currentService];
 		}
 		else
 		{
-			[_delegate performSelectorOnMainThread:@selector(addService:)
-										withObject:currentService
-									 waitUntilDone:NO];
+			[[_delegate queueOnMainThread] addService:currentService];
 		}
 		currentService = nil;
 	}

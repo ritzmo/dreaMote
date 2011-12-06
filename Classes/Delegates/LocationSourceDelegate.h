@@ -25,5 +25,13 @@
  */
 - (void)addLocation: (NSObject<LocationProtocol> *)anItem;
 
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of locations to add.
+ */
+@optional
+- (void)addLocations:(NSArray *)items;
+
 @end
 

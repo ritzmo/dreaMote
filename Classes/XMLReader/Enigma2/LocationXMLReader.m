@@ -11,6 +11,8 @@
 #import <Constants.h>
 #import <Objects/Generic/Location.h>
 
+#import "NSObject+Queue.h"
+
 @implementation Enigma2LocationXMLReader
 
 /* initialize */
@@ -19,6 +21,8 @@
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([_delegate respondsToSelector:@selector(addLocation:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -29,9 +33,29 @@
 	NSObject<LocationProtocol> *fakeObject = [[GenericLocation alloc] init];
 	fakeObject.fullpath = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.valid = NO;
-	[_delegate performSelectorOnMainThread: @selector(addLocation:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread:@selector(addLocation:)
+								withObject:fakeObject
+							 waitUntilDone:NO];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<LocationSourceDelegate> *)_delegate addLocations:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
+}
+
+- (void)maybeDispatch:(NSObject *)item
+{
+	[self.currentItems addObject:item];
+	if(self.currentItems.count >= kBatchDispatchItemsCount)
+	{
+		[(NSObject<LocationSourceDelegate> *)_delegate addLocations:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
 }
 
 /*
@@ -58,9 +82,10 @@ Example:
 		GenericLocation *newLocation = [[GenericLocation alloc] init];
 		newLocation.fullpath = currentString;
 		newLocation.valid = YES;
-		[_delegate performSelectorOnMainThread:@selector(addLocation:)
-									withObject:newLocation
-								 waitUntilDone:NO];
+		if(self.currentItems)
+			[[self queueOnMainThread] maybeDispatch:newLocation];
+		else
+			[[_delegate queueOnMainThread] addLocation:newLocation];
 	}
 	currentString = nil;
 }

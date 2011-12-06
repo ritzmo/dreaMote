@@ -8,8 +8,10 @@
 
 #import "MovieXMLReader.h"
 
-#import "Constants.h"
-#import "../../Objects/Generic/Movie.h"
+#import <Constants.h>
+#import <Objects/Generic/Movie.h>
+
+#import "NSObject+Queue.h"
 
 static const char *kEnigma2MovieElement = "e2movie";
 static const NSUInteger kEnigma2MovieElementLength = 8;
@@ -120,15 +122,9 @@ Example:
 	if(!strncmp((const char *)localname, kEnigma2MovieElement, kEnigma2MovieElementLength))
 	{
 		if(self.currentItems)
-		{
-			[self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentMovie waitUntilDone:NO];
-		}
+			[[self queueOnMainThread] maybeDispatch:currentMovie];
 		else
-		{
-			[_delegate performSelectorOnMainThread:@selector(addMovie:)
-										withObject:currentMovie
-									 waitUntilDone:NO];
-		}
+			[[_delegate queueOnMainThread] addMovie:currentMovie];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2DescriptionExtended, kEnigma2DescriptionExtendedLength))
 	{

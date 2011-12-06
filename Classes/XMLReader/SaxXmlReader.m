@@ -11,6 +11,8 @@
 #import "AppDelegate.h"
 #import "RemoteConnectorObject.h"
 
+#import "NSObject+Queue.h"
+
 @interface SaxXmlReader()
 - (void)charactersFound:(const xmlChar *)characters length:(int)length;
 - (void)parsingError:(const char *)msg, ...;
@@ -98,7 +100,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	}
 	else
 	{
-		[self performSelectorOnMainThread:@selector(finishedParsingDocument) withObject:nil waitUntilDone:NO];
+		[[self queueOnMainThread] finishedParsingDocument];
 	}
 	} // /@autoreleasepool
 	return nil;

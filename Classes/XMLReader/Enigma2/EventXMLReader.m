@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
+#import "NSObject+Queue.h"
 
 #import <Objects/Generic/Event.h>
 #import <Objects/Generic/Service.h>
@@ -181,7 +182,7 @@ typedef enum {
 - (void)maybeDispatchNow:(NSObject<EventProtocol> *)event
 {
 	[self.currentItems addObject:event];
-	if(self.currentItems.count >= kBatchDispatchItemsCount)
+	if(self.currentItems.count > kBatchDispatchItemsCount) // NOTE: improve ux a bit by sending "next events" first on combined fetch
 	{
 		[(NSObject<NowSourceDelegate> *)_delegate addNowEvents:self.currentItems];
 		[self.currentItems removeAllObjects];
@@ -294,16 +295,17 @@ typedef enum {
 		if(self.currentItems)
 		{
 			if(selector == @selector(addNowEvent:))
-				return [self performSelectorOnMainThread:@selector(maybeDispatchNow:) withObject:currentEvent waitUntilDone:NO];
+				return [[self queueOnMainThread] maybeDispatchNow:currentEvent];
 			else if(selector == @selector(addEvent:))
-				return [self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentEvent waitUntilDone:NO];
+				return [[self queueOnMainThread] maybeDispatch:currentEvent];
 		}
 		if(self.nextItems && selector == @selector(addNextEvent:))
 		{
-			[self performSelectorOnMainThread:@selector(maybeDispatchNext:) withObject:currentEvent waitUntilDone:NO];
+			return [[self queueOnMainThread] maybeDispatchNext:currentEvent];
 		}
 		else
 		{
+			// TODO: not using queueOnMainThread here because of "unknown selector" warning
 			[_delegate performSelectorOnMainThread:selector
 										withObject:currentEvent
 									 waitUntilDone:NO];
