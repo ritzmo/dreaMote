@@ -686,6 +686,66 @@
 #endif
 }
 
+/* add events to list */
+- (void)addEvents:(NSArray *)items
+{
+	NSUInteger count = _events.count;
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:items.count];
+	[_tableView beginUpdates];
+#endif
+	[_events addObjectsFromArray:items];
+	for(NSObject<EventProtocol> *event in items)
+	{
+		if(_useSections)
+		{
+			if(count == 0)
+			{
+				NSDateComponents *components = [_gregorian components:NSDayCalendarUnit fromDate:event.begin];
+				_lastDay = [components day];
+				[_sectionOffsets addObject:[NSNumber numberWithInteger:0]];
+#if INCLUDE_FEATURE(Extra_Animation)
+				[_tableView insertSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationLeft];
+				++count;
+				continue;
+#endif
+			}
+			else
+			{
+				NSInteger thisDay = [[_gregorian components:NSDayCalendarUnit fromDate:event.begin] day];
+				if(thisDay != _lastDay)
+				{
+					_lastDay = thisDay;
+					[_sectionOffsets addObject:[NSNumber numberWithInteger:count]];
+#if INCLUDE_FEATURE(Extra_Animation)
+					[_tableView insertSections:[NSIndexSet indexSetWithIndex:_sectionOffsets.count-1] withRowAnimation:UITableViewRowAnimationLeft];
+					++count;
+					continue;
+#endif
+				}
+			}
+#if INCLUDE_FEATURE(Extra_Animation)
+			[indexPaths addObject:[NSIndexPath indexPathForRow:count - [[_sectionOffsets lastObject] integerValue] inSection:_sectionOffsets.count - 1]];
+#endif
+		}
+#if INCLUDE_FEATURE(Extra_Animation)
+		else
+		{
+			[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		}
+#endif
+		++count;
+#if IS_FULL()
+		[[EPGCache sharedInstance] addEventOperation:event];
+#endif
+	}
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+	[_tableView endUpdates];
+#endif
+}
+
 #pragma mark	-
 #pragma mark		Table View
 #pragma mark	-

@@ -73,12 +73,22 @@ typedef enum {
 
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:NO selector:@selector(addEvent:) responseType:RESPONSE_UNKNOWN];
+	if((self = [self initWithDelegate:delegate getServices:NO selector:@selector(addEvent:) responseType:RESPONSE_UNKNOWN]))
+	{
+		if([delegate respondsToSelector:@selector(addEvents:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+	}
+	return self;
 }
 
 - (id)initWithDelegateAndGetServices:(NSObject<EventSourceDelegate> *)delegate getServices:(BOOL)getServices
 {
-	return [self initWithDelegate:delegate getServices:getServices selector:@selector(addEvent:) responseType:RESPONSE_EVENTLIST];
+	if((self = [self initWithDelegate:delegate getServices:getServices selector:@selector(addEvent:) responseType:RESPONSE_EVENTLIST]))
+	{
+		if([delegate respondsToSelector:@selector(addEvents:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+	}
+	return self;
 }
 
 - (id)initWithNowNextDelegate:(NSObject<NowSourceDelegate,NextSourceDelegate> *)delegate
@@ -143,13 +153,32 @@ typedef enum {
 - (void)finishedParsingDocument
 {
 	if(self.currentItems.count)
-		[(NSObject<NowSourceDelegate> *)_delegate addNowEvents:self.currentItems];
+	{
+		if(_delegateSelector == NULL || _delegateSelector == @selector(addNowEvent:))
+			[(NSObject<NowSourceDelegate> *)_delegate addNowEvents:self.currentItems];
+		else
+			[(NSObject<EventSourceDelegate> *)_delegate addEvents:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
 	if(self.nextItems.count)
+	{
 		[(NSObject<NextSourceDelegate> *)_delegate addNextEvents:self.nextItems];
+		[self.nextItems removeAllObjects];
+	}
 	[super finishedParsingDocument];
 }
 
 - (void)maybeDispatch:(NSObject<EventProtocol> *)event
+{
+	[self.currentItems addObject:event];
+	if(self.currentItems.count >= kBatchDispatchItemsCount)
+	{
+		[(NSObject<EventSourceDelegate> *)_delegate addEvents:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+}
+
+- (void)maybeDispatchNow:(NSObject<EventProtocol> *)event
 {
 	[self.currentItems addObject:event];
 	if(self.currentItems.count >= kBatchDispatchItemsCount)
@@ -262,11 +291,14 @@ typedef enum {
 			}
 		}
 
-		if(self.currentItems && selector == @selector(addNowEvent:))
+		if(self.currentItems)
 		{
-			[self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentEvent waitUntilDone:NO];
+			if(selector == @selector(addNowEvent:))
+				return [self performSelectorOnMainThread:@selector(maybeDispatchNow:) withObject:currentEvent waitUntilDone:NO];
+			else if(selector == @selector(addEvent:))
+				return [self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentEvent waitUntilDone:NO];
 		}
-		else if(self.nextItems && selector == @selector(addNextEvent:))
+		if(self.nextItems && selector == @selector(addNextEvent:))
 		{
 			[self performSelectorOnMainThread:@selector(maybeDispatchNext:) withObject:currentEvent waitUntilDone:NO];
 		}
