@@ -228,8 +228,7 @@
 			}
 			else
 			{
-				// TODO: implement selection
-				UIImage *image = [UIImage imageNamed:@"Cell_Blue.png"];
+				UIImage *image = selected ? [UIImage imageNamed:@"Cell_BlueSelected.png"] : [UIImage imageNamed:@"Cell_Blue.png"];
 				cell.backgroundView = [[UIImageView alloc] initWithImage:image];
 				cell.backgroundColor = nil;
 				image = [UIImage imageNamed:@"CellHighlighted_Blue.png"];
@@ -242,10 +241,18 @@
 			UIColor *backgroundColor = nil;
 			if(tableView.style == UITableViewStylePlain)
 			{
-				// TODO: implement selection
-				backgroundColor = nil;
-				cell.backgroundView = nil;
+				// remove old background views
 				cell.selectedBackgroundView = nil;
+				if(![cell.backgroundView isMemberOfClass:[UIView class]])
+					cell.backgroundView = nil;
+
+				// create a new background view only if selected
+				if(!cell.backgroundView && selected)
+					cell.backgroundView = [[UIView alloc] init];
+				if(selected)
+					cell.backgroundView.backgroundColor = [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1];
+				else
+					cell.backgroundView.backgroundColor = [UIColor clearColor];
 			}
 			else
 				backgroundColor = [UIColor colorWithRed:.12 green:.12 blue:.12 alpha:1];
@@ -259,7 +266,8 @@
 			UIColor *backgroundColor = nil;
 			if(tableView.style == UITableViewStylePlain)
 			{
-				// TODO: implement selection
+				if(selected)
+					slave = !slave;
 				backgroundColor = nil;
 				UIImage *image = slave ? [UIImage imageNamed:@"Cell_DarkGroup.png"] : [UIImage imageNamed:@"Cell_Dark.png"];
 				cell.backgroundView = [[UIImageView alloc] initWithImage:image];

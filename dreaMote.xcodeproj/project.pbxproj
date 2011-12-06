@@ -407,6 +407,9 @@
 		DA7921091461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA79210A1461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA79210B1461AC0D0040615E /* SHKFacebookForm.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7921081461AC0D0040615E /* SHKFacebookForm.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAA303E2148E8C180011A225 /* Cell_BlueSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAA303E1148E8C180011A225 /* Cell_BlueSelected.png */; };
+		DAA303E3148E8C180011A225 /* Cell_BlueSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAA303E1148E8C180011A225 /* Cell_BlueSelected.png */; };
+		DAA303E4148E8C180011A225 /* Cell_BlueSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAA303E1148E8C180011A225 /* Cell_BlueSelected.png */; };
 		DAAAC5D814791D320030739E /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5D714791D320030739E /* Tag.m */; };
 		DAAAC5D914791D320030739E /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5D714791D320030739E /* Tag.m */; };
 		DAAAC5DA14791D320030739E /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5D714791D320030739E /* Tag.m */; };
@@ -1409,6 +1412,7 @@
 		DA7920E11461ABCF0040615E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		DA7921071461AC0D0040615E /* SHKFacebookForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFacebookForm.h; sourceTree = "<group>"; };
 		DA7921081461AC0D0040615E /* SHKFacebookForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFacebookForm.m; sourceTree = "<group>"; };
+		DAA303E1148E8C180011A225 /* Cell_BlueSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_BlueSelected.png; sourceTree = "<group>"; };
 		DAAAC5D614791D320030739E /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; };
 		DAAAC5D714791D320030739E /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; };
 		DAAAC5DB14791D960030739E /* TagXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagXMLReader.h; sourceTree = "<group>"; };
@@ -2603,6 +2607,7 @@
 				DAC8BEFA13B200F100CA00D9 /* audio-x-generic.png */,
 				DAC8BEFB13B200F100CA00D9 /* bouquet.png */,
 				DA2F23B6146DB2A0007DC7F6 /* Cell_Blue.png */,
+				DAA303E1148E8C180011A225 /* Cell_BlueSelected.png */,
 				DA20F3F114714B200099CB4F /* Cell_Dark.png */,
 				DA20F3F214714B200099CB4F /* Cell_DarkGroup.png */,
 				DA2F23BF146DCD30007DC7F6 /* CellHighlighted_Blue.png */,
@@ -3599,6 +3604,7 @@
 				DA1CEA861473AA1900709BEF /* whiteArrow@2x.png in Resources */,
 				DA30A5DC1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 				DA2645FE1476D22D00B91162 /* ShareKit.bundle in Resources */,
+				DAA303E2148E8C180011A225 /* Cell_BlueSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3719,6 +3725,7 @@
 				DA1CEA871473AA1900709BEF /* whiteArrow@2x.png in Resources */,
 				DA30A5DD1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 				DA2645FF1476D22D00B91162 /* ShareKit.bundle in Resources */,
+				DAA303E3148E8C180011A225 /* Cell_BlueSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3835,6 +3842,7 @@
 				DA1CEA881473AA1A00709BEF /* whiteArrow@2x.png in Resources */,
 				DA30A5DE1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 				DA2646001476D22D00B91162 /* ShareKit.bundle in Resources */,
+				DAA303E4148E8C180011A225 /* Cell_BlueSelected.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
