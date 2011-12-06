@@ -60,11 +60,19 @@ typedef struct
 	xmlParserCtxtPtr _xmlParserContext; /*!< @brief Parser context of libxml2. */
 @protected
 	NSMutableString *currentString; /*!< @brief String that is currently being completed. */
+	NSMutableArray *currentItems; /*!< @brief Items waiting to be dispatched to the main thread. */
 }
 
 /*!
  @brief Currently received string.
  */
 @property (nonatomic, strong) NSMutableString *currentString;
+
+/*!
+ @brief Array of objects to dispatch.
+ For performance reasons sometimes we dispatch multiple items at once.
+ This array can be used to store the items beforehand.
+ */
+@property (nonatomic, strong) NSMutableArray *currentItems;
 
 @end

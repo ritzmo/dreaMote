@@ -22,7 +22,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 @implementation SaxXmlReader
 
-@synthesize currentString;
+@synthesize currentString, currentItems;
 
 - (void)dealloc
 {
@@ -32,6 +32,8 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
+	@autoreleasepool
+	{
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:_timeout];
@@ -111,7 +113,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 										  waitUntilDone:NO];
 		}
 	}
-
+	} // /@autoreleasepool
 	return nil;
 }
 
