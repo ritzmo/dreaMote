@@ -48,16 +48,6 @@
 	[super finishedParsingDocument];
 }
 
-- (void)maybeDispatch:(NSObject *)item
-{
-	[self.currentItems addObject:item];
-	if(self.currentItems.count >= kBatchDispatchItemsCount)
-	{
-		[(NSObject<LocationSourceDelegate> *)_delegate addLocations:self.currentItems];
-		[self.currentItems removeAllObjects];
-	}
-}
-
 /*
 Example:
 <?xml version="1.0" encoding="UTF-8"?> 
@@ -83,7 +73,15 @@ Example:
 		newLocation.fullpath = currentString;
 		newLocation.valid = YES;
 		if(self.currentItems)
-			[[self queueOnMainThread] maybeDispatch:newLocation];
+		{
+			[self.currentItems addObject:newLocation];
+			if(self.currentItems.count >= kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addLocations:dispatchArray];
+			}
+		}
 		else
 			[[_delegate queueOnMainThread] addLocation:newLocation];
 	}

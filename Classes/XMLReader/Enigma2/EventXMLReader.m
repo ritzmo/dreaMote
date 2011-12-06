@@ -169,36 +169,6 @@ typedef enum {
 	[super finishedParsingDocument];
 }
 
-- (void)maybeDispatch:(NSObject<EventProtocol> *)event
-{
-	[self.currentItems addObject:event];
-	if(self.currentItems.count >= kBatchDispatchItemsCount)
-	{
-		[(NSObject<EventSourceDelegate> *)_delegate addEvents:self.currentItems];
-		[self.currentItems removeAllObjects];
-	}
-}
-
-- (void)maybeDispatchNow:(NSObject<EventProtocol> *)event
-{
-	[self.currentItems addObject:event];
-	if(self.currentItems.count > kBatchDispatchItemsCount) // NOTE: improve ux a bit by sending "next events" first on combined fetch
-	{
-		[(NSObject<NowSourceDelegate> *)_delegate addNowEvents:self.currentItems];
-		[self.currentItems removeAllObjects];
-	}
-}
-
-- (void)maybeDispatchNext:(NSObject<EventProtocol> *)event
-{
-	[self.nextItems addObject:event];
-	if(self.nextItems.count >= kBatchDispatchItemsCount)
-	{
-		[(NSObject<NextSourceDelegate> *)_delegate addNextEvents:self.nextItems];
-		[self.nextItems removeAllObjects];
-	}
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -292,16 +262,35 @@ typedef enum {
 			}
 		}
 
-		if(self.currentItems)
+		if(selector == @selector(addNowEvent:) && self.currentItems)
 		{
-			if(selector == @selector(addNowEvent:))
-				return [[self queueOnMainThread] maybeDispatchNow:currentEvent];
-			else if(selector == @selector(addEvent:))
-				return [[self queueOnMainThread] maybeDispatch:currentEvent];
+			[self.currentItems addObject:currentEvent];
+			if(self.currentItems.count > kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addNowEvents:dispatchArray];
+			}
 		}
-		if(self.nextItems && selector == @selector(addNextEvent:))
+		else if(selector == @selector(addEvent:) && self.currentItems)
 		{
-			return [[self queueOnMainThread] maybeDispatchNext:currentEvent];
+			[self.currentItems addObject:currentEvent];
+			if(self.currentItems.count > kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addEvents:dispatchArray];
+			}
+		}
+		else if(selector == @selector(addNextEvent:) && self.nextItems)
+		{
+			[self.nextItems addObject:currentEvent];
+			if(self.nextItems.count >= kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.nextItems copy];
+				[self.nextItems removeAllObjects];
+				[[_delegate queueOnMainThread] addNextEvents:dispatchArray];
+			}
 		}
 		else
 		{

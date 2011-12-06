@@ -67,16 +67,6 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 	[super finishedParsingDocument];
 }
 
-- (void)maybeDispatch:(NSObject *)item
-{
-	[self.currentItems addObject:item];
-	if(self.currentItems.count >= kBatchDispatchItemsCount)
-	{
-		[(NSObject<MovieSourceDelegate> *)_delegate addMovies:self.currentItems];
-		[self.currentItems removeAllObjects];
-	}
-}
-
 /*
 Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -122,7 +112,15 @@ Example:
 	if(!strncmp((const char *)localname, kEnigma2MovieElement, kEnigma2MovieElementLength))
 	{
 		if(self.currentItems)
-			[[self queueOnMainThread] maybeDispatch:currentMovie];
+		{
+			[self.currentItems addObject:currentMovie];
+			if(self.currentItems.count >= kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addMovies:dispatchArray];
+			}
+		}
 		else
 			[[_delegate queueOnMainThread] addMovie:currentMovie];
 	}

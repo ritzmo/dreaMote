@@ -53,16 +53,6 @@
 	[super finishedParsingDocument];
 }
 
-- (void)maybeDispatch:(NSObject<ServiceProtocol> *)service
-{
-	[self.currentItems addObject:service];
-	if(self.currentItems.count >= kBatchDispatchItemsCount)
-	{
-		[(NSObject<ServiceSourceDelegate> *)_delegate addServices:self.currentItems];
-		[self.currentItems removeAllObjects];
-	}
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8"?>
@@ -93,7 +83,13 @@
 	{
 		if(self.currentItems)
 		{
-			[[self queueOnMainThread] maybeDispatch:currentService];
+			[self.currentItems addObject:currentService];
+			if(self.currentItems.count >= kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addServices:dispatchArray];
+			}
 		}
 		else
 		{
