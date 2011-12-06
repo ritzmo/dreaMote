@@ -254,6 +254,18 @@
 #endif
 }
 
+- (void)addEvents:(NSArray *)items
+{
+	for(NSObject<EventProtocol> *event in items)
+	{
+		const NSUInteger index = [_events indexForInsertingObject:event sortedUsingSelector:@selector(compare:)];
+		[_events insertObject:event atIndex:index];
+	}
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(!_useSections)
+		[_tableView reloadData];
+#endif
+}
 
 #pragma mark	-
 #pragma mark		Table View
