@@ -20,10 +20,18 @@
 
 /*!
  @brief New object was created and should be added to list.
- 
+
  @param anItem Movie to add.
  */
 - (void)addMovie: (NSObject<MovieProtocol> *)anItem;
+
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of movies to add.
+ */
+@optional
+- (void)addMovies:(NSArray *)items;
 
 @end
 

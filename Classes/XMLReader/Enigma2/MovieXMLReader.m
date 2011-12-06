@@ -39,6 +39,8 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 	{
 		_delegate = delegate;
 		_timeout = kTimeout * 3; // a lot higher timeout to allow to spin up hdd
+		if([delegate respondsToSelector:@selector(addMovies:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -51,6 +53,26 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 	[_delegate performSelectorOnMainThread: @selector(addMovie:)
 								withObject: fakeObject
 							 waitUntilDone: NO];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<MovieSourceDelegate> *)_delegate addMovies:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
+}
+
+- (void)maybeDispatch:(NSObject *)item
+{
+	[self.currentItems addObject:item];
+	if(self.currentItems.count >= kBatchDispatchItemsCount)
+	{
+		[(NSObject<MovieSourceDelegate> *)_delegate addMovies:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
 }
 
 /*
@@ -97,9 +119,16 @@ Example:
 {
 	if(!strncmp((const char *)localname, kEnigma2MovieElement, kEnigma2MovieElementLength))
 	{
-		[_delegate performSelectorOnMainThread: @selector(addMovie:)
-									withObject: currentMovie
-								 waitUntilDone: NO];
+		if(self.currentItems)
+		{
+			[self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentMovie waitUntilDone:NO];
+		}
+		else
+		{
+			[_delegate performSelectorOnMainThread:@selector(addMovie:)
+										withObject:currentMovie
+									 waitUntilDone:NO];
+		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2DescriptionExtended, kEnigma2DescriptionExtendedLength))
 	{

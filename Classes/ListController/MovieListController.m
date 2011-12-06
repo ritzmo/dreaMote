@@ -849,6 +849,51 @@
 	}
 }
 
+- (void)addMovies:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = (selectedTags) ? taggedMovies.count : _movies.count;
+	NSMutableArray *indexPaths = (!_sortTitle) ? [NSMutableArray arrayWithCapacity:items.count] : nil;
+#endif
+	[_movies addObjectsFromArray:items];
+	BOOL add = YES;
+	for(NSObject<MovieProtocol> *movie in items)
+	{
+		[allTags addObjectsFromArray:movie.tags];
+		if(selectedTags)
+		{
+			add = YES;
+			for(NSString *tag in selectedTags)
+			{
+				if(![movie.tags containsObject:tag])
+				{
+					add = NO;
+					break;
+				}
+			}
+			if(add)
+			{
+				[taggedMovies addObject:movie];
+#if INCLUDE_FEATURE(Extra_Animation)
+				[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+				++count;
+#endif
+			}
+		}
+#if INCLUDE_FEATURE(Extra_Animation)
+		else
+		{
+			[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+			++count;
+		}
+#endif
+	}
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+#endif
+}
+
 #pragma mark -
 #pragma mark MBProgressHUDDelegate
 #pragma mark -
