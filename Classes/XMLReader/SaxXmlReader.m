@@ -98,23 +98,18 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	}
 	else
 	{
-		// delegate wants to be informated about parsing end
-		SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
-		NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
-		if(_delegate && [_delegate respondsToSelector:finishedParsing] && sig)
-		{
-			BaseXMLReader *__unsafe_unretained dataSource = self;
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:finishedParsing];
-			[invocation setArgument:&dataSource atIndex:2];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-										  waitUntilDone:NO];
-		}
+		[self performSelectorOnMainThread:@selector(finishedParsingDocument) withObject:nil waitUntilDone:NO];
 	}
 	} // /@autoreleasepool
 	return nil;
+}
+
+- (void)finishedParsingDocument
+{
+	if([_delegate respondsToSelector:@selector(dataSourceDelegateFinishedParsingDocument:)])
+	{
+		[_delegate dataSourceDelegateFinishedParsingDocument:self];
+	}
 }
 
 #pragma mark -

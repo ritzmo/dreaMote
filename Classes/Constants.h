@@ -138,6 +138,8 @@ extern const char *kPiconGlob;
 
 #define kCurrentDatabaseVersion 2
 
+#define kBatchDispatchItemsCount 10
+
 // shared e2 xml element names
 extern const char *kEnigma2Servicereference;
 #define kEnigma2ServicereferenceLength 19

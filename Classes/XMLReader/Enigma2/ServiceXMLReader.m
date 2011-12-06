@@ -25,6 +25,8 @@
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([delegate respondsToSelector:@selector(addServices:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -34,9 +36,26 @@
 {
 	NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addService:)
-								withObject: fakeService
-							 waitUntilDone: NO];
+	[_delegate performSelectorOnMainThread:@selector(addService:)
+								withObject:fakeService
+							 waitUntilDone:NO];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+		[(NSObject<ServiceSourceDelegate> *)_delegate addServices:self.currentItems];
+	[super finishedParsingDocument];
+}
+
+- (void)maybeDispatch:(NSObject<ServiceProtocol> *)service
+{
+	[self.currentItems addObject:service];
+	if(self.currentItems.count >= kBatchDispatchItemsCount)
+	{
+		[(NSObject<ServiceSourceDelegate> *)_delegate addServices:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
 }
 
 /*
@@ -67,9 +86,18 @@
 {
 	if(!strncmp((const char *)localname, kEnigma2ServiceElement, kEnigma2ServiceElementLength))
 	{
-		[_delegate performSelectorOnMainThread: @selector(addService:)
-									withObject: currentService
-								 waitUntilDone: NO];
+		if(self.currentItems)
+		{
+			// TODO: does this really have to happen on the main thread?
+			[self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentService waitUntilDone:NO];
+		}
+		else
+		{
+			[_delegate performSelectorOnMainThread:@selector(addService:)
+										withObject:currentService
+									 waitUntilDone:NO];
+		}
+		currentService = nil;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))
 	{

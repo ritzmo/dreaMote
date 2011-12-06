@@ -1550,6 +1550,30 @@ enum serviceListTags
 #endif
 }
 
+- (void)addNowEvents:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = _mainList.count;
+	NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:items.count];
+#endif
+	[_mainList addObjectsFromArray:items];
+	for(NSObject<EventProtocol> *event in items)
+	{
+		[_piconLoader addOperationWithBlock:^{ [event.service picon]; }];
+#if IS_FULL()
+		[_multiEPG addService:event.service];
+#endif
+#if INCLUDE_FEATURE(Extra_Animation)
+		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		++count;
+#endif
+	}
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+#endif
+}
+
 #pragma mark -
 #pragma mark NextSourceDelegate
 #pragma mark -
@@ -1558,6 +1582,11 @@ enum serviceListTags
 - (void)addNextEvent:(NSObject <EventProtocol>*)event
 {
 	[_subList addObject: event];
+}
+
+- (void)addNextEvents:(NSArray *)items
+{
+	[_subList addObjectsFromArray:items];
 }
 
 #pragma mark -
@@ -1579,6 +1608,30 @@ enum serviceListTags
 #endif
 #if IS_FULL()
 	[_multiEPG addService:service];
+#endif
+}
+
+- (void)addServices:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = _mainList.count;
+	NSMutableArray *indexPaths = (!isAll) ? [NSMutableArray arrayWithCapacity:items.count] : nil;
+#endif
+	[_mainList addObjectsFromArray:items];
+	for(NSObject<ServiceProtocol> *service in items)
+	{
+		[_piconLoader addOperationWithBlock:^{ [service picon]; }];
+#if IS_FULL()
+		[_multiEPG addService:service];
+#endif
+#if INCLUDE_FEATURE(Extra_Animation)
+		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		 ++count;
+#endif
+	}
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
 #endif
 }
 

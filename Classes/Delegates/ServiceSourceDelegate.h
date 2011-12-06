@@ -23,7 +23,15 @@
  
  @param anItem Service to add.
  */
-- (void)addService: (NSObject<ServiceProtocol> *)anItem;
+- (void)addService:(NSObject<ServiceProtocol> *)anItem;
+
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of services to add.
+ */
+@optional
+- (void)addServices:(NSArray *)items;
 
 @end
 

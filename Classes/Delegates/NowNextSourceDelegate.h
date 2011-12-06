@@ -25,6 +25,14 @@
  */
 - (void)addNowEvent: (NSObject<EventProtocol> *)anItem;
 
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of events to add.
+ */
+@optional
+- (void)addNowEvents:(NSArray *)items;
+
 @end
 
 /*!
@@ -41,6 +49,14 @@
  @param anItem Event to add.
  */
 - (void)addNextEvent: (NSObject<EventProtocol> *)anItem;
+
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of events to add.
+ */
+@optional
+- (void)addNextEvents:(NSArray *)items;
 
 @end
 

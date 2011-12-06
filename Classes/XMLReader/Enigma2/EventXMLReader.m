@@ -45,11 +45,12 @@ typedef enum {
 @property (nonatomic, strong) NSDateFormatter *formatter;
 @property (nonatomic) responseType_t responseType;
 @property (nonatomic) BOOL isNext;
+@property (nonatomic, strong) NSMutableArray *nextItems;
 @end
 
 @implementation Enigma2EventXMLReader
 
-@synthesize currentEvent, formatter, isNext, responseType;
+@synthesize currentEvent, formatter, isNext, nextItems, responseType;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<DataSourceDelegate> *)delegate getServices:(BOOL)getServices selector:(SEL)selector responseType:(responseType_t)response
@@ -82,17 +83,39 @@ typedef enum {
 
 - (id)initWithNowNextDelegate:(NSObject<NowSourceDelegate,NextSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:YES selector:NULL responseType:RESPONSE_NOWNEXT];
+	if((self = [self initWithDelegate:delegate getServices:YES selector:NULL responseType:RESPONSE_NOWNEXT]))
+	{
+		if([delegate respondsToSelector:@selector(addNextEvents:)] && [delegate respondsToSelector:@selector(addNowEvents:)])
+		{
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+			self.nextItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+		}
+	}
+	return self;
 }
 
 - (id)initWithNowDelegate:(NSObject<NowSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:YES selector:@selector(addNowEvent:) responseType:RESPONSE_NOW_OR_NEXT];
+	if((self = [self initWithDelegate:delegate getServices:YES selector:@selector(addNowEvent:) responseType:RESPONSE_NOW_OR_NEXT]))
+	{
+		if([delegate respondsToSelector:@selector(addNowEvents:)])
+		{
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+		}
+	}
+	return self;
 }
 
 - (id)initWithNextDelegate:(NSObject<NextSourceDelegate> *)delegate
 {
-	return [self initWithDelegate:delegate getServices:NO selector:@selector(addNextEvent:) responseType:RESPONSE_NOW_OR_NEXT];
+	if((self = [self initWithDelegate:delegate getServices:NO selector:@selector(addNextEvent:) responseType:RESPONSE_NOW_OR_NEXT]))
+	{
+		if([delegate respondsToSelector:@selector(addNowEvents:)])
+		{
+			self.nextItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+		}
+	}
+	return self;
 }
 
 /* send fake object */
@@ -115,6 +138,35 @@ typedef enum {
 	[_delegate performSelectorOnMainThread:selector
 								withObject:fakeObject
 							 waitUntilDone:NO];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+		[(NSObject<NowSourceDelegate> *)_delegate addNowEvents:self.currentItems];
+	if(self.nextItems.count)
+		[(NSObject<NextSourceDelegate> *)_delegate addNextEvents:self.nextItems];
+	[super finishedParsingDocument];
+}
+
+- (void)maybeDispatch:(NSObject<EventProtocol> *)event
+{
+	[self.currentItems addObject:event];
+	if(self.currentItems.count >= kBatchDispatchItemsCount)
+	{
+		[(NSObject<NowSourceDelegate> *)_delegate addNowEvents:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+}
+
+- (void)maybeDispatchNext:(NSObject<EventProtocol> *)event
+{
+	[self.nextItems addObject:event];
+	if(self.nextItems.count >= kBatchDispatchItemsCount)
+	{
+		[(NSObject<NextSourceDelegate> *)_delegate addNextEvents:self.nextItems];
+		[self.nextItems removeAllObjects];
+	}
 }
 
 /*
@@ -210,9 +262,20 @@ typedef enum {
 			}
 		}
 
-		[_delegate performSelectorOnMainThread:selector
-									withObject:currentEvent
-								 waitUntilDone:NO];
+		if(self.currentItems && selector == @selector(addNowEvent:))
+		{
+			[self performSelectorOnMainThread:@selector(maybeDispatch:) withObject:currentEvent waitUntilDone:NO];
+		}
+		else if(self.nextItems && selector == @selector(addNextEvent:))
+		{
+			[self performSelectorOnMainThread:@selector(maybeDispatchNext:) withObject:currentEvent waitUntilDone:NO];
+		}
+		else
+		{
+			[_delegate performSelectorOnMainThread:selector
+										withObject:currentEvent
+									 waitUntilDone:NO];
+		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EventExtendedDescription, kEnigma2EventExtendedDescriptionLength))
 	{

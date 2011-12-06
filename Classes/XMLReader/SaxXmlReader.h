@@ -64,6 +64,11 @@ typedef struct
 }
 
 /*!
+ @brief Finished parsing current document.
+ */
+- (void)finishedParsingDocument;
+
+/*!
  @brief Currently received string.
  */
 @property (nonatomic, strong) NSMutableString *currentString;
