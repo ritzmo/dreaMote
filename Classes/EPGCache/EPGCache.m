@@ -259,6 +259,14 @@
 	[_delegate performSelectorOnMainThread:@selector(addService:) withObject:copy waitUntilDone:NO];
 }
 
+- (void)addServices:(NSArray *)items
+{
+	for(NSObject<ServiceProtocol> *service in items)
+	{
+		[self addService:service];
+	}
+}
+
 #pragma mark -
 #pragma mark EventSourceDelegate
 #pragma mark -
@@ -284,6 +292,14 @@
 #else
 		// ignore
 #endif
+	}
+}
+
+- (void)addEvents:(NSArray *)items
+{
+	for(NSObject<EventProtocol> *event in items)
+	{
+		[self addEvent:event];
 	}
 }
 
