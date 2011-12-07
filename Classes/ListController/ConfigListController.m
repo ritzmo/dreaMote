@@ -675,7 +675,7 @@ enum settingsRows
 	{
 		/* Connections */
 		case connectionSection:
-			sourceCell.accessoryType = UITableViewCellAccessoryNone;
+			
 			sourceCell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			sourceCell.textLabel.textAlignment = UITextAlignmentLeft;
@@ -688,7 +688,6 @@ enum settingsRows
 				// Setup fake item and abort
 				if(row == 0)
 				{
-					sourceCell.imageView.image = nil;
 					sourceCell.textLabel.text = NSLocalizedString(@"New Connection", @"");
 					break;
 				}
@@ -697,13 +696,11 @@ enum settingsRows
 				row--;
 			}
 
-			// Set image for cell
-			if([[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] == row)
-				sourceCell.imageView.image = [UIImage imageNamed:@"emblem-favorite.png"];
-			else if([RemoteConnectorObject getConnectedId] == row)
-				sourceCell.imageView.image = [UIImage imageNamed:@"network-wired.png"];
+			// set accessory
+			if([RemoteConnectorObject getConnectedId] == row)
+				sourceCell.accessoryType = UITableViewCellAccessoryCheckmark;
 			else
-				sourceCell.imageView.image = nil;
+				sourceCell.accessoryType = UITableViewCellAccessoryNone;
 
 			// Title handling
 			hostTitle = [(NSDictionary *)[_connections objectAtIndex: row] objectForKey: kRemoteName];
@@ -816,7 +813,6 @@ enum settingsRows
 		{
 			sourceCell.accessoryType = UITableViewCellAccessoryNone;
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-			sourceCell.imageView.image = nil;
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			switch(row)
 			{
@@ -840,7 +836,6 @@ enum settingsRows
 			MKStoreManager *manager = [MKStoreManager sharedManager];
 			NSUInteger count = manager.purchasableObjectCount;
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
-			sourceCell.imageView.image = nil;
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
 			if((NSUInteger)indexPath.row < count)

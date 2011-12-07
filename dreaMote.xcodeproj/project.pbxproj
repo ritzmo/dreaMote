@@ -482,9 +482,6 @@
 		DAC8BF6113B200F100CA00D9 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEFD13B200F100CA00D9 /* document-save.png */; };
 		DAC8BF6213B200F100CA00D9 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEFD13B200F100CA00D9 /* document-save.png */; };
 		DAC8BF6313B200F100CA00D9 /* document-save.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BEFD13B200F100CA00D9 /* document-save.png */; };
-		DAC8BF7C13B200F100CA00D9 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0713B200F100CA00D9 /* emblem-favorite.png */; };
-		DAC8BF7D13B200F100CA00D9 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0713B200F100CA00D9 /* emblem-favorite.png */; };
-		DAC8BF7E13B200F100CA00D9 /* emblem-favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0713B200F100CA00D9 /* emblem-favorite.png */; };
 		DAC8BF7F13B200F100CA00D9 /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0813B200F100CA00D9 /* exit.png */; };
 		DAC8BF8013B200F100CA00D9 /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0813B200F100CA00D9 /* exit.png */; };
 		DAC8BF8113B200F100CA00D9 /* exit.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF0813B200F100CA00D9 /* exit.png */; };
@@ -644,9 +641,6 @@
 		DAC8C02D13B200F100CA00D9 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4413B200F100CA00D9 /* movie.png */; };
 		DAC8C02E13B200F100CA00D9 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4413B200F100CA00D9 /* movie.png */; };
 		DAC8C02F13B200F100CA00D9 /* movie.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4413B200F100CA00D9 /* movie.png */; };
-		DAC8C03013B200F100CA00D9 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
-		DAC8C03113B200F100CA00D9 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
-		DAC8C03213B200F100CA00D9 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAC8C03313B200F100CA00D9 /* NotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4613B200F100CA00D9 /* NotSelected.png */; };
 		DAC8C03413B200F100CA00D9 /* NotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4613B200F100CA00D9 /* NotSelected.png */; };
 		DAC8C03513B200F100CA00D9 /* NotSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4613B200F100CA00D9 /* NotSelected.png */; };
@@ -3528,7 +3522,6 @@
 				DAC8BF5B13B200F100CA00D9 /* bouquet.png in Resources */,
 				DAC8BF5E13B200F100CA00D9 /* current.png in Resources */,
 				DAC8BF6113B200F100CA00D9 /* document-save.png in Resources */,
-				DAC8BF7C13B200F100CA00D9 /* emblem-favorite.png in Resources */,
 				DAC8BF7F13B200F100CA00D9 /* exit.png in Resources */,
 				DAC8BF8213B200F100CA00D9 /* folder.png in Resources */,
 				DAC8BF8513B200F100CA00D9 /* Icon-72.png in Resources */,
@@ -3583,7 +3576,6 @@
 				DAC8C02713B200F100CA00D9 /* mediaplayer.png in Resources */,
 				DAC8C02A13B200F100CA00D9 /* menu.png in Resources */,
 				DAC8C02D13B200F100CA00D9 /* movie.png in Resources */,
-				DAC8C03013B200F100CA00D9 /* network-wired.png in Resources */,
 				DAC8C03313B200F100CA00D9 /* NotSelected.png in Resources */,
 				DAC8C03613B200F100CA00D9 /* others.png in Resources */,
 				DAC8C03913B200F100CA00D9 /* preferences-desktop-screensaver.png in Resources */,
@@ -3647,7 +3639,6 @@
 				DAC8BF5C13B200F100CA00D9 /* bouquet.png in Resources */,
 				DAC8BF5F13B200F100CA00D9 /* current.png in Resources */,
 				DAC8BF6213B200F100CA00D9 /* document-save.png in Resources */,
-				DAC8BF7D13B200F100CA00D9 /* emblem-favorite.png in Resources */,
 				DAC8BF8013B200F100CA00D9 /* exit.png in Resources */,
 				DAC8BF8313B200F100CA00D9 /* folder.png in Resources */,
 				DAC8BF9213B200F100CA00D9 /* internet-mail.png in Resources */,
@@ -3702,7 +3693,6 @@
 				DAC8C02813B200F100CA00D9 /* mediaplayer.png in Resources */,
 				DAC8C02B13B200F100CA00D9 /* menu.png in Resources */,
 				DAC8C02E13B200F100CA00D9 /* movie.png in Resources */,
-				DAC8C03113B200F100CA00D9 /* network-wired.png in Resources */,
 				DAC8C03413B200F100CA00D9 /* NotSelected.png in Resources */,
 				DAC8C03713B200F100CA00D9 /* others.png in Resources */,
 				DAC8C03A13B200F100CA00D9 /* preferences-desktop-screensaver.png in Resources */,
@@ -3768,7 +3758,6 @@
 				DAC8BF5D13B200F100CA00D9 /* bouquet.png in Resources */,
 				DAC8BF6013B200F100CA00D9 /* current.png in Resources */,
 				DAC8BF6313B200F100CA00D9 /* document-save.png in Resources */,
-				DAC8BF7E13B200F100CA00D9 /* emblem-favorite.png in Resources */,
 				DAC8BF8113B200F100CA00D9 /* exit.png in Resources */,
 				DAC8BF8413B200F100CA00D9 /* folder.png in Resources */,
 				DAC8BF9313B200F100CA00D9 /* internet-mail.png in Resources */,
@@ -3820,7 +3809,6 @@
 				DAC8C02913B200F100CA00D9 /* mediaplayer.png in Resources */,
 				DAC8C02C13B200F100CA00D9 /* menu.png in Resources */,
 				DAC8C02F13B200F100CA00D9 /* movie.png in Resources */,
-				DAC8C03213B200F100CA00D9 /* network-wired.png in Resources */,
 				DAC8C03513B200F100CA00D9 /* NotSelected.png in Resources */,
 				DAC8C03813B200F100CA00D9 /* others.png in Resources */,
 				DAC8C03B13B200F100CA00D9 /* preferences-desktop-screensaver.png in Resources */,
