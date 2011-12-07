@@ -1615,24 +1615,27 @@ enum serviceListTags
 - (void)addServices:(NSArray *)items
 {
 #if INCLUDE_FEATURE(Extra_Animation)
-	NSUInteger count = _mainList.count;
-	NSMutableArray *indexPaths = (!isAll) ? [NSMutableArray arrayWithCapacity:items.count] : nil;
+	NSUInteger count = [_tableView numberOfRowsInSection:0];
+	const BOOL forceReload = (isAll || items.count > kBatchDispatchItemsCount);
+	NSMutableArray *indexPaths = (!forceReload) ? [NSMutableArray arrayWithCapacity:items.count] : nil;
 #endif
 	[_mainList addObjectsFromArray:items];
 	for(NSObject<ServiceProtocol> *service in items)
 	{
 		[_piconLoader addOperationWithBlock:^{ [service picon]; }];
-#if IS_FULL()
-		[_multiEPG addService:service];
-#endif
 #if INCLUDE_FEATURE(Extra_Animation)
 		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
-		 ++count;
+		++count;
 #endif
 	}
+#if IS_FULL()
+	[_multiEPG addServices:items];
+#endif
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(indexPaths)
 		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+	else
+		[_tableView reloadData];
 #endif
 }
 

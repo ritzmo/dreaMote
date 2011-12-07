@@ -454,6 +454,30 @@
 #endif
 }
 
+- (void)addServices:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = _services.count;
+	NSMutableArray *indexPaths = (self.isViewLoaded && [self.view superview]) ? [NSMutableArray arrayWithCapacity:items.count] : nil;
+#endif
+	[_services addObjectsFromArray:items];
+#if INCLUDE_FEATURE(Extra_Animation)
+	for(NSObject<ServiceProtocol> *service in items)
+	{
+		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		++count;
+	}
+#endif
+#if INCLUDE_FEATURE(Extra_Animation)
+	if(indexPaths)
+		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
+	else
+	{
+		[_tableView reloadData];
+	}
+#endif
+}
+
 #pragma mark -
 #pragma mark EventSourceDelegate
 #pragma mark -
@@ -537,7 +561,7 @@
 	{
 		return kMultiEPGCellHeightIpad;
 	}
-	else
+	else if(self.isViewLoaded && [self.view superview])
 	{
 		NSObject<ServiceProtocol> *service = [_services objectAtIndex:indexPath.row];
 		if(service.picon)
