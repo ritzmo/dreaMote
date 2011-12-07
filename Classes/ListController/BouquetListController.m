@@ -372,8 +372,13 @@ enum bouquetListTags
 
 - (void)showBouquets:(id)sender
 {
+	@synchronized(self)
+	{
+		if(_reloading)
+			return;
+		_reloading = YES;
+	}
 	_listType = LIST_TYPE_BOUQUETS;
-	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
@@ -381,8 +386,13 @@ enum bouquetListTags
 
 - (void)showProvider:(id)sender
 {
+	@synchronized(self)
+	{
+		if(_reloading)
+			return;
+		_reloading = YES;
+	}
 	_listType = LIST_TYPE_PROVIDER;
-	_reloading = YES;
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
