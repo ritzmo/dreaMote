@@ -33,6 +33,11 @@ extern NSString *kServiceCell_ID;
 @property (nonatomic, strong) UIFont *font;
 
 /*!
+ @brief Allow to load picon on main thread.
+ */
+@property (nonatomic) BOOL loadPicon;
+
+/*!
  @brief Service.
  */
 @property (nonatomic, strong) NSObject<ServiceProtocol> *service;

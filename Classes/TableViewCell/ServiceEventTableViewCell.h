@@ -31,6 +31,11 @@ extern NSString *kServiceEventCell_ID;
 @property (nonatomic, strong) NSDateFormatter *formatter;
 
 /*!
+ @brief Allow to load picon on main thread.
+ */
+@property (nonatomic) BOOL loadPicon;
+
+/*!
  @brief Current Event.
  */
 @property (nonatomic, strong) NSObject<EventProtocol> *now;

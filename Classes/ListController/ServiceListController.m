@@ -1702,6 +1702,7 @@ enum serviceListTags
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
+		((ServiceEventTableViewCell *)cell).loadPicon = NO;
 		((ServiceEventTableViewCell *)cell).formatter = _dateFormatter;
 		((ServiceEventTableViewCell *)cell).now = firstObject;
 		@try
@@ -1717,6 +1718,7 @@ enum serviceListTags
 	{
 		cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
 
+		((ServiceTableViewCell *)cell).loadPicon = NO;
 		((ServiceTableViewCell *)cell).service = firstObject;
 
 		const BOOL shouldSelect = [_selectedServices containsObject:firstObject];

@@ -16,7 +16,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 
 @implementation ServiceEventTableViewCell
 
-@synthesize formatter, now, next;
+@synthesize formatter, loadPicon, now, next;
 
 /* initialize */
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -25,6 +25,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	{
 		self.accessoryType = UITableViewCellAccessoryNone;
 		self.backgroundColor = [UIColor clearColor];
+		loadPicon = YES;
 
 		NSString *localeIdentifier = [[NSLocale componentsFromLocaleIdentifier:[[NSLocale currentLocale] localeIdentifier]] objectForKey:NSLocaleLanguageCode];
 		if([localeIdentifier isEqualToString:@"de"])
@@ -125,7 +126,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		return;
 	}
 	// eventually draw picon
-	UIImage *picon = now.service.piconLoaded ? now.service.picon : nil;
+	UIImage *picon =  (loadPicon || now.service.piconLoaded) ? now.service.picon : nil;
 	if(picon)
 	{
 		if(picon.size.height > boundsHeight)
