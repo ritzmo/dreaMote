@@ -662,6 +662,7 @@ enum bouquetListTags
 		return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 	}
 	ServiceTableViewCell *cell = [ServiceTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceCell_ID];
+	cell.loadPicon = NO;
 	cell.service = [_bouquets objectAtIndex:indexPath.row];
 	if(_listType == LIST_TYPE_PROVIDER || [bouquetDelegate isKindOfClass:[ServiceListController class]])
 		cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
