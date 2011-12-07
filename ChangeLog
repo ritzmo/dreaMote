@@ -258,9 +258,10 @@ Enigma2:
 - Support multiple harddrives in "About Receiver"
 Enigma2:
 - Support for the upcoming web interface 1.7.0
+- Support for more recent AutoTimer features
 - Allow to change timer tags
 - Allow to filter movies by tags
-- Allow to move movies between locations (required web interface 1.7.0)
+- Allow to move movies between locations (requires web interface 1.7.0)
 - Improve performance when filling tables
 
 1.3.0-full:
