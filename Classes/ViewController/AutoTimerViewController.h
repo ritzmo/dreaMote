@@ -109,7 +109,7 @@
  @brief Version of the AutoTimer in use.
  @note Used to hide/show some features.
  */
-@property (assign) NSInteger autotimerVersion;
+@property (nonatomic, assign) NSInteger autotimerVersion;
 
 /*!
  @brief Delegate.
