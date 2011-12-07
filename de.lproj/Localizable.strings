@@ -860,7 +860,7 @@
 
 /* Default title of SearchHistoryLengthEditorController
    Label of cell in config which gives search history length */
-"Search History Length" = "Länge Suchverlauf";
+"Search History Length" = "Länge EPG-Suchverlauf";
 
 /* Label of Progress HUD during AutoConfiguration */
 "Searching…" = "Suche…";
@@ -991,7 +991,7 @@
 
 /* Configuration item to choose theme
    Title for theme selection */
-"Theme" = "Thema";
+"Theme" = "Aussehen";
 
 /* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
 "This can take a while." = "Diese Aktion dauert einige Minuten.";
