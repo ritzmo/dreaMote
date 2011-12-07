@@ -22,7 +22,7 @@
 
 @interface Enigma2ServiceXMLReader()
 - (void)charactersFound:(const xmlChar *)characters length:(int)length;
-@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic, strong) GenericService *currentService;
 @end
 
 @interface Enigma2EventXMLReader()
@@ -77,11 +77,11 @@
 {
 	if(!strncmp((const char *)localname, kEnigma2ServiceElement, kEnigma2ServiceElementLength))
 	{
-		NSObject<ServiceProtocol> *newService = sreader.currentService;
+		GenericService *newService = sreader.currentService;
 		if(newService.sname == nil || [newService.sname isEqualToString:@""])
 		{
-			newService = [[GenericService alloc] init];
 			newService.sname = NSLocalizedString(@"Nothing playing.", @"");
+			[newService setValid:NO];
 		}
 
 		[_delegate performSelectorOnMainThread:@selector(addService:)
