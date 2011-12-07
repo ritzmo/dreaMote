@@ -106,6 +106,7 @@ enum serviceListTags
 		[_dateFormatter setDateStyle:NSDateFormatterNoStyle];
 		[_dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_piconLoader = [[NSOperationQueue alloc] init];
+		[_piconLoader setMaxConcurrentOperationCount:kBatchDispatchItemsCount];
 #if IS_FULL()
 		_multiEPG = [[MultiEPGListController alloc] init];
 		_multiEPG.multiEpgDelegate = self;

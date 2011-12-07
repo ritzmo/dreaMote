@@ -125,7 +125,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		return;
 	}
 	// eventually draw picon
-	UIImage *picon = now.service.picon;
+	UIImage *picon = now.service.piconLoaded ? now.service.picon : nil;
 	if(picon)
 	{
 		if(picon.size.height > boundsHeight)

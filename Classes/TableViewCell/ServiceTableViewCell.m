@@ -94,7 +94,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 	CGPoint point;
 	// eventually draw picon
-	UIImage *picon = service.picon;
+	UIImage *picon = service.piconLoaded ? service.picon : nil;
 	if(picon)
 	{
 		CGFloat width = picon.size.width;
