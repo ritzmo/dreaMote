@@ -541,22 +541,31 @@ enum settingsRows
 			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[singleton themeNames]
 																						andSelection:[DreamoteConfiguration singleton].currentTheme
 																							andTitle:NSLocalizedString(@"Theme", @"Title for theme selection")];
+			__block SimpleSingleSelectionListController *blockVc = vc;
+			NSUInteger currentTheme = [DreamoteConfiguration singleton].currentTheme;
 			vc.callback = ^(NSUInteger newSelection, BOOL isFinal, BOOL canceling)
 			{
 				if(!canceling)
 				{
-					if(!isIpad && !isFinal)
-						return NO;
-
 					[DreamoteConfiguration singleton].currentTheme = newSelection;
+
+					if(!isIpad && !isFinal)
+					{
+						[blockVc theme];
+						return NO;
+					}
+
 					NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 					[stdDefaults setObject:[NSNumber numberWithInteger:newSelection] forKey:kActiveTheme];
 					[stdDefaults synchronize];
 					[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 				}
 				else if(!isIpad)
+				{
+					[DreamoteConfiguration singleton].currentTheme = currentTheme;
 					[self.navigationController popToViewController:self animated:YES];
-				
+				}
+
 				if(isIpad)
 					[self dismissModalViewControllerAnimated:YES];
 				return YES;
