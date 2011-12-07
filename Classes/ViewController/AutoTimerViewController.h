@@ -57,6 +57,7 @@
 	UISwitch *_overrideAlternatives; /*!< @brief Override Alternatives? */
 	UISwitch *_timeframeSwitch; /*!< @brief Enable/Disable Timeframe. */
 	UISwitch *_timerJustplay; /*!< @brief Create zap timers? */
+	UISwitch *_timerSetEndtime; /*!< @brief Set Endtime for zap timers? */
 	UISwitch *_timespanSwitch; /*!< @brief Enable/Disable Timespan. */
 	UISwitch *_maxdurationSwitch; /*!< @brief Maxduration Switch. */
 

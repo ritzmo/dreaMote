@@ -60,6 +60,8 @@ static const NSUInteger kEnigma2ATLastActivationLength = 15;
 #endif
 static const char *kEnigma2ATJustplay = "justplay";
 static const NSUInteger kEnigma2ATJustplayLength = 9;
+static const char *kEnigma2ATSetEndtime = "setEndtime";
+static const NSUInteger kEnigma2ATSetEndtimeLength = 11;
 static const char *kEnigma2ATAfter = "after";
 static const NSUInteger kEnigma2ATAfterLength = 6;
 static const char *kEnigma2ATBefore = "before";
@@ -273,7 +275,10 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			{
 				currentAT.justplay = [value isEqualToString:@"1"];
 			}
-
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSetEndtime, kEnigma2ATSetEndtimeLength))
+			{
+				currentAT.setEndtime = [value isEqualToString:@"1"];
+			}
 		}
 	}
 	else if(	!strncmp((const char *)localname, kEnigma2ATInclude, kEnigma2ATIncludeLength)

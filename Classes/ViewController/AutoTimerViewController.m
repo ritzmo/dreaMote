@@ -63,6 +63,7 @@ enum generalSectionRows
 	generalSectionRowCase,
 	generalSectionRowPreferAlternatives,
 	generalSectionRowJustplay,
+	generalSectionRowSetEndtime,
 	generalSectionRowAvoidDuplicateDescription,
 	generalSectionRowSearchForDuplicateDescription,
 	generalSectionRowMax,
@@ -291,6 +292,7 @@ static NSArray *searchTypeTexts = nil;
 	_overrideAlternatives.on = _timer.overrideAlternatives;
 	_timeframeSwitch.on = (_timer.after != nil && _timer.before != nil);
 	_timerJustplay.on = _timer.justplay;
+	_timerSetEndtime.on = _timer.setEndtime;
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 
@@ -500,6 +502,11 @@ static NSArray *searchTypeTexts = nil;
 	_timerJustplay.on = _timer.justplay;
 	_timerJustplay.backgroundColor = [UIColor clearColor];
 
+	// Set Endtime
+	_timerSetEndtime = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_timerSetEndtime.on = _timer.setEndtime;
+	_timerSetEndtime.backgroundColor = [UIColor clearColor];
+
 	// Timespan
 	_timespanSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_timespanSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
@@ -529,6 +536,7 @@ static NSArray *searchTypeTexts = nil;
 		_overrideAlternatives.onTintColor = tintColor;
 		_timeframeSwitch.onTintColor = tintColor;
 		_timerJustplay.onTintColor = tintColor;
+		_timerSetEndtime.onTintColor = tintColor;
 		_timespanSwitch.onTintColor = tintColor;
 		_maxdurationSwitch.onTintColor = tintColor;
 	}
@@ -553,6 +561,7 @@ static NSArray *searchTypeTexts = nil;
 	_overrideAlternatives = nil;
 	_timeframeSwitch = nil;
 	_timerJustplay = nil;
+	_timerSetEndtime = nil;
 	_timespanSwitch = nil;
 	_maxdurationSwitch = nil;
 
@@ -631,6 +640,7 @@ static NSArray *searchTypeTexts = nil;
 
 		_timer.enabled = _timerEnabled.on;
 		_timer.justplay = _timerJustplay.on;
+		_timer.setEndtime = _timerSetEndtime.on;
 		_timer.searchCase = _sensitiveSearch.on ? CASE_SENSITIVE : CASE_INSENSITIVE;
 		_timer.overrideAlternatives = _overrideAlternatives.on;
 
@@ -706,6 +716,7 @@ static NSArray *searchTypeTexts = nil;
 	_sensitiveSearch.enabled = editing;
 	_overrideAlternatives.enabled = editing;
 	_timerJustplay.enabled = editing;
+	_timerSetEndtime.enabled = editing;
 	_timeframeSwitch.enabled = editing;
 	_timerJustplay.enabled = editing;
 	_timespanSwitch.enabled = editing;
@@ -951,7 +962,7 @@ static NSArray *searchTypeTexts = nil;
 		{
 			NSInteger count = generalSectionRowMax;
 			if(autotimerVersion < 7)
-				--count;
+				count -= 2;
 			return count;
 		}
 		case durationSection:
@@ -1003,6 +1014,9 @@ static NSArray *searchTypeTexts = nil;
 			break;
 		case generalSection:
 		{
+			if(row >= generalSectionRowSetEndtime && autotimerVersion < 7)
+				++row;
+
 			switch(row)
 			{
 				case generalSectionRowEnabled:
@@ -1032,6 +1046,11 @@ static NSArray *searchTypeTexts = nil;
 					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 					((DisplayCell *)cell).view = _timerJustplay;
 					cell.textLabel.text = NSLocalizedString(@"Justplay", @"");
+					break;
+				case generalSectionRowSetEndtime:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)cell).view = _timerSetEndtime;
+					cell.textLabel.text = NSLocalizedStringFromTable(@"Endtime if Justplay", @"AutoTimer", @"Set Endtime for Zaptimers");
 					break;
 				case generalSectionRowAvoidDuplicateDescription:
 					cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
@@ -1424,8 +1443,13 @@ static NSArray *searchTypeTexts = nil;
 	switch(indexPath.section)
 	{
 		case generalSection:
-			if(row >= generalSectionRowSearchForDuplicateDescription && autotimerVersion < 7)
-				++row;
+			if(autotimerVersion < 7)
+			{
+				if(row >= generalSectionRowSetEndtime)
+					++row;
+				if(row >= generalSectionRowSearchForDuplicateDescription)
+					++row;
+			}
 
 			if(row == generalSectionRowType || row == generalSectionRowAvoidDuplicateDescription || row == generalSectionRowSearchForDuplicateDescription)
 			{

@@ -95,6 +95,7 @@ typedef enum
 @property (nonatomic) NSInteger maxduration;
 @property (nonatomic, strong) NSString *location;
 @property (nonatomic) BOOL justplay;
+@property (nonatomic) BOOL setEndtime;
 @property (nonatomic, strong) NSDate *before;
 @property (nonatomic, strong) NSDate *after;
 @property (nonatomic) autoTimerAvoidDuplicateDescription avoidDuplicateDescription;

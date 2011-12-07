@@ -952,7 +952,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSMutableString *timerString = [NSMutableString stringWithCapacity:100];
 
 	[timerString appendString:@"/autotimer/edit?"];
-	[timerString appendFormat:@"match=%@&name=%@&enabled=%d&justplay=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0, changeTimer.justplay ? 1 : 0];
+	[timerString appendFormat:@"match=%@&name=%@&enabled=%d&justplay=%d&setEndtime=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0, changeTimer.justplay ? 1 : 0, changeTimer.setEndtime ? 1 : 0];
 	[timerString appendFormat:@"&searchCase=%@&overrideAlternatives=%d", (changeTimer.searchCase == CASE_SENSITIVE) ? @"sensitive" : @"insensitive", changeTimer.overrideAlternatives ? 1 : 0];
 	[timerString appendFormat:@"&avoidDuplicateDescription=%d&searchForDuplicateDescription=%d&location=%@", (int)changeTimer.avoidDuplicateDescription, (int)changeTimer.searchForDuplicateDescription, changeTimer.location ? [changeTimer.location urlencode] : @""];
 
