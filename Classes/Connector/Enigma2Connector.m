@@ -499,7 +499,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
+	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate atOnce:[bouquet isEqualToService:[self allServicesBouquet:isRadio]]];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }

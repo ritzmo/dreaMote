@@ -1616,8 +1616,8 @@ enum serviceListTags
 {
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSUInteger count = [_tableView numberOfRowsInSection:0];
-	const BOOL forceReload = (isAll || items.count > kBatchDispatchItemsCount);
-	NSMutableArray *indexPaths = (!forceReload) ? [NSMutableArray arrayWithCapacity:items.count] : nil;
+	const BOOL forceReload = (items.count > kBatchDispatchItemsCount);
+	NSMutableArray *indexPaths = (isAll || forceReload) ? nil :[NSMutableArray arrayWithCapacity:items.count];
 #endif
 	[_mainList addObjectsFromArray:items];
 	for(NSObject<ServiceProtocol> *service in items)
@@ -1634,7 +1634,7 @@ enum serviceListTags
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(indexPaths)
 		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
-	else
+	else if(!isAll)
 		[_tableView reloadData];
 #endif
 }

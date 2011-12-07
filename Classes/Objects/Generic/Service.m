@@ -140,8 +140,7 @@
 
 - (BOOL)isEqualToService: (NSObject<ServiceProtocol> *)otherService
 {
-	return [self.sref isEqualToString: otherService.sref] &&
-	[self.sname isEqualToString: otherService.sname];
+	return [sref isEqualToString:otherService.sref];
 }
 
 @end

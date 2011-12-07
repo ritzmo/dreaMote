@@ -6,21 +6,14 @@
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <XMLReader/SaxXmlReader.h>
 
-#import "SaxXmlReader.h"
-#import "ServiceSourceDelegate.h"
-
-@class GenericService;
+#import <Delegates/ServiceSourceDelegate.h>
 
 /*!
  @brief Enigma2 Service XML Reader.
  */
 @interface Enigma2ServiceXMLReader : SaxXmlReader
-{
-@private
-	GenericService *currentService; /*!< @brief Current Service. */
-}
 
 /*!
  @brief Standard initializer.
@@ -29,5 +22,14 @@
  @return Enigma2ServiceXMLReader instance.
  */
 - (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate;
+
+/*!
+ @brief Standard initializer.
+
+ @param target Delegate.
+ @param atOnce Only send a single message to the main thread.
+ @return Enigma2ServiceXMLReader instance.
+ */
+- (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate atOnce:(BOOL)atOnce;
 
 @end

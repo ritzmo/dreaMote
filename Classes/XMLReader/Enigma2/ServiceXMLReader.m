@@ -14,12 +14,13 @@
 #import <Objects/Generic/Service.h>
 
 @interface Enigma2ServiceXMLReader()
-@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic) BOOL atOnce;
+@property (nonatomic, strong) GenericService *currentService;
 @end
 
 @implementation Enigma2ServiceXMLReader
 
-@synthesize currentService;
+@synthesize atOnce, currentService;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate
@@ -29,6 +30,15 @@
 		_delegate = delegate;
 		if([delegate respondsToSelector:@selector(addServices:)])
 			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+	}
+	return self;
+}
+
+- (id)initWithDelegate:(NSObject<ServiceSourceDelegate> *)delegate atOnce:(BOOL)singleMessage
+{
+	if((self = [self initWithDelegate:delegate]))
+	{
+		atOnce = singleMessage;
 	}
 	return self;
 }
@@ -84,7 +94,7 @@
 		if(self.currentItems)
 		{
 			[self.currentItems addObject:currentService];
-			if(self.currentItems.count >= kBatchDispatchItemsCount)
+			if(!atOnce && self.currentItems.count >= kBatchDispatchItemsCount)
 			{
 				NSArray *dispatchArray = [self.currentItems copy];
 				[self.currentItems removeAllObjects];
