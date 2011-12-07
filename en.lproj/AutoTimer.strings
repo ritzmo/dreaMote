@@ -55,6 +55,9 @@
 /* Text for cell with default editor for new autotimers on the receiver */
 /*"Editor for new Timers: %@" = "Editor for new Timers: %@";*/
 
+/* Set Endtime for Zaptimers */
+/*"Endtime if Justplay" = "Endtime if Justplay";*/
+
 /* Error message if AutoTimer could not be added. */
 /*"Error adding AutoTimer: %@" = "Error adding AutoTimer: %@";*/
 
