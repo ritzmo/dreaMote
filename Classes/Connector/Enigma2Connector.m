@@ -88,6 +88,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	{
 		// version not yet determined, assume up2date
 		case WEBIF_VERSION_UNKNOWN:
+			if(feature == kFeaturesOptimizedNowNext) // exclude optimized now/next though to improve compatibility
+				return NO;
 			break;
 		// should never occur: unhandled internal version; assume it's old though to not cause any trouble.
 		default:
@@ -108,7 +110,6 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				return NO;
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_8:
-			// NOTE: 1.7.0 is neither not yet final, but it will include these features
 			if(
 			   (feature == kFeaturesMediaPlayerPlaylistLoad) ||
 			   (feature == kFeaturesOptimizedNowNext) ||
