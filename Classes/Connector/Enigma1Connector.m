@@ -430,14 +430,16 @@ enum enigma1MessageTypes {
 			return nil;
 		}
 
-		NSString *tag = (thisType & CACHE_MASK_BOUQUET) ? @"bouquet" : @"provider";
 		NSString *xpath = nil;
 		if(thisType & CACHE_MASK_BOUQUET)
 			xpath = [NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref];
 		else if(thisType & CACHE_MASK_PROVIDER)
 			xpath = [NSString stringWithFormat: @"/providers/provider[reference=\"%@\"]/service", bouquet.sref];
 		else
-			xpath = [NSString stringWithFormat: @"/unknowns/unknown/service", tag, tag, bouquet.sref];
+		{
+			NSLog(@"[Enigma1Connector] Incomplete mask - grabbing everything!");
+			xpath = @"/*/*/service";
+		}
 		resultNodes = [_cachedBouquetsReader.document nodesForXPath:xpath error:nil];
 	}
 
