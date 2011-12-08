@@ -38,7 +38,7 @@
 
 - (BOOL)isValid
 {
-	return _valid;
+	return _valid && sref;
 }
 
 - (void)setValid:(BOOL)newValid
