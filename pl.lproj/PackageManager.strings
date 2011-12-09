@@ -5,7 +5,7 @@
 "All" = "Wszystko";
 
 /* Commit changes made in list */
-"Commit" = "Potwierdü";
+"Commit" = "Potwierdź";
 
 /* Installed Packages */
 "Installed" = "Zainstalowane";
@@ -14,10 +14,10 @@
 "Installed Packages:" = "Zainstalowane Pakiety:";
 
 /* Title of alert when the user taps 'commit' but did not select any packages. */
-"No packages selected" = "Nie naznaczono øadnego pakietu";
+"No packages selected" = "Nie naznaczono żadnego pakietu";
 
 /* Header of package list when removing packages. */
-"Removed Packages:" = "UsuniÍte Pakiety:";
+"Removed Packages:" = "Usunięte Pakiety:";
 
 /* Update remote list of packages */
 "Update" = "Aktualizuj";
