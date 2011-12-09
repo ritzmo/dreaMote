@@ -14,22 +14,22 @@
 "Alternatives deleted" = "Wykryto Alrternatywy";
 
 /* Delete selected service */
-"Delete" = "Usuñ";
+"Delete" = "Usuń";
 
 /* Button removing service alternatives */
-"Delete all" = "Usuñ wszystko";
+"Delete all" = "Usuń wszystko";
 
 /* Title of prompt requesting name for new bouquet */
-"Enter name of bouquet" = "Wpisz nazwê bukietu";
+"Enter name of bouquet" = "Wpisz nazwę bukietu";
 
 /* Title of prompt requesting new name for an existing service */
-"Enter new name" = "Wpisz nazwê";
+"Enter new name" = "Wpisz nazwę";
 
 /* Title of prompt requesting new name for an existing bouquet */
-"Enter new name of bouquet" = "Wpisz now¹ nazwê bukietu";
+"Enter new name of bouquet" = "Wpisz nową nazwę bukietu";
 
 /* Title of prompt requesting name for a marker the user requested */
-"Enter title for marker" = "Wpisz nazwê znacznika";
+"Enter title for marker" = "Wpisz nazwę znacznika";
 
 /* Title of cell to add a bouquet */
 "New Bouquet" = "Nowy Bukiet";
@@ -38,35 +38,35 @@
 "Open" = "Otwórz";
 
 /* Undo selection made by the user. */
-"Remove selection" = "Usuñ zaznaczone";
+"Remove selection" = "Usuń zaznaczone";
 
 /* Rename currently selected service */
-"Rename" = "Zmieñ Nazwê";
+"Rename" = "Zmień Nazwę";
 
 /* Text of HUD when one or multiple services were added to a bouquet */
 "Service(s) added" = "Dodano Serwis(y)";
 
 /* Show alternatives for selected service */
-"Show Alternatives" = "Poka¿ Alternatywy";
+"Show Alternatives" = "Pokaż Alternatywy";
 
 /* Creating a marker has failed */
-"Unable to add marker: %@" = "Nie mo¿na dodaæ znacznika: %@";
+"Unable to add marker: %@" = "Nie można dodać znacznika: %@";
 
 /* Adding an alternative to a service failed */
-"Unable to add service %@ to alternative %@: %@" = "Nie mo¿na dodaæ serwisu %1$@ do alternatywy %2$@: %3$@";
+"Unable to add service %@ to alternative %@: %@" = "Nie można dodać serwisu %1$@ do alternatywy %2$@: %3$@";
 
 /* Adding a service to a bouquet failed */
-"Unable to add service(s) to bouquet %@: %@" = "Nie mo¿na dodaæ serwisu(ów) do bukietu %1$@: %2$@";
+"Unable to add service(s) to bouquet %@: %@" = "Nie można dodać serwisu(ów) do bukietu %1$@: %2$@";
 
 /* Creating a bouquet has failed */
-"Unable to create bouquet: %@" = "Nie mo¿na utworzyæ bukietu: %@";
+"Unable to create bouquet: %@" = "Nie można utworzyć bukietu: %@";
 
 /* Removing alternatives failed */
-"Unable to remove alternatives: %@" = "Nie mo¿na usun¹æ alternatyw: %@";
+"Unable to remove alternatives: %@" = "Nie można usunąć alternatyw: %@";
 
 /* Renaming a bouquet has failed */
-"Unable to rename bouquet: %@" = "Nie mo¿na zmieniæ nazwê bukietu: %@";
+"Unable to rename bouquet: %@" = "Nie można zmienić nazwę bukietu: %@";
 
 /* Renaming a service has failed */
-"Unable to rename service: %@" = "Nie mo¿na zmieniæ nazwy serwisu: %@";
+"Unable to rename service: %@" = "Nie można zmienić nazwy serwisu: %@";
 
