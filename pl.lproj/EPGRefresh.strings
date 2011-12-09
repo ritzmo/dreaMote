@@ -1,5 +1,5 @@
 /* Delay if not in standby/in use */
-"<delay if not in standby/in use>" = "<poczekaj jeúli nie jest w trybie Standby/w uøyciu>";
+"<delay if not in standby/in use>" = "<poczekaj jeśli nie jest w trybie Standby/w użyciu>";
 
 /* Time to stay on service */
 "<time to stay on service>" = "<czas do zostania na serwisie>";
@@ -11,19 +11,19 @@
 "Bouquets" = "Bukiety";
 
 /* Label for cell 'delay refresh if not in standby (minutes)' */
-"Delay if busy (min.)" = "OpÛünij jeúli nie jest zajÍty (min.)";
+"Delay if busy (min.)" = "Opóźnij jeśli nie jest zajęty (min.)";
 
 /* Adapter name */
-"Fake Recording" = "Fa≥szywe Nagrywanie";
+"Fake Recording" = "Fałszywe Nagrywanie";
 
 /* Force EPG refresh even if receiver is not in standby or timers are active */
-"Force refresh if in use" = "Forsuj odúwieøanie jeúli w uøyciu";
+"Force refresh if in use" = "Forsuj odświeżanie jeśli w użyciu";
 
 /* Time of last refresh if given by remote end */
-"Last refresh: %@" = "Ostatnie odúwieøanie: %@";
+"Last refresh: %@" = "Ostatnie odświeżanie: %@";
 
 /* Adapter name */
-"Main Picture" = "G≥Ûwny Obrazek";
+"Main Picture" = "Główny Obrazek";
 
 /* Search EPG for AutoTimers after refresh */
 "Parse AutoTimer" = "Analizuj AutoTimer";
@@ -35,19 +35,19 @@
 "Picture in Picture (hidden)" = "Obraz w Obrazie (ukryty)";
 
 /* Toggle 'Refresh EPG automatically' */
-"Refresh automatically" = "Odúwieø Automatycznie";
+"Refresh automatically" = "Odśwież Automatycznie";
 
 /* Refresh using different Adapter */
-"Refresh using: %@" = "Odúwieø uøywajπc: %@";
+"Refresh using: %@" = "Odśwież używając: %@";
 
 /* section header for service to refresh */
 "Services" = "Serwisy";
 
 /* Shutdown after refreshing EPG */
-"Shutdown after refresh" = "Zamknij po odúwieøaniu";
+"Shutdown after refresh" = "Zamknij po odświeżaniu";
 
 /* start manual refresh of epg */
-"Start refresh" = "Rozpocznij odúwieøanie";
+"Start refresh" = "Rozpocznij odświeżanie";
 
 /* Label for cell 'Time to stay on service (minutes)' */
 "Time on service (min.)" = "Czas na serwis (min.)";
@@ -56,5 +56,5 @@
 "Time on service (sec.)" = "Czas na serwis (sec.)";
 
 /* Wakeup from Deep Standby for EPG refresh */
-"Wakeup for refresh" = "Obudü podczas odúwieøania";
+"Wakeup for refresh" = "Obudź podczas odświeżania";
 
