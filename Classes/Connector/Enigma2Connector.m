@@ -347,6 +347,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 - (Result *)getResultFromSimpleXmlWithRelativeString:(NSString *)relativeURL
 {
 	xmlDocPtr doc = NULL;
+	xmlXPathContextPtr xpathCtx = NULL;
+	xmlXPathObjectPtr xpathObj = NULL;
 	NSError *error = nil;
 	NSURL *myURI = [[NSURL alloc] initWithString:relativeURL relativeToURL:_baseAddress];
 	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
@@ -372,8 +374,6 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	}
 	else do
 	{
-		xmlXPathContextPtr xpathCtx;
-		xmlXPathObjectPtr xpathObj;
 		xmlNodeSetPtr nodes;
 
 		xpathCtx = xmlXPathNewContext(doc);
@@ -410,9 +410,10 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			xmlFree(stringVal);
 		}
 
-		xmlXPathFreeObject(xpathObj);
-		xmlXPathFreeContext(xpathCtx);
+		// xpath object will be freed after this block
 	} while(0);
+	xmlXPathFreeObject(xpathObj);
+	xmlXPathFreeContext(xpathCtx);
 	xmlFreeDoc(doc);
 
 	return result;
