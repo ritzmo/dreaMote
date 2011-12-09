@@ -2,7 +2,7 @@
 "<days>" = "<days>";
 
 /* Placeholder of AutoTimer Title field */
-"<enter title>" = "<wpisz tytu≥>";
+"<enter title>" = "<wpisz tytuł>";
 
 /* Placeholder of Textfield in Filter Editor */
 "<filter text>" = "<filtruj tekst>";
@@ -14,7 +14,7 @@
 "<maximum duration>" = "<maksymalny czas trwania>";
 
 /* Placeholder of AutoTimer Match field */
-"<text to find in title>" = "<tekest do znalezienia w tytule>";
+"<text to find in title>" = "<tekst do znalezienia w tytule>";
 
 /* Label for cell 'addsimilar_on_conflict' */
 "Add similar timer on conflict" = "Dodaj podobny Timer podczas konfliktu";
@@ -23,7 +23,7 @@
 "Add timer disabled on conflict" = "Nie dodawaj Timera podczas konfliktu";
 
 /* Label for cell 'maxdays_in_future' */
-"Add timer for the next X days" = "Dodaj Timer na nastÍpne X dni";
+"Add timer for the next X days" = "Dodaj Timer na następne X dni";
 
 /* timeframe after */
 "After: %@" = "Po: %@";
@@ -35,7 +35,7 @@
 "All timers" = "Wszystkie Timery";
 
 /* User requested autopoll but interval is equal to or less than 0. */
-"Automated Search for events requires a valid interval to be set!" = "Automatyczne Wyszukiwanie wydarzeÒ wymaga ustawionego waønego interwa≥u!";
+"Automated Search for events requires a valid interval to be set!" = "Automatyczne Wyszukiwanie wydarzeń wymaga ustawionego ważnego interwału!";
 
 /* Open Editor for new AutoTimer */
 "AutoTimer Editor" = "Edycja AutoTimer";
@@ -53,37 +53,37 @@
 "Classic" = "Klasyczny";
 
 /* Text for cell with default editor for new autotimers on the receiver */
-"Editor for new Timers: %@" = "Edytor dla nowych TimerÛw: %@";
+"Editor for new Timers: %@" = "Edytor dla nowych Timerów: %@";
 
 /* Set Endtime for Zaptimers */
 "Endtime if Justplay" = ""Czas zakończenia gdy Tylko Odtwarzaj"";
 
 /* Error message if AutoTimer could not be added. */
-"Error adding AutoTimer: %@" = "B≥πd podczas tworzenia AutoTimer'a: %@";
+"Error adding AutoTimer: %@" = "Błąd podczas tworzenia AutoTimer'a: %@";
 
 /* Error message if AutoTimer could not be edited. */
-"Error editing AutoTimer: %@" = "B≥πd edycji AutoTimer'a: %@";
+"Error editing AutoTimer: %@" = "Błąd edycji AutoTimer'a: %@";
 
 /* Search type: exact event title */
-"Exact" = "Dok≥adny";
+"Exact" = "Dokładny";
 
 /* Exclude Filter */
 "Exclude" = "Wyklucz";
 
 /* Force parsing is finished, this could have been either an error or a success */
-"Finished parsing EPG" = "ZakoÒczono analizÍ EPG";
+"Finished parsing EPG" = "Zakończono analizę EPG";
 
 /* timespan from */
 "From: %@" = "Od: %@";
 
 /* Label for cell 'try_guessing' */
-"Guess event by begin/end" = "SprÛbuj odgadnπÊ wydarzenie po starcie/koÒcu";
+"Guess event by begin/end" = "Spróbuj odgadnąć wydarzenie po starcie/końcu";
 
 /* Search type: partial in event description */
 "in Description" = "w Opisie";
 
 /* Include Filter */
-"Include" = "UwzglÍdnij";
+"Include" = "Uwzględnij";
 
 /* Title of timer modification behavior selection. */
 "Modify Timers" = "Modyfikuje Timery";
@@ -92,7 +92,7 @@
 "Modify timers: %@" = "Modyfikuj Timery: %@";
 
 /* weekday filter */
-"Mon-Fri" = "Pon-Piπ";
+"Mon-Fri" = "Pon-Pią";
 
 /* Text for cell which allows to add a new AutoTimer */
 "New AutoTimer" = "Nowy AutoTimer";
@@ -110,10 +110,10 @@
 "No" = "Nie";
 
 /* Type of timers to modify: None */
-"None" = "Øaden";
+"None" = "żaden";
 
 /* Label for cell 'notifsimilar' */
-"Notification for similar timers" = "Powiadomienie dla podobnych TimerÛw";
+"Notification for similar timers" = "Powiadomienie dla podobnych Timerów";
 
 /* Label for cell 'notifconflict' */
 "Notification on conflicts" = "Powiadamiaj przy konflikcie";
@@ -122,13 +122,13 @@
 "Parse EPG" = "Analizuj EPG";
 
 /* Search type: partial event title */
-"Partial" = "CzÍúciowy";
+"Partial" = "Częúciowy";
 
 /* Label for cell 'autopoll' */
 "Poll automatically" = "Automatyczne Poll";
 
 /* Label for cell 'interval' */
-"Poll interval (in h)" = "Interwa≥ Poll (w godz.)";
+"Poll interval (in h)" = "Interwał Poll (w godz.)";
 
 /* Avoid Duplicate Description 1 (timers on same service) */
 "Same Service" = "Taki sam Serwis";
@@ -153,7 +153,7 @@
 "Settings" = "Ustawienia";
 
 /* Label for cell 'show_in_extensionsmenu' */
-"Show in extension menu" = "Pokaø w rozszerzonym menu";
+"Show in extension menu" = "Pokaż w rozszerzonym menu";
 
 /* Label for cell 'fastscan' */
 "Support \"Fast-Scan\"" = "Wsparcie \"Fast-Scan\"";
@@ -168,22 +168,22 @@
 "Timers/Recordings" = "Timery/Nagrania";
 
 /* section header for timespan */
-"Timespan" = "Przedzia≥ Czasowy";
+"Timespan" = "Przedział Czasowy";
 
 /* Search For Duplicates: in Title */
-"Title" = "Tytu≥";
+"Title" = "Tytuł";
 
 /* Search For Duplicates: in Title and Short+Extended Description */
-"Title and all descriptions" = "Tytu≥ i wszystkie opisy";
+"Title and all descriptions" = "Tytuł i wszystkie opisy";
 
 /* Search For Duplicates: in Title and Short Description */
-"Title and short description" = "Tytu≥ i wszystkie opisy";
+"Title and short description" = "Tytuł i wszystkie opisy";
 
 /* timespan to */
 "To: %@" = "Do: %@";
 
 /* Remote host did not return a valid result, probably because the version of the installed plugin is too old. */
-"Unable to complete request.\nPlugin too old?" = "Nie moøna wykonaÊ øπdania.\nPrzestarza≥y Plugin?";
+"Unable to complete request.\nPlugin too old?" = "Nie można wykonać żądania.\nPrzestarzały Plugin?";
 
 /* Title of avoid duplicate description selector. */
 "Unique Description" = "Unikalny Opis";
