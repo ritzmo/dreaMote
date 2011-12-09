@@ -1,0 +1,1193 @@
+/* sat finder refresh interval */
+"%.0f sec" = "%.Of sek";
+
+/* Free space on harddisk (available of total free), includes size. */
+"%@ of %@ free" = "%1$@ z %2$@ wolne";
+
+/* zip-file was extracted without any errors. */
+"%d files extracted successfully." = "%d plików wypakowano z powodzeniem.";
+
+/* Minutes */
+"%d min" = "%d min";
+
+/* Seconds */
+"%d sec" = "%d sek";
+
+/* Comment for repeat count in neutrino */
+"0 = unlimited" = "0 = bez ograniczeń";
+
+/* Repeated */
+"2-weekly" = "2-tygodnie";
+
+/* Repeated */
+"4-weekly" = "4-tygodnie";
+
+/* Placeholder for remote address in config. */
+"<address: e.g. 192.168.1.10>" = "<adres: np 192.168.1.10>";
+
+/* Placeholder of _timerDescription */
+"<enter description>" = "<wpisz opis>";
+
+/* Placeholder of _timerTitle */
+"<enter title>" = "<wpisz tytul>";
+
+/* Label for Filesystems Item in MediaPlayer Filelist */
+"<Filesystems>" = "<Systemy Plików>";
+
+/* Placeholder for textfield with search history length */
+"<history length>" = "<długość historii>";
+
+/* Placeholder for message caption field */
+"<message caption>" = "<podpis wiadomości>";
+
+/* Placeholder for message text field */
+"<message text>" = "<tekst wiadomości>";
+
+/* Placeholder for message timeout field */
+"<message timeout>" = "<minął czas oczekiwania wiadomości>";
+
+/* Placeholder for SleepTimer duration field */
+"<min.>" = "<min.>";
+
+/* Placeholder for remote hostname in config. */
+"<name: e.g. living room>" = "<nazwa: np pokój dzienny>";
+
+/* Placeholder for remote password in config. */
+"<password: usually dreambox>" = "<hasło: przeważnie dreambox>";
+
+/* Placeholder for remote port in config. */
+"<port: usually %d>" = "<port: przeważnie %d>";
+
+/* Placeholder for remote username in config. */
+"<username: usually root>" = "<nazwa użytkownika: przeważnie root>";
+
+/* No hostname entered in ConfigView. */
+"A connection needs at least a hostname." = "Połączenie wymaga przynajmniej nazwy hosta.";
+
+/* No comment provided by engineer. */
+"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "Nie znaleziono żadnego wydarzenia.\nSpróbuj odświeżyć listę wydarzeń dla tego serwisu.";
+
+/* Message explaining what what happens on zip-file import. */
+"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!" = "Plik zip (%s) został znaleziony w katalogu Dokumenty.\nWypakować i usunąć teraz?\n\nTa wiadomość zostanie pokazana za każdym razem podczas uruchomienia aplikacji jeśli w katalogu Dokumenty znajduje się plik zip!";
+
+/* About Button Text
+   Title of AboutDreamoteViewController */
+"About" = "O...";
+
+/* Title of About Receiver in Other List
+   Title of AboutViewController */
+"About Receiver" = "O Tunerze";
+
+/* Title of Alert when import triggered */
+"About to import data" = "Import Danych";
+
+/* Used in MediaPlayer, add only the current folder */
+"Add" = "Dodaj";
+
+/* Explaination of AutoTimer in Other List */
+"Add and edit AutoTimers" = "Dodaj i edytuj AutoTimer'y";
+
+/* Add new AutoTimer based on this event */
+"Add AutoTimer" = "Dodaj AutoTimer";
+
+/* Button in MediaPlayer to add current folder to playlist */
+"Add Folder" = "Dodaj Folder";
+
+/* Used in MediaPlayer, add shown folders recursively */
+"Add recursively" = "Dodaj rekursywnie";
+
+/* No comment provided by engineer. */
+"Add Timer" = "Dodaj Timer";
+
+/* Create calendar entry for this event */
+"Add to calendar" = "Dodaj do kalendarza";
+
+/* Used in MediaPlayer, append tracks to playlist */
+"Adding to Playlist" = "Dodaj do Playlisty";
+
+/* Enigma2 only. Refers to the remote with four extra buttons (FRwd/PlayPause/Stop/FFwd). */
+"Advanced Remote" = "Zaawansowany Pilot";
+
+/* Default title of AfterEventViewController */
+"After Event" = "Po Wydarzeniu";
+
+/* Automatic Gain Control (in Percent) */
+"AGC" = "AGC";
+
+/* No comment provided by engineer. */
+"Album" = "Album";
+
+/* 'All Services' button in bouquet list */
+"All" = "Wszystko";
+
+/* Name of 'All Services'-Bouquet */
+"All Services" = "Wszystkie Serwisy";
+
+/* No comment provided by engineer. */
+"An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Wystąpił nieoczekiwany błąd (%@) po usuwaniu nagrania.\nOdśwież listę ręcznie, aby zobaczyć zmianę!";
+
+/* No comment provided by engineer. */
+"Artist" = "Artysta";
+
+/* Message type */
+"Attention" = "Uwaga";
+
+/* After Event */
+"Auto" = "Auto";
+
+/* Button in Connection Editor which detects the remote receiver type automatically. */
+"Autodetect" = "Wykrycie Automatyczne";
+
+/* Default title of AutoTimerViewController */
+"AutoTimer" = "AutoTimer";
+
+/* Text of HUD when AutoTimer was added successfully */
+"AutoTimer added" = "AutoTimer dodany";
+
+/* Text of HUD when AutoTimer was changed successfully */
+"AutoTimer changed" = "AutoTimer zmieniony";
+
+/* Text of HUD when an AutoTimer was removed successfully */
+"AutoTimer deleted" = "AutoTimer usunięty";
+
+/* Title of AutoTimer in Other List */
+"AutoTimer-Plugin" = "AutoTimer-Plugin";
+
+/* Title of AutoTimerListController */
+"AutoTimers" = "AutoTimer'y";
+
+/* No comment provided by engineer. */
+"Begin" = "Zacznij";
+
+/* Name of blue theme */
+"Blue" = "Niebieski";
+
+/* Text of HUD when a bookmark was removed successfully */
+"Bookmark deleted" = "Zakładka usunięta";
+
+/* Bouquets button in bouquet list
+   Title of BouquetListController */
+"Bouquets" = "Bukiet";
+
+/* Button in Appirater alert suggesting to buy paid version */
+"Buy full version" = "Kup pełną wersję";
+
+/* No comment provided by engineer. */
+"Can't edit a running or finished timer." = "Nie można edytować trwającego lub skończonego Timera.";
+
+/* No comment provided by engineer. */
+"Can't save a timer with an empty title." = "Nie można zapisać Timera bez tytułu.";
+
+/* No comment provided by engineer. */
+"Can't save a timer without a service." = "Nie można zapisać Timera bez serwisu.";
+
+/* No comment provided by engineer. */
+"Cancel" = "Anuluj";
+
+/* No comment provided by engineer. */
+"Caption" = "Podpis";
+
+/* No comment provided by engineer. */
+"Caption cannot be empty." = "Podpis nie może być pusty.";
+
+/* case-sensitive matching (of autotimers) */
+"Case-Sensitive" = "Wielkość liter ważna";
+
+/* Explaination of Settings in Other List */
+"Change configuration and edit known hosts" = "Zmień konfigurację i profile";
+
+/* Timer cleanup button */
+"Cleanup" = "Wyczyść";
+
+/* Clear button/action in MediaPlayer */
+"Clear" = "Wyczyść";
+
+/* Title of action sheet when leaving MediaPlayer view. */
+"Close MediaPlayer?" = "Zamknąć MediaPlayer?";
+
+/* Default Title of ConfigListController
+   Default title of ConfigViewController */
+"Configuration" = "Ustawienia";
+
+/* Section title for connections in ConfigList */
+"Configured Connections" = "Połączenia";
+
+/* Message type */
+"Confirmed" = "Potwierdzono";
+
+/* Connect to the remote host for this session. */
+"Connect" = "Połącz";
+
+/* No comment provided by engineer. */
+"Connection could not be established." = "Połączenie nie mogło być ustanowione.";
+
+/* Configuration item to choose connection timeout
+   Default title of TimeoutSelectionViewController */
+"Connection Timeout" = "Czas połączenia minął";
+
+/* No comment provided by engineer. */
+"Connection to remote host failed with status code %d." = "Połączenie do hosta zakończyło się błędem %d.";
+
+/* Default title of ConnectorViewController */
+"Connector" = "Połączenie";
+
+/* Title of Control View in Other List */
+"Control" = "Kontrola";
+
+/* Explaination of Control View in Other List */
+"Control Powerstate and Volume" = "Kontroluj Zasilanie i Głośność";
+
+/* Explaination of Media Player in Other List */
+"Control the remote media player" = "Kontroluj zdalny media player";
+
+/* Title of ControlViewController */
+"Controls" = "Kontrolki";
+
+/* No comment provided by engineer. */
+"Could not add new timer (%@)!" = "Nie można dodać nowego Timera (%@)!";
+
+/* No comment provided by engineer. */
+"Could not add new timer and failed to retain original one! (%@)" = "Nie można dodać nowego Timera, ani zachować oryginalnego! (%@)";
+
+/* No comment provided by engineer. */
+"Could not add song to playlist" = "Nie można dodać utworu do playlisty";
+
+/* Autodetection of host type failed. */
+"Could not determine remote box type." = "Nie można określić typu zdalnego boxa.";
+
+/* No comment provided by engineer. */
+"Could not open connection to database." = "Nie można ustanowić połączenia do bazy danych.";
+
+/* No comment provided by engineer. */
+"Could not remove base timer (%@)!" = "Nie można usunąć bazowego Timera (%@)!";
+
+/* No comment provided by engineer. */
+"Could not send message." = "Nie można wysłać wiadomości.";
+
+/* No comment provided by engineer. */
+"Credential" = "Credential";
+
+/* No comment provided by engineer. */
+"Currently playing" = "Odtwarzane";
+
+/* Repeated */
+"Daily" = "Codziennie";
+
+/* Name of dark theme */
+"Dark" = "Ciemny";
+
+/* Title of DatePickerController */
+"Date Picker" = "Czas i Data";
+
+/* After Event */
+"Deep Standby" = "Wyłącz";
+
+/* Name of default theme */
+"Default" = "Domyślny";
+
+/* Default After Event action (usually auto on enigma2 receivers) */
+"Default Action" = "Domyślna Akcja";
+
+/* No comment provided by engineer. */
+"Default Location" = "Domyślna Lokalizacja";
+
+/* Delete button in MediaPlayer
+   Delete button in MovieList
+   Delete button in TimerList */
+"Delete" = "Usuń";
+
+/* No comment provided by engineer. */
+"Delete failed" = "Nie usunięto";
+
+/* Label of Progress HUD in MediaPlayer when deleting multiple items from playlist
+   Label of Progress HUD in MovieList when deleting multiple items
+   Label of Progress HUD in TimerList when deleting multiple items */
+"Deleting" = "Usuwanie";
+
+/* No comment provided by engineer. */
+"Description" = "Opis";
+
+/* Explaination of Signal Finder in Other List */
+"Displays current SNR/AGC" = "Pokazuje bieżący SNR/AGC";
+
+/* Shown when touching screenshots for 1s, asks to save to libary */
+"Do you want to save this picture?" = "Chcesz zapisać ten obrazek?";
+
+/* No comment provided by engineer. */
+"Done" = "Zrobione";
+
+/* SleepTimer Duration Cell Label */
+"Duration" = "Czas Trwania";
+
+/* Explaination of Sleep Timer in Other List */
+"Edit and (de)activate Sleep Timer" = "Edytuj i (re)aktywuj  czas uśpienia";
+
+/* Toggle in Signal Finder which is responsible for starting/stopping the tone generator */
+"Enable audio" = "Włącz sygnał dźwiękowy";
+
+/* No comment provided by engineer. */
+"Enabled" = "Włączone";
+
+/* No comment provided by engineer. */
+"encrypted" = "zaszyfrowane";
+
+/* No comment provided by engineer. */
+"End" = "Koniec";
+
+/* No comment provided by engineer. */
+"End has to be after begin." = "Koniec musi nastąpić po rozpoczęciu.";
+
+/* Title of message when trying to select next/previous movie by swiping but end was reached. */
+"End of list reached" = "Osiągnięto koniec listy";
+
+/* Title of message when trying to select next/previous service by swiping but end was reached. */
+"End of service list reached" = "Osiągnięto koniec listy serwisów";
+
+/* No comment provided by engineer. */
+"Enigma" = "Enigma";
+
+/* No comment provided by engineer. */
+"Enigma 2" = "Enigma 2";
+
+/* Title of prompt requesting name for playlist to be saved in MediaPlayer */
+"Enter name of Playlist" = "Wpisz nazwę Playlisty";
+
+/* Title of prompt requesting name for new bookmark */
+"Enter path of bookmark" = "Wpisz ścieżkę zakładki";
+
+/* Default title of EPGRefreshViewController */
+"EPGRefresh" = "EPGRefresh";
+
+/* Default title of EPGRefreshAdapterViewController */
+"EPGRefresh Adapter" = "EPGRefresh Adapter";
+
+/* Title of EPGRefresh in Other List */
+"EPGRefresh-Plugin" = "EPGRefresh-Plugin";
+
+/* Message type */
+"Error" = "Błąd";
+
+/* No comment provided by engineer. */
+"Error adding new timer: %@" = "Błąd dodawania nowego timera: %@";
+
+/* Title of alert when timer cleanup failed */
+"Error cleaning up" = "Błąd czyszczenia";
+
+/* No comment provided by engineer. */
+"Error editing timer: %@" = "Błąd edytowania Timera: %@";
+
+/* No comment provided by engineer. */
+"Error retrieving Data" = "Błąd pobierania danych";
+
+/* Title of alert when sending/saving of email failed */
+"Error sending email!" = "Błąd wysyłania email'a!";
+
+/* No comment provided by engineer. */
+"Event" = "Wydarzenie";
+
+/* Default Title of EventListController */
+"Events" = "Events";
+
+/* Title of exact section of SatFinder */
+"Exact" = "Dokładny";
+
+/* export data from lite to full version */
+"Export to dreaMote" = "Eksportuj do dreaMote";
+
+/* Button executing zip extraction/deletion */
+"Extract" = "Wypakuj";
+
+/* Removal of zip-file failed after extraction. */
+"Failed to remove zip-file!\nPlease remove it manually using iTunes." = "usuwanie pliku zip nie powiodło się!\nUsuń go ręcznie przez iTunes.";
+
+/* Title of Alert when retrieving remote data failed. */
+"Failed to retrieve data" = "Błąd pobierania danych";
+
+/* No comment provided by engineer. */
+"Failed to start instant record" = "Nagrywaj teraz.";
+
+/* Default title of AutoTimerFilterViewController */
+"Filter" = "Filtr";
+
+/* No comment provided by engineer. */
+"Filter: Description" = "Filtr: Opis";
+
+/* No comment provided by engineer. */
+"Filter: Shortdescription" = "Filtr: Krótki Opis";
+
+/* No comment provided by engineer. */
+"Filter: Title" = "Filtr: Tytuł";
+
+/* No comment provided by engineer. */
+"Filter: Weekday" = "Filtr: Dzień tygodnia";
+
+/* Timer type */
+"Finished" = "Zakończono";
+
+/* Forget previous purchases in config list (debug builds only) */
+"Forget Purchases" = "Forget Purchases";
+
+/* Weekday */
+"Fri" = "Pią";
+
+/* No comment provided by engineer. */
+"Friday" = "Piątek";
+
+/* in timer settings dialog */
+"General" = "Ogólne";
+
+/* No comment provided by engineer. */
+"Genre" = "Gatunek";
+
+/* Cell title with GUI version in About View */
+"GUI Version" = "Wersja GUI";
+
+/* Title of section in About View containing harddisk information (if any) */
+"Harddisk" = "Dysk Twardy";
+
+/* Default sharing string for events */
+"Hey, check out %@ on %@. %@" = "Hey, sprawdź %1$@ na %2$@. %3$@";
+
+/* Title of SearchHistoryListController */
+"History" = "Historia";
+
+/* No comment provided by engineer. */
+"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Jeśli lubisz używać %@, może ocenisz aplikację w AppStore? Nie zabieże ci to więcej niż minutę. Dzięki za Twoje wsparcie!";
+
+/* No comment provided by engineer. */
+"Illegal response returned by VDR-server! Aborting." = "Nielegalna odpowiedź zwrócona przez serwer VDR! Anulowanie.";
+
+/* Cell title with Image version in About View */
+"Image Version" = "Wersja Obrazu";
+
+/* No comment provided by engineer. */
+"IMDb" = "IMDb";
+
+/* Button executing import */
+"Import" = "Importuj";
+
+/* Title of Alert when a zip file was found in the documents folder possibly containing picons. */
+"Import Picons?" = "Importuj Picony?";
+
+/* Message type */
+"Info" = "Info";
+
+/* Explaination of About Receiver in Other List */
+"Information on software and tuners" = "Informacja o oprogramowaniu i tunerach";
+
+/* Explaination of Package Manager in Other List */
+"Install/Update/Remove packages" = "Instal/Aktualizuj/Usuń pakiety";
+
+/* instant sat finder refresh */
+"instant" = "rzeczywisty";
+
+/* No comment provided by engineer. */
+"Instant Record" = "Nagrywaj";
+
+/* Title of refresh Interval section of SatFinder */
+"Interval" = "Interwał";
+
+/* No comment provided by engineer. */
+"Invalid message type." = "Nieprawidłowy typ wiadomości.";
+
+/* [SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter. */
+"Invalid timer object received: %@." = "Odebrano nieprawidłowy obiekt z timera: %@.";
+
+/* No comment provided by engineer. */
+"Justplay" = "Tylko Odtwarzaj";
+
+/* Load button/action in MediaPlayer */
+"Load" = "Załaduj";
+
+/* Label of Progress HUD in MultiEPG */
+"Loading EPG…" = "Ładowanie EPG…";
+
+/* Label of Progress HUD in TimerList when loading list of available tags */
+"Loading Tags" = "Ładowanie Tagów";
+
+/* Loading Status */
+"Loading..." = "Ładowanie...";
+
+/* No comment provided by engineer. */
+"Location" = "Lokalizacja";
+
+/* Title of LocationListController */
+"Locations" = "Lokalizacje";
+
+/* Make this remote host the default for future sessions. */
+"Make Default" = "Zrób Domyślnym";
+
+/* No comment provided by engineer. */
+"Master" = "Podstawowy";
+
+/* Title of section with AutoTimer match-Attribute. String to find in EPG-Title. */
+"Match" = "Dopasowanie";
+
+/* Title of section with AutoTimer max Duration-Attribute. Maximum Duration a event can have to match this AutoTimer. */
+"Max. Duration" = "Maks. Czas Trwania";
+
+/* Title of Media Player in Other List */
+"Media Player" = "Media Player";
+
+/* Title of MediaPlayerController
+   Title of MediaPlayerSplitViewController */
+"MediaPlayer" = "MediaPlayer";
+
+/* Default title of MessageViewController
+   Message type */
+"Message" = "Wiadomość";
+
+/* No comment provided by engineer. */
+"Message cannot be empty." = "Wiadomość nie może być pusta.";
+
+/* Text of HUD when message was sent successfully */
+"Message sent" = "Wiadomość wysłano";
+
+/* Default title of MessageTypeViewController */
+"Message Type" = "Typ Wiadomości";
+
+/* Title of Message View in Other List */
+"Messages" = "Wiadomości";
+
+/* Weekday */
+"Mon" = "Pon";
+
+/* No comment provided by engineer. */
+"Monday" = "Poniedziałek";
+
+/* Repeated */
+"Monthly" = "Miesięczny";
+
+/* Tab Title of OtherListController */
+"More" = "Więcej";
+
+/* Button in MovieView to move current movie */
+"Move" = "Przenieś";
+
+/* Default title of MovieViewController */
+"Movie" = "Film";
+
+/* Text of HUD when a movied was removed successfully */
+"Movie deleted" = "Wykryto Film";
+
+/* Text in HUD when moving a movie succeeded. */
+"Movie moved" = "Film przeniesiony";
+
+/* Title of Movie List in Other List
+   Title of MovieListController */
+"Movies" = "Filmy";
+
+/* Text of HUD when multiple movies were removed */
+"Movies deleted" = "Filmy usunięto";
+
+/* Multi EPG Button title */
+"Multi EPG" = "Multi EPG";
+
+/* Configuration item to choose timespan displayed by MultiEPG
+   Default title of MultiEPGIntervalViewController */
+"Multi-EPG Interval" = "Multi-EPG Interwał";
+
+/* No comment provided by engineer. */
+"Mute" = "Mute";
+
+/* No comment provided by engineer. */
+"N/A" = "Niedostępne";
+
+/* Title of Alert suggesting autoconfiguration. */
+"Need Help?" = "Potrzebujesz pomocy?";
+
+/* No comment provided by engineer. */
+"Neutrino" = "Neutrino";
+
+/* don't refresh sat finder */
+"never" = "nigdy";
+
+/* Repeated */
+"Never" = "Nigdy";
+
+/* Title of cell to add a new bookmark */
+"New Bookmark" = "Nowa Zakładka";
+
+/* No comment provided by engineer. */
+"New Connection" = "Nowe połączenie";
+
+/* No comment provided by engineer. */
+"New Timer" = "Nowy Timer";
+
+/* No comment provided by engineer. */
+"Next" = "Następny";
+
+/* Name of night theme */
+"Night" = "Noc";
+
+/* No comment provided by engineer. */
+"No" = "Nie";
+
+/* No comment provided by engineer. */
+"no authentication" = "bez uwierzytelniania";
+
+/* Placeholder if no data has been received yet. */
+"No Data…" = "Brak Danych…";
+
+/* Placeholder text in Now/Next-ServiceList if no EPG data present */
+"No EPG" = "Brak EPG";
+
+/* Title of message when trying to select next/previous event by swiping but cache did not return results. */
+"No events found" = "Nie znaleziono żadnych wydarzeń";
+
+/* No comment provided by engineer. */
+"No similar Events" = "No similar Events";
+
+/* User requested AutoTimer timeframe but none was setup. */
+"No timeframe given." = "Nie podano przedziału czasowego.";
+
+/* No comment provided by engineer. */
+"No, Thanks" = "Nie, Dzięki";
+
+/* No comment provided by engineer. */
+"None" = "Żaden";
+
+/* Message type */
+"Normal" = "Normalny";
+
+/* No comment provided by engineer. */
+"not encrypted" = "nie zaszyfrowane";
+
+/* After Event */
+"Nothing" = "Nic";
+
+/* No comment provided by engineer. */
+"Nothing playing." = "Nic nie gra.";
+
+/* MultiEPG change to current hour */
+"Now" = "Teraz";
+
+/* No comment provided by engineer. */
+"Now Playing" = "Odtwarzane";
+
+/* Toggle to enable showing now/next in servicelist if available. */
+"Now/Next in Servicelist" = "Teraz/Następny na liście serwisów";
+
+/* No comment provided by engineer. */
+"OSD" = "OSD";
+
+/* Repeated */
+"Other" = "Inne";
+
+/* Title of Package Manager in Other List
+   Title of PackageManagerListController */
+"Package Manager" = "Menadżer Pakietów";
+
+/* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
+"Page not found.\nPlugin not installed?" = "Strona nie znaleziona.\nBrakujący Plugin?";
+
+/* Title of percentage section of SatFinder */
+"Percentage" = "Procentaż";
+
+/* No comment provided by engineer. */
+"Play" = "Odtwarzaj";
+
+/* No comment provided by engineer. */
+"Play/Pause" = "Odtwarzaj/Pauza";
+
+/* TabBar Title of CurrentViewController */
+"Playing" = "Odtwarzanie";
+
+/* Used in MediaPlayer, append track to playlist and start playback */
+"Playing immediately" = "Odtwarzanie od razu";
+
+/* Title of PlayListController */
+"Playlist" = "Playlista";
+
+/* Playlist was saved in MediaPlayer */
+"Playlist saved successfully." = "Playlista zapisana z powodzeniem.";
+
+/* New MediaPlayer playlist was loaded */
+"Playlist was loaded successfully." = "Playlist was loaded successfully.";
+
+/* No comment provided by engineer. */
+"Please provide a valid timeout interval." = "Proszę podać prawidłowy czas oczekiwania.";
+
+/* No comment provided by engineer. */
+"Power" = "Zasilanie";
+
+/* No comment provided by engineer. */
+"Prefer Alternatives" = "Preferuj Alternatywy";
+
+/* Timer type */
+"Prepared" = "Przygotowane";
+
+/* No comment provided by engineer. */
+"Previous" = "Poprzednie";
+
+/* MultiEPG change to 20:00 */
+"Primetime" = "Pasmo Programowe";
+
+/* Provider button in bouquet list */
+"Provider" = "Dostawca";
+
+/* Pull down to refresh status */
+"Pull down to refresh..." = "Pociągnij w dół, aby odświeżyć...";
+
+/* Section title for In-App-Purchases in ConfigList */
+"Purchase" = "Kup";
+
+/* In-App-Purchase was completed successfully */
+"Purchase completed" = "Transakcja zakończona";
+
+/* Message type */
+"Question" = "Pytanie";
+
+/* Radio switch button */
+"Radio" = "Radio";
+
+/* Title of radio mode of BouquetListController */
+"Radio Bouquets" = "Bukiety Radio";
+
+/* Title of Radio mode of ServiceListController */
+"Radio Services" = "Serwisy Radio";
+
+/* No comment provided by engineer. */
+"Rate %@" = "Ocena %@";
+
+/* Confirmation dialog title */
+"Really %@?" = "Naprawdę %@?";
+
+/* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
+"Really add all items in this folder?" = "Naprawdę dodać wszystkie rzeczy do tego folderu?";
+
+/* used in confirmation dialog: really reboot? */
+"reboot" = "restart";
+
+/* No comment provided by engineer. */
+"Reboot" = "Restart";
+
+/* User interaction with TimerList failed because index could not be retrieved. */
+"Received invalid row (%d, %d) which was mapped to index %d of %d. Please reload this table and try again." = "Otrzymano niepoprawny rząd (%1$d, %2$d) który został zmapowany do indeksu %3$d z %4$d. Przeładuj i spróbuj ponownie.";
+
+/* Generic Placeholder for system-supplied error (and possibly success) messages */
+"Received response: %@." = "Otrzymano odpowiedź: %@.";
+
+/* Cell title with Receiver model in About View */
+"Receiver model" = "Model Odbiornika";
+
+/* No comment provided by engineer. */
+"Record" = "Nagraj";
+
+/* Explaination of Movie List in Other List */
+"Recorded Movies" = "Nagrane Filmy";
+
+/* Title of Location List in Other List */
+"Recording Locations" = "Lokalizacja Nagrań";
+
+/* Title of MovieSplitViewController */
+"Recordings" = "Nagrania";
+
+/* No comment provided by engineer. */
+"Refresh" = "Odśwież";
+
+/* used in confirmation dialog: really refresh epg? */
+"refresh EPG" = "odśwież EPG";
+
+/* Release to refresh status */
+"Release to refresh..." = "Puść, aby odświeżyć...";
+
+/* No comment provided by engineer. */
+"Remind me later" = "Przypomnij mi później";
+
+/* No comment provided by engineer. */
+"Remote Box Type" = "Typ Zdalnego Boxa";
+
+/* Title of RCEmulatorController */
+"Remote Control" = "Pilot";
+
+/* No comment provided by engineer. */
+"Remote Host" = "Zdalny Host";
+
+/* No comment provided by engineer. */
+"Remote host unreachable." = "Zdalny host nieosiągalny.";
+
+/* No comment provided by engineer. */
+"Removing track failed" = "Usuwanie utworu nie powiodło się";
+
+/* Default title of SimpleRepeatedViewController */
+"Repeated" = "Powtarzanie";
+
+/* Cell Label of repeat count in Neutrino */
+"Repetitions" = "Powtórki";
+
+/* used in confirmation dialog: really restart? */
+"restart" = "restart";
+
+/* No comment provided by engineer. */
+"Restart" = "Restart";
+
+/* In-App-Purchase were restored successfully */
+"Restore completed" = "Przywracanie zakończone";
+
+/* Restore previous purchases in config list */
+"Restore Purchases" = "Przywróć zakupy";
+
+/* Timer type */
+"Running" = "Trwające";
+
+/* Weekday */
+"Sat" = "Sob";
+
+/* No comment provided by engineer. */
+"Saturday" = "Sobota";
+
+/* Save button/action in MediaPlayer */
+"Save" = "Zapisz";
+
+/* No comment provided by engineer. */
+"Screenshot" = "Screenshot";
+
+/* Button initiating autoconfiguration. */
+"Search" = "Szukaj";
+
+/* Start AutoConfiguration from ConfigListController */
+"Search Connections" = "Połączenia Wyszukiwania";
+
+/* Title of Event Search in Other List */
+"Search EPG" = "Szukaj EPG";
+
+/* Explaination of Event Search in Other List */
+"Search EPG for event titles" = "Szukaj EPG po nazwach wydarzeń";
+
+/* Default Title of EventSearchListController */
+"Search Events" = "Szukaj Wydarzenia";
+
+/* Default title of SearchHistoryLengthEditorController
+   Label of cell in config which gives search history length */
+"Search History Length" = "Długość Historii Wyszukiwania";
+
+/* Label of Progress HUD during AutoConfiguration */
+"Searching…" = "Wyszukiwanie…";
+
+/* Default title of ConnectionListController */
+"Select Connection" = "Wybierz Połączenie";
+
+/* No comment provided by engineer. */
+"Select Service" = "Wybierz Serwis";
+
+/* No comment provided by engineer. */
+"Select Tags" = "Wybierz Tagi";
+
+/* Title of ServiceZapListController */
+"Select type of zap" = "Wybierz typ zap'u";
+
+/* No comment provided by engineer. */
+"Send" = "Wyślij";
+
+/* Explaination of Message View in Other List */
+"Send short Messages" = "Wyślij krótkie wiadomości";
+
+/* No comment provided by engineer. */
+"Sending command failed" = "Wysyłanie komendy nie powiodło się";
+
+/* Toggle to enable sections in event lists */
+"Separate events by day" = "Podziel wydarzenia na dni";
+
+/* No comment provided by engineer. */
+"Service" = "Serwis";
+
+/* Service List (former Multi EPG) Button title */
+"Service List" = "Lista Serwisów";
+
+/* Title of ServiceListController */
+"Services" = "Serwisy";
+
+/* Title of Settings in Other List */
+"Settings" = "Ustawienia";
+
+/* Explaination of EPGRefresh in Other List */
+"Settings of EPGRefresh-Plugin" = "Ustawienia pluginu EPGRefresh";
+
+/* No comment provided by engineer. */
+"Share" = "Podziel się";
+
+/* show welcome screen (help) */
+"Show Help" = "Pokaż Pomoc";
+
+/* Explaination of Location List in Other List */
+"Show recording locations" = "Pokaż lokalizacje nagrań";
+
+/* Shuffle button in MediaPlayer */
+"Shuffle" = "Losuj";
+
+/* Label of Progress HUD in MediaPlayer when shuffling playlist */
+"Shuffling Playlist" = "Losowanie Playlisty";
+
+/* used in confirmation dialog: really shutdown? */
+"shutdown" = "wyłącz";
+
+/* Toggle Shutdown/Standby of SleepTimer */
+"Shutdown" = "Wyłącz";
+
+/* Title of SignalViewController */
+"Signal" = "Sygnał";
+
+/* Title of Signal Finder in Other List */
+"Signal Finder" = "Szukaj Sygnału";
+
+/* No comment provided by engineer. */
+"Similar Events" = "Podobne Wydarzenia";
+
+/* No comment provided by engineer. */
+"Simple Remote" = "Prosty Pilot";
+
+/* Toggle to enable \"single bouquet\" mode (available in Enigma2 and only configurable on iPhone/iPod Touch) */
+"Single Bouquet" = "Pojedynczy Bukiet";
+
+/* No comment provided by engineer. */
+"Size" = "Rozmiar";
+
+/* Default title of SleepTimerViewController
+   Title of Sleep Timer in Other List */
+"Sleep Timer" = "Czas Uśpienia";
+
+/* Text of HUD when sleep timer was disabled successfully */
+"Sleep Timer disabled" = "Czas Uśpienia wyłączony";
+
+/* Text of HUD when sleep timer was set successfully */
+"Sleep Timer set" = "Czas Uśpienia ustawiony";
+
+/* Signal to Noise Ratio (in Percent) */
+"SNR" = "SNR";
+
+/* Sort (movies) alphabetically */
+"Sort A-Z" = "Sortuj A-Z";
+
+/* Sort (movies) by time */
+"Sort by time" = "Sortuj według czasu";
+
+/* Standby. Either as AfterEvent action or Button in Controls. */
+"Standby" = "Standby";
+
+/* No comment provided by engineer. */
+"Stop" = "Stop";
+
+/* No comment provided by engineer. */
+"Success" = "Powodzenie";
+
+/* Weekday */
+"Sun" = "Nie";
+
+/* No comment provided by engineer. */
+"Sunday" = "Niedziela";
+
+/* No comment provided by engineer. */
+"SVDRP" = "SVDRP";
+
+/* No comment provided by engineer. */
+"Tags" = "Tagi";
+
+/* No comment provided by engineer. */
+"Text" = "Tekst";
+
+/* No comment provided by engineer. */
+"The match attribute is mandatory." = "Atrybut dopasowania jest wymagany.";
+
+/* Configuration item to choose theme
+   Title for theme selection */
+"Theme" = "Skórka";
+
+/* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
+"This can take a while." = "Może to chwilę potrwać.";
+
+/* Weekday */
+"Thu" = "Czw";
+
+/* No comment provided by engineer. */
+"Thursday" = "Czwartek";
+
+/* User requested AutoTimer timeframe but before if equal to or earlier than end. */
+"Timeframe has to be ascending." = "Okres czasu musi być roznący.";
+
+/* No comment provided by engineer. */
+"Timeout" = "Minął czas oczekiwania";
+
+/* Default title of TimerViewController */
+"Timer" = "Timer";
+
+/* Text of HUD when timer was added successfully */
+"Timer added" = "Dodano Timer";
+
+/* Text of HUD when timer was changed successfully */
+"Timer changed" = "Zmieniono Timer";
+
+/* Text of HUD when timer was removed successfully */
+"Timer deleted" = "Usunięto Timer";
+
+/* Open Editor for new Timer */
+"Timer Editor" = "Edycja Timer'a";
+
+/* Title of TimerListController */
+"Timers" = "Timery";
+
+/* Text of HUD when multiple timer were removed successfully */
+"Timers deleted" = "Timery usunięte";
+
+/* No comment provided by engineer. */
+"Title" = "Tytuł";
+
+/* Message of Alert suggesting autoconfiguration. */
+"To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?" = "Dla uproszczenia konfiguracji, ta aplikacja może spróbować znaleźć twój STB używając znanych domyślnych konfiguracji.\nSpróbować zrobić to teraz?";
+
+/* No comment provided by engineer. */
+"Today" = "Dzisiaj";
+
+/* No comment provided by engineer. */
+"Tomorrow" = "Jutro";
+
+/* Weekday */
+"Tue" = "Wto";
+
+/* No comment provided by engineer. */
+"Tuesday" = "Wtorek";
+
+/* Title of section in About View containing tuner information (if any) */
+"Tuners" = "Tunery";
+
+/* TV switch button */
+"TV" = "TV";
+
+/* No comment provided by engineer. */
+"Type" = "Typ";
+
+/* Creating a bookmark has failed */
+"Unable to add bookmark: %@" = "Nie można dodać zakładki: %@";
+
+/* No comment provided by engineer. */
+"Unable to add timer: Service not found." = "Nie można dodać Timera: Serwis nie znaleziony.";
+
+/* Connection failed due to improper authentication */
+"Unable to authenticate. Wrong password?" = "Nie można uwierzytelnić. Złe hasło?";
+
+/* No comment provided by engineer. */
+"Unable to compile SQL-Query (Error-Code %d)." = "Nie można skompilować zapytania-SQL (Kod-Błędu %d).";
+
+/* No comment provided by engineer. */
+"Unable to connect to host.\nPlease restart the application." = "Nie można połączyć się z hostem.\nZrestartuj aplikację.";
+
+/* Unable to initiate connection. */
+"Unable to connect to remote host." = "Nie można połączyć się ze zdalnym hostem.";
+
+/* No comment provided by engineer. */
+"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Nie można określić wyniku, prosimy zaktualizować plugin WebInterface jeśli masz zamiar korzystać z tej funkcji";
+
+/* Zip-Extraction failed */
+"Unable to extract zip-file!" = "Nie można wypakować pliku zip!";
+
+/* Error message: Autoconfiguration was unable to find a host in this network. */
+"Unable to find valid connection data." = "Nie można znaleźć ważnego połączenia danych.";
+
+/* Failed to retrieve or generate URL of remote stream */
+"Unable to generate stream URL." = "Nie można wygenerować Streaming-URL.";
+
+/* No comment provided by engineer. */
+"Unable to map button to keycode!" = "Nie można zmapować przycisku!";
+
+/* No comment provided by engineer. */
+"Unable to retrieve tag list." = "Nie można odtworzyć listy tagów.";
+
+/* No comment provided by engineer. */
+"Unable to start playback" = "Unable to start playback";
+
+/* No comment provided by engineer. */
+"Unknown" = "Nieznany";
+
+/* Data connection failed for unknown reason. */
+"Unknown connection error occured." = "Wystąpił nieznany błąd połączenia.";
+
+/* Remote host did return error code but no specific message. */
+"Unknown Error." = "UNieznany Błąd.";
+
+/* Data parsing failed for unknown reason. */
+"Unknown parsing error occured." = "Wystąpił nieznany błąd analizy.";
+
+/* Unable to find service name for service id */
+"Unknown Service (%@)" = "Nieznany Serwis (%@)";
+
+/* Label text in AutoConfiguration if host is unreachable */
+"unreachable" = "niedostępny";
+
+/* No comment provided by engineer. */
+"Use SSL" = "Użyj SSL";
+
+/* Title of section in About View containing versioning information */
+"Version Information" = "Informacje o Wersji";
+
+/* No comment provided by engineer. */
+"Vibrate in RC" = "Wibruj w Pilocie";
+
+/* No comment provided by engineer. */
+"Video" = "Wideo";
+
+/* No comment provided by engineer. */
+"Volume" = "Głośność";
+
+/* Timer type */
+"Waiting" = "Oczekiwanie";
+
+/* Message type */
+"Warning" = "Ostrzeżenie";
+
+/* Weekday */
+"Wed" = "Śro";
+
+/* No comment provided by engineer. */
+"Wednesday" = "Środa";
+
+/* Repeated */
+"Weekdays" = "Dni Tygodnia";
+
+/* Repeated */
+"Weekly" = "Tygodniowo";
+
+/* Default sharing string for movies */
+"What's your opinion on \"%@\"?" = "Jaka jest Twoja opinia o \"%@\"?";
+
+/* Label of Progress HUD in ConfigList when waiting for the AppStore */
+"Working…" = "Pracuję…";
+
+/* No comment provided by engineer. */
+"Year" = "Rok";
+
+/* No comment provided by engineer. */
+"Yes" = "Tak";
+
+/* Message type */
+"Yes/No" = "Tak/Nie";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Wczoraj";
+
+/* Message explaining what will happen on import */
+"You are about to import data into this application. All existing settings will be lost!" = "Masz zamiar zaimportować dane do tej aplikacji. Wszystkie aktualne ustawienia zostaną stracone!";
+
+/* No comment provided by engineer. */
+"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "Używasz wersji %1$@ pluginu WebInterface.\nDla pełnej funkcjalności sugerowana jest aktualizacja WebInterfacce'u do wersji %2$@.";
+
+/* No comment provided by engineer. */
+"You have reached either the end or the beginning of the selected service list." = "Został osiągnięty albo koniec lub początek listy wybranych serwisów.";
+
+/* No comment provided by engineer. */
+"You have reached either the end or the beginning of your movie list." = "Został osiągnięty albo koniec lub początek listy filmów.";
+
+/* No filename entered when trying to save MediaPlayer playlist */
+"You have to enter a filename to save the playlist" = "Musisz wpisać nazwę pliku, aby zapisać playliste";
+
+/* User requested automated EPG refresh but no timespan given. */
+"You have to provide a timespan to refresh automatically." = "Musisz podać okres czasu, aby odświeżać automatycznie.";
+
+/* User tried to leave config view without any host set up. */
+"You need to configure this application before you can use it." = "Musisz skonfigurować tą aplikację, aby móc jej uzywać.";
+
+/* No comment provided by engineer. */
+"Zap" = "Zap";
+
+/* No comment provided by engineer. */
+"Zap on receiver" = "Zap w tunerze";
+

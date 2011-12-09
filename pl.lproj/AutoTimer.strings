@@ -1,0 +1,202 @@
+/* Placeholder for maxdays field in AutoTimer settings (add timer for days on the next X days) */
+"<days>" = "<days>";
+
+/* Placeholder of AutoTimer Title field */
+"<enter title>" = "<wpisz tytu≥>";
+
+/* Placeholder of Textfield in Filter Editor */
+"<filter text>" = "<filtruj tekst>";
+
+/* Placeholder for interval field in AutoTimer settings (time in hours between automated polling) */
+"<hours>" = "<godziny>";
+
+/* Placeholder of AutoTimer Maxduration field */
+"<maximum duration>" = "<maksymalny czas trwania>";
+
+/* Placeholder of AutoTimer Match field */
+"<text to find in title>" = "<tekest do znalezienia w tytule>";
+
+/* Label for cell 'addsimilar_on_conflict' */
+"Add similar timer on conflict" = "Dodaj podobny Timer podczas konfliktu";
+
+/* Label for cell 'disabled_on_conflict' */
+"Add timer disabled on conflict" = "Nie dodawaj Timera podczas konfliktu";
+
+/* Label for cell 'maxdays_in_future' */
+"Add timer for the next X days" = "Dodaj Timer na nastÍpne X dni";
+
+/* timeframe after */
+"After: %@" = "Po: %@";
+
+/* Avoid Duplicate Description 2 (timer on all services) */
+"All Services" = "Wszystkie Serwisy";
+
+/* Type of timers to modify: All timers */
+"All timers" = "Wszystkie Timery";
+
+/* User requested autopoll but interval is equal to or less than 0. */
+"Automated Search for events requires a valid interval to be set!" = "Automatyczne Wyszukiwanie wydarzeÒ wymaga ustawionego waønego interwa≥u!";
+
+/* Open Editor for new AutoTimer */
+"AutoTimer Editor" = "Edycja AutoTimer";
+
+/* Type of timers to modify: Only AutoTimers created during this session */
+"AutoTimers" = "AutoTimery";
+
+/* timeframe before */
+"Before: %@" = "Przed: %@";
+
+/* section header for bouquet restriction */
+"Bouquets" = "Bukiety";
+
+/* Editor Type: Regular Editor */
+"Classic" = "Klasyczny";
+
+/* Text for cell with default editor for new autotimers on the receiver */
+"Editor for new Timers: %@" = "Edytor dla nowych TimerÛw: %@";
+
+/* Set Endtime for Zaptimers */
+"Endtime if Justplay" = ""Czas zakończenia gdy Tylko Odtwarzaj"";
+
+/* Error message if AutoTimer could not be added. */
+"Error adding AutoTimer: %@" = "B≥πd podczas tworzenia AutoTimer'a: %@";
+
+/* Error message if AutoTimer could not be edited. */
+"Error editing AutoTimer: %@" = "B≥πd edycji AutoTimer'a: %@";
+
+/* Search type: exact event title */
+"Exact" = "Dok≥adny";
+
+/* Exclude Filter */
+"Exclude" = "Wyklucz";
+
+/* Force parsing is finished, this could have been either an error or a success */
+"Finished parsing EPG" = "ZakoÒczono analizÍ EPG";
+
+/* timespan from */
+"From: %@" = "Od: %@";
+
+/* Label for cell 'try_guessing' */
+"Guess event by begin/end" = "SprÛbuj odgadnπÊ wydarzenie po starcie/koÒcu";
+
+/* Search type: partial in event description */
+"in Description" = "w Opisie";
+
+/* Include Filter */
+"Include" = "UwzglÍdnij";
+
+/* Title of timer modification behavior selection. */
+"Modify Timers" = "Modyfikuje Timery";
+
+/* Text for cell with timer modification behavior */
+"Modify timers: %@" = "Modyfikuj Timery: %@";
+
+/* weekday filter */
+"Mon-Fri" = "Pon-Piπ";
+
+/* Text for cell which allows to add a new AutoTimer */
+"New AutoTimer" = "Nowy AutoTimer";
+
+/* add new bouquet filter */
+"New Bouquet" = "Nowy Bukiet";
+
+/* add new filter */
+"New Filter" = "Nowy Filtr";
+
+/* add new service filter */
+"New Service" = "Nowy Serwis";
+
+/* Avoid Duplicate Description disabled */
+"No" = "Nie";
+
+/* Type of timers to modify: None */
+"None" = "Øaden";
+
+/* Label for cell 'notifsimilar' */
+"Notification for similar timers" = "Powiadomienie dla podobnych TimerÛw";
+
+/* Label for cell 'notifconflict' */
+"Notification on conflicts" = "Powiadamiaj przy konflikcie";
+
+/* Start forced parsing of EPG */
+"Parse EPG" = "Analizuj EPG";
+
+/* Search type: partial event title */
+"Partial" = "CzÍúciowy";
+
+/* Label for cell 'autopoll' */
+"Poll automatically" = "Automatyczne Poll";
+
+/* Label for cell 'interval' */
+"Poll interval (in h)" = "Interwa≥ Poll (w godz.)";
+
+/* Avoid Duplicate Description 1 (timers on same service) */
+"Same Service" = "Taki sam Serwis";
+
+/* weekday filter */
+"Sat-Sun" = "Sob-Nie";
+
+/* Title of search type selector. */
+"Search Type" = "Typ Szukania";
+
+/* searchType attribute of autotimer. Can be partial, exact or in description.. */
+"Search Type: %@" = "Typ Szukania: %@";
+
+/* searchForDuplicateDescription attribute of autotimer. Defines where avoidDuplicateDescription searches for 'uniqueness'. */
+"Search unique Description in %@" = "Unikalny Opis Szukania %@";
+
+/* section header for service restriction */
+"Services" = "Serwisy";
+
+/* Default title of AutoTimerSettingsViewController
+   Open Settings dialog */
+"Settings" = "Ustawienia";
+
+/* Label for cell 'show_in_extensionsmenu' */
+"Show in extension menu" = "Pokaø w rozszerzonym menu";
+
+/* Label for cell 'fastscan' */
+"Support \"Fast-Scan\"" = "Wsparcie \"Fast-Scan\"";
+
+/* section header for timeframe */
+"Timeframe" = "Okres Czasu";
+
+/* Title of (new) timer editor selector. */
+"Timer Editor" = "Edytor Timera";
+
+/* Avoid Duplicate Description 3 (timers on all services and recordings) */
+"Timers/Recordings" = "Timery/Nagrania";
+
+/* section header for timespan */
+"Timespan" = "Przedzia≥ Czasowy";
+
+/* Search For Duplicates: in Title */
+"Title" = "Tytu≥";
+
+/* Search For Duplicates: in Title and Short+Extended Description */
+"Title and all descriptions" = "Tytu≥ i wszystkie opisy";
+
+/* Search For Duplicates: in Title and Short Description */
+"Title and short description" = "Tytu≥ i wszystkie opisy";
+
+/* timespan to */
+"To: %@" = "Do: %@";
+
+/* Remote host did not return a valid result, probably because the version of the installed plugin is too old. */
+"Unable to complete request.\nPlugin too old?" = "Nie moøna wykonaÊ øπdania.\nPrzestarza≥y Plugin?";
+
+/* Title of avoid duplicate description selector. */
+"Unique Description" = "Unikalny Opis";
+
+/* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings. */
+"Unique Description: %@" = "Unikalny Opis: %@";
+
+/* Title of 'search for duplicate description' selector. */
+"Unique in" = "Unikalny";
+
+/* option (e.g. timespan or timeframe) unset */
+"unset" = "pusty";
+
+/* Editor Type: Wizard */
+"Wizard" = "Kreator";
+

@@ -1,0 +1,30 @@
+/* Abort pending commit */
+"Abort" = "Przerwij";
+
+/* All available Packages */
+"All" = "Wszystko";
+
+/* Commit changes made in list */
+"Commit" = "Potwierdü";
+
+/* Installed Packages */
+"Installed" = "Zainstalowane";
+
+/* Header of package list when installing packages. */
+"Installed Packages:" = "Zainstalowane Pakiety:";
+
+/* Title of alert when the user taps 'commit' but did not select any packages. */
+"No packages selected" = "Nie naznaczono øadnego pakietu";
+
+/* Header of package list when removing packages. */
+"Removed Packages:" = "UsuniÍte Pakiety:";
+
+/* Update remote list of packages */
+"Update" = "Aktualizuj";
+
+/* Upgradable Packages */
+"Upgradable" = "Aktualizowalny";
+
+/* Upgrade all available packages */
+"Upgrade" = "Aktualizuj";
+

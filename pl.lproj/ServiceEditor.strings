@@ -1,0 +1,72 @@
+/* Add new alternative service to currently selected service */
+"Add Alternative" = "Dodaj Alternatywny";
+
+/* Add new marker before this position */
+"Add Marker" = "Dodaj Znacznik";
+
+/* Add this service to another bouquet */
+"Add to Bouquet" = "Dodaj do Bukietu";
+
+/* Text of HUD when a service was added as alternative to the currently selected one */
+"Alternative added" = "Alternatywa dodana";
+
+/* Text of HUD when all alternatives were removed for a services */
+"Alternatives deleted" = "Wykryto Alrternatywy";
+
+/* Delete selected service */
+"Delete" = "Usuñ";
+
+/* Button removing service alternatives */
+"Delete all" = "Usuñ wszystko";
+
+/* Title of prompt requesting name for new bouquet */
+"Enter name of bouquet" = "Wpisz nazwê bukietu";
+
+/* Title of prompt requesting new name for an existing service */
+"Enter new name" = "Wpisz nazwê";
+
+/* Title of prompt requesting new name for an existing bouquet */
+"Enter new name of bouquet" = "Wpisz now¹ nazwê bukietu";
+
+/* Title of prompt requesting name for a marker the user requested */
+"Enter title for marker" = "Wpisz nazwê znacznika";
+
+/* Title of cell to add a bouquet */
+"New Bouquet" = "Nowy Bukiet";
+
+/* Open selected service */
+"Open" = "Otwórz";
+
+/* Undo selection made by the user. */
+"Remove selection" = "Usuñ zaznaczone";
+
+/* Rename currently selected service */
+"Rename" = "Zmieñ Nazwê";
+
+/* Text of HUD when one or multiple services were added to a bouquet */
+"Service(s) added" = "Dodano Serwis(y)";
+
+/* Show alternatives for selected service */
+"Show Alternatives" = "Poka¿ Alternatywy";
+
+/* Creating a marker has failed */
+"Unable to add marker: %@" = "Nie mo¿na dodaæ znacznika: %@";
+
+/* Adding an alternative to a service failed */
+"Unable to add service %@ to alternative %@: %@" = "Nie mo¿na dodaæ serwisu %1$@ do alternatywy %2$@: %3$@";
+
+/* Adding a service to a bouquet failed */
+"Unable to add service(s) to bouquet %@: %@" = "Nie mo¿na dodaæ serwisu(ów) do bukietu %1$@: %2$@";
+
+/* Creating a bouquet has failed */
+"Unable to create bouquet: %@" = "Nie mo¿na utworzyæ bukietu: %@";
+
+/* Removing alternatives failed */
+"Unable to remove alternatives: %@" = "Nie mo¿na usun¹æ alternatyw: %@";
+
+/* Renaming a bouquet has failed */
+"Unable to rename bouquet: %@" = "Nie mo¿na zmieniæ nazwê bukietu: %@";
+
+/* Renaming a service has failed */
+"Unable to rename service: %@" = "Nie mo¿na zmieniæ nazwy serwisu: %@";
+

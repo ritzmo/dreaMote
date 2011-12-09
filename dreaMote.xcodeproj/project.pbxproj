@@ -1911,6 +1911,11 @@
 		DADDDDFF146AA75D00BE035E /* BaseTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseTableViewCell.m; sourceTree = "<group>"; };
 		DADDDE03146AC7C300BE035E /* ColoredAccessoryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColoredAccessoryView.h; sourceTree = "<group>"; };
 		DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColoredAccessoryView.m; sourceTree = "<group>"; };
+		DAEC23A91492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/AutoTimer.strings; sourceTree = "<group>"; };
+		DAEC23AA1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/EPGRefresh.strings; sourceTree = "<group>"; };
+		DAEC23AB1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DAEC23AC1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/PackageManager.strings; sourceTree = "<group>"; };
+		DAEC23AD1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAFA4BFF144ACF6B005DE541 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
@@ -3494,6 +3499,7 @@
 				nl,
 				vi,
 				zh_CN,
+				pl,
 			);
 			mainGroup = DAC8BE4013B1FF9200CA00D9;
 			productRefGroup = DAC8BE4C13B1FF9200CA00D9 /* Products */;
@@ -4689,6 +4695,7 @@
 			children = (
 				DAAB66EB1468473A0099DBA9 /* en */,
 				DAAB66ED146847440099DBA9 /* de */,
+				DAEC23AD1492BB4F00A94824 /* pl */,
 			);
 			name = ServiceEditor.strings;
 			sourceTree = "<group>";
@@ -4698,6 +4705,7 @@
 			children = (
 				DAB85AF7145864B40089A382 /* en */,
 				DAB85AFC145864BD0089A382 /* de */,
+				DAEC23AC1492BB4F00A94824 /* pl */,
 			);
 			name = PackageManager.strings;
 			sourceTree = "<group>";
@@ -4707,6 +4715,7 @@
 			children = (
 				DAC8C4EE13B2034100CA00D9 /* en */,
 				DAC8C4FC13B2034B00CA00D9 /* de */,
+				DAEC23A91492BB4F00A94824 /* pl */,
 			);
 			name = AutoTimer.strings;
 			sourceTree = "<group>";
@@ -4716,6 +4725,7 @@
 			children = (
 				DAC8C4F013B2034100CA00D9 /* en */,
 				DAC8C4FD13B2034B00CA00D9 /* de */,
+				DAEC23AA1492BB4F00A94824 /* pl */,
 			);
 			name = EPGRefresh.strings;
 			sourceTree = "<group>";
@@ -4725,6 +4735,7 @@
 			children = (
 				DAC8C4F213B2034100CA00D9 /* en */,
 				DAC8C4FE13B2034C00CA00D9 /* de */,
+				DAEC23AB1492BB4F00A94824 /* pl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
