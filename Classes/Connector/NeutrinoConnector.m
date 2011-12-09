@@ -23,11 +23,12 @@
 #import <Delegates/TimerSourceDelegate.h>
 #import <Delegates/VolumeSourceDelegate.h>
 
-#import <XMLReader/BaseXMLReader.h>
 #import <XMLReader/Neutrino/EventXMLReader.h>
 #import <XMLReader/Neutrino/ServiceXMLReader.h>
 
-#import <CXMLElement.h>
+#import <libxml/parser.h>
+#import <libxml/tree.h>
+#import <libxml/xpath.h>
 
 #import <ViewController/NeutrinoRCEmulatorController.h>
 
@@ -353,11 +354,22 @@ enum neutrinoMessageTypes {
 		return nil;
 	}
 
+	// get string encoding for getting services through xml
+	CFStringEncoding cfenc = CFStringConvertNSStringEncodingToEncoding(NSISOLatin1StringEncoding);
+	CFStringRef cfencstr = CFStringConvertEncodingToIANACharSetName(cfenc);
+	CFIndex length = CFStringGetLength(cfencstr);
+	char *enc = (char *)malloc(length + 1);
+	const BOOL conversionResult = enc == NULL ? NO : CFStringGetCString(cfencstr, enc, length, kCFStringEncodingUTF8);
+	if(!conversionResult)
+	{
+		free(enc);
+		enc = NULL; // try no encoding
+	}
+
 	// Parse
 	const NSString *baseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 	const NSArray *timerStringList = [baseString componentsSeparatedByString: @"\n"];
 	const NSMutableDictionary *serviceMap = [NSMutableDictionary dictionary];
-	const BaseXMLReader *xmlReader = nil;
 	for(NSString *timerString in timerStringList)
 	{
 		// eventID eventType eventRepeat repcount announceTime alarmTime stopTime data
@@ -412,25 +424,41 @@ enum neutrinoMessageTypes {
 
 			// request epg for channel id with no events (to retrieve name)
 			myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&max=0", [sref urlencode]] relativeToURL:_baseAddress];
-			if(xmlReader == nil)
-				xmlReader = [[BaseXMLReader alloc] init];
-			xmlReader.encoding = NSISOLatin1StringEncoding;
-			CXMLDocument *dom = [xmlReader parseXMLFileAtURL:myURI parseError:&error];
-
-			const NSArray *resultNodes = nil;
-			if(error == nil)
-				resultNodes = [dom nodesForXPath:@"/epglist/channel_name" error:&error];
-
+			NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+														  returningResponse:nil
+																	  error:&error];
+			xmlDocPtr doc = NULL;
+			xmlXPathContextPtr xpathCtx = NULL;
+			xmlXPathObjectPtr xpathObj = NULL;
 			if(error == nil)
 			{
-				for(CXMLElement *resultElement in resultNodes)
-				{
-					NSString *stringValue = [[resultElement stringValue] copy];
-					service.sname = stringValue;
-					break;
-				}
+				doc = xmlReadMemory([data bytes], [data length], "", enc, XML_PARSE_RECOVER);
 			}
-			error = nil;
+			if(doc != NULL) do
+			{
+				xmlNodeSetPtr nodes;
+
+				xpathCtx = xmlXPathNewContext(doc);
+				if(!xpathCtx) break;
+
+				// get state
+				xpathObj = xmlXPathEvalExpression((xmlChar *)"/epglist/channel_name", xpathCtx);
+				if(!xpathObj) break;
+
+				nodes = xpathObj->nodesetval;
+				if(!nodes) break;
+
+				if(nodes->nodeNr > 0)
+				{
+					xmlChar *stringVal = xmlNodeListGetString(doc, nodes->nodeTab[0]->children, 1);
+					service.sname = [NSString stringWithCString:(const char *)stringVal encoding:NSISOLatin1StringEncoding];
+					xmlFree(stringVal);
+				}
+			} while(0);
+			xmlXPathFreeObject(xpathObj);
+			xmlXPathFreeContext(xpathCtx);
+			xmlFreeDoc(doc);
+			error = nil; // reset possible error code
 
 			// set invalid name if not found
 			if(service.sname == nil || [service.sname isEqualToString:@""])
@@ -459,6 +487,7 @@ enum neutrinoMessageTypes {
 								   withObject: timer
 								waitUntilDone: NO];
 	}
+	free(enc);
 
 	[self indicateSuccess:delegate];
 	return nil;
