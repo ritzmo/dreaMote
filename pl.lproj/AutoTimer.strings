@@ -56,7 +56,7 @@
 "Editor for new Timers: %@" = "Edytor dla nowych Timerów: %@";
 
 /* Set Endtime for Zaptimers */
-"Endtime if Justplay" = ""Czas zakończenia gdy Tylko Odtwarzaj"";
+"Endtime if Justplay" = "Czas zakończenia gdy Tylko Odtwarzaj";
 
 /* Error message if AutoTimer could not be added. */
 "Error adding AutoTimer: %@" = "Błąd podczas tworzenia AutoTimer'a: %@";
