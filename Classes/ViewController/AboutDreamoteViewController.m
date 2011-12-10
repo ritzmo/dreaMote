@@ -216,15 +216,8 @@
 	[mvc setToRecipients:[NSArray arrayWithObject:@"dreamote@ritzmo.de"]];
 	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@", [currentDevice model], [currentDevice systemVersion], displayName, bundleVersion];
 	[mvc setMessageBody:body isHTML:NO];
-	if([mvc respondsToSelector:@selector(modalTransitionStyle)])
-	{
-		mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-	}
-	UIViewController *parentViewController = self.parentViewController;
-	if(!parentViewController && [self respondsToSelector:@selector(presentingViewController)])
-		parentViewController = self.presentingViewController;
-	[self dismissModalViewControllerAnimated:NO];
-	[parentViewController presentModalViewController:mvc animated:YES];
+	mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+	[self presentModalViewController:mvc animated:YES];
 }
 
 /* rotate with device on ipad, otherwise to portrait */
@@ -375,8 +368,20 @@
 	}
 	NSObject<AboutDreamoteDelegate> *delegate = aboutDelegate; // make sure the pointer stays valid
 	aboutDelegate = nil;
-	[controller dismissModalViewControllerAnimated:YES];
-	controller.mailComposeDelegate = nil;
+
+	UIViewController *parentViewController = self.parentViewController;
+	if([self respondsToSelector:@selector(presentingViewController)])
+	{
+		parentViewController = self.presentingViewController;
+		[self dismissViewControllerAnimated:YES completion:^{
+			[parentViewController dismissModalViewControllerAnimated:YES];
+		}];
+	}
+	else
+	{
+		controller.mailComposeDelegate = nil;
+		[parentViewController dismissModalViewControllerAnimated:YES];
+	}
 
 	if([delegate conformsToProtocol:@protocol(AboutDreamoteDelegate)])
 	{
