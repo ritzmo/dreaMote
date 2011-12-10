@@ -9,7 +9,6 @@
 #import "OtherSplitViewController.h"
 
 #import <ListController/OtherListController.h>
-#import <ViewController/AboutDreamoteViewController.h>
 #import <ViewController/ConfigViewController.h>
 
 @implementation OtherSplitViewController
@@ -34,13 +33,26 @@
 	// Instantiate view controllers
 	OtherListController *olc = [[OtherListController alloc] init];
 	olc.mgSplitViewController = self;
-	UIViewController *vc = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
+	AboutDreamoteViewController *vc = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
+	vc.aboutDelegate = self;
 
 	// Setup navigation controllers and add to split view
 	UIViewController *navController1, *navController2;
 	navController1 = [[UINavigationController alloc] initWithRootViewController:olc];
 	navController2 = [[UINavigationController alloc] initWithRootViewController:vc];
 	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
+}
+
+#pragma mark - AboutDreamoteDelegate
+
+- (void)dismissedAboutDialog
+{
+	// ignore? should never happen :)
+}
+
+- (BOOL)shouldShowDoneButton
+{
+	return NO;
 }
 
 #pragma mark - OtherViewProtocol

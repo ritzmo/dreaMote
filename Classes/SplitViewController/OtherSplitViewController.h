@@ -9,7 +9,8 @@
 #import "AdSupportedSplitViewController.h"
 
 #import <OtherViewProtocol.h>
+#import <ViewController/AboutDreamoteViewController.h>
 
-@interface OtherSplitViewController : AdSupportedSplitViewController<OtherViewProtocol>
+@interface OtherSplitViewController : AdSupportedSplitViewController<AboutDreamoteDelegate, OtherViewProtocol>
 
 @end
