@@ -33,6 +33,8 @@
 	#import "EPGCache.h"
 #endif
 
+#import "SFHFKeychainUtils.h"
+
 // SSKTk
 #import "SSKManager.h"
 
@@ -103,6 +105,30 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	return returnValue;
 }
 
+- (NSString *)uuid
+{
+	NSError *error = nil;
+	NSString *object = [SFHFKeychainUtils getPasswordForUsername:@"uniqueID"
+												  andServiceName:@"freaqueUuid"
+														   error:&error];
+	if(error || !object || [object isEqualToString:@""])
+	{
+		CFUUIDRef cfUuidRef = CFUUIDCreate(kCFAllocatorDefault);
+		CFStringRef cfUuid = CFUUIDCreateString(kCFAllocatorDefault, cfUuidRef);
+		object = [(__bridge NSString *)cfUuid copy];
+		CFRelease(cfUuid);
+		CFRelease(cfUuidRef);
+		[SFHFKeychainUtils storeUsername:@"uniqueID"
+							 andPassword:object
+						  forServiceName:@"freaqueUuid"
+						  updateExisting:YES
+								   error:&error];
+		if(error)
+			NSLog(@"failed to store uuid");
+	}
+	return object;
+}
+
 #pragma mark -
 #pragma mark UIApplicationDelegate
 #pragma mark -
@@ -113,11 +139,13 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 #if !IS_DEBUG()
 	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
 #endif
-	[[SSKManager sharedManager] lookForProducts:[NSDictionary dictionaryWithObjectsAndKeys:
+	SSKManager *sskManager = [SSKManager sharedManager];
+	sskManager.uuidForReview = [self uuid];
+	[sskManager lookForProducts:[NSDictionary dictionaryWithObjectsAndKeys:
 #if IS_FULL()
-												 [NSArray arrayWithObject:kServiceEditorPurchase], @"Non-Consumables", nil]];
+								 [NSArray arrayWithObject:kServiceEditorPurchase], @"Non-Consumables", nil]];
 #else
-												 [NSArray arrayWithObject:kAdFreePurchase], @"Non-Consumables", nil]];
+								 [NSArray arrayWithObject:kAdFreePurchase], @"Non-Consumables", nil]];
 #endif
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
