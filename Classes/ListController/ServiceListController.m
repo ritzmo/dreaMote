@@ -27,7 +27,7 @@
 #import <XMLReader/SaxXMLReader.h>
 
 #import "MBProgressHUD.h"
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 enum serviceListTags
 {
@@ -412,7 +412,7 @@ enum serviceListTags
 	[_tableView addGestureRecognizer:longPressGesture];
 
 #if IS_LITE()
-	if(delegate == nil && [MKStoreManager isFeaturePurchased:kServiceEditorPurchase])
+	if(delegate == nil && [SSKManager isFeaturePurchased:kServiceEditorPurchase])
 #endif
 	{
 		searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 44.0f)];
@@ -626,7 +626,7 @@ enum serviceListTags
 	UIBarButtonItem *firstButton = nil;
 	UIBarButtonItem *secondButton = nil;
 
-	if(delegate == nil && [MKStoreManager isFeaturePurchased:kServiceEditorPurchase])
+	if(delegate == nil && [SSKManager isFeaturePurchased:kServiceEditorPurchase])
 	{
 		const BOOL isIphone = IS_IPHONE();
 		// show on iPhone or on iPad in portrait

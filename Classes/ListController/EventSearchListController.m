@@ -22,7 +22,7 @@
 #import "Insort/NSArray+CWSortedInsert.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 #define kTransitionDuration	0.6
 
@@ -105,7 +105,7 @@
 	self.navigationItem.rightBarButtonItem = barButtonItem;
 
 #if INCLUDE_FEATURE(Ads)
-	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	if(IS_IPHONE() && ![SSKManager isFeaturePurchased:kAdFreePurchase])
 	{
 		[self createAdBannerView];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];

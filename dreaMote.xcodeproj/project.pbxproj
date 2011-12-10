@@ -378,8 +378,6 @@
 		DA681B2413B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
 		DA681B2513B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
 		DA681B2613B4976700232190 /* Setup_Auto.png in Resources */ = {isa = PBXBuildFile; fileRef = DA681B2013B4976700232190 /* Setup_Auto.png */; };
-		DA73A4111463D6E800E6F505 /* MKStoreKitConfigs Full.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA73A4101463D6E800E6F505 /* MKStoreKitConfigs Full.plist */; };
-		DA73A4131463D6F300E6F505 /* MKStoreKitConfigs Lite.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA73A4121463D6F300E6F505 /* MKStoreKitConfigs Lite.plist */; };
 		DA7920E21461ABCF0040615E /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7920CB1461ABCF0040615E /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA7920E31461ABCF0040615E /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7920CB1461ABCF0040615E /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA7920E41461ABCF0040615E /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = DA7920CB1461ABCF0040615E /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -428,24 +426,18 @@
 		DAAAC5E8147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */; };
 		DAAAC5E9147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */; };
 		DAAAC5EA147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */; };
-		DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E51462DA00002CDC31 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAABAA011462DA00002CDC31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E71462DA00002CDC31 /* NSData+Base64.m */; };
-		DAABAA021462DA00002CDC31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E71462DA00002CDC31 /* NSData+Base64.m */; };
-		DAABAA031462DA00002CDC31 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9E71462DA00002CDC31 /* NSData+Base64.m */; };
-		DAABAA071462DA00002CDC31 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */; };
-		DAABAA081462DA00002CDC31 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */; };
-		DAABAA091462DA00002CDC31 /* MKSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */; };
-		DAABAA0A1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
-		DAABAA0B1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
-		DAABAA0C1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */; };
-		DAABAA101462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
-		DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
-		DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F11462DA00002CDC31 /* MKStoreManager.m */; };
-		DAABAA131462DA00002CDC31 /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */; };
-		DAABAA141462DA00002CDC31 /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */; };
-		DAABAA151462DA00002CDC31 /* MKStoreObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */; };
+		DAAAD60A1492DE9E00F27A02 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD6051492DE9E00F27A02 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAAAD60B1492DE9E00F27A02 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD6051492DE9E00F27A02 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAAAD60C1492DE9E00F27A02 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD6051492DE9E00F27A02 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAAAD6131492DEF600F27A02 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD6121492DEF600F27A02 /* NSData+Base64.m */; };
+		DAAAD6141492DEF600F27A02 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD6121492DEF600F27A02 /* NSData+Base64.m */; };
+		DAAAD6151492DEF600F27A02 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD6121492DEF600F27A02 /* NSData+Base64.m */; };
+		DAAAD6201492E7BF00F27A02 /* SSKManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD61A1492E7BF00F27A02 /* SSKManager.m */; };
+		DAAAD6211492E7BF00F27A02 /* SSKManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD61A1492E7BF00F27A02 /* SSKManager.m */; };
+		DAAAD6221492E7BF00F27A02 /* SSKManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD61A1492E7BF00F27A02 /* SSKManager.m */; };
+		DAAAD6231492E7BF00F27A02 /* SSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD61C1492E7BF00F27A02 /* SSKProduct.m */; };
+		DAAAD6241492E7BF00F27A02 /* SSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD61C1492E7BF00F27A02 /* SSKProduct.m */; };
+		DAAAD6251492E7BF00F27A02 /* SSKProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = DAAAD61C1492E7BF00F27A02 /* SSKProduct.m */; };
 		DAABAA291462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAABAA2A1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
 		DAABAA2B1462DBC0002CDC31 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAABAA281462DBC0002CDC31 /* StoreKit.framework */; };
@@ -1394,8 +1386,6 @@
 		DA681B1913B483FB00232190 /* NSNetService+IpString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNetService+IpString.m"; sourceTree = "<group>"; };
 		DA681B1F13B4976700232190 /* Screenshot_Save.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot_Save.png; sourceTree = "<group>"; };
 		DA681B2013B4976700232190 /* Setup_Auto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Setup_Auto.png; sourceTree = "<group>"; };
-		DA73A4101463D6E800E6F505 /* MKStoreKitConfigs Full.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MKStoreKitConfigs Full.plist"; sourceTree = "<group>"; };
-		DA73A4121463D6F300E6F505 /* MKStoreKitConfigs Lite.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MKStoreKitConfigs Lite.plist"; sourceTree = "<group>"; };
 		DA7920CA1461ABCF0040615E /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Facebook.h; path = "ShareKit/Submodules/facebook-ios-sdk/src/Facebook.h"; sourceTree = SOURCE_ROOT; };
 		DA7920CB1461ABCF0040615E /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Facebook.m; path = "ShareKit/Submodules/facebook-ios-sdk/src/Facebook.m"; sourceTree = SOURCE_ROOT; };
 		DA7920CC1461ABCF0040615E /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBConnect.h; path = "ShareKit/Submodules/facebook-ios-sdk/src/FBConnect.h"; sourceTree = SOURCE_ROOT; };
@@ -1429,22 +1419,18 @@
 		DAAAC5E014791DC10030739E /* TagSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagSourceDelegate.h; sourceTree = "<group>"; };
 		DAAAC5E6147926AF0030739E /* SimpleMultiSelectionListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleMultiSelectionListController.h; sourceTree = "<group>"; };
 		DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleMultiSelectionListController.m; sourceTree = "<group>"; };
+		DAAAD6041492DE9E00F27A02 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		DAAAD6051492DE9E00F27A02 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		DAAAD6111492DEF600F27A02 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		DAAAD6121492DEF600F27A02 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		DAAAD6181492E7BF00F27A02 /* SSKConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKConfig.h; sourceTree = "<group>"; };
+		DAAAD6191492E7BF00F27A02 /* SSKManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKManager.h; sourceTree = "<group>"; };
+		DAAAD61A1492E7BF00F27A02 /* SSKManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKManager.m; sourceTree = "<group>"; };
+		DAAAD61B1492E7BF00F27A02 /* SSKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKProduct.h; sourceTree = "<group>"; };
+		DAAAD61C1492E7BF00F27A02 /* SSKProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKProduct.m; sourceTree = "<group>"; };
 		DAAB66EB1468473A0099DBA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 		DAAB66ED146847440099DBA9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
-		DAABA9E41462DA00002CDC31 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
-		DAABA9E51462DA00002CDC31 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
-		DAABA9E61462DA00002CDC31 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
-		DAABA9E71462DA00002CDC31 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
-		DAABA9EA1462DA00002CDC31 /* MKSKProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKProduct.h; sourceTree = "<group>"; };
-		DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKProduct.m; sourceTree = "<group>"; };
-		DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKSKSubscriptionProduct.h; sourceTree = "<group>"; };
-		DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKSKSubscriptionProduct.m; sourceTree = "<group>"; };
-		DAABA9F01462DA00002CDC31 /* MKStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreManager.h; sourceTree = "<group>"; };
-		DAABA9F11462DA00002CDC31 /* MKStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreManager.m; sourceTree = "<group>"; };
-		DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreObserver.h; sourceTree = "<group>"; };
-		DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKStoreObserver.m; sourceTree = "<group>"; };
 		DAABAA281462DBC0002CDC31 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
-		DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKStoreKitConfigs.h; sourceTree = "<group>"; };
 		DAB85AF7145864B40089A382 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAB85AFC145864BD0089A382 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAC298F814699895001D55FC /* UIViewController+Theming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Theming.h"; sourceTree = "<group>"; };
@@ -2109,6 +2095,7 @@
 		DA51CDBD144ACBED00C714ED /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				DAAAD6021492DE9E00F27A02 /* JSONKit */,
 				DA51CDBE144ACBED00C714ED /* Keychain */,
 				DA51CDC1144ACBED00C714ED /* OAuth */,
 				DA51CDE4144ACBED00C714ED /* SHKRequest.h */,
@@ -2546,31 +2533,26 @@
 			path = "ShareKit/Submodules/facebook-ios-sdk/src/JSON";
 			sourceTree = SOURCE_ROOT;
 		};
-		DAABA9E11462DA00002CDC31 /* MKStoreKit */ = {
+		DAAAD6021492DE9E00F27A02 /* JSONKit */ = {
 			isa = PBXGroup;
 			children = (
-				DAABA9E31462DA00002CDC31 /* Externals */,
-				DAABA9EA1462DA00002CDC31 /* MKSKProduct.h */,
-				DAABA9EB1462DA00002CDC31 /* MKSKProduct.m */,
-				DAABA9EC1462DA00002CDC31 /* MKSKSubscriptionProduct.h */,
-				DAABA9ED1462DA00002CDC31 /* MKSKSubscriptionProduct.m */,
-				DAABA9F01462DA00002CDC31 /* MKStoreManager.h */,
-				DAABA9F11462DA00002CDC31 /* MKStoreManager.m */,
-				DAABA9F21462DA00002CDC31 /* MKStoreObserver.h */,
-				DAABA9F31462DA00002CDC31 /* MKStoreObserver.m */,
+				DAAAD6041492DE9E00F27A02 /* JSONKit.h */,
+				DAAAD6051492DE9E00F27A02 /* JSONKit.m */,
 			);
-			path = MKStoreKit;
-			sourceTree = "<group>";
+			name = JSONKit;
+			path = ShareKit/Submodules/JSONKit;
+			sourceTree = SOURCE_ROOT;
 		};
-		DAABA9E31462DA00002CDC31 /* Externals */ = {
+		DAAAD6161492E7BF00F27A02 /* SSKTk */ = {
 			isa = PBXGroup;
 			children = (
-				DAABA9E41462DA00002CDC31 /* JSONKit.h */,
-				DAABA9E51462DA00002CDC31 /* JSONKit.m */,
-				DAABA9E61462DA00002CDC31 /* NSData+Base64.h */,
-				DAABA9E71462DA00002CDC31 /* NSData+Base64.m */,
+				DAAAD6181492E7BF00F27A02 /* SSKConfig.h */,
+				DAAAD6191492E7BF00F27A02 /* SSKManager.h */,
+				DAAAD61A1492E7BF00F27A02 /* SSKManager.m */,
+				DAAAD61B1492E7BF00F27A02 /* SSKProduct.h */,
+				DAAAD61C1492E7BF00F27A02 /* SSKProduct.m */,
 			);
-			path = Externals;
+			path = SSKTk;
 			sourceTree = "<group>";
 		};
 		DAC8BE4013B1FF9200CA00D9 = {
@@ -2583,9 +2565,9 @@
 				DAC8BE4E13B1FF9200CA00D9 /* Frameworks */,
 				DAC8BE4C13B1FF9200CA00D9 /* Products */,
 				DA4EC5FE13B2368E0019DAC7 /* LiteUnzip */,
-				DAABA9E11462DA00002CDC31 /* MKStoreKit */,
 				DA4DD24E148E50F800B23CD3 /* NSObject-Invoke-Queue */,
 				DA51CDAA144ACBED00C714ED /* ShareKit */,
+				DAAAD6161492E7BF00F27A02 /* SSKTk */,
 				DAC8C4BB13B202F600CA00D9 /* QuincyKit */,
 			);
 			sourceTree = "<group>";
@@ -2779,7 +2761,6 @@
 				DAC8C07F13B2014C00CA00D9 /* Constants.m */,
 				DA5FC38B148AF045006C27D1 /* DeferTagLoader.h */,
 				DA5FC38C148AF045006C27D1 /* DeferTagLoader.m */,
-				DAABAA351462ECBA002CDC31 /* MKStoreKitConfigs.h */,
 				DAD9F08E1466EA11007C0A31 /* OtherViewProtocol.h */,
 				DAC8C10313B2014C00CA00D9 /* RecursiveFileAdder.h */,
 				DAC8C10413B2014C00CA00D9 /* RecursiveFileAdder.m */,
@@ -2804,6 +2785,8 @@
 				DAC8C09913B2014C00CA00D9 /* Insort */,
 				DAC8C06213B2014C00CA00D9 /* NSArray+ArrayFromData.h */,
 				DAC8C06313B2014C00CA00D9 /* NSArray+ArrayFromData.m */,
+				DAAAD6111492DEF600F27A02 /* NSData+Base64.h */,
+				DAAAD6121492DEF600F27A02 /* NSData+Base64.m */,
 				DAC8C06613B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.h */,
 				DAC8C06713B2014C00CA00D9 /* NSDateFormatter+FuzzyFormatting.m */,
 				DAC8C06813B2014C00CA00D9 /* NSError+AutoLocalizedError.h */,
@@ -3394,8 +3377,6 @@
 				DAC8C4F113B2034100CA00D9 /* Localizable.strings */,
 				DAC8C50813B2038300CA00D9 /* MainWindow-iPad.xib */,
 				DAC8C50A13B2038300CA00D9 /* MainWindow.xib */,
-				DA73A4101463D6E800E6F505 /* MKStoreKitConfigs Full.plist */,
-				DA73A4121463D6F300E6F505 /* MKStoreKitConfigs Lite.plist */,
 				DAC8C50C13B2038300CA00D9 /* OtherList.xib */,
 				DAB85AF6145864B40089A382 /* PackageManager.strings */,
 				DAC8C4D113B2032300CA00D9 /* welcome_de.html */,
@@ -3428,7 +3409,6 @@
 				DAC8BE4813B1FF9200CA00D9 /* Frameworks */,
 				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BE4913B1FF9200CA00D9 /* Resources */,
-				DA73A4141463D7D300E6F505 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3447,7 +3427,6 @@
 				DAC8BEAC13B2009F00CA00D9 /* Frameworks */,
 				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BEAD13B2009F00CA00D9 /* Resources */,
-				DA73A4141463D7D300E6F505 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3466,7 +3445,6 @@
 				DAC8BED213B200C500CA00D9 /* Frameworks */,
 				DA36A0841461B13600ABAF15 /* ShellScript */,
 				DAC8BED313B200C500CA00D9 /* Resources */,
-				DA73A4141463D7D300E6F505 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -3612,7 +3590,6 @@
 				DA51CEE9144ACBEE00C714ED /* SHKSharers.plist in Resources */,
 				DA51CF40144ACBEE00C714ED /* SHKEvernote.md in Resources */,
 				DA7920E51461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DA73A4111463D6E800E6F505 /* MKStoreKitConfigs Full.plist in Resources */,
 				DA2F23B7146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
 				DA2F23BC146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 				DA2F23C0146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */,
@@ -3733,7 +3710,6 @@
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
 				DAB85AF9145864B40089A382 /* PackageManager.strings in Resources */,
 				DA7920E61461ABCF0040615E /* FBDialog.bundle in Resources */,
-				DA73A4131463D6F300E6F505 /* MKStoreKitConfigs Lite.plist in Resources */,
 				DA2F23B8146DB2A0007DC7F6 /* Cell_Blue.png in Resources */,
 				DA2F23BD146DB87E007DC7F6 /* Header_Blue.png in Resources */,
 				DA2F23C1146DCD30007DC7F6 /* CellHighlighted_Blue.png in Resources */,
@@ -3884,19 +3860,6 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = "/usr/bin/env python";
 			shellScript = "import os\nos.environ['MACOSX_DEPLOYMENT_TARGET'] = '10.7'\nimport csv\nfrom subprocess import Popen, PIPE\nfrom Foundation import NSMutableDictionary\n\ncmd = \"/usr/bin/git rev-parse --short HEAD\" # get the short commit hash from git\nbuild_number = Popen(cmd, shell=True, stdout=PIPE).stdout.read()\ninfo_plist = os.environ['BUILT_PRODUCTS_DIR'] + \"/\" + os.environ['WRAPPER_NAME'] + \"/Info.plist\"\n\n# Open the plist and write the short commit hash as the bundle version\nplist = NSMutableDictionary.dictionaryWithContentsOfFile_(info_plist)\nversion = csv.reader([plist['CFBundleShortVersionString'].rstrip()], delimiter=\" \").next()[0]\nif os.environ['CONFIGURATION'] == \"Debug\":\n    version = ''.join([version, '+', build_number])\nplist['CFBundleVersion'] = version\nplist.writeToFile_atomically_(info_plist, 1)\n\nprint 'project_bundle_version: '+version";
-		};
-		DA73A4141463D7D300E6F505 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = "/usr/bin/env python";
-			shellScript = "import os\n\nfilenames = {\n    'dreaMote': 'MKStoreKitConfigs Full.plist',\n    'dreaMote Lite': 'MKStoreKitConfigs Lite.plist',\n}\nbefore = filenames.get(os.environ['TARGET_NAME'], None)\n\nif before:\n    basedir = os.path.join(os.environ['BUILT_PRODUCTS_DIR'], os.environ['WRAPPER_NAME'])\n    fullpath = os.path.join(basedir, before)\n    if os.path.exists(fullpath):\n        target = os.path.join(basedir, 'MKStoreKitConfigs.plist')\n        os.rename(fullpath, target)\n        print fullpath, 'renamed to', target\n    else:\n        raise Exception, 'Source configuration %s not found!' % (fullpath,)\nelse:\n    print 'Target %s has no source file name defined, ignoring build step.' % (os.environ['TARGET_NAME'], )";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -4144,12 +4107,6 @@
 				DA7920FD1461ABCF0040615E /* SBJsonParser.m in Sources */,
 				DA7921001461ABCF0040615E /* SBJsonWriter.m in Sources */,
 				DA7921091461AC0D0040615E /* SHKFacebookForm.m in Sources */,
-				DAABA9FE1462DA00002CDC31 /* JSONKit.m in Sources */,
-				DAABAA011462DA00002CDC31 /* NSData+Base64.m in Sources */,
-				DAABAA071462DA00002CDC31 /* MKSKProduct.m in Sources */,
-				DAABAA0A1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
-				DAABAA101462DA00002CDC31 /* MKStoreManager.m in Sources */,
-				DAABAA131462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 				DAD9F0911466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 				DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */,
 				DA33164D14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */,
@@ -4178,6 +4135,10 @@
 				DA4DD256148E50F800B23CD3 /* DDInvocationGrabber.m in Sources */,
 				DA4DD259148E50F900B23CD3 /* NSObject+Invoke.m in Sources */,
 				DA4DD25C148E50F900B23CD3 /* NSObject+Queue.m in Sources */,
+				DAAAD60A1492DE9E00F27A02 /* JSONKit.m in Sources */,
+				DAAAD6131492DEF600F27A02 /* NSData+Base64.m in Sources */,
+				DAAAD6201492E7BF00F27A02 /* SSKManager.m in Sources */,
+				DAAAD6231492E7BF00F27A02 /* SSKProduct.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4416,12 +4377,6 @@
 				DA7920FE1461ABCF0040615E /* SBJsonParser.m in Sources */,
 				DA7921011461ABCF0040615E /* SBJsonWriter.m in Sources */,
 				DA79210A1461AC0D0040615E /* SHKFacebookForm.m in Sources */,
-				DAABA9FF1462DA00002CDC31 /* JSONKit.m in Sources */,
-				DAABAA021462DA00002CDC31 /* NSData+Base64.m in Sources */,
-				DAABAA081462DA00002CDC31 /* MKSKProduct.m in Sources */,
-				DAABAA0B1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
-				DAABAA111462DA00002CDC31 /* MKStoreManager.m in Sources */,
-				DAABAA141462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 				DAD9F0921466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 				DA33164E14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */,
 				DA3316531469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
@@ -4446,6 +4401,10 @@
 				DA4DD257148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */,
 				DA4DD25A148E50F900B23CD3 /* NSObject+Invoke.m in Sources */,
 				DA4DD25D148E50F900B23CD3 /* NSObject+Queue.m in Sources */,
+				DAAAD60B1492DE9E00F27A02 /* JSONKit.m in Sources */,
+				DAAAD6141492DEF600F27A02 /* NSData+Base64.m in Sources */,
+				DAAAD6211492E7BF00F27A02 /* SSKManager.m in Sources */,
+				DAAAD6241492E7BF00F27A02 /* SSKProduct.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4655,12 +4614,6 @@
 				DA7920FF1461ABCF0040615E /* SBJsonParser.m in Sources */,
 				DA7921021461ABCF0040615E /* SBJsonWriter.m in Sources */,
 				DA79210B1461AC0D0040615E /* SHKFacebookForm.m in Sources */,
-				DAABAA001462DA00002CDC31 /* JSONKit.m in Sources */,
-				DAABAA031462DA00002CDC31 /* NSData+Base64.m in Sources */,
-				DAABAA091462DA00002CDC31 /* MKSKProduct.m in Sources */,
-				DAABAA0C1462DA00002CDC31 /* MKSKSubscriptionProduct.m in Sources */,
-				DAABAA121462DA00002CDC31 /* MKStoreManager.m in Sources */,
-				DAABAA151462DA00002CDC31 /* MKStoreObserver.m in Sources */,
 				DAD9F0931466EA7B007C0A31 /* OtherSplitViewController.m in Sources */,
 				DA33164F14695DDD00A63BA8 /* DreamoteConfiguration.m in Sources */,
 				DA3316541469624100A63BA8 /* DreamoteIpadConfiguration.m in Sources */,
@@ -4684,6 +4637,10 @@
 				DA4DD258148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */,
 				DA4DD25B148E50F900B23CD3 /* NSObject+Invoke.m in Sources */,
 				DA4DD25E148E50F900B23CD3 /* NSObject+Queue.m in Sources */,
+				DAAAD60C1492DE9E00F27A02 /* JSONKit.m in Sources */,
+				DAAAD6151492DEF600F27A02 /* NSData+Base64.m in Sources */,
+				DAAAD6221492E7BF00F27A02 /* SSKManager.m in Sources */,
+				DAAAD6251492E7BF00F27A02 /* SSKProduct.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -20,7 +20,7 @@
 #import "ServiceTableViewCell.h"
 #import "CellTextView.h"
 
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
@@ -86,7 +86,7 @@
 	_tableView.dataSource = self;
 
 #if INCLUDE_FEATURE(Ads)
-	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	if(![SSKManager isFeaturePurchased:kAdFreePurchase])
 	{
 		[self createAdBannerView];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];

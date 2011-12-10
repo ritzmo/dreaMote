@@ -33,7 +33,7 @@
 	#import "EPGCache.h"
 #endif
 
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 #define ONEDAY 86400
 
@@ -189,7 +189,7 @@
 	}
 
 #if INCLUDE_FEATURE(Ads)
-	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	if(IS_IPHONE() && ![SSKManager isFeaturePurchased:kAdFreePurchase])
 	{
 		[self createAdBannerView];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];

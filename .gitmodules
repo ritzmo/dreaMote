@@ -10,9 +10,9 @@
 [submodule "TouchXML"]
 	path = TouchXML
 	url = git://github.com/ritzmo/TouchXML.git
-[submodule "MKStoreKit"]
-	path = MKStoreKit
-	url = git://github.com/ritzmo/MKStoreKit.git
 [submodule "NSObject-Invoke-Queue"]
 	path = NSObject-Invoke-Queue
 	url = git://github.com/theory/NSObject-Invoke-Queue.git
+[submodule "SSKTk"]
+	path = SSKTk
+	url = git://github.com/ritzmo/SSKTk.git

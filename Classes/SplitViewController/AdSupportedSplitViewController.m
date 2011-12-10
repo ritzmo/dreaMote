@@ -9,7 +9,7 @@
 #import "AdSupportedSplitViewController.h"
 
 #import <Constants.h>
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 @interface AdSupportedSplitViewController()
 #if INCLUDE_FEATURE(Ads)
@@ -34,7 +34,7 @@
 {
 	[super loadView];
 
-	if(![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	if(![SSKManager isFeaturePurchased:kAdFreePurchase])
 	{
 		[self createAdBannerView];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];

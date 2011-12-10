@@ -22,7 +22,7 @@
 #import <Objects/Generic/Result.h>
 
 #import "MBProgressHUD.h"
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 #define deleteExtraWidth	35
 
@@ -137,7 +137,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 #if INCLUDE_FEATURE(Ads)
-	if(IS_IPHONE() && ![MKStoreManager isFeaturePurchased:kAdFreePurchase])
+	if(IS_IPHONE() && ![SSKManager isFeaturePurchased:kAdFreePurchase])
 	{
 		[self createAdBannerView];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adsWereRemoved:) name:kAdRemovalPurchased object:nil];

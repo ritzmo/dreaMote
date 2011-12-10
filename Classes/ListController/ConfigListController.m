@@ -22,7 +22,7 @@
 #import "ConnectionListController.h"
 #import "SimpleSingleSelectionListController.h"
 
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 #define kMultiEPGRowTag 99
 #define kTimeoutRowTag 100
@@ -96,6 +96,7 @@ enum settingsRows
 	{
 		self.title = NSLocalizedString(@"Configuration", @"Default Title of ConfigListController");
 		_connections = [RemoteConnectorObject getConnections];
+		purchasables = [SSKManager sharedManager].purchasables;
 
 		// listen to changes in available connections
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
@@ -254,6 +255,7 @@ enum settingsRows
 
 - (void)productsFetched:(NSNotification *)note
 {
+	purchasables = [SSKManager sharedManager].purchasables;
 	[_tableView reloadData];
 }
 
@@ -265,45 +267,64 @@ enum settingsRows
 	[progressHUD setLabelText:NSLocalizedString(@"Working…", @"Label of Progress HUD in ConfigList when waiting for the AppStore")];
 	[progressHUD setMode:MBProgressHUDModeIndeterminate];
 	[progressHUD show:YES];
-	NSArray *purchasables = [MKStoreManager sharedManager].purchasableObjectsList;
 	if(indexPath.row < (NSInteger)purchasables.count)
 	{
-		[[MKStoreManager sharedManager] buyFeature:[purchasables objectAtIndex:indexPath.row]
-										onComplete:^(NSString *featureId)
-		 {
-			 progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-			 progressHUD.mode = MBProgressHUDModeCustomView;
-			 progressHUD.labelText = NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully");
-			 [progressHUD hide:YES afterDelay:2];
+		[[SSKManager sharedManager] buyProduct:[purchasables objectAtIndex:indexPath.row]
+							 completionHandler:^(NSString *featureId)
+		{
+			progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+			progressHUD.mode = MBProgressHUDModeCustomView;
+			progressHUD.labelText = NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully");
+			[progressHUD hide:YES afterDelay:2];
 #if INCLUDE_FEATURE(Ads)
-			 if([featureId isEqualToString:kAdFreePurchase])
-			 {
-				 [[NSNotificationCenter defaultCenter] postNotificationName:kAdRemovalPurchased object:nil userInfo:nil];
-			 }
+			if([featureId isEqualToString:kAdFreePurchase])
+			{
+				[[NSNotificationCenter defaultCenter] postNotificationName:kAdRemovalPurchased object:nil userInfo:nil];
+			}
 #endif
-		 }
-									   onCancelled:^
-		 {
-			 [progressHUD hide:YES];
-		 }];
+		}
+								 cancelHandler:^(NSString *featureId)
+		{
+			[progressHUD hide:YES];
+		}
+								  errorHandler:^(NSString *featureId, NSError *error)
+		{
+#ifndef NDEBUG
+			NSLog(@"purchase error: %@", error);
+#endif
+			NSString *title = [error localizedFailureReason];
+			NSString *message = [error localizedRecoverySuggestion];
+			if(!message && [error code] != 5001)
+				message = [error localizedDescription];
+			if(title || message)
+			{
+				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+																message:message
+															   delegate:self
+													  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
+													  otherButtonTitles:nil];
+				[alert show];
+			}
+			[progressHUD hide:YES];
+		}];
 	}
 #if IS_DEBUG()
 	else if(indexPath.row == (NSInteger)purchasables.count + 1)
 	{
-		[[MKStoreManager sharedManager] removeAllKeychainData];
+		[[SSKManager sharedManager] removeAllKeychainData];
 		[progressHUD hide:YES];
 	}
 #endif
 	else
 	{
-		[[MKStoreManager sharedManager] restorePreviousTransactionsOnComplete:^
+		[[SSKManager sharedManager] restorePreviousPurchasesOnComplete:^(NSString *featureId)
 		 {
 			 progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
 			 progressHUD.mode = MBProgressHUDModeCustomView;
 			 progressHUD.labelText = NSLocalizedString(@"Restore completed", @"In-App-Purchase were restored successfully");
 			 [progressHUD hide:YES afterDelay:2];
 		 }
-																	  onError:^(NSError *error)
+																	  onError:^(NSString *featureId, NSError *error)
 		 {
 			 [progressHUD hide:YES];
 			 NSLog(@"error %@, error code %d", error, error.code);
@@ -842,15 +863,15 @@ enum settingsRows
 		}
 		case purchaseSection:
 		{
-			MKStoreManager *manager = [MKStoreManager sharedManager];
-			NSUInteger count = manager.purchasableObjectCount;
 			sourceCell.textLabel.font = [UIFont boldSystemFontOfSize:kTextViewFontSize-1];
 			sourceCell.textLabel.textAlignment = UITextAlignmentCenter;
 			sourceCell.textLabel.adjustsFontSizeToFitWidth = YES;
+			NSUInteger count = purchasables.count;
 			if((NSUInteger)indexPath.row < count)
 			{
-				sourceCell.accessoryType = [MKStoreManager isFeaturePurchased:[manager.purchasableObjectsList objectAtIndex:indexPath.row]] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-				sourceCell.textLabel.text = [manager.purchasableObjectsDescription objectAtIndex:indexPath.row];
+				SSKProduct *product = [purchasables objectAtIndex:indexPath.row];
+				sourceCell.accessoryType = [SSKManager isFeaturePurchased:product.productIdentifier] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				sourceCell.textLabel.text = [product stringValue];
 			}
 #if IS_DEBUG()
 			else if((NSUInteger)indexPath.row == count + 1)
@@ -877,7 +898,7 @@ enum settingsRows
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	NSInteger sections = purchaseSection;
-	if([SKPaymentQueue canMakePayments] && [MKStoreManager sharedManager].purchasableObjectCount)
+	if([SKPaymentQueue canMakePayments] && purchasables.count)
 		++sections;
 	return sections;
 }
@@ -907,7 +928,7 @@ enum settingsRows
 #endif
 		case purchaseSection:
 		{
-			NSUInteger count = [MKStoreManager sharedManager].purchasableObjectCount;
+			NSUInteger count = purchasables.count;
 #if IS_DEBUG()
 			if(count)
 				++count;

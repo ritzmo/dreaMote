@@ -33,8 +33,8 @@
 	#import "EPGCache.h"
 #endif
 
-// MKStoreKit
-#import "MKStoreManager.h"
+// SSKTk
+#import "SSKManager.h"
 
 enum appDelegateAlertTags
 {
@@ -113,7 +113,12 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 #if !IS_DEBUG()
 	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
 #endif
-	[MKStoreManager sharedManager];
+	[[SSKManager sharedManager] lookForProducts:[NSDictionary dictionaryWithObjectsAndKeys:
+#if IS_FULL()
+												 [NSArray arrayWithObject:kServiceEditorPurchase], @"Non-Consumables", nil]];
+#else
+												 [NSArray arrayWithObject:kAdFreePurchase], @"Non-Consumables", nil]];
+#endif
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSNumber *activeConnectionId = [NSNumber numberWithInteger: 0];

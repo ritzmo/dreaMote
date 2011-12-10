@@ -25,7 +25,7 @@
 
 #import <XMLReader/BaseXMLReader.h>
 
-#import "MKStoreManager.h"
+#import "SSKManager.h"
 
 #import "GradientView.h"
 
@@ -273,7 +273,7 @@ enum bouquetListTags
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = button;
 	}
-	else if([MKStoreManager isFeaturePurchased:kServiceEditorPurchase] && [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
+	else if([SSKManager isFeaturePurchased:kServiceEditorPurchase] && [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
 	{
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	}
