@@ -53,4 +53,12 @@
  @brief View was dismissed.
  */
 - (void)dismissedAboutDialog;
+
+/*!
+ @brief Show/Hide the done button.
+ If this method is declared and returns NO the done button will not be shown.
+ @return NO to hide the done button.
+ */
+@optional
+- (BOOL)shouldShowDoneButton;
 @end

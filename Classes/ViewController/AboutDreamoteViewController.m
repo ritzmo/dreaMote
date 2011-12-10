@@ -130,12 +130,15 @@
 	_aboutText.delegate = self;
 	[self.view addSubview:_aboutText];
 
-	frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
-	_doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	_doneButton.frame = frame;
-	[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
-	[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
-	[self.view addSubview: _doneButton];
+	if(![aboutDelegate respondsToSelector:@selector(shouldShowDoneButton)] || [aboutDelegate shouldShowDoneButton])
+	{
+		frame = CGRectMake(((size.width - 100) / 2), 400 + kTweenMargin, 100, 34);
+		_doneButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		_doneButton.frame = frame;
+		[_doneButton setTitle:NSLocalizedString(@"Done", @"") forState: UIControlStateNormal];
+		[_doneButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+		[self.view addSubview: _doneButton];
+	}
 
 	if(welcomeType == welcomeTypeNone)
 	{
