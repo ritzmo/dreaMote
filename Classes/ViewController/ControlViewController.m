@@ -233,7 +233,10 @@
 														 destructiveButtonTitle:NSLocalizedString(@"Reboot", "")
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[actionSheet showInView:self.view];
+		else
+			[actionSheet showFromTabBar:self.tabBarController.tabBar];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -255,7 +258,10 @@
 														 destructiveButtonTitle:NSLocalizedString(@"Restart", "")
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[actionSheet showInView:self.view];
+		else
+			[actionSheet showFromTabBar:self.tabBarController.tabBar];
 		((UIButton *)sender).enabled = YES;
 	}
 }
@@ -278,7 +284,10 @@
 														 destructiveButtonTitle:NSLocalizedString(@"Shutdown", "")
 															  otherButtonTitles:nil];
 		actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-		[actionSheet showFromTabBar:self.tabBarController.tabBar];
+		if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+			[actionSheet showInView:self.view];
+		else
+			[actionSheet showFromTabBar:self.tabBarController.tabBar];
 		((UIButton *)sender).enabled = YES;
 	}
 }
