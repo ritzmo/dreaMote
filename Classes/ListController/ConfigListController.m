@@ -296,6 +296,8 @@ enum settingsRows
 			NSString *message = [error localizedRecoverySuggestion];
 			if(!message && [error code] != 5001)
 				message = [error localizedDescription];
+			if(error.domain == sskErrorDomain && error.code == 100) // hide "double taps"
+				title = message = nil;
 			if(title || message)
 			{
 				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
