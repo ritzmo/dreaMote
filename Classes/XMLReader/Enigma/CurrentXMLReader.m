@@ -8,8 +8,8 @@
 
 #import "CurrentXMLReader.h"
 
-#import "../../Objects/Generic/Event.h"
-#import "../../Objects/Generic/Service.h"
+#import <Objects/Generic/Event.h>
+#import <Objects/Generic/Service.h>
 
 @implementation EnigmaCurrentXMLReader
 
@@ -24,13 +24,12 @@
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<ServiceProtocol> *fakeObject = [[GenericService alloc] init];
 	fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addService:)
-								withObject: fakeObject
-								waitUntilDone: NO];
+	[(NSObject<ServiceSourceDelegate> *)_delegate addService:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 - (NSObject<EventProtocol> *)parseEvent: (NSArray *)resultNodes

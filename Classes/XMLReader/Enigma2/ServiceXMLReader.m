@@ -44,13 +44,12 @@
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread:@selector(addService:)
-								withObject:fakeService
-							 waitUntilDone:NO];
+	[(NSObject<ServiceSourceDelegate> *)_delegate addService:fakeService];
+	[super errorLoadingDocument:error];
 }
 
 - (void)finishedParsingDocument

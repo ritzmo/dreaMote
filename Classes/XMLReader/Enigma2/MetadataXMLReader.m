@@ -44,13 +44,12 @@ static const NSUInteger kEnigma2CoverfileLength = 12;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<MetadataProtocol> *fakeObject = [[GenericMetadata alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread:@selector(addMetadata:)
-								withObject:fakeObject
-							 waitUntilDone:NO];
+	[(NSObject<MetadataSourceDelegate> *)_delegate addMetadata:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

@@ -8,7 +8,7 @@
 
 #import "SignalXMLReader.h"
 
-#import "../../Objects/Generic/Signal.h"
+#import <Objects/Generic/Signal.h>
 
 #import "CXMLElement.h"
 

@@ -8,8 +8,8 @@
 
 #import "FileXMLReader.h"
 
-#import "Constants.h"
-#import "../../Objects/Generic/File.h"
+#import <Constants.h>
+#import <Objects/Generic/File.h>
 
 static const char *kEnigma2FileElement = "e2file";
 static const NSUInteger kEnigma2FileElementLength = 7;
@@ -37,13 +37,12 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<FileProtocol> *fakeObject = [[GenericFile alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addFile:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[(NSObject<FileSourceDelegate> *)_delegate addFile:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

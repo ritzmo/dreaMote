@@ -28,14 +28,13 @@
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<LocationProtocol> *fakeObject = [[GenericLocation alloc] init];
 	fakeObject.fullpath = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.valid = NO;
-	[_delegate performSelectorOnMainThread:@selector(addLocation:)
-								withObject:fakeObject
-							 waitUntilDone:NO];
+	[(NSObject<LocationSourceDelegate> *)_delegate addLocation:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 - (void)finishedParsingDocument

@@ -8,7 +8,7 @@
 
 #import "EventXMLReader.h"
 
-#import "../../Objects/Generic/Event.h"
+#import <Objects/Generic/Event.h>
 
 static const char *kEnigmaEventElement = "event";
 static const NSUInteger kEnigmaEventElementLength = 6;
@@ -40,13 +40,12 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addEvent:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[(NSObject<EventSourceDelegate> *)_delegate addEvent:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

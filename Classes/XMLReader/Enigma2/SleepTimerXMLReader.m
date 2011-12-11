@@ -8,8 +8,8 @@
 
 #import "SleepTimerXMLReader.h"
 
-#import "Constants.h"
-#import "../../Objects/Generic/SleepTimer.h"
+#import <Constants.h>
+#import <Objects/Generic/SleepTimer.h>
 
 static const char *kEnigma2SleepTimerElement = "e2sleeptimer";
 static const NSUInteger kEnigma2SleepTimerElementLength = 13;
@@ -41,14 +41,13 @@ static const NSUInteger kEnigma2TextElementLength = 7;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
-	SleepTimer *fake = [[SleepTimer alloc] init];
-	fake.valid = NO;
-	fake.text = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread:@selector(addSleepTimer:)
-								withObject:fake
-							 waitUntilDone:NO];
+	SleepTimer *fakeObject = [[SleepTimer alloc] init];
+	fakeObject.valid = NO;
+	fakeObject.text = NSLocalizedString(@"Error retrieving Data", @"");
+	[(NSObject<SleepTimerSourceDelegate> *)_delegate addSleepTimer:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

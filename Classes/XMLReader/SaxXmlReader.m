@@ -36,76 +36,65 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 {
 	@autoreleasepool
 	{
-	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
-												  cachePolicy:NSURLRequestReloadIgnoringCacheData
-											  timeoutInterval:_timeout];
-	NSURLConnection *con = nil;
+		NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
+													  cachePolicy:NSURLRequestReloadIgnoringCacheData
+												  timeoutInterval:_timeout];
+		NSURLConnection *con = nil;
 
-	if(request)
-		con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+		if(request)
+			con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 #if IS_DEBUG()
-	else
-		[NSException raise:@"ExcSaxXmlReaderNoRequest" format:@""];
+		else
+			[NSException raise:@"ExcSaxXmlReaderNoRequest" format:@""];
 #endif
 
-	if(con)
-	{
-		[APP_DELEGATE addNetworkOperation];
-		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, (__bridge void *)(self), NULL, 0, NULL);
-		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT | XML_PARSE_RECOVER);
-
-		while(!_done)
+		if(con)
 		{
-			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		}
-		[con cancel]; // just in case, cancel the connection
-		[APP_DELEGATE removeNetworkOperation];
+			[APP_DELEGATE addNetworkOperation];
+			_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, (__bridge void *)(self), NULL, 0, NULL);
+			xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT | XML_PARSE_RECOVER);
 
-		xmlFreeParserCtxt(_xmlParserContext);
-		_xmlParserContext = NULL;
-	}
-	else
-	{
+			while(!_done)
+			{
+				[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+			}
+			[con cancel]; // just in case, cancel the connection
+			[APP_DELEGATE removeNetworkOperation];
+
+			xmlFreeParserCtxt(_xmlParserContext);
+			_xmlParserContext = NULL;
+		}
+		else
+		{
 #if IS_DEBUG()
-		[NSException raise:@"ExcSaxXmlReaderNoConnection" format:@""];
+			[NSException raise:@"ExcSaxXmlReaderNoConnection" format:@""];
 #else
-		NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown connection error occured.", @"Data connection failed for unknown reason.")
-															 forKey:NSLocalizedDescriptionKey];
-		failureReason = [NSError errorWithDomain:@"myDomain"
-											code:900
-										userInfo:userInfo];
+			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown connection error occured.", @"Data connection failed for unknown reason.")
+																 forKey:NSLocalizedDescriptionKey];
+			failureReason = [NSError errorWithDomain:@"myDomain"
+												code:900
+											userInfo:userInfo];
 #endif
-	}
-
-	if(failureReason)
-	{
-		[self sendErroneousObject];
-
-		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
-		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
-		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
-		{
-			BaseXMLReader *__unsafe_unretained dataSource = self;
-			NSError *__unsafe_unretained dataSourceError = failureReason;
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:errorParsing];
-			[invocation setArgument:&dataSource atIndex:2];
-			[invocation setArgument:&dataSourceError atIndex:3];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
 		}
-	}
-	else
-	{
-		[[self queueOnMainThread] finishedParsingDocument];
-	}
+
+		if(failureReason)
+			[[self queueOnMainThread] errorLoadingDocument:failureReason];
+		else
+			[[self queueOnMainThread] finishedParsingDocument];
 	} // /@autoreleasepool
 	return nil;
 }
 
+/* overwrite parent implementation because we use the queue here */
+- (void)errorLoadingDocument:(NSError *)error
+{
+	if([_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:)])
+	{
+		[_delegate dataSourceDelegate:self errorParsingDocument:error];
+	}
+}
+
+/* overwrite parent implementation because we use the queue here */
 - (void)finishedParsingDocument
 {
 	if([_delegate respondsToSelector:@selector(dataSourceDelegateFinishedParsingDocument:)])

@@ -48,13 +48,12 @@ static const NSUInteger kEnigma2MovieFilesizeLength = 11;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<MovieProtocol> *fakeObject = [[GenericMovie alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addMovie:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[(NSObject<MovieSourceDelegate> *)_delegate addMovie:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 - (void)finishedParsingDocument

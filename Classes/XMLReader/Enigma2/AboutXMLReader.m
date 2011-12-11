@@ -53,11 +53,10 @@ static const NSUInteger kEnigma2NimTypeLength = 5;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
-	[_delegate performSelectorOnMainThread:@selector(addAbout:)
-								withObject:nil
-							 waitUntilDone:NO];
+	[(NSObject<AboutSourceDelegate> *)_delegate addAbout:nil];
+	[super errorLoadingDocument:error];
 }
 
 /*

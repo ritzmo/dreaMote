@@ -130,7 +130,7 @@ typedef enum {
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
@@ -146,9 +146,12 @@ typedef enum {
 	SEL selector = _delegateSelector;
 	if(selector == NULL) // only possible in combined now/next where one callback should suffice
 		selector = @selector(addNowEvent:);
+
+	// for some reason this hides the "unknown selector" warning, so keep it for now :)
 	[_delegate performSelectorOnMainThread:selector
 								withObject:fakeObject
 							 waitUntilDone:NO];
+	[super errorLoadingDocument:error];
 }
 
 - (void)finishedParsingDocument

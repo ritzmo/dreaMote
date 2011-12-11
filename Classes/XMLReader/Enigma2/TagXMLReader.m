@@ -27,14 +27,13 @@ static const NSInteger kEnigma2TagLength = 6;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	Tag *fakeObject = [[Tag alloc] init];
 	fakeObject.tag = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.valid = NO;
-	[_delegate performSelectorOnMainThread:@selector(addTag:)
-								withObject:fakeObject
-							 waitUntilDone:NO];
+	[(NSObject<TagSourceDelegate> *)_delegate addTag:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

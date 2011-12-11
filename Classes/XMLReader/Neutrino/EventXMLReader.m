@@ -8,9 +8,9 @@
 
 #import "EventXMLReader.h"
 
-#import "../../Objects/Generic/Event.h"
-#import "../../Objects/Generic/Service.h"
-#import "ServiceSourceDelegate.h"
+#import <Objects/Generic/Event.h>
+#import <Objects/Generic/Service.h>
+#import <Delegates/ServiceSourceDelegate.h>
 
 static const char *kNeutrinoEventElement = "prog";
 static const NSUInteger kNeutrinoEventElementLength = 5;
@@ -72,24 +72,21 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	if(_getCurrent)
 	{
 		NSObject<ServiceProtocol> *fakeObject = [[GenericService alloc] init];
 		fakeObject.sname = NSLocalizedString(@"Error retrieving Data", @"");
-		[_delegate performSelectorOnMainThread:@selector(addService:)
-									withObject:fakeObject
-								 waitUntilDone:NO];
+		[(NSObject<ServiceSourceDelegate> *)_delegate addService:fakeObject];
 	}
 	else
 	{
 		NSObject<EventProtocol> *fakeObject = [[GenericEvent alloc] init];
 		fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
-		[_delegate performSelectorOnMainThread:@selector(addEvent:)
-									withObject:fakeObject
-								 waitUntilDone:NO];
+		[(NSObject<EventSourceDelegate> *)_delegate addEvent:fakeObject];
 	}
+	[super errorLoadingDocument:error];
 }
 
 /*

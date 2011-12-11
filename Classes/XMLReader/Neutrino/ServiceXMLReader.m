@@ -8,8 +8,8 @@
 
 #import "ServiceXMLReader.h"
 
-#import "Constants.h"
-#import "../../Objects/Generic/Service.h"
+#import <Constants.h>
+#import <Objects/Generic/Service.h>
 
 static const char *kNeutrinoServiceElement = "channel";
 static const NSUInteger kNeutrinoServiceElementLength = 8;
@@ -39,13 +39,12 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-	[_delegate performSelectorOnMainThread: @selector(addService:)
-								withObject: fakeService
-							 waitUntilDone: NO];
+	[(NSObject<ServiceSourceDelegate> *)_delegate addService:fakeService];
+	[super errorLoadingDocument:error];
 }
 
 /*

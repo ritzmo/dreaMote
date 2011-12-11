@@ -8,8 +8,8 @@
 
 #import "TimerXMLReader.h"
 
-#import "../../Objects/Enigma/Timer.h"
-#import "../../Objects/Generic/Timer.h"
+#import <Objects/Enigma/Timer.h>
+#import <Objects/Generic/Timer.h>
 
 @implementation EnigmaTimerXMLReader
 
@@ -24,15 +24,14 @@
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<TimerProtocol> *fakeObject = [[GenericTimer alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
-	[_delegate performSelectorOnMainThread: @selector(addTimer:)
-								withObject: fakeObject
-							 waitUntilDone: NO];
+	[(NSObject<TimerSourceDelegate> *)_delegate addTimer:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

@@ -20,11 +20,6 @@
  */
 @interface BaseXMLReader()
 /*!
- @brief Instruct XMLReader to send fake object to callback.
- */
-- (void)sendErroneousObject;
-
-/*!
  @brief Parse XML Document.
  */
 - (void)parseFull;
@@ -95,28 +90,39 @@
 	// bail out if we encountered an error
 	if(localError)
 	{
-		[self sendErroneousObject];
-
-		// delegate wants to be informated about errors
-		SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
-		NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
-		if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
-		{
-			BaseXMLReader *__unsafe_unretained dataSource = self;
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			[invocation retainArguments];
-			[invocation setTarget:_delegate];
-			[invocation setSelector:errorParsing];
-			[invocation setArgument:&dataSource atIndex:2];
-			[invocation setArgument:&localError atIndex:3];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
-		return nil;
+		[self errorLoadingDocument:localError];
+		document = nil;
 	}
+	// else parse document and notify delegate
+	else
+	{
+		[self parseFull];
+		[self finishedParsingDocument];
+	}
+	return document;
+}
 
-	[self parseFull];
+- (void)errorLoadingDocument:(NSError *)error
+{
+	// delegate wants to be informated about errors
+	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
+	NSMethodSignature *sig = [_delegate methodSignatureForSelector:errorParsing];
+	if(_delegate && [_delegate respondsToSelector:errorParsing] && sig)
+	{
+		BaseXMLReader *__unsafe_unretained dataSource = self;
+		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
+		[invocation retainArguments];
+		[invocation setTarget:_delegate];
+		[invocation setSelector:errorParsing];
+		[invocation setArgument:&dataSource atIndex:2];
+		[invocation setArgument:&error atIndex:3];
+		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
+								  waitUntilDone:NO];
+	}
+}
 
+- (void)finishedParsingDocument
+{
 	// delegate wants to be informated about parsing end
 	SEL finishedParsing = @selector(dataSourceDelegateFinishedParsingDocument:);
 	NSMethodSignature *sig = [_delegate methodSignatureForSelector:finishedParsing];
@@ -131,13 +137,6 @@
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
-	return document;
-}
-
-/* send fake object back to callback */
-- (void)sendErroneousObject
-{
-	// NOTE: descending classes should implement this
 }
 
 /* parse complete xml document */

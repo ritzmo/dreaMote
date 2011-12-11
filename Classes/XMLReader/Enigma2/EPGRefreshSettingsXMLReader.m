@@ -30,12 +30,6 @@
 	return self;
 }
 
-/* send fake object */
-- (void)sendErroneousObject
-{
-	// fake settings are stupid, don't send them
-}
-
 /*
  Example:
  <?xml version="1.0" encoding="UTF-8" ?>

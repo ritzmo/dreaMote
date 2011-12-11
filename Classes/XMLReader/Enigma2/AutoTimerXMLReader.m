@@ -96,14 +96,12 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	AutoTimer *fakeObject = [[AutoTimer alloc] init];
 	fakeObject.name = NSLocalizedString(@"Error retrieving Data", @"");
-
-	[_delegate performSelectorOnMainThread:@selector(addAutoTimer:)
-								withObject:fakeObject
-							 waitUntilDone:NO];
+	[(NSObject<AutoTimerSourceDelegate> *)_delegate addAutoTimer:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 /*

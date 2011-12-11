@@ -24,9 +24,16 @@ typedef CXMLDocument OurXMLDocument;
  */
 @protocol XMLReader
 /*!
- @brief Send fake object back to delegate to indicate a failure
+ @brief The XML Document could not be loaded.
+ Should be overriden by children to send an erroneous object to the delegate.
+ @param error The connection error.
  */
-- (void)sendErroneousObject;
+- (void)errorLoadingDocument:(NSError *)error;
+
+/*!
+ @brief Finished parsing current document.
+ */
+- (void)finishedParsingDocument;
 @end
 
 /*!

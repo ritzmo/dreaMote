@@ -56,15 +56,14 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 }
 
 /* send fake object */
-- (void)sendErroneousObject
+- (void)errorLoadingDocument:(NSError *)error
 {
 	NSObject<TimerProtocol> *fakeObject = [[GenericTimer alloc] init];
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	fakeObject.state = 0;
 	fakeObject.valid = NO;
-	[_delegate performSelectorOnMainThread:@selector(addTimer:)
-								withObject:fakeObject
-							 waitUntilDone:NO];
+	[(NSObject<TimerSourceDelegate> *)_delegate addTimer:fakeObject];
+	[super errorLoadingDocument:error];
 }
 
 - (void)finishedParsingDocument
