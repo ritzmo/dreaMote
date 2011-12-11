@@ -357,7 +357,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 	if(error == nil)
 	{
-		doc = xmlReadMemory([data bytes], [data length], "", NULL, XML_PARSE_RECOVER);
+		doc = xmlReadMemory([data bytes], [data length], "", NULL, XML_PARSE_NOENT | XML_PARSE_RECOVER);
 	}
 
 	Result *result = [Result createResult];
@@ -409,13 +409,14 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			result.resulttext = [NSString stringWithCString:(const char *)stringVal encoding:NSUTF8StringEncoding];
 			xmlFree(stringVal);
 		}
-
 		// xpath object will be freed after this block
 	} while(0);
 	xmlXPathFreeObject(xpathObj);
 	xmlXPathFreeContext(xpathCtx);
 	xmlFreeDoc(doc);
 
+	if(!result.result && !result.resulttext)
+		result.resulttext = NSLocalizedString(@"Unknown Error.", @"Remote host did return error code but no specific message.");
 	return result;
 }
 

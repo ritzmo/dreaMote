@@ -1259,15 +1259,7 @@ enum serviceListTags
 			{
 				if(errorMessages.length)
 					[errorMessages appendString:@"\n"];
-				if(result.resulttext)
-					[errorMessages appendString:result.resulttext];
-				else
-				{
-#if IS_DEBUG()
-					NSLog(@"[ServiceListController] No error message for invalid result, adding dummy!");
-#endif
-					[errorMessages appendString:NSLocalizedString(@"Unknown Error.", @"Remote host did return error code but no specific message.")];
-				}
+				[errorMessages appendString:result.resulttext];
 			}
 		}
 	}
