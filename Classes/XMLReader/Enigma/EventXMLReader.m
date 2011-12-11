@@ -8,7 +8,10 @@
 
 #import "EventXMLReader.h"
 
+#import <Constants.h>
 #import <Objects/Generic/Event.h>
+
+#import "NSObject+Queue.h"
 
 static const char *kEnigmaEventElement = "event";
 static const NSUInteger kEnigmaEventElementLength = 6;
@@ -35,6 +38,8 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([delegate respondsToSelector:@selector(addEvents:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -46,6 +51,16 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[(NSObject<EventSourceDelegate> *)_delegate addEvent:fakeObject];
 	[super errorLoadingDocument:error];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<EventSourceDelegate> *)_delegate addEvents:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
 }
 
 /*
@@ -89,9 +104,20 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 {
 	if(!strncmp((const char *)localname, kEnigmaEventElement, kEnigmaEventElementLength))
 	{
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
-									withObject: currentEvent
-								 waitUntilDone: NO];
+		if(self.currentItems)
+		{
+			[self.currentItems addObject:currentEvent];
+			if(self.currentItems.count > kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addEvents:dispatchArray];
+			}
+		}
+		else
+			[_delegate performSelectorOnMainThread:@selector(addEvent:)
+										withObject:currentEvent
+									 waitUntilDone:NO];
 	}
 	else if(!strncmp((const char *)localname, kEnigmaEventExtendedDescription, kEnigmaEventExtendedDescriptionLength))
 	{
