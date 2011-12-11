@@ -15,7 +15,7 @@
 
 @interface SaxXmlReader()
 - (void)charactersFound:(const xmlChar *)characters length:(int)length;
-- (void)parsingError:(const char *)msg, ...;
+- (void)parsingError:(NSString *)msg;
 - (void)endDocument;
 @end
 
@@ -129,24 +129,12 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	}
 }
 
-- (void)parsingError:(const char *)msg, ...
+- (void)parsingError:(NSString *)msg
 {
-	NSString *format = [[NSString alloc] initWithBytes:msg
-												length:strlen(msg)
-											  encoding:NSUTF8StringEncoding];
-	CFStringRef resultString = NULL;
-	va_list argList;
-	va_start(argList, msg);
-	resultString = CFStringCreateWithFormatAndArguments(NULL, NULL, (__bridge CFStringRef)format, argList);
-	va_end(argList);
-
-	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:(__bridge NSString*)resultString forKey:NSLocalizedDescriptionKey];
+	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:msg forKey:NSLocalizedDescriptionKey];
 	NSError *error = [NSError errorWithDomain:@"ParsingDomain" code:101 userInfo:userInfo];
-
 	failureReason = error;
 	_done = YES;
-
-	CFRelease(resultString);
 }
 
 - (void)endDocument
@@ -275,9 +263,17 @@ static void	charactersFoundSAX(void *ctx, const xmlChar *ch, int len)
 
 static void errorEncounteredSAX(void *ctx, const char *msg, ...)
 {
+	CFStringRef format = CFStringCreateWithBytesNoCopy(NULL, (const UInt8 *)msg, strlen(msg), kCFStringEncodingUTF8, false, kCFAllocatorNull);
+	CFStringRef resultString = NULL;
 	va_list argList;
 	va_start(argList, msg);
-	[(__bridge SaxXmlReader *)ctx parsingError:msg, argList];
+	resultString = CFStringCreateWithFormatAndArguments(NULL, NULL, format, argList);
+	va_end(argList);
+
+	[(__bridge SaxXmlReader *)ctx parsingError:(__bridge NSString *)resultString];
+
+	CFRelease(format);
+	CFRelease(resultString);
 }
 
 static void endDocumentSAX(void *ctx)
