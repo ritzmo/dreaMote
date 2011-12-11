@@ -10,9 +10,22 @@
 
 #import <Objects/Generic/Signal.h>
 
-#import "CXMLElement.h"
+static const char *kEnigmaSignal = "streaminfo";
+static const NSUInteger kEnigmaSignalLength = 11;
+static const char *kEnigmaSnr = "snr";
+static const NSUInteger kEnigmaSnrLength = 4;
+static const char *kEnigmaBer = "ber";
+static const NSUInteger kEnigmaBerLength = 4;
+static const char *kEnigmaAgc = "acg";
+static const NSUInteger kEnigmaAgcLength = 4;
+
+@interface EnigmaSignalXMLReader()
+@property (nonatomic, strong) GenericSignal *signal;
+@end
 
 @implementation EnigmaSignalXMLReader
+
+@synthesize signal;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<SignalSourceDelegate> *)delegate
@@ -73,43 +86,46 @@
  </streaminfo>
  
 */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	CXMLNode *currentChild = nil;
-	const NSArray *resultNodes = [document nodesForXPath:@"/streaminfo" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(!strncmp((const char *)localname, kEnigmaSignal, kEnigmaSignalLength))
 	{
-		GenericSignal *newSignal = [[GenericSignal alloc] init];
-		newSignal.snrdb = -1; // enigma does not support this...
-
-		for(NSUInteger counter = 0; counter < [resultElement childCount]; ++counter)
-		{
-			currentChild = (CXMLNode *)[resultElement childAtIndex: counter];
-			const NSString *elementName = [currentChild name];
-			if ([elementName isEqualToString:@"snr"]) {
-				const NSString *str = [currentChild stringValue];
-				newSignal.snr = [[str substringToIndex: [str length] - 1] integerValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"ber"]) {
-				newSignal.ber = [[currentChild stringValue] integerValue];
-				continue;
-			}
-			else if ([elementName isEqualToString:@"agc"]) {
-				NSString *str = [currentChild stringValue];
-				newSignal.agc = [[str substringToIndex: [str length] - 1] integerValue];
-				continue;
-			}
-		}
-
-		[_delegate performSelectorOnMainThread: @selector(addSignal:)
-									withObject: newSignal
-								 waitUntilDone: NO];
-		
-		// Signal is unique
-		break;
+		signal = [[GenericSignal alloc] init];
+		signal.snrdb = -1; // enigma does not support this...
 	}
+	else if(	!strncmp((const char *)localname, kEnigmaSnr, kEnigmaSnrLength)
+			||	!strncmp((const char *)localname, kEnigmaBer, kEnigmaBerLength)
+			||	!strncmp((const char *)localname, kEnigmaAgc, kEnigmaAgcLength)
+			)
+	{
+		currentString = [[NSMutableString alloc] init];
+	}
+}
+
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(!strncmp((const char *)localname, kEnigmaSignal, kEnigmaSignalLength))
+	{
+		[_delegate performSelectorOnMainThread:@selector(addSignal:)
+									withObject:signal
+								 waitUntilDone:NO];
+	}
+	else if(!strncmp((const char *)localname, kEnigmaSnr, kEnigmaSnrLength))
+	{
+		NSString *str = [currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		signal.snr = [[str substringToIndex: [str length] - 1] integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigmaBer, kEnigmaBerLength))
+	{
+		signal.ber = [[currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] integerValue];
+	}
+	else if(!strncmp((const char *)localname, kEnigmaAgc, kEnigmaAgcLength))
+	{
+		NSString *str = [currentString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		signal.agc = [[str substringToIndex: [str length] - 1] integerValue];
+	}
+
+	self.currentString = nil;
 }
 
 @end
