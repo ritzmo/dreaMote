@@ -53,14 +53,13 @@
 	[super errorLoadingDocument:error];
 }
 
-- (CXMLDocument *)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
+- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
 {
 	sreader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:nil];
 	ereader = [[Enigma2EventXMLReader alloc] initWithDelegate:nil];
-	CXMLDocument *returnValue = [super parseXMLFileAtURL:URL parseError:error];
+	[super parseXMLFileAtURL:URL parseError:error];
 	sreader = nil;
 	ereader = nil;
-	return returnValue;
 }
 
 /*

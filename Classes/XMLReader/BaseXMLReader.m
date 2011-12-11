@@ -15,19 +15,9 @@
 #import "SynchronousRequestReader.h"
 #import "Constants.h"
 
-/*!
- @brief Private functions of BaseXMLReader.
- */
-@interface BaseXMLReader()
-/*!
- @brief Parse XML Document.
- */
-- (void)parseFull;
-@end
-
 @implementation BaseXMLReader
 
-@synthesize encoding, document;
+@synthesize encoding;
 @synthesize delegate = _delegate;
 
 /* initialize */
@@ -43,63 +33,9 @@
 }
 
 /* download and parse xml document */
-- (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
-	document = nil;
-	_done = NO;
-	NSError __autoreleasing *localError = nil;
-#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-	NSError *__unsafe_unretained parserError = localError;
-	document = [[CXMLPushDocument alloc] initWithError:&parserError];
-
-	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
-												  cachePolicy:NSURLRequestReloadIgnoringCacheData
-											  timeoutInterval:_timeout];
-	NSURLConnection *connection = [[NSURLConnection alloc]
-									initWithRequest:request
-									delegate:document];
-	if(connection)
-	{
-		[APP_DELEGATE addNetworkOperation];
-		do
-		{
-			[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-		} while (!document.done);
-		[APP_DELEGATE removeNetworkOperation];
-		[connection cancel]; // just in case, cancel the connection
-	}
-	else
-	{
-		localError = [NSError errorWithDomain:@"myDomain"
-										 code:101
-									 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Connection could not be established.", @"") forKey:NSLocalizedDescriptionKey]];
-	}
-#else //!LAME_ASYNCHRONOUS_DOWNLOAD
-	NSData *data = [SynchronousRequestReader sendSynchronousRequest:URL
-												 returningResponse:nil
-															 error:&localError
-													   withTimeout:_timeout];
-	if(localError == nil)
-		document = [[CXMLDocument alloc] initWithData:data encoding:encoding options:0 error:&localError];
-#endif
-	_done = YES;
-	// set error to eventual local error
-	if(error)
-		*error = localError;
-
-	// bail out if we encountered an error
-	if(localError)
-	{
-		[self errorLoadingDocument:localError];
-		document = nil;
-	}
-	// else parse document and notify delegate
-	else
-	{
-		[self parseFull];
-		[self finishedParsingDocument];
-	}
-	return document;
+	// NOTE: descending classes should implement this
 }
 
 - (void)errorLoadingDocument:(NSError *)error
@@ -137,12 +73,6 @@
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
-}
-
-/* parse complete xml document */
-- (void)parseFull
-{
-	// NOTE: descending classes should implement this
 }
 
 @end

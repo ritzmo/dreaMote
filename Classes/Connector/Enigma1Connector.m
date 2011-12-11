@@ -27,10 +27,6 @@
 #import <XMLReader/Enigma/SignalXMLReader.h>
 #import <XMLReader/Enigma/TimerXMLReader.h>
 
-#import <libxml/parser.h>
-#import <libxml/tree.h>
-#import <libxml/xpath.h>
-
 #import <ViewController/EnigmaRCEmulatorController.h>
 
 #import <Categories/NSString+URLEncode.h>

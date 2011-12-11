@@ -6,12 +6,13 @@
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
-
-#import <UIKit/UIKit.h>
-
-#import "RemoteConnector.h"
+#import <Connector/RemoteConnector.h>
 
 #import <XMLReader/BaseXMLReader.h>
+
+#import <libxml/parser.h>
+#import <libxml/tree.h>
+#import <libxml/xpath.h>
 
 typedef enum
 {

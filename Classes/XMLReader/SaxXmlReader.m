@@ -32,7 +32,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	_xmlParserContext = NULL;
 }
 
-- (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
 	@autoreleasepool
 	{
@@ -82,7 +82,6 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		else
 			[[self queueOnMainThread] finishedParsingDocument];
 	} // /@autoreleasepool
-	return nil;
 }
 
 /* overwrite parent implementation because we use the queue here */

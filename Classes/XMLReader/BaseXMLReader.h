@@ -6,17 +6,6 @@
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
-#ifdef LAME_ASYNCHRONOUS_DOWNLOAD
-#import <XMLReader/CXMLPushDocument.h>
-typedef CXMLPushDocument OurXMLDocument;
-#else
-#import <CXMLDocument.h>
-typedef CXMLDocument OurXMLDocument;
-#endif
-#import <CXMLElement.h>
-
-#import <Connector/RemoteConnector.h>
-
 #import <Delegates/DataSourceDelegate.h>
 
 /*!
@@ -47,7 +36,6 @@ typedef CXMLDocument OurXMLDocument;
 @protected
 	BOOL _done; /*!< @brief Finished parsing? */
 	NSObject<DataSourceDelegate> *_delegate; /*!< @brief Delegate. */
-	OurXMLDocument *document; /*!< @brief CXMLDocument. */
 	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
 }
 
@@ -58,17 +46,12 @@ typedef CXMLDocument OurXMLDocument;
  @param error Will be pointed to NSError if one occurs.
  @return Parsed XML Document.
  */
-- (CXMLDocument *)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
 
 /*!
  @brief Delegate.
  */
 @property (nonatomic, strong) NSObject<DataSourceDelegate> *delegate;
-
-/*!
- @brief If using TouchXML to parse XML, this is the pointer to the document.
- */
-@property (nonatomic, readonly) CXMLDocument *document;
 
 /*!
  @brief Expected encoding of document.

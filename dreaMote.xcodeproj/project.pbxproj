@@ -83,9 +83,6 @@
 		DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EF1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m */; };
 		DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */; };
 		DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */; };
-		DA3F60A4148AA920008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
-		DA3F60A5148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
-		DA3F60A6148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */; };
 		DA4DD256148E50F800B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
 		DA4DD257148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
 		DA4DD258148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
@@ -987,9 +984,6 @@
 		DAC8C32513B2014D00CA00D9 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */; };
 		DAC8C32613B2014D00CA00D9 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */; };
 		DAC8C32713B2014D00CA00D9 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */; };
-		DAC8C32813B2014D00CA00D9 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18413B2014D00CA00D9 /* CXMLPushDocument.m */; };
-		DAC8C32913B2014D00CA00D9 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18413B2014D00CA00D9 /* CXMLPushDocument.m */; };
-		DAC8C32A13B2014D00CA00D9 /* CXMLPushDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18413B2014D00CA00D9 /* CXMLPushDocument.m */; };
 		DAC8C32B13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18713B2014D00CA00D9 /* CurrentXMLReader.m */; };
 		DAC8C32C13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18713B2014D00CA00D9 /* CurrentXMLReader.m */; };
 		DAC8C32E13B2014D00CA00D9 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18913B2014D00CA00D9 /* EventXMLReader.m */; };
@@ -1039,24 +1033,6 @@
 		DAC8C44713B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C44813B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C44913B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C47213B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; };
-		DAC8C47313B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; };
-		DAC8C47413B201DE00CA00D9 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */; };
-		DAC8C47813B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; };
-		DAC8C47913B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; };
-		DAC8C47A13B201DE00CA00D9 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */; };
-		DAC8C48113B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; };
-		DAC8C48213B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; };
-		DAC8C48313B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */; };
-		DAC8C48413B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; };
-		DAC8C48513B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; };
-		DAC8C48613B201DE00CA00D9 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46313B201DE00CA00D9 /* CXMLNode.m */; };
-		DAC8C48713B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; };
-		DAC8C48813B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; };
-		DAC8C48913B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */; };
-		DAC8C48A13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; };
-		DAC8C48B13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; };
-		DAC8C48C13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */; };
 		DAC8C49313B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
 		DAC8C49413B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
 		DAC8C49513B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
@@ -1780,8 +1756,6 @@
 		DAC8C17F13B2014D00CA00D9 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
 		DAC8C18113B2014D00CA00D9 /* BaseXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseXMLReader.h; sourceTree = "<group>"; };
 		DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseXMLReader.m; sourceTree = "<group>"; };
-		DAC8C18313B2014D00CA00D9 /* CXMLPushDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLPushDocument.h; sourceTree = "<group>"; };
-		DAC8C18413B2014D00CA00D9 /* CXMLPushDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLPushDocument.m; sourceTree = "<group>"; };
 		DAC8C18613B2014D00CA00D9 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
 		DAC8C18713B2014D00CA00D9 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
 		DAC8C18813B2014D00CA00D9 /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventXMLReader.h; sourceTree = "<group>"; };
@@ -1828,29 +1802,6 @@
 		DAC8C1B313B2014D00CA00D9 /* SaxXmlReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaxXmlReader.m; sourceTree = "<group>"; };
 		DAC8C3B913B201B900CA00D9 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		DAC8C45213B201DE00CA00D9 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
-		DAC8C45313B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
-		DAC8C45413B201DE00CA00D9 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
-		DAC8C45513B201DE00CA00D9 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
-		DAC8C45613B201DE00CA00D9 /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument.h; sourceTree = "<group>"; };
-		DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument.m; sourceTree = "<group>"; };
-		DAC8C45813B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
-		DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
-		DAC8C45A13B201DE00CA00D9 /* CXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement.h; sourceTree = "<group>"; };
-		DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement.m; sourceTree = "<group>"; };
-		DAC8C45C13B201DE00CA00D9 /* CXMLElement_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement_CreationExtensions.h; sourceTree = "<group>"; };
-		DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement_CreationExtensions.m; sourceTree = "<group>"; };
-		DAC8C45E13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLElement_ElementTreeExtensions.h; sourceTree = "<group>"; };
-		DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLElement_ElementTreeExtensions.m; sourceTree = "<group>"; };
-		DAC8C46013B201DE00CA00D9 /* CXMLNamespaceNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNamespaceNode.h; sourceTree = "<group>"; };
-		DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNamespaceNode.m; sourceTree = "<group>"; };
-		DAC8C46213B201DE00CA00D9 /* CXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode.h; sourceTree = "<group>"; };
-		DAC8C46313B201DE00CA00D9 /* CXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode.m; sourceTree = "<group>"; };
-		DAC8C46413B201DE00CA00D9 /* CXMLNode_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_PrivateExtensions.h; sourceTree = "<group>"; };
-		DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_PrivateExtensions.m; sourceTree = "<group>"; };
-		DAC8C46613B201DE00CA00D9 /* CXMLNode_XPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_XPathExtensions.h; sourceTree = "<group>"; };
-		DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_XPathExtensions.m; sourceTree = "<group>"; };
-		DAC8C46B13B201DE00CA00D9 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchXML.h; sourceTree = "<group>"; };
 		DAC8C49113B2023200CA00D9 /* dreaMote_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dreaMote_Prefix.pch; sourceTree = SOURCE_ROOT; };
 		DAC8C49213B2023200CA00D9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = SOURCE_ROOT; };
 		DAC8C49613B2024B00CA00D9 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -3218,11 +3169,8 @@
 				DAC8C18513B2014D00CA00D9 /* Enigma */,
 				DAC8C19013B2014D00CA00D9 /* Enigma2 */,
 				DAC8C1AD13B2014D00CA00D9 /* Neutrino */,
-				DAC8C45013B201DE00CA00D9 /* TouchXML */,
 				DAC8C18113B2014D00CA00D9 /* BaseXMLReader.h */,
 				DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */,
-				DAC8C18313B2014D00CA00D9 /* CXMLPushDocument.h */,
-				DAC8C18413B2014D00CA00D9 /* CXMLPushDocument.m */,
 				DAC8C1B213B2014D00CA00D9 /* SaxXmlReader.h */,
 				DAC8C1B313B2014D00CA00D9 /* SaxXmlReader.m */,
 			);
@@ -3304,45 +3252,6 @@
 			);
 			path = MBProgressHUD;
 			sourceTree = SOURCE_ROOT;
-		};
-		DAC8C45013B201DE00CA00D9 /* TouchXML */ = {
-			isa = PBXGroup;
-			children = (
-				DAC8C45113B201DE00CA00D9 /* Creation */,
-				DAC8C45613B201DE00CA00D9 /* CXMLDocument.h */,
-				DAC8C45713B201DE00CA00D9 /* CXMLDocument.m */,
-				DAC8C45813B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.h */,
-				DAC8C45913B201DE00CA00D9 /* CXMLDocument_PrivateExtensions.m */,
-				DAC8C45A13B201DE00CA00D9 /* CXMLElement.h */,
-				DAC8C45B13B201DE00CA00D9 /* CXMLElement.m */,
-				DAC8C45C13B201DE00CA00D9 /* CXMLElement_CreationExtensions.h */,
-				DAC8C45D13B201DE00CA00D9 /* CXMLElement_CreationExtensions.m */,
-				DAC8C45E13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.h */,
-				DAC8C45F13B201DE00CA00D9 /* CXMLElement_ElementTreeExtensions.m */,
-				DAC8C46013B201DE00CA00D9 /* CXMLNamespaceNode.h */,
-				DAC8C46113B201DE00CA00D9 /* CXMLNamespaceNode.m */,
-				DAC8C46213B201DE00CA00D9 /* CXMLNode.h */,
-				DAC8C46313B201DE00CA00D9 /* CXMLNode.m */,
-				DAC8C46413B201DE00CA00D9 /* CXMLNode_PrivateExtensions.h */,
-				DAC8C46513B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m */,
-				DAC8C46613B201DE00CA00D9 /* CXMLNode_XPathExtensions.h */,
-				DAC8C46713B201DE00CA00D9 /* CXMLNode_XPathExtensions.m */,
-				DAC8C46B13B201DE00CA00D9 /* TouchXML.h */,
-			);
-			name = TouchXML;
-			path = TouchXML/Source;
-			sourceTree = SOURCE_ROOT;
-		};
-		DAC8C45113B201DE00CA00D9 /* Creation */ = {
-			isa = PBXGroup;
-			children = (
-				DAC8C45213B201DE00CA00D9 /* CXMLDocument_CreationExtensions.h */,
-				DAC8C45313B201DE00CA00D9 /* CXMLDocument_CreationExtensions.m */,
-				DAC8C45413B201DE00CA00D9 /* CXMLNode_CreationExtensions.h */,
-				DAC8C45513B201DE00CA00D9 /* CXMLNode_CreationExtensions.m */,
-			);
-			path = Creation;
-			sourceTree = "<group>";
 		};
 		DAC8C49013B2021700CA00D9 /* Other Sources */ = {
 			isa = PBXGroup;
@@ -3974,7 +3883,6 @@
 				DAC8C31F13B2014D00CA00D9 /* TimeoutSelectionViewController.m in Sources */,
 				DAC8C32213B2014D00CA00D9 /* TimerViewController.m in Sources */,
 				DAC8C32513B2014D00CA00D9 /* BaseXMLReader.m in Sources */,
-				DAC8C32813B2014D00CA00D9 /* CXMLPushDocument.m in Sources */,
 				DAC8C32B13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */,
 				DAC8C32E13B2014D00CA00D9 /* EventXMLReader.m in Sources */,
 				DAC8C33113B2014D00CA00D9 /* MovieXMLReader.m in Sources */,
@@ -3998,12 +3906,6 @@
 				DAC8C36713B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36A13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,
 				DAC8C44713B201BA00CA00D9 /* MBProgressHUD.m in Sources */,
-				DAC8C47213B201DE00CA00D9 /* CXMLDocument.m in Sources */,
-				DAC8C47813B201DE00CA00D9 /* CXMLElement.m in Sources */,
-				DAC8C48113B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */,
-				DAC8C48413B201DE00CA00D9 /* CXMLNode.m in Sources */,
-				DAC8C48713B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */,
-				DAC8C48A13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */,
 				DAC8C49313B2023200CA00D9 /* main.m in Sources */,
 				DAC8C4C113B202F600CA00D9 /* BWQuincyManager.m in Sources */,
 				DA4EC60113B2368E0019DAC7 /* LiteUnzip.m in Sources */,
@@ -4121,7 +4023,6 @@
 				DA34E3EC1488C8BE00CBA5F8 /* AutoTimerSettings.m in Sources */,
 				DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */,
 				DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */,
-				DA3F60A6148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC388148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA5FC38D148AF045006C27D1 /* DeferTagLoader.m in Sources */,
 				DA32C848148B97CE00B8C638 /* About.m in Sources */,
@@ -4244,7 +4145,6 @@
 				DAC8C32013B2014D00CA00D9 /* TimeoutSelectionViewController.m in Sources */,
 				DAC8C32313B2014D00CA00D9 /* TimerViewController.m in Sources */,
 				DAC8C32613B2014D00CA00D9 /* BaseXMLReader.m in Sources */,
-				DAC8C32913B2014D00CA00D9 /* CXMLPushDocument.m in Sources */,
 				DAC8C32C13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */,
 				DAC8C32F13B2014D00CA00D9 /* EventXMLReader.m in Sources */,
 				DAC8C33213B2014D00CA00D9 /* MovieXMLReader.m in Sources */,
@@ -4267,12 +4167,6 @@
 				DAC8C36813B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36B13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,
 				DAC8C44813B201BA00CA00D9 /* MBProgressHUD.m in Sources */,
-				DAC8C47313B201DE00CA00D9 /* CXMLDocument.m in Sources */,
-				DAC8C47913B201DE00CA00D9 /* CXMLElement.m in Sources */,
-				DAC8C48213B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */,
-				DAC8C48513B201DE00CA00D9 /* CXMLNode.m in Sources */,
-				DAC8C48813B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */,
-				DAC8C48B13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */,
 				DAC8C49413B2023200CA00D9 /* main.m in Sources */,
 				DAC8C4C213B202F600CA00D9 /* BWQuincyManager.m in Sources */,
 				DA681B1013B356C200232190 /* ConnectionTableViewCell.m in Sources */,
@@ -4386,7 +4280,6 @@
 				DAAAC5D914791D320030739E /* Tag.m in Sources */,
 				DAAAC5DE14791D970030739E /* TagXMLReader.m in Sources */,
 				DAAAC5E9147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
-				DA3F60A5148AA921008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC389148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA5FC38E148AF045006C27D1 /* DeferTagLoader.m in Sources */,
 				DA32C849148B97CE00B8C638 /* About.m in Sources */,
@@ -4499,17 +4392,10 @@
 				DAC8C32113B2014D00CA00D9 /* TimeoutSelectionViewController.m in Sources */,
 				DAC8C32413B2014D00CA00D9 /* TimerViewController.m in Sources */,
 				DAC8C32713B2014D00CA00D9 /* BaseXMLReader.m in Sources */,
-				DAC8C32A13B2014D00CA00D9 /* CXMLPushDocument.m in Sources */,
 				DAC8C36613B2014D00CA00D9 /* EventXMLReader.m in Sources */,
 				DAC8C36913B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36C13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,
 				DAC8C44913B201BA00CA00D9 /* MBProgressHUD.m in Sources */,
-				DAC8C47413B201DE00CA00D9 /* CXMLDocument.m in Sources */,
-				DAC8C47A13B201DE00CA00D9 /* CXMLElement.m in Sources */,
-				DAC8C48313B201DE00CA00D9 /* CXMLNamespaceNode.m in Sources */,
-				DAC8C48613B201DE00CA00D9 /* CXMLNode.m in Sources */,
-				DAC8C48913B201DE00CA00D9 /* CXMLNode_PrivateExtensions.m in Sources */,
-				DAC8C48C13B201DE00CA00D9 /* CXMLNode_XPathExtensions.m in Sources */,
 				DAC8C49513B2023200CA00D9 /* main.m in Sources */,
 				DAC8C4C313B202F600CA00D9 /* BWQuincyManager.m in Sources */,
 				DA681B1113B356C200232190 /* ConnectionTableViewCell.m in Sources */,
@@ -4623,7 +4509,6 @@
 				DAAAC5DA14791D320030739E /* Tag.m in Sources */,
 				DAAAC5DF14791D970030739E /* TagXMLReader.m in Sources */,
 				DAAAC5EA147926AF0030739E /* SimpleMultiSelectionListController.m in Sources */,
-				DA3F60A4148AA920008FC0DF /* CXMLDocument_PrivateExtensions.m in Sources */,
 				DA5FC38A148AD9A6006C27D1 /* SHKiOS5Twitter.m in Sources */,
 				DA32C84A148B97CE00B8C638 /* About.m in Sources */,
 				DA4DD258148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */,
