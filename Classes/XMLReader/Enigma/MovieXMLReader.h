@@ -6,16 +6,17 @@
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <XMLReader/SaxXmlReader.h>
 
-#import "BaseXMLReader.h"
-#import "MovieSourceDelegate.h"
+#import <Delegates/MovieSourceDelegate.h>
 
 /*!
  @brief Enigma Movie XML Reader.
  */
-@interface EnigmaMovieXMLReader : BaseXMLReader
+@interface EnigmaMovieXMLReader : SaxXmlReader
 {
+@private
+	NSUInteger count; /*!< @brief Counter. */
 }
 
 /*!

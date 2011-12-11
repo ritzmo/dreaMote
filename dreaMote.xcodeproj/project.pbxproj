@@ -777,8 +777,6 @@
 		DAC8C22913B2014D00CA00D9 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C22A13B2014D00CA00D9 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C22B13B2014D00CA00D9 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22C13B2014D00CA00D9 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CC13B2014C00CA00D9 /* Movie.m */; };
-		DAC8C22D13B2014D00CA00D9 /* Movie.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CC13B2014C00CA00D9 /* Movie.m */; };
 		DAC8C22F13B2014D00CA00D9 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CE13B2014C00CA00D9 /* Service.m */; };
 		DAC8C23013B2014D00CA00D9 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CE13B2014C00CA00D9 /* Service.m */; };
 		DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D013B2014C00CA00D9 /* Timer.m */; };
@@ -1625,8 +1623,6 @@
 		DAC8C0C613B2014C00CA00D9 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
 		DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
 		DAC8C0C913B2014C00CA00D9 /* AboutProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutProtocol.h; sourceTree = "<group>"; };
-		DAC8C0CB13B2014C00CA00D9 /* Movie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Movie.h; sourceTree = "<group>"; };
-		DAC8C0CC13B2014C00CA00D9 /* Movie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Movie.m; sourceTree = "<group>"; };
 		DAC8C0CD13B2014C00CA00D9 /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
 		DAC8C0CE13B2014C00CA00D9 /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DAC8C0CF13B2014C00CA00D9 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
@@ -2974,8 +2970,6 @@
 		DAC8C0CA13B2014C00CA00D9 /* Enigma */ = {
 			isa = PBXGroup;
 			children = (
-				DAC8C0CB13B2014C00CA00D9 /* Movie.h */,
-				DAC8C0CC13B2014C00CA00D9 /* Movie.m */,
 				DAC8C0CD13B2014C00CA00D9 /* Service.h */,
 				DAC8C0CE13B2014C00CA00D9 /* Service.m */,
 				DAC8C0CF13B2014C00CA00D9 /* Timer.h */,
@@ -3905,7 +3899,6 @@
 				DAC8C22313B2014D00CA00D9 /* MGSplitCornersView.m in Sources */,
 				DAC8C22613B2014D00CA00D9 /* MGSplitDividerView.m in Sources */,
 				DAC8C22913B2014D00CA00D9 /* MGSplitViewController.m in Sources */,
-				DAC8C22C13B2014D00CA00D9 /* Movie.m in Sources */,
 				DAC8C22F13B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */,
@@ -4180,7 +4173,6 @@
 				DAC8C22413B2014D00CA00D9 /* MGSplitCornersView.m in Sources */,
 				DAC8C22713B2014D00CA00D9 /* MGSplitDividerView.m in Sources */,
 				DAC8C22A13B2014D00CA00D9 /* MGSplitViewController.m in Sources */,
-				DAC8C22D13B2014D00CA00D9 /* Movie.m in Sources */,
 				DAC8C23013B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
