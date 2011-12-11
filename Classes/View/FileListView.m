@@ -158,7 +158,8 @@
 					[idxPaths addObject:[NSIndexPath indexPathForRow:playing inSection: 0]];
 
 				_playing = idx;
-				[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
+				if(!reloading)
+					[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
 				return YES;
 			}
 			return NO;
@@ -168,7 +169,9 @@
 	if(playing != NSNotFound)
 	{
 		_playing = NSNotFound;
-		[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:playing inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+
+		if(!reloading)
+			[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:playing inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		return YES;
 	}
 	return NO;
