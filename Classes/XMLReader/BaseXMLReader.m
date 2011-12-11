@@ -33,9 +33,10 @@
 }
 
 /* download and parse xml document */
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
+- (BOOL)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
 	// NOTE: descending classes should implement this
+	return NO;
 }
 
 - (void)errorLoadingDocument:(NSError *)error

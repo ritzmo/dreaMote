@@ -12,10 +12,6 @@
  @brief Service in Enigma.
  */
 @interface EnigmaService : GenericService
-{
-@private
-	BOOL _isBouquet; /*!< @brief For Bouquets: Is this a userbouquet or a Provider?. */
-}
 
 @property (nonatomic, assign) BOOL isBouquet;
 

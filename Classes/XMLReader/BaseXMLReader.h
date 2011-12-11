@@ -46,7 +46,7 @@
  @param error Will be pointed to NSError if one occurs.
  @return Parsed XML Document.
  */
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
+- (BOOL)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
 
 /*!
  @brief Delegate.

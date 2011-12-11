@@ -65,7 +65,7 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 	return self;
 }
 
-- (void)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
+- (BOOL)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
 	_currentCounter = 2;
 	return [super parseXMLFileAtURL:URL parseError:error];

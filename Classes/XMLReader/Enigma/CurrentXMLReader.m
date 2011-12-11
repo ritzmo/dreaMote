@@ -66,11 +66,12 @@ typedef enum
 	[super errorLoadingDocument:error];
 }
 
-- (void)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
+- (BOOL)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
 {
 	ereader = [[EnigmaEventXMLReader alloc] initWithDelegate:nil];
-	[super parseXMLFileAtURL:URL parseError:error];
+	const BOOL retVal = [super parseXMLFileAtURL:URL parseError:error];
 	ereader = nil;
+	return retVal;
 }
 
 /*
