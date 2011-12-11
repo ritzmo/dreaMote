@@ -29,18 +29,26 @@
 - (void)loadView
 {
 	[super loadView];
+#if IS_DEBUG()
+	NSLog(@"[OtherSplitViewController] loadView");
+#endif
 
-	// Instantiate view controllers
-	OtherListController *olc = [[OtherListController alloc] init];
-	olc.mgSplitViewController = self;
-	AboutDreamoteViewController *vc = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
-	vc.aboutDelegate = self;
+	if(!isInit)
+	{
+		isInit = YES;
 
-	// Setup navigation controllers and add to split view
-	UIViewController *navController1, *navController2;
-	navController1 = [[UINavigationController alloc] initWithRootViewController:olc];
-	navController2 = [[UINavigationController alloc] initWithRootViewController:vc];
-	self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
+		// Instantiate view controllers
+		OtherListController *olc = [[OtherListController alloc] init];
+		olc.mgSplitViewController = self;
+		AboutDreamoteViewController *vc = [[AboutDreamoteViewController alloc] initWithWelcomeType:welcomeTypeFull];
+		vc.aboutDelegate = self;
+
+		// Setup navigation controllers and add to split view
+		UIViewController *navController1, *navController2;
+		navController1 = [[UINavigationController alloc] initWithRootViewController:olc];
+		navController2 = [[UINavigationController alloc] initWithRootViewController:vc];
+		self.viewControllers = [NSArray arrayWithObjects: navController1, navController2, nil];
+	}
 }
 
 #pragma mark - AboutDreamoteDelegate

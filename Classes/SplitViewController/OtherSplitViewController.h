@@ -12,5 +12,9 @@
 #import <ViewController/AboutDreamoteViewController.h>
 
 @interface OtherSplitViewController : AdSupportedSplitViewController<AboutDreamoteDelegate, OtherViewProtocol>
+{
+@private
+	BOOL isInit;
+}
 
 @end
