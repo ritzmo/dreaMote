@@ -69,6 +69,7 @@ static NSUInteger kEnigmaServiceLength = 8;
 	{
 		currentMovie = [[GenericMovie alloc] init];
 		currentMovie.time = [NSDate dateWithTimeIntervalSince1970:count++];
+		currentMovie.timeString = @"";
 	}
 	else if(	!strncmp((const char *)localname, kEnigmaReference, kEnigmaReferenceLength)
 			||	!strncmp((const char *)localname, kEnigmaName, kEnigmaNameLength))
