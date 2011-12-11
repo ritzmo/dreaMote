@@ -1649,7 +1649,7 @@ enum serviceListTags
 #if IS_DEBUG()
 	NSParameterAssert([_mainList count] > (NSUInteger)indexPath.row);
 #else
-	if(indexPath.row > [_mainList count])
+	if((NSUInteger)indexPath.row > [_mainList count])
 		return;
 #endif
 	NSObject<ServiceProtocol> *service = ((NSObject<EventProtocol > *)[_mainList objectAtIndex: indexPath.row]).service;
