@@ -603,8 +603,8 @@ enum enigma1MessageTypes {
 {
 	Result *result = [Result createResult];
 	NSString *append = nil;
-	if([oldTimer respondsToSelector:@selector(getTypedata)])
-		append = [NSString stringWithFormat:@"&type=%d", [(EnigmaTimer *)oldTimer getTypedata]];
+	if([oldTimer respondsToSelector:@selector(typedata)])
+		append = [NSString stringWithFormat:@"&type=%d", ((EnigmaTimer *)oldTimer).typedata];
 	else
 		append = @"";
 

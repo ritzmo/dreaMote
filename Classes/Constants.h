@@ -165,3 +165,15 @@ extern const char *kEnigma2ServiceElement;
 #define kEnigma2ServiceElementLength 10
 extern const char *kEnigma2EventElement;
 #define kEnigma2EventElementLength 8
+
+// shared e1 xml element names
+extern const char *kEnigmaDescription;
+#define kEnigmaDescriptionLength 12
+extern const char *kEnigmaDuration;
+#define kEnigmaDurationLength 9
+extern const char *kEnigmaBegin;
+#define kEnigmaBeginLength 6
+extern const char *kEnigmaReference;
+#define kEnigmaReferenceLength 10
+extern const char *kEnigmaName;
+#define kEnigmaNameLength 5

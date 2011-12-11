@@ -6,17 +6,14 @@
 //  Copyright 2008-2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <XMLReader/SaxXmlReader.h>
 
-#import "BaseXMLReader.h"
-#import "TimerSourceDelegate.h"
+#import <Delegates/TimerSourceDelegate.h>
 
 /*!
  @brief Enigma Timer XML Reader.
  */
-@interface EnigmaTimerXMLReader : BaseXMLReader
-{
-}
+@interface EnigmaTimerXMLReader : SaxXmlReader
 
 /*!
  @brief Standard initializer.

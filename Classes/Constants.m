@@ -21,3 +21,10 @@ const char *kEnigma2Location = "e2location";
 const char *kEnigma2SimpleXmlItem = "e2simplexmlitem";
 const char *kEnigma2ServiceElement = "e2service";
 const char *kEnigma2EventElement = "e2event";
+
+// shared e1 xml element names
+const char *kEnigmaDescription = "description";
+const char *kEnigmaDuration = "duration";
+const char *kEnigmaBegin = "start";
+const char *kEnigmaReference = "reference";
+const char *kEnigmaName = "name";

@@ -15,10 +15,6 @@
 
 static const char *kEnigmaService = "service";
 static NSUInteger kEnigmaServiceLength = 8;
-static const char *kEnigmaReference = "reference";
-static NSUInteger kEnigmaReferenceLength = 10;
-static const char *kEnigmaName = "name";
-static NSUInteger kEnigmaNameLength = 5;
 
 @interface EnigmaMovieXMLReader()
 @property (nonatomic, strong) GenericMovie *currentMovie;
@@ -109,6 +105,7 @@ static NSUInteger kEnigmaNameLength = 5;
 		// TODO: check if replace is still needed with new parser
 		currentMovie.title = [currentString stringByReplacingOccurrencesOfString: @"&amp;" withString: @"&"];
 	}
+	currentString = nil;
 }
 
 @end

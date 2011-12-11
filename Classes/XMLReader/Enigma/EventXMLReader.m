@@ -17,12 +17,6 @@ static const char *kEnigmaEventElement = "event";
 static const NSUInteger kEnigmaEventElementLength = 6;
 static const char *kEnigmaEventExtendedDescription = "details";
 static const NSUInteger kEnigmaEventExtendedDescriptionLength = 8;
-static const char *kEnigmaEventTitle = "description";
-static const NSUInteger kEnigmaEventTitleLength = 12;
-static const char *kEnigmaEventDuration = "duration";
-static const NSUInteger kEnigmaEventDurationLength = 9;
-static const char *kEnigmaEventBegin = "start";
-static const NSUInteger kEnigmaEventBeginLength = 6;
 
 @interface EnigmaEventXMLReader()
 @property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
@@ -91,9 +85,9 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 		self.currentEvent = [[GenericEvent alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kEnigmaEventExtendedDescription, kEnigmaEventExtendedDescriptionLength)
-			||	!strncmp((const char *)localname, kEnigmaEventTitle, kEnigmaEventTitleLength)
-			||	!strncmp((const char *)localname, kEnigmaEventDuration, kEnigmaEventDurationLength)
-			||	!strncmp((const char *)localname, kEnigmaEventBegin, kEnigmaEventBeginLength)
+			||	!strncmp((const char *)localname, kEnigmaDescription, kEnigmaDescriptionLength)
+			||	!strncmp((const char *)localname, kEnigmaDuration, kEnigmaDurationLength)
+			||	!strncmp((const char *)localname, kEnigmaBegin, kEnigmaBeginLength)
 		)
 	{
 		currentString = [[NSMutableString alloc] init];
@@ -123,15 +117,15 @@ static const NSUInteger kEnigmaEventBeginLength = 6;
 	{
 		currentEvent.edescription = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigmaEventTitle, kEnigmaEventTitleLength))
+	else if(!strncmp((const char *)localname, kEnigmaDescription, kEnigmaDescriptionLength))
 	{
 		currentEvent.title = currentString;
 	}
-	else if(!strncmp((const char *)localname, kEnigmaEventDuration, kEnigmaEventDurationLength))
+	else if(!strncmp((const char *)localname, kEnigmaDuration, kEnigmaDurationLength))
 	{
 		[currentEvent setEndFromDurationString:currentString];
 	}
-	else if(!strncmp((const char *)localname, kEnigmaEventBegin, kEnigmaEventBeginLength))
+	else if(!strncmp((const char *)localname, kEnigmaBegin, kEnigmaBeginLength))
 	{
 		[currentEvent setBeginFromString:currentString];
 	}
