@@ -859,10 +859,14 @@ enum serviceListTags
 	if(gesture.state != UIGestureRecognizerStateBegan)
 		return;
 
-	// get service
+	// get index path
 	const CGPoint p = [gesture locationInView:tableView];
 	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
-	NSObject<ServiceProtocol> *service;
+	if(!indexPath)
+		return;
+
+	// get service
+	NSObject<ServiceProtocol> *service = nil;
 	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
 	id objectAtIndexPath = [array objectAtIndex:indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
@@ -878,6 +882,7 @@ enum serviceListTags
 		[_selectedServices removeObject:service];
 	else
 		[_selectedServices addObject:service];
+
 	[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
