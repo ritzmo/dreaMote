@@ -52,7 +52,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	{
 		[APP_DELEGATE addNetworkOperation];
 		_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, (__bridge void *)(self), NULL, 0, NULL);
-		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT);
+		xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT | XML_PARSE_RECOVER);
 
 		while(!_done)
 		{
