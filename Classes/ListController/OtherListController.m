@@ -548,7 +548,20 @@
 		}
 	}
 	else
+	{
+		// XXX: wtf?
+		if([self.navigationController.viewControllers containsObject:targetViewController])
+		{
+#if IS_DEBUG()
+			NSMutableString* result = [[NSMutableString alloc] init];
+			for(NSObject* obj in self.navigationController.viewControllers)
+				[result appendString:[obj description]];
+			[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [targetViewController description], result];
+#endif
+			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+		}
 		[self.navigationController pushViewController:targetViewController animated:YES];
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tv cellForRowAtIndexPath:(NSIndexPath *)indexPath
