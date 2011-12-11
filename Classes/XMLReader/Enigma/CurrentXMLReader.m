@@ -8,10 +8,44 @@
 
 #import "CurrentXMLReader.h"
 
+#import <Constants.h>
+
 #import <Objects/Generic/Event.h>
 #import <Objects/Generic/Service.h>
 
+#import <XMLReader/Enigma/EventXMLReader.h>
+
+static const char *kEnigmaServiceElement = "service";
+static NSUInteger kEnigmaServiceElementLength = 8;
+static const char *kEnigmaCurrentEvent = "current_event";
+static NSUInteger kEnigmaCurrentEventLength = 14;
+static const char *kEnigmaNextEvent = "next_event";
+static NSUInteger kEnigmaNextEventLength = 11;
+
+typedef enum
+{
+	CONTEXT_UNK,
+	CONTEXT_SERVICE,
+	CONTEXT_EVENT
+} currentContext_t;
+
+@interface SaxXmlReader()
+- (void)charactersFound:(const xmlChar *)characters length:(int)length;
+@end
+
+@interface EnigmaEventXMLReader()
+@property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
+@end
+
+@interface EnigmaCurrentXMLReader()
+@property (nonatomic, assign) currentContext_t context;
+@property (nonatomic, strong) GenericService *currentService;
+@property (nonatomic, strong) EnigmaEventXMLReader *ereader;
+@end
+
 @implementation EnigmaCurrentXMLReader
+
+@synthesize context, currentService, ereader;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
@@ -32,109 +66,116 @@
 	[super errorLoadingDocument:error];
 }
 
-- (NSObject<EventProtocol> *)parseEvent: (NSArray *)resultNodes
+- (CXMLDocument *)parseXMLFileAtURL:(NSURL *)URL parseError:(NSError **)error
 {
-	for(CXMLElement *resultElement in resultNodes)
-	{
-		NSObject<EventProtocol> *newEvent = [[GenericEvent alloc] init];
-		NSArray *childNodes = [resultElement nodesForXPath:@"description" error:nil];
-		CXMLDocument *childElement;
-		for(childElement in childNodes)
-		{
-			newEvent.title = [childElement stringValue];
-			break;
-		}
-
-		// Workaround unknown now/next
-		if(newEvent.title == nil)
-		{
-			return nil;
-		}
-
-		childNodes = [resultElement nodesForXPath:@"start" error:nil];
-		for(childElement in childNodes)
-		{
-			NSDate *begin = [NSDate dateWithTimeIntervalSince1970: [[childElement stringValue] doubleValue]];
-			newEvent.begin = begin;
-			break;
-		}
-
-		childNodes = [resultElement nodesForXPath:@"duration" error:nil];
-		for(childElement in childNodes)
-		{
-			NSString *rawDurationString = [childElement stringValue];
-			NSRange range;
-			range.location = 1;
-			range.length = [rawDurationString length] - 2;
-			rawDurationString = [rawDurationString substringWithRange: range];
-			newEvent.end = [newEvent.begin dateByAddingTimeInterval:[rawDurationString doubleValue] * 60.0];
-			break;
-		}
-
-		childNodes = [resultElement nodesForXPath:@"details" error:nil];
-		for(childElement in childNodes)
-		{
-			newEvent.edescription = [childElement stringValue];
-			break;
-		}
-		
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
-									withObject: newEvent
-									waitUntilDone: NO];
-		return newEvent;
-	}
-	return nil;
+	ereader = [[EnigmaEventXMLReader alloc] initWithDelegate:nil];
+	CXMLDocument *returnValue = [super parseXMLFileAtURL:URL parseError:error];
+	ereader = nil;
+	return returnValue;
 }
 
 /*
  Example:
  */
-- (void)parseFull
+- (void)elementFound:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI namespaceCount:(int)namespaceCount namespaces:(const xmlChar **)namespaces attributeCount:(int)attributeCount defaultAttributeCount:(int)defaultAttributeCount attributes:(xmlSAX2Attributes *)attributes
 {
-	const NSObject<EventProtocol> *current_event = [self parseEvent: [document nodesForXPath:@"/currentservicedata/current_event" error:nil]];
-	const NSArray *resultNodes = [document nodesForXPath:@"/currentservicedata/service" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
+	if(context == CONTEXT_SERVICE)
 	{
-		NSObject<ServiceProtocol> *newService = [[GenericService alloc] init];
-		NSArray *childNodes = [resultElement nodesForXPath:@"name" error:nil];
-		CXMLElement *childElement = nil;
-		for(childElement in childNodes)
+		if(		!strncmp((const char *)localname, kEnigmaName, kEnigmaNameLength)
+		   ||	!strncmp((const char *)localname, kEnigmaReference, kEnigmaReferenceLength))
 		{
-			newService.sname = [childElement stringValue];
-			break;
+			currentString = [[NSMutableString alloc] init];
 		}
+	}
+	else if(context == CONTEXT_EVENT)
+	{
+		[ereader elementFound:localname prefix:prefix uri:URI namespaceCount:namespaceCount namespaces:namespaces attributeCount:attributeCount defaultAttributeCount:defaultAttributeCount attributes:attributes];
+	}
+	else if(!strncmp((const char *)localname, kEnigmaServiceElement, kEnigmaServiceElementLength))
+	{
+		context = CONTEXT_SERVICE;
+		currentService = [[GenericService alloc] init];
+	}
+	else if(	!strncmp((const char *)localname, kEnigmaCurrentEvent, kEnigmaCurrentEventLength)
+			||	!strncmp((const char *)localname, kEnigmaNextEvent, kEnigmaNextEventLength))
+	{
+		context = CONTEXT_EVENT;
+	}
+}
 
-		if(newService.sname == nil || [newService.sname isEqualToString:@""])
+- (void)endElement:(const xmlChar *)localname prefix:(const xmlChar *)prefix uri:(const xmlChar *)URI
+{
+	if(context == CONTEXT_SERVICE)
+	{
+		if(!strncmp((const char *)localname, kEnigmaServiceElement, kEnigmaServiceElementLength))
 		{
-			// NOTE: fall back to current event title because it looks weird for
-			// recordings otherwise, but if we are playing a recording back
-			// we won't be able to distinguish between standby and running...
-			if(current_event && current_event.title != nil && ![current_event.title isEqualToString:@""])
+			context = CONTEXT_UNK;
+		}
+		else if(!strncmp((const char *)localname, kEnigmaName, kEnigmaNameLength))
+		{
+			currentService.sname = currentString;
+		}
+		else if(!strncmp((const char *)localname, kEnigmaReference, kEnigmaReferenceLength))
+		{
+			currentService.sref = currentString;
+		}
+	}
+	else if(context == CONTEXT_EVENT)
+	{
+		if(!strncmp((const char *)localname, kEnigmaCurrentEvent, kEnigmaCurrentEventLength))
+		{
+			NSObject<EventProtocol> *currentEvent = ereader.currentEvent;
+			if(!currentEvent.title || [currentEvent.title isEqualToString:@""])
+				currentEvent = nil;
+
+			if(currentService.sname == nil || [currentService.sname isEqualToString:@""])
 			{
-				newService.sname = current_event.title;
+				// NOTE: fall back to current event title because it looks weird for
+				// recordings otherwise, but if we are playing a recording back
+				// we won't be able to distinguish between standby and running...
+				if(currentEvent)
+				{
+					currentService.sname = currentEvent.title;
+				}
+				else
+				{
+					currentService.sname = NSLocalizedString(@"Nothing playing.", @"");
+				}
 			}
-			else {
-				newService.sname = NSLocalizedString(@"Nothing playing.", @"");
-			}
+
+			context = CONTEXT_UNK;
+			[_delegate performSelectorOnMainThread:@selector(addService:)
+										withObject:currentService
+									 waitUntilDone:NO];
+
+			if(currentEvent)
+				[_delegate performSelectorOnMainThread:@selector(addEvent:)
+											withObject:currentEvent
+										 waitUntilDone:NO];
+		}
+		if(!strncmp((const char *)localname, kEnigmaNextEvent, kEnigmaNextEventLength))
+		{
+			NSObject<EventProtocol> *currentEvent = ereader.currentEvent;
+			if(!currentEvent.title || [currentEvent.title isEqualToString:@""])
+				return;
+
+			context = CONTEXT_UNK;
+			[_delegate performSelectorOnMainThread:@selector(addEvent:)
+										withObject:currentEvent
+									 waitUntilDone:NO];
 		}
 		else
 		{
-			childNodes = [resultElement nodesForXPath:@"reference" error:nil];
-			for(childElement in childNodes)
-			{
-				newService.sref = [childElement stringValue];
-				break;
-			}
+			[ereader endElement:localname prefix:prefix uri:URI];
 		}
-
-		[_delegate performSelectorOnMainThread: @selector(addService:)
-									withObject: newService
-									waitUntilDone: NO];
-		break;
 	}
+	currentString = nil;
+}
 
-	[self parseEvent: [document nodesForXPath:@"/currentservicedata/next_event" error:nil]];
+- (void)charactersFound:(const xmlChar *)characters length:(int)length
+{
+	[ereader charactersFound:characters length:length];
+	[super charactersFound:characters length:length];
 }
 
 @end
