@@ -117,11 +117,6 @@
 	return _picon;
 }
 
-- (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error
-{
-	return nil;
-}
-
 #pragma mark -
 #pragma mark	Copy
 #pragma mark -

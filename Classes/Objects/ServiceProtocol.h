@@ -47,17 +47,6 @@
 
 
 /*!
- @brief Return List of CXMLNodes matching given XPath expression.
- 
- @note Does not need to be implemented but required by some Connectors.
-
- @param xpath XPath expression.
- @param error Will be pointed to NSError if one occurs.
- @return Array of CXMLNodes matching the expression.
- */
-- (NSArray *)nodesForXPath: (NSString *)xpath error: (NSError **)error;
-
-/*!
  @brief Check equality with another Service.
  
  @param otherService Service to check equality with.
