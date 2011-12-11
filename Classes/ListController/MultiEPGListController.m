@@ -484,6 +484,14 @@
 
 - (void)addEvent:(NSObject <EventProtocol>*)event
 {
+	if(!event || !event.service.sref)
+	{
+#if IS_DEBUG()
+		NSLog(@"[MultiEPGListController] Got nil-Event or nil sref in addEvent: %@ // %@", event, event.service.sref);
+#endif
+		return;
+	}
+
 	NSMutableArray *arr = [_events valueForKey:event.service.sref];
 	if(arr)
 	{
