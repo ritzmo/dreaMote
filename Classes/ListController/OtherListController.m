@@ -259,7 +259,12 @@
 		{
 			MGSplitViewController *targetViewController = [selectedDictionary objectForKey:@"viewController"];
 			UINavigationController *navController = (UINavigationController *)targetViewController.masterViewController;
-			[navController pushViewController:masterViewController animated:NO];
+			if(masterViewController.navigationController != navController)
+				[navController pushViewController:masterViewController animated:NO];
+#if IS_DEBUG()
+			else
+				NSLog(@"[OtherListController] masterVierController already had navController as navigationController: not pushing.");
+#endif
 			[selectedDictionary removeObjectForKey:@"masterViewController"];
 
 			if([masterViewController respondsToSelector:@selector(setMgSplitViewController:)])
