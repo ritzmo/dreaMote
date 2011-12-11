@@ -27,6 +27,10 @@
 #import <XMLReader/Enigma/SignalXMLReader.h>
 #import <XMLReader/Enigma/TimerXMLReader.h>
 
+#import <libxml/parser.h>
+#import <libxml/tree.h>
+#import <libxml/xpath.h>
+
 #import <ViewController/EnigmaRCEmulatorController.h>
 
 #import <Categories/NSString+URLEncode.h>
@@ -160,7 +164,8 @@ enum enigma1MessageTypes {
 {
 	[_bouquetsCacheLock lock];
 
-	_cachedBouquetsReader = nil;
+	xmlFreeDoc(_cachedBouquetsDoc);
+	_cachedBouquetsDoc = NULL;
 
 	[_bouquetsCacheLock unlock];
 }
@@ -265,9 +270,10 @@ enum enigma1MessageTypes {
  */
 - (NSError *)maybeRefreshBouquetsXMLCache:(cacheType)requestedCacheType
 {
+	NSError *error = nil;
 	@synchronized(self)
 	{
-		if(!_cachedBouquetsReader || _cacheType != requestedCacheType)
+		if(_cachedBouquetsDoc == NULL || _cacheType != requestedCacheType)
 		{
 			NSInteger mode = 0;
 			if(requestedCacheType & CACHE_TYPE_RADIO)
@@ -280,95 +286,101 @@ enum enigma1MessageTypes {
 			_cacheType = requestedCacheType;
 
 			NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/xml/services?mode=%d&submode=%d", mode, submode] relativeToURL:_baseAddress];
-			NSError *returnValue = nil;
+			NSHTTPURLResponse *response;
+			NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+														  returningResponse:&response
+																	  error:&error];
 
-			_cachedBouquetsReader = [[BaseXMLReader alloc] init];
-			[_cachedBouquetsReader parseXMLFileAtURL:myURI parseError:&returnValue];
+			xmlFreeDoc(_cachedBouquetsDoc); // free possible old document
+			if(error)
+				_cachedBouquetsDoc = NULL;
+			else
+			{
+				_cachedBouquetsDoc = xmlReadMemory([data bytes], [data length], "", NULL, XML_PARSE_RECOVER | XML_PARSE_NOENT);
+				if(_cachedBouquetsDoc == NULL)
+					error = [NSError errorWithDomain:@"myDomain" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown parsing error occured.", @"Data parsing failed for unknown reason.") forKey:NSLocalizedDescriptionKey]];
+			}
 		}
 	}
+	return error;
+}
+
+- (BaseXMLReader *)fetchBouquetsOrProvider:(NSObject<ServiceSourceDelegate> *)delegate cacheType:(cacheType)requestedCacheType
+{
+	[_bouquetsCacheLock lock];
+	xmlFreeDoc(_cachedBouquetsDoc); _cachedBouquetsDoc = NULL; // TODO: bouquets always force a reload
+	NSError *error = [self maybeRefreshBouquetsXMLCache:requestedCacheType];
+	if(error)
+	{
+		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
+		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
+		[delegate performSelectorOnMainThread: @selector(addService:)
+								   withObject: fakeService
+								waitUntilDone: NO];
+
+		[self indicateError:delegate error:error];
+		[_bouquetsCacheLock unlock];
+		return nil;
+	}
+
+	xmlXPathContextPtr xpathCtx = NULL;
+	xmlXPathObjectPtr xpathObj = NULL;
+	const BOOL isProvider = (requestedCacheType & CACHE_MASK_PROVIDER);
+	do
+	{
+		xmlNodeSetPtr nodes;
+
+		xpathCtx = xmlXPathNewContext(_cachedBouquetsDoc);
+		if(!xpathCtx) break;
+
+		// get state
+		xpathObj = xmlXPathEvalExpression((xmlChar *)(isProvider ? "/providers/provider" : "/bouquets/bouquet"), xpathCtx);
+		if(!xpathObj) break;
+
+		nodes = xpathObj->nodesetval;
+		if(!nodes) break;
+
+		for(NSInteger i = 0; i < nodes->nodeNr; ++i)
+		{
+			xmlNodePtr cur = nodes->nodeTab[i];
+			EnigmaService *newService = [[EnigmaService alloc] init];
+			newService.isBouquet = !isProvider;
+
+			for(xmlNodePtr child = cur->children; child; child = child->next)
+			{
+				if(!strncmp((const char *)child->name, kEnigmaName, kEnigmaNameLength))
+				{
+					xmlChar *stringVal = xmlNodeListGetString(_cachedBouquetsDoc, child->children, 1);
+					newService.sname = [NSString stringWithCString:(const char *)stringVal encoding:NSUTF8StringEncoding];
+					xmlFree(stringVal);
+				}
+				else if(!strncmp((const char *)child->name, kEnigmaReference, kEnigmaReferenceLength))
+				{
+					xmlChar *stringVal = xmlNodeListGetString(_cachedBouquetsDoc, child->children, 1);
+					newService.sref = [NSString stringWithCString:(const char *)stringVal encoding:NSUTF8StringEncoding];
+					xmlFree(stringVal);
+				}
+			}
+
+			[delegate performSelectorOnMainThread:@selector(addService:) withObject:newService waitUntilDone:NO];
+		}
+	} while(0);
+	xmlXPathFreeObject(xpathObj);
+	xmlXPathFreeContext(xpathCtx);
+
+	[self indicateSuccess:delegate];
+	[_bouquetsCacheLock unlock];
 	return nil;
 }
 
 - (BaseXMLReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
-	[_bouquetsCacheLock lock];
-	_cachedBouquetsReader = nil; // TODO: bouquets always force a reload
-	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
-	if(error)
-	{
-		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
-		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: fakeService
-								waitUntilDone: NO];
-
-		[self indicateError:delegate error:error];
-		[_bouquetsCacheLock unlock];
-		return nil;
-	}
-
-	NSArray *resultNodes = nil;
-	NSUInteger parsedServicesCounter = 0;
-
-	resultNodes = [_cachedBouquetsReader.document nodesForXPath:@"/bouquets/bouquet" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
-	{
-		if(++parsedServicesCounter >= MAX_SERVICES)
-			break;
-
-		// A service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode:(CXMLNode *)resultElement isBouquet:YES];
-
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: newService
-								waitUntilDone: NO];
-	}
-
-	[self indicateSuccess:delegate];
-	[_bouquetsCacheLock unlock];
-	return _cachedBouquetsReader;
+	return [self fetchBouquetsOrProvider:delegate cacheType:CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 }
 
 - (BaseXMLReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
-	[_bouquetsCacheLock lock];
-	_cachedBouquetsReader = nil; // TODO: providers always force a reload
-	NSError *error = [self maybeRefreshBouquetsXMLCache:CACHE_MASK_PROVIDER|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
-	if(error)
-	{
-		NSObject<ServiceProtocol> *fakeService = [[GenericService alloc] init];
-		fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: fakeService
-								waitUntilDone: NO];
-
-		[self indicateError:delegate error:error];
-		[_bouquetsCacheLock unlock];
-		return nil;
-	}
-
-	NSArray *resultNodes = nil;
-	NSUInteger parsedServicesCounter = 0;
-
-	resultNodes = [_cachedBouquetsReader.document nodesForXPath:@"/providers/provider" error:nil];
-
-	for(CXMLElement *resultElement in resultNodes)
-	{
-		if(++parsedServicesCounter >= MAX_SERVICES)
-			break;
-
-		// A service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode:(CXMLNode *)resultElement isBouquet:NO];
-
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: newService
-								waitUntilDone: NO];
-	}
-
-	[self indicateSuccess:delegate];
-	[_bouquetsCacheLock unlock];
-	return _cachedBouquetsReader;
+	return [self fetchBouquetsOrProvider:delegate cacheType:CACHE_MASK_PROVIDER|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 }
 
 - (NSObject<ServiceProtocol> *)allServicesBouquet:(BOOL)isRadio
@@ -393,9 +405,6 @@ enum enigma1MessageTypes {
 
 	[_bouquetsCacheLock lock];
 
-	NSArray *resultNodes = nil;
-	NSUInteger parsedServicesCounter = 0;
-
 	// Gather information on the needed cache type
 	cacheType thisType = (isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV);
 	NSString *sref = bouquet.sref;
@@ -408,14 +417,12 @@ enum enigma1MessageTypes {
 		thisType |= (((EnigmaService *)bouquet).isBouquet) ? CACHE_MASK_BOUQUET : CACHE_MASK_PROVIDER;
 	}
 
-	// if cache is valid for this request, read services
-	if(_cacheType == thisType)
+	// if cache type is wrong, try to load cache and abort on failure
+	if(_cacheType != thisType)
 	{
-		resultNodes = [bouquet nodesForXPath:@"service" error:nil];
-	}
-
-	if(!resultNodes || ![resultNodes count])
-	{
+#if IS_DEBUG()
+		NSLog(@"[Enigma1Connector] Cached document has type %d but expecting type %d, reloading.", _cacheType, thisType);
+#endif
 		NSError *error = [self maybeRefreshBouquetsXMLCache:thisType];
 		if(error)
 		{
@@ -429,34 +436,67 @@ enum enigma1MessageTypes {
 			[_bouquetsCacheLock unlock];
 			return nil;
 		}
-
-		NSString *xpath = nil;
-		if(thisType & CACHE_MASK_BOUQUET)
-			xpath = [NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref];
-		else if(thisType & CACHE_MASK_PROVIDER)
-			xpath = [NSString stringWithFormat: @"/providers/provider[reference=\"%@\"]/service", bouquet.sref];
-		else if(thisType & CACHE_MASK_ALL)
-			xpath = @"/*/*/service";
-		else
-		{
-			NSLog(@"[Enigma1Connector] Incomplete mask - doing our best!");
-			xpath = [NSString stringWithFormat: @"/*/*[reference=\"%@\"]/service", bouquet.sref];
-		}
-		resultNodes = [_cachedBouquetsReader.document nodesForXPath:xpath error:nil];
 	}
+#if IS_DEBUG()
+	else
+		NSLog(@"[Enigma1Connector] Cached document has correct type.");
+#endif
 
-	for(CXMLElement *resultElement in resultNodes)
+	NSString *xpath = nil;
+	if(thisType & CACHE_MASK_BOUQUET)
+		xpath = [NSString stringWithFormat: @"/bouquets/bouquet[reference=\"%@\"]/service", bouquet.sref];
+	else if(thisType & CACHE_MASK_PROVIDER)
+		xpath = [NSString stringWithFormat: @"/providers/provider[reference=\"%@\"]/service", bouquet.sref];
+	else if(thisType & CACHE_MASK_ALL)
+		xpath = @"/*/*/service";
+	else
 	{
-		if(++parsedServicesCounter >= MAX_SERVICES)
-			break;
-
-		// A service in the xml represents a service, so create an instance of it.
-		NSObject<ServiceProtocol> *newService = [[EnigmaService alloc] initWithNode: (CXMLNode *)resultElement];
-
-		[delegate performSelectorOnMainThread: @selector(addService:)
-								   withObject: [newService copy] // XXX: create copy of service to prevent losing the root document
-								waitUntilDone: NO];
+		NSLog(@"[Enigma1Connector] Incomplete mask - doing our best!");
+		xpath = [NSString stringWithFormat: @"/*/*[reference=\"%@\"]/service", bouquet.sref];
 	}
+
+	xmlXPathContextPtr xpathCtx = NULL;
+	xmlXPathObjectPtr xpathObj = NULL;
+	do
+	{
+		xmlNodeSetPtr nodes;
+
+		xpathCtx = xmlXPathNewContext(_cachedBouquetsDoc);
+		if(!xpathCtx) break;
+
+		// get state
+		xpathObj = xmlXPathEvalExpression((xmlChar *)[xpath cStringUsingEncoding:NSUTF8StringEncoding], xpathCtx);
+		if(!xpathObj) break;
+
+		nodes = xpathObj->nodesetval;
+		if(!nodes) break;
+
+		for(NSInteger i = 0; i < nodes->nodeNr; ++i)
+		{
+			xmlNodePtr cur = nodes->nodeTab[i];
+			GenericService *newService = [[GenericService alloc] init];
+
+			for(xmlNodePtr child = cur->children; child; child = child->next)
+			{
+				if(!strncmp((const char *)child->name, kEnigmaName, kEnigmaNameLength))
+				{
+					xmlChar *stringVal = xmlNodeListGetString(_cachedBouquetsDoc, child->children, 1);
+					newService.sname = [NSString stringWithCString:(const char *)stringVal encoding:NSUTF8StringEncoding];
+					xmlFree(stringVal);
+				}
+				else if(!strncmp((const char *)child->name, kEnigmaReference, kEnigmaReferenceLength))
+				{
+					xmlChar *stringVal = xmlNodeListGetString(_cachedBouquetsDoc, child->children, 1);
+					newService.sref = [NSString stringWithCString:(const char *)stringVal encoding:NSUTF8StringEncoding];
+					xmlFree(stringVal);
+				}
+			}
+
+			[delegate performSelectorOnMainThread:@selector(addService:) withObject:newService waitUntilDone:NO];
+		}
+	} while(0);
+	xmlXPathFreeObject(xpathObj);
+	xmlXPathFreeContext(xpathCtx);
 
 	[self indicateSuccess:delegate];
 	[_bouquetsCacheLock unlock];

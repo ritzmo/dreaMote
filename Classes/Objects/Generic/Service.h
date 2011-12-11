@@ -15,7 +15,7 @@
  */
 @interface GenericService : NSObject <ServiceProtocol>
 {
-@private
+@protected
 	BOOL _valid; /*!< @brief Valid service?. */
 	/* Picons */
 	BOOL _calculatedPicon; /*!< @brief Did we try to load the picon before? */

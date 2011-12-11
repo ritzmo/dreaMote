@@ -31,12 +31,12 @@ typedef enum
 	NSLock *_bouquetsCacheLock; /*!< @brief Lock for _cachedBouquetsXML. */
 
 	/*!
-	 @brief XML Reader responsible for current cached document.
+	 @brief XML Document of current cacheType.
 
 	 For performance Reasons the Service list is only fetched once when entering
 	 the Bouquet list so we have to cache this (already parsed) XML in memory.
 	*/
-	BaseXMLReader *_cachedBouquetsReader;
+	xmlDocPtr _cachedBouquetsDoc;
 	cacheType _cacheType;
 }
 
