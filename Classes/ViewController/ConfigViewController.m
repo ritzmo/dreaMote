@@ -55,13 +55,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 - (UIButton *)create_Button: (NSString *)imageName: (SEL)action;
 
 /*!
- @brief Selector to call when _makeDefaultButton was pressed.
- 
- @param sender Unused instance of sender.
- */
-- (void)makeDefault: (id)sender;
-
-/*!
  @brief Selector to call when _connectButton was pressed.
  
  @param sender Unused instance of sender.
@@ -81,11 +74,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 - (void)sslChanged:(id)sender;
 
 
-
-/*!
- @brief "Make Default" Button.
- */
-@property (nonatomic,strong) UIButton *makeDefaultButton;
 
 /*!
  @brief "Connect" Button.
@@ -108,7 +96,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 @implementation ConfigViewController
 
 @synthesize connectionIndex = _connectionIndex;
-@synthesize makeDefaultButton = _makeDefaultButton;
 @synthesize connectButton = _connectButton;
 @synthesize progressHUD = progressHUD;
 @synthesize tableView = _tableView;
@@ -176,7 +163,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	UnsetCellAndDelegate(_usernameCell);
 	UnsetCellAndDelegate(_passwordCell);
 
-	SafeDestroyButton(_makeDefaultButton);
 	SafeDestroyButton(_connectButton);
 
 	progressHUD.delegate = nil;
@@ -320,10 +306,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	// Connect Button
 	self.connectButton = [self create_Button: @"network-wired.png": @selector(doConnect:)];
 	_connectButton.enabled = YES;
-	
-	// "Make Default" Button
-	self.makeDefaultButton = [self create_Button: @"emblem-favorite.png": @selector(makeDefault:)];
-	_makeDefaultButton.enabled = YES;
 
 	// Single bouquet switch
 	_singleBouquetSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, kSwitchButtonWidth, kSwitchButtonHeight)];
@@ -378,7 +360,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	_nowNextSwitch = nil;
 	_sslSwitch = nil;
 
-	SafeDestroyButton(_makeDefaultButton);
 	SafeDestroyButton(_connectButton);
 
 	[super viewDidUnload];
@@ -417,27 +398,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			if(_connectionIndex == -1)
 			{
 				_connectionIndex = [connections count];
-				[connections addObject: _connection];
-				// FIXME: ugly!
-				if(_connectionIndex != [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] || _connectionIndex != [RemoteConnectorObject getConnectedId])
-				{
-					const NSInteger numberOfRowsInSection = [_tableView numberOfRowsInSection:2];
-					const NSInteger newNumberOfRowsInSection = [self tableView:_tableView numberOfRowsInSection:2];
-					if(numberOfRowsInSection != newNumberOfRowsInSection) // XXX: seen a weird crash because of this, handle it
-					{
-#if IS_DEBUG()
-						[NSException raise:@"numberOfRowsDidNotMatch" format:@"was %d, is now %d. _connector %d, kConnector %@", numberOfRowsInSection, newNumberOfRowsInSection, _connector, [[_connection objectForKey:kConnector] stringValue]];
-#endif
-						[_tableView reloadData];
-					}
-					else
-					{
-						[_tableView beginUpdates];
-						[_tableView insertSections:[NSIndexSet indexSetWithIndex:3]
-												withRowAnimation:UITableViewRowAnimationFade];
-						[_tableView endUpdates];
-					}
-				}
+				[connections addObject:_connection];
 
 				// NOTE: if this is the first connection, we need to establish it here to properly check for features.
 				if(_mustSave)
@@ -508,8 +469,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 #endif
 	[super setEditing: editing animated: animated];
 
-	/*_makeDefaultButton.enabled = editing;
-	 _connectButton.enabled = editing;*/
+	//_connectButton.enabled = editing;
 }
 
 /* cancel and close */
@@ -531,78 +491,10 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	}
 }
 
-/* "make default" button pressed */
-- (void)makeDefault: (id)sender
-{
-	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
-	NSNumber *activeConnection = [NSNumber numberWithInteger: _connectionIndex];
-	const NSInteger connectedId = [RemoteConnectorObject getConnectedId];
-
-	if(![RemoteConnectorObject connectTo: _connectionIndex])
-	{
-		// error connecting... what now?
-		UIAlertView *notification = [[UIAlertView alloc]
-									 initWithTitle:NSLocalizedString(@"Error", @"")
-									 message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
-									 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[notification show];
-		return;
-	}
-	else
-	{
-		// connected to different host than before
-		if(_connectionIndex != connectedId)
-		{
-			const NSError *error = nil;
-			const BOOL doAbort = ![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
-			// error without doAbort means e.g. old version
-			if(error)
-			{
-				UIAlertView *notification = [[UIAlertView alloc]
-											 initWithTitle:doAbort ? NSLocalizedString(@"Error", @"") : NSLocalizedString(@"Warning", @"")
-											 message:[error localizedDescription]
-											 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-				[notification show];
-				if(doAbort)
-				{
-					[RemoteConnectorObject connectTo:connectedId];
-					return;
-				}
-			}
-		}
-	}
-	NSInteger numberOfSections = [_tableView numberOfSections];
-#if IS_DEBUG()
-	NSInteger curDefault = [[stdDefaults objectForKey:kActiveConnection] integerValue];
-#endif
-	[stdDefaults setObject: activeConnection forKey: kActiveConnection];
-
-	if(numberOfSections == 4)
-	{
-		[_tableView beginUpdates];
-		[_tableView deleteSections:[NSIndexSet indexSetWithIndex:3]
-								withRowAnimation:UITableViewRowAnimationFade];
-		[_tableView endUpdates];
-	}
-	else if(numberOfSections != 3) // NOTE: we also expect "3" if this was fired multiple times
-	{
-#if IS_DEBUG()
-		[NSException raise:@"InvalidSectionCountOnMakeDefault" format:@"numberOfSections was %d, expected 4. kActiveConnection was %d, _connectionIndex is %d, connected was %d", numberOfSections, curDefault, _connectionIndex, connectedId];
-#else
-		[_tableView reloadData];
-#endif
-	}
-	
-	// post notification
-	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-}
-
 /* "connect" button pressed */
 - (void)doConnect: (id)sender
 {
 	const NSInteger connectedId = [RemoteConnectorObject getConnectedId];
-
-	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 
 	if(![RemoteConnectorObject connectTo: _connectionIndex])
 	{
@@ -633,30 +525,20 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			}
 		}
 	}
-	const NSInteger numberOfRowsInSection = [_tableView numberOfRowsInSection:3];
-	const BOOL isDefault = (_connectionIndex == [stdDefaults integerForKey: kActiveConnection]);
 
-	if(isDefault && numberOfRowsInSection == 1)
+	if([_tableView numberOfSections] == 4)
 	{
 		[_tableView beginUpdates];
 		[_tableView deleteSections:[NSIndexSet indexSetWithIndex:3]
 				  withRowAnimation:UITableViewRowAnimationFade];
 		[_tableView endUpdates];
 	}
-	else if(!isDefault && numberOfRowsInSection == 2)
-	{
-		[_tableView beginUpdates];
-		[_tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:3]]
-						  withRowAnimation:UITableViewRowAnimationFade];
-		[_tableView endUpdates];
-	}
 	else
 	{
 #if IS_DEBUG()
-		[NSException raise:@"InvalidRowCountOnDoConnect" format:@"%@, numberOfRowsInSection %d", isDefault ? @"is default" : @"not default", numberOfRowsInSection];
-#else
-		[_tableView reloadData];
+		NSLog(@"[ConfigViewController] Invalid number of sections in doConnect: %d", [_tableView numberOfSections]);
 #endif
+		[_tableView reloadData];
 	}
 
 	// post notification
@@ -740,8 +622,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 /* number of sections */
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	if(	_connectionIndex == -1
-		|| (_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection] && _connectionIndex == [RemoteConnectorObject getConnectedId]))
+	// unknown index or connected: no connect button
+	if(		(_connectionIndex == -1)
+		||	(_connectionIndex == [RemoteConnectorObject getConnectedId]))
 		return 3;
 	return 4;
 }
@@ -821,10 +704,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				return (IS_IPAD()) ? 3 : 4;
 			return 1;
 		case 3:
-			if(_connectionIndex == [[NSUserDefaults standardUserDefaults] integerForKey: kActiveConnection]
-			   || _connectionIndex == [RemoteConnectorObject getConnectedId])
+			if(_connectionIndex != [RemoteConnectorObject getConnectedId])
 				return 1;
-			return 2;
+			return 0;
 	}
 	return 0;
 }
@@ -960,10 +842,6 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Connect", @"Connect to the remote host for this session.");
 					((DisplayCell *)sourceCell).view = _connectButton;
 					break;
-				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Make Default", @"Make this remote host the default for future sessions.");
-					((DisplayCell *)sourceCell).view = _makeDefaultButton;
-					break;
 				default:
 					break;
 			}
@@ -977,7 +855,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 }
 
 /* select row */
-- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (NSIndexPath *)tableView:(UITableView *)tv willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
 	NSInteger row = indexPath.row;
 	if(self.editing && indexPath.section == 2 && row == 0)
 	{
@@ -999,13 +878,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	}
 	else if(indexPath.section == 3)
 	{
-		if(_connectionIndex == [RemoteConnectorObject getConnectedId])
-			row++;
-
 		if(row == 0)
 			[self doConnect: nil];
-		else
-			[self makeDefault: nil];
 	}
 
 	// We don't want any actual response :-)

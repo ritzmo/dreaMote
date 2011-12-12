@@ -150,6 +150,12 @@ static RemoteConnectorObject *singleton;
 
 + (void)saveConnections
 {
+	// save default connection for next launch
+	RemoteConnectorObject *singleton = [RemoteConnectorObject singleton];
+	const NSUInteger index = [singleton.connections indexOfObject:singleton.connection];
+	if(index != NSNotFound)
+		[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithUnsignedInteger:index] forKey:kActiveConnection];
+
 	NSString *finalPath = [kConfigPath stringByExpandingTildeInPath];
 	[[RemoteConnectorObject singleton].connections writeToFile: finalPath atomically: YES];
 }

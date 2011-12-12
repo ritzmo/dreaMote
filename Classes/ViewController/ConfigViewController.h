@@ -40,7 +40,6 @@
 	CellTextField *_passwordCell; /*!< @brief Password Cell. */
 	NSMutableDictionary *_connection; /*!< @brief Connection Dictionary. */
 	NSInteger _connectionIndex; /*!< @brief Index in List of known Connections. */
-	UIButton *_makeDefaultButton; /*!< @brief "Make Default" Button. */
 	UIButton *_connectButton; /*!< @brief "Connect" Button. */
 	UISwitch *_singleBouquetSwitch; /*!< @brief Switch for "Single Bouquet Mode" if Connector supports it. */
 	/*!
