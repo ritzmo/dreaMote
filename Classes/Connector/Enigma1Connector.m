@@ -294,7 +294,17 @@ enum enigma1MessageTypes {
 			{
 				_cachedBouquetsDoc = xmlReadMemory([data bytes], [data length], "", NULL, XML_PARSE_RECOVER | XML_PARSE_NOENT);
 				if(_cachedBouquetsDoc == NULL)
-					error = [NSError errorWithDomain:@"myDomain" code:101 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Unknown parsing error occured.", @"Data parsing failed for unknown reason.") forKey:NSLocalizedDescriptionKey]];
+				{
+					NSString *errorText = nil;
+					xmlErrorPtr theLastErrorPtr = xmlGetLastError();
+					if(theLastErrorPtr)
+						errorText = [NSString stringWithUTF8String:theLastErrorPtr->message];
+					else
+						errorText = NSLocalizedString(@"Unknown parsing error occured.", @"Data parsing failed for unknown reason.");
+					error = [NSError errorWithDomain:@"myDomain"
+												code:101
+											userInfo:[NSDictionary dictionaryWithObject:errorText forKey:NSLocalizedDescriptionKey]];
+				}
 			}
 		}
 	}
