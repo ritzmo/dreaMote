@@ -72,6 +72,12 @@ enum bouquetMode {
 	MODE_RADIO = 1,
 };
 
+typedef enum {
+	FEATURE_AUTOTIMER = 1 << 0,
+	FEATURE_EPGREFRESH = 1 << 1,
+	FEATURE_ALL = FEATURE_AUTOTIMER | FEATURE_EPGREFRESH,
+} dynamicFeatures_t;
+
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.6.5", @"1.6.8", @"1.7.0"
 };
@@ -79,12 +85,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 @interface Enigma2Connector()
 - (NSString *)getServiceReferenceForBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
+@property (nonatomic, assign) dynamicFeatures_t dynamicFeatures;
 @property (nonatomic, strong) NSError *versionWarning;
 @end
 
 @implementation Enigma2Connector
 
-@synthesize versionWarning;
+@synthesize dynamicFeatures, versionWarning;
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
@@ -125,6 +132,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			break;
 	}
 
+	if(feature == kFeaturesAutoTimer)
+		return (dynamicFeatures & FEATURE_AUTOTIMER);
+	else if(feature == kFeaturesEPGRefresh)
+		return (dynamicFeatures & FEATURE_EPGREFRESH);
+
 	return
 		(feature != kFeaturesMessageCaption) &&
 		(feature != kFeaturesComplicatedRepeated);
@@ -157,11 +169,29 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			_password = inPassword;
 		}
 		_advancedRc = advancedRc;
+		dynamicFeatures = FEATURE_ALL;
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 			const BOOL reachable = [self isReachable:nil];
 			if(reachable)
 			{
+				NSURL *myURI = [NSURL URLWithString:@"/autotimer/set" relativeToURL:_baseAddress];
+
+				NSHTTPURLResponse *response;
+				[SynchronousRequestReader sendSynchronousRequest:myURI
+											   returningResponse:&response
+														   error:nil];
+				if([response statusCode] != 200)
+					dynamicFeatures &= ~FEATURE_AUTOTIMER;
+
+				myURI = [NSURL URLWithString:@"/epgrefresh/set" relativeToURL:_baseAddress];
+				[SynchronousRequestReader sendSynchronousRequest:myURI
+											   returningResponse:&response
+														   error:nil];
+				if([response statusCode] != 200)
+					dynamicFeatures &= ~FEATURE_EPGREFRESH;
+				NSLog(@"%d", [response statusCode]);
+
 				// this might have changed the features, so handle this like a reconnect
 				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
 			}
