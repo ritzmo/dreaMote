@@ -1121,6 +1121,9 @@
 		DAFAAE8913EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 		DAFAAE8A13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 		DAFAAE8B13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
+		DAFB623E1496B16900263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
+		DAFB62401496B16A00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
+		DAFB62411496B16B00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -3512,6 +3515,7 @@
 				DA30A5DC1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 				DA2645FE1476D22D00B91162 /* ShareKit.bundle in Resources */,
 				DAA303E2148E8C180011A225 /* Cell_BlueSelected.png in Resources */,
+				DAFB623E1496B16900263128 /* network-wired.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3630,6 +3634,7 @@
 				DA30A5DD1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 				DA2645FF1476D22D00B91162 /* ShareKit.bundle in Resources */,
 				DAA303E3148E8C180011A225 /* Cell_BlueSelected.png in Resources */,
+				DAFB62401496B16A00263128 /* network-wired.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3745,6 +3750,7 @@
 				DA30A5DE1475C7E40052C2C9 /* 37x-Checkmark.png in Resources */,
 				DA2646001476D22D00B91162 /* ShareKit.bundle in Resources */,
 				DAA303E4148E8C180011A225 /* Cell_BlueSelected.png in Resources */,
+				DAFB62411496B16B00263128 /* network-wired.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
