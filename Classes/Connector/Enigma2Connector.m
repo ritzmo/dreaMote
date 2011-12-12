@@ -190,7 +190,6 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 														   error:nil];
 				if([response statusCode] != 200)
 					dynamicFeatures &= ~FEATURE_EPGREFRESH;
-				NSLog(@"%d", [response statusCode]);
 
 				// this might have changed the features, so handle this like a reconnect
 				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];

@@ -240,7 +240,6 @@
 
 - (void)handleReconnect: (NSNotification *)note
 {
-	NSLog(@"handleReconnect");
 	if(_aboutDictionary)
 	{
 		const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
