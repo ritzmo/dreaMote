@@ -248,19 +248,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	BOOL treatAsFirst = YES;
 	if([RemoteConnectorObject loadConnections])
 	{
-		if([RemoteConnectorObject connectTo:[activeConnectionId integerValue]])
-		{
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-				NSError *error = nil;
-				[[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+		treatAsFirst = ![RemoteConnectorObject connectTo:[activeConnectionId integerValue]];
 
-				// this might have changed the features, so handle this like a reconnect
-				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-			});
-			treatAsFirst = NO;
-		}
-
-		// by using mg split view loadView is called to early which might lead to the
+		// by using mg split view loadView is called too early which might lead to the
 		// wrong mode being shown (e.g. only movie list & movie view for enigma2 instead
 		// of location list & movie list). posting this notification will trigger the necessary
 		// reload.

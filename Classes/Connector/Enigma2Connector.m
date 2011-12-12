@@ -78,9 +78,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 @interface Enigma2Connector()
 - (NSString *)getServiceReferenceForBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+@property (nonatomic, strong) NSError *versionWarning;
 @end
 
 @implementation Enigma2Connector
+
+@synthesize versionWarning;
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
@@ -153,6 +157,15 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			_password = inPassword;
 		}
 		_advancedRc = advancedRc;
+
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+			const BOOL reachable = [self isReachable:nil];
+			if(reachable)
+			{
+				// this might have changed the features, so handle this like a reconnect
+				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+			}
+		});
 	}
 	return self;
 }
@@ -282,10 +295,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 												  returningResponse:&response
 															  error:error];
 
-	// TODO: check webif version
 	if([response statusCode] == 200)
 	{
-		if(error != nil && !_wasWarned)
+		// only parse on initial connection
+		@synchronized(self) {
+		if(_webifVersion == WEBIF_VERSION_UNKNOWN)
 		{
 			NSRange dataRange = NSMakeRange(0, [data length]);
 			NSRange versionBegin = [data rangeOfData:[NSData dataWithBytesNoCopy:"e2webifversion>" length:15 freeWhenDone:NO] options:0 range:dataRange];
@@ -302,9 +316,10 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				versionBegin.length = versionEnd.location - versionBegin.location;
 
 				NSMutableString *stringValue = [[NSMutableString alloc] initWithData:[data subdataWithRange:versionBegin] encoding:NSUTF8StringEncoding];
+				versionBegin.location = 0;
 				// XXX: reading out versions like these is quite difficult, so we artificial relabel them so 1.6.0 > 1.6rc > 1.6beta
-				[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:NSMakeRange(0, [stringValue length])];
-				[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:NSMakeRange(0, [stringValue length])];
+				[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:versionBegin];
+				[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:versionBegin];
 				NSInteger i = WEBIF_VERSION_1_5b;
 
 				_webifVersion = WEBIF_VERSION_OLD;
@@ -321,20 +336,21 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 				// only warn on old version, but suggest updating to the newest one
 				if(_webifVersion < WEBIF_VERSION_1_6_5)
 				{
-					*error = [NSError errorWithDomain:@"myDomain"
+					versionWarning = [NSError errorWithDomain:@"myDomain"
 												code:98
 											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
 				}
 			}
-
-			_wasWarned = YES;
 		}
+		} // @synchronized(self)
+		if(versionWarning && error)
+			*error = versionWarning;
 		return YES;
 	}
 	else
 	{
 		// no connection error but unexpected status, generate error
-		if(error != nil && *error == nil)
+		if(error && *error == nil)
 		{
 			*error = [NSError errorWithDomain:@"myDomain"
 										 code:99
