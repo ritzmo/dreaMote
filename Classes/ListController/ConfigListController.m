@@ -226,9 +226,7 @@ enum settingsRows
 	[[NSUserDefaults standardUserDefaults] setBool: _simpleRemote.on forKey: kPrefersSimpleRemote];
 
 	// we need to post a notification so the main view reloads the rc
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 }
 
 - (void)vibrationChanged:(id)sender
@@ -243,6 +241,9 @@ enum settingsRows
 
 - (void)rereadData:(NSNotification *)note
 {
+	if(![self isViewLoaded] || self.view.superview)
+		return;
+
 	_connections = [RemoteConnectorObject getConnections];
 
 	// just in case, read them too
@@ -508,9 +509,7 @@ enum settingsRows
 						[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
 
 						// post notification
-						[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 						[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-						[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 					}
 					// connected to same host
 					else
@@ -1024,9 +1023,7 @@ enum settingsRows
 						 withRowAnimation: UITableViewRowAnimationFade];
 
 		// post notification
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 		[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rereadData:) name:kReconnectNotification object:nil];
 	}
 	// Add new connection
 	else if(editingStyle == UITableViewCellEditingStyleInsert)
