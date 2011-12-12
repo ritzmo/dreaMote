@@ -240,15 +240,215 @@
 
 - (void)handleReconnect: (NSNotification *)note
 {
-	if(_aboutDictionary) // check an arbitrary item for nil
-		[self viewWillAppear:YES];
+	NSLog(@"handleReconnect");
+	if(_aboutDictionary)
+	{
+		const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
+		if(![RemoteConnectorObject isConnected])
+			if(![RemoteConnectorObject connectTo: [connId integerValue]])
+				return;
+		const BOOL isIpad = IS_IPAD();
+
+		BOOL reload = NO;
+		/* The menu reorganization might be buggy, this should be redone
+		 as it was a bad hack to begin with */
+		// Add/Remove Record
+		if(!isIpad)
+		{
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
+			{
+				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
+				{
+					if(![menuList containsObject: _locationsDictionary])
+					{
+						[menuList removeObject:_recordDictionary];
+						[menuList insertObject:_locationsDictionary atIndex: 2];
+						reload = YES;
+					}
+				}
+				else
+				{
+					if(![menuList containsObject: _recordDictionary])
+					{
+						[menuList removeObject:_locationsDictionary];
+						[menuList insertObject:_recordDictionary atIndex: 2];
+						reload = YES;
+					}
+				}
+			}
+			else
+			{
+				if([menuList containsObject: _recordDictionary]
+				   || [menuList containsObject: _locationsDictionary])
+				{
+					[menuList removeObject: _recordDictionary];
+					[menuList removeObject: _locationsDictionary];
+					reload = YES;
+				}
+			}
+
+			// Add/Remove Media Player
+			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
+			{
+				if(![menuList containsObject: _mediaPlayerDictionary])
+				{
+					[menuList insertObject: _mediaPlayerDictionary atIndex: 2];
+					reload = YES;
+				}
+			}
+			else
+			{
+				if([menuList containsObject: _mediaPlayerDictionary])
+				{
+					[menuList removeObject: _mediaPlayerDictionary];
+					reload = YES;
+				}
+			}
+		}
+
+		// Add/Remove Signal Finder
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSatFinder])
+		{
+			if(![menuList containsObject: _signalDictionary])
+			{
+				[menuList insertObject: _signalDictionary atIndex: (isIpad) ? 3 : 4];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject: _signalDictionary])
+			{
+				[menuList removeObject: _signalDictionary];
+				reload = YES;
+			}
+		}
+
+		// Add/Remove Package Manager
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesPackageManagement])
+		{
+			if(![menuList containsObject: _packageManagerDictionary])
+			{
+				[menuList insertObject: _packageManagerDictionary atIndex: (isIpad) ? 4 : 5];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject: _packageManagerDictionary])
+			{
+				[menuList removeObject: _packageManagerDictionary];
+				reload = YES;
+			}
+		}
+
+		// Add/Remove Sleep Timer
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSleepTimer])
+		{
+			if(![menuList containsObject: _sleeptimerDictionary])
+			{
+				[menuList insertObject: _sleeptimerDictionary atIndex: (isIpad) ? 4 : 5];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject: _sleeptimerDictionary])
+			{
+				[menuList removeObject: _sleeptimerDictionary];
+				reload = YES;
+			}
+		}
+
+		// Add/Remove Event Search
+		/*!
+		 @note Full version does emulated epg search in cache, so only check for native
+		 search ability in lite version.
+		 */
+#if IS_FULL()
+		if(YES)
+#else
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
+#endif
+		{
+			if(![menuList containsObject: _eventSearchDictionary])
+			{
+				[menuList insertObject: _eventSearchDictionary atIndex: 2];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject: _eventSearchDictionary])
+			{
+				[menuList removeObject: _eventSearchDictionary];
+				reload = YES;
+			}
+		}
+
+		// Add/Remove About Receiver
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
+		{
+			if(![menuList containsObject: _aboutDictionary])
+			{
+				[menuList insertObject: _aboutDictionary atIndex: 0];
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject: _aboutDictionary])
+			{
+				[menuList removeObject: _aboutDictionary];
+				reload = YES;
+			}
+		}
+
+#if IS_FULL()
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer])
+		{
+			if(![menuList containsObject:_autotimerDictionary])
+			{
+				[menuList addObject:_autotimerDictionary]; // add to EOL
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject:_autotimerDictionary])
+			{
+				[menuList removeObject:_autotimerDictionary];
+				reload = YES;
+			}
+		}
+#endif
+
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesEPGRefresh])
+		{
+			if(![menuList containsObject:_epgrefreshDictionary])
+			{
+				[menuList addObject:_epgrefreshDictionary]; // add to EOL
+				reload = YES;
+			}
+		}
+		else
+		{
+			if([menuList containsObject:_epgrefreshDictionary])
+			{
+				[menuList removeObject:_epgrefreshDictionary];
+				reload = YES;
+			}
+		}
+
+		if(reload)
+			[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+	}
 }
 
 #pragma mark UIViewController delegates
 
 - (void)viewWillAppear:(BOOL)animated
 {
-	const BOOL isIpad = IS_IPAD();
 	// this UIViewController is about to re-appear, make sure we remove the current selection in our table view
 	NSIndexPath *tableSelection = [tableView indexPathForSelectedRow];
 	if(mgSplitViewController)
@@ -278,205 +478,7 @@
 	{
 		[tableView deselectRowAtIndexPath:tableSelection animated:YES];
 	}
-
-	const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
-	if(![RemoteConnectorObject isConnected])
-		if(![RemoteConnectorObject connectTo: [connId integerValue]])
-			return;
-
-	BOOL reload = NO;
-	/* The menu reorganization might be buggy, this should be redone
-	   as it was a bad hack to begin with */
-	// Add/Remove Record
-	if(!isIpad)
-	{
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
-		{
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
-			{
-				if(![menuList containsObject: _locationsDictionary])
-				{
-					[menuList removeObject:_recordDictionary];
-					[menuList insertObject:_locationsDictionary atIndex: 2];
-					reload = YES;
-				}
-			}
-			else
-			{
-				if(![menuList containsObject: _recordDictionary])
-				{
-					[menuList removeObject:_locationsDictionary];
-					[menuList insertObject:_recordDictionary atIndex: 2];
-					reload = YES;
-				}
-			}
-		}
-		else
-		{
-			if([menuList containsObject: _recordDictionary]
-			   || [menuList containsObject: _locationsDictionary])
-			{
-				[menuList removeObject: _recordDictionary];
-				[menuList removeObject: _locationsDictionary];
-				reload = YES;
-			}
-		}
-		
-		// Add/Remove Media Player
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
-		{
-			if(![menuList containsObject: _mediaPlayerDictionary])
-			{
-				[menuList insertObject: _mediaPlayerDictionary atIndex: 2];
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject: _mediaPlayerDictionary])
-			{
-				[menuList removeObject: _mediaPlayerDictionary];
-				reload = YES;
-			}
-		}
-	}
-
-	// Add/Remove Signal Finder
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSatFinder])
-	{
-		if(![menuList containsObject: _signalDictionary])
-		{
-			[menuList insertObject: _signalDictionary atIndex: (isIpad) ? 3 : 4];
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _signalDictionary])
-		{
-			[menuList removeObject: _signalDictionary];
-			reload = YES;
-		}
-	}
-
-	// Add/Remove Package Manager
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesPackageManagement])
-	{
-		if(![menuList containsObject: _packageManagerDictionary])
-		{
-			[menuList insertObject: _packageManagerDictionary atIndex: (isIpad) ? 4 : 5];
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _packageManagerDictionary])
-		{
-			[menuList removeObject: _packageManagerDictionary];
-			reload = YES;
-		}
-	}
-
-	// Add/Remove Sleep Timer
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSleepTimer])
-	{
-		if(![menuList containsObject: _sleeptimerDictionary])
-		{
-			[menuList insertObject: _sleeptimerDictionary atIndex: (isIpad) ? 4 : 5];
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _sleeptimerDictionary])
-		{
-			[menuList removeObject: _sleeptimerDictionary];
-			reload = YES;
-		}
-	}
-
-	// Add/Remove Event Search
-	/*!
-	 @note Full version does emulated epg search in cache, so only check for native
-	 search ability in lite version.
-	 */
-#if IS_FULL()
-	if(YES)
-#else
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
-#endif
-	{
-		if(![menuList containsObject: _eventSearchDictionary])
-		{
-			[menuList insertObject: _eventSearchDictionary atIndex: 2];
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _eventSearchDictionary])
-		{
-			[menuList removeObject: _eventSearchDictionary];
-			reload = YES;
-		}
-	}
-
-	// Add/Remove About Receiver
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
-	{
-		if(![menuList containsObject: _aboutDictionary])
-		{
-			[menuList insertObject: _aboutDictionary atIndex: 0];
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject: _aboutDictionary])
-		{
-			[menuList removeObject: _aboutDictionary];
-			reload = YES;
-		}
-	}
-
-#if IS_FULL()
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer])
-	{
-		if(![menuList containsObject:_autotimerDictionary])
-		{
-			[menuList addObject:_autotimerDictionary]; // add to EOL
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject:_autotimerDictionary])
-		{
-			[menuList removeObject:_autotimerDictionary];
-			reload = YES;
-		}
-	}
-#endif
-
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesEPGRefresh])
-	{
-		if(![menuList containsObject:_epgrefreshDictionary])
-		{
-			[menuList addObject:_epgrefreshDictionary]; // add to EOL
-			reload = YES;
-		}
-	}
-	else
-	{
-		if([menuList containsObject:_epgrefreshDictionary])
-		{
-			[menuList removeObject:_epgrefreshDictionary];
-			reload = YES;
-		}
-	}
-
-	if(reload)
-		[tableView reloadData];
+	[self handleReconnect:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -568,7 +570,10 @@
 {
 	MainTableViewCell *cell = [MainTableViewCell reusableTableViewCellInView:tv withIdentifier:kMainCell_ID];
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	cell.dataDictionary = [menuList objectAtIndex:indexPath.row];
+	if(menuList.count > (NSUInteger)indexPath.row)
+		cell.dataDictionary = [menuList objectAtIndex:indexPath.row];
+	else
+		cell.dataDictionary = nil;
 
 	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tv];
 }
