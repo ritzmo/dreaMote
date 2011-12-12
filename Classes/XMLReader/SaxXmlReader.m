@@ -124,8 +124,16 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (void)parsingError:(NSString *)msg
 {
+#if IS_DEBUG()
+	NSLog(@"[%@] parsingError: %@", [self class], msg);
+#endif
+	// return on errors starting with PCDATA (assume bad encoding)
+	if([msg hasPrefix:@"PCDATA"])
+		return;
+
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:msg forKey:NSLocalizedDescriptionKey];
 	NSError *error = [NSError errorWithDomain:@"ParsingDomain" code:101 userInfo:userInfo];
+	xmlStopParser(_xmlParserContext); // abort parsing (NOTE: we might want to gather all errors first)
 	failureReason = error;
 	_done = YES;
 }
