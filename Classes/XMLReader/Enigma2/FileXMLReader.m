@@ -11,6 +11,8 @@
 #import <Constants.h>
 #import <Objects/Generic/File.h>
 
+#import "NSObject+Queue.h"
+
 static const char *kEnigma2FileElement = "e2file";
 static const NSUInteger kEnigma2FileElementLength = 7;
 static const char *kEnigma2FileIsDirectory = "e2isdirectory";
@@ -32,6 +34,8 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([delegate respondsToSelector:@selector(addFiles:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -43,6 +47,16 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	fakeObject.title = NSLocalizedString(@"Error retrieving Data", @"");
 	[(NSObject<FileSourceDelegate> *)_delegate addFile:fakeObject];
 	[super errorLoadingDocument:error];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<FileSourceDelegate> *)_delegate addFiles:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
 }
 
 /*
@@ -83,9 +97,18 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	{
 		if(currentFile)
 		{
-			[_delegate performSelectorOnMainThread:@selector(addFile:)
-										withObject:currentFile
-									 waitUntilDone:NO];
+			if(self.currentItems)
+			{
+				[self.currentItems addObject:currentFile];
+				if(self.currentItems.count >= kBatchDispatchItemsCount)
+				{
+					NSArray *dispatchArray = [self.currentItems copy];
+					[self.currentItems removeAllObjects];
+					[[_delegate queueOnMainThread] addFiles:dispatchArray];
+				}
+			}
+			else
+				[[_delegate queueOnMainThread] addFile:currentFile];
 		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicereference, kEnigma2ServicereferenceLength))

@@ -25,5 +25,13 @@
  */
 - (void)addFile: (NSObject<FileProtocol> *)anItem;
 
+/*!
+ @brief New objects were created and should be added to list.
+
+ @param items Array of files to add.
+ */
+@optional
+- (void)addFiles:(NSArray *)items;
+
 @end
 

@@ -272,6 +272,24 @@
 #endif
 }
 
+- (void)addFiles:(NSArray *)items
+{
+#if INCLUDE_FEATURE(Extra_Animation)
+	NSUInteger count = _files.count;
+	NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:items.count];
+#endif
+	[_files addObjectsFromArray:items];
+#if INCLUDE_FEATURE(Extra_Animation)
+	for(NSObject<FileProtocol> *service in items)
+	{
+		[indexPaths addObject:[NSIndexPath indexPathForRow:count inSection:0]];
+		++count;
+	}
+	if(indexPaths)
+		[self insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+#endif
+}
+
 #pragma mark	-
 #pragma mark	UITableView delegate methods
 #pragma mark	-

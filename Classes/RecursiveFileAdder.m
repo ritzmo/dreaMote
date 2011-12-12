@@ -42,13 +42,20 @@
 		if(rangeOfString.location == NSNotFound) return;
 
 		// it's not, add to our queue
-		// TODO: add copy back if this actually uses a cxmldocument
 		[_remainingPaths addObject:sref];
 	}
 	// file
 	else if(file != nil)
 	{
 		[_delegate recursiveFileAdder:self addFile:file];
+	}
+}
+
+- (void)addFiles:(NSArray *)items
+{
+	for(NSObject<FileProtocol> *file in items)
+	{
+		[self addFile:file];
 	}
 }
 
