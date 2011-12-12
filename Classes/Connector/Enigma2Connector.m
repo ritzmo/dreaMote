@@ -75,15 +75,18 @@ enum bouquetMode {
 typedef enum {
 	FEATURE_AUTOTIMER = 1 << 0,
 	FEATURE_EPGREFRESH = 1 << 1,
-	FEATURE_ALL = FEATURE_AUTOTIMER | FEATURE_EPGREFRESH,
+	FEATURE_BOUQUETEDITOR = 1 << 2,
+	FEATURE_ALL = FEATURE_AUTOTIMER | FEATURE_EPGREFRESH | FEATURE_BOUQUETEDITOR,
 } dynamicFeatures_t;
 
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
-	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.6.5", @"1.6.8", @"1.7.0"
+	nil, nil, @"1.5+beta", @"1.5+beta3", @"1.5+beta4", @"1.6.5", @"1.6.8", @"1.7.0"
 };
 
 @interface Enigma2Connector()
 - (NSString *)getServiceReferenceForBouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+- (void)checkFeatures:(NSData *)data;
 
 @property (nonatomic, assign) dynamicFeatures_t dynamicFeatures;
 @property (nonatomic, strong) NSError *versionWarning;
@@ -136,6 +139,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		return (dynamicFeatures & FEATURE_AUTOTIMER);
 	else if(feature == kFeaturesEPGRefresh)
 		return (dynamicFeatures & FEATURE_EPGREFRESH);
+	else if(feature ==kFeaturesServiceEditor)
+		return (dynamicFeatures & FEATURE_BOUQUETEDITOR);
 
 	return
 		(feature != kFeaturesMessageCaption) &&
@@ -169,31 +174,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			_password = inPassword;
 		}
 		_advancedRc = advancedRc;
-		dynamicFeatures = FEATURE_ALL;
+		dynamicFeatures = FEATURE_ALL; // assume all features until detection
 
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 			const BOOL reachable = [self isReachable:nil];
 			if(reachable)
-			{
-				NSURL *myURI = [NSURL URLWithString:@"/autotimer/set" relativeToURL:_baseAddress];
-
-				NSHTTPURLResponse *response;
-				[SynchronousRequestReader sendSynchronousRequest:myURI
-											   returningResponse:&response
-														   error:nil];
-				if([response statusCode] != 200)
-					dynamicFeatures &= ~FEATURE_AUTOTIMER;
-
-				myURI = [NSURL URLWithString:@"/epgrefresh/set" relativeToURL:_baseAddress];
-				[SynchronousRequestReader sendSynchronousRequest:myURI
-											   returningResponse:&response
-														   error:nil];
-				if([response statusCode] != 200)
-					dynamicFeatures &= ~FEATURE_EPGREFRESH;
-
 				// this might have changed the features, so handle this like a reconnect
 				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-			}
 		});
 	}
 	return self;
@@ -315,6 +302,122 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [[EnigmaRCEmulatorController alloc] init];
 }
 
+- (void)checkFeatures:(NSData *)data
+{
+	NSRange dataRange = NSMakeRange(0, [data length]);
+	NSRange versionBegin = [data rangeOfData:[NSData dataWithBytesNoCopy:"e2webifversion>" length:15 freeWhenDone:NO] options:0 range:dataRange];
+	NSRange versionEnd = {NSNotFound, NSNotFound};
+	if(versionBegin.location != NSNotFound)
+	{
+		dataRange.location = versionBegin.location;
+		dataRange.length -= versionBegin.location;
+		versionEnd = [data rangeOfData:[NSData dataWithBytesNoCopy:"</e2webifversion" length:16 freeWhenDone:NO] options:0 range:dataRange];
+	}
+	if(versionEnd.location != NSNotFound)
+	{
+		versionBegin.location += 15;
+		versionBegin.length = versionEnd.location - versionBegin.location;
+
+		NSMutableString *stringValue = [[NSMutableString alloc] initWithData:[data subdataWithRange:versionBegin] encoding:NSUTF8StringEncoding];
+		versionBegin.location = 0;
+		// XXX: reading out versions like these is quite difficult, so we artificial relabel them so 1.6.0 > 1.6rc > 1.6beta
+		[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:versionBegin];
+		[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:versionBegin];
+		NSInteger i = WEBIF_VERSION_1_5b;
+
+		_webifVersion = WEBIF_VERSION_OLD;
+		for(; i < WEBIF_VERSION_MAX; ++i)
+		{
+			// version is older than identifier, abort
+			if([stringValue compare:webifIdentifier[i]] == NSOrderedAscending)
+				break;
+			// newer or equal to this version, abort
+			else
+				_webifVersion = i;
+		}
+
+		// only warn on old version, but suggest updating to the newest one
+		if(_webifVersion < WEBIF_VERSION_1_6_5)
+		{
+			dynamicFeatures = 0; // either no support for externals or will be detected
+			versionWarning = [NSError errorWithDomain:@"myDomain"
+												 code:98
+											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
+		}
+
+		// detect plugins
+		if(_webifVersion >= WEBIF_VERSION_1_7_0)
+		{
+			NSHTTPURLResponse *response;
+			NSURL *myURI = [NSURL URLWithString:@"/web/external" relativeToURL:_baseAddress];
+			data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:nil];
+			if([response statusCode] == 200)
+			{
+				xmlDocPtr doc = xmlReadMemory([data bytes], [data length], "", NULL, XML_PARSE_NOENT | XML_PARSE_RECOVER);
+				xmlXPathContextPtr xpathCtx = NULL;
+				xmlXPathObjectPtr xpathObj = NULL;
+				dynamicFeatures = 0; // start fresh
+				if(doc != NULL) do
+				{
+					xmlNodeSetPtr nodes;
+
+					xpathCtx = xmlXPathNewContext(doc);
+					if(!xpathCtx) break;
+
+					// get extension names
+					xpathObj = xmlXPathEvalExpression((xmlChar *)"/e2webifexternals/e2webifexternal/e2path", xpathCtx);
+					if(!xpathObj) break;
+
+					nodes = xpathObj->nodesetval;
+					if(!nodes) break;
+
+					for(NSInteger i = 0; i < nodes->nodeNr; ++i)
+					{
+						xmlNodePtr cur = nodes->nodeTab[i];
+						xmlChar *stringVal = xmlNodeListGetString(doc, cur->children, 1);
+						if(!strncmp((const char *)stringVal, "autotimer", 10))
+							dynamicFeatures |= FEATURE_AUTOTIMER;
+						else if(!strncmp((const char *)stringVal, "epgrefresh", 11))
+							dynamicFeatures |= FEATURE_EPGREFRESH;
+						else if(!strncmp((const char *)stringVal, "bouqueteditor", 14))
+							dynamicFeatures |= FEATURE_BOUQUETEDITOR;
+						xmlFree(stringVal);
+					}
+				} while(0);
+				xmlXPathFreeObject(xpathObj);
+				xmlXPathFreeContext(xpathCtx);
+				xmlFreeDoc(doc);
+			}
+		}
+		else if(_webifVersion >= WEBIF_VERSION_1_5b4)
+		{
+			NSHTTPURLResponse *response;
+			NSURL *myURI = [NSURL URLWithString:@"/autotimer/set" relativeToURL:_baseAddress];
+			[SynchronousRequestReader sendSynchronousRequest:myURI
+										   returningResponse:&response
+													   error:nil];
+			if([response statusCode] == 200)
+				dynamicFeatures |= FEATURE_AUTOTIMER;
+
+			myURI = [NSURL URLWithString:@"/epgrefresh/set" relativeToURL:_baseAddress];
+			[SynchronousRequestReader sendSynchronousRequest:myURI
+										   returningResponse:&response
+													   error:nil];
+			if([response statusCode] == 200)
+				dynamicFeatures |= FEATURE_EPGREFRESH;
+
+			myURI = [NSURL URLWithString:@"/bouqueteditor/web/addbouquet" relativeToURL:_baseAddress];
+			[SynchronousRequestReader sendSynchronousRequest:myURI
+										   returningResponse:&response
+													   error:nil];
+			if([response statusCode] == 200)
+				dynamicFeatures |= FEATURE_BOUQUETEDITOR;
+		}
+	}
+}
+
 - (BOOL)isReachable:(NSError **)error
 {
 	NSURL *myURI = [NSURL URLWithString:@"/web/about" relativeToURL:_baseAddress];
@@ -326,52 +429,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 	if([response statusCode] == 200)
 	{
-		// only parse on initial connection
 		@synchronized(self) {
-		if(_webifVersion == WEBIF_VERSION_UNKNOWN)
-		{
-			NSRange dataRange = NSMakeRange(0, [data length]);
-			NSRange versionBegin = [data rangeOfData:[NSData dataWithBytesNoCopy:"e2webifversion>" length:15 freeWhenDone:NO] options:0 range:dataRange];
-			NSRange versionEnd = {NSNotFound, NSNotFound};
-			if(versionBegin.location != NSNotFound)
+			// only parse on initial connection
+			if(_webifVersion == WEBIF_VERSION_UNKNOWN)
 			{
-				dataRange.location = versionBegin.location;
-				dataRange.length -= versionBegin.location;
-				versionEnd = [data rangeOfData:[NSData dataWithBytesNoCopy:"</e2webifversion" length:16 freeWhenDone:NO] options:0 range:dataRange];
-			}
-			if(versionEnd.location != NSNotFound)
-			{
-				versionBegin.location += 15;
-				versionBegin.length = versionEnd.location - versionBegin.location;
-
-				NSMutableString *stringValue = [[NSMutableString alloc] initWithData:[data subdataWithRange:versionBegin] encoding:NSUTF8StringEncoding];
-				versionBegin.location = 0;
-				// XXX: reading out versions like these is quite difficult, so we artificial relabel them so 1.6.0 > 1.6rc > 1.6beta
-				[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:versionBegin];
-				[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:versionBegin];
-				NSInteger i = WEBIF_VERSION_1_5b;
-
-				_webifVersion = WEBIF_VERSION_OLD;
-				for(; i < WEBIF_VERSION_MAX; ++i)
-				{
-					// version is older than identifier, abort
-					if([stringValue compare:webifIdentifier[i]] == NSOrderedAscending)
-						break;
-					// newer or equal to this version, abort
-					else
-						_webifVersion = i;
-				}
-
-				// only warn on old version, but suggest updating to the newest one
-				if(_webifVersion < WEBIF_VERSION_1_6_5)
-				{
-					versionWarning = [NSError errorWithDomain:@"myDomain"
-												code:98
-											userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
-				}
+				[self checkFeatures:data];
 			}
 		}
-		} // @synchronized(self)
 		if(versionWarning && error)
 			*error = versionWarning;
 		return YES;

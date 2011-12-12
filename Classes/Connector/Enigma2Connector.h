@@ -20,6 +20,8 @@ typedef enum
 	WEBIF_VERSION_1_5b,
 	/*! @brief 1.5b3 added location support */
 	WEBIF_VERSION_1_5b3,
+	/*! @brief 1.5b4 added externals support */
+	WEBIF_VERSION_1_5b4,
 	/*! @brief Sleeptimer added. */
 	WEBIF_VERSION_1_6_5,
 	/*! @brief Save/Load/Clear MP playlist. */
