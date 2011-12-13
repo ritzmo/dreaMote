@@ -21,6 +21,6 @@
 /*!
  @brief Rc Code.
  */
-@property (nonatomic) IBOutlet NSInteger rcCode;
+@property (nonatomic) NSInteger rcCode;
 
 @end
