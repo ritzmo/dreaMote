@@ -29,7 +29,6 @@
 @interface TimerViewController : UIViewController <UITextFieldDelegate,
 													UITableViewDelegate, UITableViewDataSource,
 													ServiceListDelegate, AfterEventDelegate,
-													RepeatedDelegate,
 													EditableTableViewCellDelegate,
 													UIPopoverControllerDelegate,
 													MGSplitViewControllerDelegate>

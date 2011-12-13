@@ -22,7 +22,7 @@
 
 @implementation SimpleRepeatedViewController
 
-@synthesize delegate;
+@synthesize callback;
 @synthesize tableView = _tableView;
 
 /* initialize */
@@ -354,25 +354,10 @@
 /* about to disapper */
 - (void)viewWillDisappear:(BOOL)animated
 {
-	if(delegate != nil)
-	{
-		SEL mySel = @selector(repeatedSelected:withCount:);
-		NSMethodSignature *sig = [(NSObject *)delegate methodSignatureForSelector:mySel];
-		if(sig)
-		{
-			NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
-			NSNumber *__unsafe_unretained repeated = [NSNumber numberWithInteger:_repeated];
-			NSNumber *__unsafe_unretained repcount = [NSNumber numberWithInteger:[_repcountField.text integerValue]];
-
-			[invocation retainArguments];
-			[invocation setTarget:delegate];
-			[invocation setSelector:mySel];
-			[invocation setArgument:&repeated atIndex:2];
-			[invocation setArgument:&repcount atIndex:3];
-			[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
-									  waitUntilDone:NO];
-		}
-	}
+	simplerepeated_callback_t call = callback;
+	callback = nil;
+	if(call)
+		call(_repeated, [_repcountField.text integerValue]); 
 }
 
 @end

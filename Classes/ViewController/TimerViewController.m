@@ -665,25 +665,6 @@ enum timerSections
 }
 
 #pragma mark -
-#pragma mark RepeatedDelegate methods
-#pragma mark -
-
-- (void)repeatedSelected:(NSNumber *)newRepeated withCount:(NSNumber *)newCount;
-{
-	NSInteger repeatcount;
-	if(newRepeated == nil)
-		return;
-
-	_timer.repeated = [newRepeated integerValue];
-	repeatcount = [newCount integerValue];
-	if(repeatcount < 0)
-		repeatcount = 0;
-	_timer.repeatcount = repeatcount;
-
-	[_tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionRepeated] withRowAnimation:UITableViewRowAnimationNone];
-}
-
-#pragma mark -
 #pragma mark AfterEventDelegate methods
 #pragma mark -
 
@@ -1124,7 +1105,6 @@ enum timerSections
 			case sectionRepeated:
 			{
 				SimpleRepeatedViewController *vc = [[SimpleRepeatedViewController alloc] init];
-				vc.delegate = self;
 				if(isIpad)
 				{
 					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -1140,6 +1120,15 @@ enum timerSections
 					vc.isSimple = YES;
 				else// if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesComplicatedRepeated])
 					vc.isSimple = NO;
+				vc.callback = ^(NSInteger repeated, NSInteger repeatcount)
+				{
+					_timer.repeated = repeated;
+					if(repeatcount < 0)
+						repeatcount = 0;
+					_timer.repeatcount = repeatcount;
+
+					[_tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionRepeated] withRowAnimation:UITableViewRowAnimationNone];
+				};
 				break;
 			}
 			case sectionLocation:

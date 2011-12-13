@@ -10,7 +10,13 @@
 
 #import "CellTextField.h" /* EditableTableViewCellDelegate */
 
-@protocol RepeatedDelegate;
+/*!
+ @brief Callback type for "repeated" callbacks.
+
+ @param repeated The flags for "repeated".
+ @param repeatcount If supported, the number of repetitions, else undefined.
+ */
+typedef void (^simplerepeated_callback_t)(NSInteger repeated, NSInteger repcount);
 
 /*!
  @brief Repeated Flag selection.
@@ -43,12 +49,9 @@
 
 
 /*!
- @brief Delegate.
-
- The delegate will be called back when disappearing to inform it about the newly selected
- repeated flags.
+ @brief Callback.
  */
-@property (nonatomic, unsafe_unretained) id<RepeatedDelegate> delegate;
+@property (nonatomic, copy) simplerepeated_callback_t callback;
 
 /*!
  @brief Repeated Flags.
@@ -69,24 +72,5 @@
  @brief Table View.
  */
 @property (nonatomic, readonly) UITableView *tableView;
-
-@end
-
-
-
-/*!
- @brief SimpleRepeatedViewController Delegate.
- 
- Implements callback functionality for RepeatedViewController.
- */
-@protocol RepeatedDelegate <NSObject>
-
-/*!
- @brief Repeated flags were selected.
- 
- @param newRepeated New repeated flags.
- @param newCount New repeated count.
- */
-- (void)repeatedSelected:(NSNumber *)newRepeated withCount:(NSNumber *)newCount;
 
 @end
