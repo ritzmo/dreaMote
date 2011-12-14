@@ -135,6 +135,10 @@
 	{
 		if(prevEvent == nil)
 		{
+			const CGFloat eventBegin = [event.begin timeIntervalSinceDate:begin];
+			const CGFloat leftLine = (eventBegin < 0) ? 0 : eventBegin * widthPerSecond;
+			if(point.x < leftLine)
+				break;
 			prevEvent = event;
 			continue;
 		}
