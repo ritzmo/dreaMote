@@ -219,7 +219,7 @@
 "Connect" = "Połącz";
 
 /* Label of Progress HUD when switching connections */
-/*"Connecting…" = "Łączenie…";*/
+"Connecting…" = "Łączenie…";
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
@@ -984,7 +984,7 @@
 "Text" = "Tekst";
 
 /* Trying to purchase Service Editor but Plugin not found on the STB. */
-/*"The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor." = "Edycja Serwisów nie działa podczas bieżącego połączenia.\nProszę pamiętać o zainstalowaniu enigma2-plugin-extensions-webbouqueteditor.";*/
+"The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor." = "Edycja Serwisów nie działa podczas bieżącego połączenia.\nProszę pamiętać o zainstalowaniu enigma2-plugin-extensions-webbouqueteditor.";
 
 /* No comment provided by engineer. */
 "The match attribute is mandatory." = "Atrybut dopasowania jest wymagany.";
