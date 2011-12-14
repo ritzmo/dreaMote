@@ -15,12 +15,14 @@
 #import "RemoteConnectorObject.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "FileListView.h"
-#import "FileProtocol.h"
+#import <ListController/ReloadableListController.h> // property tableView
+#import <Objects/FileProtocol.h>
+#import <Objects/Generic/Result.h>
+#import <View/FileListView.h>
+#import <View/RCButton.h>
+#import <View/UIPromptView.h>
+
 #import "MBProgressHUD.h"
-#import "Result.h"
-#import "RCButton.h"
-#import "UIPromptView.h"
 
 #import <XMLReader/BaseXMLReader.h>
 
@@ -1033,6 +1035,9 @@ enum mediaPlayerTags
 - (void)splitViewController: (id)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
+	// HACK: force-remove background color
+	if([aViewController isKindOfClass:[UINavigationController class]])
+		aViewController.view.backgroundColor = nil;
 	self.navigationItem.leftBarButtonItem = barButtonItem;
 	self.popoverController = pc;
 }
@@ -1040,6 +1045,16 @@ enum mediaPlayerTags
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController: (id)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
+	if([aViewController isKindOfClass:[UINavigationController class]])
+	{
+		UIViewController *visibleViewController = ((UINavigationController *)aViewController).visibleViewController;
+		if([visibleViewController respondsToSelector:@selector(tableView)])
+		{
+			UITableView *tableView = ((ReloadableListController *)visibleViewController).tableView;
+			aViewController.view.backgroundColor = tableView.backgroundColor;
+		}
+	}
+
 	self.navigationItem.leftBarButtonItem = nil;
 	self.popoverController = nil;
 }

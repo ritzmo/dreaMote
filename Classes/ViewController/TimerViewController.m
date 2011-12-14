@@ -1351,6 +1351,9 @@ enum timerSections
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
 	barButtonItem.title = aViewController.title;
+	// HACK: force-remove background color
+	if([aViewController isKindOfClass:[UINavigationController class]])
+		aViewController.view.backgroundColor = nil;
 	_popoverButtonItem = barButtonItem;
 
 	// assign popover button if there is no left button assigned.
@@ -1365,6 +1368,16 @@ enum timerSections
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
+	if([aViewController isKindOfClass:[UINavigationController class]])
+	{
+		UIViewController *visibleViewController = ((UINavigationController *)aViewController).visibleViewController;
+		if([visibleViewController respondsToSelector:@selector(tableView)])
+		{
+			UITableView *tableView = ((ReloadableListController *)visibleViewController).tableView;
+			aViewController.view.backgroundColor = tableView.backgroundColor;
+		}
+	}
+
 	_popoverButtonItem = nil;
 	if([self.navigationItem.leftBarButtonItem isEqual: barButtonItem])
 	{

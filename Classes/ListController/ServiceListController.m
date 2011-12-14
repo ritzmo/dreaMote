@@ -1999,7 +1999,7 @@ enum serviceListTags
 
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
 {
-	barButtonItem.title = aViewController.title;
+	[super splitViewController:svc willHideViewController:aViewController withBarButtonItem:barButtonItem forPopoverController:pc];
 	self.navigationItem.leftBarButtonItem = barButtonItem;
 	self.popoverController = pc;
 }
@@ -2008,6 +2008,7 @@ enum serviceListTags
 // Called when the view is shown again in the split view, invalidating the button and popover controller.
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
 {
+	[super splitViewController:svc willShowViewController:aViewController invalidatingBarButtonItem:barButtonItem];
 	self.navigationItem.leftBarButtonItem = nil;
 	self.popoverController = nil;
 }

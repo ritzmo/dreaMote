@@ -12,7 +12,7 @@
 #import "SwipeTableView.h"
 
 @class BaseXMLReader;
-@class CXMLDocument;
+@class MGSplitViewController;
 
 /*!
  @brief Protocol for a subclass of ReloadableListController.
@@ -62,6 +62,9 @@
  @brief Default implementation of xml parser success callback.
  */
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
+
+- (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc;
+- (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem;
 
 @property (nonatomic, readonly) SwipeTableView *tableView;
 

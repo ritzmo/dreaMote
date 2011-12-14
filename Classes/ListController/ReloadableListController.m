@@ -242,4 +242,29 @@
 	return _reloading;
 }
 
+#pragma mark -
+#pragma mark SplitviewController
+#pragma mark -
+
+- (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc
+{
+	barButtonItem.title = aViewController.title;
+	// HACK: force-remove background color
+	if([aViewController isKindOfClass:[UINavigationController class]])
+		aViewController.view.backgroundColor = nil;
+}
+
+- (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+	if([aViewController isKindOfClass:[UINavigationController class]])
+	{
+		UIViewController *visibleViewController = ((UINavigationController *)aViewController).visibleViewController;
+		if([visibleViewController respondsToSelector:@selector(tableView)])
+		{
+			UITableView *tableView = ((ReloadableListController *)visibleViewController).tableView;
+			aViewController.view.backgroundColor = tableView.backgroundColor;
+		}
+	}
+}
+
 @end
