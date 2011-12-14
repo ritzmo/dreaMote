@@ -509,30 +509,19 @@
 			UIViewController *masterViewController = ((MGSplitViewController *)targetViewController).masterViewController;
 			UIViewController *detailViewController = ((MGSplitViewController *)targetViewController).detailViewController;
 
-			UIViewController *pushViewController = masterViewController;
+			targetViewController = masterViewController;
 			if([masterViewController isKindOfClass:[UINavigationController class]])
 			{
 				NSLog(@"WARNING: Stealing a view controller from a navigation stack does is dangerous, think of a better way!");
-				pushViewController = ((UINavigationController *)masterViewController).visibleViewController;
-				[selectedDictionary setObject:pushViewController forKey:@"masterViewController"];
+				targetViewController = ((UINavigationController *)masterViewController).visibleViewController;
+				[selectedDictionary setObject:targetViewController forKey:@"masterViewController"];
 			}
-			if([pushViewController respondsToSelector:@selector(setMgSplitViewController:)])
+			if([targetViewController respondsToSelector:@selector(setMgSplitViewController:)])
 			{
 				NSLog(@"Note: Transferring split view controller to subview - this could get messy!");
-				[(AutoTimerListController *)pushViewController setMgSplitViewController:mgSplitViewController];
+				[(AutoTimerListController *)targetViewController setMgSplitViewController:mgSplitViewController];
 			}
-			// XXX: wtf?
-			if([self.navigationController.viewControllers containsObject:pushViewController])
-			{
-#if IS_DEBUG()
-				NSMutableString* result = [[NSMutableString alloc] init];
-				for(NSObject* obj in self.navigationController.viewControllers)
-					[result appendString:[obj description]];
-				[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [pushViewController description], result];
-#endif
-				[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the new view without any problems
-			}
-			[self.navigationController pushViewController:pushViewController animated:YES];
+			// NOTE: the generic code path will take care of pushing this view
 
 			if(detailViewController != mgSplitViewController.detailViewController)
 				[detailViewController.view removeFromSuperview];
@@ -555,9 +544,10 @@
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
 			[[DreamoteConfiguration singleton] styleNavigationController:navController];
 			mgSplitViewController.detailViewController = navController;
+			targetViewController = nil; // prevent generic code path from pushing this view
 		}
 	}
-	else
+	if(targetViewController)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:targetViewController])
@@ -566,7 +556,7 @@
 			NSMutableString* result = [[NSMutableString alloc] init];
 			for(NSObject* obj in self.navigationController.viewControllers)
 				[result appendString:[obj description]];
-			[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [targetViewController description], result];
+			[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@. MGSplitViewController: %@", [targetViewController description], result, [mgSplitViewController description]];
 #endif
 			[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 		}
