@@ -122,7 +122,7 @@
 "Parse EPG" = "Analizuj EPG";
 
 /* Search type: partial event title */
-"Partial" = "Częúciowy";
+"Partial" = "Częściowy";
 
 /* Label for cell 'autopoll' */
 "Poll automatically" = "Automatyczne Poll";
