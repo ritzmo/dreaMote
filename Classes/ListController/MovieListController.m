@@ -28,6 +28,7 @@
 @interface MovieListController()
 - (void)setSortTitle:(BOOL)newSortTitle allowSearch:(BOOL)allowSearch;
 - (void)updateButtons;
+- (void)setupToolbar;
 - (void)setupLeftBarButton;
 
 /*!
@@ -233,7 +234,16 @@
 	}
 	[super setEditing: editing animated: animated];
 	[_tableView setEditing: editing animated: animated];
-	[self.navigationController setToolbarHidden:!editing animated:animated];
+	if(animated)
+	{
+		[UIView beginAnimations:nil context:NULL];
+		[UIView setAnimationDuration:0.2f];
+	}
+	[self setupToolbar];
+	if(animated)
+		[UIView commitAnimations];
+	if(IS_IPAD())
+		[self.navigationController setToolbarHidden:!editing animated:animated];
 }
 
 /* about to appear */
@@ -243,55 +253,7 @@
 	if(isIpad)
 		[self setupLeftBarButton];
 
-	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordDelete])
-	{
-		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-																						target:nil
-																						action:nil];
-		NSArray *items = nil;
-
-		if(isIpad)
-		{
-			// iOS 5.0+
-			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-			{
-				items = [[NSArray alloc] initWithObjects:self.editButtonItem, _sortButton, nil];
-				self.navigationItem.rightBarButtonItems = items;
-			}
-			else
-			{
-				UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
-				items = [[NSArray alloc] initWithObjects:flexItem, _sortButton, self.editButtonItem, nil];
-				[toolbar setItems:items animated:NO];
-				UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
-
-				self.navigationItem.rightBarButtonItem = buttonItem;
-
-			}
-		}
-		else
-		{
-			// NOTE: this is actually not the right place to check for this, but fixing this requires some more refactoring :)
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
-			{
-				items = [[NSArray alloc] initWithObjects:_tagButton, flexItem, _sortButton, flexItem, self.editButtonItem, nil];
-			}
-			else
-				items = [[NSArray alloc] initWithObjects:_sortButton, flexItem, self.editButtonItem, nil];
-			[self setToolbarItems:items animated:NO];
-			[self.navigationController setToolbarHidden:NO animated:YES];
-
-			self.navigationItem.rightBarButtonItem = nil;
-		}
-	}
-	else
-	{
-		// iOS 5.0+
-		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
-			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject:_sortButton];
-		else
-			self.navigationItem.rightBarButtonItem = _sortButton;
-	}
+	[self setupToolbar];
 
 	if(_refreshMovies && !_reloading)
 	{
@@ -577,6 +539,65 @@
 	[_deleteButton setTitle:text forState:UIControlStateNormal];
 	if(_deleteButton.frame.size.width != textSize.width + deleteExtraWidth)
 		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+}
+
+- (void)setupToolbar
+{
+	const BOOL isIpad = IS_IPAD();
+	if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordDelete])
+	{
+		const UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+																						target:nil
+																						action:nil];
+		NSArray *items = nil;
+
+		if(isIpad)
+		{
+			// iOS 5.0+
+			if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			{
+				items = [[NSArray alloc] initWithObjects:self.editButtonItem, _sortButton, nil];
+				self.navigationItem.rightBarButtonItems = items;
+			}
+			else
+			{
+				UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 190, self.navigationController.navigationBar.frame.size.height)];
+				items = [[NSArray alloc] initWithObjects:flexItem, _sortButton, self.editButtonItem, nil];
+				[toolbar setItems:items animated:NO];
+				UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:toolbar];
+
+				self.navigationItem.rightBarButtonItem = buttonItem;
+			}
+		}
+		else
+		{
+			if(self.editing)
+			{
+				UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithCustomView:_deleteButton];
+				items = [[NSArray alloc] initWithObjects:deleteItem, flexItem, self.editButtonItem, nil];
+			}
+			else
+			{
+				// NOTE: this is actually not the right place to check for this, but fixing this requires some more refactoring :)
+				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesRecordingLocations])
+					items = [[NSArray alloc] initWithObjects:_tagButton, flexItem, _sortButton, flexItem, self.editButtonItem, nil];
+				else
+					items = [[NSArray alloc] initWithObjects:_sortButton, flexItem, self.editButtonItem, nil];
+			}
+			[self setToolbarItems:items animated:NO];
+			[self.navigationController setToolbarHidden:NO animated:YES];
+
+			self.navigationItem.rightBarButtonItem = nil;
+		}
+	}
+	else
+	{
+		// iOS 5.0+
+		if([self.navigationItem respondsToSelector:@selector(rightBarButtonItems)])
+			self.navigationItem.rightBarButtonItems = [NSArray arrayWithObject:_sortButton];
+		else
+			self.navigationItem.rightBarButtonItem = _sortButton;
+	}
 }
 
 /* layout */
