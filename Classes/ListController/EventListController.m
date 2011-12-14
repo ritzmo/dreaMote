@@ -760,16 +760,26 @@
 	EventTableViewCell *cell = [EventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kEventCell_ID];
 
 	cell.formatter = dateFormatter;
-	if(_useSections)
+	@try
 	{
-		const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
-		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex:offset + indexPath.row];
+		if(_useSections)
+		{
+			const NSInteger offset = [[_sectionOffsets objectAtIndex:indexPath.section] integerValue];
+			cell.event = (NSObject<EventProtocol> *)[events objectAtIndex:offset + indexPath.row];
+		}
+		else
+			cell.event = (NSObject<EventProtocol> *)[events objectAtIndex: indexPath.row];
 	}
-	else
-		cell.event = (NSObject<EventProtocol> *)[events objectAtIndex: indexPath.row];
+	@catch (NSException *exception)
+	{
+		cell.event = nil;
+		NSLog(@"[EventListController] Exception while trying to assign event to cell (%d, %d - max %d): %@", indexPath.section, indexPath.row, [events count], [exception description]);
+#if IS_DEBUG()
+		[exception raise];
+#endif
+	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 }
 
 /* select row */
