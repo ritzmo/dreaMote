@@ -8,7 +8,7 @@
 "Commit" = "Potwierdź";
 
 /* Installed Packages */
-"Installed" = "Zainstalowane";
+"Installed" = "Pakiety";
 
 /* Header of package list when installing packages. */
 "Installed Packages:" = "Zainstalowane Pakiety:";
@@ -23,7 +23,7 @@
 "Update" = "Aktualizuj";
 
 /* Upgradable Packages */
-"Upgradable" = "•••";
+"Upgradable" = "Nowe";
 
 /* Upgrade all available packages */
 "Upgrade" = "Aktualizuj";
