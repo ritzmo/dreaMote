@@ -51,6 +51,43 @@ enum settingsRows
 #endif
 };
 
+
+#pragma mark - UIActionSheet with block callback
+typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
+@interface UIBlockAlertView : UIAlertView<UIAlertViewDelegate>
++ (UIBlockAlertView *)alertViewWithTitle:(NSString *)title
+								 message:(NSString *)message
+					   cancelButtonTitle:(NSString *)cancelButtonTitle
+					   otherButtonTitles:(NSArray *)buttonTitles
+							   onDismiss:(dismiss_block_t)onDismiss;
+@property (nonatomic, copy) dismiss_block_t onDismiss;
+@end
+
+@implementation UIBlockAlertView
+@synthesize onDismiss;
++ (UIBlockAlertView *)alertViewWithTitle:(NSString *)title message:(NSString *)message cancelButtonTitle:(NSString *)cancelButtonTitle otherButtonTitles:(NSArray *)buttonTitles onDismiss:(dismiss_block_t)onDismiss
+{
+	UIBlockAlertView *view = [[UIBlockAlertView alloc] initWithTitle:title
+															 message:message
+															delegate:nil
+												   cancelButtonTitle:cancelButtonTitle
+												   otherButtonTitles:nil];
+	for(NSString* thisButtonTitle in buttonTitles)
+		[view addButtonWithTitle:thisButtonTitle];
+
+	view.onDismiss = onDismiss;
+	view.delegate = view;
+	[view show];
+	return view;
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	((UIBlockAlertView *)alertView).onDismiss(alertView, buttonIndex);
+}
+@end
+
+#pragma mark - ConfigListController
+
 /*!
  @brief Private functions of ConfigListController.
  */
@@ -260,66 +297,100 @@ enum settingsRows
 	[_tableView reloadData];
 }
 
+- (void)doPurchase:(SSKProduct *)product
+{
+	[[SSKManager sharedManager] buyProduct:product
+						 completionHandler:^(NSString *featureId)
+	 {
+		 progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+		 progressHUD.mode = MBProgressHUDModeCustomView;
+		 progressHUD.labelText = NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully");
+		 [progressHUD hide:YES afterDelay:2];
+#if INCLUDE_FEATURE(Ads)
+		 if([featureId isEqualToString:kAdFreePurchase])
+		 {
+			 [[NSNotificationCenter defaultCenter] postNotificationName:kAdRemovalPurchased object:nil userInfo:nil];
+		 }
+#endif
+	 }
+							 cancelHandler:^(NSString *featureId)
+	 {
+		 [progressHUD hide:YES];
+	 }
+							  errorHandler:^(NSString *featureId, NSError *error)
+	 {
+#ifndef NDEBUG
+		 NSLog(@"purchase error: %@", error);
+#endif
+		 NSString *title = [error localizedFailureReason];
+		 NSString *message = [error localizedRecoverySuggestion];
+		 if(!message && [error code] != 5001)
+			 message = [error localizedDescription];
+		 if(error.domain == sskErrorDomain && error.code == 100) // hide "double taps"
+			 title = message = nil;
+		 if(title || message)
+		 {
+			 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+															 message:message
+															delegate:self
+												   cancelButtonTitle:@"OK"
+												   otherButtonTitles:nil];
+			 [alert show];
+		 }
+		 [progressHUD hide:YES];
+	 }];
+}
+
 - (void)purchaseSectionSelectedAtIndexPath:(NSIndexPath *)indexPath
 {
-	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
-	[self.view addSubview:progressHUD];
-	progressHUD.removeFromSuperViewOnHide = YES;
-	[progressHUD setLabelText:NSLocalizedString(@"Working…", @"Label of Progress HUD in ConfigList when waiting for the AppStore")];
-	[progressHUD setMode:MBProgressHUDModeIndeterminate];
-	[progressHUD show:YES];
+	dispatch_block_t showHud = ^{
+		progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+		[self.view addSubview:progressHUD];
+		progressHUD.removeFromSuperViewOnHide = YES;
+		[progressHUD setLabelText:NSLocalizedString(@"Working…", @"Label of Progress HUD in ConfigList when waiting for the AppStore")];
+		[progressHUD setMode:MBProgressHUDModeIndeterminate];
+		[progressHUD show:YES];
+	};
+
 	if(indexPath.row < (NSInteger)purchasables.count)
 	{
-		[[SSKManager sharedManager] buyProduct:[purchasables objectAtIndex:indexPath.row]
-							 completionHandler:^(NSString *featureId)
+		SSKProduct *product = [purchasables objectAtIndex:indexPath.row];
+		if([product.productIdentifier isEqualToString:kServiceEditorPurchase] && ![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
 		{
-			progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
-			progressHUD.mode = MBProgressHUDModeCustomView;
-			progressHUD.labelText = NSLocalizedString(@"Purchase completed", @"In-App-Purchase was completed successfully");
-			[progressHUD hide:YES afterDelay:2];
-#if INCLUDE_FEATURE(Ads)
-			if([featureId isEqualToString:kAdFreePurchase])
+			[UIBlockAlertView alertViewWithTitle:NSLocalizedString(@"Warning", @"")
+										 message:NSLocalizedString(@"The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor.", @"Trying to purchase Service Editor but Plugin not found on the STB.")
+							   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+							   otherButtonTitles:[NSArray arrayWithObject:NSLocalizedString(@"Purchase", @"")]
+									   onDismiss:^(UIAlertView *alertView, NSInteger buttonIndex)
 			{
-				[[NSNotificationCenter defaultCenter] postNotificationName:kAdRemovalPurchased object:nil userInfo:nil];
-			}
-#endif
+				if(buttonIndex == alertView.cancelButtonIndex)
+				{
+					// ignore
+				}
+				else
+				{
+					dispatch_async(dispatch_get_main_queue(), showHud);
+					[self doPurchase:product];
+				}
+			}];
 		}
-								 cancelHandler:^(NSString *featureId)
+		else
 		{
-			[progressHUD hide:YES];
+			showHud();
+			[self doPurchase:product];
 		}
-								  errorHandler:^(NSString *featureId, NSError *error)
-		{
-#ifndef NDEBUG
-			NSLog(@"purchase error: %@", error);
-#endif
-			NSString *title = [error localizedFailureReason];
-			NSString *message = [error localizedRecoverySuggestion];
-			if(!message && [error code] != 5001)
-				message = [error localizedDescription];
-			if(error.domain == sskErrorDomain && error.code == 100) // hide "double taps"
-				title = message = nil;
-			if(title || message)
-			{
-				UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-																message:message
-															   delegate:self
-													  cancelButtonTitle:NSLocalizedString(@"Dismiss", @"")
-													  otherButtonTitles:nil];
-				[alert show];
-			}
-			[progressHUD hide:YES];
-		}];
 	}
 #if IS_DEBUG()
 	else if(indexPath.row == (NSInteger)purchasables.count + 1)
 	{
+		showHud();
 		[[SSKManager sharedManager] removeAllKeychainData];
 		[progressHUD hide:YES];
 	}
 #endif
 	else
 	{
+		showHud();
 		[[SSKManager sharedManager] restorePreviousPurchasesOnComplete:^(NSString *featureId)
 		 {
 			 progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
