@@ -44,7 +44,7 @@
 "<message text>" = "<tekst wiadomości>";
 
 /* Placeholder for message timeout field */
-"<message timeout>" = "<minął czas oczekiwania wiadomości>";
+"<message timeout>" = "<czas wyświetlania w sekundach>";
 
 /* Placeholder for SleepTimer duration field */
 "<min.>" = "<min.>";
@@ -238,7 +238,7 @@
 "Control Powerstate and Volume" = "Kontroluj Zasilanie i Głośność";
 
 /* Explaination of Media Player in Other List */
-"Control the remote media player" = "Kontroluj zdalny media player";
+"Control the remote media player" = "Kontroluj zdalnie Media Player";
 
 /* Title of ControlViewController */
 "Controls" = "Kontrolki";
@@ -470,7 +470,7 @@
 "Import Picons?" = "Importuj Picony?";
 
 /* Message type */
-"Info" = "Info";
+"Info" = "Informacja";
 
 /* Explaination of About Receiver in Other List */
 "Information on software and tuners" = "Informacja o oprogramowaniu i tunerach";
@@ -878,7 +878,7 @@
 "Send" = "Wyślij";
 
 /* Explaination of Message View in Other List */
-"Send short Messages" = "Wyślij krótkie wiadomości";
+"Send short Messages" = "Wyślij krótkie wiadomości do tunera";
 
 /* No comment provided by engineer. */
 "Sending command failed" = "Wysyłanie komendy nie powiodło się";
@@ -1006,7 +1006,7 @@
 "Timeframe has to be ascending." = "Okres czasu musi być roznący.";
 
 /* No comment provided by engineer. */
-"Timeout" = "Minął czas oczekiwania";
+"Timeout" = "Pokazuj okno przez";
 
 /* Default title of TimerViewController */
 "Timer" = "Timer";
