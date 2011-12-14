@@ -396,6 +396,7 @@
 {
 	NSMutableString *errorMessages = [[NSMutableString alloc] init];
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	dispatch_block_t mainBlock = nil;
 
 	NSSet *set = [_selected copy];
 	float countPerMovie = 1/(float)[set count];
@@ -417,21 +418,34 @@
 		// alert user if movie could not be deleted
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:errorMessages
 															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-		[alert show];
+		mainBlock = ^{
+			[progressHUD hide:YES];
+			[alert show];
+		};
 	}
 	else
-		showCompletedHudWithText(NSLocalizedString(@"Movies deleted", @"Text of HUD when multiple movies were removed"));
+	{
+		progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+		progressHUD.mode = MBProgressHUDModeCustomView;
+		progressHUD.labelText = NSLocalizedString(@"Movies deleted", @"Text of HUD when multiple movies were removed");
+		mainBlock = ^{
+			[progressHUD hide:YES afterDelay:2];
+		};
+	}
 
 	// resort current table view if sorting by title
 	if(_sortTitle)
 		[self setSortTitle:YES allowSearch:YES];
+	UITableView *tableView = _tableView;
 #if IS_FULL()
 	// reload active table view
 	if(_searchDisplay.active)
-		[_searchDisplay.searchResultsTableView reloadData];
-	else
+		tableView = _searchDisplay.searchResultsTableView;
 #endif
-		[_tableView reloadData];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[tableView reloadData];
+		mainBlock();
+	});
 }
 
 - (void)multiDelete:(id)sender
@@ -445,7 +459,10 @@
 	[progressHUD setLabelText:NSLocalizedString(@"Deleting", @"Label of Progress HUD in MovieList when deleting multiple items")];
 	[progressHUD setMode:MBProgressHUDModeDeterminate];
 	progressHUD.progress = 0.0f;
-	[progressHUD showWhileExecuting:@selector(multiDeleteDefer) onTarget:self withObject:nil animated:YES];
+	[progressHUD show:YES];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		[self multiDeleteDefer];
+	});
 
 	NSString *text = NSLocalizedString(@"Delete", @"Delete button in MovieList");
 	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];

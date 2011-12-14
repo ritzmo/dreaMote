@@ -313,6 +313,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	NSMutableString *errorMessages = [[NSMutableString alloc] init];
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	dispatch_block_t mainBlock = nil;
 
 	NSInteger state = 0;
 	NSSet *set = [_selected copy];
@@ -338,12 +339,25 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		// alert user if timer(s) could not be deleted
 		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Delete failed", @"") message:errorMessages
 															 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-		[alert show];
+		mainBlock = ^{
+			[progressHUD hide:YES];
+			[alert show];
+		};
 	}
 	else
-		showCompletedHudWithText(NSLocalizedString(@"Timers deleted", @"Text of HUD when multiple timer were removed successfully"));
+	{
+		progressHUD.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+		progressHUD.mode = MBProgressHUDModeCustomView;
+		progressHUD.labelText = NSLocalizedString(@"Timers deleted", @"Text of HUD when multiple timer were removed successfully");
+		mainBlock = ^{
+			[progressHUD hide:YES afterDelay:2];
+		};
+	}
 
-	[_tableView reloadData];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[_tableView reloadData];
+		mainBlock();
+	});
 }
 
 - (void)multiDelete:(id)sender
@@ -354,7 +368,10 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	[progressHUD setLabelText:NSLocalizedString(@"Deleting", @"Label of Progress HUD in TimerList when deleting multiple items")];
 	[progressHUD setMode:MBProgressHUDModeDeterminate];
 	progressHUD.progress = 0.0f;
-	[progressHUD showWhileExecuting:@selector(multiDeleteDefer) onTarget:self withObject:nil animated:YES];
+	[progressHUD show:YES];
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+		[self multiDeleteDefer];
+	});
 
 	NSString *text = NSLocalizedString(@"Delete", @"Delete button in TimerList");
 	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
