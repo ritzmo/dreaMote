@@ -523,6 +523,17 @@
 				NSLog(@"Note: Transferring split view controller to subview - this could get messy!");
 				[(AutoTimerListController *)pushViewController setMgSplitViewController:mgSplitViewController];
 			}
+			// XXX: wtf?
+			if([self.navigationController.viewControllers containsObject:pushViewController])
+			{
+#if IS_DEBUG()
+				NSMutableString* result = [[NSMutableString alloc] init];
+				for(NSObject* obj in self.navigationController.viewControllers)
+					[result appendString:[obj description]];
+				[NSException raise:@"OtherListTargetTwiceInNavigationStack" format:@"targetViewController (%@) was twice in navigation stack: %@", [pushViewController description], result];
+#endif
+				[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the new view without any problems
+			}
 			[self.navigationController pushViewController:pushViewController animated:YES];
 
 			if(detailViewController != mgSplitViewController.detailViewController)
