@@ -1,5 +1,5 @@
 /* sat finder refresh interval */
-"%.0f sec" = "%.Of sek";
+"%.0f sec" = "%.0f sek";
 
 /* Free space on harddisk (available of total free), includes size. */
 "%@ of %@ free" = "%1$@ z %2$@ wolne";
