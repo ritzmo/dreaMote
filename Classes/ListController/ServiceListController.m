@@ -1991,6 +1991,7 @@ enum serviceListTags
 	searchTableView.editing = self.editing;
 	searchTableView.allowsSelectionDuringEditing = YES;
 	searchTableView.rowHeight = kServiceCellHeight;
+	searchTableView.backgroundColor = _tableView.backgroundColor;
 }
 
 #pragma mark -
