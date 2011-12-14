@@ -218,8 +218,8 @@
 /* Connect to the remote host for this session. */
 "Connect" = "Verbinde";
 
-/* No comment provided by engineer. */
-"Connection could not be established." = "Verbindung konnte nicht hergestellt werden.";
+/* Label of Progress HUD when switching connections */
+"Connecting…" = "Verbinde…";
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
@@ -513,9 +513,6 @@
 
 /* Title of LocationListController */
 "Locations" = "Verzeichnisse";
-
-/* Make this remote host the default for future sessions. */
-"Make Default" = "Zu Standard machen";
 
 /* No comment provided by engineer. */
 "Master" = "Master";
@@ -985,6 +982,9 @@
 
 /* No comment provided by engineer. */
 "Text" = "Text";
+
+/* Trying to purchase Service Editor but Plugin not found on the STB. */
+"The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor." = "Der konfigurierte Receiver unterstützt dies nicht.\nBitte enigma2-plugin-extensions-webbouqueteditor installieren.";
 
 /* No comment provided by engineer. */
 "The match attribute is mandatory." = "\"Finde in Titel\" muss gesetzt sein.";

@@ -218,8 +218,8 @@
 /* Connect to the remote host for this session. */
 /*"Connect" = "Connect";*/
 
-/* No comment provided by engineer. */
-/*"Connection could not be established." = "Connection could not be established.";*/
+/* Label of Progress HUD when switching connections */
+/*"Connecting…" = "Connecting…";*/
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
@@ -513,9 +513,6 @@
 
 /* Title of LocationListController */
 /*"Locations" = "Locations";*/
-
-/* Make this remote host the default for future sessions. */
-/*"Make Default" = "Make Default";*/
 
 /* No comment provided by engineer. */
 /*"Master" = "Master";*/
@@ -985,6 +982,9 @@
 
 /* No comment provided by engineer. */
 /*"Text" = "Text";*/
+
+/* Trying to purchase Service Editor but Plugin not found on the STB. */
+/*"The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor." = "The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor.";*/
 
 /* No comment provided by engineer. */
 /*"The match attribute is mandatory." = "The match attribute is mandatory.";*/
