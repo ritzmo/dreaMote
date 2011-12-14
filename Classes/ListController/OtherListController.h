@@ -30,7 +30,6 @@
 #if IS_FULL()
 	NSMutableDictionary *_autotimerDictionary; /*!< @brief Dictionary describing AutoTimer Item. */
 #endif
-	ConfigListController *_configListController; /*!< @brief Config List. */
 	NSMutableDictionary *_epgrefreshDictionary; /*!< @brief Dictionary describing EPGRefresh Item. */
 	NSMutableDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSMutableDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */

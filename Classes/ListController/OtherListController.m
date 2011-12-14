@@ -58,7 +58,6 @@
 	{
 		self.title = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
 		self.tabBarItem.title = NSLocalizedString(@"More", @"Tab Title of OtherListController");
-		_configListController = nil;
 	}
 	return self;
 }
@@ -217,7 +216,6 @@
 #if IS_FULL()
 	_autotimerDictionary = nil;
 #endif
-	_configListController = nil;
 	_epgrefreshDictionary = nil;
 	_eventSearchDictionary = nil;
 	_mediaPlayerDictionary = nil;
