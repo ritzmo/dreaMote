@@ -697,6 +697,9 @@
 	[_events addObjectsFromArray:items];
 	for(NSObject<EventProtocol> *event in items)
 	{
+#if IS_FULL()
+		[[EPGCache sharedInstance] addEventOperation:event];
+#endif
 		if(_useSections)
 		{
 			if(count == 0)
@@ -735,9 +738,6 @@
 		}
 #endif
 		++count;
-#if IS_FULL()
-		[[EPGCache sharedInstance] addEventOperation:event];
-#endif
 	}
 #if INCLUDE_FEATURE(Extra_Animation)
 	if(indexPaths)

@@ -271,6 +271,7 @@ Enigma2:
 1.4.0:
 - Fix some possible crashes
 - Fix crash with mail composer if opened from help screen in the settings
+- Fix filling EPGCache passively
 - No longer reset 'More' on the iPad in low memory conditions
 - Completely remove TouchXML
 - Improved error recovery (and display) for XML parsers
