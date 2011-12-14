@@ -157,7 +157,7 @@
 "AutoTimers" = "AutoTimer'y";
 
 /* No comment provided by engineer. */
-"Begin" = "Zacznij";
+"Begin" = "Start";
 
 /* Name of blue theme */
 "Blue" = "Niebieski";
@@ -223,7 +223,7 @@
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
-"Connection Timeout" = "Czas połączenia minął";
+"Connection Timeout" = "Czas próby połączenia";
 
 /* No comment provided by engineer. */
 "Connection to remote host failed with status code %d." = "Połączenie do hosta zakończyło się błędem %d.";
@@ -326,7 +326,7 @@
 "Enable audio" = "Włącz sygnał dźwiękowy";
 
 /* No comment provided by engineer. */
-"Enabled" = "Włączone";
+"Enabled" = "Włącz";
 
 /* No comment provided by engineer. */
 "encrypted" = "zaszyfrowane";
@@ -476,7 +476,7 @@
 "Information on software and tuners" = "Informacja o oprogramowaniu i tunerach";
 
 /* Explaination of Package Manager in Other List */
-"Install/Update/Remove packages" = "Instal/Aktualizuj/Usuń pakiety";
+"Install/Update/Remove packages" = "Instaluj/Aktualizuj/Usuń pakiety";
 
 /* instant sat finder refresh */
 "instant" = "rzeczywisty";
@@ -633,7 +633,7 @@
 "No events found" = "Nie znaleziono żadnych wydarzeń";
 
 /* No comment provided by engineer. */
-"No similar Events" = "No similar Events";
+"No similar Events" = "Brak podobnych wydarzeń";
 
 /* User requested AutoTimer timeframe but none was setup. */
 "No timeframe given." = "Nie podano przedziału czasowego.";
@@ -654,7 +654,7 @@
 "Nothing" = "Nic";
 
 /* No comment provided by engineer. */
-"Nothing playing." = "Nic nie gra.";
+"Nothing playing." = "Nic nie jest odtwarzanie.";
 
 /* MultiEPG change to current hour */
 "Now" = "Teraz";
@@ -679,7 +679,7 @@
 "Page not found.\nPlugin not installed?" = "Strona nie znaleziona.\nBrakujący Plugin?";
 
 /* Title of percentage section of SatFinder */
-"Percentage" = "Procentaż";
+"Percentage" = "Siła sygnału";
 
 /* No comment provided by engineer. */
 "Play" = "Odtwarzaj";
