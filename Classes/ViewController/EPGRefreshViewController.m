@@ -572,9 +572,15 @@ enum generalSectionItems
 {
 	switch(section)
 	{
-		case generalSection:
 		case serviceSection:
+			if(!([services count] || self.editing))
+				return 0;
+			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 		case bouquetSection:
+			if(!([bouquets count] || self.editing))
+				return 0;
+			/* FALL THROUGH */
+		case generalSection:
 			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 		default:
 			return 0;
@@ -585,9 +591,15 @@ enum generalSectionItems
 {
 	switch(section)
 	{
-		case generalSection:
 		case serviceSection:
+			if(!([services count] || self.editing))
+				return nil;
+			return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 		case bouquetSection:
+			if(!([bouquets count] || self.editing))
+				return nil;
+			/* FALL THROUGH */
+		case generalSection:
 			return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 		default:
 			return nil;
@@ -601,8 +613,12 @@ enum generalSectionItems
 		case generalSection:
 			return NSLocalizedString(@"General", @"in timer settings dialog");
 		case serviceSection:
+			if(!([services count] || self.editing))
+				return nil;
 			return NSLocalizedStringFromTable(@"Services", @"EPGRefresh", @"section header for service to refresh");
 		case bouquetSection:
+			if(!([bouquets count] || self.editing))
+				return nil;
 			return NSLocalizedStringFromTable(@"Bouquets", @"EPGRefresh", @"section header for bouquet to refresh");
 		default:
 			return nil;
