@@ -337,6 +337,7 @@ enum serviceListTags
 {
 	const BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
+#if IS_FULL()
 	[_tableView setEditing:editing animated:animated];
 	if(_searchDisplay.active)
 		[_searchDisplay.searchResultsTableView setEditing:editing animated:animated];
@@ -356,6 +357,7 @@ enum serviceListTags
 			[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchData)];
 		}
 	}
+#endif
 }
 
 /* layout */

@@ -200,6 +200,7 @@ enum bouquetListTags
 {
 	BOOL wasEditing = self.editing;
 	[super setEditing:editing animated:animated];
+#if IS_FULL()
 	[_tableView setEditing:editing animated:animated];
 	if(IS_IPAD())
 		[_serviceListController setEditing:editing animated:animated];
@@ -216,6 +217,7 @@ enum bouquetListTags
 		else
 			[_tableView reloadData];
 	}
+#endif
 }
 
 /* layout */
@@ -273,10 +275,12 @@ enum bouquetListTags
 																				target:self action:@selector(doneAction:)];
 		self.navigationItem.rightBarButtonItem = button;
 	}
+#if IS_FULL()
 	else if([SSKManager isFeaturePurchased:kServiceEditorPurchase] && [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesServiceEditor])
 	{
 		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	}
+#endif
 	else
 		self.navigationItem.rightBarButtonItem = nil;
 
