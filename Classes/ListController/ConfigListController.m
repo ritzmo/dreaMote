@@ -342,6 +342,70 @@ enum settingsRows
 	}
 }
 
+- (void)connectTo:(NSIndexPath *)indexPath
+{
+	const NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
+
+	if(![RemoteConnectorObject connectTo:indexPath.row])
+	{
+		// error connecting... what now?
+		UIAlertView *notification = [[UIAlertView alloc]
+									 initWithTitle:NSLocalizedString(@"Error", @"")
+									 message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
+									 delegate:nil
+									 cancelButtonTitle:@"OK"
+									 otherButtonTitles:nil];
+		[notification show];
+	}
+	// did connect
+	else
+	{
+		const NSError *error = nil;
+		const BOOL doAbort = ![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
+		dispatch_block_t mainBlock = nil;
+		// error without doAbort means e.g. old version
+		if(error)
+		{
+			UIAlertView *notification = [[UIAlertView alloc]
+										 initWithTitle:doAbort ? NSLocalizedString(@"Error", @"") : NSLocalizedString(@"Warning", @"")
+										 message:[error localizedDescription]
+										 delegate:nil
+										 cancelButtonTitle:@"OK"
+										 otherButtonTitles:nil];
+			[notification show];
+		}
+
+		// not reachable
+		if(doAbort)
+		{
+			[RemoteConnectorObject connectTo:connectedIdx];
+			mainBlock = ^{
+				[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			};
+		}
+		// connected to new host
+		else if(connectedIdx != indexPath.row)
+		{
+			NSArray *reloads = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:connectedIdx inSection:0], indexPath, nil];
+			mainBlock = ^{
+				[_tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
+			};
+
+			// post notification
+			[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+		}
+		// connected to same host
+		else
+		{
+			mainBlock =^{
+				[_tableView deselectRowAtIndexPath:indexPath animated:YES];
+			};
+		}
+		if(mainBlock)
+			dispatch_async(dispatch_get_main_queue(), mainBlock);
+	}
+}
+
 #pragma mark -
 #pragma mark TimeoutSelection
 #pragma mark -
@@ -466,59 +530,13 @@ enum settingsRows
 			// else connect to this host
 			else
 			{
-				const NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
-
-				if(![RemoteConnectorObject connectTo:indexPath.row])
-				{
-					// error connecting... what now?
-					UIAlertView *notification = [[UIAlertView alloc]
-												 initWithTitle:NSLocalizedString(@"Error", @"")
-													   message:NSLocalizedString(@"Unable to connect to host.\nPlease restart the application.", @"")
-													  delegate:nil
-											 cancelButtonTitle:@"OK"
-											 otherButtonTitles:nil];
-					[notification show];
-				}
-				// did connect
-				else
-				{
-					const NSError *error = nil;
-					const BOOL doAbort = ![[RemoteConnectorObject sharedRemoteConnector] isReachable:&error];
-					// error without doAbort means e.g. old version
-					if(error)
-					{
-						UIAlertView *notification = [[UIAlertView alloc]
-													 initWithTitle:doAbort ? NSLocalizedString(@"Error", @"") : NSLocalizedString(@"Warning", @"")
-													 message:[error localizedDescription]
-													 delegate:nil
-											cancelButtonTitle:@"OK"
-											otherButtonTitles:nil];
-						[notification show];
-					}
-
-					// not reachable
-					if(doAbort)
-					{
-						[RemoteConnectorObject connectTo:connectedIdx];
-						[tableView deselectRowAtIndexPath:indexPath animated:YES];
-					}
-					// connected to new host
-					else if(connectedIdx != indexPath.row)
-					{
-						NSArray *reloads = [NSArray arrayWithObjects:[NSIndexPath indexPathForRow:connectedIdx inSection:0], indexPath, nil];
-						[tableView reloadRowsAtIndexPaths:reloads withRowAnimation:UITableViewRowAnimationFade];
-
-						// post notification
-						[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-					}
-					// connected to same host
-					else
-					{
-						[tableView deselectRowAtIndexPath:indexPath animated:YES];
-					}
-				}
+				progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+				[self.view addSubview:progressHUD];
+				progressHUD.removeFromSuperViewOnHide = YES;
+				[progressHUD setLabelText:NSLocalizedString(@"Connecting…", @"Label of Progress HUD when switching connections")];
+				[progressHUD setMode:MBProgressHUDModeIndeterminate];
+				[progressHUD showWhileExecuting:@selector(connectTo:) onTarget:self withObject:indexPath animated:YES];
 			}
-
 		}
 		else
 		{

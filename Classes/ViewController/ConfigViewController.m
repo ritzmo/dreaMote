@@ -476,8 +476,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	}
 }
 
-/* "connect" button pressed */
-- (void)doConnect: (id)sender
+/* the heavy lifting for reconnection */
+- (void)doBackgroundConnect
 {
 	const NSInteger connectedId = [RemoteConnectorObject getConnectedId];
 
@@ -528,6 +528,17 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 
 	// post notification
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+}
+
+/* "connect" button pressed */
+- (void)doConnect:(id)sender
+{
+	progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
+	[self.view addSubview:progressHUD];
+	progressHUD.removeFromSuperViewOnHide = YES;
+	[progressHUD setLabelText:NSLocalizedString(@"Connecting…", @"Label of Progress HUD when switching connections")];
+	[progressHUD setMode:MBProgressHUDModeIndeterminate];
+	[progressHUD showWhileExecuting:@selector(doBackgroundConnect) onTarget:self withObject:nil animated:YES];
 }
 
 - (void)sslChanged:(id)sender
