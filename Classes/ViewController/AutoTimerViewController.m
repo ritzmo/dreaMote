@@ -434,21 +434,21 @@ static NSArray *searchTypeTexts = nil;
 
 - (void)showHideDetails:(id)sender
 {
-	NSIndexSet *idxSet = nil;
-	if([sender isEqual:_maxdurationSwitch])
+	NSMutableIndexSet *idxSet = [[NSMutableIndexSet alloc] init];
+	if([_tableView numberOfRowsInSection:durationSection] != [self tableView:_tableView numberOfRowsInSection:durationSection])
 	{
-		idxSet = [NSIndexSet indexSetWithIndex:durationSection];
+		[idxSet addIndex:durationSection];
 	}
-	else if([sender isEqual:_timespanSwitch])
+	if([_tableView numberOfRowsInSection:timespanSection] != [self tableView:_tableView numberOfRowsInSection:timespanSection])
 	{
-		idxSet = [NSIndexSet indexSetWithIndex:timespanSection];
+		[idxSet addIndex:timespanSection];
 	}
-	else if([sender isEqual:_timeframeSwitch])
+	if([_tableView numberOfRowsInSection:timeframeSection] != [self tableView:_tableView numberOfRowsInSection:timeframeSection])
 	{
-		idxSet = [NSIndexSet indexSetWithIndex:timeframeSection];
+		[idxSet addIndex:timeframeSection];
 	}
 
-	if(idxSet)
+	if(idxSet.count)
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
 }
 
