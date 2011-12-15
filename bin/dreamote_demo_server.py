@@ -360,6 +360,101 @@ FILE = """<e2file>
  <e2root>%s</e2root>
 </e2file>"""
 
+GETCURRENT_E1 = (
+"""<?xml version="1.0" encoding="UTF-8" ?>
+<currentservicedata>
+    <service>
+        <name></name>
+        <reference></reference>
+    </service>
+    <audio_channels>
+    </audio_channels>
+    <audio_track>
+    </audio_track>
+    <video_channels>
+    </video_channels>
+    <current_event>
+        <date></date>
+        <time></time>
+        <start></start>
+        <duration></duration>
+        <description></description>
+        <details></details>
+    </current_event>
+    <next_event>
+        <date></date>
+        <time></time>
+        <start></start>
+        <duration></duration>
+        <description></description>
+        <details></details>
+    </next_event>
+</currentservicedata>""",
+"""<?xml version="1.0" encoding="UTF-8" ?>
+<currentservicedata>
+    <service>
+        <name>Some Service</name>
+        <reference>:::::DUMMY:::::</reference>
+    </service>
+    <audio_channels>
+		-1
+    </audio_channels>
+    <audio_track>
+		-1
+    </audio_track>
+    <video_channels>
+		-1
+    </video_channels>
+    <current_event>
+        <date>-1</date>
+        <time>-1</time>
+        <start>%(start_now).2f</start>
+        <duration>99</duration>
+        <description>Some title</description>
+        <details>Some description</details>
+    </current_event>
+    <next_event>
+        <date>-1</date>
+        <time>-1</time>
+        <start>%(start_next).2f</start>
+        <duration>101</duration>
+        <description>Some other title</description>
+        <details>Some other description</details>
+    </next_event>
+</currentservicedata>""",
+"""<?xml version="1.0" encoding="UTF-8" ?>
+<currentservicedata>
+    <service>
+        <name></name>
+        <reference>:::DUMMY RECORDING:::</reference>
+    </service>
+    <audio_channels>
+		-1
+    </audio_channels>
+    <audio_track>
+		-1
+    </audio_track>
+    <video_channels>
+		-1
+    </video_channels>
+    <current_event>
+        <date>-1</date>
+        <time>-1</time>
+        <start>%(start_now).2f</start>
+        <duration>99</duration>
+        <description>Some recording</description>
+        <details></details>
+    </current_event>
+    <next_event>
+        <date></date>
+        <time></time>
+        <start></start>
+        <duration></duration>
+        <description></description>
+        <details></details>
+    </next_event>
+</currentservicedata>""")
+
 BOXSTATUS = """<?xml version="1.0" encoding="UTF-8"?>
 <boxstatus><current_time>1298106939</current_time><standby>0</standby><recording>0</recording><mode>0</mode><ip>127.0.0.1</ip></boxstatus>"""
 
@@ -1194,6 +1289,10 @@ class Simple(resource.Resource):
 # ENIGMA
 		elif lastComp == "boxstatus":
 			returndoc = BOXSTATUS
+		elif lastComp == "currentservicedata":
+			curtype = state.getCurrentType()
+			now = time.time()
+			returndoc = GETCURRENT_E1[curtype] % {'start_now':now-179, 'now':now, 'start_next':now+1381}
 		elif lastComp == "zapTo":
 			returndoc = "IMO RETURN OF E1 SUCKS"
 		elif req.path == "/xml/getServices":
