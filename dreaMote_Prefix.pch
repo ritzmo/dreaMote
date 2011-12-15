@@ -106,8 +106,10 @@
 // re-usable macro to show a temporary "everything fine" hud
 // NOTE: you still need to manually include MBProgressHUD.h
 #define showCompletedHudWithText(text) { \
-	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.navigationController.view]; \
-	[self.navigationController.view addSubview:hud]; \
+	UIView *view = self.navigationController.view; \
+	if(!view) view = self.view; \
+	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view]; \
+	[view addSubview:hud]; \
 	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
 	hud.mode = MBProgressHUDModeCustomView; \
 	hud.labelText = (text); \
