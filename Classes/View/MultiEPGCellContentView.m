@@ -131,23 +131,23 @@
 	// NOTE: we iterate through the array and check the previous events begin against our begin
 	// this should fix possible problems with overlapping events
 	NSObject<EventProtocol> *prevEvent = nil;
+	CGFloat prevLine = 0;
 	for(NSObject<EventProtocol> *event in _events)
 	{
 		if(prevEvent == nil)
 		{
 			const CGFloat eventBegin = [event.begin timeIntervalSinceDate:begin];
-			const CGFloat leftLine = (eventBegin < 0) ? 0 : eventBegin * widthPerSecond;
-			if(point.x < leftLine)
+			prevLine = (eventBegin < 0) ? 0 : eventBegin * widthPerSecond;
+			if(point.x < prevLine)
 				break;
 			prevEvent = event;
 			continue;
 		}
-		const CGFloat eventBegin = [prevEvent.begin timeIntervalSinceDate:begin];
-		const CGFloat leftLine = (eventBegin < 0) ? 0 : eventBegin * widthPerSecond;
-		const CGFloat rightLine = [event.begin timeIntervalSinceDate:begin] * widthPerSecond;
+		const CGFloat leftLine = prevLine;
+		prevLine = [event.begin timeIntervalSinceDate:begin] * widthPerSecond;
 
 		// if x within bounds of previous event, return it…
-		if(point.x >= leftLine && point.x < rightLine)
+		if(point.x >= leftLine && point.x < prevLine)
 		{
 			return prevEvent;
 		}
