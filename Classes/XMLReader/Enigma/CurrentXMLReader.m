@@ -100,6 +100,7 @@ typedef enum
 			||	!strncmp((const char *)localname, kEnigmaNextEvent, kEnigmaNextEventLength))
 	{
 		context = CONTEXT_EVENT;
+		ereader.currentEvent = [[GenericEvent alloc] init]; // the parser waits for an <event> which it won't find
 	}
 }
 
@@ -153,7 +154,7 @@ typedef enum
 											withObject:currentEvent
 										 waitUntilDone:NO];
 		}
-		if(!strncmp((const char *)localname, kEnigmaNextEvent, kEnigmaNextEventLength))
+		else if(!strncmp((const char *)localname, kEnigmaNextEvent, kEnigmaNextEventLength))
 		{
 			NSObject<EventProtocol> *currentEvent = ereader.currentEvent;
 			if(!currentEvent.title || [currentEvent.title isEqualToString:@""])
