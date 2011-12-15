@@ -1116,6 +1116,8 @@
 		DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */; };
 		DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */; };
 		DAF05E1D14997F8400408FE7 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF05E1C14997F8400408FE7 /* Service.m */; };
+		DAF05E1F149983D900408FE7 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF05E1C14997F8400408FE7 /* Service.m */; };
+		DAF05E20149983DA00408FE7 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF05E1C14997F8400408FE7 /* Service.m */; };
 		DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
@@ -4310,6 +4312,7 @@
 				DAAAD6141492DEF600F27A02 /* NSData+Base64.m in Sources */,
 				DAAAD6211492E7BF00F27A02 /* SSKManager.m in Sources */,
 				DAAAD6241492E7BF00F27A02 /* SSKProduct.m in Sources */,
+				DAF05E1F149983D900408FE7 /* Service.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4538,6 +4541,7 @@
 				DAAAD6151492DEF600F27A02 /* NSData+Base64.m in Sources */,
 				DAAAD6221492E7BF00F27A02 /* SSKManager.m in Sources */,
 				DAAAD6251492E7BF00F27A02 /* SSKProduct.m in Sources */,
+				DAF05E20149983DA00408FE7 /* Service.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

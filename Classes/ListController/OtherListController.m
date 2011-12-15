@@ -467,7 +467,7 @@
 			if([masterViewController respondsToSelector:@selector(setMgSplitViewController:)])
 			{
 				NSLog(@"Note: Giving master its previous split view back, this is some crazy sh**!");
-				[(AutoTimerListController *)masterViewController setMgSplitViewController:targetViewController];
+				[(ServiceListController *)masterViewController setMgSplitViewController:targetViewController];
 			}
 		}
 	}
@@ -519,7 +519,7 @@
 			if([targetViewController respondsToSelector:@selector(setMgSplitViewController:)])
 			{
 				NSLog(@"Note: Transferring split view controller to subview - this could get messy!");
-				[(AutoTimerListController *)targetViewController setMgSplitViewController:mgSplitViewController];
+				[(ServiceListController *)targetViewController setMgSplitViewController:mgSplitViewController];
 			}
 			// NOTE: the generic code path will take care of pushing this view
 
