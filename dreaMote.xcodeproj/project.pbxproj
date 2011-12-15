@@ -1115,6 +1115,7 @@
 		DADDDE05146AC7C300BE035E /* ColoredAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */; };
 		DADDDE06146AC7C300BE035E /* ColoredAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */; };
 		DADDDE07146AC7C300BE035E /* ColoredAccessoryView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADDDE04146AC7C300BE035E /* ColoredAccessoryView.m */; };
+		DAF05E1D14997F8400408FE7 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAF05E1C14997F8400408FE7 /* Service.m */; };
 		DAFA4C00144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C01144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
 		DAFA4C02144ACF6B005DE541 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAFA4BFF144ACF6B005DE541 /* Security.framework */; };
@@ -1852,6 +1853,8 @@
 		DAEC23AB1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DAEC23AC1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/PackageManager.strings; sourceTree = "<group>"; };
 		DAEC23AD1492BB4F00A94824 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
+		DAF05E1B14997F8400408FE7 /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
+		DAF05E1C14997F8400408FE7 /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
 		DAFA4BFF144ACF6B005DE541 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
@@ -2908,6 +2911,7 @@
 				DAC8C0CA13B2014C00CA00D9 /* Enigma */,
 				DAC8C0D113B2014C00CA00D9 /* Enigma2 */,
 				DAC8C0DE13B2014C00CA00D9 /* Generic */,
+				DAF05E1A14997F8400408FE7 /* Neutrino */,
 				DAC8C0FF13B2014C00CA00D9 /* SVDRP */,
 				DAC8C0C913B2014C00CA00D9 /* AboutProtocol.h */,
 				DAC8C0DC13B2014C00CA00D9 /* EventProtocol.h */,
@@ -3302,6 +3306,15 @@
 			);
 			name = QuincyKit;
 			path = QuincyKit/client/iOS;
+			sourceTree = "<group>";
+		};
+		DAF05E1A14997F8400408FE7 /* Neutrino */ = {
+			isa = PBXGroup;
+			children = (
+				DAF05E1B14997F8400408FE7 /* Service.h */,
+				DAF05E1C14997F8400408FE7 /* Service.m */,
+			);
+			path = Neutrino;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -4039,6 +4052,7 @@
 				DAAAD6131492DEF600F27A02 /* NSData+Base64.m in Sources */,
 				DAAAD6201492E7BF00F27A02 /* SSKManager.m in Sources */,
 				DAAAD6231492E7BF00F27A02 /* SSKProduct.m in Sources */,
+				DAF05E1D14997F8400408FE7 /* Service.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

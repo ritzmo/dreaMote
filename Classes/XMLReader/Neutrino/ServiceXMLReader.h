@@ -6,19 +6,14 @@
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <XMLReader/SaxXmlReader.h>
 
-#import "SaxXmlReader.h"
-#import "ServiceSourceDelegate.h"
+#import <Delegates/ServiceSourceDelegate.h>
 
 /*!
  @brief Neutrino Service XML Reader.
  */
 @interface NeutrinoServiceXMLReader : SaxXmlReader
-{
-@private
-	NSObject<ServiceProtocol> *currentService; /*!< @brief Current Service. */
-}
 
 /*!
  @brief Standard initializer.

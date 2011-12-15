@@ -9,7 +9,7 @@
 #import "ServiceXMLReader.h"
 
 #import <Constants.h>
-#import <Objects/Generic/Service.h>
+#import <Objects/Neutrino/Service.h>
 
 #import "NSObject+Queue.h"
 
@@ -23,7 +23,7 @@ static const char *kNeutrinoServicelogo = "logo";
 static const NSUInteger kNeutrinoServicelogoLength = 5;
 
 @interface NeutrinoServiceXMLReader()
-@property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
+@property (nonatomic, strong) NeutrinoService *currentService;
 @end
 
 @implementation NeutrinoServiceXMLReader
@@ -90,7 +90,7 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 {
 	if(!strncmp((const char *)localname, kNeutrinoServiceElement, kNeutrinoServiceElementLength))
 	{
-		self.currentService = [[GenericService alloc] init];
+		self.currentService = [[NeutrinoService alloc] init];
 	}
 	else if(	!strncmp((const char *)localname, kNeutrinoServicereference, kNeutrinoServicereferenceLength)
 			||	!strncmp((const char *)localname, kNeutrinoServicename, kNeutrinoServicenameLength)
@@ -126,7 +126,7 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 	}
 	else if(!strncmp((const char *)localname, kNeutrinoServicename, kNeutrinoServicenameLength))
 	{
-			currentService.sname = currentString;
+		currentService.sname = currentString;
 	}
 	else if(!strncmp((const char *)localname, kNeutrinoServicelogo, kNeutrinoServicelogoLength))
 	{

@@ -12,7 +12,7 @@
 
 @implementation GenericService
 
-@synthesize sname, sref, piconName;
+@synthesize sname, sref;
 
 - (id)init
 {
@@ -30,7 +30,6 @@
 		self.sref = [service.sref copy];
 		self.sname = [service.sname copy];
 		_valid = service.valid;
-		self.piconName = [service.piconName copy];
 	}
 
 	return self;
@@ -55,63 +54,47 @@
 {
 	if(!_calculatedPicon && _valid)
 	{
-		if(self.piconName)
+		NSInteger length = [self.sref length]+1;
+		char *cSref = malloc(length);
+		if(!cSref)
+			return nil;
+		if(![self.sref getCString:cSref maxLength:length encoding:NSASCIIStringEncoding])
 		{
-			NSRange piconRange = [self.piconName rangeOfString:@"/" options:NSBackwardsSearch];
-			if(piconRange.location != NSNotFound)
-			{
-				piconRange.length = [self.piconName length] - piconRange.location - 1;
-				piconRange.location += 1;
-				NSString *basename = [self.piconName substringWithRange:piconRange];
-				NSString *fullpath = [[NSString alloc] initWithFormat:kPiconPath, basename];
-				_picon = [UIImage imageNamed:fullpath];
-			}
+			free(cSref);
+			return nil;
 		}
-		else
+		NSInteger i = length-2;
+		/*!
+		 @note Enigma sref needs at least 20 characters, so if we did not find the first ':'
+		 at the 19th position, abort early.
+		 */
+		for(; i > 18; --i)
 		{
-			NSInteger length = [self.sref length]+1;
-			char *cSref = malloc(length);
-			if(!cSref)
-				return nil;
-			if(![self.sref getCString:cSref maxLength:length encoding:NSASCIIStringEncoding])
+			if(cSref[i] == ':')
 			{
-				free(cSref);
-				return nil;
-			}
-			NSInteger i = length-2;
-			/*!
-			 @note Enigma sref needs at least 20 characters, so if we did not find the first ':'
-			 at the 19th position, abort early.
-			 */
-			for(; i > 18; --i)
-			{
-				if(cSref[i] == ':')
+				// rstrip(':')
+				do
 				{
-					// rstrip(':')
-					do
-					{
-						length = i;
-						cSref[i] = '\0';
-						--i;
-					} while(cSref[i] == ':');
+					length = i;
+					cSref[i] = '\0';
+					--i;
+				} while(cSref[i] == ':');
 
-					// skip one character from last ':'
-					for(--i; i > 0; --i)
+				// skip one character from last ':'
+				for(--i; i > 0; --i)
+				{
+					if(cSref[i] == ':')
 					{
-						if(cSref[i] == ':')
-						{
-							cSref[i] = '_';
-							--i; // there has to be at least one character != ':' before this one
-						}
+						cSref[i] = '_';
+						--i; // there has to be at least one character != ':' before this one
 					}
-					break;
 				}
+				break;
 			}
-			NSString *basename = [[NSString alloc] initWithBytesNoCopy:cSref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
-			NSString *fullpath = [[NSString alloc] initWithFormat:kPiconPathPng, basename];
-			_picon = [UIImage imageNamed:fullpath];
 		}
-
+		NSString *basename = [[NSString alloc] initWithBytesNoCopy:cSref length:length encoding:NSASCIIStringEncoding freeWhenDone:YES];
+		NSString *fullpath = [[NSString alloc] initWithFormat:kPiconPathPng, basename];
+		_picon = [UIImage imageNamed:fullpath];
 		_calculatedPicon = YES;
 	}
 	return _picon;
