@@ -35,12 +35,13 @@ static const NSUInteger kEnigma2NimTypeLength = 5;
 @interface Enigma2AboutXMLReader()
 @property (nonatomic, strong) GenericAbout *about;
 @property (nonatomic, strong) Harddisk *hdd;
-@property (nonatomic, strong) NSMutableArray *currentList;
+@property (nonatomic, strong) NSMutableArray *hddlist;
+@property (nonatomic, strong) NSMutableArray *nimlist;
 @end
 
 @implementation Enigma2AboutXMLReader
 
-@synthesize about, currentList, hdd;
+@synthesize about, hdd, hddlist, nimlist;
 
 /* initialize */
 - (id)initWithDelegate:(NSObject<AboutSourceDelegate> *)delegate
@@ -86,15 +87,18 @@ Example:
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Nims, kEnigma2NimsLength))
 	{
-		currentList = [[NSMutableArray alloc] initWithCapacity:4];
-		about.tuners = currentList;
+		if(!nimlist)
+		{
+			nimlist = [[NSMutableArray alloc] initWithCapacity:4];
+			about.tuners = nimlist;
+		}
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Hdd, kEnigma2HddLength))
 	{
-		if(!currentList)
+		if(!hddlist)
 		{
-			currentList = [[NSMutableArray alloc] initWithCapacity:2];
-			about.hdd = currentList;
+			hddlist = [[NSMutableArray alloc] initWithCapacity:2];
+			about.hdd = hddlist;
 		}
 		hdd = [[Harddisk alloc] init];
 	}
@@ -108,7 +112,8 @@ Example:
 									withObject:about
 								 waitUntilDone:NO];
 		about = nil;
-		currentList = nil;
+		hddlist = nil;
+		nimlist = nil;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2EnigmaVersion, kEnigma2EnigmaVersionLength))
 	{
@@ -124,7 +129,7 @@ Example:
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Hdd, kEnigma2HddLength))
 	{
-		[currentList addObject:hdd];
+		[hddlist addObject:hdd];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2HddCapacity, kEnigma2HddCapacityLength))
 	{
@@ -140,7 +145,7 @@ Example:
 	}
 	else if(!strncmp((const char *)localname, kEnigma2NimType, kEnigma2NimTypeLength))
 	{
-		[currentList addObject:currentString];
+		[nimlist addObject:currentString];
 	}
 
 	self.currentString = nil;
