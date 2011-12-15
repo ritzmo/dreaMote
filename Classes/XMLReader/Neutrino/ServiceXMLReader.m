@@ -11,6 +11,8 @@
 #import <Constants.h>
 #import <Objects/Generic/Service.h>
 
+#import "NSObject+Queue.h"
+
 static const char *kNeutrinoServiceElement = "channel";
 static const NSUInteger kNeutrinoServiceElementLength = 8;
 static const char *kNeutrinoServicereference = "id";
@@ -34,6 +36,8 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([delegate respondsToSelector:@selector(addServices:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -45,6 +49,16 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 	fakeService.sname = NSLocalizedString(@"Error retrieving Data", @"");
 	[(NSObject<ServiceSourceDelegate> *)_delegate addService:fakeService];
 	[super errorLoadingDocument:error];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<ServiceSourceDelegate> *)_delegate addServices:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
 }
 
 /*
@@ -91,9 +105,20 @@ static const NSUInteger kNeutrinoServicelogoLength = 5;
 {
 	if(!strncmp((const char *)localname, kNeutrinoServiceElement, kNeutrinoServiceElementLength))
 	{
-		[_delegate performSelectorOnMainThread: @selector(addService:)
-									withObject: currentService
-								 waitUntilDone: NO];
+		if(self.currentItems)
+		{
+			[self.currentItems addObject:currentService];
+			if(self.currentItems.count >= kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addServices:dispatchArray];
+			}
+		}
+		else
+			[_delegate performSelectorOnMainThread:@selector(addService:)
+										withObject:currentService
+									 waitUntilDone:NO];
 	}
 	else if(!strncmp((const char *)localname, kNeutrinoServicereference, kNeutrinoServicereferenceLength))
 	{

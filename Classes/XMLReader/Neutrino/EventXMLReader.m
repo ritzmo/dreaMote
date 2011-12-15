@@ -8,9 +8,13 @@
 
 #import "EventXMLReader.h"
 
+#import <Constants.h>
+
 #import <Objects/Generic/Event.h>
 #import <Objects/Generic/Service.h>
 #import <Delegates/ServiceSourceDelegate.h>
+
+#import "NSObject+Queue.h"
 
 static const char *kNeutrinoEventElement = "prog";
 static const NSUInteger kNeutrinoEventElementLength = 5;
@@ -47,6 +51,8 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		if([delegate respondsToSelector:@selector(addEvents:)])
+			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
 	return self;
 }
@@ -54,9 +60,8 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 /* initialize */
 - (id)initWithDelegate:(NSObject<EventSourceDelegate> *)delegate andGetCurrent:(BOOL)getCurrent
 {
-	if((self = [super init]))
+	if((self = [self initWithDelegate:delegate]))
 	{
-		_delegate = delegate;
 		if(getCurrent && [delegate respondsToSelector:@selector(addService:)])
 		{
 			_getCurrent = [NSDate date];
@@ -87,6 +92,16 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 		[(NSObject<EventSourceDelegate> *)_delegate addEvent:fakeObject];
 	}
 	[super errorLoadingDocument:error];
+}
+
+- (void)finishedParsingDocument
+{
+	if(self.currentItems.count)
+	{
+		[(NSObject<EventSourceDelegate> *)_delegate addEvents:self.currentItems];
+		[self.currentItems removeAllObjects];
+	}
+	[super finishedParsingDocument];
 }
 
 /*
@@ -161,9 +176,22 @@ static const NSUInteger kNeutrinoChannelNameLength = 13;
 				return;
 			}
 		}
-		[_delegate performSelectorOnMainThread: @selector(addEvent:)
-									withObject: currentEvent
-								 waitUntilDone: NO];
+		if(self.currentItems)
+		{
+			[self.currentItems addObject:currentEvent];
+			if(self.currentItems.count > kBatchDispatchItemsCount)
+			{
+				NSArray *dispatchArray = [self.currentItems copy];
+				[self.currentItems removeAllObjects];
+				[[_delegate queueOnMainThread] addEvents:dispatchArray];
+			}
+		}
+		else
+		{
+			[_delegate performSelectorOnMainThread:@selector(addEvent:)
+										withObject:currentEvent
+									 waitUntilDone:NO];
+		}
 	}
 	else if(!strncmp((const char *)localname, kNeutrinoEventExtendedDescription, kNeutrinoEventExtendedDescriptionLength))
 	{
