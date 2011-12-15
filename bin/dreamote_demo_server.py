@@ -26,7 +26,60 @@ EMULATE_OLD_E1 = 0
 EMULATE_NEUTRINOHD = False
 
 ### DOCUMENTS
-GETCURRENT = """<?xml version="1.0" encoding="UTF-8"?>
+GETCURRENT = (
+# (standby)
+"""<e2currentserviceinformation>
+	<e2service>
+		<e2servicereference></e2servicereference>
+		<e2servicename></e2servicename>
+		<e2providername></e2providername>
+		<e2videowidth></e2videowidth>
+		<e2videoheight></e2videoheight>
+		<e2servicevideosize>x</e2servicevideosize>
+		<e2iswidescreen></e2iswidescreen>
+		<e2apid></e2apid>
+		<e2vpid></e2vpid>
+		<e2pcrpid></e2pcrpid>
+		<e2pmtpid></e2pmtpid>
+		<e2txtpid></e2txtpid>
+		<e2tsid></e2tsid>
+		<e2onid></e2onid>
+		<e2sid></e2sid>
+	</e2service>
+	<e2eventlist>
+		<e2event>
+			<e2eventservicereference></e2eventservicereference>
+			<e2eventservicename></e2eventservicename>
+			<e2eventprovidername></e2eventprovidername>
+			<e2eventid></e2eventid>
+			<e2eventname></e2eventname>
+			<e2eventtitle></e2eventtitle>
+			<e2eventdescription></e2eventdescription>
+			<e2eventstart></e2eventstart>
+			<e2eventduration></e2eventduration>
+			<e2eventremaining></e2eventremaining>
+			<e2eventcurrenttime>%(now).2f</e2eventcurrenttime>
+			<e2eventdescriptionextended></e2eventdescriptionextended>
+		</e2event>
+		<e2event>
+			<e2eventservicereference></e2eventservicereference>
+			<e2eventservicename></e2eventservicename>
+			<e2eventprovidername></e2eventprovidername>
+			<e2eventid></e2eventid>
+			<e2eventname></e2eventname>
+			<e2eventtitle></e2eventtitle>
+			<e2eventdescription></e2eventdescription>
+			<e2eventstart></e2eventstart>
+			<e2eventduration></e2eventduration>
+			<e2eventremaining></e2eventremaining>
+			<e2eventcurrenttime>%(now).2f</e2eventcurrenttime>
+			<e2eventdescriptionextended></e2eventdescriptionextended>
+		</e2event>
+	</e2eventlist>
+</e2currentserviceinformation>
+""",
+# (livetv)
+"""<?xml version="1.0" encoding="UTF-8"?>
 <e2currentserviceinformation>
 	<e2service>
 		<e2servicereference>1:0:1:445D:453:1:C00000:0:0:0:</e2servicereference>
@@ -54,10 +107,10 @@ GETCURRENT = """<?xml version="1.0" encoding="UTF-8"?>
 			<e2eventname>Demo Eventname</e2eventname>
 			<e2eventtitle>Demo Eventname</e2eventtitle>
 			<e2eventdescription>Event Short description</e2eventdescription>
-			<e2eventstart>%.2f</e2eventstart>
+			<e2eventstart>%(start_now).2f</e2eventstart>
 			<e2eventduration>1560</e2eventduration>
 			<e2eventremaining>1381</e2eventremaining>
-			<e2eventcurrenttime>%.2f</e2eventcurrenttime>
+			<e2eventcurrenttime>%(now).2f</e2eventcurrenttime>
 			<e2eventdescriptionextended>Event description</e2eventdescriptionextended>
 		</e2event>
 		<e2event>
@@ -68,14 +121,64 @@ GETCURRENT = """<?xml version="1.0" encoding="UTF-8"?>
 			<e2eventname>Demo Eventname 2</e2eventname>
 			<e2eventtitle>Demo Eventname 2</e2eventtitle>
 			<e2eventdescription>Event Short description 2</e2eventdescription>
-			<e2eventstart>%.2f</e2eventstart>
+			<e2eventstart>%(start_next).2f</e2eventstart>
 			<e2eventduration>1800</e2eventduration>
 			<e2eventremaining>1800</e2eventremaining>
-			<e2eventcurrenttime>%.2f</e2eventcurrenttime>
+			<e2eventcurrenttime>%(now).2f</e2eventcurrenttime>
 			<e2eventdescriptionextended>Event description 2</e2eventdescriptionextended>
 		</e2event>
 	</e2eventlist>
 </e2currentserviceinformation>"""
+# (recording)
+,"""<e2currentserviceinformation>
+	<e2service>
+		<e2servicereference>N/A</e2servicereference>
+		<e2servicename>Some recording</e2servicename>
+		<e2providername>N/A</e2providername>
+		<e2videowidth>624</e2videowidth>
+		<e2videoheight>352</e2videoheight>
+		<e2servicevideosize>624x352</e2servicevideosize>
+		<e2iswidescreen></e2iswidescreen>
+		<e2apid>N/A</e2apid>
+		<e2vpid>N/A</e2vpid>
+		<e2pcrpid>N/A</e2pcrpid>
+		<e2pmtpid>N/A</e2pmtpid>
+		<e2txtpid>N/A</e2txtpid>
+		<e2tsid>N/A</e2tsid>
+		<e2onid>N/A</e2onid>
+		<e2sid>N/A</e2sid>
+	</e2service>
+	<e2eventlist>
+		<e2event>
+			<e2eventservicereference>N/A</e2eventservicereference>
+			<e2eventservicename>Some recording</e2eventservicename>
+			<e2eventprovidername>N/A</e2eventprovidername>
+			<e2eventid></e2eventid>
+			<e2eventname>Some name</e2eventname>
+			<e2eventtitle>Some title</e2eventtitle>
+			<e2eventdescription>Some description</e2eventdescription>
+			<e2eventstart>%(start_now).2f</e2eventstart>
+			<e2eventduration>5098</e2eventduration>
+			<e2eventremaining>5098</e2eventremaining>
+			<e2eventcurrenttime>%(now).2f</e2eventcurrenttime>
+			<e2eventdescriptionextended></e2eventdescriptionextended>
+		</e2event>
+		<e2event>
+			<e2eventservicereference>N/A</e2eventservicereference>
+			<e2eventservicename>Some recording</e2eventservicename>
+			<e2eventprovidername>N/A</e2eventprovidername>
+			<e2eventid></e2eventid>
+			<e2eventname></e2eventname>
+			<e2eventtitle></e2eventtitle>
+			<e2eventdescription></e2eventdescription>
+			<e2eventstart></e2eventstart>
+			<e2eventduration></e2eventduration>
+			<e2eventremaining></e2eventremaining>
+			<e2eventcurrenttime>%(now).2f</e2eventcurrenttime>
+			<e2eventdescriptionextended></e2eventdescriptionextended>
+		</e2event>
+	</e2eventlist>
+</e2currentserviceinformation>""")
 
 SIMPLEXMLRESULT = """<?xml version="1.0" encoding="UTF-8"?>
 <e2simplexmlresult>
@@ -677,10 +780,12 @@ class Service:
 		self.sref = sref
 
 class State:
+	CURRENT_TYPE_STANDBY, CURRENT_TYPE_LIVE, CURRENT_TYPE_RECORDING, CURRENT_TYPE_MAX = xrange(4)
 	def __init__(self):
 		self.movies = []
 		self.timers = []
 		self.is_muted = False
+		self.currentType = self.CURRENT_TYPE_STANDBY
 		self.reset()
 
 	def getBouquetsForType(self, type="tv"):
@@ -785,6 +890,10 @@ class State:
 	def isMuted(self):
 		return self.is_muted
 
+	def getCurrentType(self):
+		self.currentType = (self.currentType + 1) % self.CURRENT_TYPE_MAX
+		return self.currentType
+
 state = State()
 
 # returns sample documents, stupid demo contents :-)
@@ -798,8 +907,9 @@ class Simple(resource.Resource):
 		lastComp = req.postpath[-1]
 # ENIGMA2
 		if lastComp == "getcurrent":
+			curtype = state.getCurrentType()
 			now = time.time()
-			returndoc = GETCURRENT % (now-179, now, now+1381, now)
+			returndoc = GETCURRENT[curtype] % {'start_now':now-179, 'now':now, 'start_next':now+1381}
 		elif lastComp == "recordnow":
 			returndoc = SIMPLEXMLRESULT % ('True', 'instant record started')
 		elif lastComp == "about":
