@@ -550,8 +550,9 @@ OSStatus RenderTone(
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
 {
-	// NOTE: no reason for this reload
-	//[_tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
+	// XXX: no idea why we need this, but for some reason we do :/
+	if(!_hasSnrdB)
+		[_tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 
 	if(_refreshInterval <= 0)
 		[self fetchSignalDefer];
