@@ -953,27 +953,39 @@
 
 	NSObject<MovieProtocol> *movie = nil;
 	cell.formatter = _dateFormatter;
-	if(_sortTitle)
+	@try
 	{
-		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
-		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
-	}
-	else
-	{
-		NSArray *movies = _movies;
-#if IS_FULL()
-		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
+		if(_sortTitle)
+		{
+			NSString *key = [_currentKeys objectAtIndex:indexPath.section];
+			movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+		}
 		else
+		{
+			NSArray *movies = _movies;
+#if IS_FULL()
+			if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
+			else
 #endif
-		if(selectedTags) movies = taggedMovies;
-		movie = [movies objectAtIndex:indexPath.row];
+			if(selectedTags) movies = taggedMovies;
+			movie = [movies objectAtIndex:indexPath.row];
+		}
 	}
-	cell.movie = movie;
-	if([_selected containsObject:movie])
-		[(MovieTableViewCell *)cell setMultiSelected:YES animated:NO];
+	@catch (NSException *exception)
+	{
+		NSLog(@"[MovieListController] Exception while trying to assign movie to cell (%d, %d - max %d): %@", indexPath.section, indexPath.row, [_movies count], [exception description]);
+#if IS_DEBUG()
+		[exception raise];
+#endif
+	}
+	@finally
+	{
+		cell.movie = movie;
+		if(movie && [_selected containsObject:movie])
+			[(MovieTableViewCell *)cell setMultiSelected:YES animated:NO];
+	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];;
 }
 
 /* row selected */
