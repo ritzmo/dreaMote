@@ -248,7 +248,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	BOOL treatAsFirst = YES;
 	if([RemoteConnectorObject loadConnections])
 	{
-		treatAsFirst = ![RemoteConnectorObject connectTo:[activeConnectionId integerValue]];
+		treatAsFirst = ![RemoteConnectorObject connectTo:[activeConnectionId integerValue] inBackground:YES];
 
 		// by using mg split view loadView is called too early which might lead to the
 		// wrong mode being shown (e.g. only movie list & movie view for enigma2 instead

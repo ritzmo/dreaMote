@@ -293,9 +293,10 @@ enum packageManagementList
  @brief Standard constructor for RemoteConnectors.
 
  @param connection Dictionary describing connection.
+ @param background Check version in background (if supported).
  @return RemoteConnector Object.
  */
-+ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection;
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection inBackground:(BOOL)background;
 
 /*!
  @brief Return default connection data known for this connector.

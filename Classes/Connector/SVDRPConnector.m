@@ -68,7 +68,7 @@ typedef enum
 	_serviceCache = nil;
 }
 
-+ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection inBackground:(BOOL)background
 {
 	NSString *address = [connection objectForKey: kRemoteHost];
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];

@@ -27,11 +27,12 @@
 
 /*!
  @brief Connect to given Connection.
- 
+
  @param connectionIndex Index of Connection in List.
+ @param background Run connection check in background?
  @return YES if Connector instance was created.
  */
-+ (BOOL)connectTo: (NSUInteger)connectionIndex;
++ (BOOL)connectTo:(NSUInteger)connectionIndex inBackground:(BOOL)background;
 
 /*!
  @brief Close active connection.

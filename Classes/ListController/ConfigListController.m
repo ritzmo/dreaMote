@@ -417,7 +417,7 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 {
 	const NSInteger connectedIdx = [RemoteConnectorObject getConnectedId];
 
-	if(![RemoteConnectorObject connectTo:indexPath.row])
+	if(![RemoteConnectorObject connectTo:indexPath.row inBackground:NO])
 	{
 		// error connecting... what now?
 		UIAlertView *notification = [[UIAlertView alloc]
@@ -449,7 +449,7 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 		// not reachable
 		if(doAbort)
 		{
-			[RemoteConnectorObject connectTo:connectedIdx];
+			[RemoteConnectorObject connectTo:connectedIdx inBackground:YES];
 			mainBlock = ^{
 				[_tableView deselectRowAtIndexPath:indexPath animated:YES];
 			};

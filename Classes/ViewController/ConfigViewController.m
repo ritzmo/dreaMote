@@ -402,7 +402,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				// NOTE: if this is the first connection, we need to establish it here to properly check for features.
 				if(_mustSave)
 				{
-					[RemoteConnectorObject connectTo:_connectionIndex];
+					[RemoteConnectorObject connectTo:_connectionIndex inBackground:YES];
 				}
 			}
 			else
@@ -412,7 +412,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 				// Reconnect because changes won't be applied otherwise
 				if(_connectionIndex == [RemoteConnectorObject getConnectedId])
 				{
-					[RemoteConnectorObject connectTo:_connectionIndex];
+					[RemoteConnectorObject connectTo:_connectionIndex inBackground:YES];
 				}
 			}
 		}
@@ -481,7 +481,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 {
 	const NSInteger connectedId = [RemoteConnectorObject getConnectedId];
 
-	if(![RemoteConnectorObject connectTo: _connectionIndex])
+	if(![RemoteConnectorObject connectTo:_connectionIndex inBackground:NO])
 	{
 		// error connecting... what now?
 		UIAlertView *notification = [[UIAlertView alloc]
@@ -505,7 +505,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			[notification show];
 			if(doAbort)
 			{
-				[RemoteConnectorObject connectTo:connectedId];
+				[RemoteConnectorObject connectTo:connectedId inBackground:YES];
 				return;
 			}
 		}

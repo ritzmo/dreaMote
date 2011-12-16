@@ -242,7 +242,7 @@
 	{
 		const id connId = [[NSUserDefaults standardUserDefaults] objectForKey: kActiveConnection];
 		if(![RemoteConnectorObject isConnected])
-			if(![RemoteConnectorObject connectTo: [connId integerValue]])
+			if(![RemoteConnectorObject connectTo:[connId integerValue] inBackground:YES])
 				return;
 		const BOOL isIpad = IS_IPAD();
 

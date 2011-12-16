@@ -104,7 +104,7 @@ enum enigma1MessageTypes {
 	return self;
 }
 
-+ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection inBackground:(BOOL)background
 {
 	NSString *address = [connection objectForKey: kRemoteHost];
 	NSString *username = [[connection objectForKey: kUsername] urlencode];

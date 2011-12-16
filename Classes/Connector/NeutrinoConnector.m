@@ -107,7 +107,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 	// NOTE: We don't use any caches
 }
 
-+ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection inBackground:(BOOL)background
 {
 	NSString *address = [connection objectForKey: kRemoteHost];
 	NSString *username = [[connection objectForKey: kUsername] urlencode];
@@ -115,7 +115,21 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 	const NSInteger port = [[connection objectForKey: kPort] integerValue];
 	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
 
-	return [[NeutrinoConnector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl];
+	NeutrinoConnector *con = [[NeutrinoConnector alloc] initWithAddress:address
+															andUsername:username
+															andPassword:password
+																andPort:port
+																 useSSL:ssl];
+	if(NO && background) // don't run this check yet as we don't use this information
+	{
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+			const BOOL reachable = [con isReachable:nil];
+			if(reachable)
+				// this might have changed the features, so handle this like a reconnect
+				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:con userInfo:nil];
+		});
+	}
+	return con;
 }
 
 + (NSArray *)knownDefaultConnections

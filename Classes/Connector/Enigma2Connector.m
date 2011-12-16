@@ -175,13 +175,6 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		}
 		_advancedRc = advancedRc;
 		dynamicFeatures = FEATURE_ALL; // assume all features until detection
-
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-			const BOOL reachable = [self isReachable:nil];
-			if(reachable)
-				// this might have changed the features, so handle this like a reconnect
-				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
-		});
 	}
 	return self;
 }
@@ -192,7 +185,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	// NOTE: We don't use any caches
 }
 
-+ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection
++ (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection inBackground:(BOOL)background
 {
 	NSString *address = [connection objectForKey: kRemoteHost];
 	NSString *username = [[connection objectForKey: kUsername] urlencode];
@@ -201,7 +194,22 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
 	const BOOL advancedRc = [[connection objectForKey: kAdvancedRemote] boolValue];
 
-	return [[Enigma2Connector alloc] initWithAddress:address andUsername:username andPassword:password andPort:port useSSL:ssl andAdvancedRc:advancedRc];
+	Enigma2Connector *con = [[Enigma2Connector alloc] initWithAddress:address
+														  andUsername:username
+														  andPassword:password
+															  andPort:port
+															   useSSL:ssl
+														andAdvancedRc:advancedRc];
+	if(background)
+	{
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+			const BOOL reachable = [con isReachable:nil];
+			if(reachable)
+				// this might have changed the features, so handle this like a reconnect
+				[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:con userInfo:nil];
+		});
+	}
+	return con;
 }
 
 + (NSArray *)knownDefaultConnections

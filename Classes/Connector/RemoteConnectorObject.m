@@ -71,7 +71,7 @@ static RemoteConnectorObject *singleton;
 	return singleton;
 }
 
-+ (BOOL)connectTo: (NSUInteger)connectionIndex
++ (BOOL)connectTo: (NSUInteger)connectionIndex inBackground:(BOOL)background
 {
 	RemoteConnectorObject *singleton = [RemoteConnectorObject singleton];
 	NSArray *connections = singleton.connections;
@@ -88,22 +88,22 @@ static RemoteConnectorObject *singleton;
 	{
 #if INCLUDE_FEATURE(Enigma2)
 		case kEnigma2Connector:
-			sharedRemoteConnector = [Enigma2Connector newWithConnection:connection];
+			sharedRemoteConnector = [Enigma2Connector newWithConnection:connection inBackground:background];
 			break;
 #endif
 #if INCLUDE_FEATURE(Enigma)
 		case kEnigma1Connector:
-			sharedRemoteConnector = [Enigma1Connector newWithConnection:connection];
+			sharedRemoteConnector = [Enigma1Connector newWithConnection:connection inBackground:background];
 			break;
 #endif
 #if INCLUDE_FEATURE(Neutrino)
 		case kNeutrinoConnector:
-			sharedRemoteConnector = [NeutrinoConnector newWithConnection:connection];
+			sharedRemoteConnector = [NeutrinoConnector newWithConnection:connection inBackground:background];
 			break;
 #endif
 #if INCLUDE_FEATURE(SVDRP)
 		case kSVDRPConnector:
-			sharedRemoteConnector = [SVDRPConnector newWithConnection:connection];
+			sharedRemoteConnector = [SVDRPConnector newWithConnection:connection inBackground:background];
 			break;
 #endif
 		default:
@@ -289,7 +289,7 @@ static RemoteConnectorObject *singleton;
 				if(flags & kSCNetworkReachabilityFlagsReachable)
 				{
 					// host is currently reachable, add to list of possible connections but first try to login
-					connector = [currentConnector newWithConnection:connection];
+					connector = [currentConnector newWithConnection:connection inBackground:NO];
 					if([connector isReachable:nil])
 					{
 						[array addObject:connection];
@@ -315,7 +315,7 @@ static RemoteConnectorObject *singleton;
 	NSObject <RemoteConnector>* connector = nil;
 
 #if INCLUDE_FEATURE(Enigma2)
-	connector = [Enigma2Connector newWithConnection:connection];
+	connector = [Enigma2Connector newWithConnection:connection inBackground:NO];
 	if([connector isReachable:nil])
 	{
 		return kEnigma2Connector;
@@ -323,7 +323,7 @@ static RemoteConnectorObject *singleton;
 #endif
 
 #if INCLUDE_FEATURE(Enigma)
-	connector = [Enigma1Connector newWithConnection:connection];
+	connector = [Enigma1Connector newWithConnection:connection inBackground:NO];
 	if([connector isReachable:nil])
 	{
 		return kEnigma1Connector;
@@ -331,7 +331,7 @@ static RemoteConnectorObject *singleton;
 #endif
 
 	#if INCLUDE_FEATURE(Neutrino)
-	connector = [NeutrinoConnector newWithConnection:connection];
+	connector = [NeutrinoConnector newWithConnection:connection inBackground:NO];
 	if([connector isReachable:nil])
 	{
 		return kNeutrinoConnector;
@@ -339,7 +339,7 @@ static RemoteConnectorObject *singleton;
 #endif
 
 #if INCLUDE_FEATURE(SVDRP)
-	connector = [SVDRPConnector newWithConnection:connection];
+	connector = [SVDRPConnector newWithConnection:connection inBackground:NO];
 	if([connector isReachable:nil])
 	{
 		return kSVDRPConnector;
