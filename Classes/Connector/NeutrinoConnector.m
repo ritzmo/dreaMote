@@ -40,7 +40,25 @@ enum neutrinoMessageTypes {
 	kNeutrinoMessageTypeMax = 2,
 };
 
+typedef enum
+{
+	YWEB_VERSION_UNKNOWN = 0,
+	YWEB_VERSION_OLD,
+	YWEB_VERSION_3_4_0,
+	YWEB_VERSION_MAX,
+} ywebVersion_t;
+
+@interface NeutrinoConnector()
+@property (nonatomic, assign) ywebVersion_t ywebVersion;
+@end
+
+static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
+	nil, nil, @"3.4.0",
+};
+
 @implementation NeutrinoConnector
+
+@synthesize ywebVersion;
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
@@ -135,15 +153,43 @@ enum neutrinoMessageTypes {
 - (BOOL)isReachable:(NSError **)error
 {
 	// Generate URI
-	NSURL *myURI = [NSURL URLWithString:@"/control/info"  relativeToURL:_baseAddress];
+	NSURL *myURI = [NSURL URLWithString:@"/control/info?nhttpd_version"  relativeToURL:_baseAddress];
 
 	NSHTTPURLResponse *response;
-	[SynchronousRequestReader sendSynchronousRequest:myURI
-								   returningResponse:&response
-											   error:error];
+	NSData *data = [SynchronousRequestReader sendSynchronousRequest:myURI
+												  returningResponse:&response
+															  error:error];
 
 	if([response statusCode] == 200)
 	{
+		NSRange myRange = NSMakeRange(0, [data length]);
+		if(ywebVersion == YWEB_VERSION_UNKNOWN && myRange.length > 2)
+		{
+			myRange.length -= 1;
+			data = [data subdataWithRange:myRange];
+			myRange.location = 0; myRange.length = 1;
+			NSData *firstChar = [data subdataWithRange:myRange];
+			NSString *stringValue = [[NSString alloc] initWithData:firstChar encoding:NSUTF8StringEncoding];
+
+			// check if this is a valid version, i.e. starting with a number (good enough)
+			if([stringValue integerValue])
+			{
+				stringValue = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+				ywebVersion = YWEB_VERSION_OLD;
+				NSInteger i = YWEB_VERSION_3_4_0;
+				for(; i < YWEB_VERSION_MAX; ++i)
+				{
+					// version is older than identifier, abort
+					if([stringValue compare:ywebIdentifier[i]] == NSOrderedAscending)
+						break;
+					// newer or equal to this version, abort
+					else
+						ywebVersion = i;
+				}
+			}
+			else
+				ywebVersion = YWEB_VERSION_OLD;
+		}
 		return YES;
 	}
 	else
