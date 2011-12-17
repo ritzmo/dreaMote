@@ -29,6 +29,7 @@ static NSUInteger kEnigmaServiceLength = 8;
 {
 	if((self = [super init]))
 	{
+		count = 0;
 		_delegate = delegate;
 		_timeout = kTimeout * 3; // a lot higher timeout to allow to spin up hdd
 		if([delegate respondsToSelector:@selector(addMovies:)])
