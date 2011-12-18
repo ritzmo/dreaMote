@@ -457,7 +457,19 @@
 			MGSplitViewController *targetViewController = [selectedDictionary objectForKey:@"viewController"];
 			UINavigationController *navController = (UINavigationController *)targetViewController.masterViewController;
 			if(masterViewController.navigationController != navController)
-				[navController pushViewController:masterViewController animated:NO];
+			{
+				@try
+				{
+					[navController pushViewController:masterViewController animated:NO];
+				}
+				@catch (NSException *exception)
+				{
+#if IS_DEBUG()
+					NSLog(@"[OtherListController] Unable to push masterViewController, just trying to pop to it...");
+#endif
+					[navController popToRootViewControllerAnimated:NO];
+				}
+			}
 #if IS_DEBUG()
 			else
 				NSLog(@"[OtherListController] masterVierController already had navController as navigationController: not pushing.");
