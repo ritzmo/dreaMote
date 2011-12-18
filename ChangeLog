@@ -277,3 +277,8 @@ Enigma2:
 - Improved error recovery (and display) for XML parsers
 Enigma:
 - Rewritten XML parsers for increased performance
+
+1.4.1:
+- Allow to select default action for zapping (if a stream player is installed)
+- Fix starting a stream from movie details
+- Smaller stability fixes
