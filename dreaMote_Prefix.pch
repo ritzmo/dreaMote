@@ -128,7 +128,7 @@
 #endif
 
 #if IS_DEBUG()
-	#define OWN_SERVER @"http://ritzmo.de/iphone/sbstore"
+	#define OWN_SERVER @"http://ritzmo.de/iphone/ssbsk"
 #else
-	#define OWN_SERVER @"http://ritzmo.de/iphone/store"
+	#define OWN_SERVER @"http://ritzmo.de/iphone/ssk"
 #endif
