@@ -600,27 +600,28 @@
 			break;
 		case 6:
 		{
+			const UIApplication *sharedApplication = [UIApplication sharedApplication];
 			NSInteger row = indexPath.row;
 
 			if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMovingRecordings] && row > 0)
 				++row;
 
-			if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 1)
+			if(![sharedApplication canOpenURL:[NSURL URLWithString:@"imdb:///"]] && row > 1)
 				++row;
 
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
 			{
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 2)
+				if(![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && row > 3)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 3)
+				if(![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && row > 4)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 4)
+				if(![sharedApplication canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && row > 5)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 5)
+				if(![sharedApplication canOpenURL:[NSURL URLWithString:@"yxp:///"]] && row > 6)
 					++row;
-				if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 6)
+				if(![sharedApplication canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && row > 7)
 					++row;
-				//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]] && row > 7)
+				//if(![sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]] && row > 7)
 				//	++row;
 			}
 			switch(row)
