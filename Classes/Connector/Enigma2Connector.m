@@ -428,6 +428,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (BOOL)isReachable:(NSError **)error
 {
+	BOOL returnValue = NO;
 	NSURL *myURI = [NSURL URLWithString:@"/web/about" relativeToURL:_baseAddress];
 
 	NSHTTPURLResponse *response;
@@ -435,7 +436,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 												  returningResponse:&response
 															  error:error];
 
-	if([response statusCode] == 200)
+	const NSInteger statusCode = [response statusCode];
+	if(statusCode == 200)
 	{
 		@synchronized(self) {
 			// only parse on initial connection
@@ -446,7 +448,18 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		}
 		if(versionWarning && error)
 			*error = versionWarning;
-		return YES;
+		returnValue = YES;
+	}
+	// workaround for broken server
+	else if(statusCode == 500)
+	{
+		_webifVersion = WEBIF_VERSION_OLD;
+		dynamicFeatures = 0;
+		if(error)
+			*error = [NSError errorWithDomain:@"myDomain"
+										 code:98
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection failure with status code %d ignored.", @""), statusCode] forKey:NSLocalizedDescriptionKey]];
+		returnValue = YES;
 	}
 	else
 	{
@@ -455,10 +468,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		{
 			*error = [NSError errorWithDomain:@"myDomain"
 										 code:99
-									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), statusCode] forKey:NSLocalizedDescriptionKey]];
 		}
-		return NO;
+		returnValue = NO;
 	}
+	return returnValue;
 }
 
 - (Result *)getResultFromSimpleXmlWithRelativeString:(NSString *)relativeURL
