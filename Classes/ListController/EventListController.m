@@ -9,12 +9,13 @@
 #import "EventListController.h"
 
 #if IS_FULL()
-	#import "AutoTimerViewController.h"
-	#import "TimerViewController.h"
-	#import "SimpleSingleSelectionListController.h"
+	#import <ViewController/AutoTimerViewController.h>
+	#import <ViewController/TimerViewController.h>
+	#import <ListController/SimpleSingleSelectionListController.h>
 #endif
-#import "EventTableViewCell.h"
-#import "EventViewController.h"
+#import <TableViewCell/EventTableViewCell.h>
+#import <ViewController/EventViewController.h>
+#import <ListController/ServiceZapListController.h>
 
 #import "MBProgressHUD.h"
 
@@ -43,14 +44,22 @@
  @param sender ui element
  */
 - (void)zapAction:(id)sender;
+
 /*!
  @brief Event was/is being held.
  */
 - (void)longPress:(UILongPressGestureRecognizer *)gesture;
+
 /*!
  @brief Helper method for gesture handling.
  */
 - (void)itemSelected:(NSNumber *)selection;
+
+/*!
+ @brief Zap type selection.
+ */
+@property (nonatomic, strong) ServiceZapListController *zapListController;
+
 #if INCLUDE_FEATURE(Ads)
 - (void)destroyAdBannerView;
 - (void)fixupAdView:(UIInterfaceOrientation)toInterfaceOrientation;
@@ -66,8 +75,8 @@
 @synthesize adBannerView = _adBannerView;
 @synthesize adBannerViewIsVisible = _adBannerViewIsVisible;
 #endif
-@synthesize serviceListController = _serviceListController;
-@synthesize searchBar, isSlave;
+@synthesize serviceListController;
+@synthesize searchBar, isSlave, zapListController;
 
 /* initialize */
 - (id)init
@@ -79,7 +88,6 @@
 		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
 		_eventViewController = nil;
 		_service = nil;
-		_serviceListController = nil;
 		_events = [NSMutableArray array];
 		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		_sectionOffsets = [NSMutableArray array];
@@ -567,12 +575,12 @@
 
 - (void)tableView:(SwipeTableView *)tableView didSwipeRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(_serviceListController == nil)
+	if(serviceListController == nil)
 		return;
-	if(![_serviceListController respondsToSelector:@selector(nextService)] || ![_serviceListController respondsToSelector:@selector(previousService)])
+	if(![serviceListController respondsToSelector:@selector(nextService)] || ![serviceListController respondsToSelector:@selector(previousService)])
 	{
 #if IS_DEBUG()
-		[NSException raise:@"ExcInvalidServiceList" format:@"_serviceListController assigned but not responding to next-/previousService selectors"];
+		[NSException raise:@"ExcInvalidServiceList" format:@"serviceListController assigned but not responding to next-/previousService selectors"];
 #endif
 		return;
 	}
@@ -586,9 +594,9 @@
 
 		NSObject<ServiceProtocol> *newService = nil;
 		if(tableView.lastSwipe & swipeTypeRight)
-			newService = [_serviceListController previousService];
+			newService = [serviceListController previousService];
 		else // if(tableView.lastSwipe & swipeTypeLeft)
-			newService = [_serviceListController nextService];
+			newService = [serviceListController nextService];
 
 		if(newService)
 			self.service = newService;
@@ -1050,6 +1058,35 @@
 	// if streaming supported, show popover on ipad and action sheet on iphone
 	if([ServiceZapListController canStream])
 	{
+		zap_callback_t callback = ^(ServiceZapListController *zlc, zapAction selectedAction)
+		{
+			NSURL *streamingURL = nil;
+			NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+			if(self.zapListController == zlc)
+				self.zapListController = nil;
+
+			if(selectedAction == zapActionRemote)
+			{
+				[sharedRemoteConnector zapTo:_service];
+				return;
+			}
+
+			streamingURL = [sharedRemoteConnector getStreamURLForService:_service];
+			if(!streamingURL)
+			{
+				// Alert user
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+																	 delegate:nil
+															cancelButtonTitle:@"OK"
+															otherButtonTitles:nil];
+				[alert show];
+			}
+			else
+				[ServiceZapListController openStream:streamingURL withAction:selectedAction];
+		};
+
+
 		if(IS_IPAD())
 		{
 			// hide popover if already visible
@@ -1061,7 +1098,7 @@
 			}
 
 			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
-			zlc.zapDelegate = self;
+			zlc.callback = callback;
 			popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
 
 			[popoverController presentPopoverFromBarButtonItem:sender
@@ -1070,7 +1107,7 @@
 		}
 		else
 		{
-			_zapListController = [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar];
+			zapListController = [ServiceZapListController showAlert:callback fromTabBar:self.tabBarController.tabBar];
 		}
 	}
 	// else just zap on remote host
@@ -1078,37 +1115,6 @@
 	{
 		[[RemoteConnectorObject sharedRemoteConnector] zapTo: _service];
 	}
-}
-
-#pragma mark -
-#pragma mark ServiceZapListDelegate methods
-#pragma mark -
-
-- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
-{
-	NSURL *streamingURL = nil;
-	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	_zapListController = nil;
-
-	if(selectedAction == zapActionRemote)
-	{
-		[sharedRemoteConnector zapTo:_service];
-		return;
-	}
-
-	streamingURL = [sharedRemoteConnector getStreamURLForService:_service];
-	if(!streamingURL)
-	{
-		// Alert user
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-															  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
-															 delegate:nil
-													cancelButtonTitle:@"OK"
-													otherButtonTitles:nil];
-		[alert show];
-	}
-	else
-		[ServiceZapListController openStream:streamingURL withAction:selectedAction];
 }
 
 #pragma mark -

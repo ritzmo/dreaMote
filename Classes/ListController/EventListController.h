@@ -8,10 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "EventSourceDelegate.h"
-#import "ReloadableListController.h"
-#import "ServiceListController.h"
-#import "ServiceZapListController.h" /* ServiceZapListDelegate */
+#import <Delegates/EventSourceDelegate.h>
+#import <ListController/ReloadableListController.h>
+#import <ListController/ServiceListController.h>
 
 #if INCLUDE_FEATURE(Ads)
 #import "iAd/ADBannerView.h"
@@ -38,8 +37,7 @@
 													SwipeTableViewDelegate,
 #endif
 													UIPopoverControllerDelegate,
-													UIActionSheetDelegate,
-													ServiceZapListDelegate>
+													UIActionSheetDelegate>
 {
 @protected
 	NSMutableArray *_events; /*!< @brief Event List. */
@@ -50,9 +48,7 @@
 	NSInteger _lastDay; /*!< @brief Last day with events if using sections / day. */
 	NSMutableArray *_sectionOffsets; /*!< @brief Array of first indices. */
 
-	ServiceListController *__unsafe_unretained _serviceListController; /*!< @brief Parent/Service List controller. */
 	EventViewController *_eventViewController; /*!< @brief Cached Event Detail View. */
-	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 
 	UISearchBar *searchBar; /*!< @brief Search bar, either for event search or in full version. */
 #if IS_FULL()

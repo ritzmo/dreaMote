@@ -25,7 +25,15 @@ typedef enum
 	zapActionMax = 7,
 } zapAction;
 
-@protocol ServiceZapListDelegate;
+@class ServiceZapListController;
+
+/*!
+ @brief Callback type for zap callbacks.
+
+ @param zapListController controller the selection was done in
+ @param selectedAction action the user selected
+ */
+typedef void (^zap_callback_t)(ServiceZapListController *zapListController, zapAction selectedAction);
 
 /*!
  @brief Table showing actions you can execute for a specific service.
@@ -61,7 +69,7 @@ typedef enum
  @param delegate Delegate to be called back.
  @param tabBar Tab bar to show action sheet from.
  */
-+ (ServiceZapListController *)showAlert:(NSObject<ServiceZapListDelegate> *)delegate fromTabBar:(UITabBar *)tabBar;
++ (ServiceZapListController *)showAlert:(zap_callback_t)callback fromTabBar:(UITabBar *)tabBar;
 
 /*!
  @brief Open external streaming application
@@ -72,28 +80,13 @@ typedef enum
 + (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
 
 /*!
- @brief Zap delegate.
+ @brief Callback.
  */
-@property (nonatomic, unsafe_unretained) NSObject<ServiceZapListDelegate> *zapDelegate;
+@property (nonatomic, copy) zap_callback_t callback;
 
 /*!
  @brief Table View.
  */
 @property (nonatomic, readonly) UITableView *tableView;
 
-@end
-
-
-
-/*!
- @brief Defines callbacks for this view.
-*/
-@protocol ServiceZapListDelegate
-/*!
- @brief Selection was made.
-
- @param zapListController controller the selection was done in
- @param selectedAction action the user selected
- */
-- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction;
 @end

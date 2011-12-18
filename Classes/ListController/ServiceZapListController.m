@@ -26,7 +26,7 @@
 
 @implementation ServiceZapListController
 
-@synthesize zapDelegate;
+@synthesize callback;
 @synthesize actionSheet = _actionSheet;
 @synthesize tableView = _tableView;
 
@@ -43,10 +43,10 @@
 		);
 }
 
-+ (ServiceZapListController *)showAlert:(NSObject<ServiceZapListDelegate> *)delegate fromTabBar:(UITabBar *)tabBar
++ (ServiceZapListController *)showAlert:(zap_callback_t)callback fromTabBar:(UITabBar *)tabBar
 {
 	ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
-	zlc.zapDelegate = delegate;
+	zlc.callback = callback;
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
 															 delegate:zlc
 													cancelButtonTitle:nil
@@ -230,14 +230,16 @@
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
-	return cell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
 }
 
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if(!zapDelegate) return nil;
+	zap_callback_t call = callback;
+	callback = nil;
+	if(!call) return nil;
+
 	NSInteger row = indexPath.row;
 
 	//if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming])
@@ -255,7 +257,7 @@
 		if(!hasAction[zapActionAcePlayer] && row > zapActionGoodPlayer)
 			++row;
 	}
-	[zapDelegate serviceZapListController:self selectedAction:(zapAction)row];
+	call(self, row);
 	return indexPath;
 }
 
@@ -317,7 +319,10 @@
 		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]] && buttonIndex > zapActionGoodPlayer)
 		//	++buttonIndex;
 
-		[zapDelegate serviceZapListController:self selectedAction:(zapAction)buttonIndex];
+		zap_callback_t call = callback;
+		callback = nil;
+		if(call)
+			call(self, buttonIndex);
 	}
 }
 

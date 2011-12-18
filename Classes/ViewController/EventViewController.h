@@ -8,11 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "Objects/EventProtocol.h"
-#import "Objects/ServiceProtocol.h"
-#import "EventSourceDelegate.h"
-#import "SwipeTableView.h" /* SwipeTableViewDelegate */
-#import "ServiceZapListController.h" /* ServiceZapListDelegate */
+#import <Objects/EventProtocol.h>
+#import <Objects/ServiceProtocol.h>
+#import <Delegates/EventSourceDelegate.h>
+#import <View/SwipeTableView.h> /* SwipeTableViewDelegate */
 
 #import <EventKitUI/EventKitUI.h>
 
@@ -31,7 +30,6 @@
 													UIPopoverControllerDelegate,
 													UIActionSheetDelegate,
 													EventSourceDelegate,
-													ServiceZapListDelegate,
 													EKEventEditViewDelegate>
 {
 @private
@@ -42,7 +40,6 @@
 	BOOL _similarFetched; /*!< @brief List of similar Events was already fetched. */
 	BOOL _isSearch; /*!< @brief This View was opened from an EPG Search. */
 	UIPopoverController *popoverController; /*!< @brief Popover controller */
-	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 	UITableView *_tableView; /*!< @brief Table View. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */

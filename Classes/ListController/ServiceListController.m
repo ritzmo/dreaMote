@@ -8,9 +8,10 @@
 
 #import "ServiceListController.h"
 
-#import "EventListController.h"
-#import "SimpleSingleSelectionListController.h"
-#import "UIPromptView.h"
+#import <ListController/EventListController.h>
+#import <ListController/SimpleSingleSelectionListController.h>
+#import <ListController/ServiceZapListController.h>
+#import <View/UIPromptView.h>
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
@@ -79,6 +80,11 @@ enum serviceListTags
 @property (nonatomic, strong) UIPopoverController *popoverZapController;
 
 /*!
+ @brief Zap type selection.
+ */
+@property (nonatomic, strong) ServiceZapListController *zapListController;
+
+/*!
  @brief Event View.
  */
 @property (nonatomic, strong) EventViewController *eventViewController;
@@ -88,6 +94,7 @@ enum serviceListTags
 
 @synthesize delegate, isAll, mgSplitViewController;
 @synthesize popoverController, popoverZapController;
+@synthesize zapListController;
 @synthesize searchBar;
 
 /* initialize */
@@ -2041,6 +2048,34 @@ enum serviceListTags
 	// if streaming supported, show popover on ipad and action sheet on iphone
 	if([ServiceZapListController canStream])
 	{
+		zap_callback_t callback = ^(ServiceZapListController *zlc, zapAction selectedAction)
+		{
+			NSURL *streamingURL = nil;
+			NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+			if(self.zapListController == zlc)
+				self.zapListController = nil;
+
+			if(selectedAction == zapActionRemote)
+			{
+				[sharedRemoteConnector zapTo:_service];
+				return;
+			}
+
+			streamingURL = [sharedRemoteConnector getStreamURLForService:_service];
+			if(!streamingURL)
+			{
+				// Alert user
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+																	 delegate:nil
+															cancelButtonTitle:@"OK"
+															otherButtonTitles:nil];
+				[alert show];
+			}
+			else
+				[ServiceZapListController openStream:streamingURL withAction:selectedAction];
+		};
+
 		if(IS_IPAD())
 		{
 			// hide popover if already visible
@@ -2056,7 +2091,7 @@ enum serviceListTags
 			}
 
 			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
-			zlc.zapDelegate = self;
+			zlc.callback = callback;
 			popoverZapController = [[UIPopoverController alloc] initWithContentViewController:zlc];
 
 			CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
@@ -2069,7 +2104,7 @@ enum serviceListTags
 		}
 		else
 		{
-			_zapListController = [ServiceZapListController showAlert:self fromTabBar:self.tabBarController.tabBar];
+			zapListController = [ServiceZapListController showAlert:callback fromTabBar:self.tabBarController.tabBar];
 		}
 	}
 	// else just zap on remote host
@@ -2077,37 +2112,6 @@ enum serviceListTags
 	{
 		[[RemoteConnectorObject sharedRemoteConnector] zapTo:_service];
 	}
-}
-
-#pragma mark -
-#pragma mark ServiceZapListDelegate methods
-#pragma mark -
-
-- (void)serviceZapListController:(ServiceZapListController *)zapListController selectedAction:(zapAction)selectedAction
-{
-	NSURL *streamingURL = nil;
-	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	_zapListController = nil;
-
-	if(selectedAction == zapActionRemote)
-	{
-		[sharedRemoteConnector zapTo:_service];
-		return;
-	}
-
-	streamingURL = [sharedRemoteConnector getStreamURLForService:_service];
-	if(!streamingURL)
-	{
-		// Alert user
-		const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
-															  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
-															 delegate:nil
-													cancelButtonTitle:@"OK"
-													otherButtonTitles:nil];
-		[alert show];
-	}
-	else
-		[ServiceZapListController openStream:streamingURL withAction:selectedAction];
 }
 
 @end

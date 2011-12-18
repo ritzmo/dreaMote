@@ -14,7 +14,6 @@
 #import "BouquetListController.h" /* BouquetListDelegate */
 #import "EventViewController.h"
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
-#import "ServiceZapListController.h" /* ServiceZapListDelegate */
 #if IS_FULL()
 	#import "MultiEPGListController.h" /* MultiEPGDelegate */
 #endif
@@ -64,7 +63,6 @@
 													NowSourceDelegate,
 													NextSourceDelegate,
 													SwipeTableViewDelegate,
-													ServiceZapListDelegate,
 #if IS_FULL()
 													MultiEPGDelegate,
 #endif
@@ -91,7 +89,6 @@
 	BOOL _supportsNowNext; /*!< @brief Use now/next mode to retrieve Events */
 	NSDateFormatter *_dateFormatter; /*!< @brief Date formatter used for now/next */
 	EventViewController *_eventViewController; /*!< @brief Event View Controller. */
-	ServiceZapListController *_zapListController; /*!< @brief Zap List controller. */
 #if IS_FULL()
 	MultiEPGListController *_multiEPG; /*!< @brief Multi EPG. */
 #endif

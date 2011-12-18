@@ -13,6 +13,7 @@
 
 #import <ListController/LocationListController.h>
 #import <ListController/MovieListController.h>
+#import <ListController/ServiceZapListController.h>
 #import <ViewController/TimerViewController.h>
 
 #import <Categories/NSDateFormatter+FuzzyFormatting.h>
