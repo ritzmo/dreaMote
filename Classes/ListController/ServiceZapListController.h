@@ -55,11 +55,48 @@ typedef void (^zap_callback_t)(ServiceZapListController *zapListController, zapA
 
 /*!
  @brief Is the device able to play back a stream?
- Will return YES if a supported streaming-capable media player is installed.
+ Will return YES if a supported streaming-capable media player is installed AND
+ the current connector supports streaming.
 
  @return YES if streaming is possible, else NO.
  */
 + (BOOL)canStream;
+
+/*!
+ @brief Is a streaming capable player installed?
+ Will return YES if a supported streaming-capable media player is installed.
+
+ @return YES if a player is installed, else NO.
+ */
++ (BOOL)streamPlayerInstalled;
+
+/*!
+ @brief Return the stream player names as used in the config list.
+
+ @param zapAction Player Action
+ @return Name of player.
+ */
++ (NSString *)playerName:(zapAction)playerAction;
+
+/*!
+ @brief Return list of installed stream player names.
+ @return Array with names.
+ */
++ (NSArray *)playerNames;
+
+/*!
+ @brief Translate an index in the list of players to a zapAction.
+ @param index Index in the playerNames array.
+ @return Corresponding action.
+ */
++ (zapAction)zapActionForIndex:(NSInteger)index;
+
+/*!
+ @brief Translate zap action to an index in the list of players.
+ @param action Action to look for.
+ @return Index in the playerNames array.
+ */
++ (NSInteger)indexForZapAction:(zapAction)action;
 
 /*!
  @brief Show Alert.

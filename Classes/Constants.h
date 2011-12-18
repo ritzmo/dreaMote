@@ -135,6 +135,7 @@ extern const char *kPiconGlob;
 #define kSeparateEpgByDay		@"separateEpgByDay"
 #define kSatFinderAudio			@"satFinderWithAudio"
 #define kActiveTheme			@"activeTheme"
+#define kZapModeDefault			@"defaultZapMode"
 
 #define kCurrentDatabaseVersion 2
 

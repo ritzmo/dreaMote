@@ -22,15 +22,18 @@
 
 #import "Appirater.h"
 #import "BWQuincyManager.h"
-#import "RemoteConnectorObject.h"
+#import <Connector/RemoteConnectorObject.h>
 
 // ShareKit
 #import "SHKConfiguration.h"
 #import "SHKFacebook.h"
-#import "DreamoteSHKConfigurator.h"
+#import <Configuration/DreamoteSHKConfigurator.h>
+
+// zap config
+#import <ListController/ServiceZapListController.h>
 
 #if IS_FULL()
-	#import "EPGCache.h"
+	#import <EPGCache/EPGCache.h>
 #endif
 
 #import "SFHFKeychainUtils.h"
@@ -164,6 +167,7 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 								 kSatFinderDefaultInterval, kSatFinderInterval,
 								 kSearchHistoryDefaultLength, kSearchHistoryLength,
 								 @"NO", kSeparateEpgByDay,
+								 [NSNumber numberWithInteger:zapActionMax], kZapModeDefault,
 								 nil];
 	[stdDefaults registerDefaults:appDefaults];
 

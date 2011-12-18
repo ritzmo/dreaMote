@@ -2076,7 +2076,12 @@ enum serviceListTags
 				[ServiceZapListController openStream:streamingURL withAction:selectedAction];
 		};
 
-		if(IS_IPAD())
+		zapAction defaultZapAction = [[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault];
+		if(defaultZapAction != zapActionMax)
+		{
+			callback(nil, defaultZapAction);
+		}
+		else if(IS_IPAD())
 		{
 			// hide popover if already visible
 			if([popoverController isPopoverVisible])

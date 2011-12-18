@@ -17,17 +17,22 @@
 
 #import <TableViewCell/DisplayCell.h>
 
-#import "AboutDreamoteViewController.h"
-#import "ConfigViewController.h"
-#import "ConnectionListController.h"
-#import "SimpleSingleSelectionListController.h"
+#import <ViewController/AboutDreamoteViewController.h>
+#import <ViewController/ConfigViewController.h>
+#import <ListController/ConnectionListController.h>
+#import <ListController/SimpleSingleSelectionListController.h>
+#import <ListController/ServiceZapListController.h>
 
 #import "SSKManager.h"
 
-#define kMultiEPGRowTag 99
-#define kTimeoutRowTag 100
-#define kHistoryLengthRowTag 101
-#define kThemeRowTag 102
+enum rowTags
+{
+	kMultiEPGRowTag = 99,
+	kTimeoutRowTag = 100,
+	kHistoryLengthRowTag = 101,
+	kThemeRowTag = 102,
+	kZapModeRowTag = 103,
+};
 
 enum sectionIds
 {
@@ -44,11 +49,13 @@ enum settingsRows
 	separateEventsRow,
 	vibrationRow,
 	themeRow,
+	zapModeRow,
 	timeoutRow,
 	historyLengthRow,
 #if IS_FULL()
 	multiEpgRow,
 #endif
+	settingsRowMax,
 };
 
 
@@ -517,6 +524,7 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 		if(cell.tag == kTimeoutRowTag
 		   || cell.tag == kHistoryLengthRowTag
 		   || cell.tag == kThemeRowTag
+		   || cell.tag == kZapModeRowTag
 #if IS_FULL()
 		   || cell.tag == kMultiEPGRowTag
 #endif
@@ -691,6 +699,40 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 			else
 				targetViewController = vc;
 		}
+		else if(cell.tag == kZapModeRowTag)
+		{
+			SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[ServiceZapListController playerNames]
+																						andSelection:[ServiceZapListController indexForZapAction:[[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault]]
+																							andTitle:NSLocalizedString(@"Default Zap-Type", @"Title of default zap type selection")];
+			vc.callback = ^(NSUInteger newSelection, BOOL isFinal, BOOL canceling)
+			{
+				if(!canceling)
+				{
+					if(!isIpad && !isFinal)
+						return NO;
+
+					NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+					[stdDefaults setObject:[NSNumber numberWithInteger:[ServiceZapListController zapActionForIndex:newSelection]] forKey:kZapModeDefault];
+					[stdDefaults synchronize];
+					[tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+				}
+				else if(!isIpad)
+					[self.navigationController popToViewController:self animated:YES];
+
+				if(isIpad)
+					[self dismissModalViewControllerAnimated:YES];
+				return YES;
+			};
+
+			if(isIpad)
+			{
+				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
+			}
+			else
+				targetViewController = vc;
+		}
 #if IS_FULL()
 		else if(cell.tag == kMultiEPGRowTag)
 		{
@@ -835,6 +877,8 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 			sourceCell.tag = 0;
 			if(row >= vibrationRow && IS_IPAD())
 				++row;
+			if(row >= zapModeRow && ![ServiceZapListController streamPlayerInstalled])
+				++row;
 
 			switch(row)
 			{
@@ -872,6 +916,22 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Theme", @"Configuration item to choose theme");
 					((DisplayCell *)sourceCell).view = label;
 					sourceCell.tag = kThemeRowTag;
+					break;
+				}
+				/* Default Zap Mode */
+				case zapModeRow:
+				{
+					UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+					label.backgroundColor = [UIColor clearColor];
+					label.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					label.textAlignment = UITextAlignmentRight;
+					label.text = [ServiceZapListController playerName:[[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault]];
+					label.textColor = [DreamoteConfiguration singleton].textColor;
+					label.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);;
+					sourceCell.textLabel.text = NSLocalizedString(@"Default Zap-Type", @"Label of cell in config which gives default zap type");
+					((DisplayCell *)sourceCell).view = label;
+					sourceCell.tag = kZapModeRowTag;
 					break;
 				}
 				/* Timeout */
@@ -1004,9 +1064,13 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 			return [_connections count];
 		case settingsSection:
 		{
-			NSInteger baseCount = (IS_IPAD()) ? 4 : 5;
-#if IS_FULL()
-			++baseCount;
+			NSInteger baseCount = settingsRowMax;
+			if(IS_IPAD())
+				--baseCount;
+			if(![ServiceZapListController streamPlayerInstalled])
+				--baseCount;
+#if IS_LITE()
+			--baseCount;
 #endif
 			return baseCount;
 		}

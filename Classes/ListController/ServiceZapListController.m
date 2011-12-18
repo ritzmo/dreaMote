@@ -33,14 +33,100 @@
 + (BOOL)canStream
 {
 	return [[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesStreaming]
-		&& (
-			[[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]]
-		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
-		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
-		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]]
-		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]]
-		|| [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]]
-		);
+		&& [self streamPlayerInstalled];
+}
+
++ (BOOL)streamPlayerInstalled
+{
+	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+	return	[sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]]
+		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
+		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
+		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"yxp:///"]]
+		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"goodplayer:///"]]
+		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]];
+}
+
++ (NSString *)playerName:(zapAction)playerAction
+{
+	switch(playerAction)
+	{
+		default:
+		case zapActionMax:
+			return NSLocalizedString(@"Always ask", @"");
+		case zapActionRemote:
+			return NSLocalizedString(@"Zap on receiver", @"");
+		case zapActionOPlayer:
+			return @"OPlayer";
+		case zapActionOPlayerLite:
+			return @"OPlayer Lite";
+		case zapActionBuzzPlayer:
+			return @"BUZZ Player";
+		case zapActionYxplayer:
+			return @"yxplayer";
+		case zapActionGoodPlayer:
+			return @"GoodPlayer";
+		case zapActionAcePlayer:
+			return @"AcePlayer";
+	}
+}
+
++ (NSArray *)playerNames
+{
+	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+	NSMutableArray *arr = [NSMutableArray arrayWithCapacity:zapActionMax];
+	[arr addObject:NSLocalizedString(@"Zap on receiver", @"")];
+	if([sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+		[arr addObject:@"OPlayer"];
+	if([sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+		[arr addObject:@"OPlayer Lite"];
+	if([sharedApplication canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+		[arr addObject:@"BUZZ Player"];
+	if([sharedApplication canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+		[arr addObject:@"yxplayer"];
+	if([sharedApplication canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
+		[arr addObject:@"GoodPlayer"];
+	if([sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
+		[arr addObject:@"AcePlayer"];
+	[arr addObject:NSLocalizedString(@"Always ask", @"")];
+	return arr;
+}
+
++ (zapAction)zapActionForIndex:(NSInteger)index
+{
+	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+	if(index > zapActionRemote && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+		++index;
+	if(index > zapActionOPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+		++index;
+	if(index > zapActionOPlayerLite && ![sharedApplication canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+		++index;
+	if(index > zapActionBuzzPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+		++index;
+	if(index > zapActionYxplayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
+		++index;
+	if(index > zapActionGoodPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
+		++index;
+	return index;
+}
+
++ (NSInteger)indexForZapAction:(zapAction)action
+{
+	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+	NSInteger index = action;
+	if(action > zapActionRemote && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
+		--index;
+	if(action > zapActionOPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
+		--index;
+	if(action > zapActionOPlayerLite && ![sharedApplication canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]])
+		--index;
+	if(action > zapActionBuzzPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"yxp:///"]])
+		--index;
+	if(action > zapActionYxplayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"goodplayer:///"]])
+		--index;
+	if(action > zapActionGoodPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
+		--index;
+	return index;
 }
 
 + (ServiceZapListController *)showAlert:(zap_callback_t)callback fromTabBar:(UITabBar *)tabBar
@@ -306,23 +392,11 @@
 	}
 	else
 	{
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayer:///"]] && buttonIndex > zapActionRemote)
-			++buttonIndex;
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]] && buttonIndex > zapActionOPlayer)
-			++buttonIndex;
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]] && buttonIndex > zapActionOPlayerLite)
-			++buttonIndex;
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]] && buttonIndex > zapActionBuzzPlayer)
-			++buttonIndex;
-		if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]] && buttonIndex > zapActionYxplayer)
-			++buttonIndex;
-		//if(![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]] && buttonIndex > zapActionGoodPlayer)
-		//	++buttonIndex;
-
+		zapAction action = [ServiceZapListController zapActionForIndex:buttonIndex];
 		zap_callback_t call = callback;
 		callback = nil;
 		if(call)
-			call(self, buttonIndex);
+			call(self, action);
 	}
 }
 
