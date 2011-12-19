@@ -1182,12 +1182,15 @@ class Simple(resource.Resource):
 			MODE_RADIO = 1
 			if lastComp == "addbouquet":
 				name = get("name")
-				mode = int(get("mode", 0))
-				if mode == MODE_RADIO:
-					bouquets = state.bouquets_r
+				if name:
+					mode = int(get("mode", 0))
+					if mode == MODE_RADIO:
+						bouquets = state.bouquets_r
+					else:
+						bouquets = state.bouquets_t
+					bouquets.append(Service(name, name))
 				else:
-					bouquets = state.bouquets_t
-				bouquets.append(Service(name, name))
+					returndoc = SIMPLEXMLRESULT % ('False', "Bla, bla, bla - something wrong, not the real error message - bla, bla...")
 			elif lastComp == "removebouquet":
 				bRef = get("sBouquetRef")
 				mode = int(get("mode", 0))
@@ -1256,8 +1259,11 @@ class Simple(resource.Resource):
 				bRef = get("sBouquetRef")
 				sRef = get("sRef")
 				name = get("Name")
-				services = state.getServicesForBouquet(bRef)
-				services.append(Service(sRef, name))
+				if sBouquetRed and sRef and Name:
+					services = state.getServicesForBouquet(bRef)
+					services.append(Service(sRef, name))
+				else:
+					returndoc = SIMPLEXMLRESULT % ('False', "Bla, bla, bla - something wrong, not the real error message - bla, bla...")
 			elif lastComp == "removeservice":
 				bRef = get("sBouquetRef")
 				sRef = get("sRef")
