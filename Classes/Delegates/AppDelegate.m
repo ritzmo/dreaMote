@@ -38,6 +38,8 @@
 
 #import "SFHFKeychainUtils.h"
 
+#import "MBProgressHUD.h"
+
 // SSKTk
 #import "SSKManager.h"
 
@@ -141,14 +143,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 {
 #if !IS_DEBUG()
 	[[BWQuincyManager sharedQuincyManager] setSubmissionURL:@"http://ritzmo.de/iphone/quincy/crash_v200.php"];
-#endif
-	SSKManager *sskManager = [SSKManager sharedManager];
-	sskManager.uuidForReview = [self uuid];
-	[sskManager lookForProducts:[NSDictionary dictionaryWithObjectsAndKeys:
-#if IS_FULL()
-								 [NSArray arrayWithObject:kServiceEditorPurchase], @"Non-Consumables", nil]];
-#else
-								 [NSArray arrayWithObject:kAdFreePurchase], @"Non-Consumables", nil]];
 #endif
 
 	NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
@@ -293,6 +287,16 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 		AudioSessionSetProperty(kAudioSessionProperty_AudioCategory, sizeof(sessionCategory), &sessionCategory);
 	}
 
+	// initialize IAP code
+	SSKManager *sskManager = [SSKManager sharedManager];
+	sskManager.uuidForReview = [self uuid];
+	[sskManager lookForProducts:[NSDictionary dictionaryWithObjectsAndKeys:
+#if IS_FULL()
+								 [NSArray arrayWithObject:kServiceEditorPurchase], @"Non-Consumables", nil]];
+#else
+	[NSArray arrayWithObject:kAdFreePurchase], @"Non-Consumables", nil]];
+#endif
+
 	return YES;
 }
 
@@ -323,6 +327,42 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	else if([url.path isEqualToString:@"/bouquets"])
 	{
 		tabBarController.selectedIndex = 0;
+	}
+	// redeem gift code
+	// Syntax: /redeem/productIdentifier/code
+	else if([url.path hasPrefix:@"/redeem"])
+	{
+		NSArray *components = [url.path componentsSeparatedByString:@"/"];
+		if(components.count > 3)
+		{
+			NSString *productIdentifier = [components objectAtIndex:2];
+			NSString *code = [components objectAtIndex:3];
+			SSKManager *sskManager = [SSKManager sharedManager];
+			[sskManager redeemCode:code
+			  forProductIdentifier:productIdentifier
+				 completionHandler:^(NSString *productIdentifier)
+			{
+				MBProgressHUD *hud = [[MBProgressHUD alloc] initWithWindow:self.window];
+				[self.window addSubview:hud];
+				hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+				hud.mode = MBProgressHUDModeCustomView;
+				hud.labelText = NSLocalizedString(@"Code redeemed", @"HUD: Code was successfully used to unlock in-app-purchase");
+				hud.removeFromSuperViewOnHide = YES;
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[hud show:YES];
+					[hud hide:YES afterDelay:2];
+				});
+			}
+					  errorHandler:^(NSString *productIdentifier, NSError *error)
+			{
+				const UIAlertView *notification = [[UIAlertView alloc] initWithTitle:[error localizedFailureReason]
+																			 message:[error localizedRecoverySuggestion]
+																			delegate:nil
+																   cancelButtonTitle:@"OK"
+																   otherButtonTitles:nil];
+				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
+			}];
+		}
 	}
 	return YES;
 }
