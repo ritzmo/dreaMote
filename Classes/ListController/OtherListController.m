@@ -10,6 +10,7 @@
 
 #import "Constants.h"
 #import "RemoteConnectorObject.h"
+#import "UIDevice+SystemVersion.h"
 #import "UITableViewCell+EasyInit.h"
 
 #import "MainTableViewCell.h"
@@ -516,16 +517,20 @@
 
 	if(mgSplitViewController)
 	{
+		const BOOL olderThanFive = [UIDevice olderThanIos:5.0f];
+		UIViewController *currentDetailsViewController = mgSplitViewController.detailViewController;
+		if(olderThanFive)
+			[currentDetailsViewController viewWillDisappear:YES];
+
 		if([targetViewController isKindOfClass:[MGSplitViewController class]])
 		{
-			UIViewController *masterViewController = ((MGSplitViewController *)targetViewController).masterViewController;
+			targetViewController = ((MGSplitViewController *)targetViewController).masterViewController;
 			UIViewController *detailViewController = ((MGSplitViewController *)targetViewController).detailViewController;
 
-			targetViewController = masterViewController;
-			if([masterViewController isKindOfClass:[UINavigationController class]])
+			if([targetViewController isKindOfClass:[UINavigationController class]])
 			{
 				NSLog(@"WARNING: Stealing a view controller from a navigation stack does is dangerous, think of a better way!");
-				targetViewController = ((UINavigationController *)masterViewController).visibleViewController;
+				targetViewController = ((UINavigationController *)targetViewController).visibleViewController;
 				[selectedDictionary setObject:targetViewController forKey:@"masterViewController"];
 			}
 			if([targetViewController respondsToSelector:@selector(setMgSplitViewController:)])
@@ -555,9 +560,15 @@
 				[(id)targetViewController setIsSlave:YES];
 			UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:targetViewController];
 			[[DreamoteConfiguration singleton] styleNavigationController:navController];
+			if(olderThanFive)
+				[targetViewController viewWillAppear:YES];
 			mgSplitViewController.detailViewController = navController;
+			if(olderThanFive)
+				[targetViewController viewDidAppear:YES];
 			targetViewController = nil; // prevent generic code path from pushing this view
 		}
+		if(olderThanFive)
+			[currentDetailsViewController viewDidDisappear:NO];
 	}
 	if(targetViewController)
 	{

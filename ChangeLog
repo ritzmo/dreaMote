@@ -282,3 +282,6 @@ Enigma:
 - Allow to select default action for zapping (if a stream player is installed)
 - Fix starting a stream from movie details
 - Smaller stability fixes
+
+1.4.2:
+- Fix some problems with iOS 4.3.x on the iPad
