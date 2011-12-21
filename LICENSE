@@ -43,7 +43,9 @@ Lite/Icon@2x.png
 Lite/iTunesArtwork
 4-sided-arrow.png
 bouquet.png
+bouquet@2x.png
 current.png
+current@2x.png
 exit.png
 key_0.png
 key_1.png
@@ -90,8 +92,11 @@ mediaplayer.png
 menu.png
 movie.png
 others.png
+others@2x.png
 remote.png
+remote@2x.png
 timer.png
+timer@2x.png
 
 The following Icons are part of the tango-icon-theme-0.8.90 package and thus
 part of the Tango Icon Library (http://tango.freedesktop.org).
