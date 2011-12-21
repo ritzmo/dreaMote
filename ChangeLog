@@ -285,3 +285,5 @@ Enigma:
 
 1.4.2:
 - Fix some problems with iOS 4.3.x on the iPad
+- New application Icon and splash screen by mfgeg, thanks!
+- Most images are available in retina-optimized resolution now
