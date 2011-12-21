@@ -20,11 +20,23 @@ distributed other than under the conditions noted above.
 The following Icons were made by mfgeg, their exact license is unknown to me
 but they were made specifically for this Application.
 
-Filenames (relative to Images) :
+Filenames (relative to Images):
+Full/Default-Landscape.png
+Full/Default-Landscape@2x.png
+Full/Default-Landscape~ipad.png
+Full/Default.png
+Full/Default@2x.png
+Full/Default~ipad.png
 Full/Icon-72.png
 Full/Icon.png
 Full/Icon@2x.png
 Full/iTunesArtwork
+Lite/Default-Landscape.png
+Lite/Default-Landscape@2x.png
+Lite/Default-Landscape~ipad.png
+Lite/Default.png
+Lite/Default@2x.png
+Lite/Default~ipad.png
 Lite/Icon-72.png
 Lite/Icon.png
 Lite/Icon@2x.png
