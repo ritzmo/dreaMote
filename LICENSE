@@ -99,16 +99,27 @@ They were released to the Public Domain.
 
 Filenames (relative to Images):
 audio-volume-high.png
+audio-volume-high@2x.png
 audio-x-generic.png
+audio-x-generic@2x.png
 document-save.png
+document-save@2x.png
 folder.png
+folder@2x.png
 internet-mail.png
+internet-mail@2x.png
 mail-forward.png
+mail-forward@2x.png
 media-playback-start.png
+media-playback-start@2x.png
 network-wired.png
+network-wired@2x.png
 preferences-desktop-screensaver.png
+preferences-desktop-screensaver@2x.png
 system-shutdown.png
+system-shutdown@2x.png
 view-refresh.png
+view-refresh@2x.png
 
 The following Icons were part of Matt Gallagher's MultiRowSelect sample project
 (http://cocoawithlove.com/2009/01/multiple-row-selection-and-editing-in.html).
