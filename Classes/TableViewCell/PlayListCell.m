@@ -44,6 +44,9 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 	}
 	[primaryColor set];
 
+	if(self.imageView.image)
+		offsetX += self.imageView.image.size.width + kLeftMargin;
+
 	CGPoint point = CGPointMake(offsetX + kLeftMargin, (boundsHeight - primaryFont.lineHeight) / 2);
 	CGFloat forWidth = boundsWidth - offsetX;
 	[file.title drawAtPoint:point forWidth:forWidth withFont:primaryFont lineBreakMode:UILineBreakModeTailTruncation];
