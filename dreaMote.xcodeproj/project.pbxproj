@@ -1184,6 +1184,12 @@
 		DAFAAE8913EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 		DAFAAE8A13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
 		DAFAAE8B13EBEBCE002A2E6A /* UIPromptView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */; };
+		DAFB010314A27FFF00C2001F /* IsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010114A27FFF00C2001F /* IsSelected@2x.png */; };
+		DAFB010414A27FFF00C2001F /* IsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010114A27FFF00C2001F /* IsSelected@2x.png */; };
+		DAFB010514A27FFF00C2001F /* IsSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010114A27FFF00C2001F /* IsSelected@2x.png */; };
+		DAFB010614A27FFF00C2001F /* NotSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010214A27FFF00C2001F /* NotSelected@2x.png */; };
+		DAFB010714A27FFF00C2001F /* NotSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010214A27FFF00C2001F /* NotSelected@2x.png */; };
+		DAFB010814A27FFF00C2001F /* NotSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010214A27FFF00C2001F /* NotSelected@2x.png */; };
 		DAFB623E1496B16900263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62401496B16A00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62411496B16B00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
@@ -1947,6 +1953,8 @@
 		DAFA4BFF144ACF6B005DE541 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DAFAAE8713EBEBCE002A2E6A /* UIPromptView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPromptView.h; sourceTree = "<group>"; };
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
+		DAFB010114A27FFF00C2001F /* IsSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IsSelected@2x.png"; sourceTree = "<group>"; };
+		DAFB010214A27FFF00C2001F /* NotSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotSelected@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2678,6 +2686,7 @@
 				DAC8BF0F13B200F100CA00D9 /* internet-mail.png */,
 				DAC2A44C14A24C1900C1038A /* internet-mail@2x.png */,
 				DAC8BF1013B200F100CA00D9 /* IsSelected.png */,
+				DAFB010114A27FFF00C2001F /* IsSelected@2x.png */,
 				DAC8BF1113B200F100CA00D9 /* key_0.png */,
 				DAC8BF1213B200F100CA00D9 /* key_1.png */,
 				DAC8BF1313B200F100CA00D9 /* key_2.png */,
@@ -2732,6 +2741,7 @@
 				DAC8BF4513B200F100CA00D9 /* network-wired.png */,
 				DAC2A44F14A24C1900C1038A /* network-wired@2x.png */,
 				DAC8BF4613B200F100CA00D9 /* NotSelected.png */,
+				DAFB010214A27FFF00C2001F /* NotSelected@2x.png */,
 				DAC8BF4713B200F100CA00D9 /* others.png */,
 				DA2ECC9314A2423B006A497B /* others@2x.png */,
 				DA21B20914561FB7002903A4 /* PackageManager.png */,
@@ -3667,6 +3677,8 @@
 				DA2ECC9B14A2423B006A497B /* others@2x.png in Resources */,
 				DA2ECC9E14A2423B006A497B /* timer@2x.png in Resources */,
 				DA8368E514A24F080047CC85 /* remote@2x.png in Resources */,
+				DAFB010314A27FFF00C2001F /* IsSelected@2x.png in Resources */,
+				DAFB010614A27FFF00C2001F /* NotSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3808,6 +3820,8 @@
 				DA2ECC9C14A2423B006A497B /* others@2x.png in Resources */,
 				DA2ECC9F14A2423B006A497B /* timer@2x.png in Resources */,
 				DA8368E614A24F080047CC85 /* remote@2x.png in Resources */,
+				DAFB010414A27FFF00C2001F /* IsSelected@2x.png in Resources */,
+				DAFB010714A27FFF00C2001F /* NotSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3940,6 +3954,8 @@
 				DA2ECC9D14A2423B006A497B /* others@2x.png in Resources */,
 				DA2ECCA014A2423B006A497B /* timer@2x.png in Resources */,
 				DA8368E714A24F080047CC85 /* remote@2x.png in Resources */,
+				DAFB010514A27FFF00C2001F /* IsSelected@2x.png in Resources */,
+				DAFB010814A27FFF00C2001F /* NotSelected@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
