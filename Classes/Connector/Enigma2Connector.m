@@ -339,7 +339,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			// version is older than identifier, abort
 			if([stringValue compare:webifIdentifier[i]] == NSOrderedAscending)
 				break;
-			// newer or equal to this version, abort
+			// newer or equal to this version, update value
 			else
 				_webifVersion = i;
 		}
@@ -348,9 +348,20 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		if(_webifVersion < WEBIF_VERSION_1_6_5)
 		{
 			dynamicFeatures = 0; // either no support for externals or will be detected
-			versionWarning = [NSError errorWithDomain:@"myDomain"
-												 code:98
-											 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
+			// detect current snapshot of so-called "open webif"
+			if([stringValue isEqualToString:@"0.0.0"])
+			{
+				_webifVersion = WEBIF_VERSION_1_5b3;
+				versionWarning = [NSError errorWithDomain:@"myDomain"
+													 code:96
+												 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported.", @"") forKey:NSLocalizedDescriptionKey]];
+			}
+			else
+			{
+				versionWarning = [NSError errorWithDomain:@"myDomain"
+													 code:98
+												 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested.", @""), stringValue, webifIdentifier[WEBIF_VERSION_MAX-1]] forKey:NSLocalizedDescriptionKey]];
+			}
 		}
 
 		// detect plugins
@@ -457,7 +468,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		dynamicFeatures = 0;
 		if(error)
 			*error = [NSError errorWithDomain:@"myDomain"
-										 code:98
+										 code:97
 									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection failure with status code %d ignored.", @""), statusCode] forKey:NSLocalizedDescriptionKey]];
 		returnValue = YES;
 	}
