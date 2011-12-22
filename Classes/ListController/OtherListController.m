@@ -524,8 +524,8 @@
 
 		if([targetViewController isKindOfClass:[MGSplitViewController class]])
 		{
-			targetViewController = ((MGSplitViewController *)targetViewController).masterViewController;
 			UIViewController *detailViewController = ((MGSplitViewController *)targetViewController).detailViewController;
+			targetViewController = ((MGSplitViewController *)targetViewController).masterViewController;
 
 			if([targetViewController isKindOfClass:[UINavigationController class]])
 			{
