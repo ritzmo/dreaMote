@@ -1393,10 +1393,10 @@
 	// get movie
 	const CGPoint p = [gesture locationInView:tableView];
 	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
-	_movie = ((NSUInteger)indexPath.row < _movies.count) ? [_movies objectAtIndex:indexPath.row] : nil;
+	NSObject<MovieProtocol> *movie = ((NSUInteger)indexPath.row < _movies.count) ? [_movies objectAtIndex:indexPath.row] : nil;
 
 	// Check for invalid movie
-	if(!_movie || !_movie.valid)
+	if(!movie || !movie.valid)
 		return;
 
 	// if streaming supported, show popover on ipad and action sheet on iphone
@@ -1411,11 +1411,11 @@
 
 			if(selectedAction == zapActionRemote)
 			{
-				[sharedRemoteConnector playMovie:_movie];
+				[sharedRemoteConnector playMovie:movie];
 				return;
 			}
 
-			streamingURL = [sharedRemoteConnector getStreamURLForMovie:_movie];
+			streamingURL = [sharedRemoteConnector getStreamURLForMovie:movie];
 			if(!streamingURL)
 			{
 				// Alert user
@@ -1469,7 +1469,7 @@
 	// else just zap on remote host
 	else
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] playMovie:_movie];
+		[[RemoteConnectorObject sharedRemoteConnector] playMovie:movie];
 	}
 }
 

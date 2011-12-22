@@ -78,7 +78,6 @@
 	UIPopoverController *popoverController; /*!< @brief Popover Controller. */
 	UIPopoverController *popoverZapController; /*!< @brief Popover Zap Controller. */
 	NSObject<ServiceProtocol> *_bouquet; /*!< @brief Current Bouquet. */
-	NSObject<ServiceProtocol> *_service; /*!< @brief Selected Service (if executing a gesture, borrowed reference). */
 	NSMutableArray *_mainList; /*!< @brief Service/Current Event List. */
 	NSMutableArray *_subList; /*!< @brief Next Event List. */
 	BOOL _refreshServices; /*!< @brief Refresh Service List on next open? */

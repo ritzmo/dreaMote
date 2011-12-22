@@ -41,7 +41,6 @@
 	NSMutableDictionary *_characters; /*!< @brief First characters -> movies for current list. */
 	UIButton *_deleteButton; /*!< @brief Delete Button for Multi select. */
 	UIBarButtonItem *_tagButton; /*!< @brief "Tags" button. */
-	NSObject<MovieProtocol> __unsafe_unretained *_movie; /*!< @brief Selected Movie (if executing a gesture, borrowed reference). */
 
 #if IS_FULL()
 	NSMutableArray *_filteredMovies; /*!< @brief Filtered list of movies when searching. */

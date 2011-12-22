@@ -2033,16 +2033,17 @@ enum serviceListTags
 		return;
 
 	// get service
+	NSObject<ServiceProtocol> *service = nil;
 	const CGPoint p = [gesture locationInView:tableView];
 	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
 	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
-		_service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
+		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
-		_service = objectAtIndexPath;
+		service = objectAtIndexPath;
 
 	// Check for invalid service
-	if(!_service || !_service.valid)
+	if(!service || !service.valid)
 		return;
 
 	// if streaming supported, show popover on ipad and action sheet on iphone
@@ -2057,11 +2058,11 @@ enum serviceListTags
 
 			if(selectedAction == zapActionRemote)
 			{
-				[sharedRemoteConnector zapTo:_service];
+				[sharedRemoteConnector zapTo:service];
 				return;
 			}
 
-			streamingURL = [sharedRemoteConnector getStreamURLForService:_service];
+			streamingURL = [sharedRemoteConnector getStreamURLForService:service];
 			if(!streamingURL)
 			{
 				// Alert user
@@ -2115,7 +2116,7 @@ enum serviceListTags
 	// else just zap on remote host
 	else
 	{
-		[[RemoteConnectorObject sharedRemoteConnector] zapTo:_service];
+		[[RemoteConnectorObject sharedRemoteConnector] zapTo:service];
 	}
 }
 
