@@ -8,9 +8,10 @@
 
 #import "MovieListController.h"
 
-#import "MovieTableViewCell.h"
-#import "MovieViewController.h"
-#import "SimpleMultiSelectionListController.h"
+#import <TableViewCell/MovieTableViewCell.h>
+#import <ListController/ServiceZapListController.h>
+#import <ListController/SimpleMultiSelectionListController.h>
+#import <ViewController/MovieViewController.h>
 
 #import "Constants.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
@@ -44,6 +45,14 @@
 - (IBAction)multiDelete:(id)sender;
 
 /*!
+ @brief Long press gesture was issued.
+ */
+- (void)zapAction:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView;
+
+- (void)longPressInMainTable:(UILongPressGestureRecognizer *)gesture;
+- (void)longPressInSearchTable:(UILongPressGestureRecognizer *)gesture;
+
+/*!
  @brief Popover Controller.
  */
 @property (nonatomic, strong) UIPopoverController *popoverController;
@@ -72,11 +81,19 @@
  @brief Activity Indicator.
  */
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
+
+/*!
+ @brief Zap type selection.
+ */
+@property (nonatomic, strong) ServiceZapListController *zapListController;
+@property (nonatomic, strong) UIPopoverController *popoverZapController;
 @end
 
 @implementation MovieListController
 
-@synthesize allTags, popoverButtonItem, popoverController, progressHUD, isSplit, isSlave, selectedTags, taggedMovies, tagPopoverController;
+@synthesize allTags, popoverButtonItem, popoverController, progressHUD, isSplit;
+@synthesize isSlave, selectedTags, taggedMovies, tagPopoverController;
+@synthesize zapListController, popoverZapController;
 #if IS_FULL()
 @synthesize searchBar;
 #endif
@@ -625,6 +642,11 @@
 	_tableView.dataSource = self;
 	_tableView.rowHeight = kUIRowHeight;
 	_tableView.allowsSelectionDuringEditing = YES;
+
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressInMainTable:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[_tableView addGestureRecognizer:longPressGesture];
 
 	_sortButton = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStyleBordered target:self action:@selector(switchSort:)];
 	if(_sortTitle)
@@ -1272,6 +1294,11 @@
 
 - (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)searchTableView
 {
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressInSearchTable:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[searchTableView addGestureRecognizer:longPressGesture];
+
 	searchTableView.backgroundColor = _tableView.backgroundColor;
 	searchTableView.allowsSelectionDuringEditing = YES;
 	searchTableView.editing = _tableView.editing;
@@ -1342,6 +1369,108 @@
 	self.popoverButtonItem = nil;
 	self.popoverController = nil;
 	[self setupLeftBarButton];
+}
+
+#pragma mark Zapping
+
+- (void)longPressInMainTable:(UILongPressGestureRecognizer *)gesture
+{
+	[self zapAction:gesture inView:_tableView];
+}
+
+- (void)longPressInSearchTable:(UILongPressGestureRecognizer *)gesture
+{
+	[self zapAction:gesture inView:_searchDisplay.searchResultsTableView];
+}
+
+/* zap */
+- (void)zapAction:(UILongPressGestureRecognizer *)gesture inView:(UITableView *)tableView
+{
+	// only do something on gesture start
+	if(gesture.state != UIGestureRecognizerStateBegan)
+		return;
+
+	// get movie
+	const CGPoint p = [gesture locationInView:tableView];
+	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
+	_movie = ((NSUInteger)indexPath.row < _movies.count) ? [_movies objectAtIndex:indexPath.row] : nil;
+
+	// Check for invalid movie
+	if(!_movie || !_movie.valid)
+		return;
+
+	// if streaming supported, show popover on ipad and action sheet on iphone
+	if([ServiceZapListController canStream])
+	{
+		zap_callback_t callback = ^(ServiceZapListController *zlc, zapAction selectedAction)
+		{
+			NSURL *streamingURL = nil;
+			NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+			if(self.zapListController == zlc)
+				self.zapListController = nil;
+
+			if(selectedAction == zapActionRemote)
+			{
+				[sharedRemoteConnector playMovie:_movie];
+				return;
+			}
+
+			streamingURL = [sharedRemoteConnector getStreamURLForMovie:_movie];
+			if(!streamingURL)
+			{
+				// Alert user
+				const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																	  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+																	 delegate:nil
+															cancelButtonTitle:@"OK"
+															otherButtonTitles:nil];
+				[alert show];
+			}
+			else
+				[ServiceZapListController openStream:streamingURL withAction:selectedAction];
+		};
+
+		zapAction defaultZapAction = [[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault];
+		if(defaultZapAction != zapActionMax)
+		{
+			callback(nil, defaultZapAction);
+		}
+		else if(IS_IPAD())
+		{
+			// hide popover if already visible
+			if([popoverController isPopoverVisible])
+			{
+				[popoverController dismissPopoverAnimated:YES];
+			}
+			if([self.popoverZapController isPopoverVisible])
+			{
+				[popoverZapController dismissPopoverAnimated:YES];
+				self.popoverController = nil;
+				return;
+			}
+
+			ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+			zlc.callback = callback;
+			popoverZapController = [[UIPopoverController alloc] initWithContentViewController:zlc];
+
+			CGRect cellRect = [tableView rectForRowAtIndexPath:indexPath];
+			cellRect.origin.x = p.x - 25.0f;
+			cellRect.size.width = cellRect.size.width - cellRect.origin.x;
+			[popoverZapController presentPopoverFromRect:cellRect
+												  inView:tableView
+								permittedArrowDirections:UIPopoverArrowDirectionLeft | UIPopoverArrowDirectionRight
+												animated:YES];
+		}
+		else
+		{
+			zapListController = [ServiceZapListController showAlert:callback fromTabBar:self.tabBarController.tabBar];
+		}
+	}
+	// else just zap on remote host
+	else
+	{
+		[[RemoteConnectorObject sharedRemoteConnector] playMovie:_movie];
+	}
 }
 
 @end
