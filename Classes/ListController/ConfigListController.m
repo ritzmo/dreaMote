@@ -1083,11 +1083,13 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 		case purchaseSection:
 		{
 			NSUInteger count = purchasables.count;
-#if IS_DEBUG()
 			if(count)
+#if IS_DEBUG()
+				count += 2;
+#else
 				++count;
 #endif
-			return count ? count + 1 : 0;
+			return count;
 		}
 		default:
 			return 0;
