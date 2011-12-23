@@ -124,6 +124,9 @@
 "All Services" = "Alle Sender";
 
 /* No comment provided by engineer. */
+"Always ask" = "Immer fragen";
+
+/* No comment provided by engineer. */
 "An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Ein unerwarteter Fehler (%@) trat nach dem Entfernen der Aufnahme auf.\nBitte die Liste manuell aktualisieren, um die Änderung anzuzeigen!";
 
 /* No comment provided by engineer. */
@@ -205,6 +208,9 @@
 /* Title of action sheet when leaving MediaPlayer view. */
 "Close MediaPlayer?" = "MediaPlayer schließen?";
 
+/* HUD: Code was successfully used to unlock in-app-purchase */
+"Code redeemed" = "Code eingelöst";
+
 /* Default Title of ConfigListController
    Default title of ConfigViewController */
 "Configuration" = "Konfiguration";
@@ -220,6 +226,9 @@
 
 /* Label of Progress HUD when switching connections */
 "Connecting…" = "Verbinde…";
+
+/* No comment provided by engineer. */
+"Connection failure with status code %d ignored." = "Verbindungsfehler mit Statuscode %d ignoriert.";
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
@@ -290,6 +299,10 @@
 
 /* No comment provided by engineer. */
 "Default Location" = "Standardverzeichnis";
+
+/* Label of cell in config which gives default zap type
+   Title of default zap type selection */
+"Default Zap-Type" = "Standard Zap-Art";
 
 /* Delete button in MediaPlayer
    Delete button in MovieList
@@ -492,6 +505,9 @@
 
 /* [SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter. */
 "Invalid timer object received: %@." = "Ungültigen Timer erhalten: %@.";
+
+/* No comment provided by engineer. */
+"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported." = "Es wurde vermutlich eine Verbindung zum sogenannenten \"OpenWebif\" aufgebaut.\nEs enthält bekannte Fehler und wird aktuell nicht offiziell von dreaMote unterstützt.";
 
 /* No comment provided by engineer. */
 "Justplay" = "Nur wiedergeben";
