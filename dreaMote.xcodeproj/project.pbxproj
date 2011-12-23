@@ -109,6 +109,9 @@
 		DA34E3EC1488C8BE00CBA5F8 /* AutoTimerSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EB1488C8BE00CBA5F8 /* AutoTimerSettings.m */; };
 		DA34E3F01488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA34E3EF1488CAB100CBA5F8 /* AutoTimerSettingsXMLReader.m */; };
 		DA3603D5146716EA003E2DDD /* AutoTimerSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */; };
+		DA391A1B14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
+		DA391A1C14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
+		DA391A1D14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
 		DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */; };
 		DA4DD256148E50F800B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
 		DA4DD257148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
@@ -1249,6 +1252,7 @@
 		DA34E3F11488CBCE00CBA5F8 /* AutoTimerSettingsSourceDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsSourceDelegate.h; sourceTree = "<group>"; };
 		DA3603D3146716EA003E2DDD /* AutoTimerSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSplitViewController.h; sourceTree = "<group>"; };
 		DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSplitViewController.m; sourceTree = "<group>"; };
+		DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SSKTk.bundle; sourceTree = "<group>"; };
 		DA3F60A0148A09D9008FC0DF /* AutoTimerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsViewController.h; sourceTree = "<group>"; };
 		DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSettingsViewController.m; sourceTree = "<group>"; };
 		DA4DD24F148E50F800B23CD3 /* DDInvocationGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDInvocationGrabber.h; sourceTree = "<group>"; };
@@ -2596,6 +2600,7 @@
 		DAAAD6161492E7BF00F27A02 /* SSKTk */ = {
 			isa = PBXGroup;
 			children = (
+				DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */,
 				DAAAD6181492E7BF00F27A02 /* SSKConfig.h */,
 				DAAAD6191492E7BF00F27A02 /* SSKManager.h */,
 				DAAAD61A1492E7BF00F27A02 /* SSKManager.m */,
@@ -3679,6 +3684,7 @@
 				DA8368E514A24F080047CC85 /* remote@2x.png in Resources */,
 				DAFB010314A27FFF00C2001F /* IsSelected@2x.png in Resources */,
 				DAFB010614A27FFF00C2001F /* NotSelected@2x.png in Resources */,
+				DA391A1B14A5347E00CDF1B8 /* SSKTk.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3822,6 +3828,7 @@
 				DA8368E614A24F080047CC85 /* remote@2x.png in Resources */,
 				DAFB010414A27FFF00C2001F /* IsSelected@2x.png in Resources */,
 				DAFB010714A27FFF00C2001F /* NotSelected@2x.png in Resources */,
+				DA391A1C14A5347E00CDF1B8 /* SSKTk.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3956,6 +3963,7 @@
 				DA8368E714A24F080047CC85 /* remote@2x.png in Resources */,
 				DAFB010514A27FFF00C2001F /* IsSelected@2x.png in Resources */,
 				DAFB010814A27FFF00C2001F /* NotSelected@2x.png in Resources */,
+				DA391A1D14A5347E00CDF1B8 /* SSKTk.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
