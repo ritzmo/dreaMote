@@ -8,7 +8,8 @@
 
 #import "AboutDreamoteViewController.h"
 
-#import "Constants.h"
+#import <Constants.h>
+#import <Connector/RemoteConnectorObject.h>
 
 @interface AboutDreamoteViewController()
 /*!
@@ -214,7 +215,8 @@
 	UIDevice *currentDevice = [UIDevice currentDevice];
 	[mvc setSubject:[NSString stringWithFormat:@"App Feedback %@", displayName]];
 	[mvc setToRecipients:[NSArray arrayWithObject:@"dreamote@ritzmo.de"]];
-	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@", [currentDevice model], [currentDevice systemVersion], displayName, bundleVersion];
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@\nConnected to: %@", [currentDevice model], [currentDevice systemVersion], displayName, bundleVersion, sharedRemoteConnector ? [sharedRemoteConnector description] : @"not connected"];
 	[mvc setMessageBody:body isHTML:NO];
 	mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:mvc animated:YES];
