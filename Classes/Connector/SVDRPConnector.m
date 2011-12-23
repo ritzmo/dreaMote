@@ -62,7 +62,6 @@ typedef enum
 	return self;
 }
 
-
 - (void)freeCaches
 {
 	_serviceCache = nil;
@@ -91,6 +90,11 @@ typedef enum
 - (UIViewController *)newRCEmulator
 {
 	return [[SVDRPRCEmulatorController alloc] init];
+}
+
+- (NSString *)description
+{
+	return @"SVDRP";
 }
 
 #pragma mark Common

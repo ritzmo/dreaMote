@@ -198,6 +198,11 @@ enum enigma1MessageTypes {
 	return [[EnigmaRCEmulatorController alloc] init];
 }
 
+- (NSString *)description
+{
+	return @"Enigma1";
+}
+
 - (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
 {
 	// check if delegate wants to be informated about errors

@@ -89,12 +89,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 - (void)checkFeatures:(NSData *)data;
 
 @property (nonatomic, assign) dynamicFeatures_t dynamicFeatures;
+@property (nonatomic, assign) BOOL officialWebif;
 @property (nonatomic, strong) NSError *versionWarning;
 @end
 
 @implementation Enigma2Connector
 
-@synthesize dynamicFeatures, versionWarning;
+@synthesize dynamicFeatures, officialWebif, versionWarning;
 
 - (const BOOL const)hasFeature: (enum connectorFeatures)feature
 {
@@ -175,6 +176,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		}
 		_advancedRc = advancedRc;
 		dynamicFeatures = FEATURE_ALL; // assume all features until detection
+		officialWebif = YES;
 	}
 	return self;
 }
@@ -310,6 +312,24 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [[EnigmaRCEmulatorController alloc] init];
 }
 
+- (NSString *)description
+{
+	if(!officialWebif)
+		return @"Enigma2 (OpenWebif)";
+
+	switch(_webifVersion)
+	{
+		default:
+			return [NSString stringWithFormat:@"Enigma2 (detected as %@)", webifIdentifier[_webifVersion]];
+		case WEBIF_VERSION_UNKNOWN:
+			return @"Enigma2 (unknown version)";
+		case WEBIF_VERSION_MAX:
+			return @"Enigma2 (illegal version)";
+		case WEBIF_VERSION_OLD:
+			return @"Enigma2 (old version)";
+	}
+}
+
 - (void)checkFeatures:(NSData *)data
 {
 	NSRange dataRange = NSMakeRange(0, [data length]);
@@ -352,6 +372,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			if([stringValue isEqualToString:@"0.0.0"])
 			{
 				_webifVersion = WEBIF_VERSION_1_5b3;
+				self.officialWebif = NO;
 				versionWarning = [NSError errorWithDomain:@"myDomain"
 													 code:96
 												 userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported.", @"") forKey:NSLocalizedDescriptionKey]];

@@ -164,6 +164,21 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 	return [[NeutrinoRCEmulatorController alloc] init];
 }
 
+- (NSString *)description
+{
+	switch(ywebVersion)
+	{
+		default:
+			return [NSString stringWithFormat:@"Neutrino (detected as %@)", ywebIdentifier[ywebVersion]];
+		case YWEB_VERSION_UNKNOWN:
+			return @"Neutrino (unknown version)";
+		case YWEB_VERSION_MAX:
+			return @"Neutrino (illegal version)";
+		case YWEB_VERSION_OLD:
+			return @"Neutrino (old version)";
+	}
+}
+
 - (BOOL)isReachable:(NSError **)error
 {
 	// Generate URI
