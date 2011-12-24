@@ -540,7 +540,7 @@ enum serviceListTags
 		 curBegin being reset and therefore the timer being restarted, so we "hide"
 		 this here for convenience reasons.
 		 */
-		if([_multiEPG.view superview])
+		if([_multiEPG isViewLoaded] && [_multiEPG.view superview])
 			[_multiEPG viewWillAppear:animated];
 #endif
 
@@ -550,7 +550,7 @@ enum serviceListTags
 	}
 
 #if IS_FULL()
-	if([_multiEPG.view superview])
+	if([_multiEPG isViewLoaded] && [_multiEPG.view superview])
 	{
 		[self.navigationController setToolbarHidden:NO animated:YES];
 		[_multiEPG viewDidAppear:YES];
@@ -567,7 +567,7 @@ enum serviceListTags
 - (void)viewWillDisappear:(BOOL)animated
 {
 #if IS_FULL()
-	if([_multiEPG.view superview])
+	if([_multiEPG isViewLoaded] && [_multiEPG.view superview])
 	{
 		[self.navigationController setToolbarHidden:YES animated:YES];
 		[_multiEPG viewWillDisappear:animated];
@@ -584,7 +584,7 @@ enum serviceListTags
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 #if IS_FULL()
-	if([_multiEPG.view superview])
+	if([_multiEPG isViewLoaded] && [_multiEPG.view superview])
 		[_multiEPG willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 	else
 #endif
@@ -596,7 +596,7 @@ enum serviceListTags
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 #if IS_FULL()
-	if([_multiEPG.view superview])
+	if([_multiEPG isViewLoaded] && [_multiEPG.view superview])
 		[_multiEPG didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 #endif
 
