@@ -21,6 +21,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 {
 	if(package == newPackage) return;
 	package = newPackage;
+	self.accessibilityLabel = newPackage.name;
 
 	[self setNeedsDisplay];
 }

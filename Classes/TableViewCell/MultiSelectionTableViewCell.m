@@ -66,12 +66,14 @@
 		indicatorImage = [UIImage imageNamed:@"IsSelected.png"];
 		imageLayer.contents = (id)indicatorImage.CGImage;
 		self.backgroundView.backgroundColor = [UIColor colorWithRed:223.0f/255.0f green:230.0f/255.0f blue:250.0f/255.0f alpha:1.0f];
+		self.accessibilityValue = NSLocalizedString(@"selected", @"Accessibility text for selected cells in multi selection");
 	}
 	else
 	{
 		indicatorImage = [UIImage imageNamed:@"NotSelected.png"];
 		imageLayer.contents = (id)indicatorImage.CGImage;
 		self.backgroundView.backgroundColor = [UIColor clearColor];
+		self.accessibilityValue = NSLocalizedString(@"not selected", @"Accessibility text for unselected cells in multi selection");
 	}
 }
 

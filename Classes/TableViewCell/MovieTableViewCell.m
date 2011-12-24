@@ -37,6 +37,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	}
 	else
 		self.accessoryType = UITableViewCellAccessoryNone;
+	self.accessibilityLabel = newMovie.sname;
 
 	// Redraw
 	[self setNeedsDisplay];

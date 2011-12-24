@@ -50,6 +50,8 @@ NSString *kEventCell_ID = @"EventCell_ID";
 		if(begin && end)
 			newEvent.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
+	self.accessibilityLabel = newEvent.title;
+	self.accessibilityValue = newEvent.timeString;
 
 	// Redraw
 	[self setNeedsDisplay];
