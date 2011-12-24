@@ -82,7 +82,6 @@
 - (void)viewDidLoad
 {
 	const BOOL isIpad = IS_IPAD();
-	menuList = [[NSMutableArray alloc] init];
 
 	// create our view controllers - we will encase each title and view controller pair in a NSDictionary
 	// and add it to a mutable array.  If you want to add more pages, simply call "addObject" on "menuList"
@@ -102,11 +101,11 @@
 						 nil];
 #endif
 
-	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+	_settingsDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Settings", @"Title of Settings in Other List"), @"title",
 						 NSLocalizedString(@"Change configuration and edit known hosts", @"Explaination of Settings in Other List"), @"explainText",
 						 [[ConfigListController alloc] init], @"viewController",
-						 nil]];
+						 nil];
 
 	_epgrefreshDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"EPGRefresh-Plugin", @"Title of EPGRefresh in Other List"), @"title",
@@ -147,17 +146,17 @@
 								  nil];
 	}
 
-	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+	_controlDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 						NSLocalizedString(@"Control", @"Title of Control View in Other List"), @"title",
 						NSLocalizedString(@"Control Powerstate and Volume", @"Explaination of Control View in Other List"), @"explainText",
 						[ControlViewController class], @"viewControllerClass",
-						nil]];
+						nil];
 
-	[menuList addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:
+	_messagesDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 						 NSLocalizedString(@"Messages", @"Title of Message View in Other List"), @"title",
 						 NSLocalizedString(@"Send short Messages", @"Explaination of Message View in Other List"), @"explainText",
 						 [MessageViewController class], @"viewControllerClass",
-						 nil]];
+						 nil];
 
 	_sleeptimerDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 							  NSLocalizedString(@"Sleep Timer", @"Title of Sleep Timer in Other List"), @"title",
@@ -217,15 +216,18 @@
 #if IS_FULL()
 	_autotimerDictionary = nil;
 #endif
+	_controlDictionary = nil;
 	_epgrefreshDictionary = nil;
 	_eventSearchDictionary = nil;
 	_mediaPlayerDictionary = nil;
+	_messagesDictionary = nil;
 	_locationsDictionary = nil;
 	_recordDictionary = nil;
+	_settingsDictionary = nil;
 	_signalDictionary = nil;
 	_sleeptimerDictionary = nil;
 	_packageManagerDictionary = nil;
-	[menuList removeAllObjects];
+	menuList = nil;
 
 	[super viewDidUnload];
 }
@@ -245,120 +247,15 @@
 		if(![RemoteConnectorObject isConnected])
 			if(![RemoteConnectorObject connectTo:[connId integerValue] inBackground:YES])
 				return;
+		const NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 		const BOOL isIpad = IS_IPAD();
+		NSMutableArray *newList = [NSMutableArray array];
 
-		BOOL reload = NO;
-		/* The menu reorganization might be buggy, this should be redone
-		 as it was a bad hack to begin with */
-		// Add/Remove Record
-		if(!isIpad)
-		{
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordInfo])
-			{
-				if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesRecordingLocations])
-				{
-					if(![menuList containsObject: _locationsDictionary])
-					{
-						[menuList removeObject:_recordDictionary];
-						[menuList insertObject:_locationsDictionary atIndex: 2];
-						reload = YES;
-					}
-				}
-				else
-				{
-					if(![menuList containsObject: _recordDictionary])
-					{
-						[menuList removeObject:_locationsDictionary];
-						[menuList insertObject:_recordDictionary atIndex: 2];
-						reload = YES;
-					}
-				}
-			}
-			else
-			{
-				if([menuList containsObject: _recordDictionary]
-				   || [menuList containsObject: _locationsDictionary])
-				{
-					[menuList removeObject: _recordDictionary];
-					[menuList removeObject: _locationsDictionary];
-					reload = YES;
-				}
-			}
+		if([sharedRemoteConnector hasFeature:kFeaturesAbout])
+			[newList addObject:_aboutDictionary];
+		[newList addObject:_settingsDictionary];
+		[newList addObject:_controlDictionary];
 
-			// Add/Remove Media Player
-			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesMediaPlayer])
-			{
-				if(![menuList containsObject: _mediaPlayerDictionary])
-				{
-					[menuList insertObject: _mediaPlayerDictionary atIndex: 2];
-					reload = YES;
-				}
-			}
-			else
-			{
-				if([menuList containsObject: _mediaPlayerDictionary])
-				{
-					[menuList removeObject: _mediaPlayerDictionary];
-					reload = YES;
-				}
-			}
-		}
-
-		// Add/Remove Signal Finder
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSatFinder])
-		{
-			if(![menuList containsObject: _signalDictionary])
-			{
-				[menuList insertObject: _signalDictionary atIndex: (isIpad) ? 3 : 4];
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject: _signalDictionary])
-			{
-				[menuList removeObject: _signalDictionary];
-				reload = YES;
-			}
-		}
-
-		// Add/Remove Package Manager
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesPackageManagement])
-		{
-			if(![menuList containsObject: _packageManagerDictionary])
-			{
-				[menuList insertObject: _packageManagerDictionary atIndex: (isIpad) ? 4 : 5];
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject: _packageManagerDictionary])
-			{
-				[menuList removeObject: _packageManagerDictionary];
-				reload = YES;
-			}
-		}
-
-		// Add/Remove Sleep Timer
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesSleepTimer])
-		{
-			if(![menuList containsObject: _sleeptimerDictionary])
-			{
-				[menuList insertObject: _sleeptimerDictionary atIndex: (isIpad) ? 4 : 5];
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject: _sleeptimerDictionary])
-			{
-				[menuList removeObject: _sleeptimerDictionary];
-				reload = YES;
-			}
-		}
-
-		// Add/Remove Event Search
 		/*!
 		 @note Full version does emulated epg search in cache, so only check for native
 		 search ability in lite version.
@@ -366,80 +263,50 @@
 #if IS_FULL()
 		if(YES)
 #else
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesEPGSearch])
+		if([sharedRemoteConnector hasFeature:kFeaturesEPGSearch])
 #endif
+			[newList addObject:_eventSearchDictionary];
+
+		if(!isIpad)
 		{
-			if(![menuList containsObject: _eventSearchDictionary])
+			if([sharedRemoteConnector hasFeature:kFeaturesRecordInfo])
 			{
-				[menuList insertObject: _eventSearchDictionary atIndex: 2];
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject: _eventSearchDictionary])
-			{
-				[menuList removeObject: _eventSearchDictionary];
-				reload = YES;
+				if([sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+					[newList addObject:_locationsDictionary];
+				else
+					[newList addObject:_recordDictionary];
 			}
 		}
 
-		// Add/Remove About Receiver
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesAbout])
+		[newList addObject:_messagesDictionary];
+
+		if([sharedRemoteConnector hasFeature:kFeaturesSatFinder])
+			[newList addObject:_signalDictionary];
+
+		if(!isIpad)
 		{
-			if(![menuList containsObject: _aboutDictionary])
-			{
-				[menuList insertObject: _aboutDictionary atIndex: 0];
-				reload = YES;
-			}
+			if([sharedRemoteConnector hasFeature:kFeaturesMediaPlayer])
+				[newList addObject:_mediaPlayerDictionary];
 		}
-		else
-		{
-			if([menuList containsObject: _aboutDictionary])
-			{
-				[menuList removeObject: _aboutDictionary];
-				reload = YES;
-			}
-		}
+
+		if([sharedRemoteConnector hasFeature:kFeaturesSleepTimer])
+			[newList addObject:_sleeptimerDictionary];
+
+		if([sharedRemoteConnector hasFeature:kFeaturesPackageManagement])
+			[newList addObject:_packageManagerDictionary];
 
 #if IS_FULL()
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer])
-		{
-			if(![menuList containsObject:_autotimerDictionary])
-			{
-				[menuList addObject:_autotimerDictionary]; // add to EOL
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject:_autotimerDictionary])
-			{
-				[menuList removeObject:_autotimerDictionary];
-				reload = YES;
-			}
-		}
+		if([sharedRemoteConnector hasFeature:kFeaturesAutoTimer])
+			[newList addObject:_autotimerDictionary];
 #endif
 
-		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesEPGRefresh])
-		{
-			if(![menuList containsObject:_epgrefreshDictionary])
-			{
-				[menuList addObject:_epgrefreshDictionary]; // add to EOL
-				reload = YES;
-			}
-		}
-		else
-		{
-			if([menuList containsObject:_epgrefreshDictionary])
-			{
-				[menuList removeObject:_epgrefreshDictionary];
-				reload = YES;
-			}
-		}
+		if([sharedRemoteConnector hasFeature:kFeaturesEPGRefresh])
+			[newList addObject:_epgrefreshDictionary];
 
-		if(reload)
-			[tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			menuList = newList;
+			[tableView reloadData];
+		});
 	}
 }
 

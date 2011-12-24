@@ -23,18 +23,21 @@
 													OtherViewProtocol,
 													UITableViewDataSource>
 {
-	NSMutableArray	*menuList; /*!< @brief Item List. */
+	NSArray	*menuList; /*!< @brief Item List. */
 @private
 	UIViewController *_aboutDreamoteViewController; /*!< @brief Cached About View. */
 	NSMutableDictionary *_aboutDictionary; /*!< @brief Dictionary describing About (Receiver) Item. */
 #if IS_FULL()
 	NSMutableDictionary *_autotimerDictionary; /*!< @brief Dictionary describing AutoTimer Item. */
 #endif
+	NSMutableDictionary *_controlDictionary; /*!< @brief Dictionary describing control item. */
 	NSMutableDictionary *_epgrefreshDictionary; /*!< @brief Dictionary describing EPGRefresh Item. */
 	NSMutableDictionary *_eventSearchDictionary; /*!< @brief Dictionary describing EPG Search Item. */
 	NSMutableDictionary *_mediaPlayerDictionary; /*!< @brief Dictionary describing MediaPlayer Item. */
+	NSMutableDictionary *_messagesDictionary; /*!< @brief Dictionary describing messages item. */
 	NSMutableDictionary *_locationsDictionary; /*!< @brief Dictionary describing Locations List Item. */
 	NSMutableDictionary *_recordDictionary; /*!< @brief Dictionary describing Movie List Item. */
+	NSMutableDictionary *_settingsDictionary; /*!< @brief Dictionary describing settings item. */
 	NSMutableDictionary *_signalDictionary; /*!< @brief Dictionary describing Signal Item. */
 	NSMutableDictionary *_sleeptimerDictionary; /*!< @brief Dictionary describing SleepTimer Item. */
 	NSMutableDictionary *_packageManagerDictionary; /*!< @brief Dictionary describing PackageManager Item. */
