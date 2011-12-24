@@ -103,13 +103,9 @@
 #endif
 
 	// add header view
-	// NOTE: looks ugly on ipad, so only enable this on iphone for now
-	if(!IS_IPAD())
-	{
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
-		_refreshHeaderView.delegate = self;
-		[_tableView addSubview:_refreshHeaderView];
-	}
+	_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.view.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height)];
+	_refreshHeaderView.delegate = self;
+	[_tableView addSubview:_refreshHeaderView];
 }
 
 - (void)theme
