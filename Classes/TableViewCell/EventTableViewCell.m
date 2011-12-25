@@ -62,7 +62,14 @@ NSString *kEventCell_ID = @"EventCell_ID";
 
 - (NSString *)accessibilityValue
 {
-	return event.timeString;
+	// Generate a new string instead of trying to work with the old one
+	[formatter setDateStyle:NSDateFormatterMediumStyle];
+	const NSString *begin = [formatter fuzzyDate:event.begin];
+	[formatter setDateStyle:NSDateFormatterNoStyle];
+	const NSString *end = [formatter stringFromDate:event.end];
+	if(begin && end)
+		return [NSString stringWithFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
+	return event.timeString; // stupid fallback, probably empty too ;)
 }
 
 - (void)drawContentRect:(CGRect)contentRect
