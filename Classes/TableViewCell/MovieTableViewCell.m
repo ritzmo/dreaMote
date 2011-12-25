@@ -52,7 +52,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	NSString *value = [super accessibilityValue];
 	if(!value)
 		return movie.timeString;
-	return value;
+	return [NSString stringWithFormat:@"%@, %@", movie.timeString, value];
 }
 
 /* layout */

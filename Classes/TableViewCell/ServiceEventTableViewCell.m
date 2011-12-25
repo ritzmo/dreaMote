@@ -109,15 +109,15 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 			const NSString *begin = [formatter stringFromDate:now.begin];
 			const NSString *end = [formatter stringFromDate:now.end];
 			[mutableString appendFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
-			[mutableString appendFormat:@", %@", now.title];
+			[mutableString appendFormat:@": %@", now.title];
 
 			if(next.begin)
 			{
 				begin = [formatter stringFromDate:next.begin];
 				end = [formatter stringFromDate:next.end];
-				[mutableString appendString:@"\n"];
+				[mutableString appendString:@",\n"];
 				[mutableString appendFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
-				[mutableString appendFormat:@", %@", next.title];
+				[mutableString appendFormat:@": %@", next.title];
 			}
 
 			string = mutableString;

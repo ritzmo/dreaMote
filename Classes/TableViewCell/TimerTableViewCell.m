@@ -57,23 +57,26 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 
 - (NSString *)accessibilityLabel
 {
-	return timer.title;
+	return [NSString stringWithFormat:@"%@: %@", timer.service.sname, timer.title];
 }
 
 - (NSString *)accessibilityValue
 {
 	NSString *value = [super accessibilityValue];
-	if(!value)
-	{
-		// Generate a new string instead of trying to work with the old one
-		[formatter setDateStyle:NSDateFormatterMediumStyle];
-		const NSString *begin = [formatter fuzzyDate:timer.begin];
-		[formatter setDateStyle:NSDateFormatterNoStyle];
-		const NSString *end = [formatter stringFromDate:timer.end];
-		if(begin && end)
-			return [NSString stringWithFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
-		return timer.timeString; // stupid fallback, probably empty too ;)
-	}
+
+	// Generate a new string instead of trying to work with the old one
+	[formatter setDateStyle:NSDateFormatterMediumStyle];
+	const NSString *begin = [formatter fuzzyDate:timer.begin];
+	[formatter setDateStyle:NSDateFormatterNoStyle];
+	const NSString *end = [formatter stringFromDate:timer.end];
+	NSString *timeString = timer.timeString;
+	if(begin && end)
+		timeString = [NSString stringWithFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
+
+	if(value)
+		value = [NSString stringWithFormat:@"%@, %@", timeString, value];
+	else
+		value = timeString;
 	return value;
 }
 
