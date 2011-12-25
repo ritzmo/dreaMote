@@ -72,8 +72,12 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 	if(newService.valid)
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	self.accessibilityValue = service.sname;
 	[self setNeedsDisplay];
+}
+
+- (NSString *)accessibilityLabel
+{
+	return service.sname;
 }
 
 - (void)drawContentRect:(CGRect)contentRect

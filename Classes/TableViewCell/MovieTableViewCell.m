@@ -47,6 +47,14 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	return movie.title;
 }
 
+- (NSString *)accessibilityValue
+{
+	NSString *value = [super accessibilityValue];
+	if(!value)
+		return movie.timeString;
+	return value;
+}
+
 /* layout */
 - (void)layoutSubviews
 {
