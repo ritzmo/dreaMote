@@ -63,7 +63,6 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 		self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	else
 		self.accessoryType = UITableViewCellAccessoryNone;
-	self.accessibilityLabel = new.service.sname;
 
 	// don't redraw until next is set
 }
@@ -92,6 +91,11 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	}
 
 	[self setNeedsDisplay];
+}
+
+- (NSString *)accessibilityLabel
+{
+	return now.service.sname;
 }
 
 - (void)drawContentRect:(CGRect)contentRect

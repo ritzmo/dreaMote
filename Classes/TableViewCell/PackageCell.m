@@ -21,9 +21,13 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 {
 	if(package == newPackage) return;
 	package = newPackage;
-	self.accessibilityLabel = newPackage.name;
 
 	[self setNeedsDisplay];
+}
+
+- (NSString *)accessibilityLabel
+{
+	return package.name;
 }
 
 - (void)drawContentRect:(CGRect)contentRect

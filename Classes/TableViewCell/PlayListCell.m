@@ -21,8 +21,13 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 {
 	if(file == newFile) return;
 	file = newFile;
-	self.accessibilityLabel = newFile.title;
+
 	[self setNeedsDisplay];
+}
+
+- (NSString *)accessibilityLabel
+{
+	return file.title;
 }
 
 - (void)drawContentRect:(CGRect)contentRect

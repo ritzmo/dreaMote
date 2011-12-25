@@ -50,11 +50,22 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 		if(begin && end)
 			newTimer.timeString = [NSString stringWithFormat: @"%@ - %@", begin, end];
 	}
-	self.accessibilityLabel = newTimer.title;
-	// do NOT set accessibilityValue here, it is used by multi selection
 
 	// Redraw
 	[self setNeedsDisplay];
+}
+
+- (NSString *)accessibilityLabel
+{
+	return timer.title;
+}
+
+- (NSString *)accessibilityValue
+{
+	NSString *value = [super accessibilityValue];
+	if(!value)
+		return timer.timeString;
+	return value;
 }
 
 - (void)drawContentRect:(CGRect)contentRect
