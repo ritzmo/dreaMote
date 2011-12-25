@@ -160,6 +160,13 @@
 	}
 }
 
+- (NSString *)sref
+{
+	if(sref)
+		return sref;
+	return service.sref;
+}
+
 - (void)setSname: (NSString *)newSname
 {
 	if(sref)
@@ -174,6 +181,13 @@
 	{
 		self.sname = newSname;
 	}
+}
+
+- (NSString *)sname
+{
+	if(sname)
+		return sname;
+	return service.sname;
 }
 
 - (void)setTagsFromString: (NSString *)newTags
