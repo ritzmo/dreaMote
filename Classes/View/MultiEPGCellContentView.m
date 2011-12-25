@@ -11,9 +11,35 @@
 #import <Constants.h>
 #import <Objects/Generic/Event.h>
 
-#if IS_DEBUG()
-	#import "NSDateFormatter+FuzzyFormatting.h"
-#endif
+#import <Categories/NSDateFormatter+FuzzyFormatting.h>
+
+#pragma mark - Accessibility Helper classes
+
+@interface MutliEPGAccessibilityElement : UIAccessibilityElement
+@property (nonatomic, strong) NSObject<EventProtocol> *event;
+@end
+
+@implementation MutliEPGAccessibilityElement
+@synthesize event;
+- (NSString *)accessibilityLabel
+{
+	return event.title;
+}
+- (NSString *)accessibilityValue
+{
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setTimeStyle:NSDateFormatterShortStyle];
+	[formatter setDateStyle:NSDateFormatterMediumStyle];
+	const NSString *begin = [formatter fuzzyDate:event.begin];
+	[formatter setDateStyle:NSDateFormatterNoStyle];
+	const NSString *end = [formatter stringFromDate:event.end];
+	if(begin && end)
+		return [NSString stringWithFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
+	return event.timeString;
+}
+@end
+
+#pragma mark - Cell
 
 /*!
  @brief Private functions of ServiceTableViewCell.
@@ -23,11 +49,12 @@
  @brief Currently playing event or nil if not in range.
  */
 @property (nonatomic, strong) NSObject<EventProtocol> *currentEvent;
+@property (nonatomic, strong) NSArray *accessibilityElements;
 @end
 
 @implementation MultiEPGCellContentView
 
-@synthesize begin, currentEvent, highlighted;
+@synthesize accessibilityElements, begin, currentEvent, highlighted;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -57,6 +84,7 @@
 		if(_events == new) return;
 		_events = new;
 
+		self.accessibilityElements = nil;
 		self.currentEvent = nil;
 
 		// wait a few moments with the redraw until we know when 'now' is
@@ -251,6 +279,95 @@
 	}
 
 	//[super drawRect:rect];
+}
+
+#pragma mark - Accessibility
+
+- (NSArray *)accessibilityElements
+{
+	if(accessibilityElements)
+		return accessibilityElements;
+
+#if TARGET_IPHONE_SIMULATOR
+	#define accessibilityX	origin.x
+	#define accessibilityY	origin.y
+	#define accessibilityWidth	size.width
+	#define accessibilityHeight	size.height
+#else
+	#define accessibilityX	origin.y
+	#define accessibilityY	origin.x
+	#define accessibilityWidth	size.height
+	#define accessibilityHeight	size.width
+#endif
+
+	const CGRect contentRect = self.accessibilityFrame;
+	const CGFloat multiEpgInterval = [[NSUserDefaults standardUserDefaults] floatForKey:kMultiEPGInterval];
+	const CGFloat widthPerSecond = contentRect.accessibilityWidth / multiEpgInterval;
+	const CGFloat boundsX = contentRect.accessibilityX;
+	const CGFloat boundsY = contentRect.accessibilityY;
+	const CGFloat boundsHeight = contentRect.accessibilityHeight;
+	NSMutableArray *newElements = [NSMutableArray arrayWithCapacity:_events.count];
+
+	// create a mutable copy of the array
+	NSMutableArray *events = [_events mutableCopy];
+
+	// add sentinel element to enforce boundaries
+	NSObject<EventProtocol> *sentinel = [[GenericEvent alloc] init];
+	[events addObject:sentinel];
+	sentinel.begin = [begin dateByAddingTimeInterval:multiEpgInterval];
+
+	// remove first element (there has to be at least the sentinel) to set initial values
+	NSObject<EventProtocol> *prevEvent = [events objectAtIndex:0];
+	[events removeObjectAtIndex:0];
+	CGFloat prevX = [prevEvent.begin timeIntervalSinceDate:begin];
+	if(prevX < 0)
+		prevX = 0;
+	else
+		prevX *= widthPerSecond;
+
+	// iterate over elements 1 to n+1 while actually working on element i-1 ;)
+	for(NSObject<EventProtocol> *event in events)
+	{
+		const CGFloat newX = [event.begin timeIntervalSinceDate:begin] * widthPerSecond;
+		CGRect curRect = CGRectZero;
+		curRect.accessibilityX = boundsX + prevX;
+		curRect.accessibilityY = boundsY;
+		curRect.accessibilityWidth = newX - prevX;
+		curRect.accessibilityHeight = boundsHeight;
+
+		MutliEPGAccessibilityElement *acc = [[MutliEPGAccessibilityElement alloc] initWithAccessibilityContainer:self];
+		acc.event = prevEvent;
+		acc.accessibilityTraits = UIAccessibilityTraitStaticText;
+		acc.accessibilityFrame = curRect;
+
+		prevEvent = event;
+		prevX = newX;
+		[newElements addObject:acc];
+	}
+	accessibilityElements = newElements;
+	return newElements;
+}
+
+- (BOOL)isAccessibilityElement
+{
+    return NO;
+}
+
+- (NSInteger)accessibilityElementCount
+{
+	return _events.count;
+}
+
+- (id)accessibilityElementAtIndex:(NSInteger)index
+{
+	if((NSUInteger)index >= _events.count)
+		return nil;
+	return [self.accessibilityElements objectAtIndex:index];
+}
+
+- (NSInteger)indexOfAccessibilityElement:(id)element
+{
+	return [accessibilityElements indexOfObject:element];
 }
 
 @end
