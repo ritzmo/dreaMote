@@ -446,6 +446,9 @@
 /* No comment provided by engineer. */
 "Friday" = "Freitag";
 
+/* Accessibility value for table cells with events (timespan of an event) */
+"from %@ to %@" = "von %1$@ bis %2$@";
+
 /* in timer settings dialog */
 "General" = "Allgemein";
 
@@ -665,6 +668,9 @@
 
 /* No comment provided by engineer. */
 "not encrypted" = "nicht verschlüsselt";
+
+/* Accessibility text for unselected cells in multi selection */
+"not selected" = "nicht markiert";
 
 /* After Event */
 "Nothing" = "Nichts tun";
@@ -889,6 +895,9 @@
 
 /* Title of ServiceZapListController */
 "Select type of zap" = "Womit umschalten?";
+
+/* Accessibility text for selected cells in multi selection */
+"selected" = "markiert";
 
 /* No comment provided by engineer. */
 "Send" = "Senden";

@@ -124,6 +124,9 @@
 "All Services" = "Wszystkie Serwisy";
 
 /* No comment provided by engineer. */
+/*"Always ask" = "Always ask";*/
+
+/* No comment provided by engineer. */
 "An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Wystąpił nieoczekiwany błąd (%@) po usuwaniu nagrania.\nOdśwież listę ręcznie, aby zobaczyć zmianę!";
 
 /* No comment provided by engineer. */
@@ -205,6 +208,9 @@
 /* Title of action sheet when leaving MediaPlayer view. */
 "Close MediaPlayer?" = "Zamknąć MediaPlayer?";
 
+/* HUD: Code was successfully used to unlock in-app-purchase */
+/*"Code redeemed" = "Code redeemed";*/
+
 /* Default Title of ConfigListController
    Default title of ConfigViewController */
 "Configuration" = "Ustawienia";
@@ -220,6 +226,9 @@
 
 /* Label of Progress HUD when switching connections */
 "Connecting…" = "Łączenie…";
+
+/* No comment provided by engineer. */
+/*"Connection failure with status code %d ignored." = "Connection failure with status code %d ignored.";*/
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
@@ -290,6 +299,10 @@
 
 /* No comment provided by engineer. */
 "Default Location" = "Domyślna Lokalizacja";
+
+/* Label of cell in config which gives default zap type
+   Title of default zap type selection */
+/*"Default Zap-Type" = "Default Zap-Type";*/
 
 /* Delete button in MediaPlayer
    Delete button in MovieList
@@ -433,6 +446,9 @@
 /* No comment provided by engineer. */
 "Friday" = "Piątek";
 
+/* Accessibility value for table cells with events (timespan of an event) */
+/*"from %@ to %@" = "from %1$@ to %2$@";*/
+
 /* in timer settings dialog */
 "General" = "Ogólne";
 
@@ -492,6 +508,9 @@
 
 /* [SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter. */
 "Invalid timer object received: %@." = "Odebrano nieprawidłowy obiekt z timera: %@.";
+
+/* No comment provided by engineer. */
+/*"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported." = "It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported.";*/
 
 /* No comment provided by engineer. */
 "Justplay" = "Tylko Odtwarzaj";
@@ -649,6 +668,9 @@
 
 /* No comment provided by engineer. */
 "not encrypted" = "nie zaszyfrowane";
+
+/* Accessibility text for unselected cells in multi selection */
+/*"not selected" = "not selected";*/
 
 /* After Event */
 "Nothing" = "Nic";
@@ -873,6 +895,9 @@
 
 /* Title of ServiceZapListController */
 "Select type of zap" = "Wybierz typ zap'u";
+
+/* Accessibility text for selected cells in multi selection */
+/*"selected" = "selected";*/
 
 /* No comment provided by engineer. */
 "Send" = "Wyślij";
