@@ -98,6 +98,36 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	return now.service.sname;
 }
 
+- (NSString *)accessibilityValue
+{
+	NSString *string = nil;
+	if(now.valid && now.service.valid)
+	{
+		if(now.begin)
+		{
+			NSMutableString *mutableString = [[NSMutableString alloc] init];
+			const NSString *begin = [formatter stringFromDate:now.begin];
+			const NSString *end = [formatter stringFromDate:now.end];
+			[mutableString appendFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
+			[mutableString appendFormat:@", %@", now.title];
+
+			if(next.begin)
+			{
+				begin = [formatter stringFromDate:next.begin];
+				end = [formatter stringFromDate:next.end];
+				[mutableString appendString:@"\n"];
+				[mutableString appendFormat:NSLocalizedString(@"from %@ to %@", @"Accessibility value for table cells with events (timespan of an event)"), begin, end];
+				[mutableString appendFormat:@", %@", next.title];
+			}
+
+			string = mutableString;
+		}
+		else
+			string = NSLocalizedString(@"No EPG", @"Placeholder text in Now/Next-ServiceList if no EPG data present");
+	}
+	return string;
+}
+
 - (void)drawContentRect:(CGRect)contentRect
 {
 	CGFloat offsetX = contentRect.origin.x;
