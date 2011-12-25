@@ -120,6 +120,9 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			if(feature == kFeaturesSleepTimer)
 				return NO;
 			/* FALL THROUGH */
+		case WEBIF_VERSION_1_5b4:
+			// externals supported, no change in features
+			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_5:
 			if(feature == kFeaturesMediaPlayerPlaylistHandling)
 				return NO;
