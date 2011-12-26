@@ -79,12 +79,12 @@
 /* setter of events property */
 - (void)setEvents:(NSArray *)new
 {
+	self.accessibilityElements = nil; // always reset these in case of orientation change
 	@synchronized(self)
 	{
 		if(_events == new) return;
 		_events = new;
 
-		self.accessibilityElements = nil;
 		self.currentEvent = nil;
 
 		// wait a few moments with the redraw until we know when 'now' is
@@ -288,52 +288,84 @@
 	if(accessibilityElements)
 		return accessibilityElements;
 
-#if TARGET_IPHONE_SIMULATOR
-	#define accessibilityX	origin.x
-	#define accessibilityY	origin.y
-	#define accessibilityWidth	size.width
-	#define accessibilityHeight	size.height
-#else
-	#define accessibilityX	origin.y
-	#define accessibilityY	origin.x
-	#define accessibilityWidth	size.height
-	#define accessibilityHeight	size.width
-#endif
+	const UIInterfaceOrientation interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+	const BOOL reverse = (interfaceOrientation == UIInterfaceOrientationPortraitUpsideDown || interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
 
 	const CGRect contentRect = self.accessibilityFrame;
 	const CGFloat multiEpgInterval = [[NSUserDefaults standardUserDefaults] floatForKey:kMultiEPGInterval];
-	const CGFloat widthPerSecond = contentRect.accessibilityWidth / multiEpgInterval;
-	const CGFloat boundsX = contentRect.accessibilityX;
-	const CGFloat boundsY = contentRect.accessibilityY;
-	const CGFloat boundsHeight = contentRect.accessibilityHeight;
+	CGFloat boundsX, boundsY, boundsHeight, boundsWidth;
+	if(UIInterfaceOrientationIsLandscape(interfaceOrientation))
+	{
+		boundsX = contentRect.origin.y;
+		boundsY = contentRect.origin.x;
+		boundsHeight = contentRect.size.width;
+		boundsWidth = contentRect.size.height;
+	}
+	else
+	{
+		boundsX = contentRect.origin.x;
+		boundsY = contentRect.origin.y;
+		boundsHeight = contentRect.size.height;
+		boundsWidth = contentRect.size.width;
+	}
+	const CGFloat widthPerSecond = boundsWidth / multiEpgInterval;
 	NSMutableArray *newElements = [NSMutableArray arrayWithCapacity:_events.count];
 
 	// create a mutable copy of the array
-	NSMutableArray *events = [_events mutableCopy];
+	NSMutableArray *events = nil;
+	if(reverse)
+		events = [NSMutableArray arrayWithArray:[[_events reverseObjectEnumerator] allObjects]];
+	else
+		events = [_events mutableCopy];
 
 	// add sentinel element to enforce boundaries
 	NSObject<EventProtocol> *sentinel = [[GenericEvent alloc] init];
 	[events addObject:sentinel];
 	sentinel.begin = [begin dateByAddingTimeInterval:multiEpgInterval];
+	sentinel.end = begin; // for reversed search
 
 	// remove first element (there has to be at least the sentinel) to set initial values
 	NSObject<EventProtocol> *prevEvent = [events objectAtIndex:0];
 	[events removeObjectAtIndex:0];
-	CGFloat prevX = [prevEvent.begin timeIntervalSinceDate:begin];
-	if(prevX < 0)
-		prevX = 0;
+	CGFloat prevX;
+	if(reverse)
+	{
+		prevX = [prevEvent.end timeIntervalSinceDate:begin] * widthPerSecond;
+		if(prevX > boundsWidth)
+			prevX = boundsWidth;
+	}
 	else
-		prevX *= widthPerSecond;
+	{
+		prevX = [prevEvent.begin timeIntervalSinceDate:begin];
+		if(prevX < 0)
+			prevX = 0;
+		else
+			prevX *= widthPerSecond;
+	}
 
 	// iterate over elements 1 to n+1 while actually working on element i-1 ;)
+	CGRect curRect = CGRectZero;
 	for(NSObject<EventProtocol> *event in events)
 	{
-		const CGFloat newX = [event.begin timeIntervalSinceDate:begin] * widthPerSecond;
-		CGRect curRect = CGRectZero;
-		curRect.accessibilityX = boundsX + prevX;
-		curRect.accessibilityY = boundsY;
-		curRect.accessibilityWidth = newX - prevX;
-		curRect.accessibilityHeight = boundsHeight;
+		CGFloat newX = [(reverse ? event.end : event.begin) timeIntervalSinceDate:begin] * widthPerSecond;
+		switch(interfaceOrientation)
+		{
+			case UIInterfaceOrientationLandscapeRight:
+				curRect = CGRectMake(boundsY, boundsX + prevX, boundsHeight, newX - prevX);
+				break;
+			case UIInterfaceOrientationLandscapeLeft:
+				curRect = CGRectMake(boundsY, boundsWidth - prevX, boundsHeight, prevX - newX);
+				if(curRect.origin.y + curRect.size.height > boundsWidth) // clip to bounds
+					curRect.size.height = boundsWidth - curRect.origin.y;
+				break;
+			case UIInterfaceOrientationPortraitUpsideDown:
+				curRect = CGRectMake(boundsWidth - prevX, boundsY, prevX - newX, boundsHeight);
+				if(curRect.origin.x + curRect.size.width > boundsWidth) // clip to bounds
+					curRect.size.width = boundsWidth - curRect.origin.x;
+				break;
+			default:
+				curRect = CGRectMake(boundsX + prevX, boundsY, newX - prevX, boundsHeight);
+		}
 
 		MutliEPGAccessibilityElement *acc = [[MutliEPGAccessibilityElement alloc] initWithAccessibilityContainer:self];
 		acc.event = prevEvent;
