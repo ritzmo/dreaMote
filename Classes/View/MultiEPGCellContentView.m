@@ -67,6 +67,15 @@
     return self;
 }
 
+- (void)setFrame:(CGRect)frame
+{
+	if(!CGRectEqualToRect(frame, self.frame))
+	{
+		[super setFrame:frame];
+		self.accessibilityElements = nil;
+	}
+}
+
 /* getter of events property */
 - (NSArray *)events
 {
@@ -318,18 +327,20 @@
 	else
 		events = [_events mutableCopy];
 
-	// add sentinel element to enforce boundaries
+	// create sentinel element to enforce boundaries
 	NSObject<EventProtocol> *sentinel = [[GenericEvent alloc] init];
-	[events addObject:sentinel];
 	sentinel.begin = [begin dateByAddingTimeInterval:multiEpgInterval];
-	sentinel.end = begin; // for reversed search
 
-	// remove first element (there has to be at least the sentinel) to set initial values
+	// remove first element (there has to be at least one for us to be called) to set initial values
+#if IS_DEBUG()
 	NSObject<EventProtocol> *prevEvent = [events objectAtIndex:0];
-	[events removeObjectAtIndex:0];
+#else
+	NSObject<EventProtocol> *prevEvent = (events.count) ? [events objectAtIndex:0] : nil;
+#endif
 	CGFloat prevX;
 	if(reverse)
 	{
+		sentinel.end = ((NSObject<EventProtocol> *)[events lastObject]).begin;
 		prevX = [prevEvent.end timeIntervalSinceDate:begin] * widthPerSecond;
 		if(prevX > boundsWidth)
 			prevX = boundsWidth;
@@ -342,6 +353,10 @@
 		else
 			prevX *= widthPerSecond;
 	}
+
+	// add sentinel to list, remove first element (which we already processed)
+	[events addObject:sentinel];
+	[events removeObjectAtIndex:0];
 
 	// iterate over elements 1 to n+1 while actually working on element i-1 ;)
 	CGRect curRect = CGRectZero;
