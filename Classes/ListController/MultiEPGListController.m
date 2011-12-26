@@ -281,6 +281,7 @@
 																   style:UIBarButtonItemStyleBordered
 																  target:self
 																  action:@selector(backButtonPressed:)];
+	backButton.accessibilityLabel = NSLocalizedString(@"Previous page", @"Accessibility text of 'back' button in MultiEPG");
 	UIBarButtonItem *nowButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Now", @"MultiEPG change to current hour")
 																  style:UIBarButtonItemStyleBordered
 																 target:self
@@ -299,6 +300,7 @@
 																  style:UIBarButtonItemStyleBordered
 																 target:self
 																 action:@selector(forwardButtonPressed:)];
+	fwdButton.accessibilityLabel = NSLocalizedString(@"Next page", @"Accessibility text of 'next' button in MultiEPG");
 
 	NSArray *items = [[NSArray alloc] initWithObjects:backButton, nowButton, flexItem, primetimeButton, fwdButton, nil];
 	[self setToolbarItems:items animated:NO];
