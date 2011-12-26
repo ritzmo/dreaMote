@@ -151,6 +151,7 @@
 			UIImage *image = [UIImage imageNamed:@"internet-mail.png"];
 			[_mailButton setImage:image forState:UIControlStateNormal];
 			[_mailButton addTarget:self action:@selector(showMailComposer:) forControlEvents:UIControlEventTouchUpInside];
+			_mailButton.accessibilityLabel = NSLocalizedString(@"Send E-Mail to Support", @"Accessibility label for mail button");
 
 			[self.view addSubview:_mailButton];
 		}
@@ -161,6 +162,7 @@
 		UIImage *image = [UIImage imageNamed:@"twitter-b.png"];
 		[_twitterButton setImage:image forState:UIControlStateNormal];
 		[_twitterButton addTarget:self action:@selector(openTwitter:) forControlEvents:UIControlEventTouchUpInside];
+		_twitterButton.accessibilityLabel = NSLocalizedString(@"Follow dreaMote on Twitter", @"Accessbility label for twitter button");
 
 		[self.view addSubview:_twitterButton];
 	}
