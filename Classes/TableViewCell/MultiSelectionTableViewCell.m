@@ -60,13 +60,23 @@
 
 - (NSString *)accessibilityValue
 {
+#if 0
 	if(self.editing)
 	{
 		if(_multiSelected)
 			return NSLocalizedString(@"selected", @"Accessibility text for selected cells in multi selection");
 		return NSLocalizedString(@"not selected", @"Accessibility text for unselected cells in multi selection");
 	}
+#endif
 	return nil;
+}
+
+- (UIAccessibilityTraits)accessibilityTraits
+{
+	UIAccessibilityTraits traits = UIAccessibilityTraitStaticText;
+	if(self.editing && _multiSelected)
+		traits |= UIAccessibilityTraitSelected;
+	return traits;
 }
 
 - (void)forceMultiSelected:(BOOL)selected
