@@ -287,3 +287,6 @@ Enigma:
 - Fix some problems with iOS 4.3.x on the iPad
 - New application Icon and splash screen by mfgeg, thanks!
 - Most images are available in retina-optimized resolution now
+- Bring back accessibility support (removed it by accident in 1.3.0)
+Enigma2:
+- Fix featureset for web interface versions between 1.5b4 and 1.6.5
