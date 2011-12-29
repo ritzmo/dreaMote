@@ -81,7 +81,7 @@ NSString *kEventCell_ID = @"EventCell_ID";
 	UIColor *primaryColor = nil, *secondaryColor = nil;
 	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.eventNameTextSize];
 	UIFont *secondaryFont = [UIFont systemFontOfSize:singleton.eventDetailsTextSize];
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  secondaryColor = singleton.highlightedTextColor;
 	}

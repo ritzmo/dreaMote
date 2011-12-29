@@ -91,7 +91,7 @@ NSString *kTimerCell_ID = @"TimerCell_ID";
 	UIFont *secondaryFont = [UIFont boldSystemFontOfSize:singleton.timerNameTextSize];
 	UIFont *tertiaryFont = [UIFont systemFontOfSize:singleton.timerTimeTextSize];
 	UIColor *primaryColor = nil;
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  singleton.highlightedTextColor;
 	}

@@ -41,7 +41,7 @@ NSString *kPackageCell_ID = @"PlayListCell_ID";
 	UIColor *primaryColor = nil, *secondaryColor = nil;
 	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.packageNameTextSize];
 	UIFont *secondaryFont = [UIFont boldSystemFontOfSize:singleton.packageVersionTextSize];
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  singleton.highlightedTextColor;
 		secondaryColor = singleton.highlightedDetailsTextColor;

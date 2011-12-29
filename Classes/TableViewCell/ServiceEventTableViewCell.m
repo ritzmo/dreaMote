@@ -138,7 +138,7 @@ NSString *kServiceEventCell_ID = @"ServiceEventCell_ID";
 	UIColor *primaryColor = nil;
 	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.serviceEventServiceSize];
 	UIFont *secondaryFont = [UIFont systemFontOfSize:singleton.serviceEventEventSize];
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  singleton.highlightedTextColor;
 	}

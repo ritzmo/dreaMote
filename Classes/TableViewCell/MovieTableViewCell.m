@@ -87,7 +87,7 @@ NSString *kMovieCell_ID = @"MovieCell_ID";
 	UIColor *primaryColor = nil;
 	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.eventNameTextSize];
 	UIFont *secondaryFont = [UIFont systemFontOfSize:singleton.eventDetailsTextSize];
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  singleton.highlightedTextColor;
 	}

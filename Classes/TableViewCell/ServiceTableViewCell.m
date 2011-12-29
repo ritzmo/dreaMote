@@ -88,7 +88,7 @@ NSString *kServiceCell_ID = @"ServiceCell_ID";
 
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 	UIColor *primaryColor = nil;
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  singleton.highlightedTextColor;
 	}

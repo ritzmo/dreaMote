@@ -40,7 +40,7 @@ NSString *kPlayListCell_ID = @"PlayListCell_ID";
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 	UIFont *primaryFont = [UIFont boldSystemFontOfSize:singleton.textViewFontSize-1];
 	UIColor *primaryColor = nil;
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 	{
 		primaryColor =  singleton.highlightedTextColor;
 	}
