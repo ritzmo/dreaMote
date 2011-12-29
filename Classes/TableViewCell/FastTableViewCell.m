@@ -57,6 +57,26 @@
 	[contentView setNeedsDisplay];
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+	if(highlighted != self.highlighted)
+	{
+		[super setHighlighted:highlighted animated:animated];
+		if(highlighted != self.selected)
+			[self setNeedsDisplay];
+	}
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+	if(selected != self.selected)
+	{
+		[super setSelected:selected animated:animated];
+		if(selected == self.highlighted)
+			[self setNeedsDisplay];
+	}
+}
+
 - (void)addSublayer:(CALayer *)layer
 {
 	[contentView.layer addSublayer:layer];
