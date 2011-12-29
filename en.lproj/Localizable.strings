@@ -437,6 +437,9 @@
 /* Timer type */
 "Finished" = "Finished";
 
+/* Accessbility label for twitter button */
+/*"Follow dreaMote on Twitter" = "Follow dreaMote on Twitter";*/
+
 /* Forget previous purchases in config list (debug builds only) */
 /*"Forget Purchases" = "Forget Purchases";*/
 
@@ -633,6 +636,9 @@
 /* No comment provided by engineer. */
 "Next" = "Next";
 
+/* Accessibility text of 'next' button in MultiEPG */
+/*"Next page" = "Next page";*/
+
 /* Name of night theme */
 /*"Night" = "Night";*/
 
@@ -738,6 +744,9 @@
 
 /* No comment provided by engineer. */
 /*"Previous" = "Previous";*/
+
+/* Accessibility text of 'back' button in MultiEPG */
+/*"Previous page" = "Previous page";*/
 
 /* MultiEPG change to 20:00 */
 /*"Primetime" = "Primetime";*/
@@ -901,6 +910,9 @@
 
 /* No comment provided by engineer. */
 /*"Send" = "Send";*/
+
+/* Accessibility label for mail button */
+/*"Send E-Mail to Support" = "Send E-Mail to Support";*/
 
 /* Explaination of Message View in Other List */
 /*"Send short Messages" = "Send short Messages";*/
