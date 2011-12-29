@@ -60,7 +60,7 @@
 		CGContextSetLineJoin(ctxt, kCGLineJoinMiter);
 		CGContextSetLineWidth(ctxt, 3);
 	}
-	if(self.highlighted)
+	if(self.highlighted || self.selected)
 		[self.highlightedColor setStroke];
 	else
 		[self.accessoryColor setStroke];
