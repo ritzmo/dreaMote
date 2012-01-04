@@ -18,6 +18,11 @@
 - (void)timeChanged: (id)sender;
 
 /*!
+ @brief delete
+ */
+- (void)deleteAction:(id)sender;
+
+/*!
  @brief done editing
  */
 - (void)doneAction:(id)sender;
@@ -29,7 +34,7 @@
 #define kPickerSegmentControlHeight 30.0
 
 @synthesize date = _date;
-@synthesize format, callback;
+@synthesize format, callback, showDeleteButton;
 
 /* initialize */
 - (id)init
@@ -103,6 +108,21 @@
 	_label.text = [format stringFromDate:_date];
 }
 
+- (void)setShowDeleteButton:(BOOL)newShowDeleteButton
+{
+	showDeleteButton = newShowDeleteButton;
+	if(newShowDeleteButton)
+	{
+		UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Delete", @"Delete-Button in Date Picker (optional)")
+																   style:UIBarButtonItemStyleBordered
+																  target:self
+																  action:@selector(deleteAction:)];
+		self.navigationItem.leftBarButtonItem = button;
+	}
+	else
+		self.navigationItem.leftBarButtonItem = nil;
+}
+
 /* layout */
 - (void)loadView
 {
@@ -127,6 +147,7 @@
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
 														target:self action:@selector(doneAction:)];
 	self.navigationItem.rightBarButtonItem = button;
+	self.showDeleteButton = showDeleteButton; // eventually show button
 
 	// label for picker selection output
 	frame = CGRectMake(	kLeftMargin,
@@ -157,6 +178,21 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return IS_IPAD() || UIInterfaceOrientationIsPortrait(interfaceOrientation);
+}
+
+- (void)deleteAction:(id)sender
+{
+	if(callback != nil)
+	{
+		datepicker_callback_t call = callback;
+		callback = nil;
+		call(nil);
+	}
+
+	if(IS_IPAD())
+		[self.navigationController dismissModalViewControllerAnimated:YES];
+	else
+		[self.navigationController popViewControllerAnimated:YES];
 }
 
 /* finish */

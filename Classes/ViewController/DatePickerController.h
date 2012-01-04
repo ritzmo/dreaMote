@@ -54,6 +54,11 @@ typedef void (^datepicker_callback_t)(NSDate *);
 @property (nonatomic, strong) NSDateFormatter *format;
 
 /*!
+ @brief Show "delete" button?
+ */
+@property (nonatomic) BOOL showDeleteButton;
+
+/*!
  @brief Callback.
  */
 @property (nonatomic, copy) datepicker_callback_t callback;
