@@ -92,6 +92,8 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 - (void)setView:(UIView *)inView
 {
 	if(view == inView) return;
+	if(view.superview == self.contentView)
+		[view removeFromSuperview];
 	view = inView;
 
 	/*!
@@ -99,7 +101,7 @@ NSString *kDisplayCell_ID = @"DisplayCell_ID";
 	 if it is not the current view.
 	 */
 	[self.contentView addSubview:inView];
-	[self setNeedsDisplay];
+	[self setNeedsLayout];
 }
 
 - (void)layoutSubviews
