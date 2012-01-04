@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import <Objects/TimerProtocol.h>
+#import <Objects/Generic/Timer.h>
 
 /*!
  @brief Timer in SVDRP.
  */
-@interface SVDRPTimer : NSObject <TimerProtocol>
+@interface SVDRPTimer : GenericTimer
 
 /*!
  @brief Generate string representation of Timer.

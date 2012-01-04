@@ -13,58 +13,49 @@
 
 @implementation SVDRPTimer
 
-@synthesize auxiliary, eit, begin, end, file, flags, title, tdescription, disabled, repeat, repeated, repeatcount, justplay, lifetime, priority, service, sref, sname, state, afterevent, valid, timeString, tid, hasRepeatBegin;
+@synthesize auxiliary, file, flags, repeat, lifetime, priority, tid, hasRepeatBegin;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
-		valid = YES;
+		self.valid = YES;
 	}
 	return self;
 }
 
-- (id)initWithSVDRPTimer:(SVDRPTimer *)timer
+- (id)initWithTimer:(NSObject<TimerProtocol> *)timer
 {
-	if((self = [super init]))
+	if((self = [super initWithTimer:timer]))
 	{
-		begin = [timer.begin copy];
-		end = [timer.end copy];
-		eit = [timer.eit copy];
-		title = [timer.title copy];
-		tdescription = [timer.tdescription copy];
-		disabled = timer.disabled;
-		justplay = timer.justplay;
-		service = [timer.service copy];
-		repeated = timer.repeated;
-		repeatcount = timer.repeatcount;
-		state = timer.state;
-		valid = timer.valid;
-		afterevent = timer.afterevent;
-		repeat = [timer.repeat copy];
-		auxiliary = [timer.auxiliary copy];
-		tid = [timer.tid copy];
-		hasRepeatBegin = timer.hasRepeatBegin;
-		flags = timer.flags;
-		lifetime = [timer.lifetime copy];
-		priority = [timer.priority copy];
+		if([timer isKindOfClass:[SVDRPTimer class]])
+		{
+			SVDRPTimer *t = (SVDRPTimer *)timer;
+			repeat = [t.repeat copy];
+			file = [t.file copy];
+			auxiliary = [t.auxiliary copy];
+			tid = [t.tid copy];
+			hasRepeatBegin = t.hasRepeatBegin;
+			flags = t.flags;
+			lifetime = [t.lifetime copy];
+			priority = [t.priority copy];
+		}
 	}
-	
 	return self;
 }
 
 - (NSString *)toString
 {
 	NSInteger newFlags = flags;
-	if(disabled)
+	if(self.disabled)
 		newFlags |= 1;
 	else
 		newFlags &= ~1;
 
 	const NSCalendar *gregorian = [[NSCalendar alloc]
 								initWithCalendarIdentifier:NSGregorianCalendar];
-	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:begin];
-	const NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:end];
+	const NSDateComponents *beginComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:self.begin];
+	const NSDateComponents *endComponents = [gregorian components: NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:self.end];
 
 	NSString *dayStr;
 	if(hasRepeatBegin)
@@ -77,7 +68,7 @@
 					[beginComponents year], [beginComponents month], [beginComponents day]];
 
 	return [NSString stringWithFormat: @"%d:%@:%@:%04d:%04d:%@:%@:%@:%@",
-		newFlags, service.sref, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
+		newFlags, self.service.sref, dayStr, [beginComponents hour] * 100 + [beginComponents minute],
 		[endComponents hour] * 100 + [endComponents minute], priority, lifetime,
 		file, auxiliary];
 }
@@ -85,22 +76,6 @@
 - (BOOL)isEqualToEvent:(NSObject <EventProtocol>*)event
 {
 	return NO;
-}
-
-- (NSString *)description
-{
-	return [NSString stringWithFormat:@"<%@> Title: '%@'.\n Eit: '%@'.\n", [self class], self.title, self.eit];
-}
-
-#pragma mark -
-#pragma mark	Copy
-#pragma mark -
-
-- (id)copyWithZone:(NSZone *)zone
-{
-	id newElement = [[SVDRPTimer alloc] initWithSVDRPTimer: self];
-
-	return newElement;
 }
 
 #pragma mark Unsupported
