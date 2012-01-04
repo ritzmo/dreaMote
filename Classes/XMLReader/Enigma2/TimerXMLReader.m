@@ -233,17 +233,20 @@ static const NSUInteger kEnigma2TimerVpsTimeLength = 17;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2TimerVpsEnabled, kEnigma2TimerVpsEnabledLength))
 	{
-		if(![currentString isEqualToString:@"True"])
+		if([currentString isEqualToString:@"True"])
 			currentTimer.vpsplugin_enabled = YES;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2TimerVpsOverwrite, kEnigma2TimerVpsOverwriteLength))
 	{
-		if(![currentString isEqualToString:@"True"])
+		if([currentString isEqualToString:@"True"])
 			currentTimer.vpsplugin_overwrite = YES;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2TimerVpsTime, kEnigma2TimerVpsTimeLength))
 	{
-		currentTimer.vpsplugin_time = [currentString doubleValue];
+		NSTimeInterval time = [currentString doubleValue];
+		if(time <= 0)
+			time = -1;
+		currentTimer.vpsplugin_time = time;
 	}
 
 	// this either does nothing or releases the string that was in use
