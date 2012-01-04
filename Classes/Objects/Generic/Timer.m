@@ -13,7 +13,7 @@
 
 @implementation GenericTimer
 
-@synthesize eit, begin, end, tags, title, tdescription, disabled, repeated, repeatcount, justplay, service, sref, sname, state, afterevent, location, valid, timeString;
+@synthesize eit, begin, end, tags, title, tdescription, disabled, repeated, repeatcount, justplay, service, sref, sname, state, afterevent, location, valid, timeString, vpsplugin_enabled, vpsplugin_overwrite, vpsplugin_time;
 
 + (NSObject<TimerProtocol> *)withEvent: (NSObject<EventProtocol> *)ourEvent
 {
@@ -78,6 +78,7 @@
 	{
 		_duration = -1;
 		valid = YES;
+		vpsplugin_time = -1; // "none"
 	}
 	return self;
 }
@@ -101,6 +102,9 @@
 		valid = timer.valid;
 		afterevent = timer.afterevent;
 		location = [timer.location copy];
+		vpsplugin_enabled = timer.vpsplugin_enabled;
+		vpsplugin_overwrite = timer.vpsplugin_overwrite;
+		vpsplugin_time = timer.vpsplugin_time;
 	}
 
 	return self;

@@ -34,6 +34,12 @@ static const char *kEnigma2TimerState = "e2state";
 static const NSUInteger kEnigma2TimerStateLength = 8;
 static const char *kEnigma2TimerRepeated = "e2repeated";
 static const NSUInteger kEnigma2TimerRepeatedLength = 11;
+static const char *kEnigma2TimerVpsEnabled = "e2vpsplugin_enabled";
+static const NSUInteger kEnigma2TimerVpsEnabledLength = 20;
+static const char *kEnigma2TimerVpsOverwrite = "e2vpsplugin_overwrite";
+static const NSUInteger kEnigma2TimerVpsOverwriteLength = 22;
+static const char *kEnigma2TimerVpsTime = "e2vpsplugin_time";
+static const NSUInteger kEnigma2TimerVpsTimeLength = 17;
 
 @interface Enigma2TimerXMLReader()
 @property (nonatomic,strong) NSObject<TimerProtocol> *currentTimer;
@@ -134,6 +140,9 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 			||	!strncmp((const char *)localname, kEnigma2TimerRepeated, kEnigma2TimerRepeatedLength)
 			||	!strncmp((const char *)localname, kEnigma2Location, kEnigma2LocationLength)
 			||	!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerVpsEnabled, kEnigma2TimerVpsEnabledLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerVpsOverwrite, kEnigma2TimerVpsOverwriteLength)
+			||	!strncmp((const char *)localname, kEnigma2TimerVpsTime, kEnigma2TimerVpsTimeLength)
 		)
 	{
 		currentString = [[NSMutableString alloc] init];
@@ -221,6 +230,20 @@ static const NSUInteger kEnigma2TimerRepeatedLength = 11;
 	else if(!strncmp((const char *)localname, kEnigma2Tags, kEnigma2TagsLength))
 	{
 		[currentTimer setTagsFromString:currentString];
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerVpsEnabled, kEnigma2TimerVpsEnabledLength))
+	{
+		if(![currentString isEqualToString:@"True"])
+			currentTimer.vpsplugin_enabled = YES;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerVpsOverwrite, kEnigma2TimerVpsOverwriteLength))
+	{
+		if(![currentString isEqualToString:@"True"])
+			currentTimer.vpsplugin_overwrite = YES;
+	}
+	else if(!strncmp((const char *)localname, kEnigma2TimerVpsTime, kEnigma2TimerVpsTimeLength))
+	{
+		currentTimer.vpsplugin_time = [currentString doubleValue];
 	}
 
 	// this either does nothing or releases the string that was in use

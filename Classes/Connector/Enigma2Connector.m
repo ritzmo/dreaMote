@@ -76,7 +76,8 @@ typedef enum {
 	FEATURE_AUTOTIMER = 1 << 0,
 	FEATURE_EPGREFRESH = 1 << 1,
 	FEATURE_BOUQUETEDITOR = 1 << 2,
-	FEATURE_ALL = FEATURE_AUTOTIMER | FEATURE_EPGREFRESH | FEATURE_BOUQUETEDITOR,
+	FEATURE_VPSPLUGIN = 1 << 3,
+	FEATURE_ALL = FEATURE_AUTOTIMER | FEATURE_EPGREFRESH | FEATURE_BOUQUETEDITOR | FEATURE_VPSPLUGIN,
 } dynamicFeatures_t;
 
 static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
@@ -139,16 +140,21 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			break;
 	}
 
-	if(feature == kFeaturesAutoTimer)
-		return (dynamicFeatures & FEATURE_AUTOTIMER);
-	else if(feature == kFeaturesEPGRefresh)
-		return (dynamicFeatures & FEATURE_EPGREFRESH);
-	else if(feature ==kFeaturesServiceEditor)
-		return (dynamicFeatures & FEATURE_BOUQUETEDITOR);
-
-	return
-		(feature != kFeaturesMessageCaption) &&
-		(feature != kFeaturesComplicatedRepeated);
+	switch(feature)
+	{
+		case kFeaturesAutoTimer:
+			return (dynamicFeatures & FEATURE_AUTOTIMER);
+		case kFeaturesEPGRefresh:
+			return (dynamicFeatures & FEATURE_EPGREFRESH);
+		case kFeaturesServiceEditor:
+			return (dynamicFeatures & FEATURE_BOUQUETEDITOR);
+		case kFeaturesVps:
+			return (dynamicFeatures & FEATURE_VPSPLUGIN);
+		default:
+			return
+				(feature != kFeaturesMessageCaption) &&
+				(feature != kFeaturesComplicatedRepeated);
+	}
 }
 
 - (const NSUInteger const)getMaxVolume
@@ -426,6 +432,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 							dynamicFeatures |= FEATURE_EPGREFRESH;
 						else if(!strncmp((const char *)stringVal, "bouqueteditor", 14))
 							dynamicFeatures |= FEATURE_BOUQUETEDITOR;
+						else if(!strncmp((const char *)stringVal, "vpsplugin", 10))
+							dynamicFeatures |= FEATURE_VPSPLUGIN;
 						xmlFree(stringVal);
 					}
 				} while(0);
@@ -457,6 +465,13 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 													   error:nil];
 			if([response statusCode] == 200)
 				dynamicFeatures |= FEATURE_BOUQUETEDITOR;
+
+			myURI = [NSURL URLWithString:@"/vpsplugin" relativeToURL:_baseAddress];
+			[SynchronousRequestReader sendSynchronousRequest:myURI
+										   returningResponse:&response
+													   error:nil];
+			if([response statusCode] == 200)
+				dynamicFeatures |= FEATURE_VPSPLUGIN;
 		}
 	}
 }
@@ -757,7 +772,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (BaseXMLReader *)fetchTimers:(NSObject<TimerSourceDelegate> *)delegate
 {
-	NSURL *myURI = [NSURL URLWithString: @"/web/timerlist" relativeToURL: _baseAddress];
+	NSURL *myURI = nil;
+	if(dynamicFeatures & FEATURE_VPSPLUGIN)
+		myURI = [NSURL URLWithString:@"/vpsplugin/web/timerlist" relativeToURL:_baseAddress];
+	else
+		myURI = [NSURL URLWithString:@"/web/timerlist" relativeToURL:_baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
@@ -768,9 +787,10 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 {
 	Result *result = nil;
 	NSString *relativeURL = nil;
+	const NSString *basePath = (dynamicFeatures & FEATURE_VPSPLUGIN) ? @"/vpsplugin" : @"";
 	if(newTimer.eit != nil && ![newTimer.eit isEqualToString:@""])
 	{
-		relativeURL = [NSString stringWithFormat: @"/web/timeraddbyeventid?sRef=%@&eventid=%@&disabled=%d&justplay=%d&afterevent=%d&dirname=%@&tags=%@", [newTimer.service.sref urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.location ? [newTimer.location urlencode] : @"", newTimer.tags.count ? [[newTimer.tags componentsJoinedByString:@" "] urlencode] : @""];
+		relativeURL = [NSString stringWithFormat: @"%@/web/timeraddbyeventid?sRef=%@&eventid=%@&disabled=%d&justplay=%d&afterevent=%d&dirname=%@&tags=%@&vpsplugin_enabled=%d&vpsplugin_overwrite=%d&vpsplugin_time=%.2f", basePath, [newTimer.service.sref urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.location ? [newTimer.location urlencode] : @"", newTimer.tags.count ? [[newTimer.tags componentsJoinedByString:@" "] urlencode] : @"", newTimer.vpsplugin_enabled, newTimer.vpsplugin_overwrite, newTimer.vpsplugin_time];
 
 		// succeeded or "normal" error
 		result = [self getResultFromSimpleXmlWithRelativeString:relativeURL];
@@ -778,14 +798,15 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			return result;
 	}
 
-	relativeURL = [NSString stringWithFormat: @"/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&tags=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @"", newTimer.tags.count ? [[newTimer.tags componentsJoinedByString:@" "] urlencode] : @""];
-	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+	relativeURL = [NSString stringWithFormat: @"%@/web/timeradd?sRef=%@&begin=%d&end=%d&name=%@&description=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&tags=%@&vpsplugin_enabled=%d&vpsplugin_overwrite=%d&vpsplugin_time=%.2f", basePath, [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @"", newTimer.tags.count ? [[newTimer.tags componentsJoinedByString:@" "] urlencode] : @"", newTimer.vpsplugin_enabled, newTimer.vpsplugin_overwrite, newTimer.vpsplugin_time];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
 - (Result *)editTimer:(NSObject<TimerProtocol> *) oldTimer: (NSObject<TimerProtocol> *) newTimer
 {
-	NSString *relativeURL = [NSString stringWithFormat: @"/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1&tags=%@", [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @"", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970], newTimer.tags.count ? [[newTimer.tags componentsJoinedByString:@" "] urlencode] : @""];
-	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
+	const NSString *basePath = (dynamicFeatures & FEATURE_VPSPLUGIN) ? @"/vpsplugin" : @"";
+	NSString *relativeURL = [NSString stringWithFormat: @"%@/web/timerchange?sRef=%@&begin=%d&end=%d&name=%@&description=%@&eit=%@&disabled=%d&justplay=%d&afterevent=%d&repeated=%d&dirname=%@&channelOld=%@&beginOld=%d&endOld=%d&deleteOldOnSave=1&tags=%@&vpsplugin_enabled=%d&vpsplugin_overwrite=%d&vpsplugin_time=%.2f", basePath, [newTimer.service.sref urlencode], (int)[newTimer.begin timeIntervalSince1970], (int)[newTimer.end timeIntervalSince1970], [newTimer.title urlencode], [newTimer.tdescription urlencode], newTimer.eit, newTimer.disabled ? 1 : 0, newTimer.justplay ? 1 : 0, newTimer.afterevent, newTimer.repeated, newTimer.location ? [newTimer.location urlencode] : @"", [oldTimer.service.sref urlencode], (int)[oldTimer.begin timeIntervalSince1970], (int)[oldTimer.end timeIntervalSince1970], newTimer.tags.count ? [[newTimer.tags componentsJoinedByString:@" "] urlencode] : @"", newTimer.vpsplugin_enabled, newTimer.vpsplugin_overwrite, newTimer.vpsplugin_time];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
 - (Result *)delTimer:(NSObject<TimerProtocol> *) oldTimer

@@ -182,6 +182,10 @@ enum connectorFeatures {
 	 @brief Recordings can be moved between folders. Requires kFeaturesRecordingLocations.
 	 */
 	kFeaturesMovingRecordings,
+	/*!
+	 @brief STB is able to control recordings using the VPS-Plugin.
+	 */
+	kFeaturesVps,
 };
 
 /*!

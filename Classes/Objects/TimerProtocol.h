@@ -249,4 +249,19 @@ enum weekDays {
  */
 @property (nonatomic, strong) NSArray *tags;
 
+/*!
+ @brief Enable VPS?
+ */
+@property (assign) BOOL vpsplugin_enabled;
+
+/*!
+ @brief Let channel control begin/end.
+ */
+@property (assign) BOOL vpsplugin_overwrite;
+
+/*!
+ @brief Starttime for VPS if not recording an event.
+ */
+@property (assign) NSTimeInterval vpsplugin_time;
+
 @end
