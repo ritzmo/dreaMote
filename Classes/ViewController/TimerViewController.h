@@ -45,6 +45,8 @@
 	CellTextField *_descriptionCell; /*!< @brief Description Cell. */
 	UISwitch *_timerEnabled; /*!< @brief Enabled Switch. */
 	UISwitch *_timerJustplay; /*!< @brief Justplay Switch. */
+	UISwitch *_vpsEnabled; /*!< @brief VPS-Enabled Switch. */
+	UISwitch *_vpsOverwrite; /*!< @brief VPS-Overwrite Switch. */
 
 	NSObject<EventProtocol> *_event; /*!< @brief Associated Event. */
 	NSObject<TimerProtocol> *_timer; /*!< @brief Associated Timer. */

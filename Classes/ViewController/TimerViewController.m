@@ -48,6 +48,13 @@
 - (void)setViewMovedUp:(BOOL)movedUp;
 
 /*!
+ @brief Return actual section for a given unnormalized section.
+ @param section
+ @return
+ */
+- (NSInteger)normalizeSection:(NSInteger)section;
+
+/*!
  @brief stop editing
  @param sender ui element
  */
@@ -65,16 +72,17 @@
 enum timerSections
 {
 	sectionTitle = 0,
-	sectionDescription = 1,
-	sectionGeneral = 2,
-	sectionService = 3,
-	sectionBegin = 4,
-	sectionEnd = 5,
-	sectionAfterEvent = 6,
-	sectionRepeated = 7,
-	sectionLocation = 8,
-	sectionTags = 9,
-	sectionMax = 10
+	sectionDescription,
+	sectionGeneral,
+	sectionService,
+	sectionBegin,
+	sectionEnd,
+	sectionVps,
+	sectionAfterEvent,
+	sectionRepeated,
+	sectionLocation,
+	sectionTags,
+	sectionMax
 };
 
 @implementation TimerViewController
@@ -260,6 +268,8 @@ enum timerSections
 	_timerDescription.text = newTimer.tdescription;
 	[_timerEnabled setOn: !newTimer.disabled];
 	[_timerJustplay setOn: newTimer.justplay];
+	[_vpsEnabled setOn:newTimer.vpsplugin_enabled];
+	[_vpsOverwrite setOn:newTimer.vpsplugin_overwrite];
 
 	[_tableView reloadData];
 	[_tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:NO];
@@ -368,6 +378,22 @@ enum timerSections
 	return returnTextField;
 }
 
+- (NSInteger)normalizeSection:(NSInteger)section
+{
+	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+	if(section >= sectionVps && ![sharedRemoteConnector hasFeature:kFeaturesVps])
+		++section;
+	if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
+		++section;
+	if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
+		++section;
+	if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+		++section;
+	if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
+		++section;
+	return section;
+}
+
 #pragma mark -
 #pragma mark UView
 #pragma mark -
@@ -415,6 +441,14 @@ enum timerSections
 	_timerJustplay = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	[_timerJustplay setOn: _timer.justplay];
 
+	// vps enabled
+	_vpsEnabled = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_timerEnabled setOn:_timer.vpsplugin_enabled];
+
+	// vps controlled by service
+	_vpsOverwrite = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_timerEnabled setOn:_timer.vpsplugin_overwrite];
+
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_timerJustplay.backgroundColor = [UIColor clearColor];
 
@@ -432,6 +466,8 @@ enum timerSections
 		UIColor *tintColor = [DreamoteConfiguration singleton].tintColor;
 		_timerEnabled.onTintColor = tintColor;
 		_timerJustplay.onTintColor = tintColor;
+		_vpsEnabled.onTintColor = tintColor;
+		_vpsOverwrite.onTintColor = tintColor;
 	}
 	[super theme];
 }
@@ -454,6 +490,8 @@ enum timerSections
 	_timerDescription = nil;
 	_timerEnabled = nil;
 	_timerJustplay = nil;
+	_vpsEnabled = nil;
+	_vpsOverwrite = nil;
 	self.navigationItem.leftBarButtonItem = nil;
 	self.navigationItem.rightBarButtonItem = nil;
 	_cancelButtonItem = nil;
@@ -536,6 +574,8 @@ enum timerSections
 
 		_timer.disabled = !_timerEnabled.on;
 		_timer.justplay = _timerJustplay.on;
+		_timer.vpsplugin_enabled = _vpsEnabled.on;
+		_timer.vpsplugin_overwrite = _vpsOverwrite.on;
 
 		// Try to commit changes if no error occured
 		if(!message)
@@ -703,6 +743,8 @@ enum timerSections
 {
 	const NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	NSInteger sections = sectionMax;
+	if(![sharedRemoteConnector hasFeature:kFeaturesVps])
+		--sections;
 	if(![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
 		--sections;
 	if(![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
@@ -731,15 +773,7 @@ enum timerSections
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
-		++section;
-	if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
-		++section;
-	if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-		++section;
-	if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-		++section;
+	section = [self normalizeSection:section];
 
 	switch (section) {
 		case sectionTitle:
@@ -758,6 +792,8 @@ enum timerSections
 			return NSLocalizedString(@"Begin", @"");
 		case sectionEnd:
 			return NSLocalizedString(@"End", @"");
+		case sectionVps:
+			return NSLocalizedString(@"VPS", @"Section title in timer settings dialog");
 		case sectionAfterEvent:
 			return NSLocalizedString(@"After Event", @"");
 		case sectionRepeated:
@@ -773,6 +809,8 @@ enum timerSections
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	section = [self normalizeSection:section];
+
 	switch(section)
 	{
 		case sectionTitle:
@@ -787,6 +825,8 @@ enum timerSections
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesDisabledTimers])
 				return 2;
 			return 1;
+		case sectionVps:
+			return 3;
 		default:
 			return 1;
 	}
@@ -807,6 +847,7 @@ enum timerSections
 			cell = _descriptionCell;
 			break;
 		case sectionGeneral:
+		case sectionVps:
 			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 			break;
 		case sectionService:
@@ -846,18 +887,8 @@ enum timerSections
 //
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSInteger section = indexPath.section;
+	NSInteger section = section = [self normalizeSection:indexPath.section];
 	UITableViewCell *sourceCell = nil;
-
-	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
-		++section;
-	if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
-		++section;
-	if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-		++section;
-	if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-		++section;
 
 	sourceCell = [self obtainTableCellForSection: tableView: section];
 
@@ -906,6 +937,33 @@ enum timerSections
 			break;
 		case sectionEnd:
 			sourceCell.textLabel.text = [self format_BeginEnd:_timer.end];
+			break;
+		case sectionVps:
+			switch(indexPath.row)
+			{
+				case 0:
+					sourceCell.textLabel.text = NSLocalizedString(@"Enable VPS", @"Label for cell with setting vpsplugin_enabled");
+					((DisplayCell *)sourceCell).view = _vpsEnabled;
+					break;
+				case 1:
+					sourceCell.textLabel.text = NSLocalizedString(@"Controlled by service", @"Label for cell with setting vpsplugin_overwrite");
+					((DisplayCell *)sourceCell).view = _vpsOverwrite;
+					break;
+				case 2:
+				{
+					UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+					label.backgroundColor = [UIColor clearColor];
+					label.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					label.textAlignment = UITextAlignmentRight;
+					label.text = (_timer.vpsplugin_time == -1) ? NSLocalizedString(@"unset", @"") : [self format_BeginEnd:[NSDate dateWithTimeIntervalSince1970:_timer.vpsplugin_time]];
+					label.textColor = [DreamoteConfiguration singleton].textColor;
+					label.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
+					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);
+					sourceCell.textLabel.text = NSLocalizedString(@"Manual Time", @"Label for cell with setting vpsplugin_time");
+					((DisplayCell *)sourceCell).view = label;
+					break;
+				}
+			}
 			break;
 		case sectionAfterEvent:
 			if(_timer.afterevent == kAfterEventNothing)
@@ -1012,27 +1070,16 @@ enum timerSections
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-	return sourceCell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 }
 
 - (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if(self.editing)
 	{
-		NSInteger section = indexPath.section;
+		NSInteger section = section = [self normalizeSection:indexPath.section];
 		UIViewController *targetViewController = nil;
 		const BOOL isIpad = IS_IPAD();
-
-		NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-		if(section >= sectionAfterEvent && ![sharedRemoteConnector hasFeature:kFeaturesTimerAfterEvent])
-			++section;
-		if(section >= sectionRepeated && ![sharedRemoteConnector hasFeature:kFeaturesTimerRepeated])
-			++section;
-		if(section >= sectionLocation && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-			++section;
-		if(section >= sectionTags && ![sharedRemoteConnector hasFeature:kFeaturesRecordingLocations])
-			++section;
 
 		switch(section)
 		{
@@ -1044,30 +1091,10 @@ enum timerSections
 				targetViewController = self.bouquetListController;
 				break;
 			}
+			case sectionVps:
+				if(indexPath.row != 2)
+					return [tv deselectRowAtIndexPath:indexPath animated:YES];
 			case sectionBegin:
-			{
-				DatePickerController *vc = [[DatePickerController alloc] init];
-				if(isIpad)
-				{
-					targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-					targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
-					targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
-				}
-				else
-					targetViewController = vc;
-
-				vc.date = [_timer.begin copy];
-				vc.callback = ^(NSDate *newDate){
-					if(newDate == nil)
-						return;
-
-					_timer.begin = newDate;
-					UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
-					if(cell)
-						cell.textLabel.text = [self format_BeginEnd:newDate];
-				};
-				break;
-			}
 			case sectionEnd:
 			{
 				DatePickerController *vc = [[DatePickerController alloc] init];
@@ -1080,13 +1107,38 @@ enum timerSections
 				else
 					targetViewController = vc;
 
-				vc.date = [_timer.end copy];
+				if(section == sectionBegin)
+					vc.date = [_timer.begin copy];
+				else if(section == sectionEnd)
+					vc.date = [_timer.end copy];
+				else// if(section == sectionVps)
+				{
+					if(_timer.vpsplugin_time == -1)
+						vc.date = [_timer.begin copy];
+					else
+						vc.date = [NSDate dateWithTimeIntervalSince1970:_timer.vpsplugin_time];
+					vc.showDeleteButton = YES;
+				}
 				vc.callback = ^(NSDate *newDate){
-					if(newDate == nil)
+					if(newDate == nil && section != sectionVps)
 						return;
 
-					_timer.end = newDate;
-					UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
+					UITableViewCell *cell = nil;
+					if(section == sectionBegin)
+					{
+						_timer.begin = newDate;
+						cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
+					}
+					else if(section == sectionEnd)
+					{
+						_timer.end = newDate;
+						cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
+					}
+					else// if(section == sectionVps)
+					{
+						_timer.vpsplugin_time = newDate ? [newDate timeIntervalSince1970] : -1;
+						[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:2 inSection:sectionVps]] withRowAnimation:UITableViewRowAnimationNone];
+					}
 					if(cell)
 						cell.textLabel.text = [self format_BeginEnd:newDate];
 				};
