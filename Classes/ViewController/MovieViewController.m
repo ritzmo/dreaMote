@@ -487,18 +487,18 @@
 		{
 			case 1:
 				if(![_movie.sname length])
-					return 0;
+					return 0.0001;
 				break;
 			case 5:
 				if([_movie.length integerValue] == -1)
-					return 0;
+					return 0.0001;
 				break;
 			default: break;
 		}
 		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 	}
 
-	return 0;
+	return 0.0001;
 }
 
 // determine the adjustable height of a row. these are determined by the sections and if a

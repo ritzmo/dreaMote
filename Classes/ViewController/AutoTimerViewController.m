@@ -937,7 +937,7 @@ static NSArray *searchTypeTexts = nil;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if(section == vpsSection && !autotimerSettings.hasVps)
-		return 0;
+		return 0.0001;
 	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 }
 

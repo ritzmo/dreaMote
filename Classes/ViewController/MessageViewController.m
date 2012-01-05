@@ -314,17 +314,17 @@
 		case 1:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageCaption])
 				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-			return 0;
+			return 0.0001;
 		case 2:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageTimeout])
 				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-			return 0;
+			return 0.0001;
 		case 3:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesMessageType])
 				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-			return 0;
+			return 0.0001;
 		default:
-			return 0;
+			return 0.0001;
 	}
 }
 

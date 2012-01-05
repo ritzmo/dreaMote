@@ -188,7 +188,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if(!_currentTrack.valid && section == 0)
-		return 0;
+		return 0.0001;
 	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 }
 

@@ -1100,7 +1100,7 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 {
 	if(section == connectionSection || section == purchaseSection)
 		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-	return 0;
+	return 0.0001;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section

@@ -431,7 +431,7 @@ OSStatus RenderTone(
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if(section == 3)
-		return 0;
+		return 0.0001;
 	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 }
 

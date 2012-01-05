@@ -574,16 +574,16 @@ enum generalSectionItems
 	{
 		case serviceSection:
 			if(!([services count] || self.editing))
-				return 0;
+				return 0.0001;
 			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 		case bouquetSection:
 			if(!([bouquets count] || self.editing))
-				return 0;
+				return 0.0001;
 			/* FALL THROUGH */
 		case generalSection:
 			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 		default:
-			return 0;
+			return 0.0001;
 	}
 }
 

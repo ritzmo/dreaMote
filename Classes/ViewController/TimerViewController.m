@@ -742,11 +742,11 @@ enum timerSections
 		case sectionTitle:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerTitle])
 				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-			return 0;
+			return 0.0001;
 		case sectionDescription:
 			if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesTimerDescription])
 				return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-			return 0;
+			return 0.0001;
 		default:
 			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 	}

@@ -631,13 +631,12 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		case 1:
 			if(_connector == kSVDRPConnector)
-				return 0;
+				return 0.0001;
 		case 0:
 		case 2:
-		case 3:
 			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 		default:
-			return 0;
+			return 0.0001;
 	}
 }
 

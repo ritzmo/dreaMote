@@ -108,7 +108,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	if(_about == nil) return 0;
+	if(_about == nil) return 0.0001;
 	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 }
 

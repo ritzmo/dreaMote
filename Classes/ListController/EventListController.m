@@ -837,7 +837,7 @@
 {
 	if(_useSections)
 		return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
-	return 0;
+	return 0.0001;
 }
 
 /* section header */
