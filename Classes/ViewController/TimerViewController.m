@@ -394,6 +394,18 @@ enum timerSections
 	return section;
 }
 
+- (void)showHideDetails:(id)sender
+{
+	NSMutableIndexSet *idxSet = [[NSMutableIndexSet alloc] init];
+	if([_tableView numberOfRowsInSection:sectionVps] != [self tableView:_tableView numberOfRowsInSection:sectionVps])
+	{
+		[idxSet addIndex:sectionVps];
+	}
+
+	if(idxSet.count)
+		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
+}
+
 #pragma mark -
 #pragma mark UView
 #pragma mark -
@@ -443,11 +455,12 @@ enum timerSections
 
 	// vps enabled
 	_vpsEnabled = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_timerEnabled setOn:_timer.vpsplugin_enabled];
+	[_vpsEnabled addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
+	[_vpsEnabled setOn:_timer.vpsplugin_enabled];
 
 	// vps controlled by service
 	_vpsOverwrite = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
-	[_timerEnabled setOn:_timer.vpsplugin_overwrite];
+	[_vpsOverwrite setOn:_timer.vpsplugin_overwrite];
 
 	// in case the parent view draws with a custom color or gradient, use a transparent color
 	_timerJustplay.backgroundColor = [UIColor clearColor];
@@ -826,6 +839,10 @@ enum timerSections
 				return 2;
 			return 1;
 		case sectionVps:
+			if(!_vpsEnabled.on)
+				return 1;
+			if(_timer.eit && ![_timer.eit isEqualToString:@""])
+				return 2;
 			return 3;
 		default:
 			return 1;
