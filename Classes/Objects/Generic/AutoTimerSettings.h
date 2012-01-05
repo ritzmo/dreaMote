@@ -37,5 +37,6 @@ typedef enum
 @property (assign) NSInteger maxdays;
 @property (assign) BOOL hasVps;
 @property (assign) NSInteger version;
+@property (assign) double api_version;
 
 @end

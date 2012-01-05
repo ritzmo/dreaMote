@@ -129,6 +129,12 @@
 			if(intValue > 0) // only change on valid version
 				settings.version = intValue;
 		}
+		else if([lastSettingName isEqualToString:@"api_version"])
+		{
+			double doubleValue = [currentString doubleValue];
+			if(doubleValue > 0) // only change on valid version
+				settings.api_version = doubleValue;
+		}
 		self.lastSettingName = nil;
 	}
 	self.currentString = nil;

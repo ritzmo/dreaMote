@@ -10,13 +10,14 @@
 
 @implementation AutoTimerSettings
 
-@synthesize autopoll, addsimilar_on_conflict, disabled_on_conflict, editor, fastscan, hasVps, interval, maxdays, notifconflict, notifsimilar, refresh, show_in_extensionsmenu, try_guessing, version;
+@synthesize autopoll, addsimilar_on_conflict, disabled_on_conflict, editor, fastscan, hasVps, interval, maxdays, notifconflict, notifsimilar, refresh, show_in_extensionsmenu, try_guessing, version, api_version;
 
 - (id)init
 {
 	if((self = [super init]))
 	{
 		version = -1; // default to unknown
+		api_version = -1; // default to unknown
 	}
 	return self;
 }
