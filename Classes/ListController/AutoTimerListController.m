@@ -134,6 +134,7 @@
 {
 	// Clean event list
 	[_autotimers removeAllObjects];
+	settings.api_version = -1; // reset this so no wrong options are shown, yet we want the settings button to stay a little longer
 #if INCLUDE_FEATURE(Extra_Animation)
 	NSIndexSet *idxSet = [NSIndexSet indexSetWithIndex:1];
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
@@ -244,7 +245,7 @@
 {
 	NSInteger intVersion = [aVersion integerValue];
 	_autotimerVersion = intVersion;
-	_autotimerView.autotimerVersion = intVersion;
+	[_autotimerView setAutotimerVersion:intVersion];
 }
 
 #pragma mark -
@@ -398,7 +399,10 @@
 	// create a copy and work on it
 	AutoTimer *copy = [autotimer copy];
 	self.autotimerView.timer = copy;
-	_autotimerView.autotimerVersion = _autotimerVersion;
+	if(settings)
+		_autotimerView.autotimerSettings = settings;
+	else
+		[_autotimerView setAutotimerVersion:_autotimerVersion];
 
 	// We do not want to refresh autotimer list when we return
 	_refreshAutotimers = NO;
@@ -491,6 +495,10 @@
 
 		AutoTimer *newTimer = [AutoTimer timer];
 		self.autotimerView.timer = newTimer;
+		if(settings)
+			_autotimerView.autotimerSettings = settings;
+		else
+			[_autotimerView setAutotimerVersion:_autotimerVersion];
 
 		// when in split view go back to autotimer view, else push it on the stack
 		if(!isSplit)

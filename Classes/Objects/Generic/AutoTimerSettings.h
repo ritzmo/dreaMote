@@ -35,7 +35,7 @@ typedef enum
 @property (assign) BOOL notifconflict;
 @property (assign) BOOL notifsimilar;
 @property (assign) NSInteger maxdays;
-@property (assign) BOOL hasVps;
+@property (nonatomic, assign) BOOL hasVps;
 @property (assign) NSInteger version;
 @property (assign) double api_version;
 

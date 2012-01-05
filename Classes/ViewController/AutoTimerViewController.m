@@ -42,6 +42,7 @@ enum sectionIds
 	matchSection,
 	generalSection,
 	timespanSection,
+	vpsSection,
 	timeframeSection,
 	durationSection,
 	servicesSection,
@@ -98,7 +99,7 @@ static NSArray *searchTypeTexts = nil;
 
 @implementation AutoTimerViewController
 
-@synthesize autotimerVersion, delegate, popoverController;
+@synthesize autotimerSettings, delegate, popoverController;
 @synthesize tableView = _tableView;
 
 - (id)init
@@ -295,6 +296,8 @@ static NSArray *searchTypeTexts = nil;
 	_timerSetEndtime.on = _timer.setEndtime;
 	_timespanSwitch.on = (_timer.from != nil && _timer.to != nil);
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
+	_vpsEnabledSwitch.on = _timer.vps_enabled;
+	_vpsOverwriteSwitch.on = _timer.vps_overwrite;
 
 	[_tableView reloadData];
 	[_tableView
@@ -328,7 +331,9 @@ static NSArray *searchTypeTexts = nil;
 
 - (void)setAutotimerVersion:(NSInteger)newVersion
 {
-	autotimerVersion = newVersion;
+	if(!autotimerSettings)
+		autotimerSettings = [[AutoTimerSettings alloc] init];
+	autotimerSettings.version = newVersion;
 	if(_tableView && self.view.superview)
 		[_tableView reloadData];
 }
@@ -361,7 +366,7 @@ static NSArray *searchTypeTexts = nil;
 
 - (void)autotimerSettingsRead:(AutoTimerSettings *)anItem
 {
-	autotimerVersion = anItem.version;
+	autotimerSettings = anItem;
 }
 
 #pragma mark -
@@ -447,6 +452,10 @@ static NSArray *searchTypeTexts = nil;
 	{
 		[idxSet addIndex:timeframeSection];
 	}
+	if([_tableView numberOfRowsInSection:vpsSection] != [self tableView:_tableView numberOfRowsInSection:vpsSection])
+	{
+		[idxSet addIndex:vpsSection];
+	}
 
 	if(idxSet.count)
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
@@ -526,6 +535,17 @@ static NSArray *searchTypeTexts = nil;
 	_maxdurationSwitch.on = (_timer.maxduration > 0);
 	_maxdurationSwitch.backgroundColor = [UIColor clearColor];
 
+	// vps enable/disable
+	_vpsEnabledSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_vpsEnabledSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
+	_vpsEnabledSwitch.on = _timer.vps_enabled;
+	_vpsEnabledSwitch.backgroundColor = [UIColor clearColor];
+
+	// vps overwrite
+	_vpsOverwriteSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_vpsOverwriteSwitch.on = _timer.vps_overwrite;
+	_vpsOverwriteSwitch.backgroundColor = [UIColor clearColor];
+
 	// default editing mode depends on our mode
 	_shouldSave = NO;
 	[self setEditing: _creatingNewTimer];
@@ -546,6 +566,8 @@ static NSArray *searchTypeTexts = nil;
 		_timerSetEndtime.onTintColor = tintColor;
 		_timespanSwitch.onTintColor = tintColor;
 		_maxdurationSwitch.onTintColor = tintColor;
+		_vpsEnabledSwitch.onTintColor = tintColor;
+		_vpsOverwriteSwitch.onTintColor = tintColor;
 	}
 	[super theme];
 }
@@ -571,6 +593,8 @@ static NSArray *searchTypeTexts = nil;
 	_timerSetEndtime = nil;
 	_timespanSwitch = nil;
 	_maxdurationSwitch = nil;
+	_vpsEnabledSwitch = nil;
+	_vpsOverwriteSwitch = nil;
 
 	_titleCell.delegate = nil;
 	_matchCell.delegate = nil;
@@ -650,6 +674,8 @@ static NSArray *searchTypeTexts = nil;
 		_timer.setEndtime = _timerSetEndtime.on;
 		_timer.searchCase = _sensitiveSearch.on ? CASE_SENSITIVE : CASE_INSENSITIVE;
 		_timer.overrideAlternatives = _overrideAlternatives.on;
+		_timer.vps_enabled = _vpsEnabledSwitch.on;
+		_timer.vps_overwrite = _vpsOverwriteSwitch.on;
 
 		// Try to commit changes if no error occured
 		if(!message)
@@ -728,6 +754,8 @@ static NSArray *searchTypeTexts = nil;
 	_timerJustplay.enabled = editing;
 	_timespanSwitch.enabled = editing;
 	_maxdurationSwitch.enabled = editing;
+	_vpsEnabledSwitch.enabled = editing;
+	_vpsOverwriteSwitch.enabled = editing;
 
 	[_tableView reloadData];
 }
@@ -908,11 +936,15 @@ static NSArray *searchTypeTexts = nil;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+	if(section == vpsSection && !autotimerSettings.hasVps)
+		return 0;
 	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+	if(section == vpsSection && !autotimerSettings.hasVps)
+		return nil;
 	return [[DreamoteConfiguration singleton] tableView:tableView viewForHeaderInSection:section];
 }
 
@@ -930,6 +962,10 @@ static NSArray *searchTypeTexts = nil;
 			return NSLocalizedString(@"Max. Duration", @"Title of section with AutoTimer max Duration-Attribute. Maximum Duration a event can have to match this AutoTimer.");
 		case timespanSection:
 			return NSLocalizedStringFromTable(@"Timespan", @"AutoTimer", @"section header for timespan");
+		case vpsSection:
+			if(!autotimerSettings.hasVps)
+				return nil;
+			return NSLocalizedStringFromTable(@"VPS", @"AutoTimer", @"section header for vps-plugin");
 		case timeframeSection:
 			return NSLocalizedStringFromTable(@"Timeframe", @"AutoTimer", @"section header for timeframe");
 		case servicesSection:
@@ -968,7 +1004,7 @@ static NSArray *searchTypeTexts = nil;
 		case generalSection:
 		{
 			NSInteger count = generalSectionRowMax;
-			if(autotimerVersion < 7)
+			if(autotimerSettings.version < 7)
 				count -= 2;
 			return count;
 		}
@@ -976,6 +1012,10 @@ static NSArray *searchTypeTexts = nil;
 			return _maxdurationSwitch.on ? 2 : 1;
 		case timespanSection:
 			return _timespanSwitch.on ? 3 : 1;
+		case vpsSection:
+			if(!autotimerSettings.hasVps)
+				return 0;
+			return _vpsEnabledSwitch.on ? 2 : 1;
 		case timeframeSection:
 			return _timeframeSwitch.on ? 3 : 1;
 		case servicesSection:
@@ -1021,7 +1061,7 @@ static NSArray *searchTypeTexts = nil;
 			break;
 		case generalSection:
 		{
-			if(row >= generalSectionRowSetEndtime && autotimerVersion < 7)
+			if(row >= generalSectionRowSetEndtime && autotimerSettings.version < 7)
 				++row;
 
 			switch(row)
@@ -1118,6 +1158,23 @@ static NSArray *searchTypeTexts = nil;
 					cell.accessoryType = UITableViewCellAccessoryNone;
 					cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
 					cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+					break;
+			}
+			break;
+		}
+		case vpsSection:
+		{
+			switch(row)
+			{
+				case 0:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)cell).view = _vpsEnabledSwitch;
+					cell.textLabel.text = NSLocalizedString(@"Enable VPS", @"Label for cell with setting vpsplugin_enabled");
+					break;
+				case 1:
+					cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+					((DisplayCell *)cell).view = _vpsOverwriteSwitch;
+					cell.textLabel.text = NSLocalizedString(@"Controlled by service", @"Label for cell with setting vpsplugin_overwrite");
 					break;
 			}
 			break;
@@ -1450,7 +1507,7 @@ static NSArray *searchTypeTexts = nil;
 	switch(indexPath.section)
 	{
 		case generalSection:
-			if(autotimerVersion < 7)
+			if(autotimerSettings.version < 7)
 			{
 				if(row >= generalSectionRowSetEndtime)
 					++row;
@@ -1465,7 +1522,7 @@ static NSArray *searchTypeTexts = nil;
 				if(row == generalSectionRowType)
 				{
 					NSArray *items = nil;
-					if(autotimerVersion < 6)
+					if(autotimerSettings.version < 6)
 						items = [searchTypeTexts subarrayWithRange:NSMakeRange(0, 2)];
 					else
 						items = searchTypeTexts;

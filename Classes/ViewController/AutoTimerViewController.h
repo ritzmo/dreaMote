@@ -60,6 +60,8 @@
 	UISwitch *_timerSetEndtime; /*!< @brief Set Endtime for zap timers? */
 	UISwitch *_timespanSwitch; /*!< @brief Enable/Disable Timespan. */
 	UISwitch *_maxdurationSwitch; /*!< @brief Maxduration Switch. */
+	UISwitch *_vpsEnabledSwitch; /*!< @brief Enable/Disable VPS. */
+	UISwitch *_vpsOverwriteSwitch; /*!< @brief Let VPS/channel control recordings. */
 
 	UIViewController *_afterEventNavigationController; /*!< @brief Navigation Controller of After Event Selector. */
 	AfterEventViewController *_afterEventViewController; /*!< @brief Cached After Event Selector. */
@@ -94,6 +96,14 @@
  */
 - (void)loadSettings;
 
+/*!
+ @brief Set only the AutoTimer-Version.
+
+ Used as helper method for "broken" AutoTimer-Versions without actual settings.
+*/
+- (void)setAutotimerVersion:(NSInteger)version;
+
+
 
 /*!
  @brief AutoTimer.
@@ -106,10 +116,10 @@
 @property (assign) BOOL creatingNewTimer;
 
 /*!
- @brief Version of the AutoTimer in use.
+ @brief AutoTimer Settings.
  @note Used to hide/show some features.
  */
-@property (nonatomic, assign) NSInteger autotimerVersion;
+@property (nonatomic, strong) AutoTimerSettings *autotimerSettings;
 
 /*!
  @brief Delegate.

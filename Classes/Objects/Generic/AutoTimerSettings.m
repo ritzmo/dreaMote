@@ -22,4 +22,10 @@
 	return self;
 }
 
+// vps is only fully available with api 1.2 and newer. earlier versions lacked the api to change the settings (so of no use for us).
+- (BOOL)hasVps
+{
+	return hasVps && api_version >= 1.2;
+}
+
 @end
