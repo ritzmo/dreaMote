@@ -74,6 +74,10 @@ static const char *kEnigma2ATAfterevent = "afterevent";
 static const NSUInteger kEnigma2ATAftereventLength = 11;
 static const char *kEnigma2ATWhere = "where";
 static const NSUInteger kEnigma2ATWhereLength = 6;
+static const char *kEnigma2ATVpsEnabled = "vps_enabled";
+static const NSUInteger kEnigma2ATVpsEnabledLength = 12;
+static const char *kEnigma2ATVpsOverwrite = "vps_overwrite";
+static const NSUInteger kEnigma2ATVpsOverwriteLength = 14;
 
 @interface Enigma2AutoTimerXMLReader()
 @property (nonatomic, strong) AutoTimer *currentAT;
@@ -276,6 +280,14 @@ static const NSUInteger kEnigma2ATWhereLength = 6;
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATSetEndtime, kEnigma2ATSetEndtimeLength))
 			{
 				currentAT.setEndtime = [value isEqualToString:@"1"];
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATVpsEnabled, kEnigma2ATVpsEnabledLength))
+			{
+				currentAT.vps_enabled = [value isEqualToString:@"yes"];
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATVpsOverwrite, kEnigma2ATVpsOverwriteLength))
+			{
+				currentAT.vps_overwrite = [value isEqualToString:@"yes"];
 			}
 		}
 	}

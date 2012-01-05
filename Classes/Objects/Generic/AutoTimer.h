@@ -101,5 +101,7 @@ typedef enum
 @property (nonatomic) autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 @property (nonatomic) autoTimerSearchForDuplicateDescription searchForDuplicateDescription;
 @property (nonatomic) enum afterEvent afterEventAction;
+@property (nonatomic) BOOL vps_enabled;
+@property (nonatomic) BOOL vps_overwrite;
 
 @end

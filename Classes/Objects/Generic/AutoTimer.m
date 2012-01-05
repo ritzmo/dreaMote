@@ -15,7 +15,7 @@
 
 @implementation AutoTimer
 
-@synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, setEndtime, before, after, avoidDuplicateDescription, searchForDuplicateDescription, afterEventAction;
+@synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, setEndtime, before, after, avoidDuplicateDescription, searchForDuplicateDescription, afterEventAction, vps_enabled, vps_overwrite;
 
 + (AutoTimer *)timer
 {
@@ -97,6 +97,8 @@
 		excludeShortdescription = [autotimer.excludeShortdescription mutableCopy];
 		excludeDescription = [autotimer.excludeDescription mutableCopy];
 		excludeDayOfWeek = [autotimer.excludeDayOfWeek mutableCopy];
+		vps_enabled = autotimer.vps_enabled;
+		vps_overwrite = autotimer.vps_overwrite;
 	}
 	return self;
 }
