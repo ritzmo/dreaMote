@@ -290,3 +290,7 @@ Enigma:
 - Bring back accessibility support (removed it by accident in 1.3.0)
 Enigma2:
 - Fix featureset for web interface versions between 1.5b4 and 1.6.5
+
+1.4.3:
+Enigma2:
+- Allow to enable VPS if recent version of plugin is installed
