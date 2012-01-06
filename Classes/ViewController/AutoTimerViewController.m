@@ -136,8 +136,8 @@ static NSArray *searchTypeTexts = nil;
 		if(searchTypeTexts == nil)
 		{
 			searchTypeTexts = [[NSArray alloc] initWithObjects:
-							   NSLocalizedStringFromTable(@"Partial", @"AutoTimer", @"Search type: partial event title"),
 							   NSLocalizedStringFromTable(@"Exact", @"AutoTimer", @"Search type: exact event title"),
+							   NSLocalizedStringFromTable(@"Partial", @"AutoTimer", @"Search type: partial event title"),
 							   NSLocalizedStringFromTable(@"in Description", @"AutoTimer", @"Search type: partial in event description"),
 							   nil
 			];
