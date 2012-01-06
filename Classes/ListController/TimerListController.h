@@ -60,7 +60,12 @@
 /*!
  @brief Controlled by a split view controller?
  */
-@property (nonatomic) BOOL isSplit;
+@property (readonly) BOOL isSplit;
+
+/*!
+ @brief Split View Controller.
+ */
+@property (nonatomic, unsafe_unretained) MGSplitViewController *mgSplitViewController;
 
 /*!
  @brief Timer View

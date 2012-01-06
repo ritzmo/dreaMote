@@ -8,7 +8,11 @@
 
 #import "TimerListController.h"
 
-#import "TimerViewController.h"
+#import <ViewController/TimerViewController.h>
+
+#if IS_FULL()
+	#import <ViewController/AutoTimerViewController.h>
+#endif
 
 #import "Constants.h"
 #import "NSDateFormatter+FuzzyFormatting.h"
@@ -39,6 +43,9 @@
 - (void)cancelConnection:(NSNotification *)notif;
 - (void)multiDelete:(id)sender;
 - (void)updateButtons;
+#if IS_FULL()
+- (void)longPress:(UILongPressGestureRecognizer *)gesture;
+#endif
 
 /*!
  @brief Activity Indicator.
@@ -55,7 +62,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 
 @implementation TimerListController
 
-@synthesize dateFormatter, isSplit, progressHUD;
+@synthesize dateFormatter, mgSplitViewController, progressHUD;
 @synthesize timerViewController = _timerViewController;
 @synthesize willReappear = _willReappear;
 #if INCLUDE_FEATURE(Ads)
@@ -162,6 +169,13 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	const UIBarButtonItem *deleteItem = [[UIBarButtonItem alloc] initWithCustomView:_deleteButton];
 	[self setToolbarItems:[NSArray arrayWithObjects:deleteItem, flexItem, nil]];
 
+#if IS_FULL()
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[_tableView addGestureRecognizer:longPressGesture];
+#endif
+
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cancelConnection:) name:kReconnectNotification object:nil];
 
@@ -185,6 +199,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 {
 	// allow to skip refresh only if there is any data
 	if(_dist[0] > 0) _willReappear = new;
+}
+
+- (BOOL)isSplit
+{
+	return mgSplitViewController != nil;
 }
 
 /* (un)set editing */
@@ -589,7 +608,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	_timerViewController.oldTimer = ourCopy;
 
 	// when in split view go back to timer view, else push it on the stack
-	if(!isSplit)
+	if(!self.isSplit)
 	{
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_timerViewController])
@@ -605,7 +624,21 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		[self.navigationController pushViewController:_timerViewController animated:YES];
 	}
 	else
-		[_timerViewController.navigationController popToRootViewControllerAnimated: YES];
+	{
+		// put _timerViewController back into details
+		UIViewController *vc = mgSplitViewController.detailViewController;
+		if([vc isKindOfClass:[UINavigationController class]])
+		{
+			UINavigationController *nc = (UINavigationController *)vc;
+			if([nc.viewControllers objectAtIndex:0] != _timerViewController)
+			{
+				nc = [[UINavigationController alloc] initWithRootViewController:_timerViewController];
+				[[DreamoteConfiguration singleton] styleNavigationController:nc];
+				self.mgSplitViewController.detailViewController = nc;
+			}
+		}
+		[_timerViewController.navigationController popToRootViewControllerAnimated:YES];
+	}
 
 	// NOTE: set this here so the edit button won't get screwed
 	_timerViewController.creatingNewTimer = NO;
@@ -770,7 +803,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		_timerViewController.oldTimer = nil;
 
 		// when in split view go back to timer view, else push it on the stack
-		if(!isSplit)
+		if(!self.isSplit)
 		{
 			// XXX: wtf?
 			if([self.navigationController.viewControllers containsObject:_timerViewController])
@@ -787,7 +820,19 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		}
 		else
 		{
-			[_timerViewController.navigationController popToRootViewControllerAnimated: YES];
+			// put _timerViewController back into details
+			UIViewController *vc = mgSplitViewController.detailViewController;
+			if([vc isKindOfClass:[UINavigationController class]])
+			{
+				UINavigationController *nc = (UINavigationController *)vc;
+				if([nc.viewControllers objectAtIndex:0] != _timerViewController)
+				{
+					nc = [[UINavigationController alloc] initWithRootViewController:_timerViewController];
+					[[DreamoteConfiguration singleton] styleNavigationController:nc];
+					self.mgSplitViewController.detailViewController = nc;
+				}
+			}
+			[_timerViewController.navigationController popToRootViewControllerAnimated:YES];
 			[self setEditing:NO animated:YES];
 		}
 
@@ -819,6 +864,40 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	// do we need this for anything?
 }
 
+#pragma mark - Gestures
+#if IS_FULL()
+
+- (void)longPress:(UILongPressGestureRecognizer *)gesture
+{
+	// only do something on gesture start
+	if(gesture.state != UIGestureRecognizerStateBegan)
+		return;
+
+	// get timer
+	UITableView *tableView = _tableView;
+	const CGPoint p = [gesture locationInView:tableView];
+	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
+	NSObject<TimerProtocol> *timer = ((TimerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).timer;
+
+	// check for invalid timer
+	if(!timer || !timer.valid)
+		return;
+
+	AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+	avc.timer = [AutoTimer timerFromTimer:timer];
+	[avc loadSettings]; // start loading settings to determine available features
+	if(!self.isSplit)
+		[self.navigationController pushViewController:avc animated:YES];
+	else
+	{
+		UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:avc];
+		self.mgSplitViewController.detailViewController = targetViewController;
+	}
+	// NOTE: set this here so the edit button won't get screwed
+	avc.creatingNewTimer = YES;
+}
+
+#endif
 #pragma mark ADBannerViewDelegate
 #if INCLUDE_FEATURE(Ads)
 
