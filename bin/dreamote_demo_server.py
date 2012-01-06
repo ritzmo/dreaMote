@@ -1292,6 +1292,38 @@ class Simple(resource.Resource):
 			if not returndoc:
 				returndoc = SIMPLEXMLRESULT % ('True', "SOME TEXT - and not really sure if everything worked :D'")
 ### /SERVICE EDITOR
+### AUTOTIMER
+		elif req.path.startswith("/autotimer"):
+			if lastComp == "get":
+				pass
+			elif lastComp == "set":
+				pass
+			elif lastComp == "parse":
+				pass
+			elif lastComp == "remove":
+				pass
+			elif lastComp == "edit":
+				pass
+			elif req.path == "/autotimer":
+				pass
+			returndoc = "UNHANDLED DOCUMENT" # dummy so we won't send a 404
+### /AUTOTIMER
+### EPGREFRESH
+		elif req.path.startswith("/epgrefresh"):
+			if lastComp == "refresh":
+				pass
+			elif lastComp == "add":
+				pass
+			elif lastComp == "del":
+				pass
+			elif lastComp == "set":
+				pass
+			elif lastComp == "get":
+				pass
+			elif req.path == "/epgrefresh":
+				pass
+			returndoc = "UNHANDLED DOCUMENT" # dummy so we won't send a 404
+### /EPGREFRESH
 # ENIGMA
 		elif lastComp == "boxstatus":
 			returndoc = BOXSTATUS
@@ -1588,6 +1620,7 @@ Since parts of the functionality removes information from the database (e.g. del
 Oh, I almost forgot: to change the listening port, just add the one you want to the command line (e.g. python bin/dreamote_demo_server.py 31337)</pre>
 </body></html>"""
 		else:
+			req.setResponseCode(404)
 			returndoc = "UNHANDLED DOCUMENT"
 
 		print req.uri, returndoc
