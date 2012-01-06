@@ -62,8 +62,7 @@
 	if(highlighted != self.highlighted)
 	{
 		[super setHighlighted:highlighted animated:animated];
-		if(highlighted != self.selected)
-			[self setNeedsDisplay];
+		[self setNeedsDisplay];
 	}
 }
 
@@ -72,8 +71,7 @@
 	if(selected != self.selected)
 	{
 		[super setSelected:selected animated:animated];
-		if(selected == self.highlighted)
-			[self setNeedsDisplay];
+		[self setNeedsDisplay];
 	}
 }
 
