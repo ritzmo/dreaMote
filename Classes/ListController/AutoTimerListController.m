@@ -124,9 +124,12 @@
 	_reloading = YES;
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
 	_xmlReader = [sharedRemoteConnector fetchAutoTimers:self];
-	[RemoteConnectorObject queueBlock:^{
-		_xmlReaderSub = [sharedRemoteConnector getAutoTimerSettings:self];
-	}];
+	if(!_xmlReaderSub) // if currently trying to parse the settings, don't do it again
+	{
+		[RemoteConnectorObject queueBlock:^{
+			_xmlReaderSub = [sharedRemoteConnector getAutoTimerSettings:self];
+		}];
+	}
 }
 
 /* remove content data */
