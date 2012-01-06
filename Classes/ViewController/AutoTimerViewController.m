@@ -367,6 +367,8 @@ static NSArray *searchTypeTexts = nil;
 - (void)autotimerSettingsRead:(AutoTimerSettings *)anItem
 {
 	autotimerSettings = anItem;
+	if([self isViewLoaded] && self.view.superview)
+		[_tableView reloadData];
 }
 
 #pragma mark -
