@@ -31,8 +31,7 @@
 
 #import <Categories/NSString+URLEncode.h>
 
-// Services are 'lightweight'
-#define MAX_SERVICES 2048
+#define IS_HTTP_SUCCESS(code) ((code) > 199 && (code) < 300)
 
 /*! @brief Virtual Service Reference for 'All TV Services'. */
 static NSString *enigmaAllServices = @"ALL_SERVICES_ENIGMA";
@@ -250,7 +249,7 @@ enum enigma1MessageTypes {
 								   returningResponse:&response
 											   error:nil];
 
-	result.result = ([response statusCode] == 204);
+	result.result = IS_HTTP_SUCCESS([response statusCode]);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
 }
@@ -684,7 +683,7 @@ enum enigma1MessageTypes {
 								   returningResponse:&response
 											   error:nil];
 
-	result.result = ([response statusCode] == 204);
+	result.result = IS_HTTP_SUCCESS([response statusCode]);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]];
 	return result;
 }
@@ -727,7 +726,7 @@ enum enigma1MessageTypes {
 								   returningResponse:&response
 											   error:nil];
 
-	result.result = ([response statusCode] == 204);
+	result.result = IS_HTTP_SUCCESS([response statusCode]);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
 }
@@ -744,7 +743,7 @@ enum enigma1MessageTypes {
 								   returningResponse:&response
 											   error:nil];
 
-	result.result = ([response statusCode] == 204);
+	result.result = IS_HTTP_SUCCESS([response statusCode]);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
 }
@@ -907,7 +906,7 @@ enum enigma1MessageTypes {
 								   returningResponse:&response
 											  error:nil];
 
-	result.result = ([response statusCode] == 204);
+	result.result = IS_HTTP_SUCCESS([response statusCode]);
 	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
 	return result;
 }
