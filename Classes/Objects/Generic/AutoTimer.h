@@ -65,6 +65,7 @@ typedef enum
 
 + (AutoTimer *)timer;
 + (AutoTimer *)timerFromEvent:(NSObject<EventProtocol> *)event;
++ (AutoTimer *)timerFromTimer:(NSObject<TimerProtocol> *)timer;
 - (void)addInclude:(NSString *)include where:(autoTimerWhereType)where;
 - (void)addExclude:(NSString *)exclude where:(autoTimerWhereType)where;
 

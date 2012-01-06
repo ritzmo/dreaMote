@@ -43,6 +43,29 @@
 	return timer;
 }
 
++ (AutoTimer *)timerFromTimer:(NSObject<TimerProtocol> *)rtimer
+{
+	AutoTimer *timer = [AutoTimer timer];
+	timer.name = rtimer.title;
+	timer.match = rtimer.title;
+	timer.enabled = YES;
+	timer.idno = -1;
+	timer.from = [rtimer.begin dateByAddingTimeInterval:-60*60];
+	timer.to = [rtimer.end dateByAddingTimeInterval:60*60];
+	timer.searchCase = CASE_SENSITIVE;
+	timer.searchType = SEARCH_TYPE_EXACT;
+	timer.overrideAlternatives = YES;
+	if(rtimer.service)
+		[timer.services addObject:rtimer.service];
+	timer.afterEventAction = rtimer.afterevent;
+	timer.tags = [rtimer.tags copy];
+	timer.justplay = rtimer.justplay;
+	timer.location = rtimer.location;
+	timer.vps_enabled = rtimer.vpsplugin_enabled;
+	timer.vps_overwrite = rtimer.vpsplugin_overwrite;
+	return timer;
+}
+
 - (id)init
 {
 	if((self = [super init]))
