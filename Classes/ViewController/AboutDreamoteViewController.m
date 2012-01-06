@@ -8,6 +8,8 @@
 
 #import "AboutDreamoteViewController.h"
 
+#include <sys/sysctl.h>
+
 #import <Constants.h>
 #import <Connector/RemoteConnectorObject.h>
 
@@ -207,18 +209,38 @@
 	[self dismissModalViewControllerAnimated: YES];
 }
 
+- (NSString *)getDeviceName
+{
+	size_t size = 0;
+	char *answer = NULL;
+	NSString *deviceName = nil;
+	sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+
+	answer = malloc(size);
+	if(answer != NULL)
+	{
+		sysctlbyname("hw.machine", answer, &size, NULL, 0);
+		deviceName = [NSString stringWithCString:answer encoding:NSUTF8StringEncoding];
+		free(answer);
+	}
+	if(!deviceName)
+		deviceName = [[UIDevice currentDevice] model]; // better than nothing
+	return deviceName;
+}
+
 /* _mailButton was pressed */
 - (void)showMailComposer:(id)sender
 {
 	MFMailComposeViewController *mvc = [[MFMailComposeViewController alloc] init];
 	mvc.mailComposeDelegate = self;
-	NSString *displayName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
-	NSString *bundleVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-	UIDevice *currentDevice = [UIDevice currentDevice];
+	const NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+	const NSString *displayName = [infoDictionary objectForKey:@"CFBundleDisplayName"];
+	const NSString *bundleVersion = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+	const UIDevice *currentDevice = [UIDevice currentDevice];
 	[mvc setSubject:[NSString stringWithFormat:@"App Feedback %@", displayName]];
 	[mvc setToRecipients:[NSArray arrayWithObject:@"dreamote@ritzmo.de"]];
 	NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
-	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@\nConnected to: %@", [currentDevice model], [currentDevice systemVersion], displayName, bundleVersion, sharedRemoteConnector ? [sharedRemoteConnector description] : @"not connected"];
+	NSString *body = [NSString stringWithFormat:@"\n\nDevice: %@\niOS Version: %@\n%@ Version: %@\nConnected to: %@", [self getDeviceName], [currentDevice systemVersion], displayName, bundleVersion, sharedRemoteConnector ? [sharedRemoteConnector description] : @"not connected"];
 	[mvc setMessageBody:body isHTML:NO];
 	mvc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
 	[self presentModalViewController:mvc animated:YES];
