@@ -16,6 +16,10 @@
 @property (nonatomic, strong) NSString *lastSettingName;
 @end
 
+@interface SaxXmlReader()
+- (void)parsingError:(NSString *)msg;
+@end
+
 @implementation Enigma2AutoTimerSettingsXMLReader
 
 @synthesize lastSettingName, settings;
@@ -29,6 +33,25 @@
 		settings = [[AutoTimerSettings alloc] init];
 	}
 	return self;
+}
+
+- (void)parsingError:(NSString *)msg
+{
+#if IS_DEBUG()
+	NSLog(@"[%@] parsingError(2): %@", [self class], msg);
+#endif
+	// there are versions with bad xml out, so just make sure I don't let this happen again and ignore them
+	// NOTE: this is because of a possible race condition in AutoTimerList
+	if(		[msg hasPrefix:@"Specification mandate value for attribute object"]
+	   ||	[msg hasPrefix:@"attributes construct error"]
+	   ||	[msg hasPrefix:@"Couldn't find end of Start Tag Components.config.ConfigEnableDisable"]
+	   ||	[msg hasPrefix:@"Opening and ending tag mismatch: Components.config.ConfigEnableDisable line 0 and e2settingvalue"]
+	   ||	[msg hasPrefix:@"Opening and ending tag mismatch: e2settingvalue line 0 and e2setting"]
+	   ||	[msg hasPrefix:@"Opening and ending tag mismatch: e2setting line 0 and e2settings"]
+	   ||	[msg hasPrefix:@"Extra content at the end of the document"])
+		return;
+
+	[super parsingError:msg];
 }
 
 /*
