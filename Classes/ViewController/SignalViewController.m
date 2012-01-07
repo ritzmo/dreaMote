@@ -571,7 +571,7 @@ OSStatus RenderTone(
 	_agc.value = (float)(signal.agc);
 
 	const BOOL oldSnrdB =_hasSnrdB;
-	_hasSnrdB = signal.snrdb > -1;
+	_hasSnrdB = signal.snrdb != NSNotFound;
 
 	// there is a weird glitch that prevents the second row from being shown unless we do a full reload, so do it here
 	// while we still know that we need to do one.

@@ -16,7 +16,7 @@
 {
 	if((self = [super init]))
 	{
-		snrdb = -1;
+		snrdb = NSNotFound;
 	}
 	return self;
 }

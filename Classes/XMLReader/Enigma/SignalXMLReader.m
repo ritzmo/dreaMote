@@ -91,7 +91,7 @@ static const NSUInteger kEnigmaAgcLength = 4;
 	if(!strncmp((const char *)localname, kEnigmaSignal, kEnigmaSignalLength))
 	{
 		signal = [[GenericSignal alloc] init];
-		signal.snrdb = -1; // enigma does not support this...
+		signal.snrdb = NSNotFound; // enigma does not support this...
 	}
 	else if(	!strncmp((const char *)localname, kEnigmaSnr, kEnigmaSnrLength)
 			||	!strncmp((const char *)localname, kEnigmaBer, kEnigmaBerLength)
