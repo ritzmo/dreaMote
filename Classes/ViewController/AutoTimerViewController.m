@@ -385,7 +385,7 @@ static NSArray *searchTypeTexts = nil;
 		dateString = [_dateFormatter fuzzyDate:dateTime];
 	}
 	else
-		dateString = NSLocalizedStringFromTable(@"unset", @"AutoTimer", @"option (e.g. timespan or timeframe) unset");
+		dateString = NSLocalizedString(@"unset", @"option (e.g. autotimer timespan, autotimer timeframe, manual vps time, ...) unset");
 	return dateString;
 }
 

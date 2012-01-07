@@ -972,7 +972,10 @@ enum timerSections
 					label.backgroundColor = [UIColor clearColor];
 					label.font = [UIFont systemFontOfSize:kTextViewFontSize];
 					label.textAlignment = UITextAlignmentRight;
-					label.text = (_timer.vpsplugin_time == -1) ? NSLocalizedString(@"unset", @"") : [self format_BeginEnd:[NSDate dateWithTimeIntervalSince1970:_timer.vpsplugin_time]];
+					if(_timer.vpsplugin_time == -1)
+						label.text = NSLocalizedString(@"unset", @"option (e.g. autotimer timespan, autotimer timeframe, manual vps time, ...) unset");
+					else
+						label.text = [self format_BeginEnd:[NSDate dateWithTimeIntervalSince1970:_timer.vpsplugin_time]];
 					label.textColor = [DreamoteConfiguration singleton].textColor;
 					label.highlightedTextColor = [DreamoteConfiguration singleton].highlightedTextColor;
 					label.frame = CGRectMake(0, 0, [label sizeThatFits:label.bounds.size].width, kSwitchButtonHeight);
