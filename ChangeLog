@@ -294,3 +294,7 @@ Enigma2:
 1.4.3:
 Enigma2:
 - Allow to enable VPS if recent version of plugin is installed
+
+1.4.3-full:
+Enigma2:
+- Allow to add AutoTimer from Timer-dialog (hold timer for 1s)
