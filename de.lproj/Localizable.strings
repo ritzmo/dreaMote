@@ -249,6 +249,9 @@
 /* Explaination of Media Player in Other List */
 "Control the remote media player" = "Medienwiedergabe auf der Dreambox";
 
+/* Label for cell with setting vpsplugin_overwrite */
+"Controlled by service" = "Durch Sender steuern";
+
 /* Title of ControlViewController */
 "Controls" = "Steuerung";
 
@@ -306,7 +309,8 @@
 
 /* Delete button in MediaPlayer
    Delete button in MovieList
-   Delete button in TimerList */
+   Delete button in TimerList
+   Delete-Button in Date Picker (optional) */
 "Delete" = "Löschen";
 
 /* No comment provided by engineer. */
@@ -337,6 +341,9 @@
 
 /* Toggle in Signal Finder which is responsible for starting/stopping the tone generator */
 "Enable audio" = "Suchton";
+
+/* Label for cell with setting vpsplugin_enabled */
+"Enable VPS" = "VPS aktivieren";
 
 /* No comment provided by engineer. */
 "Enabled" = "Aktiv";
@@ -535,6 +542,9 @@
 
 /* Title of LocationListController */
 "Locations" = "Verzeichnisse";
+
+/* Label for cell with setting vpsplugin_time */
+"Manual Time" = "VPS-Zeit";
 
 /* No comment provided by engineer. */
 "Master" = "Master";
@@ -1150,6 +1160,9 @@
 /* Label text in AutoConfiguration if host is unreachable */
 "unreachable" = "nicht erreichbar";
 
+/* option (e.g. autotimer timespan, autotimer timeframe, manual vps time, ...) unset */
+"unset" = "ungesetzt";
+
 /* No comment provided by engineer. */
 "Use SSL" = "SSL benutzen";
 
@@ -1164,6 +1177,9 @@
 
 /* No comment provided by engineer. */
 "Volume" = "Lautstärke";
+
+/* Section title in timer settings dialog */
+"VPS" = "VPS";
 
 /* Timer type */
 "Waiting" = "Wartend";

@@ -194,8 +194,8 @@
 /* Title of 'search for duplicate description' selector. */
 /*"Unique in" = "Unique in";*/
 
-/* option (e.g. timespan or timeframe) unset */
-/*"unset" = "unset";*/
+/* section header for vps-plugin */
+/*"VPS" = "VPS";*/
 
 /* Editor Type: Wizard */
 /*"Wizard" = "Wizard";*/
