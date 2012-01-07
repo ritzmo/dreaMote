@@ -97,4 +97,15 @@
  @param service Service event is on.
  */
 - (void)multiEPG:(MultiEPGListController *)multiEPG didSelectEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service;
+
+/*!
+ @brief Multi EPG has a UIViewController it wants pushed.
+ Happens when holding an event and opening AutoTimer or Timer Editor.
+
+ @param multiEPG MultiEPG the selection was made in.
+ @param viewController The UIViewController to push.
+ @param animated Should the transmission be animated?
+ */
+@optional
+- (void)multiEPG:(MultiEPGListController *)multiEPG pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 @end

@@ -17,9 +17,67 @@
 #import "UIDevice+SystemVersion.h"
 #import "UITableViewCell+EasyInit.h"
 
-#import "MultiEPGTableViewCell.h"
+#import <ListController/ServiceZapListController.h>
+#import <ListController/SimpleSingleSelectionListController.h>
+
+#import <ViewController/AutoTimerViewController.h>
+#import <ViewController/TimerViewController.h>
+
+#import <TableViewCell/MultiEPGTableViewCell.h>
+
+#import <Objects/Generic/AutoTimer.h>
+#import <Objects/Generic/Result.h>
+#import <Objects/Generic/Timer.h>
 
 #import <XMLReader/SaxXmlReader.h>
+
+#pragma mark - UIActionSheet with block callback
+typedef void (^dismiss_block_t)(UIActionSheet *actionSheet, NSInteger buttonIndex);
+@interface UIBlockActionSheet : UIActionSheet<UIActionSheetDelegate>
++ (UIBlockActionSheet *)actionSheetWithTitle:(NSString *)title
+						   cancelButtonTitle:(NSString *)cancelButtonTitle
+					  destructiveButtonTitle:(NSString *)destructiveButtonTitle
+						   otherButtonTitles:(NSArray *)buttonTitles
+								   onDismiss:(dismiss_block_t)onDismiss;
+@property (nonatomic, copy) dismiss_block_t onDismiss;
+@end
+
+@implementation UIBlockActionSheet
+@synthesize onDismiss;
++ (UIBlockActionSheet *)actionSheetWithTitle:(NSString *)title
+						   cancelButtonTitle:(NSString *)cancelButtonTitle
+					  destructiveButtonTitle:(NSString *)destructiveButtonTitle
+						   otherButtonTitles:(NSArray *)buttonTitles
+								   onDismiss:(dismiss_block_t)onDismiss
+{
+	UIBlockActionSheet *sheet = [[UIBlockActionSheet alloc] initWithTitle:title
+																 delegate:nil
+														cancelButtonTitle:nil
+												   destructiveButtonTitle:destructiveButtonTitle
+														otherButtonTitles:nil];
+
+	for(NSString* thisButtonTitle in buttonTitles)
+		[sheet addButtonWithTitle:thisButtonTitle];
+
+	if(cancelButtonTitle)
+	{
+		[sheet addButtonWithTitle:cancelButtonTitle];
+		sheet.cancelButtonIndex = [buttonTitles count];
+
+		if(destructiveButtonTitle)
+			sheet.cancelButtonIndex++;
+	}
+	sheet.onDismiss = onDismiss;
+	sheet.delegate = sheet;
+	return sheet;
+}
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	((UIBlockActionSheet *)actionSheet).onDismiss(actionSheet, buttonIndex);
+}
+@end
+
+#pragma mark - MultiEPGListController
 
 @interface MultiEPGListController()
 /*!
@@ -38,9 +96,24 @@
 - (void)readEPG;
 
 /*!
+ @brief Event was/is being held.
+ */
+- (void)longPress:(UILongPressGestureRecognizer *)gesture;
+
+/*!
  @brief Activity Indicator.
  */
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
+
+/*!
+ @brief Popover Controller.
+ */
+@property (nonatomic, strong) UIPopoverController *popoverController;
+
+/*!
+ @brief Zap type selection.
+ */
+@property (nonatomic, strong) ServiceZapListController *zapListController;
 @end
 
 @implementation MultiEPGListController
@@ -49,6 +122,8 @@
 @synthesize pendingRequests;
 @synthesize progressHUD;
 @synthesize isSlave;
+@synthesize popoverController;
+@synthesize zapListController;
 
 - (id)init
 {
@@ -83,6 +158,11 @@
 	CGRect visibleFrame = CGRectMake(0, headerHeight, contentView.frame.size.width, contentView.frame.size.height-headerHeight);
 	_tableView.frame = visibleFrame;
 	[contentView addSubview:_tableView];
+
+	UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+	longPressGesture.minimumPressDuration = 1;
+	longPressGesture.enabled = YES;
+	[_tableView addGestureRecognizer:longPressGesture];
 
 	_headerView = [[MultiEPGHeaderView alloc] initWithFrame:CGRectMake(0, 0, contentView.frame.size.width, headerHeight)];
 	[contentView addSubview:_headerView];
@@ -622,6 +702,218 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 	return [_services count];
+}
+
+#pragma mark Gestures
+
+- (void)longPress:(UILongPressGestureRecognizer *)gesture
+{
+	// only do something on gesture start
+	if(gesture.state != UIGestureRecognizerStateBegan)
+		return;
+
+	const CGPoint p = [gesture locationInView:_tableView];
+	NSIndexPath *indexPath = [_tableView indexPathForRowAtPoint:p];
+	const MultiEPGTableViewCell *cell = (MultiEPGTableViewCell *)[_tableView cellForRowAtIndexPath:indexPath];
+	const CGRect cellRect = [_tableView rectForRowAtIndexPath:indexPath];
+	const CGPoint lastTouch = _tableView.lastTouch;
+	CGPoint locationInCell;
+	locationInCell.x = lastTouch.x;
+	locationInCell.y = lastTouch.y - cellRect.origin.y;
+	NSObject<EventProtocol> *event = [cell eventAtPoint:locationInCell];
+	NSObject<ServiceProtocol> *service = cell.service;
+
+	// check for invalid service and invalid event (can the latter happen?)
+	if(!service || !service.valid || (event && !event.valid))
+		return;
+
+	// event selected
+	if(event)
+	{
+		void (^timer_function)(NSInteger selection) = ^(NSInteger selection)
+		{
+			switch(selection)
+			{
+				default:
+					break;
+				/* AutoTimer Editor */
+				case 0:
+				{
+					AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
+					[avc loadSettings]; // start loading settings to determine available features
+					avc.timer = [AutoTimer timerFromEvent:event];
+					if(!avc.timer.services.count)
+						[avc.timer.services addObject:service];
+
+					[multiEpgDelegate multiEPG:self pushViewController:avc animated:YES];
+					// NOTE: set this here so the edit button won't get screwed
+					avc.creatingNewTimer = YES;
+					[_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+					break;
+				}
+				/* Timer Editor */
+				case 1:
+				{
+					TimerViewController *targetViewController = [TimerViewController newWithEventAndService:event :service];
+					[multiEpgDelegate multiEPG:self pushViewController:targetViewController animated:YES];
+					[_tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+					break;
+				}
+				/* Add Timer */
+				case 2:
+				{
+					NSObject<TimerProtocol> *timer = [GenericTimer withEventAndService:event :service];
+
+					Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTimer:timer];
+					if(result.result)
+						showCompletedHudWithText(NSLocalizedString(@"Timer added", @"Text of HUD when timer was added successfully"))
+						else
+						{
+							const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																				  message:[NSString stringWithFormat: NSLocalizedString(@"Error adding new timer: %@", @""), result.resulttext]
+																				 delegate:nil
+																		cancelButtonTitle:@"OK"
+																		otherButtonTitles:nil];
+							[alert show];
+						}
+					break;
+				}
+			}
+		};
+
+		// choice: autotimer editor, timer editor, add timer
+		// this is different from the non-full or non-autotimer ui for consistency reasons
+		// you get the convenience of just adding a timer without further interaction
+		// but also the choice of opening the editor which is similar to the autotimer approach
+		// because just adding an autotimer from the information we can gather here is stupid
+		if([[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer] && [multiEpgDelegate respondsToSelector:@selector(multiEPG:pushViewController:animated:)])
+		{
+			if(IS_IPAD())
+			{
+				if(popoverController)
+					[popoverController dismissPopoverAnimated:YES];
+				SimpleSingleSelectionListController *vc = [SimpleSingleSelectionListController withItems:[NSArray arrayWithObjects:
+																										  NSLocalizedStringFromTable(@"AutoTimer Editor", @"AutoTimer", @"Open Editor for new AutoTimer"),
+																										  NSLocalizedString(@"Timer Editor", @"Open Editor for new Timer"),
+																										  NSLocalizedString(@"Add Timer", @""),
+																										  nil]
+																							andSelection:NSNotFound
+																								andTitle:nil];
+				vc.callback = ^(NSUInteger selectedItem, BOOL isClosing, BOOL canceling){
+					// NOTE: ignore cancel as the button is not visible in our case
+					[popoverController dismissPopoverAnimated:YES];
+					popoverController = nil;
+
+					if(!isClosing)
+						timer_function(selectedItem);
+
+					return YES;
+				};
+				vc.contentSizeForViewInPopover = CGSizeMake(183.0f, 185.0f);
+				popoverController = [[UIPopoverController alloc] initWithContentViewController:vc];
+				[popoverController presentPopoverFromRect:CGRectMake(p.x, p.y, 1, 1)
+												   inView:_tableView
+								 permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight
+												 animated:YES];
+			}
+			else
+			{
+				UIActionSheet *as = [UIBlockActionSheet actionSheetWithTitle:nil
+														   cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+													  destructiveButtonTitle:nil
+														   otherButtonTitles:[NSArray arrayWithObjects:NSLocalizedStringFromTable(@"AutoTimer Editor", @"AutoTimer", @"Open Editor for new AutoTimer"),
+																			  NSLocalizedString(@"Timer Editor", @"Open Editor for new Timer"),
+																			  NSLocalizedString(@"Add Timer", @""),
+																			  nil]
+																   onDismiss:^(UIActionSheet *actionSheet, NSInteger buttonIndex)
+									 {
+										 if(buttonIndex == actionSheet.cancelButtonIndex)
+										 {
+											// do nothing
+										 }
+										 else
+										 {
+											 timer_function(buttonIndex);
+										 }
+									 }];
+				if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
+					[as showInView:self.view];
+				else
+					[as showFromTabBar:self.tabBarController.tabBar];
+			}
+		}
+		else
+			timer_function(2);
+	}
+	// no event selected: zap/stream
+	else
+	{
+		// if streaming supported, show popover on ipad and action sheet on iphone
+		if([ServiceZapListController canStream])
+		{
+			zap_callback_t callback = ^(ServiceZapListController *zlc, zapAction selectedAction)
+			{
+				NSURL *streamingURL = nil;
+				NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+				if(self.zapListController == zlc)
+					self.zapListController = nil;
+
+				if(selectedAction == zapActionRemote)
+				{
+					[sharedRemoteConnector zapTo:service];
+					return;
+				}
+
+				streamingURL = [sharedRemoteConnector getStreamURLForService:service];
+				if(!streamingURL)
+				{
+					// Alert user
+					const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"")
+																		  message:NSLocalizedString(@"Unable to generate stream URL.", @"Failed to retrieve or generate URL of remote stream")
+																		 delegate:nil
+																cancelButtonTitle:@"OK"
+																otherButtonTitles:nil];
+					[alert show];
+				}
+				else
+					[ServiceZapListController openStream:streamingURL withAction:selectedAction];
+			};
+
+			zapAction defaultZapAction = [[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault];
+			if(defaultZapAction != zapActionMax)
+			{
+				callback(nil, defaultZapAction);
+			}
+			else if(IS_IPAD())
+			{
+				// hide popover if already visible
+				if([popoverController isPopoverVisible])
+				{
+					[popoverController dismissPopoverAnimated:YES];
+					self.popoverController = nil;
+					return;
+				}
+
+				ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+				zlc.callback = callback;
+				popoverController = [[UIPopoverController alloc] initWithContentViewController:zlc];
+
+				[popoverController presentPopoverFromRect:CGRectMake(p.x, p.y, 1, 1)
+												   inView:_tableView
+								 permittedArrowDirections:UIPopoverArrowDirectionLeft | UIPopoverArrowDirectionRight
+												 animated:YES];
+			}
+			else
+			{
+				zapListController = [ServiceZapListController showAlert:callback fromTabBar:self.tabBarController.tabBar];
+			}
+		}
+		// else just zap on remote host
+		else
+		{
+			[[RemoteConnectorObject sharedRemoteConnector] zapTo:service];
+		}
+	}
 }
 
 @end

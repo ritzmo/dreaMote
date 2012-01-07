@@ -1464,6 +1464,13 @@ enum serviceListTags
 	[self.navigationController pushViewController:targetViewController animated:YES];
 }
 
+- (void)multiEPG:(MultiEPGListController *)multiEPG pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+	_refreshServices = NO;
+	multiEPG.willReappear = YES;
+	[self.navigationController pushViewController:viewController animated:animated];
+}
+
 #endif
 #pragma mark -
 #pragma mark DataSourceDelegate

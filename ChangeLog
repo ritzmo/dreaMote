@@ -296,5 +296,6 @@ Enigma2:
 - Allow to enable VPS if recent version of plugin is installed
 
 1.4.3-full:
+- Long press gesture added to MultiEPG (hold service or empty area to zap/stream and an event to add a timer)
 Enigma2:
 - Allow to add AutoTimer from Timer-dialog (hold timer for 1s)
