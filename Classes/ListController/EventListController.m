@@ -12,6 +12,7 @@
 	#import <ViewController/AutoTimerViewController.h>
 	#import <ViewController/TimerViewController.h>
 	#import <ListController/SimpleSingleSelectionListController.h>
+	#import <Objects/Generic/AutoTimer.h>
 #endif
 #import <TableViewCell/EventTableViewCell.h>
 #import <ViewController/EventViewController.h>
@@ -25,7 +26,6 @@
 #import "UITableViewCell+EasyInit.h"
 
 #import <Objects/EventProtocol.h>
-#import <Objects/Generic/AutoTimer.h>
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Timer.h>
 #import <Objects/ServiceProtocol.h>
@@ -435,7 +435,10 @@
 				[popoverController dismissPopoverAnimated:YES];
 				popoverController = nil;
 
-				[self performSelectorOnMainThread:@selector(itemSelected:) withObject:[NSNumber numberWithUnsignedInteger:selectedItem] waitUntilDone:NO];
+				if(!isClosing)
+					[self performSelectorOnMainThread:@selector(itemSelected:)
+										   withObject:[NSNumber numberWithUnsignedInteger:selectedItem]
+										waitUntilDone:NO];
 
 				return YES;
 			};
