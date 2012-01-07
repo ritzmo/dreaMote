@@ -235,7 +235,7 @@
 "Connection Timeout" = "Czas próby połączenia";
 
 /* No comment provided by engineer. */
-"Connection to remote host failed with status code %d." = "Połączenie do hosta zakończyło się błędem %d.";
+"Connection to remote host failed with status code %d (%@)." = "Połączenie do hosta zakończyło się błędem %d (%@).";
 
 /* Default title of ConnectorViewController */
 "Connector" = "Połączenie";

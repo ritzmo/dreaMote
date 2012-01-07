@@ -228,7 +228,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 		{
 			*error = [NSError errorWithDomain:@"myDomain"
 										 code:99
-									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), [response statusCode]] forKey:NSLocalizedDescriptionKey]];
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d (%@).", @""), [response statusCode], [NSHTTPURLResponse localizedStringForStatusCode:[response statusCode]]] forKey:NSLocalizedDescriptionKey]];
 		}
 		return NO;
 	}

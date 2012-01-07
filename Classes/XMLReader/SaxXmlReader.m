@@ -218,7 +218,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 		NSInteger statusCode = [(NSHTTPURLResponse *)response statusCode];
 		if (statusCode > 399)
 		{
-			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), statusCode]
+			NSDictionary *userInfo = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d (%@).", @""), statusCode, [NSHTTPURLResponse localizedStringForStatusCode:statusCode]]
 																 forKey:NSLocalizedDescriptionKey];
 			NSError *error = [NSError errorWithDomain:NSURLErrorDomain
 												 code:statusCode

@@ -518,7 +518,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		{
 			*error = [NSError errorWithDomain:@"myDomain"
 										 code:99
-									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d.", @""), statusCode] forKey:NSLocalizedDescriptionKey]];
+									 userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithFormat:NSLocalizedString(@"Connection to remote host failed with status code %d (%@).", @""), statusCode, [NSHTTPURLResponse localizedStringForStatusCode:statusCode]] forKey:NSLocalizedDescriptionKey]];
 		}
 		returnValue = NO;
 	}
