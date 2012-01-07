@@ -883,16 +883,34 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	if(!timer || !timer.valid)
 		return;
 
-	AutoTimerViewController *avc = [[AutoTimerViewController alloc] init];
-	avc.timer = [AutoTimer timerFromTimer:timer];
-	[avc loadSettings]; // start loading settings to determine available features
-	if(!self.isSplit)
-		[self.navigationController pushViewController:avc animated:YES];
+	AutoTimerViewController *avc = nil;
+	if(self.isSplit)
+	{
+		UIViewController *vc = mgSplitViewController.detailViewController;
+		if([vc isKindOfClass:[UINavigationController class]])
+		{
+			UINavigationController *nc = (UINavigationController *)vc;
+			if([[nc.viewControllers objectAtIndex:0] isKindOfClass:[AutoTimerViewController class]])
+			{
+				avc = [nc.viewControllers objectAtIndex:0];
+				[nc popToRootViewControllerAnimated:YES];
+			}
+		}
+		if(!avc)
+		{
+			avc = [[AutoTimerViewController alloc] init];
+			[avc loadSettings]; // start loading settings to determine available features
+			UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:avc];
+			self.mgSplitViewController.detailViewController = targetViewController;
+		}
+	}
 	else
 	{
-		UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:avc];
-		self.mgSplitViewController.detailViewController = targetViewController;
+		avc = [[AutoTimerViewController alloc] init];
+		[avc loadSettings]; // start loading settings to determine available features
+		[self.navigationController pushViewController:avc animated:YES];
 	}
+	avc.timer = [AutoTimer timerFromTimer:timer];
 	// NOTE: set this here so the edit button won't get screwed
 	avc.creatingNewTimer = YES;
 }
