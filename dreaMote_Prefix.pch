@@ -108,6 +108,7 @@
 #define showCompletedHudWithText(text) { \
 	UIView *view = self.navigationController.view; \
 	if(!view) view = self.view; \
+	if(!view) view = [UIApplication sharedApplication].keyWindow; \
 	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view]; \
 	[view addSubview:hud]; \
 	hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]]; \
