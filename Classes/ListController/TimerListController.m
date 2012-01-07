@@ -872,6 +872,13 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	// only do something on gesture start
 	if(gesture.state != UIGestureRecognizerStateBegan)
 		return;
+	// abort if no autotimer support
+	if(![[RemoteConnectorObject sharedRemoteConnector] hasFeature:kFeaturesAutoTimer])
+	{
+		gesture.enabled = NO; gesture.enabled = YES; // abort gesture
+		// NOTE: this does NOT fix "hold then scroll", but highlighting works again :)
+		return;
+	}
 
 	// get timer
 	UITableView *tableView = _tableView;
