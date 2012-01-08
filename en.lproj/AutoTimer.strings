@@ -25,6 +25,9 @@
 /* Label for cell 'maxdays_in_future' */
 /*"Add timer for the next X days" = "Add timer for the next X days";*/
 
+/* User has actived the after event during timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing. */
+/*"After event should only apply during timespan but no timespan given." = "After event should only apply during timespan but no timespan given.";*/
+
 /* timeframe after */
 /*"After: %@" = "After: %@";*/
 
@@ -51,6 +54,9 @@
 
 /* Editor Type: Regular Editor */
 /*"Classic" = "Classic";*/
+
+/* Label for switch controlling if after event action should only be modified during a given timespan. */
+/*"During timespan" = "During timespan";*/
 
 /* Text for cell with default editor for new autotimers on the receiver */
 /*"Editor for new Timers: %@" = "Editor for new Timers: %@";*/
@@ -169,6 +175,9 @@
 
 /* section header for timespan */
 /*"Timespan" = "Timespan";*/
+
+/* User has actived the timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing. */
+/*"Timespan selected but not configured." = "Timespan selected but not configured.";*/
 
 /* Search For Duplicates: in Title */
 /*"Title" = "Title";*/
