@@ -1140,6 +1140,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 - (Result *)editAutoTimer:(AutoTimer *)changeTimer
 {
 	NSMutableString *timerString = [NSMutableString stringWithCapacity:100];
+	NSCalendar *gregorian = nil;
 
 	[timerString appendString:@"/autotimer/edit?"];
 	[timerString appendFormat:@"match=%@&name=%@&enabled=%d&justplay=%d&setEndtime=%d", [changeTimer.match urlencode], [changeTimer.name urlencode], changeTimer.enabled ? 1 : 0, changeTimer.justplay ? 1 : 0, changeTimer.setEndtime ? 1 : 0];
@@ -1190,6 +1191,14 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	if(changeTimer.afterEventAction != kAfterEventMax)
 	{
 		[timerString appendFormat:@"&afterevent=%d", changeTimer.afterEventAction];
+		if(changeTimer.afterEventFrom && changeTimer.afterEventTo)
+		{
+			if(!gregorian) gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+			NSDateComponents *comps = [gregorian components:NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:changeTimer.afterEventFrom];
+			[timerString appendFormat:@"&aftereventFrom=%d:%d", [comps hour], [comps minute]];
+			comps = [gregorian components:NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:changeTimer.afterEventTo];
+			[timerString appendFormat:@"&aftereventTo=%d:%d", [comps hour], [comps minute]];
+		}
 	}
 	else
 	{
@@ -1198,7 +1207,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 	if(changeTimer.from && changeTimer.to)
 	{
-		const NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		if(!gregorian) gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents *comps = [gregorian components:NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:changeTimer.from];
 		[timerString appendFormat:@"&timespanFrom=%d:%d", [comps hour], [comps minute]];
 		comps = [gregorian components:NSHourCalendarUnit | NSMinuteCalendarUnit fromDate:changeTimer.to];

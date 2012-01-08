@@ -102,6 +102,8 @@ typedef enum
 @property (nonatomic) autoTimerAvoidDuplicateDescription avoidDuplicateDescription;
 @property (nonatomic) autoTimerSearchForDuplicateDescription searchForDuplicateDescription;
 @property (nonatomic) enum afterEvent afterEventAction;
+@property (nonatomic, strong) NSDate *afterEventFrom;
+@property (nonatomic, strong) NSDate *afterEventTo;
 @property (nonatomic) BOOL vps_enabled;
 @property (nonatomic) BOOL vps_overwrite;
 

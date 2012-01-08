@@ -15,7 +15,7 @@
 
 @implementation AutoTimer
 
-@synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, setEndtime, before, after, avoidDuplicateDescription, searchForDuplicateDescription, afterEventAction, vps_enabled, vps_overwrite;
+@synthesize name, match, enabled, idno, from, to, offsetBefore, offsetAfter, encoding, searchType, searchCase, overrideAlternatives, services, bouquets, tags, maxduration, location, justplay, setEndtime, before, after, avoidDuplicateDescription, searchForDuplicateDescription, afterEventAction, afterEventFrom, afterEventTo, vps_enabled, vps_overwrite;
 
 + (AutoTimer *)timer
 {
@@ -112,6 +112,8 @@
 		after = [autotimer.after copy];
 		avoidDuplicateDescription = autotimer.avoidDuplicateDescription;
 		afterEventAction = autotimer.afterEventAction;
+		afterEventFrom = [autotimer.afterEventFrom copy];
+		afterEventTo = [autotimer.afterEventTo copy];
 		includeTitle = [autotimer.includeTitle mutableCopy];
 		includeShortdescription = [autotimer.includeShortdescription mutableCopy];
 		includeDescription = [autotimer.includeDescription mutableCopy];

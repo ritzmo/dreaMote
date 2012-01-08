@@ -80,6 +80,7 @@ static const char *kEnigma2ATVpsOverwrite = "vps_overwrite";
 static const NSUInteger kEnigma2ATVpsOverwriteLength = 14;
 
 @interface Enigma2AutoTimerXMLReader()
+- (NSDate *)dateFromComponents:(NSString *)componentsString;
 @property (nonatomic, strong) AutoTimer *currentAT;
 @property (nonatomic, strong) NSObject<ServiceProtocol> *currentService;
 @end
@@ -106,6 +107,23 @@ static const NSUInteger kEnigma2ATVpsOverwriteLength = 14;
 	fakeObject.name = NSLocalizedString(@"Error retrieving Data", @"");
 	[(NSObject<AutoTimerSourceDelegate> *)_delegate addAutoTimer:fakeObject];
 	[super errorLoadingDocument:error];
+}
+
+- (NSDate *)dateFromComponents:(NSString *)componentsString
+{
+	NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
+	const NSArray *comps = [componentsString componentsSeparatedByString:@":"];
+	if([comps count] != 2)
+	{
+		return nil;
+	}
+	else
+	{
+		[components setHour:[[comps objectAtIndex:0] integerValue]];
+		[components setMinute:[[comps objectAtIndex:1] integerValue]];
+
+		return [gregorian dateFromComponents:components];
+	}
 }
 
 /*
@@ -153,42 +171,24 @@ static const NSUInteger kEnigma2ATVpsOverwriteLength = 14;
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATFrom, kEnigma2ATFromLength))
 			{
-				NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
-
-				const NSArray *comps = [value componentsSeparatedByString:@":"];
-				if([comps count] != 2)
+				currentAT.from = [self dateFromComponents:value];
+				if(!currentAT.from)
 				{
 #if IS_DEBUG()
 					[NSException raise:NSInternalInconsistencyException format:@"invalid 'from' received"];
 #endif
 					self.currentAT = nil;
 				}
-				else
-				{
-					[components setHour:[[comps objectAtIndex:0] integerValue]];
-					[components setMinute:[[comps objectAtIndex:1] integerValue]];
-
-					currentAT.from = [gregorian dateFromComponents:components];
-				}
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATTo, kEnigma2ATToLength))
 			{
-				NSDateComponents *components = [gregorian components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
-
-				const NSArray *comps = [value componentsSeparatedByString:@":"];
-				if([comps count] != 2)
+				currentAT.to = [self dateFromComponents:value];
+				if(!currentAT.to)
 				{
 #if IS_DEBUG()
 					[NSException raise:NSInternalInconsistencyException format:@"invalid 'to' received"];
 #endif
 					self.currentAT = nil;
-				}
-				else
-				{
-					[components setHour:[[comps objectAtIndex:0] integerValue]];
-					[components setMinute:[[comps objectAtIndex:1] integerValue]];
-
-					currentAT.to = [gregorian dateFromComponents:components];
 				}
 			}
 			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATOffset, kEnigma2ATOffsetLength))
@@ -328,7 +328,37 @@ static const NSUInteger kEnigma2ATVpsOverwriteLength = 14;
 	}
 	else if(!strncmp((const char *)localname, kEnigma2ATAfterevent, kEnigma2ATAftereventLength))
 	{
-		// optional: from/to as attribute (ignore in first version, just like gui on stb)
+		NSInteger i = 0;
+		for(; i < attributeCount; ++i)
+		{
+			const NSInteger valueLength = (int)(attributes[i].end - attributes[i].value);
+			NSString *value = [[NSString alloc] initWithBytes:(const void *)attributes[i].value
+                                                       length:valueLength
+                                                     encoding:NSUTF8StringEncoding];
+			if(!strncmp((const char*)attributes[i].localname, kEnigma2ATFrom, kEnigma2ATFromLength))
+			{
+				currentAT.afterEventFrom = [self dateFromComponents:value];
+				if(!currentAT.afterEventFrom)
+				{
+#if IS_DEBUG()
+					[NSException raise:NSInternalInconsistencyException format:@"invalid 'from' received"];
+#endif
+					self.currentAT = nil;
+				}
+			}
+			else if(!strncmp((const char*)attributes[i].localname, kEnigma2ATTo, kEnigma2ATToLength))
+			{
+				currentAT.afterEventTo = [self dateFromComponents:value];
+				if(!currentAT.afterEventTo)
+				{
+#if IS_DEBUG()
+					[NSException raise:NSInternalInconsistencyException format:@"invalid 'to' received"];
+#endif
+					self.currentAT = nil;
+				}
+			}
+		}
+
 		currentString = [[NSMutableString alloc] init];
 	}
 	else if(!strncmp((const char *)localname, kEnigma2Servicename, kEnigma2ServicenameLength))

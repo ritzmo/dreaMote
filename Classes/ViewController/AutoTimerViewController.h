@@ -55,6 +55,7 @@
 	UISwitch *_timerEnabled; /*!< @brief Enable/Disable Switch. */
 	UISwitch *_sensitiveSearch; /*!< @brief Case-(in)sensitive Search. */
 	UISwitch *_overrideAlternatives; /*!< @brief Override Alternatives? */
+	UISwitch *_afterEventTimespanSwitch; /*!< @brief AfterEvent only during timespan? */
 	UISwitch *_timeframeSwitch; /*!< @brief Enable/Disable Timeframe. */
 	UISwitch *_timerJustplay; /*!< @brief Create zap timers? */
 	UISwitch *_timerSetEndtime; /*!< @brief Set Endtime for zap timers? */

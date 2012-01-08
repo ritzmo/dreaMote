@@ -458,6 +458,10 @@ static NSArray *searchTypeTexts = nil;
 	{
 		[idxSet addIndex:vpsSection];
 	}
+	if([_tableView numberOfRowsInSection:aftereventSection] != [self tableView:_tableView numberOfRowsInSection:aftereventSection])
+	{
+		[idxSet addIndex:aftereventSection];
+	}
 
 	if(idxSet.count)
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
@@ -508,6 +512,12 @@ static NSArray *searchTypeTexts = nil;
 	_overrideAlternatives = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
 	_overrideAlternatives.on = _timer.overrideAlternatives;
 	_overrideAlternatives.backgroundColor = [UIColor clearColor];
+
+	// AfterEvent in Timespan?
+	_afterEventTimespanSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	[_afterEventTimespanSwitch addTarget:self action:@selector(showHideDetails:) forControlEvents:UIControlEventValueChanged];
+	_afterEventTimespanSwitch.on = (_timer.after != nil && _timer.before != nil);
+	_afterEventTimespanSwitch.backgroundColor = [UIColor clearColor];
 
 	// Timeframe
 	_timeframeSwitch = [[UISwitch alloc] initWithFrame: CGRectMake(0, 0, 300, kSwitchButtonHeight)];
@@ -563,6 +573,7 @@ static NSArray *searchTypeTexts = nil;
 		_timerEnabled.onTintColor = tintColor;
 		_sensitiveSearch.onTintColor = tintColor;
 		_overrideAlternatives.onTintColor = tintColor;
+		_afterEventTimespanSwitch.onTintColor = tintColor;
 		_timeframeSwitch.onTintColor = tintColor;
 		_timerJustplay.onTintColor = tintColor;
 		_timerSetEndtime.onTintColor = tintColor;
@@ -590,6 +601,7 @@ static NSArray *searchTypeTexts = nil;
 	_timerEnabled = nil;
 	_sensitiveSearch = nil;
 	_overrideAlternatives = nil;
+	_afterEventTimespanSwitch = nil;
 	_timeframeSwitch = nil;
 	_timerJustplay = nil;
 	_timerSetEndtime = nil;
@@ -657,6 +669,10 @@ static NSArray *searchTypeTexts = nil;
 			_timer.from = nil;
 			_timer.to = nil;
 		}
+		else if((_timer.from != nil && _timer.to == nil) || (_timer.from == nil && _timer.to != nil))
+		{
+			message = NSLocalizedStringFromTable(@"Timespan selected but not configured.", @"AutoTimer", @"User has actived the timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing.");
+		}
 
 		// timeframe
 		if(!_timeframeSwitch.on)
@@ -670,6 +686,17 @@ static NSArray *searchTypeTexts = nil;
 		// check timeframe sanity
 		else if([_timer.after compare:_timer.before] != NSOrderedAscending)
 			message = NSLocalizedString(@"Timeframe has to be ascending.", @"User requested AutoTimer timeframe but before if equal to or earlier than end.");
+
+		// after event during timespan
+		if(!_afterEventTimespanSwitch.on || autotimerSettings.api_version < 1.2)
+		{
+			_timer.afterEventFrom = nil;
+			_timer.afterEventTo = nil;
+		}
+		else if((_timer.afterEventFrom != nil && _timer.afterEventTo == nil) || (_timer.afterEventFrom == nil && _timer.afterEventTo != nil))
+		{
+			message = NSLocalizedStringFromTable(@"After event should only apply during timespan but no timespan given.", @"AutoTimer", @"User has actived the after event during timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing.");
+		}
 
 		_timer.enabled = _timerEnabled.on;
 		_timer.justplay = _timerJustplay.on;
@@ -750,6 +777,7 @@ static NSArray *searchTypeTexts = nil;
 	_timerEnabled.enabled = editing;
 	_sensitiveSearch.enabled = editing;
 	_overrideAlternatives.enabled = editing;
+	_afterEventTimespanSwitch.enabled = editing;
 	_timerJustplay.enabled = editing;
 	_timerSetEndtime.enabled = editing;
 	_timeframeSwitch.enabled = editing;
@@ -892,6 +920,7 @@ static NSArray *searchTypeTexts = nil;
 
 	UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:aftereventSection]];
 	[self setAfterEventText:cell];
+	[self showHideDetails:nil];
 }
 
 #pragma mark -
@@ -999,10 +1028,15 @@ static NSArray *searchTypeTexts = nil;
 	{
 		case titleSection:
 		case matchSection:
-		case aftereventSection:
 		case locationSection:
 		case tagsSection:
 			return 1;
+		case aftereventSection:
+			if(_timer.afterEventAction == kAfterEventMax || autotimerSettings.api_version < 1.2)
+				return 1;
+			if(_afterEventTimespanSwitch.on)
+				return 4;
+			return 2;
 		case generalSection:
 		{
 			NSInteger count = generalSectionRowMax;
@@ -1256,11 +1290,31 @@ static NSArray *searchTypeTexts = nil;
 			break;
 		}
 		case aftereventSection:
-			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
-			cell.accessoryType = UITableViewCellAccessoryNone;
-			cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
-			cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
-			[self setAfterEventText:cell];
+			if(row == 1)
+			{
+				cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+				((DisplayCell *)cell).view = _afterEventTimespanSwitch;
+				cell.textLabel.text = NSLocalizedStringFromTable(@"During timespan", @"AutoTimer", @"Label for switch controlling if after event action should only be modified during a given timespan.");
+			}
+			else
+			{
+				cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
+				cell.accessoryType = UITableViewCellAccessoryNone;
+				cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
+				cell.textLabel.font = [UIFont systemFontOfSize:kTextViewFontSize];
+				if(row == 0)
+				{
+					[self setAfterEventText:cell];
+				}
+				else if(row == 2)
+				{
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:_timer.afterEventFrom withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
+				}
+				else //if(row == 3)
+				{
+					cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:_timer.afterEventTo withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
+				}
+			}
 			break;
 		case locationSection:
 			cell = [BaseTableViewCell reusableTableViewCellInView:tableView withIdentifier:kBaseCell_ID];
@@ -1575,35 +1629,21 @@ static NSArray *searchTypeTexts = nil;
 					targetViewController = vc;
 			}
 			break;
-		case timespanSection:
-		{
+		case aftereventSection:
 			if(row == 0)
+			{
+				self.afterEventViewController.selectedItem = _timer.afterEventAction;
+				// FIXME: why gives directly assigning this an error?
+				const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
+				self.afterEventViewController.showAuto = showAuto;
+				self.afterEventViewController.showDefault = YES;
+
+				targetViewController = self.afterEventNavigationController;
 				break;
-
-			DatePickerController *vc = [[DatePickerController alloc] init];
-			if(IS_IPAD())
-			{
-				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
-				targetViewController.modalPresentationStyle = vc.modalPresentationStyle;
-				targetViewController.modalTransitionStyle = vc.modalTransitionStyle;
 			}
-			else
-				targetViewController = vc;
-
-			if(row == 1)
-			{
-				vc.date = [_timer.from copy];
-				vc.callback = ^(NSDate *date){[self fromSelected:date];};
-			}
-			else
-			{
-				vc.date = [_timer.to copy];
-				vc.callback = ^(NSDate *date){[self toSelected:date];};
-			}
-
-			[vc setDatePickerMode:UIDatePickerModeTime];
-			break;
-		}
+			else if(row == 1)
+				break;
+		case timespanSection:
 		case timeframeSection:
 		{
 			if(row == 0)
@@ -1619,21 +1659,63 @@ static NSArray *searchTypeTexts = nil;
 			else
 				targetViewController = vc;
 
-			if(row == 1)
+			if(indexPath.section == timespanSection)
 			{
-				vc.date = [_timer.after copy];
-				vc.callback = ^(NSDate *date){[self afterSelected:date];};
+				if(row == 1)
+				{
+					vc.date = [_timer.from copy];
+					vc.callback = ^(NSDate *date){[self fromSelected:date];};
+				}
+				else
+				{
+					vc.date = [_timer.to copy];
+					vc.callback = ^(NSDate *date){[self toSelected:date];};
+				}
+				[vc setDatePickerMode:UIDatePickerModeTime];
 			}
-			else
+			else if(indexPath.section == timeframeSection)
 			{
-				vc.date = [_timer.before copy];
-				vc.callback = ^(NSDate *date){[self beforeSelected:date];};
-			}
+				if(row == 1)
+				{
+					vc.date = [_timer.after copy];
+					vc.callback = ^(NSDate *date){[self afterSelected:date];};
+				}
+				else
+				{
+					vc.date = [_timer.before copy];
+					vc.callback = ^(NSDate *date){[self beforeSelected:date];};
+				}
 
-			// XXX: I would prefer UIDatePickerModeDateAndTime here but this does not provide us
-			// with a year selection, so restrict this to UIDatePickerModeDate for now (which is
-			// similar to the way it's handled on the receiver itself)
-			[vc setDatePickerMode:UIDatePickerModeDate];
+				// XXX: I would prefer UIDatePickerModeDateAndTime here but this does not provide us
+				// with a year selection, so restrict this to UIDatePickerModeDate for now (which is
+				// similar to the way it's handled on the receiver itself)
+				[vc setDatePickerMode:UIDatePickerModeDate];
+			}
+			else// if(indexPath.section == aftereventSection)
+			{
+				if(row == 2)
+					vc.date = [_timer.afterEventFrom copy];
+				else
+					vc.date = [_timer.afterEventTo copy];
+
+				vc.callback = ^(NSDate *date)
+				{
+					if(date == nil)
+						return;
+
+					if(row == 2)
+						_timer.afterEventFrom = date;
+					else
+						_timer.afterEventTo = date;
+
+					UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:indexPath.section]];
+					if(row == 2)
+						cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:date withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
+					else
+						cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"To: %@", @"AutoTimer", @"timespan to"), [self format_Time:date withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
+				};
+				[vc setDatePickerMode:UIDatePickerModeTime];
+			}
 			break;
 		}
 		case servicesSection:
@@ -1644,17 +1726,6 @@ static NSArray *searchTypeTexts = nil;
 			if(self.editing && row == 0)
 				targetViewController = self.bouquetListController;
 			break;
-		case aftereventSection:
-		{
-			self.afterEventViewController.selectedItem = _timer.afterEventAction;
-			// FIXME: why gives directly assigning this an error?
-			const BOOL showAuto = [[RemoteConnectorObject sharedRemoteConnector] hasFeature: kFeaturesTimerAfterEventAuto];
-			self.afterEventViewController.showAuto = showAuto;
-			self.afterEventViewController.showDefault = YES;
-
-			targetViewController = self.afterEventNavigationController;
-			break;
-		}
 		case locationSection:
 		{
 			const BOOL isIpad = IS_IPAD();
