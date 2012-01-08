@@ -569,7 +569,10 @@ enum bouquetListTags
 			[popoverController dismissPopoverAnimated:YES];
 			popoverController = nil;
 
-			[self performSelectorOnMainThread:@selector(itemSelected:) withObject:[NSNumber numberWithUnsignedInteger:selectedItem] waitUntilDone:NO];
+			if(!isClosing)
+				[self performSelectorOnMainThread:@selector(itemSelected:)
+									   withObject:[NSNumber numberWithUnsignedInteger:selectedItem]
+									waitUntilDone:NO];
 
 			return YES;
 		};
