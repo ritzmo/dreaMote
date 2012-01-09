@@ -277,7 +277,7 @@ enum serviceListTags
 	{
 		_refreshServices = YES;
 		// only refresh if visible
-		if([self.view superview])
+		if([self isViewLoaded] && [self.view superview])
 			[self viewWillAppear:NO];
 	}
 }
