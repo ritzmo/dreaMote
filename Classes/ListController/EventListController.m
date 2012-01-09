@@ -706,10 +706,13 @@
 	[_tableView beginUpdates];
 #endif
 	[_events addObjectsFromArray:items];
+#if IS_FULL()
+	EPGCache *epgCache = [EPGCache sharedInstance];
+#endif
 	for(NSObject<EventProtocol> *event in items)
 	{
 #if IS_FULL()
-		[[EPGCache sharedInstance] addEventOperation:event];
+		[epgCache addEventOperation:event];
 #endif
 		if(_useSections)
 		{
