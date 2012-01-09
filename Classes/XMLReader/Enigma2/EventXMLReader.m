@@ -100,6 +100,7 @@ typedef enum {
 		{
 			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 			self.nextItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
+			isNext = NO;
 		}
 	}
 	return self;
@@ -232,16 +233,8 @@ typedef enum {
 			default: break;
 			case RESPONSE_NOWNEXT:
 			{
-				if(isNext)
-				{
-					selector = @selector(addNextEvent:);
-					_getServices = YES;
-				}
-				else
-				{
-					selector = @selector(addNowEvent:);
-					_getServices = NO;
-				}
+				_getServices = isNext; // if current is "next", next event will be "now" and thus we need to get the service
+				selector = isNext ? @selector(addNextEvent:) : @selector(addNowEvent:);
 				isNext = !isNext;
 				/* FALL THROUGH */
 			}
