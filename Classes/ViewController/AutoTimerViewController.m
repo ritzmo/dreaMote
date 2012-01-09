@@ -462,6 +462,10 @@ static NSArray *searchTypeTexts = nil;
 	{
 		[idxSet addIndex:aftereventSection];
 	}
+	if([_tableView numberOfRowsInSection:generalSection] != [self tableView:_tableView numberOfRowsInSection:generalSection]) // possible problem with settings not being available
+	{
+		[idxSet addIndex:generalSection];
+	}
 
 	if(idxSet.count)
 		[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationFade];
