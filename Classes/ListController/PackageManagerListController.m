@@ -408,6 +408,13 @@
 	{
 		// NOTE: overly complicated because we change selection in both tables
 		PackageCell *cell = (PackageCell *)[tableView cellForRowAtIndexPath:indexPath];
+		if(![cell respondsToSelector:@selector(toggleMultiSelected)])
+		{
+#if IS_DEBUG()
+			[NSException raise:@"ExcInvalidCell" format:@"Cell (%@) at index %@ does not support multi selection: listType %d, reviewingChanges: %@", cell, indexPath, _listType, _reviewingChanges ? @"yes": @"no"];
+#endif
+		   return indexPath;
+		}
 		selected = [cell toggleMultiSelected];
 
 		package = cell.package;
@@ -419,6 +426,13 @@
 	else
 	{
 		PackageCell *cell = (PackageCell *)[tableView cellForRowAtIndexPath:indexPath];
+		if(![cell respondsToSelector:@selector(toggleMultiSelected)])
+		{
+#if IS_DEBUG()
+			[NSException raise:@"ExcInvalidCell" format:@"Cell (%@) at index %@ does not support multi selection: listType %d, reviewingChanges: %@", cell, indexPath, _listType, _reviewingChanges ? @"yes": @"no"];
+#endif
+			return indexPath;
+		}
 		selected = [cell toggleMultiSelected];
 		package = cell.package;
 	}
