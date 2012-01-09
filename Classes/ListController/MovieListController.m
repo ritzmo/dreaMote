@@ -742,6 +742,7 @@
 - (void)fetchData
 {
 	_reloading = YES;
+	_sortButton.enabled = NO;
 	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation];
 }
 
@@ -865,6 +866,7 @@
 	{
 		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
+	_sortButton.enabled = YES;
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
@@ -883,6 +885,7 @@
 	{
 		[super dataSourceDelegateFinishedParsingDocument:dataSource];
 	}
+	_sortButton.enabled = YES;
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
