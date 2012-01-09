@@ -1726,7 +1726,19 @@ enum serviceListTags
 {
 	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
 	UITableViewCell *cell = nil;
-	id firstObject = [array objectAtIndex:indexPath.row];
+	id firstObject = nil;
+	@try
+	{
+		firstObject = [array objectAtIndex:indexPath.row];
+	}
+	@catch (NSException *exception)
+	{
+		NSLog(@"[ServiceListController] Exception while trying to get element for cell (%d, %d - max %d): %@", indexPath.section, indexPath.row, [array count], [exception description]);
+#if IS_DEBUG()
+		[exception raise];
+#endif
+	}
+
 	if([firstObject conformsToProtocol:@protocol(EventProtocol)])
 	{
 		cell = [ServiceEventTableViewCell reusableTableViewCellInView:tableView withIdentifier:kServiceEventCell_ID];
