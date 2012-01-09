@@ -17,6 +17,7 @@
 #import "UITableViewCell+EasyInit.h"
 
 #import <ViewController/AutoTimerSettingsViewController.h>
+#import <ListController/SimulatedTimerListController.h>
 
 #import <TableViewCell/AutoTimerTableViewCell.h>
 #import <TableViewCell/BaseTableViewCell.h>
@@ -27,6 +28,7 @@
 
 @interface AutoTimerListController()
 - (void)openSettings:(id)sender;
+- (void)openPreview:(id)sender;
 - (void)parseEPG:(id)sender;
 @property (nonatomic, strong) AutoTimerSettings *settings;
 @end
@@ -111,7 +113,12 @@
 	if(self.settings)
 	{
 		const UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Settings", @"AutoTimer", @"Open Settings dialog") style:UIBarButtonItemStyleBordered target:self action:@selector(openSettings:)];
-		items = [[NSArray alloc] initWithObjects:settingsButton, flexItem, parseButton, nil];
+		items = [[NSMutableArray alloc] initWithObjects:settingsButton, flexItem, parseButton, nil];
+		if(self.settings.api_version >= 1.2)
+		{
+			const UIBarButtonItem *previewButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedStringFromTable(@"Preview", @"AutoTimer", @"Open Preview dialog") style:UIBarButtonItemStyleBordered target:self action:@selector(openPreview:)];
+			[(NSMutableArray *)items insertObject:previewButton atIndex:items.count-1];
+		}
 	}
 	else
 		items = [[NSArray alloc] initWithObjects:flexItem, parseButton, nil];
@@ -156,6 +163,23 @@
 
 	if(mgSplitViewController)
 	{
+		UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
+		self.mgSplitViewController.detailViewController = targetViewController;
+	}
+	else
+		[self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)openPreview:(id)sender
+{
+	if(self.settings.api_version < 1.2)
+		return;
+
+	SimulatedTimerListController *vc = [[SimulatedTimerListController alloc] init];
+
+	if(mgSplitViewController)
+	{
+		vc.isSlave = self.isSplit;
 		UIViewController *targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
 		self.mgSplitViewController.detailViewController = targetViewController;
 	}

@@ -788,6 +788,15 @@ enum packageManagementList
 - (BaseXMLReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate;
 
 /*!
+ @brief Retrieve List of Timers the current AutoTimers would generate.
+
+ @param delegate Delegate to be called back.
+ @return Pointer to newly created XMLReader.
+ */
+@optional // kFeaturesAutoTimer
+- (BaseXMLReader *)simulateAutoTimers:(NSObject<TimerSourceDelegate> *)delegate;
+
+/*!
  @brief Add new AutoTimer.
 
  @param newTimer AutoTimer to add.

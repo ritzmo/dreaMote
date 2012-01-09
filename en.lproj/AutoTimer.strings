@@ -1,3 +1,6 @@
+/* Acessibility value for simulated autotimers. Previous acessibility value (time string) followed by autotimer name */
+/*"%@, Auto-Timer %@" = "%1$@, Auto-Timer %2$@";*/
+
 /* Placeholder for maxdays field in AutoTimer settings (add timer for days on the next X days) */
 /*"<days>" = "<days>";*/
 
@@ -136,6 +139,10 @@
 /* Label for cell 'interval' */
 /*"Poll interval (in h)" = "Poll interval (in h)";*/
 
+/* Open Preview dialog
+   Title of SimulatedTimerListController */
+/*"Preview" = "Preview";*/
+
 /* Avoid Duplicate Description 1 (timers on same service) */
 /*"Same Service" = "Same Service";*/
 
@@ -160,6 +167,9 @@
 
 /* Label for cell 'show_in_extensionsmenu' */
 /*"Show in extension menu" = "Show in extension menu";*/
+
+/* Sort list by AutoTimer name */
+/*"Sort AutoTimer" = "Sort AutoTimer";*/
 
 /* Label for cell 'fastscan' */
 /*"Support \"Fast-Scan\"" = "Support \"Fast-Scan\"";*/

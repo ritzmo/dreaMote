@@ -37,6 +37,7 @@
 #import <XMLReader/Enigma2/LocationXMLReader.h>
 #import <XMLReader/Enigma2/ServiceXMLReader.h>
 #import <XMLReader/Enigma2/SignalXMLReader.h>
+#import <XMLReader/Enigma2/SimulatedTimerXMLReader.h>
 #import <XMLReader/Enigma2/SleepTimerXMLReader.h>
 #import <XMLReader/Enigma2/TagXMLReader.h>
 #import <XMLReader/Enigma2/TimerXMLReader.h>
@@ -1121,6 +1122,15 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer" relativeToURL:_baseAddress];
 
 	BaseXMLReader *streamReader = [[Enigma2AutoTimerXMLReader alloc] initWithDelegate:delegate];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
+}
+
+- (BaseXMLReader *)simulateAutoTimers:(NSObject<TimerSourceDelegate> *)delegate
+{
+	NSURL *myURI = [NSURL URLWithString:@"/autotimer/simulate" relativeToURL:_baseAddress];
+
+	BaseXMLReader *streamReader = [[Enigma2SimulatedTimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }

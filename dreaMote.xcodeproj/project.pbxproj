@@ -1232,6 +1232,10 @@
 		DAFB010614A27FFF00C2001F /* NotSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010214A27FFF00C2001F /* NotSelected@2x.png */; };
 		DAFB010714A27FFF00C2001F /* NotSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010214A27FFF00C2001F /* NotSelected@2x.png */; };
 		DAFB010814A27FFF00C2001F /* NotSelected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DAFB010214A27FFF00C2001F /* NotSelected@2x.png */; };
+		DAFB3D1B14BB232400E3EEDE /* SimulatedTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB3D1A14BB232400E3EEDE /* SimulatedTimer.m */; };
+		DAFB3D1F14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB3D1E14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.m */; };
+		DAFB3D2214BB287300E3EEDE /* SimulatedTimerXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB3D2114BB287300E3EEDE /* SimulatedTimerXMLReader.m */; };
+		DAFB3D2514BB2C0700E3EEDE /* SimulatedTimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAFB3D2414BB2C0700E3EEDE /* SimulatedTimerListController.m */; };
 		DAFB623E1496B16900263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62401496B16A00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62411496B16B00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
@@ -2023,6 +2027,14 @@
 		DAFAAE8813EBEBCE002A2E6A /* UIPromptView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPromptView.m; sourceTree = "<group>"; };
 		DAFB010114A27FFF00C2001F /* IsSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "IsSelected@2x.png"; sourceTree = "<group>"; };
 		DAFB010214A27FFF00C2001F /* NotSelected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NotSelected@2x.png"; sourceTree = "<group>"; };
+		DAFB3D1914BB232400E3EEDE /* SimulatedTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimulatedTimer.h; sourceTree = "<group>"; };
+		DAFB3D1A14BB232400E3EEDE /* SimulatedTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimulatedTimer.m; sourceTree = "<group>"; };
+		DAFB3D1D14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimulatedTimerTableViewCell.h; sourceTree = "<group>"; };
+		DAFB3D1E14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimulatedTimerTableViewCell.m; sourceTree = "<group>"; };
+		DAFB3D2014BB287300E3EEDE /* SimulatedTimerXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimulatedTimerXMLReader.h; sourceTree = "<group>"; };
+		DAFB3D2114BB287300E3EEDE /* SimulatedTimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimulatedTimerXMLReader.m; sourceTree = "<group>"; };
+		DAFB3D2314BB2C0700E3EEDE /* SimulatedTimerListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimulatedTimerListController.h; sourceTree = "<group>"; };
+		DAFB3D2414BB2C0700E3EEDE /* SimulatedTimerListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimulatedTimerListController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3124,6 +3136,8 @@
 				DAAAC5E7147926AF0030739E /* SimpleMultiSelectionListController.m */,
 				DAC8C0BC13B2014C00CA00D9 /* SimpleSingleSelectionListController.h */,
 				DAC8C0BD13B2014C00CA00D9 /* SimpleSingleSelectionListController.m */,
+				DAFB3D2314BB2C0700E3EEDE /* SimulatedTimerListController.h */,
+				DAFB3D2414BB2C0700E3EEDE /* SimulatedTimerListController.m */,
 				DAC8C0BE13B2014C00CA00D9 /* TimerListController.h */,
 				DAC8C0BF13B2014C00CA00D9 /* TimerListController.m */,
 			);
@@ -3213,6 +3227,8 @@
 				DAC8C0F213B2014C00CA00D9 /* Service.m */,
 				DAC8C0F313B2014C00CA00D9 /* Signal.h */,
 				DAC8C0F413B2014C00CA00D9 /* Signal.m */,
+				DAFB3D1914BB232400E3EEDE /* SimulatedTimer.h */,
+				DAFB3D1A14BB232400E3EEDE /* SimulatedTimer.m */,
 				DAC8C0F513B2014C00CA00D9 /* SleepTimer.h */,
 				DAC8C0F613B2014C00CA00D9 /* SleepTimer.m */,
 				DAAAC5D614791D320030739E /* Tag.h */,
@@ -3311,6 +3327,8 @@
 				DAC8C13313B2014D00CA00D9 /* ServiceEventTableViewCell.m */,
 				DAC8C13413B2014D00CA00D9 /* ServiceTableViewCell.h */,
 				DAC8C13513B2014D00CA00D9 /* ServiceTableViewCell.m */,
+				DAFB3D1D14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.h */,
+				DAFB3D1E14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.m */,
 				DAC8C13613B2014D00CA00D9 /* TimerTableViewCell.h */,
 				DAC8C13713B2014D00CA00D9 /* TimerTableViewCell.m */,
 			);
@@ -3465,6 +3483,8 @@
 				DAC8C1A213B2014D00CA00D9 /* MovieXMLReader.m */,
 				DAC8C1A313B2014D00CA00D9 /* ServiceXMLReader.h */,
 				DAC8C1A413B2014D00CA00D9 /* ServiceXMLReader.m */,
+				DAFB3D2014BB287300E3EEDE /* SimulatedTimerXMLReader.h */,
+				DAFB3D2114BB287300E3EEDE /* SimulatedTimerXMLReader.m */,
 				DAC8C1A513B2014D00CA00D9 /* SignalXMLReader.h */,
 				DAC8C1A613B2014D00CA00D9 /* SignalXMLReader.m */,
 				DAC8C1A713B2014D00CA00D9 /* SleepTimerXMLReader.h */,
@@ -4373,6 +4393,10 @@
 				DA56B12814AC71E20082BB0C /* SBJsonBase.m in Sources */,
 				DA56B12B14AC71E20082BB0C /* SBJsonParser.m in Sources */,
 				DA56B12E14AC71E20082BB0C /* SBJsonWriter.m in Sources */,
+				DAFB3D1B14BB232400E3EEDE /* SimulatedTimer.m in Sources */,
+				DAFB3D1F14BB23CA00E3EEDE /* SimulatedTimerTableViewCell.m in Sources */,
+				DAFB3D2214BB287300E3EEDE /* SimulatedTimerXMLReader.m in Sources */,
+				DAFB3D2514BB2C0700E3EEDE /* SimulatedTimerListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
