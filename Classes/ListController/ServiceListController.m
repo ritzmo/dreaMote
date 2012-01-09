@@ -158,6 +158,7 @@ enum serviceListTags
 {
 	// Same bouquet assigned, abort
 	if(_bouquet == new) return;
+	const BOOL animated = [self isViewLoaded] && self.view.superview != nil;
 	_bouquet = [new copy];
 
 	// Set Title
@@ -168,7 +169,7 @@ enum serviceListTags
 	_supportsNowNext = [RemoteConnectorObject showNowNext];
 	isAll = NO;
 	_reloading = YES;
-	[_searchDisplay setActive:NO animated:YES];
+	[_searchDisplay setActive:NO animated:animated];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 	[self emptyData];
 	_refreshServices = NO;
@@ -179,16 +180,16 @@ enum serviceListTags
 		if(IS_IPHONE() && [UIDevice olderThanIos:5.0f])
 			topOffset += searchBar.frame.size.height;
 #endif
-		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:YES];
+		[_tableView setContentOffset:CGPointMake(0, topOffset) animated:animated];
 	}
 
 	// Eventually remove popover
 	if(self.popoverController != nil) {
-        [self.popoverController dismissPopoverAnimated:YES];
+        [self.popoverController dismissPopoverAnimated:animated];
     }
 	if(self.popoverZapController)
 	{
-		[self.popoverZapController dismissPopoverAnimated:YES];
+		[self.popoverZapController dismissPopoverAnimated:animated];
 		self.popoverZapController = nil;
 	}
 
