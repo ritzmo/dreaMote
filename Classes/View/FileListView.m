@@ -147,6 +147,8 @@
 {
 	NSUInteger idx = 0;
 	NSUInteger playing = _playing;
+	const BOOL noUpdate = reloading || ([self numberOfRowsInSection:0] != [self tableView:self numberOfRowsInSection:0]);
+
 	for(NSObject<FileProtocol> *file in _files)
 	{
 		if([file.title isEqualToString: filename])
@@ -158,7 +160,7 @@
 					[idxPaths addObject:[NSIndexPath indexPathForRow:playing inSection: 0]];
 
 				_playing = idx;
-				if(!reloading)
+				if(!noUpdate)
 					[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
 				return YES;
 			}
@@ -170,7 +172,7 @@
 	{
 		_playing = NSNotFound;
 
-		if(!reloading)
+		if(!noUpdate)
 			[self reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:playing inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 		return YES;
 	}
