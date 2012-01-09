@@ -124,7 +124,7 @@
 "All Services" = "Wszystkie Serwisy";
 
 /* No comment provided by engineer. */
-/*"Always ask" = "Zawsze pytaj";*/
+"Always ask" = "Zawsze pytaj";
 
 /* No comment provided by engineer. */
 "An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Wystąpił nieoczekiwany błąd (%@) po usuwaniu nagrania.\nOdśwież listę ręcznie, aby zobaczyć zmianę!";
@@ -209,7 +209,7 @@
 "Close MediaPlayer?" = "Zamknąć MediaPlayer?";
 
 /* HUD: Code was successfully used to unlock in-app-purchase */
-/*"Code redeemed" = "Kod użyty";*/
+"Code redeemed" = "Kod użyty";
 
 /* Default Title of ConfigListController
    Default title of ConfigViewController */
@@ -228,7 +228,7 @@
 "Connecting…" = "Łączenie…";
 
 /* No comment provided by engineer. */
-/*"Connection failure with status code %d ignored." = "Błąd połączenia z kodem stanu %d zignorowany.";*/
+"Connection failure with status code %d ignored." = "Błąd połączenia z kodem stanu %d zignorowany.";
 
 /* Configuration item to choose connection timeout
    Default title of TimeoutSelectionViewController */
@@ -250,7 +250,7 @@
 "Control the remote media player" = "Kontroluj zdalnie Media Player";
 
 /* Label for cell with setting vpsplugin_overwrite */
-/*"Controlled by service" = "Kontrolowany przez serwis";*/
+"Controlled by service" = "Kontrolowany przez serwis";
 
 /* Title of ControlViewController */
 "Controls" = "Kontrolki";
@@ -305,7 +305,7 @@
 
 /* Label of cell in config which gives default zap type
    Title of default zap type selection */
-/*"Default Zap-Type" = "Domyślny Typ Zap";*/
+"Default Zap-Type" = "Domyślny Typ Zap";
 
 /* Delete button in MediaPlayer
    Delete button in MovieList
@@ -343,7 +343,7 @@
 "Enable audio" = "Włącz sygnał dźwiękowy";
 
 /* Label for cell with setting vpsplugin_enabled */
-/*"Enable VPS" = "Włącz VPS";*/
+"Enable VPS" = "Włącz VPS";
 
 /* No comment provided by engineer. */
 "Enabled" = "Włącz";
@@ -445,7 +445,7 @@
 "Finished" = "Zakończono";
 
 /* Accessbility label for twitter button */
-/*"Follow dreaMote on Twitter" = "Śledź dreaMote na Twitterze";*/
+"Follow dreaMote on Twitter" = "Śledź dreaMote na Twitterze";
 
 /* Forget previous purchases in config list (debug builds only) */
 "Forget Purchases" = "Forget Purchases";
@@ -457,7 +457,7 @@
 "Friday" = "Piątek";
 
 /* Accessibility value for table cells with events (timespan of an event) */
-/*"from %@ to %@" = "od %1$@ do %2$@";*/
+"from %@ to %@" = "od %1$@ do %2$@";
 
 /* in timer settings dialog */
 "General" = "Ogólne";
@@ -520,7 +520,7 @@
 "Invalid timer object received: %@." = "Odebrano nieprawidłowy obiekt z timera: %@.";
 
 /* No comment provided by engineer. */
-/*"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported." = "Wygląda na to, że używasz tzw. \"OpenWebif\",proszę pamiętać, że zawiera znane bugi i nie jest oficjalnie wspierany.";*/
+"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported." = "Wygląda na to, że używasz tzw. \"OpenWebif\",proszę pamiętać, że zawiera znane bugi i nie jest oficjalnie wspierany.";
 
 /* No comment provided by engineer. */
 "Justplay" = "Tylko Odtwarzaj";
@@ -544,7 +544,7 @@
 "Locations" = "Lokalizacje";
 
 /* Label for cell with setting vpsplugin_time */
-/*"Manual Time" = "Czas Ręczny";*/
+"Manual Time" = "Czas Ręczny";
 
 /* No comment provided by engineer. */
 "Master" = "Podstawowy";
@@ -647,7 +647,7 @@
 "Next" = "Następny";
 
 /* Accessibility text of 'next' button in MultiEPG */
-/*"Next page" = "Nast. dtrona";*/
+"Next page" = "Nast. dtrona";
 
 /* Name of night theme */
 "Night" = "Noc";
@@ -686,7 +686,7 @@
 "not encrypted" = "nie zaszyfrowane";
 
 /* Accessibility text for unselected cells in multi selection */
-/*"not selected" = "nie zaznaczono";*/
+"not selected" = "nie zaznaczono";
 
 /* After Event */
 "Nothing" = "Nic";
@@ -756,7 +756,7 @@
 "Previous" = "Poprzednie";
 
 /* Accessibility text of 'back' button in MultiEPG */
-/*"Previous page" = "Poprzednia strona";*/
+"Previous page" = "Poprzednia strona";
 
 /* MultiEPG change to 20:00 */
 "Primetime" = "Pasmo Programowe";
@@ -916,13 +916,13 @@
 "Select type of zap" = "Wybierz typ zap'u";
 
 /* Accessibility text for selected cells in multi selection */
-/*"selected" = "zaznaczono";*/
+"selected" = "zaznaczono";
 
 /* No comment provided by engineer. */
 "Send" = "Wyślij";
 
 /* Accessibility label for mail button */
-/*"Send E-Mail to Support" = "Wyślij E-Mail'a do pomocy technicznej";*/
+"Send E-Mail to Support" = "Wyślij E-Mail'a do pomocy technicznej";
 
 /* Explaination of Message View in Other List */
 "Send short Messages" = "Wyślij krótkie wiadomości do tunera";
@@ -1179,7 +1179,7 @@
 "Volume" = "Głośność";
 
 /* Section title in timer settings dialog */
-/*"VPS" = "VPS";*/
+"VPS" = "VPS";
 
 /* Timer type */
 "Waiting" = "Oczekiwanie";

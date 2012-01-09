@@ -1,5 +1,5 @@
 /* Acessibility value for simulated autotimers. Previous acessibility value (time string) followed by autotimer name */
-/*"%@, Auto-Timer %@" = "%1$@, Auto-Timer %2$@";*/
+"%@, Auto-Timer %@" = "%1$@, Auto-Timer %2$@";
 
 /* Placeholder for maxdays field in AutoTimer settings (add timer for days on the next X days) */
 "<days>" = "<days>";
@@ -29,7 +29,7 @@
 "Add timer for the next X days" = "Dodaj Timer na następne X dni";
 
 /* User has actived the after event during timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing. */
-/*"After event should only apply during timespan but no timespan given." = "Po wydarzeniu powinien być stosowany wyłącznie w danym przedziale czasu, ale nie danym przedziale czasu.";*/
+"After event should only apply during timespan but no timespan given." = "Po wydarzeniu powinien być stosowany wyłącznie w danym przedziale czasu, ale nie danym przedziale czasu.";
 
 /* timeframe after */
 "After: %@" = "Po: %@";
@@ -59,7 +59,7 @@
 "Classic" = "Klasyczny";
 
 /* Label for switch controlling if after event action should only be modified during a given timespan. */
-/*"During timespan" = "Podczas przedziału czasowego";*/
+"During timespan" = "Podczas przedziału czasowego";
 
 /* Text for cell with default editor for new autotimers on the receiver */
 "Editor for new Timers: %@" = "Edytor dla nowych Timerów: %@";
@@ -141,7 +141,7 @@
 
 /* Open Preview dialog
    Title of SimulatedTimerListController */
-/*"Preview" = "Podgląd";*/
+"Preview" = "Podgląd";
 
 /* Avoid Duplicate Description 1 (timers on same service) */
 "Same Service" = "Taki sam Serwis";
@@ -169,7 +169,7 @@
 "Show in extension menu" = "Pokaż w rozszerzonym menu";
 
 /* Sort list by AutoTimer name */
-/*"Sort AutoTimer" = "Sortuj AutoTimer'a";*/
+"Sort AutoTimer" = "Sortuj AutoTimer'a";
 
 /* Label for cell 'fastscan' */
 "Support \"Fast-Scan\"" = "Wsparcie \"Fast-Scan\"";
@@ -187,7 +187,7 @@
 "Timespan" = "Przedział Czasowy";
 
 /* User has actived the timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing. */
-/*"Timespan selected but not configured." = "Przedział czasowy wybrany, ale nie jest ustawiony.";*/
+"Timespan selected but not configured." = "Przedział czasowy wybrany, ale nie jest ustawiony.";
 
 /* Search For Duplicates: in Title */
 "Title" = "Tytuł";
@@ -214,7 +214,7 @@
 "Unique in" = "Unikalny";
 
 /* section header for vps-plugin */
-/*"VPS" = "VPS";*/
+"VPS" = "VPS";
 
 /* Editor Type: Wizard */
 "Wizard" = "Kreator";
