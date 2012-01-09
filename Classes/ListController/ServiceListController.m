@@ -2059,11 +2059,11 @@ enum serviceListTags
 	NSObject<ServiceProtocol> *service = nil;
 	const CGPoint p = [gesture locationInView:tableView];
 	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
-	id objectAtIndexPath = [_mainList objectAtIndex:indexPath.row];
-	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
-		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
-	else
-		service = objectAtIndexPath;
+	const UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	if([cell isKindOfClass:[ServiceEventTableViewCell class]])
+		service = ((ServiceEventTableViewCell *)cell).now.service;
+	else// if([cell isKindOfClass:[ServiceTableViewCell class]])
+		service = ((ServiceTableViewCell *)cell).service;
 
 	// Check for invalid service
 	if(!service || !service.valid)
