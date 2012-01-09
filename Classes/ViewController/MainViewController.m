@@ -117,7 +117,7 @@
 	image = [UIImage imageNamed: @"others.png"];
 	_otherController.tabBarItem.image = image;
 
-	self.viewControllers = menuList;
+	self.viewControllers = [menuList copy];
 	self.selectedViewController = [menuList lastObject];
 	self.delegate = self;
 
@@ -248,7 +248,7 @@
 	UIImage *image = [UIImage imageNamed: @"remote.png"];
 	_rcController.tabBarItem.image = image;
 
-	[self performSelectorOnMainThread:@selector(setViewControllers:) withObject:menuList waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(setViewControllers:) withObject:[menuList copy] waitUntilDone:NO];
 	} // end synchronized
 }
 
