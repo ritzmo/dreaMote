@@ -167,7 +167,9 @@
 /* finish */
 - (void)doneAction:(id)sender
 {
-	if(callback)
+	autotimerfilter_callback_t call = callback;
+	callback = nil;
+	if(call)
 	{
 		__unsafe_unretained NSString *text = nil;
 
@@ -179,8 +181,6 @@
 		if([text isEqualToString:@""])
 			text = nil;
 
-		autotimerfilter_callback_t call = callback;
-		callback = nil;
 		call(YES, text, filterType, include, oldText, oldInclude);
 	}
 }
