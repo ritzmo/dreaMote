@@ -241,13 +241,14 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 {
 	[super setEditing: editing animated: animated];
 
-	/*_vibrateInRC.enabled = editing;
-	_simpleRemote.enabled = editing;*/
-
 	// Animate if requested
 	if(animated)
 	{
-		if(editing)
+		if([self tableView:_tableView numberOfRowsInSection:0] == [_tableView numberOfRowsInSection:0])
+		{
+			// ignore
+		}
+		else if(editing)
 		{
 			[_tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:0 inSection:0]]
 							  withRowAnimation:UITableViewRowAnimationFade];
