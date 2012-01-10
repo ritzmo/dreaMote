@@ -48,4 +48,15 @@ NSString *kSimulatedTimerCell_ID = @"SimulatedTimerCell_ID";
 	[autotimerName drawAtPoint:point forWidth:forWidth withFont:tertiaryFont lineBreakMode:UILineBreakModeTailTruncation];
 }
 
+/* Workaround for accessory */
+- (void)setAccessoryType:(UITableViewCellAccessoryType)accessoryType
+{
+	[super setAccessoryType:UITableViewCellAccessoryNone];
+}
+
+- (void)setEditingAccessoryType:(UITableViewCellAccessoryType)editingAccessoryType
+{
+	[super setEditingAccessoryType:UITableViewCellAccessoryNone];
+}
+
 @end
