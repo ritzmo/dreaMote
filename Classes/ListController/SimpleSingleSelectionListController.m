@@ -131,7 +131,9 @@
 {
 	const NSUInteger previousSelection = selectedItem;
 	selectedItem = indexPath.row;
-	const BOOL willDispose = callback ? callback(selectedItem, NO, NO) : NO;
+	simplesingleselection_callback_t call = callback;
+	callback = nil;
+	const BOOL willDispose = call ? call(selectedItem, NO, NO) : NO;
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -142,9 +144,8 @@
 
 		cell = [tableView cellForRowAtIndexPath:indexPath];
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
+		callback = call;
 	}
-	else
-		callback = nil;
 }
 
 #pragma mark - UIViewController delegate methods
