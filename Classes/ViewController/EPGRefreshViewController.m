@@ -582,6 +582,8 @@ enum generalSectionItems
 			/* FALL THROUGH */
 		case generalSection:
 			return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
+		case startSection:
+			return 0; // we want some spacing at the top
 		default:
 			return 0.0001;
 	}
