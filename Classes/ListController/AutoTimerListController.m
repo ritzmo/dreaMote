@@ -283,6 +283,7 @@
 {
 	// NOTE: theoretically we might need to copy this, but since we use a sax reader for the settings this is ok
 	self.settings = anItem;
+	_autotimerView.autotimerSettings = anItem;
 	[self configureToolbar];
 }
 

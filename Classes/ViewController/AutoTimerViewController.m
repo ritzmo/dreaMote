@@ -329,6 +329,14 @@ static NSArray *searchTypeTexts = nil;
 	[self setEditing:YES animated:YES];
 }
 
+- (void)setAutotimerSettings:(AutoTimerSettings *)as
+{
+	if(autotimerSettings == as) return;
+	autotimerSettings = as;
+	if(_tableView && self.view.superview)
+		[_tableView reloadData];
+}
+
 - (void)setAutotimerVersion:(NSInteger)newVersion
 {
 	if(!autotimerSettings)
