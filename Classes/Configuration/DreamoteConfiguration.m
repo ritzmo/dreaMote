@@ -705,7 +705,7 @@
 
 - (CGFloat)simulatedTimerCellHeight
 {
-	return 63;
+	return 65;
 }
 
 - (CGFloat)eventNameTextSize

@@ -41,7 +41,7 @@ NSString *kSimulatedTimerCell_ID = @"SimulatedTimerCell_ID";
 	DreamoteConfiguration *singleton = [DreamoteConfiguration singleton];
 	UIFont *tertiaryFont = [UIFont systemFontOfSize:singleton.timerTimeTextSize];
 
-	CGPoint point = CGPointMake(offsetX + kLeftMargin, contentRect.size.height-tertiaryFont.lineHeight);
+	CGPoint point = CGPointMake(offsetX + kLeftMargin, contentRect.size.height-tertiaryFont.lineHeight-2);
 	CGFloat forWidth = boundsWidth - point.x;
 
 	NSString *autotimerName = [self.timer isKindOfClass:[SimulatedTimer class]] ? ((SimulatedTimer *)self.timer).autotimerName : nil;

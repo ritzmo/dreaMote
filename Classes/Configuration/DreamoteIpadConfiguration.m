@@ -84,7 +84,7 @@
 
 - (CGFloat)simulatedTimerCellHeight
 {
-	return 81;
+	return 83;
 }
 
 - (CGFloat)metadataCellHeight
