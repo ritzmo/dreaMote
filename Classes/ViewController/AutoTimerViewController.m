@@ -360,7 +360,9 @@ static NSArray *searchTypeTexts = nil;
 
 - (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	// ignore
+#if IS_DEBUG()
+	NSLog(@"[%@] dataSourceDelegate:%@ errorParsingDocument:%@", [self class], dataSource, error);
+#endif
 }
 
 - (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
