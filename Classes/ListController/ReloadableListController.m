@@ -182,6 +182,14 @@
 	// no error -> probably handled by child class
 	if(!error)
 		return;
+	if(![error isKindOfClass:[NSError class]])
+	{
+#if IS_DEBUG()
+		[NSException raise:@"ExcErrorasInvalidClass" format:@"dataSourceDelegate:%@ errorParsingDocument:%@", dataSource, error];
+#else
+		return; // abort
+#endif
+	}
 
 	// Alert user
 	const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed to retrieve data", @"Title of Alert when retrieving remote data failed.")
