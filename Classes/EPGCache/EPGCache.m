@@ -385,16 +385,23 @@
 
 	@synchronized(self)
 	{
+		if(database == NULL)
+			return; // called multiple times, just abort
+
+		sqlite3 *db = database;
+		sqlite3_stmt *stmt = insert_stmt;
+
 		[queue cancelAllOperations];
 		_service = nil;
 
-		// stop transcation
-		sqlite3_exec(database, "COMMIT", 0, 0, 0);
-
-		sqlite3_finalize(insert_stmt);
 		insert_stmt = NULL;
-		sqlite3_close(database);
 		database = NULL;
+
+		// stop transaction
+		sqlite3_exec(db, "COMMIT", 0, 0, 0);
+
+		sqlite3_finalize(stmt);
+		sqlite3_close(db);
 	}
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self willEnterForeground:nil]; // abuse willEnterForeground to kill an eventual background thread
