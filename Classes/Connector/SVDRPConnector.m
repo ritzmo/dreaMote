@@ -155,7 +155,7 @@ typedef enum
 	}
 }
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
 {
 	// check if delegate wants to be informated about errors
 	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
@@ -168,12 +168,13 @@ typedef enum
 										code:100
 									userInfo:[NSDictionary dictionaryWithObject:NSLocalizedString(@"Remote host unreachable.", @"") forKey:NSLocalizedDescriptionKey]];
 		}
+		__unsafe_unretained NSError *invocationError = error;
 
 		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
-		[invocation setArgument:&error atIndex:3];
+		[invocation setArgument:&invocationError atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}

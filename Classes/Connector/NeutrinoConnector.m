@@ -234,19 +234,20 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 	}
 }
 
-- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(__unsafe_unretained NSError *)error
+- (void)indicateError:(NSObject<DataSourceDelegate> *)delegate error:(NSError *)error
 {
 	// check if delegate wants to be informated about errors
 	SEL errorParsing = @selector(dataSourceDelegate:errorParsingDocument:);
 	NSMethodSignature *sig = [delegate methodSignatureForSelector:errorParsing];
 	if(delegate && [delegate respondsToSelector:errorParsing] && sig)
 	{
+		__unsafe_unretained NSError *invocationError = error;
 		NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:sig];
 		[invocation retainArguments];
 		[invocation setTarget:delegate];
 		[invocation setSelector:errorParsing];
 		//[invocation setArgument:&self atIndex:2];
-		[invocation setArgument:&error atIndex:3];
+		[invocation setArgument:&invocationError atIndex:3];
 		[invocation performSelectorOnMainThread:@selector(invoke) withObject:NULL
 								  waitUntilDone:NO];
 	}
