@@ -955,7 +955,7 @@
 #endif
 	}
 #if INCLUDE_FEATURE(Extra_Animation)
-	if(indexPaths)
+	if(indexPaths && indexPaths.count)
 		[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
 #endif
 }
