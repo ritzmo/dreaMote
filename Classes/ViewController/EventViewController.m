@@ -649,6 +649,7 @@
 	[item setAlternateText:[[item text] stringByAppendingFormat:@" <br/><br/>%@", _summaryView.text] toShareOn:@"Email"];
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
+	[SHK setRootViewController:self];
 	[actionSheet showInView:self.view];
 }
 
