@@ -743,6 +743,7 @@
 {
 	_reloading = YES;
 	_sortButton.enabled = NO;
+	_tagButton.enabled = NO;
 	_xmlReader = [[RemoteConnectorObject sharedRemoteConnector] fetchMovielist:self withLocation:_currentLocation];
 }
 
@@ -867,6 +868,7 @@
 		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 	_sortButton.enabled = YES;
+	_tagButton.enabled = allTags.count > 0;
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
@@ -886,6 +888,7 @@
 		[super dataSourceDelegateFinishedParsingDocument:dataSource];
 	}
 	_sortButton.enabled = YES;
+	_tagButton.enabled = allTags.count > 0;
 #if IS_FULL()
 	[_tableView setContentOffset:CGPointMake(0, searchBar.frame.size.height) animated:YES];
 #endif
