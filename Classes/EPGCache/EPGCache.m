@@ -37,6 +37,11 @@
 - (NSObject<EventProtocol> *)getEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service returnNext:(BOOL)next;
 
 /*!
+ @brief Make sure the database file exists.
+ */
+-(void)checkDatabase;
+
+/*!
  @brief Application did enter background.
  */
 - (void)didEnterBackground:(NSNotification *)note;
@@ -66,6 +71,15 @@
 		_databasePath = [kEPGCachePath stringByExpandingTildeInPath];
 		queue = [[NSOperationQueue alloc] init];
 		[queue setMaxConcurrentOperationCount:1];
+		[self checkDatabase];
+		if(sqlite3_open([_databasePath UTF8String], &database) != SQLITE_OK)
+		{
+			NSLog(@"[%@] Unable to open database %@ with message: %s (%d, %d)", [self class], _databasePath, sqlite3_errmsg(database), sqlite3_errcode(database), sqlite3_extended_errcode(database));
+#if IS_DEBUG()
+			[NSException raise:@"FailedToLoadEpgCache" format:@"Unable to open database %@ with message: %s (%d, %d)", _databasePath, sqlite3_errmsg(database), sqlite3_errcode(database), sqlite3_extended_errcode(database)];
+#endif
+			database = NULL;
+		}
 	}
 	return self;
 }
@@ -73,6 +87,12 @@
 - (void)dealloc
 {
 	[queue cancelAllOperations];
+	sqlite3_stmt *stmt = insert_stmt;
+	insert_stmt = NULL;
+	sqlite3_finalize(stmt);
+	sqlite3 *db = database;
+	database = NULL;
+	sqlite3_close(db);
 }
 
 - (BOOL)reloading
@@ -134,11 +154,9 @@
 /* search previous/next event */
 - (NSObject<EventProtocol> *)getEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service returnNext:(BOOL)next
 {
-	sqlite3 *db = NULL;
 	GenericEvent *newEvent = nil;
-	[self checkDatabase];
 
-	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	if(database != NULL)
 	{
 		char *stmt = NULL;
 		if(next)
@@ -147,7 +165,7 @@
 			stmt = "SELECT * FROM events WHERE begin < ? AND sref = ? ORDER BY begin DESC LIMIT 0,1;";
 
 		sqlite3_stmt *compiledStatement = NULL;
-		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 		{
 			sqlite3_bind_int64(compiledStatement, 1, [event.begin timeIntervalSince1970]);
 			sqlite3_bind_text(compiledStatement, 2, [service.sref UTF8String], -1, SQLITE_TRANSIENT);
@@ -167,7 +185,6 @@
 		}
 		sqlite3_finalize(compiledStatement);
 	}
-	sqlite3_close(db);
 
 	return newEvent;
 }
@@ -319,7 +336,7 @@
 - (BOOL)startTransaction:(NSObject<ServiceProtocol> *)service
 {
 	// cannot start transaction while one is already running
-	if(database != NULL)
+	if(insert_stmt != NULL || _service)
 	{
 #if IS_DEBUG()
 		NSLog(@"[EPGCache] There already is a transcation active for service %@. Can't start transaction for service %@", _service.sname, service.sname);
@@ -328,17 +345,22 @@
 	}
 
 	BOOL retVal = YES;
-	[self checkDatabase];
-	_service = [service copy];
-
-	retVal = (sqlite3_open([_databasePath UTF8String], &database) == SQLITE_OK);
-	if(retVal)
+	@synchronized(self)
 	{
+		if(insert_stmt != NULL || _service)
+		{
+#if IS_DEBUG()
+			NSLog(@"[%@] There already is a transcation active for service %@. Can't start transaction for service %@ (2nd try)", [self class], _service.sname, service.sname);
+#endif
+			return NO;
+		}
+
+		[queue cancelAllOperations];
+		_service = [service copy];
+
 		const char *stmt = "INSERT INTO events (eit, begin, end, title, sdescription, edescription, sref, sname) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 		if(sqlite3_prepare_v2(database, stmt, -1, &insert_stmt, NULL) != SQLITE_OK)
 		{
-			sqlite3_close(database);
-			database = NULL;
 			retVal = NO;
 		}
 		else if(service != nil)
@@ -360,9 +382,7 @@
 					else
 					{
 						sqlite3_finalize(insert_stmt);
-						sqlite3_close(database);
 						insert_stmt = NULL;
-						database = NULL;
 						[NSException raise:@"FailedToClearEpgCache" format:@"failed to clear epg cache for service %@ (%@) due to error %s (%d: %d)", _service.sname, _service.sref, sqlite3_errmsg(database), errcode, sqlite3_extended_errcode(database)];
 					}
 #else
@@ -382,27 +402,24 @@
 /* stop current transaction */
 - (void)stopTransaction
 {
-	if(database == NULL) return;
+	if(insert_stmt == NULL) return;
 
 	@synchronized(self)
 	{
-		if(database == NULL)
+		if(insert_stmt == NULL)
 			return; // called multiple times, just abort
 
-		sqlite3 *db = database;
 		sqlite3_stmt *stmt = insert_stmt;
 
 		[queue cancelAllOperations];
 		_service = nil;
 
 		insert_stmt = NULL;
-		database = NULL;
 
 		// stop transaction
-		sqlite3_exec(db, "COMMIT", 0, 0, 0);
+		sqlite3_exec(database, "COMMIT", 0, 0, 0);
 
 		sqlite3_finalize(stmt);
-		sqlite3_close(db);
 	}
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self willEnterForeground:nil]; // abuse willEnterForeground to kill an eventual background thread
@@ -439,14 +456,11 @@
 /* remove old events from cache */
 - (void)cleanCache
 {
-	sqlite3 *db = NULL;
-	[self checkDatabase];
-
-	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	if(database != NULL)
 	{
 		const char *stmt = "DELETE FROM events WHERE end <= ?;";
 		sqlite3_stmt *compiledStatement = NULL;
-		if(sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
+		if(sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL) == SQLITE_OK)
 		{
 			// TODO: make interval configurable? previous events could be interesting.
 			NSDate *now = [NSDate date];
@@ -455,8 +469,6 @@
 		}
 		sqlite3_finalize(compiledStatement);
 	}
-
-	sqlite3_close(db);
 }
 
 /* read epg for given time interval */
@@ -475,11 +487,9 @@
 		return;
 	}
 
-	sqlite3 *db = NULL;
 	NSError *error = nil;
-	[self checkDatabase];
 
-	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	if(database != NULL)
 	{
 		const char *stmt = "SELECT * FROM events WHERE end >= ? AND begin <= ? ORDER BY begin ASC;";
 		sqlite3_stmt *compiledStatement = NULL;
@@ -487,7 +497,7 @@
 		NSInteger retries = 0;
 		do
 		{
-			int rc = sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL);
+			int rc = sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL);
 
 			/* database busy and still retries */
 			if(rc == SQLITE_BUSY && retries < kMaxRetries)
@@ -548,8 +558,6 @@
 	{
 		[self indicateSuccess:delegate];
 	}
-
-	sqlite3_close(db);
 }
 
 - (NSObject<EventProtocol> *)getNextEvent:(NSObject<EventProtocol> *)event onService:(NSObject<ServiceProtocol> *)service
@@ -565,11 +573,9 @@
 /* perform simple epg search */
 - (void)searchEPGForTitle:(NSString *)name delegate:(NSObject<EventSourceDelegate> *)delegate
 {
-	sqlite3 *db = NULL;
 	NSError *error = nil;
-	[self checkDatabase];
 
-	if(sqlite3_open([_databasePath UTF8String], &db) == SQLITE_OK)
+	if(database != NULL)
 	{
 		const char *stmt = "SELECT * FROM events WHERE title LIKE ? ORDER BY begin ASC;";
 		sqlite3_stmt *compiledStatement = NULL;
@@ -577,7 +583,7 @@
 		NSInteger retries = 0;
 		do
 		{
-			int rc = sqlite3_prepare_v2(db, stmt, -1, &compiledStatement, NULL);
+			int rc = sqlite3_prepare_v2(database, stmt, -1, &compiledStatement, NULL);
 
 			/* database busy and still retries */
 			if(rc == SQLITE_BUSY && retries < kMaxRetries)
@@ -639,8 +645,6 @@
 	{
 		[self indicateSuccess:delegate];
 	}
-
-	sqlite3_close(db);
 }
 
 #pragma mark - Background Task Management
