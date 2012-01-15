@@ -367,8 +367,11 @@ enum bouquetListTags
 			[self.navigationController popToRootViewControllerAnimated:NO]; // return to bouquet list, so we can push the service list without any problems
 		}
 		[_serviceListController setEditing:self.editing animated:YES];
+#if IS_FULL()
+		if(![SSKManager isFeaturePurchased:kServiceEditorPurchase])
+#endif
+			[self.navigationController setToolbarHidden:YES animated:YES];
 		[self.navigationController pushViewController:_serviceListController animated:YES];
-		[self.navigationController setToolbarHidden:YES animated:YES];
 	}
 	else
 		[_serviceListController.navigationController popToRootViewControllerAnimated: YES];
