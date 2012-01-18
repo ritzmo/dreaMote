@@ -1123,9 +1123,9 @@
 		DAC8C36A13B2014D00CA00D9 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C1B313B2014D00CA00D9 /* SaxXmlReader.m */; };
 		DAC8C36B13B2014D00CA00D9 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C1B313B2014D00CA00D9 /* SaxXmlReader.m */; };
 		DAC8C36C13B2014D00CA00D9 /* SaxXmlReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C1B313B2014D00CA00D9 /* SaxXmlReader.m */; };
-		DAC8C44713B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C44813B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C44913B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DAC8C44713B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; };
+		DAC8C44813B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; };
+		DAC8C44913B201BA00CA00D9 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C3BA13B201B900CA00D9 /* MBProgressHUD.m */; };
 		DAC8C49313B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
 		DAC8C49413B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
 		DAC8C49513B2023200CA00D9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C49213B2023200CA00D9 /* main.m */; };
