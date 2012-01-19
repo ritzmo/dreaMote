@@ -19,6 +19,14 @@
 @interface RCButton : UIButton
 
 /*!
+ @brief Set the background image for this button.
+ Uses an explicit method to set the background image by filename
+ so we have it internally for the accessibility texts.
+ @param filename Name of the file to be used as background.
+ */
+- (void)setBackgroundFromFilename:(NSString *)filename;
+
+/*!
  @brief Rc Code.
  */
 @property (nonatomic) NSInteger rcCode;

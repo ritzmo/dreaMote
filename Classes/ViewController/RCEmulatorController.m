@@ -292,11 +292,7 @@
 {
 	RCButton *uiButton = [[RCButton alloc] initWithFrame: frame];
 	uiButton.rcCode = keyCode;
-	if(imagePath != nil){
-		UIImage *image = [UIImage imageNamed:imagePath];
-		[uiButton setBackgroundImage:image forState:UIControlStateHighlighted];
-		[uiButton setBackgroundImage:image forState:UIControlStateNormal];
-	}
+	[uiButton setBackgroundFromFilename:imagePath];
 	[uiButton addTarget:self action:@selector(buttonPressed:)
 				forControlEvents:UIControlEventTouchUpInside];
 
