@@ -22,7 +22,7 @@
 #import <TableViewCell/DisplayCell.h>
 #import "Constants.h"
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #if IS_FULL()
 	#import <ViewController/AutoTimerViewController.h>
@@ -258,7 +258,7 @@
 
 - (void)fetchEvents
 {
-	BaseXMLReader *newReader = nil;
+	SaxXmlReader *newReader = nil;
 	@try {
 		newReader = [[RemoteConnectorObject sharedRemoteConnector] searchEPGSimilar:self event:_event];
 	}
@@ -274,12 +274,12 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// ignore error
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	//[_tableView reloadData];
 }

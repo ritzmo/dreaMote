@@ -358,14 +358,14 @@ static NSArray *searchTypeTexts = nil;
 #pragma mark DataSourceDelegate methods
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 #if IS_DEBUG()
 	NSLog(@"[%@] dataSourceDelegate:%@ errorParsingDocument:%@", [self class], dataSource, error);
 #endif
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	// ignore
 }

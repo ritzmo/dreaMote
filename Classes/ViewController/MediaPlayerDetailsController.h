@@ -14,7 +14,7 @@
 #import "MetadataSourceDelegate.h"
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
-@class BaseXMLReader;
+@class SaxXmlReader;
 
 @interface MediaPlayerDetailsController : MediaPlayerController <UITableViewDelegate,
 															UITableViewDataSource,
@@ -26,7 +26,7 @@
 	UIImage *_currentCover; /*!< @brief Coverart to currently playing track. */
 	UITableView *_tableView; /*!< @brief "Main" Table view. */
 
-	BaseXMLReader *_xmlReaderMetadata; /*!< @brief Track metadata. */
+	SaxXmlReader *_xmlReaderMetadata; /*!< @brief Track metadata. */
 }
 
 /*!

@@ -17,7 +17,7 @@
 
 #import <View/GradientView.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 #import <XMLReader/SaxXmlReader.h>
 
 @implementation ReloadableListController
@@ -170,9 +170,9 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	if(dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+	if(dataSource == _xmlReader)
 		_xmlReader = nil;
 
 	_reloading = NO;
@@ -200,9 +200,9 @@
 	[alert show];
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
-	if(dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+	if(dataSource == _xmlReader)
 		_xmlReader = nil;
 
 	_reloading = NO;

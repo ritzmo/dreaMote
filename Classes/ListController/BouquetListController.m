@@ -23,7 +23,7 @@
 #import <Objects/Generic/Result.h>
 #import <Objects/Generic/Service.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #import "SSKManager.h"
 
@@ -490,7 +490,7 @@ enum bouquetListTags
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	_radioButton.enabled = YES;
 	// assume details will fail too if in split
@@ -505,7 +505,7 @@ enum bouquetListTags
 		[super dataSourceDelegate:dataSource errorParsingDocument:error];
 	}
 }
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	_radioButton.enabled = YES;
 	if(isSplit)

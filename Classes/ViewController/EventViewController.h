@@ -16,7 +16,7 @@
 #import <EventKitUI/EventKitUI.h>
 
 // Forward declarations...
-@class BaseXMLReader;
+@class SaxXmlReader;
 
 /*!
  @brief Event View.
@@ -43,7 +43,7 @@
 	UITableView *_tableView; /*!< @brief Table View. */
 
 	NSDateFormatter *_dateFormatter; /*!< @brief Date Formatter. */
-	BaseXMLReader *_xmlReader; /*!< @brief Current Event XML Reader. */
+	SaxXmlReader *_xmlReader; /*!< @brief Current Event XML Reader. */
 }
 
 /*!

@@ -20,7 +20,7 @@
 
 #import <TableViewCell/SimulatedTimerTableViewCell.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #import "MBProgressHUD.h"
 
@@ -99,7 +99,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	if([error domain] == NSURLErrorDomain)
 	{
@@ -117,7 +117,7 @@
 	[super dataSourceDelegate:dataSource errorParsingDocument:error];
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	self.sortTitle = _sortTitle; // sort
 	_reloading = NO;

@@ -213,7 +213,7 @@
 #pragma mark -
 
 // NOTE: can't use super because it has modifications for the search bar
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	_reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
@@ -231,7 +231,7 @@
 	[alert show];
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	if(_useSections)
 		[self sortEventsInSections]; // calls reloadData by itself

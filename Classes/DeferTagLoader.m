@@ -12,7 +12,7 @@
 
 @interface DeferTagLoader()
 @property (nonatomic, strong) NSMutableArray *tags;
-@property (nonatomic, strong) BaseXMLReader *xmlReader;
+@property (nonatomic, strong) SaxXmlReader *xmlReader;
 @end
 
 @implementation DeferTagLoader
@@ -27,7 +27,7 @@
 	return self;
 }
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	tagLoaderCallback_t call = callback;
 	callback = nil;
@@ -35,7 +35,7 @@
 		call(tags, NO);
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	tagLoaderCallback_t call = callback;
 	callback = nil;

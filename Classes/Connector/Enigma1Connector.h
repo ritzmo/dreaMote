@@ -8,7 +8,7 @@
 
 #import <Connector/RemoteConnector.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #import <libxml/parser.h>
 #import <libxml/tree.h>

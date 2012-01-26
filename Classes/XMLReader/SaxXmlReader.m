@@ -8,10 +8,16 @@
 
 #import "SaxXmlReader.h"
 
-#import "AppDelegate.h"
-#import "RemoteConnectorObject.h"
+#import <Delegates/AppDelegate.h>
+#import <Connector/RemoteConnectorObject.h>
+
+#import <Constants.h>
 
 #import "NSObject+Queue.h"
+
+@interface SynchronousRequestReader()
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
+@end
 
 @interface SaxXmlReader()
 - (void)charactersFound:(const xmlChar *)characters length:(int)length;
@@ -25,6 +31,19 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 @implementation SaxXmlReader
 
 @synthesize currentString, currentItems;
+@synthesize delegate = _delegate;
+@synthesize encoding;
+
+/* initialize */
+- (id)init
+{
+	if((self = [super init]))
+	{
+		_timeout = kTimeout;
+		encoding = NSUTF8StringEncoding;
+	}
+	return self;
+}
 
 - (void)dealloc
 {
@@ -34,6 +53,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 - (BOOL)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error
 {
+	NSError *failureReason = nil;
 	@autoreleasepool
 	{
 		NSURLRequest *request = [[NSURLRequest alloc] initWithURL:URL
@@ -54,7 +74,8 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 			_xmlParserContext = xmlCreatePushParserCtxt(&libxmlSAXHandlerStruct, (__bridge void *)(self), NULL, 0, NULL);
 			xmlCtxtUseOptions(_xmlParserContext, XML_PARSE_NOENT | XML_PARSE_RECOVER);
 
-			while(!_done)
+			_running = YES;
+			while(_running)
 			{
 				[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 			}
@@ -63,6 +84,8 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 
 			xmlFreeParserCtxt(_xmlParserContext);
 			_xmlParserContext = NULL;
+
+			failureReason = self.error;
 		}
 		else
 		{
@@ -134,13 +157,13 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	NSDictionary *userInfo = [NSDictionary dictionaryWithObject:msg forKey:NSLocalizedDescriptionKey];
 	NSError *error = [NSError errorWithDomain:@"ParsingDomain" code:101 userInfo:userInfo];
 	xmlStopParser(_xmlParserContext); // abort parsing (NOTE: we might want to gather all errors first)
-	failureReason = error;
-	_done = YES;
+	self.error = error;
+	_running = NO;
 }
 
 - (void)endDocument
 {
-	_done = YES;
+	_running = NO;
 }
 
 #pragma mark dummy methods
@@ -164,48 +187,6 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 #pragma mark NSURLConnection delegate methods
 #pragma mark -
 
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
-{
-	return YES;
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
-{
-	if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
-	{
-		// TODO: ask user to accept certificate
-		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
-			 forAuthenticationChallenge:challenge];
-		return;
-	}
-	else if([challenge previousFailureCount] < 2) // ssl might have failed already
-	{
-		NSURLCredential *creds = [RemoteConnectorObject getCredential];
-		if(creds)
-		{
-			[challenge.sender useCredential:creds forAuthenticationChallenge:challenge];
-			return;
-		}
-	}
-
-	// NOTE: continue just swallows all errors while cancel gives a weird message,
-	// but a weird message is better than no response
-	//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
-	[challenge.sender cancelAuthenticationChallenge:challenge];
-}
-
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
-{
-	return nil;
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-	failureReason = error;
-
-	_done = YES;
-}
-
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	xmlParseChunk(_xmlParserContext, (const char *)[data bytes], [data length], 0);
@@ -223,6 +204,11 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 			NSError *error = [NSError errorWithDomain:NSURLErrorDomain
 												 code:statusCode
 											 userInfo:userInfo];
+
+			// release parser so it does not overwrite our custom error due to a race condition
+			xmlFreeParserCtxt(_xmlParserContext);
+			_xmlParserContext = NULL;
+
 			[self connection:connection didFailWithError:error];
 		}
 	}
@@ -231,7 +217,7 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
 	xmlParseChunk(_xmlParserContext, NULL, 0, 1);
-	// NOTE: don't set _done, instead let the parser to it because it will be destroyed afterwards
+	// NOTE: don't set _running, instead let the parser do it because it will be destroyed afterwards
 }
 
 @end

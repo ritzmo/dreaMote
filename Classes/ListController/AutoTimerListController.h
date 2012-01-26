@@ -29,7 +29,7 @@
 	AutoTimerViewController *_autotimerView; /*!< @brief AutoTimer View. */
 	NSInteger _autotimerVersion; /*! @brief Version of AutoTimer in use. */
 
-	BaseXMLReader *_xmlReaderSub; /*! @brief Second XML Reader (for Settings) */
+	SaxXmlReader *_xmlReaderSub; /*! @brief Second XML Reader (for Settings) */
 }
 
 /*!

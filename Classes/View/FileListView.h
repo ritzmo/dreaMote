@@ -11,7 +11,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "FileSourceDelegate.h"
 
-@class BaseXMLReader;
+@class SaxXmlReader;
 @protocol FileProtocol;
 @protocol FileListDelegate;
 
@@ -23,7 +23,7 @@
 	BOOL _isPlaylist; /*!< @brief Is playlist? */
 	NSInteger _playing; /*!< @brief Item marked as currently playing. */
 
-	BaseXMLReader *_xmlReader; /*!< @brief XML Reader. */
+	SaxXmlReader *_xmlReader; /*!< @brief XML Reader. */
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 	NSMutableArray *_files; /*!< @brief Current List of Files. */
 	NSMutableArray *_selected; /*!< @brief List of selected Files. */

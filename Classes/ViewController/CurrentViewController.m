@@ -145,7 +145,7 @@
 
 - (void)fetchData
 {
-	BaseXMLReader *newReader = nil;
+	SaxXmlReader *newReader = nil;
 	@try {
 		_reloading = YES;
 		newReader = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
@@ -178,7 +178,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:_tableView];
 	_reloading = NO;

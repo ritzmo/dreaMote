@@ -24,7 +24,7 @@
 
 #import "MBProgressHUD.h"
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #define deleteExtraWidth	35
 #define kTransitionDuration	(CGFloat)0.6
@@ -129,7 +129,7 @@ enum mediaPlayerTags
 
 - (void)fetchAbout
 {
-	BaseXMLReader *newReader = nil;
+	SaxXmlReader *newReader = nil;
 	@try {
 		newReader = [[RemoteConnectorObject sharedRemoteConnector] getAbout:self];
 	}
@@ -143,7 +143,7 @@ enum mediaPlayerTags
 
 - (void)fetchCurrent
 {
-	BaseXMLReader *newReader = nil;
+	SaxXmlReader *newReader = nil;
 	@try {
 		newReader = [[RemoteConnectorObject sharedRemoteConnector] getCurrent:self];
 	}
@@ -998,13 +998,13 @@ enum mediaPlayerTags
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// we want the playlist to indicate errors, since this is a recurring event
 	// the annoyance would be huge
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	//
 }

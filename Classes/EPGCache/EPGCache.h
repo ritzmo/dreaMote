@@ -15,7 +15,7 @@
 
 // forward declare
 @protocol EPGCacheDelegate;
-@class BaseXMLReader;
+@class SaxXmlReader;
 
 /*!
  @brief Local EPGCache.
@@ -31,7 +31,7 @@
 	NSObject<ServiceProtocol> *_bouquet;
 	NSObject<EPGCacheDelegate> *_delegate;
 	NSMutableArray *_serviceList;
-	BaseXMLReader *_xmlReader;
+	SaxXmlReader *_xmlReader;
 
 	NSOperationQueue *queue; /*!< @brief Queue with pending event additions. */
 	UIBackgroundTaskIdentifier _backgroundTask; /*!< @brief Identifier for current background task. */

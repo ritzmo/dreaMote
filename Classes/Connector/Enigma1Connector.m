@@ -316,7 +316,7 @@ enum enigma1MessageTypes {
 	return error;
 }
 
-- (BaseXMLReader *)fetchBouquetsOrProvider:(NSObject<ServiceSourceDelegate> *)delegate cacheType:(cacheType)requestedCacheType
+- (SaxXmlReader *)fetchBouquetsOrProvider:(NSObject<ServiceSourceDelegate> *)delegate cacheType:(cacheType)requestedCacheType
 {
 	[_bouquetsCacheLock lock];
 	xmlFreeDoc(_cachedBouquetsDoc); _cachedBouquetsDoc = NULL; // TODO: bouquets always force a reload
@@ -384,12 +384,12 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
-- (BaseXMLReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	return [self fetchBouquetsOrProvider:delegate cacheType:CACHE_MASK_BOUQUET|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 }
 
-- (BaseXMLReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	return [self fetchBouquetsOrProvider:delegate cacheType:CACHE_MASK_PROVIDER|(isRadio ? CACHE_TYPE_RADIO : CACHE_TYPE_TV)];
 }
@@ -405,7 +405,7 @@ enum enigma1MessageTypes {
 	return service;
 }
 
-- (BaseXMLReader *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	// split view on ipad
 	if(!bouquet)
@@ -514,13 +514,13 @@ enum enigma1MessageTypes {
 	return nil;
 }
 
-- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (SaxXmlReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/xml/serviceepg?ref=%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[EnigmaEventXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	return streamReader;
 }
@@ -558,13 +558,13 @@ enum enigma1MessageTypes {
 
 #pragma mark Timer
 
-- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/timers" relativeToURL: _baseAddress];
 
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[EnigmaTimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	return streamReader;
 }
@@ -696,7 +696,7 @@ enum enigma1MessageTypes {
 	return [self zapInternal: movie.sref];
 }
 
-- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location
+- (SaxXmlReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location
 {
 	if(location != nil)
 	{
@@ -710,7 +710,7 @@ enum enigma1MessageTypes {
 
 	NSError *parseError = nil;
 
-	BaseXMLReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[EnigmaMovieXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:&parseError];
 	return streamReader;
 }
@@ -766,11 +766,11 @@ enum enigma1MessageTypes {
 
 #pragma mark Control
 
-- (BaseXMLReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+- (SaxXmlReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/xml/currentservicedata" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[EnigmaCurrentXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[EnigmaCurrentXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -920,7 +920,7 @@ enum enigma1MessageTypes {
 
 	NSError *parseError = nil;
 
-	const BaseXMLReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithDelegate: delegate];
+	const SaxXmlReader *streamReader = [[EnigmaSignalXMLReader alloc] initWithDelegate: delegate];
 	[streamReader parseXMLFileAtURL: myURI parseError: &parseError];
 }
 
@@ -1035,7 +1035,7 @@ enum enigma1MessageTypes {
 
 #pragma mark Unsupported
 
-- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];

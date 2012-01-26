@@ -488,9 +488,9 @@ typedef void (^dismiss_block_t)(UIActionSheet *actionSheet, NSInteger buttonInde
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
-	if(dataSource && dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+	if(dataSource == _xmlReader)
 		_xmlReader = nil;
 
 	if(--pendingRequests == 0)
@@ -509,9 +509,9 @@ typedef void (^dismiss_block_t)(UIActionSheet *actionSheet, NSInteger buttonInde
 	}
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
-	if(dataSource && dataSource == _xmlReader && [dataSource isKindOfClass:[SaxXmlReader class]])
+	if(dataSource == _xmlReader)
 		_xmlReader = nil;
 
 	if(--pendingRequests == 0)

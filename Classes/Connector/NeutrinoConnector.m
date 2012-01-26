@@ -289,7 +289,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 	return result;
 }
 
-- (BaseXMLReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -344,7 +344,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 	return nil;
 }
 
-- (BaseXMLReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -363,17 +363,17 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/getbouquet?xml=true&bouquet=%@&mode=TV", bouquet.sref] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[NeutrinoServiceXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (SaxXmlReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	// TODO: Maybe we should not hardcode "max"
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true", service.sref] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -404,7 +404,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 #pragma mark Timer
 
 // TODO: reimplement this as streaming parser some day :-)
-- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	// Generate URI
 	NSURL *myURI = [NSURL URLWithString:@"/control/timer?format=id" relativeToURL:_baseAddress];
@@ -669,7 +669,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 
 #pragma mark Recordings
 
-- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+- (SaxXmlReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	// is this possible?
 	return nil;
@@ -678,7 +678,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 #pragma mark Control
 
 // XXX: not working correctly (does not skip old events if they are returned), hence the feature is still disabled
-- (BaseXMLReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+- (SaxXmlReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/control/zapto" relativeToURL: _baseAddress];
 
@@ -697,7 +697,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 
 	NSString *serviceId = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 	myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/control/epg?xml=true&channelid=%@&details=true&max=50", [serviceId urlencode]] relativeToURL:_baseAddress];
-	BaseXMLReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetCurrent:YES];
+	SaxXmlReader *streamReader = [[NeutrinoEventXMLReader alloc] initWithDelegate:delegate andGetCurrent:YES];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 
 	return streamReader;
@@ -996,7 +996,7 @@ static NSString *ywebIdentifier[YWEB_VERSION_MAX] = {
 
 #pragma mark Unsupported
 
-- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];

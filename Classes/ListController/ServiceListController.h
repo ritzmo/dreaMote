@@ -19,7 +19,7 @@
 #endif
 
 // Forward declarations
-@class BaseXMLReader;
+@class SaxXmlReader;
 @class EventListController;
 @protocol ServiceProtocol;
 
@@ -99,7 +99,7 @@
 	UISearchBar *searchBar; /*!< @brief Search bar. */
 	UISearchDisplayController *_searchDisplay; /*!< @brief Search display. */
 
-	BaseXMLReader *_xmlReaderSub; /*!< XMLReader for list of 'Next' events if showing now/next. */
+	SaxXmlReader *_xmlReaderSub; /*!< XMLReader for list of 'Next' events if showing now/next. */
 }
 
 /*!

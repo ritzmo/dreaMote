@@ -18,7 +18,7 @@
 
 #import <Objects/FileProtocol.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 @interface FileListView()
 - (void)fetchData;
@@ -133,7 +133,7 @@
 /* start download of file list */
 - (void)fetchData
 {
-	BaseXMLReader *newReader = nil;
+	SaxXmlReader *newReader = nil;
 	reloading = YES;
 	if(self.isPlaylist)
 		newReader = [[RemoteConnectorObject sharedRemoteConnector] fetchPlaylist:self];
@@ -227,7 +227,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	reloading = NO;
 	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self];
@@ -245,7 +245,7 @@
 	}
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 #if INCLUDE_FEATURE(Extra_Animation)
 	[self reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];

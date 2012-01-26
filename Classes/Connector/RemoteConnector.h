@@ -251,7 +251,7 @@ enum packageManagementList
 // Forward declarations...
 @class AutoTimer;
 @class AutoTimerSettings;
-@class BaseXMLReader;
+@class SaxXmlReader;
 @class EPGRefreshSettings;
 @class Result;
 @class SleepTimer;
@@ -382,7 +382,7 @@ enum packageManagementList
  @param isRadio Fetch radio bouquets?
  @return Pointer to newly created XMLReader.
  */
-- (BaseXMLReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
+- (SaxXmlReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
 
 /*!
  @brief Fetch list of available Providers.
@@ -392,7 +392,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesProviderList
-- (BaseXMLReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
+- (SaxXmlReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio;
 /*!
  @brief Return service describing the 'All Services'-Bouquet.
 
@@ -410,7 +410,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @required
-- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service;
+- (SaxXmlReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service;
 
 /*!
  @brief Fetch Services of a given Bouquet.
@@ -421,7 +421,7 @@ enum packageManagementList
  @param isRadio Fetch radio services?
  @return Pointer to newly created XMLReader.
  */
-- (BaseXMLReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+- (SaxXmlReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request list of current and upcoming event from the receiver.
@@ -432,7 +432,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesOptimizedNowNext
-- (BaseXMLReader *)getNowNext:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+- (SaxXmlReader *)getNowNext:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request bouquet list by upcoming event from the receiver.
@@ -443,7 +443,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesNowNext
-- (BaseXMLReader *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+- (SaxXmlReader *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request bouquet list by currently playing event from the receiver.
@@ -454,7 +454,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesNowNext
-- (BaseXMLReader *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+- (SaxXmlReader *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
 
 /*!
  @brief Request stream URL for given service.
@@ -474,7 +474,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesEPGSearch
-- (BaseXMLReader *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title;
+- (SaxXmlReader *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title;
 
 /*!
  @brief Search EPG for Similar Events.
@@ -486,7 +486,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesEPGSearchSimilar
-- (BaseXMLReader *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
+- (SaxXmlReader *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event;
 
 /*!
  @brief Zap to given service.
@@ -542,7 +542,7 @@ enum packageManagementList
  @param delegate Delegate to be called back.
  @return Pointer to newly created XMLReader.
  */
-- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate;
 
 /*!
  @brief Request list of all available Tags from the Receiver.
@@ -551,7 +551,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesRecordingLocations
-- (BaseXMLReader *)fetchTags:(NSObject<TagSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchTags:(NSObject<TagSourceDelegate> *)delegate;
 
 #pragma mark -
 #pragma mark Recordings
@@ -583,7 +583,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesRecordingLocations
-- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 
 /*!
  @brief Add a new location.
@@ -612,7 +612,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesRecordInfo
-- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
+- (SaxXmlReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation:(NSString *)location;
 
 /*!
  @brief Request stream URL for given movie.
@@ -662,7 +662,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesMediaPlayer
-- (BaseXMLReader *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path;
+- (SaxXmlReader *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path;
 
 /*!
  @brief Request playlist from the receiver.
@@ -671,7 +671,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesMediaPlayer
-- (BaseXMLReader *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate;
 
 /*!
  @brief Request a file from the Receiver.
@@ -689,7 +689,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesMediaPlayerMetadata
-- (BaseXMLReader *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
+- (SaxXmlReader *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate;
 
 /*!
  @brief Send command to MediaPlayer.
@@ -767,7 +767,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesAutoTimer
-- (BaseXMLReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate;;
+- (SaxXmlReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate;;
 
 /*!
  @brief Modify AutoTimer settings.
@@ -785,7 +785,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesAutoTimer
-- (BaseXMLReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate;
 
 /*!
  @brief Retrieve List of Timers the current AutoTimers would generate.
@@ -794,7 +794,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesAutoTimer
-- (BaseXMLReader *)simulateAutoTimers:(NSObject<TimerSourceDelegate> *)delegate;
+- (SaxXmlReader *)simulateAutoTimers:(NSObject<TimerSourceDelegate> *)delegate;
 
 /*!
  @brief Add new AutoTimer.
@@ -835,7 +835,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesEPGRefresh
-- (BaseXMLReader *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate;
+- (SaxXmlReader *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate;
 
 /*!
  @brief Retrieve EPGRefresh services.
@@ -844,7 +844,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesEPGRefresh
-- (BaseXMLReader *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate;
+- (SaxXmlReader *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate;
 
 /*!
  @brief Commit changes in EPGRefresh settings to receiver.
@@ -876,7 +876,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesSleepTimer
-- (BaseXMLReader *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate;
+- (SaxXmlReader *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate;
 
 /*!
  @brief Set SleepTimer settings.
@@ -887,7 +887,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesSleepTimer
-- (BaseXMLReader *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate;
+- (SaxXmlReader *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate;
 
 #pragma mark -
 #pragma mark Package Management
@@ -1045,7 +1045,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesAbout
-- (BaseXMLReader *)getAbout: (NSObject<AboutSourceDelegate> *)delegate;
+- (SaxXmlReader *)getAbout: (NSObject<AboutSourceDelegate> *)delegate;
 
 /*!
  @brief Get information on currently playing service and now/new event.
@@ -1054,7 +1054,7 @@ enum packageManagementList
  @return Pointer to newly created XMLReader.
  */
 @optional // kFeaturesCurrent
-- (BaseXMLReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
+- (SaxXmlReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate;
 
 /*!
  @brief Request a Screnshot from the Receiver.

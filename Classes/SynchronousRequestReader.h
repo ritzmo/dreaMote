@@ -17,8 +17,8 @@
 {
 @private
 	NSMutableData *_data; /*!< @brief Incoming data. */
-	NSError *_error; /*!< @brief Error. */
 	NSURLResponse *_response; /*!< @brief Response. */
+@protected
 	BOOL _running; /*!< @brief Still downloading? */
 }
 
@@ -42,5 +42,10 @@
  @return Retrieved data.
  */
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error;
+
+/*!
+ @brief Error.
+ */
+@property (nonatomic, strong) NSError *error;
 
 @end

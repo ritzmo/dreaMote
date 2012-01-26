@@ -11,7 +11,7 @@
 #import "EGORefreshTableHeaderView.h"
 #import "SwipeTableView.h"
 
-@class BaseXMLReader;
+@class SaxXmlReader;
 @class MGSplitViewController;
 
 /*!
@@ -45,7 +45,7 @@
 	EGORefreshTableHeaderView *_refreshHeaderView; /*!< @brief "Pull up to refresh". */
 	BOOL _reloading; /*!< @brief Currently reloading. */
 	SwipeTableView *_tableView; /*!< @brief Table view. */
-	BaseXMLReader *_xmlReader; /*!< @brief Current XML Document. */
+	SaxXmlReader *_xmlReader; /*!< @brief Current XML Document. */
 }
 
 /*!
@@ -56,12 +56,12 @@
 /*!
  @brief Default implementation of xml parser error callback.
  */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error;
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error;
 
 /*!
  @brief Default implementation of xml parser success callback.
  */
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource;
 
 - (void)splitViewController:(MGSplitViewController*)svc willHideViewController:(UIViewController *)aViewController withBarButtonItem:(UIBarButtonItem*)barButtonItem forPopoverController: (UIPopoverController*)pc;
 - (void)splitViewController:(MGSplitViewController*)svc willShowViewController:(UIViewController *)aViewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem;

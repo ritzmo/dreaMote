@@ -6,12 +6,11 @@
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <SynchronousRequestReader.h>
+
+#import <Delegates/DataSourceDelegate.h>
 
 #import <libxml/tree.h>
-
-// needed for interface and some variables
-#import "BaseXMLReader.h"
 
 typedef struct
 {
@@ -51,17 +50,46 @@ typedef struct
 @end
 
 /*!
- @brief SAX XML Reader.
+ @brief Protocol used to guarantee that XML readers implement common functionality.
  */
-@interface SaxXmlReader : BaseXMLReader <StreamingReader>
+@protocol XmlReader
+/*!
+ @brief The XML Document could not be loaded.
+ Should be overriden by children to send an erroneous object to the delegate.
+ @param error The connection error.
+ */
+- (void)errorLoadingDocument:(NSError *)error;
+
+/*!
+ @brief Finished parsing current document.
+ */
+- (void)finishedParsingDocument;
+@end
+
+/*!
+ @brief SAX XML Reader.
+
+ Download a website and read it in as XML.
+ */
+@interface SaxXmlReader : SynchronousRequestReader <StreamingReader, XmlReader>
 {
 @private
-	NSError *failureReason; /*!< @brief Reason for parsing failure. */
 	xmlParserCtxtPtr _xmlParserContext; /*!< @brief Parser context of libxml2. */
 @protected
+	NSObject<DataSourceDelegate> *_delegate; /*!< @brief Delegate. */
+	NSTimeInterval _timeout; /*!< @brief Timeout for requests. */
 	NSMutableString *currentString; /*!< @brief String that is currently being completed. */
 	NSMutableArray *currentItems; /*!< @brief Items waiting to be dispatched to the main thread. */
 }
+
+/*!
+ @brief Download and parse XML document.
+
+ @param URL URL to download.
+ @param error Will be pointed to NSError if one occurs.
+ @return Parsed XML Document.
+ */
+- (BOOL)parseXMLFileAtURL: (NSURL *)URL parseError: (NSError **)error;
 
 /*!
  @brief Currently received string.
@@ -74,5 +102,16 @@ typedef struct
  This array can be used to store the items beforehand.
  */
 @property (nonatomic, strong) NSMutableArray *currentItems;
+
+
+/*!
+ @brief Delegate.
+ */
+@property (nonatomic, strong) NSObject<DataSourceDelegate> *delegate;
+
+/*!
+ @brief Expected encoding of document.
+ */
+@property (nonatomic) NSStringEncoding encoding;
 
 @end

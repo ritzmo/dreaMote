@@ -24,7 +24,7 @@
 #import <Objects/Generic/Result.h>
 #import <Objects/ServiceProtocol.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 #import <XMLReader/SaxXMLReader.h>
 
 #import "MBProgressHUD.h"
@@ -1480,7 +1480,7 @@ enum serviceListTags
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// NOTE: this might hide an error, but we prefer missing one over getting the same one twice
 	if(--pendingRequests == 0)
@@ -1505,18 +1505,12 @@ enum serviceListTags
 	}
 
 	if(dataSource == _xmlReader)
-	{
-		if([dataSource isKindOfClass:[SaxXmlReader class]])
-			_xmlReader = nil;
-	}
+		_xmlReader = nil;
 	else if(dataSource == _xmlReaderSub)
-	{
-		if([dataSource isKindOfClass:[SaxXmlReader class]])
-			_xmlReaderSub = nil;
-	}
+		_xmlReaderSub = nil;
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	if(--pendingRequests == 0)
 	{
@@ -1546,15 +1540,9 @@ enum serviceListTags
 	}
 
 	if(dataSource == _xmlReader)
-	{
-		if([dataSource isKindOfClass:[SaxXmlReader class]])
-			_xmlReader = nil;
-	}
+		_xmlReader = nil;
 	else if(dataSource == _xmlReaderSub)
-	{
-		if([dataSource isKindOfClass:[SaxXmlReader class]])
-			_xmlReaderSub = nil;
-	}
+		_xmlReaderSub = nil;
 }
 
 #pragma mark -

@@ -22,7 +22,7 @@
 #import <TableViewCell/AutoTimerTableViewCell.h>
 #import <TableViewCell/BaseTableViewCell.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #import "MBProgressHUD.h"
 
@@ -216,7 +216,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	if(dataSource == _xmlReaderSub)
 	{
@@ -242,7 +242,7 @@
 	[super dataSourceDelegate:dataSource errorParsingDocument:error];
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	if(dataSource == _xmlReaderSub)
 	{

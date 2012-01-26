@@ -1074,9 +1074,6 @@
 		DAC8C32213B2014D00CA00D9 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C17F13B2014D00CA00D9 /* TimerViewController.m */; };
 		DAC8C32313B2014D00CA00D9 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C17F13B2014D00CA00D9 /* TimerViewController.m */; };
 		DAC8C32413B2014D00CA00D9 /* TimerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C17F13B2014D00CA00D9 /* TimerViewController.m */; };
-		DAC8C32513B2014D00CA00D9 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */; };
-		DAC8C32613B2014D00CA00D9 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */; };
-		DAC8C32713B2014D00CA00D9 /* BaseXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */; };
 		DAC8C32B13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18713B2014D00CA00D9 /* CurrentXMLReader.m */; };
 		DAC8C32C13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18713B2014D00CA00D9 /* CurrentXMLReader.m */; };
 		DAC8C32E13B2014D00CA00D9 /* EventXMLReader.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C18913B2014D00CA00D9 /* EventXMLReader.m */; };
@@ -1911,8 +1908,6 @@
 		DAC8C17D13B2014D00CA00D9 /* TimeoutSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeoutSelectionViewController.m; sourceTree = "<group>"; };
 		DAC8C17E13B2014D00CA00D9 /* TimerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerViewController.h; sourceTree = "<group>"; };
 		DAC8C17F13B2014D00CA00D9 /* TimerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerViewController.m; sourceTree = "<group>"; };
-		DAC8C18113B2014D00CA00D9 /* BaseXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseXMLReader.h; sourceTree = "<group>"; };
-		DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseXMLReader.m; sourceTree = "<group>"; };
 		DAC8C18613B2014D00CA00D9 /* CurrentXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrentXMLReader.h; sourceTree = "<group>"; };
 		DAC8C18713B2014D00CA00D9 /* CurrentXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrentXMLReader.m; sourceTree = "<group>"; };
 		DAC8C18813B2014D00CA00D9 /* EventXMLReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventXMLReader.h; sourceTree = "<group>"; };
@@ -3429,8 +3424,6 @@
 				DAC8C18513B2014D00CA00D9 /* Enigma */,
 				DAC8C19013B2014D00CA00D9 /* Enigma2 */,
 				DAC8C1AD13B2014D00CA00D9 /* Neutrino */,
-				DAC8C18113B2014D00CA00D9 /* BaseXMLReader.h */,
-				DAC8C18213B2014D00CA00D9 /* BaseXMLReader.m */,
 				DAC8C1B213B2014D00CA00D9 /* SaxXmlReader.h */,
 				DAC8C1B313B2014D00CA00D9 /* SaxXmlReader.m */,
 			);
@@ -4225,7 +4218,6 @@
 				DAC8C31C13B2014D00CA00D9 /* SVDRPRCEmulatorController.m in Sources */,
 				DAC8C31F13B2014D00CA00D9 /* TimeoutSelectionViewController.m in Sources */,
 				DAC8C32213B2014D00CA00D9 /* TimerViewController.m in Sources */,
-				DAC8C32513B2014D00CA00D9 /* BaseXMLReader.m in Sources */,
 				DAC8C32B13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */,
 				DAC8C32E13B2014D00CA00D9 /* EventXMLReader.m in Sources */,
 				DAC8C33113B2014D00CA00D9 /* MovieXMLReader.m in Sources */,
@@ -4501,7 +4493,6 @@
 				DAC8C31D13B2014D00CA00D9 /* SVDRPRCEmulatorController.m in Sources */,
 				DAC8C32013B2014D00CA00D9 /* TimeoutSelectionViewController.m in Sources */,
 				DAC8C32313B2014D00CA00D9 /* TimerViewController.m in Sources */,
-				DAC8C32613B2014D00CA00D9 /* BaseXMLReader.m in Sources */,
 				DAC8C32C13B2014D00CA00D9 /* CurrentXMLReader.m in Sources */,
 				DAC8C32F13B2014D00CA00D9 /* EventXMLReader.m in Sources */,
 				DAC8C33213B2014D00CA00D9 /* MovieXMLReader.m in Sources */,
@@ -4758,7 +4749,6 @@
 				DAC8C31E13B2014D00CA00D9 /* SVDRPRCEmulatorController.m in Sources */,
 				DAC8C32113B2014D00CA00D9 /* TimeoutSelectionViewController.m in Sources */,
 				DAC8C32413B2014D00CA00D9 /* TimerViewController.m in Sources */,
-				DAC8C32713B2014D00CA00D9 /* BaseXMLReader.m in Sources */,
 				DAC8C36613B2014D00CA00D9 /* EventXMLReader.m in Sources */,
 				DAC8C36913B2014D00CA00D9 /* ServiceXMLReader.m in Sources */,
 				DAC8C36C13B2014D00CA00D9 /* SaxXmlReader.m in Sources */,

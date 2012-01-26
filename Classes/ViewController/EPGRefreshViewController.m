@@ -427,7 +427,7 @@ enum generalSectionItems
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 	// show one error message at the most
 	if(--pendingRequests == 0)
@@ -449,7 +449,7 @@ enum generalSectionItems
 	}
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	if(--pendingRequests == 0)
 	{

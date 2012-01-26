@@ -15,7 +15,7 @@
 #import <Objects/Generic/Event.h>
 #import <Objects/Generic/Service.h>
 
-#import <XMLReader/BaseXMLReader.h>
+#import <XMLReader/SaxXmlReader.h>
 
 #define kMaxRetries	10
 
@@ -193,7 +193,7 @@
 #pragma mark DataSourceDelegate
 #pragma mark -
 
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error
 {
 #if 0
 	// alert user
@@ -212,7 +212,7 @@
 	[self dataSourceDelegateFinishedParsingDocument:dataSource];
 }
 
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource
 {
 	NSUInteger count = [_serviceList count];
 	if(count)

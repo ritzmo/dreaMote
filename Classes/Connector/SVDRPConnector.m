@@ -226,7 +226,7 @@ typedef enum
 
 // TODO: does the vdr actually have bouquets?
 // FIXME: for now we just return a fake service, we don't support favourite online mode anyway
-- (BaseXMLReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchBouquets: (NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -289,7 +289,7 @@ typedef enum
 	return parserContinue;
 }
 
-- (BaseXMLReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchServices: (NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	if(isRadio)
 	{
@@ -354,7 +354,7 @@ typedef enum
 	return nil;
 }
 
-- (BaseXMLReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (SaxXmlReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
@@ -558,7 +558,7 @@ typedef enum
 	return parserContinue;
 }
 
-- (BaseXMLReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	[APP_DELEGATE addNetworkOperation];
 	if(!_socket || ![_socket isConnected])
@@ -805,7 +805,7 @@ typedef enum
 	return rc;
 }
 
-- (BaseXMLReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+- (SaxXmlReader *)fetchMovielist: (NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	if(location != nil)
 	{
@@ -1138,7 +1138,7 @@ typedef enum
 	return;
 }
 
-- (BaseXMLReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
+- (SaxXmlReader *)fetchLocationlist: (NSObject<LocationSourceDelegate> *)delegate;
 {
 #if IS_DEBUG()
 	[NSException raise:@"ExcUnsupportedFunction" format:@""];

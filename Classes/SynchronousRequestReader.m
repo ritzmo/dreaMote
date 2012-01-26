@@ -22,7 +22,6 @@
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection;
 
 @property (nonatomic, strong) NSData *data;
-@property (nonatomic, strong) NSError *error;
 @property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic) BOOL running;
 @end
@@ -30,7 +29,7 @@
 @implementation SynchronousRequestReader
 
 @synthesize data = _data;
-@synthesize error = _error;
+@synthesize error;
 @synthesize response = _response;
 @synthesize running = _running;
 
@@ -38,7 +37,6 @@
 {
 	if((self = [super init]))
 	{
-		_data = [[NSMutableData alloc] init];
 		_running = YES;
 	}
 	return self;
@@ -48,7 +46,7 @@
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
 {
 	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
-	NSData *data = srr.data;
+	NSMutableData *data = nil;
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:timeout];
@@ -63,6 +61,8 @@
 		[NSException raise:@"ExcSRRNoConnection" format:@""];
 #endif
 
+	srr.running = YES;
+	srr.data = data = [[NSMutableData alloc] init];
 	[APP_DELEGATE addNetworkOperation];
 	while(con && srr.running)
 	{
@@ -125,9 +125,9 @@
 	return nil;
 }
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)connectionError
 {
-	self.error = error;
+	self.error = connectionError;
 	_running = NO;
 }
 

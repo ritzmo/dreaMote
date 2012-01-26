@@ -6,7 +6,7 @@
 //  Copyright 2011 Moritz Venn. All rights reserved.
 //
 
-@class BaseXMLReader;
+@class SaxXmlReader;
 @class CXMLDocument;
 
 /*!
@@ -22,7 +22,7 @@
 
  @param dataSource Source that triggered this action.
 */
-- (void)dataSourceDelegateFinishedParsingDocument:(BaseXMLReader *)dataSource;
+- (void)dataSourceDelegateFinishedParsingDocument:(SaxXmlReader *)dataSource;
 
 /*!
  @brief Failed to parse Document.
@@ -30,6 +30,6 @@
  @param dataSource Source that triggered this action.
  @param error Error which occured.
 */
-- (void)dataSourceDelegate:(BaseXMLReader *)dataSource errorParsingDocument:(NSError *)error;
+- (void)dataSourceDelegate:(SaxXmlReader *)dataSource errorParsingDocument:(NSError *)error;
 
 @end

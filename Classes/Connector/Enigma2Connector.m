@@ -639,7 +639,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self zapInternal: service.sref];
 }
 
-- (BaseXMLReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	NSString *sref = nil;
 	if(isRadio)
@@ -648,12 +648,12 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		sref = @"";
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/getservices?%@", sref] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchProviders:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
 {
 	NSString *sref = nil;
 	if(isRadio)
@@ -663,7 +663,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -679,69 +679,69 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return service;
 }
 
-- (BaseXMLReader *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)fetchServices:(NSObject<ServiceSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/getservices?sRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate atOnce:[bouquet isEqualToService:[self allServicesBouquet:isRadio]]];
+	SaxXmlReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate atOnce:[bouquet isEqualToService:[self allServicesBouquet:isRadio]]];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)fetchEPG:(NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
+- (SaxXmlReader *)fetchEPG:(NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:NO];
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:NO];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
+- (SaxXmlReader *)searchEPG: (NSObject<EventSourceDelegate> *)delegate title:(NSString *)title
 {
 	// TODO: iso8859-1 is currently hardcoded, we might want to fix that
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsearch?search=%@", [title urlencodeWithEncoding:NSISOLatin1StringEncoding]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
+- (SaxXmlReader *)searchEPGSimilar: (NSObject<EventSourceDelegate> *)delegate event:(NSObject<EventProtocol> *)event
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgsimilar?sRef=%@&eventid=%@", [event.service.sref urlencode], event.eit] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
-- (BaseXMLReader *)getNowNext:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)getNowNext:(NSObject<NowSourceDelegate, NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgnownext?bRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNowNextDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNowNextDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgnow?bRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNowDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNowDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
+- (SaxXmlReader *)getNext:(NSObject<NextSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio
 {
 	NSString *sref = [self getServiceReferenceForBouquet:bouquet isRadio:isRadio];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgnext?bRef=%@", sref] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNextDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithNextDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -771,7 +771,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark Timer
 
-- (BaseXMLReader *)fetchTimers:(NSObject<TimerSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchTimers:(NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = nil;
 	if(dynamicFeatures & FEATURE_VPSPLUGIN)
@@ -779,7 +779,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	else
 		myURI = [NSURL URLWithString:@"/web/timerlist" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2TimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -822,12 +822,12 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
-- (BaseXMLReader *)fetchTags:(NSObject<TagSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchTags:(NSObject<TagSourceDelegate> *)delegate
 {
 	// NOTE: the older "movietags" API is unsupported because there is not much we can do with it in that old a web interface version ;)
 	NSURL *myURI = [NSURL URLWithString: @"/web/gettags" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2TagXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2TagXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -839,11 +839,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self zapInternal: movie.sref];
 }
 
-- (BaseXMLReader *)fetchLocationlist:(NSObject <LocationSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchLocationlist:(NSObject <LocationSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/getlocations" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2LocationXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2LocationXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -860,7 +860,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
-- (BaseXMLReader *)fetchMovielist:(NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
+- (SaxXmlReader *)fetchMovielist:(NSObject<MovieSourceDelegate> *)delegate withLocation: (NSString *)location
 {
 	NSString *dirname = nil;
 	if(location == nil)
@@ -869,7 +869,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		dirname = [location urlencode];
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat: @"/web/movielist?dirname=%@", dirname] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2MovieXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -914,16 +914,16 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark MediaPlayer
 
-- (BaseXMLReader *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path
+- (SaxXmlReader *)fetchFiles: (NSObject<FileSourceDelegate> *)delegate path:(NSString *)path
 {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/mediaplayerlist?path=%@", [path urlencode]] relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2FileXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2FileXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchPlaylist: (NSObject<FileSourceDelegate> *)delegate
 {
 	return [self fetchFiles:delegate path:@"playlist"];
 }
@@ -968,11 +968,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self getResultFromSimpleXmlWithRelativeString: relativeURL];
 }
 
-- (BaseXMLReader *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate
+- (SaxXmlReader *)getMetadata: (NSObject<MetadataSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/mediaplayercurrent" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2MetadataXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2MetadataXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -1070,11 +1070,11 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self getResultFromSimpleXmlWithRelativeString:@"/autotimer/parse"];
 }
 
-- (BaseXMLReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate
+- (SaxXmlReader *)getAutoTimerSettings:(NSObject<AutoTimerSettingsSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer/get" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2AutoTimerSettingsXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2AutoTimerSettingsXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -1117,20 +1117,20 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
-- (BaseXMLReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
+- (SaxXmlReader *)fetchAutoTimers:(NSObject<AutoTimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2AutoTimerXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2AutoTimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)simulateAutoTimers:(NSObject<TimerSourceDelegate> *)delegate
+- (SaxXmlReader *)simulateAutoTimers:(NSObject<TimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/autotimer/simulate" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2SimulatedTimerXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2SimulatedTimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -1372,20 +1372,20 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark EPGRefresh
 
-- (BaseXMLReader *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate
+- (SaxXmlReader *)getEPGRefreshSettings:(NSObject<EPGRefreshSettingsSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/epgrefresh/get" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2EPGRefreshSettingsXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2EPGRefreshSettingsXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate
+- (SaxXmlReader *)getEPGRefreshServices:(NSObject<ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/epgrefresh" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2ServiceXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -1440,21 +1440,21 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark SleepTimer
 
-- (BaseXMLReader *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate
+- (SaxXmlReader *)getSleepTimerSettings:(NSObject<SleepTimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:@"/web/sleeptimer?cmd=get" relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2SleepTimerXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2SleepTimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate
+- (SaxXmlReader *)setSleepTimerSettings:(SleepTimer *)settings delegate:(NSObject<SleepTimerSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/sleeptimer?cmd=set&enabled=%@&time=%d&action=%@",
 										 settings.enabled ? @"True" : @"False", settings.time, (settings.action == sleeptimerShutdown) ? @"shutdown" : @"standby"] relativeToURL:_baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2SleepTimerXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2SleepTimerXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -1613,20 +1613,20 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark Control
 
-- (BaseXMLReader *)getAbout:(NSObject <AboutSourceDelegate>*)delegate
+- (SaxXmlReader *)getAbout:(NSObject <AboutSourceDelegate>*)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/about" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2AboutXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2AboutXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
 
-- (BaseXMLReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
+- (SaxXmlReader *)getCurrent: (NSObject<EventSourceDelegate,ServiceSourceDelegate> *)delegate
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/getcurrent" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2CurrentXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2CurrentXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }
@@ -1664,7 +1664,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/vol" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2VolumeXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 }
 
@@ -1701,7 +1701,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 {
 	NSURL *myURI = [NSURL URLWithString: @"/web/signal" relativeToURL: _baseAddress];
 
-	BaseXMLReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate:delegate];
+	SaxXmlReader *streamReader = [[Enigma2SignalXMLReader alloc] initWithDelegate:delegate];
 	[streamReader parseXMLFileAtURL:myURI parseError: nil];
 }
 
