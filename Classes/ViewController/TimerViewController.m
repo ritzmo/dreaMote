@@ -1147,17 +1147,17 @@ enum timerSections
 					if(section == sectionBegin)
 					{
 						_timer.begin = newDate;
-						cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionBegin]];
+						cell = [_tableView cellForRowAtIndexPath:indexPath];
 					}
 					else if(section == sectionEnd)
 					{
 						_timer.end = newDate;
-						cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionEnd]];
+						cell = [_tableView cellForRowAtIndexPath:indexPath];
 					}
 					else// if(section == sectionVps)
 					{
 						_timer.vpsplugin_time = newDate ? [newDate timeIntervalSince1970] : -1;
-						[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:2 inSection:sectionVps]] withRowAnimation:UITableViewRowAnimationNone];
+						[_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 					}
 					if(cell)
 						cell.textLabel.text = [self format_BeginEnd:newDate];
@@ -1199,7 +1199,7 @@ enum timerSections
 						repeatcount = 0;
 					_timer.repeatcount = repeatcount;
 
-					[_tableView reloadSections:[NSIndexSet indexSetWithIndex:sectionRepeated] withRowAnimation:UITableViewRowAnimationNone];
+					[_tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
 				};
 				break;
 			}
@@ -1210,7 +1210,7 @@ enum timerSections
 				vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling){
 					if(!canceling)
 					{
-						UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:sectionLocation]];
+						UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 						if(newLocation)
 						{
 							_timer.location = newLocation.fullpath;
