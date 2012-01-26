@@ -41,6 +41,11 @@
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error;
 
 /*!
+ @brief Data received from remote host.
+ */
+@property (nonatomic, readonly) NSData *responseData;
+
+/*!
  @brief Error.
  */
 @property (nonatomic, strong) NSError *error;

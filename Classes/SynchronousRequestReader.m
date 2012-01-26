@@ -34,7 +34,6 @@
 	return self;
 }
 
-
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
 {
 	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
@@ -73,6 +72,11 @@
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error
 {
 	return [SynchronousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kTimeout];
+}
+
+- (NSData *)responseData
+{
+	return data;
 }
 
 #pragma mark -
