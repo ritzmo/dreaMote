@@ -83,6 +83,8 @@
 #pragma mark NSURLConnection delegate methods
 #pragma mark -
 
+#pragma mark Pre-iOS5
+
 - (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace
 {
 	return YES;
@@ -90,7 +92,7 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-	if([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust])
+	if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust)
 	{
 		// TODO: ask user to accept certificate
 		[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
@@ -112,6 +114,37 @@
 	//[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 	[challenge.sender cancelAuthenticationChallenge:challenge];
 }
+
+#pragma mark Post-iOS5
+
+- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
+{
+	if([challenge previousFailureCount] == 0)
+	{
+		if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodDefault ||
+		   challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+		   challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest)
+		{
+            NSURLCredential *creds = [RemoteConnectorObject getCredential];
+			if(creds)
+			{
+				[challenge.sender useCredential:creds forAuthenticationChallenge:challenge];
+				return;
+			}
+        }
+		else if(challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust)
+		{
+			// TODO: ask user to accept certificate
+			[challenge.sender useCredential:[NSURLCredential credentialForTrust:challenge.protectionSpace.serverTrust]
+				 forAuthenticationChallenge:challenge];
+			return;
+		}
+	}
+
+	[challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
+}
+
+#pragma mark Generic
 
 - (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse
 {
