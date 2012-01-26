@@ -3,7 +3,7 @@
 //  dreaMote
 //
 //  Created by Moritz Venn on 04.02.11.
-//  Copyright 2011 Moritz Venn. All rights reserved.
+//  Copyright 2011-2012 Moritz Venn. All rights reserved.
 //
 
 #import "ZoomingScrollView.h"

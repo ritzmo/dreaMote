@@ -3,7 +3,7 @@
 //  dreaMote
 //
 //  Created by Moritz Venn on 26.10.09.
-//  Copyright 2009-2011 Moritz Venn. All rights reserved.
+//  Copyright 2009-2012 Moritz Venn. All rights reserved.
 //
 
 #import "CurrentViewController.h"

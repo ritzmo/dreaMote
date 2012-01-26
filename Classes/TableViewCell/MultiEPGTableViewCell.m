@@ -3,7 +3,7 @@
 //  dreaMote
 //
 //  Created by Moritz Venn on 27.01.11.
-//  Copyright 2011 Moritz Venn. All rights reserved.
+//  Copyright 2011-2012 Moritz Venn. All rights reserved.
 //
 
 #import "Constants.h"
