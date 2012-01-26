@@ -446,7 +446,7 @@
 			if([vc isKindOfClass:[UINavigationController class]])
 			{
 				UINavigationController *nc = (UINavigationController *)vc;
-				if([nc.viewControllers objectAtIndex:0] != _autotimerView)
+				if(!nc.viewControllers.count || [nc.viewControllers objectAtIndex:0] != _autotimerView)
 				{
 					nc = [[UINavigationController alloc] initWithRootViewController:_autotimerView];
 					[[DreamoteConfiguration singleton] styleNavigationController:nc];
@@ -540,7 +540,7 @@
 				if([vc isKindOfClass:[UINavigationController class]])
 				{
 					UINavigationController *nc = (UINavigationController *)vc;
-					if([nc.viewControllers objectAtIndex:0] != _autotimerView)
+					if(!nc.viewControllers.count || [nc.viewControllers objectAtIndex:0] != _autotimerView)
 					{
 						nc = [[UINavigationController alloc] initWithRootViewController:_autotimerView];
 						[[DreamoteConfiguration singleton] styleNavigationController:nc];

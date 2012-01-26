@@ -630,7 +630,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		if([vc isKindOfClass:[UINavigationController class]])
 		{
 			UINavigationController *nc = (UINavigationController *)vc;
-			if([nc.viewControllers objectAtIndex:0] != _timerViewController)
+			if(!nc.viewControllers.count || [nc.viewControllers objectAtIndex:0] != _timerViewController)
 			{
 				nc = [[UINavigationController alloc] initWithRootViewController:_timerViewController];
 				[[DreamoteConfiguration singleton] styleNavigationController:nc];
@@ -825,7 +825,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			if([vc isKindOfClass:[UINavigationController class]])
 			{
 				UINavigationController *nc = (UINavigationController *)vc;
-				if([nc.viewControllers objectAtIndex:0] != _timerViewController)
+				if(!nc.viewControllers.count || [nc.viewControllers objectAtIndex:0] != _timerViewController)
 				{
 					nc = [[UINavigationController alloc] initWithRootViewController:_timerViewController];
 					[[DreamoteConfiguration singleton] styleNavigationController:nc];
@@ -897,7 +897,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		if([vc isKindOfClass:[UINavigationController class]])
 		{
 			UINavigationController *nc = (UINavigationController *)vc;
-			if([[nc.viewControllers objectAtIndex:0] isKindOfClass:[AutoTimerViewController class]])
+			if(nc.viewControllers.count && [[nc.viewControllers objectAtIndex:0] isKindOfClass:[AutoTimerViewController class]])
 			{
 				avc = [nc.viewControllers objectAtIndex:0];
 				[nc popToRootViewControllerAnimated:YES];
