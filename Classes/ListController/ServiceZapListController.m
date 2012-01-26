@@ -8,13 +8,15 @@
 
 #import "ServiceZapListController.h"
 
-#import "Constants.h"
-#import "RemoteConnectorObject.h"
+#import <Constants.h>
+#import <Connector/RemoteConnectorObject.h>
 
-#import "UITableViewCell+EasyInit.h"
-#import "UIDevice+SystemVersion.h"
+#import <Categories/UITableViewCell+EasyInit.h>
+#import <Categories/UIDevice+SystemVersion.h>
 
-#import "BaseTableViewCell.h"
+#import <Delegates/AppDelegate.h>
+
+#import <TableViewCell/BaseTableViewCell.h>
 
 @interface ServiceZapListController()
 /*!
@@ -154,6 +156,8 @@
 		[zlc.actionSheet addButtonWithTitle:@"AcePlayer"];
 
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
+	if(tabBar == nil)
+		tabBar = APP_DELEGATE.tabBarController.tabBar;
 	[zlc.actionSheet showFromTabBar:tabBar];
 
 	[[NSNotificationCenter defaultCenter] addObserver:zlc selector:@selector(dismissActionSheet:) name:UIApplicationDidEnterBackgroundNotification object:nil];
