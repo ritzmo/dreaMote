@@ -8,29 +8,21 @@
 
 #import "SynchronousRequestReader.h"
 
-#import "AppDelegate.h"
-#import "Constants.h"
-#import "RemoteConnectorObject.h"
+#import <Constants.h>
+
+#import <Delegates/AppDelegate.h>
+#import <Connector/RemoteConnectorObject.h>
 
 @interface SynchronousRequestReader()
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace;
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error;
-- (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge;
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data;
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response;
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse;
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection;
-
-@property (nonatomic, strong) NSData *data;
+@property (nonatomic, strong) NSMutableData *data;
 @property (nonatomic, strong) NSURLResponse *response;
 @property (nonatomic) BOOL running;
 @end
 
 @implementation SynchronousRequestReader
 
-@synthesize data = _data;
+@synthesize data, response;
 @synthesize error;
-@synthesize response = _response;
 @synthesize running = _running;
 
 - (id)init
@@ -46,7 +38,6 @@
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
 {
 	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
-	NSMutableData *data = nil;
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:timeout];
@@ -62,7 +53,6 @@
 #endif
 
 	srr.running = YES;
-	srr.data = data = [[NSMutableData alloc] init];
 	[APP_DELEGATE addNetworkOperation];
 	while(con && srr.running)
 	{
@@ -77,13 +67,12 @@
 	if(error)
 		*error = srr.error;
 
-	return data;
+	return srr.data;
 }
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error
 {
 	return [SynchronousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kTimeout];
-	
 }
 
 #pragma mark -
@@ -131,14 +120,21 @@
 	_running = NO;
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)d
 {
-	[_data appendData:data];
+	[data appendData:d];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)resp
 {
-	self.response = response;
+	long long size = 0;
+	if([resp respondsToSelector:@selector(expectedContentLength)])
+		size = [(NSHTTPURLResponse *)resp expectedContentLength];
+	if(size == NSURLResponseUnknownLength)
+		size = 0;
+	self.data = [[NSMutableData alloc] initWithCapacity:(NSUInteger)size];
+
+	self.response = resp;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection

@@ -15,9 +15,6 @@
  */
 @interface SynchronousRequestReader : NSObject
 {
-@private
-	NSMutableData *_data; /*!< @brief Incoming data. */
-	NSURLResponse *_response; /*!< @brief Response. */
 @protected
 	BOOL _running; /*!< @brief Still downloading? */
 }
