@@ -1164,7 +1164,7 @@
 	if(_reloading)
 	{
 #if IS_DEBUG()
-		[NSException raise:@"MovieListUserInteractionWhileReloading" format:@"commintEditingStyle was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
+		[NSException raise:@"MovieListUserInteractionWhileReloading" format:@"commitEditingStyle was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
 #endif
 		return;
 	}
@@ -1173,14 +1173,19 @@
 	NSObject<MovieProtocol> *movie = nil;
 	if(_sortTitle)
 	{
-		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
-		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+		NSString *key = (NSUInteger)indexPath.section < _currentKeys.count ? [_currentKeys objectAtIndex:indexPath.section] : nil;
+		NSArray *movies = [_characters valueForKey:key];
+		movie = (NSUInteger)indexPath.row < movies.count ? [movies objectAtIndex:indexPath.row] : nil;
 	}
 	else
 	{
 		NSArray *movies = (selectedTags) ? taggedMovies : _movies;
-		movie = [movies objectAtIndex:indexPath.row];
+		movie = (NSUInteger)indexPath.row < movies.count ? [movies objectAtIndex:indexPath.row] : nil;
 	}
+#if IS_DEBUG()
+	if(!movie)
+		[NSException raise:@"MovieListNoMovie" format:@"commitEditingStyle was triggered for indexPath (section %d, row %d) without a row attached! Sorting by title: %@, _currentKeys: %@, _characters: %@, selectedTags: %@, taggedMovies: %@, _movies: %@", indexPath.section, indexPath.row, _sortTitle ? @"yes" : @"no", _currentKeys, _characters, selectedTags, taggedMovies, _movies];
+#endif
 
 	if(!movie.valid)
 		return;
