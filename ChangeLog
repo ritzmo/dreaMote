@@ -299,3 +299,10 @@ Enigma2:
 - Long press gesture added to MultiEPG (hold service or empty area to zap/stream and an event to add a timer)
 Enigma2:
 - Allow to add AutoTimer from Timer-dialog (hold timer for 1s)
+
+1.4.4:
+- Improve accessibility in RC emulator a bit
+- Generic stability improvemenets
+
+1.4.4-full:
+- Fix possible crash when leaving service list with active search (iPhone only)
