@@ -341,7 +341,8 @@ enum bouquetListTags
 - (void)showServicelist:(NSObject<ServiceProtocol> *)bouquet
 {
 	// Check for cached ServiceListController instance
-	if(_serviceListController == nil)
+	// NOTE: ignore cache on iPhone if search is still active, we won't be able to end it and crash otherwise ;)
+	if(_serviceListController == nil || (_serviceListController.searchDisplayController.active && IS_IPHONE()))
 		_serviceListController = [[ServiceListController alloc] init];
 	
 	// Redirect callback if we have one
