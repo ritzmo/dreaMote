@@ -315,6 +315,7 @@ enum serviceListTags
 	{
 		_multiEpgButton.title = NSLocalizedString(@"Service List", @"Service List (former Multi EPG) Button title");
 		[_multiEPG viewWillAppear:YES];
+		[_searchDisplay setActive:NO animated:YES];
 		self.view = _multiEPG.view;
 		[self setToolbarItems:_multiEPG.toolbarItems];
 		if(IS_IPHONE())
