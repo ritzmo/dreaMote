@@ -224,7 +224,7 @@
 	NSString *description = _event.sdescription;
 	if([description length])
 		[text appendString: description];
-	else
+	else if([_event.title length])
 		[text appendString: _event.title];
 
 	description = _event.edescription;
