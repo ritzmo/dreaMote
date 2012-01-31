@@ -16,7 +16,7 @@ static const char *kEnigmaSnr = "snr";
 static const NSUInteger kEnigmaSnrLength = 4;
 static const char *kEnigmaBer = "ber";
 static const NSUInteger kEnigmaBerLength = 4;
-static const char *kEnigmaAgc = "acg";
+static const char *kEnigmaAgc = "agc";
 static const NSUInteger kEnigmaAgcLength = 4;
 
 @interface EnigmaSignalXMLReader()
