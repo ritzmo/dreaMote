@@ -836,10 +836,7 @@ typedef void (^dismiss_block_t)(UIActionSheet *actionSheet, NSInteger buttonInde
 											 timer_function(buttonIndex);
 										 }
 									 }];
-				if(self.tabBarController == nil) // XXX: bug in MGSplitViewController?
-					[as showInView:self.view];
-				else
-					[as showFromTabBar:self.tabBarController.tabBar];
+				[as showFromTabBar:APP_DELEGATE.tabBarController.tabBar];
 			}
 		}
 		else
