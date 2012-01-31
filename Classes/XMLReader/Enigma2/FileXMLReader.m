@@ -34,6 +34,7 @@ static const NSUInteger kEnigma2FileRootLength = 7;
 	if((self = [super init]))
 	{
 		_delegate = delegate;
+		_timeout = kTimeout * 3; // a lot higher timeout to allow to spin up hdd
 		if([delegate respondsToSelector:@selector(addFiles:)])
 			self.currentItems = [NSMutableArray arrayWithCapacity:kBatchDispatchItemsCount];
 	}
