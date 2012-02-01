@@ -528,6 +528,9 @@ typedef void (^dismiss_block_t)(UIActionSheet *actionSheet, NSInteger buttonInde
 
 - (void)addService:(NSObject <ServiceProtocol>*)service
 {
+	if(!service)
+		return;
+
 	[_services addObject:service];
 #if INCLUDE_FEATURE(Extra_Animation)
 	const NSUInteger idx = _services.count-1;
