@@ -371,7 +371,7 @@
 	return [menuList count];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	NSMutableDictionary *selectedDictionary = [menuList objectAtIndex:indexPath.row];
 	UIViewController *targetViewController = [selectedDictionary objectForKey:@"viewController"];
@@ -397,7 +397,23 @@
 			if([targetViewController isKindOfClass:[UINavigationController class]])
 			{
 				NSLog(@"WARNING: Stealing a view controller from a navigation stack does is dangerous, think of a better way!");
-				targetViewController = ((UINavigationController *)targetViewController).visibleViewController;
+				if(((UINavigationController *)targetViewController).visibleViewController)
+					targetViewController = ((UINavigationController *)targetViewController).visibleViewController;
+				else
+				{
+#if IS_DEBUG()
+					NSLog(@"ERROR: Visible view controller is nil - trying to get the first one");
+#endif
+					if(((UINavigationController *)targetViewController).viewControllers.count)
+						targetViewController = [((UINavigationController *)targetViewController).viewControllers objectAtIndex:0];
+					else
+					{
+#if IS_DEBUG()
+						NSLog(@"FAILURE: No view controllers attached to navigation controller!");
+#endif
+						return [tv deselectRowAtIndexPath:indexPath animated:YES];
+					}
+				}
 				[selectedDictionary setObject:targetViewController forKey:@"masterViewController"];
 			}
 			if([targetViewController respondsToSelector:@selector(setMgSplitViewController:)])
