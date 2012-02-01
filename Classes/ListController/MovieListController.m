@@ -163,6 +163,7 @@
 	selectedTags = nil;
 	_tagButton.title = NSLocalizedString(@"Tags", @"");
 	taggedMovies = nil;
+	_reloading = YES;
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:_tableView];
 #if IS_FULL()
