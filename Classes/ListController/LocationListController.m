@@ -329,7 +329,7 @@
 }
 
 /* select row */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	// do nothing if reloading
 	if(_reloading)
@@ -337,7 +337,7 @@
 #if IS_DEBUG()
 		NSLog(@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row);
 #endif
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	NSInteger row = indexPath.row;
@@ -350,11 +350,11 @@
 #if IS_DEBUG()
 			NSLog(@"Selection (%d) outside of bounds (%d) in LocationListController. This does not have to be bad!", indexPath.row, _locations.count);
 #endif
-			return nil;
+			return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 		}
 		location = [_locations objectAtIndex:row];
 		if(!location.valid)
-			return nil;
+			return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	// Callback mode
@@ -397,8 +397,7 @@
 			[_movieListController.navigationController popToRootViewControllerAnimated: YES];
 	}
 	else
-		return nil;
-	return indexPath;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /* number of sections */
