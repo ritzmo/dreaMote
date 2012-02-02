@@ -734,25 +734,27 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (NSURL *)getStreamURLForService:(NSObject<ServiceProtocol> *)service
 {
-	// check if this is actually a movie
-	NSString *sref = service.sref;
+	const NSString *sref = service.sref;
+	NSURL *streamURL = nil;
 	if([sref isEqualToString:@"N/A"])
-		return nil;
+	{
+		// do nothing
+	}
+	// check if this is actually a movie
 	else if([sref hasPrefix:@"1:0:0:0:0:0:0:0:0:0:"])
 	{
 		// create fake movie object and retrieve url using appropriate method
 		NSString *filename = [sref substringFromIndex:20];
 		GenericMovie *movie = [[GenericMovie alloc] init];
 		movie.filename = filename;
-		NSURL *streamURL = [self getStreamURLForMovie:movie];
-		return streamURL;
+		streamURL = [self getStreamURLForMovie:movie];
 	}
 	else
 	{
 		// TODO: add support for custom port and un/pw but lets stick to the defaults for testing
-		NSURL *streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8001/%@", [_baseAddress host], [sref urlencode]]];
-		return streamURL;
+		streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8001/%@", [_baseAddress host], [sref urlencode]]];
 	}
+	return streamURL;
 }
 
 #pragma mark Timer
