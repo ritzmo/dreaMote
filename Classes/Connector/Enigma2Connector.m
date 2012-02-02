@@ -619,15 +619,10 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark Services
 
-- (Result *)zapInternal:(NSString *) sref
+- (Result *)zapTo:(NSObject<ServiceProtocol> *)service
 {
-	NSString *relativeURL = [NSString stringWithFormat:@"/web/zap?sRef=%@", [sref urlencode]];
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/zap?sRef=%@", [service.sref urlencode]];
 	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
-}
-
-- (Result *)zapTo:(NSObject<ServiceProtocol> *) service
-{
-	return [self zapInternal: service.sref];
 }
 
 - (SaxXmlReader *)fetchBouquets:(NSObject<ServiceSourceDelegate> *)delegate isRadio:(BOOL)isRadio
@@ -825,9 +820,10 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 #pragma mark Recordings
 
-- (Result *)playMovie:(NSObject<MovieProtocol> *) movie
+- (Result *)playMovie:(NSObject<MovieProtocol> *)movie
 {
-	return [self zapInternal: movie.sref];
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/zap?sRef=%@", [movie.sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
 - (SaxXmlReader *)fetchLocationlist:(NSObject <LocationSourceDelegate> *)delegate
