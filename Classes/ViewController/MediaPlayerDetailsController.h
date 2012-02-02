@@ -6,12 +6,13 @@
 //  Copyright 2011-2012 Moritz Venn. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <ViewController/MediaPlayerController.h>
 
-#import "FileListView.h"
-#import "MediaPlayerController.h"
-#import "MetadataProtocol.h"
-#import "MetadataSourceDelegate.h"
+#import <View/FileListView.h>
+
+#import <Objects/MetadataProtocol.h>
+#import <Delegates/MetadataSourceDelegate.h>
+#import <Delegates/VolumeSourceDelegate.h>
 #import "MGSplitViewController.h" /* MGSplitViewControllerDelegate */
 
 @class SaxXmlReader;
@@ -19,12 +20,14 @@
 @interface MediaPlayerDetailsController : MediaPlayerController <UITableViewDelegate,
 															UITableViewDataSource,
 															MGSplitViewControllerDelegate,
-															MetadataSourceDelegate>
+															MetadataSourceDelegate,
+															VolumeSourceDelegate>
 {
 @private
 	NSObject<MetadataProtocol> *_currentTrack; /*!< @brief Meta-information to currently playing track. */
 	UIImage *_currentCover; /*!< @brief Coverart to currently playing track. */
 	UITableView *_tableView; /*!< @brief "Main" Table view. */
+	UISlider *_volumeSlider; /*!< @brief Slider for the current volume. */
 
 	SaxXmlReader *_xmlReaderMetadata; /*!< @brief Track metadata. */
 }

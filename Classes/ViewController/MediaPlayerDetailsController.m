@@ -18,6 +18,13 @@
 - (void)emptyData;
 - (void)fetchCoverart;
 - (void)fetchData;
+- (void)fetchVolume;
+
+/*!
+ @brief change volume
+ @param volumeSlider ui element
+ */
+- (void)volumeChanged:(UISlider *)volumeSlider;
 @end
 
 @implementation MediaPlayerDetailsController
@@ -29,6 +36,7 @@
 {
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
+	SafeDestroyButton(_volumeSlider);
 }
 
 /* getter of playlist */
@@ -68,6 +76,14 @@
 	_tableView.autoresizesSubviews = YES;
 	_tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 
+	_volumeSlider = [[UISlider alloc] initWithFrame: CGRectMake(0,0, 220, kSliderHeight)];
+	[_volumeSlider addTarget:self action:@selector(volumeChanged:) forControlEvents:UIControlEventValueChanged];
+	_volumeSlider.backgroundColor = [UIColor clearColor];
+	_volumeSlider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+	_volumeSlider.minimumValue = 0;
+	_volumeSlider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
+	_volumeSlider.continuous = NO;
+
 	if(IS_IPAD())
 	{
 		_tableView.backgroundView = [[UIView alloc] init];
@@ -96,8 +112,16 @@
 	// _fileList is also unset in super, but do it here to keep things more logical, as we also set it in this class
 	_fileList.fileDelegate = nil;
 	_fileList = nil;
+	SafeDestroyButton(_volumeSlider);
 
 	[super viewDidUnload];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	_volumeSlider.maximumValue = (float)[[RemoteConnectorObject sharedRemoteConnector] getMaxVolume];
+	[RemoteConnectorObject queueInvocationWithTarget:self selector:@selector(fetchVolume)];
+	[super viewWillAppear:animated];
 }
 
 /* new track started playing */
@@ -152,6 +176,12 @@
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
 }
 
+/* initiate download of volume state */
+- (void)fetchVolume
+{
+	[[RemoteConnectorObject sharedRemoteConnector] getVolume: self];
+}
+
 - (void)placeControls:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
 	// parent class would screw up the fileList frame otherwise
@@ -163,6 +193,14 @@
 	_fileList.frame = self.view.frame;
 
 	[super flipView:nil];
+}
+
+/* change volume */
+- (void)volumeChanged:(UISlider *)volumeSlider
+{
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[[RemoteConnectorObject sharedRemoteConnector] setVolume:(NSInteger)[volumeSlider value]];
+	});
 }
 
 #pragma mark - UITableView delegates
@@ -187,7 +225,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-	if(!_currentTrack.valid && section == 0)
+	if((!_currentTrack.valid && section == 0) || section == 1)
 		return 0.0001;
 	return [[DreamoteConfiguration singleton] tableView:tableView heightForHeaderInSection:section];
 }
@@ -206,7 +244,6 @@
 				return NSLocalizedString(@"Now Playing", @"");
 			return nil;
 		case 1:
-			return NSLocalizedString(@"Controls", @"");
 		default:
 			return nil;
 	}
@@ -221,7 +258,7 @@
 				return 1;
 			return 0;
 		case 1:
-			return 4;
+			return 5;
 		default:
 			return 0;
 	}
@@ -258,19 +295,23 @@
 			switch(indexPath.row)
 			{
 				case 0:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Previous", @"");
-					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
+					((DisplayCell *)sourceCell).textLabel.text = NSLocalizedString(@"Volume", @"");
+					((DisplayCell *)sourceCell).view = _volumeSlider;
 					break;
 				case 1:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Stop", @"");
-					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_stop.png" andKeyCode: kButtonCodeStop];
+					((DisplayCell *)sourceCell).textLabel.text = NSLocalizedString(@"Previous", @"");
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_fr.png" andKeyCode: kButtonCodeFRwd];
 					break;
 				case 2:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Play/Pause", @"");
-					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause];
+					((DisplayCell *)sourceCell).textLabel.text = NSLocalizedString(@"Stop", @"");
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_stop.png" andKeyCode: kButtonCodeStop];
 					break;
 				case 3:
-					((DisplayCell *)sourceCell).nameLabel.text = NSLocalizedString(@"Next", @"");
+					((DisplayCell *)sourceCell).textLabel.text = NSLocalizedString(@"Play/Pause", @"");
+					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_pp.png" andKeyCode: kButtonCodePlayPause];
+					break;
+				case 4:
+					((DisplayCell *)sourceCell).textLabel.text = NSLocalizedString(@"Next", @"");
 					((DisplayCell *)sourceCell).view = [self newButton:CGRectMake(0, 0, kUIRowHeight-2, kUIRowHeight-2) withImage:@"key_ff.png" andKeyCode: kButtonCodeFFwd];
 					break;
 				default: break;
@@ -301,6 +342,19 @@
 		_currentCover = nil;
 	}
 	[_tableView reloadSections:idxSet withRowAnimation:UITableViewRowAnimationRight];
+}
+
+#pragma mark -
+#pragma mark VolumeSourceDelegate
+#pragma mark -
+
+/* volume received */
+- (void)addVolume:(GenericVolume *)volume
+{
+	if(volume == nil)
+		return;
+
+	_volumeSlider.value = (float)(volume.current);
 }
 
 @end
