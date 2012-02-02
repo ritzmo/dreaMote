@@ -920,7 +920,7 @@ enum mediaPlayerTags
 		Result *result = [[RemoteConnectorObject sharedRemoteConnector] addTrack:file startPlayback:startPlayback];
 		if(result.result)
 		{
-			if(!_massAdd)
+			if(!_massAdd && !_playlist.reloading)
 				[_playlist refreshData];
 		}
 		else
