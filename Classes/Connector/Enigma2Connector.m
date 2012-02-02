@@ -20,8 +20,6 @@
 #import <Objects/Generic/Service.h>
 #import <Delegates/MediaPlayerShuffleDelegate.h>
 
-#import <Connector/RemoteConnectorObject.h> /* usesAdvancedRemote */
-
 #import <SynchronousRequestReader.h>
 #import <XMLReader/Enigma2/AboutXMLReader.h>
 #if IS_FULL()
