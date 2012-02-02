@@ -621,17 +621,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)zapInternal:(NSString *) sref
 {
-	Result *result = [Result createResult];
-	NSURL *myURI = [NSURL URLWithString:[NSString stringWithFormat:@"/web/zap?sRef=%@", [sref urlencode]] relativeToURL:_baseAddress];
-
-	NSHTTPURLResponse *response;
-	[SynchronousRequestReader sendSynchronousRequest:myURI
-								   returningResponse:&response
-											   error:nil];
-
-	result.result = ([response statusCode] == 200);
-	result.resulttext = [NSHTTPURLResponse localizedStringForStatusCode: [response statusCode]];
-	return result;
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/zap?sRef=%@", [sref urlencode]];
+	return [self getResultFromSimpleXmlWithRelativeString:relativeURL];
 }
 
 - (Result *)zapTo:(NSObject<ServiceProtocol> *) service
