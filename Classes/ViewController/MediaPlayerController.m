@@ -76,13 +76,18 @@ enum mediaPlayerTags
 		_adding = YES;
 		_massAdd = NO;
 
+		const NSString *localeIdentifier = [[NSLocale preferredLanguages] objectAtIndex:0];
+
 		_shuffleButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Shuffle", @"Shuffle button in MediaPlayer")
 														style:UIBarButtonItemStyleBordered
 													   target:self
 													   action:@selector(shuffle:)];
 		_deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[_deleteButton setTitleEdgeInsets:UIEdgeInsetsMake(-1, 0, 0, 0)];
-		_deleteButton.titleLabel.font = [UIFont systemFontOfSize:17];
+		if(IS_IPHONE() && [localeIdentifier isEqualToString:@"de"])
+			_deleteButton.titleLabel.font = [UIFont systemFontOfSize:12];
+		else
+			_deleteButton.titleLabel.font = [UIFont systemFontOfSize:17];
 		[_deleteButton setBackgroundImage:[[UIImage imageNamed:@"delete.png"] stretchableImageWithLeftCapWidth:5.0 topCapHeight:0.0] forState:UIControlStateNormal];
 		[_deleteButton setImage:[UIImage imageNamed:@"trashicon.png"] forState:UIControlStateNormal];
 		NSString *text = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
@@ -310,7 +315,7 @@ enum mediaPlayerTags
 	NSString *text = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
 	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
 	[_deleteButton setTitle:text forState:UIControlStateNormal];
-	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+	_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, _deleteButton.frame.size.height);
 	_deleteButton.enabled = NO;
 	_shuffleButton.enabled = NO;
 	_progressActions = -1;
@@ -763,6 +768,13 @@ enum mediaPlayerTags
 
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
+	CGFloat buttonHeight = 30;
+	if(IS_IPHONE() && UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+		buttonHeight = 26;
+	CGRect buttonFrame = _deleteButton.frame;
+	buttonFrame.size.height = buttonHeight;
+	_deleteButton.frame = buttonFrame;
+
 	[self theme];
 }
 
@@ -852,6 +864,16 @@ enum mediaPlayerTags
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 	[self placeControls: toInterfaceOrientation duration:duration];
+
+	if(IS_IPHONE())
+	{
+		CGFloat buttonHeight = 30;
+		if(UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
+			buttonHeight = 26;
+		CGRect buttonFrame = _deleteButton.frame;
+		buttonFrame.size.height = buttonHeight;
+		_deleteButton.frame = buttonFrame;
+	}
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -943,7 +965,10 @@ enum mediaPlayerTags
 	NSString *text;
 	if(count)
 	{
-		text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
+		if(IS_IPHONE() && _deleteButton.titleLabel.font.pointSize < 17 && count > 9) // XXX: this might get too long on the iphone and ios would remove the button otherwise
+			text = NSLocalizedString(@"Delete", @"Delete button in MediaPlayer");
+		else
+			text = [NSString stringWithFormat:@"%@ (%d)", NSLocalizedString(@"Delete", @"Delete button in MediaPlayer"), count];
 		_deleteButton.enabled = YES;
 	}
 	else
@@ -954,7 +979,7 @@ enum mediaPlayerTags
 	CGSize textSize = [text sizeWithFont:_deleteButton.titleLabel.font];
 	[_deleteButton setTitle:text forState:UIControlStateNormal];
 	if(_deleteButton.frame.size.width != textSize.width + deleteExtraWidth)
-		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, 33);
+		_deleteButton.frame = CGRectMake(0, 0, textSize.width + deleteExtraWidth, _deleteButton.frame.size.height);
 }
 
 /* playlist item was removed */
