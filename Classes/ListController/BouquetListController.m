@@ -148,9 +148,9 @@ enum bouquetListTags
 	}
 
 	// on ipad also set service list to radio mode, unnecessary on iphone
+	_serviceListController.isRadio = new;
 	if(IS_IPAD())
 	{
-		_serviceListController.isRadio = new;
 		_serviceListController.bouquet = nil;
 	}
 
@@ -343,7 +343,10 @@ enum bouquetListTags
 	// Check for cached ServiceListController instance
 	// NOTE: ignore cache on iPhone if search is still active, we won't be able to end it and crash otherwise ;)
 	if(_serviceListController == nil || (_serviceListController.searchDisplayController.active && IS_IPHONE()))
+	{
 		_serviceListController = [[ServiceListController alloc] init];
+		_serviceListController.isRadio = self.isRadio;
+	}
 	
 	// Redirect callback if we have one
 	if(serviceDelegate)
