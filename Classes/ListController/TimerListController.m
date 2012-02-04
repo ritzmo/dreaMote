@@ -546,10 +546,11 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	((TimerTableViewCell *)cell).formatter = dateFormatter;
 	NSObject<TimerProtocol> *timer = [_timers objectAtIndex:offset + indexPath.row];
 	((TimerTableViewCell *)cell).timer = timer;
-	if([_selected containsObject:timer])
+	const BOOL shouldSelect = [_selected containsObject:timer];
+	if(shouldSelect)
 		[(TimerTableViewCell *)cell setMultiSelected:YES animated:NO];
 
-	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:NO multiSelected:shouldSelect];
 }
 
 /* row selected */

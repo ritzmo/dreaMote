@@ -980,6 +980,7 @@
 {
 	MovieTableViewCell *cell = [MovieTableViewCell reusableTableViewCellInView:tableView withIdentifier:kMovieCell_ID];
 
+	BOOL shouldSelect = NO;
 	NSObject<MovieProtocol> *movie = nil;
 	cell.formatter = _dateFormatter;
 	@try
@@ -1010,11 +1011,12 @@
 	@finally
 	{
 		cell.movie = movie;
-		if(movie && [_selected containsObject:movie])
+		shouldSelect = (movie && [_selected containsObject:movie]) ? YES : NO;
+		if(shouldSelect)
 			[(MovieTableViewCell *)cell setMultiSelected:YES animated:NO];
 	}
 
-	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave multiSelected:shouldSelect];
 }
 
 /* row selected */

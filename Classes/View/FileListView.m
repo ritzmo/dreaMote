@@ -314,9 +314,10 @@
 		else
 			pcell.imageView.image = nil;
 
-		if([_selected containsObject:file])
+		const BOOL shouldSelect = [_selected containsObject:file];
+		if(shouldSelect)
 			[pcell setMultiSelected:YES animated:NO];
-		cell = [singleton styleTableViewCell:pcell inTableView:tableView asSlave:isIphone];
+		cell = [singleton styleTableViewCell:pcell inTableView:tableView asSlave:isIphone multiSelected:shouldSelect];
 	}
 	else
 	{

@@ -392,10 +392,11 @@
 	cell.package = [packages objectAtIndex:row];
 
 	// fix selection
-	if([_selectedPackages containsObject:cell.package])
+	const BOOL shouldSelect = [_selectedPackages containsObject:cell.package];
+	if(shouldSelect)
 		[cell setMultiSelected:YES animated:NO];
 
-	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
+	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave multiSelected:shouldSelect];
 }
 
 /* select row */
