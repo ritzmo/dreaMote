@@ -129,6 +129,12 @@
 /* No comment provided by engineer. */
 "An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Wystąpił nieoczekiwany błąd (%@) po usuwaniu nagrania.\nOdśwież listę ręcznie, aby zobaczyć zmianę!";
 
+/* Accessibility label for button: leftarrow */
+/*"Arrow (left)" = "Arrow (left)";*/
+
+/* Accessibility label for button: rightarrow */
+/*"Arrow (right)" = "Arrow (right)";*/
+
 /* No comment provided by engineer. */
 "Artist" = "Artysta";
 
@@ -426,6 +432,12 @@
 /* No comment provided by engineer. */
 "Failed to start instant record" = "Nagrywaj teraz.";
 
+/* Accessibility label for button: fast-forward */
+/*"Fast-Forward" = "Fast-Forward";*/
+
+/* Accessibility label for button: fast-rewind */
+/*"Fast-Rewind" = "Fast-Rewind";*/
+
 /* Default title of AutoTimerFilterViewController */
 "Filter" = "Filtr";
 
@@ -722,6 +734,9 @@
 /* No comment provided by engineer. */
 "Play" = "Odtwarzaj";
 
+/* Accessibility label for button: play/pause */
+/*"Play-Pause" = "Play-Pause";*/
+
 /* No comment provided by engineer. */
 "Play/Pause" = "Odtwarzaj/Pauza";
 
@@ -809,7 +824,7 @@
 /* Cell title with Receiver model in About View */
 "Receiver model" = "Model Odbiornika";
 
-/* No comment provided by engineer. */
+/* Accessibility label for button: rec */
 "Record" = "Nagraj";
 
 /* Explaination of Movie List in Other List */

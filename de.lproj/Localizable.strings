@@ -129,6 +129,12 @@
 /* No comment provided by engineer. */
 "An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Ein unerwarteter Fehler (%@) trat nach dem Entfernen der Aufnahme auf.\nBitte die Liste manuell aktualisieren, um die Änderung anzuzeigen!";
 
+/* Accessibility label for button: leftarrow */
+"Arrow (left)" = "Links (Pfeil)";
+
+/* Accessibility label for button: rightarrow */
+"Arrow (right)" = "Rechts (Pfeil)";
+
 /* No comment provided by engineer. */
 "Artist" = "Interpret";
 
@@ -426,6 +432,12 @@
 /* No comment provided by engineer. */
 "Failed to start instant record" = "Sofortaufnahme konnte nicht gestartet werden";
 
+/* Accessibility label for button: fast-forward */
+"Fast-Forward" = "Vorspulen";
+
+/* Accessibility label for button: fast-rewind */
+"Fast-Rewind" = "Zurückspulen";
+
 /* Default title of AutoTimerFilterViewController */
 "Filter" = "Filter";
 
@@ -722,6 +734,9 @@
 /* No comment provided by engineer. */
 "Play" = "Wiedergabe";
 
+/* Accessibility label for button: play/pause */
+"Play-Pause" = "Wiedergabe-Pause";
+
 /* No comment provided by engineer. */
 "Play/Pause" = "Wiedergabe/Pause";
 
@@ -809,7 +824,7 @@
 /* Cell title with Receiver model in About View */
 "Receiver model" = "Gerätetyp";
 
-/* No comment provided by engineer. */
+/* Accessibility label for button: rec */
 "Record" = "Aufnahme";
 
 /* Explaination of Movie List in Other List */
