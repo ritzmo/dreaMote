@@ -148,11 +148,13 @@ enum bouquetListTags
 	}
 
 	// on ipad also set service list to radio mode, unnecessary on iphone
-	_serviceListController.isRadio = new;
 	if(IS_IPAD())
 	{
+		_serviceListController.isRadio = new;
 		_serviceListController.bouquet = nil;
 	}
+	else
+		[_serviceListController forceRadio:new];
 
 	// make sure we are going to refresh
 	_refreshBouquets = YES;
@@ -345,7 +347,7 @@ enum bouquetListTags
 	if(_serviceListController == nil || (_serviceListController.searchDisplayController.active && IS_IPHONE()))
 	{
 		_serviceListController = [[ServiceListController alloc] init];
-		_serviceListController.isRadio = self.isRadio;
+		[_serviceListController forceRadio:self.isRadio];
 	}
 	
 	// Redirect callback if we have one

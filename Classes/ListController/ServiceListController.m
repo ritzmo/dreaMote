@@ -248,24 +248,11 @@ enum serviceListTags
 - (void)setIsRadio:(BOOL)new
 {
 	if(_isRadio == new) return;
-	_isRadio = new;
-	_radioButton.enabled = NO;
-
-	// Set title
-	if(new)
-	{
-		self.title = NSLocalizedString(@"Radio Services", @"Title of Radio mode of ServiceListController");
-		// since "radio" loses the (imo) most important information lets lose the less important one
-		self.navigationController.tabBarItem.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
-	}
-	else
-	{
-		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
-		self.navigationController.tabBarItem.title = self.title;
-	}
+	[self forceRadio:new];
+	_radioButton.enabled = NO; // NOTE: disallow switching this during reload
 
 	// pop to root view, needed on ipad when switching to radio in bouquet list
-	[self.navigationController popToRootViewControllerAnimated: YES];
+	[self.navigationController popToRootViewControllerAnimated:YES];
 
 	// TODO: do we need to hand this down to multi epg? (single bouquet on iphone possibly)
 
@@ -280,6 +267,24 @@ enum serviceListTags
 		// only refresh if visible
 		if([self isViewLoaded] && [self.view superview])
 			[self viewWillAppear:NO];
+	}
+}
+
+- (void)forceRadio:(BOOL)newIsRadio
+{
+	_isRadio = newIsRadio;
+	
+	// Set title
+	if(newIsRadio)
+	{
+		self.title = NSLocalizedString(@"Radio Services", @"Title of Radio mode of ServiceListController");
+		// since "radio" loses the (imo) most important information lets lose the less important one
+		self.navigationController.tabBarItem.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
+	}
+	else
+	{
+		self.title = NSLocalizedString(@"Services", @"Title of ServiceListController");
+		self.navigationController.tabBarItem.title = self.title;
 	}
 }
 

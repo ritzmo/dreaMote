@@ -119,6 +119,12 @@
 - (NSObject<ServiceProtocol> *)previousService;
 
 
+/*!
+ @brief Force isRadio variable to a certain value.
+ Optimizes things a bit on the iPhone.
+ */
+- (void)forceRadio:(BOOL)newIsRadio;
+
 
 /*!
  @brief Search bar.
