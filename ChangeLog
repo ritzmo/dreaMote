@@ -303,6 +303,10 @@ Enigma2:
 1.4.4:
 - Improve accessibility in RC emulator a bit
 - Generic stability improvemenets
+Enigma:
+- Fix AGC in Sat Finder
 
 1.4.4-full:
 - Fix possible crash when leaving service list with active search (iPhone only)
+Enigma2:
+- Fix editing radio services on the iPhone
