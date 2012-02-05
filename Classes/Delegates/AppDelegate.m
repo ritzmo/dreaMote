@@ -36,7 +36,7 @@
 	#import <EPGCache/EPGCache.h>
 #endif
 
-#import "SFHFKeychainUtils.h"
+#import "SSKeychain.h"
 
 #import "MBProgressHUD.h"
 
@@ -113,9 +113,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 - (NSString *)uuid
 {
 	NSError *error = nil;
-	NSString *object = [SFHFKeychainUtils getPasswordForUsername:@"uniqueID"
-												  andServiceName:@"freaqueUuid"
-														   error:&error];
+	NSString *object = [SSKeychain passwordForService:@"freaqueUuid"
+											  account:@"uniqueID"
+												error:&error];
 	if(error || !object || [object isEqualToString:@""])
 	{
 		CFUUIDRef cfUuidRef = CFUUIDCreate(kCFAllocatorDefault);
@@ -123,11 +123,10 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 		object = [(__bridge NSString *)cfUuid copy];
 		CFRelease(cfUuid);
 		CFRelease(cfUuidRef);
-		[SFHFKeychainUtils storeUsername:@"uniqueID"
-							 andPassword:object
-						  forServiceName:@"freaqueUuid"
-						  updateExisting:YES
-								   error:&error];
+		[SSKeychain setPassword:object
+					 forService:@"freaqueUuid"
+						account:@"uniqueID"
+						  error:&error];
 		if(error)
 			NSLog(@"failed to store uuid");
 	}

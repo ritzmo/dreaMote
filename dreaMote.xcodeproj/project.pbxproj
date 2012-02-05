@@ -10,6 +10,30 @@
 		DA00A7B8147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
 		DA00A7B9147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
 		DA00A7BA147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
+		DA05670A14DECB5100BCCA04 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663A14DECB4F00BCCA04 /* ObjectiveFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05670B14DECB5100BCCA04 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663A14DECB4F00BCCA04 /* ObjectiveFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05670C14DECB5100BCCA04 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663A14DECB4F00BCCA04 /* ObjectiveFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05670D14DECB5100BCCA04 /* OFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663C14DECB4F00BCCA04 /* OFUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05670E14DECB5100BCCA04 /* OFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663C14DECB4F00BCCA04 /* OFUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05670F14DECB5100BCCA04 /* OFUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663C14DECB4F00BCCA04 /* OFUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05671014DECB5100BCCA04 /* OFXMLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663E14DECB4F00BCCA04 /* OFXMLMapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05671114DECB5100BCCA04 /* OFXMLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663E14DECB4F00BCCA04 /* OFXMLMapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05671214DECB5100BCCA04 /* OFXMLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05663E14DECB4F00BCCA04 /* OFXMLMapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05672214DECB5100BCCA04 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05664614DECB4F00BCCA04 /* SSKeychain.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05672314DECB5100BCCA04 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05664614DECB4F00BCCA04 /* SSKeychain.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05672414DECB5100BCCA04 /* SSKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05664614DECB4F00BCCA04 /* SSKeychain.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05675614DECBD700BCCA04 /* SHKXMLResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675514DECBD700BCCA04 /* SHKXMLResponseParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05675714DECBD700BCCA04 /* SHKXMLResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675514DECBD700BCCA04 /* SHKXMLResponseParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05675814DECBD700BCCA04 /* SHKXMLResponseParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675514DECBD700BCCA04 /* SHKXMLResponseParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05675B14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675A14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05675C14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675A14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05675D14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675A14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05676014DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675F14DECDE800BCCA04 /* SHKSharerDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05676114DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675F14DECDE800BCCA04 /* SHKSharerDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05676214DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05675F14DECDE800BCCA04 /* SHKSharerDelegate.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05676514DECE1200BCCA04 /* SHKFormOptionController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05676414DECE1200BCCA04 /* SHKFormOptionController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05676614DECE1200BCCA04 /* SHKFormOptionController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05676414DECE1200BCCA04 /* SHKFormOptionController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA05676714DECE1200BCCA04 /* SHKFormOptionController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA05676414DECE1200BCCA04 /* SHKFormOptionController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA1CEA6E14731EB900709BEF /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = DA1CEA6C14731EB900709BEF /* delete.png */; };
 		DA1CEA6F14731EB900709BEF /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = DA1CEA6C14731EB900709BEF /* delete.png */; };
 		DA1CEA7014731EB900709BEF /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = DA1CEA6C14731EB900709BEF /* delete.png */; };
@@ -186,9 +210,6 @@
 		DA78F0DE14C1E71200919093 /* UIWebView+SHK.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78EFF914C1E71200919093 /* UIWebView+SHK.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F0DF14C1E71200919093 /* UIWebView+SHK.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78EFF914C1E71200919093 /* UIWebView+SHK.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F0E014C1E71200919093 /* UIWebView+SHK.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78EFF914C1E71200919093 /* UIWebView+SHK.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F0E114C1E71200919093 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78EFFD14C1E71200919093 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F0E214C1E71200919093 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78EFFD14C1E71200919093 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F0E314C1E71200919093 /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78EFFD14C1E71200919093 /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F0E414C1E71200919093 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F00114C1E71200919093 /* NSMutableURLRequest+Parameters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F0E514C1E71200919093 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F00114C1E71200919093 /* NSMutableURLRequest+Parameters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F0E614C1E71200919093 /* NSMutableURLRequest+Parameters.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F00114C1E71200919093 /* NSMutableURLRequest+Parameters.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -348,12 +369,6 @@
 		DA78F18014C1E71200919093 /* NSData_LFHTTPFormExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08214C1E71200919093 /* NSData_LFHTTPFormExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F18114C1E71200919093 /* NSData_LFHTTPFormExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08214C1E71200919093 /* NSData_LFHTTPFormExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F18214C1E71200919093 /* NSData_LFHTTPFormExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08214C1E71200919093 /* NSData_LFHTTPFormExtensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F18314C1E71200919093 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08414C1E71200919093 /* ObjectiveFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F18414C1E71200919093 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08414C1E71200919093 /* ObjectiveFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F18514C1E71200919093 /* ObjectiveFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08414C1E71200919093 /* ObjectiveFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F18614C1E71200919093 /* OFXMLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08714C1E71200919093 /* OFXMLMapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F18714C1E71200919093 /* OFXMLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08714C1E71200919093 /* OFXMLMapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F18814C1E71200919093 /* OFXMLMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08714C1E71200919093 /* OFXMLMapper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F18914C1E71200919093 /* SHKFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08914C1E71200919093 /* SHKFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F18A14C1E71200919093 /* SHKFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08914C1E71200919093 /* SHKFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F18B14C1E71200919093 /* SHKFlickr.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F08914C1E71200919093 /* SHKFlickr.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1232,6 +1247,22 @@
 /* Begin PBXFileReference section */
 		DA00A7B6147272DF00D3DA55 /* MultiSelectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectionTableViewCell.h; sourceTree = "<group>"; };
 		DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectionTableViewCell.m; sourceTree = "<group>"; };
+		DA05663914DECB4F00BCCA04 /* ObjectiveFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr.h; path = Source/ObjectiveFlickr.h; sourceTree = "<group>"; };
+		DA05663A14DECB4F00BCCA04 /* ObjectiveFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ObjectiveFlickr.m; path = Source/ObjectiveFlickr.m; sourceTree = "<group>"; };
+		DA05663B14DECB4F00BCCA04 /* OFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFUtilities.h; path = Source/OFUtilities.h; sourceTree = "<group>"; };
+		DA05663C14DECB4F00BCCA04 /* OFUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFUtilities.m; path = Source/OFUtilities.m; sourceTree = "<group>"; };
+		DA05663D14DECB4F00BCCA04 /* OFXMLMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OFXMLMapper.h; path = Source/OFXMLMapper.h; sourceTree = "<group>"; };
+		DA05663E14DECB4F00BCCA04 /* OFXMLMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OFXMLMapper.m; path = Source/OFXMLMapper.m; sourceTree = "<group>"; };
+		DA05664514DECB4F00BCCA04 /* SSKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSKeychain.h; sourceTree = "<group>"; };
+		DA05664614DECB4F00BCCA04 /* SSKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSKeychain.m; sourceTree = "<group>"; };
+		DA05675414DECBD700BCCA04 /* SHKXMLResponseParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKXMLResponseParser.h; sourceTree = "<group>"; };
+		DA05675514DECBD700BCCA04 /* SHKXMLResponseParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKXMLResponseParser.m; sourceTree = "<group>"; };
+		DA05675914DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSHTTPCookieStorage+DeleteForURL.h"; sourceTree = "<group>"; };
+		DA05675A14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSHTTPCookieStorage+DeleteForURL.m"; sourceTree = "<group>"; };
+		DA05675E14DECDE800BCCA04 /* SHKSharerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKSharerDelegate.h; sourceTree = "<group>"; };
+		DA05675F14DECDE800BCCA04 /* SHKSharerDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKSharerDelegate.m; sourceTree = "<group>"; };
+		DA05676314DECE1200BCCA04 /* SHKFormOptionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFormOptionController.h; sourceTree = "<group>"; };
+		DA05676414DECE1200BCCA04 /* SHKFormOptionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFormOptionController.m; sourceTree = "<group>"; };
 		DA1CEA6C14731EB900709BEF /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		DA1CEA6D14731EB900709BEF /* trashicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trashicon.png; sourceTree = "<group>"; };
 		DA20F3F114714B200099CB4F /* Cell_Dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_Dark.png; sourceTree = "<group>"; };
@@ -1329,8 +1360,6 @@
 		DA78EFF714C1E71200919093 /* NSData+md5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+md5.m"; sourceTree = "<group>"; };
 		DA78EFF814C1E71200919093 /* UIWebView+SHK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+SHK.h"; sourceTree = "<group>"; };
 		DA78EFF914C1E71200919093 /* UIWebView+SHK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+SHK.m"; sourceTree = "<group>"; };
-		DA78EFFC14C1E71200919093 /* SFHFKeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFHFKeychainUtils.h; sourceTree = "<group>"; };
-		DA78EFFD14C1E71200919093 /* SFHFKeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFHFKeychainUtils.m; sourceTree = "<group>"; };
 		DA78F00014C1E71200919093 /* NSMutableURLRequest+Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+Parameters.h"; sourceTree = "<group>"; };
 		DA78F00114C1E71200919093 /* NSMutableURLRequest+Parameters.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+Parameters.m"; sourceTree = "<group>"; };
 		DA78F00214C1E71200919093 /* NSString+URLEncoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+URLEncoding.h"; sourceTree = "<group>"; };
@@ -1442,11 +1471,6 @@
 		DA78F08014C1E71200919093 /* LFWebAPIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LFWebAPIKit.h; sourceTree = "<group>"; };
 		DA78F08114C1E71200919093 /* NSData_LFHTTPFormExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSData_LFHTTPFormExtensions.h; sourceTree = "<group>"; };
 		DA78F08214C1E71200919093 /* NSData_LFHTTPFormExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSData_LFHTTPFormExtensions.m; sourceTree = "<group>"; };
-		DA78F08314C1E71200919093 /* ObjectiveFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectiveFlickr.h; sourceTree = "<group>"; };
-		DA78F08414C1E71200919093 /* ObjectiveFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ObjectiveFlickr.m; sourceTree = "<group>"; };
-		DA78F08514C1E71200919093 /* OFUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFUtilities.h; sourceTree = "<group>"; };
-		DA78F08614C1E71200919093 /* OFXMLMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OFXMLMapper.h; sourceTree = "<group>"; };
-		DA78F08714C1E71200919093 /* OFXMLMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OFXMLMapper.m; sourceTree = "<group>"; };
 		DA78F08814C1E71200919093 /* SHKFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKFlickr.h; sourceTree = "<group>"; };
 		DA78F08914C1E71200919093 /* SHKFlickr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKFlickr.m; sourceTree = "<group>"; };
 		DA78F08B14C1E71200919093 /* NSError+SHKFoursquareV2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+SHKFoursquareV2.h"; sourceTree = "<group>"; };
@@ -2095,6 +2119,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DA0565B914DECB4F00BCCA04 /* objectiveflickr */ = {
+			isa = PBXGroup;
+			children = (
+				DA05663914DECB4F00BCCA04 /* ObjectiveFlickr.h */,
+				DA05663A14DECB4F00BCCA04 /* ObjectiveFlickr.m */,
+				DA05663B14DECB4F00BCCA04 /* OFUtilities.h */,
+				DA05663C14DECB4F00BCCA04 /* OFUtilities.m */,
+				DA05663D14DECB4F00BCCA04 /* OFXMLMapper.h */,
+				DA05663E14DECB4F00BCCA04 /* OFXMLMapper.m */,
+			);
+			path = objectiveflickr;
+			sourceTree = "<group>";
+		};
+		DA05663F14DECB4F00BCCA04 /* sskeychain */ = {
+			isa = PBXGroup;
+			children = (
+				DA05664514DECB4F00BCCA04 /* SSKeychain.h */,
+				DA05664614DECB4F00BCCA04 /* SSKeychain.m */,
+			);
+			path = sskeychain;
+			sourceTree = "<group>";
+		};
 		DA30A5DA1475C7BE0052C2C9 /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -2192,6 +2238,8 @@
 				DA78EFF214C1E71200919093 /* SHKOAuthSharer.m */,
 				DA78EFF314C1E71200919093 /* SHKSharer.h */,
 				DA78EFF414C1E71200919093 /* SHKSharer.m */,
+				DA05675E14DECDE800BCCA04 /* SHKSharerDelegate.h */,
+				DA05675F14DECDE800BCCA04 /* SHKSharerDelegate.m */,
 			);
 			path = "Base Sharer Classes";
 			sourceTree = "<group>";
@@ -2201,6 +2249,8 @@
 			children = (
 				DA78EFF614C1E71200919093 /* NSData+md5.h */,
 				DA78EFF714C1E71200919093 /* NSData+md5.m */,
+				DA05675914DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.h */,
+				DA05675A14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m */,
 				DA78EFF814C1E71200919093 /* UIWebView+SHK.h */,
 				DA78EFF914C1E71200919093 /* UIWebView+SHK.m */,
 			);
@@ -2210,21 +2260,13 @@
 		DA78EFFA14C1E71200919093 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				DA78EFFB14C1E71200919093 /* Keychain */,
 				DA78EFFE14C1E71200919093 /* OAuth */,
 				DA78F02114C1E71200919093 /* SHKRequest.h */,
 				DA78F02214C1E71200919093 /* SHKRequest.m */,
+				DA05675414DECBD700BCCA04 /* SHKXMLResponseParser.h */,
+				DA05675514DECBD700BCCA04 /* SHKXMLResponseParser.m */,
 			);
 			path = Helpers;
-			sourceTree = "<group>";
-		};
-		DA78EFFB14C1E71200919093 /* Keychain */ = {
-			isa = PBXGroup;
-			children = (
-				DA78EFFC14C1E71200919093 /* SFHFKeychainUtils.h */,
-				DA78EFFD14C1E71200919093 /* SFHFKeychainUtils.m */,
-			);
-			path = Keychain;
 			sourceTree = "<group>";
 		};
 		DA78EFFE14C1E71200919093 /* OAuth */ = {
@@ -2505,11 +2547,6 @@
 				DA78F08014C1E71200919093 /* LFWebAPIKit.h */,
 				DA78F08114C1E71200919093 /* NSData_LFHTTPFormExtensions.h */,
 				DA78F08214C1E71200919093 /* NSData_LFHTTPFormExtensions.m */,
-				DA78F08314C1E71200919093 /* ObjectiveFlickr.h */,
-				DA78F08414C1E71200919093 /* ObjectiveFlickr.m */,
-				DA78F08514C1E71200919093 /* OFUtilities.h */,
-				DA78F08614C1E71200919093 /* OFXMLMapper.h */,
-				DA78F08714C1E71200919093 /* OFXMLMapper.m */,
 				DA78F08814C1E71200919093 /* SHKFlickr.h */,
 				DA78F08914C1E71200919093 /* SHKFlickr.m */,
 			);
@@ -2630,6 +2667,8 @@
 				DA78F0C214C1E71200919093 /* SHKFormFieldCell.m */,
 				DA78F0C314C1E71200919093 /* SHKFormFieldSettings.h */,
 				DA78F0C414C1E71200919093 /* SHKFormFieldSettings.m */,
+				DA05676314DECE1200BCCA04 /* SHKFormOptionController.h */,
+				DA05676414DECE1200BCCA04 /* SHKFormOptionController.m */,
 				DA78F0C514C1E71200919093 /* SHKOAuthView.h */,
 				DA78F0C614C1E71200919093 /* SHKOAuthView.m */,
 				DA78F0C714C1E71200919093 /* SHKShareItemDelegate.h */,
@@ -2644,6 +2683,8 @@
 		DA78F1DD14C1E72100919093 /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
+				DA0565B914DECB4F00BCCA04 /* objectiveflickr */,
+				DA05663F14DECB4F00BCCA04 /* sskeychain */,
 				DA78F1DE14C1E72100919093 /* facebook-ios-sdk */,
 				DA78F22F14C1E72100919093 /* JSONKit */,
 			);
@@ -3645,6 +3686,7 @@
 				vi,
 				zh_CN,
 				pl,
+				English,
 			);
 			mainGroup = DAC8BE4013B1FF9200CA00D9;
 			productRefGroup = DAC8BE4C13B1FF9200CA00D9 /* Products */;
@@ -4290,7 +4332,6 @@
 				DA78F0D814C1E71200919093 /* SHKSharer.m in Sources */,
 				DA78F0DB14C1E71200919093 /* NSData+md5.m in Sources */,
 				DA78F0DE14C1E71200919093 /* UIWebView+SHK.m in Sources */,
-				DA78F0E114C1E71200919093 /* SFHFKeychainUtils.m in Sources */,
 				DA78F0E414C1E71200919093 /* NSMutableURLRequest+Parameters.m in Sources */,
 				DA78F0E714C1E71200919093 /* NSString+URLEncoding.m in Sources */,
 				DA78F0EA14C1E71200919093 /* NSURL+Base.m in Sources */,
@@ -4341,8 +4382,6 @@
 				DA78F17A14C1E71200919093 /* LFHTTPRequest.m in Sources */,
 				DA78F17D14C1E71200919093 /* LFSiteReachability.m in Sources */,
 				DA78F18014C1E71200919093 /* NSData_LFHTTPFormExtensions.m in Sources */,
-				DA78F18314C1E71200919093 /* ObjectiveFlickr.m in Sources */,
-				DA78F18614C1E71200919093 /* OFXMLMapper.m in Sources */,
 				DA78F18914C1E71200919093 /* SHKFlickr.m in Sources */,
 				DA78F18C14C1E71200919093 /* NSError+SHKFoursquareV2.m in Sources */,
 				DA78F18F14C1E71200919093 /* SHKFoursquareV2.m in Sources */,
@@ -4382,6 +4421,14 @@
 				DA78F29614C1E72200919093 /* SBJsonParser.m in Sources */,
 				DA78F29914C1E72200919093 /* SBJsonWriter.m in Sources */,
 				DA78F2B114C1E72200919093 /* JSONKit.m in Sources */,
+				DA05670A14DECB5100BCCA04 /* ObjectiveFlickr.m in Sources */,
+				DA05670D14DECB5100BCCA04 /* OFUtilities.m in Sources */,
+				DA05671014DECB5100BCCA04 /* OFXMLMapper.m in Sources */,
+				DA05672214DECB5100BCCA04 /* SSKeychain.m in Sources */,
+				DA05675614DECBD700BCCA04 /* SHKXMLResponseParser.m in Sources */,
+				DA05675B14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */,
+				DA05676014DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
+				DA05676514DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4556,7 +4603,6 @@
 				DA78F0D914C1E71200919093 /* SHKSharer.m in Sources */,
 				DA78F0DC14C1E71200919093 /* NSData+md5.m in Sources */,
 				DA78F0DF14C1E71200919093 /* UIWebView+SHK.m in Sources */,
-				DA78F0E214C1E71200919093 /* SFHFKeychainUtils.m in Sources */,
 				DA78F0E514C1E71200919093 /* NSMutableURLRequest+Parameters.m in Sources */,
 				DA78F0E814C1E71200919093 /* NSString+URLEncoding.m in Sources */,
 				DA78F0EB14C1E71200919093 /* NSURL+Base.m in Sources */,
@@ -4607,8 +4653,6 @@
 				DA78F17B14C1E71200919093 /* LFHTTPRequest.m in Sources */,
 				DA78F17E14C1E71200919093 /* LFSiteReachability.m in Sources */,
 				DA78F18114C1E71200919093 /* NSData_LFHTTPFormExtensions.m in Sources */,
-				DA78F18414C1E71200919093 /* ObjectiveFlickr.m in Sources */,
-				DA78F18714C1E71200919093 /* OFXMLMapper.m in Sources */,
 				DA78F18A14C1E71200919093 /* SHKFlickr.m in Sources */,
 				DA78F18D14C1E71200919093 /* NSError+SHKFoursquareV2.m in Sources */,
 				DA78F19014C1E71200919093 /* SHKFoursquareV2.m in Sources */,
@@ -4648,6 +4692,14 @@
 				DA78F29714C1E72200919093 /* SBJsonParser.m in Sources */,
 				DA78F29A14C1E72200919093 /* SBJsonWriter.m in Sources */,
 				DA78F2B214C1E72200919093 /* JSONKit.m in Sources */,
+				DA05670B14DECB5100BCCA04 /* ObjectiveFlickr.m in Sources */,
+				DA05670E14DECB5100BCCA04 /* OFUtilities.m in Sources */,
+				DA05671114DECB5100BCCA04 /* OFXMLMapper.m in Sources */,
+				DA05672314DECB5100BCCA04 /* SSKeychain.m in Sources */,
+				DA05675714DECBD700BCCA04 /* SHKXMLResponseParser.m in Sources */,
+				DA05675C14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */,
+				DA05676114DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
+				DA05676614DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4793,7 +4845,6 @@
 				DA78F0DA14C1E71200919093 /* SHKSharer.m in Sources */,
 				DA78F0DD14C1E71200919093 /* NSData+md5.m in Sources */,
 				DA78F0E014C1E71200919093 /* UIWebView+SHK.m in Sources */,
-				DA78F0E314C1E71200919093 /* SFHFKeychainUtils.m in Sources */,
 				DA78F0E614C1E71200919093 /* NSMutableURLRequest+Parameters.m in Sources */,
 				DA78F0E914C1E71200919093 /* NSString+URLEncoding.m in Sources */,
 				DA78F0EC14C1E71200919093 /* NSURL+Base.m in Sources */,
@@ -4844,8 +4895,6 @@
 				DA78F17C14C1E71200919093 /* LFHTTPRequest.m in Sources */,
 				DA78F17F14C1E71200919093 /* LFSiteReachability.m in Sources */,
 				DA78F18214C1E71200919093 /* NSData_LFHTTPFormExtensions.m in Sources */,
-				DA78F18514C1E71200919093 /* ObjectiveFlickr.m in Sources */,
-				DA78F18814C1E71200919093 /* OFXMLMapper.m in Sources */,
 				DA78F18B14C1E71200919093 /* SHKFlickr.m in Sources */,
 				DA78F18E14C1E71200919093 /* NSError+SHKFoursquareV2.m in Sources */,
 				DA78F19114C1E71200919093 /* SHKFoursquareV2.m in Sources */,
@@ -4885,6 +4934,14 @@
 				DA78F29814C1E72200919093 /* SBJsonParser.m in Sources */,
 				DA78F29B14C1E72200919093 /* SBJsonWriter.m in Sources */,
 				DA78F2B314C1E72200919093 /* JSONKit.m in Sources */,
+				DA05670C14DECB5100BCCA04 /* ObjectiveFlickr.m in Sources */,
+				DA05670F14DECB5100BCCA04 /* OFUtilities.m in Sources */,
+				DA05671214DECB5100BCCA04 /* OFXMLMapper.m in Sources */,
+				DA05672414DECB5100BCCA04 /* SSKeychain.m in Sources */,
+				DA05675814DECBD700BCCA04 /* SHKXMLResponseParser.m in Sources */,
+				DA05675D14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */,
+				DA05676214DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
+				DA05676714DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
