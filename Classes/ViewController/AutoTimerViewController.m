@@ -1722,7 +1722,7 @@ static NSArray *searchTypeTexts = nil;
 					else
 						_timer.afterEventTo = date;
 
-					UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:indexPath.section]];
+					UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 					if(row == 2)
 						cell.textLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"From: %@", @"AutoTimer", @"timespan from"), [self format_Time:date withDateStyle:NSDateFormatterNoStyle andTimeStyle:NSDateFormatterShortStyle]];
 					else
@@ -1748,7 +1748,7 @@ static NSArray *searchTypeTexts = nil;
 			vc.callback = ^(NSObject<LocationProtocol> *newLocation, BOOL canceling){
 				if(!canceling)
 				{
-					UITableViewCell *cell = [tv cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:locationSection]];
+					UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 					if(newLocation)
 					{
 						_timer.location = newLocation.fullpath;
@@ -1766,7 +1766,7 @@ static NSArray *searchTypeTexts = nil;
 				else
 					[self.navigationController popToViewController:self animated:YES];
 			};
-			
+
 			if(isIpad)
 			{
 				targetViewController = [[UINavigationController alloc] initWithRootViewController:vc];
@@ -1803,7 +1803,7 @@ static NSArray *searchTypeTexts = nil;
 						if(!cancel)
 						{
 							_timer.tags = [newSelectedItems allObjects];
-							UITableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+							UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
 							if(cell)
 								cell.textLabel.text = (_timer.tags.count) ? [_timer.tags componentsJoinedByString:@" "] : NSLocalizedString(@"None", @"");
 						}
