@@ -1199,7 +1199,7 @@ enum timerSections
 						repeatcount = 0;
 					_timer.repeatcount = repeatcount;
 
-					[_tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationNone];
+					[_tableView reloadSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationNone];
 				};
 				break;
 			}
