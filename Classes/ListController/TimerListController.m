@@ -540,11 +540,15 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	cell = [TimerTableViewCell reusableTableViewCellInView:tableView withIdentifier:kTimerCell_ID];
 
 	// Assign item
-	NSInteger offset = 0;
+	NSUInteger offset = indexPath.row;
 	if(section > 0)
-		offset = _dist[section-1];
+		offset += _dist[section-1];
 	((TimerTableViewCell *)cell).formatter = dateFormatter;
-	NSObject<TimerProtocol> *timer = [_timers objectAtIndex:offset + indexPath.row];
+	NSObject<TimerProtocol> *timer = (offset < _timers.count) ? [_timers objectAtIndex:offset] : nil;
+#if IS_DEBUG()
+	if(!timer)
+		[NSException raise:@"TimerListInvalidIndexForCell" format:@"tableView:cellForRowAtIndexPath: requested cell for indexPath (section %d, row %d) which we did not find a timer for. Offsets (%d, %d, %d, %d), _timers (%@), calculated index (%d), _timers.count (%d)", indexPath.section, indexPath.row, _dist[0], _dist[1], _dist[2], _dist[3], [_timers description], offset, _timers.count];
+#endif
 	((TimerTableViewCell *)cell).timer = timer;
 	const BOOL shouldSelect = [_selected containsObject:timer];
 	if(shouldSelect)
