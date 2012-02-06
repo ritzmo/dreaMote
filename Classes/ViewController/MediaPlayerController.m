@@ -162,17 +162,17 @@ enum mediaPlayerTags
 
 - (void)sendCommand:(NSString *)command
 {
-	@autoreleasepool {
-
-		Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
-		if(!result.result)
+	@autoreleasepool
+	{
+		NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+		Result *result = [sharedRemoteConnector respondsToSelector:@selector(mediaplayerCommand:)] ? [sharedRemoteConnector mediaplayerCommand:command] : nil;
+		if(result && !result.result)
 		{
 			// Alert user
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
 																 delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 			[alert show];
 		}
-
 	}
 }
 
@@ -189,8 +189,9 @@ enum mediaPlayerTags
 	}
 
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		Result *result = [[RemoteConnectorObject sharedRemoteConnector] mediaplayerCommand:command];
-		if(!result.result)
+		NSObject<RemoteConnector> *sharedRemoteConnector = [RemoteConnectorObject sharedRemoteConnector];
+		Result *result = [sharedRemoteConnector respondsToSelector:@selector(mediaplayerCommand:)] ? [sharedRemoteConnector mediaplayerCommand:command] : nil;
+		if(result && !result.result)
 		{
 			// Alert user
 			const UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Sending command failed", @"") message:result.resulttext
