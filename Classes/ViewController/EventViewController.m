@@ -8,7 +8,9 @@
 
 #import "EventViewController.h"
 
-#import "RemoteConnectorObject.h"
+#import <Delegates/AppDelegate.h>
+
+#import <Connector/RemoteConnectorObject.h>
 
 #import <ViewController/TimerViewController.h>
 #import <ListController/ServiceZapListController.h>
@@ -650,7 +652,7 @@
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
 	[SHK setRootViewController:self];
-	[actionSheet showInView:self.view];
+	[actionSheet showFromTabBar:APP_DELEGATE.tabBarController.tabBar];
 }
 
 #pragma mark Calendar

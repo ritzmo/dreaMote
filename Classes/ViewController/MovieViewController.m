@@ -8,6 +8,8 @@
 
 #import "MovieViewController.h"
 
+#import <Delegates/AppDelegate.h>
+
 #import <Constants.h>
 #import <Connector/RemoteConnectorObject.h>
 
@@ -782,7 +784,7 @@
 	SHKActionSheet *actionSheet = [SHKActionSheet actionSheetForItem:item];
 
 	[SHK setRootViewController:self];
-	[actionSheet showInView:self.view];
+	[actionSheet showFromTabBar:APP_DELEGATE.tabBarController.tabBar];
 }
 
 @end
