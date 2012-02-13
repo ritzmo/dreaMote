@@ -399,12 +399,6 @@
 		DA78F1A414C1E71200919093 /* SHKInstapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F09E14C1E71200919093 /* SHKInstapaper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F1A514C1E71200919093 /* SHKInstapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F09E14C1E71200919093 /* SHKInstapaper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F1A614C1E71200919093 /* SHKInstapaper.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F09E14C1E71200919093 /* SHKInstapaper.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F1A714C1E71200919093 /* SHKLinkedIn.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A114C1E71200919093 /* SHKLinkedIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F1A814C1E71200919093 /* SHKLinkedIn.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A114C1E71200919093 /* SHKLinkedIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F1A914C1E71200919093 /* SHKLinkedIn.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A114C1E71200919093 /* SHKLinkedIn.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F1AA14C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A314C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F1AB14C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A314C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F1AC14C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A314C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F1AD14C1E71200919093 /* SHKPinboard.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A614C1E71200919093 /* SHKPinboard.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F1AE14C1E71200919093 /* SHKPinboard.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A614C1E71200919093 /* SHKPinboard.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F1AF14C1E71200919093 /* SHKPinboard.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F0A614C1E71200919093 /* SHKPinboard.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1491,10 +1485,6 @@
 		DA78F09B14C1E71200919093 /* SHKGoogleReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKGoogleReader.m; sourceTree = "<group>"; };
 		DA78F09D14C1E71200919093 /* SHKInstapaper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKInstapaper.h; sourceTree = "<group>"; };
 		DA78F09E14C1E71200919093 /* SHKInstapaper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKInstapaper.m; sourceTree = "<group>"; };
-		DA78F0A014C1E71200919093 /* SHKLinkedIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKLinkedIn.h; sourceTree = "<group>"; };
-		DA78F0A114C1E71200919093 /* SHKLinkedIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKLinkedIn.m; sourceTree = "<group>"; };
-		DA78F0A214C1E71200919093 /* SHKLinkedInOAMutableURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKLinkedInOAMutableURLRequest.h; sourceTree = "<group>"; };
-		DA78F0A314C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKLinkedInOAMutableURLRequest.m; sourceTree = "<group>"; };
 		DA78F0A514C1E71200919093 /* SHKPinboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKPinboard.h; sourceTree = "<group>"; };
 		DA78F0A614C1E71200919093 /* SHKPinboard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKPinboard.m; sourceTree = "<group>"; };
 		DA78F0A814C1E71200919093 /* SHKReadItLater.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKReadItLater.h; sourceTree = "<group>"; };
@@ -2435,7 +2425,6 @@
 				DA78F08A14C1E71200919093 /* FoursquareV2 */,
 				DA78F09914C1E71200919093 /* Google Reader */,
 				DA78F09C14C1E71200919093 /* Instapaper */,
-				DA78F09F14C1E71200919093 /* LinkedIn */,
 				DA78F0A414C1E71200919093 /* Pinboard */,
 				DA78F0A714C1E71200919093 /* Read It Later */,
 				DA78F0AA14C1E71200919093 /* Tumblr */,
@@ -2590,17 +2579,6 @@
 				DA78F09E14C1E71200919093 /* SHKInstapaper.m */,
 			);
 			path = Instapaper;
-			sourceTree = "<group>";
-		};
-		DA78F09F14C1E71200919093 /* LinkedIn */ = {
-			isa = PBXGroup;
-			children = (
-				DA78F0A014C1E71200919093 /* SHKLinkedIn.h */,
-				DA78F0A114C1E71200919093 /* SHKLinkedIn.m */,
-				DA78F0A214C1E71200919093 /* SHKLinkedInOAMutableURLRequest.h */,
-				DA78F0A314C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m */,
-			);
-			path = LinkedIn;
 			sourceTree = "<group>";
 		};
 		DA78F0A414C1E71200919093 /* Pinboard */ = {
@@ -4392,8 +4370,6 @@
 				DA78F19E14C1E71200919093 /* SHKFoursquareV2VenuesForm.m in Sources */,
 				DA78F1A114C1E71200919093 /* SHKGoogleReader.m in Sources */,
 				DA78F1A414C1E71200919093 /* SHKInstapaper.m in Sources */,
-				DA78F1A714C1E71200919093 /* SHKLinkedIn.m in Sources */,
-				DA78F1AA14C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m in Sources */,
 				DA78F1AD14C1E71200919093 /* SHKPinboard.m in Sources */,
 				DA78F1B014C1E71200919093 /* SHKReadItLater.m in Sources */,
 				DA78F1B314C1E71200919093 /* SHKTumblr.m in Sources */,
@@ -4663,8 +4639,6 @@
 				DA78F19F14C1E71200919093 /* SHKFoursquareV2VenuesForm.m in Sources */,
 				DA78F1A214C1E71200919093 /* SHKGoogleReader.m in Sources */,
 				DA78F1A514C1E71200919093 /* SHKInstapaper.m in Sources */,
-				DA78F1A814C1E71200919093 /* SHKLinkedIn.m in Sources */,
-				DA78F1AB14C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m in Sources */,
 				DA78F1AE14C1E71200919093 /* SHKPinboard.m in Sources */,
 				DA78F1B114C1E71200919093 /* SHKReadItLater.m in Sources */,
 				DA78F1B414C1E71200919093 /* SHKTumblr.m in Sources */,
@@ -4905,8 +4879,6 @@
 				DA78F1A014C1E71200919093 /* SHKFoursquareV2VenuesForm.m in Sources */,
 				DA78F1A314C1E71200919093 /* SHKGoogleReader.m in Sources */,
 				DA78F1A614C1E71200919093 /* SHKInstapaper.m in Sources */,
-				DA78F1A914C1E71200919093 /* SHKLinkedIn.m in Sources */,
-				DA78F1AC14C1E71200919093 /* SHKLinkedInOAMutableURLRequest.m in Sources */,
 				DA78F1AF14C1E71200919093 /* SHKPinboard.m in Sources */,
 				DA78F1B214C1E71200919093 /* SHKReadItLater.m in Sources */,
 				DA78F1B514C1E71200919093 /* SHKTumblr.m in Sources */,
