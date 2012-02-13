@@ -90,6 +90,9 @@
 		_serviceController = [[UINavigationController alloc] initWithRootViewController: viewController];
 		viewController = [[TimerListController alloc] init];
 		_timerController = [[UINavigationController alloc] initWithRootViewController: viewController];
+
+		if(UIAccessibilityIsVoiceOverRunning()) // XXX: we want a reload button if voice-over is enabled
+			_currentController = [[UINavigationController alloc] initWithRootViewController:_currentController];
 	}
 	_rcController = nil;
 	[menuList addObject:_timerController];

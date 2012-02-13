@@ -25,6 +25,7 @@
 @interface  CurrentViewController()
 - (UITextView *)newSummary: (NSObject<EventProtocol> *)event;
 - (UIButton *)createButtonForSelector:(SEL)selector withImage:(NSString *)imageName;
+- (void)doRefresh:(id)sender;
 #if INCLUDE_FEATURE(Ads)
 - (void)createAdBannerView;
 - (void)destroyAdBannerView;
@@ -85,6 +86,11 @@
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 
+	if(UIAccessibilityIsVoiceOverRunning())
+	{
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(doRefresh:)];
+	}
+
 #if INCLUDE_FEATURE(Ads)
 	if(![SSKManager isFeaturePurchased:kAdFreePurchase])
 	{
@@ -108,6 +114,10 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:kAdRemovalPurchased object:nil];
 	[self destroyAdBannerView];
 #endif
+	if(UIAccessibilityIsVoiceOverRunning())
+	{
+		self.navigationItem.rightBarButtonItem = nil;
+	}
 	[super viewDidUnload];
 }
 
@@ -141,6 +151,11 @@
 	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
 
 	return button;
+}
+
+- (void)doRefresh:(id)sender
+{
+	[self egoRefreshTableHeaderDidTriggerRefresh:_refreshHeaderView];
 }
 
 - (void)fetchData
