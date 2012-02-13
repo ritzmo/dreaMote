@@ -1521,6 +1521,8 @@
 		DA78F23114C1E72100919093 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		DA78F23214C1E72100919093 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		DA8368E414A24F080047CC85 /* remote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "remote@2x.png"; sourceTree = "<group>"; };
+		DA920D1714E9781700BE77EE /* AsynchronousRequestReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AsynchronousRequestReader.h; sourceTree = "<group>"; };
+		DA920D1814E9781700BE77EE /* AsynchronousRequestReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AsynchronousRequestReader.m; sourceTree = "<group>"; };
 		DAA303E1148E8C180011A225 /* Cell_BlueSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Cell_BlueSelected.png; sourceTree = "<group>"; };
 		DAAAC5D614791D320030739E /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; };
 		DAAAC5D714791D320030739E /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; };
@@ -2904,6 +2906,8 @@
 				DAC8C13A13B2014D00CA00D9 /* View */,
 				DAC8C14513B2014D00CA00D9 /* ViewController */,
 				DAC8C18013B2014D00CA00D9 /* XMLReader */,
+				DA920D1714E9781700BE77EE /* AsynchronousRequestReader.h */,
+				DA920D1814E9781700BE77EE /* AsynchronousRequestReader.m */,
 				DAC8C07E13B2014C00CA00D9 /* Constants.h */,
 				DAC8C07F13B2014C00CA00D9 /* Constants.m */,
 				DA5FC38B148AF045006C27D1 /* DeferTagLoader.h */,

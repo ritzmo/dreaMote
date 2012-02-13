@@ -112,7 +112,14 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	return failureReason == nil;
 }
 
-/* overwrite parent implementation because we use the queue here */
++ (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
+{
+#if IS_DEBUG()
+	[NSException raise:@"ExcWrongClass" format:@"Tried to send synchronous request using %@", [self class]];
+#endif
+	return nil;
+}
+
 - (void)errorLoadingDocument:(NSError *)error
 {
 	if([_delegate respondsToSelector:@selector(dataSourceDelegate:errorParsingDocument:)])
@@ -121,7 +128,6 @@ static xmlSAXHandler libxmlSAXHandlerStruct;
 	}
 }
 
-/* overwrite parent implementation because we use the queue here */
 - (void)finishedParsingDocument
 {
 	if([_delegate respondsToSelector:@selector(dataSourceDelegateFinishedParsingDocument:)])

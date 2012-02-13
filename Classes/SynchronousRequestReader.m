@@ -16,14 +16,12 @@
 @interface SynchronousRequestReader()
 @property (nonatomic, strong) NSMutableData *data;
 @property (nonatomic, strong) NSURLResponse *response;
-@property (nonatomic) BOOL running;
 @end
 
 @implementation SynchronousRequestReader
 
 @synthesize data, response;
 @synthesize error;
-@synthesize running = _running;
 
 - (id)init
 {
@@ -34,15 +32,14 @@
 	return self;
 }
 
-+ (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
+- (void)sendSynchronousRequest:(NSURL *)url withTimeout:(NSTimeInterval)timeout
 {
-	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
 	NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url
 												  cachePolicy:NSURLRequestReloadIgnoringCacheData
 											  timeoutInterval:timeout];
 	NSURLConnection *con = nil;
 	if(request)
-		con = [[NSURLConnection alloc] initWithRequest:request delegate:srr];
+		con = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 #if IS_DEBUG()
 	else
 		[NSException raise:@"ExcSRRNoRequest" format:@""];
@@ -51,14 +48,20 @@
 		[NSException raise:@"ExcSRRNoConnection" format:@""];
 #endif
 
-	srr.running = YES;
+	_running = YES;
 	[APP_DELEGATE addNetworkOperation];
-	while(con && srr.running)
+	while(con && _running)
 	{
 		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
 	}
 	[APP_DELEGATE removeNetworkOperation];
 	[con cancel]; // just in case, cancel the connection
+}
+
++ (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error withTimeout:(NSTimeInterval)timeout
+{
+	SynchronousRequestReader *srr = [[SynchronousRequestReader alloc] init];
+	[srr sendSynchronousRequest:url withTimeout:timeout];
 
 	// hand over response & error if requested
 	if(response)
@@ -71,7 +74,7 @@
 
 + (NSData *)sendSynchronousRequest:(NSURL *)url returningResponse:(NSURLResponse **)response error:(NSError **)error
 {
-	return [SynchronousRequestReader sendSynchronousRequest:url returningResponse:response error:error withTimeout:kTimeout];
+	return [self sendSynchronousRequest:url returningResponse:response error:error withTimeout:kTimeout];
 }
 
 - (NSData *)responseData
