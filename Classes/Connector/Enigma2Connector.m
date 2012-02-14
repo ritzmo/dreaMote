@@ -124,7 +124,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			// externals supported, no change in features
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_5:
-			if(feature == kFeaturesMediaPlayerPlaylistHandling)
+			if(feature == kFeaturesMediaPlayerPlaylistHandling ||
+			   feature == kFeaturesEpgMulti) // officially came two days before 1.6.8 with 1.6.7 but let's ignore this ;)
 				return NO;
 			/* FALL THROUGH */
 		case WEBIF_VERSION_1_6_8:
@@ -678,6 +679,19 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	NSURL *myURI = [NSURL URLWithString: [NSString stringWithFormat:@"/web/epgservice?sRef=%@", [service.sref urlencode]] relativeToURL: _baseAddress];
 
 	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:NO];
+	[streamReader parseXMLFileAtURL:myURI parseError:nil];
+	return streamReader;
+}
+
+- (SaxXmlReader *)fetchEPG:(NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service afterDate:(NSDate *)after beforeDate:(NSDate *)before
+{
+	NSString *relativeURL = [NSString stringWithFormat:@"/web/epgmulti?bRef=%@", [service.sref urlencode]];
+	if(after && before)
+		relativeURL = [relativeURL stringByAppendingFormat:@"&time=%d&endTime=%d", (NSInteger)[after timeIntervalSince1970], (NSInteger)[before timeIntervalSince1970]];
+
+	NSURL *myURI = [NSURL URLWithString:relativeURL relativeToURL:_baseAddress];
+
+	SaxXmlReader *streamReader = [[Enigma2EventXMLReader alloc] initWithDelegateAndGetServices:delegate getServices:YES];
 	[streamReader parseXMLFileAtURL:myURI parseError:nil];
 	return streamReader;
 }

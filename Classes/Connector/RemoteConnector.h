@@ -186,6 +186,11 @@ enum connectorFeatures {
 	 @brief STB is able to control recordings using the VPS-Plugin.
 	 */
 	kFeaturesVps,
+	/*!
+	 @brief Can get events of a bouquet in a given timespan.
+	 Used by Multi-EPG if cache is empty for the given interval
+	 */
+	kFeaturesEpgMulti,
 };
 
 /*!
@@ -455,6 +460,18 @@ enum packageManagementList
  */
 @optional // kFeaturesNowNext
 - (SaxXmlReader *)getNow:(NSObject<NowSourceDelegate> *)delegate bouquet:(NSObject<ServiceProtocol> *)bouquet isRadio:(BOOL)isRadio;
+
+/*!
+ @brief Request EPG of a given Bouquet in an (optional but strongly recommended) time interval.
+
+ @param delegate Delegate to be called back.
+ @param service Bouquet to request EPG of.
+ @param after Begin of our requested timespan.
+ @param before End of our requested timespan.
+ @return Pointer to newly created XMLReader.
+ */
+@optional // kFeaturesEpgMulti
+- (SaxXmlReader *)fetchEPG:(NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service afterDate:(NSDate *)after beforeDate:(NSDate *)before;
 
 /*!
  @brief Request stream URL for given service.
