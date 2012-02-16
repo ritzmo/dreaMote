@@ -924,7 +924,7 @@ enum serviceListTags
 	 - Add Marker
 	 - Rename
 	 ---------------------
-	 Multi-Select is recuded to this choices:
+	 Multi-Select is reduced to this choices:
 	 - Add to bouquet
 	 - Reset selection
 	 */
