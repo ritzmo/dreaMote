@@ -468,6 +468,9 @@
 		DA78F2B114C1E72200919093 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F23214C1E72100919093 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F2B214C1E72200919093 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F23214C1E72100919093 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F2B314C1E72200919093 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F23214C1E72100919093 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA7F53B214EDBB8B00DD34CA /* ServiceEditor.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */; };
+		DA7F53B414EDBB8B00DD34CA /* ServiceEditor.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */; };
+		DA7F53B514EDBB8C00DD34CA /* ServiceEditor.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */; };
 		DA8368E514A24F080047CC85 /* remote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8368E414A24F080047CC85 /* remote@2x.png */; };
 		DA8368E614A24F080047CC85 /* remote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8368E414A24F080047CC85 /* remote@2x.png */; };
 		DA8368E714A24F080047CC85 /* remote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8368E414A24F080047CC85 /* remote@2x.png */; };
@@ -3759,6 +3762,7 @@
 				DA78F13214C1E71200919093 /* ShareKit.bundle in Resources */,
 				DA78F17414C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F27E14C1E72200919093 /* FBDialog.bundle in Resources */,
+				DA7F53B214EDBB8B00DD34CA /* ServiceEditor.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3903,6 +3907,7 @@
 				DA78F13314C1E71200919093 /* ShareKit.bundle in Resources */,
 				DA78F17514C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F27F14C1E72200919093 /* FBDialog.bundle in Resources */,
+				DA7F53B414EDBB8B00DD34CA /* ServiceEditor.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4038,6 +4043,7 @@
 				DA78F13414C1E71200919093 /* ShareKit.bundle in Resources */,
 				DA78F17614C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F28014C1E72200919093 /* FBDialog.bundle in Resources */,
+				DA7F53B514EDBB8C00DD34CA /* ServiceEditor.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
