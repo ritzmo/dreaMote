@@ -3477,7 +3477,6 @@
 		DAC8C4BA13B202D600CA00D9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */,
 				DAC8C4CD13B2032300CA00D9 /* about.html */,
 				DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */,
 				DAC8C4CE13B2032300CA00D9 /* changes_de.html */,
@@ -3493,6 +3492,7 @@
 				DAC8C50A13B2038300CA00D9 /* MainWindow.xib */,
 				DAC8C50C13B2038300CA00D9 /* OtherList.xib */,
 				DAB85AF6145864B40089A382 /* PackageManager.strings */,
+				DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */,
 				DAC8C4D113B2032300CA00D9 /* welcome_de.html */,
 				DAC8C4D213B2032300CA00D9 /* welcome_en.html */,
 				DAC8C4D313B2032300CA00D9 /* welcome_fr.html */,
@@ -3584,7 +3584,7 @@
 		DAC8BE4213B1FF9200CA00D9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = DAC8BE4513B1FF9200CA00D9 /* Build configuration list for PBXProject "dreaMote" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -4935,6 +4935,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_STRICT_ALIASING = YES;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
@@ -4972,6 +4973,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
 				GCC_STRICT_ALIASING = YES;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = "";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
@@ -5011,6 +5013,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Info Full.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5030,6 +5033,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Info Full.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5051,6 +5055,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Info Lite.plist";
 				OTHER_CFLAGS = "-DBUILD_DREAMOTE_LITE";
@@ -5071,6 +5076,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Info Lite.plist";
 				OTHER_CFLAGS = (
@@ -5096,6 +5102,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Info Coolmote.plist";
 				OTHER_CFLAGS = "-DBUILD_COOLMOTE";
@@ -5116,6 +5123,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = dreaMote_Prefix.pch;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Info Coolmote.plist";
 				OTHER_CFLAGS = (
