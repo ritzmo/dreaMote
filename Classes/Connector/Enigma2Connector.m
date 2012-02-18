@@ -360,6 +360,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 		// XXX: reading out versions like these is quite difficult, so we artificial relabel them so 1.6.0 > 1.6rc > 1.6beta
 		[stringValue replaceOccurrencesOfString:@"beta" withString:@"+beta" options:0 range:versionBegin];
 		[stringValue replaceOccurrencesOfString:@"rc" withString:@"+rc" options:0 range:versionBegin];
+		if([stringValue hasPrefix:@"OWIF"])
+			stringValue = (NSMutableString *)@"0.0.0";
 		NSInteger i = WEBIF_VERSION_1_5b;
 
 		_webifVersion = WEBIF_VERSION_OLD;
