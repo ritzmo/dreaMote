@@ -518,35 +518,6 @@ enum timerSections
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-	if(!_creatingNewTimer && _oldTimer.state != 0 && !_oldTimer.disabled)
-	{
-		if(editing)
-		{
-			UIAlertView *notification = [[UIAlertView alloc]
-								initWithTitle:NSLocalizedString(@"Error", @"")
-								message:NSLocalizedString(@"Can't edit a running or finished timer.", @"")
-								delegate:nil
-								cancelButtonTitle:@"OK"
-								otherButtonTitles:nil];
-			[notification show];
-		}
-		else
-		{
-			self.navigationItem.leftBarButtonItem = _popoverButtonItem;
-
-			[super setEditing: NO animated: animated];
-			[self cellShouldBeginEditing: nil];
-			[self.timerTitleCell setEditing: NO animated: animated];
-			[self.timerDescriptionCell setEditing: NO animated: animated];
-			_timerEnabled.enabled = NO;
-			_timerJustplay.enabled = NO;
-		}
-
-		if(delegate && [delegate respondsToSelector:@selector(timerViewController:editingWasCanceled:)])
-			[delegate timerViewController:self editingWasCanceled:_oldTimer];
-		return;
-	}
-
 	if(editing)
 	{
 		/*!
