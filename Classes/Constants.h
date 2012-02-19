@@ -136,6 +136,7 @@ extern const char *kPiconGlob;
 #define kSatFinderAudio			@"satFinderWithAudio"
 #define kActiveTheme			@"activeTheme"
 #define kZapModeDefault			@"defaultZapMode"
+#define kMenuItemOrder			@"menuItemOrder"
 
 #define kCurrentDatabaseVersion 2
 
