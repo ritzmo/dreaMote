@@ -79,6 +79,32 @@
     [super didReceiveMemoryWarning];
 }
 
+/* layout */
+- (void)loadView
+{
+	const BOOL isIpad = IS_IPAD();
+
+	// create and configure the table view
+	tableView = [[UITableView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] style:UITableViewStylePlain];	
+	tableView.delegate = self;
+	tableView.dataSource = self;
+	tableView.autoresizesSubviews = YES;
+	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+	if(isIpad)
+		tableView.rowHeight = kUIRowHeight;
+	self.view = tableView;
+
+	// Add the "About" button to the navigation bar
+	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStyleBordered target:self action:@selector(aboutDreamoteAction:)];
+	if(isIpad)
+		self.navigationItem.rightBarButtonItem = buttonItem; // left button somehow gets shrinked pretty badly, so use the right one instead
+	else
+		self.navigationItem.leftBarButtonItem = buttonItem;
+
+	[self theme];
+}
+
 - (void)viewDidLoad
 {
 	const BOOL isIpad = IS_IPAD();
@@ -170,26 +196,10 @@
 							  [PackageManagerListController class], @"viewControllerClass",
 							  nil];
 
-	// Add the "About" button to the navigation bar
-	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"About", @"About Button Text") style:UIBarButtonItemStyleBordered target:self action:@selector(aboutDreamoteAction:)];
-	if(isIpad)
-		self.navigationItem.rightBarButtonItem = buttonItem; // left button somehow gets shrinked pretty badly, so use the right one instead
-	else
-		self.navigationItem.leftBarButtonItem = buttonItem;
-
-	tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-	if(isIpad)
-		tableView.rowHeight = kUIRowHeight;
-
-	// setup our list view to autoresizing in case we decide to support autorotation along the other UViewControllers
-	tableView.autoresizesSubviews = YES;
-	tableView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 
 	[self startObservingThemeChanges];
-	[self theme];
 }
 
 - (void)theme

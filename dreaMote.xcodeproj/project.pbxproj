@@ -1184,9 +1184,6 @@
 		DAC8C4F913B2034100CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
 		DAC8C4FA13B2034100CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
 		DAC8C4FB13B2034100CA00D9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4F113B2034100CA00D9 /* Localizable.strings */; };
-		DAC8C51413B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
-		DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
-		DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C50C13B2038300CA00D9 /* OtherList.xib */; };
 		DAD9F0911466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
 		DAD9F0921466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
 		DAD9F0931466EA7B007C0A31 /* OtherSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */; };
@@ -1974,7 +1971,6 @@
 		DAC8C4FC13B2034B00CA00D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AutoTimer.strings; sourceTree = "<group>"; };
 		DAC8C4FD13B2034B00CA00D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/EPGRefresh.strings; sourceTree = "<group>"; };
 		DAC8C4FE13B2034C00CA00D9 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
-		DAC8C50D13B2038300CA00D9 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = Resources/en.lproj/OtherList.xib; sourceTree = "<group>"; };
 		DAD9F08E1466EA11007C0A31 /* OtherViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherViewProtocol.h; sourceTree = "<group>"; };
 		DAD9F08F1466EA7B007C0A31 /* OtherSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherSplitViewController.h; sourceTree = "<group>"; };
 		DAD9F0901466EA7B007C0A31 /* OtherSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherSplitViewController.m; sourceTree = "<group>"; };
@@ -3483,7 +3479,6 @@
 				DAC8C4EB13B2033200CA00D9 /* Info Full.plist */,
 				DAC8C4EC13B2033200CA00D9 /* Info Lite.plist */,
 				DAC8C4F113B2034100CA00D9 /* Localizable.strings */,
-				DAC8C50C13B2038300CA00D9 /* OtherList.xib */,
 				DAB85AF6145864B40089A382 /* PackageManager.strings */,
 				DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */,
 				DAC8C4D113B2032300CA00D9 /* welcome_de.html */,
@@ -3698,7 +3693,6 @@
 				DAC8C4E013B2032300CA00D9 /* welcome_de.html in Resources */,
 				DAC8C4E313B2032300CA00D9 /* welcome_en.html in Resources */,
 				DAC8C4DD13B2032300CA00D9 /* epgcache.sqlite in Resources */,
-				DAC8C51413B2038300CA00D9 /* OtherList.xib in Resources */,
 				DA681B2113B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2413B4976700232190 /* Setup_Auto.png in Resources */,
 				DA21B20A14561FB7002903A4 /* PackageManager.png in Resources */,
@@ -3842,7 +3836,6 @@
 				DAC8C4F413B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F713B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4FA13B2034100CA00D9 /* Localizable.strings in Resources */,
-				DAC8C51513B2038300CA00D9 /* OtherList.xib in Resources */,
 				DA681B2213B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2513B4976700232190 /* Setup_Auto.png in Resources */,
 				DA21B20B14561FB7002903A4 /* PackageManager.png in Resources */,
@@ -3982,7 +3975,6 @@
 				DAC8C4F513B2034100CA00D9 /* AutoTimer.strings in Resources */,
 				DAC8C4F813B2034100CA00D9 /* EPGRefresh.strings in Resources */,
 				DAC8C4FB13B2034100CA00D9 /* Localizable.strings in Resources */,
-				DAC8C51613B2038300CA00D9 /* OtherList.xib in Resources */,
 				DA681B2313B4976700232190 /* Screenshot_Save.png in Resources */,
 				DA681B2613B4976700232190 /* Setup_Auto.png in Resources */,
 				DA21B20C14561FB7002903A4 /* PackageManager.png in Resources */,
@@ -4880,14 +4872,6 @@
 				DAEC23AB1492BB4F00A94824 /* pl */,
 			);
 			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-		DAC8C50C13B2038300CA00D9 /* OtherList.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DAC8C50D13B2038300CA00D9 /* en */,
-			);
-			name = OtherList.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
