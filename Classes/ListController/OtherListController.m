@@ -218,7 +218,7 @@
 - (void)viewDidUnload
 {
 	[self stopObservingThemeChanges];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 	self.tableView = nil;
 	self.navigationItem.leftBarButtonItem = self.navigationItem.rightBarButtonItem = nil;
 

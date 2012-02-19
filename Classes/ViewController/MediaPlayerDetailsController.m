@@ -105,7 +105,7 @@
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self]; // NOTE: parent should do this, but since we set it, we should unset it
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil]; // NOTE: parent should do this, but since we set it, we should unset it
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
 	_tableView = nil;

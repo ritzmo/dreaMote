@@ -138,7 +138,7 @@
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 	self.delegate = nil;
 	menuList = nil;
 	_currentController = nil;

@@ -63,7 +63,7 @@
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 
 	if(_timerListController.mgSplitViewController == self)
 		_timerListController.mgSplitViewController = nil;

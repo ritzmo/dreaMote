@@ -250,7 +250,8 @@ enum bouquetListTags
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kBouquetsChangedNotification object:nil];
 	_radioButton = nil;
 
 	[super viewDidUnload];

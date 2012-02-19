@@ -208,7 +208,7 @@
 - (void)dealloc
 {
 	[self stopObservingThemeChanges];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
 

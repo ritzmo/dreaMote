@@ -470,7 +470,7 @@ enum serviceListTags
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 	_radioButton = nil;
 	_multiEpgButton = nil;
 

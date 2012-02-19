@@ -66,7 +66,7 @@
 
 - (void)viewDidUnload
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:kReconnectNotification object:nil];
 
 	_locationListController.movieListController = nil;
 	_locationListController = nil;
