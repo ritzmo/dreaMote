@@ -31,6 +31,7 @@
 
 // zap config
 #import <ListController/ServiceZapListController.h>
+#import <ViewController/MainViewController.h>
 
 #if IS_FULL()
 	#import <EPGCache/EPGCache.h>
@@ -262,7 +263,9 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 	}
 
 	// Show the window and view
-	[window addSubview: tabBarController.view];
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.tabBarController = [[MainViewController alloc] init];
+	self.window.rootViewController = self.tabBarController;
 	[window makeKeyAndVisible];
 
 	// don't prompt for rating if zip file is found to avoid (possibly) showing two alerts

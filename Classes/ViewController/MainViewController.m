@@ -60,7 +60,7 @@
 	[super didReceiveMemoryWarning];
 }
 
-- (void)awakeFromNib
+- (void)viewDidLoad
 {
 	const BOOL isIpad = IS_IPAD();
 	UIViewController *viewController = nil;
@@ -126,6 +126,9 @@
 
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
+
+	[self startObservingThemeChanges];
+	[super viewDidLoad];
 }
 
 - (void)theme
@@ -133,14 +136,20 @@
 	[[DreamoteConfiguration singleton] styleTabBar:self.tabBar];
 }
 
-- (void)viewDidLoad
-{
-	[self startObservingThemeChanges];
-	[super viewDidLoad];
-}
-
 - (void)viewDidUnload
 {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	self.delegate = nil;
+	menuList = nil;
+	_currentController = nil;
+	_bouquetController = nil;
+	_serviceController = nil;
+	_timerController = nil;
+	_mediaplayerController = nil;
+	_movieController = nil;
+	_currentController = nil;
+	_otherController = nil;
+
 	[self stopObservingThemeChanges];
 	[super viewDidUnload];
 }
