@@ -325,11 +325,6 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 		alert.tag = TAG_URL;
 		[alert show];
 	}
-	// open bouquets list, bouquets are always on index 0 of the viewControllers
-	else if([url.path isEqualToString:@"/bouquets"])
-	{
-		tabBarController.selectedIndex = 0;
-	}
 	// redeem gift code
 	// Syntax: /redeem/productIdentifier/code
 	else if([url.path hasPrefix:@"/redeem"])
@@ -364,6 +359,36 @@ void ToneInterruptionListener(void *inClientData, UInt32 inInterruptionState)
 																   otherButtonTitles:nil];
 				[notification performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 			}];
+		}
+	}
+	// check if the user wants to open any of our views directly
+	else
+	{
+		NSDictionary *pagePaths = [[NSDictionary alloc] initWithObjectsAndKeys:
+								   [NSNumber numberWithInteger:MENUITEM_SERVICE], @"/bouquets",
+								   [NSNumber numberWithInteger:MENUITEM_CURRENT], @"/current",
+								   [NSNumber numberWithInteger:MENUITEM_RECORDINGS], @"/recordings",
+								   [NSNumber numberWithInteger:MENUITEM_MEDIAPLAYER], @"/mediaplayer",
+								   [NSNumber numberWithInteger:MENUITEM_REMOTE], @"/remote",
+								   [NSNumber numberWithInteger:MENUITEM_TIMER], @"/timer",
+								   [NSNumber numberWithInteger:MENUITEM_ABOUT], @"/about",
+								   [NSNumber numberWithInteger:MENUITEM_AUTOTIMER], @"/autotimer",
+								   [NSNumber numberWithInteger:MENUITEM_SETTINGS], @"/configuration",
+								   [NSNumber numberWithInteger:MENUITEM_EPGREFRESH], @"/epgrefresh",
+								   [NSNumber numberWithInteger:MENUITEM_EVENTSEARCH], @"/eventsearch",
+								   [NSNumber numberWithInteger:MENUITEM_SIGNAL], @"/signal",
+								   [NSNumber numberWithInteger:MENUITEM_CONTROL], @"/control",
+								   [NSNumber numberWithInteger:MENUITEM_MESSAGES], @"/messages",
+								   [NSNumber numberWithInteger:MENUITEM_SLEEPTIMER], @"/sleeptimer",
+								   [NSNumber numberWithInteger:MENUITEM_PACKAGEMANAGER], @"/packagemanager",
+								   nil];
+		NSNumber *number = [pagePaths objectForKey:url.path];
+		if(number)
+		{
+			// XXX: not correct yet, but since we'd have to rewrite a lot of code if we added an intermediate implementation let's live with this for now :D
+			// this is unofficial anyway except for /bouquets which continues to work
+			menuItem itemId = [number integerValue];
+			tabBarController.selectedIndex = itemId;
 		}
 	}
 	return YES;
