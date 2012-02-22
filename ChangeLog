@@ -310,3 +310,13 @@ Enigma:
 - Fix possible crash when leaving service list with active search (iPhone only)
 Enigma2:
 - Fix editing radio services on the iPhone
+
+1.4.5:
+- Voice-Over: Add refresh button to 'Currently playing'
+- Slight adjustment to multi selection background image in 'Blue' theme
+Enigma2:
+- Allow to configure streaming port (if a supported player is installed)
+
+1.4.5-full: (intl)
+Enigma2:
+- Fix translations in service editor
