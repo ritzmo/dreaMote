@@ -182,6 +182,7 @@
 /* re-download data */
 - (void)refreshData
 {
+	reloading = YES;
 	[self emptyData];
 	[_refreshHeaderView setTableLoadingWithinScrollView:self];
 
