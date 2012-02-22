@@ -113,6 +113,7 @@ extern const char *kPiconGlob;
 #define kConnector				@"connectorKey"
 #define kSingleBouquet			@"singleBouquetKey"
 #define kPort					@"portKey"
+#define kStreamingPort			@"streamingPort"
 #define kAdvancedRemote			@"advancedRemote"
 #define kSSL					@"ssl"
 #define kShowNowNext			@"showNowNext"

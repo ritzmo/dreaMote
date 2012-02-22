@@ -42,6 +42,7 @@ typedef enum
 	NSString *_username; /*!< @brief Connection username */
 	BOOL _advancedRc; /*!< @brief Uses advanced remote control. */
 	webifVersion _webifVersion; /*!< @brief Version of remove web interface. */
+	NSInteger _streamingPort; /*!< @brief Port used for streaming. */
 }
 
 @end

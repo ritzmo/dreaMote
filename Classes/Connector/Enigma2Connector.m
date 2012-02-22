@@ -162,7 +162,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	return 100;
 }
 
-- (id)initWithAddress:(NSString *)address andUsername:(NSString *)inUsername andPassword:(NSString *)inPassword andPort:(NSInteger)inPort useSSL:(BOOL)ssl andAdvancedRc:(BOOL)advancedRc
+- (id)initWithAddress:(NSString *)address andUsername:(NSString *)inUsername andPassword:(NSString *)inPassword andPort:(NSInteger)inPort andStreamingPort:(NSInteger)inStreamingPort useSSL:(BOOL)ssl andAdvancedRc:(BOOL)advancedRc
 {
 	if((self = [super init]))
 	{
@@ -183,6 +183,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 			_username = inUsername;
 			_password = inPassword;
 		}
+		_streamingPort = (inStreamingPort > 0) ? inStreamingPort : 8001;
 		_advancedRc = advancedRc;
 		dynamicFeatures = FEATURE_ALL; // assume all features until detection
 		officialWebif = YES;
@@ -198,17 +199,19 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 + (NSObject <RemoteConnector>*)newWithConnection:(const NSDictionary *)connection inBackground:(BOOL)background
 {
-	NSString *address = [connection objectForKey: kRemoteHost];
-	NSString *username = [[connection objectForKey: kUsername] urlencode];
-	NSString *password = [[connection objectForKey: kPassword] urlencode];
-	const NSInteger port = [[connection objectForKey: kPort] integerValue];
-	const BOOL ssl = [[connection objectForKey: kSSL] boolValue];
-	const BOOL advancedRc = [[connection objectForKey: kAdvancedRemote] boolValue];
+	NSString *address = [connection objectForKey:kRemoteHost];
+	NSString *username = [[connection objectForKey:kUsername] urlencode];
+	NSString *password = [[connection objectForKey:kPassword] urlencode];
+	const NSInteger port = [[connection objectForKey:kPort] integerValue];
+	const NSInteger streamingPort = [[connection objectForKey:kStreamingPort] integerValue];
+	const BOOL ssl = [[connection objectForKey:kSSL] boolValue];
+	const BOOL advancedRc = [[connection objectForKey:kAdvancedRemote] boolValue];
 
 	Enigma2Connector *con = [[Enigma2Connector alloc] initWithAddress:address
 														  andUsername:username
 														  andPassword:password
 															  andPort:port
+													 andStreamingPort:streamingPort
 															   useSSL:ssl
 														andAdvancedRc:advancedRc];
 	if(background)
@@ -765,8 +768,8 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 	}
 	else
 	{
-		// TODO: add support for custom port and un/pw but lets stick to the defaults for testing
-		streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:8001/%@", [_baseAddress host], [sref urlencode]]];
+		// TODO: add support for un/pw but lets stick to the defaults (disabled) for testing
+		streamURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://%@:%d/%@", [_baseAddress host], _streamingPort, [sref urlencode]]];
 	}
 	return streamURL;
 }
