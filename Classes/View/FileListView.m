@@ -146,22 +146,24 @@
 - (BOOL)selectPlayingByTitle:(NSString *)filename
 {
 	NSUInteger idx = 0;
-	NSUInteger playing = _playing;
+	const NSUInteger playing = _playing;
 	const BOOL noUpdate = reloading || ([self numberOfRowsInSection:0] != [self tableView:self numberOfRowsInSection:0]);
 
-	for(NSObject<FileProtocol> *file in _files)
+	const NSArray *files = [_files copy]; // use a copy to prevent another thread emptying it while we iterate
+	for(NSObject<FileProtocol> *file in files)
 	{
 		if([file.title isEqualToString: filename])
 		{
 			if(playing != idx)
 			{
-				NSMutableArray *idxPaths = [NSMutableArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]];
-				if(playing != NSNotFound)
-					[idxPaths addObject:[NSIndexPath indexPathForRow:playing inSection: 0]];
-
 				_playing = idx;
 				if(!noUpdate)
+				{
+					NSMutableArray *idxPaths = [NSMutableArray arrayWithObject:[NSIndexPath indexPathForRow:idx inSection:0]];
+					if(playing != NSNotFound)
+						[idxPaths addObject:[NSIndexPath indexPathForRow:playing inSection:0]];
 					[self reloadRowsAtIndexPaths:idxPaths withRowAnimation:UITableViewRowAnimationFade];
+				}
 				return YES;
 			}
 			return NO;
