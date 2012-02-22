@@ -34,6 +34,8 @@
 	CellTextField *_remoteAddressCell; /*!< @brief Address Cell. */
 	UITextField *_remotePortTextField; /*!< @brief Port Text Field. */
 	CellTextField *_remotePortCell; /*!< @brief Port Cell. */
+	UITextField *_remoteStreamingPortTextField; /*!< @brief Streaming Port Text Field. */
+	CellTextField *_remoteStreamingPortCell; /*!< @brief Streaming Port Cell. */
 	UITextField *_usernameTextField; /*!< @brief Username Text Field. */
 	CellTextField *_usernameCell; /*!< @brief Username Cell. */
 	UITextField *_passwordTextField; /*!< @brief Password Text Field. */

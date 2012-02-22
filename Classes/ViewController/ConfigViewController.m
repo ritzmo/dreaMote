@@ -8,11 +8,13 @@
 
 #import "ConfigViewController.h"
 
-#import "RemoteConnector.h"
-#import "RemoteConnectorObject.h"
-#import "Constants.h"
-#import "UITableViewCell+EasyInit.h"
-#import "UIDevice+SystemVersion.h"
+#import <Categories/UITableViewCell+EasyInit.h>
+#import <Categories/UIDevice+SystemVersion.h>
+#import <Connector/RemoteConnector.h>
+#import <Connector/RemoteConnectorObject.h>
+#import <Constants.h>
+
+#import <ListController/ServiceZapListController.h>
 
 #import <TableViewCell/DisplayCell.h>
 
@@ -81,6 +83,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 @property (nonatomic,strong) UIButton *connectButton;
 
 @property (nonatomic,strong) MBProgressHUD *progressHUD;
+
+@property (nonatomic, readonly) BOOL canStreamWithVariablePort;
 @end
 
 /*!
@@ -160,6 +164,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	UnsetCellAndDelegate(_remoteNameCell);
 	UnsetCellAndDelegate(_remoteAddressCell);
 	UnsetCellAndDelegate(_remotePortCell);
+	UnsetCellAndDelegate(_remoteStreamingPortCell);
 	UnsetCellAndDelegate(_usernameCell);
 	UnsetCellAndDelegate(_passwordCell);
 
@@ -292,6 +297,13 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	_remotePortTextField.text = [port integerValue] ? [port stringValue] : nil;
 	_remotePortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
 
+	// Streaming Port
+	const NSNumber *streamingPort = [_connection objectForKey:kStreamingPort];
+	_remoteStreamingPortTextField = [self create_TextField];
+	_remoteStreamingPortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<streaming port: usually %d>", @"Placeholder for remote streaming port in config."), 8001];
+	_remoteStreamingPortTextField.text = [streamingPort integerValue] ? [streamingPort stringValue] : nil;
+	_remoteStreamingPortTextField.keyboardType = UIKeyboardTypeNumbersAndPunctuation; // NOTE: we lack a better one :-)
+
 	// Username
 	_usernameTextField = [self create_TextField];
 	_usernameTextField.placeholder = NSLocalizedString(@"<username: usually root>", @"Placeholder for remote username in config.");
@@ -347,12 +359,14 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	UnsetCellAndDelegate(_remoteNameCell);
 	UnsetCellAndDelegate(_remoteAddressCell);
 	UnsetCellAndDelegate(_remotePortCell);
+	UnsetCellAndDelegate(_remoteStreamingPortCell);
 	UnsetCellAndDelegate(_usernameCell);
 	UnsetCellAndDelegate(_passwordCell);
 
 	_remoteNameTextField = nil;
 	_remoteAddressTextField = nil;
 	_remotePortTextField = nil;
+	_remoteStreamingPortTextField = nil;
 	_usernameTextField = nil;
 	_passwordTextField = nil;
 	_singleBouquetSwitch = nil;
@@ -375,6 +389,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			[_connection setObject: _remoteNameTextField.text forKey: kRemoteName];
 			[_connection setObject: _remoteAddressTextField.text forKey: kRemoteHost];
 			[_connection setObject: [NSNumber numberWithInteger: [_remotePortTextField.text integerValue]] forKey: kPort];
+			[_connection setObject:[NSNumber numberWithInteger:[_remoteStreamingPortTextField.text integerValue]] forKey:kStreamingPort];
 			[_connection setObject: _usernameTextField.text forKey: kUsername];
 			[_connection setObject: _passwordTextField.text forKey: kPassword];
 			[_connection setObject: [NSNumber numberWithInteger: _connector] forKey: kConnector];
@@ -422,6 +437,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		[_remoteNameCell stopEditing];
 		[_remoteAddressCell stopEditing];
 		[_remotePortCell stopEditing];
+		[_remoteStreamingPortCell stopEditing];
 		[_usernameCell stopEditing];
 		[_passwordCell stopEditing];
 		_singleBouquetSwitch.enabled = NO;
@@ -545,6 +561,11 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 {
 	// update port placeholder
 	_remotePortTextField.placeholder = [NSString stringWithFormat:NSLocalizedString(@"<port: usually %d>", @"Placeholder for remote port in config."), connectorPortMap[_connector][_sslSwitch.on]];
+}
+
+- (BOOL)canStreamWithVariablePort
+{
+	return _connector == kEnigma2Connector && [ServiceZapListController streamPlayerInstalled];
 }
 
 /* rotate with device */
@@ -683,6 +704,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 		case 0:
 			if(_connector == kSVDRPConnector)
 				return 3;
+			else if(self.canStreamWithVariablePort)
+				return 5;
 			return 4;
 		case 1:
 			if(_connector == kSVDRPConnector)
@@ -730,7 +753,9 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	switch(section)
 	{
 		case 0:
-			if(row == 3)
+		{
+			const BOOL canStreamWithVariablePort = self.canStreamWithVariablePort;
+			if((canStreamWithVariablePort && row == 4) || (!canStreamWithVariablePort && row == 3))
 			{
 				sourceCell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
 
@@ -756,10 +781,15 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 					((CellTextField *)sourceCell).view = _remotePortTextField;
 					_remotePortCell = (CellTextField *)sourceCell;
 					break;
+				case 3:
+					((CellTextField *)sourceCell).view = _remoteStreamingPortTextField;
+					_remoteStreamingPortCell = (CellTextField *)sourceCell;
+					break;
 				default:
 					break;
 			}
 			break;
+		}
 		case 1:
 			sourceCell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
 			((CellTextField *)sourceCell).delegate = self; // so we can detect when cell editing starts
@@ -845,8 +875,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			break;
 	}
 
-	[[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
-	return sourceCell;
+	return [[DreamoteConfiguration singleton] styleTableViewCell:sourceCell inTableView:tableView];
 }
 
 /* select row */
@@ -892,6 +921,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		[_remoteAddressCell stopEditing];
 		[_remotePortCell stopEditing];
+		[_remoteStreamingPortCell stopEditing];
 		[_usernameCell stopEditing];
 		[_passwordCell stopEditing];
 	}
@@ -899,6 +929,7 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		[_remoteNameCell stopEditing];
 		[_remoteAddressCell stopEditing];
+		[_remoteStreamingPortCell stopEditing];
 		[_usernameCell stopEditing];
 		[_passwordCell stopEditing];
 	}
@@ -906,10 +937,19 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 	{
 		[_remoteNameCell stopEditing];
 		[_remotePortCell stopEditing];
+		[_remoteStreamingPortCell stopEditing];
 		[_usernameCell stopEditing];
 		[_passwordCell stopEditing];
 	}
-	else
+	else if([cell isEqual:_remoteStreamingPortCell])
+	{
+		[_remoteNameCell stopEditing];
+		[_remoteAddressCell stopEditing];
+		[_remotePortCell stopEditing];
+		[_usernameCell stopEditing];
+		[_passwordCell stopEditing];
+	}
+	else // XXX: wtf?
 		[_remoteAddressCell stopEditing];
 
 	// NOTE: _usernameCell & _passwordCell will track this themselves
@@ -993,6 +1033,8 @@ static const NSInteger connectorPortMap[kMaxConnector][2] = {
 			indexPath = [NSIndexPath indexPathForRow:1 inSection:0];
 		else if(_remotePortCell.isInlineEditing)
 			indexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+		else if(_remoteStreamingPortCell.isInlineEditing)
+			indexPath = [NSIndexPath indexPathForRow:3 inSection:0];
 		else if(_usernameCell.isInlineEditing)
 			indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
 		else if(_passwordCell.isInlineEditing)
