@@ -1034,8 +1034,8 @@
 	NSObject<MovieProtocol> *movie = nil;
 	if(_sortTitle)
 	{
-		NSString *key = [_currentKeys objectAtIndex:indexPath.section];
-		movie = [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row];
+		NSString *key = ((NSUInteger)indexPath.section < _currentKeys.count) ? [_currentKeys objectAtIndex:indexPath.section] : nil;
+		movie = key ? [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row] : nil;
 	}
 	else
 	{
@@ -1045,9 +1045,13 @@
 		else
 #endif
 		if(selectedTags) movies = taggedMovies;
-		movie = [movies objectAtIndex:indexPath.row];
+		movie = ((NSUInteger)indexPath.row < movies.count) ? [movies objectAtIndex:indexPath.row] : nil;
 	}
 
+#if IS_DEBUG()
+	if(!movie)
+		[NSException raise:@"MovieListNoMovieFound" format:@"tableView:didSelectRowAtIndexPath: requested for indexPath (section %d, row %d)", indexPath.section, indexPath.row];
+#endif
 	if(!movie.valid)
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];;
 
