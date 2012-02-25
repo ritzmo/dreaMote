@@ -1471,6 +1471,16 @@ enum serviceListTags
 
 	_refreshServices = NO;
 	multiEPG.willReappear = YES;
+	if([self.navigationController.viewControllers containsObject:targetViewController])
+	{
+#if IS_DEBUG()
+		NSMutableString* result = [[NSMutableString alloc] init];
+		for(NSObject* obj in self.navigationController.viewControllers)
+			[result appendString:[obj description]];
+		[NSException raise:@"TargetListControllerTwiceInNavigationStack" format:@"targetViewController (%@ at %p) was twice in navigation stack: %@",targetViewController, targetViewController, result];
+#endif
+		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the controller without any problems
+	}
 	[self.navigationController pushViewController:targetViewController animated:YES];
 }
 
