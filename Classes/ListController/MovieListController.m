@@ -1031,33 +1031,13 @@
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
-	NSObject<MovieProtocol> *movie = nil;
-	if(_sortTitle)
-	{
-		NSString *key = ((NSUInteger)indexPath.section < _currentKeys.count) ? [_currentKeys objectAtIndex:indexPath.section] : nil;
-		movie = key ? [(NSArray *)[_characters valueForKey:key] objectAtIndex:indexPath.row] : nil;
-	}
-	else
-	{
-		NSArray *movies = _movies;
-#if IS_FULL()
-		if(tableView == _searchDisplay.searchResultsTableView) movies = _filteredMovies;
-		else
-#endif
-		if(selectedTags) movies = taggedMovies;
-		movie = ((NSUInteger)indexPath.row < movies.count) ? [movies objectAtIndex:indexPath.row] : nil;
-	}
-
-#if IS_DEBUG()
-	if(!movie)
-		[NSException raise:@"MovieListNoMovieFound" format:@"tableView:didSelectRowAtIndexPath: requested for indexPath (section %d, row %d)", indexPath.section, indexPath.row];
-#endif
+	MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+	NSObject<MovieProtocol> *movie = cell.movie;
 	if(!movie.valid)
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];;
 
 	if(self.editing)
 	{
-		MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 		const BOOL selected = [cell toggleMultiSelected];
 
 		if(selected)
