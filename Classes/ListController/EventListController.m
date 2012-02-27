@@ -439,6 +439,8 @@
 					[self performSelectorOnMainThread:@selector(itemSelected:)
 										   withObject:[NSNumber numberWithUnsignedInteger:selectedItem]
 										waitUntilDone:NO];
+				else
+					[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 				return YES;
 			};
