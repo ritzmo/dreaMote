@@ -343,17 +343,8 @@
 /* select row */
 - (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// do nothing if reloading
-	if(reloading)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"FileListViewUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
-#endif
-		return nil;
-	}
-
 	// See if we have a valid file
-	NSObject<FileProtocol> *file = [_files objectAtIndex:indexPath.row];
+	NSObject<FileProtocol> *file = ((NSUInteger)indexPath.row < _files.count) ? [_files objectAtIndex:indexPath.row] : nil;
 	if(!file.valid)
 		return nil;
 	// if we're in playlist mode and we have a delegate call it back
