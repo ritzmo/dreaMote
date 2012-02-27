@@ -125,6 +125,12 @@
 		DA391A1C14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
 		DA391A1D14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
 		DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */; };
+		DA481A8014FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; };
+		DA481A8114FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; };
+		DA481A8214FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; };
+		DA481A8514FBE79D00B9EBAB /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */; };
+		DA481A8614FBE79D00B9EBAB /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */; };
+		DA481A8714FBE79D00B9EBAB /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */; };
 		DA4DD256148E50F800B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
 		DA4DD257148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
 		DA4DD258148E50F900B23CD3 /* DDInvocationGrabber.m in Sources */ = {isa = PBXBuildFile; fileRef = DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */; };
@@ -288,9 +294,6 @@
 		DA78F12F14C1E71200919093 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F03714C1E71200919093 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F13014C1E71200919093 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F03714C1E71200919093 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F13114C1E71200919093 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F03714C1E71200919093 /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DA78F13214C1E71200919093 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA78F03814C1E71200919093 /* ShareKit.bundle */; };
-		DA78F13314C1E71200919093 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA78F03814C1E71200919093 /* ShareKit.bundle */; };
-		DA78F13414C1E71200919093 /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA78F03814C1E71200919093 /* ShareKit.bundle */; };
 		DA78F13514C1E71200919093 /* SHKCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F03D14C1E71200919093 /* SHKCopy.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F13614C1E71200919093 /* SHKCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F03D14C1E71200919093 /* SHKCopy.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F13714C1E71200919093 /* SHKCopy.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F03D14C1E71200919093 /* SHKCopy.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1283,6 +1286,9 @@
 		DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SSKTk.bundle; sourceTree = "<group>"; };
 		DA3F60A0148A09D9008FC0DF /* AutoTimerSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AutoTimerSettingsViewController.h; sourceTree = "<group>"; };
 		DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AutoTimerSettingsViewController.m; sourceTree = "<group>"; };
+		DA481A7E14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableDictionary+NSNullsToEmptyStrings.h"; sourceTree = "<group>"; };
+		DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableDictionary+NSNullsToEmptyStrings.m"; sourceTree = "<group>"; };
+		DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareKit.bundle; sourceTree = "<group>"; };
 		DA4DD24F148E50F800B23CD3 /* DDInvocationGrabber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDInvocationGrabber.h; sourceTree = "<group>"; };
 		DA4DD250148E50F800B23CD3 /* DDInvocationGrabber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDInvocationGrabber.m; sourceTree = "<group>"; };
 		DA4DD251148E50F800B23CD3 /* NSObject+Invoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Invoke.h"; sourceTree = "<group>"; };
@@ -1386,7 +1392,6 @@
 		DA78F03414C1E71200919093 /* SHKCustomShareMenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCustomShareMenuCell.m; sourceTree = "<group>"; };
 		DA78F03614C1E71200919093 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		DA78F03714C1E71200919093 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		DA78F03814C1E71200919093 /* ShareKit.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareKit.bundle; sourceTree = "<group>"; };
 		DA78F03C14C1E71200919093 /* SHKCopy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKCopy.h; sourceTree = "<group>"; };
 		DA78F03D14C1E71200919093 /* SHKCopy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHKCopy.m; sourceTree = "<group>"; };
 		DA78F03F14C1E71200919093 /* SHKMail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHKMail.h; sourceTree = "<group>"; };
@@ -2149,7 +2154,7 @@
 				DA78EFEF14C1E71200919093 /* Core */,
 				DA78F02A14C1E71200919093 /* Customize UI */,
 				DA78F03514C1E71200919093 /* Reachability */,
-				DA78F03814C1E71200919093 /* ShareKit.bundle */,
+				DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */,
 				DA78F03914C1E71200919093 /* Sharers */,
 				DA78F0B714C1E71200919093 /* SHKConfig.h */,
 				DA78F1DD14C1E72100919093 /* Submodules */,
@@ -2209,6 +2214,8 @@
 				DA78EFF714C1E71200919093 /* NSData+md5.m */,
 				DA05675914DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.h */,
 				DA05675A14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m */,
+				DA481A7E14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.h */,
+				DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */,
 				DA78EFF814C1E71200919093 /* UIWebView+SHK.h */,
 				DA78EFF914C1E71200919093 /* UIWebView+SHK.m */,
 			);
@@ -3741,10 +3748,10 @@
 				DAFB010614A27FFF00C2001F /* NotSelected@2x.png in Resources */,
 				DA391A1B14A5347E00CDF1B8 /* SSKTk.bundle in Resources */,
 				DA78F11D14C1E71200919093 /* SHKSharers.plist in Resources */,
-				DA78F13214C1E71200919093 /* ShareKit.bundle in Resources */,
 				DA78F17414C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F27E14C1E72200919093 /* FBDialog.bundle in Resources */,
 				DA7F53B214EDBB8B00DD34CA /* ServiceEditor.strings in Resources */,
+				DA481A8514FBE79D00B9EBAB /* ShareKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3883,10 +3890,10 @@
 				DAFB010714A27FFF00C2001F /* NotSelected@2x.png in Resources */,
 				DA391A1C14A5347E00CDF1B8 /* SSKTk.bundle in Resources */,
 				DA78F11E14C1E71200919093 /* SHKSharers.plist in Resources */,
-				DA78F13314C1E71200919093 /* ShareKit.bundle in Resources */,
 				DA78F17514C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F27F14C1E72200919093 /* FBDialog.bundle in Resources */,
 				DA7F53B414EDBB8B00DD34CA /* ServiceEditor.strings in Resources */,
+				DA481A8614FBE79D00B9EBAB /* ShareKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4016,10 +4023,10 @@
 				DAFB010814A27FFF00C2001F /* NotSelected@2x.png in Resources */,
 				DA391A1D14A5347E00CDF1B8 /* SSKTk.bundle in Resources */,
 				DA78F11F14C1E71200919093 /* SHKSharers.plist in Resources */,
-				DA78F13414C1E71200919093 /* ShareKit.bundle in Resources */,
 				DA78F17614C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F28014C1E72200919093 /* FBDialog.bundle in Resources */,
 				DA7F53B514EDBB8C00DD34CA /* ServiceEditor.strings in Resources */,
+				DA481A8714FBE79D00B9EBAB /* ShareKit.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4319,6 +4326,7 @@
 				DA05675B14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */,
 				DA05676014DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
 				DA05676514DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
+				DA481A8014FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4583,6 +4591,7 @@
 				DA05675C14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */,
 				DA05676114DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
 				DA05676614DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
+				DA481A8114FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4818,6 +4827,7 @@
 				DA05675D14DECD3A00BCCA04 /* NSHTTPCookieStorage+DeleteForURL.m in Sources */,
 				DA05676214DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
 				DA05676714DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
+				DA481A8214FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
