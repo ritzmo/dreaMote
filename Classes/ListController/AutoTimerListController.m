@@ -420,7 +420,8 @@
 	}
 
 	// See if we have a valid autotimer
-	AutoTimer *autotimer = [_autotimers objectAtIndex:indexPath.row];
+	AutoTimerTableViewCell *cell = (AutoTimerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+	AutoTimer *autotimer = cell.timer;
 	if(!autotimer.valid)
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
