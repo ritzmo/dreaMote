@@ -1022,15 +1022,6 @@
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// do nothing if reloading
-	if(_reloading)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"MovieListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
-#endif
-		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
-
 	MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 	NSObject<MovieProtocol> *movie = cell.movie;
 	if(!movie.valid)
