@@ -796,19 +796,13 @@
 	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView asSlave:self.isSlave];
 }
 
-/* select row */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+/* row selected */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// do nothing if reloading
-	if(_reloading)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"EventListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
-#endif
-		return nil;
-	}
-
 	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
+
+	if(!event.valid)
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	if(_eventViewController == nil)
 		_eventViewController = [[EventViewController alloc] init];
@@ -827,9 +821,7 @@
 #endif
 		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
 	}
-	[self.navigationController pushViewController: _eventViewController animated: YES];
-
-	return indexPath;
+	[self.navigationController pushViewController:_eventViewController animated: YES];
 }
 
 /* number of section */

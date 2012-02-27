@@ -290,18 +290,9 @@
 	return cell;
 }
 
-/* about to select row */
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+/* row selected */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// do nothing if reloading
-	if(_reloading)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"EventSearchListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
-#endif
-		return nil;
-	}
-
 	NSObject<EventProtocol> *event = ((EventTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).event;
 	NSObject<ServiceProtocol> *service = nil;
 
@@ -314,7 +305,7 @@
 		NSLog(@"exception while trying to retrieve service from event %@ at index %d/%d", [event description], indexPath.section, indexPath.row);
 		[e raise];
 #endif
-		return nil;
+		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
 	if(_eventViewController == nil)
@@ -324,9 +315,17 @@
 	_eventViewController.service = service;
 	_eventViewController.search = YES;
 
-	[self.navigationController pushViewController: _eventViewController animated: YES];
-
-	return indexPath;
+	if([self.navigationController.viewControllers containsObject:_eventViewController])
+	{
+#if IS_DEBUG()
+		NSMutableString* result = [[NSMutableString alloc] init];
+		for(NSObject* obj in self.navigationController.viewControllers)
+			[result appendString:[obj description]];
+		[NSException raise:@"EventViewTwiceInNavigationStack" format:@"_eventViewController was twice in navigation stack: %@", result];
+#endif
+		[self.navigationController popToViewController:self animated:NO]; // return to us, so we can push the service list without any problems
+	}
+	[self.navigationController pushViewController:_eventViewController animated:YES];
 }
 
 #pragma mark -
