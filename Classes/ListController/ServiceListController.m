@@ -1786,7 +1786,7 @@ enum serviceListTags
 
 	NSObject<ServiceProtocol> *service = nil;
 	NSArray *array = (tableView == _tableView) ? _mainList : _filteredServices;
-	id objectAtIndexPath = [array objectAtIndex: indexPath.row];
+	id objectAtIndexPath = ((NSUInteger)indexPath.row < array.count) ? [array objectAtIndex:indexPath.row] : nil;
 	if([objectAtIndexPath conformsToProtocol:@protocol(EventProtocol)])
 		service = ((NSObject<EventProtocol > *)objectAtIndexPath).service;
 	else
