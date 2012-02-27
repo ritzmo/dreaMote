@@ -702,24 +702,9 @@ enum bouquetListTags
 /* select row */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	// do nothing if reloading
-	if(_reloading)
-	{
-#if IS_DEBUG()
-		NSLog(@"didSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row);
-#endif
-		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
-	if(indexPath.row >= (NSInteger)_bouquets.count)
-	{
-#if IS_DEBUG()
-		NSLog(@"Selection (%d) outside of bounds (%d) in BouquetListController. This does not have to be bad!", indexPath.row, _bouquets.count);
-#endif
-		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
-
 	// See if we have a valid bouquet
-	NSObject<ServiceProtocol> *bouquet = [_bouquets objectAtIndex: indexPath.row];
+	ServiceTableViewCell *cell = ((NSUInteger)indexPath.row < _bouquets.count) ? (ServiceTableViewCell *)[tableView cellForRowAtIndexPath:indexPath] : nil;
+	NSObject<ServiceProtocol> *bouquet = cell.service;
 	if(!bouquet.valid)
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
