@@ -560,13 +560,13 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 /* row selected */
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	TimerTableViewCell *cell = (TimerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 	if(self.editing)
 	{
 		if(indexPath.section == 0)
 			return [self tableView:tableView commitEditingStyle:UITableViewCellEditingStyleInsert forRowAtIndexPath:indexPath];
 		else
 		{
-			TimerTableViewCell *cell = (TimerTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
 			const BOOL selected = [cell toggleMultiSelected];
 			if(selected)
 				[_selected addObject:cell.timer];
@@ -577,21 +577,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
 
-	// do nothing if reloading
-	if(_reloading)
-	{
-#if IS_DEBUG()
-		[NSException raise:@"TimerListUserInteractionWhileReloading" format:@"willSelectRowAtIndexPath was triggered for indexPath (section %d, row %d) while reloading", indexPath.section, indexPath.row];
-#endif
-		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
-	}
-
-	NSInteger index = indexPath.row;
-	const NSInteger section = indexPath.section - 1;
-	if(section > 0)
-		index += _dist[section - 1];
-
-	NSObject<TimerProtocol> *timer = [_timers objectAtIndex: index];
+	NSObject<TimerProtocol> *timer = cell.timer;
 	if(!timer.valid)
 	{
 		return [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -605,9 +591,6 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 			_timerViewController = [[TimerViewController alloc] init];
 	}
 
-	if(!IS_IPAD())
-		_willReappear = YES;
-
 	_timerViewController.delegate = self;
 	_timerViewController.timer = timer;
 	_timerViewController.oldTimer = ourCopy;
@@ -615,6 +598,7 @@ static const int stateMap[kTimerStateMax] = {kTimerStateRunning, kTimerStatePrep
 	// when in split view go back to timer view, else push it on the stack
 	if(!self.isSplit)
 	{
+		_willReappear = YES;
 		// XXX: wtf?
 		if([self.navigationController.viewControllers containsObject:_timerViewController])
 		{
