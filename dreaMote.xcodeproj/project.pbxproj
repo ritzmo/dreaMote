@@ -472,8 +472,6 @@
 		DA78F2B214C1E72200919093 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F23214C1E72100919093 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA78F2B314C1E72200919093 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DA78F23214C1E72100919093 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA7F53B214EDBB8B00DD34CA /* ServiceEditor.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */; };
-		DA7F53B414EDBB8B00DD34CA /* ServiceEditor.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */; };
-		DA7F53B514EDBB8C00DD34CA /* ServiceEditor.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAAB66EA1468473A0099DBA9 /* ServiceEditor.strings */; };
 		DA8368E514A24F080047CC85 /* remote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8368E414A24F080047CC85 /* remote@2x.png */; };
 		DA8368E614A24F080047CC85 /* remote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8368E414A24F080047CC85 /* remote@2x.png */; };
 		DA8368E714A24F080047CC85 /* remote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA8368E414A24F080047CC85 /* remote@2x.png */; };
@@ -1218,6 +1216,16 @@
 		DAFB623E1496B16900263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62401496B16A00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62411496B16B00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
+		DAFE6A4214FD515A00B6B8CD /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CD13B2032300CA00D9 /* about.html */; };
+		DAFE6A4314FD515A00B6B8CD /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CD13B2032300CA00D9 /* about.html */; };
+		DAFE6A4414FD515A00B6B8CD /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CD13B2032300CA00D9 /* about.html */; };
+		DAFE6A4514FD515A00B6B8CD /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */; };
+		DAFE6A4814FD515A00B6B8CD /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CE13B2032300CA00D9 /* changes_de.html */; };
+		DAFE6A4914FD515A00B6B8CD /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CE13B2032300CA00D9 /* changes_de.html */; };
+		DAFE6A4A14FD515A00B6B8CD /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CE13B2032300CA00D9 /* changes_de.html */; };
+		DAFE6A4B14FD515A00B6B8CD /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CF13B2032300CA00D9 /* changes_en.html */; };
+		DAFE6A4C14FD515A00B6B8CD /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CF13B2032300CA00D9 /* changes_en.html */; };
+		DAFE6A4D14FD515A00B6B8CD /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CF13B2032300CA00D9 /* changes_en.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1966,7 +1974,7 @@
 		DAC8C4D113B2032300CA00D9 /* welcome_de.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_de.html; path = Other/welcome_de.html; sourceTree = "<group>"; };
 		DAC8C4D213B2032300CA00D9 /* welcome_en.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_en.html; path = Other/welcome_en.html; sourceTree = "<group>"; };
 		DAC8C4D313B2032300CA00D9 /* welcome_fr.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = welcome_fr.html; path = Other/welcome_fr.html; sourceTree = "<group>"; };
-		DAC8C4E913B2033200CA00D9 /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		DAC8C4E913B2033200CA00D9 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		DAC8C4EA13B2033200CA00D9 /* Info Coolmote.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info Coolmote.plist"; sourceTree = "<group>"; };
 		DAC8C4EB13B2033200CA00D9 /* Info Full.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info Full.plist"; sourceTree = "<group>"; };
 		DAC8C4EC13B2033200CA00D9 /* Info Lite.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info Lite.plist"; sourceTree = "<group>"; };
@@ -2003,6 +2011,11 @@
 		DAFB3D2114BB287300E3EEDE /* SimulatedTimerXMLReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimulatedTimerXMLReader.m; sourceTree = "<group>"; };
 		DAFB3D2314BB2C0700E3EEDE /* SimulatedTimerListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimulatedTimerListController.h; sourceTree = "<group>"; };
 		DAFB3D2414BB2C0700E3EEDE /* SimulatedTimerListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimulatedTimerListController.m; sourceTree = "<group>"; };
+		DAFE6A3D14FD515A00B6B8CD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/AutoTimer.strings; sourceTree = "<group>"; };
+		DAFE6A3E14FD515A00B6B8CD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/EPGRefresh.strings; sourceTree = "<group>"; };
+		DAFE6A3F14FD515A00B6B8CD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		DAFE6A4014FD515A00B6B8CD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/PackageManager.strings; sourceTree = "<group>"; };
+		DAFE6A4114FD515A00B6B8CD /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/ServiceEditor.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -3597,6 +3610,7 @@
 				zh_CN,
 				pl,
 				English,
+				ru,
 			);
 			mainGroup = DAC8BE4013B1FF9200CA00D9;
 			productRefGroup = DAC8BE4C13B1FF9200CA00D9 /* Products */;
@@ -3752,6 +3766,10 @@
 				DA78F27E14C1E72200919093 /* FBDialog.bundle in Resources */,
 				DA7F53B214EDBB8B00DD34CA /* ServiceEditor.strings in Resources */,
 				DA481A8514FBE79D00B9EBAB /* ShareKit.bundle in Resources */,
+				DAFE6A4214FD515A00B6B8CD /* about.html in Resources */,
+				DAFE6A4514FD515A00B6B8CD /* AutoTimer.strings in Resources */,
+				DAFE6A4814FD515A00B6B8CD /* changes_de.html in Resources */,
+				DAFE6A4B14FD515A00B6B8CD /* changes_en.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3892,8 +3910,10 @@
 				DA78F11E14C1E71200919093 /* SHKSharers.plist in Resources */,
 				DA78F17514C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F27F14C1E72200919093 /* FBDialog.bundle in Resources */,
-				DA7F53B414EDBB8B00DD34CA /* ServiceEditor.strings in Resources */,
 				DA481A8614FBE79D00B9EBAB /* ShareKit.bundle in Resources */,
+				DAFE6A4314FD515A00B6B8CD /* about.html in Resources */,
+				DAFE6A4914FD515A00B6B8CD /* changes_de.html in Resources */,
+				DAFE6A4C14FD515A00B6B8CD /* changes_en.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4025,8 +4045,10 @@
 				DA78F11F14C1E71200919093 /* SHKSharers.plist in Resources */,
 				DA78F17614C1E71200919093 /* SHKEvernote.md in Resources */,
 				DA78F28014C1E72200919093 /* FBDialog.bundle in Resources */,
-				DA7F53B514EDBB8C00DD34CA /* ServiceEditor.strings in Resources */,
 				DA481A8714FBE79D00B9EBAB /* ShareKit.bundle in Resources */,
+				DAFE6A4414FD515A00B6B8CD /* about.html in Resources */,
+				DAFE6A4A14FD515A00B6B8CD /* changes_de.html in Resources */,
+				DAFE6A4D14FD515A00B6B8CD /* changes_en.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4840,6 +4862,7 @@
 				DAAB66EB1468473A0099DBA9 /* en */,
 				DAAB66ED146847440099DBA9 /* de */,
 				DAEC23AD1492BB4F00A94824 /* pl */,
+				DAFE6A4114FD515A00B6B8CD /* ru */,
 			);
 			name = ServiceEditor.strings;
 			sourceTree = "<group>";
@@ -4850,6 +4873,7 @@
 				DAB85AF7145864B40089A382 /* en */,
 				DAB85AFC145864BD0089A382 /* de */,
 				DAEC23AC1492BB4F00A94824 /* pl */,
+				DAFE6A4014FD515A00B6B8CD /* ru */,
 			);
 			name = PackageManager.strings;
 			sourceTree = "<group>";
@@ -4860,6 +4884,7 @@
 				DAC8C4EE13B2034100CA00D9 /* en */,
 				DAC8C4FC13B2034B00CA00D9 /* de */,
 				DAEC23A91492BB4F00A94824 /* pl */,
+				DAFE6A3D14FD515A00B6B8CD /* ru */,
 			);
 			name = AutoTimer.strings;
 			sourceTree = "<group>";
@@ -4870,6 +4895,7 @@
 				DAC8C4F013B2034100CA00D9 /* en */,
 				DAC8C4FD13B2034B00CA00D9 /* de */,
 				DAEC23AA1492BB4F00A94824 /* pl */,
+				DAFE6A3E14FD515A00B6B8CD /* ru */,
 			);
 			name = EPGRefresh.strings;
 			sourceTree = "<group>";
@@ -4880,6 +4906,7 @@
 				DAC8C4F213B2034100CA00D9 /* en */,
 				DAC8C4FE13B2034C00CA00D9 /* de */,
 				DAEC23AB1492BB4F00A94824 /* pl */,
+				DAFE6A3F14FD515A00B6B8CD /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

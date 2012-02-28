@@ -1,0 +1,60 @@
+/* Delay if not in standby/in use */
+/*"<delay if not in standby/in use>" = "<delay if not in standby/in use>";*/
+
+/* Time to stay on service */
+/*"<time to stay on service>" = "<time to stay on service>";*/
+
+/* Inherit services from AutoTimer */
+/*"Add AutoTimer services" = "Add AutoTimer services";*/
+
+/* section header for bouquet to refresh */
+/*"Bouquets" = "Bouquets";*/
+
+/* Label for cell 'delay refresh if not in standby (minutes)' */
+/*"Delay if busy (min.)" = "Delay if busy (min.)";*/
+
+/* Adapter name */
+/*"Fake Recording" = "Fake Recording";*/
+
+/* Force EPG refresh even if receiver is not in standby or timers are active */
+/*"Force refresh if in use" = "Force refresh if in use";*/
+
+/* Time of last refresh if given by remote end */
+/*"Last refresh: %@" = "Last refresh: %@";*/
+
+/* Adapter name */
+/*"Main Picture" = "Main Picture";*/
+
+/* Search EPG for AutoTimers after refresh */
+/*"Parse AutoTimer" = "Parse AutoTimer";*/
+
+/* Adapter name */
+/*"Picture in Picture" = "Picture in Picture";*/
+
+/* Adapter name */
+/*"Picture in Picture (hidden)" = "Picture in Picture (hidden)";*/
+
+/* Toggle 'Refresh EPG automatically' */
+/*"Refresh automatically" = "Refresh automatically";*/
+
+/* Refresh using different Adapter */
+/*"Refresh using: %@" = "Refresh using: %@";*/
+
+/* section header for service to refresh */
+/*"Services" = "Services";*/
+
+/* Shutdown after refreshing EPG */
+/*"Shutdown after refresh" = "Shutdown after refresh";*/
+
+/* start manual refresh of epg */
+/*"Start refresh" = "Start refresh";*/
+
+/* Label for cell 'Time to stay on service (minutes)' */
+/*"Time on service (min.)" = "Time on service (min.)";*/
+
+/* Label for cell 'Time to stay on service (seconds)' */
+/*"Time on service (sec.)" = "Time on service (sec.)";*/
+
+/* Wakeup from Deep Standby for EPG refresh */
+/*"Wakeup for refresh" = "Wakeup for refresh";*/
+

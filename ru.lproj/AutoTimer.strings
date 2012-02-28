@@ -1,0 +1,221 @@
+/* Acessibility value for simulated autotimers. Previous acessibility value (time string) followed by autotimer name */
+/*"%@, Auto-Timer %@" = "%1$@, Auto-Timer %2$@";*/
+
+/* Placeholder for maxdays field in AutoTimer settings (add timer for days on the next X days) */
+/*"<days>" = "<days>";*/
+
+/* Placeholder of AutoTimer Title field */
+/*"<enter title>" = "<enter title>";*/
+
+/* Placeholder of Textfield in Filter Editor */
+/*"<filter text>" = "<filter text>";*/
+
+/* Placeholder for interval field in AutoTimer settings (time in hours between automated polling) */
+/*"<hours>" = "<hours>";*/
+
+/* Placeholder of AutoTimer Maxduration field */
+/*"<maximum duration>" = "<maximum duration>";*/
+
+/* Placeholder of AutoTimer Match field */
+/*"<text to find in title>" = "<text to find in title>";*/
+
+/* Label for cell 'addsimilar_on_conflict' */
+/*"Add similar timer on conflict" = "Add similar timer on conflict";*/
+
+/* Label for cell 'disabled_on_conflict' */
+/*"Add timer disabled on conflict" = "Add timer disabled on conflict";*/
+
+/* Label for cell 'maxdays_in_future' */
+/*"Add timer for the next X days" = "Add timer for the next X days";*/
+
+/* User has actived the after event during timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing. */
+/*"After event should only apply during timespan but no timespan given." = "After event should only apply during timespan but no timespan given.";*/
+
+/* timeframe after */
+/*"After: %@" = "After: %@";*/
+
+/* Avoid Duplicate Description 2 (timer on all services) */
+/*"All Services" = "All Services";*/
+
+/* Type of timers to modify: All timers */
+/*"All timers" = "All timers";*/
+
+/* User requested autopoll but interval is equal to or less than 0. */
+/*"Automated Search for events requires a valid interval to be set!" = "Automated Search for events requires a valid interval to be set!";*/
+
+/* Open Editor for new AutoTimer */
+/*"AutoTimer Editor" = "AutoTimer Editor";*/
+
+/* Type of timers to modify: Only AutoTimers created during this session */
+/*"AutoTimers" = "AutoTimers";*/
+
+/* timeframe before */
+/*"Before: %@" = "Before: %@";*/
+
+/* section header for bouquet restriction */
+/*"Bouquets" = "Bouquets";*/
+
+/* Editor Type: Regular Editor */
+/*"Classic" = "Classic";*/
+
+/* Label for switch controlling if after event action should only be modified during a given timespan. */
+/*"During timespan" = "During timespan";*/
+
+/* Text for cell with default editor for new autotimers on the receiver */
+/*"Editor for new Timers: %@" = "Editor for new Timers: %@";*/
+
+/* Set Endtime for Zaptimers */
+/*"Endtime if Justplay" = "Endtime if Justplay";*/
+
+/* Error message if AutoTimer could not be added. */
+/*"Error adding AutoTimer: %@" = "Error adding AutoTimer: %@";*/
+
+/* Error message if AutoTimer could not be edited. */
+/*"Error editing AutoTimer: %@" = "Error editing AutoTimer: %@";*/
+
+/* Search type: exact event title */
+/*"Exact" = "Exact";*/
+
+/* Exclude Filter */
+/*"Exclude" = "Exclude";*/
+
+/* Force parsing is finished, this could have been either an error or a success */
+/*"Finished parsing EPG" = "Finished parsing EPG";*/
+
+/* timespan from */
+/*"From: %@" = "From: %@";*/
+
+/* Label for cell 'try_guessing' */
+/*"Guess event by begin/end" = "Guess event by begin/end";*/
+
+/* Search type: partial in event description */
+/*"in Description" = "in Description";*/
+
+/* Include Filter */
+/*"Include" = "Include";*/
+
+/* Title of timer modification behavior selection. */
+/*"Modify Timers" = "Modify Timers";*/
+
+/* Text for cell with timer modification behavior */
+/*"Modify timers: %@" = "Modify timers: %@";*/
+
+/* weekday filter */
+/*"Mon-Fri" = "Mon-Fri";*/
+
+/* Text for cell which allows to add a new AutoTimer */
+/*"New AutoTimer" = "New AutoTimer";*/
+
+/* add new bouquet filter */
+/*"New Bouquet" = "New Bouquet";*/
+
+/* add new filter */
+/*"New Filter" = "New Filter";*/
+
+/* add new service filter */
+/*"New Service" = "New Service";*/
+
+/* Avoid Duplicate Description disabled */
+/*"No" = "No";*/
+
+/* Type of timers to modify: None */
+/*"None" = "None";*/
+
+/* Label for cell 'notifsimilar' */
+/*"Notification for similar timers" = "Notification for similar timers";*/
+
+/* Label for cell 'notifconflict' */
+/*"Notification on conflicts" = "Notification on conflicts";*/
+
+/* Start forced parsing of EPG */
+/*"Parse EPG" = "Parse EPG";*/
+
+/* Search type: partial event title */
+/*"Partial" = "Partial";*/
+
+/* Label for cell 'autopoll' */
+/*"Poll automatically" = "Poll automatically";*/
+
+/* Label for cell 'interval' */
+/*"Poll interval (in h)" = "Poll interval (in h)";*/
+
+/* Open Preview dialog
+   Title of SimulatedTimerListController */
+/*"Preview" = "Preview";*/
+
+/* Avoid Duplicate Description 1 (timers on same service) */
+/*"Same Service" = "Same Service";*/
+
+/* weekday filter */
+/*"Sat-Sun" = "Sat-Sun";*/
+
+/* Title of search type selector. */
+/*"Search Type" = "Search Type";*/
+
+/* searchType attribute of autotimer. Can be partial, exact or in description.. */
+/*"Search Type: %@" = "Search Type: %@";*/
+
+/* searchForDuplicateDescription attribute of autotimer. Defines where avoidDuplicateDescription searches for 'uniqueness'. */
+/*"Search unique Description in %@" = "Search unique Description in %@";*/
+
+/* section header for service restriction */
+/*"Services" = "Services";*/
+
+/* Default title of AutoTimerSettingsViewController
+   Open Settings dialog */
+/*"Settings" = "Settings";*/
+
+/* Label for cell 'show_in_extensionsmenu' */
+/*"Show in extension menu" = "Show in extension menu";*/
+
+/* Sort list by AutoTimer name */
+/*"Sort AutoTimer" = "Sort AutoTimer";*/
+
+/* Label for cell 'fastscan' */
+/*"Support \"Fast-Scan\"" = "Support \"Fast-Scan\"";*/
+
+/* section header for timeframe */
+/*"Timeframe" = "Timeframe";*/
+
+/* Title of (new) timer editor selector. */
+/*"Timer Editor" = "Timer Editor";*/
+
+/* Avoid Duplicate Description 3 (timers on all services and recordings) */
+/*"Timers/Recordings" = "Timers/Recordings";*/
+
+/* section header for timespan */
+/*"Timespan" = "Timespan";*/
+
+/* User has actived the timespan switch but not given a timespan. Does NOT happen if no timespan given at all but only if one of the two settings is missing. */
+/*"Timespan selected but not configured." = "Timespan selected but not configured.";*/
+
+/* Search For Duplicates: in Title */
+/*"Title" = "Title";*/
+
+/* Search For Duplicates: in Title and Short+Extended Description */
+/*"Title and all descriptions" = "Title and all descriptions";*/
+
+/* Search For Duplicates: in Title and Short Description */
+/*"Title and short description" = "Title and short description";*/
+
+/* timespan to */
+/*"To: %@" = "To: %@";*/
+
+/* Remote host did not return a valid result, probably because the version of the installed plugin is too old. */
+/*"Unable to complete request.\nPlugin too old?" = "Unable to complete request.\nPlugin too old?";*/
+
+/* Title of avoid duplicate description selector. */
+/*"Unique Description" = "Unique Description";*/
+
+/* avoidDuplicateDescription attribute of autotimer. Event (short)description has to be unique among set timers on this service/all services/all services and recordings. */
+/*"Unique Description: %@" = "Unique Description: %@";*/
+
+/* Title of 'search for duplicate description' selector. */
+/*"Unique in" = "Unique in";*/
+
+/* section header for vps-plugin */
+/*"VPS" = "VPS";*/
+
+/* Editor Type: Wizard */
+/*"Wizard" = "Wizard";*/
+

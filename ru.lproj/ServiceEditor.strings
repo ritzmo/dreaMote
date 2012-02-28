@@ -1,0 +1,72 @@
+/* Add new alternative service to currently selected service */
+/*"Add Alternative" = "Add Alternative";*/
+
+/* Add new marker before this position */
+/*"Add Marker" = "Add Marker";*/
+
+/* Add this service to another bouquet */
+/*"Add to Bouquet" = "Add to Bouquet";*/
+
+/* Text of HUD when a service was added as alternative to the currently selected one */
+/*"Alternative added" = "Alternative added";*/
+
+/* Text of HUD when all alternatives were removed for a services */
+/*"Alternatives deleted" = "Alternatives deleted";*/
+
+/* Delete selected service */
+/*"Delete" = "Delete";*/
+
+/* Button removing service alternatives */
+/*"Delete all" = "Delete all";*/
+
+/* Title of prompt requesting name for new bouquet */
+/*"Enter name of bouquet" = "Enter name of bouquet";*/
+
+/* Title of prompt requesting new name for an existing service */
+/*"Enter new name" = "Enter new name";*/
+
+/* Title of prompt requesting new name for an existing bouquet */
+/*"Enter new name of bouquet" = "Enter new name of bouquet";*/
+
+/* Title of prompt requesting name for a marker the user requested */
+/*"Enter title for marker" = "Enter title for marker";*/
+
+/* Title of cell to add a bouquet */
+/*"New Bouquet" = "New Bouquet";*/
+
+/* Open selected service */
+/*"Open" = "Open";*/
+
+/* Undo selection made by the user. */
+/*"Remove selection" = "Remove selection";*/
+
+/* Rename currently selected service */
+/*"Rename" = "Rename";*/
+
+/* Text of HUD when one or multiple services were added to a bouquet */
+/*"Service(s) added" = "Service(s) added";*/
+
+/* Show alternatives for selected service */
+/*"Show Alternatives" = "Show Alternatives";*/
+
+/* Creating a marker has failed */
+/*"Unable to add marker: %@" = "Unable to add marker: %@";*/
+
+/* Adding an alternative to a service failed */
+/*"Unable to add service %@ to alternative %@: %@" = "Unable to add service %1$@ to alternative %2$@: %3$@";*/
+
+/* Adding a service to a bouquet failed */
+/*"Unable to add service(s) to bouquet %@: %@" = "Unable to add service(s) to bouquet %1$@: %2$@";*/
+
+/* Creating a bouquet has failed */
+/*"Unable to create bouquet: %@" = "Unable to create bouquet: %@";*/
+
+/* Removing alternatives failed */
+/*"Unable to remove alternatives: %@" = "Unable to remove alternatives: %@";*/
+
+/* Renaming a bouquet has failed */
+/*"Unable to rename bouquet: %@" = "Unable to rename bouquet: %@";*/
+
+/* Renaming a service has failed */
+/*"Unable to rename service: %@" = "Unable to rename service: %@";*/
+

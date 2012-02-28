@@ -1,0 +1,30 @@
+/* Abort pending commit */
+/*"Abort" = "Abort";*/
+
+/* All available Packages */
+/*"All" = "All";*/
+
+/* Commit changes made in list */
+/*"Commit" = "Commit";*/
+
+/* Installed Packages */
+/*"Installed" = "Installed";*/
+
+/* Header of package list when installing packages. */
+/*"Installed Packages:" = "Installed Packages:";*/
+
+/* Title of alert when the user taps 'commit' but did not select any packages. */
+/*"No packages selected" = "No packages selected";*/
+
+/* Header of package list when removing packages. */
+/*"Removed Packages:" = "Removed Packages:";*/
+
+/* Update remote list of packages */
+/*"Update" = "Update";*/
+
+/* Upgradable Packages */
+/*"Upgradable" = "Upgradable";*/
+
+/* Upgrade all available packages */
+/*"Upgrade" = "Upgrade";*/
+

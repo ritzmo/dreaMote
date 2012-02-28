@@ -1,0 +1,1261 @@
+/* sat finder refresh interval */
+"%.0f sec" = "%.0f сек";
+
+/* Free space on harddisk (available of total free), includes size. */
+"%@ of %@ free" = "%1$@ of %2$@ свободно";
+
+/* zip-file was extracted without any errors. */
+"%d files extracted successfully." = "%d файлы разархивированны полностью.";
+
+/* Minutes */
+"%d min" = "%d мин";
+
+/* Seconds */
+"%d sec" = "%d сек";
+
+/* Comment for repeat count in neutrino */
+"0 = unlimited" = "0 = неограниченно";
+
+/* Repeated */
+"2-weekly" = "2-недельно";
+
+/* Repeated */
+"4-weekly" = "4-недельно";
+
+/* Placeholder for remote address in config. */
+"<address: e.g. 192.168.1.10>" = "<адрес: например 192.168.1.10>";
+
+/* Placeholder of _timerDescription */
+"<enter description>" = "<введите описание>";
+
+/* Placeholder of _timerTitle */
+"<enter title>" = "<введите название>";
+
+/* Label for Filesystems Item in MediaPlayer Filelist */
+"<Filesystems>" = "<Файловая система>";
+
+/* Placeholder for textfield with search history length */
+"<history length>" = "<глубина истории>";
+
+/* Placeholder for message caption field */
+"<message caption>" = "<заголовок сообщения>";
+
+/* Placeholder for message text field */
+"<message text>" = "<текст сообщения>";
+
+/* Placeholder for message timeout field */
+"<message timeout>" = "<длительность сообщения>";
+
+/* Placeholder for SleepTimer duration field */
+"<min.>" = "<мин.>";
+
+/* Placeholder for remote hostname in config. */
+"<name: e.g. living room>" = "<название: например Спальня>";
+
+/* Placeholder for remote password in config. */
+"<password: usually dreambox>" = "<пароль: обычно dreambox>";
+
+/* Placeholder for remote port in config. */
+"<port: usually %d>" = "<порт: обычно %d>";
+
+/* Placeholder for remote streaming port in config. */
+/*"<streaming port: usually %d>" = "<streaming port: usually %d>";*/
+
+/* Placeholder for remote username in config. */
+"<username: usually root>" = "<логин: обычно root>";
+
+/* No hostname entered in ConfigView. */
+"A connection needs at least a hostname." = "Для соединения необходимо указать URL адрес ресивера.";
+
+/* No comment provided by engineer. */
+"A search did not return any event.\nTry refreshing the cache by reloading the event list for this service." = "Поиск не дал результатов.\nПопробуйте перезагрузить EPG.";
+
+/* Message explaining what what happens on zip-file import. */
+"A zip-file (%s) was found in your Documents folder.\nUnpack and delete it now?\n\nThis message will show on every application launch with a zip-file in the Documents folder!" = "zip-файл (%s) был найден в папке Документы.\nРаскрыть и удалить его?\n\nЭто сообщение будет отображаться на каждом запуске приложения с ZIP-файлом в папке Документы!";
+
+/* About Button Text
+   Title of AboutDreamoteViewController */
+"About" = "О программе";
+
+/* Title of About Receiver in Other List
+   Title of AboutViewController */
+"About Receiver" = "О ресивере";
+
+/* Title of Alert when import triggered */
+"About to import data" = "Импортирование данных";
+
+/* Used in MediaPlayer, add only the current folder */
+"Add" = "Добавить";
+
+/* Explaination of AutoTimer in Other List */
+"Add and edit AutoTimers" = "Добавление и редактирование АвтоТаймера";
+
+/* Add new AutoTimer based on this event */
+"Add AutoTimer" = "Добавить АвтоТаймер";
+
+/* Button in MediaPlayer to add current folder to playlist */
+"Add Folder" = "Добавить папку";
+
+/* Used in MediaPlayer, add shown folders recursively */
+"Add recursively" = "Добавить включая подкаталоги";
+
+/* No comment provided by engineer. */
+"Add Timer" = "Добавить таймер";
+
+/* Create calendar entry for this event */
+"Add to calendar" = "Добавить в календарь";
+
+/* Used in MediaPlayer, append tracks to playlist */
+"Adding to Playlist" = "Добавить в плэй-лист";
+
+/* Enigma2 only. Refers to the remote with four extra buttons (FRwd/PlayPause/Stop/FFwd). */
+"Advanced Remote" = "Расширенный ПДУ";
+
+/* Default title of AfterEventViewController */
+"After Event" = "После события";
+
+/* Automatic Gain Control (in Percent) */
+"AGC" = "АРУ";
+
+/* No comment provided by engineer. */
+"Album" = "Альбом";
+
+/* 'All Services' button in bouquet list */
+"All" = "Все";
+
+/* Name of 'All Services'-Bouquet */
+"All Services" = "Все каналы";
+
+/* No comment provided by engineer. */
+"Always ask" = "Всегда спрашивать";
+
+/* No comment provided by engineer. */
+"An unexpected error (%@) occured after removing the recording.\nPlease reload the list manually to see the change!" = "Непредвиденная ошибка (%@) произошла во время перемешения записи.\nПожалуйста перезагрузите список вручную чтобы увидеть изменения!";
+
+/* Accessibility label for button: leftarrow */
+"Arrow (left)" = "Стрелка (лево)";
+
+/* Accessibility label for button: rightarrow */
+"Arrow (right)" = "Стрелка (право)";
+
+/* No comment provided by engineer. */
+"Artist" = "Артист";
+
+/* Message type */
+"Attention" = "Внимание";
+
+/* After Event */
+"Auto" = "Авто";
+
+/* Button in Connection Editor which detects the remote receiver type automatically. */
+"Autodetect" = "Автонастройка";
+
+/* Default title of AutoTimerViewController */
+"AutoTimer" = "АвтоТаймер";
+
+/* Text of HUD when AutoTimer was added successfully */
+"AutoTimer added" = "АвтоТаймер добавлен";
+
+/* Text of HUD when AutoTimer was changed successfully */
+"AutoTimer changed" = "АвтоТаймер изменён";
+
+/* Text of HUD when an AutoTimer was removed successfully */
+"AutoTimer deleted" = "АвтоТаймер удалён";
+
+/* Title of AutoTimer in Other List */
+"AutoTimer-Plugin" = "Плагин - АвтоТаймер";
+
+/* Title of AutoTimerListController */
+"AutoTimers" = "АвтоТаймеры";
+
+/* No comment provided by engineer. */
+"Begin" = "Начало";
+
+/* Name of blue theme */
+"Blue" = "Синий";
+
+/* Text of HUD when a bookmark was removed successfully */
+"Bookmark deleted" = "Закладка удалена";
+
+/* Bouquets button in bouquet list
+   Title of BouquetListController */
+"Bouquets" = "Группы";
+
+/* Button in Appirater alert suggesting to buy paid version */
+"Buy full version" = "Купите полную версию";
+
+/* No comment provided by engineer. */
+"Can't save a timer with an empty title." = "Невозможно сохранить таймер с пустым названием";
+
+/* No comment provided by engineer. */
+"Can't save a timer without a service." = "Невозможно сохранить таймер без названия канала.";
+
+/* No comment provided by engineer. */
+"Cancel" = "Отмена";
+
+/* No comment provided by engineer. */
+"Caption" = "Заголовок";
+
+/* No comment provided by engineer. */
+"Caption cannot be empty." = "Заголовок не может быть пустой.";
+
+/* case-sensitive matching (of autotimers) */
+"Case-Sensitive" = "РегистроЗависимый";
+
+/* Explaination of Settings in Other List */
+"Change configuration and edit known hosts" = "Изменение настроек и профилей";
+
+/* Timer cleanup button */
+"Cleanup" = "Очистка";
+
+/* Clear button/action in MediaPlayer */
+"Clear" = "Очистить";
+
+/* Title of action sheet when leaving MediaPlayer view. */
+"Close MediaPlayer?" = "Закрыть медиаплеер?";
+
+/* HUD: Code was successfully used to unlock in-app-purchase */
+"Code redeemed" = "Код принят";
+
+/* Default Title of ConfigListController
+   Default title of ConfigViewController */
+"Configuration" = "Настройки";
+
+/* Section title for connections in ConfigList */
+"Configured Connections" = "Настройки подключения";
+
+/* Message type */
+"Confirmed" = "Подтверждено";
+
+/* Connect to the remote host for this session. */
+"Connect" = "Подключить";
+
+/* Label of Progress HUD when switching connections */
+"Connecting…" = "Подключаюсь…";
+
+/* No comment provided by engineer. */
+"Connection failure with status code %d ignored." = "Ошибка подключения с кодом ошибки %d игнорирована.";
+
+/* Configuration item to choose connection timeout
+   Default title of TimeoutSelectionViewController */
+"Connection Timeout" = "Тайм-аут соединения";
+
+/* No comment provided by engineer. */
+"Connection to remote host failed with status code %d (%@)." = "Соединение с ресивером разорвано, код ошибки %1$d (%2$@).";
+
+/* Default title of ConnectorViewController */
+"Connector" = "Соеденитель";
+
+/* Title of Control View in Other List */
+"Control" = "Управление";
+
+/* Explaination of Control View in Other List */
+"Control Powerstate and Volume" = "Управление питанием и громкостью";
+
+/* Explaination of Media Player in Other List */
+"Control the remote media player" = "Упралвение медиаплеером";
+
+/* Label for cell with setting vpsplugin_overwrite */
+"Controlled by service" = "Контролируется системой";
+
+/* Title of ControlViewController */
+"Controls" = "Управление";
+
+/* No comment provided by engineer. */
+"Could not add new timer (%@)!" = "Невозможно добавить новый таймер (%@)!";
+
+/* No comment provided by engineer. */
+"Could not add new timer and failed to retain original one! (%@)" = "Невозможно добавить новый таймер и не сохранить исходный! (%@)";
+
+/* No comment provided by engineer. */
+"Could not add song to playlist" = "Невозможно добавить песню в плэй-лист";
+
+/* Autodetection of host type failed. */
+"Could not determine remote box type." = "Невозможно определить тип ресивера.";
+
+/* No comment provided by engineer. */
+"Could not open connection to database." = "Не удалось подключиться к базе данных.";
+
+/* No comment provided by engineer. */
+"Could not remove base timer (%@)!" = "Невозможно удалить основной таймер (%@)!";
+
+/* No comment provided by engineer. */
+"Could not send message." = "Невозможно отправить сообщение.";
+
+/* No comment provided by engineer. */
+"Credential" = "Credential";
+
+/* No comment provided by engineer. */
+"Currently playing" = "Сейчас идет";
+
+/* Repeated */
+"Daily" = "Ежедневно";
+
+/* Name of dark theme */
+"Dark" = "Тёмная";
+
+/* Title of DatePickerController */
+"Date Picker" = "Выбор даты";
+
+/* After Event */
+"Deep Standby" = "Глубокий Standby";
+
+/* Name of default theme */
+"Default" = "Стандартная";
+
+/* Default After Event action (usually auto on enigma2 receivers) */
+"Default Action" = "Стандартное действие";
+
+/* No comment provided by engineer. */
+"Default Location" = "Стандартный путь";
+
+/* Label of cell in config which gives default zap type
+   Title of default zap type selection */
+"Default Zap-Type" = "Стандартный тип переключения";
+
+/* Delete button in MediaPlayer
+   Delete button in MovieList
+   Delete button in TimerList
+   Delete-Button in Date Picker (optional) */
+"Delete" = "Удалить";
+
+/* No comment provided by engineer. */
+"Delete failed" = "Удаление отменено";
+
+/* Label of Progress HUD in MediaPlayer when deleting multiple items from playlist
+   Label of Progress HUD in MovieList when deleting multiple items
+   Label of Progress HUD in TimerList when deleting multiple items */
+"Deleting" = "Удаляю";
+
+/* No comment provided by engineer. */
+"Description" = "Описание";
+
+/* Explaination of Signal Finder in Other List */
+"Displays current SNR/AGC" = "Показать текущие значения SNR/AGC";
+
+/* Shown when touching screenshots for 1s, asks to save to libary */
+"Do you want to save this picture?" = "Вы хотите сохранить картинку?";
+
+/* No comment provided by engineer. */
+"Done" = "Сделано";
+
+/* SleepTimer Duration Cell Label */
+"Duration" = "Длительность";
+
+/* Explaination of Sleep Timer in Other List */
+"Edit and (de)activate Sleep Timer" = "Редактирование и активация таймера сна";
+
+/* Toggle in Signal Finder which is responsible for starting/stopping the tone generator */
+"Enable audio" = "Включить звук";
+
+/* Label for cell with setting vpsplugin_enabled */
+"Enable VPS" = "VPS включен";
+
+/* No comment provided by engineer. */
+"Enabled" = "Включено";
+
+/* No comment provided by engineer. */
+"encrypted" = "зашифровано";
+
+/* No comment provided by engineer. */
+"End" = "Конец";
+
+/* No comment provided by engineer. */
+"End has to be after begin." = "Конец должен быть после начала.";
+
+/* Title of message when trying to select next/previous movie by swiping but end was reached. */
+"End of list reached" = "Конец списка достигнут";
+
+/* Title of message when trying to select next/previous service by swiping but end was reached. */
+"End of service list reached" = "Конец списка каналов достигнут";
+
+/* No comment provided by engineer. */
+"Enigma" = "Enigma";
+
+/* No comment provided by engineer. */
+"Enigma 2" = "Enigma 2";
+
+/* Title of prompt requesting name for playlist to be saved in MediaPlayer */
+"Enter name of Playlist" = "Введите имя плэй-листа";
+
+/* Title of prompt requesting name for new bookmark */
+"Enter path of bookmark" = "Введите путь для закладок";
+
+/* Default title of EPGRefreshViewController */
+"EPGRefresh" = "EPGRefresh";
+
+/* Default title of EPGRefreshAdapterViewController */
+"EPGRefresh Adapter" = "EPGRefresh адаптер";
+
+/* Title of EPGRefresh in Other List */
+"EPGRefresh-Plugin" = "Ошибка плагина - EPGRefresh";
+
+/* Message type */
+"Error" = "Ошибка";
+
+/* No comment provided by engineer. */
+"Error adding new timer: %@" = "Ошибка добавления таймера: %@";
+
+/* Title of alert when timer cleanup failed */
+"Error cleaning up" = "Ошибка очистки";
+
+/* No comment provided by engineer. */
+"Error editing timer: %@" = "Ошибка редактирования таймера: %@";
+
+/* No comment provided by engineer. */
+"Error retrieving Data" = "Ошибка получения данных";
+
+/* Title of alert when sending/saving of email failed */
+"Error sending email!" = "Ошибка оптравки почты!";
+
+/* No comment provided by engineer. */
+"Event" = "Передача";
+
+/* Default Title of EventListController */
+"Events" = "Передачи";
+
+/* Title of exact section of SatFinder */
+"Exact" = "Точно";
+
+/* export data from lite to full version */
+"Export to dreaMote" = "Экспортировать в dreaMote";
+
+/* Button executing zip extraction/deletion */
+"Extract" = "Разархивировать";
+
+/* Removal of zip-file failed after extraction. */
+"Failed to remove zip-file!\nPlease remove it manually using iTunes." = "Невозможно удалить zip-файл!\nПожалуйста удалите его вручную через iTunes.";
+
+/* Title of Alert when retrieving remote data failed. */
+"Failed to retrieve data" = "Невозможно получить данные";
+
+/* No comment provided by engineer. */
+"Failed to start instant record" = "Невозможно начать немедленную запись";
+
+/* Accessibility label for button: fast-forward */
+"Fast-Forward" = "Быстро-Назад";
+
+/* Accessibility label for button: fast-rewind */
+"Fast-Rewind" = "Быстро-вперёд";
+
+/* Default title of AutoTimerFilterViewController */
+"Filter" = "Фильтр";
+
+/* No comment provided by engineer. */
+"Filter: Description" = "Филтр: Описание";
+
+/* No comment provided by engineer. */
+"Filter: Shortdescription" = "Фильтр: краткое описание";
+
+/* No comment provided by engineer. */
+"Filter: Title" = "Фильтр: Название";
+
+/* No comment provided by engineer. */
+"Filter: Weekday" = "Фильтр: Выходной";
+
+/* Timer type */
+"Finished" = "Завершено";
+
+/* Accessbility label for twitter button */
+"Follow dreaMote on Twitter" = "Следовать за dreaMote на Twitter";
+
+/* Forget previous purchases in config list (debug builds only) */
+"Forget Purchases" = "Forget Purchases";
+
+/* Weekday */
+"Fri" = "Пят";
+
+/* No comment provided by engineer. */
+"Friday" = "Пятница";
+
+/* Accessibility value for table cells with events (timespan of an event) */
+"from %@ to %@" = "от %1$@ до %2$@";
+
+/* in timer settings dialog */
+"General" = "Основные";
+
+/* No comment provided by engineer. */
+"Genre" = "Жанр";
+
+/* Cell title with GUI version in About View */
+"GUI Version" = "Версия Интерфейса";
+
+/* Title of section in About View containing harddisk information (if any) */
+"Harddisk" = "Жесткий диск";
+
+/* Default sharing string for events */
+"Hey, check out %@ on %@. %@" = "Проверьте %1$@ на %2$@. %3$@";
+
+/* Title of SearchHistoryListController */
+"History" = "История";
+
+/* No comment provided by engineer. */
+"If you enjoy using %@, would you mind taking a moment to rate it? It won't take more than a minute. Thanks for your support!" = "Если Вам понравилось использование %@, могли бы Вы уделить минутку для добавления рэйтинга программы? Это не займет более одной минуты. Спасибо за Вашу поддержку!";
+
+/* No comment provided by engineer. */
+"Illegal response returned by VDR-server! Aborting." = "Illegal response returned by VDR-server! Aborting.";
+
+/* Cell title with Image version in About View */
+"Image Version" = "Версия ПО";
+
+/* No comment provided by engineer. */
+"IMDb" = "IMDb";
+
+/* Button executing import */
+"Import" = "Импорт";
+
+/* Title of Alert when a zip file was found in the documents folder possibly containing picons. */
+"Import Picons?" = "Импортировать пиконы?";
+
+/* Message type */
+"Info" = "Инфо";
+
+/* Explaination of About Receiver in Other List */
+"Information on software and tuners" = "Информация о тюнере и ПО";
+
+/* Explaination of Package Manager in Other List */
+"Install/Update/Remove packages" = "Добавить/Обновить/Удалить пакеты";
+
+/* instant sat finder refresh */
+"instant" = "мгновенно";
+
+/* No comment provided by engineer. */
+"Instant Record" = "Мгновенная запись";
+
+/* Title of refresh Interval section of SatFinder */
+"Interval" = "Интервал";
+
+/* No comment provided by engineer. */
+"Invalid message type." = "Неверный тип сообщения.";
+
+/* [SVDRPConnector {edit,del}Timer:] did not receive an SVDRPTimer as parameter. */
+"Invalid timer object received: %@." = "Invalid timer object received: %@.";
+
+/* No comment provided by engineer. */
+"It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported." = "It appears you might be using the so-called \"OpenWebif\", please note that it contains known bugs and is not officially supported.";
+
+/* No comment provided by engineer. */
+"Justplay" = "Justplay";
+
+/* Load button/action in MediaPlayer */
+"Load" = "Загрузка";
+
+/* Label of Progress HUD in MultiEPG */
+"Loading EPG…" = "Загружаю EPG…";
+
+/* Label of Progress HUD in TimerList when loading list of available tags */
+"Loading Tags" = "Загружаю метки";
+
+/* Loading Status */
+"Loading..." = "Загружаю...";
+
+/* No comment provided by engineer. */
+"Location" = "Расположение";
+
+/* Title of LocationListController */
+"Locations" = "Расположение";
+
+/* Label for cell with setting vpsplugin_time */
+"Manual Time" = "Ручное время";
+
+/* No comment provided by engineer. */
+"Master" = "Основной";
+
+/* Title of section with AutoTimer match-Attribute. String to find in EPG-Title. */
+"Match" = "Соответствует";
+
+/* Title of section with AutoTimer max Duration-Attribute. Maximum Duration a event can have to match this AutoTimer. */
+"Max. Duration" = "Макс. Длительность";
+
+/* Title of Media Player in Other List */
+"Media Player" = "Медиа Плеер";
+
+/* Title of MediaPlayerController
+   Title of MediaPlayerSplitViewController */
+"MediaPlayer" = "Медиа Плеер";
+
+/* Default title of MessageViewController
+   Message type */
+"Message" = "Сообщение";
+
+/* No comment provided by engineer. */
+"Message cannot be empty." = "Сообщение не может быть пустым.";
+
+/* Text of HUD when message was sent successfully */
+"Message sent" = "Сообщение отправлено";
+
+/* Default title of MessageTypeViewController */
+"Message Type" = "Тип сообщения";
+
+/* Title of Message View in Other List */
+"Messages" = "Сообщения";
+
+/* Weekday */
+"Mon" = "Пон";
+
+/* No comment provided by engineer. */
+"Monday" = "Понедельник";
+
+/* Repeated */
+"Monthly" = "Ежемесячно";
+
+/* Tab Title of OtherListController */
+"More" = "Далее";
+
+/* Button in MovieView to move current movie */
+"Move" = "Переместить";
+
+/* Default title of MovieViewController */
+"Movie" = "Запись";
+
+/* Text of HUD when a movied was removed successfully */
+"Movie deleted" = "Запись удалена";
+
+/* Text in HUD when moving a movie succeeded. */
+"Movie moved" = "Запись перемешена";
+
+/* Title of Movie List in Other List
+   Title of MovieListController */
+"Movies" = "Записи";
+
+/* Text of HUD when multiple movies were removed */
+"Movies deleted" = "Записи удалены";
+
+/* Multi EPG Button title */
+"Multi EPG" = "Мульти EPG";
+
+/* Configuration item to choose timespan displayed by MultiEPG
+   Default title of MultiEPGIntervalViewController */
+"Multi-EPG Interval" = "Мульти-EPG интервал";
+
+/* No comment provided by engineer. */
+"Mute" = "Выключить звук";
+
+/* No comment provided by engineer. */
+"N/A" = "N/A";
+
+/* Title of Alert suggesting autoconfiguration. */
+"Need Help?" = "Нужна помощь?";
+
+/* No comment provided by engineer. */
+"Neutrino" = "Neutrino";
+
+/* don't refresh sat finder */
+"never" = "Никогда";
+
+/* Repeated */
+"Never" = "Никогда";
+
+/* Title of cell to add a new bookmark */
+"New Bookmark" = "Новая закладка";
+
+/* No comment provided by engineer. */
+"New Connection" = "Новое подключение";
+
+/* No comment provided by engineer. */
+"New Timer" = "Новый таймер";
+
+/* No comment provided by engineer. */
+"Next" = "Следующий";
+
+/* Accessibility text of 'next' button in MultiEPG */
+"Next page" = "Следующая страница";
+
+/* Name of night theme */
+"Night" = "Ночная";
+
+/* No comment provided by engineer. */
+"No" = "Нет";
+
+/* No comment provided by engineer. */
+"no authentication" = "без аутентификации";
+
+/* Placeholder if no data has been received yet. */
+"No Data…" = "Нет данных…";
+
+/* Placeholder text in Now/Next-ServiceList if no EPG data present */
+"No EPG" = "Нет EPG";
+
+/* Title of message when trying to select next/previous event by swiping but cache did not return results. */
+"No events found" = "Передач не найдено";
+
+/* No comment provided by engineer. */
+"No similar Events" = "Похожих передач не найдено";
+
+/* User requested AutoTimer timeframe but none was setup. */
+"No timeframe given." = "No timeframe given.";
+
+/* No comment provided by engineer. */
+"No, Thanks" = "Нет, спасибо";
+
+/* No comment provided by engineer. */
+"None" = "Никакой";
+
+/* Message type */
+"Normal" = "Стандартный";
+
+/* No comment provided by engineer. */
+"not encrypted" = "не закодировано";
+
+/* Accessibility text for unselected cells in multi selection */
+"not selected" = "не выбрано";
+
+/* After Event */
+"Nothing" = "Ничего";
+
+/* No comment provided by engineer. */
+"Nothing playing." = "Ничего не идет.";
+
+/* MultiEPG change to current hour */
+"Now" = "Сейчас";
+
+/* No comment provided by engineer. */
+"Now Playing" = "Сейчас идет";
+
+/* Toggle to enable showing now/next in servicelist if available. */
+"Now/Next in Servicelist" = "Сейчас/Следующее в списке передач";
+
+/* No comment provided by engineer. */
+"OSD" = "OSD";
+
+/* Repeated */
+"Other" = "Другие";
+
+/* Title of Package Manager in Other List
+   Title of PackageManagerListController */
+"Package Manager" = "Менеджер пакетов";
+
+/* Connection failure with 404 in AutoTimer/EPGRefresh. Plugin probably too old or not installed. */
+"Page not found.\nPlugin not installed?" = "Страница не найдена.\nПлагин не установлен?";
+
+/* Title of percentage section of SatFinder */
+"Percentage" = "Проценты";
+
+/* No comment provided by engineer. */
+"Play" = "Воспроизведение";
+
+/* Accessibility label for button: play/pause */
+"Play-Pause" = "Вопсроизведние/Пауза";
+
+/* No comment provided by engineer. */
+"Play/Pause" = "Вопсроизведние/Пауза";
+
+/* TabBar Title of CurrentViewController */
+"Playing" = "Воспроизведение";
+
+/* Used in MediaPlayer, append track to playlist and start playback */
+"Playing immediately" = "Немедленное воспроизведение";
+
+/* Title of PlayListController */
+"Playlist" = "Плэйлист";
+
+/* Playlist was saved in MediaPlayer */
+"Playlist saved successfully." = "Плэйлист успешно сохранен";
+
+/* New MediaPlayer playlist was loaded */
+"Playlist was loaded successfully." = "Плэйлист полностью загружен.";
+
+/* No comment provided by engineer. */
+"Please provide a valid timeout interval." = "Пожалуйста укажите корректный интервал тайм-аута.";
+
+/* No comment provided by engineer. */
+"Power" = "Питание";
+
+/* No comment provided by engineer. */
+"Prefer Alternatives" = "Prefer Alternatives";
+
+/* Timer type */
+"Prepared" = "Подготовлен";
+
+/* No comment provided by engineer. */
+"Previous" = "Предыдущий";
+
+/* Accessibility text of 'back' button in MultiEPG */
+"Previous page" = "Предыдущая страница";
+
+/* MultiEPG change to 20:00 */
+"Primetime" = "Прайм-тайм";
+
+/* Provider button in bouquet list */
+"Provider" = "Оператор";
+
+/* Pull down to refresh status */
+"Pull down to refresh..." = "Протяните для обновления...";
+
+/* Section title for In-App-Purchases in ConfigList */
+"Purchase" = "Приобрести";
+
+/* In-App-Purchase was completed successfully */
+"Purchase completed" = "Приобретение выполнено";
+
+/* Message type */
+"Question" = "Вопрос";
+
+/* Radio switch button */
+"Radio" = "Радио";
+
+/* Title of radio mode of BouquetListController */
+"Radio Bouquets" = "Радио группы";
+
+/* Title of Radio mode of ServiceListController */
+"Radio Services" = "Радио каналы";
+
+/* No comment provided by engineer. */
+"Rate %@" = "Рейтинг %@";
+
+/* Confirmation dialog title */
+"Really %@?" = "Уверенны %@?";
+
+/* Used in MediaPlayer, choice presented to add current folder recursively or non-recursively to playlist */
+"Really add all items in this folder?" = "Уверены в добавлении всех файлов из папки?";
+
+/* used in confirmation dialog: really reboot? */
+"reboot" = "перезагрузка";
+
+/* No comment provided by engineer. */
+"Reboot" = "Перезагрузка";
+
+/* User interaction with TimerList failed because index could not be retrieved. */
+"Received invalid row (%d, %d) which was mapped to index %d of %d. Please reload this table and try again." = "Received invalid row (%1$d, %2$d) which was mapped to index %3$d of %4$d. Please reload this table and try again.";
+
+/* Generic Placeholder for system-supplied error (and possibly success) messages */
+"Received response: %@." = "Ресивер отвечает: %@.";
+
+/* Cell title with Receiver model in About View */
+"Receiver model" = "Модель ресивера";
+
+/* Accessibility label for button: rec */
+"Record" = "Запись";
+
+/* Explaination of Movie List in Other List */
+"Recorded Movies" = "Записанные фильмы";
+
+/* Title of Location List in Other List */
+"Recording Locations" = "Путь для записей";
+
+/* Title of MovieSplitViewController */
+"Recordings" = "Записи";
+
+/* No comment provided by engineer. */
+"Refresh" = "Обновить";
+
+/* used in confirmation dialog: really refresh epg? */
+"refresh EPG" = "обновить EPG";
+
+/* Release to refresh status */
+"Release to refresh..." = "Нажмите для обновления...";
+
+/* No comment provided by engineer. */
+"Remind me later" = "Напомнить позднее";
+
+/* No comment provided by engineer. */
+"Remote Box Type" = "Тип устройства";
+
+/* Title of RCEmulatorController */
+"Remote Control" = "ПДУ";
+
+/* No comment provided by engineer. */
+"Remote Host" = "Ресивер";
+
+/* No comment provided by engineer. */
+"Remote host unreachable." = "Ресивер недоступен.";
+
+/* No comment provided by engineer. */
+"Removing track failed" = "Удаление трэка не удалось";
+
+/* Default title of SimpleRepeatedViewController */
+"Repeated" = "Многократно";
+
+/* Cell Label of repeat count in Neutrino */
+"Repetitions" = "Repetitions";
+
+/* used in confirmation dialog: really restart? */
+"restart" = "в перезегрузке";
+
+/* No comment provided by engineer. */
+"Restart" = "Перезагрузка";
+
+/* In-App-Purchase were restored successfully */
+"Restore completed" = "Восстановление выполнено";
+
+/* Restore previous purchases in config list */
+"Restore Purchases" = "Восстановить покупки";
+
+/* Timer type */
+"Running" = "Запущен";
+
+/* Weekday */
+"Sat" = "Суб";
+
+/* No comment provided by engineer. */
+"Saturday" = "Суббота";
+
+/* Save button/action in MediaPlayer */
+"Save" = "Сохранить";
+
+/* No comment provided by engineer. */
+"Screenshot" = "Снимок экрана";
+
+/* Button initiating autoconfiguration. */
+"Search" = "Поиск";
+
+/* Start AutoConfiguration from ConfigListController */
+"Search Connections" = "Поиск подклчений";
+
+/* Title of Event Search in Other List */
+"Search EPG" = "Искать в EPG";
+
+/* Explaination of Event Search in Other List */
+"Search EPG for event titles" = "Искать в EPG названия передач";
+
+/* Default Title of EventSearchListController */
+"Search Events" = "Искать передачу";
+
+/* Default title of SearchHistoryLengthEditorController
+   Label of cell in config which gives search history length */
+"Search History Length" = "Глубина поиска";
+
+/* Label of Progress HUD during AutoConfiguration */
+"Searching…" = "Ищу…";
+
+/* Default title of ConnectionListController */
+"Select Connection" = "Выберите подключение";
+
+/* No comment provided by engineer. */
+"Select Service" = "Выберите передачу";
+
+/* No comment provided by engineer. */
+"Select Tags" = "Выберите метки";
+
+/* Title of ServiceZapListController */
+"Select type of zap" = "Выберите тип переключения";
+
+/* Accessibility text for selected cells in multi selection */
+"selected" = "выбрано";
+
+/* No comment provided by engineer. */
+"Send" = "Отправить";
+
+/* Accessibility label for mail button */
+"Send E-Mail to Support" = "Отправить E-Mail в тех-поддержку";
+
+/* Explaination of Message View in Other List */
+"Send short Messages" = "Отправить короткое сообщение";
+
+/* No comment provided by engineer. */
+"Sending command failed" = "Отправка не удалась";
+
+/* Toggle to enable sections in event lists */
+"Separate events by day" = "Разделить передачи по дням";
+
+/* No comment provided by engineer. */
+"Service" = "Каналы";
+
+/* Service List (former Multi EPG) Button title */
+"Service List" = "Список каналов";
+
+/* Title of ServiceListController */
+"Services" = "Каналы";
+
+/* Title of Settings in Other List */
+"Settings" = "Настройки";
+
+/* Explaination of EPGRefresh in Other List */
+"Settings of EPGRefresh-Plugin" = "Настройки плагина EPGRefresh";
+
+/* No comment provided by engineer. */
+"Share" = "Share";
+
+/* show welcome screen (help) */
+"Show Help" = "Показать помощь";
+
+/* Explaination of Location List in Other List */
+"Show recording locations" = "Показать путь записей";
+
+/* Shuffle button in MediaPlayer */
+"Shuffle" = "Перемешать";
+
+/* Label of Progress HUD in MediaPlayer when shuffling playlist */
+"Shuffling Playlist" = "Перемешиваю плэй-лист";
+
+/* used in confirmation dialog: really shutdown? */
+"shutdown" = "выключении";
+
+/* Toggle Shutdown/Standby of SleepTimer */
+"Shutdown" = "Выключение";
+
+/* Title of SignalViewController */
+"Signal" = "Сигнал";
+
+/* Title of Signal Finder in Other List */
+"Signal Finder" = "Измеритель уровня сигнала";
+
+/* No comment provided by engineer. */
+"Similar Events" = "Похожие передачи";
+
+/* No comment provided by engineer. */
+"Simple Remote" = "Простой ПДУ";
+
+/* Toggle to enable \"single bouquet\" mode (available in Enigma2 and only configurable on iPhone/iPod Touch) */
+"Single Bouquet" = "Одиночная группа";
+
+/* No comment provided by engineer. */
+"Size" = "Размер";
+
+/* Default title of SleepTimerViewController
+   Title of Sleep Timer in Other List */
+"Sleep Timer" = "Таймер сна";
+
+/* Text of HUD when sleep timer was disabled successfully */
+"Sleep Timer disabled" = "Таймер сна отключен";
+
+/* Text of HUD when sleep timer was set successfully */
+"Sleep Timer set" = "Таймер сна установлен";
+
+/* Signal to Noise Ratio (in Percent) */
+"SNR" = "SNR";
+
+/* Sort (movies) alphabetically */
+"Sort A-Z" = "Сортировать А-Я";
+
+/* Sort (movies) by time */
+"Sort by time" = "Сортировать по времени";
+
+/* Standby. Either as AfterEvent action or Button in Controls. */
+"Standby" = "Standby";
+
+/* No comment provided by engineer. */
+"Stop" = "Стоп";
+
+/* No comment provided by engineer. */
+"Success" = "Успешно";
+
+/* Weekday */
+"Sun" = "Вск";
+
+/* No comment provided by engineer. */
+"Sunday" = "Воскресенье";
+
+/* No comment provided by engineer. */
+"SVDRP" = "SVDRP";
+
+/* No comment provided by engineer. */
+"Tags" = "Метки";
+
+/* No comment provided by engineer. */
+"Text" = "Текст";
+
+/* Trying to purchase Service Editor but Plugin not found on the STB. */
+"The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor." = "The current connection does not support the Service Editor.\nPlease remember to install enigma2-plugin-extensions-webbouqueteditor.";
+
+/* No comment provided by engineer. */
+"The match attribute is mandatory." = "The match attribute is mandatory.";
+
+/* Configuration item to choose theme
+   Title for theme selection */
+"Theme" = "Темы";
+
+/* Details label of Progress HUD in MultiEPG. Since loading the EPG for an entire bouquet took me about 5minutes over WiFi this warning is appropriate. */
+"This can take a while." = "Это займет некоторое время.";
+
+/* Weekday */
+"Thu" = "Чтв";
+
+/* No comment provided by engineer. */
+"Thursday" = "Четверг";
+
+/* User requested AutoTimer timeframe but before if equal to or earlier than end. */
+"Timeframe has to be ascending." = "Timeframe has to be ascending.";
+
+/* No comment provided by engineer. */
+"Timeout" = "Тайм-аут";
+
+/* Default title of TimerViewController */
+"Timer" = "Таймер";
+
+/* Text of HUD when timer was added successfully */
+"Timer added" = "Таймер добавлен";
+
+/* Text of HUD when timer was changed successfully */
+"Timer changed" = "Таймер изменён";
+
+/* Text of HUD when timer was removed successfully */
+"Timer deleted" = "Таймер удален";
+
+/* Open Editor for new Timer */
+"Timer Editor" = "Редактор таймеров";
+
+/* Title of TimerListController */
+"Timers" = "Таймеры";
+
+/* Text of HUD when multiple timer were removed successfully */
+"Timers deleted" = "Таймеры удалены";
+
+/* No comment provided by engineer. */
+"Title" = "Название";
+
+/* Message of Alert suggesting autoconfiguration. */
+"To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?" = "To simplify configuration, this application can try to reach your STB using known default configurations.\nTry this now?";
+
+/* No comment provided by engineer. */
+"Today" = "Сегодня";
+
+/* No comment provided by engineer. */
+"Tomorrow" = "Завтра";
+
+/* Weekday */
+"Tue" = "Втр";
+
+/* No comment provided by engineer. */
+"Tuesday" = "Вторник";
+
+/* Title of section in About View containing tuner information (if any) */
+"Tuners" = "Тюнеры";
+
+/* TV switch button */
+"TV" = "ТВ";
+
+/* No comment provided by engineer. */
+"Type" = "Тип";
+
+/* Creating a bookmark has failed */
+"Unable to add bookmark: %@" = "Невозможно добавить закладку: %@";
+
+/* No comment provided by engineer. */
+"Unable to add timer: Service not found." = "Невозможно добавить таймер: Канал не найден.";
+
+/* Connection failed due to improper authentication */
+"Unable to authenticate. Wrong password?" = "Ошибка аутентификации. Неверный пароль ?";
+
+/* No comment provided by engineer. */
+"Unable to compile SQL-Query (Error-Code %d)." = "Unable to compile SQL-Query (Error-Code %d).";
+
+/* No comment provided by engineer. */
+"Unable to connect to host.\nPlease restart the application." = "Невозможно подключиться к ресиверу.\nПерезагрузите программу.";
+
+/* Unable to initiate connection. */
+"Unable to connect to remote host." = "Невозможно подключиться к ресиверу.";
+
+/* No comment provided by engineer. */
+"Unable to determine result, please upgrade your WebInterface if you intend to use this functionality" = "Unable to determine result, please upgrade your WebInterface if you intend to use this functionality";
+
+/* Zip-Extraction failed */
+"Unable to extract zip-file!" = "Unable to extract zip-file!";
+
+/* Error message: Autoconfiguration was unable to find a host in this network. */
+"Unable to find valid connection data." = "Unable to find valid connection data.";
+
+/* Failed to retrieve or generate URL of remote stream */
+"Unable to generate stream URL." = "Unable to generate stream URL.";
+
+/* No comment provided by engineer. */
+"Unable to map button to keycode!" = "Unable to map button to keycode!";
+
+/* No comment provided by engineer. */
+"Unable to retrieve tag list." = "Unable to retrieve tag list.";
+
+/* No comment provided by engineer. */
+"Unable to start playback" = "Невозможно начать воспроизведение";
+
+/* No comment provided by engineer. */
+"Unknown" = "Неизвестно";
+
+/* Data connection failed for unknown reason. */
+"Unknown connection error occured." = "Неизвестная ошибка при подключении.";
+
+/* Remote host did return error code but no specific message. */
+"Unknown Error." = "Неизвестная ошибка.";
+
+/* Data parsing failed for unknown reason. */
+"Unknown parsing error occured." = "Unknown parsing error occured.";
+
+/* Unable to find service name for service id */
+"Unknown Service (%@)" = "Неизвестный канал (%@)";
+
+/* Label text in AutoConfiguration if host is unreachable */
+"unreachable" = "недоступен";
+
+/* option (e.g. autotimer timespan, autotimer timeframe, manual vps time, ...) unset */
+"unset" = "невыбрано";
+
+/* No comment provided by engineer. */
+"Use SSL" = "Использовать SSL";
+
+/* Title of section in About View containing versioning information */
+"Version Information" = "Информация о версии";
+
+/* No comment provided by engineer. */
+"Vibrate in RC" = "Вибрация в ПДУ";
+
+/* No comment provided by engineer. */
+"Video" = "Видео";
+
+/* No comment provided by engineer. */
+"Volume" = "Громкость";
+
+/* Section title in timer settings dialog */
+"VPS" = "VPS";
+
+/* Timer type */
+"Waiting" = "Ожидаю";
+
+/* Message type */
+"Warning" = "Предупреждение";
+
+/* Weekday */
+"Wed" = "Среда";
+
+/* No comment provided by engineer. */
+"Wednesday" = "Среда";
+
+/* Repeated */
+"Weekdays" = "Выходные";
+
+/* Repeated */
+"Weekly" = "Еженедельно";
+
+/* Default sharing string for movies */
+"What's your opinion on \"%@\"?" = "Каково Ваше мнеие о \"%@\"?";
+
+/* Label of Progress HUD in ConfigList when waiting for the AppStore */
+"Working…" = "Работаю…";
+
+/* No comment provided by engineer. */
+"Year" = "Год";
+
+/* No comment provided by engineer. */
+"Yes" = "Да";
+
+/* Message type */
+"Yes/No" = "Да/Нет";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Вчера";
+
+/* Message explaining what will happen on import */
+"You are about to import data into this application. All existing settings will be lost!" = "You are about to import data into this application. All existing settings will be lost!";
+
+/* No comment provided by engineer. */
+"You are using version %@ of the web interface.\nFor full functionality updating to version %@ is suggested." = "You are using version %1$@ of the web interface.\nFor full functionality updating to version %2$@ is suggested.";
+
+/* No comment provided by engineer. */
+"You have reached either the end or the beginning of the selected service list." = "You have reached either the end or the beginning of the selected service list.";
+
+/* No comment provided by engineer. */
+"You have reached either the end or the beginning of your movie list." = "You have reached either the end or the beginning of your movie list.";
+
+/* No filename entered when trying to save MediaPlayer playlist */
+"You have to enter a filename to save the playlist" = "Введите имя файла для сохранения в плэй-листе";
+
+/* User requested automated EPG refresh but no timespan given. */
+"You have to provide a timespan to refresh automatically." = "You have to provide a timespan to refresh automatically.";
+
+/* User tried to leave config view without any host set up. */
+"You need to configure this application before you can use it." = "Вам необходимо настроить эту программу перед использованием.";
+
+/* No comment provided by engineer. */
+"Zap" = "Переключить";
+
+/* No comment provided by engineer. */
+"Zap on receiver" = "Переключить на ресивере";
+
