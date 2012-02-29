@@ -1216,16 +1216,7 @@
 		DAFB623E1496B16900263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62401496B16A00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
 		DAFB62411496B16B00263128 /* network-wired.png in Resources */ = {isa = PBXBuildFile; fileRef = DAC8BF4513B200F100CA00D9 /* network-wired.png */; };
-		DAFE6A4214FD515A00B6B8CD /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CD13B2032300CA00D9 /* about.html */; };
-		DAFE6A4314FD515A00B6B8CD /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CD13B2032300CA00D9 /* about.html */; };
-		DAFE6A4414FD515A00B6B8CD /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CD13B2032300CA00D9 /* about.html */; };
 		DAFE6A4514FD515A00B6B8CD /* AutoTimer.strings in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4ED13B2034100CA00D9 /* AutoTimer.strings */; };
-		DAFE6A4814FD515A00B6B8CD /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CE13B2032300CA00D9 /* changes_de.html */; };
-		DAFE6A4914FD515A00B6B8CD /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CE13B2032300CA00D9 /* changes_de.html */; };
-		DAFE6A4A14FD515A00B6B8CD /* changes_de.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CE13B2032300CA00D9 /* changes_de.html */; };
-		DAFE6A4B14FD515A00B6B8CD /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CF13B2032300CA00D9 /* changes_en.html */; };
-		DAFE6A4C14FD515A00B6B8CD /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CF13B2032300CA00D9 /* changes_en.html */; };
-		DAFE6A4D14FD515A00B6B8CD /* changes_en.html in Resources */ = {isa = PBXBuildFile; fileRef = DAC8C4CF13B2032300CA00D9 /* changes_en.html */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
