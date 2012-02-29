@@ -1147,23 +1147,8 @@
 		return;
 	}
 
-	// NOTE: search able will never be editing, so no special handling
-	NSObject<MovieProtocol> *movie = nil;
-	if(_sortTitle)
-	{
-		NSString *key = (NSUInteger)indexPath.section < _currentKeys.count ? [_currentKeys objectAtIndex:indexPath.section] : nil;
-		NSArray *movies = [_characters valueForKey:key];
-		movie = (NSUInteger)indexPath.row < movies.count ? [movies objectAtIndex:indexPath.row] : nil;
-	}
-	else
-	{
-		NSArray *movies = (selectedTags) ? taggedMovies : _movies;
-		movie = (NSUInteger)indexPath.row < movies.count ? [movies objectAtIndex:indexPath.row] : nil;
-	}
-#if IS_DEBUG()
-	if(!movie)
-		[NSException raise:@"MovieListNoMovie" format:@"commitEditingStyle was triggered for indexPath (section %d, row %d) without a row attached! Sorting by title: %@, _currentKeys: %@, _characters: %@, selectedTags: %@, taggedMovies: %@, _movies: %@", indexPath.section, indexPath.row, _sortTitle ? @"yes" : @"no", _currentKeys, _characters, selectedTags, taggedMovies, _movies];
-#endif
+	MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+	NSObject<MovieProtocol> *movie = cell.movie;
 
 	if(!movie.valid)
 		return;
@@ -1382,10 +1367,11 @@
 	// get movie
 	const CGPoint p = [gesture locationInView:tableView];
 	NSIndexPath *indexPath = [tableView indexPathForRowAtPoint:p];
-	NSObject<MovieProtocol> *movie = ((NSUInteger)indexPath.row < _movies.count) ? [_movies objectAtIndex:indexPath.row] : nil;
+	MovieTableViewCell *cell = (MovieTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+	NSObject<MovieProtocol> *movie = cell.movie;
 
 	// Check for invalid movie
-	if(!movie || !movie.valid)
+	if(!movie.valid)
 		return;
 
 	// if streaming supported, show popover on ipad and action sheet on iphone
