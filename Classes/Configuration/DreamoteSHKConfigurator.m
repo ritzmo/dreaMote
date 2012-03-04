@@ -46,12 +46,18 @@
 	} 
 }
 
-- (NSNumber*)formBgColorRed {
-	// NOTE: unable to implement this unless iOS 5 and then it's still overly complicated - this API sucks :D
-	return [NSNumber numberWithInt:-1];
+- (UIColor *)formFontColor
+{
+	return [DreamoteConfiguration singleton].textColor;
 }
 
-- (NSNumber*)maxFavCount {
+- (UIColor *)formBackgroundColor
+{
+    return [DreamoteConfiguration singleton].groupedTableViewBackgroundColor;
+}
+
+- (NSNumber *)maxFavCount
+{
 	return [NSNumber numberWithInt:IS_IPAD() ? 4 : 3];
 }
 
