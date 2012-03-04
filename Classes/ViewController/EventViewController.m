@@ -180,6 +180,12 @@
 	[self theme];
 }
 
+- (void)theme
+{
+	_summaryView.textColor = [DreamoteConfiguration singleton].textColor;
+	[super theme];
+}
+
 - (void)viewDidLoad
 {
 	[self startObservingThemeChanges];
