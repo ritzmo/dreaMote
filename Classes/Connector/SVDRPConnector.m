@@ -203,7 +203,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -300,7 +300,7 @@ typedef enum
 	}
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -357,7 +357,7 @@ typedef enum
 - (SaxXmlReader *)fetchEPG: (NSObject<EventSourceDelegate> *)delegate service:(NSObject<ServiceProtocol> *)service
 {
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -561,7 +561,7 @@ typedef enum
 - (SaxXmlReader *)fetchTimers: (NSObject<TimerSourceDelegate> *)delegate
 {
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -623,7 +623,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -670,7 +670,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -703,7 +703,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -743,7 +743,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -816,7 +816,7 @@ typedef enum
 	}
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -876,7 +876,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -904,7 +904,7 @@ typedef enum
 	GenericVolume *volumeObject = nil;
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 		return;
@@ -946,7 +946,7 @@ typedef enum
 - (BOOL)toggleMuted
 {
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 		return NO;
@@ -962,7 +962,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -1054,7 +1054,7 @@ typedef enum
 	}
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
@@ -1079,7 +1079,7 @@ typedef enum
 	Result *result = [Result createResult];
 
 	[APP_DELEGATE addNetworkOperation];
-	if(!_socket || ![_socket isConnected])
+	if(!_socket || ![_socket isConnected] || ![_socket isWritable])
 		[self getSocket];
 	if(![_socket isConnected])
 	{
