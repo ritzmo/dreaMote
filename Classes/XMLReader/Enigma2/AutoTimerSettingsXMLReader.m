@@ -86,61 +86,76 @@
 	}
 	else if(!strncmp((const char *)localname, kEnigma2SettingValue, kEnigma2SettingValueLength))
 	{
-		if([lastSettingName isEqualToString:@"config.plugins.autotimer.autopoll"])
+		if([lastSettingName hasPrefix:@"config.plugins.autotimer."])
 		{
-			settings.autopoll = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.interval"])
-		{
-			settings.interval = [currentString integerValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.refresh"])
-		{
-			if([currentString isEqualToString:@"none"])
-				settings.refresh = REFRESH_NONE;
-			else if([currentString isEqualToString:@"auto"])
-				settings.refresh = REFRESH_AUTO;
+			if([lastSettingName hasSuffix:@".autopoll"])
+			{
+				settings.autopoll = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".interval"])
+			{
+				settings.interval = [currentString integerValue];
+			}
+			else if([lastSettingName hasSuffix:@".refresh"])
+			{
+				if([currentString isEqualToString:@"none"])
+					settings.refresh = REFRESH_NONE;
+				else if([currentString isEqualToString:@"auto"])
+					settings.refresh = REFRESH_AUTO;
+				else
+					settings.refresh = REFRESH_ALL;
+			}
+			else if([lastSettingName hasSuffix:@".try_guessing"])
+			{
+				settings.try_guessing = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".editor"])
+			{
+				if([currentString isEqualToString:@"plain"])
+					settings.editor = EDITOR_CLASSIC;
+				else
+					settings.editor = EdiTOR_WIZARD;
+			}
+			else if([lastSettingName hasSuffix:@".addsimilar_on_conflict"])
+			{
+				settings.addsimilar_on_conflict = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".disabled_on_conflict"])
+			{
+				settings.disabled_on_conflict = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".show_in_extensionsmenu"])
+			{
+				settings.show_in_extensionsmenu = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".fastscan"])
+			{
+				settings.fastscan = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".notifconflict"])
+			{
+				settings.notifconflict = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".notifsimilar"])
+			{
+				settings.notifsimilar = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".maxdaysinfuture"])
+			{
+				settings.maxdays = [currentString integerValue];
+			}
+			else if([lastSettingName hasSuffix:@".add_autotimer_to_tags"])
+			{
+				settings.autotimer_tag = [currentString boolValue];
+			}
+			else if([lastSettingName hasSuffix:@".add_name_to_tags"])
+			{
+				settings.name_tag = [currentString boolValue];
+			}
+#if IS_DEBUG()
 			else
-				settings.refresh = REFRESH_ALL;
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.try_guessing"])
-		{
-			settings.try_guessing = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.editor"])
-		{
-			if([currentString isEqualToString:@"plain"])
-				settings.editor = EDITOR_CLASSIC;
-			else
-				settings.editor = EdiTOR_WIZARD;
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.addsimilar_on_conflict"])
-		{
-			settings.addsimilar_on_conflict = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.disabled_on_conflict"])
-		{
-			settings.disabled_on_conflict = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.show_in_extensionsmenu"])
-		{
-			settings.show_in_extensionsmenu = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.fastscan"])
-		{
-			settings.fastscan = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.autotimer.notifconflict"])
-		{
-			settings.notifconflict = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.notifsimilar"])
-		{
-			settings.notifsimilar = [currentString boolValue];
-		}
-		else if([lastSettingName isEqualToString:@"config.plugins.epgrefresh.maxdaysinfuture"])
-		{
-			settings.maxdays = [currentString integerValue];
+				NSLog(@"Unhandled setting name: %@", lastSettingName);
+#endif
 		}
 		else if([lastSettingName isEqualToString:@"hasVps"])
 		{
@@ -158,6 +173,10 @@
 			if(doubleValue > 0) // only change on valid version
 				settings.api_version = doubleValue;
 		}
+#if IS_DEBUG()
+		else
+			NSLog(@"Unhandled setting name: %@", lastSettingName);
+#endif
 		self.lastSettingName = nil;
 	}
 	self.currentString = nil;

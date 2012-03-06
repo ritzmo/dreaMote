@@ -35,6 +35,8 @@
 	UISwitch *_fastscan; /*!< @brief . */
 	UISwitch *_notifconflict; /*!< @brief . */
 	UISwitch *_notifsimilar; /*!< @brief . */
+	UISwitch *_autotimerTag; /*!< @brief . */
+	UISwitch *_nameTag; /*!< @brief . */
 }
 
 @property (nonatomic, strong) AutoTimerSettings *settings;

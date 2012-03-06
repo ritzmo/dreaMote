@@ -1087,7 +1087,7 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 
 - (Result *)setAutoTimerSettings:(AutoTimerSettings *)settings
 {
-	NSMutableString *relativeURL = [NSMutableString stringWithFormat:@"/autotimer/set?autopoll=%@&interval=%d&try_guessing=%@&disabled_on_conflict=%@&addsimilar_on_conflict=%@&show_in_extensionsmenu=%@&fastscan=%@&notifconflict=%@&notifsimilar=%@&maxdaysinfuture=%d",
+	NSMutableString *relativeURL = [NSMutableString stringWithFormat:@"/autotimer/set?autopoll=%@&interval=%d&try_guessing=%@&disabled_on_conflict=%@&addsimilar_on_conflict=%@&show_in_extensionsmenu=%@&fastscan=%@&notifconflict=%@&notifsimilar=%@&maxdaysinfuture=%d&add_autotimer_to_tags=%@&add_name_to_tags=%@",
 									settings.autopoll ? @"true" : @"",
 									settings.interval,
 									settings.try_guessing ? @"true" : @"",
@@ -1097,7 +1097,9 @@ static NSString *webifIdentifier[WEBIF_VERSION_MAX] = {
 									settings.fastscan ? @"true" : @"",
 									settings.notifconflict ? @"true" : @"",
 									settings.notifsimilar ? @"true" : @"",
-									settings.maxdays];
+									settings.maxdays,
+									settings.autotimer_tag ? @"true" : @"",
+									settings.name_tag ? @"true" : @""];
 	if(settings.refresh == REFRESH_NONE)
 	{
 		[relativeURL appendString:@"&refresh=none"];

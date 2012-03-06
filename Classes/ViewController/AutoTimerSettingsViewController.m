@@ -43,6 +43,8 @@ enum sectionItems
 	notifconflictRow,
 	notifSimilarRow,
 	maxdaysRow,
+	autotimerTagRow,
+	nameTagRow,
 	maxRow,
 };
 
@@ -154,6 +156,8 @@ enum sectionItems
 		settings.notifconflict = _notifconflict.on;
 		settings.notifsimilar = _notifsimilar.on;
 		settings.maxdays = [_maxdays.text integerValue];
+		settings.autotimer_tag = _autotimerTag.on;
+		settings.name_tag = _nameTag.on;
 
 		if(settings.maxdays < 0)
 		{
@@ -264,6 +268,14 @@ enum sectionItems
 	_notifsimilar.on = settings.notifsimilar;
 	_notifsimilar.backgroundColor = [UIColor clearColor];
 
+	_autotimerTag = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_autotimerTag.on = settings.autotimer_tag;
+	_autotimerTag.backgroundColor = [UIColor clearColor];
+
+	_nameTag = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 300, kSwitchButtonHeight)];
+	_nameTag.on = settings.name_tag;
+	_nameTag.backgroundColor = [UIColor clearColor];
+
 	[self setEditing:YES animated:YES];
 
 	[self theme];
@@ -282,6 +294,8 @@ enum sectionItems
 		_fastscan.onTintColor = tintColor;
 		_notifconflict.onTintColor = tintColor;
 		_notifsimilar.onTintColor = tintColor;
+		_autotimerTag.onTintColor = tintColor;
+		_nameTag.onTintColor = tintColor;
 	}
 	[super theme];
 }
@@ -300,6 +314,8 @@ enum sectionItems
 	_fastscan = nil;
 	_notifconflict = nil;
 	_notifsimilar = nil;
+	_autotimerTag = nil;
+	_nameTag = nil;
     [super viewDidUnload];
 }
 
@@ -358,6 +374,7 @@ enum sectionItems
 
 - (void)autotimerSettingsRead:(AutoTimerSettings *)anItem
 {
+	double api_version = settings.api_version;
 	settings = anItem;
 	_interval.text = [NSString stringWithFormat:@"%d", settings.interval];
 	_maxdays.text = [NSString stringWithFormat:@"%d", settings.maxdays];
@@ -369,6 +386,11 @@ enum sectionItems
 	_fastscan.on = settings.fastscan;
 	_notifconflict.on = settings.notifconflict;
 	_notifsimilar.on = settings.notifsimilar;
+	_autotimerTag.on = settings.autotimer_tag;
+	_nameTag.on = settings.name_tag;
+
+	if(api_version != settings.api_version)
+		[_tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
 }
 
 #pragma mark -
@@ -382,6 +404,8 @@ enum sectionItems
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	if(settings.api_version < 1.3)
+		return maxRow - 2;
 	return maxRow;
 }
 
@@ -468,6 +492,16 @@ enum sectionItems
 				_maxdaysCell.fixedWidth = 94.0f;
 			}
 			cell = _maxdaysCell;
+			break;
+		case autotimerTagRow:
+			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+			((DisplayCell *)cell).view = _autotimerTag;
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Add \"AutoTimer\" tag", @"AutoTimer", @"Label for cell 'add_autotimer_to_tags'");
+			break;
+		case nameTagRow:
+			cell = [DisplayCell reusableTableViewCellInView:tableView withIdentifier:kDisplayCell_ID];
+			((DisplayCell *)cell).view = _nameTag;
+			cell.textLabel.text = NSLocalizedStringFromTable(@"Add name as tag", @"AutoTimer", @"Label for cell 'add_name_to_tags'");
 			break;
 	}
 

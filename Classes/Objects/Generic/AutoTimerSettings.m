@@ -10,7 +10,7 @@
 
 @implementation AutoTimerSettings
 
-@synthesize autopoll, addsimilar_on_conflict, disabled_on_conflict, editor, fastscan, hasVps, interval, maxdays, notifconflict, notifsimilar, refresh, show_in_extensionsmenu, try_guessing, version, api_version;
+@synthesize addsimilar_on_conflict, autopoll, autotimer_tag, disabled_on_conflict, editor, fastscan, hasVps, interval, maxdays, name_tag, notifconflict, notifsimilar, refresh, show_in_extensionsmenu, try_guessing, version, api_version;
 
 - (id)init
 {
