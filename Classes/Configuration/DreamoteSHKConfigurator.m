@@ -46,6 +46,7 @@
 	} 
 }
 
+#if 0
 - (UIColor *)formFontColor
 {
 	return [DreamoteConfiguration singleton].textColor;
@@ -55,6 +56,7 @@
 {
     return [DreamoteConfiguration singleton].groupedTableViewBackgroundColor;
 }
+#endif
 
 - (NSNumber *)maxFavCount
 {
