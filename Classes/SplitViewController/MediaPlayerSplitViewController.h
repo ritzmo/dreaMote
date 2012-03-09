@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "MGSplitViewController/MGSplitViewController.h"
+#import <MGSplitViewController.h>
 
 @interface MediaPlayerSplitViewController : MGSplitViewController {
 }

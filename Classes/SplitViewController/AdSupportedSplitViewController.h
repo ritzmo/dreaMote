@@ -12,7 +12,7 @@
 	#import <iAd/ADBannerView.h>
 #endif
 
-#import "MGSplitViewController/MGSplitViewController.h"
+#import <MGSplitViewController.h>
 
 @interface AdSupportedSplitViewController : MGSplitViewController
 #if INCLUDE_FEATURE(Ads)

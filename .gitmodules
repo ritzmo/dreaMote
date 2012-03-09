@@ -13,3 +13,6 @@
 [submodule "SSKTk"]
 	path = SSKTk
 	url = git://github.com/ritzmo/SSKTk.git
+[submodule "MGSplitViewController"]
+	path = MGSplitViewController
+	url = git://github.com/ritzmo/MGSplitViewController.git

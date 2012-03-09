@@ -125,9 +125,9 @@
 		DA391A1C14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
 		DA391A1D14A5347E00CDF1B8 /* SSKTk.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA391A1A14A5347E00CDF1B8 /* SSKTk.bundle */; };
 		DA3F60A2148A09D9008FC0DF /* AutoTimerSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA3F60A1148A09D9008FC0DF /* AutoTimerSettingsViewController.m */; };
-		DA481A8014FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; };
-		DA481A8114FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; };
-		DA481A8214FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; };
+		DA481A8014FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA481A8114FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA481A8214FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */ = {isa = PBXBuildFile; fileRef = DA481A7F14FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA481A8514FBE79D00B9EBAB /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */; };
 		DA481A8614FBE79D00B9EBAB /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */; };
 		DA481A8714FBE79D00B9EBAB /* ShareKit.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DA481A8414FBE79D00B9EBAB /* ShareKit.bundle */; };
@@ -172,6 +172,15 @@
 		DA5FC384148AD96F006C27D1 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA5FC381148AD96F006C27D1 /* Twitter.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		DA5FC38D148AF045006C27D1 /* DeferTagLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5FC38C148AF045006C27D1 /* DeferTagLoader.m */; };
 		DA5FC38E148AF045006C27D1 /* DeferTagLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = DA5FC38C148AF045006C27D1 /* DeferTagLoader.m */; };
+		DA609255150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA609249150AB5E100CB5FA5 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA609256150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA609249150AB5E100CB5FA5 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA609257150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA609249150AB5E100CB5FA5 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA609258150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA60924B150AB5E100CB5FA5 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA609259150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA60924B150AB5E100CB5FA5 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA60925A150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA60924B150AB5E100CB5FA5 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA60925E150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA60924F150AB5E100CB5FA5 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA60925F150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA60924F150AB5E100CB5FA5 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA609260150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA60924F150AB5E100CB5FA5 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DA6126931472D84F006F6C76 /* Slider_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6126921472D84F006F6C76 /* Slider_Dark.png */; };
 		DA6126941472D84F006F6C76 /* Slider_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6126921472D84F006F6C76 /* Slider_Dark.png */; };
 		DA6126951472D84F006F6C76 /* Slider_Dark.png in Resources */ = {isa = PBXBuildFile; fileRef = DA6126921472D84F006F6C76 /* Slider_Dark.png */; };
@@ -856,15 +865,6 @@
 		DAC8C21D13B2014D00CA00D9 /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0BF13B2014C00CA00D9 /* TimerListController.m */; };
 		DAC8C21E13B2014D00CA00D9 /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0BF13B2014C00CA00D9 /* TimerListController.m */; };
 		DAC8C21F13B2014D00CA00D9 /* TimerListController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0BF13B2014C00CA00D9 /* TimerListController.m */; };
-		DAC8C22313B2014D00CA00D9 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C313B2014C00CA00D9 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22413B2014D00CA00D9 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C313B2014C00CA00D9 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22513B2014D00CA00D9 /* MGSplitCornersView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C313B2014C00CA00D9 /* MGSplitCornersView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22613B2014D00CA00D9 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C513B2014C00CA00D9 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22713B2014D00CA00D9 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C513B2014C00CA00D9 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22813B2014D00CA00D9 /* MGSplitDividerView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C513B2014C00CA00D9 /* MGSplitDividerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22913B2014D00CA00D9 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22A13B2014D00CA00D9 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DAC8C22B13B2014D00CA00D9 /* MGSplitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DAC8C22F13B2014D00CA00D9 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CE13B2014C00CA00D9 /* Service.m */; };
 		DAC8C23013B2014D00CA00D9 /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0CE13B2014C00CA00D9 /* Service.m */; };
 		DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = DAC8C0D013B2014C00CA00D9 /* Timer.m */; };
@@ -1314,6 +1314,12 @@
 		DA5FC381148AD96F006C27D1 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		DA5FC38B148AF045006C27D1 /* DeferTagLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeferTagLoader.h; sourceTree = "<group>"; };
 		DA5FC38C148AF045006C27D1 /* DeferTagLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeferTagLoader.m; sourceTree = "<group>"; };
+		DA609248150AB5E100CB5FA5 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitCornersView.h; sourceTree = "<group>"; };
+		DA609249150AB5E100CB5FA5 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitCornersView.m; sourceTree = "<group>"; };
+		DA60924A150AB5E100CB5FA5 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitDividerView.h; sourceTree = "<group>"; };
+		DA60924B150AB5E100CB5FA5 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
+		DA60924E150AB5E100CB5FA5 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
+		DA60924F150AB5E100CB5FA5 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
 		DA6126921472D84F006F6C76 /* Slider_Dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Dark.png; sourceTree = "<group>"; };
 		DA6126971472DD2C006F6C76 /* Slider_Night.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Slider_Night.png; sourceTree = "<group>"; };
 		DA681B0D13B356C200232190 /* ConnectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionTableViewCell.h; sourceTree = "<group>"; };
@@ -1735,12 +1741,6 @@
 		DAC8C0BD13B2014C00CA00D9 /* SimpleSingleSelectionListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleSingleSelectionListController.m; sourceTree = "<group>"; };
 		DAC8C0BE13B2014C00CA00D9 /* TimerListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerListController.h; sourceTree = "<group>"; };
 		DAC8C0BF13B2014C00CA00D9 /* TimerListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimerListController.m; sourceTree = "<group>"; };
-		DAC8C0C213B2014C00CA00D9 /* MGSplitCornersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitCornersView.h; sourceTree = "<group>"; };
-		DAC8C0C313B2014C00CA00D9 /* MGSplitCornersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitCornersView.m; sourceTree = "<group>"; };
-		DAC8C0C413B2014C00CA00D9 /* MGSplitDividerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitDividerView.h; sourceTree = "<group>"; };
-		DAC8C0C513B2014C00CA00D9 /* MGSplitDividerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitDividerView.m; sourceTree = "<group>"; };
-		DAC8C0C613B2014C00CA00D9 /* MGSplitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGSplitViewController.h; sourceTree = "<group>"; };
-		DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGSplitViewController.m; sourceTree = "<group>"; };
 		DAC8C0C913B2014C00CA00D9 /* AboutProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutProtocol.h; sourceTree = "<group>"; };
 		DAC8C0CD13B2014C00CA00D9 /* Service.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Service.h; sourceTree = "<group>"; };
 		DAC8C0CE13B2014C00CA00D9 /* Service.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Service.m; sourceTree = "<group>"; };
@@ -2167,6 +2167,20 @@
 			name = ShareKit;
 			path = ShareKit/Classes/ShareKit;
 			sourceTree = "<group>";
+		};
+		DA609245150AB5E100CB5FA5 /* MGSplitViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DA609248150AB5E100CB5FA5 /* MGSplitCornersView.h */,
+				DA609249150AB5E100CB5FA5 /* MGSplitCornersView.m */,
+				DA60924A150AB5E100CB5FA5 /* MGSplitDividerView.h */,
+				DA60924B150AB5E100CB5FA5 /* MGSplitDividerView.m */,
+				DA60924E150AB5E100CB5FA5 /* MGSplitViewController.h */,
+				DA60924F150AB5E100CB5FA5 /* MGSplitViewController.m */,
+			);
+			name = MGSplitViewController;
+			path = MGSplitViewController/Classes;
+			sourceTree = SOURCE_ROOT;
 		};
 		DA78EFE814C1E71200919093 /* Configuration */ = {
 			isa = PBXGroup;
@@ -3093,20 +3107,6 @@
 			path = ListController;
 			sourceTree = "<group>";
 		};
-		DAC8C0C013B2014C00CA00D9 /* MGSplitViewController */ = {
-			isa = PBXGroup;
-			children = (
-				DAC8C0C213B2014C00CA00D9 /* MGSplitCornersView.h */,
-				DAC8C0C313B2014C00CA00D9 /* MGSplitCornersView.m */,
-				DAC8C0C413B2014C00CA00D9 /* MGSplitDividerView.h */,
-				DAC8C0C513B2014C00CA00D9 /* MGSplitDividerView.m */,
-				DAC8C0C613B2014C00CA00D9 /* MGSplitViewController.h */,
-				DAC8C0C713B2014C00CA00D9 /* MGSplitViewController.m */,
-			);
-			name = MGSplitViewController;
-			path = ../MGSplitViewController;
-			sourceTree = "<group>";
-		};
 		DAC8C0C813B2014C00CA00D9 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -3218,7 +3218,7 @@
 			isa = PBXGroup;
 			children = (
 				DAC8C09C13B2014C00CA00D9 /* IntelligentSplitViewController */,
-				DAC8C0C013B2014C00CA00D9 /* MGSplitViewController */,
+				DA609245150AB5E100CB5FA5 /* MGSplitViewController */,
 				DA3603D3146716EA003E2DDD /* AutoTimerSplitViewController.h */,
 				DA3603D4146716EA003E2DDD /* AutoTimerSplitViewController.m */,
 				DAC8C10F13B2014C00CA00D9 /* AdSupportedSplitViewController.h */,
@@ -4091,9 +4091,6 @@
 				DAC8C21713B2014D00CA00D9 /* ServiceZapListController.m in Sources */,
 				DAC8C21A13B2014D00CA00D9 /* SimpleSingleSelectionListController.m in Sources */,
 				DAC8C21D13B2014D00CA00D9 /* TimerListController.m in Sources */,
-				DAC8C22313B2014D00CA00D9 /* MGSplitCornersView.m in Sources */,
-				DAC8C22613B2014D00CA00D9 /* MGSplitDividerView.m in Sources */,
-				DAC8C22913B2014D00CA00D9 /* MGSplitViewController.m in Sources */,
 				DAC8C22F13B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23213B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C24413B2014D00CA00D9 /* AutoTimer.m in Sources */,
@@ -4331,6 +4328,9 @@
 				DA05676014DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
 				DA05676514DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
 				DA481A8014FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */,
+				DA609255150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */,
+				DA609258150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */,
+				DA60925E150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4369,9 +4369,6 @@
 				DAC8C21813B2014D00CA00D9 /* ServiceZapListController.m in Sources */,
 				DAC8C21B13B2014D00CA00D9 /* SimpleSingleSelectionListController.m in Sources */,
 				DAC8C21E13B2014D00CA00D9 /* TimerListController.m in Sources */,
-				DAC8C22413B2014D00CA00D9 /* MGSplitCornersView.m in Sources */,
-				DAC8C22713B2014D00CA00D9 /* MGSplitDividerView.m in Sources */,
-				DAC8C22A13B2014D00CA00D9 /* MGSplitViewController.m in Sources */,
 				DAC8C23013B2014D00CA00D9 /* Service.m in Sources */,
 				DAC8C23313B2014D00CA00D9 /* Timer.m in Sources */,
 				DAC8C24813B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
@@ -4596,6 +4593,9 @@
 				DA05676114DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
 				DA05676614DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
 				DA481A8114FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */,
+				DA609256150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */,
+				DA609259150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */,
+				DA60925F150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4631,9 +4631,6 @@
 				DAC8C21913B2014D00CA00D9 /* ServiceZapListController.m in Sources */,
 				DAC8C21C13B2014D00CA00D9 /* SimpleSingleSelectionListController.m in Sources */,
 				DAC8C21F13B2014D00CA00D9 /* TimerListController.m in Sources */,
-				DAC8C22513B2014D00CA00D9 /* MGSplitCornersView.m in Sources */,
-				DAC8C22813B2014D00CA00D9 /* MGSplitDividerView.m in Sources */,
-				DAC8C22B13B2014D00CA00D9 /* MGSplitViewController.m in Sources */,
 				DAC8C24913B2014D00CA00D9 /* EPGRefreshSettings.m in Sources */,
 				DAC8C24C13B2014D00CA00D9 /* Event.m in Sources */,
 				DAC8C24F13B2014D00CA00D9 /* File.m in Sources */,
@@ -4832,6 +4829,9 @@
 				DA05676214DECDE800BCCA04 /* SHKSharerDelegate.m in Sources */,
 				DA05676714DECE1200BCCA04 /* SHKFormOptionController.m in Sources */,
 				DA481A8214FBE77300B9EBAB /* NSMutableDictionary+NSNullsToEmptyStrings.m in Sources */,
+				DA609257150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */,
+				DA60925A150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */,
+				DA609260150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4929,6 +4929,7 @@
 					MBProgressHUD,
 					TouchXML/Source,
 					LiteUnzip,
+					MGSplitViewController/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_LDFLAGS = "-all_load";
@@ -4967,6 +4968,7 @@
 					MBProgressHUD,
 					TouchXML/Source,
 					LiteUnzip,
+					MGSplitViewController/Classes,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
