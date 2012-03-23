@@ -196,6 +196,8 @@
 							  [PackageManagerListController class], @"viewControllerClass",
 							  nil];
 
+	menuList = [NSArray arrayWithObject:_settingsDictionary];
+
 	// listen to connection changes
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleReconnect:) name:kReconnectNotification object:nil];
 
