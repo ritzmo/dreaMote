@@ -239,7 +239,8 @@ OSStatus RenderTone(
 	_snr.minimumValue = 0;
 	_snr.maximumValue = 100;
 	_snr.continuous = NO;
-	_snr.enabled = NO;
+	_snr.enabled = YES;
+	_snr.userInteractionEnabled = NO;
 
 	// AGC
 	_agc = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, 240, kSliderHeight)];
@@ -251,7 +252,8 @@ OSStatus RenderTone(
 	_agc.minimumValue = 0;
 	_agc.maximumValue = 100;
 	_agc.continuous = NO;
-	_agc.enabled = NO;
+	_agc.enabled = YES;
+	_agc.userInteractionEnabled = NO;
 
 	// Interval Slider
 	_interval = [[UISlider alloc] initWithFrame: CGRectMake(0, 0, (IS_IPAD()) ? 300 : 200, kSliderHeight)];
