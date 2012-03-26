@@ -1149,7 +1149,7 @@
 "Unknown connection error occured." = "Wystąpił nieznany błąd połączenia.";
 
 /* Remote host did return error code but no specific message. */
-"Unknown Error." = "UNieznany Błąd.";
+"Unknown Error." = "Nieznany Błąd.";
 
 /* Data parsing failed for unknown reason. */
 "Unknown parsing error occured." = "Wystąpił nieznany błąd analizy.";
