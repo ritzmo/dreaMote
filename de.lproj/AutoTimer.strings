@@ -19,6 +19,12 @@
 /* Placeholder of AutoTimer Match field */
 "<text to find in title>" = "<zu suchender text>";
 
+/* Label for cell 'add_autotimer_to_tags' */
+"Add \"AutoTimer\" tag" = "\"AutoTimer\" als Tag";
+
+/* Label for cell 'add_name_to_tags' */
+"Add name as tag" = "Titel als Tag";
+
 /* Label for cell 'addsimilar_on_conflict' */
 "Add similar timer on conflict" = "Alternativen timer bei Konflikt hinzufügen";
 

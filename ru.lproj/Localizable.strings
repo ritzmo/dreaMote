@@ -558,9 +558,6 @@
 /* Label for cell with setting vpsplugin_time */
 "Manual Time" = "Ручное время";
 
-/* No comment provided by engineer. */
-"Master" = "Основной";
-
 /* Title of section with AutoTimer match-Attribute. String to find in EPG-Title. */
 "Match" = "Соответствует";
 

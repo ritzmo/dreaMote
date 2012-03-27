@@ -58,6 +58,9 @@
 /* Placeholder for remote port in config. */
 "<port: usually %d>" = "<Port: z.B. %d>";
 
+/* Placeholder for remote streaming port in config. */
+"<streaming port: usually %d>" = "<Streaming-Port: z.B. %d>";
+
 /* Placeholder for remote username in config. */
 "<username: usually root>" = "<Benutzername: z.B. root>";
 
@@ -180,9 +183,6 @@
 
 /* Button in Appirater alert suggesting to buy paid version */
 "Buy full version" = "Vollversion kaufen";
-
-/* No comment provided by engineer. */
-"Can't edit a running or finished timer." = "Kann aktiven oder beendeten Timer nicht bearbeiten.";
 
 /* No comment provided by engineer. */
 "Can't save a timer with an empty title." = "Kann keinen Timer ohne Titel sichern.";
@@ -557,9 +557,6 @@
 
 /* Label for cell with setting vpsplugin_time */
 "Manual Time" = "VPS-Zeit";
-
-/* No comment provided by engineer. */
-"Master" = "Master";
 
 /* Title of section with AutoTimer match-Attribute. String to find in EPG-Title. */
 "Match" = "Suche in Titel";
