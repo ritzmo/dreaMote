@@ -52,6 +52,7 @@ enum settingsRows
 	zapModeRow,
 	timeoutRow,
 	historyLengthRow,
+    customActionRow,
 #if IS_FULL()
 	multiEpgRow,
 #endif
@@ -156,7 +157,7 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 
 	_tableView.delegate = nil;
 	_tableView.dataSource = nil;
-
+    UnsetCellAndDelegate(_customActionTextField);
 	progressHUD.delegate = nil;
 }
 
@@ -201,7 +202,11 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 
 	// add edit button
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-
+    
+    _customActionTextField = [self create_TextField];
+    _customActionTextField.placeholder = NSLocalizedString(@"<url to custom action>", @"Placeholder for custom urlaction.");
+    _customActionTextField.text = [stdDefaults stringForKey:kCustomACtion];
+    [_customActionTextField addTarget:self action:@selector(customActionChanged:) forControlEvents:UIControlEventEditingDidEnd];
 	[self theme];
 }
 
@@ -216,6 +221,30 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 	}
 	[super theme];
 }
+
+/* create a textfield */
+- (UITextField *)create_TextField
+{
+	UITextField *returnTextField = [[UITextField alloc] initWithFrame:CGRectZero];
+    
+	returnTextField.leftView = nil;
+	returnTextField.leftViewMode = UITextFieldViewModeNever;
+	returnTextField.borderStyle = UITextBorderStyleRoundedRect;
+    returnTextField.textColor = [UIColor blackColor];
+	returnTextField.font = [UIFont systemFontOfSize:kTextFieldFontSize];
+    returnTextField.backgroundColor = [UIColor whiteColor];
+	// no auto correction support
+	returnTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+	returnTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	returnTextField.keyboardType = UIKeyboardTypeDefault;
+	returnTextField.returnKeyType = UIReturnKeyDone;
+    
+	// has a clear 'x' button to the right
+	returnTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    
+	return returnTextField;
+}
+
 
 - (void)viewDidLoad
 {
@@ -272,6 +301,11 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 
 	// we need to post a notification so the main view reloads the rc
 	[[NSNotificationCenter defaultCenter] postNotificationName:kReconnectNotification object:self userInfo:nil];
+}
+
+- (void)customActionChanged:(id)sender
+{
+    [[NSUserDefaults standardUserDefaults] setValue: _customActionTextField.text forKey: kCustomACtion];
 }
 
 - (void)vibrationChanged:(id)sender
@@ -967,6 +1001,12 @@ typedef void (^dismiss_block_t)(UIAlertView *alertView, NSInteger buttonIndex);
 					sourceCell.tag = kHistoryLengthRowTag;
 					break;
 				}
+                case customActionRow:
+                {
+                    sourceCell = [CellTextField reusableTableViewCellInView:tableView withIdentifier:kCellTextField_ID];
+                    ((CellTextField *)sourceCell).view = _customActionTextField;
+                    break;
+                }
 #if IS_FULL()
 				/* Multi-EPG interval */
 				case multiEpgRow:
