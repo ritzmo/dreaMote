@@ -22,7 +22,8 @@ typedef enum
 	zapActionYxplayer = 4,
 	zapActionGoodPlayer = 5,
 	zapActionAcePlayer = 6,
-	zapActionMax = 7,
+    zapActionCustomUrl = 7,
+	zapActionMax = 8,
 } zapAction;
 
 @class ServiceZapListController;
