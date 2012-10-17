@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1AD269651620374100B55ADF /* FBFrictionlessRequestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD269641620374100B55ADF /* FBFrictionlessRequestSettings.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1AD269661620374100B55ADF /* FBFrictionlessRequestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD269641620374100B55ADF /* FBFrictionlessRequestSettings.m */; };
+		1AD269671620374100B55ADF /* FBFrictionlessRequestSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AD269641620374100B55ADF /* FBFrictionlessRequestSettings.m */; };
 		DA00A7B8147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
 		DA00A7B9147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
 		DA00A7BA147272DF00D3DA55 /* MultiSelectionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */; };
@@ -1220,6 +1223,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1AD269631620374100B55ADF /* FBFrictionlessRequestSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBFrictionlessRequestSettings.h; sourceTree = "<group>"; };
+		1AD269641620374100B55ADF /* FBFrictionlessRequestSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBFrictionlessRequestSettings.m; sourceTree = "<group>"; };
 		DA00A7B6147272DF00D3DA55 /* MultiSelectionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectionTableViewCell.h; sourceTree = "<group>"; };
 		DA00A7B7147272DF00D3DA55 /* MultiSelectionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectionTableViewCell.m; sourceTree = "<group>"; };
 		DA05663914DECB4F00BCCA04 /* ObjectiveFlickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectiveFlickr.h; path = Source/ObjectiveFlickr.h; sourceTree = "<group>"; };
@@ -2632,6 +2637,8 @@
 		DA78F20314C1E72100919093 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				1AD269631620374100B55ADF /* FBFrictionlessRequestSettings.h */,
+				1AD269641620374100B55ADF /* FBFrictionlessRequestSettings.m */,
 				DA78F20714C1E72100919093 /* Facebook.h */,
 				DA78F20814C1E72100919093 /* Facebook.m */,
 				DA78F20914C1E72100919093 /* facebook_ios_sdk_Prefix.pch */,
@@ -4312,6 +4319,7 @@
 				DA78F28114C1E72200919093 /* FBDialog.m in Sources */,
 				DA78F28414C1E72200919093 /* FBLoginDialog.m in Sources */,
 				DA78F28714C1E72200919093 /* FBRequest.m in Sources */,
+				1AD269651620374100B55ADF /* FBFrictionlessRequestSettings.m in Sources */,
 				DA78F28A14C1E72200919093 /* NSObject+SBJSON.m in Sources */,
 				DA78F28D14C1E72200919093 /* NSString+SBJSON.m in Sources */,
 				DA78F29014C1E72200919093 /* SBJSON.m in Sources */,
@@ -4596,6 +4604,7 @@
 				DA609256150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */,
 				DA609259150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */,
 				DA60925F150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */,
+				1AD269661620374100B55ADF /* FBFrictionlessRequestSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4832,6 +4841,7 @@
 				DA609257150AB5E100CB5FA5 /* MGSplitCornersView.m in Sources */,
 				DA60925A150AB5E100CB5FA5 /* MGSplitDividerView.m in Sources */,
 				DA609260150AB5E100CB5FA5 /* MGSplitViewController.m in Sources */,
+				1AD269671620374100B55ADF /* FBFrictionlessRequestSettings.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
