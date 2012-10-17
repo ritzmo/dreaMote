@@ -16,3 +16,6 @@
 [submodule "MGSplitViewController"]
 	path = MGSplitViewController
 	url = git://github.com/ritzmo/MGSplitViewController.git
+[submodule "TSMiniWebBrowser"]
+	path = TSMiniWebBrowser
+	url = git://github.com/tonisalae/TSMiniWebBrowser.git
