@@ -18,6 +18,8 @@
 
 #import <TableViewCell/BaseTableViewCell.h>
 
+#import "TSMiniWebBrowser.h"
+
 @interface ServiceZapListController()
 /*!
  @brief Hide action sheet if visible.
@@ -41,12 +43,14 @@
 + (BOOL)streamPlayerInstalled
 {
 	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	return	[sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]]
 		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]]
 		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"buzzplayer:///"]]
 		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"yxp:///"]]
 		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"goodplayer:///"]]
-		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]];
+		||	[sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]]
+        ||  ![[stdDefaults stringForKey:kCustomACtion] isEqualToString:@""];
 }
 
 + (NSString *)playerName:(zapAction)playerAction
@@ -70,6 +74,8 @@
 			return @"GoodPlayer";
 		case zapActionAcePlayer:
 			return @"AcePlayer";
+        case zapActionCustomUrl:
+            return @"Custom-URL";
 	}
 }
 
@@ -90,6 +96,10 @@
 		[arr addObject:@"GoodPlayer"];
 	if([sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
 		[arr addObject:@"AcePlayer"];
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+    if(![[stdDefaults stringForKey:kCustomACtion] isEqualToString:@""]) {
+        [arr addObject:@"Custom-URL"];
+    }
 	[arr addObject:NSLocalizedString(@"Always ask", @"")];
 	return arr;
 }
@@ -97,6 +107,7 @@
 + (zapAction)zapActionForIndex:(NSInteger)index
 {
 	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	if(index > zapActionRemote && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
 		++index;
 	if(index > zapActionOPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayerlite:///"]])
@@ -109,12 +120,15 @@
 		++index;
 	if(index > zapActionGoodPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
 		++index;
+	if(index > zapActionCustomUrl && [[stdDefaults stringForKey:kCustomACtion] isEqualToString:@""])
+		++index;
 	return index;
 }
 
 + (NSInteger)indexForZapAction:(zapAction)action
 {
 	const UIApplication *sharedApplication = [UIApplication sharedApplication];
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	NSInteger index = action;
 	if(action > zapActionRemote && ![sharedApplication canOpenURL:[NSURL URLWithString:@"oplayer:///"]])
 		--index;
@@ -128,12 +142,16 @@
 		--index;
 	if(action > zapActionGoodPlayer && ![sharedApplication canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
 		--index;
+	if(action > zapActionCustomUrl && [[stdDefaults stringForKey:kCustomACtion] isEqualToString:@""])
+		--index;
 	return index;
 }
 
 + (ServiceZapListController *)showAlert:(zap_callback_t)callback fromTabBar:(UITabBar *)tabBar
 {
 	ServiceZapListController *zlc = [[ServiceZapListController alloc] init];
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+    
 	zlc.callback = callback;
 	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Select type of zap", @"")
 															 delegate:zlc
@@ -154,6 +172,8 @@
 		[zlc.actionSheet addButtonWithTitle:@"GoodPlayer"];
 	if([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]])
 		[zlc.actionSheet addButtonWithTitle:@"AcePlayer"];
+    if(![[stdDefaults stringForKey:kCustomACtion] isEqualToString:@""])
+        [zlc.actionSheet addButtonWithTitle:@"Custom-URL"];
 
 	zlc.actionSheet.cancelButtonIndex = [zlc.actionSheet addButtonWithTitle:NSLocalizedString(@"Cancel", @"")];
 	if(tabBar == nil)
@@ -165,9 +185,15 @@
 	return zlc;
 }
 
-+ (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
+- (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
+{
+    [ServiceZapListController openStreamWithViewController:streamingURL withAction:action withViewController:self];
+}
+
++ (void)openStreamWithViewController:(NSURL *)streamingURL withAction:(zapAction)action withViewController:(UIViewController *)vc
 {
 	NSURL *url = nil;
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
 	switch(action)
 	{
 		default: break;
@@ -189,9 +215,27 @@
 		case zapActionAcePlayer:
 			url = [NSURL URLWithString:[NSString stringWithFormat:@"aceplayer://%@", [streamingURL absoluteURL]]];
 			break;
+        case zapActionCustomUrl:
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [stdDefaults stringForKey:kCustomACtion], [streamingURL absoluteURL]]];
+            break;
 	}
-	if(url)
-		[[UIApplication sharedApplication] openURL:url];
+	if(url) {
+        if( [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"] ) {
+            TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
+
+            webBrowser.showURLStringOnActionSheetTitle = NO;
+            webBrowser.showPageTitleOnTitleBar = YES;
+            webBrowser.showActionButton = YES;
+            webBrowser.showReloadButton = YES;
+            webBrowser.mode = TSMiniWebBrowserModeModal;
+            webBrowser.barStyle = UIBarStyleBlack;
+            
+            [vc presentModalViewController:webBrowser animated:YES];
+        }
+        else {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
 }
 
 - (id)init
@@ -260,6 +304,8 @@
 	hasAction[zapActionYxplayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"yxp:///"]];
 	hasAction[zapActionGoodPlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"goodplayer:///"]];
 	hasAction[zapActionAcePlayer] = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"aceplayer:///"]];
+    NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
+    hasAction[zapActionCustomUrl] = ![[stdDefaults stringForKey:kCustomACtion] isEqualToString:@""];
 	[_tableView reloadData];
 }
 
@@ -293,6 +339,8 @@
 			++row;
 		if(!hasAction[zapActionAcePlayer] && row > zapActionGoodPlayer)
 			++row;
+		if(!hasAction[zapActionCustomUrl] && row > zapActionCustomUrl)
+			++row;
 	}
 	switch((zapAction)row)
 	{
@@ -318,6 +366,9 @@
 		case zapActionAcePlayer:
 			cell.textLabel.text = @"AcePlayer";
 			break;
+        case zapActionCustomUrl:
+            cell.textLabel.text = @"Custom-URL";
+            break;
 	}
 
 	return [[DreamoteConfiguration singleton] styleTableViewCell:cell inTableView:tableView];
@@ -345,6 +396,8 @@
 		if(!hasAction[zapActionGoodPlayer] && row > zapActionYxplayer)
 			++row;
 		if(!hasAction[zapActionAcePlayer] && row > zapActionGoodPlayer)
+			++row;
+		if(!hasAction[zapActionCustomUrl] && row > zapActionCustomUrl)
 			++row;
 	}
 	call(self, row);

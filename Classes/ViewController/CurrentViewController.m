@@ -683,7 +683,7 @@
 		[alert show];
 	}
 	else
-		[ServiceZapListController openStream:streamingURL withAction:action];
+        [ServiceZapListController openStreamWithViewController:streamingURL withAction:action withViewController:self];
 }
 
 - (void)openOPlayer:(id)sender

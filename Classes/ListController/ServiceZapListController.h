@@ -22,7 +22,8 @@ typedef enum
 	zapActionYxplayer = 4,
 	zapActionGoodPlayer = 5,
 	zapActionAcePlayer = 6,
-	zapActionMax = 7,
+    zapActionCustomUrl = 7,
+	zapActionMax = 8,
 } zapAction;
 
 @class ServiceZapListController;
@@ -114,7 +115,8 @@ typedef void (^zap_callback_t)(ServiceZapListController *zapListController, zapA
  @param streamingUrl URL of the stream.
  @param action zapAction matching the application to open.
  */
-+ (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
+- (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
++ (void)openStreamWithViewController:(NSURL *)streamingUrl withAction:(zapAction)action withViewController:(UIViewController*) vc;
 
 /*!
  @brief Callback.
