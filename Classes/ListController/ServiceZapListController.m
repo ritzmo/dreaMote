@@ -18,6 +18,8 @@
 
 #import <TableViewCell/BaseTableViewCell.h>
 
+#import "TSMiniWebBrowser.h"
+
 @interface ServiceZapListController()
 /*!
  @brief Hide action sheet if visible.
@@ -217,8 +219,23 @@
             url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", [stdDefaults stringForKey:kCustomACtion], [streamingURL absoluteURL]]];
             break;
 	}
-	if(url)
-		[[UIApplication sharedApplication] openURL:url];
+	if(url) {
+        if( [url.scheme isEqualToString:@"http"] || [url.scheme isEqualToString:@"https"] ) {
+            TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:url];
+
+            webBrowser.showURLStringOnActionSheetTitle = NO;
+            webBrowser.showPageTitleOnTitleBar = YES;
+            webBrowser.showActionButton = YES;
+            webBrowser.showReloadButton = YES;
+            webBrowser.mode = TSMiniWebBrowserModeModal;
+            webBrowser.barStyle = UIBarStyleBlack;
+            
+            [vc presentModalViewController:webBrowser animated:YES];
+        }
+        else {
+            [[UIApplication sharedApplication] openURL:url];
+        }
+    }
 }
 
 - (id)init
