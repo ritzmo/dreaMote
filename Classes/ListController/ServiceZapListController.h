@@ -115,7 +115,8 @@ typedef void (^zap_callback_t)(ServiceZapListController *zapListController, zapA
  @param streamingUrl URL of the stream.
  @param action zapAction matching the application to open.
  */
-+ (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
+- (void)openStream:(NSURL *)streamingUrl withAction:(zapAction)action;
++ (void)openStreamWithViewController:(NSURL *)streamingUrl withAction:(zapAction)action withViewController:(UIViewController*) vc;
 
 /*!
  @brief Callback.

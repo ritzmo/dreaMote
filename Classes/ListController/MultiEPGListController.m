@@ -876,7 +876,7 @@ typedef void (^dismiss_block_t)(UIActionSheet *actionSheet, NSInteger buttonInde
 					[alert show];
 				}
 				else
-					[ServiceZapListController openStream:streamingURL withAction:selectedAction];
+                    [ServiceZapListController openStreamWithViewController:streamingURL withAction:selectedAction withViewController:self];
 			};
 
 			zapAction defaultZapAction = [[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault];

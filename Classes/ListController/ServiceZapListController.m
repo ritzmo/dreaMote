@@ -183,7 +183,12 @@
 	return zlc;
 }
 
-+ (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
+- (void)openStream:(NSURL *)streamingURL withAction:(zapAction)action
+{
+    [ServiceZapListController openStreamWithViewController:streamingURL withAction:action withViewController:self];
+}
+
++ (void)openStreamWithViewController:(NSURL *)streamingURL withAction:(zapAction)action withViewController:(UIViewController *)vc
 {
 	NSURL *url = nil;
     NSUserDefaults *stdDefaults = [NSUserDefaults standardUserDefaults];
