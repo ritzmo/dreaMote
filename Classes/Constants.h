@@ -138,6 +138,7 @@ extern const char *kPiconGlob;
 #define kActiveTheme			@"activeTheme"
 #define kZapModeDefault			@"defaultZapMode"
 #define kMenuItemOrder			@"menuItemOrder"
+#define kCustomACtion			@"customAction"
 
 #define kCurrentDatabaseVersion 2
 

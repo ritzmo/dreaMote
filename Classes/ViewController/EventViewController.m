@@ -742,7 +742,7 @@
 				[alert show];
 			}
 			else
-				[ServiceZapListController openStream:streamingURL withAction:selectedAction];
+				[ServiceZapListController openStreamWithViewController:streamingURL withAction:selectedAction withViewController:self];
 		};
 
 		zapAction defaultZapAction = [[NSUserDefaults standardUserDefaults] integerForKey:kZapModeDefault];

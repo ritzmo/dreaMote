@@ -31,6 +31,7 @@
 	UISwitch *_vibrateInRC; /*!< @brief "Vibrate in RC" UISwitch. */
 	UISwitch *_simpleRemote; /*!< @brief "Use simple remote" UISwitch. */
 	UISwitch *_sepEventsByDay; /*!< @brief "Separate events by day" UISwitch. */
+    UITextField *_customActionTextField; /*!< @brief Name Text Field. */
 	MBProgressHUD *progressHUD; /*!< @brief ProgressHUD if being shown. */
 	NSArray *purchasables; /*!< @brief List of purchasable objects. */
 }
